@@ -1,0 +1,5 @@
+vimdiff
+colo morning
+set filetype=dos
+set filetype=unix
+
