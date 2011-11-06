@@ -1,7 +1,1 @@
-vimdiff
-colo morning
-set filetype=dos
-set filetype=unix
-
-find . -name *fileToSearch*
-
+Various usefull commands & tricks
