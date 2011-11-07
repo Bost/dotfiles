@@ -1,4 +1,61 @@
+@CHARSET "ISO-8859-1";
+
 body {
-	font-family: courier new;
-	font-size: smaller;
+	font-family: monospace;
+	font-size: 11px;
+	float: left;
+	width: 100%;
+	color: black;
 }
+.cmd {
+	font-weight:bold;
+	width: 30%;
+	float: left;
+/*
+	border:1px solid blue;
+*/
+}
+
+.desc, .rest {
+	float: left;
+	width: 40%;
+/*
+	border:1px solid red;
+*/
+}
+
+.line {
+	float: left;
+	width: 90%;
+/*
+	border:1px solid green;
+*/
+}
+
+.rest {
+	float: left;
+	width: 90%;
+	color: red;
+/*
+	border:1px solid green;
+*/
+}}
+
+
+
+.g21, .g22, .g23
+{
+}
+
+.g21 {
+		background-color: lightblue;
+}
+
+.g22 {
+		background-color: lightgray;
+}
+
+.g23 {
+		background-color: lightyellow;
+}
+
