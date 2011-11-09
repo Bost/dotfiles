@@ -11,7 +11,7 @@
 	<body>
 		<div>
 			<div class="line"><div class="rest">vim:</div></div>
-			
+
 			<div class="line">
 				<div class="cmd">bufdo %s/pattern/substit/ge | update</div><div class="desc"># substitute in all buffers</div>
 			</div>
@@ -31,11 +31,27 @@
 					["x]y{motion}
 				</div><div class="desc"># yank {motion} into register x</div>
 			</div>
-<!--
+
+			<div class="line">
+				<div class="cmd">
+					gq
+				</div>
+				<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div>
+			</div>
 			<div class="line"><div class="rest">vim:</div></div>
 			<div class="line">
 				<div class="cmd">
-				</div><div class="desc">&nbsp;</div>
+					sort u
+				</div>
+				<div class="desc"># remove duplicate lines</div>
+			</div>
+<!--
+
+			<div class="line"><div class="rest">vim:</div></div>
+			<div class="line">
+				<div class="cmd">
+				</div>
+				<div class="desc">&nbsp;</div>
 			</div>
 
 			:e filename - Edit a file in a new buffer
@@ -45,7 +61,7 @@ ctrl+ws - Split windows
 ctrl+ww - switch between windows
 ctrl+wq - Quit a window
 ctrl+wv - Split windows vertically
--->			
+-->
 			<div class="line">
 				<div class="cmd">vim -p file1 file2</div><div class="desc"># open vim with tabs</div>
 			</div>
