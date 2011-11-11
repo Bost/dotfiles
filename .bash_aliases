@@ -12,7 +12,7 @@ SUDO_UPDATE="sudo apt-get update"
 alias update=$SUDO_UPDATE
 alias upd=$SUDO_UPDATE
 
-SUDO_UPGRADE="sudo apt-get upgrader"
+SUDO_UPGRADE="sudo apt-get upgrade"
 alias upgrade=$SUDO_UPGRADE
 alias upg=$SUDO_UPGRADE
 
