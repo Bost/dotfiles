@@ -9,8 +9,10 @@
 #alias all='cd $MBS_HOME/all.git'
 
 SUDO_UPDATE="sudo apt-get update"
+alias ll="ls -la"
 alias update=$SUDO_UPDATE
 alias upd=$SUDO_UPDATE
+alias inst="sudo apt-get install"
 
 SUDO_UPGRADE="sudo apt-get upgrade"
 alias upgrade=$SUDO_UPGRADE
