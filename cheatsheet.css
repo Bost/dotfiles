@@ -9,7 +9,7 @@ body {
 }
 .cmd {
 	font-weight:bold;
-	width: 30%;
+	width: 40%;
 	float: left;
 /*
 	border:1px solid blue;
@@ -18,7 +18,7 @@ body {
 
 .desc, .rest {
 	float: left;
-	width: 40%;
+	width: 50%;
 /*
 	border:1px solid red;
 */
@@ -39,7 +39,7 @@ body {
 /*
 	border:1px solid green;
 */
-}}
+}
 
 
 
