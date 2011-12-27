@@ -20,6 +20,7 @@ alias upg=$SUDO_UPGRADE
 
 alias aliases='vim ~/.bash_aliases'
 alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
+alias png='ping -c 5 www.google.com'
 
 alias v='vim'
 alias g='gvim'
