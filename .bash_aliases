@@ -37,13 +37,17 @@ elif [ $CURR_USER = "bost" ]; then
 
 	VIMRC=/home/bost/.vimrc
 	SUDO_UPDATE="sudo apt-get update"
+	alias ll="ls -la"
 	alias update=$SUDO_UPDATE
 	alias upd=$SUDO_UPDATE
 
-	SUDO_UPGRADE="sudo apt-get upgrader"
+	SUDO_UPGRADE="sudo apt-get upgrade"
 	alias upgrade=$SUDO_UPGRADE
 	alias upg=$SUDO_UPGRADE
-	alias reload='echo "reloading $HOME/.bashrc"; source $HOME/.bashrc'
+
+	alias inst="sudo apt-get install"
+
+	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
 fi
 
 export qDrive=$base/q
@@ -81,6 +85,10 @@ alias v=$VIM_CMD
 alias g=$GVIM_CMD
 
 alias cls='clear'
+
+alias aliases='vim ~/.bash_aliases'
+
+alias png='ping -c 5 www.google.com'
 
 alias c='cat'
 
