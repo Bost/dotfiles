@@ -14,24 +14,46 @@ alias l='ls -CF'
 #alias mv='mv -i'
 #alias grep='grep --color'
 
-CURR_USER=`whoami`
-echo CURR_USER=$CURR_USER
-if [ $CURR_USER = "svo02896" ] || [ $CURR_USER = "SVO02896" ]; then
-	echo Loading windows cygwin aliases
+uname=`uname -a`
+strMinGw32="MINGW32_NT-5.2 COR-PARIS-DEV1"
+strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
+strCygwin_wsles347="CYGWIN_NT-5.1 wsles347"
+strLinux="TODO specify later"
+#echo uname: $uname
+
+isMinGw32=`expr match "$uname" "$strMinGw32"`
+isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
+isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
+isLinux=`expr match "$uname" "$strLinux"`
+
+#echo isCygwin_dev1: $isCygwin_dev1
+#echo isCygwin_wsles347: $isCygwin_wsles347
+#echo isMinGw32: $isMinGw32
+
+if [ "$isCygwin_dev1" -gt 0 ]; then
+	echo "### Loading $strCygwin_dev1 aliases"
 	base=/cygdrive
-	DEV=$base/d/dev
+	DEV=$base/d/users/svoboda/dev
 	VIMRC=$base/h/.vimrc
 	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
-elif [ $CURR_USER = "dslocal\\svo02896" ]; then
-	echo Loading git cygwin aliases
+elif [ "$isCygwin_wsles347" -gt 0 ]; then
+	echo "### Loading $strCygwin_wsles347 aliases"
+	base=/cygdrive
+	DEV=$base/d/dev
+
+	#VIMRC=$ASE/h/.vimrc.msgit
+	VIMRC=$base/h/.vimrc.dark
+	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
+elif [ "$isMinGw32" -gt 0 ]; then
+	echo "### Loading $strMinGw32 aliases"
 	base=
 	DEV=$base/d/users/svoboda/dev
 
 	#VIMRC=$ASE/h/.vimrc.msgit
 	VIMRC=$base/h/.vimrc.dark
 	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
-elif [ $CURR_USER = "bost" ]; then
-	echo Loading linux aliases
+elif [ "$isLinux" -gt 0 ]; then
+	echo "### Loading $strLinux aliases"
 	base=
 	DEV=/home/bost/dev
 
@@ -48,6 +70,8 @@ elif [ $CURR_USER = "bost" ]; then
 	alias inst="sudo apt-get install"
 
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
+else
+	echo "ERROR No environment detected"
 fi
 
 export qDrive=$base/q
@@ -160,14 +184,16 @@ alias md='mkdir -p'
 # alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
 alias cvs-reset='cvs update -C -l -d -P '
 
-fDefvars=$rosv/mbs/deployments/defvars.sh 
-#echo "fDefvars=$fDefvars"
-if [ -f "${fDefvars}" ]; then
-	. "${fDefvars}"
-	#echo "File loaded: ${fDefvars}"
-else
-	echo "ERROR File not found: ${fDefvars}"
-fi
+if [ "$isLinux" -eq 0 ]; then
 
+	fDefvars=$rosv/mbs/deployments/defvars.sh
+	#echo "fDefvars=$fDefvars"
+	if [ -f "${fDefvars}" ]; then
+		. "${fDefvars}"
+		#echo "File loaded: ${fDefvars}"
+	else
+		echo "ERROR File not found: ${fDefvars}"
+	fi
+fi
 #echo "HOME=$HOME"
 
