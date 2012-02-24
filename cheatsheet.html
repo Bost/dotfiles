@@ -44,23 +44,6 @@
 				</div>
 				<div class="desc"># remove duplicate lines</div>
 			</div>
-<!--
-
-			<div class="line"><div class="rest">vim:</div></div>
-			<div class="line">
-				<div class="cmd">
-				</div>
-				<div class="desc">&nbsp;</div>
-			</div>
-
-			:e filename - Edit a file in a new buffer
-:bd - delete a buffer (close a file)
-:sp filename - Open a file in a new buffer and split window
-ctrl+ws - Split windows
-ctrl+ww - switch between windows
-ctrl+wq - Quit a window
-ctrl+wv - Split windows vertically
--->
 			<div class="line">
 				<div class="cmd">vim -p file1 file2</div><div class="desc"># open vim with tabs</div>
 			</div>
@@ -135,6 +118,10 @@ ctrl+wv - Split windows vertically
 
 
 			<div class="line"><div class="rest">bash:</div></div>
+
+			<div class="line">
+				<div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div><div class="desc"># print the output to log and to the stdout</div>
+			</div>
 			<div class="line">
 				<div class="cmd">find . -name *fileToSearch*</div><div class="desc">&nbsp;</div>
 			</div>
@@ -164,11 +151,9 @@ ctrl+wv - Split windows vertically
 				<div class="cmd">cvs diff -r RELEASE_1_0 -r RELEASE_1_1</div><div class="desc">&nbsp;</div>
 			</div>
 
-
 			<div class="line">
 				<div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div>
 			</div>
-
 
 			<div class="line"><div class="rest">github:</div></div>
 			<div class="line">
@@ -178,9 +163,7 @@ ctrl+wv - Split windows vertically
 				<div class="cmd">cat ~/.ssh/id_rsa.pub</div><div class="desc"># now copy-paste the ~/.ssh/id_rsa.pub to github under 'Add another public key'</div>
 			</div>
 
-
 			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
 
 			<div class="line"><div class="rest">eclipse - delete history and index:</div></div>
 			<div class="line">
@@ -193,10 +176,53 @@ ctrl+wv - Split windows vertically
 				<div class="cmd">rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt</div><div class="desc">&nbsp;</div>
 			</div>
 
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
 			<div class="line">
-				<div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div>
+				<div class="cmd">[\t ]+$</div><div class="desc"># remove trailing whitespaces - eclipse</div>
 			</div>
+
+
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+<!--
+
+			<div class="line"><div class="rest">vim:</div></div>
+			<div class="line">
+				<div class="cmd">
+				</div>
+				<div class="desc">&nbsp;</div>
+			</div>
+
+			:e filename - Edit a file in a new buffer
+:bd - delete a buffer (close a file)
+:sp filename - Open a file in a new buffer and split window
+ctrl+ws - Split windows
+ctrl+ww - switch between windows
+ctrl+wq - Quit a window
+ctrl+wv - Split windows vertically
+-->
+
+			<div class="line"><div class="rest">emacs:</div></div>
+			<div class="line"><div class="cmd">C-x C-c</div>		<div class="desc"># exit emacs</div></div>
+			<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
+			<div class="line"><div class="cmd">C-x C-f</div>		<div class="desc"># find file</div></div>
+			<div class="line"><div class="cmd"></div>	<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
+			<div class="line"><div class="cmd">C-x 1</div>		<div class="desc"># close all windows except the one the cursors in</div></div>
+			<div class="line"><div class="cmd">C-c C-C</div>		<div class="desc"># end of git commit message (under emacs)</div></div>
+
+			<div class="line"><div class="cmd">M-x command</div>	<div class="desc"># execute command</div></div>
+			<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression</div></div>
+			<div class="line"><div class="cmd">C-M-x</div>			<div class="desc"># immediate eval</div></div>
+			<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
+			<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>			<div class="desc"># emacs command list</div></div>
+			
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+
+			<div class="line"><div class="rest">emacs slime:</div></div>
+			<div class="line"><div class="cmd">M-x slime</div>		<div class="desc"># start slime (Superior Lisp Interaction Mode for Emacs)</div></div>
+			<div class="line"><div class="cmd">C-x C-e</div>		<div class="desc"># repeat last command</div></div>
+			<div class="line"><div class="cmd">M-p</div>		<div class="desc"># reprint last command to the REPL</div></div>
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
 			<div class="line"><div class="rest">db2:</div></div>
 

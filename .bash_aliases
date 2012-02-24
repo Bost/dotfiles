@@ -18,7 +18,7 @@ uname=`uname -a`
 strMinGw32="MINGW32_NT-5.2 COR-PARIS-DEV1"
 strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
 strCygwin_wsles347="CYGWIN_NT-5.1 wsles347"
-strLinux="TODO specify later"
+strLinux="Linux"
 #echo uname: $uname
 
 isMinGw32=`expr match "$uname" "$strMinGw32"`
