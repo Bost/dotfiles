@@ -161,6 +161,7 @@ alias gci='git commit'
 
 alias sc='script/console'
 alias h='history'
+alias hrep='history | grep '
 
 #alias tu='top -o cpu'
 #alias tm='top -o vsize'
