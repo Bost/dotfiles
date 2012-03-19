@@ -33,29 +33,37 @@ isLinux=`expr match "$uname" "$strLinux"`
 if [ "$isCygwin_dev1" -gt 0 ]; then
 	echo "### Loading $strCygwin_dev1 aliases"
 	base=/cygdrive
-	DEV=$base/d/users/svoboda/dev
+	dev=$base/d/users/svoboda/dev
+	export winapp=$base/d/users/svoboda/winapp
 	VIMRC=$base/h/.vimrc
+
 	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
+	alias pfandbrief='cd $dev/pfandbrief'
+	alias clojure='java -cp $winapp/clojure-1.3.0/clojure-1.3.0.jar clojure.main'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
 	echo "### Loading $strCygwin_wsles347 aliases"
 	base=/cygdrive
-	DEV=$base/d/dev
-
-	#VIMRC=$ASE/h/.vimrc.msgit
+	dev=$base/d/dev
+	export winapp=$base/d/winapp
 	VIMRC=$base/h/.vimrc.dark
+
 	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
+	alias clojure='$winapp/clojure-1.3.0/clojure.sh'
 elif [ "$isMinGw32" -gt 0 ]; then
 	echo "### Loading $strMinGw32 aliases"
 	base=
-	DEV=$base/d/users/svoboda/dev
-
+	dev=$base/d/users/svoboda/dev
+	export winapp=$base/d/users/svoboda/winapp
 	#VIMRC=$ASE/h/.vimrc.msgit
 	VIMRC=$base/h/.vimrc.dark
+
 	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
+	alias pfandbrief='cd $dev/pfandbrief'
+	alias clojure='java -cp $winapp/clojure-1.3.0/clojure-1.3.0.jar clojure.main'
 elif [ "$isLinux" -gt 0 ]; then
 	echo "### Loading $strLinux aliases"
 	base=
-	DEV=/home/bost/dev
+	dev=/home/bost/dev
 
 	VIMRC=/home/bost/.vimrc
 	SUDO_UPDATE="sudo apt-get update"
@@ -83,22 +91,22 @@ alias q:='cd $qDrive'
 
 alias rosv='cd $rosv'
 alias conf='cd $rosv/mbs/conf'
-alias scl='cd $DEV/scl-directory'
+alias scl='cd $dev/scl-directory'
 
-alias dem='cd $DEV/mbs/dem'
-alias mce='cd $DEV/mbs/mce'
-alias std='cd $DEV/mbs/std'
-alias bmw='cd $DEV/mbs/bmw'
-alias mbb='cd $DEV/mbs/mbb'
-alias all='cd $DEV/mbs/all.git'
+alias dem='cd $dev/mbs/dem'
+alias mce='cd $dev/mbs/mce'
+alias std='cd $dev/mbs/std'
+alias bmw='cd $dev/mbs/bmw'
+alias mbb='cd $dev/mbs/mbb'
+alias all='cd $dev/mbs/all.git'
 
-alias jacarta='cd $DEV/jacarta'
-alias hre='cd $DEV/jacarta.hre'
+alias jacarta='cd $dev/jacarta'
+alias hre='cd $dev/jacarta.hre'
 
-alias services='cd $DEV/xml-services'
-alias      xml='cd $DEV/xml-services'
+alias services='cd $dev/xml-services'
+alias xml='cd $dev/xml-services'
 
-alias dev='cd $DEV'
+alias dev='cd $dev'
 
 VIM_CMD='vim -u $VIMRC'
 GVIM_CMD='gvim -u $VIMRC'
