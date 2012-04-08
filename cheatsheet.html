@@ -52,6 +52,11 @@
 
 			<div class="line"><div class="cmd">grep --exclude=.git</div><div class="desc">&nbsp;</div></div>
 			<div class="line"><div class="cmd">grep --exclude=.git -lir 'something' *.cpp</div>	<div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">
+git filter-branch -f --env-filter "GIT_AUTHOR_NAME='Bost'; GIT_AUTHOR_EMAIL='thebost@gmail.com'; GIT_COMMITTER_NAME='Bost'; GIT_COMMITTER_EMAIL='thebost@gmail.com';" HEAD
+			</div><div class="desc"># change the name and email in all commits</div></div>
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 			<div class="line"><div class="cmd">git branch -rd public/whatever</div>				<div class="desc"># delete a remote-tracking branch</div></div>
 			<div class="line"><div class="cmd">git diff --name-only master branch</div>			<div class="desc">&nbsp;</div></div>
 			<div class="line"><div class="cmd">git show --name-only</div>						<div class="desc">&nbsp;</div></div>
@@ -129,7 +134,6 @@ ctrl+wv - Split windows vertically
 			<div class="line"><div class="cmd">M-p</div>			<div class="desc"># reprint last command to the REPL</div></div>
 
 			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
 		</div>
 	</body>
 </html>
