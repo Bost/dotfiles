@@ -76,8 +76,8 @@ elif [ "$isLinux" -gt 0 ]; then
 	alias upg=$SUDO_UPGRADE
 
 	alias inst="sudo apt-get install"
-
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
+	alias clojure='java -cp $dev/clojure-1.3.0/clojure-1.3.0.jar clojure.main'
 else
 	echo "ERROR No environment detected"
 fi
