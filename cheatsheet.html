@@ -176,6 +176,21 @@ ctrl+wv - Split windows vertically
 			<div class="line"><div class="cmd">ctrl-n</div>				<div class="desc"># auto completition</div></div>
 			<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
 			<div class="line"><div class="cmd">ctrl-x ctrl-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
+
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+
+			<div class="line"><div class="rest">usefull stuff:</div></div>
+			<div class="line"><div class="cmd">sudo !!</div>			<div class="desc"># Run the last command as root</div></div>
+			<div class="line"><div class="cmd">cp filename{,.bak}</div>	<div class="desc"># quickly backup or copy a file with bash</div></div>
+			<div class="line"><div class="cmd">$ssh-copy-id user@host</div>			<div class="desc">Copy ssh keys to user@host to enable password-less ssh logins</div></div>
+			<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>		<div class="desc">Execute a command at a given time</div></div>
+			<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
+				<div class="desc">Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html. Will allow you to mount a folder security over a network.</div></div>
+
+			<div class="line"><div class="cmd">ssh user@host cat /path/to/remotefile | diff /path/to/localfile -</div>			<div class="desc"># Compare a remote file with a local file</div></div>
+			<!--
+			<div class="line"><div class="cmd"></div>			<div class="desc"></div></div>
+			-->
 	</div>
 	</body>
 </html>
