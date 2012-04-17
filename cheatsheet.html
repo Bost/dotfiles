@@ -23,11 +23,22 @@
 			<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
 			<div class="line"><div class="cmd">`.</div>					<div class="desc"># last edit location</div></div>
 			<div class="line"><div class="cmd">'.</div>					<div class="desc"># last edit line</div></div>
+
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+
 			<div class="line"><div class="cmd">vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">gvim -d file1 file2</div><div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">]c</div>					<div class="desc"># jump to next diff</div></div>
+			<div class="line"><div class="cmd">[c</div>					<div class="desc"># jump to previous diff</div></div>
+			<div class="line"><div class="cmd">do :diffg :diffget</div>	<div class="desc"># replace a diff in the current viewport with that from the other viewport, use the :diffget command</div></div>
+			<div class="line"><div class="cmd">dp</div>					<div class="desc"># replace a diff in the other viewport with that from the current viewport, use the :diffput command</div></div>
+
+			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+
 			<div class="line"><div class="cmd">color morning</div>		<div class="desc">&nbsp;</div></div>
 			<div class="line"><div class="cmd">set fileformat=dos|unix|mac</div><div class="desc">&nbsp;</div></div>
 			<div class="line"><div class="cmd">set filetype=html|xml|...</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">CTRL-w</div>				<div class="desc"># move around split viewports</div></div>
+			<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
 			<div class="line"><div class="cmd">&gt;</div>				<div class="desc"># shift text right</div></div>
 			<div class="line"><div class="cmd">&lt;</div>				<div class="desc"># shift text left</div></div>
 			<div class="line"><div class="cmd">=</div>					<div class="desc"># align text</div></div>
@@ -163,7 +174,7 @@ ctrl+wv - Split windows vertically
 			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
 			<div class="line"><div class="cmd">ctrl-n</div>				<div class="desc"># auto completition</div></div>
-			<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># switch between windows</div></div>
+			<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
 			<div class="line"><div class="cmd">ctrl-x ctrl-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
 	</div>
 	</body>
