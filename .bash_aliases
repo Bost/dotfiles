@@ -15,20 +15,25 @@ alias l='ls -CF'
 #alias grep='grep --color'
 
 uname=`uname -a`
-strMinGw32="MINGW32_NT-5.2 COR-PARIS-DEV1"
+strMinGw32_dev1="MINGW32_NT-5.2 COR-PARIS-DEV1"
 strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
 strCygwin_wsles347="CYGWIN_NT-5.1 wsles347"
+strMinGw32_wsles347="MINGW32_NT-5.1 WSLES347"
 strLinux="Linux"
 #echo uname: $uname
 
-isMinGw32=`expr match "$uname" "$strMinGw32"`
+isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
 isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
 isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
 isLinux=`expr match "$uname" "$strLinux"`
+isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
 
 #echo isCygwin_dev1: $isCygwin_dev1
 #echo isCygwin_wsles347: $isCygwin_wsles347
-#echo isMinGw32: $isMinGw32
+#echo isMinGw32_dev1: $isMinGw32_dev1
+#echo isMinGw32_wsles347: $isMinGw32_wsles347
+
+alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 
 if [ "$isCygwin_dev1" -gt 0 ]; then
 	echo "### Loading $strCygwin_dev1 aliases"
@@ -37,8 +42,6 @@ if [ "$isCygwin_dev1" -gt 0 ]; then
 	export winapp=$base/d/users/svoboda/winapp
 	VIMRC=$base/h/.vimrc
 
-	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
-	alias pfandbrief='cd $dev/pfandbrief'
 	alias clojure='java -cp $winapp/clojure-1.3.0/clojure-1.3.0.jar clojure.main'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
 	echo "### Loading $strCygwin_wsles347 aliases"
@@ -47,19 +50,24 @@ elif [ "$isCygwin_wsles347" -gt 0 ]; then
 	export winapp=$base/d/winapp
 	VIMRC=$base/h/.vimrc.dark
 
-	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 	alias clojure='$winapp/clojure-1.3.0/clojure.sh'
-elif [ "$isMinGw32" -gt 0 ]; then
-	echo "### Loading $strMinGw32 aliases"
+elif [ "$isMinGw32_dev1" -gt 0 ]; then
+	echo "### Loading $strMinGw32_dev1 aliases"
 	base=
 	dev=$base/d/users/svoboda/dev
 	export winapp=$base/d/users/svoboda/winapp
 	#VIMRC=$ASE/h/.vimrc.msgit
 	VIMRC=$base/h/.vimrc.dark
 
-	alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
-	alias pfandbrief='cd $dev/pfandbrief'
 	alias clojure='java -cp $winapp/clojure-1.3.0/clojure-1.3.0.jar clojure.main'
+elif [ "$isMinGw32_wsles347" -gt 0 ]; then
+	echo "### Loading $strMinGw32_wsles347 aliases"
+	base=
+	dev=$base/d/dev
+	export winapp=$base/d/winapp
+	VIMRC=$base/h/.vimrc.dark
+
+	#alias clojure='$winapp/clojure-1.3.0/clojure.sh'
 elif [ "$isLinux" -gt 0 ]; then
 	echo "### Loading $strLinux aliases"
 	base=
@@ -92,6 +100,7 @@ alias q:='cd $qDrive'
 alias rosv='cd $rosv'
 alias conf='cd $rosv/mbs/conf'
 alias scl='cd $dev/scl-directory'
+alias cheatsheet='cd $dev/cheatsheet'
 
 alias dem='cd $dev/mbs/dem'
 alias mce='cd $dev/mbs/mce'
@@ -102,6 +111,7 @@ alias all='cd $dev/mbs/all.git'
 
 alias jacarta='cd $dev/jacarta'
 alias hre='cd $dev/jacarta.hre'
+alias pfandbrief='cd $dev/pfandbrief'
 
 alias services='cd $dev/xml-services'
 alias xml='cd $dev/xml-services'
