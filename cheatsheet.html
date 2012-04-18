@@ -56,16 +56,18 @@
 			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
 			<div class="line"><div class="rest">bash:</div></div>
-			<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div><div class="desc"># print the output to log and to the stdout</div></div>
-			<div class="line"><div class="cmd">find . -name *fileToSearch*</div>	<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>			<div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="cmd">grep -lir "TextToFind" *</div>		<div class="desc"># print only file-names</div></div>
-			<div class="line"><div class="cmd">grep -i -n "TextToSearch" *</div>	<div class="desc"># print line numbers</div></div>
-
-			<div class="line"><div class="cmd">grep --exclude=.git</div><div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
+			<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
+			<div class="line"><div class="cmd">find . -name *fileToSearch*</div>				<div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">
+				find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>	<div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">grep -lir "TextToFind" *</div>					<div class="desc"># print only file-names</div></div>
+			<div class="line"><div class="cmd">grep -i -n "TextToSearch" *</div>				<div class="desc"># print line numbers</div></div>
+			<div class="line"><div class="cmd">grep --exclude=.git</div>						<div class="desc">&nbsp;</div></div>
 			<div class="line"><div class="cmd">grep --exclude=.git -lir 'something' *.cpp</div>	<div class="desc">&nbsp;</div></div>
+
 			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+
 			<div class="line"><div class="cmd">
 git filter-branch -f --env-filter "GIT_AUTHOR_NAME='Bost'; GIT_AUTHOR_EMAIL='thebost@gmail.com'; GIT_COMMITTER_NAME='Bost'; GIT_COMMITTER_EMAIL='thebost@gmail.com';" HEAD
 			</div><div class="desc"># change the name and email in all commits</div></div>
