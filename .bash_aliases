@@ -42,7 +42,7 @@ if [ "$isCygwin_dev1" -gt 0 ]; then
 	export winapp=$base/d/users/svoboda/winapp
 	VIMRC=$base/h/.vimrc
 
-	alias clojure='java -cp $winapp/clojure-1.3.0/clojure-1.3.0.jar clojure.main'
+	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
 	echo "### Loading $strCygwin_wsles347 aliases"
 	base=/cygdrive
@@ -50,7 +50,7 @@ elif [ "$isCygwin_wsles347" -gt 0 ]; then
 	export winapp=$base/d/winapp
 	VIMRC=$base/h/.vimrc.dark
 
-	alias clojure='$winapp/clojure-1.3.0/clojure.sh'
+	alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_dev1" -gt 0 ]; then
 	echo "### Loading $strMinGw32_dev1 aliases"
 	base=
@@ -59,7 +59,7 @@ elif [ "$isMinGw32_dev1" -gt 0 ]; then
 	#VIMRC=$ASE/h/.vimrc.msgit
 	VIMRC=$base/h/.vimrc.dark
 
-	alias clojure='java -cp $winapp/clojure-1.3.0/clojure-1.3.0.jar clojure.main'
+	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_wsles347" -gt 0 ]; then
 	echo "### Loading $strMinGw32_wsles347 aliases"
 	base=
@@ -67,7 +67,7 @@ elif [ "$isMinGw32_wsles347" -gt 0 ]; then
 	export winapp=$base/d/winapp
 	VIMRC=$base/h/.vimrc.dark
 
-	#alias clojure='$winapp/clojure-1.3.0/clojure.sh'
+	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isLinux" -gt 0 ]; then
 	echo "### Loading $strLinux aliases"
 	base=
@@ -85,7 +85,7 @@ elif [ "$isLinux" -gt 0 ]; then
 
 	alias inst="sudo apt-get install"
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
-	alias clojure='java -cp $dev/clojure-1.3.0/clojure-1.3.0.jar clojure.main'
+	alias clojure='java -cp $dev/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 else
 	echo "ERROR No environment detected"
 fi
