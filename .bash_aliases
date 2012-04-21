@@ -71,9 +71,8 @@ elif [ "$isMinGw32_wsles347" -gt 0 ]; then
 elif [ "$isLinux" -gt 0 ]; then
 	echo "### Loading $strLinux aliases"
 	base=
-	dev=/home/bost/dev
-
-	VIMRC=/home/bost/.vimrc
+	dev=$HOME/dev
+	VIMRC=$HOME/.vimrc
 	SUDO_UPDATE="sudo apt-get update"
 	alias ll="ls -la"
 	alias update=$SUDO_UPDATE
@@ -90,32 +89,39 @@ else
 	echo "ERROR No environment detected"
 fi
 
-export qDrive=$base/q
-export rosv=$qDrive/transfer/rosv
+if [ "$isLinux" -eq 0 ]; then
+	export qDrive=$base/q
+	export rosv=$qDrive/transfer/rosv
 
-alias c:='cd $base/c'
-alias d:='cd $base/d'
-alias q:='cd $qDrive'
+	alias c:='cd $base/c'
+	alias d:='cd $base/d'
+	alias q:='cd $qDrive'
 
-alias rosv='cd $rosv'
-alias conf='cd $rosv/mbs/conf'
-alias scl='cd $dev/scl-directory'
+	alias rosv='cd $rosv'
+	alias conf='cd $rosv/mbs/conf'
+	alias scl='cd $dev/scl-directory'
+
+	alias dem='cd $dev/mbs/dem'
+	alias mce='cd $dev/mbs/mce'
+	alias std='cd $dev/mbs/std'
+	alias bmw='cd $dev/mbs/bmw'
+	alias mbb='cd $dev/mbs/mbb'
+	alias all='cd $dev/mbs/all.git'
+
+	alias jacarta='cd $dev/jacarta'
+	alias hre='cd $dev/jacarta.hre'
+	alias pfandbrief='cd $dev/pfandbrief'
+
+	alias services='cd $dev/xml-services'
+	alias xml='cd $dev/xml-services'
+
+	#alias prod='echo ssh rsvoboda@172.17.31.184; ssh rsvoboda@172.17.31.184'
+	#alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
+	alias prod='echo ssh rsvoboda@194.99.105.205; ssh rsvoboda@194.99.105.205'
+	alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
+fi
+
 alias cheatsheet='cd $dev/cheatsheet'
-
-alias dem='cd $dev/mbs/dem'
-alias mce='cd $dev/mbs/mce'
-alias std='cd $dev/mbs/std'
-alias bmw='cd $dev/mbs/bmw'
-alias mbb='cd $dev/mbs/mbb'
-alias all='cd $dev/mbs/all.git'
-
-alias jacarta='cd $dev/jacarta'
-alias hre='cd $dev/jacarta.hre'
-alias pfandbrief='cd $dev/pfandbrief'
-
-alias services='cd $dev/xml-services'
-alias xml='cd $dev/xml-services'
-
 alias dev='cd $dev'
 
 VIM_CMD='vim -u $VIMRC'
@@ -127,18 +133,9 @@ alias v=$VIM_CMD
 alias g=$GVIM_CMD
 
 alias cls='clear'
-
 alias aliases='vim ~/.bash_aliases'
-
 alias png='ping -c 5 www.google.com'
-
 alias c='cat'
-
-#alias prod='echo ssh rsvoboda@172.17.31.184; ssh rsvoboda@172.17.31.184'
-#alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
-alias prod='echo ssh rsvoboda@194.99.105.205; ssh rsvoboda@194.99.105.205'
-alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
-
 alias less='less -r'
 #alias rm='rm -i'
 alias whence='type -a'
@@ -204,7 +201,6 @@ alias md='mkdir -p'
 alias cvs-reset='cvs update -C -l -d -P '
 
 if [ "$isLinux" -eq 0 ]; then
-
 	fDefvars=$rosv/mbs/deployments/defvars.sh
 	#echo "fDefvars=$fDefvars"
 	if [ -f "${fDefvars}" ]; then

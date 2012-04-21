@@ -8,7 +8,8 @@ set ignorecase
 set smartcase
 
 "set guifont=DejaVu\ Sans\ Mono\ 9
-set guifont=Lucida_Console:h8:cDEFAULT
+"set guifont=Lucida_Console:h8:cDEFAULT
+"set guifont=Monospace
 "set guifont=lucida_console:h8:w5
 "set lines=64 columns=160
 
