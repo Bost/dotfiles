@@ -19,6 +19,7 @@ strMinGw32_dev1="MINGW32_NT-5.2 COR-PARIS-DEV1"
 strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
 strCygwin_wsles347="CYGWIN_NT-5.1 wsles347"
 strMinGw32_wsles347="MINGW32_NT-5.1 WSLES347"
+strMinGw32_app1="MINGW32_NT-5.2 COR-ALLDM-APP1"
 strLinux="Linux"
 #echo uname: $uname
 
@@ -27,11 +28,13 @@ isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
 isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
 isLinux=`expr match "$uname" "$strLinux"`
 isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
+isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 
 #echo isCygwin_dev1: $isCygwin_dev1
 #echo isCygwin_wsles347: $isCygwin_wsles347
 #echo isMinGw32_dev1: $isMinGw32_dev1
 #echo isMinGw32_wsles347: $isMinGw32_wsles347
+#echo isMinGw32_app1: $strMinGw32_app1
 
 alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 
@@ -58,6 +61,16 @@ elif [ "$isMinGw32_dev1" -gt 0 ]; then
 	export winapp=$base/d/users/svoboda/winapp
 	#VIMRC=$ASE/h/.vimrc.msgit
 	VIMRC=$base/h/.vimrc.dark
+
+	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+elif [ "$isMinGw32_app1" -gt 0 ]; then
+	echo "### Loading $strMinGw32_app1 aliases"
+	base=
+	dev=$base/d/users/svoboda/dev
+	export winapp=$base/d/users/svoboda/winapp
+	#VIMRC=$ASE/h/.vimrc.msgit
+	# this works just well
+	VIMRC=/d/winapp/Vim/_vimrc
 
 	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_wsles347" -gt 0 ]; then
