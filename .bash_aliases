@@ -21,6 +21,7 @@ strCygwin_wsles347="CYGWIN_NT-5.1 wsles347"
 strMinGw32_wsles347="MINGW32_NT-5.1 WSLES347"
 strMinGw32_app1="MINGW32_NT-5.2 COR-ALLDM-APP1"
 strLinux="Linux"
+strCygwin_155="CYGWIN_NT-6.1-WOW64 LE-C-155"
 #echo uname: $uname
 
 isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
@@ -29,6 +30,7 @@ isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
 isLinux=`expr match "$uname" "$strLinux"`
 isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
 isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
+isCygwin_155=`expr match "$uname" "$strCygwin_155"`
 
 #echo isCygwin_dev1: $isCygwin_dev1
 #echo isCygwin_wsles347: $isCygwin_wsles347
@@ -46,6 +48,14 @@ if [ "$isCygwin_dev1" -gt 0 ]; then
 	VIMRC=$base/h/.vimrc
 
 	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+elif [ "$isCygwin_155" -gt 0 ]; then
+	echo "### Loading $strCygwin_155"
+	base=/cygdrive
+	dev=$base/c/cygwin/home/svo02896/dev
+	export winapp=$base/c/winapp
+	#VIMRC=$base/h/.vimrc.dark
+
+	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
 	echo "### Loading $strCygwin_wsles347 aliases"
 	base=/cygdrive
@@ -60,7 +70,8 @@ elif [ "$isMinGw32_dev1" -gt 0 ]; then
 	dev=$base/d/users/svoboda/dev
 	export winapp=$base/d/users/svoboda/winapp
 	#VIMRC=$ASE/h/.vimrc.msgit
-	VIMRC=$base/h/.vimrc.dark
+	#VIMRC=$base/h/.vimrc.dark
+	VIMRC=$base/h/.vimrc
 
 	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_app1" -gt 0 ]; then
