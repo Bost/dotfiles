@@ -145,6 +145,7 @@ if [ "$isLinux" -eq 0 ]; then
 	alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
 fi
 
+alias webcli='cd $dev/webcli'
 alias cheatsheet='cd $dev/cheatsheet'
 alias dev='cd $dev'
 
