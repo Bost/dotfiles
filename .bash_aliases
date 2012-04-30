@@ -22,6 +22,7 @@ strMinGw32_wsles347="MINGW32_NT-5.1 WSLES347"
 strMinGw32_app1="MINGW32_NT-5.2 COR-ALLDM-APP1"
 strLinux="Linux"
 strCygwin_155="CYGWIN_NT-6.1-WOW64 LE-C-155"
+strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
 #echo uname: $uname
 
 isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
@@ -31,7 +32,9 @@ isLinux=`expr match "$uname" "$strLinux"`
 isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
 isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 isCygwin_155=`expr match "$uname" "$strCygwin_155"`
+isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
 
+#echo isMinGw32_155: $isMinGw32_155
 #echo isCygwin_dev1: $isCygwin_dev1
 #echo isCygwin_wsles347: $isCygwin_wsles347
 #echo isMinGw32_dev1: $isMinGw32_dev1
@@ -51,6 +54,14 @@ if [ "$isCygwin_dev1" -gt 0 ]; then
 elif [ "$isCygwin_155" -gt 0 ]; then
 	echo "### Loading $strCygwin_155"
 	base=/cygdrive
+	dev=$base/c/cygwin/home/svo02896/dev
+	export winapp=$base/c/winapp
+	#VIMRC=$base/h/.vimrc.dark
+
+	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+elif [ "$isMinGw32_155" -gt 0 ]; then
+	echo "### Loading $strMinGw32_155"
+	base=
 	dev=$base/c/cygwin/home/svo02896/dev
 	export winapp=$base/c/winapp
 	#VIMRC=$base/h/.vimrc.dark
