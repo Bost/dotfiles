@@ -56,6 +56,8 @@
 			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
 			<div class="line"><div class="rest">bash:</div></div>
+			<div class="line"><div class="cmd">ls --format=single-column</div>					<div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>					<div class="desc"># Execute a command at a given time</div></div>
 			<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
 			<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
 			<div class="line"><div class="cmd">find . -name *fileToSearch*</div>				<div class="desc">&nbsp;</div></div>
@@ -189,7 +191,6 @@ ctrl+wv - Split windows vertically
 			<div class="line"><div class="cmd">sudo !!</div>			<div class="desc"># Run the last command as root</div></div>
 			<div class="line"><div class="cmd">cp filename{,.bak}</div>	<div class="desc"># quickly backup or copy a file with bash</div></div>
 			<div class="line"><div class="cmd">$ssh-copy-id user@host</div>			<div class="desc">Copy ssh keys to user@host to enable password-less ssh logins</div></div>
-			<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>		<div class="desc">Execute a command at a given time</div></div>
 			<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
 				<div class="desc">Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html. Will allow you to mount a folder security over a network.</div></div>
 
