@@ -1,5 +1,7 @@
 # Add aliases to your ~/.gitconfig file:
 [alias]
+	au = add --update
+	ss = status --short
 	st = status
 	ci = commit
 	br = branch
