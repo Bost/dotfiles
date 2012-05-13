@@ -11,20 +11,38 @@
 	<body>
 		<div>
 			<div class="line"><div class="rest">vim:</div></div>
-			<div class="line"><div class="cmd">bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
-			<div class="line"><div class="cmd">bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
-			<div class="line"><div class="cmd">reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
+			<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
+			<div class="line"><div class="cmd">:bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
+			<div class="line"><div class="cmd">:reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
 			<div class="line"><div class="cmd">["x]y{motion}</div>		<div class="desc"># yank {motion} into register x</div></div>
 			<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
-			<div class="line"><div class="cmd">sort u</div>				<div class="desc"># remove duplicate lines</div></div>
+			<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marsk (for jumping etc); m - marks something?</div></div>
+			<div class="line"><div class="cmd">:sort u</div>			<div class="desc"># remove duplicate lines</div></div>
 			<div class="line"><div class="cmd">vim -p file1 file2</div>	<div class="desc"># open vim with tabs</div></div>
-			<div class="line"><div class="cmd">! sort</div>				<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">r! command</div>			<div class="desc"># execute command and read in its output</div></div>
+			<div class="line"><div class="cmd">:! sort</div>			<div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">cc</div>				<div class="desc"># change line</div></div>
+			<div class="line"><div class="cmd">R r</div>				<div class="desc"># replace mode, replace 1 character</div></div>
+			<div class="line"><div class="cmd">:r! command</div>		<div class="desc"># execute command and read in its output</div></div>
 			<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
 			<div class="line"><div class="cmd">`.</div>					<div class="desc"># last edit location</div></div>
 			<div class="line"><div class="cmd">'.</div>					<div class="desc"># last edit line</div></div>
-			<div class="line"><div class="cmd">set guifont=?</div>		<div class="desc"># display current guifont</div></div>
-			<div class="line"><div class="cmd">set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
+			<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump f: forward, backward</div></div>
+			<div class="line"><div class="cmd">zz zb zt or M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
+			<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
+			<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
+			<div class="line"><div class="cmd">ctrl t / ctrl d</div>	<div class="desc"># align text in insert mode</div></div>
+			<div class="line"><div class="cmd">vit / yit / cit / dit</div>	<div class="desc"># mark/yank/change/delete "innerHTML"</div></div>
+			<div class="line"><div class="cmd">vat / yat / cat / dat</div>	<div class="desc"># mark/yank/change/delete whole tag</div></div>
+			<div class="line"><div class="cmd">o in visual mode</div>	<div class="desc"># change the marking direction</div></div>
+			<div class="line"><div class="cmd">* / #</div>				<div class="desc"># hightlight and search forwards/backwards</div></div>
+			<div class="line"><div class="cmd">g* / g#</div>			<div class="desc"># hightlight and search for parts of a word</div></div>
+			<div class="line"><div class="cmd">:[range]s/bacon/lettuce/[ciInp] [count]</div>
+																		<div class="desc"># confirm, ignore case, case sensitive, number of matches; print lines</div></div>
+			<div class="line"><div class="cmd">:s/bacon/lettuce/g10</div>
+																		<div class="desc"># replace only next 10 lines</div></div>
+			<div class="line"><div class="cmd">:[range]s//lettuce/...</div>
+																		<div class="desc"># use previous search pattern</div></div>
+			<div class="line"><div class="cmd">:g/regexp/p</div>		<div class="desc"># "grep"</div></div>
 
 			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
@@ -62,6 +80,9 @@
 			<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>					<div class="desc"># Execute a command at a given time</div></div>
 			<div class="line"><div class="cmd">wc cheatsheet.html</div>							<div class="desc"># line count, word count</div></div>
 			<div class="line"><div class="cmd">sudo !!</div>									<div class="desc">&nbsp;</div></div>
+			<div class="line"><div class="cmd">!$</div>											<div class="desc"># last parameter of the last command</div></div>
+			<div class="line"><div class="cmd">ctrl r, ctrl g</div>								<div class="desc"># bash history, abort history</div></div>
+			<div class="line"><div class="cmd">mv README.{text,txt}</div>						<div class="desc"># bash using list: mv README.text README.txt</div></div>
 			<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
 			<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
 			<div class="line"><div class="cmd">find . -name *fileToSearch*</div>				<div class="desc">&nbsp;</div></div>
