@@ -120,6 +120,7 @@ elif [ "$isLinux" -gt 0 ]; then
 	alias inst="sudo apt-get install"
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
 	alias clojure='java -cp $dev/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+	alias kk="krusader --left . --right . &"
 else
 	echo "ERROR No environment detected"
 fi
@@ -233,6 +234,11 @@ alias md='mkdir -p'
 
 #alias cp='cp -i'
 #alias mv='mv -i'
+
+function take {
+	mkdir $1
+	cd $1
+}
 
 # example:
 # alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
