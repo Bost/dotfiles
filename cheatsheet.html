@@ -5,143 +5,185 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 		<title>Cheatsheet</title>
+		<link rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css">
+		<script src="cheatsheet-js/jquery-1.7.2.js"></script><style type="text/css"></style>
+		<script src="cheatsheet-js/jquery.ui.core.js"></script>
+		<script src="cheatsheet-js/jquery.ui.widget.js"></script>
+		<!--
+		<script src="cheatsheet-js/jquery.ui.mouse.js"></script>
+		<script src="cheatsheet-js/jquery.ui.resizable.js"></script>
+		<link rel="stylesheet" href="http://jqueryui.com/demos/demos.css">
+		-->
+		<script src="cheatsheet-js/jquery.ui.accordion.js"></script>
 		<link rel="stylesheet" href="cheatsheet.css" type="text/css" media="screen" charset="utf-8" />
+		<script>
+			var ids = "#acc0, #acc1, #acc1, #acc2, #acc3, #acc4, #acc5, #acc6, #acc7, #acc8, #acc9, #acc10, #acc11, #acc12";
+			$(function() {
+				$(ids).accordion({
+					//fillSpace: true, 
+					collapsible: true
+				});
+			});
+			/*
+			$(function() {
+				$( "#accordionResizer" ).resizable({
+					//minHeight: 140,
+					resize: function() {
+						$( ids ).accordion( "resize" );
+					}
+				});
+			});
+			*/
+		</script>
 
 	</head>
 	<body>
+		<script>
+			$(function() {
+				$(ids).accordion();
+			});
+		</script>
 		<div>
-			<div class="line"><div class="rest">vim:</div></div>
-			<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
-			<div class="line"><div class="cmd">:bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
-			<div class="line"><div class="cmd">:reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
-			<div class="line"><div class="cmd">["x]y{motion}</div>		<div class="desc"># yank {motion} into register x</div></div>
-			<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
-			<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marsk (for jumping etc); m - marks something?</div></div>
-			<div class="line"><div class="cmd">:sort u</div>			<div class="desc"># remove duplicate lines</div></div>
-			<div class="line"><div class="cmd">vim -p file1 file2</div>	<div class="desc"># open vim with tabs</div></div>
-			<div class="line"><div class="cmd">:! sort</div>			<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">cc</div>				<div class="desc"># change line</div></div>
-			<div class="line"><div class="cmd">R r</div>				<div class="desc"># replace mode, replace 1 character</div></div>
-			<div class="line"><div class="cmd">:r! command</div>		<div class="desc"># execute command and read in its output</div></div>
-			<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
-			<div class="line"><div class="cmd">`.</div>					<div class="desc"># last edit location</div></div>
-			<div class="line"><div class="cmd">'.</div>					<div class="desc"># last edit line</div></div>
-			<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump f: forward, backward</div></div>
-			<div class="line"><div class="cmd">zz zb zt or M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
-			<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
-			<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
-			<div class="line"><div class="cmd">ctrl t / ctrl d</div>	<div class="desc"># align text in insert mode</div></div>
-			<div class="line"><div class="cmd">vit / yit / cit / dit</div>	<div class="desc"># mark/yank/change/delete "innerHTML"</div></div>
-			<div class="line"><div class="cmd">vat / yat / cat / dat</div>	<div class="desc"># mark/yank/change/delete whole tag</div></div>
-			<div class="line"><div class="cmd">o in visual mode</div>	<div class="desc"># change the marking direction</div></div>
-			<div class="line"><div class="cmd">* / #</div>				<div class="desc"># hightlight and search forwards/backwards</div></div>
-			<div class="line"><div class="cmd">g* / g#</div>			<div class="desc"># hightlight and search for parts of a word</div></div>
-			<div class="line"><div class="cmd">:[range]s/bacon/lettuce/[ciInp] [count]</div>
-																		<div class="desc"># confirm, ignore case, case sensitive, number of matches; print lines</div></div>
-			<div class="line"><div class="cmd">:s/bacon/lettuce/g10</div>
-																		<div class="desc"># replace only next 10 lines</div></div>
-			<div class="line"><div class="cmd">:[range]s//lettuce/...</div>
-																		<div class="desc"># use previous search pattern</div></div>
-			<div class="line"><div class="cmd">:g/regexp/p</div>		<div class="desc"># "grep"</div></div>
+			<div id="acc0" class="acc">
+				<h3 class="head"><a href="#">vim:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
+					<div class="line"><div class="cmd">:bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
+					<div class="line"><div class="cmd">:reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
+					<div class="line"><div class="cmd">["x]y{motion}</div>		<div class="desc"># yank {motion} into register x</div></div>
+					<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
+					<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marsk (for jumping etc); m - marks something?</div></div>
+					<div class="line"><div class="cmd">:sort u</div>			<div class="desc"># remove duplicate lines</div></div>
+					<div class="line"><div class="cmd">vim -p file1 file2</div>	<div class="desc"># open vim with tabs</div></div>
+					<div class="line"><div class="cmd">:! sort</div>			<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">cc</div>					<div class="desc"># change line</div></div>
+					<div class="line"><div class="cmd">R r</div>				<div class="desc"># replace mode, replace 1 character</div></div>
+					<div class="line"><div class="cmd">:r! command</div>		<div class="desc"># execute command and read in its output</div></div>
+					<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
+					<div class="line"><div class="cmd">`.</div>					<div class="desc"># last edit location</div></div>
+					<div class="line"><div class="cmd">'.</div>					<div class="desc"># last edit line</div></div>
+					<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump f: forward, backward</div></div>
+					<div class="line"><div class="cmd">zz zb zt or M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
+					<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
+					<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
+					<div class="line"><div class="cmd">ctrl t / ctrl d</div>	<div class="desc"># align text in insert mode</div></div>
+					<div class="line"><div class="cmd">vit / yit / cit / dit</div>	<div class="desc"># mark/yank/change/delete "innerHTML"</div></div>
+					<div class="line"><div class="cmd">vat / yat / cat / dat</div>	<div class="desc"># mark/yank/change/delete whole tag</div></div>
+					<div class="line"><div class="cmd">o in visual mode</div>	<div class="desc"># change the marking direction</div></div>
+					<div class="line"><div class="cmd">* / #</div>				<div class="desc"># hightlight and search forwards/backwards</div></div>
+					<div class="line"><div class="cmd">g* / g#</div>			<div class="desc"># hightlight and search for parts of a word</div></div>
+					<div class="line"><div class="cmd">:[range]s/bacon/lettuce/[ciInp] [count]</div>
+						<div class="desc"># confirm, ignore case, case sensitive, number of matches; print lines</div></div>
+					<div class="line"><div class="cmd">:s/bacon/lettuce/g10</div>
+						<div class="desc"># replace only next 10 lines</div></div>
+					<div class="line"><div class="cmd">:[range]s//lettuce/...</div>
+						<div class="desc"># use previous search pattern</div></div>
+					<div class="line"><div class="cmd">:g/regexp/p</div>		<div class="desc"># "grep"</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">gvim -d file1 file2</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">]c</div>					<div class="desc"># jump to next diff</div></div>
-			<div class="line"><div class="cmd">[c</div>					<div class="desc"># jump to previous diff</div></div>
-			<div class="line"><div class="cmd">do :diffg :diffget</div>	<div class="desc"># replace a diff in the current viewport with that from the other viewport, use the :diffget command</div></div>
-			<div class="line"><div class="cmd">dp</div>					<div class="desc"># replace a diff in the other viewport with that from the current viewport, use the :diffput command</div></div>
+					<div class="line"><div class="cmd">vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">gvim -d file1 file2</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">]c</div>					<div class="desc"># jump to next diff</div></div>
+					<div class="line"><div class="cmd">[c</div>					<div class="desc"># jump to previous diff</div></div>
+					<div class="line"><div class="cmd">do :diffg :diffget</div>
+						<div class="desc"># replace a diff in the current viewport with that from the other viewport, use the :diffget command</div></div>
+					<div class="line"><div class="cmd">dp</div>
+						<div class="desc"># replace a diff in the other viewport with that from the current viewport, use the :diffput command</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">color morning</div>		<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">set fileformat=dos|unix|mac</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">set filetype=html|xml|...</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
-			<div class="line"><div class="cmd">&gt;</div>				<div class="desc"># shift text right</div></div>
-			<div class="line"><div class="cmd">&lt;</div>				<div class="desc"># shift text left</div></div>
-			<div class="line"><div class="cmd">=</div>					<div class="desc"># align text</div></div>
-			<div class="line"><div class="cmd">CTRL ]</div>				<div class="desc"># follow link in vim help</div></div>
-			<div class="line"><div class="cmd">CTRL T</div>				<div class="desc"># go back to previous topic in the vim help</div></div>
-			<div class="line"><div class="cmd">CTRL O, CTRL I</div>		<div class="desc"># older and newer vim help locations</div></div>
+					<div class="line"><div class="cmd">color morning</div>		<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">set fileformat=dos|unix|mac</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">set filetype=html|xml|...</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
+					<div class="line"><div class="cmd">&gt;</div>				<div class="desc"># shift text right</div></div>
+					<div class="line"><div class="cmd">&lt;</div>				<div class="desc"># shift text left</div></div>
+					<div class="line"><div class="cmd">=</div>					<div class="desc"># align text</div></div>
+					<div class="line"><div class="cmd">CTRL ]</div>				<div class="desc"># follow link in vim help</div></div>
+					<div class="line"><div class="cmd">CTRL T</div>				<div class="desc"># go back to previous topic in the vim help</div></div>
+					<div class="line"><div class="cmd">CTRL O, CTRL I</div>		<div class="desc"># older and newer vim help locations</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="rest">vim scripts:</div></div>
+					<div class="line"><div class="cmd">NERDTree</div>			<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">snipMate</div>			<div class="desc"># html tag completition</div></div>
+					<div class="line"><div class="cmd">fuzzyFinder</div>		<div class="desc"># finds file, need L9 vim plugin (doesn't work somehow :(</div></div>
+				</div>
+			</div>
 
-			<div class="line"><div class="rest">vim scripts:</div></div>
-			<div class="line"><div class="cmd">NERDTree</div>			<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">snipMate</div>			<div class="desc"># html tag completition</div></div>
-			<div class="line"><div class="cmd">fuzzyFinder</div>		<div class="desc"># finds file, need L9 vim plugin (doesn't work somehow :(</div></div>
+			<div id="acc1" class="acc">
+				<h3 class="head"><a href="#">bash:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">ls --format=single-column</div>					<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>					<div class="desc"># Execute a command at a given time</div></div>
+					<div class="line"><div class="cmd">wc cheatsheet.html</div>							<div class="desc"># line count, word count</div></div>
+					<div class="line"><div class="cmd">sudo !!</div>									<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">!$</div>											<div class="desc"># last parameter of the last command</div></div>
+					<div class="line"><div class="cmd">ctrl r, ctrl g</div>								<div class="desc"># bash history, abort history</div></div>
+					<div class="line"><div class="cmd">mv README.{text,txt}</div>						<div class="desc"># bash using list: mv README.text README.txt</div></div>
+					<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
+					<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
+					<div class="line"><div class="cmd">find . -name *fileToSearch*</div>				<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">
+							find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>	<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">grep -lir "TextToFind" *</div>					<div class="desc"># print only file-names</div></div>
+					<div class="line"><div class="cmd">grep -i -n "TextToSearch" *</div>				<div class="desc"># print line numbers</div></div>
+					<div class="line"><div class="cmd">grep --exclude=.git</div>						<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">grep --exclude=.git -lir 'something' *.cpp</div>	<div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="rest">bash:</div></div>
-			<div class="line"><div class="cmd">ls --format=single-column</div>					<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>					<div class="desc"># Execute a command at a given time</div></div>
-			<div class="line"><div class="cmd">wc cheatsheet.html</div>							<div class="desc"># line count, word count</div></div>
-			<div class="line"><div class="cmd">sudo !!</div>									<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">!$</div>											<div class="desc"># last parameter of the last command</div></div>
-			<div class="line"><div class="cmd">ctrl r, ctrl g</div>								<div class="desc"># bash history, abort history</div></div>
-			<div class="line"><div class="cmd">mv README.{text,txt}</div>						<div class="desc"># bash using list: mv README.text README.txt</div></div>
-			<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
-			<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
-			<div class="line"><div class="cmd">find . -name *fileToSearch*</div>				<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">
-				find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>	<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">grep -lir "TextToFind" *</div>					<div class="desc"># print only file-names</div></div>
-			<div class="line"><div class="cmd">grep -i -n "TextToSearch" *</div>				<div class="desc"># print line numbers</div></div>
-			<div class="line"><div class="cmd">grep --exclude=.git</div>						<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">grep --exclude=.git -lir 'something' *.cpp</div>	<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">
+							git filter-branch -f --env-filter "GIT_AUTHOR_NAME='Bost'; GIT_AUTHOR_EMAIL='thebost@gmail.com'; GIT_COMMITTER_NAME='Bost'; GIT_COMMITTER_EMAIL='thebost@gmail.com';" HEAD
+					</div><div class="desc"># change the name and email in all commits</div></div>
+					<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">git branch -rd public/whatever</div>				<div class="desc"># delete a remote-tracking branch from local repository</div></div>
+					<div class="line"><div class="cmd">git diff --name-only master branch</div>			<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">git show --name-only</div>						<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">git log -S'text-to-search'</div>					<div class="desc"># search entire commit history</div></div>
+					<div class="line"><div class="cmd">git log --pretty=format:'%h %s'</div>			<div class="desc"># show formated commit logs</div></div>
+					<div class="line"><div class="cmd">--git-dir=../all/.git --work-tree=.</div>		<div class="desc"># set git base directory and working tree</div></div>
+				</div>
+			</div>
+			<div id="acc2" class="acc">
+				<h3 class="head"><a href="#">cvs:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">cvs diff -r RELEASE_1_0 -r RELEASE_1_1</div>		<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">cvs update -C path/file.ext</div>				<div class="desc"># get clean copy</div></div>
+					<div class="line"><div class="cmd">cvs checkout -r branchOrTag module</div>			<div class="desc"># checkout module from branch or tag</div></div>
+				</div>
+			</div>
+			<div id="acc3" class="acc">
+				<h3 class="head"><a href="#">github:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">ssh-keygen</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">cat ~/.ssh/id_rsa.pub</div>
+						<div class="desc"># now copy-paste the ~/.ssh/id_rsa.pub to github under 'Add another public key'</div></div>
+				</div>
+			</div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+			<div id="acc4" class="acc">
+				<h3 class="head"><a href="#">eclipse - delete history and index:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">rm -rf .metadata/.plugins/org.eclipse.core.resources/.history</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">
-git filter-branch -f --env-filter "GIT_AUTHOR_NAME='Bost'; GIT_AUTHOR_EMAIL='thebost@gmail.com'; GIT_COMMITTER_NAME='Bost'; GIT_COMMITTER_EMAIL='thebost@gmail.com';" HEAD
-			</div><div class="desc"># change the name and email in all commits</div></div>
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">git branch -rd public/whatever</div>				<div class="desc"># delete a remote-tracking branch from local repository</div></div>
-			<div class="line"><div class="cmd">git diff --name-only master branch</div>			<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">git show --name-only</div>						<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">git log -S'text-to-search'</div>					<div class="desc"># search entire commit history</div></div>
-			<div class="line"><div class="cmd">git log --pretty=format:'%h %s'</div>			<div class="desc"># show formated commit logs</div></div>
-			<div class="line"><div class="cmd">--git-dir=../all/.git --work-tree=.</div>		<div class="desc"># set git base directory and working tree</div></div>
+					<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">[\t ]+$</div><div class="desc"># eclipse: remove trailing whitespaces</div></div>
+				</div>
+			</div>
 
-			<div class="line"><div class="rest">cvs:</div></div>
-			<div class="line"><div class="cmd">cvs diff -r RELEASE_1_0 -r RELEASE_1_1</div>		<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">cvs update -C path/file.ext</div>				<div class="desc"># get clean copy</div></div>
-			<div class="line"><div class="cmd">cvs checkout -r branchOrTag module</div>				    <div class="desc"># checkout module from branch or tag</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="rest">github:</div></div>
-			<div class="line"><div class="cmd">ssh-keygen</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">cat ~/.ssh/id_rsa.pub</div>						<div class="desc"># now copy-paste the ~/.ssh/id_rsa.pub to github under 'Add another public key'</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="rest">eclipse - delete history and index:</div></div>
-			<div class="line"><div class="cmd">METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">rm -rf .metadata/.plugins/org.eclipse.core.resources/.history</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="cmd">[\t ]+$</div><div class="desc"># eclipse: remove trailing whitespaces</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="rest">db2:</div></div>
-			<div class="line"><div class="cmd">db2 get connection state</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">db2 CATALOG TCPIP NODE $NODE_NAME REMOTE $IP_ADDR server $PORT</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">db2 CATALOG DATABASE $DATABASE_NAME AT NODE $NODE_NAME</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">db2 TERMINATE</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="rest">solaris:</div></div>
-			<div class="line"><div class="cmd">/usr/ucb/ps -auxww</div><div class="desc"># full command line</div></div>
+			<div id="acc5" class="acc">
+				<h3 class="head"><a href="#">db2:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">db2 get connection state</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">db2 CATALOG TCPIP NODE $NODE_NAME REMOTE $IP_ADDR server $PORT</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">db2 CATALOG DATABASE $DATABASE_NAME AT NODE $NODE_NAME</div><div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">db2 TERMINATE</div><div class="desc">&nbsp;</div></div>
+				</div>
+			</div>
 
 <!--
 
@@ -160,71 +202,75 @@ ctrl+ww - switch between windows
 ctrl+wq - Quit a window
 ctrl+wv - Split windows vertically
 -->
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+			<div id="acc8" class="acc">
+				<h3 class="head"><a href="#">emacs:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">C-x C-c</div>		<div class="desc"># exit emacs</div></div>
+					<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
+					<div class="line"><div class="cmd">C-x C-f</div>		<div class="desc"># find file</div></div>
+					<div class="line"><div class="cmd"></div>				<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
+					<div class="line"><div class="cmd">C-x 1</div>			<div class="desc"># close all windows except the one the cursors in</div></div>
+					<div class="line"><div class="cmd">C-c C-C</div>		<div class="desc"># end of git commit message (under emacs)</div></div>
 
-			<div class="line"><div class="rest">jar:</div></div>
+					<div class="line"><div class="cmd">M-x command</div>	<div class="desc"># execute command</div></div>
+					<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression</div></div>
+					<div class="line"><div class="cmd">C-M-x</div>			<div class="desc"># immediate eval</div></div>
+					<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
+					<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>
+						<div class="desc"># emacs command list</div></div>
+				</div>
+			</div>
+
+			<div id="acc9" class="acc">
+				<h3 class="head"><a href="#">emacs slime:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">M-x slime</div>		<div class="desc"># start slime (Superior Lisp Interaction Mode for Emacs)</div></div>
+					<div class="line"><div class="cmd">C-x C-e</div>		<div class="desc"># repeat last command</div></div>
+					<div class="line"><div class="cmd">M-p</div>			<div class="desc"># reprint last command to the REPL</div></div>
+				</div>
+			</div>
+
+			<div id="acc10" class="acc">
+				<h3 class="head"><a href="#">vimclojure (lein-tarsier):</a></h3>
+				<div>
+					<div class="line"><div class="cmd">\sr</div>				<div class="desc"># start REPL</div></div>
+					<div class="line"><div class="cmd">\sR</div>				<div class="desc"># start interactive REPL initialized to have same namespace as current buffer</div></div>
+
+					<div class="line"><div class="cmd">\si</div>				<div class="desc"># prompt for input and lookup with (source)</div></div>
+					<div class="line"><div class="cmd">\fd</div>				<div class="desc"># prompt for input and lookup with (find-doc)</div></div>
+
+					<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+
+					<div class="line"><div class="cmd">\el</div>				<div class="desc"># eval current line</div></div>
+					<div class="line"><div class="cmd">\ef</div>				<div class="desc"># eval current file</div></div>
+					<div class="line"><div class="cmd">\eb</div>				<div class="desc"># eval current current visual block selected</div></div>
+					<div class="line"><div class="cmd">\et</div>				<div class="desc"># send a function to the REPL</div></div>
+					<div class="line"><div class="cmd">\p</div>					<div class="desc"># close a window</div></div>
+
+					<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+
+					<div class="line"><div class="cmd">ctrl-n</div>				<div class="desc"># auto completition</div></div>
+					<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
+					<div class="line"><div class="cmd">ctrl-x ctrl-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
+				</div>
+			</div>
+
+			<div id="acc11" class="acc">
+				<h3 class="head"><a href="#">usefull stuff:</a></h3>
+				<div>
+					<div class="line"><div class="cmd">/usr/ucb/ps -auxww</div><div class="desc"># solaris: full command line</div></div>
 			<div class="line"><div class="cmd">jar tf</div>			<div class="desc"># list files in a jar-file</div></div>
+					<div class="line"><div class="cmd">xfce4-session-logout</div>			<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">sudo !!</div>			<div class="desc"># Run the last command as root</div></div>
+					<div class="line"><div class="cmd">cp filename{,.bak}</div>	<div class="desc"># quickly backup or copy a file with bash</div></div>
+					<div class="line"><div class="cmd">$ssh-copy-id user@host</div>			<div class="desc"># Copy ssh keys to user@host to enable password-less ssh logins</div></div>
+					<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
+						<div class="desc"># Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html. Will allow you to mount a folder security over a network.</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="rest">emacs:</div></div>
-			<div class="line"><div class="cmd">C-x C-c</div>		<div class="desc"># exit emacs</div></div>
-			<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
-			<div class="line"><div class="cmd">C-x C-f</div>		<div class="desc"># find file</div></div>
-			<div class="line"><div class="cmd"></div>				<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
-			<div class="line"><div class="cmd">C-x 1</div>			<div class="desc"># close all windows except the one the cursors in</div></div>
-			<div class="line"><div class="cmd">C-c C-C</div>		<div class="desc"># end of git commit message (under emacs)</div></div>
-
-			<div class="line"><div class="cmd">M-x command</div>	<div class="desc"># execute command</div></div>
-			<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression</div></div>
-			<div class="line"><div class="cmd">C-M-x</div>			<div class="desc"># immediate eval</div></div>
-			<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
-			<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>			<div class="desc"># emacs command list</div></div>
-			
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="rest">emacs slime:</div></div>
-			<div class="line"><div class="cmd">M-x slime</div>		<div class="desc"># start slime (Superior Lisp Interaction Mode for Emacs)</div></div>
-			<div class="line"><div class="cmd">C-x C-e</div>		<div class="desc"># repeat last command</div></div>
-			<div class="line"><div class="cmd">M-p</div>			<div class="desc"># reprint last command to the REPL</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="rest">vimclojure (lein-tarsier):</div></div>
-			<div class="line"><div class="cmd">\sr</div>				<div class="desc"># start REPL</div></div>
-			<div class="line"><div class="cmd">\sR</div>				<div class="desc"># start interactive REPL initialized to have same namespace as current buffer</div></div>
-
-			<div class="line"><div class="cmd">\si</div>				<div class="desc"># prompt for input and lookup with (source)</div></div>
-			<div class="line"><div class="cmd">\fd</div>				<div class="desc"># prompt for input and lookup with (find-doc)</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="cmd">\el</div>				<div class="desc"># eval current line</div></div>
-			<div class="line"><div class="cmd">\ef</div>				<div class="desc"># eval current file</div></div>
-			<div class="line"><div class="cmd">\eb</div>				<div class="desc"># eval current current visual block selected</div></div>
-			<div class="line"><div class="cmd">\et</div>				<div class="desc"># send a function to the REPL</div></div>
-			<div class="line"><div class="cmd">\p</div>					<div class="desc"># close a window</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="cmd">ctrl-n</div>				<div class="desc"># auto completition</div></div>
-			<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
-			<div class="line"><div class="cmd">ctrl-x ctrl-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
-
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-			<div class="line"><div class="rest">usefull stuff:</div></div>
-			<div class="line"><div class="cmd">xfce4-session-logout</div>			<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">sudo !!</div>			<div class="desc"># Run the last command as root</div></div>
-			<div class="line"><div class="cmd">cp filename{,.bak}</div>	<div class="desc"># quickly backup or copy a file with bash</div></div>
-			<div class="line"><div class="cmd">$ssh-copy-id user@host</div>			<div class="desc">Copy ssh keys to user@host to enable password-less ssh logins</div></div>
-			<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
-				<div class="desc">Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html. Will allow you to mount a folder security over a network.</div></div>
-
-			<div class="line"><div class="cmd">ssh user@host cat /path/to/remotefile | diff /path/to/localfile -</div>			<div class="desc"># Compare a remote file with a local file</div></div>
-			<!--
-			<div class="line"><div class="cmd"></div>			<div class="desc"></div></div>
-			-->
+					<div class="line"><div class="cmd">ssh user@host cat /path/to/remotefile | diff /path/to/localfile -</div>
+						<div class="desc"># Compare a remote file with a local file</div></div>
+				</div>
+			</div>
 	</div>
 	</body>
 </html>
