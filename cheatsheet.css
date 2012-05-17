@@ -4,8 +4,11 @@ body {
 	font-family: monospace;
 	font-size: 11px;
 	float: left;
-	width: 100%;
+	width: 90%; 
 	color: black;
+}
+.acc {
+	width: 90%;
 }
 .cmd {
 	font-weight:bold;
