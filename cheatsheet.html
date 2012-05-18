@@ -13,14 +13,38 @@
 		<script src="cheatsheet-js/jquery.ui.mouse.js"></script>
 		<script src="cheatsheet-js/jquery.ui.resizable.js"></script>
 		<link rel="stylesheet" href="http://jqueryui.com/demos/demos.css">
+
+:e filename - Edit a file in a new buffer
+:bd - delete a buffer (close a file)
+:sp filename - Open a file in a new buffer and split window
+ctrl+ws - Split windows
+ctrl+ww - switch between windows
+ctrl+wq - Quit a window
+ctrl+wv - Split windows vertically
 		-->
 		<script src="cheatsheet-js/jquery.ui.accordion.js"></script>
 		<link rel="stylesheet" href="cheatsheet.css" type="text/css" media="screen" charset="utf-8" />
 		<script>
-			var ids = "#acc0, #acc1, #acc1, #acc2, #acc3, #acc4, #acc5, #acc6, #acc7, #acc8, #acc9, #acc10, #acc11, #acc12";
+			var eMaxIdx = 12;
+			var accIdPrefix = "#acc";
+
+			function getAccId(idx) {
+				return accIdPrefix + idx;
+			}
+			function getIds(maxIdx) {
+				var ids = "";
+				for (var i = 0; i < maxIdx; i++) {
+					if (i > 0) {
+						ids += ", ";
+					}
+					ids += getAccId(i);
+				}
+				return ids;
+			}
+			var ids = getIds(eMaxIdx);
 			$(function() {
 				$(ids).accordion({
-					//fillSpace: true, 
+					//fillSpace: true,
 					collapsible: true
 				});
 			});
@@ -39,11 +63,46 @@
 	</head>
 	<body>
 		<script>
+			$(document).ready(function(){
+				$("#expand_all").click(function(){
+					for (var i = 0; i < eMaxIdx; i++) {
+						var accId = getAccId(i);
+						$(accId + " .head").slideDown();
+					}
+					return false;
+				});
+				$("#collapse_all").click(function(){
+					for (var i = 0; i < eMaxIdx; i++) {
+						var accId = getAccId(i);
+						$(accId + " .head").hide();
+					}
+					return false;
+				});
+				$("#toggle_all").click(function(){
+					/*
+					//getter
+					var active = $( ".selector" ).accordion( "option", "active" );
+					//setter
+					$( ".selector" ).accordion( "option", "active", 2 );
+					*/
+					for (var i = 0; i < eMaxIdx; i++) {
+						var accId = getAccId(i);
+						$(accId + " .head").click();
+					}
+					return false;
+				});
+			});
+
 			$(function() {
 				$(ids).accordion();
 			});
 		</script>
 		<div>
+			<h3><a id="toggle_all" href="#">toggle all</a></h3>
+			<!--
+			<h3><a id="expand_all" href="#">expand all</a></h3>
+			<h3><a id="collapse_all" href="#">collapse all</a></h3>
+			-->
 			<div id="acc0" class="acc">
 				<h3 class="head"><a href="#">vim:</a></h3>
 				<div>
@@ -185,23 +244,6 @@
 				</div>
 			</div>
 
-<!--
-
-			<div class="line"><div class="rest">vim:</div></div>
-			<div class="line">
-				<div class="cmd">
-				</div>
-				<div class="desc">&nbsp;</div>
-			</div>
-
-			:e filename - Edit a file in a new buffer
-:bd - delete a buffer (close a file)
-:sp filename - Open a file in a new buffer and split window
-ctrl+ws - Split windows
-ctrl+ww - switch between windows
-ctrl+wq - Quit a window
-ctrl+wv - Split windows vertically
--->
 			<div id="acc8" class="acc">
 				<h3 class="head"><a href="#">emacs:</a></h3>
 				<div>
