@@ -6,24 +6,21 @@ body {
 	float: left;
 	color: black;
 }
+
 .buttons {
     float: right;
     position: relative;
 }
-/*
-#resizable {
-	width: 80%;
-}
-*/
+
 .draggable {
-	padding: 0.5em;
+/*	padding: 0.5em; */
 	float: left;
-	border:1px solid red;
+/*	border:1px solid red; */
 }
 .resizable {
-	padding: 0.5em;
+/*	padding: 0.5em; */
 	float: left;
-	border:1px solid blue;
+/*	border:1px solid blue; */
 }
 .cmd {
 	font-weight:bold;
@@ -49,5 +46,37 @@ body {
 	width: 90%;
 	color: red;
 /*	border:1px solid green;*/
+}
+
+.effect {
+/*	padding: 0.4em; */
+/*	position: relative; */
+	width: 100%;
+	padding: 0.4em 0.4em;
+}
+.acc {
+	padding-top: 0.4em;
+	width: 100%;
+/*	border:1px solid gray;*/
+}
+
+.head {
+	/*
+	background: #CCC;
+	color: #222;
+	*/
+	border:0px;
+	/* height: 3em;*/
+	padding: 0.8em 0.8em 0.8em;
+	font-size: 1.2em;
+	position: relative;
+}
+
+.line:hover {
+	background: #dfe1e2;
+}
+
+.head:hover {
+	background: #8f9fa8;
 }
 

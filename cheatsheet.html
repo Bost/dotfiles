@@ -5,16 +5,13 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 		<title>Cheatsheet</title>
-		<link rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css">
-		<script src="cheatsheet-js/jquery-1.7.2.js"></script><style type="text/css"></style>
-		<script src="cheatsheet-js/jquery.ui.core.js"></script>
-		<script src="cheatsheet-js/jquery.ui.widget.js"></script>
-		<script src="cheatsheet-js/jquery.ui.mouse.js"></script>
-		<script src="cheatsheet-js/jquery.ui.button.js"></script>
-		<script src="cheatsheet-js/jquery.ui.resizable.js"></script>
-		<script src="cheatsheet-js/jquery.ui.draggable.js"></script>
-		<link rel="stylesheet" href="http://jqueryui.com/demos/demos.css">
+		<script src="jquery/js/jquery-1.7.2.min.js"></script>
+		<script src="jquery/js/jquery-ui-1.8.20.custom.min.js"></script>
+		<link rel="stylesheet" href="jquery/css/custom-theme/jquery-ui-1.8.20.custom.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="cheatsheet.css" type="text/css" media="screen" charset="utf-8" />
 		<!--
+		<link rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css">
+		<link rel="stylesheet" href="http://jqueryui.com/demos/demos.css">
 :e filename - Edit a file in a new buffer
 :bd - delete a buffer (close a file)
 :sp filename - Open a file in a new buffer and split window
@@ -23,13 +20,11 @@ ctrl+ww - switch between windows
 ctrl+wq - Quit a window
 ctrl+wv - Split windows vertically
 		-->
-		<script src="cheatsheet-js/jquery.ui.accordion.js"></script>
-		<link rel="stylesheet" href="cheatsheet.css" type="text/css" media="screen" charset="utf-8" />
 		<script>
 			var option = "option";
 			var active = "active";
 			var eMaxIdx = 12;
-			var accIdPrefix = "#acc";
+			var accIdPrefix = "#head";
 
 			function getAccId(idx) {
 				return accIdPrefix + idx;
@@ -46,21 +41,28 @@ ctrl+wv - Split windows vertically
 			}
 			var ids = getIds(eMaxIdx);
 			$(function() {
-				$(ids).accordion({
-					//fillSpace: true,
-					collapsible: true
-				});
-			});
-			/*
-			$(function() {
-				$( "#accordionResizer" ).resizable({
-					//minHeight: 140,
-					resize: function() {
-						$( ids ).accordion( "resize" );
+				function runEffect(divId) {
+					// other effect must be downloaded from jquery theme roller
+					var selectedEffect = "blind";
+
+					// most effect types need no options passed by default
+					var options = {};
+					// some effects have required parameters
+					if ( selectedEffect === "scale" ) {
+						options = { percent: 0 };
+					} else if ( selectedEffect === "size" ) {
+						options = { to: { width: 200, height: 60 } };
 					}
+					//var elem = $( "#"+divId +	" .effect" );
+					var elem = $("#"+divId).next();
+					elem.toggle( selectedEffect, options, 360 );
+				};
+
+				$(ids).click(function() {
+					runEffect(this.id);
+					return false;
 				});
 			});
-			*/
 		</script>
 
 	</head>
@@ -70,48 +72,39 @@ ctrl+wv - Split windows vertically
 				$("#expand_all").click(function(){
 					for (var i = 0; i < eMaxIdx; i++) {
 						var accId = getAccId(i);
-						var elem = $(accId);
-						var isActive = elem.accordion(option, active)+"";	// must be converted to string
-						//alert("i: " +i+ "\n"+"expand: "+isActive);
-						if (isActive == "false") {
-							elem.accordion("activate", 0); // activate the 0-th element of the accX
-						}
+						var elem = $(accId).next();
+						elem.show();
 					}
 					return false;
 				});
 				$("#collapse_all").click(function(){
 					for (var i = 0; i < eMaxIdx; i++) {
 						var accId = getAccId(i);
-						var elem = $(accId);
-						var isActive = elem.accordion(option, active)+"";	// must be converted to string
-						//alert(i + " collapse: "+isActive);
-						if (isActive == "0") {
-							elem.accordion("activate", false);	// false means 'close' all elements of the accX
-						}
+						var elem = $(accId).next();
+						elem.hide();
 					}
 					return false;
 				});
 			});
 
 			$(function() {
-				$(ids).accordion();
-			});
-			$(function() {
-				$( ".resizable" ).resizable();
-				$( ".draggable" ).draggable();
+			//	$( ".resizable" ).resizable();
+			//	$( ".draggable" ).draggable();
 			});
 			$(function() {
 				$( "input:submit, a, button", ".buttons" ).button();
 				$( "a", ".buttons" ).click(function() { return false; });
 			});
-		</script>
+			//:if expand("%") == ""|browse confirm w|else|confirm w|endif
+	</script>
 		<div class="draggable buttons">
 			<a id="expand_all" href="#">expand-all</a> <a id="collapse_all" href="#">collapse-all</a>
 		</div>
-		<div class="resizable draggable ui-widget-content">
-			<div id="acc0" class="acc">
-				<h3 class="head"><a href="#">vim:</a></h3>
-				<div>
+		<div>
+			<div id="acc0" class="acc resizable draggable ui-corner-all">
+				<!--div id="head0" class="head ui-widget-header ui-corner-all ui-state-hover">vim:</div-->
+				<div id="head0" class="head ui-widget-header ui-corner-all ui-button-text">vim:</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
 					<div class="line"><div class="cmd">:bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
 					<div class="line"><div class="cmd">:reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
@@ -176,9 +169,9 @@ ctrl+wv - Split windows vertically
 				</div>
 			</div>
 
-			<div id="acc1" class="acc">
-				<h3 class="head"><a href="#">bash:</a></h3>
-				<div>
+			<div id="acc1" class="acc resizable draggable ui-corner-all">
+				<div id="head1" class="head ui-widget-header ui-corner-all">bash:</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">ls --format=single-column</div>					<div class="desc">&nbsp;</div></div>
 					<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>					<div class="desc"># Execute a command at a given time</div></div>
 					<div class="line"><div class="cmd">wc cheatsheet.html</div>							<div class="desc"># line count, word count</div></div>
@@ -210,26 +203,28 @@ ctrl+wv - Split windows vertically
 					<div class="line"><div class="cmd">--git-dir=../all/.git --work-tree=.</div>		<div class="desc"># set git base directory and working tree</div></div>
 				</div>
 			</div>
-			<div id="acc2" class="acc">
-				<h3 class="head"><a href="#">cvs:</a></h3>
-				<div>
+
+			<div id="acc2" class="acc resizable draggable ui-corner-all">
+				<div id="head2" class="head ui-widget-header ui-corner-all">cvs:</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">cvs diff -r RELEASE_1_0 -r RELEASE_1_1</div>		<div class="desc">&nbsp;</div></div>
 					<div class="line"><div class="cmd">cvs update -C path/file.ext</div>				<div class="desc"># get clean copy</div></div>
 					<div class="line"><div class="cmd">cvs checkout -r branchOrTag module</div>			<div class="desc"># checkout module from branch or tag</div></div>
 				</div>
 			</div>
-			<div id="acc3" class="acc">
-				<h3 class="head"><a href="#">github:</a></h3>
-				<div>
+
+			<div id="acc3" class="acc resizable draggable ui-corner-all">
+				<div id="head3" class="head ui-widget-header ui-corner-all">gihub:</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">ssh-keygen</div><div class="desc">&nbsp;</div></div>
 					<div class="line"><div class="cmd">cat ~/.ssh/id_rsa.pub</div>
 						<div class="desc"># now copy-paste the ~/.ssh/id_rsa.pub to github under 'Add another public key'</div></div>
 				</div>
 			</div>
 
-			<div id="acc4" class="acc">
-				<h3 class="head"><a href="#">eclipse - delete history and index:</a></h3>
-				<div>
+			<div id="acc4" class="acc resizable draggable ui-corner-all">
+				<div id="head4" class="head ui-widget-header ui-corner-all">eclipse - delete history and index:</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core</div><div class="desc">&nbsp;</div></div>
 					<div class="line"><div class="cmd">rm -rf .metadata/.plugins/org.eclipse.core.resources/.history</div><div class="desc">&nbsp;</div></div>
 					<div class="line"><div class="cmd">rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt</div><div class="desc">&nbsp;</div></div>
@@ -240,9 +235,9 @@ ctrl+wv - Split windows vertically
 				</div>
 			</div>
 
-			<div id="acc5" class="acc">
-				<h3 class="head"><a href="#">db2:</a></h3>
-				<div>
+			<div id="acc5" class="acc resizable draggable ui-corner-all">
+				<div id="head5" class="head ui-widget-header ui-corner-all">db2:</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">db2 get connection state</div><div class="desc">&nbsp;</div></div>
 					<div class="line"><div class="cmd">db2 CATALOG TCPIP NODE $NODE_NAME REMOTE $IP_ADDR server $PORT</div><div class="desc">&nbsp;</div></div>
 					<div class="line"><div class="cmd">db2 CATALOG DATABASE $DATABASE_NAME AT NODE $NODE_NAME</div><div class="desc">&nbsp;</div></div>
@@ -250,9 +245,9 @@ ctrl+wv - Split windows vertically
 				</div>
 			</div>
 
-			<div id="acc8" class="acc">
-				<h3 class="head"><a href="#">emacs:</a></h3>
-				<div>
+			<div id="acc8" class="acc resizable draggable ui-corner-all">
+				<div id="head8" class="head ui-widget-header ui-corner-all">emacs:</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">C-x C-c</div>		<div class="desc"># exit emacs</div></div>
 					<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
 					<div class="line"><div class="cmd">C-x C-f</div>		<div class="desc"># find file</div></div>
@@ -269,18 +264,18 @@ ctrl+wv - Split windows vertically
 				</div>
 			</div>
 
-			<div id="acc9" class="acc">
-				<h3 class="head"><a href="#">emacs slime:</a></h3>
-				<div>
+			<div id="acc9" class="acc resizable draggable ui-corner-all">
+				<div id="head9" class="head ui-widget-header ui-corner-all">emacs slime:</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">M-x slime</div>		<div class="desc"># start slime (Superior Lisp Interaction Mode for Emacs)</div></div>
 					<div class="line"><div class="cmd">C-x C-e</div>		<div class="desc"># repeat last command</div></div>
 					<div class="line"><div class="cmd">M-p</div>			<div class="desc"># reprint last command to the REPL</div></div>
 				</div>
 			</div>
 
-			<div id="acc10" class="acc">
-				<h3 class="head"><a href="#">vimclojure (lein-tarsier):</a></h3>
-				<div>
+			<div id="acc10" class="acc resizable draggable ui-corner-all">
+				<div id="head10" class="head ui-widget-header ui-corner-all">vimclojure (lein-tarsier):</div>
+				<div class="effect ui-corner-all">
 					<div class="line"><div class="cmd">\sr</div>				<div class="desc"># start REPL</div></div>
 					<div class="line"><div class="cmd">\sR</div>				<div class="desc"># start interactive REPL initialized to have same namespace as current buffer</div></div>
 
@@ -303,22 +298,23 @@ ctrl+wv - Split windows vertically
 				</div>
 			</div>
 
-			<div id="acc11" class="acc">
-				<h3 class="head"><a href="#">usefull stuff:</a></h3>
-				<div>
-					<div class="line"><div class="cmd">/usr/ucb/ps -auxww</div><div class="desc"># solaris: full command line</div></div>
-			<div class="line"><div class="cmd">jar tf</div>			<div class="desc"># list files in a jar-file</div></div>
-					<div class="line"><div class="cmd">xfce4-session-logout</div>			<div class="desc">&nbsp;</div></div>
-					<div class="line"><div class="cmd">sudo !!</div>			<div class="desc"># Run the last command as root</div></div>
-					<div class="line"><div class="cmd">cp filename{,.bak}</div>	<div class="desc"># quickly backup or copy a file with bash</div></div>
-					<div class="line"><div class="cmd">$ssh-copy-id user@host</div>			<div class="desc"># Copy ssh keys to user@host to enable password-less ssh logins</div></div>
+			<div id="acc11" class="acc resizable draggable ui-corner-all">
+				<div id="head11" class="head ui-widget-header ui-corner-all">usefull stuff:</div>
+				<div class="effect ui-corner-all">
+					<div class="line"><div class="cmd">/usr/ucb/ps -auxww</div>		<div class="desc"># solaris: full command line</div></div>
+					<div class="line"><div class="cmd">jar tf</div>					<div class="desc"># list files in a jar-file</div></div>
+					<div class="line"><div class="cmd">xfce4-session-logout</div>	<div class="desc">&nbsp;</div></div>
+					<div class="line"><div class="cmd">sudo !!</div>				<div class="desc"># Run the last command as root</div></div>
+					<div class="line"><div class="cmd">cp filename{,.bak}</div>		<div class="desc"># quickly backup or copy a file with bash</div></div>
+					<div class="line"><div class="cmd">$ssh-copy-id user@host</div>	<div class="desc"># Copy ssh keys to user@host to enable password-less ssh logins</div></div>
 					<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
-						<div class="desc"># Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html. Will allow you to mount a folder security over a network.</div></div>
+						<div class="desc"># Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html.
+						   Will allow you to mount a folder security over a network.</div></div>
 
 					<div class="line"><div class="cmd">ssh user@host cat /path/to/remotefile | diff /path/to/localfile -</div>
 						<div class="desc"># Compare a remote file with a local file</div></div>
 				</div>
 			</div>
-	</div>
+		</div>
 	</body>
 </html>
