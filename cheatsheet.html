@@ -8,7 +8,7 @@
 		<script src="jquery/js/jquery-1.7.2.min.js"></script>
 		<script src="jquery/js/jquery-ui-1.8.20.custom.min.js"></script>
 		<link rel="stylesheet" href="jquery/css/custom-theme/jquery-ui-1.8.20.custom.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" href="cheatsheet.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="cheatsheet.css" type="text/css" charset="utf-8" />
 		<!--
 		<link rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css">
 		<link rel="stylesheet" href="http://jqueryui.com/demos/demos.css">
@@ -64,7 +64,7 @@ ctrl+wv - Split windows vertically
 	$(function() {
 		var el = $("#sortable");
 		el.sortable();
-		el.disableSelection();
+		//el.disableSelection();
 		//	$( ".resizable" ).resizable();
 		//	$( ".draggable" ).draggable();
 	});
@@ -94,10 +94,10 @@ ctrl+wv - Split windows vertically
 
 </head>
 <body>
-<div class="draggable buttons"><a id="expand_all" href="#">expand-all</a> <a id="collapse_all" href="#">collapse-all</a></div>
+<div class="draggable buttons"><button id="expand_all">expand-all</button> <button id="collapse_all">collapse-all</button></div>
 <div>
 <ul id="sortable" class="ui-sortable">
-	<li id="acc0" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<li id="acc0" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 	<div id="head0" class="head ui-widget-header ui-corner-all ui-button-text">vim:</div>
 	<div class="effect ui-corner-all">
 		<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
@@ -105,6 +105,7 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">:reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
 		<div class="line"><div class="cmd">["x]y{motion}</div>		<div class="desc"># yank {motion} into register x</div></div>
 		<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
+		<div class="line"><div class="cmd">:wa</div>				<div class="desc"># write all buffers at once</div></div>
 		<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marsk (for jumping etc); m - marks something?</div></div>
 		<div class="line"><div class="cmd">:sort u</div>			<div class="desc"># remove duplicate lines</div></div>
 		<div class="line"><div class="cmd">vim -p file1 file2</div>	<div class="desc"># open vim with tabs</div></div>
@@ -164,7 +165,7 @@ ctrl+wv - Split windows vertically
 	</div>
 	</li>
 
-	<li id="acc1" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<li id="acc1" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 	<div id="head1" class="head ui-widget-header ui-corner-all">bash:</div>
 	<div class="effect ui-corner-all">
 		<div class="line"><div class="cmd">ls --format=single-column</div>					<div class="desc">&nbsp;</div></div>
@@ -199,7 +200,7 @@ ctrl+wv - Split windows vertically
 	</div>
 	</li>
 
-	<li id="acc2" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<li id="acc2" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 	<div id="head2" class="head ui-widget-header ui-corner-all">cvs:</div>
 	<div class="effect ui-corner-all">
 		<div class="line"><div class="cmd">cvs diff -r RELEASE_1_0 -r RELEASE_1_1</div>		<div class="desc">&nbsp;</div></div>
@@ -208,109 +209,108 @@ ctrl+wv - Split windows vertically
 	</div>
 	</li>
 
-	<li id="acc3" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="acc3" class="acc resizable draggable ui-corner-all">
-		<div id="head3" class="head ui-widget-header ui-corner-all">gihub:</div>
-		<div class="effect ui-corner-all">
-			<div class="line"><div class="cmd">ssh-keygen</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">cat ~/.ssh/id_rsa.pub</div>
-				<div class="desc"># now copy-paste the ~/.ssh/id_rsa.pub to github under 'Add another public key'</div></div>
-		</div>
-		</li>
+	<li id="acc3" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<div id="head3" class="head ui-widget-header ui-corner-all">gihub:</div>
+	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">ssh-keygen</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">cat ~/.ssh/id_rsa.pub</div>
+			<div class="desc"># now copy-paste the ~/.ssh/id_rsa.pub to github under 'Add another public key'</div></div>
+	</div>
+	</li>
 
-		<li id="acc4" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-		<div id="head4" class="head ui-widget-header ui-corner-all">eclipse - delete history and index:</div>
-		<div class="effect ui-corner-all">
-			<div class="line"><div class="cmd">METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">rm -rf .metadata/.plugins/org.eclipse.core.resources/.history</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt</div><div class="desc">&nbsp;</div></div>
+	<li id="acc4" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<div id="head4" class="head ui-widget-header ui-corner-all">eclipse - delete history and index:</div>
+	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">rm -rf .metadata/.plugins/org.eclipse.core.resources/.history</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">[\t ]+$</div><div class="desc"># eclipse: remove trailing whitespaces</div></div>
-		</div>
-		</li>
+		<div class="line"><div class="cmd">[\t ]+$</div><div class="desc"># eclipse: remove trailing whitespaces</div></div>
+	</div>
+	</li>
 
-		<li id="acc5" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-		<div id="head5" class="head ui-widget-header ui-corner-all">db2:</div>
-		<div class="effect ui-corner-all">
-			<div class="line"><div class="cmd">db2 get connection state</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">db2 CATALOG TCPIP NODE $NODE_NAME REMOTE $IP_ADDR server $PORT</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">db2 CATALOG DATABASE $DATABASE_NAME AT NODE $NODE_NAME</div><div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">db2 TERMINATE</div><div class="desc">&nbsp;</div></div>
-		</div>
-		</li>
+	<li id="acc5" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<div id="head5" class="head ui-widget-header ui-corner-all">db2:</div>
+	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">db2 get connection state</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">db2 CATALOG TCPIP NODE $NODE_NAME REMOTE $IP_ADDR server $PORT</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">db2 CATALOG DATABASE $DATABASE_NAME AT NODE $NODE_NAME</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">db2 TERMINATE</div><div class="desc">&nbsp;</div></div>
+	</div>
+	</li>
 
-		<li id="acc8" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-		<div id="head8" class="head ui-widget-header ui-corner-all">emacs:</div>
-		<div class="effect ui-corner-all">
-			<div class="line"><div class="cmd">C-x C-c</div>		<div class="desc"># exit emacs</div></div>
-			<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
-			<div class="line"><div class="cmd">C-x C-f</div>		<div class="desc"># find file</div></div>
-			<div class="line"><div class="cmd"></div>				<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
-			<div class="line"><div class="cmd">C-x 1</div>			<div class="desc"># close all windows except the one the cursors in</div></div>
-			<div class="line"><div class="cmd">C-c C-C</div>		<div class="desc"># end of git commit message (under emacs)</div></div>
+	<li id="acc8" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<div id="head8" class="head ui-widget-header ui-corner-all">emacs:</div>
+	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">C-x C-c</div>		<div class="desc"># exit emacs</div></div>
+		<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
+		<div class="line"><div class="cmd">C-x C-f</div>		<div class="desc"># find file</div></div>
+		<div class="line"><div class="cmd"></div>				<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
+		<div class="line"><div class="cmd">C-x 1</div>			<div class="desc"># close all windows except the one the cursors in</div></div>
+		<div class="line"><div class="cmd">C-c C-C</div>		<div class="desc"># end of git commit message (under emacs)</div></div>
 
-			<div class="line"><div class="cmd">M-x command</div>	<div class="desc"># execute command</div></div>
-			<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression</div></div>
-			<div class="line"><div class="cmd">C-M-x</div>			<div class="desc"># immediate eval</div></div>
-			<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
-			<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>
-				<div class="desc"># emacs command list</div></div>
-		</div>
-		</li>
+		<div class="line"><div class="cmd">M-x command</div>	<div class="desc"># execute command</div></div>
+		<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression</div></div>
+		<div class="line"><div class="cmd">C-M-x</div>			<div class="desc"># immediate eval</div></div>
+		<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
+		<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>
+			<div class="desc"># emacs command list</div></div>
+	</div>
+	</li>
 
-		<li id="acc9" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-		<div id="head9" class="head ui-widget-header ui-corner-all">emacs slime:</div>
-		<div class="effect ui-corner-all">
-			<div class="line"><div class="cmd">M-x slime</div>		<div class="desc"># start slime (Superior Lisp Interaction Mode for Emacs)</div></div>
-			<div class="line"><div class="cmd">C-x C-e</div>		<div class="desc"># repeat last command</div></div>
-			<div class="line"><div class="cmd">M-p</div>			<div class="desc"># reprint last command to the REPL</div></div>
-		</div>
-		</li>
+	<li id="acc9" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<div id="head9" class="head ui-widget-header ui-corner-all">emacs slime:</div>
+	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">M-x slime</div>		<div class="desc"># start slime (Superior Lisp Interaction Mode for Emacs)</div></div>
+		<div class="line"><div class="cmd">C-x C-e</div>		<div class="desc"># repeat last command</div></div>
+		<div class="line"><div class="cmd">M-p</div>			<div class="desc"># reprint last command to the REPL</div></div>
+	</div>
+	</li>
 
-		<li id="acc10" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-		<div id="head10" class="head ui-widget-header ui-corner-all">vimclojure (lein-tarsier):</div>
-		<div class="effect ui-corner-all">
-			<div class="line"><div class="cmd">\sr</div>				<div class="desc"># start REPL</div></div>
-			<div class="line"><div class="cmd">\sR</div>				<div class="desc"># start interactive REPL initialized to have same namespace as current buffer</div></div>
+	<li id="acc10" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<div id="head10" class="head ui-widget-header ui-corner-all">vimclojure (lein-tarsier):</div>
+	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">\sr</div>				<div class="desc"># start REPL</div></div>
+		<div class="line"><div class="cmd">\sR</div>				<div class="desc"># start interactive REPL initialized to have same namespace as current buffer</div></div>
 
-			<div class="line"><div class="cmd">\si</div>				<div class="desc"># prompt for input and lookup with (source)</div></div>
-			<div class="line"><div class="cmd">\fd</div>				<div class="desc"># prompt for input and lookup with (find-doc)</div></div>
+		<div class="line"><div class="cmd">\si</div>				<div class="desc"># prompt for input and lookup with (source)</div></div>
+		<div class="line"><div class="cmd">\fd</div>				<div class="desc"># prompt for input and lookup with (find-doc)</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">\el</div>				<div class="desc"># eval current line</div></div>
-			<div class="line"><div class="cmd">\ef</div>				<div class="desc"># eval current file</div></div>
-			<div class="line"><div class="cmd">\eb</div>				<div class="desc"># eval current current visual block selected</div></div>
-			<div class="line"><div class="cmd">\et</div>				<div class="desc"># send a function to the REPL</div></div>
-			<div class="line"><div class="cmd">\p</div>					<div class="desc"># close a window</div></div>
+		<div class="line"><div class="cmd">\el</div>				<div class="desc"># eval current line</div></div>
+		<div class="line"><div class="cmd">\ef</div>				<div class="desc"># eval current file</div></div>
+		<div class="line"><div class="cmd">\eb</div>				<div class="desc"># eval current current visual block selected</div></div>
+		<div class="line"><div class="cmd">\et</div>				<div class="desc"># send a function to the REPL</div></div>
+		<div class="line"><div class="cmd">\p</div>					<div class="desc"># close a window</div></div>
 
-			<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-			<div class="line"><div class="cmd">ctrl-n</div>				<div class="desc"># auto completition</div></div>
-			<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
-			<div class="line"><div class="cmd">ctrl-x ctrl-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
-		</div>
-		</li>
+		<div class="line"><div class="cmd">ctrl-n</div>				<div class="desc"># auto completition</div></div>
+		<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
+		<div class="line"><div class="cmd">ctrl-x ctrl-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
+	</div>
+	</li>
 
-		<li id="acc11" class="acc ui-state-default resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-		<div id="head11" class="head ui-widget-header ui-corner-all">usefull stuff:</div>
-		<div class="effect ui-corner-all">
-			<div class="line"><div class="cmd">/usr/ucb/ps -auxww</div>		<div class="desc"># solaris: full command line</div></div>
-			<div class="line"><div class="cmd">jar tf</div>					<div class="desc"># list files in a jar-file</div></div>
-			<div class="line"><div class="cmd">xfce4-session-logout</div>	<div class="desc">&nbsp;</div></div>
-			<div class="line"><div class="cmd">sudo !!</div>				<div class="desc"># Run the last command as root</div></div>
-			<div class="line"><div class="cmd">cp filename{,.bak}</div>		<div class="desc"># quickly backup or copy a file with bash</div></div>
-			<div class="line"><div class="cmd">$ssh-copy-id user@host</div>	<div class="desc"># Copy ssh keys to user@host to enable password-less ssh logins</div></div>
-			<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
-				<div class="desc"># Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html.
-					Will allow you to mount a folder security over a network.</div></div>
+	<li id="acc11" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	<div id="head11" class="head ui-widget-header ui-corner-all">usefull stuff:</div>
+	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">/usr/ucb/ps -auxww</div>		<div class="desc"># solaris: full command line</div></div>
+		<div class="line"><div class="cmd">jar tf</div>					<div class="desc"># list files in a jar-file</div></div>
+		<div class="line"><div class="cmd">xfce4-session-logout</div>	<div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">sudo !!</div>				<div class="desc"># Run the last command as root</div></div>
+		<div class="line"><div class="cmd">cp filename{,.bak}</div>		<div class="desc"># quickly backup or copy a file with bash</div></div>
+		<div class="line"><div class="cmd">$ssh-copy-id user@host</div>	<div class="desc"># Copy ssh keys to user@host to enable password-less ssh logins</div></div>
+		<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
+			<div class="desc"># Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html.
+				Will allow you to mount a folder security over a network.</div></div>
 
-			<div class="line"><div class="cmd">ssh user@host cat /path/to/remotefile | diff /path/to/localfile -</div>
-				<div class="desc"># Compare a remote file with a local file</div></div>
-		</div>
-		</li>
+		<div class="line"><div class="cmd">ssh user@host cat /path/to/remotefile | diff /path/to/localfile -</div>
+			<div class="desc"># Compare a remote file with a local file</div></div>
+	</div>
+	</li>
 	</ul>
 </div>
 </body>
