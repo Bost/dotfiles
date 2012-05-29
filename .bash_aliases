@@ -128,6 +128,18 @@ fi
 if [ "$isLinux" -eq 0 ]; then
 	export qDrive=$base/q
 	export rosv=$qDrive/transfer/rosv
+	deployments_base=$rosv/mbs/deployments
+	deployments_mce=$deployments_base/mce
+
+	fDefvars=$deployments_base/defvars.sh
+	#echo "fDefvars=$fDefvars"
+	if [ -f "${fDefvars}" ]; then
+		. "${fDefvars}"
+		#echo "File loaded: ${fDefvars}"
+	else
+		echo "ERROR File not found: ${fDefvars}"
+		exit
+	fi
 
 	alias c:='cd $base/c'
 	alias d:='cd $base/d'
@@ -135,6 +147,7 @@ if [ "$isLinux" -eq 0 ]; then
 
 	alias rosv='cd $rosv'
 	alias conf='cd $rosv/mbs/conf'
+	alias deployments='cd $deployments_mce'
 	alias scl='cd $dev/scl-directory'
 
 	alias dem='cd $dev/mbs/dem'
@@ -155,6 +168,14 @@ if [ "$isLinux" -eq 0 ]; then
 	#alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
 	alias prod='echo ssh rsvoboda@194.99.105.205; ssh rsvoboda@194.99.105.205'
 	alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
+
+	alias mbssum='$deployments_base/mbssum.sh'
+	function depl {
+		deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
+		mkdir -p $deployments_full/lib
+		mkdir -p $deployments_full/deploy
+	}
+
 fi
 
 alias webcli='cd $dev/webcli'
@@ -191,6 +212,7 @@ alias ...='cd ../..'
 alias cdd='cd -'
 alias ls='ls -G'
 
+# use full command and options names - no gitconfig aliases
 GIT_ADD_ALL="echo 'git add .'; git add ."
 alias ga=$GIT_ADD_ALL
 alias gadd=$GIT_ADD_ALL
@@ -243,16 +265,5 @@ function take {
 # example:
 # alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
 alias cvs-reset='cvs update -C -l -d -P '
-
-if [ "$isLinux" -eq 0 ]; then
-	fDefvars=$rosv/mbs/deployments/defvars.sh
-	#echo "fDefvars=$fDefvars"
-	if [ -f "${fDefvars}" ]; then
-		. "${fDefvars}"
-		#echo "File loaded: ${fDefvars}"
-	else
-		echo "ERROR File not found: ${fDefvars}"
-	fi
-fi
 #echo "HOME=$HOME"
 
