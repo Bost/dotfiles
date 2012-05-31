@@ -170,11 +170,9 @@ if [ "$isLinux" -eq 0 ]; then
 	alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
 
 	alias mbssum='$deployments_base/mbssum.sh'
-	function depl {
-		deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
-		mkdir -p $deployments_full/lib
-		mkdir -p $deployments_full/deploy
-	}
+
+	deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
+	alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
 
 fi
 
