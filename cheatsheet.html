@@ -103,17 +103,22 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
 		<div class="line"><div class="cmd">:bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
 		<div class="line"><div class="cmd">:let @m='' :let @m=@n</div>					<div class="desc"># clear register, copy register value</div></div>
+		<div class="line"><div class="cmd">v/abc</div>			<div class="desc"># mark everything from the cursor up to abc</div></div>
 		<div class="line"><div class="cmd">:reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
 		<div class="line"><div class="cmd">["x]y{motion}</div>		<div class="desc"># yank {motion} into register x</div></div>
 		<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
+		<div class="line"><div class="cmd">q .... q @a/@@</div>		<div class="desc"># start/stop recording, play down the recording</div></div>
 		<div class="line"><div class="cmd">:wa</div>				<div class="desc"># write all buffers at once</div></div>
 		<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marsk (for jumping etc); m - marks something?</div></div>
 		<div class="line"><div class="cmd">:sort u</div>			<div class="desc"># remove duplicate lines</div></div>
 		<div class="line"><div class="cmd">vim -p file1 file2</div>	<div class="desc"># open vim with tabs</div></div>
 		<div class="line"><div class="cmd">:! sort</div>			<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">cc</div>					<div class="desc"># change line</div></div>
-		<div class="line"><div class="cmd">gum gUm</div>				<div class="desc"># lowercase/uppercase of movement m </div></div>
+		<div class="line"><div class="cmd">78i- ESC</div>			<div class="desc"># print line with 78 '-' chars</div></div>
+		<div class="line"><div class="cmd">cc</div>					<div class="desc"># change current line</div></div>
+		<div class="line"><div class="cmd">gum gUm</div>			<div class="desc"># lowercase/uppercase of movement m </div></div>
 		<div class="line"><div class="cmd">R r</div>				<div class="desc"># replace mode, replace 1 character</div></div>
+		<div class="line"><div class="cmd">30|</div>				<div class="desc"># jump to column 30</div></div>
+		<div class="line"><div class="cmd">f/t F/T</div>			<div class="desc"># search for/backward</div></div>
 		<div class="line"><div class="cmd">:r! command</div>		<div class="desc"># execute command and read in its output</div></div>
 		<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
 		<div class="line"><div class="cmd">`.</div>					<div class="desc"># last edit location</div></div>
@@ -260,6 +265,36 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
 		<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>
 			<div class="desc"># emacs command list</div></div>
+		<div class="line"><div class="cmd">M-% aka M-x query-replace</div>			<div class="desc">#</div></div>
+		<div class="line"><div class="cmd">M-x replace-string</div>			<div class="desc">#</div></div>
+		<div class="line"><div class="cmd">M-u</div>			<div class="desc"># upper case for next word</div></div>
+		<div class="line"><div class="cmd">M-l</div>			<div class="desc"># lower case</div></div>
+		<div class="line"><div class="cmd">M-c capitalize</div>		<div class="desc"># (1st letter is upper case)</div></div>
+		<div class="line"><div class="cmd">M-x ispell-region</div>	<div class="desc"># check a small region</div></div>
+		<div class="line"><div class="cmd">M-x ispell-buffer</div>	<div class="desc">#</div></div>
+
+		<div class="line"><div class="cmd">M-x erc</div>		<div class="desc">#  - start irc inside of emacs</div></div>
+		<div class="line"><div class="cmd">C-x `</div>			<div class="desc"># - jump to the next (compilation error(s), grep results etc.)</div></div>
+		<div class="line"><div class="cmd">M-x compile</div>		<div class="desc"># - compile using given program</div></div>
+		<div class="line"><div class="cmd">M-x speedbar</div>		<div class="desc"># (by default shows only python scripts)</div></div>
+		<div class="line"><div class="cmd">C-x C-w</div>		<div class="desc"># writte buffer to a different file</div></div>
+		<div class="line"><div class="cmd">M-x grep</div>		<div class="desc">#</div></div>
+		<div class="line"><div class="cmd">M-$ spell</div>		<div class="desc"># check word</div></div>
+		<div class="line"><div class="cmd">M-x flyspell-mode</div>	<div class="desc"># ? check all document ?</div></div>
+		<div class="line"><div class="cmd">M-<</div>			<div class="desc"># beginning of buffer</div></div>
+		<div class="line"><div class="cmd">M-></div>			<div class="desc"># end of buffer</div></div>
+		<div class="line"><div class="cmd">M-v / C-v</div>		<div class="desc"># page up/down</div></div>
+		<div class="line"><div class="cmd">C-l</div>			<div class="desc"># center the screen</div></div>
+		<div class="line"><div class="cmd">M-x shell</div>		<div class="desc"># start a bash command line</div></div>
+		<div class="line"><div class="cmd">C-x C-f ENTER</div>		<div class="desc"># enters the dired mode (see menu)</div></div>
+		<div class="line"><div class="cmd">M-q</div>			<div class="desc"># rewrap the line in auto-fill-mode</div></div>
+		<div class="line"><div class="cmd">C-u</div>			<div class="desc"># parameter key</div></div>
+		<div class="line"><div class="cmd">C-u 40 C-x f</div>		<div class="desc"># sets the line wrap to 40 characters, M-q # activate the wrap</div></div>
+		<div class="line"><div class="cmd">M-x fill-region</div>		<div class="desc"># reflow all the paragraphs in the area</div></div>
+		<div class="line"><div class="cmd">M-o M-s</div>			<div class="desc"># center for given line width</div></div>
+		<div class="line"><div class="cmd">M-o M-s</div>			<div class="desc"># center for given line width
+
+
 	</div>
 	</li>
 
@@ -300,10 +335,21 @@ ctrl+wv - Split windows vertically
 	<li id="acc11" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 	<div id="head11" class="head ui-widget-header ui-corner-all">usefull stuff:</div>
 	<div class="effect ui-corner-all">
+<!--
+file # info about file
+identify # info about picture file
+type -a ... # type of ...
+echo $SHLVL # shell level
+
+## beginning
+%% end
+-->
 		<div class="line"><div class="cmd">/usr/ucb/ps -auxww</div>		<div class="desc"># solaris: full command line</div></div>
 		<div class="line"><div class="cmd">jar tf</div>					<div class="desc"># list files in a jar-file</div></div>
 		<div class="line"><div class="cmd">xfce4-session-logout</div>	<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">sudo !!</div>				<div class="desc"># Run the last command as root</div></div>
+		<div class="line"><div class="cmd">man -k abc</div>				<div class="desc"># search man pages for abc</div></div>
+		<div class="line"><div class="cmd">!$</div>				<div class="desc"># get argument of the last command</div></div>
 		<div class="line"><div class="cmd">cp filename{,.bak}</div>		<div class="desc"># quickly backup or copy a file with bash</div></div>
 		<div class="line"><div class="cmd">$ssh-copy-id user@host</div>	<div class="desc"># Copy ssh keys to user@host to enable password-less ssh logins</div></div>
 		<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
