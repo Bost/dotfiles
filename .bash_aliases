@@ -157,6 +157,7 @@ if [ "$isLinux" -eq 0 ]; then
 	alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
 fi
 
+alias e='echo'
 alias webcli='cd $dev/webcli'
 alias cheatsheet='cd $dev/cheatsheet'
 alias dev='cd $dev'
@@ -236,7 +237,7 @@ alias md='mkdir -p'
 #alias mv='mv -i'
 
 function take {
-	mkdir $1
+	mkdir -p $1
 	cd $1
 }
 
