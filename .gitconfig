@@ -7,5 +7,19 @@
 	br = branch
 	co = checkout
 	df = diff
-	lg = log -p
+    bi = bisect
+    lg = log -p
+    who = shortlog -s --
+    undo=reset --hard
+[user]
+	name = Bost
+	email = thebost@gmail.com
 
+[sendemail]
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = Rostislav.Svoboda@gmail.com
+	smtpserverport = 587
+
+[color]
+	ui = always
