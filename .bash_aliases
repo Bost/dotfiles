@@ -117,6 +117,8 @@ elif [ "$isLinux" -gt 0 ]; then
 	alias upgrade=$SUDO_UPGRADE
 	alias upg=$SUDO_UPGRADE
 
+	alias uu='upd && upg'
+
 	alias inst="sudo apt-get install"
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
 	alias clojure='java -cp $dev/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
