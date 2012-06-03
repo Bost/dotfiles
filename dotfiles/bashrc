@@ -1,0 +1,4 @@
+_dev=~/dev/cheatsheet/dotfiles/bash
+. $_dev/env
+. $_dev/config
+. $_dev/aliases
