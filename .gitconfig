@@ -7,10 +7,10 @@
 	br = branch
 	co = checkout
 	df = diff
-    bi = bisect
-    lg = log -p
-    who = shortlog -s --
-    undo=reset --hard
+	bi = bisect
+	lg = log -p
+	who = shortlog -s --
+	undo=reset --hard
 [user]
 	name = Bost
 	email = thebost@gmail.com

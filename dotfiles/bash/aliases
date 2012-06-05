@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# aliases and functions
+
 alias less='less -r'
 #alias rm='rm -i'
 alias whence='type -a'
@@ -104,7 +106,16 @@ elif [ "$isMinGw32_wsles347" -gt 0 ]; then
 
 	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isLinux" -gt 0 ]; then
-	echo "### Loading $strLinux aliases"
+
+	strLinux_64="Linux desktop-64"
+	isLinux_64=`expr match "$uname" "$strLinux_64"`
+
+	if [ "$isLinux_64" -gt 0 ]; then
+		echo "### Loading $strLinux_64 aliases"
+	else
+		echo "### Loading $strLinux aliases"
+	fi
+
 	base=
 	dev=$HOME/dev
 	VIMRC=$HOME/.vimrc

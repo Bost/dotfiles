@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# values used by other sripts and applications
+export PATH=~/bin:$PATH
