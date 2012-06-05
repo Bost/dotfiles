@@ -1,4 +1,12 @@
-_dev=~/dev/cheatsheet/dotfiles/bash
-. $_dev/env
-. $_dev/config
-. $_dev/aliases
+function readFile {
+	if [ -f "$1" ]; then
+		. "$1"
+	else
+		echo "ERROR: File not found: $1"
+	fi
+}
+
+bashFilesHome=dev/cheatsheet/dotfiles/bash
+readFile $bashFilesHome/env
+readFile $bashFilesHome/config
+readFile $bashFilesHome/aliases
