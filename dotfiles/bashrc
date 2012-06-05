@@ -10,3 +10,4 @@ bashFilesHome=dev/cheatsheet/dotfiles/bash
 readFile $bashFilesHome/env
 readFile $bashFilesHome/config
 readFile $bashFilesHome/aliases
+readFile $bashFilesHome/variables
