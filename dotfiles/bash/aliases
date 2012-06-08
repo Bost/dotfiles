@@ -168,9 +168,9 @@ if [ "$isLinux" -eq 0 ]; then
 	alias std='cd $dev/mbs/std'
 	alias bmw='cd $dev/mbs/bmw'
 	alias mbb='cd $dev/mbs/mbb'
-	alias all='cd $dev/mbs/all.git'
 
 	alias jacarta='cd $dev/jacarta'
+	alias light='cd $dev/jacarta.hre-light'
 	alias hre='cd $dev/jacarta.hre'
 	alias pfandbrief='cd $dev/pfandbrief'
 
