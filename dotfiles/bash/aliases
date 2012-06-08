@@ -139,6 +139,8 @@ else
 fi
 
 if [ "$isLinux" -eq 0 ]; then
+	echo "### Loading non-linux aliases"
+
 	export qDrive=$base/q
 	export rosv=$qDrive/transfer/rosv
 	deployments_base=$rosv/mbs/deployments
@@ -187,7 +189,10 @@ if [ "$isLinux" -eq 0 ]; then
 	deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
 	alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
 
+#else
+#	echo "Linux aliases already loaded"
 fi
+
 
 alias e='echo'
 alias webcli='cd $dev/webcli'
