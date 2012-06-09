@@ -139,6 +139,8 @@ else
 fi
 
 if [ "$isLinux" -eq 0 ]; then
+	echo "### Loading non-linux aliases"
+
 	export qDrive=$base/q
 	export rosv=$qDrive/transfer/rosv
 	deployments_base=$rosv/mbs/deployments
@@ -168,9 +170,9 @@ if [ "$isLinux" -eq 0 ]; then
 	alias std='cd $dev/mbs/std'
 	alias bmw='cd $dev/mbs/bmw'
 	alias mbb='cd $dev/mbs/mbb'
-	alias all='cd $dev/mbs/all.git'
 
 	alias jacarta='cd $dev/jacarta'
+	alias light='cd $dev/jacarta.hre-light'
 	alias hre='cd $dev/jacarta.hre'
 	alias pfandbrief='cd $dev/pfandbrief'
 
@@ -211,6 +213,8 @@ if [ "$isLinux" -eq 0 ]; then
 	echo export CVSROOT=:pserver:rostislav.svoboda@cor-src-01:/srv/cvs/alldata"   # alternative CVSROOT"
 
 	export PATH=$PATH:~/bin
+#else
+#	echo "Linux aliases already loaded"
 fi
 
 alias unexport='unset'
