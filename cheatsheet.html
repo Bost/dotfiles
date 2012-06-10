@@ -127,7 +127,8 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">zz zb zt or M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
 		<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
 		<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
-		<div class="line"><div class="cmd">ctrl t / ctrl d</div>	<div class="desc"># align text in insert mode</div></div>
+		<div class="line"><div class="cmd">C-^ / C-6</div>	<div class="desc"># switch to the alternate file (probably the one marked with %/#)</div></div>
+		<div class="line"><div class="cmd">C-t / C-d</div>	<div class="desc"># align text in insert mode</div></div>
 		<div class="line"><div class="cmd">vit / yit / cit / dit</div>	<div class="desc"># mark/yank/change/delete "innerHTML"</div></div>
 		<div class="line"><div class="cmd">vat / yat / cat / dat</div>	<div class="desc"># mark/yank/change/delete whole tag</div></div>
 		<div class="line"><div class="cmd">o in visual mode</div>	<div class="desc"># change the marking direction</div></div>
@@ -157,14 +158,17 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">color morning</div>		<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">set fileformat=dos|unix|mac</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">set filetype=html|xml|...</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
+		<div class="line"><div class="cmd">C-w C-w</div>		<div class="desc"># move around split viewports</div></div>
+		<div class="line"><div class="cmd">C-w h /j/k/m/ r / x</div>		<div class="desc"># move around viewports according to given direction</div></div>
+		<div class="line"><div class="cmd">C-| / C-_</div>		<div class="desc"># maximize vertically / horizontally</div></div>
 		<div class="line"><div class="cmd">:sp filename  :vsp filename</div>		<div class="desc"># split viewports horizontal / vertical</div></div>
 		<div class="line"><div class="cmd">&gt;</div>				<div class="desc"># shift text right</div></div>
 		<div class="line"><div class="cmd">&lt;</div>				<div class="desc"># shift text left</div></div>
 		<div class="line"><div class="cmd">=</div>					<div class="desc"># align text</div></div>
-		<div class="line"><div class="cmd">CTRL ]</div>				<div class="desc"># follow link in vim help</div></div>
-		<div class="line"><div class="cmd">CTRL T</div>				<div class="desc"># go back to previous topic in the vim help</div></div>
-		<div class="line"><div class="cmd">CTRL O, CTRL I</div>		<div class="desc"># older and newer vim help locations</div></div>
+		<div class="line"><div class="cmd">C-]</div>				<div class="desc"># follow link in vim help</div></div>
+		<div class="line"><div class="cmd">C-T</div>				<div class="desc"># go back to previous topic in the vim help</div></div>
+		<div class="line"><div class="cmd">:changes g; g,</div>	<div class="desc"># move forth/back in the change list</div></div>
+		<div class="line"><div class="cmd">:jumps C-O / C-I</div>	<div class="desc"># back/forth in the jump list (older/newer)</div></div>
 
 		<div class="line"><div class="rest">vim scripts:</div></div>
 		<div class="line"><div class="cmd">NERDTree</div>			<div class="desc">&nbsp;</div></div>
@@ -181,7 +185,7 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">wc cheatsheet.html</div>							<div class="desc"># line count, word count</div></div>
 		<div class="line"><div class="cmd">sudo !!</div>									<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">!$</div>											<div class="desc"># last parameter of the last command</div></div>
-		<div class="line"><div class="cmd">ctrl r, ctrl g</div>								<div class="desc"># bash history, abort history</div></div>
+		<div class="line"><div class="cmd">C-r, C-g</div>								<div class="desc"># bash history, abort history</div></div>
 		<div class="line"><div class="cmd">mv README.{text,txt}</div>						<div class="desc"># bash using list: mv README.text README.txt</div></div>
 		<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
 		<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
@@ -326,9 +330,9 @@ ctrl+wv - Split windows vertically
 
 		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-		<div class="line"><div class="cmd">ctrl-n</div>				<div class="desc"># auto completition</div></div>
-		<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
-		<div class="line"><div class="cmd">ctrl-x ctrl-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
+		<div class="line"><div class="cmd">C-n</div>				<div class="desc"># auto completition</div></div>
+		<div class="line"><div class="cmd">C-w C-w</div>		<div class="desc"># move around split viewports</div></div>
+		<div class="line"><div class="cmd">C-x C-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
 	</div>
 	</li>
 
