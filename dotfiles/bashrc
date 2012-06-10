@@ -6,7 +6,7 @@ function readFile {
 	fi
 }
 
-bashFilesHome=dev/cheatsheet/dotfiles/bash
+bashFilesHome=$HOME/dev/cheatsheet/dotfiles/bash
 readFile $bashFilesHome/env
 readFile $bashFilesHome/config
 readFile $bashFilesHome/aliases
