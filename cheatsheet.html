@@ -246,10 +246,13 @@ ctrl+wv - Split windows vertically
 	<li id="acc5" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 	<div id="head5" class="head ui-widget-header ui-corner-all">db2:</div>
 	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">db2cmd -i -w db2clpsetcp</div><div class="desc"># init db2 envidonment</div></div>
+		<div class="line"><div class="cmd">echo %DB2CLP%</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">db2 get connection state</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">db2 CATALOG TCPIP NODE $NODE_NAME REMOTE $IP_ADDR server $PORT</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">db2 CATALOG DATABASE $DATABASE_NAME AT NODE $NODE_NAME</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">db2 TERMINATE</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">db2 -vf script.sql -t</div><div class="desc"># launch db2 script on CLI</div></div>
 	</div>
 	</li>
 
