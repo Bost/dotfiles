@@ -5,8 +5,13 @@ function readFile {
 		echo "ERROR: File not found: $1"
 	fi
 }
-
 bashFilesHome=$HOME/dev/cheatsheet/dotfiles/bash
+if [ -f "$1" ]; then
+	echo "HOME: $HOME"
+else
+	bashFilesHome=/h/dev/cheatsheet/dotfiles/bash
+	echo "HOME: $HOME"
+fi
 readFile $bashFilesHome/env
 readFile $bashFilesHome/config
 readFile $bashFilesHome/aliases
