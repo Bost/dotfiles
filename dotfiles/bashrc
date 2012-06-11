@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function readFile {
 	if [ -f "$1" ]; then
 		. "$1"
@@ -6,11 +8,9 @@ function readFile {
 	fi
 }
 bashFilesHome=$HOME/dev/cheatsheet/dotfiles/bash
-if [ -f "$1" ]; then
-	echo "HOME: $HOME"
-else
+if [ ! -d "$bashFilesHome" ]; then
 	bashFilesHome=/h/dev/cheatsheet/dotfiles/bash
-	echo "HOME: $HOME"
+	echo "Trying to use alternative HOME: $HOME"
 fi
 readFile $bashFilesHome/env
 readFile $bashFilesHome/config
