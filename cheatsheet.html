@@ -261,15 +261,31 @@ ctrl+wv - Split windows vertically
 
 	<div class="effect ui-corner-all">
 		<div class="line"><div class="cmd">M-` / F10</div>		<div class="desc"># menu</div></div>
+		<div class="line"><div class="cmd">C-u C-SPC</div>		<div class="desc"># jump back to the last mark (there's a mark-ring)</div></div>
+		<div class="line"><div class="cmd">C-h v</div>		        <div class="desc"># describe variable</div></div>
 		<div class="line"><div class="cmd">C-x C-c</div>		<div class="desc"># exit emacs</div></div>
+		<div class="line"><div class="cmd">C-u C-x v =</div>		<div class="desc"># diff against any chosen revision</div></div>
+		<div class="line"><div class="cmd">C-x v u</div>		<div class="desc"># discard changes</div></div>
+		<div class="line"><div class="cmd">C-x v ~</div>		<div class="desc"># checkout any version: master~3   last 3th version</div></div>
+		<div class="line"><div class="cmd">C-x v l</div>		<div class="desc"># commit log: f - view revision; d - view diff</div></div>
 		<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
+		<div class="line"><div class="cmd">C-x v i</div>		<div class="desc"># add to version control system</div></div>
+		<div class="line"><div class="cmd">C-x r RET</div>		<div class="desc"># add to version control system</div></div>
 		<div class="line"><div class="cmd">C-x C-f / C-v</div>		<div class="desc"># find file / find alternate file </div></div>
 		<div class="line"><div class="cmd">C-x 4 f / C-x 4 b</div>	<div class="desc"># find-file-other window / switch-to-buffer-other-window</div></div>
 		<div class="line"><div class="cmd">C-x C-s / C-w</div>		<div class="desc"># save file / save as</div></div>
 		<div class="line"><div class="cmd">C-x s</div>		        <div class="desc"># save-some-buffers</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># eshell: ifconfig > #<buffer interfaces></div></div>
 		<div class="line"><div class="cmd"></div>			<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># cssh ? ssh shell ? (somehow strange)</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># color-theme-calm-forest ? does not work?</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># yasnippet - yet another snippets</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># elpa - emacs lisp package archive</div></div>
 		<div class="line"><div class="cmd">C-x 1</div>			<div class="desc"># delete-other-windows</div></div>
 		<div class="line"><div class="cmd">M-!</div>			<div class="desc"># shell-command</div></div>
+		<div class="line"><div class="cmd">M-;</div>			<div class="desc"># comment out active region</div></div>
+		<div class="line"><div class="cmd">M-/</div>			<div class="desc"># code completion</div></div>
+		<div class="line"><div class="cmd">C-x m</div>			<div class="desc"># email</div></div>
 		<div class="line"><div class="cmd">C-x i</div>			<div class="desc"># insert file</div></div>
 		<div class="line"><div class="cmd">C-c C-C</div>		<div class="desc"># end of git commit message (under emacs)</div></div>
 
@@ -302,8 +318,8 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">C-k / M-k</div>	        <div class="desc"># kill line / kill sentence / yank</div></div>
 		<div class="line"><div class="cmd">C-w</div>	                <div class="desc"># kill region (cut)</div></div>
 		<div class="line"><div class="cmd">M-w</div>	                <div class="desc"># kill ring save (copy)</div></div>
-		<div class="line"><div class="cmd">C-y</div>	                <div class="desc"># really yank (paste)</div></div>
-		<div class="line"><div class="cmd">M-y</div>	                <div class="desc"># really yank pop (historic paste of old cuts/copies)</div></div>
+		<div class="line"><div class="cmd">C-y</div>	                <div class="desc"># yank (paste last killed entry)</div></div>
+		<div class="line"><div class="cmd">M-y</div>	                <div class="desc"># cycle back through previous entries in the kill ring</div>
 		<div class="line"><div class="cmd">M-x grep</div>		<div class="desc">#</div></div>
 		<div class="line"><div class="cmd">M-$ spell</div>		<div class="desc"># check word</div></div>
 		<div class="line"><div class="cmd">M-x flyspell-mode</div>	<div class="desc"># ? check all document ?</div></div>
