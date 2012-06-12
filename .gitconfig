@@ -22,4 +22,4 @@
 	smtpserverport = 587
 
 [color]
-	ui = always
+	ui = auto
