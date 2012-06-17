@@ -187,6 +187,7 @@ if [ "$isLinux" -eq 0 ]; then
 	deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
 	alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
 
+	alias suspend='sudo pm-suspend'
 fi
 
 alias e='echo'
