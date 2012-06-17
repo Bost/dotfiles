@@ -63,10 +63,10 @@ ctrl+wv - Split windows vertically
 	});
 	$(function() {
 		var el = $("#sortable");
-		el.sortable();
+		//el.sortable();    // this makes copy-paste impossible
 		//el.disableSelection();
-		//	$( ".resizable" ).resizable();
-		//	$( ".draggable" ).draggable();
+		//$( ".resizable" ).resizable();
+		//$( ".draggable" ).draggable();
 	});
 	$(function() {
 		$( "input:submit, a, button", ".buttons" ).button();
@@ -127,7 +127,8 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">zz zb zt or M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
 		<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
 		<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
-		<div class="line"><div class="cmd">ctrl t / ctrl d</div>	<div class="desc"># align text in insert mode</div></div>
+		<div class="line"><div class="cmd">C-^ / C-6</div>	<div class="desc"># switch to the alternate file (probably the one marked with %/#)</div></div>
+		<div class="line"><div class="cmd">C-t / C-d</div>	<div class="desc"># align text in insert mode</div></div>
 		<div class="line"><div class="cmd">vit / yit / cit / dit</div>	<div class="desc"># mark/yank/change/delete "innerHTML"</div></div>
 		<div class="line"><div class="cmd">vat / yat / cat / dat</div>	<div class="desc"># mark/yank/change/delete whole tag</div></div>
 		<div class="line"><div class="cmd">o in visual mode</div>	<div class="desc"># change the marking direction</div></div>
@@ -157,14 +158,17 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">color morning</div>		<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">set fileformat=dos|unix|mac</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">set filetype=html|xml|...</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
+		<div class="line"><div class="cmd">C-w C-w</div>		<div class="desc"># move around split viewports</div></div>
+		<div class="line"><div class="cmd">C-w h /j/k/m/ r / x</div>		<div class="desc"># move around viewports according to given direction</div></div>
+		<div class="line"><div class="cmd">C-| / C-_</div>		<div class="desc"># maximize vertically / horizontally</div></div>
 		<div class="line"><div class="cmd">:sp filename  :vsp filename</div>		<div class="desc"># split viewports horizontal / vertical</div></div>
 		<div class="line"><div class="cmd">&gt;</div>				<div class="desc"># shift text right</div></div>
 		<div class="line"><div class="cmd">&lt;</div>				<div class="desc"># shift text left</div></div>
 		<div class="line"><div class="cmd">=</div>					<div class="desc"># align text</div></div>
-		<div class="line"><div class="cmd">CTRL ]</div>				<div class="desc"># follow link in vim help</div></div>
-		<div class="line"><div class="cmd">CTRL T</div>				<div class="desc"># go back to previous topic in the vim help</div></div>
-		<div class="line"><div class="cmd">CTRL O, CTRL I</div>		<div class="desc"># older and newer vim help locations</div></div>
+		<div class="line"><div class="cmd">C-]</div>				<div class="desc"># follow link in vim help</div></div>
+		<div class="line"><div class="cmd">C-T</div>				<div class="desc"># go back to previous topic in the vim help</div></div>
+		<div class="line"><div class="cmd">:changes g; g,</div>	<div class="desc"># move forth/back in the change list</div></div>
+		<div class="line"><div class="cmd">:jumps C-O / C-I</div>	<div class="desc"># back/forth in the jump list (older/newer)</div></div>
 
 		<div class="line"><div class="rest">vim scripts:</div></div>
 		<div class="line"><div class="cmd">NERDTree</div>			<div class="desc">&nbsp;</div></div>
@@ -181,7 +185,7 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">wc cheatsheet.html</div>							<div class="desc"># line count, word count</div></div>
 		<div class="line"><div class="cmd">sudo !!</div>									<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">!$</div>											<div class="desc"># last parameter of the last command</div></div>
-		<div class="line"><div class="cmd">ctrl r, ctrl g</div>								<div class="desc"># bash history, abort history</div></div>
+		<div class="line"><div class="cmd">C-r, C-g</div>								<div class="desc"># bash history, abort history</div></div>
 		<div class="line"><div class="cmd">mv README.{text,txt}</div>						<div class="desc"># bash using list: mv README.text README.txt</div></div>
 		<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
 		<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
@@ -242,59 +246,109 @@ ctrl+wv - Split windows vertically
 	<li id="acc5" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 	<div id="head5" class="head ui-widget-header ui-corner-all">db2:</div>
 	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">db2cmd -i -w db2clpsetcp</div><div class="desc"># init db2 envidonment</div></div>
+		<div class="line"><div class="cmd">echo %DB2CLP%</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">db2 get connection state</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">db2 CATALOG TCPIP NODE $NODE_NAME REMOTE $IP_ADDR server $PORT</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">db2 CATALOG DATABASE $DATABASE_NAME AT NODE $NODE_NAME</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">db2 TERMINATE</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">db2 -vf script.sql -t</div><div class="desc"># launch db2 script on CLI</div></div>
 	</div>
 	</li>
 
 	<li id="acc8" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 	<div id="head8" class="head ui-widget-header ui-corner-all">emacs:</div>
+
 	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">C-x C-c</div>		<div class="desc"># exit emacs</div></div>
+		<div class="line"><div class="cmd">M-` / F10</div>		<div class="desc"># menu</div></div>
+		<div class="line"><div class="cmd">C-u C-SPC</div>		<div class="desc"># jump back to the last mark (there's a mark-ring)</div></div>
+		<div class="line"><div class="cmd">C-h v</div>		        <div class="desc"># describe variable</div></div>
+		<div class="line"><div class="cmd">C-x ^ or C-x { or } </div>   <div class="desc"># enlarge-window, shrink-window horizontally / vertically</div></div>
+		<div class="line"><div class="cmd">C-u C-x v =</div>		<div class="desc"># diff against any chosen revision</div></div>
+		<div class="line"><div class="cmd">C-x v u</div>		<div class="desc"># discard changes</div></div>
+		<div class="line"><div class="cmd">C-x v ~</div>		<div class="desc"># checkout any version: master~3   last 3th version</div></div>
+		<div class="line"><div class="cmd">C-x v l</div>		<div class="desc"># commit log: f - view revision; d - view diff</div></div>
 		<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
-		<div class="line"><div class="cmd">C-x C-f</div>		<div class="desc"># find file</div></div>
-		<div class="line"><div class="cmd"></div>				<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
-		<div class="line"><div class="cmd">C-x 1</div>			<div class="desc"># close all windows except the one the cursors in</div></div>
+		<div class="line"><div class="cmd">C-x v i</div>		<div class="desc"># add to version control system</div></div>
+		<div class="line"><div class="cmd">C-x r RET</div>		<div class="desc"># add to version control system</div></div>
+		<div class="line"><div class="cmd">C-x C-f / C-v</div>		<div class="desc"># find file / find alternate file </div></div>
+		<div class="line"><div class="cmd">C-x 4 f / C-x 4 b</div>	<div class="desc"># find-file-other window / switch-to-buffer-other-window</div></div>
+		<div class="line"><div class="cmd">C-x C-s / C-w</div>		<div class="desc"># save file / save as</div></div>
+		<div class="line"><div class="cmd">C-x s</div>		        <div class="desc"># save-some-buffers</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># eshell: ifconfig > #<buffer interfaces></div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># cssh ? ssh shell ? (somehow strange)</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># color-theme-calm-forest ? does not work?</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># yasnippet - yet another snippets</div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># elpa - emacs lisp package archive</div></div>
+		<div class="line"><div class="cmd">C-x 1</div>			<div class="desc"># delete-other-windows</div></div>
+		<div class="line"><div class="cmd">M-!</div>			<div class="desc"># shell-command</div></div>
+		<div class="line"><div class="cmd">M-;</div>			<div class="desc"># comment out active region</div></div>
+		<div class="line"><div class="cmd">M-/</div>			<div class="desc"># code completion</div></div>
+		<div class="line"><div class="cmd">C-x m</div>			<div class="desc"># email</div></div>
+		<div class="line"><div class="cmd">C-x i</div>			<div class="desc"># insert file</div></div>
 		<div class="line"><div class="cmd">C-c C-C</div>		<div class="desc"># end of git commit message (under emacs)</div></div>
 
+		<div class="line"><div class="cmd">C-h k key / C-h f function</div>	<div class="desc"># describe-key / describe-function</div></div>
 		<div class="line"><div class="cmd">M-x command</div>	<div class="desc"># execute command</div></div>
-		<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression</div></div>
+		<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression - see M-x eval-current-buffer</div></div>
 		<div class="line"><div class="cmd">C-M-x</div>			<div class="desc"># immediate eval</div></div>
 		<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
 		<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>
 			<div class="desc"># emacs command list</div></div>
-		<div class="line"><div class="cmd">M-% aka M-x query-replace</div>			<div class="desc">#</div></div>
-		<div class="line"><div class="cmd">M-x replace-string</div>			<div class="desc">#</div></div>
+		<div class="line"><div class="cmd">M-% / M-x query-replace</div><div class="desc">#</div></div>
+		<div class="line"><div class="cmd">M-x replace-string</div>	<div class="desc">#</div></div>
 		<div class="line"><div class="cmd">M-u</div>			<div class="desc"># upper case for next word</div></div>
 		<div class="line"><div class="cmd">M-l</div>			<div class="desc"># lower case</div></div>
 		<div class="line"><div class="cmd">M-c capitalize</div>		<div class="desc"># (1st letter is upper case)</div></div>
 		<div class="line"><div class="cmd">M-x ispell-region</div>	<div class="desc"># check a small region</div></div>
 		<div class="line"><div class="cmd">M-x ispell-buffer</div>	<div class="desc">#</div></div>
 
-		<div class="line"><div class="cmd">M-x erc</div>		<div class="desc">#  - start irc inside of emacs</div></div>
-		<div class="line"><div class="cmd">C-x `</div>			<div class="desc"># - jump to the next (compilation error(s), grep results etc.)</div></div>
-		<div class="line"><div class="cmd">M-x compile</div>		<div class="desc"># - compile using given program</div></div>
+		<div class="line"><div class="cmd">C-u n</div>		        <div class="desc"># repeat n times following command</div></div>
+		<div class="line"><div class="cmd">C-_ / C-/ / C-x u</div>		<div class="desc"># undo</div></div>
+		<div class="line"><div class="cmd">C-f C-_</div>		<div class="desc"># redo</div></div>
+		<div class="line"><div class="cmd">M-x erc</div>		<div class="desc"># start irc inside of emacs</div></div>
+		<div class="line"><div class="cmd">M-a / M-e</div>		<div class="desc"># forward / backward one sentence</div></div>
+		<div class="line"><div class="cmd">C-x h / M-h</div>		<div class="desc"># mark whole buffer / mark paragraph</div></div>
+		<div class="line"><div class="cmd">C-x `</div>			<div class="desc"># jump to the next (compilation error(s), grep results etc.)</div></div>
+		<div class="line"><div class="cmd">M-x compile</div>		<div class="desc"># compile using given program</div></div>
 		<div class="line"><div class="cmd">M-x speedbar</div>		<div class="desc"># (by default shows only python scripts)</div></div>
 		<div class="line"><div class="cmd">C-x C-w</div>		<div class="desc"># writte buffer to a different file</div></div>
+		<div class="line"><div class="cmd">C-x left/right</div>         <div class="desc"># next-buffer / previous-buffer</div></div>
+		<div class="line"><div class="cmd">C-k / M-k</div>	        <div class="desc"># kill line / kill sentence / yank</div></div>
+		<div class="line"><div class="cmd">C-w</div>	                <div class="desc"># kill region (cut)</div></div>
+		<div class="line"><div class="cmd">M-w</div>	                <div class="desc"># kill ring save (copy)</div></div>
+		<div class="line"><div class="cmd">C-y</div>	                <div class="desc"># yank (paste last killed entry)</div></div>
+		<div class="line"><div class="cmd">M-y</div>	                <div class="desc"># cycle back through previous entries in the kill ring</div></div>
 		<div class="line"><div class="cmd">M-x grep</div>		<div class="desc">#</div></div>
 		<div class="line"><div class="cmd">M-$ spell</div>		<div class="desc"># check word</div></div>
 		<div class="line"><div class="cmd">M-x flyspell-mode</div>	<div class="desc"># ? check all document ?</div></div>
 		<div class="line"><div class="cmd">M-<</div>			<div class="desc"># beginning of buffer</div></div>
 		<div class="line"><div class="cmd">M-></div>			<div class="desc"># end of buffer</div></div>
 		<div class="line"><div class="cmd">M-v / C-v</div>		<div class="desc"># page up/down</div></div>
+		<div class="line"><div class="cmd">C-t / M-t / C-x C-t</div>	<div class="desc"># transpose chars/words/lines</div></div>
 		<div class="line"><div class="cmd">C-l</div>			<div class="desc"># center the screen</div></div>
-		<div class="line"><div class="cmd">M-x shell</div>		<div class="desc"># start a bash command line</div></div>
+		<div class="line"><div class="cmd">M-x shell / eshell </div>	<div class="desc"># start a bash command line</div></div>
 		<div class="line"><div class="cmd">C-x C-f ENTER</div>		<div class="desc"># enters the dired mode (see menu)</div></div>
 		<div class="line"><div class="cmd">M-q</div>			<div class="desc"># rewrap the line in auto-fill-mode</div></div>
 		<div class="line"><div class="cmd">C-u</div>			<div class="desc"># parameter key</div></div>
 		<div class="line"><div class="cmd">C-u 40 C-x f</div>		<div class="desc"># sets the line wrap to 40 characters, M-q # activate the wrap</div></div>
-		<div class="line"><div class="cmd">M-x fill-region</div>		<div class="desc"># reflow all the paragraphs in the area</div></div>
-		<div class="line"><div class="cmd">M-o M-s</div>			<div class="desc"># center for given line width</div></div>
-		<div class="line"><div class="cmd">M-o M-s</div>			<div class="desc"># center for given line width
-
-
+		<div class="line"><div class="cmd">M-x fill-region</div>	<div class="desc"># reflow all the paragraphs in the area</div></div>
+		<div class="line"><div class="cmd">M-o M-s</div>		<div class="desc"># center for given line width</div></div>
+		<div class="line"><div class="cmd">C-M-s</div>	         	<div class="desc"># isearch-forward-regexp</div></div>
+		<div class="line"><div class="cmd">C-M-%</div>	         	<div class="desc"># query-replace-regexp</div></div>
+		<div class="line"><div class="cmd">C-u M-! command</div>	<div class="desc"># execute command and read-in its output</div></div>
+M-x gdb
+		<div class="line"><div class="cmd">C-h i m emacs</div>	        <div class="desc"># ? emacs manual?</div></div>
+		<div class="line"><div class="cmd">M-x dbg</div>	        <div class="desc"># </div></div>
+		<div class="line"><div class="cmd">M-x ediff</div>	        <div class="desc"># </div></div>
+		<div class="line"><div class="cmd">M-x compile</div>	        <div class="desc"># </div></div>
+		<div class="line"><div class="cmd">M-x grep</div>	        <div class="desc"># </div></div>
+		<div class="line"><div class="cmd">M-x man</div>	        <div class="desc"># </div></div>
+		<div class="line"><div class="cmd">M-x gnus</div>	        <div class="desc"># news, email, rss</div></div>
+		<div class="line"><div class="cmd">M-:</div>	                <div class="desc"># documentation reader</div></div>
+		<div class="line"><div class="cmd">M-g g</div>	                <div class="desc"># documentation reader</div></div>
+		<div class="line"><div class="cmd">C-u C-n</div>	        <div class="desc"># move forward 4 lines</div></div>
 	</div>
 	</li>
 
@@ -314,7 +368,8 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">\sR</div>				<div class="desc"># start interactive REPL initialized to have same namespace as current buffer</div></div>
 
 		<div class="line"><div class="cmd">\si</div>				<div class="desc"># prompt for input and lookup with (source)</div></div>
-		<div class="line"><div class="cmd">\fd</div>				<div class="desc"># prompt for input and lookup with (find-doc)</div></div>
+		<div class="line"><div class="cmd">\fd</div>
+		  <div class="desc"># prompt for input and lookup with (find-doc)</div></div>
 
 		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
@@ -326,9 +381,9 @@ ctrl+wv - Split windows vertically
 
 		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-		<div class="line"><div class="cmd">ctrl-n</div>				<div class="desc"># auto completition</div></div>
-		<div class="line"><div class="cmd">ctrl-w ctrl-w</div>		<div class="desc"># move around split viewports</div></div>
-		<div class="line"><div class="cmd">ctrl-x ctrl-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
+		<div class="line"><div class="cmd">C-n</div>				<div class="desc"># auto completition</div></div>
+		<div class="line"><div class="cmd">C-w C-w</div>		<div class="desc"># move around split viewports</div></div>
+		<div class="line"><div class="cmd">C-x C-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
 	</div>
 	</li>
 
