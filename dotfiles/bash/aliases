@@ -232,7 +232,7 @@ alias v=$VIM_CMD
 alias g=$GVIM_CMD
 
 alias cls='clear'
-alias aliases='vim ~/.bash_aliases'
+alias prep='ps -ef | grep '
 alias png='ping -c 5 www.google.com'
 alias c='cat'
 alias less='less -r'
