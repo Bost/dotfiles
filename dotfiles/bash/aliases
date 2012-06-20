@@ -172,7 +172,7 @@ if [ "$isLinux" -eq 0 ]; then
 	alias mbb='cd $dev/mbs/mbb'
 
 	alias jacarta='cd $dev/jacarta'
-	alias light='cd $dev/jacarta.hre-light'
+	alias light='cd $dev/jacarta.light'
 	alias hre='cd $dev/jacarta.hre'
 	alias pfandbrief='cd $dev/pfandbrief'
 
