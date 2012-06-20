@@ -129,8 +129,18 @@ elif [ "$isLinux" -gt 0 ]; then
 	alias upg=$SUDO_UPGRADE
 
 	alias uu='upd && upg'
+	alias cx='chmod +x'
+	alias k9='kill -9'
+	# I guess '2> /dev/null' redirects errors to /dev/null
+	alias f='find ./ 2> /dev/null'
 
-	alias inst="sudo apt-get install"
+	# -y  Assume Yes to all queries and do not prompt
+	alias inst="sudo apt-get install -y"
+	alias arem="sudo apt-get autoremove -y"
+
+	#Search the package list for a regex pattern
+	#TODO alias sea='apt-cache search'
+
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
 	alias clojure='java -cp $dev/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 	alias kk="krusader --left . --right . &"
@@ -211,7 +221,7 @@ s	alias suspend='sudo pm-suspend'
 	echo export http_proxy=$http_proxy
 	echo export https_proxy=$https_proxy
 	echo export ftp_proxy=$ftp_proxy
-	echo export CVSROOT=$CVSROOT"	        # this is the active CVSROOT"
+	echo export CVSROOT=$CVSROOT"		# this is the active CVSROOT"
 	echo export CVSROOT=:pserver:rostislav.svoboda@cor-src-01:/srv/cvs/alldata"   # alternative CVSROOT"
 
 	export PATH=$PATH:~/bin
@@ -310,4 +320,3 @@ function take {
 # alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
 alias cvs-reset='cvs update -C -l -d -P '
 #echo "HOME=$HOME"
-
