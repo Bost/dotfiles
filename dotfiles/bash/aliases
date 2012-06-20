@@ -138,6 +138,8 @@ elif [ "$isLinux" -gt 0 ]; then
 	alias inst="sudo apt-get install -y"
 	alias arem="sudo apt-get autoremove -y"
 
+	alias suspend='sudo pm-suspend'
+
 	#Search the package list for a regex pattern
 	#TODO alias sea='apt-cache search'
 
@@ -198,8 +200,6 @@ if [ "$isLinux" -eq 0 ]; then
 
 	deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
 	alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
-
-s	alias suspend='sudo pm-suspend'
 
 	# TODO this stuff should be in the env file
 	proxy=RSVOBODA:ve6h496q@192.168.2.105:3128
