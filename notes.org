@@ -5,3 +5,15 @@
 
 * emacs
 ** folding
+
+* check programs from google summer of code
+
+* magit: set username and password
+
+* hierarchical data format
+
+  mv filename.{txt,xml}
+  mkdir -p path/dirname.0{1,2,3}
+  xmllint
+
+  quilt - linux kernel patch management
