@@ -8,7 +8,7 @@
 	co = checkout
 	df = diff
 	bi = bisect
-	lg = log -p
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	who = shortlog -s --
 	undo=reset --hard
 [user]
@@ -22,4 +22,4 @@
 	smtpserverport = 587
 
 [color]
-	ui = always
+	ui = auto
