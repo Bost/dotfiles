@@ -8,6 +8,8 @@
 - time bank
   http://www.sme.sk/c/6414188/oprav-mi-bicykel-a-ja-ta-naucim-tancovat.html
 
+* scala
+
 ** citat
 - hackernews
 - redit
@@ -88,3 +90,4 @@ lein swank-wrap 4005 webcli.server
 slime-connect
 (let [x 1]
   (swank.core/break))
+
