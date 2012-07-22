@@ -129,6 +129,7 @@ elif [ "$isLinux" -gt 0 ]; then
 	alias upg=$SUDO_UPGRADE
 
 	alias uu='upd && upg'
+	alias ud='sudo apt-get dist-upgrade'
 	alias cx='chmod +x'
 	alias k9='kill -9'
 	# I guess '2> /dev/null' redirects errors to /dev/null
