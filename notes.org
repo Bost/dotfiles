@@ -1,6 +1,5 @@
 * emacs
 - folding
-- shortcut for sql code comment
 
 * check programs from google summer of code
 
@@ -15,10 +14,10 @@
 * pozri sa na
 ** vseobecne
 - hierarchical data format
-- fraktaly
+- fraktals
 - google summer of code - prilis orientovane na konkretne projekty
 - hierarchical data format
-- sugar sync
+- sugar sync - data sync accross comps
 ** clojure data persistency, dbases under google app engine
    datomic
 - time bank
@@ -28,12 +27,12 @@
 
 ** citat
 - hackernews
-- redit
+- reddit
+- kickstarter
 
 ** emacs
 - folding
 - org-mode: Kurt Schwer - RT 3 - emacs part 3 - org-mode and babel
-- install anything
 - linum relative numbers
   M-1 3 C-n - scroll down 13 lines
 - macros
@@ -55,16 +54,13 @@
 * facebook
 - upload fotos
 
-* shopping - TP
-
 * BTC
 - save from bitcoin.de
-- Michael - electrum
 - backup - papier?
 
 * *good* keyboard
 
-* org mode - tagging							:org:
+* org mode - tagging                            :org:
 
 | col1    | col2          |
 |---------+---------------|
@@ -86,7 +82,37 @@ return "Hello from python"
 : Hello from python
 
 * clojure
+#+BEGIN_SRC clojure
 lein swank-wrap 4005 webcli.server
 slime-connect
 (let [x 1]
   (swank.core/break))
+#+END_SRC
+
+* semaphores
+** compare 2 bitmaps
+#+BEGIN_SRC
+// http://stackoverflow.com/questions/10487152/comparing-two-images-for-motion-detecting-purposes
+private int returnCountOfDifferentPixels(String pic1, String pic2)
+    {
+        Bitmap i1 = loadBitmap(pic1);
+        Bitmap i2 = loadBitmap(pic2);
+        int count=0;
+
+        for (int y = 0; y < i1.getHeight(); ++y)
+               for (int x = 0; x < i1.getWidth(); ++x)
+                    if (i1.getPixel(x, y) != i2.getPixel(x, y))
+                        {
+                        count++;
+                        }
+
+          return count;
+
+    }
+#+END_SRC
+
+** make an android app for picture comparision
+** get a mobile, fix it on the window
+** transmit results
+
+* no information available
