@@ -1,22 +1,45 @@
-* emacs
-- folding
-
-* check programs from google summer of code
-
 * magit: set username and password
 
   mv filename.{txt,xml}
   mkdir -p path/dirname.0{1,2,3}
   xmllint
 
-  quilt - linux kernel patch management
+videa pre Michaela, Volkera a Thomasa
+Volker, Thomas - drink (az po Volkerovom nastupe?)
+
+fluidui - odporucit Michaelovi
+clojure - omrknut nejake male dbazy
+
+najst cafe s Inetom
+
+Divadlo - Kontaktovat Daniela, email al. cez portal divadla
+
+* App
+ Achatzsuche (geocaching), BTCs, Sequence of QR Codes/ graphical elements (pyramide, cube, sphere, toroid, etc)
+ Kickstart - money
+
+* three.js
+  vytvorit gulu/gule s menami funkcii
+  github commit
+
+* Jan Sieckman
+  opytat sa na kniznice s tech. literaturov
+  bike tour v polke septembra
+
+* bicycle clickies - Thomas
+
+* TODO
+  pohnojit kvety
+  prachy
+  bitcoin backup
+  ubuntu dell notebook (video Mark Shuttlework)
+
 
 * pozri sa na
 ** vseobecne
 - hierarchical data format
 - fraktals
 - google summer of code - prilis orientovane na konkretne projekty
-- hierarchical data format
 - sugar sync - data sync accross comps
 ** clojure data persistency, dbases under google app engine
    datomic
@@ -26,9 +49,7 @@
 * scala
 
 ** citat
-- hackernews
-- reddit
-- kickstarter
+- hackernews,reddit, kickstarter
 
 ** emacs
 - folding
@@ -41,12 +62,9 @@
 
 ** napady
 - dbaza "vlastnych skusenosti"
-- lepsi diff format - rozdiel oproti idealnemu stavu
-- problemy tazke comp, lahke cloveka (arimaa, etc.)
+- lepsi diff format - rozdiel oproti idealnemu stavu, Abstract Syntax Tree (code must be compiled for every commit)
+- zamerat sa na problemy tazke pre comp, lahke pre cloveka (arimaa, etc.)
 - semafory
-
-* dovolenka
-- bicycle
 
 * segra
 - krstiny
@@ -93,21 +111,17 @@ slime-connect
 ** compare 2 bitmaps
 #+BEGIN_SRC
 // http://stackoverflow.com/questions/10487152/comparing-two-images-for-motion-detecting-purposes
-private int returnCountOfDifferentPixels(String pic1, String pic2)
-    {
+private int returnCountOfDifferentPixels(String pic1, String pic2) {
         Bitmap i1 = loadBitmap(pic1);
         Bitmap i2 = loadBitmap(pic2);
-        int count=0;
 
+        int count=0;
         for (int y = 0; y < i1.getHeight(); ++y)
                for (int x = 0; x < i1.getWidth(); ++x)
-                    if (i1.getPixel(x, y) != i2.getPixel(x, y))
-                        {
+                    if (i1.getPixel(x, y) != i2.getPixel(x, y)) {
                         count++;
-                        }
-
-          return count;
-
+                    }
+        return count;
     }
 #+END_SRC
 
