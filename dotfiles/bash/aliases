@@ -68,6 +68,9 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
 	export winapp=$base/c/winapp
 	#VIMRC=$base/h/.vimrc.dark
 
+	# TODO alias for gvim
+	#/c/winapp-x86/Vim/vim73/gvim.exe
+
 	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
 	echo "### Loading $strCygwin_wsles347 aliases"
