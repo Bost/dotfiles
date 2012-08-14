@@ -38,24 +38,25 @@ ctrl+wv - Split windows vertically
 		return ids;
 	}
 	var ids = getIds(eMaxIdx);
+
+	function runEffect(divId) {
+		// other effect must be downloaded from jquery theme roller
+		var selectedEffect = "blind";
+
+		// most effect types need no options passed by default
+		var options = {};
+		// some effects have required parameters
+		if ( selectedEffect === "scale" ) {
+			options = { percent: 0 };
+		} else if ( selectedEffect === "size" ) {
+			options = { to: { width: 200, height: 60 } };
+		}
+		//var elem = $( "#"+divId +	" .effect" );
+		var elem = $("#"+divId).next();
+		elem.toggle( selectedEffect, options, 360 );
+	};
+
 	$(function() {
-		function runEffect(divId) {
-			// other effect must be downloaded from jquery theme roller
-			var selectedEffect = "blind";
-
-			// most effect types need no options passed by default
-			var options = {};
-			// some effects have required parameters
-			if ( selectedEffect === "scale" ) {
-				options = { percent: 0 };
-			} else if ( selectedEffect === "size" ) {
-				options = { to: { width: 200, height: 60 } };
-			}
-			//var elem = $( "#"+divId +	" .effect" );
-			var elem = $("#"+divId).next();
-			elem.toggle( selectedEffect, options, 360 );
-		};
-
 		$(ids).click(function() {
 			runEffect(this.id);
 			return false;
@@ -81,6 +82,11 @@ ctrl+wv - Split windows vertically
 			}
 			return false;
 		});
+		$("#goto_emacs").click(function(){
+			runEffect("head8");
+			// TODO scroll down to the emacs section and open it if closed
+			return false;
+		});
 		$("#collapse_all").click(function(){
 			for (var i = 0; i < eMaxIdx; i++) {
 				var accId = getId(i);
@@ -94,7 +100,11 @@ ctrl+wv - Split windows vertically
 
 </head>
 <body>
-<div class="draggable buttons"><button id="expand_all">expand-all</button> <button id="collapse_all">collapse-all</button></div>
+	<div class="draggable buttons">
+		<button id="expand_all">expand-all</button>
+		<button id="collapse_all">collapse-all</button>
+		<button id="goto_emacs">goto emacs</button>
+	</div>
 <div>
 <ul id="sortable" class="ui-sortable">
 	<li id="acc0" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
@@ -106,13 +116,13 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">v/abc</div>			<div class="desc"># mark everything from the cursor up to abc</div></div>
 		<div class="line"><div class="cmd">:reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
 		<div class="line"><div class="cmd">["x]y{motion}</div>		<div class="desc"># yank {motion} into register x</div></div>
+		<div class="line"><div class="cmd">"0P</div>				<div class="desc"># paste last yanked text</div></div>
 		<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
 		<div class="line"><div class="cmd">q .... q @a/@@</div>		<div class="desc"># start/stop recording, play down the recording</div></div>
 		<div class="line"><div class="cmd">:wa</div>				<div class="desc"># write all buffers at once</div></div>
 		<div class="line"><div class="cmd">F3 or C-x ( / F4 or C-x e</div>	<div class="desc"># start macro, stop/play macro</div></div>
 		<div class="line"><div class="cmd">M-5 F4 or C-x e</div>		<div class="desc"># repeat macro 5 times</div></div>
-		<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marsk (for jumping etc); m - marks something?</div></div>
-		<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marsk (for jumping etc); m - marks something?</div></div>
+		<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marks (for jumping etc); m - marks something?</div></div>
 		<div class="line"><div class="cmd">C-x C-k e</div>			<div class="desc"># edit macro</div></div>
 		<div class="line"><div class="cmd">vim -p file1 file2</div>	<div class="desc"># open vim with tabs</div></div>
 		<div class="line"><div class="cmd">:! sort</div>			<div class="desc">&nbsp;</div></div>
@@ -127,15 +137,15 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
 		<div class="line"><div class="cmd">`.</div>					<div class="desc"># last edit location</div></div>
 		<div class="line"><div class="cmd">'.</div>					<div class="desc"># last edit line</div></div>
-		<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump f: forward, backward</div></div>
-		<div class="line"><div class="cmd">zz zb zt or M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
+		<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump forward, backward</div></div>
+		<div class="line"><div class="cmd">zz zb zt / M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
 		<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
 		<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
 		<div class="line"><div class="cmd">C-^ / C-6</div>	<div class="desc"># switch to the alternate file (probably the one marked with %/#)</div></div>
 		<div class="line"><div class="cmd">C-t / C-d</div>	<div class="desc"># align text in insert mode</div></div>
 		<div class="line"><div class="cmd">vit / yit / cit / dit</div>	<div class="desc"># mark/yank/change/delete "innerHTML"</div></div>
 		<div class="line"><div class="cmd">vat / yat / cat / dat</div>	<div class="desc"># mark/yank/change/delete whole tag</div></div>
-		<div class="line"><div class="cmd">o in visual mode</div>	<div class="desc"># change the marking direction</div></div>
+		<div class="line"><div class="cmd">o (in visual mode)</div> <div class="desc"># change the marking direction in visual mode</div></div>
 		<div class="line"><div class="cmd">* / #</div>				<div class="desc"># hightlight and search forwards/backwards</div></div>
 		<div class="line"><div class="cmd">g* / g#</div>			<div class="desc"># hightlight and search for parts of a word</div></div>
 		<div class="line"><div class="cmd">:[range]s/bacon/lettuce/[ciInp] [count]</div>
@@ -150,8 +160,7 @@ ctrl+wv - Split windows vertically
 
 		<div class="line"><div class="cmd">vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">gvim -d file1 file2</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">]c</div>					<div class="desc"># jump to next diff</div></div>
-		<div class="line"><div class="cmd">[c</div>					<div class="desc"># jump to previous diff</div></div>
+		<div class="line"><div class="cmd">]c / [c</div>            <div class="desc"># jump to next / previous diff</div></div>
 		<div class="line"><div class="cmd">do :diffg :diffget</div>
 			<div class="desc"># replace a diff in the current viewport with that from the other viewport, use the :diffget command</div></div>
 		<div class="line"><div class="cmd">dp</div>
@@ -166,11 +175,9 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">C-w h /j/k/m/ r / x</div>		<div class="desc"># move around viewports according to given direction</div></div>
 		<div class="line"><div class="cmd">C-| / C-_</div>		<div class="desc"># maximize vertically / horizontally</div></div>
 		<div class="line"><div class="cmd">:sp filename  :vsp filename</div>		<div class="desc"># split viewports horizontal / vertical</div></div>
-		<div class="line"><div class="cmd">&gt;</div>				<div class="desc"># shift text right</div></div>
-		<div class="line"><div class="cmd">&lt;</div>				<div class="desc"># shift text left</div></div>
+		<div class="line"><div class="cmd">&gt; / &lt;</div>        <div class="desc"># shift text right / left</div></div>
 		<div class="line"><div class="cmd">=</div>					<div class="desc"># align text</div></div>
-		<div class="line"><div class="cmd">C-]</div>				<div class="desc"># follow link in vim help</div></div>
-		<div class="line"><div class="cmd">C-T</div>				<div class="desc"># go back to previous topic in the vim help</div></div>
+		<div class="line"><div class="cmd">C-] / C-T</div>          <div class="desc"># follow link / go back to previous topic in vim help</div></div>
 		<div class="line"><div class="cmd">:changes g; g,</div>	<div class="desc"># move forth/back in the change list</div></div>
 		<div class="line"><div class="cmd">:jumps C-O / C-I</div>	<div class="desc"># back/forth in the jump list (older/newer)</div></div>
 
@@ -279,7 +286,7 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">C-x 4 f / C-x 4 b</div>	<div class="desc"># find-file-other window / switch-to-buffer-other-window</div></div>
 		<div class="line"><div class="cmd">C-x C-s / C-w</div>		<div class="desc"># save file / save as</div></div>
 		<div class="line"><div class="cmd">C-x s</div>		        <div class="desc"># save-some-buffers</div></div>
-		<div class="line"><div class="cmd"></div>			<div class="desc"># eshell: ifconfig > #<buffer interfaces></div></div>
+		<div class="line"><div class="cmd"></div>			<div class="desc"># eshell: ifconfig &gt; #<buffer interfaces></div></div>
 		<div class="line"><div class="cmd"></div>			<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
 		<div class="line"><div class="cmd"></div>			<div class="desc"># cssh ? ssh shell ? (somehow strange)</div></div>
 		<div class="line"><div class="cmd"></div>			<div class="desc"># color-theme-calm-forest ? does not work?</div></div>
@@ -327,8 +334,8 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">M-x grep</div>		<div class="desc">#</div></div>
 		<div class="line"><div class="cmd">M-$ spell</div>		<div class="desc"># check word</div></div>
 		<div class="line"><div class="cmd">M-x flyspell-mode</div>	<div class="desc"># ? check all document ?</div></div>
-		<div class="line"><div class="cmd">M-<</div>			<div class="desc"># beginning of buffer</div></div>
-		<div class="line"><div class="cmd">M-></div>			<div class="desc"># end of buffer</div></div>
+		<div class="line"><div class="cmd">M-&lt;</div>			<div class="desc"># beginning of buffer</div></div>
+		<div class="line"><div class="cmd">M-&gt;</div>			<div class="desc"># end of buffer</div></div>
 		<div class="line"><div class="cmd">M-v / C-v</div>		<div class="desc"># page up/down</div></div>
 		<div class="line"><div class="cmd">C-t / M-t / C-x C-t</div>	<div class="desc"># transpose chars/words/lines</div></div>
 		<div class="line"><div class="cmd">C-l</div>			<div class="desc"># center the screen</div></div>
@@ -342,7 +349,7 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">C-M-s</div>	         	<div class="desc"># isearch-forward-regexp</div></div>
 		<div class="line"><div class="cmd">C-M-%</div>	         	<div class="desc"># query-replace-regexp</div></div>
 		<div class="line"><div class="cmd">C-u M-! command</div>	<div class="desc"># execute command and read-in its output</div></div>
-M-x gdb
+		<div class="line"><div class="cmd">M-x gdb</div>            <div class="desc"># debugger</div></div>
 		<div class="line"><div class="cmd">C-h i m emacs</div>	        <div class="desc"># ? emacs manual?</div></div>
 		<div class="line"><div class="cmd">M-x dbg</div>	        <div class="desc"># </div></div>
 		<div class="line"><div class="cmd">M-x ediff</div>	        <div class="desc"># </div></div>
@@ -353,6 +360,7 @@ M-x gdb
 		<div class="line"><div class="cmd">M-:</div>	                <div class="desc"># documentation reader</div></div>
 		<div class="line"><div class="cmd">M-g g</div>	                <div class="desc"># documentation reader</div></div>
 		<div class="line"><div class="cmd">C-u C-n</div>	        <div class="desc"># move forward 4 lines</div></div>
+		<div class="line"><div class="cmd">C-x C-+ / C-x C--</div>  <div class="desc"># increase / decrease font size</div></div>
 	</div>
 	</li>
 
