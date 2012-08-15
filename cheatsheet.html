@@ -82,17 +82,22 @@ ctrl+wv - Split windows vertically
 			}
 			return false;
 		});
-		$("#goto_emacs").click(function(){
-			runEffect("head8");
-			// TODO scroll down to the emacs section and open it if closed
-			return false;
-		});
-		$("#collapse_all").click(function(){
+
+		function collapseAll() {
 			for (var i = 0; i < eMaxIdx; i++) {
 				var accId = getId(i);
 				var elem = $(accId).next();
 				elem.hide();
 			}
+		}
+		$("#goto_emacs").click(function(){
+			collapseAll();
+			runEffect("head8");
+			// TODO scroll down to the emacs section and open it if closed
+			return false;
+		});
+		$("#collapse_all").click(function(){
+			collapseAll();
 			return false;
 		});
 	});
@@ -303,6 +308,7 @@ ctrl+wv - Split windows vertically
 		<div class="line"><div class="cmd">C-h k key / C-h f function</div>	<div class="desc"># describe-key / describe-function</div></div>
 		<div class="line"><div class="cmd">M-x command</div>	<div class="desc"># execute command</div></div>
 		<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression - see M-x eval-current-buffer</div></div>
+		<div class="line"><div class="cmd">C-M-f / C-M-b</div>  <div class="desc"># jump forward / backward to matching brace; cursor may need to be behind closing ')'</div></div>
 		<div class="line"><div class="cmd">C-M-x</div>			<div class="desc"># immediate eval</div></div>
 		<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
 		<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>
