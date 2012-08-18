@@ -37,12 +37,11 @@ Divadlo - Kontaktovat Daniela, email al. cez portal divadla
 
 * pozri sa na
 ** vseobecne
-- hierarchical data format
-- fraktals
+- fractals
 - google summer of code - prilis orientovane na konkretne projekty
+- hierarchical data format
 - sugar sync - data sync accross comps
-** clojure data persistency, dbases under google app engine
-   datomic
+- clojure data persistency, dbases under google app engine, datomic
 - time bank
   http://www.sme.sk/c/6414188/oprav-mi-bicykel-a-ja-ta-naucim-tancovat.html
 
@@ -54,6 +53,7 @@ Divadlo - Kontaktovat Daniela, email al. cez portal divadla
 ** emacs
 - folding
 - org-mode: Kurt Schwer - RT 3 - emacs part 3 - org-mode and babel
+- install anything
 - linum relative numbers
   M-1 3 C-n - scroll down 13 lines
 - macros
@@ -65,6 +65,20 @@ Divadlo - Kontaktovat Daniela, email al. cez portal divadla
 - lepsi diff format - rozdiel oproti idealnemu stavu, Abstract Syntax Tree (code must be compiled for every commit)
 - zamerat sa na problemy tazke pre comp, lahke pre cloveka (arimaa, etc.)
 - semafory
+- Volker
+   http://de.wikipedia.org/wiki/Open_Source_Ecology
+
+- Thomas
+   http://www.ted.com/talks/ayah_bdeir_building_blocks_that_blink_beep_and_teach.html
+
+- Michael
+   http://www.ted.com/talks/matt_ridley_when_ideas_have_sex.html
+
+- 3:30
+   http://www.youtube.com/watch?v=H07pbDhBgXg
+
+
+- dokaz identity bez udania mena
 
 * segra
 - krstiny
@@ -91,6 +105,7 @@ echo "Hello World" # C-c - evaluate code
 
 #+RESULTS:
 : Hello World
+
 
 #+BEGIN_SRC python
 return "Hello from python"
