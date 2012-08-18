@@ -233,6 +233,7 @@ if [ "$isLinux" -eq 0 ]; then
 #	echo "Linux aliases already loaded"
 fi
 
+alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
 alias unexport='unset'
 alias e='echo'
 alias webcli='cd $dev/webcli'
