@@ -1,18 +1,32 @@
 " behave mswin
 behave xterm
 
+" Initialization -------------------------------------------------------------
 " This is standard pathogen and vim setup
 set nocompatible
+"silent! call pathogen#infect()
 call pathogen#infect()
 silent! call pathogen#runtime_append_all_bundles()
+"let mapleader = ","
 
-set number
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
 
-set guifont=DejaVu\ Sans\ Mono\ 9
+
+" GUI only stuff
+" ----------------------------------------------------------------------------
+
+if has('gui_running')
+	" switch off the menu in the gui window
+	"set guioptions=gt
+
+	" horizontal scrollbar
+	set guioptions+=b
+endif
+
+if has('mac')
+elseif has('unix')
+	set guifont=DejaVu\ Sans\ Mono\ 9
+elseif has('win32')
+endif
 "set guifont=Monospace\ 9
 "set guifont=Lucida_Console:h8:cDEFAULT
 "set guifont=lucida_console:h8:w5
@@ -21,27 +35,19 @@ set guifont=DejaVu\ Sans\ Mono\ 9
 " highlight current line
 set cursorline
 
-" TODO what is linebreak for?
-"set linebreak
+"set linebreak			" TODO what is linebreak for?
 
 "colorscheme default
 "colorscheme darkblue
-colorscheme desert
-
-" horizontal scrollbar
-set guioptions+=b
-
-filetype indent on
-filetype plugin on
+try
+    colorscheme vividchalk
+catch
+	"colorscheme slate
+	colorscheme desert
+endtry
 
 set smartindent
 "set autoindent
-
-" character coding for empty characters
-"set listchars=tab:>-,eol:$,precedes:>,trail:_
-
-" show empty characters
-"set list
 
 set tabstop=4
 set shiftwidth=4 softtabstop=4
@@ -65,13 +71,9 @@ set shiftwidth=4 softtabstop=4
 
 set backspace=indent,eol,start  " make that backspace key work the way it should
 "set background=dark             " Use colours that work well on a dark background (Console is usually black)
-set showmode                    " show the current mode
-syntax on                       " turn syntax highlighting on by default
 
 " Show EOL type and last modified timestamp, right after the filename
 set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
-
-syntax on
 
 " Here's the vimclojure stuff. You'll need to adjust the NailgunClient
 " setting if you're on windows or have other problems.
@@ -86,3 +88,105 @@ let vimclojure#NailgunClient = $HOME . "/.vim/lib/vimclojure-nailgun-client/ng"
 "let vimclojure#NailgunServer = "192.168.178.21"
 "let vimclojure#NailgunServer = "192.168.178.20"
 "let vimclojure#NailgunPort = "2113"
+
+" Shortcuts ------------------------------------------------------------------
+
+" Exit insert mode without a manual <ESC> or <C-C>
+imap <Leader><Leader> <ESC>l
+
+" character coding for empty characters
+set listchars=tab:>-,eol:$,precedes:>,trail:_
+
+" Toggle hidden (empty) chars
+nmap <Leader>l :set list!<CR>
+"set list
+
+
+" Toggle line wrapping
+"nmap <Leader>w :set wrap!<CR>
+
+nmap <Leader>w :w<CR>
+
+" Toggle line numbers
+"nmap <Leader>n :set nu!<CR>
+
+" ============================================================================
+" try the shortcuts below:
+" ============================================================================
+
+" Quit the current window
+nmap <Leader>q :q<CR>
+
+" Delete the current buffer
+nmap <Leader>d :bd<CR>
+
+" Quickly switch buffers (prev/next)
+nmap <C-P> :bp<CR>
+nmap <C-N> :bp<CR>
+
+" Show a list of all open buffers
+nmap <Leader>b :ls<CR>
+
+" Jump from window to window
+nmap <Leader><Tab> <C-W>w
+
+" Jump from tab to tab
+nmap <Leader><S-Tab> :tabn<CR>
+
+" Quickly 'maximize' a split
+nmap <Leader>mw <C-W>\|
+nmap <Leader>mh <C-W>_
+nmap <Leader>me <C-W>=
+nmap <Leader>mm <Leader>mw<Leader>mh
+
+" Quickly 'maximize' the entire UI - 999 is a bit lot :(
+nmap <Leader>Mw :set columns=250<CR>
+nmap <Leader>Mh :set lines=69<CR>
+nmap <Leader>MM <Leader>Mw<Leader>Mh
+
+" Split up/down/left/right
+nmap <Leader>sk :sp \| Explore<CR>
+nmap <Leader>sj :rightbelow sp \| Explore<CR>
+nmap <Leader>sh :vsp \| Explore<CR>
+nmap <Leader>sl :rightbelow vsp \| Explore<CR>
+
+" .vimrc Helpers
+"nmap <Leader>er :tabnew ~/.vimrc<CR>
+nmap <Leader>ev :e ~/.vimrc<CR>
+nmap <Leader>ec :e ~/dev/cheatsheet/cheatsheet.html<CR>
+nmap <Leader>sr :source ~/.vimrc<CR>
+
+
+" this is the default mouse setting
+"if has('mouse')
+"    set mouse=a
+"endif
+
+
+" Syntax ---------------------------------------------------------------------
+syntax on
+filetype plugin indent on
+set showmatch
+setlocal foldmethod=syntax
+set foldlevel=1
+
+" Editor Behavior -------------------------------------------------------------
+set nowrap
+set number
+set showmode                    " show the current mode
+set ruler
+
+" Searching
+set hlsearch
+set incsearch
+set ignorecase
+" smartcase is new
+set smartcase
+
+" Insure Clean Pasting w/autoindented code
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+
+" Backup files are for the weak
+"set nobackup
+"set nowritebackup
