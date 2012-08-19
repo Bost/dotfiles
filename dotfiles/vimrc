@@ -2,18 +2,19 @@
 behave xterm
 
 " Initialization -------------------------------------------------------------
-" This is standard pathogen and vim setup
 set nocompatible
 "silent! call pathogen#infect()
 call pathogen#infect()
 silent! call pathogen#runtime_append_all_bundles()
 "let mapleader = ","
+"let mapleader = " "
+set showcmd                     " display incomplete commands
+set hidden                      " handle multiple buffers more efficiently
+set laststatus=2                " show status line
+"set encoding=utf-8
 
 
-
-" GUI only stuff
-" ----------------------------------------------------------------------------
-
+" GUI only stuff -------------------------------------------------------------
 if has('gui_running')
 	" switch off the menu in the gui window
 	"set guioptions=gt
@@ -32,9 +33,7 @@ endif
 "set guifont=lucida_console:h8:w5
 "set lines=64 columns=160
 
-" highlight current line
-set cursorline
-
+set cursorline          " highlight current line
 "set linebreak			" TODO what is linebreak for?
 
 "colorscheme default
@@ -50,7 +49,10 @@ set smartindent
 "set autoindent
 
 set tabstop=4
+set expandtab                   " use spaces, not tabs (optional)
+"set showtabline=2
 set shiftwidth=4 softtabstop=4
+set backspace=indent,eol,start  " backspace through everything in insert mode
 
 " start maximized
 " autocmd GUIEnter * :simalt ~x
@@ -63,14 +65,12 @@ set shiftwidth=4 softtabstop=4
 " visualise a word
 "map <space> vw
 
-" only for cheatsheet.htm: jump to the 1st '#' character, then replace
-" everything ih the html tag with '# '
+" only for cheatsheet.html: jump to the 1st '#' character, then replace
+" everything in the html tag with '# '
 "map <F3> f#cit# 
 
-"set showtabline=2
-
-set backspace=indent,eol,start  " make that backspace key work the way it should
-"set background=dark             " Use colours that work well on a dark background (Console is usually black)
+" Use colours that work well on a dark background (Console is usually black)
+"set background=dark
 
 " Show EOL type and last modified timestamp, right after the filename
 set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
@@ -91,10 +91,10 @@ let vimclojure#NailgunClient = $HOME . "/.vim/lib/vimclojure-nailgun-client/ng"
 
 " Shortcuts ------------------------------------------------------------------
 
-" Exit insert mode without a manual <ESC> or <C-C>
+" Press twice the <Leader> to exit insert mode without a manual <ESC> or <C-C>
 imap <Leader><Leader> <ESC>l
 
-" character coding for empty characters
+" Character coding for empty characters
 set listchars=tab:>-,eol:$,precedes:>,trail:_
 
 " Toggle hidden (empty) chars
@@ -105,6 +105,7 @@ nmap <Leader>l :set list!<CR>
 " Toggle line wrapping
 "nmap <Leader>w :set wrap!<CR>
 
+" Save file
 nmap <Leader>w :w<CR>
 
 " Toggle line numbers
@@ -150,7 +151,6 @@ nmap <Leader>sj :rightbelow sp \| Explore<CR>
 nmap <Leader>sh :vsp \| Explore<CR>
 nmap <Leader>sl :rightbelow vsp \| Explore<CR>
 
-" .vimrc Helpers
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
 nmap <Leader>ev :e ~/.vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/cheatsheet.html<CR>
@@ -172,16 +172,15 @@ set foldlevel=1
 
 " Editor Behavior -------------------------------------------------------------
 set nowrap
-set number
-set showmode                    " show the current mode
+set number               " Shows line number
+set showmode             " show the current mode
 set ruler
 
 " Searching
-set hlsearch
-set incsearch
-set ignorecase
-" smartcase is new
-set smartcase
+set hlsearch             " highlight matches
+set incsearch            " incremental searching
+set ignorecase           " searches are case insensitive...
+set smartcase            " ... unless they contain at least one capital letter
 
 " Insure Clean Pasting w/autoindented code
 nnoremap <F2> :set invpaste paste?<CR>
