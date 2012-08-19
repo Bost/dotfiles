@@ -97,7 +97,8 @@ imap <Leader><Leader> <ESC>l
 " Character coding for empty characters
 "set listchars=tab:>-,eol:$,precedes:>,trail:_
 " Set symbols for tabs like textmate
-set listchars=tab:▸\ ,eol:¬
+"set listchars=tab:▸\ ,eol:¬
+set listchars=tab:▸\ ,eol:$,precedes:>,trail:_
 
 " Toggle hidden (empty) chars
 nmap <Leader>l :set list!<CR>
@@ -206,6 +207,8 @@ nmap <leader>- :sp<CR>
 " Vertical split
 "nmap <leader>\ :vsp<CR>
 
+" Remap 0 to first non-blank character
+"map 0 ^
 
 " Rename current file
 function! RenameFile()
