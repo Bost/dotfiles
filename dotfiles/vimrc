@@ -95,7 +95,9 @@ let vimclojure#NailgunClient = $HOME . "/.vim/lib/vimclojure-nailgun-client/ng"
 imap <Leader><Leader> <ESC>l
 
 " Character coding for empty characters
-set listchars=tab:>-,eol:$,precedes:>,trail:_
+"set listchars=tab:>-,eol:$,precedes:>,trail:_
+" Set symbols for tabs like textmate
+set listchars=tab:▸\ ,eol:¬
 
 " Toggle hidden (empty) chars
 nmap <Leader>l :set list!<CR>
@@ -145,6 +147,12 @@ nmap <Leader>Mw :set columns=250<CR>
 nmap <Leader>Mh :set lines=69<CR>
 nmap <Leader>MM <Leader>Mw<Leader>Mh
 
+" Switch windows with ctrl + hjkl
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
 " Split up/down/left/right
 nmap <Leader>sk :sp \| Explore<CR>
 nmap <Leader>sj :rightbelow sp \| Explore<CR>
@@ -189,3 +197,24 @@ set pastetoggle=<F2>
 " Backup files are for the weak
 "set nobackup
 "set nowritebackup
+
+" Wait-time for a key code or mapped keysequence to complete, default 1000
+set timeoutlen=500
+
+" Horizontal split
+nmap <leader>- :sp<CR>
+" Vertical split
+"nmap <leader>\ :vsp<CR>
+
+
+" Rename current file
+function! RenameFile()
+	let old_name = expand("%")
+	let new_name = input('New file name: ', expand('%'))
+	if new_name != '' && new_name != old_name
+		exec ':saveas ' . new_name
+		exec ':silent !rm ' . old_name
+		redraw!
+	endif
+endfunction
+map <leader>n :call RenameFile()<cr>
