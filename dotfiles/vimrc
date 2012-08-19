@@ -200,12 +200,16 @@ set pastetoggle=<F2>
 "set nowritebackup
 
 " Wait-time for a key code or mapped keysequence to complete, default 1000
-set timeoutlen=500
+"set timeoutlen=500
 
 " Horizontal split
 nmap <leader>- :sp<CR>
 " Vertical split
 "nmap <leader>\ :vsp<CR>
+
+nmap <leader>gst :Gstatus<CR>
+nmap <leader>gdf :Gdiff<CR>
+nmap <leader>gci :Gcommit<CR>
 
 " Remap 0 to first non-blank character
 "map 0 ^
