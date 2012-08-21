@@ -123,7 +123,7 @@
 		<div class="line"><div class="cmd">["x]y{motion}</div>		<div class="desc"># yank {motion} into register x</div></div>
 		<div class="line"><div class="cmd">"0P</div>				<div class="desc"># paste last yanked text</div></div>
 		<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
-		<div class="line"><div class="cmd">q .... q @a/@@</div>		<div class="desc"># start/stop recording, play down the recording</div></div>
+		<div class="line"><div class="cmd">qq .... q @q/@@</div>i   <div class="desc"># start/stop recording, play down the recording</div></div>
 		<div class="line"><div class="cmd">:wa</div>				<div class="desc"># write all buffers at once</div></div>
 		<div class="line"><div class="cmd">F3 or C-x ( / F4 or C-x e</div>	<div class="desc"># start macro, stop/play macro</div></div>
 		<div class="line"><div class="cmd">M-5 F4 or C-x e</div>	<div class="desc"># repeat macro 5 times</div></div>
@@ -143,7 +143,7 @@
 		<div class="line"><div class="cmd">`. / '.</div>			<div class="desc"># last edit location (~ key)/ line (&auml; key)</div></div>
 		<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump forward, backward</div></div>
 		<div class="line"><div class="cmd">zz zb zt / M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
-		<div class="line"><div class="cmd">zc zo za / zC zO zA</div><div class="desc"># close, open, toggle current fold / all folds</div></div>
+		<div class="line"><div class="cmd">zc zo za / zC zO zA / zR</div><div class="desc"># close, open, toggle current / all folds from cursor/ all folds</div></div>
 		<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
 		<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
 		<div class="line"><div class="cmd">C-^ / C-6</div>	<div class="desc"># switch to the alternate file (probably the one marked with %/#)</div></div>
