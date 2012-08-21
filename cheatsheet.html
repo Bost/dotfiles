@@ -133,7 +133,6 @@
 		<div class="line"><div class="cmd">:! sort</div>			<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">:sort u</div>			<div class="desc"># filter out duplicate rows (unique rows only)</div></div>
 		<div class="line"><div class="cmd">78i-&lt;Esc&gt;</div>    <div class="desc"># print 78 '-' chars at once</div></div>
-		<div class="line"><div class="cmd">cc</div>					<div class="desc"># change current line</div></div>
 		<div class="line"><div class="cmd">gum gUm</div>			<div class="desc"># lowercase/uppercase of movement m </div></div>
 		<div class="line"><div class="cmd">R r ~</div>				<div class="desc"># replace mode, replace 1 char, replace char and move right</div></div>
 		<div class="line"><div class="cmd">30|</div>				<div class="desc"># jump to column 30</div></div>
@@ -164,11 +163,12 @@
 		<div class="line"><div class="cmd">:[range]s//lettuce/...</div>
 			<div class="desc"># use previous search pattern</div></div>
 		<div class="line"><div class="cmd">:g/regexp/p</div>		<div class="desc"># "grep"</div></div>
+		<div class="line"><div class="cmd">g; / g,</div>            <div class="desc"># cycle back / forward to the last places you were in insert mode</div></div>
+		<div class="line"><div class="cmd">s / S</div>              <div class="desc"># delete current char / clear current line and go to insert mode</div></div>
+		<div class="line"><div class="cmd">cc</div>                 <div class="desc"># change current line</div></div>
 
 		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-		<div class="line"><div class="cmd">s</div>                  <div class="desc"># delete current char and go to insert mode</div></div>
-		<div class="line"><div class="cmd">S</div>                  <div class="desc"># clear current line and go to insert mode</div></div>
 		<div class="line"><div class="cmd">vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">gvim -d file1 file2</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">]c / [c</div>            <div class="desc"># jump to next / previous diff</div></div>

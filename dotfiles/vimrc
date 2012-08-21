@@ -179,7 +179,11 @@ syntax on
 filetype plugin indent on
 set showmatch
 setlocal foldmethod=syntax
-set foldlevel=1
+"set foldlevel=1
+set foldlevelstart=99          "remove folds
+
+"set linespace=4                "add some line space for easy reading
+
 
 " Editor Behavior -------------------------------------------------------------
 set nowrap
@@ -213,6 +217,20 @@ nmap <leader>gst :Gstatus<CR>
 nmap <leader>gdf :Gdiff<CR>
 nmap <leader>gci :Gcommit<CR>
 
+
+unmap <S-Up>
+unmap <S-Down>
+
+nmap <S-Up> [e
+nmap <S-Down> ]e
+
+vmap <S-Left> <gv
+vmap <S-Right> >gv
+vmap <S-Up> [egv
+vmap <S-Down> ]egv
+
+nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
+
 " Remap 0 to first non-blank character
 "map 0 ^
 
@@ -230,4 +248,14 @@ map <leader>n :call RenameFile()<cr>
 
 " Start python on F5
 autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
+
+" use <leader>Ctrl+L to toggle the line number counting method
+function! g:ToggleNuMode()
+  if &nu == 1
+     set rnu
+  else
+     set nu
+  endif
+endfunction
+nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<cr>
 
