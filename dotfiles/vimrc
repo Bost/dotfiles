@@ -11,22 +11,23 @@ silent! call pathogen#runtime_append_all_bundles()
 set showcmd                     " display incomplete commands
 set hidden                      " handle multiple buffers more efficiently
 set laststatus=2                " show status line
-"set encoding=utf-8
+set encoding=utf-8
 
 
 " GUI only stuff -------------------------------------------------------------
 if has('gui_running')
-	" switch off the menu in the gui window
-	"set guioptions=gt
+    " switch off the menu in the gui window
+    "set guioptions=gt
 
-	" horizontal scrollbar
-	set guioptions+=b
+    " horizontal scrollbar
+    set guioptions+=b
 endif
 
 if has('mac')
 elseif has('unix')
-	set guifont=DejaVu\ Sans\ Mono\ 9
+    set guifont=DejaVu\ Sans\ Mono\ 9
 elseif has('win32')
+    set guifont=Lucida_Console:h8:w5
 endif
 "set guifont=Monospace\ 9
 "set guifont=Lucida_Console:h8:cDEFAULT
@@ -39,7 +40,10 @@ set cursorline          " highlight current line
 "colorscheme default
 "colorscheme darkblue
 try
-    colorscheme vividchalk
+    "colorscheme evening
+    "colorscheme vividchalk
+    colorscheme wombat
+    "colorscheme inkpot
 catch
 	"colorscheme slate
 	colorscheme desert
@@ -49,7 +53,7 @@ set smartindent
 "set autoindent
 
 set tabstop=4
-set expandtab                   " use spaces, not tabs (optional)
+set expandtab                   " use spaces, not tabs
 "set showtabline=2
 set shiftwidth=4 softtabstop=4
 set backspace=indent,eol,start  " backspace through everything in insert mode
@@ -95,10 +99,8 @@ let vimclojure#NailgunClient = $HOME . "/.vim/lib/vimclojure-nailgun-client/ng"
 imap <Leader><Leader> <ESC>l
 
 " Character coding for empty characters
-"set listchars=tab:>-,eol:$,precedes:>,trail:_
+set listchars=tab:>-,eol:$,precedes:>,trail:_
 " Set symbols for tabs like textmate
-"set listchars=tab:▸\ ,eol:¬
-set listchars=tab:▸\ ,eol:$,precedes:>,trail:_
 
 " Toggle hidden (empty) chars
 nmap <Leader>l :set list!<CR>
@@ -225,3 +227,7 @@ function! RenameFile()
 	endif
 endfunction
 map <leader>n :call RenameFile()<cr>
+
+" Start python on F5
+autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
+
