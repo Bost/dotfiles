@@ -125,8 +125,6 @@
 		<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
 		<div class="line"><div class="cmd">qq .... q @q/@@</div>i   <div class="desc"># start/stop recording, play down the recording</div></div>
 		<div class="line"><div class="cmd">:wa</div>				<div class="desc"># write all buffers at once</div></div>
-		<div class="line"><div class="cmd">F3 or C-x ( / F4 or C-x e</div>	<div class="desc"># start macro, stop/play macro</div></div>
-		<div class="line"><div class="cmd">M-5 F4 or C-x e</div>	<div class="desc"># repeat macro 5 times</div></div>
 		<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marks (for jumping etc); m - marks something?</div></div>
 		<div class="line"><div class="cmd">C-x C-k e</div>			<div class="desc"># edit macro</div></div>
 		<div class="line"><div class="cmd">vim -p file1 file2</div>	<div class="desc"># open vim with tabs</div></div>
@@ -136,7 +134,7 @@
 		<div class="line"><div class="cmd">gum gUm</div>			<div class="desc"># lowercase/uppercase of movement m </div></div>
 		<div class="line"><div class="cmd">R r ~</div>				<div class="desc"># replace mode, replace 1 char, replace char and move right</div></div>
 		<div class="line"><div class="cmd">30|</div>				<div class="desc"># jump to column 30</div></div>
-		<div class="line"><div class="cmd">f/t F/T</div>			<div class="desc"># search for/backward</div></div>
+		<div class="line"><div class="cmd">f/t F/T</div>			<div class="desc"># search forward / backward</div></div>
 		<div class="line"><div class="cmd">:r! command</div>		<div class="desc"># execute command and read in its output</div></div>
 		<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
 		<div class="line"><div class="cmd">`. / '.</div>			<div class="desc"># last edit location (~ key)/ line (&auml; key)</div></div>
@@ -169,8 +167,7 @@
 
 		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
-		<div class="line"><div class="cmd">vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">gvim -d file1 file2</div><div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">gvim -d file1 file2 / vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">]c / [c</div>            <div class="desc"># jump to next / previous diff</div></div>
 		<div class="line"><div class="cmd">do :diffg :diffget</div>
 			<div class="desc"># replace a diff in the current viewport with that from the other viewport, use the :diffget command</div></div>
@@ -339,6 +336,8 @@
 		<div class="line"><div class="cmd">M-x ispell-region</div>	<div class="desc"># check a small region</div></div>
 		<div class="line"><div class="cmd">M-x ispell-buffer</div>	<div class="desc">#</div></div>
 
+		<div class="line"><div class="cmd">F3 or C-x ( / F4 or C-x e</div>	<div class="desc"># start macro, stop/play macro</div></div>
+		<div class="line"><div class="cmd">M-5 F4 or C-x e</div>	<div class="desc"># repeat macro 5 times</div></div>
 		<div class="line"><div class="cmd">C-u n</div>		        <div class="desc"># repeat n times following command</div></div>
 		<div class="line"><div class="cmd">C-_ / C-/ / C-x u</div>		<div class="desc"># undo</div></div>
 		<div class="line"><div class="cmd">C-f C-_</div>		<div class="desc"># redo</div></div>
