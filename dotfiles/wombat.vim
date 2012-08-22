@@ -52,5 +52,5 @@ hi PreProc 		guifg=#e5786d gui=none
 hi Number		guifg=#e5786d gui=none
 hi Special		guifg=#e7f6da gui=none
 
-hi Search       guibg=red
+"hi Search       guibg=red      " red is a color for errors - cannot use it
 "hi Search       guibg=#cccc00
