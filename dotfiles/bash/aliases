@@ -66,10 +66,7 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
 	base=
 	dev=$base/c/cygwin/home/svo02896/dev
 	export winapp=$base/c/winapp
-	#VIMRC=$base/h/.vimrc.dark
-
-	# TODO alias for gvim
-	#/c/winapp-x86/Vim/vim73/gvim.exe
+	VIMRC=$base/c/cygwin/home/svo02896/.vimrc
 
 	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
