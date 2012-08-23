@@ -113,7 +113,7 @@
 <div>
 <ul id="sortable" class="ui-sortable">
 	<li id="acc0" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head0" class="head ui-widget-header ui-corner-all ui-button-text">vim:</div>
+    <div id="head0" class="head ui-widget-header ui-corner-all ui-button-text">vim: <a href="http://vim.wikia.com/wiki/Best_Vim_Tips">http://vim.wikia.com/wiki/Best_Vim_Tips</a></div>
 	<div class="effect ui-corner-all">
 		<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
 		<div class="line"><div class="cmd">:bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
@@ -163,7 +163,13 @@
 		<div class="line"><div class="cmd">:g/regexp/p</div>		<div class="desc"># "grep"</div></div>
 		<div class="line"><div class="cmd">g; / g,</div>            <div class="desc"># cycle back / forward to the last places you were in insert mode</div></div>
 		<div class="line"><div class="cmd">s / S</div>              <div class="desc"># delete current char / clear current line and go to insert mode</div></div>
+		<div class="line"><div class="cmd">gf</div>                 <div class="desc"># open file under cursor</div></div>
 		<div class="line"><div class="cmd">cc</div>                 <div class="desc"># change current line</div></div>
+		<div class="line"><div class="cmd">C-o / C-i</div>          <div class="desc"># retrace the movements in the file backwards / forwards</div></div>
+		<div class="line"><div class="cmd">C-a / C-x</div>          <div class="desc"># increment / decrement next number on the current line</div></div>
+		<div class="line"><div class="cmd">xp</div>                 <div class="desc"># swap chars</div></div>
+        <div class="line"><div class="cmd">C-x C-l</div>            <div class="desc"># line completition in insert mode</div></div>
+        <div class="line"><div class="cmd">/C-r C-w</div>           <div class="desc"># pull &lt;cword&gt; onto search/command line</div></div>
 
 		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
