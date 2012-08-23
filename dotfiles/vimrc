@@ -258,15 +258,14 @@ endfunction
 nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<cr>
 
 " Quickly switch buffers (prev/next)
-" These two mapping must be at the end of file in order to override some other
-" settings
-try
-    unmap <C-P>
-    unmap <C-N>
-catch
-endtry
-nmap <C-P> :bp<CR>
-nmap <C-N> :bp<CR>
+" it doesn't work somehow TODO try to see why using :map or :nmap
+"try
+    "unmap <C-P>
+    "unmap <C-N>
+"catch
+"endtry
+"nmap <C-P> :bp<CR>
+"nmap <C-N> :bp<CR>
 
 autocmd VimEnter * NERDTree
 
@@ -275,3 +274,13 @@ nmap <leader>j :call Email("Jürgen")<CR>
 nmap <leader>y :call Email("Yvonne")<CR>
 nmap <leader>t :call Email("Thomas")<CR>
 
+" Buffer switching can be also made by <C-^>
+nmap <leader>1 :1b<CR>
+nmap <leader>2 :2b<CR>
+nmap <leader>3 :3b<CR>
+nmap <leader>4 :4b<CR>
+nmap <leader>5 :5b<CR>
+nmap <leader>6 :6b<CR>
+nmap <leader>7 :7b<CR>
+nmap <leader>8 :8b<CR>
+nmap <leader>9 :9b<CR>
