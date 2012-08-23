@@ -108,7 +108,7 @@ nmap <Leader>l :set list!<CR>
 
 
 " Toggle line wrapping
-"nmap <Leader>w :set wrap!<CR>
+nmap <Leader>r :set wrap!<CR>
 
 " Save file
 nmap <Leader>w :w<CR>
@@ -125,10 +125,6 @@ nmap <Leader>q :q<CR>
 
 " Delete the current buffer
 nmap <Leader>d :bd<CR>
-
-" Quickly switch buffers (prev/next)
-nmap <C-P> :bp<CR>
-nmap <C-N> :bp<CR>
 
 " Show a list of all open buffers
 nmap <Leader>b :ls<CR>
@@ -260,4 +256,22 @@ function! g:ToggleNuMode()
   endif
 endfunction
 nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<cr>
+
+" Quickly switch buffers (prev/next)
+" These two mapping must be at the end of file in order to override some other
+" settings
+try
+    unmap <C-P>
+    unmap <C-N>
+catch
+endtry
+nmap <C-P> :bp<CR>
+nmap <C-N> :bp<CR>
+
+autocmd VimEnter * NERDTree
+
+nmap <leader>a :call Email("Andreas")<CR>
+nmap <leader>j :call Email("Jürgen")<CR>
+nmap <leader>y :call Email("Yvonne")<CR>
+nmap <leader>t :call Email("Thomas")<CR>
 
