@@ -210,8 +210,9 @@ nmap <leader>- :sp<CR>
 " Vertical split
 "nmap <leader>\ :vsp<CR>
 
-nmap <leader>gst :Gstatus<CR>
-nmap <leader>gdf :Gdiff<CR>
+nmap <leader>st :Gstatus<CR>
+" <CR> allows me to use this shortcut from the :Gstatus window
+nmap <leader>df <CR>:Gdiff<CR>
 nmap <leader>gci :Gcommit<CR>
 
 try                     " these keys are not mapped under windows by default
@@ -270,10 +271,12 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<cr>
 
 autocmd VimEnter * NERDTree
 
-nmap <leader>a :call Email("Andreas")<CR>
-nmap <leader>j :call Email("Jürgen")<CR>
-nmap <leader>y :call Email("Yvonne")<CR>
-nmap <leader>t :call Email("Thomas")<CR>
+if has('win32')
+    nmap <leader>a :call Email("Andreas")<CR>
+    nmap <leader>j :call Email("Jürgen")<CR>
+    nmap <leader>y :call Email("Yvonne")<CR>
+    nmap <leader>t :call Email("Thomas")<CR>
+endif
 
 " Buffer switching can be also made by <C-^>
 nmap <leader>1 :1b<CR>
