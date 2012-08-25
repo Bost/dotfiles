@@ -145,7 +145,13 @@ elif [ "$isLinux" -gt 0 ]; then
 	#TODO alias sea='apt-cache search'
 
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
-	alias clojure='java -cp $dev/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+    # clojure classpath
+    cljcp=$dev/clojure-1.4.0/clojure-1.4.0.jar
+    cljcp=$cljcp:$dev/clojure-contrib-1.1.0/clojure-contrib.jar 
+    cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
+    alias clojure='java -cp $cljcp clojure.main'
+    alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
+    #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer 127.0.0.1 &'
 	alias kk="krusader --left . --right . &"
 else
 	echo "ERROR No environment detected"
@@ -215,7 +221,6 @@ if [ "$isLinux" -eq 0 ]; then
 	echo ''
 
 	export CVSROOT=:pserver:svoboda@cor-paris-src1:/var/cvs/java
-
 	#echo "CVSROOT="$CVSROOT"   # this is the active CVSROOT"
 
 	echo export TERM=msys
@@ -236,6 +241,7 @@ alias e='echo'
 alias webcli='cd $dev/webcli'
 alias cheatsheet='cd $dev/cheatsheet'
 alias dev='cd $dev'
+alias envp='env | grep ^PATH'
 
 VIM_CMD='vim -u $VIMRC'
 GVIM_CMD='gvim -u $VIMRC'
