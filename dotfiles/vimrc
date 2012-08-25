@@ -54,7 +54,7 @@ set smartindent
 
 set tabstop=4
 set expandtab                   " use spaces, not tabs
-"set showtabline=2
+"set showtabline=2               " show the tabs right below the menu
 set shiftwidth=4 softtabstop=4
 set backspace=indent,eol,start  " backspace through everything in insert mode
 
@@ -87,11 +87,12 @@ let vimclojure#HighlightContrib=1
 let vimclojure#DynamicHighlighting=1
 let vimclojure#ParenRainbow=1
 "let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
-let vimclojure#WantNailgun = 0
-let vimclojure#NailgunClient = $HOME . "/.vim/lib/vimclojure-nailgun-client/ng"
-"let vimclojure#NailgunServer = "192.168.178.21"
-"let vimclojure#NailgunServer = "192.168.178.20"
-"let vimclojure#NailgunPort = "2113"
+let vimclojure#WantNailgun = 1
+let vimclojure#NailgunClient = "~/dev/vimclojure-nailgun-client/ng"  " the ng is already in env PATH 
+"let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
+let vimclojure#NailgunPort = "2113"
+let vimclojure#SplitPos = "right"        " open the split window on the right side
+let vimclojure#SplitSize = 80
 
 " Shortcuts ------------------------------------------------------------------
 
@@ -108,7 +109,7 @@ nmap <Leader>l :set list!<CR>
 
 
 " Toggle line wrapping
-nmap <Leader>r :set wrap!<CR>
+nmap <Leader>wr :set wrap!<CR>
 
 " Save file
 nmap <Leader>w :w<CR>
@@ -135,11 +136,11 @@ nmap <Leader><Tab> <C-W>w
 " Jump from tab to tab
 nmap <Leader><S-Tab> :tabn<CR>
 
-" Quickly 'maximize' a split
-nmap <Leader>mw <C-W>\|
-nmap <Leader>mh <C-W>_
-nmap <Leader>me <C-W>=
-nmap <Leader>mm <Leader>mw<Leader>mh
+" Quickly 'maximize' a split - these shortcuts colide with VimClojure
+"nmap <Leader>mw <C-W>\|
+"nmap <Leader>mh <C-W>_
+"nmap <Leader>me <C-W>=
+"nmap <Leader>mm <Leader>mw<Leader>mh
 
 " Quickly 'maximize' the entire UI - 999 is a bit lot :(
 nmap <Leader>Mw :set columns=250<CR>
@@ -161,7 +162,7 @@ nmap <Leader>sl :rightbelow vsp \| Explore<CR>
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
 nmap <Leader>ev :e ~/.vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/cheatsheet.html<CR>
-nmap <Leader>sr :source ~/.vimrc<CR>
+nmap <Leader>r :source ~/.vimrc<CR>
 
 
 " this is the default mouse setting

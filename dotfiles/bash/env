@@ -4,4 +4,4 @@
 export JDK_16_HOME=~/java/jdk1.6.0_33
 export JAVA_HOME=~/java/jdk1.7.0_05
 export APP_ENG_HOME=~/dev/appengine-java-sdk-1.7.0
-export PATH=~/bin:$JAVA_HOME/bin:$APP_ENG_HOME/bin:$PATH
+export PATH=$PATH:~/bin:$JAVA_HOME/bin:$APP_ENG_HOME/bin
