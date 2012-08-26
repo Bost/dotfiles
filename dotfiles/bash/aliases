@@ -121,6 +121,7 @@ elif [ "$isLinux" -gt 0 ]; then
 	VIMRC=$HOME/.vimrc
 	SUDO_UPDATE="sudo apt-get update"
 	alias ll="ls -la"
+	alias lock="xflock4"
 	alias update=$SUDO_UPDATE
 	alias upd=$SUDO_UPDATE
 
@@ -146,8 +147,8 @@ elif [ "$isLinux" -gt 0 ]; then
 
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
     # clojure classpath
-    cljcp=$dev/clojure-1.4.0/clojure-1.4.0.jar
-    cljcp=$cljcp:$dev/clojure-contrib-1.1.0/clojure-contrib.jar 
+    cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
+    cljcp=$cljcp:$dev/clojure-contrib-1.2.0/clojure-contrib.jar
     cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
     alias clojure='java -cp $cljcp clojure.main'
     alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
