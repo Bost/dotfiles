@@ -88,7 +88,7 @@ let vimclojure#DynamicHighlighting=1
 let vimclojure#ParenRainbow=1
 "let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
 let vimclojure#WantNailgun = 1
-let vimclojure#NailgunClient = "~/dev/vimclojure-nailgun-client/ng"  " the ng is already in env PATH 
+let vimclojure#NailgunClient = "ng"  " the ng is already in env PATH
 "let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
 let vimclojure#NailgunPort = "2113"
 let vimclojure#SplitPos = "right"        " open the split window on the right side
@@ -125,7 +125,7 @@ nmap <Leader>w :w<CR>
 nmap <Leader>q :q<CR>
 
 " Delete the current buffer
-nmap <Leader>d :bd<CR>
+nmap <Leader>bd :bd<CR>
 
 " Show a list of all open buffers
 nmap <Leader>b :ls<CR>
@@ -288,3 +288,5 @@ nmap <leader>6 :6b<CR>
 nmap <leader>7 :7b<CR>
 nmap <leader>8 :8b<CR>
 nmap <leader>9 :9b<CR>
+
+autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
