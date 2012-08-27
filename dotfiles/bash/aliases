@@ -148,7 +148,8 @@ elif [ "$isLinux" -gt 0 ]; then
 	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
     # clojure classpath
     cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
-    cljcp=$cljcp:$dev/clojure-contrib-1.2.0/clojure-contrib.jar
+    cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.0.jar
+    cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
     cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
     alias clojure='java -cp $cljcp clojure.main'
     alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
@@ -244,13 +245,11 @@ alias cheatsheet='cd $dev/cheatsheet'
 alias dev='cd $dev'
 alias envp='env | grep ^PATH'
 
-VIM_CMD='vim -u $VIMRC'
-GVIM_CMD='gvim -u $VIMRC'
 
-alias vim=$VIM_CMD
-alias vi=$VIM_CMD
-alias v=$VIM_CMD
-alias g=$GVIM_CMD
+alias vim='vim -u $VIMRC'
+alias vi=vim
+alias v=vim
+alias g='gvim -u $VIMRC &'
 
 alias cls='clear'
 alias prep='ps -ef | grep '
