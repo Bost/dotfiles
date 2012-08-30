@@ -17,7 +17,7 @@ set encoding=utf-8
 " GUI only stuff -------------------------------------------------------------
 if has('gui_running')
     " switch off the menu in the gui window
-    "set guioptions=gt
+    set guioptions=gt
 
     " horizontal scrollbar
     set guioptions+=b
@@ -244,7 +244,7 @@ function! RenameFile()
 		redraw!
 	endif
 endfunction
-map <leader>n :call RenameFile()<cr>
+map <leader>n :call RenameFile()<CR>
 
 " Start python on F5
 autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
@@ -257,7 +257,7 @@ function! g:ToggleNuMode()
      set nu
   endif
 endfunction
-nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<cr>
+nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 
 " Quickly switch buffers (prev/next)
 " it doesn't work somehow TODO try to see why using :map or :nmap
@@ -270,6 +270,7 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<cr>
 "nmap <C-N> :bp<CR>
 
 autocmd VimEnter * NERDTree
+nmap <leader>nt :NERDTree<CR>
 
 if has('win32')
     nmap <leader>a :call Email("Andreas")<CR>
