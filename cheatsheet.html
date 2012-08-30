@@ -114,7 +114,7 @@
 <ul id="sortable" class="ui-sortable">
 	<li id="acc0" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
     <div id="head0" class="head ui-widget-header ui-corner-all ui-button-text">vim: <a href="http://vim.wikia.com/wiki/Best_Vim_Tips">http://vim.wikia.com/wiki/Best_Vim_Tips</a></div>
-	<div class="effect ui-corner-all">
+    <div class="effect ui-corner-all">
 		<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
 		<div class="line"><div class="cmd">:bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
 		<div class="line"><div class="cmd">:let @m='' :let @m=@n</div>					<div class="desc"># clear register, copy register value</div></div>
@@ -148,6 +148,23 @@
 		<div class="line"><div class="cmd">C-t / C-d</div>	<div class="desc"># align text in insert mode</div></div>
 		<div class="line"><div class="cmd">vit / yit / cit / dit</div>	<div class="desc"># mark/yank/change/delete "innerHTML"</div></div>
 		<div class="line"><div class="cmd">vat / yat / cat / dat</div>	<div class="desc"># mark/yank/change/delete whole tag</div></div>
+        <!--
+Text Object (type :h text-objects in vim for a complete description)
+
+This feature allows to operate on a block of text where the cursor is.
+
+This is typically used with the 'd' or 'c' commands (delete, change), followed by 'i' or 'a' (inside a block or a whole block) and ended by a block description.
+
+Examples of use cases:
+
+ca{ : Delete a block of code delimited by curly braces.
+ci( : Change the content inside parenthesis.
+ci" : Change the content inside a string
+da< : Delete an html tag
+dap : Delete current paragraph (handy to delete a whole function).
+daw : Delete a word
+        -->
+        <div class="line"><div class="cmd">ci{ / ci( / ci[</div>	<div class="desc"># change the content inside given parenthesis</div></div>
 		<div class="line"><div class="cmd">o in visual mode</div>	<div class="desc"># change the marking direction</div></div>
 		<div class="line"><div class="cmd">gv</div>	<div class="desc"># re-select last visual block</div></div>
 		<div class="line"><div class="cmd">I{string}&lt;Esc&gt; / A{string}&lt;Esc&gt;</div>
