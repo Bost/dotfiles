@@ -3,7 +3,6 @@
 # aliases and functions
 
 alias less='less -r'
-#alias rm='rm -i'
 alias whence='type -a'
 alias ls='ls -F --color=tty'
 alias dir='ls --color=auto --format=vertical'
@@ -242,6 +241,7 @@ alias unexport='unset'
 alias e='echo'
 alias webcli='cd $dev/webcli'
 alias cheatsheet='cd $dev/cheatsheet'
+alias hello='cd $dev/helloworld'
 alias dev='cd $dev'
 alias envp='env | grep ^PATH'
 
