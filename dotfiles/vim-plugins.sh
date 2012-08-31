@@ -13,40 +13,65 @@ else
     exit 1
 fi
 
+i=0
+pName[$i]="csv.vim"
+pUrl_[$i]="https://github.com/vim-scripts/csv.vim.git"
+i=$i+1
+
 #switch between buffers by using the one of the default public interfaces: 
 #  '\be' (normal open)  or 
 #  '\bs' (force horizontal split open)  or 
 #  '\bv' (force vertical split open) 
-pName[0]="bufexplorer"
-pUrl_[0]="https://github.com/c9s/bufexplorer.git"
+pName[$i]="bufexplorer"
+pUrl_[$i]="https://github.com/c9s/bufexplorer.git"
+i=$i+1
 
-pName[1]="nerdcommenter"
-pUrl_[1]="https://github.com/scrooloose/nerdcommenter.git"
+if [ "$isLinux" -gt 0 ]; then
+    # lusty requires ruby - at first I test it under linux
+    pName[$i]="lusty"
+    pUrl_[$i]="https://github.com/sjbach/lusty.git"
+    i=$i+1
+fi
 
-pName[2]="nerdtree"
-pUrl_[2]="https://github.com/scrooloose/nerdtree.git"
+pName[$i]="nerdcommenter"
+pUrl_[$i]="https://github.com/scrooloose/nerdcommenter.git"
+i=$i+1
 
-pName[3]="VimClojure"
-pUrl_[3]="https://github.com/vim-scripts/VimClojure.git"
+pName[$i]="nerdtree"
+pUrl_[$i]="https://github.com/scrooloose/nerdtree.git"
+i=$i+1
 
-pName[4]="vim-fugitive"
-pUrl_[4]="https://github.com/tpope/vim-fugitive.git"
+pName[$i]="VimClojure"
+pUrl_[$i]="https://github.com/vim-scripts/VimClojure.git"
+i=$i+1
 
-pName[5]="vim-repeat"
-pUrl_[5]="https://github.com/tpope/vim-repeat.git"
+pName[$i]="vim-fugitive"
+pUrl_[$i]="https://github.com/tpope/vim-fugitive.git"
+i=$i+1
 
-pName[6]="vim-tail"
-pUrl_[6]="https://github.com/tony/vim-tail.git"
+pName[$i]="vim-repeat"
+pUrl_[$i]="https://github.com/tpope/vim-repeat.git"
+i=$i+1
 
-pName[7]="vim-unimpaired"
-pUrl_[7]="https://github.com/tpope/vim-unimpaired.git"
+pName[$i]="vim-tail"
+pUrl_[$i]="https://github.com/tony/vim-tail.git"
+i=$i+1
 
-pName[8]="YankRing"
-pUrl_[8]="https://github.com/vim-scripts/YankRing.vim.git"
+pName[$i]="vim-unimpaired"
+pUrl_[$i]="https://github.com/tpope/vim-unimpaired.git"
+i=$i+1
 
-pName[9]="gundo.vim"
-pUrl_[9]="http://github.com/sjl/gundo.vim.git"
+pName[$i]="YankRing.vim"
+pUrl_[$i]="https://github.com/vim-scripts/YankRing.vim.git"
+i=$i+1
 
+pName[$i]="gundo.vim"
+pUrl_[$i]="http://github.com/sjl/gundo.vim.git"
+i=$i+1
+
+pName[$i]="minibufexpl.vim"
+pUrl_[$i]="https://github.com/fholgado/minibufexpl.vim.git"
+i=$i+1
 
 size=${#pName[*]}
 size=$(( $size - 1))
