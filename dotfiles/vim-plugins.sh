@@ -13,7 +13,10 @@ else
     exit 1
 fi
 
-
+#switch between buffers by using the one of the default public interfaces: 
+#  '\be' (normal open)  or 
+#  '\bs' (force horizontal split open)  or 
+#  '\bv' (force vertical split open) 
 pName[0]="bufexplorer"
 pUrl_[0]="https://github.com/c9s/bufexplorer.git"
 
@@ -37,6 +40,12 @@ pUrl_[6]="https://github.com/tony/vim-tail.git"
 
 pName[7]="vim-unimpaired"
 pUrl_[7]="https://github.com/tpope/vim-unimpaired.git"
+
+pName[8]="YankRing"
+pUrl_[8]="https://github.com/vim-scripts/YankRing.vim.git"
+
+pName[9]="gundo.vim"
+pUrl_[9]="http://github.com/sjl/gundo.vim.git"
 
 
 size=${#pName[*]}
