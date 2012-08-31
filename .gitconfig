@@ -15,11 +15,5 @@
 	name = Bost
 	email = thebost@gmail.com
 
-[sendemail]
-	smtpencryption = tls
-	smtpserver = smtp.gmail.com
-	smtpuser = Rostislav.Svoboda@gmail.com
-	smtpserverport = 587
-
 [color]
 	ui = auto
