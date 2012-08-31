@@ -18,7 +18,7 @@ alias l='ls -CF'
 alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 
 if [ "$isCygwin_dev1" -gt 0 ]; then
-	echo "### Loading $strCygwin_dev1 aliases"
+	echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
 	base=/cygdrive
 	dev=$base/d/users/svoboda/dev
 	export winapp=$base/d/users/svoboda/winapp
@@ -26,7 +26,7 @@ if [ "$isCygwin_dev1" -gt 0 ]; then
 
 	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isCygwin_155" -gt 0 ]; then
-	echo "### Loading $strCygwin_155"
+	echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 	base=/cygdrive
 	dev=$base/c/cygwin/home/svo02896/dev
 	export winapp=$base/c/winapp
@@ -34,7 +34,7 @@ elif [ "$isCygwin_155" -gt 0 ]; then
 
 	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_155" -gt 0 ]; then
-	echo "### Loading $strMinGw32_155"
+	echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 	base=
 	dev=$base/c/cygwin/home/svo02896/dev
 	export winapp=$base/c/winapp
@@ -42,7 +42,7 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
 
 	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
-	echo "### Loading $strCygwin_wsles347 aliases"
+	echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
 	base=/cygdrive
 	dev=$base/d/dev
 	export winapp=$base/d/winapp
@@ -50,7 +50,7 @@ elif [ "$isCygwin_wsles347" -gt 0 ]; then
 
 	alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_dev1" -gt 0 ]; then
-	echo "### Loading $strMinGw32_dev1 aliases"
+	echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
 	base=
 	dev=$base/d/users/svoboda/dev
 	export winapp=$base/d/users/svoboda/winapp
@@ -60,7 +60,7 @@ elif [ "$isMinGw32_dev1" -gt 0 ]; then
 
 	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_app1" -gt 0 ]; then
-	echo "### Loading $strMinGw32_app1 aliases"
+	echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
 	base=
 	dev=$base/d/users/svoboda/dev
 	export winapp=$base/d/users/svoboda/winapp
@@ -70,7 +70,7 @@ elif [ "$isMinGw32_app1" -gt 0 ]; then
 
 	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_wsles347" -gt 0 ]; then
-	echo "### Loading $strMinGw32_wsles347 aliases"
+	echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
 	base=
 	dev=$base/d/dev
 	export winapp=$base/d/winapp
@@ -83,9 +83,9 @@ elif [ "$isLinux" -gt 0 ]; then
 	isLinux_64=`expr match "$uname" "$strLinux_64"`
 
 	if [ "$isLinux_64" -gt 0 ]; then
-		echo "### Loading $strLinux_64 aliases"
+		echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
 	else
-		echo "### Loading $strLinux aliases"
+		echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
 	fi
 
 	base=
@@ -132,7 +132,7 @@ else
 fi
 
 if [ "$isLinux" -eq 0 ]; then
-	echo "### Loading non-linux aliases"
+	echo "### isLinux: $isLinux ==> Loading non-linux aliases"
 
 	export qDrive=$base/q
 	export rosv=$qDrive/transfer/rosv
