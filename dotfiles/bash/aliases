@@ -212,6 +212,8 @@ fi
 alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
 alias unexport='unset'
 alias e='echo'
+# this is a rather speculative $home location :)
+alias home='cd $dev/..'
 alias webcli='cd $dev/webcli'
 alias cheatsheet='cd $dev/cheatsheet'
 alias hello='cd $dev/helloworld'

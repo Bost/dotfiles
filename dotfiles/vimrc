@@ -128,7 +128,8 @@ nmap <Leader>q :q<CR>
 nmap <Leader>bd :bd<CR>
 
 " Show a list of all open buffers
-nmap <Leader>b :ls<CR>
+"nmap <Leader>b :ls<CR>
+map <Leader>b :MiniBufExplorer<cr>
 
 " Jump from window to window
 nmap <Leader><Tab> <C-W>w
@@ -147,7 +148,7 @@ nmap <Leader>Mw :set columns=250<CR>
 nmap <Leader>Mh :set lines=69<CR>
 nmap <Leader>MM <Leader>Mw<Leader>Mh
 
-" Switch windows with ctrl + hjkl
+" Switch windows with CTRL + hjkl
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -162,6 +163,8 @@ nmap <Leader>sl :rightbelow vsp \| Explore<CR>
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
 nmap <Leader>ev :e ~/.vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/cheatsheet.html<CR>
+" this vim-plugins shortcut may colide with something
+nmap <Leader>ep :e ~/dev/cheatsheet/dotfiles/vim-plugins.sh<CR>
 nmap <Leader>r :source ~/.vimrc<CR>
 
 
