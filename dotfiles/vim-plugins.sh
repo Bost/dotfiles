@@ -49,7 +49,7 @@ do
     if [ -d $vh/bundle/$name ]; then
         cd $vh/bundle/$name && git pull
     else
-        git clone $url $vh/bundle
+        cd $vh/bundle && git clone $url
     fi
 done
 
