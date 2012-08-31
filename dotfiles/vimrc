@@ -210,10 +210,12 @@ nmap <leader>- :sp<CR>
 " Vertical split
 "nmap <leader>\ :vsp<CR>
 
+nmap <leader>cdf :color default<CR>:colorscheme default<CR>
 nmap <leader>st :Gstatus<CR>
 " <CR> allows me to use this shortcut from the :Gstatus window
 nmap <leader>df <CR>:Gdiff<CR>
 nmap <leader>gci :Gcommit<CR>
+nmap <leader>gps :Git push<CR>
 
 try                     " these keys are not mapped under windows by default
     unmap <S-Up>
@@ -244,7 +246,7 @@ function! RenameFile()
 		redraw!
 	endif
 endfunction
-map <leader>n :call RenameFile()<CR>
+map <leader>n :call RenameFile()<cr>
 
 " Start python on F5
 autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
@@ -269,7 +271,7 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 "nmap <C-P> :bp<CR>
 "nmap <C-N> :bp<CR>
 
-autocmd VimEnter * NERDTree
+"autocmd VimEnter * NERDTree
 nmap <leader>nt :NERDTree<CR>
 
 if has('win32')
@@ -291,3 +293,8 @@ nmap <leader>8 :8b<CR>
 nmap <leader>9 :9b<CR>
 
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
+
+" this may work under linux, too
+if has('win32')
+    au GUIEnter * simalt ~x
+endif
