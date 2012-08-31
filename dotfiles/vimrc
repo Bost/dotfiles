@@ -165,6 +165,7 @@ nmap <Leader>ev :e ~/.vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/cheatsheet.html<CR>
 " this vim-plugins shortcut may colide with something
 nmap <Leader>ep :e ~/dev/cheatsheet/dotfiles/vim-plugins.sh<CR>
+nmap <Leader>ea :e ~/dev/cheatsheet/dotfiles/bash/aliases<CR>
 nmap <Leader>r :source ~/.vimrc<CR>
 
 
