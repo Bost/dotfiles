@@ -7,3 +7,33 @@ export APP_ENG_HOME=~/dev/appengine-java-sdk-1.7.0
 export NAILGUN_CLIENT_HOME=~/dev/vimclojure-nailgun-client
 # I need too have $PATH at the end because I want to override the pre-preinstalled java
 export PATH=~/bin:$JAVA_HOME/bin:$APP_ENG_HOME/bin:$NAILGUN_CLIENT_HOME:$PATH
+
+uname=`uname -a`
+strMinGw32_dev1="MINGW32_NT-5.2 COR-PARIS-DEV1"
+strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
+strCygwin_wsles347="CYGWIN_NT-5.1 wsles347"
+strMinGw32_wsles347="MINGW32_NT-5.1 WSLES347"
+strMinGw32_app1="MINGW32_NT-5.2 COR-ALLDM-APP1"
+strLinux="Linux"
+strCygwin_155="CYGWIN_NT-6.1-WOW64 LE-C-155"
+strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
+#echo uname: $uname
+
+export isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
+export isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
+export isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
+export isLinux=`expr match "$uname" "$strLinux"`
+export isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
+export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
+export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
+export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
+
+#echo isMinGw32_dev1: $isMinGw32_dev1
+#echo isCygwin_dev1: $isCygwin_dev1
+#echo isCygwin_wsles347: $isCygwin_wsles347
+#echo isLinux: $isLinux
+#echo isMinGw32_wsles347: $isMinGw32_wsles347
+#echo isMinGw32_app1: $isMinGw32_app1
+#echo isCygwin_155: $isCygwin_155
+#echo isMinGw32_155: $isMinGw32_155
+
