@@ -15,33 +15,6 @@ alias l='ls -CF'
 #alias mv='mv -i'
 #alias grep='grep --color'
 
-uname=`uname -a`
-strMinGw32_dev1="MINGW32_NT-5.2 COR-PARIS-DEV1"
-strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
-strCygwin_wsles347="CYGWIN_NT-5.1 wsles347"
-strMinGw32_wsles347="MINGW32_NT-5.1 WSLES347"
-strMinGw32_app1="MINGW32_NT-5.2 COR-ALLDM-APP1"
-strLinux="Linux"
-strCygwin_155="CYGWIN_NT-6.1-WOW64 LE-C-155"
-strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
-#echo uname: $uname
-
-isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
-isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
-isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
-isLinux=`expr match "$uname" "$strLinux"`
-isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
-isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
-isCygwin_155=`expr match "$uname" "$strCygwin_155"`
-isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
-
-#echo isMinGw32_155: $isMinGw32_155
-#echo isCygwin_dev1: $isCygwin_dev1
-#echo isCygwin_wsles347: $isCygwin_wsles347
-#echo isMinGw32_dev1: $isMinGw32_dev1
-#echo isMinGw32_wsles347: $isMinGw32_wsles347
-#echo isMinGw32_app1: $strMinGw32_app1
-
 alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 
 if [ "$isCygwin_dev1" -gt 0 ]; then

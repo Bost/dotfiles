@@ -2,7 +2,9 @@
 
 # TODO it may be better to rewrite this script in python
 
-if [ -d ~/.vim ]; then
+if [ "$isMinGw32_155" -gt 0 ]; then
+    vh=/c/cygwin/home/svo02896/vimfiles
+elif [ -d ~/.vim ]; then
     vh=~/.vim
 elif [ -d ~/vimfiles ]; then
     vh=~/vimfiles
