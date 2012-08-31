@@ -272,7 +272,7 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 "nmap <C-N> :bp<CR>
 
 "autocmd VimEnter * NERDTree
-nmap <leader>nt :NERDTree<CR>
+"nmap <leader>nt :NERDTree<CR>
 
 if has('win32')
     nmap <leader>a :call Email("Andreas")<CR>
@@ -298,3 +298,8 @@ autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
 if has('win32')
     au GUIEnter * simalt ~x
 endif
+
+nnoremap <F5> :GundoToggle<CR>
+nnoremap <silent> <F11> :YRShow<CR>
+nnoremap <silent> <F9> :NERDTreeToggle<CR>
+
