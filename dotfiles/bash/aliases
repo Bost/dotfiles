@@ -18,106 +18,106 @@ alias l='ls -CF'
 alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 
 if [ "$isCygwin_dev1" -gt 0 ]; then
-	echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
-	base=/cygdrive
-	dev=$base/d/users/svoboda/dev
-	export winapp=$base/d/users/svoboda/winapp
-	VIMRC=$base/h/.vimrc
+    echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
+    base=/cygdrive
+    dev=$base/d/users/svoboda/dev
+    export winapp=$base/d/users/svoboda/winapp
+    VIMRC=$base/h/.vimrc
 
-	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isCygwin_155" -gt 0 ]; then
-	echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
-	base=/cygdrive
-	dev=$base/c/cygwin/home/svo02896/dev
-	export winapp=$base/c/winapp
-	#VIMRC=$base/h/.vimrc.dark
+    echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
+    base=/cygdrive
+    dev=$base/c/cygwin/home/svo02896/dev
+    export winapp=$base/c/winapp
+    #VIMRC=$base/h/.vimrc.dark
 
-	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_155" -gt 0 ]; then
-	echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
-	base=
-	dev=$base/c/cygwin/home/svo02896/dev
-	export winapp=$base/c/winapp
-	VIMRC=$base/c/cygwin/home/svo02896/.vimrc
+    echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
+    base=
+    dev=$base/c/cygwin/home/svo02896/dev
+    export winapp=$base/c/winapp
+    VIMRC=$base/c/cygwin/home/svo02896/.vimrc
 
-	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
-	echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
-	base=/cygdrive
-	dev=$base/d/dev
-	export winapp=$base/d/winapp
-	VIMRC=$base/h/.vimrc.dark
+    echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
+    base=/cygdrive
+    dev=$base/d/dev
+    export winapp=$base/d/winapp
+    VIMRC=$base/h/.vimrc.dark
 
-	alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+    alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_dev1" -gt 0 ]; then
-	echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
-	base=
-	dev=$base/d/users/svoboda/dev
-	export winapp=$base/d/users/svoboda/winapp
-	#VIMRC=$ASE/h/.vimrc.msgit
-	#VIMRC=$base/h/.vimrc.dark
-	VIMRC=$base/h/.vimrc
+    echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
+    base=
+    dev=$base/d/users/svoboda/dev
+    export winapp=$base/d/users/svoboda/winapp
+    #VIMRC=$ASE/h/.vimrc.msgit
+    #VIMRC=$base/h/.vimrc.dark
+    VIMRC=$base/h/.vimrc
 
-	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_app1" -gt 0 ]; then
-	echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
-	base=
-	dev=$base/d/users/svoboda/dev
-	export winapp=$base/d/users/svoboda/winapp
-	#VIMRC=$ASE/h/.vimrc.msgit
-	# this works just well
-	VIMRC=/d/winapp/Vim/_vimrc
+    echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
+    base=
+    dev=$base/d/users/svoboda/dev
+    export winapp=$base/d/users/svoboda/winapp
+    #VIMRC=$ASE/h/.vimrc.msgit
+    # this works just well
+    VIMRC=/d/winapp/Vim/_vimrc
 
-	alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_wsles347" -gt 0 ]; then
-	echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
-	base=
-	dev=$base/d/dev
-	export winapp=$base/d/winapp
-	VIMRC=$base/h/.vimrc.dark
+    echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
+    base=
+    dev=$base/d/dev
+    export winapp=$base/d/winapp
+    VIMRC=$base/h/.vimrc.dark
 
-	#alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isLinux" -gt 0 ]; then
 
-	strLinux_64="Linux desktop-64"
-	isLinux_64=`expr match "$uname" "$strLinux_64"`
+    strLinux_64="Linux desktop-64"
+    isLinux_64=`expr match "$uname" "$strLinux_64"`
 
-	if [ "$isLinux_64" -gt 0 ]; then
-		echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
-	else
-		echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
-	fi
+    if [ "$isLinux_64" -gt 0 ]; then
+        echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
+    else
+        echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
+    fi
 
-	base=
-	dev=$HOME/dev
-	VIMRC=$HOME/.vimrc
-	SUDO_UPDATE="sudo apt-get update"
-	alias ll="ls -la"
-	alias lock="xflock4"
-	alias update=$SUDO_UPDATE
-	alias upd=$SUDO_UPDATE
+    base=
+    dev=$HOME/dev
+    VIMRC=$HOME/.vimrc
+    SUDO_UPDATE="sudo apt-get update"
+    alias ll="ls -la"
+    alias lock="xflock4"
+    alias update=$SUDO_UPDATE
+    alias upd=$SUDO_UPDATE
 
-	SUDO_UPGRADE="sudo apt-get upgrade"
-	alias upgrade=$SUDO_UPGRADE
-	alias upg=$SUDO_UPGRADE
+    SUDO_UPGRADE="sudo apt-get upgrade"
+    alias upgrade=$SUDO_UPGRADE
+    alias upg=$SUDO_UPGRADE
 
-	alias uu='upd && upg'
-	alias ud='sudo apt-get dist-upgrade'
-	alias cx='chmod +x'
-	alias k9='kill -9'
-	# I guess '2> /dev/null' redirects errors to /dev/null
-	alias f='find ./ 2> /dev/null'
+    alias uu='upd && upg'
+    alias ud='sudo apt-get dist-upgrade'
+    alias cx='chmod +x'
+    alias k9='kill -9'
+    # I guess '2> /dev/null' redirects errors to /dev/null
+    alias f='find ./ 2> /dev/null'
 
-	# -y  Assume Yes to all queries and do not prompt
-	alias inst="sudo apt-get install -y"
-	alias arem="sudo apt-get autoremove -y"
+    # -y  Assume Yes to all queries and do not prompt
+    alias inst="sudo apt-get install -y"
+    alias arem="sudo apt-get autoremove -y"
 
-	alias suspend='sudo pm-suspend'
+    alias suspend='sudo pm-suspend'
 
-	#Search the package list for a regex pattern
-	#TODO alias sea='apt-cache search'
+    #Search the package list for a regex pattern
+    #TODO alias sea='apt-cache search'
 
-	alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
+    alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
     # clojure classpath
     cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
     cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.0.jar
@@ -126,87 +126,88 @@ elif [ "$isLinux" -gt 0 ]; then
     alias clojure='java -cp $cljcp clojure.main'
     alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
     #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer 127.0.0.1 &'
-	alias kk="krusader --left . --right . &"
+    alias kk="krusader --left . --right . &"
+    alias gvim='gvim -c "call Maximize_Window()"'
 else
-	echo "ERROR No environment detected"
+    echo "ERROR No environment detected"
 fi
 
 if [ "$isLinux" -eq 0 ]; then
-	echo "### isLinux: $isLinux ==> Loading non-linux aliases"
+    echo "### isLinux: $isLinux ==> Loading non-linux aliases"
 
-	export qDrive=$base/q
-	export rosv=$qDrive/transfer/rosv
-	deployments_base=$rosv/mbs/deployments
-	deployments_mce=$deployments_base/mce
+    export qDrive=$base/q
+    export rosv=$qDrive/transfer/rosv
+    deployments_base=$rosv/mbs/deployments
+    deployments_mce=$deployments_base/mce
 
-	fDefvars=$deployments_base/defvars.sh
-	#echo "fDefvars=$fDefvars"
-	if [ -f "${fDefvars}" ]; then
-		. "${fDefvars}"
-		#echo "File loaded: ${fDefvars}"
-	else
-		echo "ERROR File not found: ${fDefvars}"
-		exit
-	fi
+    fDefvars=$deployments_base/defvars.sh
+    #echo "fDefvars=$fDefvars"
+    if [ -f "${fDefvars}" ]; then
+        . "${fDefvars}"
+        #echo "File loaded: ${fDefvars}"
+    else
+        echo "ERROR File not found: ${fDefvars}"
+        exit
+    fi
 
-	alias c:='cd $base/c'
-	alias d:='cd $base/d'
-	alias q:='cd $qDrive'
+    alias c:='cd $base/c'
+    alias d:='cd $base/d'
+    alias q:='cd $qDrive'
 
-	alias rosv='cd $rosv'
-	alias conf='cd $rosv/mbs/conf'
-	alias deployments='cd $deployments_mce'
-	alias scl='cd $dev/scl-directory'
+    alias rosv='cd $rosv'
+    alias conf='cd $rosv/mbs/conf'
+    alias deployments='cd $deployments_mce'
+    alias scl='cd $dev/scl-directory'
 
-	alias dem='cd $dev/mbs/dem'
-	alias mce='cd $dev/mbs/mce'
-	alias std='cd $dev/mbs/std'
-	alias bmw='cd $dev/mbs/bmw'
-	alias mbb='cd $dev/mbs/mbb'
+    alias dem='cd $dev/mbs/dem'
+    alias mce='cd $dev/mbs/mce'
+    alias std='cd $dev/mbs/std'
+    alias bmw='cd $dev/mbs/bmw'
+    alias mbb='cd $dev/mbs/mbb'
 
-	alias jacarta='cd $dev/jacarta'
-	alias light='cd $dev/jacarta.light'
-	alias hre='cd $dev/jacarta.hre'
-	alias pfandbrief='cd $dev/pfandbrief'
+    alias jacarta='cd $dev/jacarta'
+    alias light='cd $dev/jacarta.light'
+    alias hre='cd $dev/jacarta.hre'
+    alias pfandbrief='cd $dev/pfandbrief'
 
-	alias services='cd $dev/xml-services'
-	alias xml='cd $dev/xml-services'
+    alias services='cd $dev/xml-services'
+    alias xml='cd $dev/xml-services'
 
-	#alias prod='echo ssh rsvoboda@172.17.31.184; ssh rsvoboda@172.17.31.184'
-	#alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
-	alias prod='echo ssh rsvoboda@194.99.105.205; ssh rsvoboda@194.99.105.205'
-	alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
+    #alias prod='echo ssh rsvoboda@172.17.31.184; ssh rsvoboda@172.17.31.184'
+    #alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
+    alias prod='echo ssh rsvoboda@194.99.105.205; ssh rsvoboda@194.99.105.205'
+    alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
 
-	alias mbssum='$deployments_base/mbssum.sh'
+    alias mbssum='$deployments_base/mbssum.sh'
 
-	deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
-	alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
+    deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
+    alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
 
-	# TODO this stuff should be in the env file
-	proxy=RSVOBODA:ve6h496q@192.168.2.105:3128
-	export http_proxy=http://$proxy
-	export https_proxy=https://$proxy
-	export ftp_proxy=ftp://$proxy
+    # TODO this stuff should be in the env file
+    proxy=RSVOBODA:ve6h496q@192.168.2.105:3128
+    export http_proxy=http://$proxy
+    export https_proxy=https://$proxy
+    export ftp_proxy=ftp://$proxy
 
-	#echo "http_proxy="$http_proxy
-	#echo "https_proxy="$https_proxy
-	#echo "ftp_proxy="$ftp_proxy
+    #echo "http_proxy="$http_proxy
+    #echo "https_proxy="$https_proxy
+    #echo "ftp_proxy="$ftp_proxy
 
-	echo ''
+    echo ''
 
-	export CVSROOT=:pserver:svoboda@cor-paris-src1:/var/cvs/java
-	#echo "CVSROOT="$CVSROOT"   # this is the active CVSROOT"
+    export CVSROOT=:pserver:svoboda@cor-paris-src1:/var/cvs/java
+    #echo "CVSROOT="$CVSROOT"   # this is the active CVSROOT"
 
-	echo export TERM=msys
-	echo export http_proxy=$http_proxy
-	echo export https_proxy=$https_proxy
-	echo export ftp_proxy=$ftp_proxy
-	echo export CVSROOT=$CVSROOT"		# this is the active CVSROOT"
-	echo export CVSROOT=:pserver:rostislav.svoboda@cor-src-01:/srv/cvs/alldata"   # alternative CVSROOT"
+    echo export TERM=msys
+    echo export http_proxy=$http_proxy
+    echo export https_proxy=$https_proxy
+    echo export ftp_proxy=$ftp_proxy
+    echo export CVSROOT=$CVSROOT"        # this is the active CVSROOT"
+    echo export CVSROOT=:pserver:rostislav.svoboda@cor-src-01:/srv/cvs/alldata"   # alternative CVSROOT"
 
-	export PATH=$PATH:~/bin
+    export PATH=$PATH:~/bin
 #else
-#	echo "Linux aliases already loaded"
+#    echo "Linux aliases already loaded"
 fi
 
 alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
@@ -224,9 +225,10 @@ alias envp='env | grep ^PATH'
 alias vim='vim -u $VIMRC'
 alias vi=vim
 alias v=vim
-alias g='gvim -u $VIMRC &'
+#alias g='gvim -u $VIMRC &'
 
 alias cls='clear'
+# under linux you may try to use pgreg
 alias prep='ps -ef | grep '
 alias png='ping -c 5 www.google.com'
 alias c='cat'
@@ -295,8 +297,8 @@ alias md='mkdir -p'
 #alias mv='mv -i'
 
 function take {
-	mkdir -p $1
-	cd $1
+    mkdir -p $1
+    cd $1
 }
 
 # example:

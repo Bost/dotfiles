@@ -14,14 +14,22 @@ else
 fi
 
 i=0
+pName[$i]="vim-session"
+pUrl_[$i]="https://github.com/xolox/vim-session.git"
+i=$i+1
+
+pName[$i]="VimOrganizer"
+pUrl_[$i]="https://github.com/hsitz/VimOrganizer.git"
+i=$i+1
+
 pName[$i]="csv.vim"
 pUrl_[$i]="https://github.com/vim-scripts/csv.vim.git"
 i=$i+1
 
-#switch between buffers by using the one of the default public interfaces: 
-#  '\be' (normal open)  or 
-#  '\bs' (force horizontal split open)  or 
-#  '\bv' (force vertical split open) 
+#switch between buffers by using the one of the default public interfaces:
+#  '\be' (normal open)  or
+#  '\bs' (force horizontal split open)  or
+#  '\bv' (force vertical split open)
 pName[$i]="bufexplorer"
 pUrl_[$i]="https://github.com/c9s/bufexplorer.git"
 i=$i+1

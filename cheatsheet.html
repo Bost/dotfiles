@@ -126,6 +126,7 @@
 		<div class="line"><div class="cmd">:messages</div>          <div class="desc"># display error messages</div></div>
 		<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
 		<div class="line"><div class="cmd">qq .... q @q/@@</div>i   <div class="desc"># start/stop recording, play down the recording</div></div>
+		<div class="line"><div class="cmd">:cw / :cwindow</div>		<div class="desc"># open the quickfix window</div></div>
 		<div class="line"><div class="cmd">:wa</div>				<div class="desc"># write all buffers at once</div></div>
 		<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marks (for jumping etc); m - marks something?</div></div>
 		<div class="line"><div class="cmd">C-x C-k e</div>			<div class="desc"># edit macro</div></div>
@@ -140,8 +141,8 @@
 		<div class="line"><div class="cmd">:r! command</div>		<div class="desc"># execute command and read in its output</div></div>
 		<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
 		<div class="line"><div class="cmd">`. / '.</div>			<div class="desc"># last edit location (~ key)/ line (&auml; key)</div></div>
-		<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump forward, backward</div></div>
-		<div class="line"><div class="cmd">zz zb zt / M L H</div>	<div class="desc"># jump middle, bottom, top</div></div>
+		<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump cursor forward, backward</div></div>
+		<div class="line"><div class="cmd">zz zb zt / M L H</div>	<div class="desc"># move window / jump cursor middle, bottom, top</div></div>
 		<div class="line"><div class="cmd">zc zo za / zC zO zA / zR</div><div class="desc"># close, open, toggle current / all folds from cursor/ all folds</div></div>
 		<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
 		<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
@@ -187,8 +188,8 @@ daw : Delete a word
 		<div class="line"><div class="cmd">C-o / C-i</div>          <div class="desc"># retrace the movements in the file backwards / forwards</div></div>
 		<div class="line"><div class="cmd">C-a / C-x</div>          <div class="desc"># increment / decrement next number on the current line</div></div>
 		<div class="line"><div class="cmd">xp</div>                 <div class="desc"># swap chars</div></div>
-        <div class="line"><div class="cmd">C-x C-l</div>            <div class="desc"># line completition in insert mode</div></div>
-        <div class="line"><div class="cmd">/C-r C-w</div>           <div class="desc"># pull &lt;cword&gt; onto search/command line</div></div>
+		<div class="line"><div class="cmd">C-x C-l</div>            <div class="desc"># line completition in insert mode</div></div>
+		<div class="line"><div class="cmd">/C-r C-w</div>           <div class="desc"># pull &lt;cword&gt; onto search/command line</div></div>
 
 		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
@@ -207,25 +208,23 @@ daw : Delete a word
 		<div class="line"><div class="cmd">set filetype=html|xml|...</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">C-w 5&lt; / C-w 5&gt; / C-w 5- / C-w 5+ </div>
 			<div class="desc"># resize vertical viewport 5 chars to the left / right / bottom / top</div></div>
-		<div class="line"><div class="cmd">C-w C-w</div>		<div class="desc"># move around split viewports</div></div>
-		<div class="line"><div class="cmd">C-w h /j/k/m/ r / x</div>		<div class="desc"># move around viewports according to given direction</div></div>
+		<div class="line"><div class="cmd">C-w C-w</div>            <div class="desc"># move around split viewports</div></div>
+		<div class="line"><div class="cmd">C-w h/j/k/l</div>        <div class="desc"># move around viewports according to given direction</div></div>
+		<div class="line"><div class="cmd">C-w r / R</div>          <div class="desc"># rotate window down-&gt;right / up-&gt;left</div></div>
 		<div class="line"><div class="cmd">C-w o / :on</div>        <div class="desc"># close other windows</div></div>
-		<div class="line"><div class="cmd">C-| / C-_</div>		<div class="desc"># maximize vertically / horizontally</div></div>
-		<div class="line"><div class="cmd">:sp filename  :vsp filename</div>		<div class="desc"># split viewports horizontal / vertical</div></div>
+		<div class="line"><div class="cmd">C-| / C-_</div>          <div class="desc"># maximize vertically / horizontally</div></div>
+		<div class="line"><div class="cmd">:sp filename / :vsp filename</div><div class="desc"># split viewports horizontal / vertical</div></div>
 		<div class="line"><div class="cmd">&gt; / &lt; / =</div>    <div class="desc"># shift text right / left / align text</div></div>
 		<div class="line"><div class="cmd">C-] / C-T</div>          <div class="desc"># follow link / go back to previous topic in vim help</div></div>
-		<div class="line"><div class="cmd">:changes g; g,</div>	<div class="desc"># move forth/back in the change list</div></div>
-		<div class="line"><div class="cmd">:jumps C-O / C-I</div>	<div class="desc"># back/forth in the jump list (older/newer)</div></div>
+		<div class="line"><div class="cmd">:changes g; g,</div>     <div class="desc"># move forth/back in the change list</div></div>
+		<div class="line"><div class="cmd">:jumps C-O / C-I</div>   <div class="desc"># back/forth in the jump list (older/newer)</div></div>
 
 		<div class="line"><div class="cmd">&nbsp;</div>            <div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">vim-fugitive</div>      <div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">-</div>          <div class="desc">stage / unstage current file</div></div>
-		<div class="line"><div class="cmd">:Gstatus</div>   <div class="desc">git status</div></div>
-		<div class="line"><div class="cmd">:Gcommit</div>   <div class="desc">git commit</div></div>
 		<div class="line"><div class="cmd">:Gread</div>     <div class="desc">git checkout -- filename</div></div>
 		<div class="line"><div class="cmd">:Gmove</div>     <div class="desc">git mv</div></div>
 		<div class="line"><div class="cmd">:Gremove</div>   <div class="desc">git rm</div></div>
-		<div class="line"><div class="cmd">:Gdiff</div>     <div class="desc"># diff the current file</div></div>
 		<div class="line"><div class="cmd">&nbsp;</div>     <div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">NERDTree</div>   <div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">i</div>          <div class="desc"># open split</div></div>
@@ -250,7 +249,7 @@ daw : Delete a word
 		<div class="line"><div class="cmd">mv README.{text,txt} ; cp file{,.bak}</div>  <div class="desc"># mv README.text README.txt ; cp file file.bak</div></div>
 		<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
 		<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
-		<div class="line"><div class="cmd">find . -name *fileToSearch*</div>				<div class="desc">&nbsp;</div></div>
+		<div class="line"><div class="cmd">find . -name "*fileToSearch*"</div>				<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">
 				find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>	<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">grep -lir "TextToFind" *</div>					<div class="desc"># print only file-names</div></div>
