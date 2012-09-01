@@ -17,7 +17,7 @@ set encoding=utf-8
 " GUI only stuff -------------------------------------------------------------
 if has('gui_running')
     " switch off the menu in the gui window
-    set guioptions=gt
+    "set guioptions=gt
 
     " horizontal scrollbar
     set guioptions+=b
@@ -57,9 +57,6 @@ set expandtab                   " use spaces, not tabs
 "set showtabline=2               " show the tabs right below the menu
 set shiftwidth=4 softtabstop=4
 set backspace=indent,eol,start  " backspace through everything in insert mode
-
-" start maximized
-" autocmd GUIEnter * :simalt ~x
 
 "imap jj <Esc>
 "imap :: <Esc>
@@ -129,7 +126,7 @@ nmap <Leader>bd :bd<CR>
 
 " Show a list of all open buffers
 "nmap <Leader>b :ls<CR>
-map <Leader>b :MiniBufExplorer<cr>
+map <Leader>b :TMiniBufExplorer<cr>
 
 " Jump from window to window
 nmap <Leader><Tab> <C-W>w
@@ -148,12 +145,6 @@ nmap <Leader>Mw :set columns=250<CR>
 nmap <Leader>Mh :set lines=69<CR>
 nmap <Leader>MM <Leader>Mw<Leader>Mh
 
-" Switch windows with CTRL + hjkl
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
-
 " Split up/down/left/right
 nmap <Leader>sk :sp \| Explore<CR>
 nmap <Leader>sj :rightbelow sp \| Explore<CR>
@@ -167,7 +158,9 @@ nmap <Leader>ec :e ~/dev/cheatsheet/cheatsheet.html<CR>
 nmap <Leader>ep :e ~/dev/cheatsheet/dotfiles/vim-plugins.sh<CR>
 nmap <Leader>ea :e ~/dev/cheatsheet/dotfiles/bash/aliases<CR>
 nmap <Leader>r :source ~/.vimrc<CR>
-
+"nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
+nmap <Leader>so :OpenSession<CR>
+nmap <Leader>ss :SaveSession<CR>
 
 " this is the default mouse setting
 "if has('mouse')
@@ -188,7 +181,8 @@ set foldlevelstart=99          "remove folds
 
 " Editor Behavior -------------------------------------------------------------
 set wrap
-set number               " Shows line number
+set relativenumber       " Shows relative line numbers
+"set number               " Shows line number
 set showmode             " show the current mode
 set ruler
 
@@ -197,10 +191,6 @@ set hlsearch             " highlight matches
 set incsearch            " incremental searching
 set ignorecase           " searches are case insensitive...
 set smartcase            " ... unless they contain at least one capital letter
-
-" Insure Clean Pasting w/autoindented code
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
 
 " Backup files are for the weak
 "set nobackup
@@ -235,8 +225,6 @@ vmap <S-Right> >gv
 vmap <S-Up> [egv
 vmap <S-Down> ]egv
 
-nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
-
 " Remap 0 to first non-blank character
 "map 0 ^
 
@@ -251,9 +239,6 @@ function! RenameFile()
 	endif
 endfunction
 map <leader>n :call RenameFile()<cr>
-
-" Start python on F5
-autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
 
 " use <leader>Ctrl+L to toggle the line number counting method
 function! g:ToggleNuMode()
@@ -275,8 +260,6 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 "nmap <C-P> :bp<CR>
 "nmap <C-N> :bp<CR>
 
-"autocmd VimEnter * NERDTree
-"nmap <leader>nt :NERDTree<CR>
 
 if has('win32')
     nmap <leader>a :call Email("Andreas")<CR>
@@ -285,7 +268,6 @@ if has('win32')
     nmap <leader>t :call Email("Thomas")<CR>
 endif
 
-" Buffer switching can be also made by <C-^>
 nmap <leader>1 :1b<CR>
 nmap <leader>2 :2b<CR>
 nmap <leader>3 :3b<CR>
@@ -296,14 +278,72 @@ nmap <leader>7 :7b<CR>
 nmap <leader>8 :8b<CR>
 nmap <leader>9 :9b<CR>
 
+nmap <leader>01 :1b<CR>
+nmap <leader>02 :2b<CR>
+nmap <leader>03 :3b<CR>
+nmap <leader>04 :4b<CR>
+nmap <leader>05 :5b<CR>
+nmap <leader>06 :6b<CR>
+nmap <leader>07 :7b<CR>
+nmap <leader>08 :8b<CR>
+nmap <leader>09 :9b<CR>
+nmap <leader>10 :10b<CR>
+nmap <leader>11 :11b<CR>
+nmap <leader>12 :12b<CR>
+nmap <leader>13 :13b<CR>
+nmap <leader>14 :14b<CR>
+nmap <leader>15 :15b<CR>
+nmap <leader>16 :16b<CR>
+nmap <leader>17 :17b<CR>
+nmap <leader>18 :18b<CR>
+nmap <leader>19 :19b<CR>
+
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
 
-" this may work under linux, too
+" start maximized
 if has('win32')
     au GUIEnter * simalt ~x
+else
+    " this works when gvim -c "call Maximize_Window()"
+    function! Maximize_Window()
+        silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+    endfunction
 endif
 
-nnoremap <F5> :GundoToggle<CR>
-nnoremap <silent> <F11> :YRShow<CR>
-nnoremap <silent> <F9> :NERDTreeToggle<CR>
+" Insure Clean Pasting w/autoindented code - this is probably not usefull
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
 
+" use <cword> to get the word under the cursor, and search for it in the
+" current directory and all subdirectories; open the quickfix window when done
+map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
+nnoremap <F5> :GundoToggle<CR>
+nnoremap <silent> <F9> :NERDTreeToggle<CR>
+nnoremap <silent> <F11> :YRShow<CR>
+"noremap <silent> <F12> :call VimCommanderToggle()<CR>
+nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
+" Start python on F5
+autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
+
+"autocmd VimEnter * <Plug>CMiniBufExplorer
+"autocmd VimEnter * NERDTree
+
+"autocmd MiniBufExplorer VimEnter       * call <SID>DEBUG('-=> VimEnter AutoCmd', 10) |let g:miniBufExplorerAutoUpdate = 1 |call <SID>AutoUpdate(-1,bufnr("%"))
+
+let g:session_autoload = 'no'
+let g:session_autosave = 'no'
+
+" no auto load - it destroys the saved session; use \b to load it
+let g:miniBufExplorerNoAutoLoad = 1
+
+" move in windows using C-w h/j/k/l
+let g:miniBufExplMapWindowNavVim = 1
+
+" move in windows using C-w left / down / up / right
+"let g:miniBufExplMapWindowNavArrows = 0
+
+" C-Tab / C-S-Tab
+let g:miniBufExplMapCTabSwitchBufs = 1
+
+" for other explorers like TagList
+"let g:miniBufExplModSelTarget = 1
