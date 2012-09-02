@@ -127,7 +127,7 @@ elif [ "$isLinux" -gt 0 ]; then
     alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
     #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer 127.0.0.1 &'
     alias kk="krusader --left . --right . &"
-    alias gvim='gvim -c "call Maximize_Window()"'
+    alias g='gvim -c "call Maximize_Window() --remote-silent"'
 else
     echo "ERROR No environment detected"
 fi

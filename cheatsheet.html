@@ -139,6 +139,8 @@
 		<div class="line"><div class="cmd">30|</div>				<div class="desc"># jump to column 30</div></div>
 		<div class="line"><div class="cmd">f/t F/T</div>			<div class="desc"># search forward / backward</div></div>
 		<div class="line"><div class="cmd">:r! command</div>		<div class="desc"># execute command and read in its output</div></div>
+		<div class="line"><div class="cmd">q: / q? / q/</div>		<div class="desc"># open Ex command-line / search string</div></div>
+		<div class="line"><div class="cmd">c-f</div>				<div class="desc"># opens command-line history when editing search pattern</div></div>
 		<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
 		<div class="line"><div class="cmd">`. / '.</div>			<div class="desc"># last edit location (~ key)/ line (&auml; key)</div></div>
 		<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump cursor forward, backward</div></div>
@@ -198,9 +200,9 @@ daw : Delete a word
 		<div class="line"><div class="cmd">gvim -d file1 file2 / vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">]c / [c</div>            <div class="desc"># jump to next / previous diff</div></div>
 		<div class="line"><div class="cmd">do :diffg :diffget</div>
-			<div class="desc"># replace a diff in the current viewport with that from the other viewport, use the :diffget command</div></div>
+			<div class="desc"># (diff obtain) replace a diff in the current viewport with that from the other viewport, use the :diffget command</div></div>
 		<div class="line"><div class="cmd">dp</div>
-			<div class="desc"># replace a diff in the other viewport with that from the current viewport, use the :diffput command</div></div>
+			<div class="desc"># (diff put) replace a diff in the other viewport with that from the current viewport, use the :diffput command</div></div>
 
 		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
 
@@ -249,6 +251,7 @@ daw : Delete a word
 		<div class="line"><div class="cmd">mv README.{text,txt} ; cp file{,.bak}</div>  <div class="desc"># mv README.text README.txt ; cp file file.bak</div></div>
 		<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
 		<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
+		<div class="line"><div class="cmd">gvim $(find . -name "*fileToSearch*")</div>      <div class="desc"># find files and open them in gvim</div></div>
 		<div class="line"><div class="cmd">find . -name "*fileToSearch*"</div>				<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">
 				find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>	<div class="desc">&nbsp;</div></div>
