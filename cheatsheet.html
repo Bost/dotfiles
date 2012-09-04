@@ -257,6 +257,7 @@ daw : Delete a word
 		<div class="line"><div class="cmd">
 				find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>	<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">grep -lir "TextToFind" *</div>					<div class="desc"># print only file-names</div></div>
+		<div class="line"><div class="cmd">grep sometext * | cut -f1 -d:</div>				<div class="desc"># print only filenames of the files containing 'sometext'</div></div>
 		<div class="line"><div class="cmd">grep -i -n "TextToSearch" *</div>				<div class="desc"># print line numbers</div></div>
 		<div class="line"><div class="cmd">grep --exclude=.git</div>						<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">grep --exclude=.git -lir 'something' *.cpp</div>	<div class="desc">&nbsp;</div></div>
