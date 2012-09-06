@@ -243,6 +243,7 @@ daw : Delete a word
 	<li id="acc1" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 	<div id="head1" class="head ui-widget-header ui-corner-all">bash:</div>
 	<div class="effect ui-corner-all">
+		<div class="line"><div class="cmd">No title bar in xfwm4: rm -r ~/.cache/sessions</div><div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">ls --format=single-column</div>				<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>				<div class="desc"># Execute a command at a given time</div></div>
 		<div class="line"><div class="cmd">wc cheatsheet.html</div>						<div class="desc"># line count, word count</div></div>
@@ -257,6 +258,7 @@ daw : Delete a word
 		<div class="line"><div class="cmd">
 				find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>	<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">grep -lir "TextToFind" *</div>					<div class="desc"># print only file-names</div></div>
+		<div class="line"><div class="cmd">grep sometext * | cut -f1 -d:</div>				<div class="desc"># print only filenames of the files containing 'sometext'</div></div>
 		<div class="line"><div class="cmd">grep -i -n "TextToSearch" *</div>				<div class="desc"># print line numbers</div></div>
 		<div class="line"><div class="cmd">grep --exclude=.git</div>						<div class="desc">&nbsp;</div></div>
 		<div class="line"><div class="cmd">grep --exclude=.git -lir 'something' *.cpp</div>	<div class="desc">&nbsp;</div></div>
