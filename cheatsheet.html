@@ -1,488 +1,56 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN""
-	"http://www.w3.org/TR/html4/strict.dtd">
+    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-		<title>Cheatsheet</title>
-		<script src="jquery/js/jquery-1.7.2.min.js"></script>
-		<script src="jquery/js/jquery-ui-1.8.20.custom.min.js"></script>
-		<link rel="stylesheet" href="jquery/css/custom-theme/jquery-ui-1.8.20.custom.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" href="cheatsheet.css" type="text/css" charset="utf-8" />
-		<!--
-		<link rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css">
-		<link rel="stylesheet" href="http://jqueryui.com/demos/demos.css">
-		-->
-<script>
-	var eMaxIdx = 12;
-	var idPrefix = "head";
+        <title>Cheatsheet</title>
+        <script src="jquery/js/jquery-1.7.2.min.js"></script>
+        <script src="jquery/js/jquery-ui-1.8.20.custom.min.js"></script>
+        <script type="text/javascript" src="vim-commands.js"></script>
+        <script type="text/javascript" src="emacs-commands.js"></script>
+        <script type="text/javascript" src="rest-commands.js"></script>
 
-	function getId(idx) {
-		return "#"+idPrefix + idx;
-	}
-	function getIds(maxIdx) {
-		var ids = "";
-		for (var i = 0; i < maxIdx; i++) {
-			if (i > 0) {
-				ids += ", ";
-			}
-			ids += getId(i);
-		}
-		return ids;
-	}
-	var ids = getIds(eMaxIdx);
-
-	function runEffect(divId) {
-		// other effect must be downloaded from jquery theme roller
-		var selectedEffect = "blind";
-
-		// most effect types need no options passed by default
-		var options = {};
-		// some effects have required parameters
-		if ( selectedEffect === "scale" ) {
-			options = { percent: 0 };
-		} else if ( selectedEffect === "size" ) {
-			options = { to: { width: 200, height: 60 } };
-		}
-		//var elem = $( "#"+divId +	" .effect" );
-		var elem = $("#"+divId).next();
-		elem.toggle( selectedEffect, options, 360 );
-	};
-
-	$(function() {
-		$(ids).click(function() {
-			runEffect(this.id);
-			return false;
-		});
-	});
-	$(function() {
-		var el = $("#sortable");
-		//el.sortable();    // this makes copy-paste impossible
-		//el.disableSelection();
-		//$( ".resizable" ).resizable();
-		//$( ".draggable" ).draggable();
-	});
-	$(function() {
-		$( "input:submit, a, button", ".buttons" ).button();
-		$( "a", ".buttons" ).click(function() { return false; });
-	});
-	$(function() {
-		$("#expand_all").click(function(){
-			for (var i = 0; i < eMaxIdx; i++) {
-				var accId = getId(i);
-				var elem = $(accId).next();
-				elem.show();
-			}
-			return false;
-		});
-
-		function collapseAll() {
-			for (var i = 0; i < eMaxIdx; i++) {
-				var accId = getId(i);
-				var elem = $(accId).next();
-				elem.hide();
-			}
-		}
-		$("#goto_vim").click(function(){
-			collapseAll();
-			runEffect("head0");
-			// TODO scroll down to the emacs section and open it if closed
-			return false;
-		});
-		$("#goto_emacs").click(function(){
-			collapseAll();
-			runEffect("head8");
-			// TODO scroll down to the emacs section and open it if closed
-			return false;
-		});
-		$("#collapse_all").click(function(){
-			collapseAll();
-			return false;
-		});
-	});
-</script>
+        <script type="text/javascript" src="cheatsheet.js"></script>
+        <link rel="stylesheet" href="jquery/css/custom-theme/jquery-ui-1.8.20.custom.css" type="text/css" media="screen" charset="utf-8" />
+        <link rel="stylesheet" href="cheatsheet.css" type="text/css" charset="utf-8" />
+        <!--
+        <link rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css">
+        <link rel="stylesheet" href="http://jqueryui.com/demos/demos.css">
+        -->
 
 </head>
-<body>
-	<div class="draggable buttons">
-		<button id="expand_all">expand-all</button>
-		<button id="collapse_all">collapse-all</button>
-		<button id="goto_emacs">goto emacs</button>
-		<button id="goto_vim">goto vim</button>
-	</div>
-<div>
-<ul id="sortable" class="ui-sortable">
-	<li id="acc0" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-    <div id="head0" class="head ui-widget-header ui-corner-all ui-button-text">vim: <a href="http://vim.wikia.com/wiki/Best_Vim_Tips">http://vim.wikia.com/wiki/Best_Vim_Tips</a></div>
-    <div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">:bufdo %s/pattern/substit/ge | update</div>	<div class="desc"># substitute and <u>save</u> in all buffers</div></div>
-		<div class="line"><div class="cmd">:bnext (or bn)/ bprev (or bp)</div>			<div class="desc"># go to next/previous buffer</div></div>
-		<div class="line"><div class="cmd">:ball</div>			<div class="desc"># open all buffers</div></div>
-		<div class="line"><div class="cmd">:let @m='' :let @m=@n</div>					<div class="desc"># clear register, copy register value</div></div>
-		<div class="line"><div class="cmd">v/abc</div>			<div class="desc"># mark everything from the cursor up to abc</div></div>
-		<div class="line"><div class="cmd">:reg {arg}</div>			<div class="desc"># display register number {arg}</div></div>
-		<div class="line"><div class="cmd">["x]y{motion}</div>		<div class="desc"># yank {motion} into register x</div></div>
-		<div class="line"><div class="cmd">"0P</div>				<div class="desc"># paste last yanked text</div></div>
-		<div class="line"><div class="cmd">:messages</div>          <div class="desc"># display error messages</div></div>
-		<div class="line"><div class="cmd">gq</div>					<div class="desc"># break lines according to :set textwidth. (see wrapmargin too)</div></div>
-		<div class="line"><div class="cmd">qq .... q @q/@@</div>i   <div class="desc"># start/stop recording, play down the recording</div></div>
-		<div class="line"><div class="cmd">:cw / :cwindow</div>		<div class="desc"># open the quickfix window</div></div>
-		<div class="line"><div class="cmd">:wa</div>				<div class="desc"># write all buffers at once</div></div>
-		<div class="line"><div class="cmd">:marks, m</div>			<div class="desc"># marks (for jumping etc); m - marks something?</div></div>
-		<div class="line"><div class="cmd">C-x C-k e</div>			<div class="desc"># edit macro</div></div>
-		<div class="line"><div class="cmd">vim -p file1 file2</div>	<div class="desc"># open vim with tabs</div></div>
-		<div class="line"><div class="cmd">:! sort</div>			<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">:sort u</div>			<div class="desc"># filter out duplicate rows (unique rows only)</div></div>
-		<div class="line"><div class="cmd">78i-&lt;Esc&gt;</div>    <div class="desc"># print 78 '-' chars at once</div></div>
-		<div class="line"><div class="cmd">gum gUm</div>			<div class="desc"># lowercase/uppercase of movement m </div></div>
-		<div class="line"><div class="cmd">R r ~</div>				<div class="desc"># replace mode, replace 1 char, replace char and move right</div></div>
-		<div class="line"><div class="cmd">30|</div>				<div class="desc"># jump to column 30</div></div>
-		<div class="line"><div class="cmd">f/t F/T</div>			<div class="desc"># search forward / backward</div></div>
-		<div class="line"><div class="cmd">:r! command</div>		<div class="desc"># execute command and read in its output</div></div>
-		<div class="line"><div class="cmd">q: / q? / q/</div>		<div class="desc"># open Ex command-line / search string</div></div>
-		<div class="line"><div class="cmd">c-f</div>				<div class="desc"># opens command-line history when editing search pattern</div></div>
-		<div class="line"><div class="cmd">.!</div>					<div class="desc"># execute current line in the shell. This doesn't work somehow</div></div>
-		<div class="line"><div class="cmd">`. / '.</div>			<div class="desc"># last edit location (~ key)/ line (&auml; key)</div></div>
-		<div class="line"><div class="cmd">; ,</div>				<div class="desc"># jump cursor forward, backward</div></div>
-		<div class="line"><div class="cmd">zz zb zt / M L H</div>	<div class="desc"># move window / jump cursor middle, bottom, top</div></div>
-		<div class="line"><div class="cmd">zc zo za / zC zO zA / zR</div><div class="desc"># close, open, toggle current / all folds from cursor/ all folds</div></div>
-		<div class="line"><div class="cmd">:set guifont=?</div>		<div class="desc"># display current guifont</div></div>
-		<div class="line"><div class="cmd">:set guifont=*</div>		<div class="desc"># display guifont dialog window</div></div>
-		<div class="line"><div class="cmd">C-^ / C-6</div>	<div class="desc"># switch to the alternate file (probably the one marked with %/#)</div></div>
-		<div class="line"><div class="cmd">C-t / C-d</div>	<div class="desc"># align text in insert mode</div></div>
-		<div class="line"><div class="cmd">vit / yit / cit / dit</div>	<div class="desc"># mark/yank/change/delete "innerHTML"</div></div>
-		<div class="line"><div class="cmd">vat / yat / cat / dat</div>	<div class="desc"># mark/yank/change/delete whole tag</div></div>
-        <!--
-Text Object (type :h text-objects in vim for a complete description)
+<body onload="addElems('vim'); addElems('emacs'); addElems('rest')">
+    <div class="draggable buttons">
+        <button id="expand_all">expand-all</button>
+        <button id="collapse_all">collapse-all</button>
+        <button id="goto_emacs">goto emacs</button>
+        <button id="goto_vim">goto vim</button>
+    </div>
+    <div>
+        <ul id="sortable" class="ui-sortable">
 
-This feature allows to operate on a block of text where the cursor is.
+            <li id="acc0" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                <div id="head0" class="head ui-widget-header ui-corner-all ui-button-text">vim:
+                    <a href="http://vim.wikia.com/wiki/Best_Vim_Tips">http://vim.wikia.com/wiki/Best_Vim_Tips</a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="http://rayninfo.co.uk/vimtips.html">http://rayninfo.co.uk/vimtips.html</a>
+                </div>
+                <div id="vim" class="effect ui-corner-all"/>
+            </li>
 
-This is typically used with the 'd' or 'c' commands (delete, change), followed by 'i' or 'a' (inside a block or a whole block) and ended by a block description.
+            <li id="acc1" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                <div id="head1" class="head ui-widget-header ui-corner-all">emacs:</div>
+                <div id="emacs" class="effect ui-corner-all"/>
+            </li>
 
-Examples of use cases:
 
-ca{ : Delete a block of code delimited by curly braces.
-ci( : Change the content inside parenthesis.
-ci" : Change the content inside a string
-da< : Delete an html tag
-dap : Delete current paragraph (handy to delete a whole function).
-daw : Delete a word
-        -->
-        <div class="line"><div class="cmd">ci{ / ci( / ci[</div>	<div class="desc"># change the content inside given parenthesis</div></div>
-		<div class="line"><div class="cmd">o in visual mode</div>	<div class="desc"># change the marking direction</div></div>
-		<div class="line"><div class="cmd">gv</div>	<div class="desc"># re-select last visual block</div></div>
-		<div class="line"><div class="cmd">I{string}&lt;Esc&gt; / A{string}&lt;Esc&gt;</div>
-			<div class="desc"># insert / append {string} to the visual block</div></div>
-		<div class="line"><div class="cmd">o (in visual mode)</div> <div class="desc"># change the marking direction in visual mode</div></div>
-		<div class="line"><div class="cmd">* / #</div>				<div class="desc"># hightlight and search forwards/backwards</div></div>
-		<div class="line"><div class="cmd">g* / g#</div>			<div class="desc"># hightlight and search for parts of a word</div></div>
-		<div class="line"><div class="cmd">:[range]s/bacon/lettuce/[ciInp] [count]</div>
-			<div class="desc"># confirm, ignore case, case sensitive, number of matches; print lines</div></div>
-		<div class="line"><div class="cmd">:s/bacon/lettuce/g10</div>
-			<div class="desc"># replace only next 10 lines</div></div>
-		<div class="line"><div class="cmd">:[range]s//lettuce/...</div>
-			<div class="desc"># use previous search pattern</div></div>
-		<div class="line"><div class="cmd">:g/regexp/p</div>		<div class="desc"># "grep"</div></div>
-		<div class="line"><div class="cmd">g; / g,</div>            <div class="desc"># cycle back / forward to the last places you were in insert mode</div></div>
-		<div class="line"><div class="cmd">s / S</div>              <div class="desc"># delete current char / clear current line and go to insert mode</div></div>
-		<div class="line"><div class="cmd">gf</div>                 <div class="desc"># open file under cursor</div></div>
-		<div class="line"><div class="cmd">cc</div>                 <div class="desc"># change current line</div></div>
-		<div class="line"><div class="cmd">C-o / C-i</div>          <div class="desc"># retrace the movements in the file backwards / forwards</div></div>
-		<div class="line"><div class="cmd">C-a / C-x</div>          <div class="desc"># increment / decrement next number on the current line</div></div>
-		<div class="line"><div class="cmd">xp</div>                 <div class="desc"># swap chars</div></div>
-		<div class="line"><div class="cmd">C-x C-l</div>            <div class="desc"># line completition in insert mode</div></div>
-		<div class="line"><div class="cmd">/C-r C-w</div>           <div class="desc"># pull &lt;cword&gt; onto search/command line</div></div>
+            <li id="acc2" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                <div id="head2" class="head ui-widget-header ui-corner-all">rest:</div>
+                <div id="rest" class="effect ui-corner-all"/>
+            </li>
 
-		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-		<div class="line"><div class="cmd">:diffthis</div><div class="desc"># diff current two buffers</div></div>
-		<div class="line"><div class="cmd">:vert diffsplit filename</div><div class="desc"># diff current buffer with a filename</div></div>
-		<div class="line"><div class="cmd">gvim -d file1 file2 / vimdiff file1 file2</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">]c / [c</div>            <div class="desc"># jump to next / previous diff</div></div>
-		<div class="line"><div class="cmd">do :diffg :diffget</div>
-			<div class="desc"># (diff obtain) replace a diff in the current viewport with that from the other viewport, use the :diffget command</div></div>
-		<div class="line"><div class="cmd">dp</div>
-			<div class="desc"># (diff put) replace a diff in the other viewport with that from the current viewport, use the :diffput command</div></div>
-
-		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-		<div class="line"><div class="cmd">set fileformat=dos|unix|mac</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">set filetype=html|xml|...</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">C-w 5&lt; / C-w 5&gt; / C-w 5- / C-w 5+ </div>
-			<div class="desc"># resize vertical viewport 5 chars to the left / right / bottom / top</div></div>
-		<div class="line"><div class="cmd">C-w C-w</div>            <div class="desc"># move around split viewports</div></div>
-		<div class="line"><div class="cmd">C-w h/j/k/l</div>        <div class="desc"># move around viewports according to given direction</div></div>
-		<div class="line"><div class="cmd">C-w r / R</div>          <div class="desc"># rotate window down-&gt;right / up-&gt;left</div></div>
-		<div class="line"><div class="cmd">C-w o / :on</div>        <div class="desc"># close other windows</div></div>
-		<div class="line"><div class="cmd">C-| / C-_</div>          <div class="desc"># maximize vertically / horizontally</div></div>
-		<div class="line"><div class="cmd">:sp filename / :vsp filename</div><div class="desc"># split viewports horizontal / vertical</div></div>
-		<div class="line"><div class="cmd">&gt; / &lt; / =</div>    <div class="desc"># shift text right / left / align text</div></div>
-		<div class="line"><div class="cmd">C-] / C-T</div>          <div class="desc"># follow link / go back to previous topic in vim help</div></div>
-		<div class="line"><div class="cmd">:changes g; g,</div>     <div class="desc"># move forth/back in the change list</div></div>
-		<div class="line"><div class="cmd">:jumps C-O / C-I</div>   <div class="desc"># back/forth in the jump list (older/newer)</div></div>
-
-		<div class="line"><div class="cmd">&nbsp;</div>            <div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">vim-fugitive</div>      <div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">-</div>          <div class="desc">stage / unstage current file</div></div>
-		<div class="line"><div class="cmd">:Gread</div>     <div class="desc">git checkout -- filename</div></div>
-		<div class="line"><div class="cmd">:Gmove</div>     <div class="desc">git mv</div></div>
-		<div class="line"><div class="cmd">:Gremove</div>   <div class="desc">git rm</div></div>
-		<div class="line"><div class="cmd">&nbsp;</div>     <div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">NERDTree</div>   <div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">:NERDTree q:</div>   <div class="desc"># change drive to q: under windows</div></div>
-		<div class="line"><div class="cmd">i</div>          <div class="desc"># open split</div></div>
-		<div class="line"><div class="cmd">cd</div>         <div class="desc"># change dir</div></div>
-		<div class="line"><div class="cmd">r</div>          <div class="desc"># refresh</div></div>
-		<div class="line"><div class="cmd">B</div>          <div class="desc"># bookmarks</div></div>
-		<div class="line"><div class="cmd">&nbsp;</div>     <div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">snipMate</div>   <div class="desc"># html tag completition</div></div>
-		<div class="line"><div class="cmd">fuzzyFinder</div><div class="desc"># finds file, need L9 vim plugin (doesn't work somehow :(</div></div>
-	</div>
-	</li>
-
-	<li id="acc1" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head1" class="head ui-widget-header ui-corner-all">bash:</div>
-	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">No title bar in xfwm4: rm -r ~/.cache/sessions</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">ls --format=single-column</div>				<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">echo "ls -l" | at midnight</div>				<div class="desc"># Execute a command at a given time</div></div>
-		<div class="line"><div class="cmd">wc cheatsheet.html</div>						<div class="desc"># line count, word count</div></div>
-		<div class="line"><div class="cmd">sudo !!</div>                                <div class="desc"># Run the last command as root</div></div>
-		<div class="line"><div class="cmd">!$</div>										<div class="desc"># last parameter (argument) of the last command</div></div>
-		<div class="line"><div class="cmd">C-r, C-g</div>								<div class="desc"># bash history, abort history</div></div>
-		<div class="line"><div class="cmd">mv README.{text,txt} ; cp file{,.bak}</div>  <div class="desc"># mv README.text README.txt ; cp file file.bak</div></div>
-		<div class="line"><div class="cmd">ls -d1 */</div>									<div class="desc"># list only directories, 1 entry per line</div></div>
-		<div class="line"><div class="cmd">./command.sh 2&gt;&amp;1 | tee command.log</div>	<div class="desc"># print the output to log and to the stdout</div></div>
-		<div class="line"><div class="cmd">gvim $(find . -name "*fileToSearch*")</div>      <div class="desc"># find files and open them in gvim</div></div>
-		<div class="line"><div class="cmd">find . -name "*fileToSearch*"</div>				<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">
-				find . -name *.properties -exec grep -lir ".*textToFind.*" '{}' \; -print</div>	<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">grep -lir "TextToFind" *</div>					<div class="desc"># print only file-names</div></div>
-		<div class="line"><div class="cmd">grep sometext * | cut -f1 -d:</div>				<div class="desc"># print only filenames of the files containing 'sometext'</div></div>
-		<div class="line"><div class="cmd">grep -i -n "TextToSearch" *</div>				<div class="desc"># print line numbers</div></div>
-		<div class="line"><div class="cmd">grep --exclude=.git</div>						<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">grep --exclude=.git -lir 'something' *.cpp</div>	<div class="desc">&nbsp;</div></div>
-
-		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-		<div class="line"><div class="cmd">
-				git filter-branch -f --env-filter "GIT_AUTHOR_NAME='Bost'; GIT_AUTHOR_EMAIL='thebost@gmail.com'; GIT_COMMITTER_NAME='Bost'; GIT_COMMITTER_EMAIL='thebost@gmail.com';" HEAD
-		</div><div class="desc"># change the name and email in all commits</div></div>
-		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">git branch -rd public/whatever</div>				<div class="desc"># delete a remote-tracking branch from local repository</div></div>
-		<div class="line"><div class="cmd">git diff --name-only master branch</div>			<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">git show --name-only</div>						<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">git log -S'text-to-search'</div>					<div class="desc"># search entire commit history</div></div>
-		<div class="line"><div class="cmd">git log --pretty=format:'%h %s'</div>			<div class="desc"># show formated commit logs</div></div>
-		<div class="line"><div class="cmd">--git-dir=../all/.git --work-tree=.</div>		<div class="desc"># set git base directory and working tree</div></div>
-	</div>
-	</li>
-
-	<li id="acc2" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head2" class="head ui-widget-header ui-corner-all">cvs:</div>
-	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">cvs diff -r RELEASE_1_0 -r RELEASE_1_1</div>		<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">cvs update -C path/file.ext</div>				<div class="desc"># get clean copy</div></div>
-		<div class="line"><div class="cmd">cvs checkout -r branchOrTag module</div>			<div class="desc"># checkout module from branch or tag</div></div>
-	</div>
-	</li>
-
-	<li id="acc3" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head3" class="head ui-widget-header ui-corner-all">gihub:</div>
-	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">ssh-keygen</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">cat ~/.ssh/id_rsa.pub</div>
-			<div class="desc"># now copy-paste the ~/.ssh/id_rsa.pub to github under 'Add another public key'</div></div>
-	</div>
-	</li>
-
-	<li id="acc4" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head4" class="head ui-widget-header ui-corner-all">eclipse - delete history and index:</div>
-	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core;</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">rm -rf .metadata/.plugins/org.eclipse.core.resources/.history;</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt;</div><div class="desc">&nbsp;</div></div>
-
-		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-		<div class="line"><div class="cmd">[\t ]+$</div><div class="desc"># eclipse: remove trailing whitespaces</div></div>
-	</div>
-	</li>
-
-	<li id="acc5" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head5" class="head ui-widget-header ui-corner-all">db2:</div>
-	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">db2cmd -i -w db2clpsetcp</div><div class="desc"># init db2 envidonment</div></div>
-		<div class="line"><div class="cmd">echo %DB2CLP%</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">db2 get connection state</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">db2 CATALOG TCPIP NODE $NODE_NAME REMOTE $IP_ADDR server $PORT</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">db2 CATALOG DATABASE $DATABASE_NAME AT NODE $NODE_NAME</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">db2 TERMINATE</div><div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">db2 -vf script.sql -t</div><div class="desc"># launch db2 script on CLI</div></div>
-	</div>
-	</li>
-
-	<li id="acc8" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head8" class="head ui-widget-header ui-corner-all">emacs:</div>
-
-	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">M-` / F10</div>		<div class="desc"># menu</div></div>
-		<div class="line"><div class="cmd">C-u C-SPC</div>		<div class="desc"># jump back to the last mark (there's a mark-ring)</div></div>
-		<div class="line"><div class="cmd">C-h v</div>		        <div class="desc"># describe variable</div></div>
-		<div class="line"><div class="cmd">C-x ^ or C-x { or } </div>   <div class="desc"># enlarge-window, shrink-window horizontally / vertically</div></div>
-		<div class="line"><div class="cmd">C-u C-x v =</div>		<div class="desc"># diff against any chosen revision</div></div>
-		<div class="line"><div class="cmd">C-x v u</div>		<div class="desc"># discard changes</div></div>
-		<div class="line"><div class="cmd">C-x v ~</div>		<div class="desc"># checkout any version: master~3   last 3th version</div></div>
-		<div class="line"><div class="cmd">C-x v l</div>		<div class="desc"># commit log: f - view revision; d - view diff</div></div>
-		<div class="line"><div class="cmd">C-x o</div>			<div class="desc"># switch window/frame</div></div>
-		<div class="line"><div class="cmd">C-x v i</div>		<div class="desc"># add to version control system</div></div>
-		<div class="line"><div class="cmd">C-x r RET</div>		<div class="desc"># add to version control system</div></div>
-		<div class="line"><div class="cmd">C-x C-f / C-v</div>		<div class="desc"># find file / find alternate file </div></div>
-		<div class="line"><div class="cmd">C-x 4 f / C-x 4 b</div>	<div class="desc"># find-file-other window / switch-to-buffer-other-window</div></div>
-		<div class="line"><div class="cmd">C-x C-s / C-w</div>		<div class="desc"># save file / save as</div></div>
-		<div class="line"><div class="cmd">C-x s</div>		        <div class="desc"># save-some-buffers</div></div>
-		<div class="line"><div class="cmd"></div>			<div class="desc"># eshell: ifconfig &gt; #<buffer interfaces></div></div>
-		<div class="line"><div class="cmd"></div>			<div class="desc"># show line number or put(line-number-mode 1) to ~/.emacs</div></div>
-		<div class="line"><div class="cmd"></div>			<div class="desc"># cssh ? ssh shell ? (somehow strange)</div></div>
-		<div class="line"><div class="cmd"></div>			<div class="desc"># color-theme-calm-forest ? does not work?</div></div>
-		<div class="line"><div class="cmd"></div>			<div class="desc"># yasnippet - yet another snippets</div></div>
-		<div class="line"><div class="cmd"></div>			<div class="desc"># elpa - emacs lisp package archive</div></div>
-		<div class="line"><div class="cmd">C-x 1</div>			<div class="desc"># delete-other-windows</div></div>
-		<div class="line"><div class="cmd">M-!</div>			<div class="desc"># shell-command</div></div>
-		<div class="line"><div class="cmd">M-;</div>			<div class="desc"># comment out active region</div></div>
-		<div class="line"><div class="cmd">M-/</div>			<div class="desc"># code completion</div></div>
-		<div class="line"><div class="cmd">C-x m</div>			<div class="desc"># email</div></div>
-		<div class="line"><div class="cmd">C-x i</div>			<div class="desc"># insert file</div></div>
-		<div class="line"><div class="cmd">C-c C-C</div>		<div class="desc"># end of git commit message (under emacs)</div></div>
-
-		<div class="line"><div class="cmd">C-h k key / C-h f function</div>	<div class="desc"># describe-key / describe-function</div></div>
-		<div class="line"><div class="cmd">M-x command</div>	<div class="desc"># execute command</div></div>
-		<div class="line"><div class="cmd">C-x e</div>			<div class="desc"># evaluate lisp s-expression - see M-x eval-current-buffer</div></div>
-		<div class="line"><div class="cmd">C-M-f / C-M-b</div>  <div class="desc"># jump forward / backward to matching brace; cursor may need to be behind closing ')'</div></div>
-		<div class="line"><div class="cmd">C-M-x</div>			<div class="desc"># immediate eval</div></div>
-		<div class="line"><div class="cmd">C-M-\</div>			<div class="desc"># auto indent block</div></div>
-		<div class="line"><div class="cmd"><a href="http://lpn.rnbhq.org/tools/xemacs/emacs_ref.html" >emacs command list</a></div>
-			<div class="desc"># emacs command list</div></div>
-		<div class="line"><div class="cmd">M-% / M-x query-replace</div><div class="desc">#</div></div>
-		<div class="line"><div class="cmd">M-x replace-string</div>	<div class="desc">#</div></div>
-		<div class="line"><div class="cmd">M-u</div>			<div class="desc"># upper case for next word</div></div>
-		<div class="line"><div class="cmd">M-l</div>			<div class="desc"># lower case</div></div>
-		<div class="line"><div class="cmd">M-c capitalize</div>		<div class="desc"># (1st letter is upper case)</div></div>
-		<div class="line"><div class="cmd">M-x ispell-region</div>	<div class="desc"># check a small region</div></div>
-		<div class="line"><div class="cmd">M-x ispell-buffer</div>	<div class="desc">#</div></div>
-
-		<div class="line"><div class="cmd">F3 or C-x ( / F4 or C-x e</div>	<div class="desc"># start macro, stop/play macro</div></div>
-		<div class="line"><div class="cmd">M-5 F4 or C-x e</div>	<div class="desc"># repeat macro 5 times</div></div>
-		<div class="line"><div class="cmd">C-u n</div>		        <div class="desc"># repeat n times following command</div></div>
-		<div class="line"><div class="cmd">C-_ / C-/ / C-x u</div>		<div class="desc"># undo</div></div>
-		<div class="line"><div class="cmd">C-f C-_</div>		<div class="desc"># redo</div></div>
-		<div class="line"><div class="cmd">M-x erc</div>		<div class="desc"># start irc inside of emacs</div></div>
-		<div class="line"><div class="cmd">M-a / M-e</div>		<div class="desc"># forward / backward one sentence</div></div>
-		<div class="line"><div class="cmd">C-x h / M-h</div>		<div class="desc"># mark whole buffer / mark paragraph</div></div>
-		<div class="line"><div class="cmd">C-x `</div>			<div class="desc"># jump to the next (compilation error(s), grep results etc.)</div></div>
-		<div class="line"><div class="cmd">M-x compile</div>		<div class="desc"># compile using given program</div></div>
-		<div class="line"><div class="cmd">M-x speedbar</div>		<div class="desc"># (by default shows only python scripts)</div></div>
-		<div class="line"><div class="cmd">C-x C-w</div>		<div class="desc"># writte buffer to a different file</div></div>
-		<div class="line"><div class="cmd">C-x left/right</div>         <div class="desc"># next-buffer / previous-buffer</div></div>
-		<div class="line"><div class="cmd">C-k / M-k</div>	        <div class="desc"># kill line / kill sentence / yank</div></div>
-		<div class="line"><div class="cmd">C-w</div>	                <div class="desc"># kill region (cut)</div></div>
-		<div class="line"><div class="cmd">M-w</div>	                <div class="desc"># kill ring save (copy)</div></div>
-		<div class="line"><div class="cmd">C-y</div>	                <div class="desc"># yank (paste last killed entry)</div></div>
-		<div class="line"><div class="cmd">M-y</div>	                <div class="desc"># cycle back through previous entries in the kill ring</div></div>
-		<div class="line"><div class="cmd">M-x grep</div>		<div class="desc">#</div></div>
-		<div class="line"><div class="cmd">M-$ spell</div>		<div class="desc"># check word</div></div>
-		<div class="line"><div class="cmd">M-x flyspell-mode</div>	<div class="desc"># ? check all document ?</div></div>
-		<div class="line"><div class="cmd">M-&lt;</div>			<div class="desc"># beginning of buffer</div></div>
-		<div class="line"><div class="cmd">M-&gt;</div>			<div class="desc"># end of buffer</div></div>
-		<div class="line"><div class="cmd">M-v / C-v</div>		<div class="desc"># page up/down</div></div>
-		<div class="line"><div class="cmd">C-t / M-t / C-x C-t</div>	<div class="desc"># transpose chars/words/lines</div></div>
-		<div class="line"><div class="cmd">C-l</div>			<div class="desc"># center the screen</div></div>
-		<div class="line"><div class="cmd">M-x shell / eshell </div>	<div class="desc"># start a bash command line</div></div>
-		<div class="line"><div class="cmd">C-x C-f ENTER</div>		<div class="desc"># enters the dired mode (see menu)</div></div>
-		<div class="line"><div class="cmd">M-q</div>			<div class="desc"># rewrap the line in auto-fill-mode</div></div>
-		<div class="line"><div class="cmd">C-u</div>			<div class="desc"># parameter key</div></div>
-		<div class="line"><div class="cmd">C-u 40 C-x f</div>		<div class="desc"># sets the line wrap to 40 characters, M-q # activate the wrap</div></div>
-		<div class="line"><div class="cmd">M-x fill-region</div>	<div class="desc"># reflow all the paragraphs in the area</div></div>
-		<div class="line"><div class="cmd">M-o M-s</div>		<div class="desc"># center for given line width</div></div>
-		<div class="line"><div class="cmd">C-M-s</div>	         	<div class="desc"># isearch-forward-regexp</div></div>
-		<div class="line"><div class="cmd">C-M-%</div>	         	<div class="desc"># query-replace-regexp</div></div>
-		<div class="line"><div class="cmd">C-u M-! command</div>	<div class="desc"># execute command and read-in its output</div></div>
-		<div class="line"><div class="cmd">M-x gdb</div>            <div class="desc"># debugger</div></div>
-		<div class="line"><div class="cmd">C-h i m emacs</div>	        <div class="desc"># ? emacs manual?</div></div>
-		<div class="line"><div class="cmd">M-x dbg</div>	        <div class="desc"># </div></div>
-		<div class="line"><div class="cmd">M-x ediff</div>	        <div class="desc"># </div></div>
-		<div class="line"><div class="cmd">M-x compile</div>	        <div class="desc"># </div></div>
-		<div class="line"><div class="cmd">M-x grep</div>	        <div class="desc"># </div></div>
-		<div class="line"><div class="cmd">M-x man</div>	        <div class="desc"># </div></div>
-		<div class="line"><div class="cmd">M-x gnus</div>	        <div class="desc"># news, email, rss</div></div>
-		<div class="line"><div class="cmd">M-:</div>	                <div class="desc"># documentation reader</div></div>
-		<div class="line"><div class="cmd">M-g g</div>	                <div class="desc"># documentation reader</div></div>
-		<div class="line"><div class="cmd">C-u C-n</div>	        <div class="desc"># move forward 4 lines</div></div>
-		<div class="line"><div class="cmd">C-x C-+ / C-x C--</div>  <div class="desc"># increase / decrease font size</div></div>
-	</div>
-	</li>
-
-	<li id="acc9" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head9" class="head ui-widget-header ui-corner-all">emacs slime:</div>
-	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">M-x slime</div>		<div class="desc"># start slime (Superior Lisp Interaction Mode for Emacs)</div></div>
-		<div class="line"><div class="cmd">C-x C-e</div>		<div class="desc"># repeat last command</div></div>
-		<div class="line"><div class="cmd">M-p</div>			<div class="desc"># reprint last command to the REPL</div></div>
-	</div>
-	</li>
-
-	<li id="acc10" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head10" class="head ui-widget-header ui-corner-all">vimclojure (lein-tarsier):</div>
-	<div class="effect ui-corner-all">
-		<div class="line"><div class="cmd">\sr</div>				<div class="desc"># start REPL</div></div>
-		<div class="line"><div class="cmd">\sR</div>				<div class="desc"># start interactive REPL initialized to have same namespace as current buffer</div></div>
-
-		<div class="line"><div class="cmd">\si</div>				<div class="desc"># prompt for input and lookup with (source)</div></div>
-		<div class="line"><div class="cmd">\fd</div>
-		  <div class="desc"># prompt for input and lookup with (find-doc)</div></div>
-
-		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-		<div class="line"><div class="cmd">\el</div>				<div class="desc"># eval current line</div></div>
-		<div class="line"><div class="cmd">\ef</div>				<div class="desc"># eval current file</div></div>
-		<div class="line"><div class="cmd">\eb</div>				<div class="desc"># eval current current visual block selected</div></div>
-		<div class="line"><div class="cmd">\et</div>				<div class="desc"># send a function to the REPL</div></div>
-		<div class="line"><div class="cmd">\p</div>					<div class="desc"># close a window</div></div>
-
-		<div class="line"><div class="cmd">&nbsp;</div><div class="desc">&nbsp;</div></div>
-
-		<div class="line"><div class="cmd">C-n</div>				<div class="desc"># auto completition</div></div>
-		<div class="line"><div class="cmd">C-w C-w</div>		<div class="desc"># move around split viewports</div></div>
-		<div class="line"><div class="cmd">C-x C-o</div>		<div class="desc"># complete function name (omni completition)</div></div>
-	</div>
-	</li>
-
-	<li id="acc11" class="acc ui-corner-all resizable draggable"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	<div id="head11" class="head ui-widget-header ui-corner-all">usefull stuff:</div>
-	<div class="effect ui-corner-all">
-<!--
-file # info about file
-identify # info about picture file
-type -a ... # type of ...
-echo $SHLVL # shell level
-
-## beginning
-%% end
--->
-		<div class="line"><div class="cmd">/usr/ucb/ps -auxww</div>		<div class="desc"># solaris: full command line</div></div>
-		<div class="line"><div class="cmd">jar tf</div>					<div class="desc"># list files in a jar-file</div></div>
-		<div class="line"><div class="cmd">xfce4-session-logout</div>	<div class="desc">&nbsp;</div></div>
-		<div class="line"><div class="cmd">man -k abc</div>				<div class="desc"># search man pages for abc</div></div>
-		<div class="line"><div class="cmd">$ssh-copy-id user@host</div>	<div class="desc"># Copy ssh keys to user@host to enable password-less ssh logins</div></div>
-		<div class="line"><div class="cmd">sshfs name@server:/path/to/folder /path/to/mount/point</div>
-			<div class="desc"># Mount folder/filesystem through SSH. Install SSHFS from http://fuse.sourceforge.net/sshfs.html.
-				Will allow you to mount a folder security over a network.</div></div>
-
-		<div class="line"><div class="cmd">ssh user@host cat /path/to/remotefile | diff /path/to/localfile -</div>
-			<div class="desc"># Compare a remote file with a local file</div></div>
-	</div>
-	</li>
-	</ul>
-</div>
+        </ul>
+    </div>
 </body>
 </html>
