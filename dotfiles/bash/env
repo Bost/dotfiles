@@ -1,18 +1,5 @@
 #!/bin/bash
 
-# values used by other sripts and applications
-export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
-export JDK_16_HOME=$HOME/java/jdk1.6.0_33
-export JAVA_HOME=$HOME/java/jdk1.7.0_07
-export MAVEN_HOME=$HOME/apache-maven-3.0.4
-export APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
-export APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.1
-export NAILGUN_CLI=$HOME/dev/vimclojure-nailgun-client
-export VIMCLOJURE_SERVER_JAR=$HOME/dev/vimclojure-server/server-2.3.6.jar
-# I need too have $PATH at the end because I want to override the pre-preinstalled java
-export PATH=$HOME/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$APPENG_JAVA_HOME/bin:$NAILGUN_CLI:$PATH
-#export PATH=$MAVEN_HOME/bin:$PATH
-
 uname=`uname -a`
 strMinGw32_dev1="MINGW32_NT-5.2 COR-PARIS-DEV1"
 strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
@@ -22,12 +9,15 @@ strMinGw32_app1="MINGW32_NT-5.2 COR-ALLDM-APP1"
 strLinux="Linux"
 strCygwin_155="CYGWIN_NT-6.1-WOW64 LE-C-155"
 strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
+strLinux_64="Linux desktop-64"
+
 #echo uname: $uname
 
 export isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
 export isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
 export isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
 export isLinux=`expr match "$uname" "$strLinux"`
+export isLinux_64=`expr match "$uname" "$strLinux_64"`
 export isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
 export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
@@ -37,8 +27,84 @@ export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
 #echo isCygwin_dev1: $isCygwin_dev1
 #echo isCygwin_wsles347: $isCygwin_wsles347
 #echo isLinux: $isLinux
+#echo isLinux_64: $isLinux_64
 #echo isMinGw32_wsles347: $isMinGw32_wsles347
 #echo isMinGw32_app1: $isMinGw32_app1
 #echo isCygwin_155: $isCygwin_155
 #echo isMinGw32_155: $isMinGw32_155
 
+if [ "$isLinux" -gt 0 ]; then
+    CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
+    JDK_16_HOME=$HOME/java/jdk1.6.0_33
+    JAVA_HOME=$HOME/java/jdk1.7.0_07
+    MAVEN_HOME=$HOME/apache-maven-3.0.4
+    APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
+    APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.1
+    NAILGUN_CLI=$HOME/dev/vimclojure-nailgun-client
+    VIMCLOJURE_SERVER_JAR=$HOME/dev/vimclojure-server/server-2.3.6.jar
+    # I need too have PATH at the end because I want to override the pre-preinstalled java
+    PATH=$HOME/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$APPENG_JAVA_HOME/bin:$NAILGUN_CLI:$PATH
+
+elif [ "$isCygwin_155" -gt 0 ]; then
+    echo ''
+
+elif [ "$isMinGw32_155" -gt 0 ]; then
+    echo ''
+    # TODO check if VIMCLOJURE_SERVER_JAR works for isMinGw32_155
+    #VIMCLOJURE_SERVER_JAR="c:\\cygwin\\home\\svo02896\\dev\\vimclojure-server\\server-2.3.6.jar"
+
+elif [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
+    VIMCLOJURE_SERVER_JAR="c:\\cygwin\\home\\svo02896\\dev\\vimclojure-server\\server-2.3.6.jar"
+    NAILGUN_CLI="c:\\cygwin\\home\\svo02896\\dev\\vimclojure-nailgun-client\\ng.exe"
+    JDK_16_HOME="c:\\winapp\\Java\\1.6.0_31"
+    JAVA_HOME="c:\\winapp\\Java\\jdk1.7.0_07"
+    APPENG_JAVA_HOME="c:\\winapp-x86\\Google\\appeng-java-sdk-1.7.1"
+    APPENG_PYTHON_HOME="c:\\winapp-x86\\Google\\google_appengine"
+
+    proxy=RSVOBODA:ve6h496q@192.168.2.105:3128
+    export http_proxy=http://$proxy
+    export https_proxy=https://$proxy
+    export ftp_proxy=ftp://$proxy
+
+    export CVSROOT=:pserver:svoboda@cor-paris-src1:/var/cvs/java
+    #echo "CVSROOT="$CVSROOT"   # this is the active CVSROOT"
+
+    echo export TERM=msys
+    echo export http_proxy=$http_proxy
+    echo export https_proxy=$https_proxy
+    echo export ftp_proxy=$ftp_proxy
+    echo export CVSROOT=$CVSROOT"        # this is the active CVSROOT"
+    echo export CVSROOT=:pserver:rostislav.svoboda@cor-src-01:/srv/cvs/alldata"   # alternative CVSROOT"
+    echo ''
+
+    export PATH=$PATH:~/bin
+fi
+
+export VIMCLOJURE_SERVER_JAR
+export NAILGUN_CLI
+export JDK_16_HOME
+export JAVA_HOME
+export APPENG_JAVA_HOME
+export APPENG_PYTHON_HOME
+
+# java classpath separator
+if [ "$isLinux" -eq 0 ]; then
+    JAVA_CP_SEP=";"
+else
+    JAVA_CP_SEP=":"
+fi
+export JAVA_CP_SEP
+
+# values used by other sripts and applications
+#export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar$JAVA_CP_SEP$CLASSPATH
+
+if [ -z $VIMCLOJURE_SERVER_JAR ]; then
+    echo "Error! Need to define location of VimClojure nailgun server jar with:"
+    echo "export VIMCLOJURE_SERVER_JAR=<location>"
+    exit 1
+fi
+ 
+if [ ! -f $VIMCLOJURE_SERVER_JAR ]; then
+    echo "Error! Unable to find VimClojure nailgun server jar at '$VIMCLOJURE_SERVER_JAR'"
+    exit 1
+fi
