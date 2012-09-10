@@ -6,6 +6,14 @@
 
         <title>Cheatsheet</title>
         <script src="jquery/js/jquery-1.7.2.min.js"></script>
+        <script>
+            var jsonVim, jsonEmacs, jsonRest;
+            function go() {
+                addElems(jsonVim, 'vim');
+                addElems(jsonEmacs, 'emacs');
+                addElems(jsonRest, 'rest');
+            }
+        </script>
         <script src="jquery/js/jquery-ui-1.8.20.custom.min.js"></script>
         <script type="text/javascript" src="vim-commands.js"></script>
         <script type="text/javascript" src="emacs-commands.js"></script>
@@ -20,7 +28,7 @@
         -->
 
 </head>
-<body onload="addElems('vim'); addElems('emacs'); addElems('rest')">
+<body onload="go()">
     <div class="draggable buttons">
         <button id="expand_all">expand-all</button>
         <button id="collapse_all">collapse-all</button>

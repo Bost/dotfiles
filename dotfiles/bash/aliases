@@ -124,7 +124,9 @@ elif [ "$isLinux" -gt 0 ]; then
     cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
     cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
     alias clojure='java -cp $cljcp clojure.main'
-    alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
+    # stop nailgunsrv: ng ng-stop
+    alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
+    #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
     #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer 127.0.0.1 &'
     alias kk="krusader --left . --right . &"
     alias g='gvim -c "call Maximize_Window()" --remote-silent'

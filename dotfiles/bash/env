@@ -1,12 +1,17 @@
 #!/bin/bash
 
 # values used by other sripts and applications
-export JDK_16_HOME=~/java/jdk1.6.0_33
-export JAVA_HOME=~/java/jdk1.7.0_06
-export APP_ENG_HOME=~/dev/appengine-java-sdk-1.7.0
-export NAILGUN_CLIENT_HOME=~/dev/vimclojure-nailgun-client
+export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
+export JDK_16_HOME=$HOME/java/jdk1.6.0_33
+export JAVA_HOME=$HOME/java/jdk1.7.0_07
+export MAVEN_HOME=$HOME/apache-maven-3.0.4
+export APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
+export APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.1
+export NAILGUN_CLI=$HOME/dev/vimclojure-nailgun-client
+export VIMCLOJURE_SERVER_JAR=$HOME/dev/vimclojure-server/server-2.3.6.jar
 # I need too have $PATH at the end because I want to override the pre-preinstalled java
-export PATH=~/bin:$JAVA_HOME/bin:$APP_ENG_HOME/bin:$NAILGUN_CLIENT_HOME:$PATH
+export PATH=$HOME/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$APPENG_JAVA_HOME/bin:$NAILGUN_CLI:$PATH
+#export PATH=$MAVEN_HOME/bin:$PATH
 
 uname=`uname -a`
 strMinGw32_dev1="MINGW32_NT-5.2 COR-PARIS-DEV1"
