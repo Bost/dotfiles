@@ -1,4 +1,4 @@
-var json = [
+var jsonRest = [
 ['rm -r ~/.cache/sessions',                       '# execute this the title bar dissapears from xfwm4'],
 ['ls --format=single-column',                     '&nbsp;'],
 ['echo "ls -l" | at midnight',                    '# Execute a command at a given time'],
