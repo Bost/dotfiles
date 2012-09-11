@@ -27,6 +27,7 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
     alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
+    alias nailguncli='ng'
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_155" -gt 0 ]; then
     :
@@ -97,6 +98,7 @@ elif [ "$isLinux" -gt 0 ]; then
     alias clojure='java -cp $cljcp clojure.main'
     # stop nailgunsrv: ng ng-stop
     alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
+    alias nailguncli='ng'
     #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
     #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer 127.0.0.1 &'
     alias kk="krusader --left . --right . &"
