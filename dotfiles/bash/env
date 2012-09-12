@@ -114,6 +114,15 @@ if [ "$isLinux" -eq 0 ]; then
     export deployments_base=$rosv/mbs/deployments
     export deployments_mce=$deployments_base/mce
     export fDefvars=$deployments_base/defvars.sh
+    #echo "fDefvars=$fDefvars"
+    if [ -f "${fDefvars}" ]; then
+        . "${fDefvars}"
+        #echo "File loaded: ${fDefvars}"
+    else
+        echo "ERROR File not found: ${fDefvars}"
+        exit
+    fi
+
     export deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
     JAVA_CP_SEP=";"
 
