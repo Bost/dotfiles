@@ -18,12 +18,15 @@ strMinGw32_app1="MINGW32_NT-5.2 COR-ALLDM-APP1"
 strLinux="Linux"
 strCygwin_155="CYGWIN_NT-6.1-WOW64 LE-C-155"
 strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
+strLinux_64="Linux desktop-64"
+
 #echo uname: $uname
 
 export isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
 export isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
 export isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
 export isLinux=`expr match "$uname" "$strLinux"`
+export isLinux_64=`expr match "$uname" "$strLinux_64"`
 export isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
 export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
@@ -33,8 +36,168 @@ export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
 #echo isCygwin_dev1: $isCygwin_dev1
 #echo isCygwin_wsles347: $isCygwin_wsles347
 #echo isLinux: $isLinux
+#echo isLinux_64: $isLinux_64
 #echo isMinGw32_wsles347: $isMinGw32_wsles347
 #echo isMinGw32_app1: $isMinGw32_app1
 #echo isCygwin_155: $isCygwin_155
 #echo isMinGw32_155: $isMinGw32_155
+
+if [ "$isCygwin_dev1" -gt 0 ]; then
+    echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
+    base=/cygdrive
+    dev=$base/d/users/svoboda/dev
+    winapp=$base/d/users/svoboda/winapp
+
+elif [ "$isCygwin_155" -gt 0 ]; then
+    echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
+    base=/cygdrive
+    dev=$base/c/cygwin/home/svo02896/dev
+    winapp=$base/c/winapp
+    winappX86=$base/c/winapp-x86
+
+elif [ "$isMinGw32_155" -gt 0 ]; then
+    echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
+    dev=$base/c/cygwin/home/svo02896/dev
+    winapp=$base/c/winapp
+
+elif [ "$isCygwin_wsles347" -gt 0 ]; then
+    echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
+    base=/cygdrive
+    dev=$base/d/dev
+    winapp=$base/d/winapp
+
+elif [ "$isMinGw32_dev1" -gt 0 ]; then
+    echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
+    dev=$base/d/users/svoboda/dev
+    winapp=$base/d/users/svoboda/winapp
+
+elif [ "$isMinGw32_app1" -gt 0 ]; then
+    echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
+    dev=$base/d/users/svoboda/dev
+    winapp=$base/d/users/svoboda/winapp
+
+elif [ "$isMinGw32_wsles347" -gt 0 ]; then
+    echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
+    dev=$base/d/dev
+    winapp=$base/d/winapp
+
+elif [ "$isLinux" -gt 0 ]; then
+
+    if [ "$isLinux_64" -gt 0 ]; then
+        echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
+    else
+        echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
+    fi
+
+    dev=$HOME/dev
+
+    JAVA_CP_SEP=":"
+
+    CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
+    JDK_16_HOME=$HOME/java/jdk1.6.0_33
+    JAVA_HOME=$HOME/java/jdk1.7.0_07
+    MAVEN_HOME=$HOME/apache-maven-3.0.4
+    APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
+    APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.1
+    NAILGUN_CLI_HOME=$HOME/dev/vimclojure-nailgun-client
+    VIMCLOJURE_SERVER_JAR=$HOME/dev/vimclojure-server/server-2.3.6.jar
+    # I need too have PATH at the end because I want to override the pre-preinstalled java
+    PATH=$HOME/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$APPENG_JAVA_HOME/bin:$NAILGUN_CLI_HOME:$PATH
+
+else
+    echo "ERROR: No environment detected"
+fi
+
+if [ "$isLinux" -eq 0 ]; then
+    echo "### isLinux: $isLinux ==> Loading non-linux aliases"
+
+    if [ -d "${winapp}" ]; then
+        export winapp
+    else
+        echo "ERROR: Undefined variable winapp: ${winapp}"
+        #exit
+    fi
+
+    export qDrive=$base/q
+    export rosv=$qDrive/transfer/rosv
+    export deployments_base=$rosv/mbs/deployments
+    export deployments_mce=$deployments_base/mce
+    export fDefvars=$deployments_base/defvars.sh
+    #echo "fDefvars=$fDefvars"
+    if [ -f "${fDefvars}" ]; then
+        . "${fDefvars}"
+        #echo "File loaded: ${fDefvars}"
+    else
+        echo "ERROR File not found: ${fDefvars}"
+        exit
+    fi
+
+    export deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
+    JAVA_CP_SEP=";"
+
+#else
+#    echo "Linux aliases already loaded"
+fi
+
+if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
+    VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
+    NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
+    JDK_16_HOME=$winapp/Java/1.6.0_31
+    JAVA_HOME=$winapp/Java/jdk1.7.0_07
+    APPENG_JAVA_HOME=$winappX86/Google/appeng-java-sdk-1.7.1
+    APPENG_PYTHON_HOME=$winappX86/Google/google_appengine
+
+    export APPENGINE_HOME=c:\\winapp-x86\\Google\\appeng-java-sdk-1.7.1
+    #export APPENGINE_HOME=/home/svo02896/appeng-java-sdk-1.7.1
+    #export APPENGINE_HOME=/cygdrive/c/winapp-x86/Google/appeng-java-sdk-1.7.1
+
+    proxy=RSVOBODA:ve6h496q@192.168.2.105:3128
+    export http_proxy=http://$proxy
+    export https_proxy=https://$proxy
+    export ftp_proxy=ftp://$proxy
+
+    export CVSROOT=:pserver:svoboda@cor-paris-src1:/var/cvs/java
+    #echo "CVSROOT="$CVSROOT"   # this is the active CVSROOT"
+
+    echo export TERM=msys
+    echo export http_proxy=$http_proxy
+    echo export https_proxy=$https_proxy
+    echo export ftp_proxy=$ftp_proxy
+    echo export CVSROOT=$CVSROOT"        # this is the active CVSROOT"
+    echo export CVSROOT=:pserver:rostislav.svoboda@cor-src-01:/srv/cvs/alldata"   # alternative CVSROOT"
+    echo ''
+
+    PATH=$HOME/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$APPENG_JAVA_HOME/bin:$NAILGUN_CLI_HOME:$PATH
+    #PATH=$PATH:~/bin
+fi
+
+export dev
+export JAVA_CP_SEP
+export VIMCLOJURE_SERVER_JAR
+export NAILGUN_CLI_HOME
+export JDK_16_HOME
+export JAVA_HOME
+export APPENG_JAVA_HOME
+export APPENG_PYTHON_HOME
+export PATH
+
+
+# values used by other sripts and applications
+#export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar$JAVA_CP_SEP$CLASSPATH
+
+if [ -z $VIMCLOJURE_SERVER_JAR ]; then
+    echo "ERROR: Need to define location of VimClojure nailgun server jar with:"
+    echo "export VIMCLOJURE_SERVER_JAR=<location>"
+    #exit 1
+fi
+ 
+if [ ! -f $VIMCLOJURE_SERVER_JAR ]; then
+    echo "ERROR: Unable to find VimClojure nailgun server jar at '$VIMCLOJURE_SERVER_JAR'"
+    #exit 1
+fi
+
+function take {
+    mkdir -p $1
+    cd $1
+}
 

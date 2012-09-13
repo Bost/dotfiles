@@ -85,22 +85,25 @@ $(function() {
     });
 });
 
-function addElems(id) {
+function addElems(data, id) {
     var ni = document.getElementById(id);
     if (!ni) {
+        console.warn('document.getElementById(',ni,') == null')
         return;
     }
+    console.log('ni: ',ni)
     //var numi = document.getElementById('theValue');
     //var num = (document.getElementById('theValue').value -1)+ 2;
     //numi.value = num;
     //var divIdName = 'my'+num+'Div';
     //newdiv.setAttribute('id',divIdName);
-    for (var i = 0; i < json.length; i++) {
-        cmd = json[i][0];
-        desc = json[i][1];
+    var i;
+    for (i = 0; i < data.length; i++) {
+        cmd = data[i][0];
+        desc = data[i][1];
         var newdiv = document.createElement('div');
         newdiv.innerHTML = '<div class="line"><div class="cmd">'+cmd+'</div><div class="desc">'+desc+'</div></div>';
         ni.appendChild(newdiv);
     }
+    console.log('elems added: ',i)
 }
-
