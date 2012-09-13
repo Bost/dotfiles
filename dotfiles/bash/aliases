@@ -18,88 +18,60 @@ alias l='ls -CF'
 alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 
 if [ "$isCygwin_dev1" -gt 0 ]; then
-    echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
-    base=/cygdrive
-    dev=$base/d/users/svoboda/dev
-    export winapp=$base/d/users/svoboda/winapp
-    VIMRC=$base/h/.vimrc
+    :
+    #echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
 
     alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isCygwin_155" -gt 0 ]; then
-    echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
-    base=/cygdrive
-    dev=$base/c/cygwin/home/svo02896/dev
-    export winapp=$base/c/winapp
-    #VIMRC=$base/h/.vimrc.dark
+    :
+    #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
+    alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
+    alias nailguncli='ng'
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_155" -gt 0 ]; then
-    echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
-    base=
-    dev=$base/c/cygwin/home/svo02896/dev
-    export winapp=$base/c/winapp
-    VIMRC=$base/c/cygwin/home/svo02896/.vimrc
+    :
+    #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_wsles347" -gt 0 ]; then
-    echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
-    base=/cygdrive
-    dev=$base/d/dev
-    export winapp=$base/d/winapp
-    VIMRC=$base/h/.vimrc.dark
+    :
+    #echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
 
     alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_dev1" -gt 0 ]; then
-    echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
-    base=
-    dev=$base/d/users/svoboda/dev
-    export winapp=$base/d/users/svoboda/winapp
-    #VIMRC=$ASE/h/.vimrc.msgit
-    #VIMRC=$base/h/.vimrc.dark
-    VIMRC=$base/h/.vimrc
+    :
+    #echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
 
     alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_app1" -gt 0 ]; then
-    echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
-    base=
-    dev=$base/d/users/svoboda/dev
-    export winapp=$base/d/users/svoboda/winapp
-    #VIMRC=$ASE/h/.vimrc.msgit
-    # this works just well
-    VIMRC=/d/winapp/Vim/_vimrc
+    :
+    #echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
 
     alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
 elif [ "$isMinGw32_wsles347" -gt 0 ]; then
-    echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
-    base=
-    dev=$base/d/dev
-    export winapp=$base/d/winapp
-    VIMRC=$base/h/.vimrc.dark
+    :
+    #echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
 
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isLinux" -gt 0 ]; then
+    :
 
-    strLinux_64="Linux desktop-64"
-    isLinux_64=`expr match "$uname" "$strLinux_64"`
+    #if [ "$isLinux_64" -gt 0 ]; then
+    #    echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
+    #else
+    #    echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
+    #fi
 
-    if [ "$isLinux_64" -gt 0 ]; then
-        echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
-    else
-        echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
-    fi
-
-    base=
-    dev=$HOME/dev
-    VIMRC=$HOME/.vimrc
-    SUDO_UPDATE="sudo apt-get update"
+    sudo_update="sudo apt-get update"
+    alias update=$sudo_update
+    alias upd=$sudo_update
     alias ll="ls -la"
     alias lock="xflock4"
-    alias update=$SUDO_UPDATE
-    alias upd=$SUDO_UPDATE
 
-    SUDO_UPGRADE="sudo apt-get upgrade"
-    alias upgrade=$SUDO_UPGRADE
-    alias upg=$SUDO_UPGRADE
+    sudo_upgrade="sudo apt-get upgrade"
+    alias upgrade=$sudo_upgrade
+    alias upg=$sudo_upgrade
 
     alias uu='upd && upg'
     alias ud='sudo apt-get dist-upgrade'
@@ -124,31 +96,20 @@ elif [ "$isLinux" -gt 0 ]; then
     cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
     cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
     alias clojure='java -cp $cljcp clojure.main'
-    alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
+    # stop nailgunsrv: ng ng-stop
+    alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
+    alias nailguncli='ng'
+    #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
     #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer 127.0.0.1 &'
     alias kk="krusader --left . --right . &"
     alias g='gvim -c "call Maximize_Window()" --remote-silent'
-else
-    echo "ERROR No environment detected"
+#else
+    #echo "ERROR No environment detected"
 fi
 
 if [ "$isLinux" -eq 0 ]; then
-    echo "### isLinux: $isLinux ==> Loading non-linux aliases"
-
-    export qDrive=$base/q
-    export rosv=$qDrive/transfer/rosv
-    deployments_base=$rosv/mbs/deployments
-    deployments_mce=$deployments_base/mce
-
-    fDefvars=$deployments_base/defvars.sh
-    #echo "fDefvars=$fDefvars"
-    if [ -f "${fDefvars}" ]; then
-        . "${fDefvars}"
-        #echo "File loaded: ${fDefvars}"
-    else
-        echo "ERROR File not found: ${fDefvars}"
-        exit
-    fi
+    :
+    #echo "### isLinux: $isLinux ==> Loading non-linux aliases"
 
     alias c:='cd $base/c'
     alias d:='cd $base/d'
@@ -180,32 +141,8 @@ if [ "$isLinux" -eq 0 ]; then
 
     alias mbssum='$deployments_base/mbssum.sh'
 
-    deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
     alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
 
-    # TODO this stuff should be in the env file
-    proxy=RSVOBODA:ve6h496q@192.168.2.105:3128
-    export http_proxy=http://$proxy
-    export https_proxy=https://$proxy
-    export ftp_proxy=ftp://$proxy
-
-    #echo "http_proxy="$http_proxy
-    #echo "https_proxy="$https_proxy
-    #echo "ftp_proxy="$ftp_proxy
-
-    echo ''
-
-    export CVSROOT=:pserver:svoboda@cor-paris-src1:/var/cvs/java
-    #echo "CVSROOT="$CVSROOT"   # this is the active CVSROOT"
-
-    echo export TERM=msys
-    echo export http_proxy=$http_proxy
-    echo export https_proxy=$https_proxy
-    echo export ftp_proxy=$ftp_proxy
-    echo export CVSROOT=$CVSROOT"        # this is the active CVSROOT"
-    echo export CVSROOT=:pserver:rostislav.svoboda@cor-src-01:/srv/cvs/alldata"   # alternative CVSROOT"
-
-    export PATH=$PATH:~/bin
 #else
 #    echo "Linux aliases already loaded"
 fi
@@ -218,8 +155,9 @@ alias home='cd $dev/..'
 alias webcli='cd $dev/webcli'
 alias cheatsheet='cd $dev/cheatsheet'
 alias hello='cd $dev/helloworld'
+alias foo='cd $dev/foo'
 alias dev='cd $dev'
-alias envp='env | grep ^PATH'
+alias envp='env | grep ^PATH='
 
 
 alias vim='vim -u $VIMRC'
@@ -251,10 +189,10 @@ alias cdd='cd -'
 alias ls='ls -G'
 
 # use full command and options names - no gitconfig aliases
-GIT_ADD_ALL="echo 'git add .'; git add ."
-alias ga=$GIT_ADD_ALL
-alias gadd=$GIT_ADD_ALL
-alias gdd=$GIT_ADD_ALL
+git_add_all="echo 'git add .'; git add ."
+alias ga=$git_add_all
+alias gadd=$git_add_all
+alias gdd=$git_add_all
 alias gg='git gui &'
 alias gtg='git tag'
 alias gtag='git tag'
@@ -263,6 +201,7 @@ alias grbs='git rebase'
 #alias gdf='git diff'
 #alias gp='git push'
 alias gpl='git pull'
+alias gps='cd $dev/cheatsheet/dotfiles/vim-pathogen && git submodule foreach git pull origin master'
 alias gcl='git clone'
 alias gau='git add --update'
 alias gss='git status --short'
@@ -295,11 +234,6 @@ alias md='mkdir -p'
 
 #alias cp='cp -i'
 #alias mv='mv -i'
-
-function take {
-    mkdir -p $1
-    cd $1
-}
 
 # example:
 # alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'

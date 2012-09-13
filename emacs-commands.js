@@ -1,4 +1,4 @@
-var json = [
+var jsonEmacs = [
 ['M-` / F10',                       '# menu'],
 ['C-u C-SPC',                       '# jump back to the last mark (there is a mark-ring)'],
 ['C-h v',                           '# describe variable'],

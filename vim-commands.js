@@ -1,4 +1,4 @@
-var json = [
+jsonVim = [
 /*
 Text Object (type :h text-objects in vim for a complete description)
 
@@ -36,7 +36,7 @@ ci" : Change the content inside a string
 ['R r ~',                                    '" replace mode, replace 1 char, replace char and move right'],
 ['30|',                                      '" jump to column 30'],
 [':r! command',                              '" execute command and read in its output'],
-['.!',                                       '" execute current line in the shell. This does not work somehow'],
+['.!sh',                                     '" execute current line in the shell'],
 ['`. / \'.',                                 '" last edit location (~ key)/ line (&auml; key)'],
 ['; ,',                                      '" jump cursor forward, backward'],
 ['zz zb zt / M L H',                         '" move window / jump cursor middle, bottom, top'],
@@ -69,9 +69,9 @@ ci" : Change the content inside a string
 [':g/regexp/p',                              '" \"grep\"'],
 ['g; / g,',                                  '" cycle back / forward to the last places you were in insert mode'],
 ['s / S',                                    '" delete current char / clear current line and go to insert mode'],
-['gf',                                       '" open file under cursor'],
+['gf',                                       '" open file under cursor (goto file)'],
+['C-w f',                                    '" open file under cursor in a new window'],
 ['cc',                                       '" change current line'],
-['C-o / C-i',                                '" retrace the movements in the file backwards / forwards'],
 ['C-a / C-x',                                '" increment / decrement next number on the current line'],
 ['xp',                                       '" swap chars'],
 ['C-n C-p',                                  '" word completition in insert mode'],
@@ -102,7 +102,7 @@ ci" : Change the content inside a string
 ['&gt; / &lt; / =',                          '" shift text right / left / align text'],
 ['C-] / C-T',                                '" follow link / go back to previous topic in vim help'],
 [':changes g; g,',                           '" move forth/back in the change list'],
-[':jumps C-O / C-I',                         '" back/forth in the jump list (older/newer)'],
+[':jumps / C-o / C-i',                       '" back/forth in the jump list (older/newer)'],
 
 ['&nbsp;',                                   '&nbsp;'],
 ['vim-fugitive',                             '&nbsp;'],
