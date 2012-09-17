@@ -115,6 +115,15 @@ if [ "$isLinux" -eq 0 ]; then
     export deployments_base=$rosv/mbs/deployments
     export deployments_mce=$deployments_base/mce
     export fDefvars=$deployments_base/defvars.sh
+    #echo "fDefvars=$fDefvars"
+    if [ -f "${fDefvars}" ]; then
+        . "${fDefvars}"
+        #echo "File loaded: ${fDefvars}"
+    else
+        echo "ERROR File not found: ${fDefvars}"
+        exit
+    fi
+
     export deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
     JAVA_CP_SEP=";"
 
@@ -124,6 +133,7 @@ fi
 
 if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
+    VIMCLOJURE_SERVER_JAR=c:\\cygwin\\home\\svo02896\\dev\\vimclojure-server\\server-2.3.6.jar
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     JDK_16_HOME=$winapp/Java/1.6.0_31
     JAVA_HOME=$winapp/Java/jdk1.7.0_07
