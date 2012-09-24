@@ -101,6 +101,7 @@ elif [ "$isLinux" -gt 0 ]; then
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.1
     NAILGUN_CLI_HOME=$HOME/dev/vimclojure-nailgun-client
     VIMCLOJURE_SERVER_JAR=$HOME/dev/vimclojure-server/server-2.3.6.jar
+    export APPENGINE_HOME=$APPENG_JAVA_HOME
     # I need too have PATH at the end because I want to override the pre-preinstalled java
     PATH=$HOME/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$APPENG_JAVA_HOME/bin:$NAILGUN_CLI_HOME:$PATH
 
@@ -141,6 +142,7 @@ fi
 
 if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
+    VIMCLOJURE_SERVER_JAR=c:\\cygwin\\home\\svo02896\\dev\\vimclojure-server\\server-2.3.6.jar
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     JDK_16_HOME=$winapp/Java/1.6.0_31
     JAVA_HOME=$winapp/Java/jdk1.7.0_07
