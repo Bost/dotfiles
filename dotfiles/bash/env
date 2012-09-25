@@ -189,8 +189,3 @@ if [ ! -f $VIMCLOJURE_SERVER_JAR ]; then
     #exit 1
 fi
 
-function take {
-    mkdir -p $1
-    cd $1
-}
-
