@@ -175,26 +175,28 @@ fi
 
 export dev
 export JAVA_CP_SEP
-export VIMCLOJURE_SERVER_JAR
-export NAILGUN_CLI_HOME
 export JDK_16_HOME
 export JAVA_HOME
-export APPENG_JAVA_HOME
-export APPENG_PYTHON_HOME
 export PATH
 
+if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
+    export VIMCLOJURE_SERVER_JAR
+    export NAILGUN_CLI_HOME
+    export APPENG_JAVA_HOME
+    export APPENG_PYTHON_HOME
 
-# values used by other sripts and applications
-#export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar$JAVA_CP_SEP$CLASSPATH
+    # values used by other sripts and applications
+    #export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar$JAVA_CP_SEP$CLASSPATH
 
-if [ -z $VIMCLOJURE_SERVER_JAR ]; then
-    echo "ERROR: Need to define location of VimClojure nailgun server jar with:"
-    echo "export VIMCLOJURE_SERVER_JAR=<location>"
-    #exit 1
-fi
- 
-if [ ! -f $VIMCLOJURE_SERVER_JAR ]; then
-    echo "ERROR: Unable to find VimClojure nailgun server jar at '$VIMCLOJURE_SERVER_JAR'"
-    #exit 1
+    if [ -z $VIMCLOJURE_SERVER_JAR ]; then
+        echo "ERROR: Need to define location of VimClojure nailgun server jar with:"
+        echo "export VIMCLOJURE_SERVER_JAR=<location>"
+        #exit 1
+    fi
+
+    if [ ! -f $VIMCLOJURE_SERVER_JAR ]; then
+        echo "ERROR: Unable to find VimClojure nailgun server jar at '$VIMCLOJURE_SERVER_JAR'"
+        #exit 1
+    fi
 fi
 
