@@ -1,0 +1,241 @@
+#!/bin/bash
+
+# aliases and functions
+
+alias less='less -r'
+alias whence='type -a'
+alias ls='ls -F --color=tty'
+alias dir='ls --color=auto --format=vertical'
+alias vdir='ls --color=auto --format=long'
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
+
+#alias cp='cp -i'
+#alias mv='mv -i'
+#alias grep='grep --color'
+
+alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
+
+if [ "$isCygwin_dev1" -gt 0 ]; then
+    :
+    #echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
+
+    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+elif [ "$isCygwin_155" -gt 0 ]; then
+    :
+    #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
+
+    alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
+    alias nailguncli='ng'
+    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+elif [ "$isMinGw32_155" -gt 0 ]; then
+    :
+    #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
+
+    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+elif [ "$isCygwin_wsles347" -gt 0 ]; then
+    :
+    #echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
+
+    alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+elif [ "$isMinGw32_dev1" -gt 0 ]; then
+    :
+    #echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
+
+    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+elif [ "$isMinGw32_app1" -gt 0 ]; then
+    :
+    #echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
+
+    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+elif [ "$isMinGw32_wsles347" -gt 0 ]; then
+    :
+    #echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
+
+    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+elif [ "$isLinux" -gt 0 ]; then
+    :
+
+    #if [ "$isLinux_64" -gt 0 ]; then
+    #    echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
+    #else
+    #    echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
+    #fi
+
+    sudo_update="sudo apt-get update"
+    alias update=$sudo_update
+    alias upd=$sudo_update
+    alias ll="ls -la"
+    alias lock="xflock4"
+
+    sudo_upgrade="sudo apt-get upgrade"
+    alias upgrade=$sudo_upgrade
+    alias upg=$sudo_upgrade
+
+    alias uu='upd && upg'
+    alias ud='sudo apt-get dist-upgrade'
+    alias cx='chmod +x'
+    alias k9='kill -9'
+    # I guess '2> /dev/null' redirects errors to /dev/null
+    alias f='find ./ 2> /dev/null'
+
+    # -y  Assume Yes to all queries and do not prompt
+    alias inst="sudo apt-get install -y"
+    alias arem="sudo apt-get autoremove -y"
+
+    alias suspend='sudo pm-suspend'
+
+    #Search the package list for a regex pattern
+    #TODO alias sea='apt-cache search'
+
+    alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
+    # clojure classpath
+    cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
+    cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.0.jar
+    cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
+    cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
+    alias clojure='java -cp $cljcp clojure.main'
+    # stop nailgunsrv: ng ng-stop
+    alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
+    alias nailguncli='ng'
+    #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
+    #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer 127.0.0.1 &'
+    alias kk="krusader --left . --right . &"
+    alias g='gvim -c "call Maximize_Window()" --remote-silent'
+#else
+    #echo "ERROR No environment detected"
+fi
+
+if [ "$isLinux" -eq 0 ]; then
+    :
+    #echo "### isLinux: $isLinux ==> Loading non-linux aliases"
+
+    alias c:='cd $base/c'
+    alias d:='cd $base/d'
+    alias q:='cd $qDrive'
+
+    alias rosv='cd $rosv'
+    alias conf='cd $rosv/mbs/conf'
+    alias deployments='cd $deployments_mce'
+    alias scl='cd $dev/scl-directory'
+
+    alias dem='cd $dev/mbs/dem'
+    alias mce='cd $dev/mbs/mce'
+    alias std='cd $dev/mbs/std'
+    alias bmw='cd $dev/mbs/bmw'
+    alias mbb='cd $dev/mbs/mbb'
+
+    alias jacarta='cd $dev/jacarta'
+    alias light='cd $dev/jacarta.light'
+    alias hre='cd $dev/jacarta.hre'
+    alias pfandbrief='cd $dev/pfandbrief'
+
+    alias services='cd $dev/xml-services'
+    alias xml='cd $dev/xml-services'
+
+    #alias prod='echo ssh rsvoboda@172.17.31.184; ssh rsvoboda@172.17.31.184'
+    #alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
+    alias prod='echo ssh rsvoboda@194.99.105.205; ssh rsvoboda@194.99.105.205'
+    alias abnt='echo ssh rsvoboda@194.99.105.206; ssh rsvoboda@194.99.105.206'
+
+    alias mbssum='$deployments_base/mbssum.sh'
+
+    alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
+
+#else
+#    echo "Linux aliases already loaded"
+fi
+
+alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
+alias unexport='unset'
+alias e='echo'
+# this is a rather speculative $home location :)
+alias home='cd $dev/..'
+alias webcli='cd $dev/webcli'
+alias cheatsheet='cd $dev/cheatsheet'
+alias hello='cd $dev/helloworld'
+alias foo='cd $dev/foo'
+alias dev='cd $dev'
+alias envp='env | grep ^PATH='
+
+
+alias vim='vim -u $VIMRC'
+alias vi=vim
+alias v=vim
+#alias g='gvim -u $VIMRC &'
+
+alias cls='clear'
+# under linux you may try to use pgreg
+alias prep='ps -ef | grep '
+alias png='ping -c 5 www.google.com'
+alias c='cat'
+alias less='less -r'
+#alias rm='rm -i'
+alias whence='type -a'
+alias ls='ls -F --color=tty'
+#alias ls='ls --color=auto'
+alias dir='ls --color=auto --format=vertical'
+#alias dir='dir --color=auto'
+alias vdir='ls --color=auto --format=long'
+#alias vdir='vdir --color=auto'
+alias ll='ls -l'
+alias l='ls -CF'
+
+#alias l='ls -lAh'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias cdd='cd -'
+alias ls='ls -G'
+
+# use full command and options names - no gitconfig aliases
+git_add_all="echo 'git add .'; git add ."
+alias ga=$git_add_all
+alias gadd=$git_add_all
+alias gdd=$git_add_all
+alias gg='git gui &'
+alias gtg='git tag'
+alias gtag='git tag'
+alias gbr='git branch'
+alias grbs='git rebase'
+#alias gdf='git diff'
+#alias gp='git push'
+alias gpl='git pull'
+alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
+alias gcl='git clone'
+alias gau='git add --update'
+alias gss='git status --short'
+alias gst='git status'
+alias gco='git checkout'
+alias gci='git commit'
+#alias gdm='git diff master'
+#alias gd='git diff | mate'
+#alias gnp='git-notpushed'
+#alias grm='git status | grep deleted | awk '
+
+alias sc='script/console'
+alias h='history'
+alias hrep='history | grep '
+
+#alias tu='top -o cpu'
+#alias tm='top -o vsize'
+#alias r='rake'
+#alias g='git status'
+#alias mkdir='nocorrect mkdir'
+#alias cp='nocorrect cp'
+alias md='mkdir -p'
+#alias mv='nocorrect mv'
+#alias e='exit'
+#alias where='command -v'
+#alias ff='open -a Firefox'
+#alias o='open . &'
+#alias ungit='find . -name '
+#alias less='less -R'
+
+#alias cp='cp -i'
+#alias mv='mv -i'
+
+# example:
+# alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
+alias cvs-reset='cvs update -C -l -d -P '
+#echo "HOME=$HOME"
