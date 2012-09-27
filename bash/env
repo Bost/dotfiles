@@ -1,14 +1,6 @@
 #!/bin/bash
 
 # values used by other sripts and applications
-export JDK_16_HOME=~/java/jdk1.6.0_33
-export JAVA_HOME=~/java/jdk1.7.0_06
-export APPENG_JAVA_HOME=~/dev/appengine-java-sdk-1.7.0
-export APPENG_PYTHON_HOME=~/dev/google_appengine-python
-export NAILGUN_CLIENT_HOME=~/dev/vimclojure-nailgun-client
-# I need too have $PATH at the end because I want to override the pre-preinstalled java
-export PATH=~/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME:$PATH
-
 uname=`uname -a`
 strMinGw32_dev1="MINGW32_NT-5.2 COR-PARIS-DEV1"
 strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
@@ -93,17 +85,19 @@ elif [ "$isLinux" -gt 0 ]; then
 
     JAVA_CP_SEP=":"
 
-    CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
-    JDK_16_HOME=$HOME/java/jdk1.6.0_33
-    JAVA_HOME=$HOME/java/jdk1.7.0_07
+    CLASSPATH=$dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
     MAVEN_HOME=$HOME/apache-maven-3.0.4
     APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.1
-    NAILGUN_CLI_HOME=$HOME/dev/vimclojure-nailgun-client
-    VIMCLOJURE_SERVER_JAR=$HOME/dev/vimclojure-server/server-2.3.6.jar
-    export APPENGINE_HOME=$APPENG_JAVA_HOME
-    # I need too have PATH at the end because I want to override the pre-preinstalled java
-    PATH=$HOME/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$APPENG_JAVA_HOME/bin:$NAILGUN_CLI_HOME:$PATH
+    NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
+    VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
+
+    JDK_16_HOME=$HOME/java/jdk1.6.0_33
+    JAVA_HOME=$HOME/java/jdk1.7.0_07
+    NAILGUN_CLIENT_HOME=$dev/vimclojure-nailgun-client
+    AAPPENG_HOME=$APPENG_JAVA_HOME
+    # I need too have $PATH at the end because I want to override the pre-preinstalled java
+    PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
 
 else
     echo "ERROR: No environment detected"
@@ -165,12 +159,11 @@ if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     APPENG_JAVA_HOME=$winappX86/Google/appeng-java-sdk-1.7.1
     APPENG_PYTHON_HOME=$winappX86/Google/google_appengine
 
-    export APPENGINE_HOME=c:\\winapp-x86\\Google\\appeng-java-sdk-1.7.1
+    APPENGINE_HOME=c:\\winapp-x86\\Google\\appeng-java-sdk-1.7.1
     #export APPENGINE_HOME=/home/svo02896/appeng-java-sdk-1.7.1
     #export APPENGINE_HOME=/cygdrive/c/winapp-x86/Google/appeng-java-sdk-1.7.1
 
-    PATH=$HOME/bin:$JAVA_HOME/bin:$APPENG_PYTHON_HOME:$APPENG_JAVA_HOME/bin:$NAILGUN_CLI_HOME:$PATH
-    #PATH=$PATH:~/bin
+    PATH=$PATH:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
 fi
 
 export dev
@@ -178,6 +171,8 @@ export JAVA_CP_SEP
 export JDK_16_HOME
 export JAVA_HOME
 export PATH
+export APPENGINE_HOME
+
 
 if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     export VIMCLOJURE_SERVER_JAR
