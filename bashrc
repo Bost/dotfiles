@@ -8,6 +8,7 @@ function readFile {
         #exit 1
 	fi
 }
+dotfilesHOME=~/dev/dotfiles
 bashFilesHome=$dotfilesHOME/bash
 if [ ! -d "$bashFilesHome" ]; then
 	bashFilesHome=/h/dev/cheatsheet/dotfiles_/bash

@@ -88,7 +88,7 @@ elif [ "$isLinux" -gt 0 ]; then
     CLASSPATH=$dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
     MAVEN_HOME=$HOME/apache-maven-3.0.4
     APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
-    APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.1
+    APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.2
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
 
