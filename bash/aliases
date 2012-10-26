@@ -10,6 +10,7 @@ alias vdir='ls --color=auto --format=long'
 alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
+alias f='find'
 
 #alias cp='cp -i'
 #alias mv='mv -i'
