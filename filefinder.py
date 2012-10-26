@@ -42,6 +42,9 @@ def grep(search_str, files):
         print 'Files found: '+str(cntFilesFound)
 
 def findJavaCall():
+    print 'Current dir: '+os.getcwd()
+    print 'Searching for: '+search_str
+    print ''
     dirs = [
         # TODO put hier dirnames where to search
         '',
