@@ -1,0 +1,466 @@
+" Initialization -------------------------------------------------------------
+set shortmess+=I                " Don't show the Vim welcome screen.
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" My Bundles here:
+"
+" original repos on github
+Bundle 'tpope/vim-fugitive'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'tpope/vim-rails.git'
+" vim-scripts repos
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+" non github repos
+Bundle 'git://git.wincent.com/command-t.git'
+" ...
+Bundle "c9s/bufexplorer.git"
+Bundle "vim-scripts/csv.vim.git"
+"Bundle "wincent/Command-T.git"
+"Bundle "vim-scripts/FuzzyFinder.git"
+Bundle "sjbach/lusty.git"
+Bundle "fholgado/minibufexpl.vim.git"
+Bundle "scrooloose/nerdcommenter.git"
+Bundle "scrooloose/nerdtree.git"
+"Bundle "tpope/vim-fugitive.git"
+Bundle "tpope/vim-repeat.git"
+Bundle "xolox/vim-session.git"
+Bundle "tpope/vim-unimpaired.git"
+Bundle "vim-scripts/VimClojure.git"
+"Bundle "hsitz/VimOrganizer.git"
+Bundle "vim-scripts/YankRing.vim.git"
+Bundle "sjl/gundo.vim.git"
+Bundle "tpope/vim-surround.git"
+
+" behave mswin
+behave xterm
+"filetype plugin indent on     " required!
+"
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
+
+
+"let mapleader = ","
+"let mapleader = " "
+set showcmd                     " display incomplete commands
+set hidden                      " handle multiple buffers more efficiently
+set laststatus=2                " Always show status line
+set encoding=utf-8
+set visualbell t_vb=    " Use null visual bell (no beeps or flashes).
+
+" TODO test this block
+set scrolloff=3         " Context lines at top and bottom of display.
+set sidescrolloff=5     " Context columns at left and right.
+set sidescroll=1        " Number of chars to scroll when scrolling sideways.
+
+" GUI only stuff -------------------------------------------------------------
+if has('gui_running')
+    " switch off the menu in the gui window
+    "set guioptions=gt
+
+    " horizontal scrollbar
+    set guioptions+=b
+
+    " remove menubar
+    set go+=m
+endif
+
+if has('mac')
+elseif has('unix')
+    set guifont=DejaVu\ Sans\ Mono\ 9
+elseif has('win32')
+    set guifont=Lucida_Console:h8:w5
+endif
+"set guifont=Monospace\ 9
+"set guifont=Lucida_Console:h8:cDEFAULT
+"set guifont=lucida_console:h8:w5
+"set lines=64 columns=160
+
+set cursorline          " highlight current line
+"set linebreak            " TODO what is linebreak for?
+
+"colorscheme default
+"colorscheme darkblue
+try
+    "colorscheme evening
+    "colorscheme vividchalk
+    "colorscheme vexorian
+    "colorscheme autumn
+    "colorscheme autumnleaf
+    "colorscheme biogoo
+    "colorscheme watermark
+    colorscheme wombat
+    "colorscheme wombatnew
+    "colorscheme wombat256
+    "colorscheme xoria254
+    "colorscheme blackboard
+    "colorscheme inkpot
+catch
+    "colorscheme slate
+    colorscheme desert
+endtry
+
+set smartindent
+"set autoindent
+
+set tabstop=4
+set expandtab                   " use spaces, not tabs
+"set showtabline=2               " show the tabs right below the menu
+set shiftwidth=4 softtabstop=4
+set backspace=indent,eol,start  " backspace through everything in insert mode
+
+"imap jj <Esc>
+"imap :: <Esc>
+
+" visualise a word and switch to insert mode
+"map <space> viw
+" visualise a word
+"map <space> vw
+
+" only for cheatsheet.html: jump to the 1st '#' character, then replace
+" everything in the html tag with '# ' and then reinsert the '# ' string
+"map <F3> f#cit# 
+
+" Use colours that work well on a dark background (Console is usually black)
+"set background=dark
+
+" Show EOL type and last modified timestamp, right after the filename
+set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
+" improve the help system, kind of tab completition
+
+set wildmenu                    " Use menu for completions
+set wildmode=full
+
+" Here's the vimclojure stuff. You'll need to adjust the NailgunClient
+" setting if you're on windows or have other problems.
+"let vimclojure#FuzzyIndent=1
+let vimclojure#HighlightBuiltins=1
+let vimclojure#HighlightContrib=1
+let vimclojure#DynamicHighlighting=1
+let vimclojure#ParenRainbow=1
+"let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
+let vimclojure#WantNailgun = 1
+let vimclojure#NailgunClient = "c:\\cygwin\\home\\svo02896\\dev\\vimclojure-nailgun-client\\ng.exe"  " the ng is already in env PATH
+"let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
+let vimclojure#NailgunPort = "2113"
+let vimclojure#SplitPos = "right"        " open the split window on the right side
+"let vimclojure#SplitSize = 80
+
+" Shortcuts ------------------------------------------------------------------
+
+" Press twice the <Leader> to exit insert mode without a manual <ESC> or <C-C>
+imap <Leader><Leader> <Esc>l
+
+" paste from system clipboard in normal and insert mode
+imap <Leader>v <Esc>"*P
+nmap <Leader>v "*P
+
+" in insert mode: delete from cursor to the EOL and switch back to insert mode
+imap <Leader>d <Esc>lDa
+
+" Character coding for empty characters
+set listchars=tab:>-,eol:$,precedes:>,trail:_
+" Set symbols for tabs like textmate
+
+" Toggle hidden (empty) chars
+nmap <Leader>l :set list!<CR>
+"set list
+
+
+" Toggle line wrapping
+nmap <Leader>wr :set wrap!<CR>
+
+" Save file
+nmap <Leader>w :w<CR>
+nmap <C-s> :w<CR>
+imap <C-s> <Esc>:w<CR>i
+imap <Leader>w <Esc>:w<CR>i
+
+" Toggle line numbers
+"nmap <Leader>n :set nu!<CR>
+
+" ============================================================================
+" try the shortcuts below:
+" ============================================================================
+
+" Quit the current window
+nmap <Leader>q :q<CR>
+
+" Delete the current buffer
+nmap <Leader>bd :bd<CR>
+
+" Show a list of all open buffers
+"nmap <Leader>b :ls<CR>
+map <Leader>b :TMiniBufExplorer<cr>
+
+" Jump from window to window
+nmap <Leader><Tab> <C-W>w
+
+" Jump from tab to tab
+nmap <Leader><S-Tab> :tabn<CR>
+
+" Quickly 'maximize' a split - these shortcuts colide with VimClojure
+"nmap <Leader>mw <C-W>\|
+"nmap <Leader>mh <C-W>_
+"nmap <Leader>me <C-W>=
+"nmap <Leader>mm <Leader>mw<Leader>mh
+
+" Quickly 'maximize' the entire UI - 999 is a bit lot :(
+nmap <Leader>Mw :set columns=250<CR>
+nmap <Leader>Mh :set lines=69<CR>
+nmap <Leader>MM <Leader>Mw<Leader>Mh
+
+" Switch windows with CTRL + hjkl
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+
+" Split up/down/left/right
+nmap <Leader>sk :sp \| Explore<CR>
+nmap <Leader>sj :rightbelow sp \| Explore<CR>
+nmap <Leader>sh :vsp \| Explore<CR>
+nmap <Leader>sl :rightbelow vsp \| Explore<CR>
+
+"nmap <Leader>er :tabnew ~/.vimrc<CR>
+nmap <Leader>ev :e ~/.vimrc<CR>
+nmap <Leader>ec :e ~/dev/cheatsheet/cheatsheet.html<CR>
+nmap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
+nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
+nmap <Leader>r :source ~/.vimrc<CR>
+"nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
+nmap <Leader>so :OpenSession<CR>
+nmap <Leader>ss :SaveSession<CR>
+
+" this is the default mouse setting
+"if has('mouse')
+"    set mouse=a
+"endif
+
+
+" Syntax ---------------------------------------------------------------------
+syntax on
+filetype plugin indent on
+set showmatch
+setlocal foldmethod=syntax
+"set foldlevel=1
+set foldlevelstart=99          "remove folds
+
+"set linespace=4                "add pixels between lines space for easy reading
+
+
+" Editor Behavior -------------------------------------------------------------
+set wrap
+set relativenumber       " Shows relative line numbers
+"set number               " Shows line number
+set showmode             " show the current mode
+set ruler                " Always show the cursor position.
+
+" Searching
+set hlsearch             " highlight matches
+set incsearch            " incremental searching
+set ignorecase           " searches are case insensitive...
+set smartcase            " ... unless they contain at least one capital letter
+
+" Backup files are for the weak
+"set nobackup
+"set nowritebackup
+
+" Wait-time for a key code or mapped keysequence to complete, default 1000
+"set timeoutlen=500
+
+" Horizontal split
+nmap <leader>- :sp<CR>
+" Vertical split
+"nmap <leader>\ :vsp<CR>
+
+nmap <leader>cdf :color default<CR>:colorscheme default<CR>
+nmap <leader>st :Gstatus<CR>
+" <CR> allows me to use this shortcut from the :Gstatus window
+nmap <leader>df <CR>:Gdiff<CR>
+nmap <leader>gci :Gcommit<CR>
+nmap <leader>gps :Git push<CR>
+
+try                     " these keys are not mapped under windows by default
+    unmap <S-Up>
+    unmap <S-Down>
+catch
+endtry
+
+nmap <S-Up> [e
+nmap <S-Down> ]e
+
+vmap <S-Left> <gv
+vmap <S-Right> >gv
+vmap <S-Up> [egv
+vmap <S-Down> ]egv
+
+" Remap 0 to first non-blank character
+"map 0 ^
+
+" Rename current file
+function! RenameFile()
+    let old_name = expand("%")
+    let new_name = input('New file name: ', expand('%'))
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>n :call RenameFile()<cr>
+
+" use <leader>Ctrl+L to toggle the line number counting method
+function! g:ToggleNuMode()
+  if &nu == 1
+     set rnu
+  else
+     set nu
+  endif
+endfunction
+nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
+
+" Quickly switch buffers (prev/next)
+" it doesn't work somehow TODO try to see why using :map or :nmap
+"try
+    "unmap <C-P>
+    "unmap <C-N>
+"catch
+"endtry
+"nmap <C-P> :bp<CR>
+"nmap <C-N> :bp<CR>
+
+
+if has('win32')
+    nmap <leader>a :call Email("Andreas")<CR>
+    nmap <leader>j :call Email("Jürgen")<CR>
+    nmap <leader>y :call Email("Yvonne")<CR>
+    nmap <leader>t :call Email("Thomas")<CR>
+endif
+
+" TODO what is the 1st buffer nr? 0 or 1?
+nmap <leader>0 :0b<CR>
+nmap <leader>1 :1b<CR>
+nmap <leader>2 :2b<CR>
+nmap <leader>3 :3b<CR>
+nmap <leader>4 :4b<CR>
+nmap <leader>5 :5b<CR>
+nmap <leader>6 :6b<CR>
+nmap <leader>7 :7b<CR>
+nmap <leader>8 :8b<CR>
+nmap <leader>9 :9b<CR>
+
+nmap <leader>10 :10b<CR>
+nmap <leader>11 :11b<CR>
+nmap <leader>12 :12b<CR>
+nmap <leader>13 :13b<CR>
+nmap <leader>14 :14b<CR>
+nmap <leader>15 :15b<CR>
+nmap <leader>16 :16b<CR>
+nmap <leader>17 :17b<CR>
+nmap <leader>18 :18b<CR>
+nmap <leader>19 :19b<CR>
+nmap <leader>20 :20b<CR>
+nmap <leader>21 :21b<CR>
+nmap <leader>22 :22b<CR>
+nmap <leader>23 :23b<CR>
+nmap <leader>24 :24b<CR>
+nmap <leader>25 :25b<CR>
+nmap <leader>26 :26b<CR>
+nmap <leader>27 :27b<CR>
+nmap <leader>28 :28b<CR>
+nmap <leader>29 :29b<CR>
+nmap <leader>30 :30b<CR>
+nmap <leader>31 :31b<CR>
+nmap <leader>32 :32b<CR>
+nmap <leader>33 :33b<CR>
+nmap <leader>34 :34b<CR>
+nmap <leader>35 :35b<CR>
+nmap <leader>36 :36b<CR>
+nmap <leader>37 :37b<CR>
+nmap <leader>38 :38b<CR>
+nmap <leader>39 :39b<CR>
+
+autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
+
+" start maximized
+if has('win32')
+    au GUIEnter * simalt ~x
+else
+    " this works when gvim -c "call Maximize_Window()"
+    function! Maximize_Window()
+        silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+    endfunction
+endif
+
+" Insure Clean Pasting w/autoindented code - this is probably not usefull
+"nnoremap <F2> :set invpaste paste?<CR>
+"set pastetoggle=<F2>
+
+nmap <F2> :set hlsearch!<CR>
+
+" use <cword> to get the word under the cursor, and search for it in the
+" current directory and all subdirectories; open the quickfix window when done
+" In fact only 'j' (not jump to the firs location) should not print all
+" matches
+map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
+"map <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
+
+nnoremap <F5> :GundoToggle<CR>
+nnoremap <silent> <F9> :NERDTreeToggle<CR>
+nnoremap <silent> <F11> :YRShow<CR>
+"noremap <silent> <F12> :call VimCommanderToggle()<CR>
+nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
+" Start python on F5
+autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
+
+"autocmd VimEnter * <Plug>CMiniBufExplorer
+"autocmd VimEnter * NERDTree
+
+"autocmd MiniBufExplorer VimEnter       * call <SID>DEBUG('-=> VimEnter AutoCmd', 10) |let g:miniBufExplorerAutoUpdate = 1 |call <SID>AutoUpdate(-1,bufnr("%"))
+
+let g:session_autoload = 'no'
+let g:session_autosave = 'no'
+
+" no auto load - it destroys the saved session; use \b to load it
+let g:miniBufExplorerNoAutoLoad = 1
+
+" move in windows using C-w h/j/k/l
+let g:miniBufExplMapWindowNavVim = 1
+
+" move in windows using C-w left / down / up / right
+"let g:miniBufExplMapWindowNavArrows = 0
+
+" C-Tab / C-S-Tab
+let g:miniBufExplMapCTabSwitchBufs = 1
+
+" for other explorers like TagList
+"let g:miniBufExplModSelTarget = 1
+
+
+" Show syntax highlighting groups for word under cursor
+nmap <C-S-P> :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+    if !exists("*synstack")
+        return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+
