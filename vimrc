@@ -43,7 +43,7 @@ Bundle "tpope/vim-surround.git"
 
 " behave mswin
 behave xterm
-"filetype plugin indent on     " required!
+filetype plugin indent on     " required!
 "
 " Brief help
 " :BundleList          - list configured bundles
@@ -63,7 +63,17 @@ set laststatus=2                " Always show status line
 set encoding=utf-8
 set visualbell t_vb=    " Use null visual bell (no beeps or flashes).
 
-" TODO test this block
+" Keep the working line in the center of the window. This is a toggle, so you
+" can bounce between centered-working-line scrolling and normal scrolling by
+" issuing the keystroke again.
+"
+" From this message on the MacVim mailing list:
+" http://groups.google.com/group/vim_mac/browse_thread/thread/31876ef48063e487/133e06134425bda1?hl=enÂ¿e06134425bda1
+"
+map <Leader>zz  :let &scrolloff=999-&scrolloff<CR>
+
+set virtualedit=block   " Makes visual block mode awesome
+
 set scrolloff=3         " Context lines at top and bottom of display.
 set sidescrolloff=5     " Context columns at left and right.
 set sidescroll=1        " Number of chars to scroll when scrolling sideways.
@@ -145,6 +155,9 @@ set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(ex
 
 set wildmenu                    " Use menu for completions
 set wildmode=full
+" Make tab completion work more like it does in bash.
+"set wildmode=longest,list
+
 
 " Here's the vimclojure stuff. You'll need to adjust the NailgunClient
 " setting if you're on windows or have other problems.
@@ -259,8 +272,12 @@ syntax on
 filetype plugin indent on
 set showmatch
 setlocal foldmethod=syntax
-"set foldlevel=1
-set foldlevelstart=99          "remove folds
+set foldlevel=1
+" set foldlevelstart=99          "remove folds
+
+" TODO Test: Space to toggle folds
+nnoremap <Space> za
+vnoremap <Space> za
 
 "set linespace=4                "add pixels between lines space for easy reading
 
@@ -277,6 +294,15 @@ set hlsearch             " highlight matches
 set incsearch            " incremental searching
 set ignorecase           " searches are case insensitive...
 set smartcase            " ... unless they contain at least one capital letter
+
+" Center the display line after searches. (This makes it *much* easier to see
+" the matched line.)
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
 
 " Backup files are for the weak
 "set nobackup
@@ -310,6 +336,10 @@ vmap <S-Left> <gv
 vmap <S-Right> >gv
 vmap <S-Up> [egv
 vmap <S-Down> ]egv
+
+" Shortcut for :bnext and :bprevious.
+nmap <A-Left> :bprevious<CR>
+nmap <A-Right> :bnext<CR>
 
 " Remap 0 to first non-blank character
 "map 0 ^
