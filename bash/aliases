@@ -143,6 +143,7 @@ if [ "$isLinux" -eq 0 ]; then
     alias mbssum='$deployments_base/mbssum.sh'
 
     alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
+    alias g='gvim'
 
 #else
 #    echo "Linux aliases already loaded"
@@ -161,11 +162,7 @@ alias foo='cd $dev/foo'
 alias dev='cd $dev'
 alias envp='env | grep ^PATH='
 
-
-alias vim='vim -u $VIMRC'
-alias vi=vim
-alias v=vim
-#alias g='gvim -u $VIMRC &'
+alias v='vim'
 
 alias cls='clear'
 # under linux you may try to use pgreg
