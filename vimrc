@@ -16,35 +16,43 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'tpope/vim-rails.git'
+"Bundle 'tpope/vim-rails.git'
 " vim-scripts repos
+
+" {{{ finders:
+" L9 is required by FuzzyFinder
 Bundle 'L9'
 Bundle 'FuzzyFinder'
-" non github repos
-Bundle 'git://git.wincent.com/command-t.git'
-" ...
-Bundle "c9s/bufexplorer.git"
-Bundle "vim-scripts/csv.vim.git"
-"Bundle "wincent/Command-T.git"
-"Bundle "vim-scripts/FuzzyFinder.git"
-Bundle "sjbach/lusty.git"
-Bundle "fholgado/minibufexpl.vim.git"
-Bundle "scrooloose/nerdcommenter.git"
-Bundle "scrooloose/nerdtree.git"
-"Bundle "tpope/vim-fugitive.git"
-Bundle "tpope/vim-repeat.git"
-Bundle "xolox/vim-session.git"
-Bundle "tpope/vim-unimpaired.git"
-Bundle "vim-scripts/VimClojure.git"
-"Bundle "hsitz/VimOrganizer.git"
-Bundle "vim-scripts/YankRing.vim.git"
-Bundle "sjl/gundo.vim.git"
-Bundle "tpope/vim-surround.git"
+"Bundle 'vim-scripts/FuzzyFinder.git'
 
-" behave mswin
-behave xterm
-filetype plugin indent on     " required!
-"
+Bundle 'kien/ctrlp.vim.git'
+
+" LustyExplorer - requires Ruby
+"Bundle 'sjbach/lusty.git'
+
+" Command-T - requires Ruby
+"Bundle 'git://git.wincent.com/command-t.git'
+"Bundle 'wincent/Command-T.git'
+" }}}
+
+Bundle 'vim-scripts/csv.vim.git'
+
+" {{{ Buffer Explorers:
+"Bundle 'c9s/bufexplorer.git'
+Bundle 'fholgado/minibufexpl.vim.git'
+" }}}
+
+Bundle 'scrooloose/nerdcommenter.git'
+Bundle 'scrooloose/nerdtree.git'
+Bundle 'tpope/vim-repeat.git'
+Bundle 'xolox/vim-session.git'
+Bundle 'tpope/vim-unimpaired.git'
+Bundle 'vim-scripts/VimClojure.git'
+"Bundle 'hsitz/VimOrganizer.git'
+" colides with: ctrlp.vim.git: Bundle 'vim-scripts/YankRing.vim.git'
+Bundle 'sjl/gundo.vim.git'
+Bundle 'tpope/vim-surround.git'
+
 " Brief help
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install(update) bundles
@@ -54,6 +62,9 @@ filetype plugin indent on     " required!
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
 
+" behave mswin
+behave xterm
+filetype plugin indent on     " required!
 
 "let mapleader = ","
 "let mapleader = " "
@@ -198,11 +209,12 @@ nmap <Leader>l :set list!<CR>
 " Toggle line wrapping
 nmap <Leader>wr :set wrap!<CR>
 
-" Save file
+" {{{ Save file
 nmap <Leader>w :w<CR>
+imap <Leader>w <Esc>:w<CR>i
 nmap <C-s> :w<CR>
 imap <C-s> <Esc>:w<CR>i
-imap <Leader>w <Esc>:w<CR>i
+" }}}
 
 " Toggle line numbers
 "nmap <Leader>n :set nu!<CR>
@@ -295,14 +307,14 @@ set incsearch            " incremental searching
 set ignorecase           " searches are case insensitive...
 set smartcase            " ... unless they contain at least one capital letter
 
-" Center the display line after searches. (This makes it *much* easier to see
-" the matched line.)
+" {{{ Center the display line after searches
 nnoremap n nzz
 nnoremap N Nzz
 nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
+" }}}
 
 " Backup files are for the weak
 "set nobackup
@@ -377,14 +389,15 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 "nmap <C-N> :bp<CR>
 
 
-if has('win32')
+" win32unix is for cygwin
+if has('win32') || has('win32unix')
     nmap <leader>a :call Email("Andreas")<CR>
     nmap <leader>j :call Email("Jürgen")<CR>
     nmap <leader>y :call Email("Yvonne")<CR>
     nmap <leader>t :call Email("Thomas")<CR>
 endif
 
-" TODO what is the 1st buffer nr? 0 or 1?
+" {{{ Jump To Buffer 
 nmap <leader>0 :0b<CR>
 nmap <leader>1 :1b<CR>
 nmap <leader>2 :2b<CR>
@@ -426,6 +439,7 @@ nmap <leader>36 :36b<CR>
 nmap <leader>37 :37b<CR>
 nmap <leader>38 :38b<CR>
 nmap <leader>39 :39b<CR>
+" }}}
 
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
 
@@ -451,6 +465,9 @@ nmap <F2> :set hlsearch!<CR>
 " matches
 map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
 "map <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
+
+" execute current line and catch the output
+map <F8> yyp!!sh<CR><Esc>
 
 nnoremap <F5> :GundoToggle<CR>
 nnoremap <silent> <F9> :NERDTreeToggle<CR>
@@ -492,5 +509,4 @@ function! <SID>SynStack()
     endif
     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-
 
