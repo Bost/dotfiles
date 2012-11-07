@@ -10,25 +10,33 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 
-" My Bundles here:
-"
-" original repos on github
+" Original repos on github
 Bundle 'tpope/vim-fugitive'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'tpope/vim-rails.git'
 " vim-scripts repos
-Bundle 'L9'
-Bundle 'FuzzyFinder'
+Bundle 'kien/ctrlp.vim.git'
+
+" python_ifold doesn't work somehow
+"Bundle 'python_ifold'
+
+Bundle 'skyl/vim-config-python-ide.git'
+
+"Bundle 'L9'
+"Bundle 'FuzzyFinder'
 " non github repos
-Bundle 'git://git.wincent.com/command-t.git'
+"Bundle 'git://git.wincent.com/command-t.git'
 " ...
 Bundle "c9s/bufexplorer.git"
 Bundle "vim-scripts/csv.vim.git"
 "Bundle "wincent/Command-T.git"
 "Bundle "vim-scripts/FuzzyFinder.git"
 Bundle "sjbach/lusty.git"
-Bundle "fholgado/minibufexpl.vim.git"
+
+" minibufexpl is bugging me
+"Bundle "fholgado/minibufexpl.vim.git"
+
 Bundle "scrooloose/nerdcommenter.git"
 Bundle "scrooloose/nerdtree.git"
 "Bundle "tpope/vim-fugitive.git"
@@ -37,9 +45,16 @@ Bundle "xolox/vim-session.git"
 Bundle "tpope/vim-unimpaired.git"
 Bundle "vim-scripts/VimClojure.git"
 "Bundle "hsitz/VimOrganizer.git"
-Bundle "vim-scripts/YankRing.vim.git"
+"Bundle "vim-scripts/YankRing.vim.git"
 Bundle "sjl/gundo.vim.git"
 Bundle "tpope/vim-surround.git"
+Bundle "mileszs/ack.vim.git"
+
+" powerline does no refresh when saving .vimrc; restart needed
+Bundle "Lokaltog/vim-powerline.git"
+
+" Easily interact with tmux from vim
+Bundle "benmills/vimux.git"
 
 " behave mswin
 behave xterm
@@ -53,7 +68,6 @@ filetype plugin indent on     " required!
 "
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
-
 
 "let mapleader = ","
 "let mapleader = " "
@@ -81,13 +95,13 @@ set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 " GUI only stuff -------------------------------------------------------------
 if has('gui_running')
     " switch off the menu in the gui window
-    "set guioptions=gt
+    set guioptions=gt
 
     " horizontal scrollbar
     set guioptions+=b
 
     " remove menubar
-    set go+=m
+    "set go+=m
 endif
 
 if has('mac')
@@ -150,9 +164,8 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 "set background=dark
 
 " Show EOL type and last modified timestamp, right after the filename
-set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
+"set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
 " improve the help system, kind of tab completition
-
 set wildmenu                    " Use menu for completions
 set wildmode=full
 " Make tab completion work more like it does in bash.
@@ -198,18 +211,23 @@ nmap <Leader>l :set list!<CR>
 " Toggle line wrapping
 nmap <Leader>wr :set wrap!<CR>
 
-" Save file
-nmap <Leader>w :w<CR>
-nmap <C-s> :w<CR>
-imap <C-s> <Esc>:w<CR>i
-imap <Leader>w <Esc>:w<CR>i
+" {{{ Save file
+nmap <Leader>w :update<CR>
+nmap <C-s> :update<CR>
+imap <C-s> <Esc>:update<CR>i
+imap <Leader>w <Esc>:update<CR>i
+
+"nmap <Leader>w :w<CR>
+"nmap <C-s> :w<CR>
+"imap <C-s> <Esc>:w<CR>i
+"imap <Leader>w <Esc>:w<CR>i
+" }}}
+
+" Sort selected text
+vnoremap <Leader>s :sort<CR>
 
 " Toggle line numbers
 "nmap <Leader>n :set nu!<CR>
-
-" ============================================================================
-" try the shortcuts below:
-" ============================================================================
 
 " Quit the current window
 nmap <Leader>q :q<CR>
@@ -217,9 +235,12 @@ nmap <Leader>q :q<CR>
 " Delete the current buffer
 nmap <Leader>bd :bd<CR>
 
-" Show a list of all open buffers
+" Show a list of all open buffers with BufExplorer
+nmap <Leader>b :BufExplorerHorizontalSplit<CR>
+
+" Show a list of all open buffers with MiniBufExplorer
 "nmap <Leader>b :ls<CR>
-map <Leader>b :TMiniBufExplorer<cr>
+"map <Leader>b :TMiniBufExplorer<cr>
 
 " Jump from window to window
 nmap <Leader><Tab> <C-W>w
@@ -253,10 +274,18 @@ nmap <Leader>sl :rightbelow vsp \| Explore<CR>
 
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
 nmap <Leader>ev :e ~/.vimrc<CR>
-nmap <Leader>ec :e ~/dev/cheatsheet/cheatsheet.html<CR>
+nmap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
 nmap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
 nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
-nmap <Leader>r :source ~/.vimrc<CR>
+
+" {{{ .vimrc reloading
+" explicit reloading
+" nmap <Leader>r :source ~/.vimrc<CR>
+
+" Automatical reloading
+autocmd! bufwritepost ~/.vimrc source %
+" }}}
+
 "nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
 nmap <Leader>so :OpenSession<CR>
 nmap <Leader>ss :SaveSession<CR>
@@ -270,9 +299,14 @@ nmap <Leader>ss :SaveSession<CR>
 " Syntax ---------------------------------------------------------------------
 syntax on
 filetype plugin indent on
-set showmatch
-setlocal foldmethod=syntax
-set foldlevel=1
+
+" Sriefly jump to matching bracket
+"set showmatch
+" Substitute globaly
+"set gdefault
+
+"setlocal foldmethod=syntax
+"set foldlevel=1
 " set foldlevelstart=99          "remove folds
 
 " TODO Test: Space to toggle folds
@@ -304,9 +338,14 @@ nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
 
-" Backup files are for the weak
+" {{{ backups
+set backupdir=/tmp
+set directory=/tmp " Don't clutter my dirs up with swp and tmp files
+
 "set nobackup
 "set nowritebackup
+"set noswapfile      " i.e. keep evething in memory
+" }}}
 
 " Wait-time for a key code or mapped keysequence to complete, default 1000
 "set timeoutlen=500
@@ -439,11 +478,14 @@ else
     endfunction
 endif
 
+" {{{ better copy & paste
 " Insure Clean Pasting w/autoindented code - this is probably not usefull
 "nnoremap <F2> :set invpaste paste?<CR>
-"set pastetoggle=<F2>
+set pastetoggle=<F2>
+set clipboard=unnamed
+" }}}
 
-nmap <F2> :set hlsearch!<CR>
+"nmap <F2> :set hlsearch!<CR>
 
 " use <cword> to get the word under the cursor, and search for it in the
 " current directory and all subdirectories; open the quickfix window when done
@@ -493,4 +535,22 @@ function! <SID>SynStack()
     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
+" {{{ colorcolumn
+" set colorcolumn=80
+set colorcolumn=0
+highlight ColorColumn guibg=black
+" }}}
 
+" {{{ Emacs-like beginning and end of line
+nmap <c-e> $
+imap <c-e> <c-o>$
+
+nmap <c-a> ^
+imap <c-a> <c-o>^
+" }}}
+
+" Select region from last edited line to the end of last pasted text
+nnoremap <leader>v '.V`]
+
+" Open the grep replacement
+nnoremap <leader>a :Ack
