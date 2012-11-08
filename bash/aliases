@@ -1,22 +1,102 @@
 #!/bin/bash
 
-# aliases and functions
+alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 
+alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
+alias unexport='unset'
+alias e='echo'
+alias envp='env | grep ^PATH='
+
+alias v='vim'
+
+alias cls='clear'
+# under linux you may try to use pgreg
+alias prep='ps -ef | grep '
+alias png='ping -c 5 www.google.com'
+alias c='cat'
+alias less='less -r'
+#alias rm='rm -i'
+alias whence='type -a'
+#alias ls='ls --color=auto'
+alias dir='ls --color=auto --format=vertical'
+#alias dir='dir --color=auto'
+alias vdir='ls --color=auto --format=long'
+#alias vdir='vdir --color=auto'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias cdd='cd -'
+
+# use full command and options names - no gitconfig aliases
+git_add_all="echo 'git add .'; git add ."
+alias ga=$git_add_all
+alias gadd=$git_add_all
+alias gdd=$git_add_all
+alias gg='git gui &'
+alias gtg='git tag'
+alias gtag='git tag'
+alias gbr='git branch'
+alias grbs='git rebase'
+#alias gdf='git diff'
+#alias gp='git push'
+alias gpl='git pull'
+#alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
+alias gcl='git clone'
+alias gau='git add --update'
+alias gss='git status --short'
+alias gst='git status'
+alias gco='git checkout'
+alias gci='git commit'
+#alias gdm='git diff master'
+#alias gd='git diff | mate'
+#alias gnp='git-notpushed'
+#alias grm='git status | grep deleted | awk '
+
+alias sc='script/console'
+alias h='history'
+alias hrep='history | grep '
+
+#alias tu='top -o cpu'
+#alias tm='top -o vsize'
+#alias r='rake'
+#alias g='git status'
+#alias mkdir='nocorrect mkdir'
+#alias cp='nocorrect cp'
+alias md='mkdir -p'
+#alias mv='nocorrect mv'
+#alias e='exit'
+#alias where='command -v'
+#alias ff='open -a Firefox'
+#alias o='open . &'
+#alias ungit='find . -name '
+#alias less='less -R'
+
+#alias cp='cp -i'
+#alias mv='mv -i'
+
+# example:
+# alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
+alias cvs-reset='cvs update -C -l -d -P '
 alias less='less -r'
 alias whence='type -a'
-alias ls='ls -F --color=tty'
 alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
-alias ll='ls -lh'
-alias la='ls -A'
-alias l='ls -CF'
+
+alias l="ls -lAh --color"    # -A does not print the . and .. entries
+alias ll="ls -lA --color"
+#alias ls='ls -F --color=tty'
+#alias l='ls -lAh'
+#alias ls='ls -G'
+#alias ls='ls -F --color=tty'
+#alias ll='ls -lh'
+#alias ll='ls -l'
+#alias l='ls -CF'
+#alias la='ls -A'
 alias f='find'
 
 #alias cp='cp -i'
 #alias mv='mv -i'
 #alias grep='grep --color'
-
-alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
 
 if [ "$isCygwin_dev1" -gt 0 ]; then
     :
@@ -67,7 +147,6 @@ elif [ "$isLinux" -gt 0 ]; then
     sudo_update="sudo apt-get update"
     alias update=$sudo_update
     alias upd=$sudo_update
-    alias ll="ls -la"
     alias lock="xflock4"
 
     sudo_upgrade="sudo apt-get upgrade"
@@ -150,9 +229,8 @@ if [ "$isLinux" -eq 0 ]; then
 #    echo "Linux aliases already loaded"
 fi
 
-alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
-alias unexport='unset'
-alias e='echo'
+
+
 # this is a rather speculative $home location :)
 alias home='cd $dev/..'
 alias webcli='cd $dev/webcli'
@@ -161,81 +239,5 @@ alias dotfiles='cd $dev/dotfiles'
 alias trackle='cd $dev/trackle'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
-alias envp='env | grep ^PATH='
 
-alias v='vim'
 
-alias cls='clear'
-# under linux you may try to use pgreg
-alias prep='ps -ef | grep '
-alias png='ping -c 5 www.google.com'
-alias c='cat'
-alias less='less -r'
-#alias rm='rm -i'
-alias whence='type -a'
-alias ls='ls -F --color=tty'
-#alias ls='ls --color=auto'
-alias dir='ls --color=auto --format=vertical'
-#alias dir='dir --color=auto'
-alias vdir='ls --color=auto --format=long'
-#alias vdir='vdir --color=auto'
-alias ll='ls -l'
-alias l='ls -CF'
-
-#alias l='ls -lAh'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias cdd='cd -'
-alias ls='ls -G'
-
-# use full command and options names - no gitconfig aliases
-git_add_all="echo 'git add .'; git add ."
-alias ga=$git_add_all
-alias gadd=$git_add_all
-alias gdd=$git_add_all
-alias gg='git gui &'
-alias gtg='git tag'
-alias gtag='git tag'
-alias gbr='git branch'
-alias grbs='git rebase'
-#alias gdf='git diff'
-#alias gp='git push'
-alias gpl='git pull'
-alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
-alias gcl='git clone'
-alias gau='git add --update'
-alias gss='git status --short'
-alias gst='git status'
-alias gco='git checkout'
-alias gci='git commit'
-#alias gdm='git diff master'
-#alias gd='git diff | mate'
-#alias gnp='git-notpushed'
-#alias grm='git status | grep deleted | awk '
-
-alias sc='script/console'
-alias h='history'
-alias hrep='history | grep '
-
-#alias tu='top -o cpu'
-#alias tm='top -o vsize'
-#alias r='rake'
-#alias g='git status'
-#alias mkdir='nocorrect mkdir'
-#alias cp='nocorrect cp'
-alias md='mkdir -p'
-#alias mv='nocorrect mv'
-#alias e='exit'
-#alias where='command -v'
-#alias ff='open -a Firefox'
-#alias o='open . &'
-#alias ungit='find . -name '
-#alias less='less -R'
-
-#alias cp='cp -i'
-#alias mv='mv -i'
-
-# example:
-# alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
-alias cvs-reset='cvs update -C -l -d -P '
-#echo "HOME=$HOME"
