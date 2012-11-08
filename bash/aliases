@@ -162,6 +162,7 @@ elif [ "$isLinux" -gt 0 ]; then
 
     # -y  Assume Yes to all queries and do not prompt
     alias inst="sudo apt-get install -y"
+    alias uninst="sudo apt-get remove -y"
     alias arem="sudo apt-get autoremove -y"
 
     alias suspend='sudo pm-suspend'

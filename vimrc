@@ -19,9 +19,8 @@ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 " {{{ finders:
 " L9 is required by FuzzyFinder
-Bundle 'L9'
-Bundle 'FuzzyFinder'
-"Bundle 'vim-scripts/FuzzyFinder.git'
+"Bundle 'L9'
+"Bundle 'FuzzyFinder'
 
 Bundle 'kien/ctrlp.vim.git'
 
@@ -193,7 +192,11 @@ let vimclojure#DynamicHighlighting=1
 let vimclojure#ParenRainbow=1
 "let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
 let vimclojure#WantNailgun = 1
-let vimclojure#NailgunClient = "c:\\cygwin\\home\\svo02896\\dev\\vimclojure-nailgun-client\\ng.exe"  " the ng is already in env PATH
+if has('win32') || has('win32unix')
+    let vimclojure#NailgunClient = "c:\\cygwin\\home\\svo02896\\dev\\vimclojure-nailgun-client\\ng.exe"
+else
+    let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
+endif
 "let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
 let vimclojure#NailgunPort = "2113"
 let vimclojure#SplitPos = "right"        " open the split window on the right side
@@ -562,7 +565,8 @@ highlight ColorColumn guibg=black
 nmap <c-e> $
 imap <c-e> <c-o>$
 
-nmap <c-a> ^
+" colides with that plugin for increment/decrement
+"nmap <c-a> ^
 imap <c-a> <c-o>^
 " }}}
 
