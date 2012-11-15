@@ -7,7 +7,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
-" required! 
+" required!
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
@@ -169,7 +169,7 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 
 " only for cheatsheet.html: jump to the 1st '#' character, then replace
 " everything in the html tag with '# ' and then reinsert the '# ' string
-"map <F3> f#cit# 
+"map <F3> f#cit#
 
 " Use colours that work well on a dark background (Console is usually black)
 "set background=dark
@@ -240,6 +240,9 @@ imap <Leader>w <Esc>:update<CR>i
 
 " Sort selected text
 vnoremap <Leader>s :sort<CR>
+
+" Sort selected text
+map <Leader>x :e /tmp/scratch<CR>
 
 " Toggle line numbers
 "nmap <Leader>n :set nu!<CR>
@@ -439,7 +442,7 @@ if has('win32') || has('win32unix')
     nmap <leader>t :call Email("Thomas")<CR>
 endif
 
-" {{{ Jump To Buffer 
+" {{{ Jump To Buffer
 nmap <leader>0 :0b<CR>
 nmap <leader>1 :1b<CR>
 nmap <leader>2 :2b<CR>
@@ -575,3 +578,18 @@ nnoremap <leader>v '.V`]
 
 " Open the grep replacement
 nnoremap <leader>a :Ack
+
+" Do not redraw while running macros (much faster)
+set lazyredraw
+
+" {{{ Kill trailing whitespace on save - this doesn't work somehow
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd FileType clj,javascript,java,python,readme,text,txt,vim
+  \ autocmd BufWritePre <buffer>
+  \ :call <SID>StripTrailingWhitespaces()
+" }}}
