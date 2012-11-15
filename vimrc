@@ -3,7 +3,17 @@ set shortmess+=I                " Don't show the Vim welcome screen.
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
+"echo "has('mac'):" has('mac')
+"echo "has('unix'):" has('unix')
+"echo "has('win32'):" has('win32')
+"echo "has('win32unix'):" has('win32unix')
+
+if has('win32')
+    set rtp+=$HOME/dev/dotfiles/vim/bundle/vundle
+else
+    set rtp+=~/.vim/bundle/vundle/
+endif
+
 call vundle#rc()
 
 " let Vundle manage Vundle
@@ -115,18 +125,14 @@ if has('gui_running')
     "set go+=m
 endif
 
-if has('mac')
-    echo 'fonts: mac'
-elseif has('win32unix')
-    set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
-    echo 'fonts: win32unix'
-elseif has('unix')
-    echo 'fonts: unix'
+if has('unix')
     set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
     "set guifont=DejaVu\ Sans\ Mono\ 9
+elseif has('win32unix')
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
 elseif has('win32')
-    echo 'fonts: win32'
     set guifont=Lucida_Console:h8:w5
+elseif has('mac')
 endif
 "set guifont=Monospace\ 9
 "set guifont=Lucida_Console:h8:cDEFAULT
@@ -298,22 +304,22 @@ nmap <Leader>sh :vsp \| Explore<CR>
 nmap <Leader>sl :rightbelow vsp \| Explore<CR>
 
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
-nmap <Leader>ev :e ~/.vimrc<CR>
+nmap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
 nmap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
 nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 
 " {{{ .vimrc reloading
 " explicit reloading
-" nmap <Leader>r :source ~/.vimrc<CR>
+" nmap <Leader>r :source ~/dev/dotfiles/vimrc<CR>
 
 " Automatical reloading
-autocmd! bufwritepost ~/.vimrc source %
-" }}}
+autocmd! bufwritepost ~/dev/dotfiles/vimrc source %
 
 "nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
 nmap <Leader>so :OpenSession<CR>
 nmap <Leader>ss :SaveSession<CR>
+" }}}
 
 " this is the default mouse setting
 "if has('mouse')
