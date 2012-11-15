@@ -116,9 +116,16 @@ if has('gui_running')
 endif
 
 if has('mac')
+    echo 'fonts: mac'
+elseif has('win32unix')
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
+    echo 'fonts: win32unix'
 elseif has('unix')
-    set guifont=DejaVu\ Sans\ Mono\ 9
+    echo 'fonts: unix'
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
+    "set guifont=DejaVu\ Sans\ Mono\ 9
 elseif has('win32')
+    echo 'fonts: win32'
     set guifont=Lucida_Console:h8:w5
 endif
 "set guifont=Monospace\ 9
