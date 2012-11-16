@@ -207,7 +207,7 @@ let vimclojure#ParenRainbow=1
 "let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
 let vimclojure#WantNailgun = 1
 if has('win32') || has('win32unix')
-    let vimclojure#NailgunClient = "c:\\cygwin\\home\\svo02896\\dev\\vimclojure-nailgun-client\\ng.exe"
+    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
 else
     let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
 endif
