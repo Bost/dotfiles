@@ -449,10 +449,12 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 
 " win32unix is for cygwin
 if has('win32') || has('win32unix')
-    nmap <leader>a :call Email("Andreas")<CR>
-    nmap <leader>j :call Email("Jürgen")<CR>
-    nmap <leader>y :call Email("Yvonne")<CR>
-    nmap <leader>t :call Email("Thomas")<CR>
+    nmap <leader>ma :call Email("Andreas")<CR>
+    nmap <leader>mj :call Email("Jürgen")<CR>
+    nmap <leader>my :call Email("Yvonne")<CR>
+    nmap <leader>mt :call Email("Thomas")<CR>
+
+    nmap <leader>ed :e $deployments_base/deployment.sh<CR>
 endif
 
 " {{{ Jump To Buffer
@@ -606,3 +608,24 @@ autocmd FileType clj,javascript,java,python,readme,text,txt,vim
   \ autocmd BufWritePre <buffer>
   \ :call <SID>StripTrailingWhitespaces()
 " }}}
+
+
+nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
+nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
+
+function! ToggleSlash(independent) range
+  let from = ''
+  for lnum in range(a:firstline, a:lastline)
+    let line = getline(lnum)
+    let first = matchstr(line, '[/\\]')
+    if !empty(first)
+      if a:independent || empty(from)
+        let from = first
+      endif
+      let opposite = (from == '/' ? '\' : '/')
+      call setline(lnum, substitute(line, from, opposite, 'g'))
+    endif
+  endfor
+endfunction
+command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
+noremap <silent> <F8> :ToggleSlash<CR>
