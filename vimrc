@@ -21,6 +21,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
+Bundle 'Bost/vim-email.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -253,9 +254,6 @@ imap <Leader>w <Esc>:update<CR>i
 
 " Sort selected text
 vnoremap <Leader>s :sort<CR>
-
-" Sort selected text
-map <Leader>x :e /tmp/scratch<CR>
 
 " Toggle line numbers
 "nmap <Leader>n :set nu!<CR>
@@ -629,3 +627,12 @@ function! ToggleSlash(independent) range
 endfunction
 command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
 noremap <silent> <F8> :ToggleSlash<CR>
+
+" {{{
+function! EditScratch()
+    "let fName = ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
+    exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
+endfunction
+
+map <Leader>x :call EditScratch()<CR>
+" }}}
