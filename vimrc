@@ -11,10 +11,8 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
-Bundle 'tpope/vim-fugitive'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-"Bundle 'tpope/vim-rails.git'
 " vim-scripts repos
 
 " {{{ finders:
@@ -47,9 +45,6 @@ Bundle 'c9s/bufexplorer.git'
 
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'scrooloose/nerdtree.git'
-Bundle 'tpope/vim-repeat.git'
-Bundle 'xolox/vim-session.git'
-Bundle 'tpope/vim-unimpaired.git'
 Bundle 'vim-scripts/VimClojure.git'
 "Bundle 'hsitz/VimOrganizer.git'
 
@@ -57,8 +52,15 @@ Bundle 'vim-scripts/VimClojure.git'
 "Bundle 'vim-scripts/YankRing.vim.git'
 
 Bundle 'sjl/gundo.vim.git'
+Bundle 'xolox/vim-session.git'
+"Bundle 'tpope/vim-rails.git'
+Bundle 'tpope/vim-unimpaired.git'
+Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround.git'
+Bundle 'tpope/vim-repeat.git'
 Bundle 'mileszs/ack.vim.git'
+
+Bundle 'matchit'
 
 " powerline does no refresh when saving .vimrc; restart needed
 Bundle 'Lokaltog/vim-powerline.git'
@@ -118,7 +120,7 @@ endif
 if has('mac')
 elseif has('unix')
     set guifont=DejaVu\ Sans\ Mono\ 9
-elseif has('win32')
+elseif has('win32') || has('win32unix')
     set guifont=Lucida_Console:h8:w5
 endif
 "set guifont=Monospace\ 9
@@ -486,7 +488,7 @@ nmap <leader>39 :39b<CR>
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
 
 " start maximized
-if has('win32')
+if has('win32') || has('win32unix')
     au GUIEnter * simalt ~x
 else
     " this works when gvim -c "call Maximize_Window()"
@@ -575,3 +577,17 @@ nnoremap <leader>v '.V`]
 
 " Open the grep replacement
 nnoremap <leader>a :Ack
+
+" {{{ Smart Home key: jump to the 1st nonblank char on the line, or, if
+" already at that position, to the start of the line
+noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+imap <silent> <Home> <C-O><Home>
+" }}}
+
+
+if has('win32') || has('win32unix')
+    " {{{ Change slashes in the current line
+    nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
+    nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
+    " }}}
+endif
