@@ -3,14 +3,27 @@ set shortmess+=I                " Don't show the Vim welcome screen.
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
+"echo "has('mac'):" has('mac')
+"echo "has('unix'):" has('unix')
+"echo "has('win32'):" has('win32')
+"echo "has('win32unix'):" has('win32unix')
+
+if has('win32')
+    set rtp+=$HOME/dev/dotfiles/vim/bundle/vundle
+else
+    set rtp+=~/.vim/bundle/vundle/
+endif
+
 call vundle#rc()
 
 " let Vundle manage Vundle
-" required! 
+" required!
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
+if has('win32')
+    Bundle 'Bost/vim-email.git'
+endif
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 " vim-scripts repos
@@ -117,11 +130,15 @@ if has('gui_running')
     "set go+=m
 endif
 
-if has('mac')
-elseif has('unix')
-    set guifont=DejaVu\ Sans\ Mono\ 9
-elseif has('win32') || has('win32unix')
+if has('unix')
+    set guifont=Ubuntu\ Mono\ 12
+    "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
+    "set guifont=DejaVu\ Sans\ Mono\ 12
+elseif has('win32unix')
+    set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
+elseif has('win32')
     set guifont=Lucida_Console:h8:w5
+elseif has('mac')
 endif
 "set guifont=Monospace\ 9
 "set guifont=Lucida_Console:h8:cDEFAULT
@@ -171,7 +188,7 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 
 " only for cheatsheet.html: jump to the 1st '#' character, then replace
 " everything in the html tag with '# ' and then reinsert the '# ' string
-"map <F3> f#cit# 
+"map <F3> f#cit#
 
 " Use colours that work well on a dark background (Console is usually black)
 "set background=dark
@@ -195,7 +212,7 @@ let vimclojure#ParenRainbow=1
 "let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
 let vimclojure#WantNailgun = 1
 if has('win32') || has('win32unix')
-    let vimclojure#NailgunClient = "c:\\cygwin\\home\\svo02896\\dev\\vimclojure-nailgun-client\\ng.exe"
+    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
 else
     let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
 endif
@@ -290,22 +307,22 @@ nmap <Leader>sh :vsp \| Explore<CR>
 nmap <Leader>sl :rightbelow vsp \| Explore<CR>
 
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
-nmap <Leader>ev :e ~/.vimrc<CR>
+nmap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
 nmap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
 nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 
 " {{{ .vimrc reloading
 " explicit reloading
-" nmap <Leader>r :source ~/.vimrc<CR>
+" nmap <Leader>r :source ~/dev/dotfiles/vimrc<CR>
 
 " Automatical reloading
-autocmd! bufwritepost ~/.vimrc source %
-" }}}
+autocmd! bufwritepost ~/dev/dotfiles/vimrc source %
 
 "nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
 nmap <Leader>so :OpenSession<CR>
 nmap <Leader>ss :SaveSession<CR>
+" }}}
 
 " this is the default mouse setting
 "if has('mouse')
@@ -435,13 +452,15 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 
 " win32unix is for cygwin
 if has('win32') || has('win32unix')
-    nmap <leader>a :call Email("Andreas")<CR>
-    nmap <leader>j :call Email("Jürgen")<CR>
-    nmap <leader>y :call Email("Yvonne")<CR>
-    nmap <leader>t :call Email("Thomas")<CR>
+    nmap <leader>ma :call Email("Andreas")<CR>
+    nmap <leader>mj :call Email("Jürgen")<CR>
+    nmap <leader>my :call Email("Yvonne")<CR>
+    nmap <leader>mt :call Email("Thomas")<CR>
+
+    nmap <leader>ed :e $deployments_base/deployment.sh<CR>
 endif
 
-" {{{ Jump To Buffer 
+" {{{ Jump To Buffer
 nmap <leader>0 :0b<CR>
 nmap <leader>1 :1b<CR>
 nmap <leader>2 :2b<CR>
@@ -578,6 +597,32 @@ nnoremap <leader>v '.V`]
 " Open the grep replacement
 nnoremap <leader>a :Ack
 
+if has('win32') || has('win32unix')
+    " {{{ Change slashes in the current line
+    nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
+    nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
+    " }}}
+
+function! ToggleSlash(independent) range
+  let from = ''
+  for lnum in range(a:firstline, a:lastline)
+    let line = getline(lnum)
+    let first = matchstr(line, '[/\\]')
+    if !empty(first)
+      if a:independent || empty(from)
+        let from = first
+      endif
+      let opposite = (from == '/' ? '\' : '/')
+      call setline(lnum, substitute(line, from, opposite, 'g'))
+    endif
+  endfor
+endfunction
+command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
+noremap <silent> <F8> :ToggleSlash<CR>
+
+
+endif
+
 " {{{ Smart Home key: jump to the 1st nonblank char on the line, or, if
 " already at that position, to the start of the line
 noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
@@ -585,9 +630,28 @@ imap <silent> <Home> <C-O><Home>
 " }}}
 
 
-if has('win32') || has('win32unix')
-    " {{{ Change slashes in the current line
-    nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
-    nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
-    " }}}
-endif
+" Do not redraw while running macros (much faster)
+set lazyredraw
+
+" {{{ Kill trailing whitespace on save - this doesn't work somehow
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd FileType clj,javascript,java,python,readme,text,txt,vim
+  \ autocmd BufWritePre <buffer>
+  \ :call <SID>StripTrailingWhitespaces()
+" }}}
+
+
+" {{{
+function! EditScratch()
+    "let fName = ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
+    exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
+endfunction
+
+map <Leader>x :call EditScratch()<CR>
+" }}}
+

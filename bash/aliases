@@ -209,7 +209,7 @@ if [ "$isLinux" -eq 0 ]; then
     alias bmw='cd $dev/mbs/bmw'
     alias mbb='cd $dev/mbs/mbb'
 
-    alias jacarta='cd $dev/jacarta'
+    alias full='cd $dev/jacarta.full'
     alias light='cd $dev/jacarta.light'
     alias hre='cd $dev/jacarta.hre'
     alias pfandbrief='cd $dev/pfandbrief'
@@ -224,7 +224,7 @@ if [ "$isLinux" -eq 0 ]; then
 
     alias mbssum='$deployments_base/mbssum.sh'
 
-    alias depl='mkdir -p $deployments_full/lib; mkdir -p $deployments_full/deploy'
+    alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias g='gvim'
 
 #else
