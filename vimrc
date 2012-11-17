@@ -73,8 +73,7 @@ Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-repeat.git'
 Bundle 'mileszs/ack.vim.git'
 
-Bundle 'matchit'
-
+Bundle 'tsaleh/vim-matchit.git'
 " powerline does no refresh when saving .vimrc; restart needed
 Bundle 'Lokaltog/vim-powerline.git'
 
