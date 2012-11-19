@@ -1,6 +1,7 @@
 #!/bin/bash
 
 alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
+alias rl='reload'
 
 alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
 alias unexport='unset'
