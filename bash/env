@@ -47,6 +47,9 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     winapp=$base/c/winapp
     winappX86=$base/c/winapp-x86
 
+    # export DISPLAY=":0" is needed for gvim in Cygwin Terminal 
+    export DISPLAY=":0"
+
 elif [ "$isMinGw32_155" -gt 0 ]; then
     echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
     dev=$base/c/cygwin/home/svo02896/dev
