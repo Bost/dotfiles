@@ -1,12 +1,21 @@
-" Initialization -------------------------------------------------------------
-set shortmess+=I                " Don't show the Vim welcome screen.
-set nocompatible               " be iMproved
-filetype off                   " required!
+" {{{ See the environment detection made in bash
+let isLinux = has('unix') && !has('win32unix')
+let isCygwin = has('win32unix')
+let isWin = has('win32')
+
+"echo "isLinux: " isLinux
+"echo "isCygwin: " isCygwin
+"echo "isWin: " isWin
 
 "echo "has('mac'):" has('mac')
 "echo "has('unix'):" has('unix')
 "echo "has('win32'):" has('win32')
 "echo "has('win32unix'):" has('win32unix')
+" }}}
+
+set shortmess+=I                " Don't show the Vim welcome screen.
+set nocompatible               " be iMproved
+filetype off                   " required!
 
 if has('win32')
     set rtp+=$HOME/dev/dotfiles/vim/bundle/vundle
@@ -21,7 +30,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
-if has('win32')
+if isWin
     Bundle 'Bost/vim-email.git'
 endif
 Bundle 'Lokaltog/vim-easymotion'
@@ -129,15 +138,14 @@ if has('gui_running')
     "set go+=m
 endif
 
-if has('unix')
+if isLinux
     set guifont=Ubuntu\ Mono\ 12
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
-elseif has('win32unix')
+elseif isCygwin
     set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
-elseif has('win32')
+elseif isWin
     set guifont=Lucida_Console:h8:w5
-elseif has('mac')
 endif
 "set guifont=Monospace\ 9
 "set guifont=Lucida_Console:h8:cDEFAULT
@@ -210,17 +218,17 @@ let vimclojure#DynamicHighlighting=1
 let vimclojure#ParenRainbow=1
 "let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
 let vimclojure#WantNailgun = 1
-if has('win32') || has('win32unix')
-    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
-else
+
+if isLinux
     let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
+elseif isWin || isCygwin
+    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
 endif
+
 "let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
 let vimclojure#NailgunPort = "2113"
 let vimclojure#SplitPos = "right"        " open the split window on the right side
 "let vimclojure#SplitSize = 80
-
-" Shortcuts ------------------------------------------------------------------
 
 " Press twice the <Leader> to exit insert mode without a manual <ESC> or <C-C>
 imap <Leader><Leader> <Esc>l
@@ -448,9 +456,7 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 "nmap <C-P> :bp<CR>
 "nmap <C-N> :bp<CR>
 
-
-" win32unix is for cygwin
-if has('win32') || has('win32unix')
+if isCygwin || isWin
     nmap <leader>ma :call Email("Andreas")<CR>
     nmap <leader>mj :call Email("Jürgen")<CR>
     nmap <leader>my :call Email("Yvonne")<CR>
@@ -505,15 +511,22 @@ nmap <leader>39 :39b<CR>
 
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
 
-" start maximized
-if has('win32') || has('win32unix')
-    au GUIEnter * simalt ~x
-else
+" {{{ Start maximized
+if isLinux
     " this works when gvim -c "call Maximize_Window()"
     function! Maximize_Window()
         silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
     endfunction
+elseif isCygwin
+    " this doesn't really work
+    "if has("gui_running")
+        "" GUI is running or is about to start. Maximize gvim window.
+        "set lines=999 columns=999
+    "endif
+elseif isWin
+    autocmd GUIEnter * simalt ~x
 endif
+" }}}
 
 " {{{ better copy & paste
 " Insure Clean Pasting w/autoindented code - this is probably not usefull
@@ -596,35 +609,34 @@ nnoremap <leader>v '.V`]
 " Open the grep replacement
 nnoremap <leader>a :Ack
 
-if has('win32') || has('win32unix')
+if isWin || isCygwin
     " {{{ Change slashes in the current line
     nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
     nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
     " }}}
 
-function! ToggleSlash(independent) range
-    let from = ''
-    for lnum in range(a:firstline, a:lastline)
-        let line = getline(lnum)
-        let first = matchstr(line, '[/\\]')
-        if !empty(first)
-            if a:independent || empty(from)
-                let from = first
+    function! ToggleSlash(independent) range
+        let from = ''
+        for lnum in range(a:firstline, a:lastline)
+            let line = getline(lnum)
+            let first = matchstr(line, '[/\\]')
+            if !empty(first)
+                if a:independent || empty(from)
+                    let from = first
+                endif
+                let opposite = (from == '/' ? '\' : '/')
+                let nl = substitute(line, from, opposite, 'g')
+                if from == '\'
+                    let snl = substitute(nl, '\(.\):', '/cygdrive/\L\1', 'g')
+                else
+                    let snl = substitute(nl, '\\cygdrive\\\(.\)', '\u\1:', 'g')
+                endif
+                call setline(lnum, snl)
             endif
-            let opposite = (from == '/' ? '\' : '/')
-            let nl = substitute(line, from, opposite, 'g')
-            if from == '\'
-                let snl = substitute(nl, '\(.\):', '/cygdrive/\L\1', 'g')
-            else
-                let snl = substitute(nl, '\\cygdrive\\\(.\)', '\u\1:', 'g')
-            endif
-            call setline(lnum, snl)
-        endif
-    endfor
-endfunction
-command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
-noremap <silent> <F8> :ToggleSlash<CR>
-
+        endfor
+    endfunction
+    command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
+    noremap <silent> <F8> :ToggleSlash<CR>
 
 endif
 
@@ -635,7 +647,7 @@ imap <silent> <Home> <C-O><Home>
 " }}}
 
 
-" Do not redraw while running macros (much faster)
+" Do not redraw while running macros (supposedly much faster)
 set lazyredraw
 
 " {{{ Kill trailing whitespace on save - this doesn't work somehow
@@ -650,13 +662,11 @@ autocmd FileType clj,javascript,java,python,readme,text,txt,vim
   \ :call <SID>StripTrailingWhitespaces()
 " }}}
 
-
-" {{{
+" {{{ Scratch buffer - a kind of like on Emacs
 function! EditScratch()
     "let fName = ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
     exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
 endfunction
-
 map <Leader>x :call EditScratch()<CR>
 " }}}
 
