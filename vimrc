@@ -30,7 +30,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
-if isWin
+if isCygwin || isWin
     Bundle 'Bost/vim-email.git'
 endif
 Bundle 'Lokaltog/vim-easymotion'
@@ -88,6 +88,11 @@ Bundle 'Lokaltog/vim-powerline.git'
 
 " Easily interact with tmux from vim
 Bundle 'benmills/vimux.git'
+
+" majutsushi/tagbar seems to be nicer than vim-scripts/taglist; both plugins
+" need exuberant ctags
+Bundle 'majutsushi/tagbar'
+"Bundle 'vim-scripts/taglist.vim.git'
 
 " Brief help
 " :BundleList          - list configured bundles
@@ -314,6 +319,7 @@ nmap <Leader>sh :vsp \| Explore<CR>
 nmap <Leader>sl :rightbelow vsp \| Explore<CR>
 
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
+" <Leader>v does not work
 nmap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
 nmap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
@@ -462,7 +468,8 @@ if isCygwin || isWin
     nmap <leader>my :call Email("Yvonne")<CR>
     nmap <leader>mt :call Email("Thomas")<CR>
 
-    nmap <leader>ed :e $deployments_base/deployment.sh<CR>
+    nmap <leader>ede :e $deployments_base/deployment.sh<CR>
+    nmap <leader>edv :e $deployments_base/defvars.sh<CR>
 endif
 
 " {{{ Jump To Buffer
@@ -528,6 +535,36 @@ elseif isWin
 endif
 " }}}
 
+if isWin || isCygwin
+    " {{{ Change slashes in the current line
+    nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
+    nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
+    " }}}
+
+    function! ToggleSlash(independent) range
+        let from = ''
+        for lnum in range(a:firstline, a:lastline)
+            let line = getline(lnum)
+            let first = matchstr(line, '[/\\]')
+            if !empty(first)
+                if a:independent || empty(from)
+                    let from = first
+                endif
+                let opposite = (from == '/' ? '\' : '/')
+                let nl = substitute(line, from, opposite, 'g')
+                if from == '\'
+                    let snl = substitute(nl, '\(.\):', '/cygdrive/\L\1', 'g')
+                else
+                    let snl = substitute(nl, '\\cygdrive\\\(.\)', '\u\1:', 'g')
+                endif
+                call setline(lnum, snl)
+            endif
+        endfor
+    endfunction
+    command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
+    noremap <silent> <F8> :ToggleSlash<CR>
+endif
+
 " {{{ better copy & paste
 " Insure Clean Pasting w/autoindented code - this is probably not usefull
 "nnoremap <F2> :set invpaste paste?<CR>
@@ -537,22 +574,38 @@ set clipboard=unnamed
 
 "nmap <F2> :set hlsearch!<CR>
 
+" {{{ On linux use :Ack instead of vimgrep
 " use <cword> to get the word under the cursor, and search for it in the
 " current directory and all subdirectories; open the quickfix window when done
 " In fact only 'j' (not jump to the firs location) should not print all
 " matches
 map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
 "map <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
-
-" execute current line and catch the output
-map <F8> yyp!!sh<CR><Esc>
+" }}}
 
 nnoremap <F5> :GundoToggle<CR>
-nnoremap <silent> <F9> :NERDTreeToggle<CR>
-nnoremap <silent> <F11> :YRShow<CR>
-"noremap <silent> <F12> :call VimCommanderToggle()<CR>
-nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
-" Start python on F5
+
+" execute current line and catch the output
+map <F7> yyp!!sh<CR><Esc>
+
+nnoremap <F9> :NERDTreeToggle<CR>
+nnoremap <F11> :YRShow<CR>
+
+if isCygwin || isWin
+    "nmap <F12> :TlistToggle<CR>
+    " for tagbar plugin
+    nmap <F12> :TagbarToggle<CR>
+    "nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
+    "noremap <F12> :call VimCommanderToggle()<CR>
+else
+    "nmap <F12> :TlistToggle<CR>
+    " for tagbar plugin
+    nmap <F12> :TagbarToggle<CR>
+    "nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
+    "noremap <F12> :call VimCommanderToggle()<CR>
+endif
+
+" start python on F5
 autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
 
 "autocmd VimEnter * <Plug>CMiniBufExplorer
@@ -608,37 +661,6 @@ nnoremap <leader>v '.V`]
 
 " Open the grep replacement
 nnoremap <leader>a :Ack
-
-if isWin || isCygwin
-    " {{{ Change slashes in the current line
-    nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
-    nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
-    " }}}
-
-    function! ToggleSlash(independent) range
-        let from = ''
-        for lnum in range(a:firstline, a:lastline)
-            let line = getline(lnum)
-            let first = matchstr(line, '[/\\]')
-            if !empty(first)
-                if a:independent || empty(from)
-                    let from = first
-                endif
-                let opposite = (from == '/' ? '\' : '/')
-                let nl = substitute(line, from, opposite, 'g')
-                if from == '\'
-                    let snl = substitute(nl, '\(.\):', '/cygdrive/\L\1', 'g')
-                else
-                    let snl = substitute(nl, '\\cygdrive\\\(.\)', '\u\1:', 'g')
-                endif
-                call setline(lnum, snl)
-            endif
-        endfor
-    endfunction
-    command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
-    noremap <silent> <F8> :ToggleSlash<CR>
-
-endif
 
 " {{{ Smart Home key: jump to the 1st nonblank char on the line, or, if
 " already at that position, to the start of the line
