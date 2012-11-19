@@ -21,11 +21,11 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
-Bundle 'Bost/vim-email.git'
-Bundle 'tpope/vim-fugitive'
+if has('win32')
+    Bundle 'Bost/vim-email.git'
+endif
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-"Bundle 'tpope/vim-rails.git'
 " vim-scripts repos
 
 " {{{ finders:
@@ -58,9 +58,6 @@ Bundle 'c9s/bufexplorer.git'
 
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'scrooloose/nerdtree.git'
-Bundle 'tpope/vim-repeat.git'
-Bundle 'xolox/vim-session.git'
-Bundle 'tpope/vim-unimpaired.git'
 Bundle 'vim-scripts/VimClojure.git'
 "Bundle 'hsitz/VimOrganizer.git'
 
@@ -68,9 +65,15 @@ Bundle 'vim-scripts/VimClojure.git'
 "Bundle 'vim-scripts/YankRing.vim.git'
 
 Bundle 'sjl/gundo.vim.git'
+Bundle 'xolox/vim-session.git'
+"Bundle 'tpope/vim-rails.git'
+Bundle 'tpope/vim-unimpaired.git'
+Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround.git'
+Bundle 'tpope/vim-repeat.git'
 Bundle 'mileszs/ack.vim.git'
 
+Bundle 'tsaleh/vim-matchit.git'
 " powerline does no refresh when saving .vimrc; restart needed
 Bundle 'Lokaltog/vim-powerline.git'
 
@@ -127,8 +130,9 @@ if has('gui_running')
 endif
 
 if has('unix')
-    set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
-    "set guifont=DejaVu\ Sans\ Mono\ 9
+    set guifont=Ubuntu\ Mono\ 12
+    "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
+    "set guifont=DejaVu\ Sans\ Mono\ 12
 elseif has('win32unix')
     set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
 elseif has('win32')
@@ -502,7 +506,7 @@ nmap <leader>39 :39b<CR>
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
 
 " start maximized
-if has('win32')
+if has('win32') || has('win32unix')
     au GUIEnter * simalt ~x
 else
     " this works when gvim -c "call Maximize_Window()"
@@ -592,24 +596,11 @@ nnoremap <leader>v '.V`]
 " Open the grep replacement
 nnoremap <leader>a :Ack
 
-" Do not redraw while running macros (much faster)
-set lazyredraw
-
-" {{{ Kill trailing whitespace on save - this doesn't work somehow
-fun! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    call cursor(l, c)
-endfun
-autocmd FileType clj,javascript,java,python,readme,text,txt,vim
-  \ autocmd BufWritePre <buffer>
-  \ :call <SID>StripTrailingWhitespaces()
-" }}}
-
-
-nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
-nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
+if has('win32') || has('win32unix')
+    " {{{ Change slashes in the current line
+    nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
+    nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
+    " }}}
 
 function! ToggleSlash(independent) range
     let from = ''
@@ -634,6 +625,32 @@ endfunction
 command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
 noremap <silent> <F8> :ToggleSlash<CR>
 
+
+endif
+
+" {{{ Smart Home key: jump to the 1st nonblank char on the line, or, if
+" already at that position, to the start of the line
+noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+imap <silent> <Home> <C-O><Home>
+" }}}
+
+
+" Do not redraw while running macros (much faster)
+set lazyredraw
+
+" {{{ Kill trailing whitespace on save - this doesn't work somehow
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd FileType clj,javascript,java,python,readme,text,txt,vim
+  \ autocmd BufWritePre <buffer>
+  \ :call <SID>StripTrailingWhitespaces()
+" }}}
+
+
 " {{{
 function! EditScratch()
     "let fName = ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
@@ -642,3 +659,4 @@ endfunction
 
 map <Leader>x :call EditScratch()<CR>
 " }}}
+
