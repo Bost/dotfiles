@@ -144,7 +144,8 @@ if has('gui_running')
 endif
 
 if isLinux
-    set guifont=Ubuntu\ Mono\ 12
+    " Ubuntu\ Mono\ 12 is too large for bambi-small
+    set guifont=Ubuntu\ Mono\ 11
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
 elseif isCygwin
@@ -246,7 +247,8 @@ nmap <Leader>v "*P
 imap <Leader>d <Esc>lDa
 
 " Character coding for empty characters
-set listchars=tab:>-,eol:$,precedes:>,trail:_
+" TODO: replace the >,< chars with some similair utf8 char
+set listchars=tab:>-,eol:$,extends:>,precedes:>,trail:_
 " Set symbols for tabs like textmate
 
 " Toggle hidden (empty) chars
@@ -329,12 +331,24 @@ nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 " explicit reloading
 " nmap <Leader>r :source ~/dev/dotfiles/vimrc<CR>
 
-" Automatical reloading
-autocmd! bufwritepost ~/dev/dotfiles/vimrc source %
+" Automatical reloading - slightly disturbing - use <Leader>S instead
+"autocmd! bufwritepost ~/dev/dotfiles/vimrc source %
 
+" {{{ Quick evaluation
+" source current line
+vnoremap <Leader>S y:execute @@<CR>
+" source highlighted text
+nnoremap <Leader>S ^vg_y:execute @@<CR>
+" }}}
+
+" select charwise the contents of the curr line, excluding indentation.
+" For pasting python line into REPL
+nnoremap vv ^vg_
+
+" {{{ not using sessions at the moment
 "nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
-nmap <Leader>so :OpenSession<CR>
-nmap <Leader>ss :SaveSession<CR>
+"nmap <Leader>so :OpenSession<CR>
+"nmap <Leader>ss :SaveSession<CR>
 " }}}
 
 " this is the default mouse setting
@@ -347,12 +361,13 @@ nmap <Leader>ss :SaveSession<CR>
 syntax on
 filetype plugin indent on
 
-" Sriefly jump to matching bracket
+" briefly jump to matching bracket
 "set showmatch
 " Substitute globaly
 "set gdefault
 
 "setlocal foldmethod=syntax
+"setlocal foldmethod=marker " Steve Lohs uses this in his vimrc
 "set foldlevel=1
 " set foldlevelstart=99          "remove folds
 
@@ -403,10 +418,10 @@ nmap <leader>- :sp<CR>
 "nmap <leader>\ :vsp<CR>
 
 nmap <leader>cdf :color default<CR>:colorscheme default<CR>
-nmap <leader>st :Gstatus<CR>
+nmap <leader>gs :Gstatus<CR>
 " <CR> allows me to use this shortcut from the :Gstatus window
-nmap <leader>df <CR>:Gdiff<CR>
-nmap <leader>gci :Gcommit<CR>
+nmap <leader>gf <CR>:Gdiff<CR>
+nmap <leader>gc :Gcommit<CR>
 nmap <leader>gps :Git push<CR>
 
 try                     " these keys are not mapped under windows by default
@@ -692,3 +707,7 @@ endfunction
 map <Leader>x :call EditScratch()<CR>
 " }}}
 
+" {{{ save some key strokes when trying to substiture something
+nnoremap <Leader>s :%s///g<left><left>
+"nnoremap <Leader>s :%s//<left>
+"}}}
