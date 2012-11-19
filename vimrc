@@ -247,14 +247,13 @@ nmap <Leader>v "*P
 imap <Leader>d <Esc>lDa
 
 " Character coding for empty characters
-" TODO: replace the >,< chars with some similair utf8 char
-set listchars=tab:>-,eol:$,extends:>,precedes:>,trail:_
-" Set symbols for tabs like textmate
+"set listchars=tab:>-,eol:$,extends:>,precedes:>,trail:_
+" let's see if these unicode chars work under cygwin
+set listchars=tab:▸\ ,eol:¶,extends:❯,precedes:❮,trail:_
 
 " Toggle hidden (empty) chars
 nmap <Leader>l :set list!<CR>
 "set list
-
 
 " Toggle line wrapping
 nmap <Leader>wr :set wrap!<CR>
@@ -270,9 +269,6 @@ imap <Leader>w <Esc>:update<CR>i
 "imap <C-s> <Esc>:w<CR>i
 "imap <Leader>w <Esc>:w<CR>i
 " }}}
-
-" Sort selected text
-vnoremap <Leader>s :sort<CR>
 
 " Toggle line numbers
 "nmap <Leader>n :set nu!<CR>
@@ -424,7 +420,7 @@ nmap <leader>gf <CR>:Gdiff<CR>
 nmap <leader>gc :Gcommit<CR>
 nmap <leader>gps :Git push<CR>
 
-try                     " these keys are not mapped under windows by default
+try     " these keys are not mapped under windows by default
     unmap <S-Up>
     unmap <S-Down>
 catch
@@ -442,11 +438,7 @@ vmap <S-Down> ]egv
 nmap <A-Left> :bprevious<CR>
 nmap <A-Right> :bnext<CR>
 
-" Remap 0 to first non-blank character
-"map 0 ^
-
-" Rename current file
-function! RenameFile()
+function! RenameFile()      " rename current file
     let old_name = expand("%")
     let new_name = input('New file name: ', expand('%'))
     if new_name != '' && new_name != old_name
@@ -707,7 +699,7 @@ endfunction
 map <Leader>x :call EditScratch()<CR>
 " }}}
 
-" {{{ save some key strokes when trying to substiture something
+" {{{ save some key strokes while doing substitution
 nnoremap <Leader>s :%s///g<left><left>
 "nnoremap <Leader>s :%s//<left>
 "}}}
