@@ -2,34 +2,27 @@
 
 # values used by other sripts and applications
 uname=`uname -a`
-strMinGw32_dev1="MINGW32_NT-5.2 COR-PARIS-DEV1"
-strCygwin_dev1="CYGWIN_NT-5.2 cor-paris-dev1"
-strCygwin_wsles347="CYGWIN_NT-5.1 wsles347"
-strMinGw32_wsles347="MINGW32_NT-5.1 WSLES347"
-strMinGw32_app1="MINGW32_NT-5.2 COR-ALLDM-APP1"
-strLinux="Linux"
-strCygwin_155="CYGWIN_NT-6.1-WOW64 LE-C-155"
-strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
 strLinux_64="Linux desktop-64"
+strLinux="Linux"
 
 #echo uname: $uname
 
 export isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
 export isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
-export isCygwin_wsles347=`expr match "$uname" "$strCygwin_wsles347"`
+export isCygwin_347=`expr match "$uname" "$strCygwin_347"`
 export isLinux=`expr match "$uname" "$strLinux"`
 export isLinux_64=`expr match "$uname" "$strLinux_64"`
-export isMinGw32_wsles347=`expr match "$uname" "$strMinGw32_wsles347"`
+export isMinGw32_347=`expr match "$uname" "$strMinGw32_347"`
 export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
 export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
 
 #echo isMinGw32_dev1: $isMinGw32_dev1
 #echo isCygwin_dev1: $isCygwin_dev1
-#echo isCygwin_wsles347: $isCygwin_wsles347
+#echo isCygwin_347: $isCygwin_347
 #echo isLinux: $isLinux
 #echo isLinux_64: $isLinux_64
-#echo isMinGw32_wsles347: $isMinGw32_wsles347
+#echo isMinGw32_347: $isMinGw32_347
 #echo isMinGw32_app1: $isMinGw32_app1
 #echo isCygwin_155: $isCygwin_155
 #echo isMinGw32_155: $isMinGw32_155
@@ -37,13 +30,13 @@ export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
 if [ "$isCygwin_dev1" -gt 0 ]; then
     echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
     base=/cygdrive
-    dev=$base/d/users/svoboda/dev
-    winapp=$base/d/users/svoboda/winapp
+    dev=$base/d/users/$USERNAME/dev
+    winapp=$base/d/users/$USERNAME/winapp
 
 elif [ "$isCygwin_155" -gt 0 ]; then
     echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
     base=/cygdrive
-    dev=$base/c/cygwin/home/svo02896/dev
+    dev=$base/c/cygwin/home/$USERNAME/dev
     winapp=$base/c/winapp
     winappX86=$base/c/winapp-x86
 
@@ -52,27 +45,27 @@ elif [ "$isCygwin_155" -gt 0 ]; then
 
 elif [ "$isMinGw32_155" -gt 0 ]; then
     echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
-    dev=$base/c/cygwin/home/svo02896/dev
+    dev=$base/c/cygwin/home/$USERNAME/dev
     winapp=$base/c/winapp
 
-elif [ "$isCygwin_wsles347" -gt 0 ]; then
-    echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
+elif [ "$isCygwin_347" -gt 0 ]; then
+    echo "### isCygwin_347: $isCygwin_347 ==> Loading $strCygwin_347 aliases"
     base=/cygdrive
     dev=$base/d/dev
     winapp=$base/d/winapp
 
 elif [ "$isMinGw32_dev1" -gt 0 ]; then
     echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
-    dev=$base/d/users/svoboda/dev
-    winapp=$base/d/users/svoboda/winapp
+    dev=$base/d/users/$USERNAME/dev
+    winapp=$base/d/users/$USERNAME/winapp
 
 elif [ "$isMinGw32_app1" -gt 0 ]; then
     echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
-    dev=$base/d/users/svoboda/dev
-    winapp=$base/d/users/svoboda/winapp
+    dev=$base/d/users/$USERNAME/dev
+    winapp=$base/d/users/$USERNAME/winapp
 
-elif [ "$isMinGw32_wsles347" -gt 0 ]; then
-    echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
+elif [ "$isMinGw32_347" -gt 0 ]; then
+    echo "### isMinGw32_347: $isMinGw32_347 ==> Loading $strMinGw32_347 aliases"
     dev=$base/d/dev
     winapp=$base/d/winapp
 
@@ -133,12 +126,10 @@ if [ "$isLinux" -eq 0 ]; then
     export deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
     JAVA_CP_SEP=";"
 
-    proxy=RSVOBODA:ve6h496q@192.168.2.105:3128
-    export http_proxy=http://$proxy
-    export https_proxy=https://$proxy
-    export ftp_proxy=ftp://$proxy
+    export http_proxy=http://$PROXY
+    export https_proxy=https://$PROXY
+    export ftp_proxy=ftp://$PROXY
 
-    export CVSROOT=:pserver:svoboda@cor-paris-src1:/var/cvs/java
     #echo "CVSROOT="$CVSROOT"   # this is the active CVSROOT"
 
     echo export TERM=msys
@@ -146,7 +137,7 @@ if [ "$isLinux" -eq 0 ]; then
     echo export https_proxy=$https_proxy
     echo export ftp_proxy=$ftp_proxy
     echo export CVSROOT=$CVSROOT"        # this is the active CVSROOT"
-    echo export CVSROOT=:pserver:rostislav.svoboda@cor-src-01:/srv/cvs/alldata"   # alternative CVSROOT"
+    echo export CVSROOT=$CVSROOT_ALTERNATIVE"   # alternative CVSROOT"
     echo ''
 
 #else
@@ -155,7 +146,7 @@ fi
 
 if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
-    VIMCLOJURE_SERVER_JAR=c:\\cygwin\\home\\svo02896\\dev\\vimclojure-server\\server-2.3.6.jar
+    VIMCLOJURE_SERVER_JAR=c:\\cygwin\\home\\$USERNAME\\dev\\vimclojure-server\\server-2.3.6.jar
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     JDK_16_HOME=$winapp/Java/1.6.0_31
     JAVA_HOME=$winapp/Java/jdk1.7.0_07
@@ -163,7 +154,7 @@ if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     APPENG_PYTHON_HOME=$winappX86/Google/google_appengine
 
     APPENGINE_HOME=c:\\winapp-x86\\Google\\appeng-java-sdk-1.7.1
-    #export APPENGINE_HOME=/home/svo02896/appeng-java-sdk-1.7.1
+    #export APPENGINE_HOME=/home/$USERNAME/appeng-java-sdk-1.7.1
     #export APPENGINE_HOME=/cygdrive/c/winapp-x86/Google/appeng-java-sdk-1.7.1
 
     PATH=$PATH:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
