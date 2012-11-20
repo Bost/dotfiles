@@ -113,17 +113,12 @@ filetype plugin indent on     " required!
 set showcmd                     " display incomplete commands
 set hidden                      " handle multiple buffers more efficiently
 set laststatus=2                " Always show status line
-set encoding=utf-8
-set visualbell t_vb=    " Use null visual bell (no beeps or flashes).
 
-" Keep the working line in the center of the window. This is a toggle, so you
-" can bounce between centered-working-line scrolling and normal scrolling by
-" issuing the keystroke again.
-"
-" From this message on the MacVim mailing list:
-" http://groups.google.com/group/vim_mac/browse_thread/thread/31876ef48063e487/133e06134425bda1?hl=enÂ¿e06134425bda1
-"
-map <Leader>zz  :let &scrolloff=999-&scrolloff<CR>
+" Ups, on cygwin I use /bin/sh, not bash. Strange
+"set shell=/bin/bash\ --login
+
+set encoding=utf-8
+set visualbell t_vb=            " Use null visual bell (no beeps or flashes).
 
 set virtualedit=block   " Makes visual block mode awesome
 
@@ -131,7 +126,7 @@ set scrolloff=3         " Context lines at top and bottom of display.
 set sidescrolloff=5     " Context columns at left and right.
 set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 
-" GUI only stuff -------------------------------------------------------------
+" {{{ gVim - GUI only stuff
 if has('gui_running')
     " switch off the menu in the gui window
     set guioptions=gt
@@ -142,6 +137,7 @@ if has('gui_running')
     " remove menubar
     "set go+=m
 endif
+" }}}
 
 if isLinux
     " Ubuntu\ Mono\ 12 is too large for bambi-small
@@ -159,7 +155,9 @@ endif
 "set lines=64 columns=160
 
 set cursorline          " highlight current line
-"set linebreak            " TODO what is linebreak for?
+" wrap long lines at 'breakat' not the last char on the screen; doesn't insert
+" <EOLN>, it affects only the way how the files is displayed
+"set linebreak
 
 "colorscheme default
 "colorscheme darkblue
@@ -191,8 +189,11 @@ set expandtab                   " use spaces, not tabs
 set shiftwidth=4 softtabstop=4
 set backspace=indent,eol,start  " backspace through everything in insert mode
 
+" {{{ Switching from insert to normal mode <Leader><Leader>
 "imap jj <Esc>
 "imap :: <Esc>
+imap <Leader><Leader> <Esc>l
+" }}}
 
 " visualise a word and switch to insert mode
 "map <space> viw
@@ -214,9 +215,7 @@ set wildmode=full
 " Make tab completion work more like it does in bash.
 "set wildmode=longest,list
 
-
-" Here's the vimclojure stuff. You'll need to adjust the NailgunClient
-" setting if you're on windows or have other problems.
+" {{{ VimClojure
 "let vimclojure#FuzzyIndent=1
 let vimclojure#HighlightBuiltins=1
 let vimclojure#HighlightContrib=1
@@ -230,26 +229,23 @@ if isLinux
 elseif isWin || isCygwin
     let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
 endif
+" }}}
 
 "let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
 let vimclojure#NailgunPort = "2113"
 let vimclojure#SplitPos = "right"        " open the split window on the right side
 "let vimclojure#SplitSize = 80
 
-" Press twice the <Leader> to exit insert mode without a manual <ESC> or <C-C>
-imap <Leader><Leader> <Esc>l
-
-" paste from system clipboard in normal and insert mode
-imap <Leader>v <Esc>"*P
-nmap <Leader>v "*P
+" {{{ Paste from system clipboard: <Leader>p
+imap <Leader>p <Esc>"*P
+nmap <Leader>p "*P
+" }}}
 
 " in insert mode: delete from cursor to the EOL and switch back to insert mode
 imap <Leader>d <Esc>lDa
 
 " Character coding for empty characters
-"set listchars=tab:>-,eol:$,extends:>,precedes:>,trail:_
-" let's see if these unicode chars work under cygwin
-set listchars=tab:▸\ ,eol:¶,extends:❯,precedes:❮,trail:_
+set listchars=tab:▸\ ,eol:¶,extends:❯,precedes:❮,trail:_,nbsp:%
 
 " Toggle hidden (empty) chars
 nmap <Leader>l :set list!<CR>
@@ -258,7 +254,7 @@ nmap <Leader>l :set list!<CR>
 " Toggle line wrapping
 nmap <Leader>wr :set wrap!<CR>
 
-" {{{ Save file
+" {{{ Save file: <C-s>
 nmap <Leader>w :update<CR>
 nmap <C-s> :update<CR>
 imap <C-s> <Esc>:update<CR>i
@@ -318,31 +314,27 @@ nmap <Leader>sh :vsp \| Explore<CR>
 nmap <Leader>sl :rightbelow vsp \| Explore<CR>
 
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
-" <Leader>v does not work
 nmap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
 nmap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
 nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 
-" {{{ .vimrc reloading
+" {{{ .vimrc reloading: <Leader>r
 " explicit reloading
-" nmap <Leader>r :source ~/dev/dotfiles/vimrc<CR>
+nmap <Leader>r :source ~/dev/dotfiles/vimrc<CR>
 
 " Automatical reloading - slightly disturbing - use <Leader>S instead
 "autocmd! bufwritepost ~/dev/dotfiles/vimrc source %
-
-" {{{ Quick evaluation
-" source current line
-vnoremap <Leader>S y:execute @@<CR>
-" source highlighted text
-nnoremap <Leader>S ^vg_y:execute @@<CR>
 " }}}
 
-" select charwise the contents of the curr line, excluding indentation.
-" For pasting python line into REPL
-nnoremap vv ^vg_
+" {{{ Quick evaluation: <Leader>S
+" source current line
+vnoremap <Leader>S y:execute @@<CR>:echo 'Sourced selection.'<CR>
+" source highlighted text
+nnoremap <Leader>S ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
+" }}}
 
-" {{{ not using sessions at the moment
+" {{{ Sesssions: not used at the moment
 "nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
 "nmap <Leader>so :OpenSession<CR>
 "nmap <Leader>ss :SaveSession<CR>
@@ -352,7 +344,6 @@ nnoremap vv ^vg_
 "if has('mouse')
 "    set mouse=a
 "endif
-
 
 " Syntax ---------------------------------------------------------------------
 syntax on
@@ -367,13 +358,29 @@ filetype plugin indent on
 "setlocal foldmethod=marker " Steve Lohs uses this in his vimrc
 "set foldlevel=1
 " set foldlevelstart=99          "remove folds
+set foldlevelstart=0
 
-" TODO Test: Space to toggle folds
+" {{{ Toggle folds: <Space>
 nnoremap <Space> za
 vnoremap <Space> za
+" }}}
 
 "set linespace=4                "add pixels between lines space for easy reading
 
+augroup ft_java
+    au!
+
+    au FileType java setlocal foldmethod=marker
+    au FileType java setlocal foldmarker={,}
+augroup END
+
+augroup ft_vim
+    au!
+
+    au FileType vim setlocal foldmethod=marker
+    au FileType help setlocal textwidth=78
+    au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+augroup END
 
 " Editor Behavior -------------------------------------------------------------
 set wrap
@@ -392,17 +399,25 @@ set smartcase            " ... unless they contain at least one capital letter
 nnoremap n nzz
 nnoremap N Nzz
 
-"nnoremap * *zz
-nnoremap * *<c-o>
+nnoremap * *zz
+" dot not jump move on asterisk or hash
+"nnoremap * *<c-o>
+"nnoremap # #<c-o>
 
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
+
+" Keep the working line in the center of the window. This is a toggle, so you
+" can bounce between centered-working-line scrolling and normal scrolling by
+" issuing the keystroke again.
+"
+" From this message on the MacVim mailing list:
+" http://groups.google.com/group/vim_mac/browse_thread/thread/31876ef48063e487/133e06134425bda1?hl=enÂ¿e06134425bda1
+"map <Leader>zz  :let &scrolloff=999-&scrolloff<CR>
 " }}}
 
-" Don't move on *
-
-" {{{ backups
+" {{{ Backups
 set backupdir=/tmp
 set directory=/tmp " Don't clutter my dirs up with swp and tmp files
 
@@ -415,16 +430,16 @@ set directory=/tmp " Don't clutter my dirs up with swp and tmp files
 "set timeoutlen=500
 
 " Horizontal split
-nmap <leader>- :sp<CR>
+nmap <Leader>- :sp<CR>
 " Vertical split
-"nmap <leader>\ :vsp<CR>
+"nmap <Leader>\ :vsp<CR>
 
-nmap <leader>cdf :color default<CR>:colorscheme default<CR>
-nmap <leader>gs :Gstatus<CR>
+nmap <Leader>cdf :color default<CR>:colorscheme default<CR>
+nmap <Leader>gs :Gstatus<CR>
 " <CR> allows me to use this shortcut from the :Gstatus window
-nmap <leader>gf <CR>:Gdiff<CR>
-nmap <leader>gc :Gcommit<CR>
-nmap <leader>gps :Git push<CR>
+nmap <Leader>gf <CR>:Gdiff<CR>
+nmap <Leader>gc :Gcommit<CR>
+nmap <Leader>gps :Git push<CR>
 
 try     " these keys are not mapped under windows by default
     unmap <S-Up>
@@ -453,9 +468,9 @@ function! RenameFile()      " rename current file
         redraw!
     endif
 endfunction
-map <leader>n :call RenameFile()<cr>
+map <Leader>n :call RenameFile()<cr>
 
-" use <leader>Ctrl+L to toggle the line number counting method
+" {{{ Toggle line number counting: <Leader><C-L>
 function! g:ToggleNuMode()
   if &nu == 1
      set rnu
@@ -463,7 +478,8 @@ function! g:ToggleNuMode()
      set nu
   endif
 endfunction
-nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
+nnoremap <silent><Leader><C-L> :call g:ToggleNuMode()<CR>
+" }}}
 
 " Quickly switch buffers (prev/next)
 " it doesn't work somehow TODO try to see why using :map or :nmap
@@ -476,57 +492,57 @@ nnoremap <silent><leader><C-L> :call g:ToggleNuMode()<CR>
 "nmap <C-N> :bp<CR>
 
 if isCygwin || isWin
-    nmap <leader>ma :call Email("Andreas")<CR>
-    nmap <leader>mj :call Email("Jürgen")<CR>
-    nmap <leader>my :call Email("Yvonne")<CR>
-    nmap <leader>mt :call Email("Thomas")<CR>
+    nmap <Leader>ma :call Email("Andreas")<CR>
+    nmap <Leader>mj :call Email("Jürgen")<CR>
+    nmap <Leader>my :call Email("Yvonne")<CR>
+    nmap <Leader>mt :call Email("Thomas")<CR>
 
-    nmap <leader>ede :e $deployments_base/deployment.sh<CR>
-    nmap <leader>edv :e $deployments_base/defvars.sh<CR>
+    nmap <Leader>ede :e $deployments_base/deployment.sh<CR>
+    nmap <Leader>edv :e $deployments_base/defvars.sh<CR>
 endif
 
-" {{{ Jump To Buffer
-nmap <leader>0 :0b<CR>
-nmap <leader>1 :1b<CR>
-nmap <leader>2 :2b<CR>
-nmap <leader>3 :3b<CR>
-nmap <leader>4 :4b<CR>
-nmap <leader>5 :5b<CR>
-nmap <leader>6 :6b<CR>
-nmap <leader>7 :7b<CR>
-nmap <leader>8 :8b<CR>
-nmap <leader>9 :9b<CR>
+" {{{ Jump To Buffer: <Leader>Number
+nmap <Leader>0 :0b<CR>
+nmap <Leader>1 :1b<CR>
+nmap <Leader>2 :2b<CR>
+nmap <Leader>3 :3b<CR>
+nmap <Leader>4 :4b<CR>
+nmap <Leader>5 :5b<CR>
+nmap <Leader>6 :6b<CR>
+nmap <Leader>7 :7b<CR>
+nmap <Leader>8 :8b<CR>
+nmap <Leader>9 :9b<CR>
 
-nmap <leader>10 :10b<CR>
-nmap <leader>11 :11b<CR>
-nmap <leader>12 :12b<CR>
-nmap <leader>13 :13b<CR>
-nmap <leader>14 :14b<CR>
-nmap <leader>15 :15b<CR>
-nmap <leader>16 :16b<CR>
-nmap <leader>17 :17b<CR>
-nmap <leader>18 :18b<CR>
-nmap <leader>19 :19b<CR>
-nmap <leader>20 :20b<CR>
-nmap <leader>21 :21b<CR>
-nmap <leader>22 :22b<CR>
-nmap <leader>23 :23b<CR>
-nmap <leader>24 :24b<CR>
-nmap <leader>25 :25b<CR>
-nmap <leader>26 :26b<CR>
-nmap <leader>27 :27b<CR>
-nmap <leader>28 :28b<CR>
-nmap <leader>29 :29b<CR>
-nmap <leader>30 :30b<CR>
-nmap <leader>31 :31b<CR>
-nmap <leader>32 :32b<CR>
-nmap <leader>33 :33b<CR>
-nmap <leader>34 :34b<CR>
-nmap <leader>35 :35b<CR>
-nmap <leader>36 :36b<CR>
-nmap <leader>37 :37b<CR>
-nmap <leader>38 :38b<CR>
-nmap <leader>39 :39b<CR>
+nmap <Leader>10 :10b<CR>
+nmap <Leader>11 :11b<CR>
+nmap <Leader>12 :12b<CR>
+nmap <Leader>13 :13b<CR>
+nmap <Leader>14 :14b<CR>
+nmap <Leader>15 :15b<CR>
+nmap <Leader>16 :16b<CR>
+nmap <Leader>17 :17b<CR>
+nmap <Leader>18 :18b<CR>
+nmap <Leader>19 :19b<CR>
+nmap <Leader>20 :20b<CR>
+nmap <Leader>21 :21b<CR>
+nmap <Leader>22 :22b<CR>
+nmap <Leader>23 :23b<CR>
+nmap <Leader>24 :24b<CR>
+nmap <Leader>25 :25b<CR>
+nmap <Leader>26 :26b<CR>
+nmap <Leader>27 :27b<CR>
+nmap <Leader>28 :28b<CR>
+nmap <Leader>29 :29b<CR>
+nmap <Leader>30 :30b<CR>
+nmap <Leader>31 :31b<CR>
+nmap <Leader>32 :32b<CR>
+nmap <Leader>33 :33b<CR>
+nmap <Leader>34 :34b<CR>
+nmap <Leader>35 :35b<CR>
+nmap <Leader>36 :36b<CR>
+nmap <Leader>37 :37b<CR>
+nmap <Leader>38 :38b<CR>
+nmap <Leader>39 :39b<CR>
 " }}}
 
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
@@ -548,11 +564,10 @@ elseif isWin
 endif
 " }}}
 
+" {{{ Change slashes in the current line: <Leader>\ <Leader>/  (Win/Cygwin only)
 if isWin || isCygwin
-    " {{{ Change slashes in the current line
     nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
     nnoremap <silent> <Leader><Bslash> :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>noh<CR>
-    " }}}
 
     function! ToggleSlash(independent) range
         let from = ''
@@ -577,8 +592,9 @@ if isWin || isCygwin
     command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
     noremap <silent> <F8> :ToggleSlash<CR>
 endif
+" }}}
 
-" {{{ better copy & paste
+" {{{ Better copy & paste: <F2>
 " Insure Clean Pasting w/autoindented code - this is probably not usefull
 "nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
@@ -586,15 +602,6 @@ set clipboard=unnamed
 " }}}
 
 "nmap <F2> :set hlsearch!<CR>
-
-" {{{ On linux use :Ack instead of vimgrep
-" use <cword> to get the word under the cursor, and search for it in the
-" current directory and all subdirectories; open the quickfix window when done
-" In fact only 'j' (not jump to the firs location) should not print all
-" matches
-map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
-"map <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
-" }}}
 
 nnoremap <F5> :GundoToggle<CR>
 
@@ -645,7 +652,7 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplModSelTarget = 1
 
 
-" Show syntax highlighting groups for word under cursor
+" {{{ Show syntax highlighting groups for word under cursor: call SynStack()
 nmap <C-S-P> :call <SID>SynStack()<CR>
 function! <SID>SynStack()
     if !exists("*synstack")
@@ -653,6 +660,7 @@ function! <SID>SynStack()
     endif
     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
+" }}}
 
 " {{{ colorcolumn
 " set colorcolumn=80
@@ -660,27 +668,41 @@ set colorcolumn=0
 highlight ColorColumn guibg=black
 " }}}
 
-" {{{ Emacs-like beginning and end of line
-nmap <c-e> $
-imap <c-e> <c-o>$
+" {{{ Emacs-like beginning and end of line: <C-e> <C-a>
+nmap <C-e> $
+imap <C-e> <C-o>$
 
-" colides with that plugin for increment/decrement
-"nmap <c-a> ^
-imap <c-a> <c-o>^
+" nmap <C-a> ^  colides with that increment/decrement plugin
+"nmap <C-a> ^
+imap <C-a> <C-o>^
 " }}}
 
 " Select region from last edited line to the end of last pasted text
-nnoremap <leader>v '.V`]
+nnoremap <Leader>v '.V`]
 
-" Open the grep replacement
-nnoremap <leader>a :Ack
+" select charwise the contents of the curr line, excluding indentation.
+" For pasting python line into REPL
+nnoremap vv ^vg_
+
+" {{{ Ack and vimgrep: <Leader>a  <F4>
+"nnoremap <Leader>a :Ack
+" ! - means do not jump on the first occurence
+nnoremap <Leader>a :Ack!<space>
+let g:ackprg = 'ack --nogroup --nocolor --column'
+
+" use <cword> to get the word under the cursor, and search for it in the
+" current directory and all subdirectories; open the quickfix window when done
+" In fact only 'j' (not jump to the firs location) should not print all
+" matches
+map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
+"map <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
+" }}}
 
 " {{{ Smart Home key: jump to the 1st nonblank char on the line, or, if
 " already at that position, to the start of the line
 noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 imap <silent> <Home> <C-O><Home>
 " }}}
-
 
 " Do not redraw while running macros (supposedly much faster)
 set lazyredraw
@@ -697,7 +719,7 @@ autocmd FileType clj,javascript,java,python,readme,text,txt,vim
   \ :call <SID>StripTrailingWhitespaces()
 " }}}
 
-" {{{ Scratch buffer - a kind of like on Emacs
+" {{{ Scratch buffer: <Leader>x
 function! EditScratch()
     "let fName = ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
     exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
@@ -705,7 +727,7 @@ endfunction
 map <Leader>x :call EditScratch()<CR>
 " }}}
 
-" {{{ save some key strokes while doing substitution
+" {{{ Save some key strokes while doing substitution: <Leader>s
 nnoremap <Leader>s :%s///g<left><left>
 "nnoremap <Leader>s :%s//<left>
 " }}}
@@ -718,7 +740,7 @@ augroup cline
 augroup END
 " }}}
 
-" {{{ TODO: take a look at: Use sane regexes
+" {{{ TODO: Use sane regexes on command line: \v
 "nnoremap / /\v
 "vnoremap / /\v
 " }}}
