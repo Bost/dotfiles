@@ -275,6 +275,7 @@ imap <Leader>w <Esc>:update<CR>i
 
 " Quit the current window
 nmap <Leader>q :q<CR>
+nnoremap K :q<CR>
 
 " Delete the current buffer
 nmap <Leader>bd :bd<CR>
@@ -390,11 +391,16 @@ set smartcase            " ... unless they contain at least one capital letter
 " {{{ Center the display line after searches
 nnoremap n nzz
 nnoremap N Nzz
-nnoremap * *zz
+
+"nnoremap * *zz
+nnoremap * *<c-o>
+
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
 " }}}
+
+" Don't move on *
 
 " {{{ backups
 set backupdir=/tmp
@@ -702,4 +708,21 @@ map <Leader>x :call EditScratch()<CR>
 " {{{ save some key strokes while doing substitution
 nnoremap <Leader>s :%s///g<left><left>
 "nnoremap <Leader>s :%s//<left>
-"}}}
+" }}}
+
+" {{{ Show cursorline only in the current window and in normal mode
+augroup cline
+    au!
+    au WinLeave,InsertEnter * set nocursorline
+    au WinEnter,InsertLeave * set cursorline
+augroup END
+" }}}
+
+" {{{ TODO: take a look at: Use sane regexes
+"nnoremap / /\v
+"vnoremap / /\v
+" }}}
+
+" gi already moves to "last place you exited insert mode", so we'll map gI to
+" something similar: move to last change
+nnoremap gI `.
