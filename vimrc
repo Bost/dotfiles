@@ -94,6 +94,10 @@ Bundle 'benmills/vimux.git'
 Bundle 'majutsushi/tagbar'
 "Bundle 'vim-scripts/taglist.vim.git'
 
+" Align.git is needed by SQLUtilities.git
+"Bundle 'vim-scripts/Align.git'
+"Bundle 'vim-scripts/SQLUtilities.git'
+
 " Brief help
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install(update) bundles
