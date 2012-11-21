@@ -61,8 +61,32 @@ Bundle 'vim-scripts/csv.vim.git'
 
 " {{{ Buffer Explorers:
 Bundle 'c9s/bufexplorer.git'
-" minibufexpl is just bugging me
+
+" {{{ MiniBufExplorer is just bugging me
 "Bundle 'fholgado/minibufexpl.vim.git'
+"autocmd VimEnter * <Plug>CMiniBufExplorer
+"autocmd MiniBufExplorer VimEnter       * call <SID>DEBUG('-=> VimEnter AutoCmd', 10) |let g:miniBufExplorerAutoUpdate = 1 |call <SID>AutoUpdate(-1,bufnr("%"))
+
+" no auto load - it destroys the saved session; use \b to load it
+"let g:miniBufExplorerNoAutoLoad = 1
+
+" move in windows using C-w h/j/k/l
+"let g:miniBufExplMapWindowNavVim = 1
+
+" move in windows using C-w left / down / up / right
+"let g:miniBufExplMapWindowNavArrows = 0
+
+" C-Tab / C-S-Tab
+"let g:miniBufExplMapCTabSwitchBufs = 1
+
+" for other explorers like TagList
+"let g:miniBufExplModSelTarget = 1
+
+" Show a list of all open buffers with MiniBufExplorer
+"map <Leader>b :TMiniBufExplorer<cr>
+
+" }}}
+
 " }}}
 
 Bundle 'scrooloose/nerdcommenter.git'
@@ -196,7 +220,8 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 " {{{ Switching from insert to normal mode <Leader><Leader>
 "imap jj <Esc>
 "imap :: <Esc>
-imap <Leader><Leader> <Esc>l
+" EasyMotion already uses <Leader><Leader>
+"imap <Leader><Leader> <Esc>l
 " }}}
 
 " visualise a word and switch to insert mode
@@ -233,12 +258,12 @@ if isLinux
 elseif isWin || isCygwin
     let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
 endif
-" }}}
 
 "let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
 let vimclojure#NailgunPort = "2113"
 let vimclojure#SplitPos = "right"        " open the split window on the right side
 "let vimclojure#SplitSize = 80
+" }}}
 
 " {{{ Paste from system clipboard: <Leader>p
 imap <Leader>p <Esc>"*P
@@ -259,15 +284,11 @@ nmap <Leader>l :set list!<CR>
 nmap <Leader>wr :set wrap!<CR>
 
 " {{{ Save file: <C-s>
-nmap <Leader>w :update<CR>
 nmap <C-s> :update<CR>
 imap <C-s> <Esc>:update<CR>i
-imap <Leader>w <Esc>:update<CR>i
 
-"nmap <Leader>w :w<CR>
 "nmap <C-s> :w<CR>
 "imap <C-s> <Esc>:w<CR>i
-"imap <Leader>w <Esc>:w<CR>i
 " }}}
 
 " Toggle line numbers
@@ -282,10 +303,6 @@ nmap <Leader>bd :bd<CR>
 
 " Show a list of all open buffers with BufExplorer
 nmap <Leader>b :BufExplorerHorizontalSplit<CR>
-
-" Show a list of all open buffers with MiniBufExplorer
-"nmap <Leader>b :ls<CR>
-"map <Leader>b :TMiniBufExplorer<cr>
 
 " Jump from window to window
 nmap <Leader><Tab> <C-W>w
@@ -311,17 +328,20 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 
-" Split up/down/left/right
-nmap <Leader>sk :sp \| Explore<CR>
-nmap <Leader>sj :rightbelow sp \| Explore<CR>
-nmap <Leader>sh :vsp \| Explore<CR>
-nmap <Leader>sl :rightbelow vsp \| Explore<CR>
+" {{{ Split up/down/left/right: not used
+"nmap <Leader>sk :sp \| Explore<CR>
+"nmap <Leader>sj :rightbelow sp \| Explore<CR>
+"nmap <Leader>sh :vsp \| Explore<CR>
+"nmap <Leader>sl :rightbelow vsp \| Explore<CR>
+" }}}
 
+" {{{ Editing dotfiles & cheatsheet files
 "nmap <Leader>er :tabnew ~/.vimrc<CR>
 nmap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
 nmap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
 nmap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
 nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
+" }}}
 
 " {{{ .vimrc reloading: <Leader>r
 " explicit reloading
@@ -338,10 +358,12 @@ vnoremap <Leader>S y:execute @@<CR>:echo 'Sourced selection.'<CR>
 nnoremap <Leader>S ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 " }}}
 
-" {{{ Sesssions: not used at the moment
+" {{{ Sessions: not used at the moment
 "nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
 "nmap <Leader>so :OpenSession<CR>
 "nmap <Leader>ss :SaveSession<CR>
+"let g:session_autoload = 'no'
+"let g:session_autosave = 'no'
 " }}}
 
 " this is the default mouse setting
@@ -605,7 +627,7 @@ set pastetoggle=<F2>
 set clipboard=unnamed
 " }}}
 
-"nmap <F2> :set hlsearch!<CR>
+nmap <F3> :set hlsearch!<CR>
 
 nnoremap <F5> :GundoToggle<CR>
 
@@ -615,46 +637,20 @@ map <F7> yyp!!sh<CR><Esc>
 nnoremap <F9> :NERDTreeToggle<CR>
 nnoremap <F11> :YRShow<CR>
 
+"nmap <F12> :TlistToggle<CR>
+nmap <F12> :TagbarToggle<CR>
+"noremap <F12> :call VimCommanderToggle()<CR>
+
 if isCygwin || isWin
-    "nmap <F12> :TlistToggle<CR>
-    " for tagbar plugin
-    nmap <F12> :TagbarToggle<CR>
     "nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
-    "noremap <F12> :call VimCommanderToggle()<CR>
 else
-    "nmap <F12> :TlistToggle<CR>
-    " for tagbar plugin
-    nmap <F12> :TagbarToggle<CR>
     "nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
-    "noremap <F12> :call VimCommanderToggle()<CR>
 endif
 
 " start python on F5
 autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
 
-"autocmd VimEnter * <Plug>CMiniBufExplorer
 "autocmd VimEnter * NERDTree
-
-"autocmd MiniBufExplorer VimEnter       * call <SID>DEBUG('-=> VimEnter AutoCmd', 10) |let g:miniBufExplorerAutoUpdate = 1 |call <SID>AutoUpdate(-1,bufnr("%"))
-
-let g:session_autoload = 'no'
-let g:session_autosave = 'no'
-
-" no auto load - it destroys the saved session; use \b to load it
-let g:miniBufExplorerNoAutoLoad = 1
-
-" move in windows using C-w h/j/k/l
-let g:miniBufExplMapWindowNavVim = 1
-
-" move in windows using C-w left / down / up / right
-"let g:miniBufExplMapWindowNavArrows = 0
-
-" C-Tab / C-S-Tab
-let g:miniBufExplMapCTabSwitchBufs = 1
-
-" for other explorers like TagList
-"let g:miniBufExplModSelTarget = 1
-
 
 " {{{ Show syntax highlighting groups for word under cursor: call SynStack()
 nmap <C-S-P> :call <SID>SynStack()<CR>
@@ -723,7 +719,7 @@ autocmd FileType clj,javascript,java,python,readme,text,txt,vim
   \ :call <SID>StripTrailingWhitespaces()
 " }}}
 
-" {{{ Scratch buffer: <Leader>x
+" {{{ Scratch buffer (:enew replacement): <Leader>x
 function! EditScratch()
     "let fName = ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
     exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
