@@ -116,9 +116,9 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
-elif [ "$isCygwin_wsles347" -gt 0 ]; then
+elif [ "$isCygwin_347" -gt 0 ]; then
     :
-    #echo "### isCygwin_wsles347: $isCygwin_wsles347 ==> Loading $strCygwin_wsles347 aliases"
+    #echo "### isCygwin_347: $isCygwin_347 ==> Loading $strCygwin_347 aliases"
 
     alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_dev1" -gt 0 ]; then
@@ -131,9 +131,9 @@ elif [ "$isMinGw32_app1" -gt 0 ]; then
     #echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
 
     alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
-elif [ "$isMinGw32_wsles347" -gt 0 ]; then
+elif [ "$isMinGw32_347" -gt 0 ]; then
     :
-    #echo "### isMinGw32_wsles347: $isMinGw32_wsles347 ==> Loading $strMinGw32_wsles347 aliases"
+    #echo "### isMinGw32_347: $isMinGw32_347 ==> Loading $strMinGw32_347 aliases"
 
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isLinux" -gt 0 ]; then
