@@ -748,3 +748,18 @@ augroup END
 " gi already moves to "last place you exited insert mode", so we'll map gI to
 " something similar: move to last change
 nnoremap gI `.
+
+" Autoread changed files
+"set autoread
+
+nnoremap <Leader>wd :windo diffthis<CR>
+
+" {{{ German Umlaute: <Leader>char (keyboard switching doesn't work in cygwin)
+imap <Leader>o ö
+imap <Leader>o Ö
+imap <Leader>a ä
+imap <Leader>A Ä
+imap <Leader>u ü
+imap <Leader>U Ü
+imap <Leader>s ß
+" }}}
