@@ -30,9 +30,8 @@ alias cdd='cd -'
 
 # use full command and options names - no gitconfig aliases
 git_add_all="echo 'git add .'; git add ."
-alias ga=$git_add_all
-alias gadd=$git_add_all
 alias gdd=$git_add_all
+alias gal=$git_add_all
 alias gg='git gui &'
 alias gtg='git tag'
 alias gtag='git tag'
@@ -45,6 +44,13 @@ alias gr='git rebase'
 alias gpl='git pull'
 alias gp='git pull'
 alias gh='git push'
+
+function GitPullRepo {
+    echo 'cd '$1' && git pull'
+    cd $1 && git pull
+}
+alias ga='_cd=`pwd`; GitPullRepo $dev/cheatsheet && GitPullRepo $dev/dotfiles && cd $_cd'
+#gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
 alias gcl='git clone'
 alias gau='git add --update'
