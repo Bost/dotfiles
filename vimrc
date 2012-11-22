@@ -465,7 +465,7 @@ nmap <Leader>gs :Gstatus<CR>
 " <CR> allows me to use this shortcut from the :Gstatus window
 nmap <Leader>gf <CR>:Gdiff<CR>
 nmap <Leader>gc :Gcommit<CR>
-nmap <Leader>gps :Git push<CR>
+nmap <Leader>gh :Git push<CR>
 
 try     " these keys are not mapped under windows by default
     unmap <S-Up>
