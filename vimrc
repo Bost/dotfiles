@@ -118,6 +118,9 @@ Bundle 'benmills/vimux.git'
 Bundle 'majutsushi/tagbar'
 "Bundle 'vim-scripts/taglist.vim.git'
 
+" vim over ssh/scp
+"Bundle 'vim-scripts/netrw.vim.git'
+
 " Brief help
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install(update) bundles
@@ -390,6 +393,7 @@ vnoremap <Space> za
 "set linespace=4                "add pixels between lines space for easy reading
 
 augroup ft_java
+    " Remove ALL autocommands for the current group.
     au!
 
     au FileType java setlocal foldmethod=marker
@@ -397,6 +401,7 @@ augroup ft_java
 augroup END
 
 augroup ft_vim
+    " Remove ALL autocommands for the current group.
     au!
 
     au FileType vim setlocal foldmethod=marker
