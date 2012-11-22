@@ -121,6 +121,10 @@ Bundle 'majutsushi/tagbar'
 " vim over ssh/scp
 "Bundle 'vim-scripts/netrw.vim.git'
 
+" Align.git is needed by SQLUtilities.git
+"Bundle 'vim-scripts/Align.git'
+"Bundle 'vim-scripts/SQLUtilities.git'
+
 " Brief help
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install(update) bundles
@@ -466,7 +470,7 @@ nmap <Leader>gs :Gstatus<CR>
 " <CR> allows me to use this shortcut from the :Gstatus window
 nmap <Leader>gf <CR>:Gdiff<CR>
 nmap <Leader>gc :Gcommit<CR>
-nmap <Leader>gps :Git push<CR>
+nmap <Leader>gh :Git push<CR>
 
 try     " these keys are not mapped under windows by default
     unmap <S-Up>
@@ -749,3 +753,18 @@ augroup END
 " gi already moves to "last place you exited insert mode", so we'll map gI to
 " something similar: move to last change
 nnoremap gI `.
+
+" Autoread changed files
+"set autoread
+
+nnoremap <Leader>wd :windo diffthis<CR>
+
+" {{{ German Umlaute: <Leader>char (keyboard switching doesn't work in cygwin)
+imap <Leader>o ö
+imap <Leader>o Ö
+imap <Leader>a ä
+imap <Leader>A Ä
+imap <Leader>u ü
+imap <Leader>U Ü
+imap <Leader>s ß
+" }}}
