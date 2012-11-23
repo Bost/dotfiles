@@ -1,4 +1,4 @@
-" {{{ See the environment detection made in bash
+" {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
 let isWin = has('win32')
@@ -26,8 +26,7 @@ endif
 
 call vundle#rc()
 
-" let Vundle manage Vundle
-" required!
+" let Vundle manage Vundle - required!
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
@@ -114,19 +113,18 @@ Bundle 'Lokaltog/vim-powerline.git'
 " Easily interact with tmux from vim
 Bundle 'benmills/vimux.git'
 
-" majutsushi/tagbar seems to be nicer than vim-scripts/taglist; both plugins
-" need exuberant ctags
+" majutsushi/tagbar seems to be nicer than vim-scripts/taglist;
+" both plugins need exuberant ctags
 Bundle 'majutsushi/tagbar'
 "Bundle 'vim-scripts/taglist.vim.git'
 
-" vim over ssh/scp
+" Vim over ssh/scp
 "Bundle 'vim-scripts/netrw.vim.git'
 
 " Align.git is needed by SQLUtilities.git
 "Bundle 'vim-scripts/Align.git'
 "Bundle 'vim-scripts/SQLUtilities.git'
 
-" Brief help
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install(update) bundles
 " :BundleSearch(!) foo - search(or refresh cache first) for foo
@@ -369,7 +367,6 @@ nnoremap <Leader>S ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 "    set mouse=a
 "endif
 
-" Syntax ---------------------------------------------------------------------
 syntax on
 filetype plugin indent on
 
@@ -408,7 +405,6 @@ augroup ft_vim
     au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
-" Editor Behavior -------------------------------------------------------------
 set wrap
 set relativenumber       " Shows relative line numbers
 "set number               " Shows line number
