@@ -13,8 +13,9 @@ let isWin = has('win32')
 "echo "has('win32unix'):" has('win32unix')
 " }}}
 
-set shortmess+=I                " Don't show the Vim welcome screen.
 set nocompatible               " be iMproved
+" 'set shortmess' doesn't work if called before 'set nocompatible'
+set shortmess+=I               " Don't show the Vim welcome screen.
 filetype off                   " required!
 
 if has('win32')
@@ -131,8 +132,8 @@ Bundle 'majutsushi/tagbar'
 " :BundleSearch(!) foo - search(or refresh cache first) for foo
 " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
 "
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
+" See :h vundle for more details or wiki for FAQ
+" Comments after Bundle command are not allowed
 " }}}
 
 " behave mswin
@@ -159,14 +160,10 @@ set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 
 " {{{ gVim - GUI only stuff
 if has('gui_running')
-    " switch off the menu in the gui window
-    set guioptions=gt
-
-    " horizontal scrollbar
-    set guioptions+=b
-
-    " remove menubar
-    "set go+=m
+    " Switch off menu (t), show bottom scrollbar (b)
+    set guioptions=tb
+    " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
+    "set guioptions=gbm
 endif
 " }}}
 
@@ -243,7 +240,7 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 "set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
 " improve the help system, kind of tab completition
 set wildmenu                    " Use menu for completions
-set wildmode=full
+set wildmode=list:longest,full
 " Make tab completion work more like it does in bash.
 "set wildmode=longest,list
 
@@ -269,11 +266,11 @@ let vimclojure#SplitPos = "right"        " open the split window on the right si
 " }}}
 
 " {{{ Paste from system clipboard: <Leader>p
-imap <Leader>p <Esc>"*P
+imap <Leader>p <Esc>"*Pi
 nmap <Leader>p "*P
 " }}}
 
-" in insert mode: delete from cursor to the EOL and switch back to insert mode
+" In insert mode: delete from cursor to the EOL and switch back to insert mode
 imap <Leader>d <Esc>lDa
 
 " Character coding for empty characters
@@ -288,10 +285,10 @@ nmap <Leader>wr :set wrap!<CR>
 
 " {{{ Save file: <C-s>
 nmap <C-s> :update<CR>
-imap <C-s> <Esc>:update<CR>i
+imap <C-s> <C-o>:update<CR>
 
 "nmap <C-s> :w<CR>
-"imap <C-s> <Esc>:w<CR>i
+"imap <C-s> <C-o>:w<CR>
 " }}}
 
 " Toggle line numbers
@@ -299,7 +296,6 @@ imap <C-s> <Esc>:update<CR>i
 
 " Quit the current window
 nmap <Leader>q :q<CR>
-nnoremap K :q<CR>
 
 " Delete the current buffer
 nmap <Leader>bd :bd<CR>
@@ -309,9 +305,7 @@ nmap <Leader>b :BufExplorerHorizontalSplit<CR>
 
 " Jump from window to window
 nmap <Leader><Tab> <C-W>w
-
-" Jump from tab to tab
-nmap <Leader><S-Tab> :tabn<CR>
+nmap <Tab> <C-W>w
 
 " Quickly 'maximize' a split - these shortcuts colide with VimClojure
 "nmap <Leader>mw <C-W>\|
@@ -324,11 +318,12 @@ nmap <Leader>Mw :set columns=250<CR>
 nmap <Leader>Mh :set lines=69<CR>
 nmap <Leader>MM <Leader>Mw<Leader>Mh
 
-" Switch windows with CTRL + hjkl
+" {{{ Switch viewports: <C-hjkl>
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
+" }}}
 
 
 " {{{ Split up/down/left/right: not used
@@ -386,8 +381,8 @@ filetype plugin indent on
 "setlocal foldmethod=syntax
 "setlocal foldmethod=marker " Steve Lohs uses this in his vimrc
 "set foldlevel=1
-" set foldlevelstart=99          "remove folds
-set foldlevelstart=0
+set foldlevelstart=99          "remove folds
+"set foldlevelstart=0
 
 " {{{ Toggle folds: <Space>
 nnoremap <Space> za
@@ -512,15 +507,13 @@ endfunction
 nnoremap <silent><Leader><C-L> :call g:ToggleNuMode()<CR>
 " }}}
 
-" Quickly switch buffers (prev/next)
-" it doesn't work somehow TODO try to see why using :map or :nmap
-"try
-    "unmap <C-P>
-    "unmap <C-N>
-"catch
-"endtry
-"nmap <C-P> :bp<CR>
-"nmap <C-N> :bp<CR>
+" {{{ Quickly switch buffers: next: <C-Tab>, prev: <C-S-Tab>
+map <C-Tab> :bn<CR>
+imap <C-Tab> <C-o>:bn<CR>
+
+map <C-S-Tab> :bp<CR>
+imap <C-S-Tab> <C-o>:bp<CR>
+" }}}
 
 if isCygwin || isWin
     nmap <Leader>ma :call Email("Andreas")<CR>
@@ -551,29 +544,6 @@ nmap <Leader>13 :13b<CR>
 nmap <Leader>14 :14b<CR>
 nmap <Leader>15 :15b<CR>
 nmap <Leader>16 :16b<CR>
-nmap <Leader>17 :17b<CR>
-nmap <Leader>18 :18b<CR>
-nmap <Leader>19 :19b<CR>
-nmap <Leader>20 :20b<CR>
-nmap <Leader>21 :21b<CR>
-nmap <Leader>22 :22b<CR>
-nmap <Leader>23 :23b<CR>
-nmap <Leader>24 :24b<CR>
-nmap <Leader>25 :25b<CR>
-nmap <Leader>26 :26b<CR>
-nmap <Leader>27 :27b<CR>
-nmap <Leader>28 :28b<CR>
-nmap <Leader>29 :29b<CR>
-nmap <Leader>30 :30b<CR>
-nmap <Leader>31 :31b<CR>
-nmap <Leader>32 :32b<CR>
-nmap <Leader>33 :33b<CR>
-nmap <Leader>34 :34b<CR>
-nmap <Leader>35 :35b<CR>
-nmap <Leader>36 :36b<CR>
-nmap <Leader>37 :37b<CR>
-nmap <Leader>38 :38b<CR>
-nmap <Leader>39 :39b<CR>
 " }}}
 
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
@@ -726,7 +696,6 @@ autocmd FileType clj,javascript,java,python,readme,text,txt,vim
 
 " {{{ Scratch buffer (:enew replacement): <Leader>x
 function! EditScratch()
-    "let fName = ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
     exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
 endfunction
 map <Leader>x :call EditScratch()<CR>
@@ -734,7 +703,6 @@ map <Leader>x :call EditScratch()<CR>
 
 " {{{ Save some key strokes while doing substitution: <Leader>s
 nnoremap <Leader>s :%s///g<left><left>
-"nnoremap <Leader>s :%s//<left>
 " }}}
 
 " {{{ Show cursorline only in the current window and in normal mode
