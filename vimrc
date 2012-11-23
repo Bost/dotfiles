@@ -37,11 +37,15 @@ Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 " vim-scripts repos
 
-" {{{ finders:
+" YankRing colides with ctrlp
+Bundle 'vim-scripts/YankRing.vim.git'
+
+" {{{ Finder plugins:
 " L9 is required by FuzzyFinder
 "Bundle 'L9'
 "Bundle 'FuzzyFinder'
 
+" Let the ctrlp overwrite the <C-p> used by YankRing
 Bundle 'kien/ctrlp.vim.git'
 
 " LustyExplorer - requires Ruby
@@ -93,9 +97,6 @@ Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'scrooloose/nerdtree.git'
 Bundle 'vim-scripts/VimClojure.git'
 "Bundle 'hsitz/VimOrganizer.git'
-
-" YannkRing colides with ctrlp.vim.git
-"Bundle 'vim-scripts/YankRing.vim.git'
 
 Bundle 'sjl/gundo.vim.git'
 Bundle 'xolox/vim-session.git'
@@ -299,7 +300,7 @@ nmap <Leader>q :q<CR>
 nmap <Leader>bd :bd<CR>
 
 " Show a list of all open buffers with BufExplorer
-nmap <Leader>b :BufExplorerHorizontalSplit<CR>
+nmap <Leader>b :BufExplorer<CR>
 
 " Jump from window to window
 nmap <Leader><Tab> <C-W>w
@@ -725,7 +726,7 @@ nnoremap <Leader>wd :windo diffthis<CR>
 
 " {{{ German Umlaute: <Leader>char (keyboard switching doesn't work in cygwin)
 imap <Leader>o ö
-imap <Leader>o Ö
+imap <Leader>O Ö
 imap <Leader>a ä
 imap <Leader>A Ä
 imap <Leader>u ü
