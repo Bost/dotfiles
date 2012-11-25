@@ -1,3 +1,6 @@
+" TODO wikipedia table comparision
+" TODO organize vimrc according to https://github.com/skwp/dotfiles/blob/master/vimrc
+
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
@@ -119,12 +122,19 @@ Bundle 'benmills/vimux.git'
 Bundle 'majutsushi/tagbar'
 "Bundle 'vim-scripts/taglist.vim.git'
 
+Bundle 'vim-scripts/SearchComplete.git'
+
 " Vim over ssh/scp
 "Bundle 'vim-scripts/netrw.vim.git'
 
 " Align.git is needed by SQLUtilities.git
 "Bundle 'vim-scripts/Align.git'
 "Bundle 'vim-scripts/SQLUtilities.git'
+"
+" TODO Evaluate plugins:
+"Bundle 'vim-scripts/The-Mail-Suite-tms.git'
+"Bundle 'vim-scripts/showmarks--Politz.git'
+"Bundle 'juanpabloaj/ShowMarks.git'
 
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install(update) bundles
@@ -239,7 +249,7 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 "set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
 " improve the help system, kind of tab completition
 set wildmenu                    " Use menu for completions
-set wildmode=list:longest,full
+set wildmode=full
 " Make tab completion work more like it does in bash.
 "set wildmode=longest,list
 
@@ -725,11 +735,20 @@ nnoremap gI `.
 nnoremap <Leader>wd :windo diffthis<CR>
 
 " {{{ German Umlaute: <Leader>char (keyboard switching doesn't work in cygwin)
-imap <Leader>o ö
-imap <Leader>O Ö
-imap <Leader>a ä
-imap <Leader>A Ä
-imap <Leader>u ü
-imap <Leader>U Ü
-imap <Leader>s ß
+"imap <Leader>o ö
+"imap <Leader>O Ö
+"imap <Leader>a ä
+"imap <Leader>A Ä
+"imap <Leader>u ü
+"imap <Leader>U Ü
+"imap <Leader>s ß
+
+" Use the same keys as on a keyboard
+imap <Leader>; ö
+imap <Leader>: ö
+imap <Leader>' ä
+imap <Leader>" Ä
+imap <Leader>[ ü
+imap <Leader>{ Ü
+imap <Leader>- ß
 " }}}
