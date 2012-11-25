@@ -123,6 +123,7 @@ Bundle 'majutsushi/tagbar'
 "Bundle 'vim-scripts/taglist.vim.git'
 
 Bundle 'vim-scripts/SearchComplete.git'
+Bundle 'ervandew/supertab.git'
 
 " Vim over ssh/scp
 "Bundle 'vim-scripts/netrw.vim.git'
