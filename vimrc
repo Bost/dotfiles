@@ -1,3 +1,4 @@
+" TODO frames made of unicode chars
 " TODO wikipedia table comparision
 " TODO organize vimrc according to https://github.com/skwp/dotfiles/blob/master/vimrc
 
@@ -115,7 +116,7 @@ Bundle 'tsaleh/vim-matchit.git'
 Bundle 'Lokaltog/vim-powerline.git'
 
 " Easily interact with tmux from vim
-Bundle 'benmills/vimux.git'
+"Bundle 'benmills/vimux.git'
 
 " majutsushi/tagbar seems to be nicer than vim-scripts/taglist;
 " both plugins need exuberant ctags
@@ -124,6 +125,7 @@ Bundle 'majutsushi/tagbar'
 
 Bundle 'vim-scripts/SearchComplete.git'
 Bundle 'ervandew/supertab.git'
+Bundle 'Bost/vim-zoom.git'
 
 " Vim over ssh/scp
 "Bundle 'vim-scripts/netrw.vim.git'
@@ -171,7 +173,8 @@ set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 " {{{ gVim - GUI only stuff
 if has('gui_running')
     " Switch off menu (t), show bottom scrollbar (b)
-    set guioptions=tb
+    "set guioptions=tb
+    set guioptions=t
     " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
     "set guioptions=gbm
 endif
@@ -287,7 +290,7 @@ imap <Leader>d <Esc>lDa
 set listchars=tab:▸\ ,eol:¶,extends:❯,precedes:❮,trail:_,nbsp:%
 
 " Toggle hidden (empty) chars
-nmap <Leader>l :set list!<CR>
+nmap <Leader>sl :set list!<CR>
 "set list
 
 " Toggle line wrapping
@@ -302,7 +305,7 @@ imap <C-s> <C-o>:update<CR>
 " }}}
 
 " Toggle line numbers
-"nmap <Leader>n :set nu!<CR>
+nmap <Leader>sn :set nu!<CR>
 
 " Quit the current window
 nmap <Leader>q :q<CR>
@@ -353,7 +356,7 @@ nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 
 " {{{ .vimrc reloading: <Leader>r
 " explicit reloading
-nmap <Leader>r :source ~/dev/dotfiles/vimrc<CR>
+nmap <Leader>rv :source ~/dev/dotfiles/vimrc<CR>
 
 " Automatical reloading - slightly disturbing - use <Leader>S instead
 "autocmd! bufwritepost ~/dev/dotfiles/vimrc source %
@@ -475,23 +478,41 @@ nmap <Leader>gf <CR>:Gdiff<CR>
 nmap <Leader>gc :Gcommit<CR>
 nmap <Leader>gh :Git push<CR>
 
-try     " these keys are not mapped under windows by default
-    unmap <S-Up>
-    unmap <S-Down>
-catch
-endtry
+" <S-Up> <S-Down> are not mapped under windows by default; try to unmap when
+" on linux too
+if has('win32')
+    try
+        unmap <S-Up>
+        unmap <S-Down>
+    catch
+        echo 'unmap <S-Up> <S-Down> does not work.'
+    endtry
+endif
 
-nmap <S-Up> [e
-nmap <S-Down> ]e
+" {{{ Switch buffers: next: <C-Tab>, prev: <C-S-Tab>
+map <C-Tab> :bnext<CR>
+imap <C-Tab> <C-o>:bnext<CR>
+
+map <C-S-Tab> :bprevious<CR>
+imap <C-S-Tab> <C-o>:bprevious<CR>
+" }}}
+
+nmap <A-Right> w
+imap <A-Right> <C-o>w
+nmap <A-Left> b
+imap <A-Left> <C-o>b
+
+" {{{ Move lines up/down: <A-Up> / <A-Down>
+nmap <A-Up> [e
+vmap <A-Up> [egv
+
+nmap <A-Down> ]e
+vmap <A-Down> ]egv
+" }}}
 
 vmap <S-Left> <gv
 vmap <S-Right> >gv
-vmap <S-Up> [egv
-vmap <S-Down> ]egv
 
-" Shortcut for :bnext and :bprevious.
-nmap <A-Left> :bprevious<CR>
-nmap <A-Right> :bnext<CR>
 
 function! RenameFile()      " rename current file
     let old_name = expand("%")
@@ -513,14 +534,6 @@ function! g:ToggleNuMode()
   endif
 endfunction
 nnoremap <silent><Leader><C-L> :call g:ToggleNuMode()<CR>
-" }}}
-
-" {{{ Quickly switch buffers: next: <C-Tab>, prev: <C-S-Tab>
-map <C-Tab> :bn<CR>
-imap <C-Tab> <C-o>:bn<CR>
-
-map <C-S-Tab> :bp<CR>
-imap <C-S-Tab> <C-o>:bp<CR>
 " }}}
 
 if isCygwin || isWin
@@ -616,6 +629,8 @@ nnoremap <F5> :GundoToggle<CR>
 
 " execute current line and catch the output
 map <F7> yyp!!sh<CR><Esc>
+map <Leader>l Ils -la <Esc>yyp!!sh<CR><Esc>
+imap <Leader>l <Esc>Ils -la <Esc>yyp!!sh<CR><Esc>
 
 nnoremap <F9> :NERDTreeToggle<CR>
 nnoremap <F11> :YRShow<CR>
