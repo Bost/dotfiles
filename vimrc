@@ -134,10 +134,18 @@ Bundle 'Bost/vim-zoom.git'
 "Bundle 'vim-scripts/Align.git'
 "Bundle 'vim-scripts/SQLUtilities.git'
 "
-" TODO Evaluate plugins:
+" {{{ TODO Evaluate plugins:
 "Bundle 'vim-scripts/The-Mail-Suite-tms.git'
 "Bundle 'vim-scripts/showmarks--Politz.git'
 "Bundle 'juanpabloaj/ShowMarks.git'
+" Shows java file class, package in a tree as in IDEs. Java source browser.
+" Rating 258/92, Downloaded by 7798
+"Bundle 'vim-scripts/JavaBrowser.git'
+
+" Compile and run Java program Rating 273/145, Downloaded by 8783
+"Bundle 'vim-scripts/JavaRun.git'
+
+" }}}
 
 " :BundleList          - list configured bundles
 " :BundleInstall(!)    - install(update) bundles
@@ -631,8 +639,8 @@ nnoremap <F5> :GundoToggle<CR>
 
 " execute current line and catch the output
 map <F7> yyp!!sh<CR><Esc>
-map <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>
-imap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>
+map <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
+imap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>kk$a
 
 nnoremap <F9> :NERDTreeToggle<CR>
 nnoremap <F11> :YRShow<CR>
