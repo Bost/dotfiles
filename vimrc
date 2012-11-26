@@ -622,6 +622,9 @@ endif
 " Insure Clean Pasting w/autoindented code - this is probably not usefull
 "nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
+
+" Make the unnamed register to be the same as the "* register. Yand & Paste
+" the selection without prepending with "* to commands
 set clipboard=unnamed
 " }}}
 
