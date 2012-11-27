@@ -126,6 +126,7 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 
+    alias g='gvim -u /c/cygwin/home/svo02896/dev/dotfiles/vimrc'
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_347" -gt 0 ]; then
     :
@@ -237,7 +238,6 @@ if [ "$isLinux" -eq 0 ]; then
     alias mbssum='$deployments_base/mbssum.sh'
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
-    alias g='gvim'
 
 #else
 #    echo "Linux aliases already loaded"
