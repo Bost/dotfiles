@@ -7,6 +7,16 @@ let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
 let isWin = has('win32')
 
+" {{{ File structure of .vim, .vimrc, vimfiles:
+" isCygwin:
+" ln -s $HOME/dev/dotfiles/vim .vim
+" ln -s $HOME/dev/dotfiles/vimrc .vimrc
+"
+" isWin:
+" cd $HOME
+" create vimfiles.lnk pointing to $HOME\dev\dotfiles\vim
+" }}}
+
 "echo "isLinux: " isLinux
 "echo "isCygwin: " isCygwin
 "echo "isWin: " isWin
@@ -23,9 +33,10 @@ set shortmess+=I               " Don't show the Vim welcome screen.
 filetype off                   " required!
 
 if has('win32')
-    set rtp+=$HOME/dev/dotfiles/vim/bundle/vundle
+    set runtimepath+=$HOME/dev/dotfiles/vim
+    set runtimepath+=$HOME/dev/dotfiles/vim/bundle/vundle
 else
-    set rtp+=~/.vim/bundle/vundle/
+    set runtimepath+=~/.vim/bundle/vundle/
 endif
 
 call vundle#rc()
@@ -38,7 +49,7 @@ if isCygwin || isWin
     Bundle 'Bost/vim-email.git'
 endif
 Bundle 'Lokaltog/vim-easymotion'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'rstacruz/sparkup', {'runtimepath': 'vim/'}
 " vim-scripts repos
 
 " YankRing colides with ctrlp
@@ -140,7 +151,7 @@ Bundle 'Bost/vim-zoom.git'
 "Bundle 'juanpabloaj/ShowMarks.git'
 " Shows java file class, package in a tree as in IDEs. Java source browser.
 " Rating 258/92, Downloaded by 7798
-"Bundle 'vim-scripts/JavaBrowser.git'
+Bundle 'vim-scripts/JavaBrowser.git'
 
 " Compile and run Java program Rating 273/145, Downloaded by 8783
 "Bundle 'vim-scripts/JavaRun.git'
