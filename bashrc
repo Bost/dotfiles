@@ -8,7 +8,7 @@ function readFile {
         #exit 1
     fi
 }
-dotfilesHOME=~/dev/dotfiles
+
 if [ ! -d "$dotfilesHOME" ]; then
     echo "ERROR: Directory doesn't exits: dotfilesHOME=${dotfilesHOME}"
     echo "Check the .bash_profile"
