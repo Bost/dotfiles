@@ -71,7 +71,6 @@ alias hrep='history | grep '
 #alias tu='top -o cpu'
 #alias tm='top -o vsize'
 #alias r='rake'
-#alias g='git status'
 #alias mkdir='nocorrect mkdir'
 #alias cp='nocorrect cp'
 alias md='mkdir -p'
@@ -121,12 +120,13 @@ elif [ "$isCygwin_155" -gt 0 ]; then
 
     alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
     alias nailguncli='ng'
+    alias g='gvim'
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 
-    alias g='gvim -u /c/cygwin/home/svo02896/dev/dotfiles/vimrc'
+    alias g='gvim -u $HOME/dev/dotfiles/vimrc'
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_347" -gt 0 ]; then
     :
