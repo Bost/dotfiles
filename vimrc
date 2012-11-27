@@ -151,7 +151,7 @@ Bundle 'Bost/vim-zoom.git'
 "Bundle 'juanpabloaj/ShowMarks.git'
 " Shows java file class, package in a tree as in IDEs. Java source browser.
 " Rating 258/92, Downloaded by 7798
-"Bundle 'vim-scripts/JavaBrowser.git'
+Bundle 'vim-scripts/JavaBrowser.git'
 
 " Compile and run Java program Rating 273/145, Downloaded by 8783
 "Bundle 'vim-scripts/JavaRun.git'
