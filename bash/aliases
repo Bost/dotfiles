@@ -150,12 +150,13 @@ elif [ "$isMinGw32_347" -gt 0 ]; then
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isLinux" -gt 0 ]; then
     :
+    if [ "$isLinux_64" -gt 0 ]; then
+        export VMAIL_BROWSER='google-chrome'
+    else
+        export VMAIL_BROWSER='chromium-browser'
+    fi
 
-    #if [ "$isLinux_64" -gt 0 ]; then
-    #    echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
-    #else
-    #    echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
-    #fi
+    export VMAIL_VIM=gvim
 
     sudo_update="sudo apt-get update"
     alias update=$sudo_update
