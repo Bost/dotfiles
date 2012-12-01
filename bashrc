@@ -9,9 +9,16 @@ function readFile {
     fi
 }
 
+bashProfileLocation=$HOME/.bash_profile
+
+if [ -z $dotfilesHOME ]; then
+    source "$bashProfileLocation"
+fi
+
 if [ ! -d "$dotfilesHOME" ]; then
     echo "ERROR: Directory doesn't exits: dotfilesHOME=${dotfilesHOME}"
-    echo "Check the .bash_profile"
+    echo "Check the $bashProfileLocation"
+    return
 else
     bashfilesHOME=$dotfilesHOME/bash
     readFile $bashfilesHOME/env
