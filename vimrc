@@ -181,7 +181,14 @@ set laststatus=2                " Always show status line
 "set shell=/bin/bash\ --login
 
 set encoding=utf-8
-set visualbell t_vb=            " Use null visual bell (no beeps or flashes).
+
+" {{{ visualbell
+" Use null visual bell (no beeps or flashes) this doesn't work
+"set visualbell t_vb=
+
+" set 'novisualbell' works as I want
+set novisualbell
+" }}}
 
 set virtualedit=block   " Makes visual block mode awesome
 
@@ -792,3 +799,6 @@ imap <Leader>[ ü
 imap <Leader>{ Ü
 imap <Leader>- ß
 " }}}
+
+" Use the vim current directory
+let g:ctrlp_working_path_mode = 0

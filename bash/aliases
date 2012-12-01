@@ -172,7 +172,7 @@ elif [ "$isLinux" -gt 0 ]; then
     alias cx='chmod +x'
     alias k9='kill -9'
     # I guess '2> /dev/null' redirects errors to /dev/null
-    alias f='find ./ 2> /dev/null'
+    #alias f='find ./ 2> /dev/null'
 
     # -y  Assume Yes to all queries and do not prompt
     alias inst="sudo apt-get install -y"
