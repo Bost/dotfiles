@@ -497,9 +497,8 @@ nmap <Leader>gf <CR>:Gdiff<CR>
 nmap <Leader>gc :Gcommit<CR>
 nmap <Leader>gh :Git push<CR>
 
-" <S-Up> <S-Down> are not mapped under windows by default; try to unmap when
-" on linux too
-if has('win32')
+" <S-Up> <S-Down> are not mapped under windows by default
+if isLinux
     try
         unmap <S-Up>
         unmap <S-Down>
