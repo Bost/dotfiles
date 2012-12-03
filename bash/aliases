@@ -1,6 +1,6 @@
 #!/bin/bash
 
-alias reload='echo "reloading ~/.bash_profile"; . ~/.bash_profile'
+alias reload='echo "reloading $HOME/.bashrc"; source $HOME/.bashrc'
 alias r='reload'
 
 alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
@@ -150,12 +150,13 @@ elif [ "$isMinGw32_347" -gt 0 ]; then
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isLinux" -gt 0 ]; then
     :
+    if [ "$isLinux_64" -gt 0 ]; then
+        export VMAIL_BROWSER='google-chrome'
+    else
+        export VMAIL_BROWSER='chromium-browser'
+    fi
 
-    #if [ "$isLinux_64" -gt 0 ]; then
-    #    echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
-    #else
-    #    echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
-    #fi
+    export VMAIL_VIM=gvim
 
     sudo_update="sudo apt-get update"
     alias update=$sudo_update
@@ -171,7 +172,7 @@ elif [ "$isLinux" -gt 0 ]; then
     alias cx='chmod +x'
     alias k9='kill -9'
     # I guess '2> /dev/null' redirects errors to /dev/null
-    alias f='find ./ 2> /dev/null'
+    #alias f='find ./ 2> /dev/null'
 
     # -y  Assume Yes to all queries and do not prompt
     alias inst="sudo apt-get install -y"
@@ -183,7 +184,6 @@ elif [ "$isLinux" -gt 0 ]; then
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
 
-    alias reload='echo "reloading ~/.bashrc"; source ~/.bashrc'
     # clojure classpath
     cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
     cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.0.jar
