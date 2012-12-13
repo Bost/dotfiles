@@ -802,3 +802,6 @@ imap <Leader>- ß
 
 " Use the vim current directory
 let g:ctrlp_working_path_mode = 0
+if isLinux
+    let g:ackprg="/usr/bin/ack-grep -H --nocolor --nogroup --column"
+endif
