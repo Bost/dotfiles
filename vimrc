@@ -342,10 +342,6 @@ nnoremap <Leader>bd :bd<CR>
 " Show a list of all open buffers with BufExplorer
 nnoremap <Leader>b :BufExplorer<CR>
 
-" Jump from window to window
-nnoremap <Leader><Tab> <C-W>w
-nnoremap <Tab> <C-W>w
-
 " Quickly 'maximize' a split - these shortcuts colide with VimClojure
 "nnoremap <Leader>mw <C-W>\|
 "nnoremap <Leader>mh <C-W>_
@@ -512,6 +508,11 @@ endif
 
 " {{{ Convenience keybinding:
 
+" {{{ Jump from window to window
+nnoremap <Leader><Tab> <C-W>w
+nnoremap <Tab> <C-W>w
+" }}}
+
 " {{{ Switch buffers: next: <C-Tab>, prev: <C-S-Tab>
 noremap <C-Tab> :bnext<CR>
 inoremap <C-Tab> <Esc>:bnext<CR>i
@@ -520,50 +521,67 @@ noremap <C-S-Tab> :bprevious<CR>
 inoremap <C-S-Tab> <Esc>:bprevious<CR>i
 " }}}
 
+function! Vis(moveKey)
+   let col = virtcol('.')
+   let lineLen = virtcol('$')
+   if col == lineLen-1 || col == 1
+       normal V
+   else
+       if a:moveKey == 'j'
+           normal vj
+       elseif a:moveKey == 'k'
+           normal vk
+       else
+           echo 'Unrecognized moveKey: ' a:moveKey
+       endif
+   endif
+endfunction
+nnoremap <Leader>c :call LookUpwards()<CR>
+
 " {{{ Visualize: lines, words
-nnoremap <S-Up> v0k
-inoremap <S-Up> <Esc>v0k
-vnoremap <S-Up> k
+nmap <S-Up> :call Vis('k')<CR>
+imap <S-Up> <Esc>:call Vis('k')<CR>
+vmap <S-Up> k
 
-nnoremap <S-Down> v$
-inoremap <S-Down> <Esc>v$
-vnoremap <S-Down> j
+nmap <S-Down> :call Vis('j')<CR>
+imap <S-Down> <Esc>:call Vis('j')<CR>
+vmap <S-Down> j
 
-nnoremap <C-S-Right> vw
-inoremap <C-S-Right> <C-o>vw
-nnoremap <C-S-Left> vb
-inoremap <C-S-Left> <C-o>vb
+nmap <C-S-Right> vw
+imap <C-S-Right> <C-o>vw
+nmap <C-S-Left> vb
+imap <C-S-Left> <C-o>vb
 " }}}
 
 " {{{ Jump one word left/right: <A-Left> / <A-Right>
-nnoremap <A-Right> w
-inoremap <A-Right> <C-o>w
-nnoremap <A-Left> b
-inoremap <A-Left> <C-o>b
+nmap <A-Right> w
+imap <A-Right> <C-o>w
+nmap <A-Left> b
+imap <A-Left> <C-o>b
 " }}}
 
 " {{{ Move lines up/down/left/right: <A-Up> / <A-Down> / <A-Left> / <A-Right>
-nnoremap <A-Up> [e
-inoremap <A-Up> <C-o>[e
-vnoremap <A-Up> [egv
+nmap <A-Up> [e
+imap <A-Up> <C-o>[e
+vmap <A-Up> [egv
 
-nnoremap <A-Down> ]e
-inoremap <A-Down> <C-o>]e
-vnoremap <A-Down> ]egv
+nmap <A-Down> ]e
+imap <A-Down> <C-o>]e
+vmap <A-Down> ]egv
 
-vnoremap <A-Left> <gv
-vnoremap <A-Right> >gv
+vmap <A-Left> <gv
+vmap <A-Right> >gv
 " }}}
 
 " {{{ DeleteWord-keybindings as in eclipse
-inoremap <C-S-Del> <Esc>lDa
-nnoremap <C-S-Del> D
+imap <C-S-Del> <Esc>lDa
+nmap <C-S-Del> D
 
-nnoremap <C-BS> bdw
-inoremap <C-BS> <Esc>bdwi
+nmap <C-BS> bdw
+imap <C-BS> <Esc>bdwi
 
-nnoremap <C-Del> dw
-inoremap <C-Del> <Esc>ldwi
+nmap <C-Del> dw
+imap <C-Del> <Esc>ldwi
 " }}}
 
 " }}}
