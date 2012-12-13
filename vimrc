@@ -257,10 +257,10 @@ set shiftwidth=4 softtabstop=4
 set backspace=indent,eol,start  " backspace through everything in insert mode
 
 " {{{ Switching from insert to normal mode <Leader><Leader>
-"imap jj <Esc>
-"imap :: <Esc>
+"inoremap jj <Esc>
+"inoremap :: <Esc>
 " EasyMotion already uses <Leader><Leader>
-"imap <Leader><Leader> <Esc>l
+"inoremap <Leader><Leader> <Esc>l
 " }}}
 
 " visualise a word and switch to insert mode
@@ -305,84 +305,84 @@ let vimclojure#SplitPos = "right"        " open the split window on the right si
 " }}}
 
 " {{{ Paste from system clipboard: <Leader>p
-imap <Leader>p <Esc>"*Pi
-nmap <Leader>p "*P
+inoremap <Leader>p <Esc>"*Pi
+nnoremap <Leader>p "*P
 " }}}
 
 " In insert mode: delete from cursor to the EOL and switch back to insert mode
-imap <Leader>d <Esc>lDa
+inoremap <Leader>d <Esc>lDa
 
 " Character coding for empty characters
 set listchars=tab:▸\ ,eol:¶,extends:❯,precedes:❮,trail:_,nbsp:%
 
 " Toggle hidden (empty) chars
-nmap <Leader>sl :set list!<CR>
+nnoremap <Leader>sl :set list!<CR>
 "set list
 
 " Toggle line wrapping
-nmap <Leader>wr :set wrap!<CR>
+nnoremap <Leader>wr :set wrap!<CR>
 
 " {{{ Save file: <C-s>
-nmap <C-s> :update<CR>
-imap <C-s> <C-o>:update<CR>
+nnoremap <C-s> :update<CR>
+inoremap <C-s> <C-o>:update<CR>
 
-"nmap <C-s> :w<CR>
-"imap <C-s> <C-o>:w<CR>
+"nnoremap <C-s> :w<CR>
+"inoremap <C-s> <C-o>:w<CR>
 " }}}
 
 " Toggle line numbers
-nmap <Leader>sn :set nu!<CR>
+nnoremap <Leader>sn :set nu!<CR>
 
 " Quit the current window
-nmap <Leader>q :q<CR>
+nnoremap <Leader>q :q<CR>
 
 " Delete the current buffer
-nmap <Leader>bd :bd<CR>
+nnoremap <Leader>bd :bd<CR>
 
 " Show a list of all open buffers with BufExplorer
-nmap <Leader>b :BufExplorer<CR>
+nnoremap <Leader>b :BufExplorer<CR>
 
 " Jump from window to window
-nmap <Leader><Tab> <C-W>w
-nmap <Tab> <C-W>w
+nnoremap <Leader><Tab> <C-W>w
+nnoremap <Tab> <C-W>w
 
 " Quickly 'maximize' a split - these shortcuts colide with VimClojure
-"nmap <Leader>mw <C-W>\|
-"nmap <Leader>mh <C-W>_
-"nmap <Leader>me <C-W>=
-"nmap <Leader>mm <Leader>mw<Leader>mh
+"nnoremap <Leader>mw <C-W>\|
+"nnoremap <Leader>mh <C-W>_
+"nnoremap <Leader>me <C-W>=
+"nnoremap <Leader>mm <Leader>mw<Leader>mh
 
 " Quickly 'maximize' the entire UI - 999 is a bit lot :(
-nmap <Leader>Mw :set columns=250<CR>
-nmap <Leader>Mh :set lines=69<CR>
-nmap <Leader>MM <Leader>Mw<Leader>Mh
+nnoremap <Leader>Mw :set columns=250<CR>
+nnoremap <Leader>Mh :set lines=69<CR>
+nnoremap <Leader>MM <Leader>Mw<Leader>Mh
 
 " {{{ Switch viewports: <C-hjkl>
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
 " }}}
 
 
 " {{{ Split up/down/left/right: not used
-"nmap <Leader>sk :sp \| Explore<CR>
-"nmap <Leader>sj :rightbelow sp \| Explore<CR>
-"nmap <Leader>sh :vsp \| Explore<CR>
-"nmap <Leader>sl :rightbelow vsp \| Explore<CR>
+"nnoremap <Leader>sk :sp \| Explore<CR>
+"nnoremap <Leader>sj :rightbelow sp \| Explore<CR>
+"nnoremap <Leader>sh :vsp \| Explore<CR>
+"nnoremap <Leader>sl :rightbelow vsp \| Explore<CR>
 " }}}
 
 " {{{ Editing dotfiles & cheatsheet files
-"nmap <Leader>er :tabnew ~/.vimrc<CR>
-nmap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
-nmap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
-nmap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
-nmap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
+"nnoremap <Leader>er :tabnew ~/.vimrc<CR>
+nnoremap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
+nnoremap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
+nnoremap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
+nnoremap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 " }}}
 
 " {{{ .vimrc reloading: <Leader>r
 " explicit reloading
-nmap <Leader>rv :source ~/dev/dotfiles/vimrc<CR>
+nnoremap <Leader>rv :source ~/dev/dotfiles/vimrc<CR>
 
 " Automatical reloading - slightly disturbing - use <Leader>S instead
 "autocmd! bufwritepost ~/dev/dotfiles/vimrc source %
@@ -396,9 +396,9 @@ nnoremap <Leader>S ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 " }}}
 
 " {{{ Sessions: not used at the moment
-"nmap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
-"nmap <Leader>so :OpenSession<CR>
-"nmap <Leader>ss :SaveSession<CR>
+"nnoremap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
+"nnoremap <Leader>so :OpenSession<CR>
+"nnoremap <Leader>ss :SaveSession<CR>
 "let g:session_autoload = 'no'
 "let g:session_autosave = 'no'
 " }}}
@@ -488,24 +488,24 @@ set directory=/tmp " Don't clutter my dirs up with swp and tmp files
 "set timeoutlen=500
 
 " Horizontal split
-nmap <Leader>- :sp<CR>
+nnoremap <Leader>- :sp<CR>
 " Vertical split
-"nmap <Leader>\ :vsp<CR>
+"nnoremap <Leader>\ :vsp<CR>
 
-nmap <Leader>cdf :color default<CR>:colorscheme default<CR>
-nmap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>cdf :color default<CR>:colorscheme default<CR>
+nnoremap <Leader>gs :Gstatus<CR>
 " <CR> allows me to use this shortcut from the :Gstatus window
-nmap <Leader>gf <CR>:Gdiff<CR>
-nmap <Leader>gc :Gcommit<CR>
-nmap <Leader>gh :Git push<CR>
+nnoremap <Leader>gf <CR>:Gdiff<CR>
+nnoremap <Leader>gc :Gcommit<CR>
+nnoremap <Leader>gh :Git push<CR>
 
 " <S-Up> <S-Down> are not mapped under windows by default
 if isLinux
     try
-        unmap <S-Up>
-        unmap <S-Down>
+        unnoremap <S-Up>
+        unnoremap <S-Down>
     catch
-        echo 'unmap <S-Up> <S-Down> does not work.'
+        echo 'unnoremap <S-Up> <S-Down> does not work.'
     endtry
 endif
 
@@ -513,57 +513,57 @@ endif
 " {{{ Convenience keybinding:
 
 " {{{ Switch buffers: next: <C-Tab>, prev: <C-S-Tab>
-map <C-Tab> :bnext<CR>
-imap <C-Tab> <Esc>:bnext<CR>i
+noremap <C-Tab> :bnext<CR>
+inoremap <C-Tab> <Esc>:bnext<CR>i
 
-map <C-S-Tab> :bprevious<CR>
-imap <C-S-Tab> <Esc>:bprevious<CR>i
+noremap <C-S-Tab> :bprevious<CR>
+inoremap <C-S-Tab> <Esc>:bprevious<CR>i
 " }}}
 
 " {{{ Visualize: lines, words
-nmap <S-Up> v0k
-imap <S-Up> <Esc>v0k
-vmap <S-Up> k
+nnoremap <S-Up> v0k
+inoremap <S-Up> <Esc>v0k
+vnoremap <S-Up> k
 
-nmap <S-Down> v$
-imap <S-Down> <Esc>v$
-vmap <S-Down> j
+nnoremap <S-Down> v$
+inoremap <S-Down> <Esc>v$
+vnoremap <S-Down> j
 
-nmap <C-S-Right> vw
-imap <C-S-Right> <C-o>vw
-nmap <C-S-Left> vb
-imap <C-S-Left> <C-o>vb
+nnoremap <C-S-Right> vw
+inoremap <C-S-Right> <C-o>vw
+nnoremap <C-S-Left> vb
+inoremap <C-S-Left> <C-o>vb
 " }}}
 
 " {{{ Jump one word left/right: <A-Left> / <A-Right>
-nmap <A-Right> w
-imap <A-Right> <C-o>w
-nmap <A-Left> b
-imap <A-Left> <C-o>b
+nnoremap <A-Right> w
+inoremap <A-Right> <C-o>w
+nnoremap <A-Left> b
+inoremap <A-Left> <C-o>b
 " }}}
 
 " {{{ Move lines up/down/left/right: <A-Up> / <A-Down> / <A-Left> / <A-Right>
-nmap <A-Up> [e
-imap <A-Up> <C-o>[e
-vmap <A-Up> [egv
+nnoremap <A-Up> [e
+inoremap <A-Up> <C-o>[e
+vnoremap <A-Up> [egv
 
-nmap <A-Down> ]e
-imap <A-Down> <C-o>]e
-vmap <A-Down> ]egv
+nnoremap <A-Down> ]e
+inoremap <A-Down> <C-o>]e
+vnoremap <A-Down> ]egv
 
-vmap <A-Left> <gv
-vmap <A-Right> >gv
+vnoremap <A-Left> <gv
+vnoremap <A-Right> >gv
 " }}}
 
 " {{{ DeleteWord-keybindings as in eclipse
-imap <C-S-Del> <Esc>lDa
-nmap <C-S-Del> D
+inoremap <C-S-Del> <Esc>lDa
+nnoremap <C-S-Del> D
 
-nmap <C-BS> bdw
-imap <C-BS> <Esc>bdwi
+nnoremap <C-BS> bdw
+inoremap <C-BS> <Esc>bdwi
 
-nmap <C-Del> dw
-imap <C-Del> <Esc>ldwi
+nnoremap <C-Del> dw
+inoremap <C-Del> <Esc>ldwi
 " }}}
 
 " }}}
@@ -577,7 +577,7 @@ function! RenameFile()      " rename current file
         redraw!
     endif
 endfunction
-map <Leader>n :call RenameFile()<cr>
+noremap <Leader>n :call RenameFile()<cr>
 
 " {{{ Toggle line number counting: <Leader><C-L>
 function! g:ToggleNuMode()
@@ -591,34 +591,34 @@ nnoremap <silent><Leader><C-L> :call g:ToggleNuMode()<CR>
 " }}}
 
 if isCygwin || isWin
-    nmap <Leader>ma :call Email("Andreas")<CR>
-    nmap <Leader>mj :call Email("Jürgen")<CR>
-    nmap <Leader>my :call Email("Yvonne")<CR>
-    nmap <Leader>mt :call Email("Thomas")<CR>
+    nnoremap <Leader>ma :call Email("Andreas")<CR>
+    nnoremap <Leader>mj :call Email("Jürgen")<CR>
+    nnoremap <Leader>my :call Email("Yvonne")<CR>
+    nnoremap <Leader>mt :call Email("Thomas")<CR>
 
-    nmap <Leader>ede :e $deployments_base/deployment.sh<CR>
-    nmap <Leader>edv :e $deployments_base/defvars.sh<CR>
+    nnoremap <Leader>ede :e $deployments_base/deployment.sh<CR>
+    nnoremap <Leader>edv :e $deployments_base/defvars.sh<CR>
 endif
 
 " {{{ Jump To Buffer: <Leader>Number
-nmap <Leader>0 :0b<CR>
-nmap <Leader>1 :1b<CR>
-nmap <Leader>2 :2b<CR>
-nmap <Leader>3 :3b<CR>
-nmap <Leader>4 :4b<CR>
-nmap <Leader>5 :5b<CR>
-nmap <Leader>6 :6b<CR>
-nmap <Leader>7 :7b<CR>
-nmap <Leader>8 :8b<CR>
-nmap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :0b<CR>
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
 
-nmap <Leader>10 :10b<CR>
-nmap <Leader>11 :11b<CR>
-nmap <Leader>12 :12b<CR>
-nmap <Leader>13 :13b<CR>
-nmap <Leader>14 :14b<CR>
-nmap <Leader>15 :15b<CR>
-nmap <Leader>16 :16b<CR>
+nnoremap <Leader>10 :10b<CR>
+nnoremap <Leader>11 :11b<CR>
+nnoremap <Leader>12 :12b<CR>
+nnoremap <Leader>13 :13b<CR>
+nnoremap <Leader>14 :14b<CR>
+nnoremap <Leader>15 :15b<CR>
+nnoremap <Leader>16 :16b<CR>
 " }}}
 
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
@@ -677,26 +677,26 @@ set pastetoggle=<F2>
 set clipboard=unnamed
 " }}}
 
-nmap <F3> :set hlsearch!<CR>
+nnoremap <F3> :set hlsearch!<CR>
 
 nnoremap <F5> :GundoToggle<CR>
 
 " execute current line and catch the output
-map <F7> yyp!!sh<CR><Esc>
-map <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
-imap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>kk$a
+noremap <F7> yyp!!sh<CR><Esc>
+noremap <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
+inoremap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>kk$a
 
 nnoremap <F9> :NERDTreeToggle<CR>
 nnoremap <F11> :YRShow<CR>
 
-"nmap <F12> :TlistToggle<CR>
-nmap <F12> :TagbarToggle<CR>
+"nnoremap <F12> :TlistToggle<CR>
+nnoremap <F12> :TagbarToggle<CR>
 "noremap <F12> :call VimCommanderToggle()<CR>
 
 if isCygwin || isWin
-    "nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
+    "nnoremap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
 else
-    "nmap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
+    "nnoremap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
 endif
 
 " start python on F5
@@ -705,7 +705,7 @@ autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
 "autocmd VimEnter * NERDTree
 
 " {{{ Show syntax highlighting groups for word under cursor: call SynStack()
-nmap <C-S-P> :call <SID>SynStack()<CR>
+nnoremap <C-S-P> :call <SID>SynStack()<CR>
 function! <SID>SynStack()
     if !exists("*synstack")
         return
@@ -721,12 +721,12 @@ highlight ColorColumn guibg=black
 " }}}
 
 " {{{ Emacs-like beginning and end of line: <C-e> <C-a>
-nmap <C-e> $
-imap <C-e> <C-o>$
+nnoremap <C-e> $
+inoremap <C-e> <C-o>$
 
-" nmap <C-a> ^  colides with that increment/decrement plugin
-"nmap <C-a> ^
-imap <C-a> <C-o>^
+" nnoremap <C-a> ^  colides with that increment/decrement plugin
+"nnoremap <C-a> ^
+inoremap <C-a> <C-o>^
 " }}}
 
 " Select region from last edited line to the end of last pasted text
@@ -746,14 +746,14 @@ let g:ackprg = 'ack --nogroup --nocolor --column'
 " current directory and all subdirectories; open the quickfix window when done
 " In fact only 'j' (not jump to the firs location) should not print all
 " matches
-map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
-"map <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
+noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
+"noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
 " }}}
 
 " {{{ Smart Home key: jump to the 1st nonblank char on the line, or, if
 " already at that position, to the start of the line
 noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
-imap <silent> <Home> <C-O><Home>
+inoremap <silent> <Home> <C-O><Home>
 " }}}
 
 " Do not redraw while running macros (supposedly much faster)
@@ -775,7 +775,7 @@ autocmd FileType clj,javascript,java,python,readme,text,txt,vim
 function! EditScratch()
     exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
 endfunction
-map <Leader>x :call EditScratch()<CR>
+noremap <Leader>x :call EditScratch()<CR>
 " }}}
 
 " {{{ Save some key strokes while doing substitution: <Leader>s
@@ -806,13 +806,13 @@ nnoremap <Leader>wd :windo diffthis<CR>
 
 " {{{ German Umlaute: <Leader>char (keyboard switching doesn't work in cygwin)
 " Use the same keys as on a keyboard
-imap <Leader>; ö
-imap <Leader>: ö
-imap <Leader>' ä
-imap <Leader>" Ä
-imap <Leader>[ ü
-imap <Leader>{ Ü
-imap <Leader>- ß
+inoremap <Leader>; ö
+inoremap <Leader>: ö
+inoremap <Leader>' ä
+inoremap <Leader>" Ä
+inoremap <Leader>[ ü
+inoremap <Leader>{ Ü
+inoremap <Leader>- ß
 " }}}
 
 " {{{ ctrlp settings
