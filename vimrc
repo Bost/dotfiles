@@ -577,11 +577,11 @@ vmap <A-Right> >gv
 imap <C-S-Del> <Esc>lDa
 nmap <C-S-Del> D
 
-nmap <C-BS> bdw
-imap <C-BS> <Esc>bdwi
+nmap <C-BS> db
+imap <C-BS> <Esc>dbi
 
-nmap <C-Del> dw
-imap <C-Del> <Esc>ldwi
+nmap <C-Del> de
+imap <C-Del> <Esc>ldei
 " }}}
 
 " }}}
