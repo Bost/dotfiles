@@ -1395,8 +1395,9 @@ fu! s:samerootsyml(each, isfile, cwd)
 endf
 
 fu! ctrlp#rmbasedir(items)
-	if a:items != [] && !stridx(a:items[0], s:dyncwd)
-		let idx = strlen(s:dyncwd) + ( s:dyncwd !~ '[\/]$' )
+	let cwd = s:dyncwd.( s:dyncwd !~ '[\/]$' ? s:lash : '' )
+	if a:items != [] && !stridx(a:items[0], cwd)
+		let idx = strlen(cwd)
 		retu map(a:items, 'strpart(v:val, idx)')
 	en
 	retu a:items
@@ -1989,7 +1990,7 @@ endf
 
 fu! s:insertcache(str)
 	let [data, g:ctrlp_newcache, str] = [g:ctrlp_allfiles, 1, a:str]
-	if strlen(str) <= strlen(data[0])
+	if data == [] || strlen(str) <= strlen(data[0])
 		let pos = 0
 	elsei strlen(str) >= strlen(data[-1])
 		let pos = len(data) - 1

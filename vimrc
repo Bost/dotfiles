@@ -403,11 +403,6 @@ nnoremap <Leader>S ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 "let g:session_autosave = 'no'
 " }}}
 
-" this is the default mouse setting
-"if has('mouse')
-"    set mouse=a
-"endif
-
 syntax on
 filetype plugin indent on
 
@@ -514,6 +509,9 @@ if isLinux
     endtry
 endif
 
+
+" {{{ Convenience keybinding:
+
 " {{{ Switch buffers: next: <C-Tab>, prev: <C-S-Tab>
 map <C-Tab> :bnext<CR>
 imap <C-Tab> <Esc>:bnext<CR>i
@@ -522,12 +520,29 @@ map <C-S-Tab> :bprevious<CR>
 imap <C-S-Tab> <Esc>:bprevious<CR>i
 " }}}
 
+" {{{ Visualize: lines, words
+nmap <S-Up> v0k
+imap <S-Up> <Esc>v0k
+vmap <S-Up> k
+
+nmap <S-Down> v$
+imap <S-Down> <Esc>v$
+vmap <S-Down> j
+
+nmap <C-S-Right> vw
+imap <C-S-Right> <C-o>vw
+nmap <C-S-Left> vb
+imap <C-S-Left> <C-o>vb
+" }}}
+
+" {{{ Jump one word left/right: <A-Left> / <A-Right>
 nmap <A-Right> w
 imap <A-Right> <C-o>w
 nmap <A-Left> b
 imap <A-Left> <C-o>b
+" }}}
 
-" {{{ Move lines up/down: <A-Up> / <A-Down>
+" {{{ Move lines up/down/left/right: <A-Up> / <A-Down> / <A-Left> / <A-Right>
 nmap <A-Up> [e
 imap <A-Up> <C-o>[e
 vmap <A-Up> [egv
@@ -535,11 +550,23 @@ vmap <A-Up> [egv
 nmap <A-Down> ]e
 imap <A-Down> <C-o>]e
 vmap <A-Down> ]egv
+
+vmap <A-Left> <gv
+vmap <A-Right> >gv
 " }}}
 
-vmap <S-Left> <gv
-vmap <S-Right> >gv
+" {{{ DeleteWord-keybindings as in eclipse
+imap <C-S-Del> <Esc>lDa
+nmap <C-S-Del> D
 
+nmap <C-BS> bdw
+imap <C-BS> <Esc>bdwi
+
+nmap <C-Del> dw
+imap <C-Del> <Esc>ldwi
+" }}}
+
+" }}}
 
 function! RenameFile()      " rename current file
     let old_name = expand("%")
@@ -778,14 +805,6 @@ nnoremap gI `.
 nnoremap <Leader>wd :windo diffthis<CR>
 
 " {{{ German Umlaute: <Leader>char (keyboard switching doesn't work in cygwin)
-"imap <Leader>o ö
-"imap <Leader>O Ö
-"imap <Leader>a ä
-"imap <Leader>A Ä
-"imap <Leader>u ü
-"imap <Leader>U Ü
-"imap <Leader>s ß
-
 " Use the same keys as on a keyboard
 imap <Leader>; ö
 imap <Leader>: ö
@@ -796,5 +815,17 @@ imap <Leader>{ Ü
 imap <Leader>- ß
 " }}}
 
+" {{{ ctrlp settings
 " Use the vim current directory
 let g:ctrlp_working_path_mode = 0
+
+"set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+"set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(class|jar|exe|so|dll|zip)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+" }}}
