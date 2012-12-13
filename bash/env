@@ -97,6 +97,8 @@ elif [ "$isLinux" -gt 0 ]; then
     # I need too have $PATH at the end because I want to override the pre-preinstalled java
     PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
 
+    export VMAIL_VIM=gvim
+    export VMAIL_BROWSER='google-chrome'
 else
     echo "ERROR: No environment detected"
 fi
