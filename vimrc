@@ -495,17 +495,6 @@ nnoremap <Leader>gf <CR>:Gdiff<CR>
 nnoremap <Leader>gc :Gcommit<CR>
 nnoremap <Leader>gh :Git push<CR>
 
-" <S-Up> <S-Down> are not mapped under windows by default
-if isLinux
-    try
-        unnoremap <S-Up>
-        unnoremap <S-Down>
-    catch
-        echo 'unnoremap <S-Up> <S-Down> does not work.'
-    endtry
-endif
-
-
 " {{{ Convenience keybinding:
 
 " {{{ Jump from window to window
