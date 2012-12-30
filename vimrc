@@ -651,6 +651,47 @@ elseif isWin
 endif
 " }}}
 
+" {{{ Better copy & paste: <F2>
+" Insure Clean Pasting w/autoindented code - this is probably not usefull
+"nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+
+" Make the unnamed register to be the same as the "* register. Yand & Paste
+" the selection without prepending with "* to commands
+set clipboard=unnamed
+" }}}
+
+nnoremap <F3> :set hlsearch!<CR>
+inoremap <F3> <Esc><F3>
+
+" {{{ Ack and vimgrep: <Leader>a  <F4>
+"nnoremap <Leader>a :Ack
+" ! - means do not jump on the first occurence
+nnoremap <Leader>a :Ack!<space>
+let g:ackprg = 'ack --nogroup --nocolor --column'
+
+" use <cword> to get the word under the cursor, and search for it in the
+" current directory and all subdirectories; open the quickfix window when done
+" In fact only 'j' (not jump to the firs location) should not print all
+" matches
+nnoremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
+"noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
+inoremap <F4> <Esc><F4>
+" }}}
+
+nnoremap <F5> :GundoToggle<CR>
+imap <F5> <Esc><F5>
+
+nnoremap <F6> /
+vnoremap <F6> /
+inoremap <F6> <Esc><F6>
+
+" execute current line and catch the output
+noremap <F7> yyp!!sh<CR><Esc>
+inoremap <F7> <Esc><F7>
+noremap <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
+inoremap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>kk$a
+
 " {{{ Change slashes in the current line: <Leader>\ <Leader>/  (Win/Cygwin only)
 if isWin || isCygwin
     nnoremap <silent> <Leader>/ :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>noh<CR>
@@ -678,59 +719,21 @@ if isWin || isCygwin
     endfunction
     command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
     noremap <silent> <F8> :ToggleSlash<CR>
-    imap <F8> <Esc><F8>
+    inoremap <F8> <Esc><F8>
 endif
 " }}}
 
-" {{{ Better copy & paste: <F2>
-" Insure Clean Pasting w/autoindented code - this is probably not usefull
-"nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
-
-" Make the unnamed register to be the same as the "* register. Yand & Paste
-" the selection without prepending with "* to commands
-set clipboard=unnamed
-" }}}
-
-nnoremap <F3> :set hlsearch!<CR>
-imap <F3> <Esc><F3>
-
-" {{{ Ack and vimgrep: <Leader>a  <F4>
-"nnoremap <Leader>a :Ack
-" ! - means do not jump on the first occurence
-nnoremap <Leader>a :Ack!<space>
-let g:ackprg = 'ack --nogroup --nocolor --column'
-
-" use <cword> to get the word under the cursor, and search for it in the
-" current directory and all subdirectories; open the quickfix window when done
-" In fact only 'j' (not jump to the firs location) should not print all
-" matches
-noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
-"noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
-imap <F4> <Esc><F4>
-" }}}
-
-nnoremap <F5> :GundoToggle<CR>
-" start python on F5
-imap <F5> <Esc><F5>
-
-" execute current line and catch the output
-noremap <F7> yyp!!sh<CR><Esc>
-imap <F7> <Esc><F7>
-noremap <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
-inoremap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>kk$a
-
 nnoremap <F9> :NERDTreeToggle<CR>
-imap <F9> <Esc><F9>
+inoremap <F9> <Esc><F9>
 
 " {{{ <F10>
 autocmd FileType python map <F10> :w<CR>:!python "%"<CR>
-imap <F10> <Esc><F10>
+inoremap <F10> <Esc><F10>
 " }}}
 
 " {{{ <F12>
 nnoremap <F11> :YRShow<CR>
-imap <F11> <Esc><F11>
+inoremap <F11> <Esc><F11>
 
 "nnoremap <F12> :TlistToggle<CR>
 nnoremap <F12> :TagbarToggle<CR>
@@ -740,7 +743,7 @@ if isCygwin || isWin
 else
     "nnoremap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
 endif
-imap <F12> <Esc><F12>
+inoremap <F12> <Esc><F12>
 " }}}
 
 "autocmd VimEnter * NERDTree
