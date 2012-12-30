@@ -325,6 +325,7 @@ nnoremap <Leader>wr :set wrap!<CR>
 " {{{ Save file: <C-s>
 nnoremap <C-s> :update<CR>
 inoremap <C-s> <C-o>:update<CR>
+vnoremap <C-s> <Esc>:update<CR>gv
 
 "nnoremap <C-s> :w<CR>
 "inoremap <C-s> <C-o>:w<CR>
@@ -422,19 +423,19 @@ vnoremap <Space> za
 
 augroup ft_java
     " Remove ALL autocommands for the current group.
-    au!
+    autocmd!
 
-    au FileType java setlocal foldmethod=marker
-    au FileType java setlocal foldmarker={,}
+    autocmd FileType java setlocal foldmethod=marker
+    autocmd FileType java setlocal foldmarker={,}
 augroup END
 
 augroup ft_vim
     " Remove ALL autocommands for the current group.
-    au!
+    autocmd!
 
-    au FileType vim setlocal foldmethod=marker
-    au FileType help setlocal textwidth=78
-    au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+    autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType help setlocal textwidth=78
+    autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
 set wrap
@@ -674,6 +675,7 @@ if isWin || isCygwin
     endfunction
     command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
     noremap <silent> <F8> :ToggleSlash<CR>
+    imap <F8> <Esc><F8>
 endif
 " }}}
 
@@ -688,29 +690,55 @@ set clipboard=unnamed
 " }}}
 
 nnoremap <F3> :set hlsearch!<CR>
+imap <F3> <Esc><F3>
+
+" {{{ Ack and vimgrep: <Leader>a  <F4>
+"nnoremap <Leader>a :Ack
+" ! - means do not jump on the first occurence
+nnoremap <Leader>a :Ack!<space>
+let g:ackprg = 'ack --nogroup --nocolor --column'
+
+" use <cword> to get the word under the cursor, and search for it in the
+" current directory and all subdirectories; open the quickfix window when done
+" In fact only 'j' (not jump to the firs location) should not print all
+" matches
+noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
+"noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
+imap <F4> <Esc><F4>
+" }}}
 
 nnoremap <F5> :GundoToggle<CR>
+" start python on F5
+imap <F5> <Esc><F5>
 
 " execute current line and catch the output
 noremap <F7> yyp!!sh<CR><Esc>
+imap <F7> <Esc><F7>
 noremap <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
 inoremap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>kk$a
 
 nnoremap <F9> :NERDTreeToggle<CR>
+imap <F9> <Esc><F9>
+
+" {{{ <F10>
+autocmd FileType python map <F10> :w<CR>:!python "%"<CR>
+imap <F10> <Esc><F10>
+" }}}
+
+" {{{ <F12>
 nnoremap <F11> :YRShow<CR>
+imap <F11> <Esc><F11>
 
 "nnoremap <F12> :TlistToggle<CR>
 nnoremap <F12> :TagbarToggle<CR>
 "noremap <F12> :call VimCommanderToggle()<CR>
-
 if isCygwin || isWin
     "nnoremap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
 else
     "nnoremap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
 endif
-
-" start python on F5
-autocmd FileType python map <F5> :w<CR>:!python "%"<CR>
+imap <F12> <Esc><F12>
+" }}}
 
 "autocmd VimEnter * NERDTree
 
@@ -746,20 +774,6 @@ nnoremap <Leader>v '.V`]
 " For pasting python line into REPL
 nnoremap vv ^vg_
 
-" {{{ Ack and vimgrep: <Leader>a  <F4>
-"nnoremap <Leader>a :Ack
-" ! - means do not jump on the first occurence
-nnoremap <Leader>a :Ack!<space>
-let g:ackprg = 'ack --nogroup --nocolor --column'
-
-" use <cword> to get the word under the cursor, and search for it in the
-" current directory and all subdirectories; open the quickfix window when done
-" In fact only 'j' (not jump to the firs location) should not print all
-" matches
-noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<CR>
-"noremap <F4> :execute "vimgrep /" . expand("<cword>") . "/gj **" <Bar> cwindow<CR>
-" }}}
-
 " {{{ Smart Home key: jump to the 1st nonblank char on the line, or, if
 " already at that position, to the start of the line
 noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
@@ -794,9 +808,9 @@ nnoremap <Leader>s :%s///g<left><left>
 
 " {{{ Show cursorline only in the current window and in normal mode
 augroup cline
-    au!
-    au WinLeave,InsertEnter * set nocursorline
-    au WinEnter,InsertLeave * set cursorline
+    autocmd!
+    autocmd WinLeave,InsertEnter * set nocursorline
+    autocmd WinEnter,InsertLeave * set cursorline
 augroup END
 " }}}
 
