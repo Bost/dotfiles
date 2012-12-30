@@ -537,17 +537,15 @@ nmap <S-Down> :call Vis('j')<CR>
 imap <S-Down> <Esc>:call Vis('j')<CR>
 vmap <S-Down> j
 
+nmap <S-Right> vl
+imap <S-Right> <Esc>vl
 nmap <C-S-Right> vw
 imap <C-S-Right> <C-o>vw
+
+nmap <S-Left> vh
+imap <S-Left> <Esc>vh
 nmap <C-S-Left> vb
 imap <C-S-Left> <C-o>vb
-" }}}
-
-" {{{ Jump one word left/right: <A-Left> / <A-Right>
-nmap <A-Right> w
-imap <A-Right> <C-o>w
-nmap <A-Left> b
-imap <A-Left> <C-o>b
 " }}}
 
 " {{{ Move lines up/down/left/right: <A-Up> / <A-Down> / <A-Left> / <A-Right>
@@ -559,7 +557,12 @@ nmap <A-Down> ]e
 imap <A-Down> <C-o>]e
 vmap <A-Down> ]egv
 
+nmap <A-Left> <<
+imap <A-Left> <Esc><<i
 vmap <A-Left> <gv
+
+nmap <A-Right> >>
+imap <A-Right> <Esc>>>i
 vmap <A-Right> >gv
 " }}}
 
