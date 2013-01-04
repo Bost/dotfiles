@@ -103,7 +103,7 @@ alias ll="ls -lA --color"
 #alias ll='ls -l'
 #alias l='ls -CF'
 #alias la='ls -A'
-alias f='find'
+alias f='find . -name '
 
 #alias cp='cp -i'
 #alias mv='mv -i'
