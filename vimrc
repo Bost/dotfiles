@@ -305,8 +305,10 @@ let vimclojure#SplitPos = "right"        " open the split window on the right si
 " }}}
 
 " {{{ Paste from system clipboard: <Leader>p
-inoremap <Leader>p <Esc>"*Pi
-nnoremap <Leader>p "*P
+inoremap <A-p> <Esc>"*Pi
+nnoremap <A-p> "*P
+"inoremap <Leader>p <Esc>"*Pi
+"nnoremap <Leader>p "*P
 " }}}
 
 " In insert mode: delete from cursor to the EOL and switch back to insert mode
