@@ -95,6 +95,8 @@ alias vdir='ls --color=auto --format=long'
 
 alias l="ls -lAh --color"    # -A does not print the . and .. entries
 alias ll="ls -lA --color"
+# show hidden files
+alias l.='ls -d .* --color=auto'
 #alias ls='ls -F --color=tty'
 #alias l='ls -lAh'
 #alias ls='ls -G'
@@ -212,24 +214,24 @@ if [ "$isLinux" -eq 0 ]; then
     alias q:='cd $qDrive'
 
     alias rosv='cd $rosv'
-    alias conf='cd $rosv/mbs/conf'
+    #alias conf='cd $rosv/mbs/conf'
     alias deployments='cd $deployments_mce'
-    alias scl='cd $dev/scl-directory'
+    #alias scl='cd $dev/scl-directory'
 
     alias dem='cd $dev/mbs/dem'
     alias mce='cd $dev/mbs/mce'
     alias std='cd $dev/mbs/std'
-    alias bmw='cd $dev/mbs/bmw'
-    alias mbb='cd $dev/mbs/mbb'
+    #alias bmw='cd $dev/mbs/bmw'
+    #alias mbb='cd $dev/mbs/mbb'
 
     alias credit='cd $dev/credit'
     alias full='cd $dev/jacarta.full'
     alias light='cd $dev/jacarta.light'
     alias hre='cd $dev/jacarta.hre'
-    alias pfandbrief='cd $dev/pfandbrief'
+    #alias pfandbrief='cd $dev/pfandbrief'
 
-    alias services='cd $dev/xml-services'
-    alias xml='cd $dev/xml-services'
+    #alias services='cd $dev/xml-services'
+    #alias xml='cd $dev/xml-services'
 
     #alias prod='echo ssh rsvoboda@172.17.31.184; ssh rsvoboda@172.17.31.184'
     #alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
@@ -256,4 +258,17 @@ alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
 
+# Visualise git log (like gitk, in the terminal)
+alias lg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
 
+# Compact, colorized git log
+alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+# Show which commands you use the most
+alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
+
+# Clear terminal and empty scrollback
+alias wipe='printf "\ec"'
+
+alias sulast='sudo $(history -p !-1)'
+#alias refunction='$EDITOR ~/.bash_functions && source ~/.bash_functions'
