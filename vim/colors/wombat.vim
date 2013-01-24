@@ -53,6 +53,7 @@ hi Keyword		guifg=#8ac6f2 gui=none
 hi PreProc 		guifg=#e5786d gui=none
 hi Number		guifg=#e5786d gui=none
 hi Special		guifg=#e7f6da gui=none
+hi vmailNewMsg	guifg=#e7f6da gui=bold
 
 "hi Search       guibg=red      " red is a color for errors - cannot use it
 hi Search       guifg=red guibg=black gui=none
