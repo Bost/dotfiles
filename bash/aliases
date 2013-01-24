@@ -45,10 +45,55 @@ alias gpl='git pull'
 alias gp='git pull'
 alias gh='git push'
 
+
+ltree () {
+    tree -C $* | less -R
+}
+
+findreplace () {
+    printf "Search: ${1}\n"
+    printf "Replace: ${2}\n"
+    printf "In: ${3}\n\n"
+ 
+    find . -name "*${3}" -type f | xargs perl -pi -e 's/${1}/${2}/g'
+}
+
+extract () {
+    if [ -f $1 ] ; then
+      case $1 in
+        *.tar.bz2)   tar xjf $1     ;;
+        *.tar.gz)    tar xzf $1     ;;
+        *.bz2)       bunzip2 $1     ;;
+        *.rar)       unrar e $1     ;;
+        *.gz)        gunzip $1      ;;
+        *.tar)       tar xf $1      ;;
+        *.tbz2)      tar xjf $1     ;;
+        *.tgz)       tar xzf $1     ;;
+        *.zip)       unzip $1       ;;
+        *.Z)         uncompress $1  ;;
+        *.7z)        7z x $1        ;;
+        *)     echo "'$1' cannot be extracted via extract()" ;;
+         esac
+     else
+         echo "'$1' is not a valid file"
+     fi
+}
+
+findTextInAnyFile () {
+    find . -name "$2" -exec grep -il "$1" {} \;
+}
+alias ft=findTextInAnyFile
+
+function mkdirAndCd() {
+  mkdir -p "$1" && cd "$1";
+}
+alias mcd=mkdirAndCd
+
 function GitPullRepo {
     echo 'cd '$1' && git pull'
     cd $1 && git pull
 }
+
 alias ga='_cd=`pwd`; GitPullRepo $dev/cheatsheet && GitPullRepo $dev/dotfiles && cd $_cd'
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
@@ -160,16 +205,8 @@ elif [ "$isLinux" -gt 0 ]; then
 
     export VMAIL_VIM=gvim
 
-    sudo_update="sudo apt-get update"
-    alias update=$sudo_update
-    alias upd=$sudo_update
     alias lock="xflock4"
-
-    sudo_upgrade="sudo apt-get upgrade"
-    alias upgrade=$sudo_upgrade
-    alias upg=$sudo_upgrade
-
-    alias uu='upd && upg'
+    alias uu="sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean"
     alias ud='sudo apt-get dist-upgrade'
     alias cx='chmod +x'
     alias k9='kill -9'
