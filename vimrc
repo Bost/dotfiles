@@ -305,7 +305,7 @@ let vimclojure#SplitPos = "right"        " open the split window on the right si
 " }}}
 
 " {{{ Paste from system clipboard: <Leader>p
-inoremap <A-p> <Esc>"*Pi
+inoremap <A-p> <Esc>"*pa
 nnoremap <A-p> "*P
 "inoremap <Leader>p <Esc>"*Pi
 "nnoremap <Leader>p "*P
