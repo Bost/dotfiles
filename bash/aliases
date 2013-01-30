@@ -51,7 +51,16 @@ alias lg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m
 # Compact, colorized git log
 alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
-
+# Search for a string in all revisions of entire git history
+gitSearchStr () {
+    git rev-list --all | (
+        while read revision; do
+            #git grep -F 'Your search string' $revision
+            git grep -F '$1' $revision
+        done
+    )
+}
+alias gstr=gitSearchStr
 
 ltree () {
     tree -C $* | less -R
