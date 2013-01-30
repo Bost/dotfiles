@@ -44,6 +44,13 @@ alias gr='git rebase'
 alias gpl='git pull'
 alias gp='git pull'
 alias gh='git push'
+# Visualise git log (like gitk, in the terminal)
+alias lg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
+alias lg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
+
+# Compact, colorized git log
+alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
 
 
 ltree () {
@@ -84,10 +91,12 @@ findTextInAnyFile () {
 }
 alias ft=findTextInAnyFile
 
+# create a directory and change into it
 function mkdirAndCd() {
   mkdir -p "$1" && cd "$1";
 }
 alias mcd=mkdirAndCd
+alias take=mkdirAndCd
 
 function GitPullRepo {
     echo 'cd '$1' && git pull'
@@ -124,7 +133,6 @@ alias md='mkdir -p'
 #alias where='command -v'
 #alias ff='open -a Firefox'
 #alias o='open . &'
-#alias ungit='find . -name '
 #alias less='less -R'
 
 #alias cp='cp -i'
@@ -294,12 +302,6 @@ alias trackle='cd $dev/trackle'
 alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
-
-# Visualise git log (like gitk, in the terminal)
-alias lg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
-
-# Compact, colorized git log
-alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
