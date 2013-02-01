@@ -342,6 +342,8 @@ nnoremap <Leader>q :q<CR>
 
 " Delete the current buffer
 nnoremap <Leader>bd :bd<CR>
+nnoremap <A-w> :bd<CR>
+inoremap <Esc><A-w> :bd<CR>
 
 " Show a list of all open buffers with BufExplorer
 nnoremap <Leader>b :BufExplorer<CR>
@@ -573,8 +575,8 @@ vmap <A-Right> >gv
 imap <C-S-Del> <Esc>lDa
 nmap <C-S-Del> D
 
-nmap <C-BS> db
-imap <C-BS> <Esc>dbi
+nmap <C-BS> bde
+imap <C-BS> <Esc>bdea
 
 nmap <C-Del> de
 imap <C-Del> <Esc>ldei
