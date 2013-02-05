@@ -4,7 +4,7 @@ if exists("syntax_on")
     syntax reset
 endif
 
-let colors_name = "eclipse"
+let colors_name = "eclipse-alternative"
 
 hi Normal       guifg=#121212 guibg=#ffffff                                             ctermfg=233   ctermbg=231
 hi ErrorMsg     guifg=#ffffff guibg=#287eff gui=bold                ctermfg=115   ctermbg=236    cterm=bold
