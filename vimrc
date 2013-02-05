@@ -33,6 +33,12 @@ set shortmess+=I               " Don't show the Vim welcome screen.
 filetype off                   " required!
 
 if has('win32')
+    set langmenu=en_US.UTF-8
+    let $LANG = 'en_US'
+
+    "source $VIMRUNTIME/delmenu.vim
+    "source $VIMRUNTIME/menu.vim
+
     set runtimepath+=$HOME/dev/dotfiles/vim
     set runtimepath+=$HOME/dev/dotfiles/vim/bundle/vundle
 else
@@ -215,6 +221,7 @@ elseif isCygwin
     set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
 elseif isWin
     set guifont=Lucida_Console:h8:w5
+    "set guifont=Consolas\ 9
 endif
 "set guifont=Monospace\ 9
 "set guifont=Lucida_Console:h8:cDEFAULT
@@ -236,7 +243,9 @@ try
     "colorscheme autumnleaf
     "colorscheme biogoo
     "colorscheme watermark
-    colorscheme wombat
+    "colorscheme wombat
+    "colorscheme eclipse
+    colorscheme eclipse-alternative
     "colorscheme wombatnew
     "colorscheme wombat256
     "colorscheme xoria254
