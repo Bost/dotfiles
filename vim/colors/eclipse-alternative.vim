@@ -28,27 +28,31 @@ hi StatusLine   guifg=blue guibg=darkgray gui=none      ctermfg=blue ctermbg=gra
 hi StatusLineNC guifg=black guibg=darkgray gui=none     ctermfg=black ctermbg=gray term=none cterm=none
 hi VertSplit    guifg=black guibg=darkgray gui=none     ctermfg=black ctermbg=gray term=none cterm=none
 
-hi Folded   guifg=#808080 guibg=#000040         ctermfg=darkgrey ctermbg=black cterm=bold term=bold
+hi Folded       guifg=#808080 guibg=#000040         ctermfg=darkgrey ctermbg=black cterm=bold term=bold
 hi FoldColumn   guifg=#808080 guibg=#000040         ctermfg=darkgrey ctermbg=black cterm=bold term=bold
-hi LineNr     gui=none guifg=#6b6b6b guibg=#eeeeee
+hi LineNr       gui=none guifg=#6b6b6b guibg=#eeeeee
 "hi LineNr   guifg=#a8a8a8 guibg=#121212         ctermfg=248      ctermbg=233
 
-hi DiffAdd  guibg=gray                           ctermbg=gray  cterm=none  term=none
+hi DiffAdd      guibg=gray                           ctermbg=gray  cterm=none  term=none
 hi DiffChange   guibg=darkmagenta ctermbg=magenta cterm=none
 hi DiffDelete   ctermfg=blue ctermbg=cyan gui=bold guifg=Blue guibg=DarkCyan
-hi DiffText cterm=bold ctermbg=red gui=bold guibg=Red
+hi DiffText     cterm=bold ctermbg=red gui=bold guibg=Red
 
-hi Cursor   guifg=black guibg=yellow ctermfg=black ctermbg=yellow
-hi lCursor  guifg=black guibg=white ctermfg=black ctermbg=white
+hi Cursor       gui=none guifg=#ffffff guibg=#0080f0
+hi lCursor      gui=none guifg=#ffffff guibg=#8040ff
+hi CursorIM     gui=none guifg=#ffffff guibg=#8040ff
+
+"hi Cursor       guifg=black guibg=yellow ctermfg=black ctermbg=yellow
+"hi lCursor      guifg=black guibg=white ctermfg=black ctermbg=white
 
 
-hi Comment  guifg=#3F7F5F                                   ctermfg=28
-hi Constant guifg=#0000C0                                   ctermfg=19                    cterm=none
-hi Special  guifg=#0000C0                                   ctermfg=19                    cterm=none
+hi Comment      guifg=#3F7F5F                                   ctermfg=28
+hi Constant     guifg=#0000C0                                   ctermfg=19                    cterm=none
+hi Special      guifg=#0000C0                                   ctermfg=19                    cterm=none
 hi Identifier   guifg=#7F9FBF  gui=bold                             ctermfg=110                   cterm=bold
 hi Statement    guifg=#7F0055                           gui=bold                ctermfg=89                    cterm=bold
-hi PreProc  guifg=#7F0055                           gui=bold                ctermfg=89                    cterm=bold
-hi Type     guifg=#7F0055                           gui=bold                                ctermfg=89                    cterm=bold
+hi PreProc      guifg=#7F0055                           gui=bold                ctermfg=89                    cterm=bold
+hi Type         guifg=#7F0055                           gui=bold                                ctermfg=89                    cterm=bold
 hi Underlined   cterm=underline term=underline
 hi Ignore   guifg=bg ctermfg=bg
 
