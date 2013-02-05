@@ -46,6 +46,7 @@ else
 endif
 
 call vundle#rc()
+let g:bundle_dir = expand('$HOME/dev/dotfiles/vim/bundle', 1)
 
 " let Vundle manage Vundle - required!
 Bundle 'gmarik/vundle'
@@ -562,7 +563,8 @@ nmap <C-S-Left> vb
 imap <C-S-Left> <C-o>vb
 " }}}
 
-" {{{ Move lines up/down/left/right: <A-Up> / <A-Down> / <A-Left> / <A-Right>
+" {{{ Move lines up/down/left/right: <A-Up> / <A-Down> / <A-Left> / <A-Right>;
+" requires unimpaired plugin
 nmap <A-Up> [e
 imap <A-Up> <C-o>[e
 vmap <A-Up> [egv
