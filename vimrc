@@ -46,7 +46,11 @@ else
 endif
 
 call vundle#rc()
-let g:bundle_dir = expand('$HOME/dev/dotfiles/vim/bundle', 1)
+
+if has('win32')
+    let g:bundle_dir = expand('$HOME/dev/dotfiles/vim/bundle', 1)
+"else - on cygwin and linux everything works as expected
+endif
 
 " let Vundle manage Vundle - required!
 Bundle 'gmarik/vundle'
