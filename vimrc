@@ -221,8 +221,8 @@ if isLinux
 elseif isCygwin
     set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
 elseif isWin
-    set guifont=Lucida_Console:h8:w5
-    "set guifont=Consolas\ 9
+    "set guifont=Lucida_Console:h8:w5
+    set guifont=Consolas:w5
 endif
 "set guifont=Monospace\ 9
 "set guifont=Lucida_Console:h8:cDEFAULT
