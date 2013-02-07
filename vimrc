@@ -6,6 +6,7 @@
 let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
 let isWin = has('win32')
+let isEclim = 1
 
 " {{{ File structure of .vim, .vimrc, vimfiles:
 " isCygwin:
@@ -20,6 +21,7 @@ let isWin = has('win32')
 "echo "isLinux: " isLinux
 "echo "isCygwin: " isCygwin
 "echo "isWin: " isWin
+"echo "isEclim: " isEclim
 
 "echo "has('mac'):" has('mac')
 "echo "has('unix'):" has('unix')
@@ -850,7 +852,9 @@ augroup END
 nnoremap gI `.
 
 " Autoread changed files
-"set autoread
+if isEclim
+    set autoread
+endif
 
 nnoremap <Leader>wd :windo diffthis<CR>
 
