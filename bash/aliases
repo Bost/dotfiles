@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 alias reload='echo "reloading $HOME/.bashrc"; source $HOME/.bashrc'
 alias r='reload'
