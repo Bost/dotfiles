@@ -215,7 +215,11 @@ if has('gui_running')
     "set guioptions=tb
     set guioptions=t
     " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
-    "set guioptions=gbm
+    "set guioptions=gbmT
+
+    " TODO toggle guioptions
+    nnoremap <Leader>T :set guioptions=gbmT<CR>
+    inoremap <Leader>T <Esc>:set guioptions=gbmT<CR>i
 endif
 " }}}
 
@@ -496,7 +500,7 @@ nnoremap g# g#zz
 
 " {{{ Backups
 set backupdir=/tmp
-set directory=/tmp " Don't clutter my dirs up with swp and tmp files
+set directory=/tmp " Don't clutter up my dirs with swp and tmp files
 
 "set nobackup
 "set nowritebackup
@@ -509,7 +513,7 @@ set directory=/tmp " Don't clutter my dirs up with swp and tmp files
 " Horizontal split
 nnoremap <Leader>- :sp<CR>
 " Vertical split
-"nnoremap <Leader>\ :vsp<CR>
+nnoremap <Leader>+ :vsp<CR>
 
 nnoremap <Leader>cdf :color default<CR>:colorscheme default<CR>
 nnoremap <Leader>gs :Gstatus<CR>
