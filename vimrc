@@ -394,6 +394,7 @@ noremap <C-l> <C-w>l
 "nnoremap <Leader>er :tabnew ~/.vimrc<CR>
 nnoremap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
 nnoremap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
+nnoremap <Leader>er :e ~/dev/cheatsheet/rest-commands.js<CR>
 nnoremap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
 nnoremap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 " }}}
