@@ -211,7 +211,7 @@ set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 
 " {{{ gVim - GUI only stuff
 if has('gui_running')
-    " Switch off menu (t), show bottom scrollbar (b)
+    " Switch off menu (t); show: bottom scrollbar (b), toolbar (T)
     "set guioptions=tb
     set guioptions=t
     " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
