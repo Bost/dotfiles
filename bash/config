@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # shell specific options and information for prompt, shell settings
