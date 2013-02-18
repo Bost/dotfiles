@@ -236,6 +236,7 @@ elif [ "$isLinux" -gt 0 ]; then
     alias arem="sudo apt-get autoremove -y"
 
     alias suspend='sudo pm-suspend'
+    alias shut='sudo shutdown -h now'
 
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
