@@ -87,6 +87,8 @@ Bundle 'kien/ctrlp.vim.git'
 " python_ifold doesn't work somehow
 "Bundle 'python_ifold'
 
+Bundle "jceb/vim-orgmode"
+
 Bundle 'skyl/vim-config-python-ide.git'
 
 Bundle 'vim-scripts/csv.vim.git'
