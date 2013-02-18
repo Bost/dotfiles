@@ -254,9 +254,9 @@ try
     "colorscheme autumnleaf
     "colorscheme biogoo
     "colorscheme watermark
-    "colorscheme wombat
+    colorscheme wombat
     "colorscheme eclipse
-    colorscheme eclipse-alternative
+    "colorscheme eclipse-alternative
     "colorscheme wombatnew
     "colorscheme wombat256
     "colorscheme xoria254
