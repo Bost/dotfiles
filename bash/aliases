@@ -242,6 +242,7 @@ elif [ "$isLinux" -gt 0 ]; then
 
     # clojure classpath
     cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
+    cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
     cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.0.jar
     cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
     cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
