@@ -200,7 +200,9 @@ filetype plugin indent on     " required!
 "let mapleader = ","
 "let mapleader = " "
 set showcmd                     " display incomplete commands
-set hidden                      " handle multiple buffers more efficiently
+" {{{ switch buffers without saving changes to file
+set  hidden
+" }}}
 set laststatus=2                " Always show status line
 
 " Ups, on cygwin I use /bin/sh, not bash. Strange
@@ -336,10 +338,12 @@ let vimclojure#SplitPos = "right"        " open the split window on the right si
 "let vimclojure#SplitSize = 80
 " }}}
 
-" {{{ Paste from system clipboard: <Leader>p
+" {{{ Paste from system clipboard: <A-p> / <A-C-p>
 inoremap <A-p> <Esc>"*pa
+inoremap <A-C-p> <Esc>"+pa
 "inoremap <S-Insert> <A-p>  " this does not work somehow
 nnoremap <A-p> "*P
+nnoremap <A-C-p> "+P
 "inoremap <Leader>p <Esc>"*Pi
 "nnoremap <Leader>p "*P
 " }}}
@@ -705,7 +709,7 @@ set pastetoggle=<F2>
 
 " Make the unnamed register to be the same as the "* register. Yand & Paste
 " the selection without prepending with "* to commands
-set clipboard=unnamed
+set clipboard+=unnamed
 " }}}
 
 nnoremap <F3> :set hlsearch!<CR>
@@ -913,3 +917,7 @@ let g:ctrlp_custom_ignore = {
 if isLinux
     let g:ackprg="/usr/bin/ack-grep -H --nocolor --nogroup --column"
 endif
+
+" {{{ Repeat last macro (2 and @ are under the same key)
+noremap <A-2> @@
+" }}}
