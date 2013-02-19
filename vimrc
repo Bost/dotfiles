@@ -150,8 +150,19 @@ Bundle 'majutsushi/tagbar'
 "Bundle 'vim-scripts/taglist.vim.git'
 
 Bundle 'vim-scripts/SearchComplete.git'
+
+" {{{ insert completion: <Tab> <C-Tab>
 Bundle 'ervandew/supertab.git'
+let g:SuperTabMappingBackward = '<C-Tab>'
+" {{{ insert completion: Alternative mapping: <C-Space> / <S-C-Space>
+"let g:SuperTabMappingForward = '<C-Space>'
+"let g:SuperTabMappingBackward = '<S-C-Space>'
+" }}}
+" }}}
+
+" {{{ increase / decrease font size: <A-i> / <A-o>
 Bundle 'Bost/vim-zoom.git'
+" }}}
 
 " Vim over ssh/scp
 "Bundle 'vim-scripts/netrw.vim.git'
