@@ -34,7 +34,7 @@ set nocompatible               " be iMproved
 set shortmess+=I               " Don't show the Vim welcome screen.
 filetype off                   " required!
 
-if has('win32')
+if isWin
     set langmenu=en_US.UTF-8
     let $LANG = 'en_US'
 
@@ -49,7 +49,7 @@ endif
 
 call vundle#rc()
 
-if has('win32')
+if isWin
     let g:bundle_dir = expand('$HOME/dev/dotfiles/vim/bundle', 1)
 "else - on cygwin and linux everything works as expected
 endif
@@ -233,8 +233,7 @@ if isLinux
 elseif isCygwin
     set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
 elseif isWin
-    "set guifont=Lucida_Console:h8:w5
-    set guifont=Consolas:w5
+    set guifont=Consolas:w5,Lucida_Console:h8:w5
 endif
 "set guifont=Monospace\ 9
 "set guifont=Lucida_Console:h8:cDEFAULT
@@ -501,8 +500,16 @@ nnoremap g# g#zz
 " }}}
 
 " {{{ Backups
-set backupdir=/tmp
-set directory=/tmp " Don't clutter up my dirs with swp and tmp files
+" TODO the vim-fugitive cannot work with temp directories a la C:\DOCUME~1\SOMEUSER\LOCALS~1\Temp\6
+if isWin
+    set backupdir=$HOME/tmp
+    " swp and tmp files
+    set directory=$HOME/tmp
+else
+    set backupdir=/tmp
+    " swp and tmp files
+    set directory=/tmp
+endif
 
 "set nobackup
 "set nowritebackup
