@@ -12,6 +12,8 @@ export isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
 export isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
 export isCygwin_347=`expr match "$uname" "$strCygwin_347"`
 export isLinux=`expr match "$uname" "$strLinux"`
+# TODO clean definition of isLinux_64
+export isLinux_64=0
 export isMinGw32_347=`expr match "$uname" "$strMinGw32_347"`
 export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
