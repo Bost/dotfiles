@@ -55,6 +55,7 @@ let s:new_window      = 1
 let s:is_maximized    = 0
 let s:short_help      = 1
 let s:window_expanded = 0
+let s:nearby_disabled = 0
 
 " Script-local variable needed since compare functions can't
 " take extra arguments
@@ -2620,11 +2621,10 @@ function! s:PrintTag(tag, depth, fileinfo, typeinfo) abort
                 " are not scope-defining tags (since those already have an
                 " identifier)
                 if !has_key(a:typeinfo.kind2scope, ckind.short)
-                    let indent  = g:tagbar_indent
+                    let indent  = (a:depth + 1) * g:tagbar_indent
                     let indent += g:tagbar_show_visibility
                     let indent += 1 " fold symbol
-                    silent put =repeat(' ', (a:depth + 1) * indent)
-                              \ . '[' . ckind.long . ']'
+                    silent put =repeat(' ', indent) . '[' . ckind.long . ']'
                     " Add basic tag to allow folding when on the header line
                     let headertag = s:BaseTag.New(ckind.long)
                     let headertag.parent = a:tag
@@ -3069,6 +3069,7 @@ function! s:AutoUpdate(fname, force) abort
     " Don't do anything if the file isn't supported
     if !s:IsValidFile(a:fname, sftype)
         call s:LogDebugMessage('Not a valid file, stopping processing')
+        let s:nearby_disabled = 1
         return
     endif
 
@@ -3112,7 +3113,9 @@ function! s:AutoUpdate(fname, force) abort
     " Display the tagbar content if the tags have been updated or a different
     " file is being displayed
     if bufwinnr('__Tagbar__') != -1 &&
-     \ (s:new_window || updated || a:fname != s:known_files.getCurrent().fpath)
+     \ (s:new_window || updated ||
+      \ (!empty(s:known_files.getCurrent()) &&
+       \ a:fname != s:known_files.getCurrent().fpath))
         call s:RenderContent(fileinfo)
     endif
 
@@ -3121,6 +3124,7 @@ function! s:AutoUpdate(fname, force) abort
     if !empty(fileinfo)
         call s:LogDebugMessage('Setting current file [' . a:fname . ']')
         call s:known_files.setCurrent(fileinfo)
+        let s:nearby_disabled = 0
     endif
 
     call s:HighlightTag(0)
@@ -3265,6 +3269,10 @@ endfunction
 " s:GetNearbyTag() {{{2
 " Get the tag info for a file near the cursor in the current file
 function! s:GetNearbyTag(all, ...) abort
+    if s:nearby_disabled
+        return {}
+    endif
+
     let fileinfo = s:known_files.getCurrent()
     if empty(fileinfo)
         return {}
