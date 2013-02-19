@@ -6,6 +6,7 @@
 let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
 let isWin = has('win32')
+let isEclim = 1
 
 " {{{ File structure of .vim, .vimrc, vimfiles:
 " isCygwin:
@@ -20,6 +21,7 @@ let isWin = has('win32')
 "echo "isLinux: " isLinux
 "echo "isCygwin: " isCygwin
 "echo "isWin: " isWin
+"echo "isEclim: " isEclim
 
 "echo "has('mac'):" has('mac')
 "echo "has('unix'):" has('unix')
@@ -46,7 +48,11 @@ else
 endif
 
 call vundle#rc()
-let g:bundle_dir = expand('$HOME/dev/dotfiles/vim/bundle', 1)
+
+if has('win32')
+    let g:bundle_dir = expand('$HOME/dev/dotfiles/vim/bundle', 1)
+"else - on cygwin and linux everything works as expected
+endif
 
 " let Vundle manage Vundle - required!
 Bundle 'gmarik/vundle'
@@ -80,6 +86,8 @@ Bundle 'kien/ctrlp.vim.git'
 
 " python_ifold doesn't work somehow
 "Bundle 'python_ifold'
+
+Bundle "jceb/vim-orgmode"
 
 Bundle 'skyl/vim-config-python-ide.git'
 
@@ -205,11 +213,15 @@ set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 
 " {{{ gVim - GUI only stuff
 if has('gui_running')
-    " Switch off menu (t), show bottom scrollbar (b)
+    " Switch off menu (t); show: bottom scrollbar (b), toolbar (T)
     "set guioptions=tb
     set guioptions=t
     " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
-    "set guioptions=gbm
+    "set guioptions=gbmT
+
+    " TODO toggle guioptions
+    nnoremap <Leader>T :set guioptions=gbmT<CR>
+    inoremap <Leader>T <Esc>:set guioptions=gbmT<CR>i
 endif
 " }}}
 
@@ -244,9 +256,9 @@ try
     "colorscheme autumnleaf
     "colorscheme biogoo
     "colorscheme watermark
-    "colorscheme wombat
+    colorscheme wombat
     "colorscheme eclipse
-    colorscheme eclipse-alternative
+    "colorscheme eclipse-alternative
     "colorscheme wombatnew
     "colorscheme wombat256
     "colorscheme xoria254
@@ -388,6 +400,7 @@ noremap <C-l> <C-w>l
 "nnoremap <Leader>er :tabnew ~/.vimrc<CR>
 nnoremap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
 nnoremap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
+nnoremap <Leader>er :e ~/dev/cheatsheet/rest-commands.js<CR>
 nnoremap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
 nnoremap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 " }}}
@@ -489,7 +502,7 @@ nnoremap g# g#zz
 
 " {{{ Backups
 set backupdir=/tmp
-set directory=/tmp " Don't clutter my dirs up with swp and tmp files
+set directory=/tmp " Don't clutter up my dirs with swp and tmp files
 
 "set nobackup
 "set nowritebackup
@@ -502,7 +515,7 @@ set directory=/tmp " Don't clutter my dirs up with swp and tmp files
 " Horizontal split
 nnoremap <Leader>- :sp<CR>
 " Vertical split
-"nnoremap <Leader>\ :vsp<CR>
+nnoremap <Leader>+ :vsp<CR>
 
 nnoremap <Leader>cdf :color default<CR>:colorscheme default<CR>
 nnoremap <Leader>gs :Gstatus<CR>
@@ -806,6 +819,7 @@ inoremap <silent> <Home> <C-O><Home>
 set lazyredraw
 
 " {{{ Kill trailing whitespace on save - this doesn't work somehow
+"TODO this works: %s/\(\S\+\)\s\+\n/\1\r/gc
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
@@ -846,7 +860,9 @@ augroup END
 nnoremap gI `.
 
 " Autoread changed files
-"set autoread
+if isEclim
+    set autoread
+endif
 
 nnoremap <Leader>wd :windo diffthis<CR>
 

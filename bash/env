@@ -1,8 +1,7 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # values used by other sripts and applications
 uname=`uname -a`
-strLinux_64="Linux desktop-64"
 strLinux="Linux"
 
 #echo uname: $uname
@@ -13,7 +12,6 @@ export isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
 export isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
 export isCygwin_347=`expr match "$uname" "$strCygwin_347"`
 export isLinux=`expr match "$uname" "$strLinux"`
-export isLinux_64=`expr match "$uname" "$strLinux_64"`
 export isMinGw32_347=`expr match "$uname" "$strMinGw32_347"`
 export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
@@ -23,20 +21,19 @@ export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
 #echo isCygwin_dev1: $isCygwin_dev1
 #echo isCygwin_347: $isCygwin_347
 #echo isLinux: $isLinux
-#echo isLinux_64: $isLinux_64
 #echo isMinGw32_347: $isMinGw32_347
 #echo isMinGw32_app1: $isMinGw32_app1
 #echo isCygwin_155: $isCygwin_155
 #echo isMinGw32_155: $isMinGw32_155
 
 if [ "$isCygwin_dev1" -gt 0 ]; then
-    echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
+    echo "### isCygwin_dev1: $isCygwin_dev1 => Loading $strCygwin_dev1 aliases"
     base=/cygdrive
     dev=$base/d/users/$USERNAME/dev
     winapp=$base/d/users/$USERNAME/winapp
 
 elif [ "$isCygwin_155" -gt 0 ]; then
-    echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
+    echo "### isCygwin_155: $isCygwin_155 => Loading $strCygwin_155"
     base=/cygdrive
     dev=$base/c/cygwin/home/$USERNAME/dev
     winapp=$base/c/winapp
@@ -46,37 +43,40 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     export DISPLAY=":0"
 
 elif [ "$isMinGw32_155" -gt 0 ]; then
-    echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
+    echo "### isMinGw32_155: $isMinGw32_155 => Loading $strMinGw32_155"
     dev=$base/c/cygwin/home/$USERNAME/dev
     winapp=$base/c/winapp
 
 elif [ "$isCygwin_347" -gt 0 ]; then
-    echo "### isCygwin_347: $isCygwin_347 ==> Loading $strCygwin_347 aliases"
+    echo "### isCygwin_347: $isCygwin_347 => Loading $strCygwin_347 aliases"
     base=/cygdrive
     dev=$base/d/dev
     winapp=$base/d/winapp
 
 elif [ "$isMinGw32_dev1" -gt 0 ]; then
-    echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
+    echo "### isMinGw32_dev1: $isMinGw32_dev1 => Loading $strMinGw32_dev1 aliases"
     dev=$base/d/users/$USERNAME/dev
     winapp=$base/d/users/$USERNAME/winapp
 
 elif [ "$isMinGw32_app1" -gt 0 ]; then
-    echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
+    echo "### isMinGw32_app1: $isMinGw32_app1 => Loading $strMinGw32_app1 aliases"
     dev=$base/d/users/$USERNAME/dev
     winapp=$base/d/users/$USERNAME/winapp
 
 elif [ "$isMinGw32_347" -gt 0 ]; then
-    echo "### isMinGw32_347: $isMinGw32_347 ==> Loading $strMinGw32_347 aliases"
+    echo "### isMinGw32_347: $isMinGw32_347 => Loading $strMinGw32_347 aliases"
     dev=$base/d/dev
     winapp=$base/d/winapp
 
 elif [ "$isLinux" -gt 0 ]; then
 
+    x86_64="x86_64"
+    uname_processor=`uname -p`
+    export isLinux_64=`expr match "$uname_processor" "$x86_64"`
     if [ "$isLinux_64" -gt 0 ]; then
-        echo "### isLinux_64: $isLinux_64 ==> Loading $strLinux_64 aliases"
+        echo "### isLinux: $isLinux_64 => Loading aliases for $strLinux $x86_64"
     else
-        echo "### isLinux: $isLinux ==> Loading $strLinux aliases"
+        echo "### isLinux: $isLinux => Loading aliases for $strLinux"
     fi
 
     dev=$HOME/dev
@@ -89,13 +89,17 @@ elif [ "$isLinux" -gt 0 ]; then
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.2
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
-
-    JDK_16_HOME=$HOME/java/jdk1.6.0_33
-    JAVA_HOME=$HOME/java/jdk1.7.0_07
     NAILGUN_CLIENT_HOME=$dev/vimclojure-nailgun-client
     AAPPENG_HOME=$APPENG_JAVA_HOME
-    # I need too have $PATH at the end because I want to override the pre-preinstalled java
-    PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
+
+    if [ "$isLinux_64" -gt 0 ]; then
+        PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
+    else
+        JDK_16_HOME=$HOME/java/jdk1.6.0_33
+        JAVA_HOME=$HOME/java/jdk1.7.0_07
+        # I need too have $PATH at the end because I want to override the pre-preinstalled java
+        PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
+    fi
 
     export VMAIL_VIM=gvim
     export VMAIL_BROWSER='google-chrome'
@@ -104,7 +108,7 @@ else
 fi
 
 if [ "$isLinux" -eq 0 ]; then
-    echo "### isLinux: $isLinux ==> Loading non-linux aliases"
+    echo "### isLinux: $isLinux => Loading non-$strLinux aliases"
 
     if [ -d "${winapp}" ]; then
         export winapp
@@ -164,10 +168,13 @@ if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     PATH=$PATH:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
 fi
 
+if [ "$isLinux_64" -eq 0 ]; then
+    export JDK_16_HOME
+    export JAVA_HOME
+fi
+
 export dev
 export JAVA_CP_SEP
-export JDK_16_HOME
-export JAVA_HOME
 export PATH
 export APPENGINE_HOME
 
