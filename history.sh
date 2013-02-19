@@ -14,13 +14,16 @@ cat ~/.ssh/id_rsa.pub
 git clone git@github.com:Bost/dotfiles.git   ~/dev
 git clone git@github.com:Bost/cheatsheet.git ~/dev
 
-# git clone for vundle is a workaround
-git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-
 uname -a
 mv ~/.bashrc ~/.bashrc.bak
 ln -s ~/dev/dotfiles/bashrc ~/.bashrc
 ln -s ~/dev/dotfiles/vim ~/.vim
+
+# TODO remove empty directories in order do proceed with :BundleInstall
+rm -rf ~/.vim/bundle/vim-orgmode
+
+# git clone for vundle is a workaround
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
 mkdir -p ~/bin && cd ~/bin/
 curl -O https://raw.github.com/technomancy/leiningen/stable/bin/lein > lein
