@@ -226,9 +226,16 @@ if has('gui_running')
     " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
     "set guioptions=gbmT
 
-    " TODO toggle guioptions
-    nnoremap <Leader>T :set guioptions=gbmT<CR>
-    inoremap <Leader>T <Esc>:set guioptions=gbmT<CR>i
+    function! ToggleGuiOptions()
+        let s:go = &guioptions
+        if s:go == 't'
+            set guioptions=gbmT
+        else
+            set guioptions=t
+        endif
+    endfunction
+    nnoremap <Leader>T :call ToggleGuiOptions()<CR>
+    inoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>i
 endif
 " }}}
 
@@ -295,13 +302,6 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 "map <space> viw
 " visualise a word
 "map <space> vw
-
-" only for cheatsheet.html: jump to the 1st '#' character, then replace
-" everything in the html tag with '# ' and then reinsert the '# ' string
-"map <F3> f#cit#
-
-" Use colours that work well on a dark background (Console is usually black)
-"set background=dark
 
 " Show EOL type and last modified timestamp, right after the filename
 "set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%H:%M\ %d/%m/%Y\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
