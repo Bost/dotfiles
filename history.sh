@@ -4,7 +4,7 @@ mkdir ~/dev
 ln -s ~/Downloads ~/downloads
 ln -s ~/Desktop ~/desktop
 sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree chromium-browser synaptic
-sudo apt-get install gparted bitcoind
+sudo apt-get install gparted bitcoind htop traceroute
 sudo apt-get install curl openjdk-7-jdk
 #sudo apt-get install emacs
 
