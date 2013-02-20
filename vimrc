@@ -94,7 +94,21 @@ Bundle 'skyl/vim-config-python-ide.git'
 Bundle 'vim-scripts/csv.vim.git'
 
 " {{{ Buffer Explorers:
-Bundle 'c9s/bufexplorer.git'
+
+" {{{ bufstop
+Bundle 'mihaifm/bufstop.git'
+map <leader>b :Bufstop<CR>
+map <leader>f :BufstopModeFast<CR>
+map <C-tab>   :BufstopBack<CR>
+map <S-tab>   :BufstopForward<CR>
+let g:BufstopAutoSpeedToggle = 1
+" }}}
+
+" {{{ BufExplorer
+"Bundle 'c9s/bufexplorer.git'
+" Show a list of all open buffers with BufExplorer
+"nnoremap <Leader>b :BufExplorer<CR>
+" }}}
 
 " {{{ MiniBufExplorer is just bugging me
 "Bundle 'fholgado/minibufexpl.vim.git'
@@ -375,9 +389,6 @@ nnoremap <Leader>bd :bd<CR>
 nnoremap <A-w> :bd<CR>
 inoremap <Esc><A-w> :bd<CR>
 
-" Show a list of all open buffers with BufExplorer
-nnoremap <Leader>b :BufExplorer<CR>
-
 " Quickly 'maximize' a split - these shortcuts colide with VimClojure
 "nnoremap <Leader>mw <C-W>\|
 "nnoremap <Leader>mh <C-W>_
@@ -548,8 +559,10 @@ nnoremap <Tab> <C-W>w
 " }}}
 
 " {{{ Switch buffers: next: <C-Tab>, prev: <C-S-Tab>
-noremap <C-Tab> :bnext<CR>
-inoremap <C-Tab> <Esc>:bnext<CR>i
+" {{{ TODO evaluating bufstop
+"noremap <C-Tab> :bnext<CR>
+"inoremap <C-Tab> <Esc>:bnext<CR>i
+" }}}
 
 noremap <C-S-Tab> :bprevious<CR>
 inoremap <C-S-Tab> <Esc>:bprevious<CR>i
@@ -710,7 +723,6 @@ nnoremap <F3> :set hlsearch!<CR>
 inoremap <F3> <Esc><F3>
 
 " {{{ Ack and vimgrep: <Leader>a  <F4>
-"nnoremap <Leader>a :Ack
 " ! - means do not jump on the first occurence
 nnoremap <Leader>a :Ack!<space>
 let g:ackprg = 'ack --nogroup --nocolor --column'
