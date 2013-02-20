@@ -224,7 +224,6 @@ if has('gui_running')
     "set guioptions=tb
     set guioptions=t
     " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
-    "set guioptions=gbmT
 
     function! ToggleGuiOptions()
         let s:go = &guioptions
