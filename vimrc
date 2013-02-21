@@ -17,8 +17,8 @@ let isEclim = 1
 " create vimfiles.lnk pointing to $HOME\dev\dotfiles\vim
 " }}}
 
-echo "has('unix'):" has('unix')" has('win32'):" has('win32')" has('win32unix'):" has('win32unix')
-echo "isLinux:" isLinux" isCygwin:" isCygwin" isWin:" isWin" isEclim:" isEclim
+"echo "has('unix'):" has('unix')" has('win32'):" has('win32')" has('win32unix'):" has('win32unix')
+"echo "isLinux:" isLinux" isCygwin:" isCygwin" isWin:" isWin" isEclim:" isEclim
 " }}}
 
 set nocompatible               " be iMproved
@@ -504,11 +504,16 @@ nnoremap <Leader>- :sp<CR>
 nnoremap <Leader>+ :vsp<CR>
 
 nnoremap <Leader>cdf :color default<CR>:colorscheme default<CR>
-nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <A-s> :Gstatus<CR>
 " <CR> allows me to use this shortcut from the :Gstatus window
-nnoremap <Leader>gf <CR>:Gdiff<CR>
-nnoremap <Leader>gc :Gcommit<CR>
-nnoremap <Leader>gh :Git push<CR>
+nnoremap <A-f> <CR>:Gdiff<CR>
+nnoremap <A-c> :Gcommit<CR>
+nnoremap <A-h> :Git push<CR>
+"nnoremap <Leader>gs :Gstatus<CR>
+"" <CR> allows me to use this shortcut from the :Gstatus window
+"nnoremap <Leader>gf <CR>:Gdiff<CR>
+"nnoremap <Leader>gc :Gcommit<CR>
+"nnoremap <Leader>gh :Git push<CR>
 
 " {{{ Convenience keybinding:
 
