@@ -17,15 +17,8 @@ let isEclim = 1
 " create vimfiles.lnk pointing to $HOME\dev\dotfiles\vim
 " }}}
 
-"echo "isLinux: " isLinux
-"echo "isCygwin: " isCygwin
-"echo "isWin: " isWin
-"echo "isEclim: " isEclim
-
-"echo "has('mac'):" has('mac')
-"echo "has('unix'):" has('unix')
-"echo "has('win32'):" has('win32')
-"echo "has('win32unix'):" has('win32unix')
+echo "has('unix'):" has('unix')" has('win32'):" has('win32')" has('win32unix'):" has('win32unix')
+echo "isLinux:" isLinux" isCygwin:" isCygwin" isWin:" isWin" isEclim:" isEclim
 " }}}
 
 set nocompatible               " be iMproved
@@ -229,26 +222,6 @@ set scrolloff=3         " Context lines at top and bottom of display.
 set sidescrolloff=5     " Context columns at left and right.
 set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 
-" {{{ gVim - GUI only stuff
-if has('gui_running')
-    " Switch off menu (t); show: bottom scrollbar (b), toolbar (T)
-    "set guioptions=tb
-    set guioptions=t
-    " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
-
-    function! ToggleGuiOptions()
-        let s:go = &guioptions
-        if s:go == 't'
-            set guioptions=gbmT
-        else
-            set guioptions=t
-        endif
-    endfunction
-    nnoremap <Leader>T :call ToggleGuiOptions()<CR>
-    inoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>i
-endif
-" }}}
-
 if isLinux
     " Ubuntu\ Mono\ 12 is too large for bambi-small
     set guifont=Ubuntu\ Mono\ 11
@@ -340,19 +313,6 @@ endif
 let vimclojure#NailgunPort = "2113"
 let vimclojure#SplitPos = "right"        " open the split window on the right side
 "let vimclojure#SplitSize = 80
-" }}}
-
-" {{{ Paste from system clipboard: <A-p> / <A-C-p>
-inoremap <A-p> <Esc>"*pa
-inoremap <A-C-p> <Esc>"+pa
-"inoremap <S-Insert> <A-p>  " this does not work somehow
-nnoremap <A-p> "*P
-nnoremap <A-C-p> "+P
-" Show content of registers
-nnoremap <A-r> :reg<CR>
-
-"inoremap <Leader>p <Esc>"*Pi
-"nnoremap <Leader>p "*P
 " }}}
 
 " In insert mode: delete from cursor to the EOL and switch back to insert mode
@@ -708,6 +668,40 @@ elseif isWin
 endif
 " }}}
 
+" {{{ All around copy / paste
+" {{{ Paste from system clipboard: <A-p> / <A-C-p>
+inoremap <A-p> <Esc>"*pa
+inoremap <A-C-p> <Esc>"+pa
+"inoremap <S-Insert> <A-p>  " this does not work somehow
+nnoremap <A-p> "*P
+nnoremap <A-C-p> "+P
+" Show content of registers
+nnoremap <A-r> :reg<CR>
+
+"inoremap <Leader>p <Esc>"*Pi
+"nnoremap <Leader>p "*P
+" }}}
+
+" {{{ ToggleGuiOptions if copy / paste doesn't work
+if has('gui_running')
+    " Switch off menu (t); show: bottom scrollbar (b), toolbar (T)
+    "set guioptions=tb
+    set guioptions=t
+    " Show : menu (m), bottom scrollbar (b), gray nactive menu items (g)
+
+    function! ToggleGuiOptions()
+        let s:go = &guioptions
+        if s:go == 't'
+            set guioptions=gbmT
+        else
+            set guioptions=t
+        endif
+    endfunction
+    nnoremap <Leader>T :call ToggleGuiOptions()<CR>
+    inoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>i
+endif
+" }}}
+
 " {{{ Better copy & paste: <F2>
 " Insure Clean Pasting w/autoindented code - this is probably not usefull
 "nnoremap <F2> :set invpaste paste?<CR>
@@ -717,6 +711,7 @@ set pastetoggle=<F2>
 " the selection without prepending with "* to commands
 " TODO not sure if set clipboard=unnamed or set clipboard+=unnamed
 set clipboard+=unnamed
+" }}}
 " }}}
 
 nnoremap <F3> :set hlsearch!<CR>
