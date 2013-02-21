@@ -1,6 +1,5 @@
-" TODO frames made of unicode chars
+" TODO vmail: frames made of unicode chars
 " TODO wikipedia table comparision
-" TODO organize vimrc according to https://github.com/skwp/dotfiles/blob/master/vimrc
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -8,7 +7,7 @@ let isCygwin = has('win32unix')
 let isWin = has('win32')
 let isEclim = 1
 
-" {{{ File structure of .vim, .vimrc, vimfiles:
+" {{{ Necessary file structure of .vim, .vimrc, vimfiles:
 " isCygwin:
 " ln -s $HOME/dev/dotfiles/vim .vim
 " ln -s $HOME/dev/dotfiles/vimrc .vimrc
@@ -37,10 +36,6 @@ filetype off                   " required!
 if isWin
     set langmenu=en_US.UTF-8
     let $LANG = 'en_US'
-
-    "source $VIMRUNTIME/delmenu.vim
-    "source $VIMRUNTIME/menu.vim
-
     set runtimepath+=$HOME/dev/dotfiles/vim
     set runtimepath+=$HOME/dev/dotfiles/vim/bundle/vundle
 else
@@ -139,6 +134,8 @@ let g:BufstopAutoSpeedToggle = 1
 
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'scrooloose/nerdtree.git'
+" vimpanel should replace nerdtree
+"Bundle 'mihaifm/vimpanel.git'
 Bundle 'vim-scripts/VimClojure.git'
 "Bundle 'hsitz/VimOrganizer.git'
 
@@ -351,6 +348,9 @@ inoremap <A-C-p> <Esc>"+pa
 "inoremap <S-Insert> <A-p>  " this does not work somehow
 nnoremap <A-p> "*P
 nnoremap <A-C-p> "+P
+" Show content of registers
+nnoremap <A-r> :reg<CR>
+
 "inoremap <Leader>p <Esc>"*Pi
 "nnoremap <Leader>p "*P
 " }}}
@@ -399,11 +399,11 @@ nnoremap <Leader>Mw :set columns=250<CR>
 nnoremap <Leader>Mh :set lines=69<CR>
 nnoremap <Leader>MM <Leader>Mw<Leader>Mh
 
-" {{{ Switch viewports: <C-hjkl>
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
+" {{{ Switch viewports: <C-hjkl> :using <Tab> instead
+"noremap <C-h> <C-w>h
+"noremap <C-j> <C-w>j
+"noremap <C-k> <C-w>k
+"noremap <C-l> <C-w>l
 " }}}
 
 
@@ -715,6 +715,7 @@ set pastetoggle=<F2>
 
 " Make the unnamed register to be the same as the "* register. Yand & Paste
 " the selection without prepending with "* to commands
+" TODO not sure if set clipboard=unnamed or set clipboard+=unnamed
 set clipboard+=unnamed
 " }}}
 
@@ -923,6 +924,6 @@ if isLinux
     let g:ackprg="/usr/bin/ack-grep -H --nocolor --nogroup --column"
 endif
 
-" {{{ Repeat last macro (2 and @ are under the same key)
+" {{{  last macro (2 and @ are under the same key) :Evaluating
 noremap <A-2> @@
 " }}}
