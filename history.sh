@@ -8,6 +8,10 @@ sudo apt-get install gparted bitcoind htop traceroute
 sudo apt-get install curl openjdk-7-jdk
 #sudo apt-get install emacs
 
+# notebooks
+sudo apt-get install powertop
+
+
 # add this comp to to github knows repos
 ssh-keygen
 cat ~/.ssh/id_rsa.pub
