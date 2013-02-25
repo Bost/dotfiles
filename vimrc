@@ -530,6 +530,7 @@ nnoremap <Leader><Tab> <C-W>w
 nnoremap <Tab> <C-W>w
 " }}}
 
+" Movement in visual mode
 function! Vis(moveKey)
    let col = virtcol('.')
    let lineLen = virtcol('$')
@@ -544,7 +545,7 @@ function! Vis(moveKey)
            echo 'Unrecognized moveKey: ' a:moveKey
        endif
    endif
-endfunction
+endfunc
 nnoremap <Leader>c :call LookUpwards()<CR>
 
 " {{{ Visualize: lines, words
@@ -590,8 +591,21 @@ vmap <A-Right> >gv
 imap <C-S-Del> <Esc>lDa
 nmap <C-S-Del> D
 
+" Fix CtrlBackspace in insert mode
+function! CtrlBackspace()
+   let col = virtcol('.')
+   let lineLen = virtcol('$')
+   normal bde
+   if col == lineLen-1 || col == 1
+       " ! means start insert mode as 'a' - append
+       :startinsert!
+   else
+       :startinsert
+   endif
+endfunc
+
 nmap <C-BS> bde
-imap <C-BS> <Esc>bdea
+imap <C-BS> <Esc>:call CtrlBackspace()<CR>
 
 nmap <C-Del> de
 imap <C-Del> <Esc>ldei
@@ -607,7 +621,7 @@ function! RenameFile()      " rename current file
         exec ':silent !rm ' . old_name
         redraw!
     endif
-endfunction
+endfunc
 noremap <Leader>n :call RenameFile()<cr>
 
 " {{{ Toggle line number counting: <Leader><C-L>
@@ -617,7 +631,7 @@ function! g:ToggleNuMode()
   else
      set nu
   endif
-endfunction
+endfunc
 nnoremap <silent><Leader><C-L> :call g:ToggleNuMode()<CR>
 " }}}
 
@@ -659,7 +673,7 @@ if isLinux
     " this works when gvim -c "call Maximize_Window()"
     function! Maximize_Window()
         silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
-    endfunction
+    endfunc
 elseif isCygwin
     " this doesn't really work
     "if has("gui_running")
@@ -699,7 +713,7 @@ if has('gui_running')
         else
             set guioptions=t
         endif
-    endfunction
+    endfunc
     nnoremap <Leader>T :call ToggleGuiOptions()<CR>
     inoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>i
 endif
@@ -771,7 +785,7 @@ if isWin || isCygwin
                 call setline(lnum, snl)
             endif
         endfor
-    endfunction
+    endfunc
     command! -bang -range ToggleSlash <line1>,<line2>call ToggleSlash(<bang>1)
     noremap <silent> <F8> :ToggleSlash<CR>
     inoremap <F8> <Esc><F8>
@@ -860,7 +874,7 @@ autocmd FileType clj,javascript,java,python,readme,text,txt,vim
 " {{{ Scratch buffer (:enew replacement): <Leader>x
 function! EditScratch()
     exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
-endfunction
+endfunc
 noremap <Leader>x :call EditScratch()<CR>
 " }}}
 
