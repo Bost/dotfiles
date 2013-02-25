@@ -83,19 +83,27 @@ Bundle 'vim-scripts/csv.vim.git'
 
 " {{{ Buffer Explorers:
 
+" {{{ Switch buffers: next: <C-Tab>, prev: <S-Tab>
+noremap <C-Tab> :bnext<CR>
+inoremap <C-Tab> <Esc>:bnext<CR>i
+
+noremap <S-Tab> :bprevious<CR>
+inoremap <S-Tab> <Esc>:bprevious<CR>i
+" }}}
+
 " {{{ bufstop
-Bundle 'mihaifm/bufstop.git'
-map <leader>b :Bufstop<CR>
-map <leader>f :BufstopModeFast<CR>
-map <C-tab>   :BufstopBack<CR>
-map <S-tab>   :BufstopForward<CR>
-let g:BufstopAutoSpeedToggle = 1
+"Bundle 'mihaifm/bufstop.git'
+"map <leader>b :Bufstop<CR>
+"map <leader>f :BufstopModeFast<CR>
+"map <C-tab>   :BufstopBack<CR>
+"map <S-tab>   :BufstopForward<CR>
+"let g:BufstopAutoSpeedToggle = 1
 " }}}
 
 " {{{ BufExplorer
-"Bundle 'c9s/bufexplorer.git'
+Bundle 'c9s/bufexplorer.git'
 " Show a list of all open buffers with BufExplorer
-"nnoremap <Leader>b :BufExplorer<CR>
+nnoremap <A-b> :BufExplorer<CR>
 " }}}
 
 " {{{ MiniBufExplorer is just bugging me
@@ -520,16 +528,6 @@ nnoremap <A-h> :Git push<CR>
 " {{{ Jump from window to window
 nnoremap <Leader><Tab> <C-W>w
 nnoremap <Tab> <C-W>w
-" }}}
-
-" {{{ Switch buffers: next: <C-Tab>, prev: <C-S-Tab>
-" {{{ TODO evaluating bufstop
-"noremap <C-Tab> :bnext<CR>
-"inoremap <C-Tab> <Esc>:bnext<CR>i
-" }}}
-
-noremap <C-S-Tab> :bprevious<CR>
-inoremap <C-S-Tab> <Esc>:bprevious<CR>i
 " }}}
 
 function! Vis(moveKey)
