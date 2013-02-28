@@ -174,6 +174,8 @@ let g:SuperTabMappingBackward = '<C-Tab>'
 
 " {{{ increase / decrease font size: <A-i> / <A-o>
 Bundle 'Bost/vim-zoom.git'
+nmap <C-A-i> :ZoomIn<CR>
+nmap <C-A-o> :ZoomOut<CR>
 " }}}
 
 " Vim over ssh/scp
@@ -685,6 +687,14 @@ elseif isCygwin
 elseif isWin
     autocmd GUIEnter * simalt ~x
 endif
+" }}}
+
+" {{{ Insert empty line above / below current line without changing mode
+nnoremap <A-O> O<Esc>j
+inoremap <A-O> <Esc>O<Esc>ji
+
+nnoremap <A-o> o<Esc>k
+inoremap <A-o> <Esc>o<Esc>ki
 " }}}
 
 " {{{ All around copy / paste
