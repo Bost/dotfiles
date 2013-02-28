@@ -385,6 +385,7 @@ nnoremap <Leader>MM <Leader>Mw<Leader>Mh
 " {{{ Editing dotfiles & cheatsheet files
 "nnoremap <Leader>er :tabnew ~/.vimrc<CR>
 nnoremap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
+nnoremap <Leader>en :e ~/dev/cheatsheet/notes.org<CR>
 nnoremap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
 nnoremap <Leader>er :e ~/dev/cheatsheet/rest-commands.js<CR>
 nnoremap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
