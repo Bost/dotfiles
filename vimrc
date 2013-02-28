@@ -512,6 +512,7 @@ nnoremap <Leader>- :sp<CR>
 nnoremap <Leader>+ :vsp<CR>
 
 nnoremap <Leader>cdf :color default<CR>:colorscheme default<CR>
+nnoremap <A-a> :Gwrite<CR>
 nnoremap <A-s> :Gstatus<CR>
 " <CR> allows me to use this shortcut from the :Gstatus window
 nnoremap <A-f> <CR>:Gdiff<CR>
