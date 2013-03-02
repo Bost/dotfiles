@@ -56,6 +56,24 @@ Bundle 'rstacruz/sparkup', {'runtimepath': 'vim/'}
 " YankRing colides with ctrlp
 Bundle 'vim-scripts/YankRing.vim.git'
 
+" {{{ plugins for nodejs and coffee-script
+Bundle 'digitaltoad/vim-jade.git'
+" {{{
+Bundle 'kchmck/vim-coffee-script.git'
+" To recompile a file when it's written, add an autocmd like this to your vimrc:
+au BufWritePost *.coffee silent CoffeeMake!
+" All of the customizations above can be used, too. This one compiles silently and with the -b option, but shows any errors:
+au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
+" }}}
+
+" {{{
+Bundle 'guileen/vim-node.git'
+au FileType javascript set dictionary+=$HOME/.vim/dict/node.dict
+" }}}
+Bundle 'myhere/vim-nodejs-complete.git'
+
+" }}}
+
 " {{{ Finder plugins:
 " L9 is required by FuzzyFinder
 "Bundle 'L9'
@@ -491,6 +509,8 @@ nnoremap g# g#zz
 
 " {{{ Backups
 " TODO the vim-fugitive cannot work with temp directories a la C:\DOCUME~1\SOMEUSER\LOCALS~1\Temp\6
+" stuff for docpad - TODO: check help
+set backupcopy=yes
 if isWin
     set backupdir=$HOME/tmp
     " swp and tmp files
