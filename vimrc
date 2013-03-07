@@ -356,9 +356,6 @@ vnoremap <C-s> <Esc>:update<CR>gv
 "inoremap <C-s> <C-o>:w<CR>
 " }}}
 
-" Toggle line numbers
-nnoremap <Leader>sn :set nu!<CR>
-
 " Quit the current window
 nnoremap <Leader>q :q<CR>
 
@@ -639,7 +636,7 @@ function! RenameFile()      " rename current file
 endfunc
 noremap <Leader>n :call RenameFile()<cr>
 
-" {{{ Toggle line number counting: <Leader><C-L>
+" {{{ Toggle: line numbering / counting: <A-C-l> / <C-l>
 function! g:ToggleNuMode()
   if &nu == 1
      set rnu
@@ -647,7 +644,13 @@ function! g:ToggleNuMode()
      set nu
   endif
 endfunc
-nnoremap <silent><Leader><C-L> :call g:ToggleNuMode()<CR>
+
+nnoremap <C-l> :call g:ToggleNuMode()<CR>
+inoremap <C-l> <Esc>:call g:ToggleNuMode()<CR>i
+
+" Toggle line numbers <>
+nnoremap <A-C-l> :set nu!<CR>
+inoremap <A-C-l> <Esc>:set nu!<CR>i
 " }}}
 
 if isCygwin || isWin
