@@ -6,6 +6,7 @@ let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
 let isWin = has('win32')
 let isEclim = 1
+let isUserBambi = ($USER == 'bambi')
 
 " {{{ Necessary file structure of .vim, .vimrc, vimfiles:
 " isCygwin:
@@ -137,7 +138,32 @@ Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'scrooloose/nerdtree.git'
 " vimpanel should replace nerdtree
 "Bundle 'mihaifm/vimpanel.git'
+" {{{ VimClojure
 Bundle 'vim-scripts/VimClojure.git'
+"let vimclojure#FuzzyIndent=1
+let vimclojure#HighlightBuiltins=1
+let vimclojure#HighlightContrib=1
+let vimclojure#DynamicHighlighting=1
+let vimclojure#ParenRainbow=1
+"let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
+let vimclojure#WantNailgun = 1
+
+if isLinux
+    let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
+elseif isWin || isCygwin
+    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
+endif
+
+"let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
+let vimclojure#NailgunPort = "2113"
+if isUserBambi " open the split window on ...
+    let vimclojure#SplitPos = 'bottom'
+else
+    let vimclojure#SplitPos = 'right'
+endif
+"let vimclojure#SplitSize = 80
+" }}}
+
 "Bundle 'hsitz/VimOrganizer.git'
 
 Bundle 'sjl/gundo.vim.git'
@@ -234,7 +260,11 @@ set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 
 if isLinux
     " Ubuntu\ Mono\ 12 is too large for bambi-small
-    set guifont=Ubuntu\ Mono\ 11
+    if isUserBambi
+        set guifont=Ubuntu\ Mono\ 10
+    else
+        set guifont=Ubuntu\ Mono\ 11
+    endif
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
 elseif isCygwin
@@ -303,27 +333,6 @@ set wildmenu                    " Use menu for completions
 set wildmode=full
 " Make tab completion work more like it does in bash.
 "set wildmode=longest,list
-
-" {{{ VimClojure
-"let vimclojure#FuzzyIndent=1
-let vimclojure#HighlightBuiltins=1
-let vimclojure#HighlightContrib=1
-let vimclojure#DynamicHighlighting=1
-let vimclojure#ParenRainbow=1
-"let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
-let vimclojure#WantNailgun = 1
-
-if isLinux
-    let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
-elseif isWin || isCygwin
-    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
-endif
-
-"let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
-let vimclojure#NailgunPort = "2113"
-let vimclojure#SplitPos = "right"        " open the split window on the right side
-"let vimclojure#SplitSize = 80
-" }}}
 
 " In insert mode: delete from cursor to the EOL and switch back to insert mode
 inoremap <Leader>d <Esc>lDa
