@@ -223,8 +223,8 @@ elif [ "$isLinux" -gt 0 ]; then
     export VMAIL_VIM=gvim
 
     alias lock="xflock4"
-    alias uu="sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean"
-    alias ud='sudo apt-get dist-upgrade'
+    alias u="sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean"
+    alias d='sudo apt-get dist-upgrade'
     alias cx='chmod +x'
     alias k9='kill -9'
     # I guess '2> /dev/null' redirects errors to /dev/null
@@ -237,6 +237,7 @@ elif [ "$isLinux" -gt 0 ]; then
 
     alias suspend='sudo pm-suspend'
     alias shut='sudo shutdown -h now'
+    alias shutdown='sudo shutdown -h now'
 
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
