@@ -15,8 +15,9 @@ sudo apt-get install powertop
 # add this comp to to github knows repos
 ssh-keygen
 cat ~/.ssh/id_rsa.pub
-git clone git@github.com:Bost/dotfiles.git   ~/dev
 git clone git@github.com:Bost/cheatsheet.git ~/dev
+git clone git@github.com:Bost/dotfiles.git   ~/dev
+cd ~/dev/dotfiles/vim/bundle && rm -rf YankRing.vim ctrlp.vim vim-orgmode vim-config-python-ide ack.vim vim-matchit vim-powerline tagbar SearchComplete supertab
 
 uname -a
 mv ~/.bashrc ~/.bashrc.bak
