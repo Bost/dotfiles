@@ -1,5 +1,7 @@
 " TODO vmail: frames made of unicode chars
 " TODO wikipedia table comparision
+" TODO visualize whole buffer and jump back to last cursor position
+" TODO vimclojure: use evaluation shortcuts from insert mode
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -321,9 +323,9 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 "inoremap <Leader><Leader> <Esc>l
 " }}}
 
-" visualise a word and switch to insert mode
+" visualize a word and switch to insert mode
 "map <space> viw
-" visualise a word
+" visualize a word
 "map <space> vw
 
 " Show EOL type and last modified timestamp, right after the filename
@@ -560,7 +562,10 @@ function! Vis(moveKey)
 endfunc
 nnoremap <Leader>c :call LookUpwards()<CR>
 
-" {{{ Visualize: lines, words
+" {{{ Visualize: whole buffer, lines, words
+nnoremap <C-a> ggVG
+inoremap <C-a> <Esc>ggVG
+
 nmap <S-Up> :call Vis('k')<CR>
 imap <S-Up> <Esc>:call Vis('k')<CR>
 vmap <S-Up> k
