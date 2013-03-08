@@ -38,13 +38,10 @@ else
     git clone git@github.com:Bost/dotfiles.git ~/dev/dotfiles
 fi
 
-
-if [ ! -d ~/.vim/bundle/vundle ]; then
-    # git clone for vundle is a workaround
-    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-    # Remove empty directories in order do proceed with :BundleInstall
-    cd ~/dev/dotfiles/vim/bundle && rm -rf YankRing.vim ctrlp.vim vim-orgmode vim-config-python-ide ack.vim vim-matchit vim-powerline tagbar SearchComplete supertab
-fi
+# git clone for vundle is a workaround
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+# Remove empty directories in order do proceed with :BundleInstall
+cd ~/dev/dotfiles/vim/bundle && rm -rf YankRing.vim ctrlp.vim vim-orgmode vim-config-python-ide ack.vim vim-matchit vim-powerline tagbar SearchComplete supertab
 
 uname -a
 timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
