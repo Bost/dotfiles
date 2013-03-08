@@ -20,6 +20,8 @@ sudo apt-get install curl openjdk-7-jdk
 # notebooks
 sudo apt-get install powertop
 
+git config --global user.name "Bost"
+git config --global user.email thebost@gmail.com
 
 # add this comp to to github knows repos
 if [ ! -f ~/.ssh/id_rsa ]; then
