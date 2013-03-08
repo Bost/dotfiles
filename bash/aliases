@@ -241,6 +241,7 @@ elif [ "$isLinux" -gt 0 ]; then
     alias uninst="sudo apt-get remove -y"
     alias arem="sudo apt-get autoremove -y"
 
+    alias susp='sudo pm-suspend'
     alias suspend='sudo pm-suspend'
     alias shut='sudo shutdown -h now'
     alias shutdown='sudo shutdown -h now'
