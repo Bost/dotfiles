@@ -12,9 +12,9 @@ fi
 if [ ! -L ~/desktop ]; then
     ln -s ~/Desktop ~/desktop
 fi
-sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree chromium-browser synaptic
-sudo apt-get install gparted bitcoind htop traceroute ssh firestarter gnome-system-tools
-sudo apt-get install curl openjdk-7-jdk
+sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree \
+    chromium-browser ant gparted bitcoind htop traceroute ssh firestarter \ 
+    gnome-system-tools curl openjdk-7-jdk maven
 #sudo apt-get install emacs
 
 # notebooks
@@ -76,6 +76,17 @@ if [ ! -f ~/dev/vimclojure-server/server-2.3.6.jar ]; then
     curl -O http://clojars.org/repo/vimclojure/server/2.3.6/server-2.3.6.jar > ~/dev/vimclojure-server/server-2.3.6.jar
 fi
 
+if [ ! -d ]; then
+    cd ~/dev && git clone https://github.com/clojure/clojure.git
+else
+    cd ~/dev/clojure && git pull
+    git checkout clojure-1.5.0
+fi
+
+if [ ! -f ~/dev/clojure/clojure-1.5.0.jar ]; then
+    ./antsetup.sh && ant
+fi
+
 if [ ! -d ~/dev/vimclojure ]; then
     cd ~/dev/
     hg clone https://bitbucket.org/kotarak/vimclojure
@@ -83,7 +94,7 @@ if [ ! -d ~/dev/vimclojure ]; then
     cd vimclojure-nailgun-client/client/
     make
     rm -rf ~/bin/ng
-    ln -s vimclojure-nailgun/client/ng ~/bin/ng
+    ln -s ~/dev/vimclojure-nailgun-client/client/ng ~/bin/ng
 fi
 rm -rf ~/bin/ng-server.sh
 cp ~/dev/dotfiles/ng-server.sh ~/bin
