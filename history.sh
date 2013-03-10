@@ -13,7 +13,7 @@ if [ ! -L ~/desktop ]; then
     ln -s ~/Desktop ~/desktop
 fi
 sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree chromium-browser synaptic
-sudo apt-get install gparted bitcoind htop traceroute ssh firestarter
+sudo apt-get install gparted bitcoind htop traceroute ssh firestarter gnome-system-tools
 sudo apt-get install curl openjdk-7-jdk
 #sudo apt-get install emacs
 
@@ -71,6 +71,22 @@ if [ ! -f ~/dev/clojure-contrib/math.combinatorics-0.0.3.jar ]; then
     mkdir -p ~/dev/clojure-contrib && cd ~/dev/clojure-contrib/
     curl -O http://search.maven.org/remotecontent?filepath=org/clojure/math.combinatorics/0.0.3/math.combinatorics-0.0.3.jar > math.combinatorics-0.0.3.jar
 fi
+if [ ! -f ~/dev/vimclojure-server/server-2.3.6.jar ]; then
+    mkdir -p ~/dev/vimclojure-server
+    curl -O http://clojars.org/repo/vimclojure/server/2.3.6/server-2.3.6.jar > ~/dev/vimclojure-server/server-2.3.6.jar
+fi
+
+if [ ! -d ~/dev/vimclojure ]; then
+    cd ~/dev/
+    hg clone https://bitbucket.org/kotarak/vimclojure
+    mv vimclojure/ vimclojure-nailgun-client
+    cd vimclojure-nailgun-client/client/
+    make
+    rm -rf ~/bin/ng
+    ln -s vimclojure-nailgun/client/ng ~/bin/ng
+fi
+rm -rf ~/bin/ng-server.sh
+cp ~/dev/dotfiles/ng-server.sh ~/bin
 
 echo ''
 echo $todo
