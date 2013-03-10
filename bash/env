@@ -182,7 +182,9 @@ if [ "$isLinux_64" -eq 0 ]; then
 fi
 
 export dev
-export JAVA_HOME
+if [ "$isLinux" -eq 0 ]; then
+    export JAVA_HOME
+fi
 # JAVA_CP_SEP is needed for vimclojure
 export JAVA_CP_SEP
 export PATH

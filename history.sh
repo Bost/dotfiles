@@ -55,25 +55,25 @@ ln -s ~/dev/dotfiles/vim ~/.vim
 
 rm -rf ~/bin/lein
 mkdir -p ~/bin
-curl -O https://raw.github.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
+cd ~/bin/ && curl -O https://raw.github.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
 chmod +x ~/bin/lein
 ~/bin/lein self-install
 
 if [ ! -f ~/dev/clojure-contrib/tools.macro-0.1.2.jar ]; then
-    mkdir -p ~/dev/clojure-contrib && cd ~/dev/clojure-contrib/
-    curl -O http://search.maven.org/remotecontent?filepath=org/clojure/tools.macro/0.1.2/tools.macro-0.1.2.jar > tools.macro-0.1.2.jar
+    mkdir -p ~/dev/clojure-contrib
+    cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/tools.macro/0.1.2/tools.macro-0.1.2.jar > tools.macro-0.1.2.jar
 fi
 if [ ! -f ~/dev/clojure-contrib/algo.monads-0.1.0.jar ]; then
-    mkdir -p ~/dev/clojure-contrib && cd ~/dev/clojure-contrib/
-    curl -O http://search.maven.org/remotecontent?filepath=org/clojure/algo.monads/0.1.0/algo.monads-0.1.0.jar > algo.monads-0.1.0.jar
+    mkdir -p ~/dev/clojure-contrib
+    cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/algo.monads/0.1.0/algo.monads-0.1.0.jar > algo.monads-0.1.0.jar
 fi
 if [ ! -f ~/dev/clojure-contrib/math.combinatorics-0.0.3.jar ]; then
-    mkdir -p ~/dev/clojure-contrib && cd ~/dev/clojure-contrib/
-    curl -O http://search.maven.org/remotecontent?filepath=org/clojure/math.combinatorics/0.0.3/math.combinatorics-0.0.3.jar > math.combinatorics-0.0.3.jar
+    mkdir -p ~/dev/clojure-contrib
+    cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/math.combinatorics/0.0.3/math.combinatorics-0.0.3.jar > math.combinatorics-0.0.3.jar
 fi
 if [ ! -f ~/dev/vimclojure-server/server-2.3.6.jar ]; then
     mkdir -p ~/dev/vimclojure-server
-    curl -O http://clojars.org/repo/vimclojure/server/2.3.6/server-2.3.6.jar > ~/dev/vimclojure-server/server-2.3.6.jar
+    cd ~/dev/vimclojure-server && curl -O http://clojars.org/repo/vimclojure/server/2.3.6/server-2.3.6.jar > server-2.3.6.jar
 fi
 
 if [ ! -d ]; then

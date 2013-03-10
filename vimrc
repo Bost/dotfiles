@@ -897,7 +897,7 @@ fun! <SID>StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd FileType clj,javascript,java,python,readme,text,txt,vim
+autocmd FileType clj,javascript,java,python,readme,text,txt,vim,sh,bat
   \ autocmd BufWritePre <buffer>
   \ :call <SID>StripTrailingWhitespaces()
 " }}}
