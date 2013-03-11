@@ -890,8 +890,8 @@ inoremap <silent> <Home> <C-O><Home>
 set lazyredraw
 
 " {{{ Kill trailing whitespace on save - this doesn't work somehow
-"TODO this works: %s/\(\S\+\)\s\+\n/\1\r/gc
-fun! <SID>StripTrailingWhitespaces()
+"TODO this works: %s/\(\S*\)\s\+\n/\1\r/gc
+function! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
     %s/\s\+$//e
