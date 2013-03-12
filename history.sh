@@ -1,40 +1,104 @@
 #!/bin/bash -e
 
-mkdir ~/dev
-ln -s ~/Downloads ~/downloads
-ln -s ~/Desktop ~/desktop
-sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree chromium-browser synaptic
-sudo apt-get install gparted bitcoind htop traceroute ssh firestarter
-sudo apt-get install curl openjdk-7-jdk
+todo="### TODO: add ~/bin to the PATH"
+echo ''
+echo $todo
+echo ''
+
+mkdir -p ~/dev
+if [ ! -L ~/downloads ]; then
+    ln -s ~/Downloads ~/downloads
+fi
+if [ ! -L ~/desktop ]; then
+    ln -s ~/Desktop ~/desktop
+fi
+sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree \
+    chromium-browser ant gparted bitcoind htop traceroute ssh firestarter \ 
+    gnome-system-tools curl openjdk-7-jdk maven
 #sudo apt-get install emacs
 
 # notebooks
 sudo apt-get install powertop
 
+git config --global user.name "Bost"
+git config --global user.email thebost@gmail.com
 
 # add this comp to to github knows repos
-ssh-keygen
+if [ ! -f ~/.ssh/id_rsa ]; then
+    ssh-keygen
+fi
 cat ~/.ssh/id_rsa.pub
-git clone git@github.com:Bost/dotfiles.git   ~/dev
-git clone git@github.com:Bost/cheatsheet.git ~/dev
 
-uname -a
-mv ~/.bashrc ~/.bashrc.bak
-ln -s ~/dev/dotfiles/bashrc ~/.bashrc
-ln -s ~/dev/dotfiles/vim ~/.vim
-
-# TODO remove empty directories in order do proceed with :BundleInstall
-rm -rf ~/.vim/bundle/vim-orgmode
+if [ -d ~/dev/cheatsheet ]; then
+    cd ~/dev/cheatsheet && git pull
+else
+    git clone git@github.com:Bost/cheatsheet.git ~/dev/cheatsheet
+fi
+if [ -d ~/dev/dotfiles ]; then
+    cd ~/dev/dotfiles && git pull
+else
+    git clone git@github.com:Bost/dotfiles.git ~/dev/dotfiles
+fi
 
 # git clone for vundle is a workaround
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+# Remove empty directories in order do proceed with :BundleInstall
+cd ~/dev/dotfiles/vim/bundle && rm -rf YankRing.vim ctrlp.vim vim-orgmode vim-config-python-ide ack.vim vim-matchit vim-powerline tagbar SearchComplete supertab
 
-mkdir -p ~/bin && cd ~/bin/
-curl -O https://raw.github.com/technomancy/leiningen/stable/bin/lein > lein
-chmod +x lein
-lein self-install
+uname -a
+timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
+mv ~/.bashrc ~/.bashrc.$timestamp.backup
+ln -s ~/dev/dotfiles/bashrc ~/.bashrc
 
-mkdir -p ~/dev/clojure-contrib & cd ~/dev/clojure-contrib/
-curl -O http://search.maven.org/remotecontent?filepath=org/clojure/tools.macro/0.1.2/tools.macro-0.1.2.jar > tools.macro-0.1.2.jar
-curl -O http://search.maven.org/remotecontent?filepath=org/clojure/algo.monads/0.1.0/algo.monads-0.1.0.jar > algo.monads-0.1.0.jar
-curl -O http://search.maven.org/remotecontent?filepath=org/clojure/math.combinatorics/0.0.3/math.combinatorics-0.0.3.jar > math.combinatorics-0.0.3.jar
+mv ~/.vim ~/.vim.$timestamp.backup
+ln -s ~/dev/dotfiles/vim ~/.vim
+
+rm -rf ~/bin/lein
+mkdir -p ~/bin
+cd ~/bin/ && curl -O https://raw.github.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
+chmod +x ~/bin/lein
+~/bin/lein self-install
+
+if [ ! -f ~/dev/clojure-contrib/tools.macro-0.1.2.jar ]; then
+    mkdir -p ~/dev/clojure-contrib
+    cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/tools.macro/0.1.2/tools.macro-0.1.2.jar > tools.macro-0.1.2.jar
+fi
+if [ ! -f ~/dev/clojure-contrib/algo.monads-0.1.0.jar ]; then
+    mkdir -p ~/dev/clojure-contrib
+    cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/algo.monads/0.1.0/algo.monads-0.1.0.jar > algo.monads-0.1.0.jar
+fi
+if [ ! -f ~/dev/clojure-contrib/math.combinatorics-0.0.3.jar ]; then
+    mkdir -p ~/dev/clojure-contrib
+    cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/math.combinatorics/0.0.3/math.combinatorics-0.0.3.jar > math.combinatorics-0.0.3.jar
+fi
+if [ ! -f ~/dev/vimclojure-server/server-2.3.6.jar ]; then
+    mkdir -p ~/dev/vimclojure-server
+    cd ~/dev/vimclojure-server && curl -O http://clojars.org/repo/vimclojure/server/2.3.6/server-2.3.6.jar > server-2.3.6.jar
+fi
+
+if [ ! -d ]; then
+    cd ~/dev && git clone https://github.com/clojure/clojure.git
+else
+    cd ~/dev/clojure && git pull
+    git checkout clojure-1.5.0
+fi
+
+if [ ! -f ~/dev/clojure/clojure-1.5.0.jar ]; then
+    ./antsetup.sh && ant
+fi
+
+if [ ! -d ~/dev/vimclojure ]; then
+    cd ~/dev/
+    hg clone https://bitbucket.org/kotarak/vimclojure
+    mv vimclojure/ vimclojure-nailgun-client
+    cd vimclojure-nailgun-client/client/
+    make
+    rm -rf ~/bin/ng
+    ln -s ~/dev/vimclojure-nailgun-client/client/ng ~/bin/ng
+fi
+rm -rf ~/bin/ng-server.sh
+cp ~/dev/dotfiles/ng-server.sh ~/bin
+
+echo ''
+echo $todo
+echo "$0 terminated"

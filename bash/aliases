@@ -107,12 +107,18 @@ function mkdirAndCd() {
 alias mcd=mkdirAndCd
 alias take=mkdirAndCd
 
+function GitPushRepo {
+    echo 'cd '$1' && git push'
+    cd $1 && git push
+}
+
 function GitPullRepo {
     echo 'cd '$1' && git pull'
     cd $1 && git pull
 }
 
 alias ga='_cd=`pwd`; GitPullRepo $dev/cheatsheet && GitPullRepo $dev/dotfiles && cd $_cd'
+alias gah='_cd=`pwd`; GitPushRepo $dev/cheatsheet && GitPushRepo $dev/dotfiles && cd $_cd'
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
 alias gcl='git clone'
@@ -223,8 +229,8 @@ elif [ "$isLinux" -gt 0 ]; then
     export VMAIL_VIM=gvim
 
     alias lock="xflock4"
-    alias uu="sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean"
-    alias ud='sudo apt-get dist-upgrade'
+    alias u="sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean"
+    alias d='sudo apt-get dist-upgrade'
     alias cx='chmod +x'
     alias k9='kill -9'
     # I guess '2> /dev/null' redirects errors to /dev/null
@@ -235,14 +241,21 @@ elif [ "$isLinux" -gt 0 ]; then
     alias uninst="sudo apt-get remove -y"
     alias arem="sudo apt-get autoremove -y"
 
+    alias susp='sudo pm-suspend'
     alias suspend='sudo pm-suspend'
     alias shut='sudo shutdown -h now'
+    alias shutdown='sudo shutdown -h now'
 
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
 
     # clojure classpath
-    cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
+    if [ -f $dev/clojure/clojure-1.5.0.jar ]; then
+        cljcp=$dev:$dev/clojure/clojure-1.5.0.jar
+    else
+        echo "Setting aliases: Consider update to clojure-1.5.0.jar"
+        cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
+    fi
     cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
     cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.0.jar
     cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar

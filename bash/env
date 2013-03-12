@@ -3,7 +3,7 @@
 # values used by other sripts and applications
 uname=`uname -a`
 strLinux="Linux"
-
+strLinuxMartin="Linux bost-martin"
 #echo uname: $uname
 # the system variable strMinGw32_155 is not visible under WinGit
 strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
@@ -14,6 +14,7 @@ export isCygwin_347=`expr match "$uname" "$strCygwin_347"`
 export isLinux=`expr match "$uname" "$strLinux"`
 # TODO clean definition of isLinux_64
 export isLinux_64=0
+export isLinuxMartin=`expr match "$uname" "$strLinuxMartin"`
 export isMinGw32_347=`expr match "$uname" "$strMinGw32_347"`
 export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
@@ -23,6 +24,8 @@ export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
 #echo isCygwin_dev1: $isCygwin_dev1
 #echo isCygwin_347: $isCygwin_347
 #echo isLinux: $isLinux
+#echo isLinux_64: $isLinux_64
+#echo isLinuxMartin: $isLinuxMartin
 #echo isMinGw32_347: $isMinGw32_347
 #echo isMinGw32_app1: $isMinGw32_app1
 #echo isCygwin_155: $isCygwin_155
@@ -77,6 +80,8 @@ elif [ "$isLinux" -gt 0 ]; then
     export isLinux_64=`expr match "$uname_processor" "$x86_64"`
     if [ "$isLinux_64" -gt 0 ]; then
         echo "### isLinux: $isLinux_64 => Loading aliases for $strLinux $x86_64"
+    elif [ "$isLinuxMartin" -gt 0 ]; then
+        echo "### isLinux: $isLinuxMartin => Loading aliases for $strLinuxMartin"
     else
         echo "### isLinux: $isLinux => Loading aliases for $strLinux"
     fi
@@ -85,18 +90,20 @@ elif [ "$isLinux" -gt 0 ]; then
 
     JAVA_CP_SEP=":"
 
-    CLASSPATH=$dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
-    MAVEN_HOME=$HOME/apache-maven-3.0.4
-    APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
-    APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.2
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
     NAILGUN_CLIENT_HOME=$dev/vimclojure-nailgun-client
-    AAPPENG_HOME=$APPENG_JAVA_HOME
 
-    if [ "$isLinux_64" -gt 0 ]; then
+    if [ "$isLinux_64" -gt 0 ] || [ "$isLinuxMartin" -eq 0 ]; then
         PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
     else
+        # TODO it seems like MAVEN_HOME is not needed
+        #MAVEN_HOME=$HOME/apache-maven-3.0.4
+        AAPPENG_HOME=$APPENG_JAVA_HOME
+        APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
+        APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.2
+        CLASSPATH=$dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
+        # TODO try to use OpenJDK instead of Oracle JDK
         JDK_16_HOME=$HOME/java/jdk1.6.0_33
         JAVA_HOME=$HOME/java/jdk1.7.0_07
         # I need too have $PATH at the end because I want to override the pre-preinstalled java
@@ -175,17 +182,24 @@ if [ "$isLinux_64" -eq 0 ]; then
 fi
 
 export dev
-export JAVA_HOME
+# JAVA_CP_SEP is needed for vimclojure
 export JAVA_CP_SEP
 export PATH
-export APPENGINE_HOME
+if [ "$isLinux" -eq 0 ]; then
+    export JAVA_HOME
+fi
 
+if [ "$isLinuxMartin" -eq 0 ]; then
+    export APPENGINE_HOME
+fi
 
 if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     export VIMCLOJURE_SERVER_JAR
     export NAILGUN_CLI_HOME
-    export APPENG_JAVA_HOME
-    export APPENG_PYTHON_HOME
+    if [ "$isLinuxMartin" -eq 0 ]; then
+        export APPENG_JAVA_HOME
+        export APPENG_PYTHON_HOME
+    fi
 
     # values used by other sripts and applications
     #export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar$JAVA_CP_SEP$CLASSPATH
