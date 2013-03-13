@@ -971,3 +971,8 @@ endif
 " {{{  last macro (2 and @ are under the same key) :Evaluating
 noremap <A-2> @@
 " }}}
+
+" {{{ xml formating
+set equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+" }}}
