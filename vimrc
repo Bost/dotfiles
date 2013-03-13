@@ -1,11 +1,14 @@
 " TODO vmail: frames made of unicode chars
 " TODO wikipedia table comparision
+" TODO visualize whole buffer and jump back to last cursor position
+" TODO vimclojure: use evaluation shortcuts from insert mode
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
 let isWin = has('win32')
 let isEclim = 1
+let isUserBambi = ($USER == 'bambi')
 
 " {{{ Necessary file structure of .vim, .vimrc, vimfiles:
 " isCygwin:
@@ -155,7 +158,32 @@ Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'scrooloose/nerdtree.git'
 " vimpanel should replace nerdtree
 "Bundle 'mihaifm/vimpanel.git'
+" {{{ VimClojure
 Bundle 'vim-scripts/VimClojure.git'
+"let vimclojure#FuzzyIndent=1
+let vimclojure#HighlightBuiltins=1
+let vimclojure#HighlightContrib=1
+let vimclojure#DynamicHighlighting=1
+let vimclojure#ParenRainbow=1
+"let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
+let vimclojure#WantNailgun = 1
+
+if isLinux
+    let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
+elseif isWin || isCygwin
+    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
+endif
+
+"let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
+let vimclojure#NailgunPort = "2113"
+if isUserBambi " open the split window on ...
+    let vimclojure#SplitPos = 'bottom'
+else
+    let vimclojure#SplitPos = 'right'
+endif
+"let vimclojure#SplitSize = 80
+" }}}
+
 "Bundle 'hsitz/VimOrganizer.git'
 
 Bundle 'sjl/gundo.vim.git'
@@ -252,7 +280,11 @@ set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 
 if isLinux
     " Ubuntu\ Mono\ 12 is too large for bambi-small
-    set guifont=Ubuntu\ Mono\ 11
+    if isUserBambi
+        set guifont=Ubuntu\ Mono\ 10
+    else
+        set guifont=Ubuntu\ Mono\ 11
+    endif
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
 elseif isCygwin
@@ -309,9 +341,9 @@ set backspace=indent,eol,start  " backspace through everything in insert mode
 "inoremap <Leader><Leader> <Esc>l
 " }}}
 
-" visualise a word and switch to insert mode
+" visualize a word and switch to insert mode
 "map <space> viw
-" visualise a word
+" visualize a word
 "map <space> vw
 
 " Show EOL type and last modified timestamp, right after the filename
@@ -321,27 +353,6 @@ set wildmenu                    " Use menu for completions
 set wildmode=full
 " Make tab completion work more like it does in bash.
 "set wildmode=longest,list
-
-" {{{ VimClojure
-"let vimclojure#FuzzyIndent=1
-let vimclojure#HighlightBuiltins=1
-let vimclojure#HighlightContrib=1
-let vimclojure#DynamicHighlighting=1
-let vimclojure#ParenRainbow=1
-"let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
-let vimclojure#WantNailgun = 1
-
-if isLinux
-    let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
-elseif isWin || isCygwin
-    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
-endif
-
-"let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
-let vimclojure#NailgunPort = "2113"
-let vimclojure#SplitPos = "right"        " open the split window on the right side
-"let vimclojure#SplitSize = 80
-" }}}
 
 " In insert mode: delete from cursor to the EOL and switch back to insert mode
 inoremap <Leader>d <Esc>lDa
@@ -364,9 +375,6 @@ vnoremap <C-s> <Esc>:update<CR>gv
 "nnoremap <C-s> :w<CR>
 "inoremap <C-s> <C-o>:w<CR>
 " }}}
-
-" Toggle line numbers
-nnoremap <Leader>sn :set nu!<CR>
 
 " Quit the current window
 nnoremap <Leader>q :q<CR>
@@ -572,7 +580,10 @@ function! Vis(moveKey)
 endfunc
 nnoremap <Leader>c :call LookUpwards()<CR>
 
-" {{{ Visualize: lines, words
+" {{{ Visualize: whole buffer, lines, words
+nnoremap <C-a> ggVG
+inoremap <C-a> <Esc>ggVG
+
 nmap <S-Up> :call Vis('k')<CR>
 imap <S-Up> <Esc>:call Vis('k')<CR>
 vmap <S-Up> k
@@ -648,7 +659,7 @@ function! RenameFile()      " rename current file
 endfunc
 noremap <Leader>n :call RenameFile()<cr>
 
-" {{{ Toggle line number counting: <Leader><C-L>
+" {{{ Toggle: line numbering / counting: <A-C-l> / <C-l>
 function! g:ToggleNuMode()
   if &nu == 1
      set rnu
@@ -656,7 +667,13 @@ function! g:ToggleNuMode()
      set nu
   endif
 endfunc
-nnoremap <silent><Leader><C-L> :call g:ToggleNuMode()<CR>
+
+nnoremap <C-l> :call g:ToggleNuMode()<CR>
+inoremap <C-l> <Esc>:call g:ToggleNuMode()<CR>i
+
+" Toggle line numbers <>
+nnoremap <A-C-l> :set nu!<CR>
+inoremap <A-C-l> <Esc>:set nu!<CR>i
 " }}}
 
 if isCygwin || isWin
@@ -891,14 +908,14 @@ inoremap <silent> <Home> <C-O><Home>
 set lazyredraw
 
 " {{{ Kill trailing whitespace on save - this doesn't work somehow
-"TODO this works: %s/\(\S\+\)\s\+\n/\1\r/gc
-fun! <SID>StripTrailingWhitespaces()
+"TODO this works: %s/\(\S*\)\s\+\n/\1\r/gc
+function! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd FileType clj,javascript,java,python,readme,text,txt,vim
+autocmd FileType clj,javascript,java,python,readme,text,txt,vim,sh,bat
   \ autocmd BufWritePre <buffer>
   \ :call <SID>StripTrailingWhitespaces()
 " }}}
