@@ -146,8 +146,9 @@ if [ "$isLinux" -eq 0 ]; then
     echo export http_proxy=$http_proxy
     echo export https_proxy=$https_proxy
     echo export ftp_proxy=$ftp_proxy
-    echo export CVSROOT=$CVSROOT"        # this is the active CVSROOT"
-    echo export CVSROOT=$CVSROOT_ALTERNATIVE"   # alternative CVSROOT"
+    echo export CVSROOT=$CVSROOT"        # active Jacarta CVSROOT"
+    echo export CVSROOT=$CVSROOT_ALTERNATIVE"   # alternative Jacarta CVSROOT"
+    echo export CVSROOT=$CVSROOT_MBS"    # CVSROOT for MBS"
     echo ''
 
 #else
