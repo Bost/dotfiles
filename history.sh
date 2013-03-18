@@ -12,10 +12,14 @@ fi
 if [ ! -L ~/desktop ]; then
     ln -s ~/Desktop ~/desktop
 fi
-sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree \
-    chromium-browser ant gparted bitcoind htop traceroute ssh firestarter \ 
-    gnome-system-tools curl openjdk-7-jdk maven
-#sudo apt-get install emacs
+echo sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree
+     sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree
+echo sudo apt-get install chromium-browser ant gparted bitcoind htop traceroute ssh firestarter
+     sudo apt-get install chromium-browser ant gparted bitcoind htop traceroute ssh firestarter
+echo sudo apt-get install gnome-system-tools curl openjdk-7-jdk maven
+     sudo apt-get install gnome-system-tools curl openjdk-7-jdk maven
+#echo sudo apt-get install emacs
+#     sudo apt-get install emacs
 
 # notebooks
 sudo apt-get install powertop
