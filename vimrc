@@ -52,6 +52,11 @@ Bundle 'gmarik/vundle'
 if isCygwin || isWin
     Bundle 'Bost/vim-email.git'
 endif
+
+"Bundle 'vim-scripts/SearchComplete.git'
+Bundle 'Shougo/neocomplcache.git'
+Bundle 'Shougo/neosnippet.git'
+
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'rstacruz/sparkup', {'runtimepath': 'vim/'}
 " vim-scripts repos
@@ -59,23 +64,23 @@ Bundle 'rstacruz/sparkup', {'runtimepath': 'vim/'}
 " YankRing colides with ctrlp
 Bundle 'vim-scripts/YankRing.vim.git'
 
-" {{{ plugins for nodejs and coffee-script
-Bundle 'digitaltoad/vim-jade.git'
-" {{{
-Bundle 'kchmck/vim-coffee-script.git'
-" To recompile a file when it's written, add an autocmd like this to your vimrc:
-au BufWritePost *.coffee silent CoffeeMake!
-" All of the customizations above can be used, too. This one compiles silently and with the -b option, but shows any errors:
-au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
-" }}}
+"" {{{ plugins for nodejs and coffee-script
+"Bundle 'digitaltoad/vim-jade.git'
+"" {{{
+"Bundle 'kchmck/vim-coffee-script.git'
+"" To recompile a file when it's written, add an autocmd like this to your vimrc:
+"au BufWritePost *.coffee silent CoffeeMake!
+"" All of the customizations above can be used, too. This one compiles silently and with the -b option, but shows any errors:
+"au BufWritePost *.coffee silent CoffeeMake! -b | cwindow | redraw!
+"" }}}
 
-" {{{
-Bundle 'guileen/vim-node.git'
-au FileType javascript set dictionary+=$HOME/.vim/dict/node.dict
-" }}}
-Bundle 'myhere/vim-nodejs-complete.git'
+"" {{{
+"Bundle 'guileen/vim-node.git'
+"au FileType javascript set dictionary+=$HOME/.vim/dict/node.dict
+"" }}}
+"Bundle 'myhere/vim-nodejs-complete.git'
 
-" }}}
+"" }}}
 
 " {{{ Finder plugins:
 " L9 is required by FuzzyFinder
@@ -155,9 +160,21 @@ nnoremap <A-b> :BufExplorer<CR>
 " }}}
 
 Bundle 'scrooloose/nerdcommenter.git'
-Bundle 'scrooloose/nerdtree.git'
+
+" {{{
 " vimpanel should replace nerdtree
 "Bundle 'mihaifm/vimpanel.git'
+
+Bundle 'scrooloose/nerdtree.git'
+Bundle 'jistr/vim-nerdtree-tabs.git'
+"autocmd VimEnter * NERDTree
+"nnoremap <F9> :NERDTreesToggle<CR>
+nnoremap <F9> :NERDTreeTabsToggle<CR>
+inoremap <F9> <Esc><F9>
+" vnoremap for :NERDTreeTabsToggle makes no sense
+let g:nerdtree_tabs_open_on_gui_startup=0
+" }}}
+
 " {{{ VimClojure
 Bundle 'vim-scripts/VimClojure.git'
 "let vimclojure#FuzzyIndent=1
@@ -206,8 +223,6 @@ Bundle 'Lokaltog/vim-powerline.git'
 " both plugins need exuberant ctags
 Bundle 'majutsushi/tagbar'
 "Bundle 'vim-scripts/taglist.vim.git'
-
-Bundle 'vim-scripts/SearchComplete.git'
 
 " {{{ insert completion: <Tab> <C-Tab>
 Bundle 'ervandew/supertab.git'
@@ -765,6 +780,7 @@ if has('gui_running')
     endfunc
     nnoremap <Leader>T :call ToggleGuiOptions()<CR>
     inoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>i
+    vnoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>gv
 endif
 " }}}
 
@@ -841,9 +857,6 @@ if isWin || isCygwin
 endif
 " }}}
 
-nnoremap <F9> :NERDTreeToggle<CR>
-inoremap <F9> <Esc><F9>
-
 " {{{ <F10>
 autocmd FileType python map <F10> :w<CR>:!python "%"<CR>
 inoremap <F10> <Esc><F10>
@@ -863,8 +876,6 @@ else
 endif
 inoremap <F12> <Esc><F12>
 " }}}
-
-"autocmd VimEnter * NERDTree
 
 " {{{ Show syntax highlighting groups for word under cursor: call SynStack()
 nnoremap <C-S-P> :call <SID>SynStack()<CR>
@@ -990,6 +1001,6 @@ noremap <A-2> @@
 " }}}
 
 " {{{ xml formating
-set equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
-au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+"set equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+"au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 " }}}
