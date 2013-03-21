@@ -171,7 +171,8 @@ Bundle 'jistr/vim-nerdtree-tabs.git'
 "nnoremap <F9> :NERDTreesToggle<CR>
 nnoremap <F9> :NERDTreeTabsToggle<CR>
 inoremap <F9> <Esc><F9>
-vnoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>gv
+" vnoremap for :NERDTreeTabsToggle makes no sense
+let g:nerdtree_tabs_open_on_gui_startup=0
 " }}}
 
 " {{{ VimClojure
@@ -779,6 +780,7 @@ if has('gui_running')
     endfunc
     nnoremap <Leader>T :call ToggleGuiOptions()<CR>
     inoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>i
+    vnoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>gv
 endif
 " }}}
 
