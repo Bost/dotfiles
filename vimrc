@@ -171,6 +171,7 @@ Bundle 'jistr/vim-nerdtree-tabs.git'
 "nnoremap <F9> :NERDTreesToggle<CR>
 nnoremap <F9> :NERDTreeTabsToggle<CR>
 inoremap <F9> <Esc><F9>
+vnoremap <Leader>T <Esc>:call ToggleGuiOptions()<CR>gv
 " }}}
 
 " {{{ VimClojure
