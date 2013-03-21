@@ -54,8 +54,13 @@ let s:ctags_types         = {}
 let s:new_window      = 1
 let s:is_maximized    = 0
 let s:short_help      = 1
-let s:window_expanded = 0
 let s:nearby_disabled = 0
+
+let s:window_expanded   = 0
+let s:window_pos = {
+    \ 'pre'  : { 'x' : 0, 'y' : 0 },
+    \ 'post' : { 'x' : 0, 'y' : 0 }
+\}
 
 " Script-local variable needed since compare functions can't
 " take extra arguments
@@ -1225,6 +1230,7 @@ function! s:BaseTag.initFoldState() abort dict
     let fileinfo = self.fileinfo
 
     if s:known_files.has(fileinfo.fpath) &&
+     \ has_key(fileinfo, '_tagfolds_old') &&
      \ has_key(fileinfo._tagfolds_old[self.fields.kind], self.fullpath)
         " The file has been updated and the tag was there before, so copy its
         " old fold state
@@ -1688,8 +1694,13 @@ function! s:OpenWindow(flags) abort
     endif
 
     " Expand the Vim window to accomodate for the Tagbar window if requested
+    " and save the window positions to be able to restore them later.
     if g:tagbar_expand && !s:window_expanded && has('gui_running')
+        let s:window_pos.pre.x = getwinposx()
+        let s:window_pos.pre.y = getwinposy()
         let &columns += g:tagbar_width + 1
+        let s:window_pos.post.x = getwinposx()
+        let s:window_pos.post.y = getwinposy()
         let s:window_expanded = 1
     endif
 
@@ -1830,6 +1841,13 @@ function! s:CloseWindow() abort
         if index(tablist, tagbarbufnr) == -1
             let &columns -= g:tagbar_width + 1
             let s:window_expanded = 0
+            " Only restore window position if it hasn't been moved manually
+            " after the expanding
+            if getwinposx() == s:window_pos.post.x &&
+             \ getwinposy() == s:window_pos.post.y
+               execute 'winpos ' . s:window_pos.pre.x .
+                           \ ' ' . s:window_pos.pre.y
+           endif
         endif
     endif
 
@@ -1877,13 +1895,16 @@ function! s:ProcessFile(fname, ftype) abort
 
     " If the file has only been updated preserve the fold states, otherwise
     " create a new entry
-    if s:known_files.has(a:fname)
+    if s:known_files.has(a:fname) && !empty(s:known_files.get(a:fname))
         let fileinfo = s:known_files.get(a:fname)
         call fileinfo.reset()
     else
         let fileinfo = s:FileInfo.New(a:fname, a:ftype)
     endif
 
+    " Use a temporary files for ctags processing instead of the original one.
+    " This allows using Tagbar for files accessed with netrw, and also doesn't
+    " slow down Tagbar for files that sit on slow network drives.
     let tempfile = tempname()
     let ext = fnamemodify(fileinfo.fpath, ':e')
     if ext != ''
@@ -1893,7 +1914,7 @@ function! s:ProcessFile(fname, ftype) abort
     call writefile(getbufline(fileinfo.bufnr, 1, '$'), tempfile)
     let fileinfo.mtime = getftime(tempfile)
 
-    let ctags_output = s:ExecuteCtagsOnFile(tempfile, a:ftype)
+    let ctags_output = s:ExecuteCtagsOnFile(tempfile, a:fname, a:ftype)
 
     call delete(tempfile)
 
@@ -1992,7 +2013,7 @@ function! s:ProcessFile(fname, ftype) abort
 endfunction
 
 " s:ExecuteCtagsOnFile() {{{2
-function! s:ExecuteCtagsOnFile(fname, ftype) abort
+function! s:ExecuteCtagsOnFile(fname, realfname, ftype) abort
     call s:LogDebugMessage('ExecuteCtagsOnFile called [' . a:fname . ']')
 
     let typeinfo = s:known_types[a:ftype]
@@ -2041,15 +2062,18 @@ function! s:ExecuteCtagsOnFile(fname, ftype) abort
     let ctags_output = s:ExecuteCtags(ctags_cmd)
 
     if v:shell_error || ctags_output =~ 'Warning: cannot open source file'
-        echoerr 'Tagbar: Could not execute ctags for ' . a:fname . '!'
-        echomsg 'Executed command: "' . ctags_cmd . '"'
-        if !empty(ctags_output)
-            call s:LogDebugMessage('Command output:')
-            call s:LogDebugMessage(ctags_output)
-            echomsg 'Command output:'
-            for line in split(ctags_output, '\n')
-                echomsg line
-            endfor
+        if !s:known_files.has(a:realfname) ||
+         \ !empty(s:known_files.get(a:realfname))
+            echoerr 'Tagbar: Could not execute ctags for ' . a:fname . '!'
+            echomsg 'Executed command: "' . ctags_cmd . '"'
+            if !empty(ctags_output)
+                call s:LogDebugMessage('Command output:')
+                call s:LogDebugMessage(ctags_output)
+                echomsg 'Command output:'
+                for line in split(ctags_output, '\n')
+                    echomsg line
+                endfor
+            endif
         endif
         return -1
     endif
@@ -3076,18 +3100,16 @@ function! s:AutoUpdate(fname, force) abort
     let updated = 0
 
     " Process the file if it's unknown or the information is outdated.
-    " Also test for entries that exist but are empty, which will be the case
-    " if there was an error during the ctags execution.
     " Testing the mtime of the file is necessary in case it got changed
     " outside of Vim, for example by checking out a different version from a
     " VCS.
-    if s:known_files.has(a:fname) && !empty(s:known_files.get(a:fname))
+    if s:known_files.has(a:fname)
         let curfile = s:known_files.get(a:fname)
         " if a:force || getbufvar(curfile.bufnr, '&modified') ||
-        if a:force ||
+        if a:force || empty(curfile) ||
          \ (filereadable(a:fname) && getftime(a:fname) > curfile.mtime)
             call s:LogDebugMessage('File data outdated, updating' .
-                                 \ ' [' .  a:fname . ']')
+                                 \ ' [' . a:fname . ']')
             call s:ProcessFile(a:fname, sftype)
             let updated = 1
         else
