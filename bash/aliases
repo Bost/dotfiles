@@ -96,7 +96,8 @@ extract () {
 }
 
 findTextInAnyFile () {
-    find . -name "$2" -exec grep -il "$1" {} \;
+    echo find . -name "$2" -exec grep -il "$1" {} \;
+         find . -name "$2" -exec grep -il "$1" {} \;
 }
 alias ft=findTextInAnyFile
 
@@ -173,7 +174,11 @@ alias l.='ls -d .* --color=auto'
 #alias ll='ls -l'
 #alias l='ls -CF'
 #alias la='ls -A'
-alias f='find . -name '
+findFile () {
+    echo find . -name "$1"
+         find . -name "$1"
+}
+alias f=findFile
 
 #alias cp='cp -i'
 #alias mv='mv -i'
