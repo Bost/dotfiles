@@ -1,7 +1,6 @@
 " TODO vmail: frames made of unicode chars
 " TODO wikipedia table comparision
 " TODO visualize whole buffer and jump back to last cursor position
-" TODO vimclojure: use evaluation shortcuts from insert mode
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -198,6 +197,10 @@ if isUserBambi " open the split window on ...
 else
     let vimclojure#SplitPos = 'right'
 endif
+inoremap <Leader>el <Esc>:call vimclojure#EvalLine()<CR>i
+inoremap <Leader>eb <Esc>:call vimclojure#EvalBlock()<CR>i
+inoremap <Leader>ep <Esc>:call vimclojure#EvalParagraph()<CR>i
+inoremap <Leader>ef <Esc>:call vimclojure#EvalFile()<CR>i
 "let vimclojure#SplitSize = 80
 " }}}
 
@@ -596,8 +599,8 @@ endfunc
 nnoremap <Leader>c :call LookUpwards()<CR>
 
 " {{{ Visualize: whole buffer, lines, words
-nnoremap <C-a> ggVG
-inoremap <C-a> <Esc>ggVG
+nnoremap <C-A-a> ggVG
+inoremap <C-A-a> <Esc>ggVG
 
 nmap <S-Up> :call Vis('k')<CR>
 imap <S-Up> <Esc>:call Vis('k')<CR>
@@ -894,12 +897,12 @@ highlight ColorColumn guibg=black
 " }}}
 
 " {{{ Emacs-like beginning and end of line: <C-e> <C-a>
-nnoremap <C-e> $
-inoremap <C-e> <C-o>$
+"nnoremap <C-e> $
+"inoremap <C-e> <C-o>$
 
 " nnoremap <C-a> ^  colides with that increment/decrement plugin
 "nnoremap <C-a> ^
-inoremap <C-a> <C-o>^
+"inoremap <C-a> <C-o>^
 " }}}
 
 " Select region from last edited line to the end of last pasted text
@@ -1004,3 +1007,29 @@ noremap <A-2> @@
 "set equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 "au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 " }}}
+
+" {{{ Resize window
+map <Leader>+ <C-W>+
+map <Leader>- <C-W>-
+" }}}
+
+
+"" {{{ TODP What is wrap mode
+"function! ScreenMovement(movement)
+  "if &wrap
+    "return "g" . a:movement
+  "else
+    "return a:movement
+  "endif
+"endfunction
+"onoremap <silent> <expr> j ScreenMovement("j")
+"onoremap <silent> <expr> k ScreenMovement("k")
+"onoremap <silent> <expr> 0 ScreenMovement("0")
+"onoremap <silent> <expr> ^ ScreenMovement("^")
+"onoremap <silent> <expr> $ ScreenMovement("$")
+"nnoremap <silent> <expr> j ScreenMovement("j")
+"nnoremap <silent> <expr> k ScreenMovement("k")
+"nnoremap <silent> <expr> 0 ScreenMovement("0")
+"nnoremap <silent> <expr> ^ ScreenMovement("^")
+"nnoremap <silent> <expr> $ ScreenMovement("$")
+"" }}}
