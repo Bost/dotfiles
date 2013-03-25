@@ -179,6 +179,7 @@ findFile () {
          find . -name "$1"
 }
 alias f=findFile
+alias cx='chmod +x'
 
 #alias cp='cp -i'
 #alias mv='mv -i'
@@ -194,9 +195,17 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
     alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
-    alias nailguncli='ng'
+    alias nailguncli='$dev/vimclojure-nailgun-client/ng.exe'
+    alias ng='nailguncli'
     alias g='gvim'
-    alias clojure='java -cp `cygpath -w $dev/clojure-1.5.1/clojure-1.5.1.jar` clojure.main'
+    cljcp=`cygpath -w $dev`
+    cljcp=$cljcp\;`cygpath -w $dev/clojure/clojure-1.5.1.jar`
+    cljcp=$cljcp\;`cygpath -w $dev/clojure-contrib/math.combinatorics-0.0.3.jar`
+    cljcp=$cljcp\;`cygpath -w $dev/clojure-contrib/algo.monads-0.1.4.jar`
+    cljcp=$cljcp\;`cygpath -w $dev/clojure-contrib/tools.macro-0.1.1.jar`
+    cljcp=$cljcp\;`cygpath -w $dev/vimclojure-server/server-2.3.6.jar`
+    alias clojure='java -cp $cljcp clojure.main'
+    #alias clojure='java -cp `cygpath -w $dev/clojure-1.5.1/clojure-1.5.1.jar` clojure.main'
 elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
@@ -236,7 +245,6 @@ elif [ "$isLinux" -gt 0 ]; then
     alias lock="xflock4"
     alias u="sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean"
     alias d='sudo apt-get dist-upgrade'
-    alias cx='chmod +x'
     alias k9='kill -9'
     # I guess '2> /dev/null' redirects errors to /dev/null
     #alias f='find ./ 2> /dev/null'
@@ -262,7 +270,7 @@ elif [ "$isLinux" -gt 0 ]; then
         cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
     fi
     cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
-    cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.0.jar
+    cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
     cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
     cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
     alias clojure='java -cp $cljcp clojure.main'
