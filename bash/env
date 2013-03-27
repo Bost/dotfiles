@@ -44,7 +44,7 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     winapp=$base/c/winapp
     winappX86=$base/c/winapp-x86
 
-    # export DISPLAY=":0" is needed for gvim in Cygwin Terminal 
+    # export DISPLAY=":0" is needed for gvim in Cygwin Terminal
     export DISPLAY=":0"
 
 elif [ "$isMinGw32_155" -gt 0 ]; then
@@ -110,6 +110,9 @@ elif [ "$isLinux" -gt 0 ]; then
         PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
     fi
 
+    PATH=$PATH:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
+    PATH=$PATH:$dev/clojure-contrib/algo.monads-0.1.4.jar
+    PATH=$PATH:$dev/clojure-contrib/tools.macro-0.1.1.jar
     export VMAIL_VIM=gvim
     export VMAIL_BROWSER='google-chrome'
 else

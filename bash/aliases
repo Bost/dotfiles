@@ -263,11 +263,12 @@ elif [ "$isLinux" -gt 0 ]; then
     #TODO alias sea='apt-cache search'
 
     # clojure classpath
-    if [ -f $dev/clojure/clojure-1.5.1.jar ]; then
-        cljcp=$dev:$dev/clojure/clojure-1.5.1.jar
+    cljJarFile=$dev/clojure-1.5.1/clojure-1.5.1.jar
+    if [ -f $cljJarFile ]; then
+        cljcp=$dev:$cljJarFile
     else
-        echo "Setting aliases: Consider update to clojure-1.5.1.jar"
-        cljcp=$dev:$dev/clojure-1.4.0/clojure-1.4.0.jar
+        echo "ERROR: Setting aliases: Consider update to clojure-1.5.1.jar"
+        return
     fi
     cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
     cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar

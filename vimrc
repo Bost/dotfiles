@@ -52,6 +52,13 @@ if isCygwin || isWin
     Bundle 'Bost/vim-email.git'
 endif
 
+" {{{ Replacement for VimClojure
+Bundle 'tpope/vim-fireplace.git'
+Bundle 'tpope/vim-classpath.git'
+Bundle 'guns/vim-clojure-static.git'
+nnoremap <A-e> :Eval<CR>
+" }}}
+
 "Bundle 'vim-scripts/SearchComplete.git'
 Bundle 'Shougo/neocomplcache.git'
 Bundle 'Shougo/neosnippet.git'
@@ -174,35 +181,35 @@ inoremap <F9> <Esc><F9>
 let g:nerdtree_tabs_open_on_gui_startup=0
 " }}}
 
-" {{{ VimClojure
-Bundle 'vim-scripts/VimClojure.git'
-"let vimclojure#FuzzyIndent=1
-let vimclojure#HighlightBuiltins=1
-let vimclojure#HighlightContrib=1
-let vimclojure#DynamicHighlighting=1
-let vimclojure#ParenRainbow=1
-"let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
-let vimclojure#WantNailgun = 1
+"" {{{ VimClojure
+"Bundle 'vim-scripts/VimClojure.git'
+""let vimclojure#FuzzyIndent=1
+"let vimclojure#HighlightBuiltins=1
+"let vimclojure#HighlightContrib=1
+"let vimclojure#DynamicHighlighting=1
+"let vimclojure#ParenRainbow=1
+""let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
+"let vimclojure#WantNailgun = 1
 
-if isLinux
-    let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
-elseif isWin || isCygwin
-    let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
-endif
+"if isLinux
+    "let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
+"elseif isWin || isCygwin
+    "let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
+"endif
 
-"let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
-let vimclojure#NailgunPort = "2113"
-if isUserBambi " open the split window on ...
-    let vimclojure#SplitPos = 'bottom'
-else
-    let vimclojure#SplitPos = 'right'
-endif
-inoremap <Leader>el <Esc>:call vimclojure#EvalLine()<CR>i
-inoremap <Leader>eb <Esc>:call vimclojure#EvalBlock()<CR>i
-inoremap <Leader>ep <Esc>:call vimclojure#EvalParagraph()<CR>i
-inoremap <Leader>ef <Esc>:call vimclojure#EvalFile()<CR>i
-"let vimclojure#SplitSize = 80
-" }}}
+""let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
+"let vimclojure#NailgunPort = "2113"
+"if isUserBambi " open the split window on ...
+    "let vimclojure#SplitPos = 'bottom'
+"else
+    "let vimclojure#SplitPos = 'right'
+"endif
+"inoremap <Leader>el <Esc>:call vimclojure#EvalLine()<CR>i
+"inoremap <Leader>eb <Esc>:call vimclojure#EvalBlock()<CR>i
+"inoremap <Leader>ep <Esc>:call vimclojure#EvalParagraph()<CR>i
+"inoremap <Leader>ef <Esc>:call vimclojure#EvalFile()<CR>i
+""let vimclojure#SplitSize = 80
+"" }}}
 
 "Bundle 'hsitz/VimOrganizer.git'
 
