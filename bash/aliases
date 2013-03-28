@@ -198,14 +198,16 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     alias nailguncli='$dev/vimclojure-nailgun-client/ng.exe'
     alias ng='nailguncli'
     alias g='gvim'
-    cljcp=`cygpath -w $dev`
-    cljcp=$cljcp\;`cygpath -w $dev/clojure/clojure-1.5.1.jar`
-    cljcp=$cljcp\;`cygpath -w $dev/clojure-contrib/math.combinatorics-0.0.3.jar`
-    cljcp=$cljcp\;`cygpath -w $dev/clojure-contrib/algo.monads-0.1.4.jar`
-    cljcp=$cljcp\;`cygpath -w $dev/clojure-contrib/tools.macro-0.1.1.jar`
-    cljcp=$cljcp\;`cygpath -w $dev/vimclojure-server/server-2.3.6.jar`
-    alias clojure='java -cp $cljcp clojure.main'
-    #alias clojure='java -cp `cygpath -w $dev/clojure-1.5.1/clojure-1.5.1.jar` clojure.main'
+    cljcp=$clojureJarFile
+    cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
+    cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
+    cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
+    cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
+    runClojure () {
+        echo java -cp `cygpath -p -w $cljcp` clojure.main
+             java -cp `cygpath -p -w $cljcp` clojure.main
+    }
+    alias clojure=runClojure
 elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
@@ -262,14 +264,7 @@ elif [ "$isLinux" -gt 0 ]; then
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
 
-    # clojure classpath
-    cljJarFile=$dev/clojure-1.5.1/clojure-1.5.1.jar
-    if [ -f $cljJarFile ]; then
-        cljcp=$dev:$cljJarFile
-    else
-        echo "ERROR: Setting aliases: Consider update to clojure-1.5.1.jar"
-        return
-    fi
+    cljcp=$clojureJarFile
     cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
     cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
     cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar

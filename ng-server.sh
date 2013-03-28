@@ -1,16 +1,18 @@
 #! /bin/bash
 
-LEIN_CP=$(lein classpath)
- 
-if [ ! $LEIN_CP ]; then
+leinCp=$(lein classpath)
+
+if [ ! $leinCp ]; then
     echo "Warning! Unable to get classpath from lein, just using existing classpath, expecting clojure jars to be available"
 fi
 
-echo "JAVA_CP_SEP: $JAVA_CP_SEP"
+# clojureJarFile must be in the path, otherwise the VimClojure server doesn't start
+ngCp=$VIMCLOJURE_SERVER_JAR:$leinCp:$clojureJarFile
+#ngCp=$VIMCLOJURE_SERVER_JAR:$leinCp:$CLASSPATH:$clojureJarFile
 
-NG_CP=""
-NG_CP=$NG_CP$VIMCLOJURE_SERVER_JAR$JAVA_CP_SEP
-NG_CP=$NG_CP$LEIN_CP$JAVA_CP_SEP
-NG_CP=$NG_CP$CLASSPATH
-echo java -server -cp "$NG_CP" vimclojure.nailgun.NGServer &
-     java -server -cp "$NG_CP" vimclojure.nailgun.NGServer &
+if [[ "$isLinux" -eq 0 ]]; then
+    ngCp="`cygpath -p -w $ngCp`"
+fi
+
+echo java -server -cp "$ngCp" vimclojure.nailgun.NGServer \&
+     java -server -cp "$ngCp" vimclojure.nailgun.NGServer  &

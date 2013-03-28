@@ -166,17 +166,15 @@ if [ "$isLinux" -eq 0 ]; then
 fi
 
 if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
+    clojureJarFile=$dev/clojure-1.5.1/clojure-1.5.1.jar
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
-    VIMCLOJURE_SERVER_JAR=c:\\cygwin\\home\\$USERNAME\\dev\\vimclojure-server\\server-2.3.6.jar
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     JDK_16_HOME=$winapp/Java/1.6.0_41
     JAVA_HOME=$winapp/Java/jdk1.7.0_15
     APPENG_JAVA_HOME=$winappX86/Google/appeng-java-sdk-1.7.1
     APPENG_PYTHON_HOME=$winappX86/Google/google_appengine
 
-    APPENGINE_HOME=c:\\winapp-x86\\Google\\appeng-java-sdk-1.7.1
-    #export APPENGINE_HOME=/home/$USERNAME/appeng-java-sdk-1.7.1
-    #export APPENGINE_HOME=/cygdrive/c/winapp-x86/Google/appeng-java-sdk-1.7.1
+    APPENGINE_HOME=/cygdrive/c/winapp-x86/Google/appeng-java-sdk-1.7.1
 
     PATH=$PATH:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
 fi
@@ -198,6 +196,7 @@ if [ "$isLinuxMartin" -eq 0 ]; then
 fi
 
 if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
+    export clojureJarFile
     export VIMCLOJURE_SERVER_JAR
     export NAILGUN_CLI_HOME
     if [ "$isLinuxMartin" -eq 0 ]; then
