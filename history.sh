@@ -13,6 +13,10 @@ if [ ! -L ~/desktop ]; then
     ln -s ~/Desktop ~/desktop
 fi
 
+echo sudo add-apt-repository ppa:bitcoin/bitcoin
+     sudo add-apt-repository ppa:bitcoin/bitcoin
+echo sudo apt-get update
+     sudo apt-get update
 echo sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree
      sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree
 echo sudo apt-get install chromium-browser ant gparted bitcoind htop traceroute ssh firestarter
@@ -22,7 +26,8 @@ echo sudo apt-get install gnome-system-tools curl openjdk-7-jdk maven ack-grep
 # in python 3 python-numpy should be already included
 echo sudo apt-get install python-numpy python-matplotlib xfce4
      sudo apt-get install python-numpy python-matplotlib xfce4
-
+echo sudo apt-get install bitcoind bitcoin-qt
+     sudo apt-get install bitcoind bitcoin-qt
 #sox kdelibs-data thunar-archive-plugin thunar-media-tags-plugin tumbler-plugins-extra xfce4-goodies xfce4-power-manager xfwm4-themes
 
 #echo sudo apt-get install emacs
