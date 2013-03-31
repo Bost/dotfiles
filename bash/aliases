@@ -203,11 +203,11 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
     cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
     cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
-    runClojure () {
+    runClojureCygpath () {
         echo java -cp `cygpath -p -w $cljcp` clojure.main
              java -cp `cygpath -p -w $cljcp` clojure.main
     }
-    alias clojure=runClojure
+    alias clojure=runClojureCygpath
 elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
@@ -269,7 +269,11 @@ elif [ "$isLinux" -gt 0 ]; then
     cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
     cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
     cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
-    alias clojure='java -cp $cljcp clojure.main'
+    runClojure () {
+        echo java -cp $cljcp clojure.main
+             java -cp $cljcp clojure.main
+    }
+    alias clojure=runClojure
     # stop nailgunsrv: ng ng-stop
     alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
     alias nailguncli='ng'

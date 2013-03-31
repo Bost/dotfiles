@@ -7,10 +7,18 @@ echo ''
 
 mkdir -p ~/dev
 if [ ! -L ~/downloads ]; then
-    ln -s ~/Downloads ~/downloads
+    if [ -d ~/Stiahnuté ]; then
+        ln -s ~/Stiahnuté ~/downloads
+    else
+        ln -s ~/Downloads ~/downloads
+    fi
 fi
 if [ ! -L ~/desktop ]; then
-    ln -s ~/Desktop ~/desktop
+    if [ -d ~/Plocha ]; then
+        ln -s ~/Plocha ~/desktop
+    else
+        ln -s ~/Desktop ~/desktop
+    fi
 fi
 
 echo sudo add-apt-repository ppa:bitcoin/bitcoin
