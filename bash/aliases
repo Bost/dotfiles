@@ -29,9 +29,11 @@ alias ...='cd ../..'
 alias cdd='cd -'
 
 # use full command and options names - no gitconfig aliases
-git_add_all="echo 'git add .'; git add ."
-alias gdd=$git_add_all
-alias gal=$git_add_all
+GitAddAll () {
+    echo git add .
+         git add .
+}
+alias gdd=GitAddAll
 alias gg='git gui &'
 alias gtg='git tag'
 alias gtag='git tag'
@@ -45,7 +47,6 @@ alias gpl='git pull'
 alias gp='git pull'
 alias gh='git push'
 # Visualise git log (like gitk, in the terminal)
-alias lg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
 alias lg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
 
 # Compact, colorized git log
@@ -103,23 +104,37 @@ alias ft=findTextInAnyFile
 
 # create a directory and change into it
 function mkdirAndCd() {
-  mkdir -p "$1" && cd "$1";
+  echo mkdir -p "$1" && cd "$1"
+       mkdir -p "$1" && cd "$1"
 }
 alias mcd=mkdirAndCd
 alias take=mkdirAndCd
 
 function GitPushRepo {
     echo 'cd '$1' && git push'
-    cd $1 && git push
+          cd  $1  && git push
 }
 
 function GitPullRepo {
     echo 'cd '$1' && git pull'
-    cd $1 && git pull
+          cd  $1  && git pull
 }
 
-alias ga='_cd=`pwd`; GitPullRepo $dev/cheatsheet && GitPullRepo $dev/dotfiles && cd $_cd'
-alias gah='_cd=`pwd`; GitPushRepo $dev/cheatsheet && GitPushRepo $dev/dotfiles && cd $_cd'
+GitUpdateAll () {
+    _cd=`pwd`
+    GitPullRepo $dev/cheatsheet && GitPullRepo $dev/dotfiles
+    if [ "$isCygwin_155" -gt 0 ]; then
+        GitPullRepo /cygdrive/h/dev/cheatsheet && GitPullRepo /cygdrive/h/dev/dotfiles
+    fi
+    cd $_cd
+}
+GitPushAll () {
+    _cd=`pwd`
+    GitPushRepo $dev/cheatsheet && GitPushRepo $dev/dotfiles
+    cd $_cd
+}
+alias ga=GitUpdateAll
+alias gah=GitPushAll
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
 alias gcl='git clone'
