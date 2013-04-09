@@ -245,10 +245,10 @@ let g:SuperTabMappingBackward = '<C-Tab>'
 " }}}
 " }}}
 
-" {{{ increase / decrease font size: <A-i> / <A-o>
+" {{{ increase / decrease font size: <A-i> / <C-A-i>
 Bundle 'Bost/vim-zoom.git'
-nmap <C-A-i> :ZoomIn<CR>
-nmap <C-A-o> :ZoomOut<CR>
+nmap <A-i> :ZoomIn<CR>
+nmap <C-A-i> :ZoomOut<CR>
 " }}}
 
 " Vim over ssh/scp
@@ -407,9 +407,10 @@ vnoremap <C-s> <Esc>:update<CR>gv
 nnoremap <Leader>q :q<CR>
 
 " Delete the current buffer
-nnoremap <Leader>bd :bd<CR>
 nnoremap <A-w> :bd<CR>
 inoremap <Esc><A-w> :bd<CR>
+nnoremap <C-A-w> :bd!<CR>
+inoremap <Esc><C-A-w> :bd!<CR>
 
 " Quickly 'maximize' a split - these shortcuts colide with VimClojure
 "nnoremap <Leader>mw <C-W>\|
