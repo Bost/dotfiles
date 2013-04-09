@@ -143,7 +143,7 @@ Bundle "jceb/vim-orgmode"
 
 Bundle 'skyl/vim-config-python-ide.git'
 
-Bundle 'vim-scripts/csv.vim.git'
+"Bundle 'vim-scripts/csv.vim.git'
 
 " {{{ Buffer Explorers:
 
