@@ -746,6 +746,10 @@ if isLinux
         silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
     endfunc
 elseif isCygwin
+    " see :winpos
+    winpos 0 19
+    " see :!xwininfo.exe
+    "winsize 1614 1022
     " this doesn't really work
     "if has("gui_running")
         "" GUI is running or is about to start. Maximize gvim window.
