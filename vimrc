@@ -1,3 +1,4 @@
+" TODO <Leader>h  insert Hallo,
 " TODO vmail: frames made of unicode chars
 " TODO wikipedia table comparision
 " TODO visualize whole buffer and jump back to last cursor position
@@ -63,6 +64,7 @@ if isLinux
     Bundle 'tpope/vim-classpath.git'
     Bundle 'guns/vim-clojure-static.git'
     nnoremap <A-e> :Eval<CR>
+    nnoremap <C-e> :Eval<CR>
 else
     " {{{ VimClojure
     Bundle 'vim-scripts/VimClojure.git'
