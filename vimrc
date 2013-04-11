@@ -48,9 +48,14 @@ endif
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
+
+" {{{ vim-email
+Bundle 'Bost/vim-email.git'
+nnoremap <Leader>gb :call Email("B")<CR>
 if isCygwin || isWin
-    Bundle 'Bost/vim-email.git'
+    nnoremap <Leader>gr :call Email("R")<CR>
 endif
+" }}}
 
 " {{{ Clojure plugins
 if isLinux
@@ -705,11 +710,6 @@ inoremap <A-C-l> <Esc>:set nu!<CR>i
 " }}}
 
 if isCygwin || isWin
-    nnoremap <Leader>ma :call Email("Andreas")<CR>
-    nnoremap <Leader>mj :call Email("Jürgen")<CR>
-    nnoremap <Leader>my :call Email("Yvonne")<CR>
-    nnoremap <Leader>mt :call Email("Thomas")<CR>
-
     nnoremap <Leader>ede :e $deployments_base/deployment.sh<CR>
     nnoremap <Leader>edv :e $deployments_base/defvars.sh<CR>
 endif
