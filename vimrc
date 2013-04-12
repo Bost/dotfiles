@@ -448,6 +448,7 @@ nnoremap <Leader>MM <Leader>Mw<Leader>Mh
 " {{{ Editing dotfiles & cheatsheet files
 "nnoremap <Leader>er :tabnew ~/.vimrc<CR>
 nnoremap <Leader>ev :e ~/dev/dotfiles/vimrc<CR>
+inoremap <Leader>ev <Esc>:e ~/dev/dotfiles/vimrc<CR>
 nnoremap <Leader>en :e ~/dev/cheatsheet/notes.org<CR>
 nnoremap <Leader>ec :e ~/dev/cheatsheet/vim-commands.js<CR>
 nnoremap <Leader>er :e ~/dev/cheatsheet/rest-commands.js<CR>
@@ -458,16 +459,37 @@ nnoremap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 " {{{ .vimrc reloading: <Leader>r
 " explicit reloading
 nnoremap <Leader>rv :source ~/dev/dotfiles/vimrc<CR>
+inoremap <Leader>rv <Esc>:source ~/dev/dotfiles/vimrc<CR>i
 
 " Automatical reloading - slightly disturbing - use <Leader>S instead
 "autocmd! bufwritepost ~/dev/dotfiles/vimrc source %
 " }}}
 
 " {{{ Quick evaluation: <Leader>S
-" source current line
-vnoremap <Leader>S y:execute @@<CR>:echo 'Sourced selection.'<CR>
-" source highlighted text
-nnoremap <Leader>S ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
+function! SourceText(origMode)
+    " this does not work as intended: the 'normal y'
+    "if a:origMode == 'v'
+    "    normal _y
+    "    exec @@
+    "    echo 'Text sourced.'
+    "else
+        let curCol = virtcol(".")
+        let lineLen = virtcol('$')
+        normal ^vg_y
+        exec @@
+        echo 'Line sourced.'
+        if a:origMode == 'i'
+            call SetCursorPos(curCol, lineLen)
+        else
+            call cursor(line('.'), curCol)
+        endif
+    "endif
+endfun
+" this must be done separately:
+vnoremap <Leader>S y:execute @@<CR>:echo 'Text sourced.'<CR>
+"vnoremap <Leader>S :call SourceText('v')<CR>
+nnoremap <Leader>S :call SourceText('n')<CR>
+inoremap <Leader>S <Esc>:call SourceText('i')<CR>
 " }}}
 
 " {{{ Sessions: not used at the moment
@@ -599,9 +621,9 @@ nnoremap <Tab> <C-W>w
 
 " Movement in visual mode
 function! Vis(moveKey)
-   let col = virtcol('.')
+   let vc = virtcol('.')
    let lineLen = virtcol('$')
-   if col == lineLen-1 || col == 1
+   if vc == lineLen-1 || vc == 1
        normal V
    else
        if a:moveKey == 'j'
@@ -661,21 +683,93 @@ vmap <A-Right> >gv
 imap <C-S-Del> <Esc>lDa
 nmap <C-S-Del> D
 
-" Fix CtrlBackspace in insert mode
-function! CtrlBackspace()
-   let col = virtcol('.')
-   let lineLen = virtcol('$')
-   normal bde
-   if col == lineLen-1 || col == 1
-       " ! means start insert mode as 'a' - append
-       :startinsert!
-   else
-       :startinsert
-   endif
+function! SetCursorPos(curCol, lineLen)
+    "echo 'a:curCol '.a:curCol.' a:lineLen '.a:lineLen
+    if a:lineLen == a:curCol + 1
+        "echo 'EOLN'
+        " ! means start insert mode as 'A' - append at the end of line
+        :startinsert!
+    else
+        "echo 'no EOLN'
+        if a:curCol == 0
+            let newCurCol = a:curCol + 1
+        elseif a:curCol == 1
+            let newCurCol = a:curCol + 1
+        else
+            let newCurCol = a:curCol + 1
+        endif
+        "echo "newCurCol ".newCurCol
+        call cursor(line('.'), newCurCol)
+        :startinsert
+    endif
+endfun
+
+function! CtrlBackspace(origMode)
+    let lineLen = virtcol('$')
+    let realCurCol = virtcol('.')
+
+    if lineLen == realCurCol + 1
+        let curCol = realCurCol
+    elseif realCurCol == 1
+        "if a:origMode == 'i'
+        "    " here I cannot know if original cursor position was 0 or 1
+        "    " so do nothing in both cases ('i', 'n')
+        "else
+        "endif
+        return
+    else
+        if a:origMode == 'i'
+            let curCol = realCurCol
+        else
+            let curCol = realCurCol - 1
+        endif
+    endif
+
+    let lnum = line('.')
+    let lineText = getline(lnum)
+    let splitPattern = '^\(.\{1,'.curCol.'\}\)\(.*\)'
+    let split0 = substitute(lineText, splitPattern , '\1', '')
+    let split1 = substitute(lineText, splitPattern , '\2', '')
+    let chopPattern = '\(\s*\S*\s*\)$'
+    let startStr = substitute(split0, chopPattern, '', '')
+    let delSize = strlen(split0) - strlen(startStr)
+
+    let newLine = startStr.split1
+    call setline(lnum, newLine)
+    let newCurPos = realCurCol - delSize
+    if newCurPos == 0
+        let newAdjustetCurPos = newCurPos + 1
+    else
+        let newAdjustetCurPos = newCurPos
+    endif
+    call cursor(line('.'), newCurPos)
+    let afterDelCurCol = -1
+    if a:origMode == 'i'
+        if newCurPos == 0
+            let afterDelCurCol = 0
+        else
+            let afterDelCurCol = newCurPos
+        endif
+        let lineLen = virtcol('$')
+        call SetCursorPos(afterDelCurCol, lineLen)
+    endif
+    "echo 'lineText: "'.lineText.'"'
+    "echo 'splitPattern: '.splitPattern
+    "echo 'curCol: '.curCol
+    "echo 'split0: '.split0
+    "echo 'split1: '.split1
+    "echo 'chopPattern: "'.chopPattern.'"'
+    "echo 'startStr: "'.startStr.'"'
+    "echo '"'.newLine.'"'
+    "echo 'realCurCol: '.realCurCol
+    "echo 'delSize: '.delSize
+    "echo 'newCurPos: '.newCurPos
+    "echo 'newAdjustetCurPos: '.newAdjustetCurPos
+    "echo 'afterDelCurCol: '.afterDelCurCol
 endfunc
 
-nmap <C-BS> bde
-imap <C-BS> <Esc>:call CtrlBackspace()<CR>
+nmap <C-BS> <Esc>:call CtrlBackspace('n')<CR>
+imap <C-BS> <Esc>:call CtrlBackspace('i')<CR>
 
 nmap <C-Del> de
 imap <C-Del> <Esc>ldei
@@ -775,8 +869,13 @@ inoremap <A-C-p> <Esc>"+pa
 "inoremap <S-Insert> <A-p>  " this does not work somehow
 nnoremap <A-p> "*P
 nnoremap <A-C-p> "+P
+vnoremap y "*y
+nnoremap y "*y
 " Show content of registers
 nnoremap <A-r> :reg<CR>
+inoremap <A-r> <Esc>:reg<CR>
+" automatic revisualization is not possible
+vnoremap <A-r> :<bs><bs><bs><bs><bs>reg<CR>
 
 "inoremap <Leader>p <Esc>"*Pi
 "nnoremap <Leader>p "*P
@@ -902,7 +1001,7 @@ function! <SID>SynStack()
     if !exists("*synstack")
         return
     endif
-    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+    echo map(synstack(line('.'), virtcol('.')), 'synIDattr(v:val, "name")')
 endfunc
 " }}}
 
@@ -930,7 +1029,7 @@ nnoremap vv ^vg_
 
 " {{{ Smart Home key: jump to the 1st nonblank char on the line, or, if
 " already at that position, to the start of the line
-noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+noremap <expr> <silent> <Home> virtcol('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 inoremap <silent> <Home> <C-O><Home>
 " }}}
 
@@ -938,12 +1037,12 @@ inoremap <silent> <Home> <C-O><Home>
 set lazyredraw
 
 " {{{ Kill trailing whitespace on save - this doesn't work somehow
-"TODO this works: %s/\(\S*\)\s\+\n/\1\r/gc
+" TODO this works: %s/\(\S*\)\s\+\n/\1\r/gc
 function! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
+    let curLine = line(".")
+    let curCol = virtcol(".")
     %s/\s\+$//e
-    call cursor(l, c)
+    call cursor(curLine, curCol)
 endfun
 autocmd FileType clj,javascript,java,python,readme,text,txt,vim,sh,bat
   \ autocmd BufWritePre <buffer>
@@ -974,7 +1073,7 @@ augroup END
 "vnoremap / /\v
 " }}}
 
-" gi already moves to "last place you exited insert mode", so we'll map gI to
+" gi already moves to "last place you exited insert mode", so we map gI to
 " something similar: move to last change
 nnoremap gI `.
 
@@ -985,7 +1084,7 @@ endif
 
 nnoremap <Leader>wd :windo diffthis<CR>
 
-" {{{ German Umlaute: <Leader>char (keyboard switching doesn't work in cygwin)
+" {{{ Diacritic characters: <Leader>char (keyboard switching doesn't work in cygwin)
 " Use the same keys as on a keyboard
 inoremap <Leader>; ö
 inoremap <Leader>: ö
@@ -994,6 +1093,40 @@ inoremap <Leader>" Ä
 inoremap <Leader>[ ü
 inoremap <Leader>{ Ü
 inoremap <Leader>- ß
+
+"inoremap <Leader>`A Á
+"inoremap <Leader>`Ae Ä
+"inoremap <Leader>`C Č
+"inoremap <Leader>`D Ď
+"inoremap <Leader>`E É
+"inoremap <Leader>`I Í
+"inoremap <Leader>`Ll Ĺ
+"inoremap <Leader>`L Ľ
+"inoremap <Leader>`N Ň
+"inoremap <Leader>`O Ó
+"inoremap <Leader>`Ou Ô
+"inoremap <Leader>`R Ŕ
+"inoremap <Leader>`S Š
+"inoremap <Leader>`T Ť
+"inoremap <Leader>`U Ú
+"inoremap <Leader>`Y Ý
+"inoremap <Leader>`Z Ž
+"inoremap <Leader>`a á
+""inoremap <Leader>` ä " defined already
+"inoremap <Leader>`c č
+"inoremap <Leader>`z ž
+"inoremap <Leader>`e é
+"inoremap <Leader>`i í
+"inoremap <Leader>`l ľ
+"inoremap <Leader>`n ň
+"inoremap <Leader>`o ó
+"inoremap <Leader>`ou ô
+"inoremap <Leader>`r ŕ
+"inoremap <Leader>`s š
+"inoremap <Leader>`t ť
+"inoremap <Leader>`u ú
+"inoremap <Leader>`y ý
+"inoremap <Leader>`z ž
 " }}}
 
 " {{{ ctrlp settings
