@@ -908,7 +908,7 @@ vnoremap <A-r> :<bs><bs><bs><bs><bs>reg<CR>
 nnoremap <F3> :set hlsearch!<CR>
 inoremap <F3> <Esc><F3>
 
-" {{{ Ack and vimgrep: <Leader>a  <F4>
+" {{{ Ack and vimgrep: <Leader>a <F4>
 " ! - means do not jump on the first occurence
 nnoremap <Leader>a :Ack!<space>
 let g:ackprg = 'ack --nogroup --nocolor --column'
@@ -969,7 +969,7 @@ endif
 " {{{ <F10>
 autocmd FileType python map <F10> :w<CR>:!python "%"<CR>
 inoremap <F10> <Esc><F10>
-" }}}
+" }}} <F10>
 
 " {{{ <F12>
 nnoremap <F11> :YRShow<CR>
@@ -984,7 +984,7 @@ else
     "nnoremap <F12> :silent !google-chrome ~/dev/cheatsheet/cheatsheet.html<CR>
 endif
 inoremap <F12> <Esc><F12>
-" }}}
+" }}} <F12>
 
 " {{{ Show syntax highlighting groups for word under cursor: call SynStack()
 nnoremap <C-S-P> :call <SID>SynStack()<CR>
@@ -996,11 +996,9 @@ function! <SID>SynStack()
 endfunc
 " }}}
 
-" {{{ colorcolumn
 " set colorcolumn=80
 set colorcolumn=0
 highlight ColorColumn guibg=black
-" }}}
 
 " Select region from last edited line to the end of last pasted text
 nnoremap <Leader>v '.V`]
@@ -1038,9 +1036,8 @@ endfunc
 noremap <Leader>x :call EditScratch()<CR>
 " }}}
 
-" {{{ Save some key strokes while doing substitution: <Leader>s
+" Save some key strokes while doing substitution: <Leader>s
 nnoremap <Leader>s :%s///g<left><left>
-" }}}
 
 " {{{ Show cursorline only in the current window and in normal mode
 augroup cline
@@ -1111,41 +1108,23 @@ inoremap <Leader>- ß
 "inoremap <Leader>`z ž
 " }}}
 
-" {{{ ctrlp settings
-" Use the vim current directory
-let g:ctrlp_working_path_mode = 0
-
-"set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-"set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
-
-"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(class|jar|exe|so|dll|zip)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
-" }}}
-
 if isLinux
     let g:ackprg="/usr/bin/ack-grep -H --nocolor --nogroup --column"
 endif
 
-" {{{  last macro (2 and @ are under the same key) :Evaluating
+" Last macro (2 and @ are under the same key) :Evaluating
 noremap <A-2> @@
-" }}}
 
 " {{{ xml formating
 "set equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 "au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 " }}}
 
-" {{{ Resize window
+" Resize window
 map <Leader>+ <C-W>+
 map <Leader>- <C-W>-
-" }}}
 
-
-"" {{{ TODP What is wrap mode
+"" {{{ TODO What is wrap mode
 "function! ScreenMovement(movement)
   "if &wrap
     "return "g" . a:movement
@@ -1164,5 +1143,24 @@ map <Leader>- <C-W>-
 "nnoremap <silent> <expr> ^ ScreenMovement("^")
 "nnoremap <silent> <expr> $ ScreenMovement("$")
 "" }}}
-" something colides me with the <C-u> shortcut
-map <C-u> :CtrlP<CR>
+
+" {{{ CtrlP settings
+" Use the vim current directory
+let g:ctrlp_working_path_mode = 0
+
+"set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+"set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(class|jar|exe|so|dll|zip)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
+" Something colides me with the <C-p> shortcut
+map <C-p> :CtrlP<CR>
+" }}} CtrlP settings
+
+" Quick Undo
+inoremap <Leader>u <Esc>ui
