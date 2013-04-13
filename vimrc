@@ -1,4 +1,5 @@
 " TODO <Leader>h  insert Hallo,
+" TODO no-linux clipboard
 " TODO vmail: frames made of unicode chars
 " TODO wikipedia table comparision
 " TODO visualize whole buffer and jump back to last cursor position
@@ -853,31 +854,6 @@ nnoremap <A-o> o<Esc>k
 inoremap <A-o> <Esc>o<Esc>ki
 " }}}
 
-" {{{ All around copy / paste
-" {{{ Paste from system clipboard: <A-p> / <A-C-p>
-inoremap <A-p> <Esc>"*pa
-inoremap <A-C-p> <Esc>"+pa
-"inoremap <S-Insert> <A-p>  " this does not work somehow
-nnoremap <A-p> "*P
-nnoremap <A-C-p> "+P
-
-if isLinux
-    vnoremap y "+y
-    nnoremap y "+y
-else
-    vnoremap y "*y
-    nnoremap y "*y
-endif
-" Show content of registers
-nnoremap <A-r> :reg<CR>
-inoremap <A-r> <Esc>:reg<CR>
-" automatic revisualization is not possible
-vnoremap <A-r> :<bs><bs><bs><bs><bs>reg<CR>
-
-"inoremap <Leader>p <Esc>"*Pi
-"nnoremap <Leader>p "*P
-" }}}
-
 " {{{ ToggleGuiOptions if copy / paste doesn't work
 if has('gui_running')
     " Switch off menu (t); show: bottom scrollbar (b), toolbar (T)
@@ -899,16 +875,34 @@ if has('gui_running')
 endif
 " }}}
 
-" {{{ Better copy & paste: <F2>
-" Insure Clean Pasting w/autoindented code - this is probably not usefull
+" {{{ Clipboard / Copy & Paste
+
+" Better copy & paste: Insure Clean Pasting w/autoindented code (usefull?)
 "nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 
-" Make the unnamed register to be the same as the "* register. Yand & Paste
-" the selection without prepending with "* to commands
-" TODO not sure if set clipboard=unnamed or set clipboard+=unnamed
-set clipboard+=unnamed
-" }}}
+if isLinux
+    " Alias unnamed register to the + register, which is the X Window clipboard
+    set clipboard=unnamedplus
+else
+    " Alias unnamed register to the * register. Yand & Paste
+    " the selection without prepending with "* to commands
+    set clipboard=unnamed
+    " {{{ Paste from system clipboard: <A-p> / <A-C-p>
+    inoremap <A-p> <Esc>"*pa
+    inoremap <A-C-p> <Esc>"+pa
+    "inoremap <S-Insert> <A-p>  " this does not work somehow
+    nnoremap <A-p> "*P
+    nnoremap <A-C-p> "+P
+    " }}}
+endif
+
+" Show content of registers
+nnoremap <A-r> :reg<CR>
+inoremap <A-r> <Esc>:reg<CR>
+" automatic revisualization is not possible
+vnoremap <A-r> :<bs><bs><bs><bs><bs>reg<CR>
+
 " }}}
 
 nnoremap <F3> :set hlsearch!<CR>
