@@ -348,8 +348,15 @@ fi
 # this is a rather speculative $home location :)
 alias home='cd $dev/..'
 alias webcli='cd $dev/webcli'
+
 alias cheatsheet='cd $dev/cheatsheet'
+alias cheat='cheatsheet'
+
 alias dotfiles='cd $dev/dotfiles'
+alias dotf='dotfiles'
+#alias dot='dot'  " /usr/bin/dot  filter for drawing directed graphs
+
+alias hoch='cd $dev/hochzeit'
 alias trackle='cd $dev/trackle'
 alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
