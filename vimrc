@@ -177,7 +177,8 @@ inoremap <S-Tab> <Esc>:bprevious<CR>i
 " {{{ BufExplorer
 Bundle 'c9s/bufexplorer.git'
 " Show a list of all open buffers with BufExplorer
-nnoremap <A-b> :BufExplorer<CR>
+nnoremap <Leader>b :BufExplorer<CR>
+nnoremap <A-b> :ball<CR>
 " }}}
 
 " {{{ MiniBufExplorer is just bugging me
