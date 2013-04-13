@@ -64,7 +64,9 @@ if isLinux
     Bundle 'tpope/vim-classpath.git'
     Bundle 'guns/vim-clojure-static.git'
     nnoremap <A-e> :Eval<CR>
-    nnoremap <C-e> :Eval<CR>
+    vnoremap <A-e> :Eval<CR>
+    nnoremap <C-e> :%Eval<CR>
+    inoremap <C-e> <Esc>:%Eval<CR>
 else
     " {{{ VimClojure
     Bundle 'vim-scripts/VimClojure.git'
@@ -367,13 +369,6 @@ set expandtab                   " use spaces, not tabs
 "set showtabline=2               " show the tabs right below the menu
 set shiftwidth=4 softtabstop=4
 set backspace=indent,eol,start  " backspace through everything in insert mode
-
-" {{{ Switching from insert to normal mode <Leader><Leader>
-"inoremap jj <Esc>
-"inoremap :: <Esc>
-" EasyMotion already uses <Leader><Leader>
-"inoremap <Leader><Leader> <Esc>l
-" }}}
 
 " visualize a word and switch to insert mode
 "map <space> viw
@@ -730,7 +725,11 @@ function! CtrlBackspace(origMode)
     let splitPattern = '^\(.\{1,'.curCol.'\}\)\(.*\)'
     let split0 = substitute(lineText, splitPattern , '\1', '')
     let split1 = substitute(lineText, splitPattern , '\2', '')
-    let chopPattern = '\(\s*\S*\s*\)$'
+
+    "let chopPattern = '\s*\S*\s*$'
+    " Stop pattern matching for non-word chars
+    let chopPattern = '\s*\(\w*\|\W*\)\s*$'
+
     let startStr = substitute(split0, chopPattern, '', '')
     let delSize = strlen(split0) - strlen(startStr)
 
@@ -821,14 +820,6 @@ nnoremap <Leader>6 :6b<CR>
 nnoremap <Leader>7 :7b<CR>
 nnoremap <Leader>8 :8b<CR>
 nnoremap <Leader>9 :9b<CR>
-
-nnoremap <Leader>10 :10b<CR>
-nnoremap <Leader>11 :11b<CR>
-nnoremap <Leader>12 :12b<CR>
-nnoremap <Leader>13 :13b<CR>
-nnoremap <Leader>14 :14b<CR>
-nnoremap <Leader>15 :15b<CR>
-nnoremap <Leader>16 :16b<CR>
 " }}}
 
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
@@ -869,8 +860,14 @@ inoremap <A-C-p> <Esc>"+pa
 "inoremap <S-Insert> <A-p>  " this does not work somehow
 nnoremap <A-p> "*P
 nnoremap <A-C-p> "+P
-vnoremap y "*y
-nnoremap y "*y
+
+if isLinux
+    vnoremap y "+y
+    nnoremap y "+y
+else
+    vnoremap y "*y
+    nnoremap y "*y
+endif
 " Show content of registers
 nnoremap <A-r> :reg<CR>
 inoremap <A-r> <Esc>:reg<CR>
@@ -931,16 +928,16 @@ nnoremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cwindow<C
 inoremap <F4> <Esc><F4>
 " }}}
 
-nnoremap <F5> :GundoToggle<CR>
-imap <F5> <Esc><F5>
-
-nnoremap <F6> /
-vnoremap <F6> /
-inoremap <F6> <Esc><F6>
+nnoremap <F6> :GundoToggle<CR>
+imap <F6> <Esc><F6>
 
 " execute current line and catch the output
 noremap <F7> yyp!!sh<CR><Esc>
 inoremap <F7> <Esc><F7>
+" TODO ListFile() working in visual mode and for a given string
+"function! ListFile()
+    "normal yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
+"endfun
 noremap <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
 inoremap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>kk$a
 
@@ -1009,15 +1006,6 @@ endfunc
 " set colorcolumn=80
 set colorcolumn=0
 highlight ColorColumn guibg=black
-" }}}
-
-" {{{ Emacs-like beginning and end of line: <C-e> <C-a>
-"nnoremap <C-e> $
-"inoremap <C-e> <C-o>$
-
-" nnoremap <C-a> ^  colides with that increment/decrement plugin
-"nnoremap <C-a> ^
-"inoremap <C-a> <C-o>^
 " }}}
 
 " Select region from last edited line to the end of last pasted text
@@ -1182,3 +1170,5 @@ map <Leader>- <C-W>-
 "nnoremap <silent> <expr> ^ ScreenMovement("^")
 "nnoremap <silent> <expr> $ ScreenMovement("$")
 "" }}}
+" something colides me with the <C-u> shortcut
+map <C-u> :CtrlP<CR>
