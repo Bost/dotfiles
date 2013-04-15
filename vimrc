@@ -236,8 +236,32 @@ Bundle 'tpope/vim-repeat.git'
 Bundle 'mileszs/ack.vim.git'
 
 Bundle 'tsaleh/vim-matchit.git'
-" powerline does no refresh when saving .vimrc; restart needed
-Bundle 'Lokaltog/vim-powerline.git'
+
+" {{{ Powerline
+
+if isLinux
+    set runtimepath+=$HOME/.vim/bundle/powerline/powerline/bindings/vim
+    Bundle 'Lokaltog/powerline.git'
+    Bundle 'Lokaltog/powerline-fonts.git'
+
+    " In terminal: leave the insert mode immediately
+    if ! has('gui_running')
+        set ttimeoutlen=10
+        augroup FastEscape
+            autocmd!
+            au InsertEnter * set timeoutlen=0
+            au InsertLeave * set timeoutlen=1000
+        augroup END
+    endif
+    set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
+else
+    " vim-powerline does no refresh when saving .vimrc; restart needed
+    Bundle 'Lokaltog/vim-powerline.git'
+    let g:Powerline_symbols = 'unicode'
+    " fancy symbols don't work
+    "let g:Powerline_symbols = 'fancy'
+endif
+" }}} Powerline
 
 " Easily interact with tmux from vim
 "Bundle 'benmills/vimux.git'
@@ -295,7 +319,7 @@ set showcmd                     " display incomplete commands
 " {{{ switch buffers without saving changes to file
 set  hidden
 " }}}
-set laststatus=2                " Always show status line
+set laststatus=2 " Always display the statusline in all windows
 
 " Ups, on cygwin I use /bin/sh, not bash. Strange
 "set shell=/bin/bash\ --login
@@ -319,9 +343,10 @@ set sidescroll=1        " Number of chars to scroll when scrolling sideways.
 if isLinux
     " Ubuntu\ Mono\ 12 is too large for bambi-small
     if isUserBambi
-        set guifont=Ubuntu\ Mono\ 10
+        "set guifont=Ubuntu\ Mono\ 10
+        set guifont=Ubuntu\ Mono\ for\ Powerline\ 10
     else
-        set guifont=Ubuntu\ Mono\ 11
+        set guifont=Ubuntu\ Mono\ for\ Powerline\ 14
     endif
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
@@ -481,7 +506,7 @@ function! SourceText(origMode)
             call cursor(line('.'), curCol)
         endif
     "endif
-endfun
+endfunc
 " this must be done separately:
 vnoremap <Leader>S y:execute @@<CR>:echo 'Text sourced.'<CR>
 "vnoremap <Leader>S :call SourceText('v')<CR>
@@ -681,25 +706,25 @@ imap <C-S-Del> <Esc>lDa
 nmap <C-S-Del> D
 
 function! SetCursorPos(curCol, lineLen)
-    "echo 'a:curCol '.a:curCol.' a:lineLen '.a:lineLen
-    if a:lineLen == a:curCol + 1
-        "echo 'EOLN'
+    let isEOLN = (a:lineLen == a:curCol + 1)
+    "echo 'a:curCol '.a:curCol.'; a:lineLen '.a:lineLen.'; isEOLN: '.isEOLN
+
+    let doIns = 1
+    if isEOLN
         " ! means start insert mode as 'A' - append at the end of line
-        :startinsert!
-    else
-        "echo 'no EOLN'
-        if a:curCol == 0
-            let newCurCol = a:curCol + 1
-        elseif a:curCol == 1
-            let newCurCol = a:curCol + 1
-        else
-            let newCurCol = a:curCol + 1
+        if doIns
+            :startinsert!
         endif
-        "echo "newCurCol ".newCurCol
+    else
+        let newCurCol = a:curCol + 1
+        ""echo "newCurCol ".newCurCol
+        let newCurCol = a:curCol
         call cursor(line('.'), newCurCol)
-        :startinsert
+        if doIns
+            :startinsert
+        endif
     endif
-endfun
+endfunc
 
 function! CtrlBackspace(origMode)
     let lineLen = virtcol('$')
@@ -768,15 +793,143 @@ function! CtrlBackspace(origMode)
     "echo 'newAdjustetCurPos: '.newAdjustetCurPos
     "echo 'afterDelCurCol: '.afterDelCurCol
 endfunc
+function! DeleteWord(origMode, key)
+    let isDel = (a:key == 'Del')
+    let isBS  = (a:key == 'BS')
+    let isInsertMode = (a:origMode == 'i')
+    let isNormalMode = (a:origMode == 'n')
+    let isDebug = 0
 
-nmap <C-BS> <Esc>:call CtrlBackspace('n')<CR>
-imap <C-BS> <Esc>:call CtrlBackspace('i')<CR>
+    if !isInsertMode && !isNormalMode
+        echo 'ERROR: Unrecognized param origMode '.a:origMode
+        return
+    endif
+    if !isDel && !isBS
+        echo 'ERROR: Unrecognized param key '.a:key
+        return
+    endif
 
-nmap <C-Del> de
-imap <C-Del> <Esc>ldei
+    let lineLen = virtcol('$') - 1
+    let realCurCol = virtcol('.')
+
+    "let isEOLN = (lineLen == realCurCol)
+    "if isEOLN
+        "let curCol = realCurCol
+    "elseif realCurCol == 1
+        "if isInsertMode
+            "" here I cannot know if original cursor position was 0 or 1
+            "" so do nothing in both cases ('i', 'n')
+            "return
+        "else
+            "let curCol = realCurCol
+        "endif
+    "else
+        "if isInsertMode
+            "let curCol = realCurCol
+        "else
+            "let curCol = realCurCol - 1
+        "endif
+    "endif
+    let curCol = realCurCol
+    if isInsertMode
+        let isEOLN = (lineLen == curCol)
+    else
+        let isEOLN = (lineLen == curCol)
+    endif
+
+    let lnum = line('.')
+    let lineText = getline(lnum)
+    let splitPattern = '^\(.\{1,'.curCol.'\}\)\(.*\)'
+    let split0 = substitute(lineText, splitPattern , '\1', '')
+    let split1 = substitute(lineText, splitPattern , '\2', '')
+
+    "let chopPattern = '\s*\S*\s*$'
+    " Stop pattern matching for non-word chars
+    let chopPattern = '\s*\(\w*\|\W*\)\s*'
+    if isDel
+        let chopPattern = '^'.chopPattern
+        let strToMatch = split1
+        let startStr = substitute(strToMatch, chopPattern, '', '')
+        let delSize = strlen(split1) - strlen(startStr)
+        let newLine = split0.startStr
+        call setline(lnum, newLine)
+        let newCurPos = curCol
+        let _ = 0
+    else " if isBS
+        let chopPattern = chopPattern.'$'
+        let strToMatch = split0
+        let startStr = substitute(strToMatch, chopPattern, '', '')
+        let delSize = strlen(split0) - strlen(startStr)
+        let newLine = startStr.split1
+        call setline(lnum, newLine)
+        let newCurPos = realCurCol - delSize
+    endif
+
+    let afterDelCurCol = -1
+
+    if isInsertMode
+        "if newCurPos == 0
+            "let afterDelCurCol = 0
+        "else
+            "let afterDelCurCol = newCurPos
+        "endif
+        let afterDelCurCol = newCurPos
+        let newLineLen = virtcol('$')
+        call SetCursorPos(afterDelCurCol, newLineLen)
+    else
+        call cursor(line('.'), newCurPos)
+    endif
+    if isDebug == 1
+        echo 'isDel: '.isDel.'; isBS: '.isBS
+        echo 'isInsertMode: '.isInsertMode.'; isNormalMode: '.isNormalMode
+        echo 'lineText: >'.lineText.'<'
+        echo 'lineLen: '.lineLen.''
+        echo 'realCurCol: '.realCurCol
+        "echo 'g:cp: '.g:cp
+        echo 'curCol: '.curCol
+        echo 'isEOLN: '.isEOLN.''
+        echo 'splitPattern: '.splitPattern
+        echo 'split0: >'.split0.'<'
+        echo 'split1: >'.split1.'<'
+        echo 'strToMatch: >'.strToMatch.'<'
+        echo 'chopPattern: >'.chopPattern.'<'
+        echo 'startStr: "'.startStr.'"'
+        echo 'newLine >'.newLine.'<'
+        echo 'delSize: '.delSize
+        echo 'newCurPos: '.newCurPos
+        echo 'afterDelCurCol: '.afterDelCurCol
+    endif
+endfunc
+
+nmap <C-BS> :call DeleteWord('n', 'BS')<CR>
+imap <C-BS> <Esc>:call DeleteWord('i', 'BS')<CR>
+
+nmap <C-Del> :call DeleteWord('n', 'Del')<CR>
+imap <C-Del> <Esc>:call DeleteWord('i', 'Del')<CR>
+
+"autocmd InsertLeave * :normal `^
+"autocmd InsertLeave * :let g:cp = virtcol('.')
+"inoremap <silent> <Esc> <Esc>`^
+"inoremap <silent> <Esc> <C-O>:call CurPos()<CR><Esc>`^
+"inoremap <silent> <Esc> <Esc>:call CurPos()<CR>`^
+"nnoremap <silent> <Esc> <Esc>:call CurPos()<CR>
+
+" {{{ Move cursor to the position where it was the last time when Insert mode
+" was stopped. Because in this binding is executed immediately after leaving
+" Insert mode, it moves cursor just where it was before.
+
+"let insert_command = "inoremap <ESC> <C-O>:stopinsert<CR>"
+"let append_command = "iunmap <ESC>"
+"nnoremap i :exe insert_command<CR>i
+"nnoremap a :exe append_command<CR>a
+
+"inoremap <silent> <Esc> <C-O>:stopinsert<CR>
+
 " }}}
 
-" }}}
+" }}} DeleteWord-keybindings as in eclipse
+
+" }}} Convenience keybindings
 
 function! RenameFile()      " rename current file
     let old_name = expand("%")
@@ -890,13 +1043,15 @@ else
     " the selection without prepending with "* to commands
     set clipboard=unnamed
     " {{{ Paste from system clipboard: <A-p> / <A-C-p>
-    inoremap <A-p> <Esc>"*pa
     inoremap <A-C-p> <Esc>"+pa
     "inoremap <S-Insert> <A-p>  " this does not work somehow
     nnoremap <A-p> "*P
     nnoremap <A-C-p> "+P
     " }}}
 endif
+
+nnoremap <A-p> p
+inoremap <A-p> <Esc>pi
 
 " Show content of registers
 nnoremap <A-r> :reg<CR>
@@ -932,7 +1087,7 @@ inoremap <F7> <Esc><F7>
 " TODO ListFile() working in visual mode and for a given string
 "function! ListFile()
     "normal yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
-"endfun
+"endfunc
 noremap <Leader>l yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
 inoremap <Leader>l <Esc>yypIls -la <Esc>yyp!!sh<CR><Esc>kk$a
 
@@ -1024,7 +1179,7 @@ function! <SID>StripTrailingWhitespaces()
     let curCol = virtcol(".")
     %s/\s\+$//e
     call cursor(curLine, curCol)
-endfun
+endfunc
 autocmd FileType clj,javascript,java,python,readme,text,txt,vim,sh,bat
   \ autocmd BufWritePre <buffer>
   \ :call <SID>StripTrailingWhitespaces()
