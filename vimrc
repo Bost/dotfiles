@@ -1,7 +1,5 @@
 " TODO <Leader>h  insert Hallo,
-" TODO no-linux clipboard
 " TODO vmail: frames made of unicode chars
-" TODO wikipedia table comparision
 " TODO visualize whole buffer and jump back to last cursor position
 
 " {{{ Environment detection: see how is it made in bash
@@ -104,9 +102,29 @@ else
     nnoremap <C-e> :call vimclojure#EvalFile()<CR>
     inoremap <C-e> <Esc>:call vimclojure#EvalFile()<CR>
     "let vimclojure#SplitSize = 80
-    " }}}
+
+    " {{{ Needed because of VimClojure bug java.lang.Exception: No namespace .. found
+    function! CleanNamespace()
+        normal gg
+        let lineText = getline('.')
+        if lineText =~ '^(ns.*)'
+            normal dd
+            :exe "% call NERDComment('n', 'Uncomment')"
+        else
+            normal yyP
+            call setline('.', lineText.')')
+            normal j
+            :exe "2,$ call NERDComment('n', 'Comment')"
+        endif
+        :exe 'w'
+    endfunc
+    inoremap <C-T> <Esc>:call CleanNamespace()<CR>
+    nnoremap <C-T> :call CleanNamespace()<CR>
+    " }}} Needed because of VimClojure bug java.lang.Exception: No namespace .. found
+
+    " }}} VimClojure
 endif
-" }}}
+" }}} Clojure plugins
 
 "Bundle 'vim-scripts/SearchComplete.git'
 Bundle 'Shougo/neocomplcache.git'
