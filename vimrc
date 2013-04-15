@@ -49,13 +49,28 @@ Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
 
-" {{{ vim-email
-Bundle 'Bost/vim-email.git'
-nnoremap <Leader>gb :call Email("B")<CR>
+" {{{ EmailSignature
+"Bundle 'Bost/vim-email.git'
+
+function! EmailSignature(sender, mode)
+    let name = getline('.').a:sender.'ost'
+    if a:sender == 'R'
+        let name = name.'o'
+    endif
+    call append('.', ['Gruß', '', name, ''])
+    normal 4j
+    if a:mode == 'i'
+        :startinsert
+    endif
+endfunc
+
+nnoremap <Leader>gb :call EmailSignature('B', 'n')<CR>
+inoremap <Leader>gb <Esc>:call EmailSignature('B', 'i')<CR>
 if isCygwin || isWin
-    nnoremap <Leader>gr :call Email("R")<CR>
+    nnoremap <Leader>gr :call EmailSignature('R', 'n')<CR>
+    inoremap <Leader>gr <Esc>:call EmailSignature('R', 'i')<CR>
 endif
-" }}}
+" }}} EmailSignature
 
 " {{{ Clojure plugins
 if isLinux
