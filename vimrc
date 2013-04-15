@@ -73,23 +73,36 @@ endif
 " }}} EmailSignature
 
 " {{{ Clojure plugins
+Bundle 'vim-scripts/VimClojure.git'
+" {{{ VimClojure - using ParenRaibow
+"let vimclojure#FuzzyIndent=1
+let vimclojure#HighlightBuiltins=1
+let vimclojure#HighlightContrib=1
+let vimclojure#DynamicHighlighting=1
+let vimclojure#ParenRainbow=1
+"let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
+" }}} VimClojure
 if isLinux
+    " {{{ The plugin rainbow_parentheses is buggy so I need VimClojure back
+    "Bundle 'kien/rainbow_parentheses.vim.git'
+    "au VimEnter * RainbowParenthesesToggle
+    "au Syntax * RainbowParenthesesLoadRound
+    "au Syntax * RainbowParenthesesLoadSquare
+    "au Syntax * RainbowParenthesesLoadBraces
+    " }}}
+
     Bundle 'tpope/vim-fireplace.git'
     Bundle 'tpope/vim-classpath.git'
     Bundle 'guns/vim-clojure-static.git'
+
     nnoremap <A-e> :Eval<CR>
     vnoremap <A-e> :Eval<CR>
+    nnoremap <C-q> :Last<CR>
+    inoremap <C-q> <Esc>:Last<CR>
     nnoremap <C-e> :%Eval<CR>
     inoremap <C-e> <Esc>:%Eval<CR>
 else
     " {{{ VimClojure
-    Bundle 'vim-scripts/VimClojure.git'
-    "let vimclojure#FuzzyIndent=1
-    let vimclojure#HighlightBuiltins=1
-    let vimclojure#HighlightContrib=1
-    let vimclojure#DynamicHighlighting=1
-    let vimclojure#ParenRainbow=1
-    "let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
     let vimclojure#WantNailgun = 1
 
     if isLinux
@@ -386,7 +399,7 @@ if isLinux
         "set guifont=Ubuntu\ Mono\ 10
         set guifont=Ubuntu\ Mono\ for\ Powerline\ 10
     else
-        set guifont=Ubuntu\ Mono\ for\ Powerline\ 13
+        set guifont=Ubuntu\ Mono\ for\ Powerline\ 12
     endif
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
