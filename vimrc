@@ -1302,9 +1302,9 @@ noremap <A-2> @@
 "au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 " }}}
 
-" Resize window
-map <Leader>+ <C-W>+
-map <Leader>- <C-W>-
+" Resize window - up/down (press & realease the keys)
+nnoremap <Leader>+ <C-W>+
+nnoremap <Leader>- <C-W>-
 
 "" {{{ TODO What is wrap mode
 "function! ScreenMovement(movement)
