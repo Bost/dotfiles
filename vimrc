@@ -92,10 +92,17 @@ else
     else
         let vimclojure#SplitPos = 'right'
     endif
+    nnoremap <A-e> :call vimclojure#EvalLine()<CR>
     inoremap <Leader>el <Esc>:call vimclojure#EvalLine()<CR>i
+    inoremap <A-e> <Esc>:call vimclojure#EvalLine()<CR>
+    vnoremap <A-e> :call vimclojure#EvalLine()<CR>
+
     inoremap <Leader>eb <Esc>:call vimclojure#EvalBlock()<CR>i
     inoremap <Leader>ep <Esc>:call vimclojure#EvalParagraph()<CR>i
+
     inoremap <Leader>ef <Esc>:call vimclojure#EvalFile()<CR>i
+    nnoremap <C-e> :call vimclojure#EvalFile()<CR>
+    inoremap <C-e> <Esc>:call vimclojure#EvalFile()<CR>
     "let vimclojure#SplitSize = 80
     " }}}
 endif

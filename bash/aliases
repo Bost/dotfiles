@@ -209,9 +209,9 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     :
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
-    alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
-    alias nailguncli='$dev/vimclojure-nailgun-client/ng.exe'
-    alias ng='nailguncli'
+    alias ns='ng-server.sh'      # it launches nailgunsrv as a background task
+    alias ng='$dev/vimclojure-nailgun-client/ng.exe'
+    alias np='ng ng-stop'
     alias g='gvim'
     cljcp=$clojureJarFile
     cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
