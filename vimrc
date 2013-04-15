@@ -241,7 +241,7 @@ Bundle 'tsaleh/vim-matchit.git'
 
 if isLinux
     set runtimepath+=$HOME/.vim/bundle/powerline/powerline/bindings/vim
-    Bundle 'Lokaltog/powerline.git'
+    Bundle 'Bost/powerline.git'
     Bundle 'Lokaltog/powerline-fonts.git'
 
     " In terminal: leave the insert mode immediately
@@ -346,7 +346,7 @@ if isLinux
         "set guifont=Ubuntu\ Mono\ 10
         set guifont=Ubuntu\ Mono\ for\ Powerline\ 10
     else
-        set guifont=Ubuntu\ Mono\ for\ Powerline\ 14
+        set guifont=Ubuntu\ Mono\ for\ Powerline\ 13
     endif
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
