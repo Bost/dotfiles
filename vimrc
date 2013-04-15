@@ -239,7 +239,7 @@ Bundle 'tsaleh/vim-matchit.git'
 
 " {{{ Powerline
 
-if isLinux
+if isLinux || isCygwin
     set runtimepath+=$HOME/.vim/bundle/powerline/powerline/bindings/vim
     Bundle 'Bost/powerline.git'
     Bundle 'Lokaltog/powerline-fonts.git'
@@ -351,7 +351,8 @@ if isLinux
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
 elseif isCygwin
-    set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
+    "set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
+    set guifont=Ubuntu\ Mono\ for\ Powerline\ 11
 elseif isWin
     set guifont=Consolas:w5,Lucida_Console:h8:w5
 endif
