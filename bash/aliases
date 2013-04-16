@@ -209,15 +209,8 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     :
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
-    alias ns='ng-server.sh'      # it launches nailgunsrv as a background task
     alias ng='$dev/vimclojure-nailgun-client/ng.exe'
-    alias np='ng ng-stop'
     alias g='gvim'
-    cljcp=$clojureJarFile
-    cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
-    cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
-    cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
-    cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
     runClojureCygpath () {
         echo java -cp `cygpath -p -w $cljcp` clojure.main
              java -cp `cygpath -p -w $cljcp` clojure.main
@@ -279,21 +272,11 @@ elif [ "$isLinux" -gt 0 ]; then
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
 
-    cljcp=$clojureJarFile
-    cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
-    cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
-    cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
-    cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
     runClojure () {
         echo java -cp $cljcp clojure.main
              java -cp $cljcp clojure.main
     }
     alias clojure=runClojure
-    # stop nailgunsrv: ng ng-stop
-    alias nailgunsrv='ng-server.sh'      # it launches nailgunsrv as a background task
-    alias nailguncli='ng'
-    #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer &'
-    #alias nailgunsrv='java -cp $cljcp vimclojure.nailgun.NGServer 127.0.0.1 &'
     alias kk="krusader --left . --right . &"
     alias g='gvim -c "call Maximize_Window()"'
     #alias g='gvim -c "call Maximize_Window()" --remote-silent'
@@ -343,7 +326,13 @@ if [ "$isLinux" -eq 0 ]; then
 #    echo "Linux aliases already loaded"
 fi
 
-
+alias ns='ng-server.sh'      # launch nailgunsrv as a background task
+alias np='ng ng-stop'
+cljcp=$clojureJarFile
+cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
+cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
+cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
+cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
 
 # this is a rather speculative $home location :)
 alias home='cd $dev/..'
