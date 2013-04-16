@@ -53,12 +53,16 @@ Bundle 'gmarik/vundle'
 "Bundle 'Bost/vim-email.git'
 
 function! EmailHallo(receiver, mode)
-    let sHallo = 'Hallo'
-    if a:receiver == 'M'
-        let sHallo = sHallo.' Michael'
+    if a:receiver == 'm'
+        call setline('.', ['Hallo Michael,', '', ''])
+        normal jj
+    elseif a:receiver == 'z'
+        call setline('.', ['Hallo zusammen,', '', ''])
+        normal jj
+    else
+        call setline('.', 'Hallo,')
+        normal $
     endif
-    call setline('.', sHallo.',')
-    normal $
     "if a:mode == 'i'
         :startinsert
     "endif
@@ -75,6 +79,12 @@ function! EmailSignature(sender, mode)
         :startinsert
     endif
 endfunc
+
+nnoremap <Leader>ghm :call EmailHallo('m', 'n')<CR>
+inoremap <Leader>ghm <Esc>:call EmailHallo('m', 'i')<CR>
+
+nnoremap <Leader>ghz :call EmailHallo('z', 'n')<CR>
+inoremap <Leader>ghz <Esc>:call EmailHallo('z', 'i')<CR>
 
 nnoremap <Leader>gh :call EmailHallo('', 'n')<CR>
 inoremap <Leader>gh <Esc>:call EmailHallo('', 'i')<CR>
@@ -97,7 +107,8 @@ let vimclojure#DynamicHighlighting=1
 let vimclojure#ParenRainbow=1
 "let vimclojure#ParenRainbowColors = { '1': 'guifg=green' }
 " }}} VimClojure
-if isLinux
+"if isLinux
+if 0
     " {{{ The plugin rainbow_parentheses is buggy so I need VimClojure back
     "Bundle 'kien/rainbow_parentheses.vim.git'
     "au VimEnter * RainbowParenthesesToggle
