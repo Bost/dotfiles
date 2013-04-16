@@ -1,6 +1,6 @@
-" TODO <Leader>h  insert Hallo,
+" TODO Delete buffow do not close the viewport
 " TODO vmail: frames made of unicode chars
-" TODO visualize whole buffer and jump back to last cursor position
+" TODO Visualize last pasted text <A-p>
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -49,8 +49,20 @@ Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
 
-" {{{ EmailSignature
+" {{{ Emailing shortcuts
 "Bundle 'Bost/vim-email.git'
+
+function! EmailHallo(receiver, mode)
+    let sHallo = 'Hallo'
+    if a:receiver == 'M'
+        let sHallo = sHallo.' Michael'
+    endif
+    call setline('.', sHallo.',')
+    normal $
+    "if a:mode == 'i'
+        :startinsert
+    "endif
+endfunc
 
 function! EmailSignature(sender, mode)
     let name = getline('.').a:sender.'ost'
@@ -64,13 +76,16 @@ function! EmailSignature(sender, mode)
     endif
 endfunc
 
+nnoremap <Leader>gh :call EmailHallo('', 'n')<CR>
+inoremap <Leader>gh <Esc>:call EmailHallo('', 'i')<CR>
+
 nnoremap <Leader>gb :call EmailSignature('B', 'n')<CR>
 inoremap <Leader>gb <Esc>:call EmailSignature('B', 'i')<CR>
 if isCygwin || isWin
     nnoremap <Leader>gr :call EmailSignature('R', 'n')<CR>
     inoremap <Leader>gr <Esc>:call EmailSignature('R', 'i')<CR>
 endif
-" }}} EmailSignature
+" }}} Emailing shortcuts
 
 " {{{ Clojure plugins
 Bundle 'vim-scripts/VimClojure.git'
@@ -231,7 +246,7 @@ inoremap <S-Tab> <Esc>:bprevious<CR>i
 Bundle 'c9s/bufexplorer.git'
 " Show a list of all open buffers with BufExplorer
 nnoremap <Leader>b :BufExplorer<CR>
-nnoremap <A-b> :ball<CR>
+nnoremap <A-b> :vertical ball<CR>
 " }}}
 
 " {{{ MiniBufExplorer is just bugging me
@@ -465,6 +480,7 @@ set wildmode=full
 
 " In insert mode: delete from cursor to the EOL and switch back to insert mode
 inoremap <Leader>d <Esc>lDa
+inoremap <Leader>D <Esc>lDa
 
 " Character coding for empty characters
 set listchars=tab:▸\ ,eol:¶,extends:❯,precedes:❮,trail:_,nbsp:%
