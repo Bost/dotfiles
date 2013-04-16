@@ -306,7 +306,6 @@ if isLinux || isCygwin
             au InsertLeave * set timeoutlen=1000
         augroup END
     endif
-    set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 else
     " vim-powerline does no refresh when saving .vimrc; restart needed
     Bundle 'Lokaltog/vim-powerline.git'
@@ -691,8 +690,19 @@ nnoremap <A-h> :Git push<CR>
 " {{{ Convenience keybinding:
 
 " {{{ Jump from window to window
-nnoremap <Leader><Tab> <C-W>w
 nnoremap <Tab> <C-W>w
+
+nnoremap <C-w><Up>    <C-W>k
+inoremap <C-w><Up>    <Esc><C-W>ki
+
+nnoremap <C-w><Down>  <C-W>j
+inoremap <C-w><Down>  <Esc><C-W>ji
+
+nnoremap <C-w><Left>  <C-W>h
+inoremap <C-w><Right> <Esc><C-W>li
+
+nnoremap <C-w><Right> <C-W>l
+inoremap <C-w><Left>  <Esc><C-W>hi
 " }}}
 
 " Movement in visual mode
@@ -1374,3 +1384,7 @@ map <C-p> :CtrlP<CR>
 
 " Quick Undo
 inoremap <Leader>u <Esc>ui
+
+" Something sets showmode so I need to keep it at the end
+" Hide the default mode text (e.g. -- INSERT -- below the statusline)
+set noshowmode
