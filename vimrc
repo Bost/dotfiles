@@ -1,6 +1,7 @@
 " TODO Delete buffow do not close the viewport
 " TODO vmail: frames made of unicode chars
 " TODO Visualize last pasted text <A-p>
+" TODO 'set encoding': Test printing of ß
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -401,7 +402,9 @@ set laststatus=2 " Always display the statusline in all windows
 " Ups, on cygwin I use /bin/sh, not bash. Strange
 "set shell=/bin/bash\ --login
 
+" The 'set encoding' works not. Try to use 'set fileencoding'.
 set encoding=utf-8
+set fileencoding=utf-8
 
 " {{{ visualbell
 " Use null visual bell (no beeps or flashes) this doesn't work
