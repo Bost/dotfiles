@@ -156,6 +156,11 @@ else
     inoremap <C-e> <Esc>:call vimclojure#EvalFile()<CR>
     nnoremap <C-q> :call vimclojure#EvalLine()<CR>
     inoremap <C-q> <Esc>:call vimclojure#EvalLine()<CR>
+
+    nnoremap <C-t> :call vimclojure#EvalToplevel()<CR>
+    inoremap <C-t> <Esc>:call vimclojure#EvalToplevel()<CR>
+
+
     "let vimclojure#SplitSize = 80
     " {{{ Needed because of VimClojure bug java.lang.Exception: No namespace .. found
     function! CleanNamespace()
@@ -164,16 +169,17 @@ else
         if lineText =~ '^(ns.*)'
             normal dd
             :exe "% call NERDComment('n', 'Uncomment')"
+            :exe 'w'
         else
             normal yyP
             call setline('.', lineText.')')
             normal j
             :exe "2,$ call NERDComment('n', 'Comment')"
+            :exe 'wq'
         endif
-        :exe 'w'
     endfunc
-    inoremap <C-T> <Esc>:call CleanNamespace()<CR>
-    nnoremap <C-T> :call CleanNamespace()<CR>
+    inoremap <Leader>t <Esc>:call CleanNamespace()<CR>
+    nnoremap <Leader>t :call CleanNamespace()<CR>
     " }}} Needed because of VimClojure bug java.lang.Exception: No namespace .. found
 
     " }}} VimClojure
@@ -1074,10 +1080,12 @@ autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
 
 " {{{ Start maximized
 if isLinux
-    " this works when gvim -c "call Maximize_Window()"
+    " should works when gvim -c "call Maximize_Window()"
     function! Maximize_Window()
+        "echomsg "max"
         silent !wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
     endfunc
+    "nnoremap <Leader>m :call Maximize_Window()
 elseif isCygwin
     " see :winpos
     winpos 0 19
