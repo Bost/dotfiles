@@ -144,19 +144,18 @@ else
     else
         let vimclojure#SplitPos = 'right'
     endif
-    nnoremap <A-e> :call vimclojure#EvalLine()<CR>
-    inoremap <Leader>el <Esc>:call vimclojure#EvalLine()<CR>i
-    inoremap <A-e> <Esc>:call vimclojure#EvalLine()<CR>
-    vnoremap <A-e> :call vimclojure#EvalLine()<CR>
 
+    inoremap <Leader>el <Esc>:call vimclojure#EvalLine()<CR>i
     inoremap <Leader>eb <Esc>:call vimclojure#EvalBlock()<CR>i
     inoremap <Leader>ep <Esc>:call vimclojure#EvalParagraph()<CR>i
-
     inoremap <Leader>ef <Esc>:call vimclojure#EvalFile()<CR>i
+
+    vnoremap <C-b> :call vimclojure#EvalBlock()<CR>
     nnoremap <C-e> :call vimclojure#EvalFile()<CR>
     inoremap <C-e> <Esc>:call vimclojure#EvalFile()<CR>
+    nnoremap <C-q> :call vimclojure#EvalLine()<CR>
+    inoremap <C-q> <Esc>:call vimclojure#EvalLine()<CR>
     "let vimclojure#SplitSize = 80
-
     " {{{ Needed because of VimClojure bug java.lang.Exception: No namespace .. found
     function! CleanNamespace()
         normal gg
