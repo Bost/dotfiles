@@ -80,13 +80,14 @@ elif [ "$isLinux" -gt 0 ]; then
     x86_64="x86_64"
     uname_processor=`uname -p`
     export isLinux_64=`expr match "$uname_processor" "$x86_64"`
-    if [ "$isLinux_64" -gt 0 ]; then
-        echo "### isLinux: $isLinux_64 => Loading aliases for $strLinux $x86_64"
-    elif [ "$isLinuxMartin" -gt 0 ]; then
-        echo "### isLinux: $isLinuxMartin => Loading aliases for $strLinuxMartin"
-    else
-        echo "### isLinux: $isLinux => Loading aliases for $strLinux"
-    fi
+    #echo "### Display no message in the console if doing scp"
+    #if [ "$isLinux_64" -gt 0 ]; then
+        #echo "### isLinux: $isLinux_64 => Loading aliases for $strLinux $x86_64"
+    #elif [ "$isLinuxMartin" -gt 0 ]; then
+        #echo "### isLinux: $isLinuxMartin => Loading aliases for $strLinuxMartin"
+    #else
+        #echo "### isLinux: $isLinux => Loading aliases for $strLinux"
+    #fi
 
     dev=$HOME/dev
 
