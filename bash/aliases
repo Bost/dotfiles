@@ -328,7 +328,20 @@ fi
 
 alias ns='ng-server.sh'      # launch nailgunsrv as a background task
 alias np='ng ng-stop'
-alias nr='ng ng-stop; ng-server.sh; sleep 1; g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj'
+function NailGunRestart() {
+    echo ng ng-stop && ng-server.sh
+         ng ng-stop && ng-server.sh
+    if [ "$isLinuxBambi" -gt 0 ]; then
+        nrSleep=8
+    else
+        nrSleep=1
+    fi
+    echo sleep $nrSleep
+         sleep $nrSleep
+    echo g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj
+         g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj
+}
+alias nr=NailGunRestart
 cljcp=$clojureJarFile
 cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
 cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
