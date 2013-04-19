@@ -329,8 +329,8 @@ fi
 alias ns='ng-server.sh'      # launch nailgunsrv as a background task
 alias np='ng ng-stop'
 function NailGunRestart() {
-    echo ng ng-stop && ng-server.sh
-         ng ng-stop && ng-server.sh
+    echo ng ng-stop; ng-server.sh
+         ng ng-stop; ng-server.sh
     if [ "$isLinuxBambi" -gt 0 ]; then
         nrSleep=8
     else
