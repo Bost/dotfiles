@@ -1440,3 +1440,6 @@ inoremap <Leader>u <Esc>ui
 " Something sets showmode so I need to keep it at the end
 " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set noshowmode
+
+" Change the current dir when a file/buffer is schwitched/deleted/opened/closed
+"set autochdir
