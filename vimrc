@@ -1393,9 +1393,14 @@ noremap <A-2> @@
 "au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 " }}}
 
-" Resize window - up/down (press & realease the keys)
-nnoremap <Leader>+ <C-W>+
-nnoremap <Leader>- <C-W>-
+" {{{ Resize window - numpad keys: <A- '/', '*', '-', '+'>
+"  Decrease height / width
+nnoremap <A--> <C-W>-
+nnoremap <A-/> <C-W><
+" Increase height / width
+nnoremap <A-+> <C-W>+
+nnoremap <A-*> <C-W>>
+" }}} Resize window - numpad keys: <A- '/', '*', '-', '+'>
 
 "" {{{ TODO What is wrap mode
 "function! ScreenMovement(movement)
@@ -1444,3 +1449,7 @@ set noshowmode
 
 " Change the current dir when a file/buffer is schwitched/deleted/opened/closed
 "set autochdir
+
+" Immediate change of the cursor - I may need following plugin to make it work
+" Bundle 'sjl/vitality.vim;
+"inoremap <Esc> <Esc><Esc>
