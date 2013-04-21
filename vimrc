@@ -51,16 +51,17 @@ Bundle 'gmarik/vundle'
 " {{{ Plugings:
 
 " {{{ GoldenView
-"Bundle 'zhaocai/GoldenView.Vim'
-"" 1. split to tiled windows
-"nmap <silent> <C-L>  <Plug>GoldenViewSplit
+Bundle 'zhaocai/GoldenView.Vim'
+let g:goldenview__enable_default_mapping = 0
+" 1. split to tiled windows
+nmap <silent> <C-k>  <Plug>GoldenViewSplit
 
-"" 2. quickly switch current window with the main pane
-"" and toggle back
-"nmap <silent> <F8>   <Plug>GoldenViewSwitchMain
-"nmap <silent> <S-F8> <Plug>GoldenViewSwitchToggle
+" 2. quickly switch current window with the main pane
+" and toggle back
+nmap <silent> <C-j> <Plug>GoldenViewSwitchMain
+nmap <silent> <C-h> <Plug>GoldenViewSwitchToggle
 
-"" 3. jump to next and previous window
+" 3. jump to next and previous window
 "nmap <silent> <C-N>  <Plug>GoldenViewNext
 "nmap <silent> <C-P>  <Plug>GoldenViewPrevious
 " }}} GoldenView

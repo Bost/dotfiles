@@ -37,9 +37,10 @@ echo sudo apt-get install python-numpy python-matplotlib
      sudo apt-get install python-numpy python-matplotlib
 echo xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin
      xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin
-echo sudo apt-get install bitcoind bitcoin-qt
-     sudo apt-get install bitcoind bitcoin-qt
-
+echo sudo apt-get install bitcoind bitcoin-qt build-dep vim-gnome
+     sudo apt-get install bitcoind bitcoin-qt build-dep vim-gnome
+echo sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev
+     sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev
 #sox kdelibs-data thunar-archive-plugin thunar-media-tags-plugin tumbler-plugins-extra xfce4-goodies xfce4-power-manager xfwm4-themes
 
 #echo sudo apt-get install emacs
@@ -134,6 +135,21 @@ cp ~/.vim/bundle/powerline-fonts/UbuntuMono/Ubuntu\ Mono\ for\ Powerline.otf ~/.
 fc-cache -vf ~/.fonts
 # ./vim/bundle/powerline/font/fontpatcher.py
 
+# Buil vim with all stuff including the +float support
+if 0 then
+    cd ~/dev
+    (date && hg clone https://vim.googlecode.com/hg/ vim) 2>&1 |tee hg-vim.log
+    cd ~/dev/vim
+    (date && hg pull -u) 2>&1 |tee -a ../hg-vim.log
+    cd ~/dev/vim/src
+    make distclean
+    #./configure --with-features=huge --enable-gui=gnome2
+    #./configure --with-features=huge --enable-gui=gtk2
+    ./configure --with-features=huge --enable-rubyinterp=yes --enable-pythoninterp=yes --enable-gui=gtk2
+    #./configure --with-features=huge --enable-gui=gnome2 --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config
+    make  # make -j 8
+    sudo make install
+fi
 
 echo ''
 echo $todo
