@@ -1,4 +1,4 @@
-" TODO Delete buffow do not close the viewport
+" TODO Delete buffer but do not close the viewport
 " TODO vmail: frames made of unicode chars
 " TODO Visualize last pasted text <A-p>
 " TODO 'set encoding': Test printing of ß
@@ -7,7 +7,6 @@
 let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
 let isWin = has('win32')
-let isEclim = 1
 let isUserBambi = ($USER == 'bambi')
 
 " {{{ Necessary file structure of .vim, .vimrc, vimfiles:
@@ -21,7 +20,7 @@ let isUserBambi = ($USER == 'bambi')
 " }}}
 
 "echo "has('unix'):" has('unix')" has('win32'):" has('win32')" has('win32unix'):" has('win32unix')
-"echo "isLinux:" isLinux" isCygwin:" isCygwin" isWin:" isWin" isEclim:" isEclim
+"echo "isLinux:" isLinux" isCygwin:" isCygwin" isWin:" isWin"
 " }}}
 
 set nocompatible               " be iMproved
@@ -304,10 +303,9 @@ nnoremap <A-b> :vertical ball<CR>
 
 " Show a list of all open buffers with MiniBufExplorer
 "map <Leader>b :TMiniBufExplorer<cr>
+" }}} MiniBufExplorer is just bugging me
 
-" }}}
-
-" }}}
+" }}} Buffer Explorers:
 
 Bundle 'scrooloose/nerdcommenter.git'
 
@@ -582,8 +580,8 @@ nnoremap <Leader>ea :e ~/dev/dotfiles/bash/aliases<CR>
 nnoremap <Leader>ee :e ~/dev/dotfiles/bash/env<CR>
 " }}}
 
-" {{{ .vimrc reloading: <Leader>r
-" explicit reloading
+" {{{ reload .vimrc: <Leader>rv
+" Explicit reloading
 nnoremap <Leader>rv :source ~/dev/dotfiles/vimrc<CR>
 inoremap <Leader>rv <Esc>:source ~/dev/dotfiles/vimrc<CR>i
 
@@ -618,7 +616,7 @@ nnoremap <Leader>S :call SourceText('n')<CR>
 inoremap <Leader>S <Esc>:call SourceText('i')<CR>
 " }}}
 
-" {{{ Sessions: not used at the moment
+" {{{ Sessions: not used
 "nnoremap <Leader>rs :source ~/dev/mysite/mysession.vim<CR>
 "nnoremap <Leader>so :OpenSession<CR>
 "nnoremap <Leader>ss :SaveSession<CR>
@@ -629,7 +627,7 @@ inoremap <Leader>S <Esc>:call SourceText('i')<CR>
 syntax on
 filetype plugin indent on
 
-" briefly jump to matching bracket
+" Briefly jump to matching bracket
 "set showmatch
 " Substitute globaly
 "set gdefault
@@ -682,8 +680,8 @@ nnoremap N Nzz
 
 nnoremap * *zz
 " dot not jump move on asterisk or hash
-"nnoremap * *<c-o>
-"nnoremap # #<c-o>
+"nnoremap * *<C-o>
+"nnoremap # #<C-o>
 
 nnoremap # #zz
 nnoremap g* g*zz
@@ -908,6 +906,8 @@ function! CtrlBackspace(origMode)
     "echo 'newAdjustetCurPos: '.newAdjustetCurPos
     "echo 'afterDelCurCol: '.afterDelCurCol
 endfunc
+
+" DeleteWord() doesn't work as needed :(
 function! DeleteWord(origMode, key)
     let isDel = (a:key == 'Del')
     let isBS  = (a:key == 'BS')
@@ -1094,7 +1094,7 @@ nnoremap <Leader>9 :9b<CR>
 
 autocmd BufRead,BufNewFile *.cljs setlocal filetype=clojure
 
-" {{{ Start maximized
+" {{{ Start maximized - this doesn't work somehow :-(
 if isLinux
     " should works when gvim -c "call Maximize_Window()"
     function! Maximize_Window()
@@ -1167,6 +1167,7 @@ else
     " }}}
 endif
 
+" Paste - same shortcut for visual and normal modes
 nnoremap <A-p> p
 inoremap <A-p> <Esc>pi
 
@@ -1176,7 +1177,7 @@ inoremap <A-r> <Esc>:reg<CR>
 " automatic revisualization is not possible
 vnoremap <A-r> :<bs><bs><bs><bs><bs>reg<CR>
 
-" }}}
+" }}} Clipboard / Copy & Paste
 
 nnoremap <F3> :set hlsearch!<CR>
 inoremap <F3> <Esc><F3>
@@ -1276,7 +1277,7 @@ highlight ColorColumn guibg=black
 " Select region from last edited line to the end of last pasted text
 nnoremap <Leader>v '.V`]
 
-" select charwise the contents of the curr line, excluding indentation.
+" Select charwise the contents of the curr line, excluding indentation.
 " For pasting python line into REPL
 nnoremap vv ^vg_
 
@@ -1302,7 +1303,7 @@ autocmd FileType clj,javascript,java,python,readme,text,txt,vim,sh,bat
   \ :call <SID>StripTrailingWhitespaces()
 " }}}
 
-" {{{ Scratch buffer (:enew replacement): <Leader>x
+" {{{ Open scratch buffer (:enew replacement): <Leader>x
 function! EditScratch()
     exec ':e /tmp/'.strftime("%Y-%m-%d_%H-%M-%S").'.scratch'
 endfunc
@@ -1330,9 +1331,7 @@ augroup END
 nnoremap gI `.
 
 " Autoread changed files
-if isEclim
-    set autoread
-endif
+"set autoread
 
 nnoremap <Leader>wd :windo diffthis<CR>
 
@@ -1436,7 +1435,7 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
-" Something colides me with the <C-p> shortcut
+" Something colides me with the <C-p> shortcut - repeat the mapping
 map <C-p> :CtrlP<CR>
 " }}} CtrlP settings
 
@@ -1447,7 +1446,8 @@ inoremap <Leader>u <Esc>ui
 " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set noshowmode
 
-" Change the current dir when a file/buffer is schwitched/deleted/opened/closed
+" Change the current dir when a file/buffer is switched/deleted/opened/closed.
+" Doesn't work the way I need
 "set autochdir
 
 " Immediate change of the cursor - I may need following plugin to make it work
