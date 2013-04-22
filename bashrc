@@ -25,3 +25,8 @@ else
     readFile $bashfilesHOME/config
     readFile $bashfilesHOME/aliases
 fi
+# TODO try this
+#"\e[A": history-search-backward
+#"\e[B": history-search-forward
+#set show-all-if-ambiguous on
+#set completion-ignore-case on
