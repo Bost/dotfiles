@@ -1453,3 +1453,8 @@ set noshowmode
 " Immediate change of the cursor - I may need following plugin to make it work
 " Bundle 'sjl/vitality.vim;
 "inoremap <Esc> <Esc><Esc>
+
+" de_20 is german new spelling
+set spelllang=de_20
+"set spelllang=en,de_20
+nmap <Leader>sp :set spell!<CR>
