@@ -829,9 +829,15 @@ function! SetCursorPos(curCol, lineLen)
             :startinsert!
         endif
     else
-        let newCurCol = a:curCol + 1
-        ""echo "newCurCol ".newCurCol
-        let newCurCol = a:curCol
+        "echo 'no EOLN'
+        if a:curCol == 0
+            let newCurCol = a:curCol + 1
+        elseif a:curCol == 1
+            let newCurCol = a:curCol + 1
+        else
+            let newCurCol = a:curCol + 1
+        endif
+        "echo "newCurCol ".newCurCol
         call cursor(line('.'), newCurCol)
         if doIns
             :startinsert
