@@ -338,8 +338,8 @@ function NailGunRestart() {
     fi
     echo sleep $nrSleep
          sleep $nrSleep
-    echo g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj
-         g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj
+    echo g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj src/clojure/hochzeit/download.clj
+         g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj src/clojure/hochzeit/download.clj
 }
 alias nr=NailGunRestart
 cljcp=$clojureJarFile
