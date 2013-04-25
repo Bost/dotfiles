@@ -976,32 +976,47 @@ function! DeleteWord(origMode, key)
         let isEOLN = (lineLen == curCol)
     endif
 
+    if isInsertMode && isBS
+        let curCol = curCol + 1
+    endif
+
     let lnum = line('.')
     let lineText = getline(lnum)
-    let splitPattern = '^\(.\{1,'.curCol.'\}\)\(.*\)'
-    let split0 = substitute(lineText, splitPattern , '\1', '')
-    let split1 = substitute(lineText, splitPattern , '\2', '')
+    let splitPattern = '^\(.\{1,'.curCol.'\}\)\(.\)\(.*\)'
+    let split1 = substitute(lineText, splitPattern , '\1', '')
+    let split2 = substitute(lineText, splitPattern , '\2', '')
+    let split3 = substitute(lineText, splitPattern , '\3', '')
 
     "let chopPattern = '\s*\S*\s*$'
     " Stop pattern matching for non-word chars
-    let chopPattern = '\s*\(\w*\|\W*\)\s*'
     if isDel
-        let chopPattern = '^'.chopPattern
-        let strToMatch = split1
+        let chopPattern = '^\s*\(\w*\|\W*\)\s*'
+        let strToMatch = split3
+        " substitute({expr}, {pat}, {sub}, {flags})
         let startStr = substitute(strToMatch, chopPattern, '', '')
-        let delSize = strlen(split1) - strlen(startStr)
-        let newLine = split0.startStr
+        if split2 =~ '\w' || split2 =~ '\s'
+            let delSize = strlen(split2) + strlen(split3) - strlen(startStr)
+            let newLine = split1.startStr
+        else
+            let delSize = strlen(split2)
+            let newLine = split1.split3
+        endif
         call setline(lnum, newLine)
         let newCurPos = curCol
         let _ = 0
     else " if isBS
-        let chopPattern = chopPattern.'$'
-        let strToMatch = split0
+        let chopPattern = '\s*\(\w*\|\W*\)\s*$'
+        let strToMatch = split1
         let startStr = substitute(strToMatch, chopPattern, '', '')
-        let delSize = strlen(split0) - strlen(startStr)
-        let newLine = startStr.split1
+        if split2 =~ '\w' || split2 =~ '\s'
+            let delSize = strlen(split1)
+            let newLine = startStr.split2.split3
+        else
+            let delSize = strlen(split1) + strlen(split2)
+            let newLine = startStr.split3
+        endif
         call setline(lnum, newLine)
-        let newCurPos = realCurCol - delSize
+        let newCurPos = strlen(startStr)
     endif
 
     let afterDelCurCol = -1
@@ -1028,8 +1043,9 @@ function! DeleteWord(origMode, key)
         echo 'curCol: '.curCol
         echo 'isEOLN: '.isEOLN.''
         echo 'splitPattern: '.splitPattern
-        echo 'split0: >'.split0.'<'
         echo 'split1: >'.split1.'<'
+        echo 'split2: >'.split2.'<'
+        echo 'split3: >'.split3.'<'
         echo 'strToMatch: >'.strToMatch.'<'
         echo 'chopPattern: >'.chopPattern.'<'
         echo 'startStr: "'.startStr.'"'
