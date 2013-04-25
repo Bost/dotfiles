@@ -2,6 +2,7 @@
 " TODO vmail: frames made of unicode chars
 " TODO Visualize last pasted text <A-p>
 " TODO 'set encoding': Test printing of ß
+" TODO StripTrailingWhitespaces(): %s/\(\S*\)\s\+\n/\1\r/g
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -1291,7 +1292,7 @@ inoremap <silent> <Home> <C-O><Home>
 set lazyredraw
 
 " {{{ Kill trailing whitespace on save - this doesn't work somehow
-" TODO this works: %s/\(\S*\)\s\+\n/\1\r/gc
+" TODO this works: %s/\(\S*\)\s\+\n/\1\r/g
 function! <SID>StripTrailingWhitespaces()
     let curLine = line(".")
     let curCol = virtcol(".")
