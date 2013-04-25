@@ -1,6 +1,8 @@
 " TODO Delete buffer but do not close the viewport
 " TODO vmail: frames made of unicode chars
 " TODO 'set encoding': Test printing of ß
+" TODO ListFile() for visual mode and for a given string
+" TODO StripTrailingWhitespaces(): %s/\(\S*\)\s\+\n/\1\r/g works
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -1224,7 +1226,6 @@ imap <F6> <Esc><F6>
 " execute current line and catch the output
 noremap <F7> yyp!!sh<CR><Esc>
 inoremap <F7> <Esc><F7>
-" TODO ListFile() working in visual mode and for a given string
 "function! ListFile()
     "normal yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
 "endfunc
@@ -1314,7 +1315,6 @@ inoremap <silent> <Home> <C-O><Home>
 set lazyredraw
 
 " {{{ Kill trailing whitespace on save - this doesn't work somehow
-" TODO this works: %s/\(\S*\)\s\+\n/\1\r/gc
 function! <SID>StripTrailingWhitespaces()
     let curLine = line(".")
     let curCol = virtcol(".")
