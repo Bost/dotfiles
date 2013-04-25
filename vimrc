@@ -1,6 +1,5 @@
 " TODO Delete buffer but do not close the viewport
 " TODO vmail: frames made of unicode chars
-" TODO Visualize last pasted text <A-p>
 " TODO 'set encoding': Test printing of ß
 
 " {{{ Environment detection: see how is it made in bash
@@ -69,7 +68,10 @@ nmap <silent> <C-h> <Plug>GoldenViewSwitchToggle
 "Bundle 'Bost/vim-email.git'
 
 function! EmailHallo(receiver, mode)
-    if a:receiver == 'm'
+    if a:receiver == 'k'
+        call setline('.', ['Hallo Kollegen,', '', ''])
+        normal jj
+    elseif a:receiver == 'm'
         call setline('.', ['Hallo Michael,', '', ''])
         normal jj
     elseif a:receiver == 'z'
@@ -96,17 +98,21 @@ function! EmailSignature(sender, mode)
     endif
 endfunc
 
-nnoremap <Leader>ghm :call EmailHallo('m', 'n')<CR>
+nnoremap <Leader>ghk      :call EmailHallo('k', 'n')<CR>
+inoremap <Leader>ghk <Esc>:call EmailHallo('k', 'i')<CR>
+
+nnoremap <Leader>ghm      :call EmailHallo('m', 'n')<CR>
 inoremap <Leader>ghm <Esc>:call EmailHallo('m', 'i')<CR>
 
-nnoremap <Leader>ghz :call EmailHallo('z', 'n')<CR>
+nnoremap <Leader>ghz      :call EmailHallo('z', 'n')<CR>
 inoremap <Leader>ghz <Esc>:call EmailHallo('z', 'i')<CR>
 
-nnoremap <Leader>gh :call EmailHallo('', 'n')<CR>
-inoremap <Leader>gh <Esc>:call EmailHallo('', 'i')<CR>
+nnoremap <Leader>gh       :call EmailHallo('', 'n')<CR>
+inoremap <Leader>gh  <Esc>:call EmailHallo('', 'i')<CR>
 
-nnoremap <Leader>gb :call EmailSignature('B', 'n')<CR>
-inoremap <Leader>gb <Esc>:call EmailSignature('B', 'i')<CR>
+nnoremap <Leader>gb       :call EmailSignature('B', 'n')<CR>
+inoremap <Leader>gb  <Esc>:call EmailSignature('B', 'i')<CR>
+
 if isCygwin || isWin
     nnoremap <Leader>gr :call EmailSignature('R', 'n')<CR>
     inoremap <Leader>gr <Esc>:call EmailSignature('R', 'i')<CR>
@@ -1292,6 +1298,7 @@ highlight ColorColumn guibg=black
 
 " Select region from last edited line to the end of last pasted text
 nnoremap <Leader>v '.V`]
+inoremap <Leader>v <Esc>'.V`]
 
 " Select charwise the contents of the curr line, excluding indentation.
 " For pasting python line into REPL
