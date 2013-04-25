@@ -1,8 +1,8 @@
 " TODO Delete buffer but do not close the viewport
 " TODO vmail: frames made of unicode chars
-" TODO Visualize last pasted text <A-p>
 " TODO 'set encoding': Test printing of ß
-" TODO StripTrailingWhitespaces(): %s/\(\S*\)\s\+\n/\1\r/g
+" TODO ListFile() for visual mode and for a given string
+" TODO StripTrailingWhitespaces(): %s/\(\S*\)\s\+\n/\1\r/g works
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -70,7 +70,10 @@ nmap <silent> <C-h> <Plug>GoldenViewSwitchToggle
 "Bundle 'Bost/vim-email.git'
 
 function! EmailHallo(receiver, mode)
-    if a:receiver == 'm'
+    if a:receiver == 'k'
+        call setline('.', ['Hallo Kollegen,', '', ''])
+        normal jj
+    elseif a:receiver == 'm'
         call setline('.', ['Hallo Michael,', '', ''])
         normal jj
     elseif a:receiver == 'z'
@@ -97,17 +100,21 @@ function! EmailSignature(sender, mode)
     endif
 endfunc
 
-nnoremap <Leader>ghm :call EmailHallo('m', 'n')<CR>
+nnoremap <Leader>ghk      :call EmailHallo('k', 'n')<CR>
+inoremap <Leader>ghk <Esc>:call EmailHallo('k', 'i')<CR>
+
+nnoremap <Leader>ghm      :call EmailHallo('m', 'n')<CR>
 inoremap <Leader>ghm <Esc>:call EmailHallo('m', 'i')<CR>
 
-nnoremap <Leader>ghz :call EmailHallo('z', 'n')<CR>
+nnoremap <Leader>ghz      :call EmailHallo('z', 'n')<CR>
 inoremap <Leader>ghz <Esc>:call EmailHallo('z', 'i')<CR>
 
-nnoremap <Leader>gh :call EmailHallo('', 'n')<CR>
-inoremap <Leader>gh <Esc>:call EmailHallo('', 'i')<CR>
+nnoremap <Leader>gh       :call EmailHallo('', 'n')<CR>
+inoremap <Leader>gh  <Esc>:call EmailHallo('', 'i')<CR>
 
-nnoremap <Leader>gb :call EmailSignature('B', 'n')<CR>
-inoremap <Leader>gb <Esc>:call EmailSignature('B', 'i')<CR>
+nnoremap <Leader>gb       :call EmailSignature('B', 'n')<CR>
+inoremap <Leader>gb  <Esc>:call EmailSignature('B', 'i')<CR>
+
 if isCygwin || isWin
     nnoremap <Leader>gr :call EmailSignature('R', 'n')<CR>
     inoremap <Leader>gr <Esc>:call EmailSignature('R', 'i')<CR>
@@ -777,6 +784,16 @@ nnoremap <Leader>c :call LookUpwards()<CR>
 nnoremap <C-A-a> ggVG
 inoremap <C-A-a> <Esc>ggVG
 
+" {{{ Copy whole buffer to clipboard
+function! CopyBufToClipboard()
+   let @a=''
+   exec ':g/.*/y A'
+   let @*=@a
+endfunc
+nnoremap <C-y> :call CopyBufToClipboard()<CR>
+inoremap <C-y> <Esc>:call CopyBufToClipboard()<CR>a
+" }}} Copy whole buffer to clipboard
+
 nmap <S-Up> :call Vis('k')<CR>
 imap <S-Up> <Esc>:call Vis('k')<CR>
 vmap <S-Up> k
@@ -830,9 +847,15 @@ function! SetCursorPos(curCol, lineLen)
             :startinsert!
         endif
     else
-        let newCurCol = a:curCol + 1
-        ""echo "newCurCol ".newCurCol
-        let newCurCol = a:curCol
+        "echo 'no EOLN'
+        if a:curCol == 0
+            let newCurCol = a:curCol + 1
+        elseif a:curCol == 1
+            let newCurCol = a:curCol + 1
+        else
+            let newCurCol = a:curCol + 1
+        endif
+        "echo "newCurCol ".newCurCol
         call cursor(line('.'), newCurCol)
         if doIns
             :startinsert
@@ -953,32 +976,47 @@ function! DeleteWord(origMode, key)
         let isEOLN = (lineLen == curCol)
     endif
 
+    if isInsertMode && isBS
+        let curCol = curCol + 1
+    endif
+
     let lnum = line('.')
     let lineText = getline(lnum)
-    let splitPattern = '^\(.\{1,'.curCol.'\}\)\(.*\)'
-    let split0 = substitute(lineText, splitPattern , '\1', '')
-    let split1 = substitute(lineText, splitPattern , '\2', '')
+    let splitPattern = '^\(.\{1,'.curCol.'\}\)\(.\)\(.*\)'
+    let split1 = substitute(lineText, splitPattern , '\1', '')
+    let split2 = substitute(lineText, splitPattern , '\2', '')
+    let split3 = substitute(lineText, splitPattern , '\3', '')
 
     "let chopPattern = '\s*\S*\s*$'
     " Stop pattern matching for non-word chars
-    let chopPattern = '\s*\(\w*\|\W*\)\s*'
     if isDel
-        let chopPattern = '^'.chopPattern
-        let strToMatch = split1
+        let chopPattern = '^\s*\(\w*\|\W*\)\s*'
+        let strToMatch = split3
+        " substitute({expr}, {pat}, {sub}, {flags})
         let startStr = substitute(strToMatch, chopPattern, '', '')
-        let delSize = strlen(split1) - strlen(startStr)
-        let newLine = split0.startStr
+        if split2 =~ '\w' || split2 =~ '\s'
+            let delSize = strlen(split2) + strlen(split3) - strlen(startStr)
+            let newLine = split1.startStr
+        else
+            let delSize = strlen(split2)
+            let newLine = split1.split3
+        endif
         call setline(lnum, newLine)
         let newCurPos = curCol
         let _ = 0
     else " if isBS
-        let chopPattern = chopPattern.'$'
-        let strToMatch = split0
+        let chopPattern = '\s*\(\w*\|\W*\)\s*$'
+        let strToMatch = split1
         let startStr = substitute(strToMatch, chopPattern, '', '')
-        let delSize = strlen(split0) - strlen(startStr)
-        let newLine = startStr.split1
+        if split2 =~ '\w' || split2 =~ '\s'
+            let delSize = strlen(split1)
+            let newLine = startStr.split2.split3
+        else
+            let delSize = strlen(split1) + strlen(split2)
+            let newLine = startStr.split3
+        endif
         call setline(lnum, newLine)
-        let newCurPos = realCurCol - delSize
+        let newCurPos = strlen(startStr)
     endif
 
     let afterDelCurCol = -1
@@ -1005,8 +1043,9 @@ function! DeleteWord(origMode, key)
         echo 'curCol: '.curCol
         echo 'isEOLN: '.isEOLN.''
         echo 'splitPattern: '.splitPattern
-        echo 'split0: >'.split0.'<'
         echo 'split1: >'.split1.'<'
+        echo 'split2: >'.split2.'<'
+        echo 'split3: >'.split3.'<'
         echo 'strToMatch: >'.strToMatch.'<'
         echo 'chopPattern: >'.chopPattern.'<'
         echo 'startStr: "'.startStr.'"'
@@ -1170,7 +1209,7 @@ endif
 
 " Paste - same shortcut for visual and normal modes
 nnoremap <A-p> p
-inoremap <A-p> <Esc>pi
+inoremap <A-p> <Esc>pa
 
 " Show content of registers
 nnoremap <A-r> :reg<CR>
@@ -1203,7 +1242,6 @@ imap <F6> <Esc><F6>
 " execute current line and catch the output
 noremap <F7> yyp!!sh<CR><Esc>
 inoremap <F7> <Esc><F7>
-" TODO ListFile() working in visual mode and for a given string
 "function! ListFile()
     "normal yypIls -la <Esc>yyp!!sh<CR><Esc>kk$
 "endfunc
@@ -1277,6 +1315,7 @@ highlight ColorColumn guibg=black
 
 " Select region from last edited line to the end of last pasted text
 nnoremap <Leader>v '.V`]
+inoremap <Leader>v <Esc>'.V`]
 
 " Select charwise the contents of the curr line, excluding indentation.
 " For pasting python line into REPL
@@ -1292,7 +1331,6 @@ inoremap <silent> <Home> <C-O><Home>
 set lazyredraw
 
 " {{{ Kill trailing whitespace on save - this doesn't work somehow
-" TODO this works: %s/\(\S*\)\s\+\n/\1\r/g
 function! <SID>StripTrailingWhitespaces()
     let curLine = line(".")
     let curCol = virtcol(".")
@@ -1454,3 +1492,8 @@ set noshowmode
 " Immediate change of the cursor - I may need following plugin to make it work
 " Bundle 'sjl/vitality.vim;
 "inoremap <Esc> <Esc><Esc>
+
+" de_20 is german new spelling
+set spelllang=de_20
+"set spelllang=en,de_20
+nmap <Leader>sp :set spell!<CR>
