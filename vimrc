@@ -776,6 +776,16 @@ nnoremap <Leader>c :call LookUpwards()<CR>
 nnoremap <C-A-a> ggVG
 inoremap <C-A-a> <Esc>ggVG
 
+" {{{ Copy whole buffer to clipboard
+function! CopyBufToClipboard()
+   let @a=''
+   exec ':g/.*/y A'
+   let @*=@a
+endfunc
+nnoremap <C-y> :call CopyBufToClipboard()<CR>
+inoremap <C-y> <Esc>:call CopyBufToClipboard()<CR>a
+" }}} Copy whole buffer to clipboard
+
 nmap <S-Up> :call Vis('k')<CR>
 imap <S-Up> <Esc>:call Vis('k')<CR>
 vmap <S-Up> k
@@ -1175,7 +1185,7 @@ endif
 
 " Paste - same shortcut for visual and normal modes
 nnoremap <A-p> p
-inoremap <A-p> <Esc>pi
+inoremap <A-p> <Esc>pa
 
 " Show content of registers
 nnoremap <A-r> :reg<CR>
