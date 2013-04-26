@@ -278,9 +278,15 @@ elif [ "$isLinux" -gt 0 ]; then
     }
     alias clojure=runClojure
     alias kk="krusader --left . --right . &"
-    alias g='gvim -c "call Maximize_Window()"'
-    #alias g='gvim -c "call Maximize_Window()" --remote-silent'
-    #alias g='gvim'
+    function StartGvim() {
+        #echo gvim -c "call Maximize_Window()"
+             #gvim -c "call Maximize_Window()"
+        #echo gvim -c "call Maximize_Window()" --remote-silent
+             #gvim -c "call Maximize_Window()" --remote-silent
+        echo gvim
+             gvim
+    }
+    alias g=StartGvim
 #else
     #echo "ERROR No environment detected"
 fi
