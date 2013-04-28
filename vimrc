@@ -193,6 +193,7 @@ else
             normal dd
             :exe "% call NERDComment('n', 'Uncomment')"
             :exe 'w'
+            :exe "call vimclojure#EvalFile()"
         else
             normal yyP
             call setline('.', lineText.')')
@@ -533,11 +534,13 @@ nnoremap <Leader>sl :set list!<CR>
 " Toggle line wrapping
 nnoremap <Leader>wr :set wrap!<CR>
 
-" {{{ Save file: <C-s>
+" {{{ Save file / Save all files: <C-s> / <C-A-s>
 nnoremap <C-s> :update<CR>
 inoremap <C-s> <C-o>:update<CR>
 vnoremap <C-s> <Esc>:update<CR>gv
-
+nnoremap <C-A-s> :wall<CR>
+inoremap <C-A-s> <C-o>:wall<CR>
+vnoremap <C-A-s> <Esc>:wall<CR>gv
 "nnoremap <C-s> :w<CR>
 "inoremap <C-s> <C-o>:w<CR>
 " }}}
