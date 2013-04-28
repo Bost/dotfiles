@@ -41,6 +41,8 @@ echo sudo apt-get install bitcoind bitcoin-qt build-dep vim-gnome
      sudo apt-get install bitcoind bitcoin-qt build-dep vim-gnome
 echo sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev
      sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev
+echo sudo apt-get install update-manager-core visualvm
+     sudo apt-get install update-manager-core visualvm
 #sox kdelibs-data thunar-archive-plugin thunar-media-tags-plugin tumbler-plugins-extra xfce4-goodies xfce4-power-manager xfwm4-themes
 
 #echo sudo apt-get install emacs
