@@ -37,12 +37,27 @@ echo sudo apt-get install python-numpy python-matplotlib
      sudo apt-get install python-numpy python-matplotlib
 echo xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin
      xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin
+echo sudo apt-get install xubuntu-desktop
+     sudo apt-get install xubuntu-desktop
 echo sudo apt-get install bitcoind bitcoin-qt build-dep vim-gnome
      sudo apt-get install bitcoind bitcoin-qt build-dep vim-gnome
 echo sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev
      sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev
 echo sudo apt-get install update-manager-core visualvm
      sudo apt-get install update-manager-core visualvm
+
+echo sudo apt-get remove nvidia-current # or nvidia-current-updates # or nvidia-experimental-304
+     sudo apt-get remove nvidia-current
+#echo sudo apt-get install --reinstall nvidia-current
+     #sudo apt-get install --reinstall nvidia-current
+echo sudo apt-get install linux-source linux-headers-generic
+     sudo apt-get install linux-source linux-headers-generic
+echo sudo apt-get install nvidia-current-updates
+     sudo apt-get install nvidia-current-updates
+
+# terminator - multiple terminals
+# pv - view copy progress
+
 #sox kdelibs-data thunar-archive-plugin thunar-media-tags-plugin tumbler-plugins-extra xfce4-goodies xfce4-power-manager xfwm4-themes
 
 #echo sudo apt-get install emacs

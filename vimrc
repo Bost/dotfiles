@@ -293,24 +293,24 @@ nnoremap <A-b> :vertical ball<CR>
 " {{{ MiniBufExplorer is just bugging me
 "Bundle 'fholgado/minibufexpl.vim.git'
 "autocmd VimEnter * <Plug>CMiniBufExplorer
-"autocmd MiniBufExplorer VimEnter       * call <SID>DEBUG('-=> VimEnter AutoCmd', 10) |let g:miniBufExplorerAutoUpdate = 1 |call <SID>AutoUpdate(-1,bufnr("%"))
+"autocmd MiniBufExplorer VimEnter    * call <SID>DEBUG('-=> VimEnter AutoCmd', 10) |let g:miniBufExplorerAutoUpdate = 1 |call <SID>AutoUpdate(-1,bufnr("%"))
 
-" no auto load - it destroys the saved session; use \b to load it
+"" no auto load - it destroys the saved session; use \b to load it
 "let g:miniBufExplorerNoAutoLoad = 1
 
-" move in windows using C-w h/j/k/l
+"" move in windows using C-w h/j/k/l
 "let g:miniBufExplMapWindowNavVim = 1
 
-" move in windows using C-w left / down / up / right
+"" move in windows using C-w left / down / up / right
 "let g:miniBufExplMapWindowNavArrows = 0
 
-" C-Tab / C-S-Tab
+"" C-Tab / C-S-Tab
 "let g:miniBufExplMapCTabSwitchBufs = 1
 
-" for other explorers like TagList
+"" for other explorers like TagList
 "let g:miniBufExplModSelTarget = 1
 
-" Show a list of all open buffers with MiniBufExplorer
+"" Show a list of all open buffers with MiniBufExplorer
 "map <Leader>b :TMiniBufExplorer<cr>
 " }}} MiniBufExplorer is just bugging me
 
@@ -548,11 +548,27 @@ vnoremap <C-A-s> <Esc>:wall<CR>gv
 " Quit the current window
 nnoremap <Leader>q :q<CR>
 
-" Delete the current buffer
-nnoremap <A-w> :bd<CR>
-inoremap <Esc><A-w> :bd<CR>
-nnoremap <C-A-w> :bd!<CR>
-inoremap <Esc><C-A-w> :bd!<CR>
+" {{{ BufClose
+Bundle 'vim-scripts/BufClose.vim'
+" Load the alternate buffer.  See ":help :_#"
+"let g:BufClose_AltBuffer = '#'    " this doesn't work as expected.
+" Call BufClose twice does the job
+
+function! Close()
+    :exe 'BufClose'
+    :exe 'BufClose'
+endfunc
+
+function! CloseForce()
+    :exe 'BufClose!'
+    :exe 'BufClose'
+endfunc
+
+nnoremap <A-w>        :call Close()<CR>
+inoremap <A-w>   <Esc>:call Close()<CR>
+nnoremap <A-C-w>      :call CloseForce()<CR>
+inoremap <A-C-w> <Esc>:call CloseForce()<CR>
+" }}} BufClose
 
 " Quickly 'maximize' a split - these shortcuts colide with VimClojure
 "nnoremap <Leader>mw <C-W>\|

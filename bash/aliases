@@ -11,9 +11,15 @@ alias envp='env | grep ^PATH='
 alias v='vim'
 
 alias cls='clear'
-# under linux you may try to use pgreg
+# use pgreg under linux
 alias prep='ps -ef | grep '
-alias png='ping -c 5 www.google.com'
+TestConnectivity() {
+    #echo ping -c 5 www.google.com
+         #ping -c 5 www.google.com
+    echo mtr google.com
+         mtr google.com
+}
+alias png=TestConnectivity
 alias c='cat'
 alias less='less -r'
 #alias rm='rm -i'
@@ -28,7 +34,6 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias cdd='cd -'
 
-# use full command and options names - no gitconfig aliases
 GitAddAll () {
     echo git add .
          git add .
@@ -39,21 +44,44 @@ alias gtg='git tag'
 alias gtag='git tag'
 alias gbr='git branch'
 alias gb='git branch'
-alias grbs='git rebase'
-alias gr='git rebase'
+
+GitRebase() {
+    #git fetch # can never fail with a conflict
+    #git ff    # tries to fast-forward
+    ## if fast-forward fails, then
+    #git rebase origin/upstreambranch
+
+    # --continue: conflict resolving per commit basis not everything-at-once
+    echo git rebase --continue
+         git rebase --continue
+    # use: 'git rebase --abort && git pull' if 'git rebase --continue' fails then use:
+
+    # you can set up your git config to always rebase when pulling.
+    #   git config master.rebase true
+    # sets it up for master of the current repo
+    #   git config --global branch.autosetuprebase always
+}
+alias gr=GitRebase
+
 #alias gdf='git diff'
 #alias gp='git push'
-alias gpl='git pull'
-alias gp='git pull'
+alias gpl='git pull --rebase'
+alias gp='git pull --rebase'
 alias gh='git push'
-# Visualise git log (like gitk, in the terminal)
-alias lg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
 
-# Compact, colorized git log
-alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+GitLog() {
+    # Visualise git log (like gitk, in the terminal)
+    #fmt=%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s
+    fmt='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    echo git log --graph --full-history --all --color --pretty=format:"$fmt"
+         git log --graph --full-history --all --color --pretty=format:"$fmt"   # --abbrev-commit"
+}
+alias gl=GitLog
 
-# Search for a string in all revisions of entire git history
+alias gitk='echo "gitk --all &"; gitk --all &'
+
 gitSearchStr () {
+    # Search for a string in all revisions of entire git history
     git rev-list --all | (
         while read revision; do
             #git grep -F 'Your search string' $revision
@@ -103,19 +131,19 @@ findTextInAnyFile () {
 alias ft=findTextInAnyFile
 
 # create a directory and change into it
-function mkdirAndCd() {
+mkdirAndCd() {
   echo mkdir -p "$1" && cd "$1"
        mkdir -p "$1" && cd "$1"
 }
 alias mcd=mkdirAndCd
 alias take=mkdirAndCd
 
-function GitPushRepo {
+GitPushRepo() {
     echo 'cd '$1' && git push'
           cd  $1  && git push
 }
 
-function GitPullRepo {
+GitPullRepo() {
     echo 'cd '$1' && git pull'
           cd  $1  && git pull
 }
@@ -262,7 +290,8 @@ elif [ "$isLinux" -gt 0 ]; then
     # -y  Assume Yes to all queries and do not prompt
     alias inst="sudo apt-get install -y"
     alias uninst="sudo apt-get remove -y"
-    alias arem="sudo apt-get autoremove -y"
+    alias rmv="sudo apt-get remove -y"
+    alias armv="sudo apt-get autoremove -y"
 
     alias susp='sudo pm-suspend'
     alias suspend='sudo pm-suspend'
@@ -278,13 +307,14 @@ elif [ "$isLinux" -gt 0 ]; then
     }
     alias clojure=runClojure
     alias kk="krusader --left . --right . &"
-    function StartGvim() {
+    StartGvim() {
         #echo gvim -c "call Maximize_Window()"
              #gvim -c "call Maximize_Window()"
         #echo gvim -c "call Maximize_Window()" --remote-silent
              #gvim -c "call Maximize_Window()" --remote-silent
-        echo gvim
-             gvim
+        # !* - all args of the last command
+        echo gvim $*
+             gvim $*
     }
     alias g=StartGvim
 #else
@@ -334,7 +364,8 @@ fi
 
 alias ns='ng-server.sh'      # launch nailgunsrv as a background task
 alias np='ng ng-stop'
-function NailGunRestart() {
+
+NailGunRestart() {
     echo "ng ng-stop; ng-server.sh"
          ng ng-stop; ng-server.sh
     if [ "$isLinuxBambi" -gt 0 ]; then
@@ -344,8 +375,8 @@ function NailGunRestart() {
     fi
     echo sleep $nrSleep
          sleep $nrSleep
-    echo g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj src/clojure/hochzeit/download.clj
-         g src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj src/clojure/hochzeit/download.clj
+    echo gvim src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj src/clojure/hochzeit/download.clj
+         gvim src/clojure/hochzeit/core.clj src/clojure/hochzeit/analyze.clj src/clojure/hochzeit/download.clj
 }
 alias nr=NailGunRestart
 cljcp=$clojureJarFile
@@ -379,3 +410,14 @@ alias wipe='printf "\ec"'
 
 alias sulast='sudo $(history -p !-1)'
 #alias refunction='$EDITOR ~/.bash_functions && source ~/.bash_functions'
+
+GeneratePassw() {
+    #echo read -s pass; echo $pass | md5sum | base64 | cut -c -16
+         #read -s pass; echo $pass | md5sum | base64 | cut -c -16
+    # 30 character password
+    echo "strings /dev/urandom | grep -o '[[:alnum:]]' | head -n 8 | tr -d '\n'; echo"
+          strings /dev/urandom | grep -o '[[:alnum:]]' | head -n 8 | tr -d '\n'; echo
+}
+alias genpasswd=GeneratePassw
+# TODO is this for passing param to an alias?
+#alias 'ps?'='ps ax | grep '

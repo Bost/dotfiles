@@ -118,7 +118,11 @@ elif [ "$isLinux" -gt 0 ]; then
     PATH=$PATH:$dev/clojure-contrib/tools.macro-0.1.1.jar
     export VMAIL_VIM=gvim
     export VMAIL_BROWSER='google-chrome'
+
+    # remaping the Esc key to Capslock (I don't use it that much)
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+
+    EDITOR=gvim # use it with <C-x>e
 else
     echo "ERROR: No environment detected"
 fi
