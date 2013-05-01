@@ -4,6 +4,22 @@
 " TODO ListFile() for visual mode and for a given string
 " TODO StripTrailingWhitespaces(): %s/\(\S*\)\s\+\n/\1\r/g works
 
+" Live reload web editing
+" Bundle 'jaxbot/brolink.vim'
+
+" Narrowing
+" Bundle 'chrisbra/NrrwRgn.git'
+
+" Bundle 'vim-scripts/ZoomWin.git'
+" Bundle 'jeetsukumaran/vim-buffergator.git'
+" Bundle 'terryma/vim-multiple-cursors.git'
+" Bundle 'Shougo/vimshell'
+
+" Git diff in the 'gutter' (sign column)
+" Bundle 'airblade/vim-gitgutter.git'
+"
+" Bundle 'mattn/gist-vim.git'
+
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
 let isCygwin = has('win32unix')
@@ -549,6 +565,7 @@ vnoremap <C-A-s> <Esc>:wall<CR>gv
 nnoremap <Leader>q :q<CR>
 
 " {{{ BufClose
+" TODO try out Bundle 'szw/vim-smartclose.git'
 Bundle 'vim-scripts/BufClose.vim'
 " Load the alternate buffer.  See ":help :_#"
 "let g:BufClose_AltBuffer = '#'    " this doesn't work as expected.
@@ -556,7 +573,7 @@ Bundle 'vim-scripts/BufClose.vim'
 
 function! Close()
     :exe 'BufClose'
-    :exe 'BufClose'
+    ":exe 'BufClose'
 endfunc
 
 function! CloseForce()
