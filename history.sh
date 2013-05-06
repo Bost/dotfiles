@@ -21,6 +21,8 @@ if [ ! -L ~/desktop ]; then
     fi
 fi
 
+echo sudo add-apt-repository ppa:gwibber-daily/ppa
+     sudo add-apt-repository ppa:gwibber-daily/ppa
 echo sudo add-apt-repository ppa:bitcoin/bitcoin
      sudo add-apt-repository ppa:bitcoin/bitcoin
 echo sudo apt-get update
@@ -39,12 +41,12 @@ echo xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4
      xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin
 echo sudo apt-get install xubuntu-desktop
      sudo apt-get install xubuntu-desktop
-echo sudo apt-get install bitcoind bitcoin-qt build-dep vim-gnome
-     sudo apt-get install bitcoind bitcoin-qt build-dep vim-gnome
+echo sudo apt-get install bitcoind bitcoin-qt build-dep graphviz visualvm
+     sudo apt-get install bitcoind bitcoin-qt build-dep graphviz visualvm
 echo sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev
      sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev
-echo sudo apt-get install update-manager-core visualvm
-     sudo apt-get install update-manager-core visualvm
+echo sudo apt-get install update-manager-core
+     sudo apt-get install update-manager-core
 
 echo sudo apt-get remove nvidia-current # or nvidia-current-updates # or nvidia-experimental-304
      sudo apt-get remove nvidia-current
