@@ -12,7 +12,6 @@
 
 " Bundle 'vim-scripts/ZoomWin.git'
 " Bundle 'jeetsukumaran/vim-buffergator.git'
-" Bundle 'terryma/vim-multiple-cursors.git'
 " Bundle 'Shougo/vimshell'
 
 " Git diff in the 'gutter' (sign column)
@@ -65,6 +64,8 @@ endif
 Bundle 'gmarik/vundle'
 
 " {{{ Plugings:
+
+"Bundle 'terryma/vim-multiple-cursors'
 
 " {{{ GoldenView
 Bundle 'zhaocai/GoldenView.Vim'
@@ -665,7 +666,7 @@ inoremap <Leader>S <Esc>:call SourceText('i')<CR>
 "nnoremap <Leader>so :OpenSession<CR>
 "nnoremap <Leader>ss :SaveSession<CR>
 "let g:session_autoload = 'no'
-"let g:session_autosave = 'no'
+let g:session_autosave = 'no'
 " }}}
 
 syntax on
