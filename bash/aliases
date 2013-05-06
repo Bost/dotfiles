@@ -65,9 +65,9 @@ alias gr=GitRebase
 
 #alias gdf='git diff'
 #alias gp='git push'
-alias gpl='git pull --rebase'
-alias gp='git pull --rebase'
-alias gh='git push'
+alias gpl=GitPull
+alias gp=GitPull
+alias gh='echo "git push"; git push'
 
 GitLog() {
     # Visualise git log (like gitk, in the terminal)
@@ -79,6 +79,7 @@ GitLog() {
 alias gl=GitLog
 
 alias gitk='echo "gitk --all &"; gitk --all &'
+alias gk='gitk'
 
 gitSearchStr () {
     # Search for a string in all revisions of entire git history
@@ -143,9 +144,13 @@ GitPushRepo() {
           cd  $1  && git push
 }
 
+GitPull() {
+    echo 'git pull --rebase'
+          git pull --rebase
+}
 GitPullRepo() {
-    echo 'cd '$1' && git pull'
-          cd  $1  && git pull
+    echo 'cd '$1' && GitPull'
+          cd  $1  && GitPull
 }
 
 GitUpdateAll () {
