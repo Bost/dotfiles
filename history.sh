@@ -34,6 +34,9 @@ echo sudo apt-get install chromium-browser ant gparted bitcoind htop traceroute 
 echo sudo apt-get install gnome-system-tools curl openjdk-7-jdk maven ack-grep
      sudo apt-get install gnome-system-tools curl openjdk-7-jdk maven ack-grep
 
+echo sudo apt-get install automake autoconf
+     sudo apt-get install automake autoconf
+
 # in python 3 python-numpy should be already included
 echo sudo apt-get install python-numpy python-matplotlib
      sudo apt-get install python-numpy python-matplotlib
