@@ -426,3 +426,5 @@ GeneratePassw() {
 alias genpasswd=GeneratePassw
 # TODO is this for passing param to an alias?
 #alias 'ps?'='ps ax | grep '
+
+alias lt='$dev/LightTable/LightTable &'

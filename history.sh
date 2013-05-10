@@ -37,6 +37,10 @@ echo sudo apt-get install gnome-system-tools curl openjdk-7-jdk maven ack-grep
 echo sudo apt-get install automake autoconf
      sudo apt-get install automake autoconf
 
+# Haskell
+echo sudo apt-get install ghc6
+     sudo apt-get install ghc6
+
 # in python 3 python-numpy should be already included
 echo sudo apt-get install python-numpy python-matplotlib
      sudo apt-get install python-numpy python-matplotlib
