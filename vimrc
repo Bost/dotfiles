@@ -14,6 +14,9 @@
 " Bundle 'jeetsukumaran/vim-buffergator.git'
 " Bundle 'Shougo/vimshell'
 
+" For git
+" Bundle 'gregsexton/gitv'
+
 " Git diff in the 'gutter' (sign column)
 " Bundle 'airblade/vim-gitgutter.git'
 "
@@ -1414,7 +1417,7 @@ nnoremap <Leader>wd :windo diffthis<CR>
 " {{{ Diacritic characters: <Leader>char (keyboard switching doesn't work in cygwin)
 " Use the same keys as on a keyboard
 inoremap <Leader>; ö
-inoremap <Leader>: ö
+inoremap <Leader>: Ö
 inoremap <Leader>' ä
 inoremap <Leader>" Ä
 inoremap <Leader>[ ü
