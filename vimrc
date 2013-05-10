@@ -473,15 +473,15 @@ if isLinux
     " Ubuntu\ Mono\ 12 is too large for bambi-small
     if isUserBambi
         "set guifont=Ubuntu\ Mono\ 10
-        set guifont=Ubuntu\ Mono\ for\ Powerline\ 10
+        set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 10
     else
-        set guifont=Ubuntu\ Mono\ for\ Powerline\ 12
+        set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
     endif
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
     "set guifont=DejaVu\ Sans\ Mono\ 12
 elseif isCygwin
     "set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
-    set guifont=Ubuntu\ Mono\ for\ Powerline\ 11
+    set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 11
 elseif isWin
     set guifont=Consolas:w5,Lucida_Console:h8:w5
 endif

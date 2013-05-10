@@ -204,7 +204,7 @@ if [ "$isLinuxMartin" -eq 0 ]; then
 fi
 
 if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
-    clojureJarFile=$dev/clojure-1.5.1/clojure-1.5.1.jar
+    clojureJarFile=$dev/clojure/clojure-1.5.1.jar
     export clojureJarFile
     export VIMCLOJURE_SERVER_JAR
     export NAILGUN_CLI_HOME
