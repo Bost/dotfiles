@@ -194,14 +194,14 @@ else
     inoremap <Leader>ep <Esc>:call vimclojure#EvalParagraph()<CR>i
     inoremap <Leader>ef <Esc>:call vimclojure#EvalFile()<CR>i
 
-    vnoremap <C-b> :call vimclojure#EvalBlock()<CR>
-    nnoremap <C-e> :call vimclojure#EvalFile()<CR>
-    inoremap <C-e> <Esc>:call vimclojure#EvalFile()<CR>
-    nnoremap <C-q> :call vimclojure#EvalLine()<CR>
-    inoremap <C-q> <Esc>:call vimclojure#EvalLine()<CR>
+    "vnoremap <C-b> :call vimclojure#EvalBlock()<CR>
+    "nnoremap <C-e> :call vimclojure#EvalFile()<CR>
+    "inoremap <C-e> <Esc>:call vimclojure#EvalFile()<CR>
+    "nnoremap <C-q> :call vimclojure#EvalLine()<CR>
+    "inoremap <C-q> <Esc>:call vimclojure#EvalLine()<CR>
 
-    nnoremap <C-t> :call vimclojure#EvalToplevel()<CR>
-    inoremap <C-t> <Esc>:call vimclojure#EvalToplevel()<CR>
+    "nnoremap <C-t> :call vimclojure#EvalToplevel()<CR>
+    "inoremap <C-t> <Esc>:call vimclojure#EvalToplevel()<CR>
 
 
     "let vimclojure#SplitSize = 80

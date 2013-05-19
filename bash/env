@@ -96,6 +96,7 @@ elif [ "$isLinux" -gt 0 ]; then
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
     NAILGUN_CLIENT_HOME=$dev/vimclojure-nailgun-client
+    APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.8
 
     if [ "$isLinux_64" -gt 0 ] || [ "$isLinuxMartin" -eq 0 ]; then
         PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
@@ -208,9 +209,9 @@ if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0
     export clojureJarFile
     export VIMCLOJURE_SERVER_JAR
     export NAILGUN_CLI_HOME
+    export APPENG_PYTHON_HOME
     if [ "$isLinuxMartin" -eq 0 ]; then
         export APPENG_JAVA_HOME
-        export APPENG_PYTHON_HOME
     fi
 
     # values used by other sripts and applications
