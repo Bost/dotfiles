@@ -355,7 +355,7 @@ let g:nerdtree_tabs_open_on_gui_startup=0
 "Bundle 'hsitz/VimOrganizer.git'
 
 Bundle 'sjl/gundo.vim.git'
-Bundle 'xolox/vim-session.git'
+"Bundle 'xolox/vim-session.git'
 "Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-unimpaired.git'
 Bundle 'tpope/vim-fugitive'
