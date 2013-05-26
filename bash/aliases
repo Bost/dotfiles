@@ -133,8 +133,10 @@ alias ft=findTextInAnyFile
 
 # create a directory and change into it
 mkdirAndCd() {
-  echo mkdir -p "$1" && cd "$1"
-       mkdir -p "$1" && cd "$1"
+  echo mkdir -p "$1"
+       mkdir -p "$1"
+  echo cd "$1"
+       cd "$1"
 }
 alias mcd=mkdirAndCd
 alias take=mkdirAndCd
