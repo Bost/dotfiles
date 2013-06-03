@@ -710,9 +710,11 @@ augroup ft_vim
     autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
+autocmd FocusLost   * :set number
+autocmd InsertEnter * :set number
+autocmd InsertLeave * :set relativenumber
+autocmd CursorMoved * :set relativenumber
 set wrap
-set relativenumber       " Shows relative line numbers
-"set number               " Shows line number
 set showmode             " show the current mode
 set ruler                " Always show the cursor position.
 
