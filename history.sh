@@ -44,9 +44,13 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # # notebooks - powertop
 #
 # build-dep cannot be found
-# sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree tofrodos chromium-browser ant gparted bitcoind htop traceroute ssh firestarter gnome-system-tools curl openjdk-7-jdk maven ack-grep automake autoconf python-numpy python-matplotlib xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin xubuntu-desktop bitcoind bitcoin-qt graphviz visualvm libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev update-manager-core linux-source linux-headers-generic powertop emacs24 ghc6 google-chrome-stable python-django gdebi
+# sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree tofrodos chromium-browser ant gparted bitcoind htop traceroute ssh firestarter gnome-system-tools curl openjdk-7-jdk maven ack-grep automake autoconf python-numpy python-matplotlib xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin xubuntu-desktop bitcoind bitcoin-qt graphviz visualvm libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev update-manager-core linux-source linux-headers-generic powertop emacs24 ghc6 google-chrome-stable python-django gdebi acpi
 # TODO compare definition of JAVA_HOME with dotfiles/bash/env
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
+
+# emacs packages:
+# git clone https://github.com/cofi/evil-numbers.git
+# auto-complete clojure-mode clojure-test-mode elisp-slime-nav evil evil-leader evil-nerd-commenter evil-numbers evil-paredit magit nrepl paredit popup smex starter-kit starter-kit-eshell starter-kit-lisp undo-tree
 
 # install google-earth (gdebi is needed)
 wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
