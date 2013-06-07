@@ -1,2 +1,4 @@
 *~
 *.swp
+\#*\#
+maven-classpath.properties
