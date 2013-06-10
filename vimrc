@@ -74,16 +74,21 @@ Bundle 'gmarik/vundle'
 Bundle 'zhaocai/GoldenView.Vim'
 let g:goldenview__enable_default_mapping = 0
 " 1. split to tiled windows
-nmap <silent> <C-k>  <Plug>GoldenViewSplit
+nmap <C-k>  <Plug>GoldenViewSplit
 
 " 2. quickly switch current window with the main pane
 " and toggle back
-nmap <silent> <C-j> <Plug>GoldenViewSwitchMain
-nmap <silent> <C-h> <Plug>GoldenViewSwitchToggle
+nmap <C-j> <Plug>GoldenViewSwitchMain
+nmap <C-h> <Plug>GoldenViewSwitchToggle
 
 " 3. jump to next and previous window
 "nmap <silent> <C-N>  <Plug>GoldenViewNext
 "nmap <silent> <C-P>  <Plug>GoldenViewPrevious
+
+" switch off autoresize of focused window - do manual resize
+"nmap <C-t> <Plug>GoldenViewResize
+nmap <C-t> :ToggleGoldenViewAutoResize<Cr>
+
 " }}} GoldenView
 
 " {{{ Emailing shortcuts
