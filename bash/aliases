@@ -245,7 +245,10 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
     alias ng='$dev/vimclojure-nailgun-client/ng.exe'
-    alias g='gvim'
+    runGvim() {
+        echo "gvim '$*' &"
+              gvim  $*  &
+    }
     runClojureCygpath () {
         echo java -cp `cygpath -p -w $cljcp` clojure.main
              java -cp `cygpath -p -w $cljcp` clojure.main
@@ -255,7 +258,10 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 
-    alias g='gvim -u $HOME/dev/dotfiles/vimrc'
+    runGvim() {
+        echo "gvim -u $HOME/dev/dotfiles/vimrc '$*' &"
+              gvim -u $HOME/dev/dotfiles/vimrc  $*  &
+    }
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isCygwin_347" -gt 0 ]; then
     :
@@ -293,6 +299,7 @@ elif [ "$isLinux" -gt 0 ]; then
               sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean
     }
     alias u=updateUpgradeClean
+
     distUpgrade() {
         echo "sudo apt-get dist-upgrade --yes"
               sudo apt-get dist-upgrade --yes
@@ -323,16 +330,15 @@ elif [ "$isLinux" -gt 0 ]; then
     }
     alias clojure=runClojure
     alias kk="krusader --left . --right . &"
-    StartGvim() {
+    runGvim() {
         #echo gvim -c "call Maximize_Window()"
              #gvim -c "call Maximize_Window()"
         #echo gvim -c "call Maximize_Window()" --remote-silent
              #gvim -c "call Maximize_Window()" --remote-silent
         # !* - all args of the last command
-        echo gvim $*
-             gvim $*
+        echo "gvim '$*' &"
+              gvim  $*  &
     }
-    alias g=StartGvim
 #else
     #echo "ERROR No environment detected"
 fi
@@ -402,6 +408,7 @@ cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
 cljcp=$cljcp:$dev/clojure-contrib/core.memoize-0.5.4.jar
 cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
 
+alias g=runGvim
 # this is a rather speculative $home location :)
 alias home='cd $dev/..'
 alias webcli='cd $dev/webcli'
@@ -418,7 +425,11 @@ alias trackle='cd $dev/trackle'
 alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
-alias e='emacs &'
+runEmacs() {
+    echo "emacs '$1' &"
+          emacs $1 &
+}
+alias e=runEmacs
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
