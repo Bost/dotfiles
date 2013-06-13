@@ -1,11 +1,9 @@
-; TODO try evil
-
 ; only for windows or cygwin
-(setq url-proxy-services
-       '(("https" . "192.168.2.105:3128")
-         ("http" . "192.168.2.105:3128")))
+;(setq url-proxy-services
+;       '(("https" . "192.168.2.105:3128")
+;         ("http" . "192.168.2.105:3128")))
 
-(setq inhibit-splash-screen)
+(setq inhibit-splash-screen t)
 ;(load-theme 'deeper-blue)
 (load-theme 'misterioso)
 
@@ -63,26 +61,21 @@
 ))
 
 ; Add shortcuts for ogr-agenda
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
+;(global-set-key "\C-cl" 'org-store-link)
+;(global-set-key "\C-cc" 'org-capture)
+;(global-set-key "\C-ca" 'org-agenda)
 
 ; Setup custom shortcuts
-(global-set-key "\C-x\C-g" 'goto-line)
-(global-set-key [f1] 'compile)
-(global-set-key [f2] 'next-error)
-
-;; TODO this must be set according to the environment
-;(setq inferior-lisp-program "~/bin/lein repl")
+;(global-set-key "\C-x\C-g" 'goto-line)
+;(global-set-key [f1] 'compile)
+;(global-set-key [f2] 'next-error)
 
 ;(add-to-list 'load-path "~/.emacs.d/edit-server/")
-;(require 'edit-server)
-;(edit-server-start)
 
 (autoload 'magit-status "magit" nil t)
 
 ;; change font size
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 140)
 
 ;; show line number on the left side
 (global-linum-mode t)
@@ -174,22 +167,22 @@
       w32-rwindow-modifier 'super ; Right Windows key
       w32-apps-modifier 'hyper) ; Menu key
 
-(global-set-key (kbd "M-s") 'save-buffer)
+;(global-set-key (kbd "M-s") 'save-buffer)
 ;; s-s is here just to have consistent key mapping.
 ;; If it's gonna work I can use M-s for something else
-(global-set-key (kbd "s-s") 'save-buffer)
-(global-set-key (kbd "s-f") 'find-file)
-(global-set-key (kbd "s-c") 'kill-ring-save) ; copy
-(global-set-key (kbd "s-x") 'kill-region)    ; cut
-(global-set-key (kbd "s-v") 'yank)	     ; paste
-(global-set-key (kbd "s-b") 'ido-switch-buffer)
-(global-set-key (kbd "s-k") 'ido-kill-buffer)
+;(global-set-key (kbd "s-s") 'save-buffer)
+;(global-set-key (kbd "s-f") 'find-file)
+;(global-set-key (kbd "s-c") 'kill-ring-save) ; copy
+;(global-set-key (kbd "s-x") 'kill-region)    ; cut
+;(global-set-key (kbd "s-v") 'yank)	     ; paste
+;(global-set-key (kbd "s-b") 'ido-switch-buffer)
+;(global-set-key (kbd "s-k") 'ido-kill-buffer)
 
 
-(global-set-key (kbd "C-S-k") 'kill-line)
-(global-set-key [C-S-delete] 'kill-line) ; the same as in eclipse
+;(global-set-key (kbd "C-S-k") 'kill-line)
+;(global-set-key [C-S-delete] 'kill-line) ; the same as in eclipse
 ;; C-S-backspace is the default key binding for kill-whole-line
-(global-set-key (kbd "C-k") 'kill-whole-line)
+;(global-set-key (kbd "C-k") 'kill-whole-line)
 (put 'upcase-region 'disabled nil)
 
 (defun bf-pretty-print-xml-region (begin end)
@@ -206,3 +199,28 @@ by using nxml's indentation rules."
         (backward-char) (insert "\n"))
       (indent-region begin end))
     (message "Ah, much better!"))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; evil
+(add-to-list 'load-path "~/.emacs.d/evil-numbers/")
+(require 'evil-numbers)
+(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
+;; or only in evil’s normal state:
+;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
+
+(require 'evil)
+(evil-mode 1)
+;; change mode-line color by evil state
+(lexical-let ((default-color (cons (face-background 'mode-line)
+                                   (face-foreground 'mode-line))))
+  (add-hook 'post-command-hook
+            (lambda ()
+              (let ((color (cond ((minibufferp) default-color)
+                                 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
+                                 ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
+                                 ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
+                                 (t default-color))))
+                (set-face-background 'mode-line (car color))
+                (set-face-foreground 'mode-line (cdr color))))))
