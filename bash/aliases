@@ -288,8 +288,17 @@ elif [ "$isLinux" -gt 0 ]; then
     export VMAIL_VIM=gvim
 
     alias lock="xflock4"
-    alias u="sudo apt-get update && sudo apt-get upgrade && sudo apt-get clean"
-    alias d='sudo apt-get dist-upgrade'
+    updateUpgradeClean() {
+        echo "sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean"
+              sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean
+    }
+    alias u=updateUpgradeClean
+    distUpgrade() {
+        echo "sudo apt-get dist-upgrade --yes"
+              sudo apt-get dist-upgrade --yes
+    }
+    alias d=distUpgrade
+
     alias k9='kill -9'
     # I guess '2> /dev/null' redirects errors to /dev/null
     #alias f='find ./ 2> /dev/null'
