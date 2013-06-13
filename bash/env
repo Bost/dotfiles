@@ -117,6 +117,7 @@ elif [ "$isLinux" -gt 0 ]; then
     PATH=$PATH:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
     PATH=$PATH:$dev/clojure-contrib/algo.monads-0.1.4.jar
     PATH=$PATH:$dev/clojure-contrib/tools.macro-0.1.1.jar
+    PATH=$PATH:$dev/clojure-contrib/core.memoize-0.5.4.jar
     export VMAIL_VIM=gvim
     export VMAIL_BROWSER='google-chrome'
 

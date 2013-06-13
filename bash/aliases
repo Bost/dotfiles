@@ -390,6 +390,7 @@ cljcp=$clojureJarFile
 cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
 cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
 cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
+cljcp=$cljcp:$dev/clojure-contrib/core.memoize-0.5.4.jar
 cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
 
 # this is a rather speculative $home location :)
