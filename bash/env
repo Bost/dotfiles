@@ -175,7 +175,6 @@ if [ "$isLinux" -eq 0 ]; then
 fi
 
 if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
-    clojureJarFile=$dev/clojure-1.5.1/clojure-1.5.1.jar
     VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
     NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     JDK_16_HOME=$winapp/Java/1.6.0_41
