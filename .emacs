@@ -99,7 +99,7 @@
 
 ;; no line wrap
 (setq default-truncate-lines t)
-
+(define-key global-map [f5] 'toggle-truncate-lines)
 (global-set-key [f6] 'split-window-horizontally)
 (global-set-key [f7] 'split-window-vertically)
 (global-set-key [f8] 'delete-window)
@@ -111,7 +111,8 @@
   (windmove-down)
   (goto-char (point-max))
   (interactive)
-  (insert "db2 -vf c:\\cygwin\\home\\svo02896\\dev\\txrating\\tmp.sql -t")
+  ;(insert "db2 -vf c:\\cygwin\\home\\svo02896\\dev\\txrating\\tmp.sql -t")
+  (insert "db2 -vf c:\\cygwin\\home\\svo02896\\dev\\credit\\script.sql -t")
   (eshell-send-input)
   (windmove-up))
 
