@@ -216,14 +216,16 @@ by using nxml's indentation rules."
 
 ;; enable global-evil-leader-mode before evil-mode, otherwise
 ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
-;(global-evil-leader-mode)
-;(evil-leader/set-key
-;  "d" 'kill-line
-;  "wr" 'toggle-truncate-lines
-;)
 
 (require 'evil)
 (evil-mode 1)
+
+(setq evil-leader/in-all-states t)
+(global-evil-leader-mode)
+(evil-leader/set-key
+  "d" 'kill-line
+  "wr" 'toggle-truncate-lines
+)
 
 (defun back-window ()
   ;; opposite of other-window
