@@ -5,7 +5,8 @@
 
 (setq inhibit-splash-screen t)
 ;(load-theme 'deeper-blue)
-(load-theme 'misterioso)
+;(load-theme 'misterioso)
+(load-theme 'whiteboard)
 
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -103,7 +104,6 @@
 (global-set-key [f6] 'split-window-horizontally)
 (global-set-key [f7] 'split-window-vertically)
 (global-set-key [f8] 'delete-window)
-(global-set-key [f9] 'other-window)
 
 (defun exec-sql ()
   ;;(windmove-up)
@@ -178,6 +178,9 @@
 ;(global-set-key (kbd "s-v") 'yank)	     ; paste
 ;(global-set-key (kbd "s-b") 'ido-switch-buffer)
 ;(global-set-key (kbd "s-k") 'ido-kill-buffer)
+; M-w overrides kill-ring-save
+(global-set-key (kbd "M-w") 'kill-this-buffer)
+;; (define-key global-map [f5] 'toggle-truncate-lines)
 
 
 ;(global-set-key (kbd "C-S-k") 'kill-line)
@@ -213,6 +216,15 @@ by using nxml's indentation rules."
 
 (require 'evil)
 (evil-mode 1)
+
+(defun back-window ()
+  ;; opposite of other-window
+  (interactive)
+  (other-window -1))
+
+(define-key evil-normal-state-map [tab] #'other-window)
+(define-key evil-normal-state-map [backtab] #'back-window)
+
 ;; change mode-line color by evil state
 (lexical-let ((default-color (cons (face-background 'mode-line)
                                    (face-foreground 'mode-line))))
