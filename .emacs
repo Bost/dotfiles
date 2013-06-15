@@ -216,7 +216,12 @@ by using nxml's indentation rules."
 
 ;; enable global-evil-leader-mode before evil-mode, otherwise
 ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
-(global-evil-leader-mode)
+;(global-evil-leader-mode)
+;(evil-leader/set-key
+;  "d" 'kill-line
+;  "wr" 'toggle-truncate-lines
+;)
+
 (require 'evil)
 (evil-mode 1)
 
@@ -227,11 +232,6 @@ by using nxml's indentation rules."
 
 (define-key evil-normal-state-map [tab] #'other-window)
 (define-key evil-normal-state-map [backtab] #'back-window)
-
-(evil-leader/set-key
-  "d" 'kill-line
-  "wr" 'toggle-truncate-lines
-  )
 
 ;; change mode-line color by evil state
 (lexical-let ((default-color (cons (face-background 'mode-line)
