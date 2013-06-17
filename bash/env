@@ -122,6 +122,7 @@ elif [ "$isLinux" -gt 0 ]; then
     PATH=$PATH:$dev/clojure-contrib/core.memoize-0.5.5.jar
     export VMAIL_VIM=gvim
     export VMAIL_BROWSER='google-chrome'
+    export CLOJURESCRIPT_HOME=$dev/clojurescript
 
     # remaping the Esc key to Capslock (I don't use it that much)
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
