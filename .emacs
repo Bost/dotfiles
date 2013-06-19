@@ -4,9 +4,10 @@
 ;         ("http" . "192.168.2.105:3128")))
 
 (setq inhibit-splash-screen t)
+;(load-theme 'light-blue)
 ;(load-theme 'deeper-blue)
 ;(load-theme 'misterioso)
-(load-theme 'whiteboard)
+;(load-theme 'whiteboard)
 
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -212,8 +213,18 @@ by using nxml's indentation rules."
       (indent-region begin end))
     (message "Ah, much better!"))
 
-;; cycle through buffers with Ctrl-Tab (like Firefox)
-(global-set-key (kbd "<C-tab>") 'bury-buffer)
+;; When moving to parent directory by `^´, Dired by default creates a
+;; new buffer for each movement up. The following rebinds `^´ to use
+;; the same buffer
+(add-hook 'dired-mode-hook
+ (lambda ()
+  (define-key dired-mode-map (kbd "^")
+    (lambda () (interactive) (find-alternate-file "..")))
+  ; was dired-up-directory
+ ))
+
+
+(setq inferior-lisp-program "browser-repl")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; evil
 (require 'evil-numbers)
@@ -244,8 +255,11 @@ by using nxml's indentation rules."
   (interactive)
   (other-window -1))
 
+;; cycle through buffers with Ctrl-Tab (like Firefox)
+(global-set-key (kbd "<C-tab>") 'bury-buffer)
+; (define-key evil-normal-state-map [tab] #'next-buffer)
 (define-key evil-normal-state-map [tab] #'other-window)
-(define-key evil-normal-state-map [backtab] #'back-window)
+; (define-key evil-normal-state-map [backtab] #'back-window)
 
 ;; change mode-line color by evil state
 (lexical-let ((default-color (cons (face-background 'mode-line)
