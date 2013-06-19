@@ -17,7 +17,13 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
+;; M-x linum-relative-toggle
+(require 'linum-relative)
 (global-linum-mode t)
+
+;; TODO what is incomplete-mode good for?
+;; turn on icomplete-mode
+;(icomplete-mode 99)
 
 ;; press y/n instead of typing yes/no
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -178,8 +184,10 @@
 ;(global-set-key (kbd "s-v") 'yank)	     ; paste
 ;(global-set-key (kbd "s-b") 'ido-switch-buffer)
 ;(global-set-key (kbd "s-k") 'ido-kill-buffer)
+
 ; M-w overrides kill-ring-save
-(global-set-key (kbd "M-w") 'kill-this-buffer)
+(global-set-key (kbd "C-M-w") 'kill-this-buffer)
+
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
 
 
@@ -204,9 +212,10 @@ by using nxml's indentation rules."
       (indent-region begin end))
     (message "Ah, much better!"))
 
+;; cycle through buffers with Ctrl-Tab (like Firefox)
+(global-set-key (kbd "<C-tab>") 'bury-buffer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; evil
-(add-to-list 'load-path "~/.emacs.d/evil-numbers/")
 (require 'evil-numbers)
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
@@ -226,6 +235,9 @@ by using nxml's indentation rules."
   "d" 'kill-line
   "wr" 'toggle-truncate-lines
 )
+
+(add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
+(require 'transpose-frame)
 
 (defun back-window ()
   ;; opposite of other-window

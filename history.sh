@@ -48,13 +48,70 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # TODO compare definition of JAVA_HOME with dotfiles/bash/env
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 
+# emacs configuration:
+# mkdir ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
+# wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
+#
+# echo "(add-to-list \'load-path \
+# \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
+# echo "(require \'transpose-frame)" >> ~/.emacs
+#
 # emacs packages:
-# git clone https://github.com/cofi/evil-numbers.git
-# auto-complete clojure-mode clojure-test-mode elisp-slime-nav evil
-# evil-leader evil-nerd-commenter evil-numbers evil-paredit magit
-# nrepl paredit popup smex starter-kit starter-kit-eshell
-# starter-kit-lisp undo-tree ack ack-and-a-half ace-jump-mode
-
+#    ack
+#    ack-and-a-half
+#    align-cljlet
+#    auto-complete
+#    bf-mode
+#    browse-kill-ring
+#    bs-ext
+#    clj-mode
+#    clj-refactor
+#    cljdoc
+#    cljsbuild-mode
+#    clojure-mode
+#    clojure-project-mode-1.0
+#    clojure-snippets
+#    clojure-test-mode
+#    clojurescript-mode
+#    csv-mode
+#    csv-nav
+#    dash
+#    dircmp
+#    dired+
+#    elisp-slime-nav
+#    evil
+#    evil-leader
+#    evil-nerd-commenter
+#    evil-numbers
+#    evil-paredit
+#    find-file-in-project
+#    google-maps
+#    google-this
+#    google-weather
+#    idle-highlight-mode
+#    ido-ubiquitous
+#    latest-clojars
+#    levenshtein
+#    linum-relative
+#    magit
+#    magit-push-remote
+#    magithub
+#    mode-icons
+#    move-text
+#    multiple-cursors
+#    nrepl
+#    org
+#    paredit
+#    popup
+#    project-mode
+#    redo+
+#    s
+#    smex
+#    starter-kit
+#    starter-kit-eshell
+#    starter-kit-js
+#    starter-kit-lisp
+#    undo-tree
 
 # install google-earth (gdebi is needed)
 wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
