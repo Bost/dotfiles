@@ -55,9 +55,11 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 # echo "(require \'transpose-frame)" >> ~/.emacs
 #
 # emacs packages:
+#    ace-jump-mode
 #    ack
 #    ack-and-a-half
 #    align-cljlet
+#    ack-menu
 #    auto-complete
 #    bf-mode
 #    browse-kill-ring
@@ -71,6 +73,9 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    clojure-snippets
 #    clojure-test-mode
 #    clojurescript-mode
+#    closure-lint-mode
+#    closure-templat...
+#    color-theme
 #    csv-mode
 #    csv-nav
 #    dash
@@ -81,16 +86,17 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    evil-leader
 #    evil-nerd-commenter
 #    evil-numbers
-#    evil-paredit
 #    find-file-in-project
 #    google-maps
 #    google-this
 #    google-weather
+#    helm
 #    idle-highlight-mode
 #    ido-ubiquitous
 #    latest-clojars
 #    levenshtein
 #    linum-relative
+#    mag-menu
 #    magit
 #    magit-push-remote
 #    magithub
@@ -99,17 +105,15 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    multiple-cursors
 #    nrepl
 #    org
-#    paredit
 #    popup
+#    project
 #    project-mode
 #    redo+
 #    s
 #    smex
-#    starter-kit
-#    starter-kit-eshell
-#    starter-kit-js
-#    starter-kit-lisp
+#    splitter
 #    undo-tree
+#    yasnippet
 
 # install google-earth (gdebi is needed)
 wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
