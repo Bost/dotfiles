@@ -5,7 +5,7 @@
 
 (setq inhibit-splash-screen t)
 ;(load-theme 'light-blue)
-;(load-theme 'deeper-blue)
+(load-theme 'deeper-blue)
 ;(load-theme 'misterioso)
 ;(load-theme 'whiteboard)
 
@@ -14,6 +14,7 @@
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
+;; (package-refresh-contents)
 
 (require 'auto-complete-config)
 (ac-config-default)
@@ -39,6 +40,7 @@
  ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
+ '(global-hl-line-mode t)
  '(show-paren-mode t)
  '(tool-bar-mode nil nil (tool-bar)))
 
@@ -192,6 +194,7 @@
 ; M-w overrides kill-ring-save
 (global-set-key (kbd "C-M-w") 'kill-this-buffer)
 (global-set-key (kbd "s-w") 'kill-this-buffer)
+(global-set-key (kbd "s-h") 'describe-key)
 
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
 
@@ -277,3 +280,6 @@ by using nxml's indentation rules."
                                  (t default-color))))
                 (set-face-background 'mode-line (car color))
                 (set-face-foreground 'mode-line (cdr color))))))
+
+(global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
+(define-key global-map (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
