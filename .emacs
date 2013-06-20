@@ -156,7 +156,7 @@
      this name at the end of your .emacs"
      (interactive "SName of the macro :")  ; ask for the name of the macro
      (kmacro-name-last-macro name)         ; use this name for the macro
-     (find-file "~/.emacs")                   ; open ~/.emacs or other user init file
+     (find-file "~/.emacs")                ; open ~/.emacs or other user init file
      (goto-char (point-max))               ; go to the end of the .emacs
      (newline)                             ; insert a newline
      (insert-kbd-macro name)               ; copy the macro
@@ -179,21 +179,19 @@
 ;; s-s is here just to have consistent key mapping.
 ;; If it's gonna work I can use M-s for something else
 (global-set-key (kbd "s-s") 'save-buffer)
-;(global-set-key (kbd "s-f") 'find-file)
-;(global-set-key (kbd "s-c") 'kill-ring-save) ; copy
-;(global-set-key (kbd "s-x") 'kill-region)    ; cut
-;(global-set-key (kbd "s-v") 'yank)	     ; paste
-;(global-set-key (kbd "s-b") 'ido-switch-buffer)
-;(global-set-key (kbd "s-k") 'ido-kill-buffer)
+(global-set-key (kbd "s-f") 'find-file)
+(global-set-key (kbd "s-c") 'kill-ring-save) ; copy
+(global-set-key (kbd "s-x") 'kill-region)    ; cut
+(global-set-key (kbd "s-v") 'yank)           ; paste
+(global-set-key (kbd "s-b") 'ido-switch-buffer)
+(global-set-key (kbd "s-k") 'ido-kill-buffer)
 
-;; this doesnt work
-(global-set-key (kbd "s-<tab>") 'other-window)
-
-(global-set-key (kbd "s-q") 'other-window)
+(global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
 (global-set-key (kbd "s-e") 'eval-last-sexp)
 
 ; M-w overrides kill-ring-save
 (global-set-key (kbd "C-M-w") 'kill-this-buffer)
+(global-set-key (kbd "s-w") 'kill-this-buffer)
 
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
 
