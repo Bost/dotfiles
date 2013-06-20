@@ -178,13 +178,19 @@
 ;(global-set-key (kbd "M-s") 'save-buffer)
 ;; s-s is here just to have consistent key mapping.
 ;; If it's gonna work I can use M-s for something else
-;(global-set-key (kbd "s-s") 'save-buffer)
+(global-set-key (kbd "s-s") 'save-buffer)
 ;(global-set-key (kbd "s-f") 'find-file)
 ;(global-set-key (kbd "s-c") 'kill-ring-save) ; copy
 ;(global-set-key (kbd "s-x") 'kill-region)    ; cut
 ;(global-set-key (kbd "s-v") 'yank)	     ; paste
 ;(global-set-key (kbd "s-b") 'ido-switch-buffer)
 ;(global-set-key (kbd "s-k") 'ido-kill-buffer)
+
+;; this doesnt work
+(global-set-key (kbd "s-<tab>") 'other-window)
+
+(global-set-key (kbd "s-q") 'other-window)
+(global-set-key (kbd "s-e") 'eval-last-sexp)
 
 ; M-w overrides kill-ring-save
 (global-set-key (kbd "C-M-w") 'kill-this-buffer)
@@ -258,7 +264,7 @@ by using nxml's indentation rules."
 ;; cycle through buffers with Ctrl-Tab (like Firefox)
 (global-set-key (kbd "<C-tab>") 'bury-buffer)
 ; (define-key evil-normal-state-map [tab] #'next-buffer)
-(define-key evil-normal-state-map [tab] #'other-window)
+;(define-key evil-normal-state-map [tab] #'other-window)
 ; (define-key evil-normal-state-map [backtab] #'back-window)
 
 ;; change mode-line color by evil state

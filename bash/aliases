@@ -316,10 +316,26 @@ elif [ "$isLinux" -gt 0 ]; then
     alias rmv="sudo apt-get remove -y"
     alias armv="sudo apt-get autoremove -y"
 
-    alias susp='sudo pm-suspend'
-    alias suspend='sudo pm-suspend'
-    alias shut='sudo shutdown -h now'
-    alias shutdown='sudo shutdown -h now'
+    reBoot() {
+        echo 'sudo reboot'
+              sudo reboot
+    }
+    alias reb=reBoot
+    alias reboot=reBoot
+
+    doSuspend() {
+        echo 'sudo pm-suspend'
+              sudo pm-suspend
+    }
+    alias susp=doSuspend
+    alias suspend=doSuspend
+
+    shutDown() {
+        echo 'sudo shutdown -h now'
+              sudo shutdown -h now
+    }
+    alias shut=shutDown
+    alias shutdown=shutDown
 
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'

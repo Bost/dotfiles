@@ -51,9 +51,7 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 # emacs configuration:
 # mkdir ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
 # wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
-#
-# echo "(add-to-list \'load-path \
-# \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
+# echo "(add-to-list \'load-path \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
 # echo "(require \'transpose-frame)" >> ~/.emacs
 #
 # emacs packages:
