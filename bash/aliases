@@ -20,6 +20,8 @@ TestConnectivity() {
          mtr google.com
 }
 alias png=TestConnectivity
+alias mtrg=TestConnectivity
+
 alias c='cat'
 alias less='less -r'
 #alias rm='rm -i'
