@@ -189,6 +189,8 @@
 (global-set-key (kbd "s-k") 'ido-kill-buffer)
 
 (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
+(global-set-key (kbd "<S-tab>") 'other-window)
+
 (global-set-key (kbd "s-e") 'eval-last-sexp)
 
 ; M-w overrides kill-ring-save
@@ -230,6 +232,8 @@ by using nxml's indentation rules."
   ; was dired-up-directory
  ))
 
+;; layout management
+(winner-mode 1)
 
 (setq inferior-lisp-program "browser-repl")
 
@@ -262,8 +266,10 @@ by using nxml's indentation rules."
   (interactive)
   (other-window -1))
 
-;; cycle through buffers with Ctrl-Tab (like Firefox)
+;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
 (global-set-key (kbd "<C-tab>") 'bury-buffer)
+(global-set-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
+
 ; (define-key evil-normal-state-map [tab] #'next-buffer)
 ;(define-key evil-normal-state-map [tab] #'other-window)
 ; (define-key evil-normal-state-map [backtab] #'back-window)
