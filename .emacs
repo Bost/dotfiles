@@ -21,6 +21,7 @@
 
 ;; M-x linum-relative-toggle
 (require 'linum-relative)
+;; show line number on the left side
 (global-linum-mode t)
 
 ;; TODO what is incomplete-mode good for?
@@ -85,10 +86,7 @@
 (autoload 'magit-status "magit" nil t)
 
 ;; change font size
-(set-face-attribute 'default nil :height 140)
-
-;; show line number on the left side
-(global-linum-mode t)
+(set-face-attribute 'default nil :height 120)
 
 ;; highlight current line - this is probably not needed in the default face
 ;(global-hl-line-mode 1)
@@ -194,12 +192,13 @@
 (global-set-key (kbd "s-e") 'eval-last-sexp)
 
 ; M-w overrides kill-ring-save
-(global-set-key (kbd "C-M-w") 'kill-this-buffer)
 (global-set-key (kbd "s-w") 'kill-this-buffer)
 (global-set-key (kbd "s-h") 'describe-key)
 
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
 
+(require 'move-text)
+(move-text-default-bindings)
 
 ;(global-set-key (kbd "C-S-k") 'kill-line)
 ;(global-set-key [C-S-delete] 'kill-line) ; the same as in eclipse
