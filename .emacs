@@ -200,6 +200,14 @@
 
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
 
+(require 'helm-files)
+(setq helm-idle-delay 0.1)
+(setq helm-input-idle-delay 0.1)
+;; (setq helm-c-locate-command "locate-with-mdfind %.0s %s")
+;; (loop for ext in '("\\.swf$" "\\.elc$" "\\.pyc$")
+;;       do (add-to-list 'helm-c-boring-file-regexp-list ext))
+(global-set-key (kbd "M-p") 'helm-for-files)
+
 (require 'move-text)
 (move-text-default-bindings)
 
@@ -227,12 +235,13 @@ by using nxml's indentation rules."
 ;; When moving to parent directory by `^´, Dired by default creates a
 ;; new buffer for each movement up. The following rebinds `^´ to use
 ;; the same buffer
-(add-hook 'dired-mode-hook
- (lambda ()
-  (define-key dired-mode-map (kbd "^")
-    (lambda () (interactive) (find-alternate-file "..")))
-  ; was dired-up-directory
- ))
+;; (add-hook 'dired-mode-hook
+;;  (lambda ()
+;;   (define-key dired-mode-map (kbd "^")
+;;     (lambda () (interactive) (find-alternate-file "..")))
+;;   ; was dired-up-directory
+;;  ))
+(toggle-diredp-find-file-reuse-dir 1)
 
 ;; layout management
 (winner-mode 1)
@@ -291,3 +300,5 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (define-key global-map (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
+
+(setq default-directory "~/dev")
