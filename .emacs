@@ -192,6 +192,11 @@
 (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
 (global-set-key (kbd "<S-iso-lefttab>") 'other-window)
 
+(global-set-key (kbd "s-0") 'delete-window)
+(global-set-key (kbd "s-1") 'delete-other-windows)
+(global-set-key (kbd "s-2") 'split-window-below)
+(global-set-key (kbd "s-3") 'split-window-right)
+
 (global-set-key (kbd "s-e") 'eval-last-sexp)
 
 ; M-w overrides kill-ring-save
