@@ -89,7 +89,7 @@
 (autoload 'magit-status "magit" nil t)
 
 ;; change font size
-(set-face-attribute 'default nil :height 120)
+(set-face-attribute 'default nil :height 100)
 
 ;; highlight current line - this is probably not needed in the default face
 ;(global-hl-line-mode 1)
