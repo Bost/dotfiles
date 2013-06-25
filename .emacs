@@ -89,7 +89,7 @@
 (autoload 'magit-status "magit" nil t)
 
 ;; change font size
-(set-face-attribute 'default nil :height 100)
+(set-face-attribute 'default nil :height 110)
 
 ;; highlight current line - this is probably not needed in the default face
 ;(global-hl-line-mode 1)
@@ -190,7 +190,7 @@
 (global-set-key (kbd "s-k") 'ido-kill-buffer)
 
 (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
-(global-set-key (kbd "<S-tab>") 'other-window)
+(global-set-key (kbd "<S-iso-lefttab>") 'other-window)
 
 (global-set-key (kbd "s-e") 'eval-last-sexp)
 
