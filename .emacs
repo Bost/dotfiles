@@ -31,6 +31,9 @@
 ;; press y/n instead of typing yes/no
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; reload all buffers when the file is changed
+(global-auto-revert-mode t)
+
 ;; this is for the emacs code browser
 (setq stack-trace-on-error t)
 
