@@ -114,7 +114,17 @@
 (setq default-truncate-lines t)
 (define-key global-map [f5] 'toggle-truncate-lines)
 (global-set-key [f6] 'split-window-horizontally)
-(global-set-key [f7] 'split-window-vertically)
+
+(defun cygpath ()
+  (setq path (thing-at-point 'line))
+  (split-window-below)
+  (eshell)
+  (interactive)
+  (insert (concat "cygpath -u " path))
+  (eshell-send-input))
+
+(global-set-key [f7] 'cygpath)
+
 (global-set-key [f8] 'delete-window)
 
 (defun exec-sql ()
