@@ -289,8 +289,8 @@ by using nxml's indentation rules."
 (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
 (require 'transpose-frame)
 
-(display-time-mode 1)
 (setq display-time-24hr-format 1)
+(display-time-mode 1)
 
 (defun back-window ()
   ;; opposite of other-window
