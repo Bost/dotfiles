@@ -323,3 +323,13 @@ by using nxml's indentation rules."
 (setq default-directory "~/dev")
 
 (menu-bar-mode -1)
+
+(defun auto-upgrade ()
+  (interactive)
+  (package-list-packages)
+  (package-menu-mark-obsolete-for-deletion)
+  (package-menu-mark-upgrades)
+  (package-menu-execute)
+)
+
+(global-set-key [f9] 'auto-upgrade)
