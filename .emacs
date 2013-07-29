@@ -42,6 +42,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(csv-separators (quote (";")))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(global-hl-line-mode t)
@@ -53,8 +54,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-
- ;; green visual background color
  '(region ((t (:background "#006400")))))
 
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
@@ -322,3 +321,5 @@ by using nxml's indentation rules."
 (define-key global-map (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 
 (setq default-directory "~/dev")
+
+(menu-bar-mode -1)
