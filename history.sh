@@ -60,6 +60,7 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 
 # sudo sensors-detect
 # sudo service module-init-tools restart
+# libqt4-opengl-dev libasound2-dev timidity
 
 # TODO compare definition of JAVA_HOME with dotfiles/bash/env
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
