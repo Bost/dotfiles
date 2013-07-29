@@ -99,7 +99,7 @@ elif [ "$isLinux" -gt 0 ]; then
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.8
 
     if [ "$isLinux_64" -gt 0 ] || [ "$isLinuxMartin" -eq 0 ]; then
-        PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
+        PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME:$HOME/.cabal/bin
     else
         # TODO it seems like MAVEN_HOME is not needed
         #MAVEN_HOME=$HOME/apache-maven-3.0.4
