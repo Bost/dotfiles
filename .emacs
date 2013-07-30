@@ -16,6 +16,9 @@
 (package-initialize)
 ;; (package-refresh-contents)
 
+;; org-babel-clojure
+(require 'ob-clojure)
+
 (require 'auto-complete-config)
 (ac-config-default)
 

@@ -44,7 +44,23 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # # notebooks - powertop
 #
 # build-dep cannot be found
-# sudo apt-get install mercurial git git-gui guake synaptic vim-gnome vim-gtk tree tofrodos chromium-browser ant gparted bitcoind htop traceroute ssh firestarter gnome-system-tools curl openjdk-7-jdk maven ack-grep automake autoconf python-numpy python-matplotlib xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin xubuntu-desktop bitcoind bitcoin-qt graphviz visualvm libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev update-manager-core linux-source linux-headers-generic powertop emacs24 ghc6 google-chrome-stable python-django gdebi acpi
+# sudo apt-get install mercurial git git-gui guake synaptic vim-gnome
+# lm-sensors
+# vim-gtk tree tofrodos chromium-browser ant gparted bitcoind htop
+# traceroute ssh firestarter gnome-system-tools curl openjdk-7-jdk
+# maven ack-grep automake autoconf python-numpy python-matplotlib
+# xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin
+# xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin
+# xfce4-sensors-plugin
+# xubuntu-desktop bitcoind bitcoin-qt graphviz visualvm
+# libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev
+# libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev
+# libxt-dev update-manager-core linux-source linux-headers-generic
+# powertop emacs24 ghc6 google-chrome-stable python-django gdebi acpi
+
+# sudo sensors-detect
+# sudo service module-init-tools restart
+
 # TODO compare definition of JAVA_HOME with dotfiles/bash/env
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 
