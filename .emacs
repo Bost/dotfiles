@@ -336,3 +336,6 @@ by using nxml's indentation rules."
 )
 
 (global-set-key [f9] 'auto-upgrade)
+
+; pretty syntax highlighting everywhere
+(global-font-lock-mode t)
