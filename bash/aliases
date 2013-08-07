@@ -391,7 +391,7 @@ if [ "$isLinux" -eq 0 ]; then
     #alias bmw='cd $dev/mbs/bmw'
     #alias mbb='cd $dev/mbs/mbb'
 
-    alias credit='cd $dev/credit'
+    alias credit='cd $dev/credit.head'
     alias full='cd $dev/jacarta.full'
     alias light='cd $dev/jacarta.light'
     alias hre='cd $dev/jacarta.hre'
