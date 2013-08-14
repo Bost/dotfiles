@@ -122,6 +122,8 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    multiple-cursors
 #    nrepl
 #    org
+#    paredit
+#    paredit-mode
 #    popup
 #    project
 #    project-mode
@@ -129,6 +131,7 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    s
 #    smex
 #    splitter
+#    workgroups2
 #    undo-tree
 #    yasnippet
 
