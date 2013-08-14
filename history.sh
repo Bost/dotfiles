@@ -57,6 +57,13 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev
 # libxt-dev update-manager-core linux-source linux-headers-generic
 # powertop emacs24 ghc6 google-chrome-stable python-django gdebi acpi
+# automake autogen autoconf ssh
+# texinfo libncurses5-dev libgtk2.0-dev libgif-dev
+# libjpeg-dev libpng-dev libxpm-dev libtiff4-dev
+# libxml2-dev librsvg2-dev libotf-dev libm17n-dev
+# libgpm-dev libgnutls-dev libgconf2-dev libdbus-1-dev
+
+
 
 # sudo sensors-detect
 # sudo service module-init-tools restart
