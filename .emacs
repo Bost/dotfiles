@@ -19,6 +19,9 @@
 (eval-after-load "paredit.el"
    '(require 'paredit-menu))
 
+(global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
+(global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
+
 ;; org-babel-clojure
 (require 'ob-clojure)
 
