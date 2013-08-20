@@ -51,7 +51,7 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # maven ack-grep automake autoconf python-numpy python-matplotlib
 # xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin
 # xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin
-# xfce4-sensors-plugin
+# xfce4-sensors-plugin xfce4-goodies xfce4-power-manager
 # xubuntu-desktop bitcoind bitcoin-qt graphviz visualvm
 # libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev
 # libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev
@@ -62,7 +62,7 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # libjpeg-dev libpng-dev libxpm-dev libtiff4-dev
 # libxml2-dev librsvg2-dev libotf-dev libm17n-dev
 # libgpm-dev libgnutls-dev libgconf2-dev libdbus-1-dev
-
+# youtube-dl ffmpeg mplayer
 
 
 # sudo sensors-detect
@@ -74,21 +74,20 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 
 # emacs configuration:
 # mkdir ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
-# wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
-# echo "(add-to-list \'load-path \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
-# echo "(require \'transpose-frame)" >> ~/.emacs
+wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
+echo "(add-to-list \'load-path \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
+echo "(require \'transpose-frame)" >> ~/.emacs
 #
 # emacs packages:
 #    ace-jump-mode
 #    ack
 #    ack-and-a-half
-#    align-cljlet
-#    ack-menu
+*#    align-cljlet - swap
+*#    ack-menu
 #    auto-complete
 #    bf-mode
 #    browse-kill-ring
 #    bs-ext
-#    clj-mode
 #    clj-refactor
 #    cljdoc
 #    cljsbuild-mode
@@ -99,10 +98,12 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    clojurescript-mode
 #    closure-lint-mode
 #    closure-templat...
-#    color-theme
+*#    color-theme  - missing
 #    csv-mode
 #    csv-nav
 #    dash
+#    dash-at-point
+#    dash-functional
 #    dircmp
 #    dired+
 #    elisp-slime-nav
@@ -110,14 +111,18 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    evil-leader
 #    evil-nerd-commenter
 #    evil-numbers
-#    find-file-in-project
+*#    evil-paredit - try out
+*#    find-file-in-project - probably not needed because of helm
 #    google-maps
 #    google-this
 #    google-weather
 #    helm
+*#   try out other helm stuff
 #    idle-highlight-mode
 #    ido-ubiquitous
+*#   ido-vertical-mode - try out
 #    latest-clojars
+*#   lein - (eshell interface for leiningen) try out
 #    levenshtein
 #    linum-relative
 #    mag-menu
@@ -132,7 +137,7 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    paredit
 #    paredit-mode
 #    popup
-#    project
+*#    project  - probably too old
 #    project-mode
 #    redo+
 #    s
@@ -140,7 +145,7 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 #    splitter
 #    workgroups2
 #    undo-tree
-#    yasnippet
+*#    yasnippet - probably not needed
 
 # install google-earth (gdebi is needed)
 wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
@@ -160,7 +165,7 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 # terminator - multiple terminals
 # pv - view copy progress
 
-#sox kdelibs-data thunar-archive-plugin thunar-media-tags-plugin tumbler-plugins-extra xfce4-goodies xfce4-power-manager xfwm4-themes
+#sox kdelibs-data thunar-archive-plugin thunar-media-tags-plugin tumbler-plugins-extra xfwm4-themes
 
 git config --global user.name "Bost"
 git config --global user.email thebost@gmail.com
