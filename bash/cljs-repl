@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ "$CLOJURESCRIPT_HOME" = "" ]; then
+  CLOJURESCRIPT_HOME=$HOME/dev/clojurescript
+fi
+
+CLJSC_CP=''
+for next in lib/: lib/*: src/clj: src/cljs: test/cljs; do
+  CLJSC_CP=$CLJSC_CP$CLOJURESCRIPT_HOME'/'$next
+done
+
+# Alternatives are:
+# (require '[cljs.repl.rhino :as repl-impl])
+# (require '[cljs.repl.browser :as repl-impl])
+
+java -server -cp $CLJSC_CP clojure.main -e \
+"(require '[cljs.repl :as repl])
+(require '[cljs.repl.browser :as repl-impl])
+(def env (repl-impl/repl-env))
+(repl/repl env)"
+
