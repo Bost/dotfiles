@@ -31,6 +31,18 @@ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-ke
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 
 
+# sudo wget --output-document=/etc/apt/sources.list.d/medibuntu.list \
+# http://www.medibuntu.org/sources.list.d/$(lsb_release -cs).list \
+# && sudo apt-get --quiet update && sudo apt-get --yes --quiet \
+# --allow-unauthenticated install medibuntu-keyring \
+# && sudo apt-get --quiet update
+
+# sudo apt-get install app-install-data-medibuntu apport-hooks-medibuntu
+# sudo apt-get install w32codecs libdvdcss2
+# sudo apt-get install libavcodec-extra-53 libavdevice-extra-53
+# libavfilter-extra-2 libavformat-extra-53 libavutil-extra-51
+# libpostproc-extra-52 libswscale-extra-2
+
 #sudo apt-get install --reinstall nvidia-current
 # or nvidia-current-updates # or nvidia-experimental-304
 # echo sudo add-apt-repository ppa:gwibber-daily/ppa
@@ -43,26 +55,32 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # # in python 3 python-numpy should be already included
 # # notebooks - powertop
 #
-# build-dep cannot be found
-# sudo apt-get install mercurial git git-gui guake synaptic vim-gnome
-# lm-sensors
-# vim-gtk tree tofrodos chromium-browser ant gparted bitcoind htop
-# traceroute ssh firestarter gnome-system-tools curl openjdk-7-jdk
-# maven ack-grep automake autoconf python-numpy python-matplotlib
-# xfce4 xfce4-cpugraph-plugin xfce4-clipman-plugin
-# xfce4-netload-plugin xfce4-xkb-plugin xfce4-systemload-plugin
-# xfce4-sensors-plugin xfce4-goodies xfce4-power-manager
-# xubuntu-desktop bitcoind bitcoin-qt graphviz visualvm
-# libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev
-# libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev
-# libxt-dev update-manager-core linux-source linux-headers-generic
-# powertop emacs24 ghc6 google-chrome-stable python-django gdebi acpi
-# automake autogen autoconf ssh
-# texinfo libncurses5-dev libgtk2.0-dev libgif-dev
-# libjpeg-dev libpng-dev libxpm-dev libtiff4-dev
-# libxml2-dev librsvg2-dev libotf-dev libm17n-dev
-# libgpm-dev libgnutls-dev libgconf2-dev libdbus-1-dev
-# youtube-dl ffmpeg mplayer
+# build-dep cannot be found sudo apt-get install mercurial git git-gui
+# guake synaptic vim-gnome lm-sensors vim-gtk tree tofrodos
+# chromium-browser ant gparted bitcoind htop traceroute ssh
+# firestarter gnome-system-tools curl openjdk-7-jdk maven ack-grep
+# automake autoconf python-numpy python-matplotlib xfce4
+# xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin
+# xfce4-xkb-plugin xfce4-systemload-plugin xfce4-sensors-plugin
+# xfce4-goodies xfce4-power-manager xubuntu-desktop bitcoind
+# bitcoin-qt graphviz visualvm libncurses5-dev libgnome2-dev
+# libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev
+# libcairo2-dev libx11-dev libxpm-dev libxt-dev update-manager-core
+# linux-source linux-headers-generic powertop emacs24 ghc6
+# google-chrome-stable python-django gdebi acpi automake autogen
+# autoconf ssh texinfo libncurses5-dev libgtk2.0-dev libgif-dev
+# libjpeg-dev libpng-dev libxpm-dev libtiff4-dev libxml2-dev
+# librsvg2-dev libotf-dev libm17n-dev libgpm-dev libgnutls-dev
+# libgconf2-dev libdbus-1-dev youtube-dl ffmpeg mplayer mplayer-gui
+# gstreamer1.0-libav gstreamer1.0-plugins-bad vlc-nox
+# ubuntu-restricted-extras libavcodec53 lirc
+# aptitude xfce4-cpufreq-plugin
+
+
+# only for wifi-enabled devices (laptop etc.)
+# sudo apt-get install wavemon
+
+
 
 
 # sudo sensors-detect

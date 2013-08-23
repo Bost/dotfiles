@@ -482,7 +482,8 @@ alias genpasswd=GeneratePassw
 # TODO is this for passing param to an alias?
 #alias 'ps?'='ps ax | grep '
 
-alias lt='$dev/LightTable/LightTable &'
+# alias lt='$dev/LightTable/LightTable &'
+alias lt='ls -lat'
 
 # create alias file for the eshell; runs 0.007 sec
 alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias 
