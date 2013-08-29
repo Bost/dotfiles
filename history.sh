@@ -75,11 +75,13 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # gstreamer1.0-libav gstreamer1.0-plugins-bad vlc-nox
 # ubuntu-restricted-extras libavcodec53 lirc
 # aptitude xfce4-cpufreq-plugin
-
+# mesa-utils
 
 # only for wifi-enabled devices (laptop etc.)
 # sudo apt-get install wavemon
 
+# vieww pdf files in chromium
+#sudo ln -s /opt/google/chrome/libpdf.so /usr/lib/chromium-browser/
 
 
 

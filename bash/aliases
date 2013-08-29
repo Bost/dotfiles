@@ -444,6 +444,12 @@ alias g=runGvim
 alias home='cd $dev/..'
 alias webcli='cd $dev/webcli'
 
+alias desktop='cd $HOME/Desktop'
+alias desk='desktop'
+
+alias downloads='cd $HOME/Downloads'
+alias down='downloads'
+
 alias cheatsheet='cd $dev/cheatsheet'
 alias cheat='cheatsheet'
 
