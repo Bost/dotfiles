@@ -73,7 +73,7 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # librsvg2-dev libotf-dev libm17n-dev libgpm-dev libgnutls-dev
 # libgconf2-dev libdbus-1-dev youtube-dl ffmpeg mplayer mplayer-gui
 # gstreamer1.0-libav gstreamer1.0-plugins-bad vlc-nox
-# ubuntu-restricted-extras libavcodec53 lirc
+# ubuntu-restricted-extras libavcodec53 lirc subversion
 # aptitude xfce4-cpufreq-plugin
 # mesa-utils iptraf
 
@@ -83,7 +83,7 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # vieww pdf files in chromium
 #sudo ln -s /opt/google/chrome/libpdf.so /usr/lib/chromium-browser/
 
-
+# svn checkout http://gmapcatcher.googlecode.com/svn/trunk gmapcatcher
 
 # sudo sensors-detect
 # sudo service module-init-tools restart
