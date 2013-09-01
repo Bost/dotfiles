@@ -268,6 +268,9 @@ by using nxml's indentation rules."
 ;;   ; was dired-up-directory
 ;;  ))
 (toggle-diredp-find-file-reuse-dir 1)
+;; (diredp-find-file-reuse-dir-buffer 1)
+;; (diredp-mouse-find-file-reuse-dir-buffer [mouse-1])
+;; (diredp-subst-find-alternate-for-find)
 
 ;; layout management
 (winner-mode 1)
