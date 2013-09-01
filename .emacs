@@ -24,6 +24,13 @@
 
 ;; org-babel-clojure
 (require 'ob-clojure)
+(global-set-key (kbd "s-t") 'clojure-jump-between-tests-and-code)
+(global-set-key (kbd "s-z") 'nrepl-switch-to-relevant-repl-buffer)
+;; Attention defaults are:
+;;     C-c C-l: (nrepl-load-file FILENAME)
+;;     C-c C-k: (nrepl-load-current-buffer)
+(global-set-key (kbd "s-l") 'nrepl-load-current-buffer)
+(global-set-key (kbd "s-n") 'nrepl-set-ns)
 
 (require 'auto-complete-config)
 (ac-config-default)
@@ -219,6 +226,8 @@
 (global-set-key (kbd "s-3") 'split-window-right)
 
 (global-set-key (kbd "s-e") 'eval-last-sexp)
+;; this is for clojure
+;;(global-set-key (kbd "s-e") 'nrepl-eval-last-expression)
 
 ; M-w overrides kill-ring-save
 (global-set-key (kbd "s-w") 'kill-this-buffer)
