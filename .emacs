@@ -25,12 +25,44 @@
 ;; org-babel-clojure
 (require 'ob-clojure)
 (global-set-key (kbd "s-t") 'clojure-jump-between-tests-and-code)
-(global-set-key (kbd "s-z") 'nrepl-switch-to-relevant-repl-buffer)
 ;; Attention defaults are:
 ;;     C-c C-l: (nrepl-load-file FILENAME)
 ;;     C-c C-k: (nrepl-load-current-buffer)
 (global-set-key (kbd "s-l") 'nrepl-load-current-buffer)
 (global-set-key (kbd "s-n") 'nrepl-set-ns)
+
+;; (defun mnrepl-jump ()
+  ;; (message "bla"))
+
+(defun clojure-mode-keys ()
+  "Modify keymaps used by `clojure-mode'."
+  (local-set-key (kbd "s-z") 'nrepl-switch-to-relevant-repl-buffer)
+  ;; (local-set-key (kbd "s-o") 'mnrepl-jump)
+  ;; (local-set-key (kbd "C-c C-o") 'mnrepl-jump)
+)
+
+(add-hook 'clojure-mode-hook 'clojure-mode-keys)
+
+(defun nrepl-mode-keys ()
+  "Modify keymaps used by `nrepl-mode'."
+  (local-set-key (kbd "s-z") 'nrepl-switch-to-last-clojure-buffer)
+  ;; (local-set-key (kbd "s-o") 'mnrepl-jump)
+)
+
+(add-hook 'nrepl-mode-hook 'nrepl-mode-keys)
+
+(defun nrepl-interaction-mode-keys ()
+  "Modify keymaps used by `nrepl-interaction-mode'."
+  ;; (local-set-key (kbd "s-o") 'mnrepl-jump)
+)
+
+(add-hook 'nrepl-interaction-mode-hook 'nrepl-interaction-mode-keys)
+
+
+;; hide the *nrepl-connection* and *nrepl-server* buffers from
+;; appearing in some buffer switching commands like
+;; switch-to-buffer(C-x b) like this:
+;; (setq nrepl-hide-special-buffers t)
 
 (require 'auto-complete-config)
 (ac-config-default)
