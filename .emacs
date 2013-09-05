@@ -31,14 +31,9 @@
 (global-set-key (kbd "s-l") 'nrepl-load-current-buffer)
 (global-set-key (kbd "s-n") 'nrepl-set-ns)
 
-;; (defun mnrepl-jump ()
-  ;; (message "bla"))
-
 (defun clojure-mode-keys ()
   "Modify keymaps used by `clojure-mode'."
   (local-set-key (kbd "s-z") 'nrepl-switch-to-relevant-repl-buffer)
-  ;; (local-set-key (kbd "s-o") 'mnrepl-jump)
-  ;; (local-set-key (kbd "C-c C-o") 'mnrepl-jump)
 )
 
 (add-hook 'clojure-mode-hook 'clojure-mode-keys)
@@ -46,8 +41,11 @@
 (defun nrepl-mode-keys ()
   "Modify keymaps used by `nrepl-mode'."
   (local-set-key (kbd "s-z") 'nrepl-switch-to-last-clojure-buffer)
-  ;; (local-set-key (kbd "s-o") 'mnrepl-jump)
+  ;; (local-set-key (kbd "s-.") 'nrepl-jump)
+  ;; (local-set-key (kbd "s-,") 'nrepl-jump-back)
 )
+(global-set-key (kbd "s-.") 'nrepl-jump)
+(global-set-key (kbd "s-,") 'nrepl-jump-back)
 
 (add-hook 'nrepl-mode-hook 'nrepl-mode-keys)
 
