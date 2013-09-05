@@ -340,6 +340,7 @@ elif [ "$isLinux" -gt 0 ]; then
         echo 'sudo pm-suspend'
               sudo pm-suspend
     }
+    alias s=doSuspend
     alias susp=doSuspend
     alias suspend=doSuspend
 
