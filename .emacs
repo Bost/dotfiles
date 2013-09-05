@@ -456,3 +456,21 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c C-M-<") 'mc/unmark-all-like-this)
+
+(global-set-key (kbd "<f2>") 'ace-jump-mode)
+
+;; (require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+
+;; yasnippets does not to work
+;; (add-to-list 'load-path
+;; 	     "~/.emacs.d/elpa/clojure-snippets-20130403.2046/snippets/clojure-mode")
+;; (require 'yasnippet)
+;; (yas-global-mode 1)
+
+;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
+;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "chromium-browser")

@@ -133,6 +133,7 @@ echo "(require \'transpose-frame)" >> ~/.emacs
 #    evil-nerd-commenter
 #    evil-numbers
 *#    evil-paredit - try out
+#    expand-region
 *#    find-file-in-project - probably not needed because of helm
 #    google-maps
 #    google-this
@@ -167,7 +168,7 @@ echo "(require \'transpose-frame)" >> ~/.emacs
 #    splitter
 #    workgroups2
 #    undo-tree
-*#    yasnippet - probably not needed
+#    yasnippet
 
 # install google-earth (gdebi is needed)
 wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
