@@ -112,6 +112,7 @@ echo "(require \'transpose-frame)" >> ~/.emacs
 #    cljdoc
 #    cljsbuild-mode
 #    clojure-mode
+#    clojure-cheatsheet
 #    clojure-project-mode-1.0
 #    clojure-snippets
 #    clojure-test-mode
@@ -137,6 +138,7 @@ echo "(require \'transpose-frame)" >> ~/.emacs
 #    google-this
 #    google-weather
 #    helm
+#    hightlight-symbol
 *#   try out other helm stuff
 #    idle-highlight-mode
 #    ido-ubiquitous

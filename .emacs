@@ -316,10 +316,18 @@ by using nxml's indentation rules."
 ;; layout management
 (winner-mode 1)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; evil
 (require 'evil-numbers)
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
+
+(global-set-key (kbd "s-+") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
+
+(global-set-key (kbd "<C-kp-add>")      'evil-numbers/inc-at-pt)
+(global-set-key (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
+(global-set-key (kbd "<s-kp-add>")      'evil-numbers/inc-at-pt)
+(global-set-key (kbd "<s-kp-subtract>") 'evil-numbers/dec-at-pt)
+
 ;; or only in evil’s normal state:
 ;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
 ;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
@@ -330,12 +338,18 @@ by using nxml's indentation rules."
 (require 'evil)
 (evil-mode 1)
 
+(define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
+(define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
+(global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
+(global-set-key (kbd "<S-delete>") 'kill-line)
+
 (setq evil-leader/in-all-states t)
 (global-evil-leader-mode)
 (evil-leader/set-key
-  "d" 'kill-line
   "wr" 'toggle-truncate-lines
 )
+
+
 
 (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
 (require 'transpose-frame)
@@ -426,3 +440,21 @@ by using nxml's indentation rules."
 
 ;; (setq inferior-lisp-buffer "browser-repl")
 ;; (message inferior-lisp-buffer)
+
+(require 'multiple-cursors)
+(global-set-key (kbd "C->") 'mc/mark-all-like-this-in-defun)
+
+;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+;; (global-set-key (kbd "C-M->") 'mc/unmark-next-like-this)
+
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-M-<") 'mc/unmark-previous-like-this)
+
+;; (global-set-key (kbd "C->") 'mc/mark-next-word-like-this)
+;; (global-set-key (kbd "C-M->") 'mc/unmark-next-word-like-this)
+
+;; (global-set-key (kbd "C-<") 'mc/mark-previous-word-like-this)
+;; (global-set-key (kbd "C-M-<") 'mc/unmark-previous-word-like-this)
+
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c C-M-<") 'mc/unmark-all-like-this)
