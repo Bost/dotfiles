@@ -386,17 +386,30 @@ by using nxml's indentation rules."
 
 (setq default-directory "~/dev")
 
-(menu-bar-mode -1)
-
 (defun auto-upgrade ()
   (interactive)
   (package-list-packages)
   (package-menu-mark-obsolete-for-deletion)
   (package-menu-mark-upgrades)
-  (package-menu-execute)
-)
+  (package-menu-execute))
+
+
+(setq gui-elements -1)
+(menu-bar-mode gui-elements)
+(scroll-bar-mode gui-elements)
+
+
+(defun gui-toggle ()
+  (interactive)
+  (setq gui-elements (* -1 gui-elements))
+  (menu-bar-mode gui-elements)
+  (toggle-scroll-bar gui-elements)
+  (message "gui-elements %s"
+           (if (= 1 gui-elements) "enabled" "disabled")))
 
 (global-set-key [f9] 'auto-upgrade)
+;; (global-set-key [f10] 'menu-bar-mode)
+(global-set-key [f10] 'gui-toggle)
 
 ; pretty syntax highlighting everywhere
 (global-font-lock-mode t)
@@ -465,7 +478,7 @@ by using nxml's indentation rules."
 
 ;; yasnippets does not to work
 ;; (add-to-list 'load-path
-;; 	     "~/.emacs.d/elpa/clojure-snippets-20130403.2046/snippets/clojure-mode")
+;;           "~/.emacs.d/elpa/clojure-snippets-20130403.2046/snippets/clojure-mode")
 ;; (require 'yasnippet)
 ;; (yas-global-mode 1)
 
