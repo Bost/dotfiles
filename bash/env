@@ -93,13 +93,14 @@ elif [ "$isLinux" -gt 0 ]; then
 
     JAVA_CP_SEP=":"
 
-    NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
-    VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
-    NAILGUN_CLIENT_HOME=$dev/vimclojure-nailgun-client
+    # NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
+    # VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
+    # NAILGUN_CLIENT_HOME=$dev/vimclojure-nailgun-client
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.8
 
     if [ "$isLinux_64" -gt 0 ] || [ "$isLinuxMartin" -eq 0 ]; then
-        PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME:$HOME/.cabal/bin
+        # PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME:$HOME/.cabal/bin
+        PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$HOME/.cabal/bin
     else
         # TODO it seems like MAVEN_HOME is not needed
         #MAVEN_HOME=$HOME/apache-maven-3.0.4
@@ -111,18 +112,21 @@ elif [ "$isLinux" -gt 0 ]; then
         JDK_16_HOME=$HOME/java/jdk1.6.0_33
         JAVA_HOME=$HOME/java/jdk1.7.0_07
         # I need too have $PATH at the end because I want to override the pre-preinstalled java
-        PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
+        # PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
+        PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME
     fi
 
-    PATH=$PATH:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
-    PATH=$PATH:$dev/clojure-contrib/algo.monads-0.1.4.jar
-    PATH=$PATH:$dev/clojure-contrib/tools.macro-0.1.1.jar
-    PATH=$PATH:$dev/clojure-contrib/data.priority-map-0.0.2.jar
-    PATH=$PATH:$dev/clojure-contrib/core.cache-0.6.3.jar
-    PATH=$PATH:$dev/clojure-contrib/core.memoize-0.5.5.jar
-    export VMAIL_VIM=gvim
-    export VMAIL_BROWSER='google-chrome'
-    export CLOJURESCRIPT_HOME=$dev/clojurescript
+    # PATH=$PATH:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
+    # PATH=$PATH:$dev/clojure-contrib/algo.monads-0.1.4.jar
+    # PATH=$PATH:$dev/clojure-contrib/tools.macro-0.1.1.jar
+    # PATH=$PATH:$dev/clojure-contrib/data.priority-map-0.0.2.jar
+    # PATH=$PATH:$dev/clojure-contrib/core.cache-0.6.3.jar
+    # PATH=$PATH:$dev/clojure-contrib/core.memoize-0.5.5.jar
+    # export VMAIL_VIM=gvim
+    # export VMAIL_BROWSER='google-chrome'
+    # export CLOJURESCRIPT_HOME=$dev/clojurescript
+    export CLOJURESCRIPT=$dev/clojurescript
+    PATH=$PATH:$CLOJURESCRIPT/bin
 
     # remaping the Esc key to Capslock (I don't use it that much)
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
@@ -179,8 +183,8 @@ if [ "$isLinux" -eq 0 ]; then
 fi
 
 if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
-    VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
-    NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
+    # VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
+    # NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     JDK_16_HOME=$winapp/Java/1.6.0_41
     JAVA_HOME=$winapp/Java/jdk1.7.0_15
     APPENG_JAVA_HOME=$winappX86/Google/appeng-java-sdk-1.7.1
@@ -188,7 +192,8 @@ if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
 
     APPENGINE_HOME=/cygdrive/c/winapp-x86/Google/appeng-java-sdk-1.7.1
 
-    PATH=$PATH:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
+    # PATH=$PATH:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
+    PATH=$PATH:$APPENG_PYTHON_HOME
 fi
 
 if [ "$isLinux_64" -eq 0 ]; then
@@ -210,8 +215,8 @@ fi
 if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     clojureJarFile=$dev/clojure/clojure-1.5.1.jar
     export clojureJarFile
-    export VIMCLOJURE_SERVER_JAR
-    export NAILGUN_CLI_HOME
+    # export VIMCLOJURE_SERVER_JAR
+    # export NAILGUN_CLI_HOME
     export APPENG_PYTHON_HOME
     if [ "$isLinuxMartin" -eq 0 ]; then
         export APPENG_JAVA_HOME
@@ -220,15 +225,15 @@ if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0
     # values used by other sripts and applications
     #export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar$JAVA_CP_SEP$CLASSPATH
 
-    if [ -z $VIMCLOJURE_SERVER_JAR ]; then
-        echo "ERROR: Need to define location of VimClojure nailgun server jar with:"
-        echo "export VIMCLOJURE_SERVER_JAR=<location>"
-        #exit 1
-    fi
+    # if [ -z $VIMCLOJURE_SERVER_JAR ]; then
+    #     echo "ERROR: Need to define location of VimClojure nailgun server jar with:"
+    #     echo "export VIMCLOJURE_SERVER_JAR=<location>"
+    #     #exit 1
+    # fi
 
-    if [ ! -f $VIMCLOJURE_SERVER_JAR ]; then
-        echo "ERROR: Unable to find VimClojure nailgun server jar at '$VIMCLOJURE_SERVER_JAR'"
-        #exit 1
-    fi
+    # if [ ! -f $VIMCLOJURE_SERVER_JAR ]; then
+    #     echo "ERROR: Unable to find VimClojure nailgun server jar at '$VIMCLOJURE_SERVER_JAR'"
+    #     #exit 1
+    # fi
 fi
 
