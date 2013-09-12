@@ -21,20 +21,27 @@
 
 (global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
 (global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
-
 ;; org-babel-clojure
 (require 'ob-clojure)
 (global-set-key (kbd "s-t") 'clojure-jump-between-tests-and-code)
 ;; Attention defaults are:
 ;;     C-c C-l: (nrepl-load-file FILENAME)
 ;;     C-c C-k: (nrepl-load-current-buffer)
-(global-set-key (kbd "s-l") 'nrepl-load-current-buffer)
-(global-set-key (kbd "s-n") 'nrepl-set-ns)
+
+
+(defun nrepl-save-and-load-current-buffer ()
+  (interactive)
+  (when (buffer-modified-p)
+    (save-buffer))
+  (nrepl-load-file (buffer-file-name))
+  (nrepl-switch-to-relevant-repl-buffer nil))
 
 (defun clojure-mode-keys ()
   "Modify keymaps used by `clojure-mode'."
   (local-set-key (kbd "s-z") 'nrepl-switch-to-relevant-repl-buffer)
-)
+  (global-set-key (kbd "s-l") 'nrepl-save-and-load-current-buffer)
+  (global-set-key (kbd "s-n") 'nrepl-set-ns)
+  )
 
 (add-hook 'clojure-mode-hook 'clojure-mode-keys)
 
@@ -43,7 +50,8 @@
   (local-set-key (kbd "s-z") 'nrepl-switch-to-last-clojure-buffer)
   ;; (local-set-key (kbd "s-.") 'nrepl-jump)
   ;; (local-set-key (kbd "s-,") 'nrepl-jump-back)
-)
+  )
+
 (global-set-key (kbd "s-.") 'nrepl-jump)
 (global-set-key (kbd "s-,") 'nrepl-jump-back)
 
