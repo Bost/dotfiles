@@ -77,7 +77,7 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # aptitude xfce4-cpufreq-plugin
 # mesa-utils iptraf
 
-# only for wifi-enabled devices (laptop etc.)
+## only for wifi-enabled devices (laptop etc.)
 # sudo apt-get install wavemon
 
 # vieww pdf files in chromium
@@ -88,6 +88,9 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # sudo sensors-detect
 # sudo service module-init-tools restart
 # libqt4-opengl-dev libasound2-dev timidity
+
+## only for cvs
+# cvs xinetd
 
 # TODO compare definition of JAVA_HOME with dotfiles/bash/env
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
