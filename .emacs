@@ -19,6 +19,7 @@
 (eval-after-load "paredit.el"
    '(require 'paredit-menu))
 
+
 (global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
 (global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
 ;; org-babel-clojure
@@ -285,10 +286,15 @@
 (require 'move-text)
 (move-text-default-bindings)
 
-;(global-set-key (kbd "C-S-k") 'kill-line)
-;(global-set-key [C-S-delete] 'kill-line) ; the same as in eclipse
+(defun kill-line-backward (arg)
+  "Kill ARG lines backward."
+  (interactive "p")
+  (kill-line (- 1 arg)))
+
 ;; C-S-backspace is the default key binding for kill-whole-line
-;(global-set-key (kbd "C-k") 'kill-whole-line)
+(global-set-key (kbd "<C-S-backspace>") 'kill-line-backward)
+(global-set-key (kbd "<C-S-delete>") 'kill-line)
+
 (put 'upcase-region 'disabled nil)
 
 (defun bf-pretty-print-xml-region (begin end)
