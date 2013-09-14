@@ -34,7 +34,8 @@
   (when (buffer-modified-p)
     (save-buffer))
   (nrepl-load-file (buffer-file-name))
-  (nrepl-switch-to-relevant-repl-buffer nil))
+  ;; (nrepl-switch-to-relevant-repl-buffer nil)
+  )
 
 (defun clojure-mode-keys ()
   "Modify keymaps used by `clojure-mode'."
