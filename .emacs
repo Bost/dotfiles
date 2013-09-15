@@ -1,13 +1,12 @@
-; only for windows or cygwin
-;(setq url-proxy-services
-;       '(("https" . "192.168.2.105:3128")
-;         ("http" . "192.168.2.105:3128")))
+;; (setq url-proxy-services
+;;       '(("https" . "192.168.2.105:3128")
+;;         ("http" . "192.168.2.105:3128")))
 
 (setq inhibit-splash-screen t)
-;(load-theme 'light-blue)
+;; (load-theme 'light-blue)
 (load-theme 'deeper-blue)
-;(load-theme 'misterioso)
-;(load-theme 'whiteboard)
+;; (load-theme 'misterioso)
+;; (load-theme 'whiteboard)
 
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -144,6 +143,8 @@
 ;(add-to-list 'load-path "~/.emacs.d/edit-server/")
 
 (autoload 'magit-status "magit" nil t)
+;; (global-set-key [f6] 'split-window-horizontally)
+(global-set-key [f6] 'magit-status)
 
 ;; change font size
 (set-face-attribute 'default nil :height 110)
@@ -168,7 +169,6 @@
 ;; no line wrap
 (setq default-truncate-lines t)
 (define-key global-map [f5] 'toggle-truncate-lines)
-(global-set-key [f6] 'split-window-horizontally)
 
 (defun cygpath ()
   (setq path (thing-at-point 'line))
