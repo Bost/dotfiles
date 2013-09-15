@@ -37,26 +37,34 @@
   ;; (nrepl-switch-to-relevant-repl-buffer nil)
   )
 
+(defun emacs-lisp-mode-keys ()
+  "Modify keymaps used by `clojure-mode'."
+  (local-set-key (kbd "s-e") 'eval-last-sexp)
+  )
+(add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
+
 (defun clojure-mode-keys ()
   "Modify keymaps used by `clojure-mode'."
+  (local-set-key (kbd "s-e") 'nrepl-eval-last-expression)
   (local-set-key (kbd "s-z") 'nrepl-switch-to-relevant-repl-buffer)
-  (global-set-key (kbd "s-l") 'nrepl-save-and-load-current-buffer)
-  (global-set-key (kbd "s-n") 'nrepl-set-ns)
+  (local-set-key (kbd "s-l") 'nrepl-save-and-load-current-buffer)
+  (local-set-key (kbd "s-n") 'nrepl-set-ns)
   )
-
 (add-hook 'clojure-mode-hook 'clojure-mode-keys)
+
+
 
 (defun nrepl-mode-keys ()
   "Modify keymaps used by `nrepl-mode'."
   (local-set-key (kbd "s-z") 'nrepl-switch-to-last-clojure-buffer)
-  ;; (local-set-key (kbd "s-.") 'nrepl-jump)
-  ;; (local-set-key (kbd "s-,") 'nrepl-jump-back)
+  (local-set-key (kbd "s-.") 'nrepl-jump)
+  (local-set-key (kbd "s-,") 'nrepl-jump-back)
   )
-
-(global-set-key (kbd "s-.") 'nrepl-jump)
-(global-set-key (kbd "s-,") 'nrepl-jump-back)
-
 (add-hook 'nrepl-mode-hook 'nrepl-mode-keys)
+
+;; (global-set-key (kbd "s-.") 'nrepl-jump)
+;; (global-set-key (kbd "s-,") 'nrepl-jump-back)
+
 
 (defun nrepl-interaction-mode-keys ()
   "Modify keymaps used by `nrepl-interaction-mode'."
@@ -264,10 +272,6 @@
 (global-set-key (kbd "s-1") 'delete-other-windows)
 (global-set-key (kbd "s-2") 'split-window-below)
 (global-set-key (kbd "s-3") 'split-window-right)
-
-(global-set-key (kbd "s-e") 'eval-last-sexp)
-;; this is for clojure
-;;(global-set-key (kbd "s-e") 'nrepl-eval-last-expression)
 
 ; M-w overrides kill-ring-save
 (global-set-key (kbd "s-w") 'kill-this-buffer)
