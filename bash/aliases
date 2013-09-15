@@ -112,8 +112,8 @@ ltree () {
 
 # TODO TreeNonIgnored should take .gitignore as input
 TreeNotIgnored () {
-    echo "tree | grep -v class"
-          tree | grep -v class
+    echo "tree | grep -v 'class\|.*~'"
+          tree | grep -v 'class\|.*~'
 }
 alias trn=TreeNotIgnored
 alias tn=TreeNotIgnored
