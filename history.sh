@@ -55,11 +55,14 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # # in python 3 python-numpy should be already included
 # # notebooks - powertop
 #
-# build-dep cannot be found sudo apt-get install mercurial git git-gui
+# build-dep cannot be found
+# sudo apt-get install
+# mercurial git git-gui
 # guake synaptic vim-gnome lm-sensors vim-gtk tree tofrodos
 # chromium-browser ant gparted bitcoind htop traceroute ssh
 # firestarter gnome-system-tools curl openjdk-7-jdk maven ack-grep
 # automake autoconf python-numpy python-matplotlib xfce4
+# xfce4-time-out-plugin
 # xfce4-cpugraph-plugin xfce4-clipman-plugin xfce4-netload-plugin
 # xfce4-xkb-plugin xfce4-systemload-plugin xfce4-sensors-plugin
 # xfce4-goodies xfce4-power-manager xubuntu-desktop bitcoind
