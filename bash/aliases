@@ -110,12 +110,13 @@ ltree () {
     tree -C $* | less --RAW-CONTROL-CHARS
 }
 
-TreeWithoutClass () {
+# TODO TreeNonIgnored should take .gitignore as input
+TreeNotIgnored () {
     echo "tree | grep -v class"
           tree | grep -v class
 }
-alias treec=TreeWithoutClass
-alias trc=TreeWithoutClass
+alias trn=TreeNotIgnored
+alias tn=TreeNotIgnored
 
 findreplace () {
     printf "Search: ${1}\n"
