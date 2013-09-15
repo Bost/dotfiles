@@ -228,6 +228,8 @@ echo "(require \'transpose-frame)" >> ~/.emacs
 *#    evil-paredit - try out
 #    expand-region
 *#    find-file-in-project - probably not needed because of helm
+#    gist
+#    gitignore-mode
 #    google-maps
 #    google-this
 #    google-weather

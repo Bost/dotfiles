@@ -19,3 +19,6 @@
 	ui = auto
 [push]
 	default = simple
+[github]
+	user = Bost
+	oauth-token = dcce70b7e5590266d99928f62706a983efc5cff2
