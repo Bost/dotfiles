@@ -105,9 +105,17 @@ gitSearchStr () {
 }
 alias gstr=gitSearchStr
 
+# ltree: colored tree with 'less'. --RAW-CONTROL-CHARS == -R
 ltree () {
-    tree -C $* | less -R
+    tree -C $* | less --RAW-CONTROL-CHARS
 }
+
+TreeWithoutClass () {
+    echo "tree | grep -v class"
+          tree | grep -v class
+}
+alias treec=TreeWithoutClass
+alias trc=TreeWithoutClass
 
 findreplace () {
     printf "Search: ${1}\n"
