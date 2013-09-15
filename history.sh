@@ -212,6 +212,7 @@ echo "(require \'transpose-frame)" >> ~/.emacs
 #    closure-lint-mode
 #    closure-templat...
 *#    color-theme  - missing
+*#    color-theme-buffer-local - probably not needed, It seems like magit has fixed background problem when staging chunks
 #    csv-mode
 #    csv-nav
 #    dash
@@ -242,8 +243,9 @@ echo "(require \'transpose-frame)" >> ~/.emacs
 #    linum-relative
 #    mag-menu
 #    magit
-#    magit-push-remote
-#    magithub
+#    magit-commit-training-wheels
+*#    magit-push-remote - probably not needed - test it
+*#    magithub - cannot be installed at the moment
 #    mode-icons
 #    move-text
 #    multiple-cursors
