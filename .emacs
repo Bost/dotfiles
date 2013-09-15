@@ -43,12 +43,31 @@
   )
 (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
+
+(defun nrepl-eval-last-expression-in-repl ()
+  "This doesn't work"
+  (interactive)
+  (evil-visual-char)
+  (evil-jump-item)
+  ;; (clipboard-kill-ring-save)
+  ;; (clipboard-kill-region)
+  ;; (nrepl-switch-to-relevant-repl-buffer)
+  ;; (clipboard-yank)
+
+;; (global-set-key [(shift delete)] 'clipboard-kill-region)
+;; (global-set-key [(control insert)] 'clipboard-kill-ring-save)
+;; (global-set-key [(shift insert)] 'clipboard-yank)
+  )
+
 (defun clojure-mode-keys ()
   "Modify keymaps used by `clojure-mode'."
+  (local-set-key (kbd "s-r") 'nrepl-eval-last-expression-in-repl)
   (local-set-key (kbd "s-e") 'nrepl-eval-last-expression)
   (local-set-key (kbd "s-z") 'nrepl-switch-to-relevant-repl-buffer)
   (local-set-key (kbd "s-l") 'nrepl-save-and-load-current-buffer)
   (local-set-key (kbd "s-n") 'nrepl-set-ns)
+  (local-set-key (kbd "s-.") 'nrepl-jump)
+  (local-set-key (kbd "s-,") 'nrepl-jump-back)
   )
 (add-hook 'clojure-mode-hook 'clojure-mode-keys)
 
