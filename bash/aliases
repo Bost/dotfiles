@@ -51,9 +51,9 @@ GrepFind () {
     echo "grep -lir '$1' \`find . -name '*.$2'\`"
     echo "###"
     if [ $# -eq 2 ] ; then
-	foundFiles=$(find . -name \*.$2)
-	# echo "foundFiles: "$foundFiles
-	grep -lir $1 $foundFiles
+        foundFiles=$(find . -name \*.$2)
+        # echo "foundFiles: "$foundFiles
+        grep -lir $1 $foundFiles
     fi
 }
 alias gf=GrepFind
@@ -121,7 +121,7 @@ findreplace () {
     printf "Search: ${1}\n"
     printf "Replace: ${2}\n"
     printf "In: ${3}\n\n"
- 
+
     find . -name "*${3}" -type f | xargs perl -pi -e 's/${1}/${2}/g'
 }
 
@@ -503,4 +503,4 @@ alias y='youtube-dl'
 alias m='mplayer'
 
 # create alias file for the eshell; runs 0.007 sec
-alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias 
+alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
