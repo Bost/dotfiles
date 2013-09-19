@@ -15,6 +15,9 @@
 (package-initialize)
 ;; (package-refresh-contents)
 
+(display-battery-mode 1)
+(size-indication-mode 1)  ; filesize indicator
+
 (eval-after-load "paredit.el"
    '(require 'paredit-menu))
 
@@ -471,16 +474,16 @@ by using nxml's indentation rules."
 ;; (global-set-key (kbd "s-z")         'wg-switch-to-workgroup)
 ;; (global-set-key (kbd "s-/")         'wg-switch-to-previous-workgroup)
 
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 ;; (setq inferior-lisp-program "browser-repl")
 ;; (setq inferior-lisp-program "cljs-repl")
 ;; (message (concat "inferior-lisp-program: " inferior-lisp-program))
 
 (defun cljs-repl ()
-    (interactive)
-    (setq inferior-lisp-program "cljs-repl")
-    (run-lisp))
+  (interactive)
+  (setq inferior-lisp-program "cljs-repl")
+  (run-lisp))
 
 (defun buffer-mode (buffer-or-string)
   "Returns the major mode associated with a buffer."
