@@ -295,8 +295,6 @@
 (global-set-key (kbd "s-2") 'split-window-below)
 (global-set-key (kbd "s-3") 'split-window-right)
 
-; M-w overrides kill-ring-save
-(global-set-key (kbd "s-w") 'kill-this-buffer)
 (global-set-key (kbd "s-h") 'describe-key)
 
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
@@ -527,4 +525,6 @@ by using nxml's indentation rules."
 ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
 
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "chromium-browser")
+      browse-url-generic-program
+      ;; "chromium-browser" does not work properly on ubuntu 13.10
+      "google-chrome")
