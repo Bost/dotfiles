@@ -528,3 +528,5 @@ by using nxml's indentation rules."
       browse-url-generic-program
       ;; "chromium-browser" does not work properly on ubuntu 13.10
       "google-chrome")
+
+(setq erc-hide-list '("JOIN" "PART" "QUIT"))
