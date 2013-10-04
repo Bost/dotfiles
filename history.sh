@@ -247,7 +247,7 @@ echo "(require \'transpose-frame)" >> ~/.emacs
 #    magit
 #    magit-commit-training-wheels
 *#    magit-push-remote - probably not needed - test it
-*#    magithub - cannot be installed at the moment
+*#    magithub - magit-log-edit-confirm-cancellation issue
 #    mode-icons
 #    move-text
 #    multiple-cursors
