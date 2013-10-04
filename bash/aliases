@@ -459,6 +459,7 @@ alias desk='desktop'
 
 alias downloads='cd $HOME/Downloads'
 alias down='downloads'
+alias catg='cd $HOME/downloads/category-theory/js'
 
 alias cheatsheet='cd $dev/cheatsheet'
 alias cheat='cheatsheet'

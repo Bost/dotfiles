@@ -41,10 +41,19 @@
   )
 
 (defun emacs-lisp-mode-keys ()
-  "Modify keymaps used by `clojure-mode'."
+  "Modify keymaps used by `emacs-lisp-mode'."
   (local-set-key (kbd "s-e") 'eval-last-sexp)
   )
 (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
+
+(defun skewer-mode-keys ()
+  "Modify keymaps used by `skewer-mode'."
+  (local-set-key (kbd "s-e") 'skewer-eval-last-expression)
+  (local-set-key (kbd "s-l") 'skewer-eval-defun)
+  (local-set-key (kbd "s-k") 'skewer-load-buffer)
+  )
+;; skewer works on top of js2-mode
+(add-hook 'js2-mode-hook 'skewer-mode-keys)
 
 
 (defun nrepl-eval-last-expression-in-repl ()
@@ -91,8 +100,7 @@
 (defun nrepl-interaction-mode-keys ()
   "Modify keymaps used by `nrepl-interaction-mode'."
   ;; (local-set-key (kbd "s-o") 'mnrepl-jump)
-)
-
+  )
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-interaction-mode-keys)
 
 
@@ -250,18 +258,18 @@
 
 ;; (desktop-save-mode 1)
 
-(defun save-macro (name)
-    "save a macro. Take a name as argument
-     and save the last defined macro under
-     this name at the end of your .emacs"
-     (interactive "SName of the macro :")  ; ask for the name of the macro
-     (kmacro-name-last-macro name)         ; use this name for the macro
-     (find-file "~/.emacs")                ; open ~/.emacs or other user init file
-     (goto-char (point-max))               ; go to the end of the .emacs
-     (newline)                             ; insert a newline
-     (insert-kbd-macro name)               ; copy the macro
-     (newline)                             ; insert a newline
-     (switch-to-buffer nil))               ; return to the initial buffer
+;; (defun save-macro (name)
+;;     "save a macro. Take a name as argument
+;;      and save the last defined macro under
+;;      this name at the end of your .emacs"
+;;      (interactive "SName of the macro :")  ; ask for the name of the macro
+;;      (kmacro-name-last-macro name)         ; use this name for the macro
+;;      (find-file "~/.emacs")                ; open ~/.emacs or other user init file
+;;      (goto-char (point-max))               ; go to the end of the .emacs
+;;      (newline)                             ; insert a newline
+;;      (insert-kbd-macro name)               ; copy the macro
+;;      (newline)                             ; insert a newline
+;;      (switch-to-buffer nil))               ; return to the initial buffer
 
 ;; setting the PC keyboard's various keys to
 ;; Super or Hyper, for emacs running on Windows.
@@ -371,6 +379,7 @@ by using nxml's indentation rules."
 
 ;; enable global-evil-leader-mode before evil-mode, otherwise
 ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
+(global-evil-leader-mode)
 
 (require 'evil)
 (evil-mode 1)
@@ -381,11 +390,18 @@ by using nxml's indentation rules."
 (global-set-key (kbd "<S-delete>") 'kill-line)
 
 (setq evil-leader/in-all-states t)
-(global-evil-leader-mode)
+;; global-evil-leader-mode must be enabled before evil-mode
+;; (global-evil-leader-mode)
+
+;; (setq evil-leader/no-prefix-mode-rx nil)
+;; (setq evil-leader/non-normal-prefix "C-")
+;; (message
+;;  (concat evil-leader/non-normal-prefix evil-leader/leader))
+
 (evil-leader/set-key
   "wr" 'toggle-truncate-lines
+  "dd" 'kill-whole-line
 )
-
 
 
 (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
@@ -530,3 +546,23 @@ by using nxml's indentation rules."
       "google-chrome")
 
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
+
+(defun copy-line (next)
+  (interactive)
+  (kill-whole-line)
+  (yank)
+  (yank)
+  (previous-line)
+  ;; (message (if (= 1 next) "next" "previous"))
+  (if (= 1 next) (previous-line)))
+
+(defun copy-line-goto-next ()
+  (interactive)
+  (copy-line 1))
+
+(defun copy-line-goto-previous ()
+  (interactive)
+  (copy-line -1))
+
+(global-set-key (kbd "C-s-<up>") 'copy-line-goto-next)
+(global-set-key (kbd "C-s-<down>") 'copy-line-goto-previous)
