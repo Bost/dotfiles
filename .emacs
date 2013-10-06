@@ -49,11 +49,12 @@
 (defun skewer-mode-keys ()
   "Modify keymaps used by `skewer-mode'."
   (local-set-key (kbd "s-e") 'skewer-eval-last-expression)
-  (local-set-key (kbd "s-l") 'skewer-eval-defun)
-  (local-set-key (kbd "s-k") 'skewer-load-buffer)
+  (local-set-key (kbd "s-x") 'skewer-eval-defun)
+  (local-set-key (kbd "s-l") 'skewer-load-buffer)
   )
 ;; skewer works on top of js2-mode
-(add-hook 'js2-mode-hook 'skewer-mode-keys)
+;; (add-hook 'js2-mode-hook 'skewer-mode-keys)
+(add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
 
 (defun nrepl-eval-last-expression-in-repl ()
@@ -185,7 +186,7 @@
 (global-set-key [f6] 'magit-status)
 
 ;; change font size
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 120)
 
 ;; highlight current line - this is probably not needed in the default face
 ;(global-hl-line-mode 1)
@@ -195,13 +196,8 @@
 ;;; location for your machine.
 (setq sql-db2-program "/cygdrive/c/winapp/IBM/SQLLIB_9.5/BIN/db2cmd.exe")
 
-;;; The interesting options here is the "-t" option
-;;; passed to "db2". This is extremely handy - it
-;;; means that ';' (semicolon) ; is treated as the command
-;;; line terminator. The default is to treat the end-of-line
-;;; as a SQL statement terminator.
-;;; You may look up the command reference online for an
-;;; explanation of the rest.
+; -t: semicolon is the command line terminator.
+; default is end-of-line as a SQL statement terminator
 (setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
 
 ;; no line wrap
@@ -218,7 +214,7 @@
 
 (global-set-key [f7] 'cygpath)
 
-(global-set-key [f8] 'delete-window)
+(global-set-key [f8] 'transpose-frame)
 
 (defun exec-sql ()
   ;;(windmove-up)
@@ -566,3 +562,41 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "C-s-<up>") 'copy-line-goto-next)
 (global-set-key (kbd "C-s-<down>") 'copy-line-goto-previous)
+
+
+(define-abbrev-table 'global-abbrev-table
+  '(("alpha" "α")
+    ("beta" "β")
+    ("gamma" "γ")
+    ("theta" "θ")
+    ("inf" "∞")
+
+    ("ar1" "→")
+    ("ar2" "⇒")
+    ("2ar" "⇐")
+    ("exs" "∃")
+    ("frll" "∀")
+    ("hmm" "homomorphism")
+    ("Hmm" "Homomorphism")
+    ("ism" "isomorphism")
+    ("Ism" "Isomorphism")
+    ("ctg" "category")
+    ("Ctg" "Category")
+    ("thr" "theory")
+    ("Thr" "Theory")
+
+    ;; javascript
+    ("fn" "function () {};")
+    ("rt" "return")
+    ("rtf" "return function () {};")
+    ))
+
+;(abbrev-mode 1) ; turn on abbrev mode
+
+(defun x11-maximize-frame ()
+  "Maximize the current frame (to full screen)"
+  (interactive)
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
+
+(x11-maximize-frame)
