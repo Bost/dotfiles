@@ -3,15 +3,19 @@
 ;;         ("http" . "192.168.2.105:3128")))
 
 (setq inhibit-splash-screen t)
-;; (load-theme 'light-blue)
-(load-theme 'deeper-blue)
-;; (load-theme 'misterioso)
-;; (load-theme 'whiteboard)
+;; (load-theme 'light-blue)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
+(load-theme 'deeper-blue)    ;(disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
+;; (load-theme 'misterioso)  ;(disable-theme 'misterioso)  (enable-theme 'misterioso)
+;; (load-theme 'whiteboard)  ;(disable-theme 'whiteboard)  (enable-theme 'whiteboard)
+;; test rainbow parenthesis:
+;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
 
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
+
+;; activate all the packages (in particular autoloads)
 (package-initialize)
 ;; (package-refresh-contents)
 
@@ -19,7 +23,7 @@
 (size-indication-mode 1)  ; filesize indicator
 
 (eval-after-load "paredit.el"
-   '(require 'paredit-menu))
+  '(require 'paredit-menu))
 
 
 (global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
@@ -303,6 +307,8 @@
 ;; (loop for ext in '("\\.swf$" "\\.elc$" "\\.pyc$")
 ;;       do (add-to-list 'helm-c-boring-file-regexp-list ext))
 (global-set-key (kbd "M-p") 'helm-for-files)
+; TODO helm-mode: <tab> should work in minibuffer as without helm
+;; (helm-mode 1)
 
 (require 'move-text)
 (move-text-default-bindings)
@@ -459,24 +465,6 @@ by using nxml's indentation rules."
 (global-font-lock-mode t)
 
 
-;; must be loaded in the end; otherwise:
-;;    Symbol's function definition is void: mapcar*
-;; (require 'workgroups2)
-
-;; (desktop-save-mode t)       ; save all opened files (or disable it)
-;; (setq wg-prefix-key (kbd "C-c z")
-;;      wg-restore-associated-buffers nil ; all buffers opened in current WG
-;;      wg-use-default-session-file nil   ; turn off for "emacs --daemon"
-;;      wg-default-session-file "~/.emacs_files/workgroups"
-;;      wg-use-faces nil
-;;      wg-morph-on nil)    ; animation off
-;; (workgroups-mode 1)       ; Activate workgroups
-
-;; (global-set-key (kbd "<pause>")     'wg-reload-session)
-;; (global-set-key (kbd "C-S-<pause>") 'wg-save-session)
-;; (global-set-key (kbd "s-z")         'wg-switch-to-workgroup)
-;; (global-set-key (kbd "s-/")         'wg-switch-to-previous-workgroup)
-
 ;; (setq debug-on-error t)
 
 ;; (setq inferior-lisp-program "browser-repl")
@@ -593,3 +581,33 @@ by using nxml's indentation rules."
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
 
 (x11-maximize-frame)
+
+(require 'rainbow-delimiters)
+; To enable it only in certain modes, add lines like the following:
+;(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+; To enable it in all programming-related emacs modes (Emacs 24+):
+;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+; To activate the mode globally, add to your init file:
+(global-rainbow-delimiters-mode)
+'; test delimiters:
+;; (((( ((( () ))) ))))
+;; [[[[ [[[ [] ]]] ]]]]
+;; {{{{ {{{ {} }}} }}}}
+
+;; must be loaded in the end; otherwise:
+;;    Symbol's function definition is void: mapcar*
+;; (require 'workgroups2)
+
+;; (desktop-save-mode t)       ; save all opened files (or disable it)
+;; (setq wg-prefix-key (kbd "C-c z")
+;;      wg-restore-associated-buffers nil ; all buffers opened in current WG
+;;      wg-use-default-session-file nil   ; turn off for "emacs --daemon"
+;;      wg-default-session-file "~/.emacs_files/workgroups"
+;;      wg-use-faces nil
+;;      wg-morph-on nil)    ; animation off
+;; (workgroups-mode 1)       ; Activate workgroups
+
+;; (global-set-key (kbd "<pause>")     'wg-reload-session)
+;; (global-set-key (kbd "C-S-<pause>") 'wg-save-session)
+;; (global-set-key (kbd "s-z")         'wg-switch-to-workgroup)
+;; (global-set-key (kbd "s-/")         'wg-switch-to-previous-workgroup)
