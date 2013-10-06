@@ -1,3 +1,9 @@
 #!/bin/bash -e
 
 # shell specific options and information for prompt, shell settings
+
+# change the .history file mode to append
+shopt -s histappend
+
+# run at each shell prompt; -a: write immediately the current/new lines to the history file
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
