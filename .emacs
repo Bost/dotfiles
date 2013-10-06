@@ -31,7 +31,6 @@
 ;;     C-c C-l: (nrepl-load-file FILENAME)
 ;;     C-c C-k: (nrepl-load-current-buffer)
 
-
 (defun nrepl-save-and-load-current-buffer ()
   (interactive)
   (when (buffer-modified-p)
@@ -67,9 +66,9 @@
   ;; (nrepl-switch-to-relevant-repl-buffer)
   ;; (clipboard-yank)
 
-;; (global-set-key [(shift delete)] 'clipboard-kill-region)
-;; (global-set-key [(control insert)] 'clipboard-kill-ring-save)
-;; (global-set-key [(shift insert)] 'clipboard-yank)
+  ;; (global-set-key [(shift delete)] 'clipboard-kill-region)
+  ;; (global-set-key [(control insert)] 'clipboard-kill-ring-save)
+  ;; (global-set-key [(shift insert)] 'clipboard-yank)
   )
 
 (defun clojure-mode-keys ()
@@ -84,8 +83,6 @@
   )
 (add-hook 'clojure-mode-hook 'clojure-mode-keys)
 
-
-
 (defun nrepl-mode-keys ()
   "Modify keymaps used by `nrepl-mode'."
   (local-set-key (kbd "s-z") 'nrepl-switch-to-last-clojure-buffer)
@@ -96,7 +93,6 @@
 
 ;; (global-set-key (kbd "s-.") 'nrepl-jump)
 ;; (global-set-key (kbd "s-,") 'nrepl-jump-back)
-
 
 (defun nrepl-interaction-mode-keys ()
   "Modify keymaps used by `nrepl-interaction-mode'."
@@ -119,8 +115,7 @@
 (global-linum-mode t)
 
 ;; TODO what is incomplete-mode good for?
-;; turn on icomplete-mode
-;(icomplete-mode 99)
+;; (icomplete-mode 99)  ; turn on icomplete-mode
 
 ;; press y/n instead of typing yes/no
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -169,7 +164,7 @@
   (perl . t)
 ))
 
-; Add shortcuts for ogr-agenda
+;; Add shortcuts for ogr-agenda
 ;(global-set-key "\C-cl" 'org-store-link)
 ;(global-set-key "\C-cc" 'org-capture)
 ;(global-set-key "\C-ca" 'org-agenda)
@@ -185,19 +180,17 @@
 ;; (global-set-key [f6] 'split-window-horizontally)
 (global-set-key [f6] 'magit-status)
 
-;; change font size
+;; font size
 (set-face-attribute 'default nil :height 120)
 
 ;; highlight current line - this is probably not needed in the default face
-;(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 (column-number-mode 1)
 
-;;; Change the path to db2cmd to reflect the correct
-;;; location for your machine.
 (setq sql-db2-program "/cygdrive/c/winapp/IBM/SQLLIB_9.5/BIN/db2cmd.exe")
 
-; -t: semicolon is the command line terminator.
-; default is end-of-line as a SQL statement terminator
+;; -t: semicolon is the command line terminator.
+;; default is end-of-line as a SQL statement terminator
 (setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
 
 ;; no line wrap
