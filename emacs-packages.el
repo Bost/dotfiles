@@ -14,12 +14,12 @@
    ack
    ack-and-a-half
    ack-menu
-   align-cljlet        ; 20121118.... installed  Space align various Clojure forms [github]
+   align-cljlet        ; Space align various Clojure forms [github]
    auto-complete
    auto-complete-nxml
-   bf-mode
+   bf-mode             ; Browse file persistently on dired [github]
    browse-kill-ring
-   bs-ext
+   bs-ext              ; Extensions to emacs buffer-selection library (bs.el) [wiki]
    charmap
    clj-refactor
    cljdoc
@@ -30,8 +30,7 @@
    clojure-snippets
    clojure-test-mode
    clojurescript-mode
-   ;; what is linter good for?
-   closure-lint-mode
+   closure-lint-mode   ; what is linter good for?
    closure-template-html-mode
    color-theme
    csv-mode
