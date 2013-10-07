@@ -520,6 +520,7 @@ by using nxml's indentation rules."
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program
       ;; "chromium-browser" does not work properly on ubuntu 13.10
+      ;"chrome" ; cygwin
       "google-chrome")
 
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
