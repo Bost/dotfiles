@@ -166,7 +166,7 @@
   (dot . t)
   (sqlite . t)
   (perl . t)
-))
+  ))
 
 ;; Add shortcuts for ogr-agenda
 ;(global-set-key "\C-cl" 'org-store-link)
@@ -570,9 +570,22 @@ by using nxml's indentation rules."
     ("fn" "function () {};")
     ("rt" "return")
     ("rtf" "return function () {};")
+
+    ;; SQL
+    ("sl" "select * from fetch first 10 rows only;")
+    ("c26"   "ADC26TDA.")
+    ;; t-table
+    ("tk"    "V60050") ; KONTO
+    ("tv"    "V60055") ; VERTAG
+    ;; c-column
+    ("coi"   "OBJECTIDENT")
+    ("coid"  "OBJECTIDENT")
+    ("ckto"  "KONTO")
+    ("cknr"  "KONTONUMMER")
+    ("cktnr" "KONTONUMMER")
     ))
 
-;(abbrev-mode 1) ; turn on abbrev mode
+(abbrev-mode 1) ; turn on abbrev mode
 
 (defun x11-maximize-frame ()
   "Maximize the current frame (to full screen)"
@@ -589,10 +602,8 @@ by using nxml's indentation rules."
 ;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 ; To activate the mode globally, add to your init file:
 (global-rainbow-delimiters-mode)
-'; test delimiters:
-;; (((( ((( () ))) ))))
-;; [[[[ [[[ [] ]]] ]]]]
-;; {{{{ {{{ {} }}} }}}}
+; test delimiters:
+;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}
 
 ;; must be loaded in the end; otherwise:
 ;;    Symbol's function definition is void: mapcar*
