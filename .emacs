@@ -243,11 +243,6 @@
   (goto-char current-point))
 
 
-;; some other not used keys
-;(global-set-key [f11] 'comment-sql-line)
-(global-set-key [f12] 'exec-sql)
-;; (global-set-key [scroll] 'exec-test-macro)
-
 ;; buffer switching
 ;; (iswitchb-mode t)			; I think this is the default
 (ido-mode t)				; probably somehow better
@@ -571,9 +566,16 @@ by using nxml's indentation rules."
     ("Thr" "Theory")
 
     ;; javascript
+    ("f" "function")
     ("fn" "function () {};")
+    ("hfn" "hom()function () {};")
     ("rt" "return")
     ("rtf" "return function () {};")
+    ("el" "element")
+    ("nr" "number")
+    ("eq" "equal")
+    ("sq" "square")
+    ("sig" "signature")
 
     ;; SQL
     ("sl" "select * from fetch first 10 rows only;")
@@ -589,7 +591,11 @@ by using nxml's indentation rules."
     ("cktnr" "KONTONUMMER")
     ))
 
-(abbrev-mode 1) ; turn on abbrev mode
+;; (abbrev-mode 1) ; turn on abbrev mode
+
+(global-set-key [f11] 'abbrev-mode)
+(global-set-key [f12] 'undo-tree-visualize)
+;; (global-set-key [scroll] 'exec-test-macro)
 
 (defun x11-maximize-frame ()
   "Maximize the current frame (to full screen)"
