@@ -560,6 +560,10 @@ by using nxml's indentation rules."
     ("2ar2" "⇔")
     ("exs" "∃")
     ("frll" "∀")
+    ("ie" "i.e.")
+    ("eg" "e.g.")  ;; exempli gration - for example
+    ("lam" "λ")
+
     ("hmm" "homomorphism")
     ("Hmm" "Homomorphism")
     ("ism" "isomorphism")
@@ -577,6 +581,7 @@ by using nxml's indentation rules."
     ("ob" "object")
     ("Ob" "Object")
     ("fu" "function")
+    ("fr" "functor")
     ("fu" "function")
     ("fn" "function () { return ;};")
     ("hfn" "hom()function () { return ; };")
@@ -586,6 +591,8 @@ by using nxml's indentation rules."
     ("El" "Element")
     ("nr" "number")
     ("Nr" "Number")
+    ("iso" "isomorphism")
+    ("Iso" "Isomorphism")
     ("mo" "morphism")
     ("Mo" "Morphism")
     ("eq" "equal")
