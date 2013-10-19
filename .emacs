@@ -1,10 +1,6 @@
 ;; TODO jump to last line and switch to edit mode
 ;; TODO delete to the end of line and switch to edit mode
 
-;; (setq url-proxy-services
-;;       '(("https" . "192.168.2.105:3128")
-;;         ("http" . "192.168.2.105:3128")))
-
 (setq inhibit-splash-screen t)
 ;; (load-theme 'light-blue)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
 (load-theme 'deeper-blue)    ;(disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
@@ -28,6 +24,7 @@
 (eval-after-load "paredit.el"
   '(require 'paredit-menu))
 
+(require 'cider) ; quick fix of https://github.com/clojure-emacs/cider/issues/385 former nrepl
 
 (global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
 (global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
@@ -219,23 +216,6 @@
 
 (global-set-key [f8] 'transpose-frame)
 
-(defun exec-sql ()
-  ;;(windmove-up)
-  (save-buffer)
-  (windmove-down)
-  (goto-char (point-max))
-  (interactive)
-  ;(insert "db2 -vf c:\\cygwin\\home\\svo02896\\dev\\txrating\\tmp.sql -t")
-  (insert "db2 -vf c:\\cygwin\\home\\svo02896\\dev\\credit\\script.sql -t")
-  (eshell-send-input)
-  (windmove-up))
-
-(defun comment-sql-line ()
-  (setq current-point (point))
-  (move-beginning-of-line nil)
-  (insert "--")
-  (goto-char current-point))
-
 (defun clean-whitespaces ()
   (setq current-point (point))
   (goto-char (point-min))
@@ -416,7 +396,7 @@ by using nxml's indentation rules."
 (global-set-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
 
 ; (define-key evil-normal-state-map [tab] #'next-buffer)
-;(define-key evil-normal-state-map [tab] #'other-window)
+; (define-key evil-normal-state-map [tab] #'other-window)
 ; (define-key evil-normal-state-map [backtab] #'back-window)
 
 ;; change mode-line color by evil state
@@ -576,6 +556,7 @@ by using nxml's indentation rules."
     ("thr" "theory")
     ("Thr" "Theory")
     ("mor" "→")   ; morphism
+    ("ass" "↦")   ; assignment
     ("mono" "↣")  ; monomorphism
     ("epi" "↠")  ; epimorphism
     ;("???" "↪")   ;
@@ -649,8 +630,7 @@ by using nxml's indentation rules."
 ;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 ; To activate the mode globally, add to your init file:
 (global-rainbow-delimiters-mode)
-; test delimiters:
-;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}
+;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
 
 ;; must be loaded in the end; otherwise:
 ;;    Symbol's function definition is void: mapcar*
