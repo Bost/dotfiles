@@ -1,3 +1,6 @@
+;; TODO jump to last line and switch to edit mode
+;; TODO delete to the end of line and switch to edit mode
+
 ;; (setq url-proxy-services
 ;;       '(("https" . "192.168.2.105:3128")
 ;;         ("http" . "192.168.2.105:3128")))
@@ -554,6 +557,7 @@ by using nxml's indentation rules."
     ("geq" "≥")
 
     ("ar1" "→")
+    ("ar11" "↠")
     ("1ar1" "↔")
     ("ar2" "⇒")
     ("2ar" "⇐")
@@ -561,9 +565,8 @@ by using nxml's indentation rules."
     ("exs" "∃")
     ("frll" "∀")
     ("ie" "i.e.")
-    ("eg" "e.g.")  ;; exempli gration - for example
-    ("lam" "λ")
-
+    ("eg" "e.g.")  ; exempli gration - for example
+    ("lam" "λ")    ; ⋋
     ("hmm" "homomorphism")
     ("Hmm" "Homomorphism")
     ("ism" "isomorphism")
@@ -572,6 +575,13 @@ by using nxml's indentation rules."
     ("Ctg" "Category")
     ("thr" "theory")
     ("Thr" "Theory")
+    ("mor" "→")   ; morphism
+    ("mono" "↣")  ; monomorphism
+    ("epi" "↠")  ; epimorphism
+    ;("???" "↪")   ;
+    ("div" "⇸")   ; division
+    ("comp" "∘")  ; composition
+    ("tens" "⊗") ; tensor
 
     ;; javascript
     ("co" "contract")
@@ -602,7 +612,6 @@ by using nxml's indentation rules."
     ("Ca" "Category")
     ("sig" "signature")
     ("Sig" "Signature")
-    ("tens" "⊗") ; tensor
 
     ;; SQL
     ("sl" "select * from fetch first 10 rows only;")
