@@ -24,7 +24,8 @@
 (eval-after-load "paredit.el"
   '(require 'paredit-menu))
 
-(require 'cider) ; quick fix of https://github.com/clojure-emacs/cider/issues/385 former nrepl
+;; quick fix of https://github.com/clojure-emacs/cider/issues/385 former nrepl
+(require 'cider)
 
 (global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
 (global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
@@ -32,15 +33,15 @@
 (require 'ob-clojure)
 (global-set-key (kbd "s-t") 'clojure-jump-between-tests-and-code)
 ;; Attention defaults are:
-;;     C-c C-l: (nrepl-load-file FILENAME)
-;;     C-c C-k: (nrepl-load-current-buffer)
+;;     C-c C-l: (cider-load-file FILENAME)
+;;     C-c C-k: (cider-load-current-buffer)
 
-(defun nrepl-save-and-load-current-buffer ()
+(defun cider-save-and-load-current-buffer ()
   (interactive)
   (when (buffer-modified-p)
     (save-buffer))
-  (nrepl-load-file (buffer-file-name))
-  ;; (nrepl-switch-to-relevant-repl-buffer nil)
+  (cider-load-file (buffer-file-name))
+  ;; (cider-switch-to-relevant-repl-buffer nil)
   )
 
 (defun emacs-lisp-mode-keys ()
@@ -60,14 +61,14 @@
 (add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
 
-(defun nrepl-eval-last-expression-in-repl ()
+(defun cider-eval-last-expression-in-repl ()
   "This doesn't work"
   (interactive)
   (evil-visual-char)
   (evil-jump-item)
   ;; (clipboard-kill-ring-save)
   ;; (clipboard-kill-region)
-  ;; (nrepl-switch-to-relevant-repl-buffer)
+  ;; (cider-switch-to-relevant-repl-buffer)
   ;; (clipboard-yank)
 
   ;; (global-set-key [(shift delete)] 'clipboard-kill-region)
@@ -77,38 +78,51 @@
 
 (defun clojure-mode-keys ()
   "Modify keymaps used by `clojure-mode'."
-  (local-set-key (kbd "s-r") 'nrepl-eval-last-expression-in-repl)
-  (local-set-key (kbd "s-e") 'nrepl-eval-last-expression)
-  (local-set-key (kbd "s-z") 'nrepl-switch-to-relevant-repl-buffer)
-  (local-set-key (kbd "s-l") 'nrepl-save-and-load-current-buffer)
-  (local-set-key (kbd "s-n") 'nrepl-set-ns)
-  (local-set-key (kbd "s-.") 'nrepl-jump)
-  (local-set-key (kbd "s-,") 'nrepl-jump-back)
+  (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
+  (local-set-key (kbd "s-e") 'cider-eval-last-expression)
+  (local-set-key (kbd "s-z") 'cider-switch-to-relevant-repl-buffer)
+  (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
+  (local-set-key (kbd "s-n") 'cider-set-ns)
+  (local-set-key (kbd "s-.") 'cider-jump)
+  (local-set-key (kbd "s-,") 'cider-jump-back)
   )
 (add-hook 'clojure-mode-hook 'clojure-mode-keys)
 
-(defun nrepl-mode-keys ()
-  "Modify keymaps used by `nrepl-mode'."
-  (local-set-key (kbd "s-z") 'nrepl-switch-to-last-clojure-buffer)
-  (local-set-key (kbd "s-.") 'nrepl-jump)
-  (local-set-key (kbd "s-,") 'nrepl-jump-back)
+(defun cider-mode-keys ()
+  "Modify keymaps used by `cider-mode'."
+  (local-set-key (kbd "s-z") 'cider-switch-to-last-clojure-buffer)
+  (local-set-key (kbd "s-.") 'cider-jump)
+  (local-set-key (kbd "s-,") 'cider-jump-back)
   )
-(add-hook 'nrepl-mode-hook 'nrepl-mode-keys)
+(add-hook 'cider-mode-hook 'cider-mode-keys)
 
-;; (global-set-key (kbd "s-.") 'nrepl-jump)
-;; (global-set-key (kbd "s-,") 'nrepl-jump-back)
+;; enable eldoc mode in clojure buffers
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
-(defun nrepl-interaction-mode-keys ()
-  "Modify keymaps used by `nrepl-interaction-mode'."
-  ;; (local-set-key (kbd "s-o") 'mnrepl-jump)
+;; enable paredit in repl buffer
+;; (add-hook 'cider-repl-mode-hook 'paredit-mode)
+
+;; smartparens is an alternative to paredit
+;; (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode)
+
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+
+;; camel case
+;; (add-hook 'cider-repl-mode-hook 'subword-mode)
+
+
+;; (global-set-key (kbd "s-.") 'cider-jump)
+;; (global-set-key (kbd "s-,") 'cider-jump-back)
+
+(defun cider-interaction-mode-keys ()
+  "Modify keymaps used by `cider-interaction-mode'."
+  ;; (local-set-key (kbd "s-o") 'cider-jump)
   )
-(add-hook 'nrepl-interaction-mode-hook 'nrepl-interaction-mode-keys)
+(add-hook 'cider-interaction-mode-hook 'cider-interaction-mode-keys)
 
 
-;; hide the *nrepl-connection* and *nrepl-server* buffers from
-;; appearing in some buffer switching commands like
-;; switch-to-buffer(C-x b) like this:
-;; (setq nrepl-hide-special-buffers t)
+;; hide *nrepl-connection* and *nrepl-server* when switching buffers
+(setq nrepl-hide-special-buffers t)
 
 (require 'auto-complete-config)
 (ac-config-default)
