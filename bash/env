@@ -110,7 +110,7 @@ elif [ "$isLinux" -gt 0 ]; then
         CLASSPATH=$dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
         # TODO try to use OpenJDK instead of Oracle JDK
         JDK_16_HOME=$HOME/java/jdk1.6.0_33
-        JAVA_HOME=$HOME/java/jdk1.7.0_07
+        JAVA_HOME=$HOME/java/jdk1.7.0_45
         # I need too have $PATH at the end because I want to override the pre-preinstalled java
         # PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
         PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME
