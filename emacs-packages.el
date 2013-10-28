@@ -21,6 +21,7 @@
    browse-kill-ring
    bs-ext              ; Extensions to emacs buffer-selection library (bs.el) [wiki]
    charmap
+   cider
    clj-refactor
    cljdoc
    cljsbuild-mode
@@ -65,12 +66,14 @@
    ido-ubiquitous
    js2-mode
    latest-clojars
+   latest-clojure-libraries
    levenshtein
    linum-relative
    litable
    load-theme-buffer-local
    mag-menu
    magit
+   magit-log-edit
    magit-commit-training-wheels
    ;; magit-push-remote - probably not needed - test it
    ;; magithub - magit-log-edit-confirm-cancellation issue
