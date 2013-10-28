@@ -82,7 +82,7 @@
   (local-set-key (kbd "s-e") 'cider-eval-last-expression)
   (local-set-key (kbd "s-z") 'cider-switch-to-relevant-repl-buffer)
   (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
-  (local-set-key (kbd "s-n") 'cider-set-ns)
+  (local-set-key (kbd "s-n") 'cider-repl-set-ns)
   (local-set-key (kbd "s-.") 'cider-jump)
   (local-set-key (kbd "s-,") 'cider-jump-back)
   )
