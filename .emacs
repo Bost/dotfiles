@@ -12,7 +12,8 @@
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+                         ("melpa" . "http://melpa.milkbox.net/packages/")
+			 ))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -23,9 +24,6 @@
 
 (eval-after-load "paredit.el"
   '(require 'paredit-menu))
-
-;; quick fix of https://github.com/clojure-emacs/cider/issues/385 former nrepl
-;; (require 'cider)
 
 (global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
 (global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
