@@ -79,7 +79,7 @@
 (defun clojure-mode-keys ()
   "Modify keymaps used by `clojure-mode'."
   (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
-  (local-set-key (kbd "s-e") 'cider-eval-last-expression)
+  (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
   (local-set-key (kbd "s-z") 'cider-switch-to-relevant-repl-buffer)
   (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
   (local-set-key (kbd "s-n") 'cider-repl-set-ns)
