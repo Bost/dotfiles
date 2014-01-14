@@ -25,7 +25,7 @@
   '(require 'paredit-menu))
 
 ;; quick fix of https://github.com/clojure-emacs/cider/issues/385 former nrepl
-(require 'cider)
+;; (require 'cider)
 
 (global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
 (global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
@@ -171,10 +171,14 @@
 ;;(desktop-load-default)
 ;;(desktop-read)
 
+
+
 (require 'org-install)
 (org-babel-do-load-languages
 'org-babel-load-languages
 '(
+  (emacs-lisp . t)
+  (clojure . t)
   (sh . t)
   (python .t)
   (R . t)
@@ -184,6 +188,11 @@
   (sqlite . t)
   (perl . t)
   ))
+
+;; Show syntax highlighting per language native mode in *.org
+(setq org-src-fontify-natively t)
+;; For languages with significant whitespace like Python:
+(setq org-src-preserve-indentation t)
 
 ;; Add shortcuts for ogr-agenda
 ;(global-set-key "\C-cl" 'org-store-link)
@@ -202,7 +211,7 @@
 (global-set-key [f6] 'magit-status)
 
 ;; font size
-(set-face-attribute 'default nil :height 120)
+(set-face-attribute 'default nil :height 100)
 
 ;; highlight current line - this is probably not needed in the default face
 ;; (global-hl-line-mode 1)
