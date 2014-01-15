@@ -50,15 +50,15 @@
   )
 (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
-(defun skewer-mode-keys ()
-  "Modify keymaps used by `skewer-mode'."
-  (local-set-key (kbd "s-e") 'skewer-eval-last-expression)
-  (local-set-key (kbd "s-x") 'skewer-eval-defun)
-  (local-set-key (kbd "s-l") 'skewer-load-buffer)
-  )
+;(defun skewer-mode-keys ()
+;  "Modify keymaps used by `skewer-mode'."
+;  (local-set-key (kbd "s-e") 'skewer-eval-last-expression)
+;  (local-set-key (kbd "s-x") 'skewer-eval-defun)
+;  (local-set-key (kbd "s-l") 'skewer-load-buffer)
+;  )
 ;; skewer works on top of js2-mode
 ;; (add-hook 'js2-mode-hook 'skewer-mode-keys)
-(add-hook 'skewer-mode-hook 'skewer-mode-keys)
+;(add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
 
 (defun cider-eval-last-expression-in-repl ()
@@ -423,17 +423,17 @@ by using nxml's indentation rules."
 ; (define-key evil-normal-state-map [backtab] #'back-window)
 
 ;; change mode-line color by evil state
-(lexical-let ((default-color (cons (face-background 'mode-line)
-                                   (face-foreground 'mode-line))))
-  (add-hook 'post-command-hook
-            (lambda ()
-              (let ((color (cond ((minibufferp) default-color)
-                                 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
-                                 ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
-                                 ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
-                                 (t default-color))))
-                (set-face-background 'mode-line (car color))
-                (set-face-foreground 'mode-line (cdr color))))))
+;(lexical-let (default-color (cons (face-background 'mode-line)
+;                                   (face-foreground 'mode-line)))
+;  (add-hook 'post-command-hook
+;            (lambda ()
+;              (let ((color (cond ((minibufferp) default-color)
+;                                 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
+;                                 ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
+;                                 ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
+;                                 (t default-color))))
+;                (set-face-background 'mode-line (car color))
+;                (set-face-foreground 'mode-line (cdr color))))))
 
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (define-key global-map (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
