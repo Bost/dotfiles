@@ -502,6 +502,7 @@ alias genpasswd=GeneratePassw
 # alias lt='$dev/LightTable/LightTable &'
 alias lt='ls -lat'
 alias ltr='ls -latr'
+alias lff='ls -lrt -d -1 $PWD/{*,.*}'
 alias lT='ls -latr'
 alias y='youtube-dl'
 alias m='mplayer'
