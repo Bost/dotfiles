@@ -509,3 +509,4 @@ alias m='mplayer'
 
 # create alias file for the eshell; runs 0.007 sec
 alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
+alias tmp='cd $HOME/tmp/'
