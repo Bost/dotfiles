@@ -670,3 +670,7 @@ by using nxml's indentation rules."
 ;; (global-set-key (kbd "C-S-<pause>") 'wg-save-session)
 ;; (global-set-key (kbd "s-z")         'wg-switch-to-workgroup)
 ;; (global-set-key (kbd "s-/")         'wg-switch-to-previous-workgroup)
+
+;(defun sql-db2-g72 ()
+;  (interactive)
+;  (copy-line -1))
