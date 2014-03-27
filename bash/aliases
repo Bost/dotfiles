@@ -170,8 +170,8 @@ GitPushRepo() {
 }
 
 GitPullOrigin() {
-    echo 'git pull --rebase origin master'
-          git pull --rebase origin master
+    echo 'git pull --rebase origin master && git fetch --tags'
+          git pull --rebase origin master && git fetch --tags
 }
 
 GitPullUpstream() {
@@ -510,7 +510,8 @@ alias genpasswd=GeneratePassw
 # TODO is this for passing param to an alias?
 #alias 'ps?'='ps ax | grep '
 
-# alias lt='$dev/LightTable/LightTable &'
+alias ltt='$dev/LightTable/deploy/LightTable &'
+alias clt='cd $dev/LightTable'
 alias lt='ls -lat'
 alias ltr='ls -latr'
 alias lff='ls -lrt -d -1 $PWD/{*,.*}'

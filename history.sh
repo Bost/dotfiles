@@ -338,3 +338,6 @@ echo sudo apt-get autoremove
 echo ''
 echo $todo
 echo "$0 terminated"
+
+ln -s /home/bost/dev/dotfiles/lighttable/user.behaviors /home/bost/.config/LightTable/settings/user.behaviors
+ln -s /home/bost/dev/dotfiles/lighttable/user.keymap /home/bost/.config/LightTable/settings/user.keymap
