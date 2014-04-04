@@ -277,7 +277,6 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     :
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
-    alias ng='$dev/vimclojure-nailgun-client/ng.exe'
     runGvim() {
         echo "gvim '$*' &"
               gvim  $*  &
@@ -353,7 +352,6 @@ elif [ "$isLinux" -gt 0 ]; then
         echo 'sudo reboot'
               sudo reboot
     }
-    alias reb=reBoot
     alias reboot=reBoot
 
     doSuspend() {
@@ -434,23 +432,6 @@ if [ "$isLinux" -eq 0 ]; then
 #    echo "Linux aliases already loaded"
 fi
 
-alias ns='ng-server.sh'      # launch nailgunsrv as a background task
-alias np='ng ng-stop'
-
-NailGunRestart() {
-    echo "ng ng-stop; ng-server.sh"
-         ng ng-stop; ng-server.sh
-    if [ "$isLinuxBambi" -gt 0 ]; then
-        nrSleep=8
-    else
-        nrSleep=1
-    fi
-    echo sleep $nrSleep
-         sleep $nrSleep
-    echo gvim src/hochzeit/core.clj src/hochzeit/analyze.clj src/hochzeit/download.clj
-         gvim src/hochzeit/core.clj src/hochzeit/analyze.clj src/hochzeit/download.clj
-}
-alias nr=NailGunRestart
 cljcp=$clojureJarFile
 cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
 cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
