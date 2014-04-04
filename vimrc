@@ -368,7 +368,8 @@ Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-repeat.git'
 Bundle 'mileszs/ack.vim.git'
 
-Bundle 'tsaleh/vim-matchit.git'
+"Bundle 'tsaleh/vim-matchit.git' " this location no longer exists
+Bundle 'eshock/vim-matchit.git'
 
 " {{{ Powerline
 

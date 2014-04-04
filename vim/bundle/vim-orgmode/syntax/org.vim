@@ -208,24 +208,30 @@ hi def link org_timestamp_inactive Comment
 " }}}
 " Lists: {{{
 
-" Ordered:
+" Ordered Lists:
 " 1. list item
 " 1) list item
-syn match org_list_ordered "^\s\+\d\+[.)]\s"
+syn match org_list_ordered "^\s*\d\+[.)]\s"
 hi def link org_list_ordered Identifier
 
-" Unordered:
+" Unordered Lists:
 " - list item
 " * list item
 " + list item
-syn match org_list_unordered "^\s\+[-*+]\s"
+" + and - don't need a whitespace prefix
+syn match org_list_unordered "^\s*[-+]\s"
+" * must have a whitespace prefix, otherwise it's a heading
+syn match org_list_unordered "^\s\+\*\s"
 hi def link org_list_unordered Identifier
 
-" Definitions:
+" Definition Lists:
 " - Term :: expl.
 " 1) Term :: expl.
-syntax region org_list_def start="^\s\+\d[.)]\s" end="::" keepend oneline contains=org_list_unordered
-syntax region org_list_def start="^\s\+[-*+]\s" end="::" keepend oneline contains=org_list_ordered
+syntax region org_list_def start="^\s*\d[.)]\s" end=" ::" keepend oneline contains=org_list_unordered
+" + and - don't need a whitespace prefix
+syntax region org_list_def start="^\s*[-+]\s" end=" ::" keepend oneline contains=org_list_ordered
+" * must have a whitespace prefix, otherwise it's a heading
+syntax region org_list_def start="^\s\+\*\s" end=" ::" keepend oneline contains=org_list_ordered
 hi def link org_list_def Identifier
 
 " }}}
@@ -262,13 +268,13 @@ hi def link org_comment Comment
 " - the non-standard `code' markup is also supported
 " - =code= and ~verbatim~ are also supported as block-level markup, see below.
 " Ref: http://orgmode.org/manual/Emphasis-and-monospace.html
-
-syntax match org_bold  '\(\_^\|\s\|[({]\)\zs\*[^ ,'"]\(.\{-}[^ ,'"]\)\?\*\ze\(\_$\|\s\|[)}\.;!\-\\:]\)'
-syntax match org_italic  '\(\_^\|\s\|[({]\)\zs\/[^ ,'"\/]\(.\{-}[^ ,'"]\)\?\/\ze\(\_$\|\s\|[)}\.;!\-\\:]\)'
-syntax match org_underline  '\(\_^\|\s\|[({]\)\zs_[^ ,'"]\(.\{-}[^ ,'"]\)\?_\ze\(\_$\|\s\|[)}\.;!\-\\:]\)'
-syntax match org_code  '\(\_^\|\s\|[({]\)\zs=[^ ,'"]\(.\{-}[^ ,'"]\)\?=\ze\(\_$\|\s\|[)}\.;!\-\\:]\)'
-syntax match org_code  '\(\_^\|\s\|[({]\)\zs`[^ ,'"]\(.\{-}[^ ,'"]\)\?`\ze\(\_$\|\s\|[)}\.;!\-\\:]\)'
-syntax match org_verbatim  '\(\_^\|\s\|[({]\)\zs\~[^ ,'"]\(.\{-}[^ ,'"]\)\?\~\ze\(\_$\|\s\|[)}\.;!\-\\:]\)'
+"syntax match org_bold /\*[^ ]*\*/
+syntax region org_bold      start="\S\@<= \*\| \*\S\@="   end="\S\@<=\*\|\*\S\@="  keepend oneline
+syntax region org_italic    start="\S\@<= \/\| \/\S\@="   end="\S\@<=\/\|\/\S\@="  keepend oneline
+syntax region org_underline start="\S\@<=_\|_\S\@="       end="\S\@<=_\|_\S\@="    keepend oneline
+syntax region org_code      start="\S\@<==\|=\S\@="       end="\S\@<==\|=\S\@="    keepend oneline
+syntax region org_code      start="\S\@<=`\|`\S\@="       end="\S\@<='\|'\S\@="    keepend oneline
+syntax region org_verbatim  start="\S\@<=\~\|\~\S\@="     end="\S\@<=\~\|\~\S\@="  keepend oneline
 
 hi def org_bold      term=bold      cterm=bold      gui=bold
 hi def org_italic    term=italic    cterm=italic    gui=italic
