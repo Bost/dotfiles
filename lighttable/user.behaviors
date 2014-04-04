@@ -26,7 +26,16 @@
               (:lt.objs.style/set-theme "default")
               :lt.objs.editor/line-numbers
               ::lt.objs.editor/highlight-current-line
-              (:lt.plugins.vim/activate-vim)]
+              (:lt.plugins.vim/activate-vim)
+              (:lt.plugins.vim/map-keys {"\\wr" ":ltexec paredit-plus.wrap-round"
+                                         "\\ws" ":ltexec paredit-plus.wrap-square"
+                                         "\\wc" ":ltexec paredit-plus.wrap-curly"
+                                         "\\wq" ":ltexec paredit-plus.wrap-quote"
+                                         "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
+                                         "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
+
+                                         "\\x" ":ltexec editor.javascript.hints.result"
+                                         })              ]
 
      ;; Here we can add behaviors to just clojure editors
      :editor.clojure [(:lt.objs.langs.clj/print-length 1000)]}
