@@ -8,6 +8,14 @@ echo $todo
 echo ''
 
 mkdir -p ~/dev
+if [ ! -L ~/music ]; then
+    if [ -d ~/Hudba ]; then
+        ln -s ~/Hudba ~/music
+    else
+        ln -s ~/Music ~/music
+    fi
+fi
+
 if [ ! -L ~/downloads ]; then
     if [ -d ~/Stiahnuté ]; then
         ln -s ~/Stiahnuté ~/downloads
