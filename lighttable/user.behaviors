@@ -23,12 +23,12 @@
      ;; The editor tag is applied to all editors
      :editor [:lt.objs.editor/no-wrap
               ;(:lt.objs.style/font-settings "Ubuntu Mono" 13 1)
-
               (:lt.objs.style/font-settings "" 14 1)
-              (:lt.objs.style/set-theme "default")
+              (:lt.objs.style/set-theme "ibdknox")
               :lt.objs.editor/line-numbers
-              ::lt.objs.editor/highlight-current-line
-              (:lt.plugins.vim/activate-vim)
+              ; 'highlight-current-line' makes the editor slow
+              ;::lt.objs.editor/highlight-current-line
+              :lt.plugins.vim/activate-vim
               (:lt.plugins.vim/map-keys {"\\wr" ":ltexec paredit-plus.wrap-round"
                                          "\\ws" ":ltexec paredit-plus.wrap-square"
                                          "\\wc" ":ltexec paredit-plus.wrap-curly"
@@ -40,7 +40,14 @@
                                          })              ]
 
      ;; Here we can add behaviors to just clojure editors
-     :editor.clojure [(:lt.objs.langs.clj/print-length 1000)]}
+     :editor.clojure [(:lt.objs.langs.clj/print-length 1000)]
+
+     ; all objects with tag :opener behave such that they open README.md in standard-editor,
+     ; when open-standard-editor behavior is triggered (i.e. when doing :open-standard-editor)
+     ;:opener [(:lt.objs.opener/open-standard-editor "/home/bost/dev/fb/README.md")]
+
+     ; TODO: open README.md when doing init
+}
 
  ;; You can use the subtract key to remove behavior that may get added by
  ;; another diff
