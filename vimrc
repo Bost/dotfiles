@@ -283,8 +283,6 @@ Bundle 'kien/ctrlp.vim.git'
 " python_ifold doesn't work somehow
 "Bundle 'python_ifold'
 
-Bundle "jceb/vim-orgmode"
-
 Bundle 'skyl/vim-config-python-ide.git'
 
 "Bundle 'vim-scripts/csv.vim.git'
@@ -366,10 +364,10 @@ Bundle 'tpope/vim-unimpaired.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-repeat.git'
-Bundle 'mileszs/ack.vim.git'
+Bundle 'mileszs/ack.vim'
 
 "Bundle 'tsaleh/vim-matchit.git' " this location no longer exists
-Bundle 'eshock/vim-matchit.git'
+Bundle 'vim-scripts/matchit.zip.git'
 
 " {{{ Powerline
 
