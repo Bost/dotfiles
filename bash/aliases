@@ -497,7 +497,7 @@ alias lt='ls -lat'
 alias ltr='ls -latr'
 alias lff='ls -lrt -d -1 $PWD/{*,.*}'
 alias lT='ls -latr'
-alias y='youtube-dl'
+alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl'
 alias m='mplayer'
 
 # create alias file for the eshell; runs 0.007 sec

@@ -349,3 +349,6 @@ echo "$0 terminated"
 
 ln -s /home/bost/dev/dotfiles/lighttable/user.behaviors /home/bost/.config/LightTable/settings/user.behaviors
 ln -s /home/bost/dev/dotfiles/lighttable/user.keymap /home/bost/.config/LightTable/settings/user.keymap
+
+curl -O https://yt-dl.org/downloads/2014.04.13/youtube-dl -o $HOME/bin/youtube-dl
+chmod a+x $HOME/bin/youtube-dl
