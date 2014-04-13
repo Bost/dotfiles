@@ -19,7 +19,7 @@
 (package-initialize)
 ;; (package-refresh-contents)
 
-(display-battery-mode 1)
+;(display-battery-mode 1) ; something's wrong with it
 (size-indication-mode 1)  ; filesize indicator
 
 (eval-after-load "paredit.el"
