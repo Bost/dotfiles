@@ -23,6 +23,9 @@
 
      ;; The editor tag is applied to all editors
      :editor [:lt.objs.editor/no-wrap
+              ;(:lt.objs.style/font-settings "Ubuntu Mono" 13 1)
+
+              (:lt.objs.style/font-settings "" 14 1)
               (:lt.objs.style/set-theme "default")
               :lt.objs.editor/line-numbers
               ::lt.objs.editor/highlight-current-line
