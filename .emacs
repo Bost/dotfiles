@@ -225,15 +225,20 @@
 (setq default-truncate-lines t)
 (define-key global-map [f5] 'toggle-truncate-lines)
 
-(defun cygpath ()
-  (setq path (thing-at-point 'line))
-  (split-window-below)
-  (eshell)
-  (interactive)
-  (insert (concat "cygpath -u " path))
-  (eshell-send-input))
+;(defun cygpath ()
+;  (setq path (thing-at-point 'line))
+;  (split-window-below)
+;  (eshell)
+;  (interactive)
+;  (insert (concat "cygpath -u " path))
+;  (eshell-send-input))
+;(global-set-key [f7] 'cygpath)
 
-(global-set-key [f7] 'cygpath)
+(defun changelog ()
+  (interactive)
+  (find-file "/cygdrive/c/cygwin/home/svo02896/dev/credit.head.fehler/migration/changelog.txt"))
+
+(global-set-key [f7] 'changelog)
 
 (global-set-key [f8] 'transpose-frame)
 
