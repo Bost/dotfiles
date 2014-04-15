@@ -43,6 +43,7 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     echo "### isCygwin_155: $isCygwin_155 => Loading $strCygwin_155"
     base=/cygdrive
     dev=$base/c/cygwin/home/$USERNAME/dev
+    tmp=$base/c/cygwin/home/$USERNAME/tmp
     winapp=$base/c/winapp
     winappX86=$base/c/winapp-x86
 
