@@ -1,23 +1,27 @@
 #!/bin/bash -e
 
-alias reload=Reload
-alias r=Reload
-
 Reload() {
     echo source $HOME/.bashrc
          source $HOME/.bashrc
 }
+alias reload=Reload
+alias r=Reload
 
 alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
 alias unexport='unset'
-alias e='echo'
 alias envp='env | grep ^PATH='
 
 alias v='vim'
 
 alias cls='clear'
+
 # use pgreg under linux
-alias prep='ps -ef | grep '
+PsEfGrep() {
+    echo "ps -ef | grep $@"
+          ps -ef | grep $@
+}
+alias prep=PsEfGrep
+
 TestConnectivity() {
     #echo ping -c 5 www.google.com
          #ping -c 5 www.google.com
@@ -49,8 +53,12 @@ alias gdd=GitAddAll
 alias gg='git gui &'
 alias gtg='git tag'
 alias gtag='git tag'
-alias gbr='git branch'
-alias gb='git branch'
+
+GitBranch () {
+    echo git branch $@
+         git branch $@
+}
+alias gbr=GitBranch
 
 GrepFind () {
     echo "grep -lir '$1' \`find . -name '*.$2'\`"
@@ -63,7 +71,7 @@ GrepFind () {
 }
 alias gf=GrepFind
 
-GitRebase() {
+GitRebaseContinue() {
     #git fetch # can never fail with a conflict
     #git ff    # tries to fast-forward
     ## if fast-forward fails, then
@@ -79,14 +87,28 @@ GitRebase() {
     # sets it up for master of the current repo
     #   git config --global branch.autosetuprebase always
 }
-alias gr=GitRebase
+
+GitRebaseInteractive() {
+    echo git rebase --interactive $@
+         git rebase --interactive $@
+}
+
+GitRebaseAbort() {
+    echo git rebase --abort
+         git rebase --abort
+}
+
+alias grc=GitRebaseContinue
+alias gri=GitRebaseInteractive
+alias gra=GitRebaseAbort
 
 #alias gdf='git diff'
 #alias gp='git push'
 alias gpl=GitPullOrigin
-alias gp=GitPullOrigin
-alias gh='echo "git push"; git push'
+alias gpo=GitPullOrigin
 alias gpu=GitPullUpstream
+
+alias gho='echo "git push"; git push'
 
 GitLog() {
     # Visualise git log (like gitk, in the terminal)
@@ -100,7 +122,7 @@ alias gl=GitLog
 alias gitk='echo "gitk --all &"; gitk --all &'
 alias gk='gitk'
 
-gitSearchStr () {
+GitSearchStr () {
     # Search for a string in all revisions of entire git history
     git rev-list --all | (
         while read revision; do
@@ -109,7 +131,7 @@ gitSearchStr () {
         done
     )
 }
-alias gstr=gitSearchStr
+alias gstr=GitSearchStr
 
 # ltree: colored tree with 'less'. --RAW-CONTROL-CHARS == -R
 ltree () {
@@ -199,7 +221,6 @@ GitUpdateAll() {
     cd $_cd
 }
 
-
 GitPushAll() {
     _cd=`pwd`
     echo 'pwd: '$_cd
@@ -207,16 +228,37 @@ GitPushAll() {
     cd $_cd
 }
 alias ga=GitUpdateAll
-alias gah=GitPushAll
+alias gha=GitPushAll
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
-alias gcl='git clone'
+
+GitClone() {
+    echo git clone $@
+         git clone $@
+}
+alias gcl=GitClone
+
 alias gau='git add --update'
 alias gss='git status --short'
-alias gst='git status'
-alias gs='git status'
-alias gco='git checkout'
-alias gci='git commit'
+
+GitStatus() {
+    echo git status $@
+         git status $@
+}
+alias gst=GitStatus
+
+GitCheckout() {
+    echo git checkout $@
+         git checkout $@
+}
+alias gco=GitCheckout
+
+GitCommit() {
+    echo git commit $@
+         git commit $@
+}
+alias gci=GitCommit
+
 #alias gdm='git diff master'
 #alias gd='git diff | mate'
 #alias gnp='git-notpushed'
@@ -224,13 +266,18 @@ alias gci='git commit'
 
 alias sc='script/console'
 alias h='history'
-alias hrep='history | grep '
-alias arep=aRep
 
-aRep() {
-    echo "alias | grep "$1
-          alias | grep $1
+HistoryGrep() {
+    echo "history | grep $@"
+          history | grep $@
 }
+alias hrep=HistoryGrep
+
+AliasGrep() {
+    echo "alias | grep $@"
+          alias | grep $@
+}
+alias arep=AliasGrep
 
 #alias tu='top -o cpu'
 #alias tm='top -o vsize'
@@ -252,6 +299,8 @@ alias md='mkdir -p'
 # alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
 alias cvs-reset='cvs update -C -l -d -P '
 alias less='less -r'
+
+# type: Display information about command type
 alias whence='type -a'
 alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
@@ -268,12 +317,18 @@ alias l.='ls -d .* --color=auto'
 #alias ll='ls -l'
 #alias l='ls -CF'
 #alias la='ls -A'
-findFile () {
-    echo find . -name "$1"
-         find . -name "$1"
+
+FindFile () {
+    echo find $@
+         find $@
 }
-alias f=findFile
-alias cx='chmod +x'
+alias f=FindFile
+
+ChmodExec () {
+    echo chmod +x $@
+         chmod +x $@
+}
+alias cx=ChmodExec
 
 #alias cp='cp -i'
 #alias mv='mv -i'
@@ -288,7 +343,7 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     :
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
-    runGvim() {
+    RunGvim() {
         echo "gvim '$*' &"
               gvim  $*  &
     }
@@ -301,7 +356,7 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 
-    runGvim() {
+    RunGvim() {
         echo "gvim -u $HOME/dev/dotfiles/vimrc '$*' &"
               gvim -u $HOME/dev/dotfiles/vimrc  $*  &
     }
@@ -389,7 +444,7 @@ elif [ "$isLinux" -gt 0 ]; then
     }
     alias clojure=runClojure
     alias kk="krusader --left . --right . &"
-    runGvim() {
+    RunGvim() {
         #echo gvim -c "call Maximize_Window()"
              #gvim -c "call Maximize_Window()"
         #echo gvim -c "call Maximize_Window()" --remote-silent
@@ -452,10 +507,9 @@ cljcp=$cljcp:$dev/clojure-contrib/core.cache-0.6.3.jar
 cljcp=$cljcp:$dev/clojure-contrib/core.memoize-0.5.5.jar
 cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
 
-alias g=runGvim
+alias g=RunGvim
 # this is a rather speculative $home location :)
 alias home='cd $dev/..'
-alias webcli='cd $dev/webcli'
 
 alias desktop='cd $HOME/Desktop'
 alias desk='desktop'
@@ -476,11 +530,11 @@ alias trackle='cd $dev/trackle'
 alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
-runEmacs() {
+RunEmacs() {
     echo "emacs '$1' &"
           emacs $1 &
 }
-alias e=runEmacs
+alias e=RunEmacs
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
