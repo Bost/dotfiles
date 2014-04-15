@@ -1,7 +1,12 @@
 #!/bin/bash -e
 
-alias reload='echo "reloading $HOME/.bashrc"; source $HOME/.bashrc'
-alias r='reload'
+alias reload=Reload
+alias r=Reload
+
+Reload() {
+    echo source $HOME/.bashrc
+         source $HOME/.bashrc
+}
 
 alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
 alias unexport='unset'
@@ -220,6 +225,12 @@ alias gci='git commit'
 alias sc='script/console'
 alias h='history'
 alias hrep='history | grep '
+alias arep=aRep
+
+aRep() {
+    echo "alias | grep "$1
+          alias | grep $1
+}
 
 #alias tu='top -o cpu'
 #alias tm='top -o vsize'
