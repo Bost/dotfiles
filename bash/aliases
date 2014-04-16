@@ -22,6 +22,13 @@ PsEfGrep() {
 }
 alias prep=PsEfGrep
 
+ExtractBashComments() {
+    egrep "^#"
+# Usage:
+# cat myscript.sh | ExtractBashComments | wc 
+# comments=$(ExtractBashComments < myscript.sh)
+}
+
 TestConnectivity() {
     #echo ping -c 5 www.google.com
          #ping -c 5 www.google.com
