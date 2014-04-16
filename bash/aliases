@@ -191,14 +191,26 @@ mkdirAndCd() {
 alias mcd=mkdirAndCd
 alias take=mkdirAndCd
 
+LeinCljsbuildClean() {
+    echo lein cljsbuild clean
+         lein cljsbuild clean
+}
+alias lcc=LeinCljsbuildClean
+
+LeinCljsbuildAuto() {
+    echo lein cljsbuild auto
+         lein cljsbuild auto
+}
+alias lca=LeinCljsbuildAuto
+
 GitPushRepo() {
     echo 'cd '$1' && git push'
           cd  $1  && git push
 }
 
 GitPullOrigin() {
-    echo 'git pull --rebase origin master && git fetch --tags'
-          git pull --rebase origin master && git fetch --tags
+    echo 'git pull --rebase origin && git fetch --tags'
+          git pull --rebase origin && git fetch --tags
 }
 
 GitPullUpstream() {
