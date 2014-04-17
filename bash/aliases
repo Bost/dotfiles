@@ -112,7 +112,13 @@ alias gra=GitRebaseAbort
 #alias gdf='git diff'
 #alias gp='git push'
 
-alias gho='echo "git push"; git push'
+GitPush() {
+    # i.e. push to origin
+    echo git push $@
+         git push $@
+}
+alias gh=GitPush
+alias gho=GitPush
 
 GitLog() {
     # Visualise git log (like gitk, in the terminal)
