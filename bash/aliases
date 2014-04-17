@@ -111,9 +111,6 @@ alias gra=GitRebaseAbort
 
 #alias gdf='git diff'
 #alias gp='git push'
-alias gpl=GitPullOrigin
-alias gpo=GitPullOrigin
-alias gpu=GitPullUpstream
 
 alias gho='echo "git push"; git push'
 
@@ -126,8 +123,12 @@ GitLog() {
 }
 alias gl=GitLog
 
-alias gitk='echo "gitk --all &"; gitk --all &'
-alias gk='gitk'
+GitKAll() {
+    echo gitk --all &
+         gitk --all &
+}
+alias gitk=GitKAll
+alias gk=GitKAll
 
 GitSearchStr () {
     # Search for a string in all revisions of entire git history
@@ -210,20 +211,17 @@ LeinCljsbuildAuto() {
 }
 alias lca=LeinCljsbuildAuto
 
-GitPushRepo() {
-    echo 'cd '$1' && git push'
-          cd  $1  && git push
-}
-
 GitPullOrigin() {
     echo 'git pull --rebase origin && git fetch --tags'
           git pull --rebase origin && git fetch --tags
 }
+alias glo=GitPullOrigin
 
 GitPullUpstream() {
     echo 'git pull --rebase upstream master'
           git pull --rebase upstream master
 }
+alias glu=GitPullUpstream
 
 GitPullOriginRepo() {
     echo 'cd '$1' && GitPullOrigin'
@@ -239,6 +237,13 @@ GitUpdateAll() {
     fi
     cd $_cd
 }
+alias ga=GitUpdateAll
+alias gua=GitUpdateAll
+
+GitPushRepo() {
+    echo 'cd '$1' && git push'
+          cd  $1  && git push
+}
 
 GitPushAll() {
     _cd=`pwd`
@@ -246,7 +251,6 @@ GitPushAll() {
     GitPushRepo $dev/cheatsheet && GitPushRepo $dev/dotfiles
     cd $_cd
 }
-alias ga=GitUpdateAll
 alias gha=GitPushAll
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
@@ -277,6 +281,12 @@ GitCommit() {
          git commit $@
 }
 alias gci=GitCommit
+
+GitResetHard() {
+    echo git reset --hard
+         git reset --hard
+}
+alias grh=GitResetHard
 
 #alias gdm='git diff master'
 #alias gd='git diff | mate'
@@ -366,11 +376,11 @@ elif [ "$isCygwin_155" -gt 0 ]; then
         echo "gvim '$*' &"
               gvim  $*  &
     }
-    runClojureCygpath () {
+    RunClojureCygpath() {
         echo java -cp `cygpath -p -w $cljcp` clojure.main
              java -cp `cygpath -p -w $cljcp` clojure.main
     }
-    alias clojure=runClojureCygpath
+    alias clojure=RunClojureCygpath
 elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
@@ -411,17 +421,17 @@ elif [ "$isLinux" -gt 0 ]; then
     export VMAIL_VIM=gvim
 
     alias lock="xflock4"
-    updateUpgradeClean() {
+    UpdateUpgradeClean() {
         echo "sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean"
               sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean
     }
-    alias u=updateUpgradeClean
+    alias u=UpdateUpgradeClean
 
-    distUpgrade() {
+    DistUpgrade() {
         echo "sudo apt-get dist-upgrade --yes"
               sudo apt-get dist-upgrade --yes
     }
-    alias d=distUpgrade
+    alias d=DistUpgrade
 
     alias k9='kill -9'
     # I guess '2> /dev/null' redirects errors to /dev/null
@@ -439,13 +449,13 @@ elif [ "$isLinux" -gt 0 ]; then
     }
     alias reboot=reBoot
 
-    doSuspend() {
+    DoSuspend() {
         echo 'sudo pm-suspend'
               sudo pm-suspend
     }
-    alias s=doSuspend
-    alias susp=doSuspend
-    alias suspend=doSuspend
+    alias s=DoSuspend
+    alias susp=DoSuspend
+    alias suspend=DoSuspend
 
     shutDown() {
         echo 'sudo shutdown -h now'
@@ -457,12 +467,11 @@ elif [ "$isLinux" -gt 0 ]; then
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
 
-    runClojure () {
+    RunClojure() {
         echo java -cp $cljcp clojure.main
              java -cp $cljcp clojure.main
     }
-    alias clojure=runClojure
-    alias kk="krusader --left . --right . &"
+    alias clojure=RunClojure
     RunGvim() {
         #echo gvim -c "call Maximize_Window()"
              #gvim -c "call Maximize_Window()"
