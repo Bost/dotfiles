@@ -459,9 +459,17 @@ elif [ "$isLinux" -gt 0 ]; then
         echo 'sudo pm-suspend'
               sudo pm-suspend
     }
-    alias s=DoSuspend
+    #alias s=DoSuspend
     alias susp=DoSuspend
     alias suspend=DoSuspend
+
+    DoHibernate() {
+        echo 'sudo pm-hibernate'
+              sudo pm-hibernate
+    }
+    #alias h=DoHibernate
+    alias hib=DoHibernate
+    alias hibernate=DoHibernate
 
     shutDown() {
         echo 'sudo shutdown -h now'
