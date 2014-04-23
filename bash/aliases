@@ -78,36 +78,32 @@ GrepFind () {
 }
 alias gf=GrepFind
 
-GitRebaseContinue() {
+#GitRebaseContinue() {
     #git fetch # can never fail with a conflict
     #git ff    # tries to fast-forward
     ## if fast-forward fails, then
     #git rebase origin/upstreambranch
 
     # --continue: conflict resolving per commit basis not everything-at-once
-    echo git rebase --continue
-         git rebase --continue
+#    echo git rebase --continue
+#         git rebase --continue
     # use: 'git rebase --abort && git pull' if 'git rebase --continue' fails then use:
 
     # you can set up your git config to always rebase when pulling.
     #   git config master.rebase true
     # sets it up for master of the current repo
     #   git config --global branch.autosetuprebase always
+#}
+
+GitRebase() {
+    echo git rebase $@
+         git rebase $@
 }
 
-GitRebaseInteractive() {
-    echo git rebase --interactive $@
-         git rebase --interactive $@
-}
-
-GitRebaseAbort() {
-    echo git rebase --abort
-         git rebase --abort
-}
-
-alias grc=GitRebaseContinue
-alias gri=GitRebaseInteractive
-alias gra=GitRebaseAbort
+alias gr='GitRebase'
+alias grc='GitRebase --continue'
+alias gri='GitRebase --interactive'
+alias gra='GitRebase --abort'
 
 #alias gdf='git diff'
 #alias gp='git push'
