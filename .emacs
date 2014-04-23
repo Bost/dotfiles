@@ -210,8 +210,7 @@
 
 (setq x-select-enable-clipboard-manager nil) ; prevent: Error saving to X clipboard manager.
 
-;; font size
-(defun get-font-height ()
+(defun get-font-height () ; font size
   (interactive)
   (if (string= "0" (getenv "isLinuxFranzi"))
     100
@@ -241,12 +240,16 @@
 ;  (eshell-send-input))
 ;(global-set-key [f7] 'cygpath)
 
-(defun changelog ()
+(defun edit-file ()
   (interactive)
-  (find-file "/cygdrive/c/cygwin/home/svo02896/dev/credit.head.fehler/migration/changelog.txt"))
+  (find-file
+   (if (string= "0" (getenv "isCygwin_155"))
+     "~/dev/dotfiles/.emacs"
+     "$dev/credit.head.fehler/migration/changelog.txt"
+     ;"/cygdrive/c/cygwin/home/svo02896/dev/credit.head.fehler/migration/changelog.txt"
+     )))
 
-(global-set-key [f7] 'changelog)
-
+(global-set-key [f7] 'edit-file)
 (global-set-key [f8] 'transpose-frame)
 
 (defun clean-whitespaces ()
