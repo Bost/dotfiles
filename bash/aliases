@@ -120,6 +120,14 @@ GitPush() {
 alias gh=GitPush
 alias gho=GitPush
 
+GitBisect() {
+    # i.e. push to origin
+    echo git bisect $@
+         git bisect $@
+}
+alias gbb='GitBisect bad'
+alias gbg='GitBisect good'
+
 GitLog() {
     # Visualise git log (like gitk, in the terminal)
     #fmt=%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s
@@ -354,7 +362,6 @@ alias arep=AliasGrep
 #alias cp='nocorrect cp'
 alias md='mkdir -p'
 #alias mv='nocorrect mv'
-#alias e='exit'
 #alias where='command -v'
 #alias ff='open -a Firefox'
 #alias o='open . &'
@@ -606,10 +613,11 @@ alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
 RunEmacs() {
-    echo "emacs '$1' &"
-          emacs $1 &
+    echo "emacs $@ &"
+          emacs $@ &
 }
 alias e=RunEmacs
+alias ea='RunEmacs $dev/dotfiles/bash/aliases'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
