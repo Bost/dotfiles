@@ -6,6 +6,7 @@ Reload() {
 }
 alias reload=Reload
 alias r=Reload
+alias t=tail
 
 alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
 alias unexport='unset'
@@ -246,13 +247,14 @@ LeinCljsbuildClean() {
     echo lein cljsbuild clean
          lein cljsbuild clean
 }
-alias lcc=LeinCljsbuildClean
+alias lcc='LeinCljsbuildClean'
 
 LeinCljsbuildAuto() {
     echo lein cljsbuild auto
          lein cljsbuild auto
 }
-alias lca=LeinCljsbuildAuto
+alias lca='LeinCljsbuildAuto'
+alias lcca='LeinCljsbuildClean && LeinCljsbuildAuto'
 
 GitPullOrigin() {
     echo 'git pull --rebase origin && git fetch --tags'
