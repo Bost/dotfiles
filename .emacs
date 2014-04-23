@@ -126,7 +126,7 @@
 (ac-config-default)
 
 ;; M-x linum-relative-toggle
-(require 'linum-relative)
+;(require 'linum-relative)
 ;; show line number on the left side
 (global-linum-mode t)
 
@@ -208,8 +208,15 @@
 ;; (global-set-key [f6] 'split-window-horizontally)
 (global-set-key [f6] 'magit-status)
 
+(setq x-select-enable-clipboard-manager nil) ; prevent: Error saving to X clipboard manager.
+
 ;; font size
-(set-face-attribute 'default nil :height 100)
+(defun get-font-height ()
+  (interactive)
+  (if (string= "0" (getenv "isLinuxFranzi"))
+    100
+    140))
+(set-face-attribute 'default nil :height (get-font-height))
 
 ;; highlight current line - this is probably not needed in the default face
 ;; (global-hl-line-mode 1)
@@ -551,7 +558,6 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "C-s-<up>") 'copy-line-goto-next)
 (global-set-key (kbd "C-s-<down>") 'copy-line-goto-previous)
-
 
 (define-abbrev-table 'global-abbrev-table
   '(("alpha" "α")
