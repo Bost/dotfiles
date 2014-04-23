@@ -3,80 +3,33 @@
 # values used by other sripts and applications
 uname=`uname -a`
 strLinux="Linux"
+strLinuxFranzi="Linux franzi"
 strLinuxMartin="Linux bost-martin"
-strLinuxMartin="Linux bambi-small"
+strLinuxBambi="Linux bambi-small"
 #echo uname: $uname
 # the system variable strMinGw32_155 is not visible under WinGit
 strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
 
-export isMinGw32_dev1=`expr match "$uname" "$strMinGw32_dev1"`
-export isCygwin_dev1=`expr match "$uname" "$strCygwin_dev1"`
-export isCygwin_347=`expr match "$uname" "$strCygwin_347"`
 export isLinux=`expr match "$uname" "$strLinux"`
 # TODO clean definition of isLinux_64
 export isLinux_64=0
+export isLinuxFranzi=`expr match "$uname" "$strLinuxFranzi"`
 export isLinuxMartin=`expr match "$uname" "$strLinuxMartin"`
-export isLinuxBambi=`expr match "$uname" "$strLinuxMartin"`
-export isMinGw32_347=`expr match "$uname" "$strMinGw32_347"`
+export isLinuxBambi=`expr match "$uname" "$strLinuxBambi"`
 export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
 export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
 export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
 
-#echo isMinGw32_dev1: $isMinGw32_dev1
-#echo isCygwin_dev1: $isCygwin_dev1
-#echo isCygwin_347: $isCygwin_347
 #echo isLinux: $isLinux
 #echo isLinux_64: $isLinux_64
+#echo isLinuxFranzi: $isLinuxFranzi
 #echo isLinuxMartin: $isLinuxMartin
-#echo isMinGw32_347: $isMinGw32_347
+#echo isLinuxBambi: $isLinuxBambi
 #echo isMinGw32_app1: $isMinGw32_app1
 #echo isCygwin_155: $isCygwin_155
 #echo isMinGw32_155: $isMinGw32_155
 
-if [ "$isCygwin_dev1" -gt 0 ]; then
-    echo "### isCygwin_dev1: $isCygwin_dev1 => Loading $strCygwin_dev1 aliases"
-    base=/cygdrive
-    dev=$base/d/users/$USERNAME/dev
-    winapp=$base/d/users/$USERNAME/winapp
-
-elif [ "$isCygwin_155" -gt 0 ]; then
-    echo "### isCygwin_155: $isCygwin_155 => Loading $strCygwin_155"
-    base=/cygdrive
-    dev=$base/c/cygwin/home/$USERNAME/dev
-    tmp=$base/c/cygwin/home/$USERNAME/tmp
-    winapp=$base/c/winapp
-    winappX86=$base/c/winapp-x86
-
-    # export DISPLAY=":0" is needed for gvim in Cygwin Terminal
-    export DISPLAY=":0"
-
-elif [ "$isMinGw32_155" -gt 0 ]; then
-    echo "### isMinGw32_155: $isMinGw32_155 => Loading $strMinGw32_155"
-    dev=$base/c/cygwin/home/$USERNAME/dev
-    winapp=$base/c/winapp
-
-elif [ "$isCygwin_347" -gt 0 ]; then
-    echo "### isCygwin_347: $isCygwin_347 => Loading $strCygwin_347 aliases"
-    base=/cygdrive
-    dev=$base/d/dev
-    winapp=$base/d/winapp
-
-elif [ "$isMinGw32_dev1" -gt 0 ]; then
-    echo "### isMinGw32_dev1: $isMinGw32_dev1 => Loading $strMinGw32_dev1 aliases"
-    dev=$base/d/users/$USERNAME/dev
-    winapp=$base/d/users/$USERNAME/winapp
-
-elif [ "$isMinGw32_app1" -gt 0 ]; then
-    echo "### isMinGw32_app1: $isMinGw32_app1 => Loading $strMinGw32_app1 aliases"
-    dev=$base/d/users/$USERNAME/dev
-    winapp=$base/d/users/$USERNAME/winapp
-
-elif [ "$isMinGw32_347" -gt 0 ]; then
-    echo "### isMinGw32_347: $isMinGw32_347 => Loading $strMinGw32_347 aliases"
-    dev=$base/d/dev
-    winapp=$base/d/winapp
-
-elif [ "$isLinux" -gt 0 ]; then
+if [ "$isLinux" -gt 0 ]; then
 
     x86_64="x86_64"
     uname_processor=`uname -p`
@@ -92,11 +45,9 @@ elif [ "$isLinux" -gt 0 ]; then
 
     dev=$HOME/dev
 
-    JAVA_CP_SEP=":"
-
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.8
 
-    if [ "$isLinux_64" -gt 0 ] || [ "$isLinuxMartin" -eq 0 ]; then
+    if [ "$isLinux_64" -gt 0 ] || [ "$isLinuxFranzi" -eq 0 ] || [ "$isLinuxMartin" -eq 0 ]; then
         PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$HOME/.cabal/bin
     else
         # TODO it seems like MAVEN_HOME is not needed
@@ -119,6 +70,28 @@ elif [ "$isLinux" -gt 0 ]; then
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
     EDITOR=gvim # use it with <C-x>e
+
+elif [ "$isCygwin_155" -gt 0 ]; then
+    echo "### isCygwin_155: $isCygwin_155 => Loading $strCygwin_155"
+    base=/cygdrive
+    dev=$base/c/cygwin/home/$USERNAME/dev
+    tmp=$base/c/cygwin/home/$USERNAME/tmp
+    winapp=$base/c/winapp
+    winappX86=$base/c/winapp-x86
+
+    # export DISPLAY=":0" is needed for gvim in Cygwin Terminal
+    export DISPLAY=":0"
+
+elif [ "$isMinGw32_155" -gt 0 ]; then
+    echo "### isMinGw32_155: $isMinGw32_155 => Loading $strMinGw32_155"
+    dev=$base/c/cygwin/home/$USERNAME/dev
+    winapp=$base/c/winapp
+
+elif [ "$isMinGw32_app1" -gt 0 ]; then
+    echo "### isMinGw32_app1: $isMinGw32_app1 => Loading $strMinGw32_app1 aliases"
+    dev=$base/d/users/$USERNAME/dev
+    winapp=$base/d/users/$USERNAME/winapp
+
 else
     echo "ERROR: No environment detected"
 fi
@@ -143,12 +116,11 @@ if [ "$isLinux" -eq 0 ]; then
         . "${fDefvars}"
         #echo "File loaded: ${fDefvars}"
     else
-        echo "ERROR File not found: ${fDefvars}"
+        echo "ERROR: File not found: ${fDefvars}"
         exit
     fi
 
     export deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
-    JAVA_CP_SEP=";"
 
     export http_proxy=http://$PROXY
     export https_proxy=https://$PROXY
@@ -170,8 +142,6 @@ if [ "$isLinux" -eq 0 ]; then
 fi
 
 if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
-    # VIMCLOJURE_SERVER_JAR=$dev/vimclojure-server/server-2.3.6.jar
-    # NAILGUN_CLI_HOME=$dev/vimclojure-nailgun-client
     JDK_16_HOME=$winapp/Java/1.6.0_41
     JAVA_HOME=$winapp/Java/jdk1.7.0_45
     APPENG_JAVA_HOME=$winappX86/Google/appeng-java-sdk-1.7.1
@@ -179,7 +149,6 @@ if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
 
     APPENGINE_HOME=/cygdrive/c/winapp-x86/Google/appeng-java-sdk-1.7.1
 
-    # PATH=$PATH:$APPENG_PYTHON_HOME:$NAILGUN_CLIENT_HOME
     PATH=$PATH:$HOME/apache-cxf-2.7.6/bin
     PATH=$PATH:$APPENG_PYTHON_HOME
 fi
@@ -189,8 +158,6 @@ if [ "$isLinux_64" -eq 0 ]; then
 fi
 
 export dev
-# JAVA_CP_SEP is needed for vimclojure
-export JAVA_CP_SEP
 export PATH
 if [ "$isLinux" -eq 0 ]; then
     export JAVA_HOME
@@ -203,14 +170,9 @@ fi
 if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     clojureJarFile=$dev/clojure/clojure-1.6.0.jar
     export clojureJarFile
-    # export VIMCLOJURE_SERVER_JAR
-    # export NAILGUN_CLI_HOME
     export APPENG_PYTHON_HOME
     if [ "$isLinuxMartin" -eq 0 ]; then
         export APPENG_JAVA_HOME
     fi
-
-    # values used by other sripts and applications
-    #export CLASSPATH=$HOME/dev/appengine-magic/appengine-magic-0.5.0.jar$JAVA_CP_SEP$CLASSPATH
 fi
 

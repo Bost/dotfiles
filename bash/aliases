@@ -409,62 +409,13 @@ alias cx=ChmodExec
 #alias mv='mv -i'
 #alias grep='grep --color'
 
-if [ "$isCygwin_dev1" -gt 0 ]; then
-    :
-    #echo "### isCygwin_dev1: $isCygwin_dev1 ==> Loading $strCygwin_dev1 aliases"
-
-    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
-elif [ "$isCygwin_155" -gt 0 ]; then
-    :
-    #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
-
-    RunGvim() {
-        echo "gvim '$*' &"
-              gvim  $*  &
-    }
-    RunClojureCygpath() {
-        echo java -cp `cygpath -p -w $cljcp` clojure.main
-             java -cp `cygpath -p -w $cljcp` clojure.main
-    }
-    alias clojure=RunClojureCygpath
-elif [ "$isMinGw32_155" -gt 0 ]; then
-    :
-    #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
-
-    RunGvim() {
-        echo "gvim -u $HOME/dev/dotfiles/vimrc '$*' &"
-              gvim -u $HOME/dev/dotfiles/vimrc  $*  &
-    }
-    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
-elif [ "$isCygwin_347" -gt 0 ]; then
-    :
-    #echo "### isCygwin_347: $isCygwin_347 ==> Loading $strCygwin_347 aliases"
-
-    alias clojure='$winapp/clojure-1.4.0/clojure.sh'
-elif [ "$isMinGw32_dev1" -gt 0 ]; then
-    :
-    #echo "### isMinGw32_dev1: $isMinGw32_dev1 ==> Loading $strMinGw32_dev1 aliases"
-
-    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
-elif [ "$isMinGw32_app1" -gt 0 ]; then
-    :
-    #echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
-
-    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
-elif [ "$isMinGw32_347" -gt 0 ]; then
-    :
-    #echo "### isMinGw32_347: $isMinGw32_347 ==> Loading $strMinGw32_347 aliases"
-
-    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
-elif [ "$isLinux" -gt 0 ]; then
+if [ "$isLinux" -gt 0 ]; then
     :
     if [ "$isLinux_64" -gt 0 ]; then
         export VMAIL_BROWSER='google-chrome'
     else
         export VMAIL_BROWSER='chromium-browser'
     fi
-
-    export VMAIL_VIM=gvim
 
     alias lock="xflock4"
     UpdateUpgradeClean() {
@@ -535,8 +486,35 @@ elif [ "$isLinux" -gt 0 ]; then
         echo "gvim '$*' &"
               gvim  $*  &
     }
-#else
-    #echo "ERROR No environment detected"
+elif [ "$isCygwin_155" -gt 0 ]; then
+    :
+    #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
+
+    RunGvim() {
+        echo "gvim '$*' &"
+              gvim  $*  &
+    }
+    RunClojureCygpath() {
+        echo java -cp `cygpath -p -w $cljcp` clojure.main
+             java -cp `cygpath -p -w $cljcp` clojure.main
+    }
+    alias clojure=RunClojureCygpath
+elif [ "$isMinGw32_155" -gt 0 ]; then
+    :
+    #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
+
+    RunGvim() {
+        echo "gvim -u $HOME/dev/dotfiles/vimrc '$*' &"
+              gvim -u $HOME/dev/dotfiles/vimrc  $*  &
+    }
+    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
+elif [ "$isMinGw32_app1" -gt 0 ]; then
+    :
+    #echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
+
+    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
+else
+    echo "ERROR: No environment detected"
 fi
 
 if [ "$isLinux" -eq 0 ]; then
@@ -618,6 +596,7 @@ RunEmacs() {
 }
 alias e=RunEmacs
 alias ea='RunEmacs $dev/dotfiles/bash/aliases'
+alias ee='RunEmacs $dev/dotfiles/bash/env'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
