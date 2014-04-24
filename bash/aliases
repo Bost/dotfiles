@@ -135,8 +135,8 @@ GitLog() {
 alias gl=GitLog
 
 GitKAll() {
-    echo gitk --all &
-         gitk --all &
+    echo "gitk --all &"
+          gitk --all &
 }
 alias gitk=GitKAll
 alias gk=GitKAll
@@ -484,6 +484,7 @@ if [ "$isLinux" -gt 0 ]; then
         echo "gvim '$*' &"
               gvim  $*  &
     }
+    alias tmp='cd /tmp'
 elif [ "$isCygwin_155" -gt 0 ]; then
     :
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
@@ -551,7 +552,11 @@ if [ "$isLinux" -eq 0 ]; then
     alias mbssum='$deployments_base/mbssum.sh'
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
+    alias tmp='cd $HOME/tmp/'
 
+    alias music='cd $HOME/music/'
+    alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl'
+    alias m='mplayer'
 #else
 #    echo "Linux aliases already loaded"
 fi
@@ -618,14 +623,12 @@ alias genpasswd=GeneratePassw
 
 alias ltt='$dev/LightTable/deploy/LightTable &'
 alias clt='cd $dev/LightTable'
+# too many lct typos
+alias lct='cd $dev/LightTable'
 alias lt='ls -lat'
 alias ltr='ls -latr'
 alias lff='ls -lrt -d -1 $PWD/{*,.*}'
 alias lT='ls -latr'
-alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl'
-alias m='mplayer'
 
 # create alias file for the eshell; runs 0.007 sec
 alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
-alias tmp='cd $HOME/tmp/'
-alias music='cd $HOME/music/'
