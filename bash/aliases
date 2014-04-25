@@ -62,13 +62,19 @@ alias gg='git gui &'
 alias gtg='git tag'
 alias gtag='git tag'
 
-GitBranch () {
+GitCherryPick() {
+    echo git cherry-pick $@
+         git cherry-pick $@
+}
+alias gcp='GitCherryPick'
+
+GitBranch() {
     echo git branch $@
          git branch $@
 }
 alias gbr=GitBranch
 
-GrepFind () {
+GrepFind() {
     echo "grep -lir '$1' \`find . -name '*.$2'\`"
     echo "###"
     if [ $# -eq 2 ] ; then
@@ -134,12 +140,14 @@ GitLog() {
 }
 alias gl=GitLog
 
-GitKAll() {
-    echo "gitk --all &"
-          gitk --all &
-}
-alias gitk=GitKAll
-alias gk=GitKAll
+#GitKAll() {
+#    echo 'gitk --all &'
+#          gitk --all &
+#}
+#alias gitk='GitKAll'
+#alias gk='GitKAll'
+alias gk='gitk --all &'
+#alias gitk='gitk --all &'
 
 GitSearchStr () {
     # Search for a string in all revisions of entire git history
