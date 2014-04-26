@@ -1,39 +1,42 @@
 #!/bin/bash -e
 
 # values used by other sripts and applications
-uname=`uname -a`
+uname=$(uname -a)
 strLinux="Linux"
 strLinuxFranzi="Linux franzi"
 strLinuxMartin="Linux bost-martin"
+strLinuxMartinJV="Linux martin-jv"
 strLinuxBambi="Linux bambi-small"
 #echo uname: $uname
 # the system variable strMinGw32_155 is not visible under WinGit
 strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
 
-export isLinux=`expr match "$uname" "$strLinux"`
+export isLinux=$(expr match "$uname" "$strLinux")
 # TODO clean definition of isLinux_64
 export isLinux_64=0
-export isLinuxFranzi=`expr match "$uname" "$strLinuxFranzi"`
-export isLinuxMartin=`expr match "$uname" "$strLinuxMartin"`
-export isLinuxBambi=`expr match "$uname" "$strLinuxBambi"`
-export isMinGw32_app1=`expr match "$uname" "$strMinGw32_app1"`
-export isCygwin_155=`expr match "$uname" "$strCygwin_155"`
-export isMinGw32_155=`expr match "$uname" "$strMinGw32_155"`
+export isLinuxFranzi=$(expr match "$uname" "$strLinuxFranzi")
+export isLinuxMartinJV=$(expr match "$uname" "$strLinuxMartinJV")
+export isLinuxMartin=$(expr match "$uname" "$strLinuxMartin")
+export isLinuxBambi=$(expr match "$uname" "$strLinuxBambi")
+export isMinGw32_app1=$(expr match "$uname" "$strMinGw32_app1")
+export isCygwin_155=$(expr match "$uname" "$strCygwin_155")
+export isMinGw32_155=$(expr match "$uname" "$strMinGw32_155")
 
 #echo isLinux: $isLinux
 #echo isLinux_64: $isLinux_64
 #echo isLinuxFranzi: $isLinuxFranzi
 #echo isLinuxMartin: $isLinuxMartin
+#echo isLinuxMartinJV: $isLinuxMartinJV
 #echo isLinuxBambi: $isLinuxBambi
 #echo isMinGw32_app1: $isMinGw32_app1
 #echo isCygwin_155: $isCygwin_155
 #echo isMinGw32_155: $isMinGw32_155
 
 if [ "$isLinux" -gt 0 ]; then
-
+    :
     x86_64="x86_64"
-    uname_processor=`uname -p`
-    export isLinux_64=`expr match "$uname_processor" "$x86_64"`
+    uname_processor=$(uname -p)
+    export isLinux_64=$(expr match "$uname_processor" "$x86_64")
     #echo "### Display no message in the console if doing scp"
     #if [ "$isLinux_64" -gt 0 ]; then
         #echo "### isLinux: $isLinux_64 => Loading aliases for $strLinux $x86_64"
@@ -44,12 +47,13 @@ if [ "$isLinux" -gt 0 ]; then
     #fi
 
     dev=$HOME/dev
-
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.8
 
     if [ "$isLinux_64" -gt 0 ] || [ "$isLinuxFranzi" -eq 0 ] || [ "$isLinuxMartin" -eq 0 ]; then
+	:
         PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$HOME/.cabal/bin
     else
+	:
         # TODO it seems like MAVEN_HOME is not needed
         #MAVEN_HOME=$HOME/apache-maven-3.0.4
         AAPPENG_HOME=$APPENG_JAVA_HOME
@@ -70,8 +74,8 @@ if [ "$isLinux" -gt 0 ]; then
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
     EDITOR=gvim # use it with <C-x>e
-
 elif [ "$isCygwin_155" -gt 0 ]; then
+    :
     echo "### isCygwin_155: $isCygwin_155 => Loading $strCygwin_155"
     base=/cygdrive
     dev=$base/c/cygwin/home/$USERNAME/dev
@@ -81,27 +85,30 @@ elif [ "$isCygwin_155" -gt 0 ]; then
 
     # export DISPLAY=":0" is needed for gvim in Cygwin Terminal
     export DISPLAY=":0"
-
 elif [ "$isMinGw32_155" -gt 0 ]; then
+    :
     echo "### isMinGw32_155: $isMinGw32_155 => Loading $strMinGw32_155"
     dev=$base/c/cygwin/home/$USERNAME/dev
     winapp=$base/c/winapp
-
 elif [ "$isMinGw32_app1" -gt 0 ]; then
+    :
     echo "### isMinGw32_app1: $isMinGw32_app1 => Loading $strMinGw32_app1 aliases"
     dev=$base/d/users/$USERNAME/dev
     winapp=$base/d/users/$USERNAME/winapp
-
 else
+    :
     echo "ERROR: No environment detected"
 fi
 
 if [ "$isLinux" -eq 0 ]; then
+    :
     echo "### isLinux: $isLinux => Loading non-$strLinux aliases"
 
     if [ -d "${winapp}" ]; then
+	:
         export winapp
     else
+	:
         echo "ERROR: Undefined variable winapp: ${winapp}"
         #exit
     fi
@@ -113,9 +120,11 @@ if [ "$isLinux" -eq 0 ]; then
     export fDefvars=$deployments_base/defvars.sh
     #echo "fDefvars=$fDefvars"
     if [ -f "${fDefvars}" ]; then
-        . "${fDefvars}"
+	:
+        source "${fDefvars}"
         #echo "File loaded: ${fDefvars}"
     else
+	:
         echo "ERROR: File not found: ${fDefvars}"
         exit
     fi
@@ -138,6 +147,7 @@ if [ "$isLinux" -eq 0 ]; then
     echo ''
 
 #else
+#    :
 #    echo "Linux aliases already loaded"
 fi
 
@@ -175,4 +185,3 @@ if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0
         export APPENG_JAVA_HOME
     fi
 fi
-
