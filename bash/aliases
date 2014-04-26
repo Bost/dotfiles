@@ -5,9 +5,9 @@ Reload() {
     echo source $HOME/.bashrc
          source $HOME/.bashrc
 }
-alias reload=Reload
-alias r=Reload
-alias t=tail
+alias reload='Reload'
+alias r='Reload'
+alias t='tail'
 
 alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
 alias unexport='unset'
@@ -163,7 +163,7 @@ alias gstr=GitSearchStr
 
 # ltree: colored tree with 'less'. --RAW-CONTROL-CHARS == -R
 ltree () {
-    tree -C $* | less --RAW-CONTROL-CHARS
+    tree -C $@ | less --RAW-CONTROL-CHARS
 }
 
 # TODO TreeNonIgnored should take .gitignore as input
@@ -490,8 +490,8 @@ if [ "$isLinux" -gt 0 ]; then
         #echo gvim -c "call Maximize_Window()" --remote-silent
              #gvim -c "call Maximize_Window()" --remote-silent
         # !* - all args of the last command
-        echo "gvim '$*' &"
-              gvim  $*  &
+        echo "gvim $@ &"
+              gvim $@ &
     }
     alias tmp='cd /tmp'
 
@@ -503,12 +503,12 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
     RunGvim() {
-        echo "gvim '$*' &"
-              gvim  $*  &
+        echo "gvim $@ &"
+              gvim $@ &
     }
     RunClojureCygpath() {
-        echo java -cp `cygpath -p -w $cljcp` clojure.main
-             java -cp `cygpath -p -w $cljcp` clojure.main
+        echo java -cp $(cygpath -p -w $cljcp) clojure.main
+             java -cp $(cygpath -p -w $cljcp) clojure.main
     }
     alias clojure=RunClojureCygpath
 elif [ "$isMinGw32_155" -gt 0 ]; then
@@ -516,8 +516,8 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 
     RunGvim() {
-        echo "gvim -u $HOME/dev/dotfiles/vimrc '$*' &"
-              gvim -u $HOME/dev/dotfiles/vimrc  $*  &
+        echo "gvim -u $HOME/dev/dotfiles/vimrc $@ &"
+              gvim -u $HOME/dev/dotfiles/vimrc $@ &
     }
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_app1" -gt 0 ]; then
@@ -639,5 +639,5 @@ alias ltr='ls -latr'
 alias lff='ls -lrt -d -1 $PWD/{*,.*}'
 alias lT='ls -latr'
 
-# create alias file for the eshell; runs 0.007 sec
-alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
+# TODO create alias file for the eshell; runs 0.007 sec
+#alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
