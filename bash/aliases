@@ -9,7 +9,15 @@ alias reload='Reload'
 alias r='Reload'
 alias t='tail'
 
-alias clean-workspace='METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core; rm -rf .metadata/.plugins/org.eclipse.core.resources/.history; rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt'
+CleanEclipseWorkspace() {
+    echo METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
+         METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
+    echo rm -rf .metadata/.plugins/org.eclipse.core.resources/.history
+         rm -rf .metadata/.plugins/org.eclipse.core.resources/.history
+    echo rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt
+         rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt
+}
+alias clean-workspace='CleanEclipseWorkspace'
 alias unexport='unset'
 alias envp='env | grep ^PATH='
 
@@ -54,26 +62,17 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias cdd='cd -'
 
-GitAddAll () {
-    echo git add .
-         git add .
+Git () {
+    echo git $@
+         git $@
 }
-alias gdd=GitAddAll
-alias gg='git gui &'
-alias gtg='git tag'
-alias gtag='git tag'
+alias gdd='Git add .' # git add files
+alias gg='Git gui &'  # TODO test this
+alias gtg='Git tag'
+alias gtag='Git tag'
 
-GitCherryPick() {
-    echo git cherry-pick $@
-         git cherry-pick $@
-}
-alias gcp='GitCherryPick'
-
-GitBranch() {
-    echo git branch $@
-         git branch $@
-}
-alias gbr=GitBranch
+alias gcp='Git cherry-pick'
+alias gbr='Git branch'
 
 GrepFind() {
     echo "grep -lir '$1' \`find . -name '*.$2'\`"
@@ -103,34 +102,19 @@ alias gf=GrepFind
     #   git config --global branch.autosetuprebase always
 #}
 
-GitRebase() {
-    echo git rebase $@
-         git rebase $@
-}
+alias gr='Git rebase'
+alias grc='Git rebase --continue'
+alias gri='Git rebase --interactive'
+alias gra='Git rebase --abort'
 
-alias gr='GitRebase'
-alias grc='GitRebase --continue'
-alias gri='GitRebase --interactive'
-alias gra='GitRebase --abort'
+#alias gdf='Git diff'
 
-#alias gdf='git diff'
-#alias gp='git push'
+alias gh='Git push' # i.e. push to origin
+#alias gp='Git push' # i.e. push to origin
+alias gho='Git push' # i.e. push to origin
 
-GitPush() {
-    # i.e. push to origin
-    echo git push $@
-         git push $@
-}
-alias gh=GitPush
-alias gho=GitPush
-
-GitBisect() {
-    # i.e. push to origin
-    echo git bisect $@
-         git bisect $@
-}
-alias gbb='GitBisect bad'
-alias gbg='GitBisect good'
+alias gbb='Git bisect bad'
+alias gbg='Git bisect good'
 
 GitLog() {
     # Visualise git log (like gitk, in the terminal)
@@ -139,7 +123,7 @@ GitLog() {
     echo git log --graph --full-history --all --color --pretty=format:"$fmt"
          git log --graph --full-history --all --color --pretty=format:"$fmt"   # --abbrev-commit"
 }
-alias gl=GitLog
+alias gl='GitLog'
 
 #GitKAll() {
 #    echo 'gitk --all &'
@@ -171,8 +155,8 @@ TreeNotIgnored () {
     echo "tree | grep -v 'class\|.*~'"
           tree | grep -v 'class\|.*~'
 }
-alias trn=TreeNotIgnored
-alias tn=TreeNotIgnored
+alias trn='TreeNotIgnored'
+alias tn='TreeNotIgnored'
 
 findreplace () {
     printf "Search: ${1}\n"
@@ -198,7 +182,7 @@ extract() {
                    bunzip2 $1
               ;;
         *.rar)
-              echo un
+              echo unrar e $1
                    unrar e $1
               ;;
         *.gz)
@@ -240,7 +224,7 @@ findTextInAnyFile () {
     echo find . -name "$2" -exec grep -il "$1" {} \;
          find . -name "$2" -exec grep -il "$1" {} \;
 }
-alias ft=findTextInAnyFile
+alias ft='findTextInAnyFile'
 
 # create a directory and change into it
 mkdirAndCd() {
@@ -249,8 +233,7 @@ mkdirAndCd() {
   echo cd "$1"
        cd "$1"
 }
-alias mcd=mkdirAndCd
-alias take=mkdirAndCd
+alias take='mkdirAndCd'
 
 LeinCljsbuildClean() {
     echo lein cljsbuild clean
@@ -271,11 +254,7 @@ GitPullOrigin() {
 }
 alias glo=GitPullOrigin
 
-GitPullUpstream() {
-    echo 'git pull --rebase upstream master'
-          git pull --rebase upstream master
-}
-alias glu=GitPullUpstream
+alias glu='Git pull --rebase upstream master'
 
 GitPullOriginRepo() {
     echo 'cd '$1' && GitPullOrigin'
@@ -309,38 +288,13 @@ alias gha=GitPushAll
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
 
-GitClone() {
-    echo git clone $@
-         git clone $@
-}
-alias gcl=GitClone
-
-alias gau='git add --update'
-alias gss='git status --short'
-
-GitStatus() {
-    echo git status $@
-         git status $@
-}
-alias gst=GitStatus
-
-GitCheckout() {
-    echo git checkout $@
-         git checkout $@
-}
-alias gco=GitCheckout
-
-GitCommit() {
-    echo git commit $@
-         git commit $@
-}
-alias gci=GitCommit
-
-GitResetHard() {
-    echo git reset --hard
-         git reset --hard
-}
-alias grh=GitResetHard
+alias gcl='Git clone'
+alias gau='Git add --update'
+alias gss='Git status --short'
+alias gst='Git status'
+alias gco='Git checkout'
+alias gci='Git commit'
+alias grh='Git reset --hard'
 
 #alias gdm='git diff master'
 #alias gd='git diff | mate'
@@ -354,7 +308,7 @@ HistoryGrep() {
     echo "history | grep $@"
           history | grep $@
 }
-alias hrep=HistoryGrep
+alias hrep='HistoryGrep'
 
 AliasGrep() {
     echo "alias | grep $@"
@@ -400,17 +354,22 @@ alias l.='ls -d .* --color=auto'
 #alias l='ls -CF'
 #alias la='ls -A'
 
+Run() {
+    echo $@
+         $@
+}
+
 FindFile () {
     echo find $@
          find $@
 }
-alias f=FindFile
+alias f='FindFile'
 
-ChmodExec () {
-    echo chmod +x $@
-         chmod +x $@
+Chmod () {
+    echo chmod $@
+         chmod $@
 }
-alias cx=ChmodExec
+alias cx='Chmod +x'
 
 #alias cp='cp -i'
 #alias mv='mv -i'
@@ -435,7 +394,7 @@ if [ "$isLinux" -gt 0 ]; then
         echo "sudo apt-get dist-upgrade --yes"
               sudo apt-get dist-upgrade --yes
     }
-    alias d=DistUpgrade
+    alias d='DistUpgrade'
 
     alias k9='kill -9'
     # I guess '2> /dev/null' redirects errors to /dev/null
@@ -447,34 +406,20 @@ if [ "$isLinux" -gt 0 ]; then
     alias rmv="sudo apt-get remove -y"
     alias armv="sudo apt-get autoremove -y"
 
-    reBoot() {
-        echo 'sudo reboot'
-              sudo reboot
+    Sudo() {
+        echo sudo $@
+             sudo $@
     }
-    alias reboot=reBoot
+    alias reboot='Sudo reboot'
 
-    DoSuspend() {
-        echo 'sudo pm-suspend'
-              sudo pm-suspend
-    }
-    #alias s=DoSuspend
-    alias susp=DoSuspend
-    alias suspend=DoSuspend
-
-    DoHibernate() {
-        echo 'sudo pm-hibernate'
-              sudo pm-hibernate
-    }
-    #alias h=DoHibernate
-    alias hib=DoHibernate
-    alias hibernate=DoHibernate
-
-    shutDown() {
-        echo 'sudo shutdown -h now'
-              sudo shutdown -h now
-    }
-    alias shut=shutDown
-    alias shutdown=shutDown
+    #alias s='Sudo pm-suspend'
+    alias susp='Sudo pm-suspend'
+    alias suspend='Sudo pm-suspend'
+    #alias h='Sudo pm-hibernate'
+    alias hib='Sudo pm-hibernate'
+    alias hibernate='Sudo pm-hibernate'
+    alias shut='Sudo shutdown -h now'
+    alias shutdown='Sudo shutdown -h now'
 
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
