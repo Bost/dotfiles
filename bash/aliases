@@ -1,28 +1,25 @@
 #!/bin/bash -ex
 # -e stop on error; -x debug
 
-Reload() {
-    echo source $HOME/.bashrc
-         source $HOME/.bashrc
+Run() {
+    echo $@
+         $@
 }
-alias reload='Reload'
-alias r='Reload'
+
+alias reload='Run source $HOME/.bashrc'
+alias      r='Run source $HOME/.bashrc'
 alias t='tail'
 
 CleanEclipseWorkspace() {
-    echo METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
-         METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
-    echo rm -rf .metadata/.plugins/org.eclipse.core.resources/.history
-         rm -rf .metadata/.plugins/org.eclipse.core.resources/.history
-    echo rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt
-         rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt
+    Run METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
+    Run rm -rf .metadata/.plugins/org.eclipse.core.resources/.history
+    Run rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt
 }
-alias clean-workspace='CleanEclipseWorkspace'
+alias clean-ws='CleanEclipseWorkspace'
 alias unexport='unset'
 alias envp='env | grep ^PATH='
 
 alias v='vim'
-
 alias cls='clear'
 
 # use pgreg under linux
@@ -30,7 +27,7 @@ PsEfGrep() {
     echo "ps -ef | grep $@"
           ps -ef | grep $@
 }
-alias prep=PsEfGrep
+alias prep='PsEfGrep'
 
 ExtractBashComments() {
     egrep "^#"
@@ -39,14 +36,9 @@ ExtractBashComments() {
 # comments=$(ExtractBashComments < myscript.sh)
 }
 
-TestConnectivity() {
-    #echo ping -c 5 www.google.com
-         #ping -c 5 www.google.com
-    echo mtr google.com
-         mtr google.com
-}
-alias png=TestConnectivity
-alias mtrg=TestConnectivity
+#ping -c 5 www.google.com
+alias  png='Run mtr google.com'
+alias mtrg='Run mtr google.com'
 
 alias c='cat'
 alias less='less -r'
@@ -62,6 +54,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias cdd='cd -'
 
+alias gap='Run git add -p'
 alias gdd='Run git add .'
 alias  gg='Run git gui &'
 alias gtg='Run git tag'
@@ -69,7 +62,7 @@ alias gcp='Run git cherry-pick'
 alias gbr='Run git branch'
 
 GrepFind() {
-    echo "grep -lir '$1' \`find . -name '*.$2'\`"
+    echo "grep -lir '$1' $\(find . -name '*.$2'\)"
     echo "###"
     if [ $# -eq 2 ] ; then
         foundFiles=$(find . -name \*.$2)
@@ -222,7 +215,7 @@ alias  lcc='Run lein cljsbuild clean'
 alias  lca='Run lein cljsbuild auto'
 alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
-alias glo='Run git pull --rebase origin' && 'Run git fetch --tags'
+alias glo='Run git pull --rebase origin && Run git fetch --tags'
 alias glu='Run git pull --rebase upstream master'
 
 GitPullOriginRepo() {
@@ -248,7 +241,7 @@ GitPushRepo() {
 }
 
 GitPushAll() {
-    _cd=`pwd`
+    _cd=$(pwd)
     echo 'pwd: '$_cd
     GitPushRepo $dev/cheatsheet && GitPushRepo $dev/dotfiles
     cd $_cd
@@ -324,10 +317,6 @@ alias l.='ls -d .* --color=auto'
 #alias l='ls -CF'
 #alias la='ls -A'
 
-Run() {
-    echo $@
-         $@
-}
 alias f='Run find'
 alias cx='Run chmod +x'
 
