@@ -5,6 +5,11 @@ Run() {
     echo $@
          $@
 }
+RunBg() {
+    echo $@ \&
+         $@ &
+}
+
 
 alias reload='Run source $HOME/.bashrc'
 alias      r='Run source $HOME/.bashrc'
@@ -458,7 +463,6 @@ cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
 cljcp=$cljcp:$dev/clojure-contrib/data.priority-map-0.0.2.jar
 cljcp=$cljcp:$dev/clojure-contrib/core.cache-0.6.3.jar
 cljcp=$cljcp:$dev/clojure-contrib/core.memoize-0.5.5.jar
-cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
 
 alias g='RunGvim'
 # this is a rather speculative $home location :)
@@ -484,9 +488,9 @@ alias trackle='cd $dev/trackle'
 alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
-alias  e='Run emacs &'
-alias ea='Run emacs $dev/dotfiles/bash/aliases &'
-alias ee='Run emacs $dev/dotfiles/bash/env &'
+alias  e='RunBg emacs'
+alias ea='RunBg emacs $dev/dotfiles/bash/aliases'
+alias ee='RunBg emacs $dev/dotfiles/bash/env'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
