@@ -28,7 +28,7 @@
 (global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
 (global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
 ;; org-babel-clojure
-(require 'ob-clojure)
+;; (require 'ob-clojure)
 (global-set-key (kbd "s-t") 'clojure-jump-between-tests-and-code)
 ;; Attention defaults are:
 ;;     C-c C-l: (cider-load-file FILENAME)
@@ -169,23 +169,21 @@
 ;;(desktop-load-default)
 ;;(desktop-read)
 
-
-
-(require 'org-install)
-(org-babel-do-load-languages
-'org-babel-load-languages
-'(
-  (emacs-lisp . t)
-  (clojure . t)
-  (sh . t)
-  (python .t)
-  (R . t)
-  (ruby . t)
-  (ditaa . t)
-  (dot . t)
-  (sqlite . t)
-  (perl . t)
-  ))
+;; (require 'org-install)
+;; (org-babel-do-load-languages
+;; 'org-babel-load-languages
+;; '(
+;;   (emacs-lisp . t)
+;;   (clojure . t)
+;;   (sh . t)
+;;   (python .t)
+;;   (R . t)
+;;   (ruby . t)
+;;   (ditaa . t)
+;;   (dot . t)
+;;   (sqlite . t)
+;;   (perl . t)
+;;   ))
 
 ;; Show syntax highlighting per language native mode in *.org
 (setq org-src-fontify-natively t)
