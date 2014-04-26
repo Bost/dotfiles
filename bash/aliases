@@ -62,17 +62,11 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias cdd='cd -'
 
-Git () {
-    echo git $@
-         git $@
-}
-alias gdd='Git add .' # git add files
-alias gg='Git gui &'  # TODO test this
-alias gtg='Git tag'
-alias gtag='Git tag'
-
-alias gcp='Git cherry-pick'
-alias gbr='Git branch'
+alias gdd='Run git add .'
+alias  gg='Run git gui &'
+alias gtg='Run git tag'
+alias gcp='Run git cherry-pick'
+alias gbr='Run git branch'
 
 GrepFind() {
     echo "grep -lir '$1' \`find . -name '*.$2'\`"
@@ -102,36 +96,27 @@ alias gf=GrepFind
     #   git config --global branch.autosetuprebase always
 #}
 
-alias gr='Git rebase'
-alias grc='Git rebase --continue'
-alias gri='Git rebase --interactive'
-alias gra='Git rebase --abort'
-
-#alias gdf='Git diff'
-
-alias gh='Git push' # i.e. push to origin
-#alias gp='Git push' # i.e. push to origin
-alias gho='Git push' # i.e. push to origin
-
-alias gbb='Git bisect bad'
-alias gbg='Git bisect good'
+alias  gr='Run git rebase'
+alias grc='Run git rebase --continue'
+alias gri='Run git rebase --interactive'
+alias gra='Run git rebase --abort'
+alias gdf='Run git diff'
+alias  gh='Run git push origin'
+alias  gp='Run git push origin'
+alias gho='Run git push origin'
+alias gbb='Run git bisect bad'
+alias gbg='Run git bisect good'
 
 GitLog() {
     # Visualise git log (like gitk, in the terminal)
     #fmt=%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s
     fmt='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-    echo git log --graph --full-history --all --color --pretty=format:"$fmt"
+    echo git log --graph --full-history --all --color --pretty=format:\"$fmt\"
          git log --graph --full-history --all --color --pretty=format:"$fmt"   # --abbrev-commit"
 }
 alias gl='GitLog'
 
-#GitKAll() {
-#    echo 'gitk --all &'
-#          gitk --all &
-#}
-#alias gitk='GitKAll'
-#alias gk='GitKAll'
-alias gk='gitk --all &'
+alias gk='Run gitk --all &'
 #alias gitk='gitk --all &'
 
 GitSearchStr () {
@@ -167,7 +152,7 @@ findreplace () {
 }
 
 extract() {
-    if [ -f $1 ] ; then
+    if [ -f "$1" ] ; then
       case $1 in
         *.tar.bz2)
               echo tar xjf $1
@@ -228,37 +213,21 @@ alias ft='findTextInAnyFile'
 
 # create a directory and change into it
 mkdirAndCd() {
-  echo mkdir -p "$1"
-       mkdir -p "$1"
-  echo cd "$1"
-       cd "$1"
+  echo mkdir -p \"$1\" \&\& cd \"$1\"
+       mkdir -p  "$1"   &&  cd  "$1"
 }
 alias take='mkdirAndCd'
 
-LeinCljsbuildClean() {
-    echo lein cljsbuild clean
-         lein cljsbuild clean
-}
-alias lcc='LeinCljsbuildClean'
+alias  lcc='Run lein cljsbuild clean'
+alias  lca='Run lein cljsbuild auto'
+alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
-LeinCljsbuildAuto() {
-    echo lein cljsbuild auto
-         lein cljsbuild auto
-}
-alias lca='LeinCljsbuildAuto'
-alias lcca='LeinCljsbuildClean && LeinCljsbuildAuto'
-
-GitPullOrigin() {
-    echo 'git pull --rebase origin && git fetch --tags'
-          git pull --rebase origin && git fetch --tags
-}
-alias glo=GitPullOrigin
-
-alias glu='Git pull --rebase upstream master'
+alias glo='Run git pull --rebase origin' && 'Run git fetch --tags'
+alias glu='Run git pull --rebase upstream master'
 
 GitPullOriginRepo() {
-    echo 'cd '$1' && GitPullOrigin'
-          cd  $1  && GitPullOrigin
+    echo cd \"$1\" \&\& GitPullOrigin
+         cd  "$1"   &&  GitPullOrigin
 }
 
 GitUpdateAll() {
@@ -270,8 +239,8 @@ GitUpdateAll() {
     fi
     cd $_cd
 }
-alias ga=GitUpdateAll
-alias gua=GitUpdateAll
+alias ga='GitUpdateAll'
+alias gua='GitUpdateAll'
 
 GitPushRepo() {
     echo 'cd '$1' && git push'
@@ -284,17 +253,18 @@ GitPushAll() {
     GitPushRepo $dev/cheatsheet && GitPushRepo $dev/dotfiles
     cd $_cd
 }
-alias gha=GitPushAll
+alias gha='GitPushAll'
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
 
-alias gcl='Git clone'
-alias gau='Git add --update'
-alias gss='Git status --short'
-alias gst='Git status'
-alias gco='Git checkout'
-alias gci='Git commit'
-alias grh='Git reset --hard'
+alias gcl='Run git clone'
+alias gau='Run git add --update'
+alias gau='Run git add -p'
+alias gss='Run git status --short'
+alias gst='Run git status'
+alias gco='Run git checkout'
+alias gci='Run git commit'
+alias grh='Run git reset --hard'
 
 #alias gdm='git diff master'
 #alias gd='git diff | mate'
@@ -358,18 +328,8 @@ Run() {
     echo $@
          $@
 }
-
-FindFile () {
-    echo find $@
-         find $@
-}
-alias f='FindFile'
-
-Chmod () {
-    echo chmod $@
-         chmod $@
-}
-alias cx='Chmod +x'
+alias f='Run find'
+alias cx='Run chmod +x'
 
 #alias cp='cp -i'
 #alias mv='mv -i'
@@ -401,34 +361,25 @@ if [ "$isLinux" -gt 0 ]; then
     #alias f='find ./ 2> /dev/null'
 
     # -y  Assume Yes to all queries and do not prompt
-    alias inst="sudo apt-get install -y"
-    alias uninst="sudo apt-get remove -y"
-    alias rmv="sudo apt-get remove -y"
-    alias armv="sudo apt-get autoremove -y"
+    alias inst="Run sudo apt-get install -y"
+    alias uninst="Run sudo apt-get remove -y"
+    alias rmv="Run sudo apt-get remove -y"
+    alias armv="Run sudo apt-get autoremove -y"
 
-    Sudo() {
-        echo sudo $@
-             sudo $@
-    }
-    alias reboot='Sudo reboot'
-
-    #alias s='Sudo pm-suspend'
-    alias susp='Sudo pm-suspend'
-    alias suspend='Sudo pm-suspend'
-    #alias h='Sudo pm-hibernate'
-    alias hib='Sudo pm-hibernate'
-    alias hibernate='Sudo pm-hibernate'
-    alias shut='Sudo shutdown -h now'
-    alias shutdown='Sudo shutdown -h now'
+    alias reboot='Run sudo reboot'
+    #alias s='Run sudo pm-suspend'
+    alias susp='Run sudo pm-suspend'
+    alias suspend='Run sudo pm-suspend'
+    #alias h='Run sudo pm-hibernate'
+    alias hib='Run sudo pm-hibernate'
+    alias hibernate='Run sudo pm-hibernate'
+    alias shut='Run sudo shutdown -h now'
+    alias shutdown='Run sudo shutdown -h now'
 
     #Search the package list for a regex pattern
     #TODO alias sea='apt-cache search'
 
-    RunClojure() {
-        echo java -cp $cljcp clojure.main
-             java -cp $cljcp clojure.main
-    }
-    alias clojure=RunClojure
+    alias clojure='Run java -cp $cljcp clojure.main'
     RunGvim() {
         #echo gvim -c "call Maximize_Window()"
              #gvim -c "call Maximize_Window()"
@@ -451,11 +402,7 @@ elif [ "$isCygwin_155" -gt 0 ]; then
         echo "gvim $@ &"
               gvim $@ &
     }
-    RunClojureCygpath() {
-        echo java -cp $(cygpath -p -w $cljcp) clojure.main
-             java -cp $(cygpath -p -w $cljcp) clojure.main
-    }
-    alias clojure=RunClojureCygpath
+    alias clojure='Run java -cp $(cygpath -p -w $cljcp) clojure.main'
 elif [ "$isMinGw32_155" -gt 0 ]; then
     :
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
@@ -524,23 +471,23 @@ cljcp=$cljcp:$dev/clojure-contrib/core.cache-0.6.3.jar
 cljcp=$cljcp:$dev/clojure-contrib/core.memoize-0.5.5.jar
 cljcp=$cljcp:$dev/vimclojure-server/server-2.3.6.jar
 
-alias g=RunGvim
+alias g='RunGvim'
 # this is a rather speculative $home location :)
 alias home='cd $dev/..'
 
 alias desktop='cd $HOME/Desktop'
-alias desk='desktop'
+alias    desk='cd $HOME/Desktop'
 
 # TODO bash: ln -s $HOME/Downloads $HOME/downloads
 alias downloads='cd $HOME/downloads'
-alias down='downloads'
+alias      down='cd $HOME/downloads'
 alias catg='cd $HOME/downloads/category-theory/js'
 
 alias cheatsheet='cd $dev/cheatsheet'
-alias cheat='cheatsheet'
+alias      cheat='cd $dev/cheatsheet'
 
 alias dotfiles='cd $dev/dotfiles'
-alias dotf='dotfiles'
+alias      dotf='cd $dev/dotfiles'
 #alias dot='dot'  " /usr/bin/dot  filter for drawing directed graphs
 
 alias hoch='cd $dev/hochzeit'
@@ -548,13 +495,9 @@ alias trackle='cd $dev/trackle'
 alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
-RunEmacs() {
-    echo "emacs $@ &"
-          emacs $@ &
-}
-alias e=RunEmacs
-alias ea='RunEmacs $dev/dotfiles/bash/aliases'
-alias ee='RunEmacs $dev/dotfiles/bash/env'
+alias  e='Run emacs &'
+alias ea='Run emacs $dev/dotfiles/bash/aliases &'
+alias ee='Run emacs $dev/dotfiles/bash/env &'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
@@ -572,11 +515,11 @@ GeneratePassw() {
     echo "strings /dev/urandom | grep -o '[[:alnum:]]' | head -n 8 | tr -d '\n'; echo"
           strings /dev/urandom | grep -o '[[:alnum:]]' | head -n 8 | tr -d '\n'; echo
 }
-alias genpasswd=GeneratePassw
+alias genpasswd='GeneratePassw'
 # TODO is this for passing param to an alias?
 #alias 'ps?'='ps ax | grep '
 
-alias ltt='$dev/LightTable/deploy/LightTable &'
+alias ltt='Run $dev/LightTable/deploy/LightTable &'
 alias clt='cd $dev/LightTable'
 # too many lct typos
 alias lct='cd $dev/LightTable'
