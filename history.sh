@@ -1,4 +1,5 @@
 #!/bin/bash -ex
+# -e stop on error; -x debug
 
 # TODO bookmars; multiple runs
 

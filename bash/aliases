@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/bin/bash -ex
+# -e stop on error; -x debug
 
 Reload() {
     echo source $HOME/.bashrc
@@ -493,6 +494,10 @@ if [ "$isLinux" -gt 0 ]; then
               gvim  $*  &
     }
     alias tmp='cd /tmp'
+
+    alias music='cd $HOME/music/'
+    alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl'
+    alias m='mplayer'
 elif [ "$isCygwin_155" -gt 0 ]; then
     :
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
@@ -561,10 +566,6 @@ if [ "$isLinux" -eq 0 ]; then
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias tmp='cd $HOME/tmp/'
-
-    alias music='cd $HOME/music/'
-    alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl'
-    alias m='mplayer'
 #else
 #    echo "Linux aliases already loaded"
 fi
