@@ -1,6 +1,10 @@
 ;; TODO jump to last line and switch to edit mode
 ;; TODO delete to the end of line and switch to edit mode
 
+;; TODO use only one emacs instance - seems to work only for terminals
+;; (load "server")
+;; (unless (server-running-p) (server-start))
+
 (setq inhibit-splash-screen t)
 ;; (load-theme 'light-blue)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
 (load-theme 'deeper-blue)    ;(disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
