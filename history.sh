@@ -1,10 +1,10 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 # TODO bookmars; multiple runs
 
 mkdir -p ~/dev
 lname=~/music
-if [ ! -L $lname ]; then
+if [ ! -L "$lname" ]; then
     if [ -d ~/Hudba ]; then
         ln -s ~/Hudba $lname
     else
@@ -13,7 +13,7 @@ if [ ! -L $lname ]; then
 fi
 
 lname=~/downloads
-if [ ! -L $lname ]; then
+if [ ! -L "$lname" ]; then
     if [ -d ~/Stiahnuté ]; then
         ln -s ~/Stiahnuté $lname
     else
@@ -22,7 +22,7 @@ if [ ! -L $lname ]; then
 fi
 
 lname=~/desktop
-if [ ! -L $lname ]; then
+if [ ! -L "$lname" ]; then
     if [ -d ~/Plocha ]; then
         ln -s ~/Plocha $lname
     else
@@ -31,7 +31,7 @@ if [ ! -L $lname ]; then
 fi
 
 lname=~/pictures
-if [ ! -L $lname ]; then
+if [ ! -L "$lname" ]; then
     if [ -d ~/Obrázky ]; then
         ln -s ~/Obrázky $lname
     else
@@ -90,6 +90,7 @@ packagesBase=(
     update-manager-core
     vim-gnome
     vim-gtk
+    vlc
     vlc-nox
     xfce4
     xfce4-clipman-plugin
@@ -194,13 +195,13 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 
 # install google-earth (gdebi is needed)
 fname=google-earth-stable_current_amd64.deb
-if [ ! -f $fname ]; then
+if [ ! -f "$fname" ]; then
     wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
     sudo gdebi $fname
 fi
 
 fname=google-chrome-stable_current_amd64.deb
-if [ ! -f $fname ]; then
+if [ ! -f "$fname" ]; then
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     sudo dpkg -i $fname
 fi
@@ -232,7 +233,7 @@ fi
 # the git pull doesn't work
 if [ 0 -eq 1 ]; then
     dname=~/dev/cheatsheet
-    if [ -d $dname ]; then
+    if [ -d "$dname" ]; then
 	cd $dname && git pull master
     else
 	echo git clone git@github.com:Bost/cheatsheet.git $dname
@@ -240,7 +241,7 @@ if [ 0 -eq 1 ]; then
     fi
 
     dname=~/dev/dotfiles
-    if [ -d $dname ]; then
+    if [ -d "$dname" ]; then
 	cd $dname && git pull master
     else
 	echo git clone git@github.com:Bost/dotfiles.git $dname
@@ -249,14 +250,14 @@ if [ 0 -eq 1 ]; then
 fi
 
 fname=~/dev/dotfiles/vimrc
-if [ ! -f $fname ]; then
-    ln -s $fname ~/.vimrc
+if [ ! -f "$fname" ]; then
+    ln -s "$fname" ~/.vimrc
 fi
 
 dname=~/.vim/bundle/vundle
 echo $dname
 # git clone for vundle is a workaround
-if [ ! -d $dname ]; then
+if [ ! -d "$dname" ]; then
     echo git clone https://github.com/gmarik/vundle.git $dname
          git clone https://github.com/gmarik/vundle.git $dname
     # Remove empty directories in order do proceed with :BundleInstall
@@ -276,7 +277,7 @@ ln -s ~/dev/dotfiles/.emacs ~/.emacs
 
 # TODO this might not be needed anymore
 fname=~/.emacs.d/elpa/transpose-frame/transpose-frame.el
-if [ ! -f $fname ]; then
+if [ ! -f "$fname" ]; then
     mkdir -p ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
     wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
 fi
@@ -289,19 +290,19 @@ fi
 
 # TODO get current clojure-contrib jars
 fname=~/dev/clojure-contrib/tools.macro-0.1.2.jar
-if [ ! -f $fname ]; then
+if [ ! -f "$fname" ]; then
     mkdir -p ~/dev/clojure-contrib
     cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/tools.macro/0.1.2/tools.macro-0.1.2.jar > tools.macro-0.1.2.jar
 fi
 
 fname=~/dev/clojure-contrib/algo.monads-0.1.0.jar
-if [ ! -f $fname ]; then
+if [ ! -f "$fname" ]; then
     mkdir -p ~/dev/clojure-contrib
     cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/algo.monads/0.1.0/algo.monads-0.1.0.jar > algo.monads-0.1.0.jar
 fi
 
 fname=~/dev/clojure-contrib/math.combinatorics-0.0.3.jar
-if [ ! -f $fname ]; then
+if [ ! -f "$fname" ]; then
     mkdir -p ~/dev/clojure-contrib
     cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/math.combinatorics/0.0.3/math.combinatorics-0.0.3.jar > math.combinatorics-0.0.3.jar
 fi
@@ -309,7 +310,7 @@ fi
 if [ 0 -eq 1 ]; then
     dname=~/dev/clojure
     echo $dname
-    if [ ! -d $dname ]; then
+    if [ ! -d "$dname" ]; then
 	cd ~/dev && git clone https://github.com/clojure/clojure.git
     else
 	cd $dname && git pull master
@@ -318,13 +319,13 @@ if [ 0 -eq 1 ]; then
     fi
 
     fname=~/dev/clojure/clojure-1.6.0.jar
-    if [ ! -f $fname ]; then
+    if [ ! -f "$fname" ]; then
 	$dname/antsetup.sh && ant
     fi
 fi
 
 dname=~/.vim/bundle/powerline-fonts
-if [ ! -d $dname ]; then
+if [ ! -d "$dname" ]; then
     echo git clone git@github.com:Bost/powerline-fonts.git $dname
          git clone git@github.com:Bost/powerline-fonts.git $dname
     mkdir ~/.fonts
@@ -355,12 +356,12 @@ echo sudo apt-get autoremove
      sudo apt-get autoremove
 
 fname=~/.config/LightTable/settings/user.behaviors
-if [ ! -f $fname ]; then
+if [ ! -f "$fname" ]; then
     ln -s ~/dev/dotfiles/lighttable/user.behaviors $fname
 fi
 
 fname=~/.config/LightTable/settings/user.keymap
-if [ ! -f $fname ]; then
+if [ ! -f "$fname" ]; then
     ln -s ~/dev/dotfiles/lighttable/user.keymap $fname
 fi
 
