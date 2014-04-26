@@ -2,51 +2,48 @@
 
 # TODO bookmars; multiple runs
 
-todo="### TODO: add ~/bin to the PATH"
-echo ''
-echo $todo
-echo ''
-
 mkdir -p ~/dev
-if [ ! -L ~/music ]; then
+lname=~/music
+if [ ! -L $lname ]; then
     if [ -d ~/Hudba ]; then
-        ln -s ~/Hudba ~/music
+        ln -s ~/Hudba $lname
     else
-        ln -s ~/Music ~/music
+        ln -s ~/Music $lname
     fi
 fi
 
-if [ ! -L ~/downloads ]; then
+lname=~/downloads
+if [ ! -L $lname ]; then
     if [ -d ~/Stiahnuté ]; then
-        ln -s ~/Stiahnuté ~/downloads
+        ln -s ~/Stiahnuté $lname
     else
-        ln -s ~/Downloads ~/downloads
+        ln -s ~/Downloads $lname
     fi
 fi
 
-if [ ! -L ~/desktop ]; then
+lname=~/desktop
+if [ ! -L $lname ]; then
     if [ -d ~/Plocha ]; then
-        ln -s ~/Plocha ~/desktop
+        ln -s ~/Plocha $lname
     else
-        ln -s ~/Desktop ~/desktop
+        ln -s ~/Desktop $lname
     fi
 fi
 
-if [ ! -L ~/pictures ]; then
+lname=~/pictures
+if [ ! -L $lname ]; then
     if [ -d ~/Obrázky ]; then
-        ln -s ~/Obrázky ~/pictures
+        ln -s ~/Obrázky $lname
     else
-        ln -s ~/Pictures ~/pictures
+        ln -s ~/Pictures $lname
     fi
 fi
 
-# a bugfix for LightTable
-sudo ln -sf /lib/i386-linux-gnu/libudev.so.1 /lib/i386-linux-gnu/libudev.so.0
-
-
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-
+# TODO multiple run
+if [ 0 -eq 1 ]; then
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+fi
 
 # sudo wget --output-document=/etc/apt/sources.list.d/medibuntu.list \
 # http://www.medibuntu.org/sources.list.d/$(lsb_release -cs).list \
@@ -54,18 +51,123 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # --allow-unauthenticated install medibuntu-keyring \
 # && sudo apt-get --quiet update
 
-# sudo apt-get install \
-# app-install-data-medibuntu \
-# apport-hooks-medibuntu \
-# w32codecs \
-# libdvdcss2 \
-# libavcodec-extra-53 \
-# libavdevice-extra-53 \
-# libavfilter-extra-2 \
-# libavformat-extra-53 \
-# libavutil-extra-51 \
-# libpostproc-extra-52 \
-# libswscale-extra-2
+packagesBase=(
+    #lirc                      # Linux Infra-red Remote Control
+    ack-grep
+    aptitude
+    bitcoin-qt
+    bitcoind
+    chromium-browser
+    curl
+    emacs24
+    fdupes
+    ffmpeg
+    firestarter
+    gdebi                 # install .deb files under gnome
+    git                   # for dotfiles
+    git-gui               # for dotfiles
+    gnome-system-tools
+    google-chrome-stable
+    gparted
+    gstreamer1.0-libav
+    gstreamer1.0-plugins-bad
+    guake
+    htop
+    iptraf
+    libavcodec53
+    lm-sensors
+    mesa-utils
+    mplayer
+    mplayer-gui
+    powertop
+    ssh
+    synaptic
+    texinfo
+    tofrodos                  # line endings
+    traceroute
+    tree
+    ubuntu-restricted-extras
+    update-manager-core
+    vim-gnome
+    vim-gtk
+    vlc-nox
+    xfce4
+    xfce4-clipman-plugin
+    xfce4-cpufreq-plugin
+    xfce4-cpugraph-plugin
+    xfce4-goodies
+    xfce4-netload-plugin
+    xfce4-power-manager
+    xfce4-sensors-plugin
+    xfce4-systemload-plugin
+    xfce4-time-out-plugin
+    xfce4-xkb-plugin
+    xsel                 # clipboard
+    xubuntu-desktop
+    youtube-dl
+    # app-install-data-medibuntu
+    # apport-hooks-medibuntu
+    # w32codecs
+    # libdvdcss2
+    # libavcodec-extra-53
+    # libavdevice-extra-53
+    # libavfilter-extra-2
+    # libavformat-extra-53
+    # libavutil-extra-51
+    # libpostproc-extra-52
+    # libswscale-extra-2
+)
+
+packagesDev=(
+    ant
+    autoconf
+    autogen
+    automake
+    ghc6                  # Glasgow Haskell Compilation system
+    graphviz             # graph drawing tools
+    libatk1.0-dev
+    libbonoboui2-dev
+    libcairo2-dev
+    libdbus-1-dev
+    libgconf2-dev
+    libgif-dev
+    libgnome2-dev
+    libgnomeui-dev
+    libgnutls-dev
+    libgpm-dev
+    libgtk2.0-dev
+    libjpeg-dev
+    libm17n-dev
+    libncurses5-dev
+    libotf-dev
+    libpng-dev
+    librsvg2-dev
+    libtiff4-dev
+    libx11-dev
+    libxml2-dev
+    libxpm-dev
+    libxt-dev
+    linux-headers-generic
+    linux-source
+    maven
+    mercurial
+    openjdk-7-jdk
+    python-django
+    python-matplotlib
+    python-numpy              # in python 3 python-numpy should be already included
+    subversion
+    visualvm                  # Java Troubleshooting Tool
+)
+
+packagesNotebook=(
+    acpi
+    wavemon    # Wireless Device Monitoring Application
+    # cvs      # cvs:
+    # xinetd   # cvs: extended Internet daemon
+)
+sudo apt-get install -y ${packagesBase[@]}
+#${packagesDev[@]} ${packagesNotebook[@]}
+
 
 #sudo apt-get install --reinstall nvidia-current
 # or nvidia-current-updates # or nvidia-experimental-304
@@ -76,113 +178,7 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # echo sudo apt-get update
 #      sudo apt-get update
 #
-# # in python 3 python-numpy should be already included
-# # notebooks - powertop
-#
 # build-dep cannot be found
-# sudo apt-get install \
-# mercurial \
-# git \
-# git-gui \
-# guake \
-# synaptic \
-# vim-gnome \
-# lm-sensors \
-# vim-gtk \
-# tree \
-# tofrodos \
-# chromium-browser \
-# ant \
-# gparted \
-# bitcoind \
-# htop \
-# traceroute \
-# ssh \
-# firestarter \
-# gnome-system-tools \
-# curl \
-# openjdk-7-jdk \
-# maven \
-# ack-grep \
-# automake \
-# autoconf \
-# python-numpy \
-# python-matplotlib \
-# xfce4 \
-# xfce4-time-out-plugin \
-# xfce4-cpugraph-plugin \
-# xfce4-clipman-plugin \
-# xfce4-netload-plugin \
-# xfce4-xkb-plugin \
-# xfce4-systemload-plugin \
-# xfce4-sensors-plugin \
-# xfce4-goodies \
-# xfce4-power-manager \
-# xubuntu-desktop \
-# bitcoind \
-# bitcoin-qt \
-# graphviz \
-# visualvm \
-# libncurses5-dev \
-# libgnome2-dev \
-# libgnomeui-dev \
-# libgtk2.0-dev \
-# libatk1.0-dev \
-# libbonoboui2-dev \
-# libcairo2-dev \
-# libx11-dev \
-# libxpm-dev \
-# libxt-dev \
-# update-manager-core \
-# linux-source \
-# linux-headers-generic \
-# powertop \
-# emacs24 \
-# ghc6 \
-# google-chrome-stable \
-# python-django \
-# gdebi \
-# acpi \
-# automake \
-# autogen \
-# autoconf \
-# ssh \
-# texinfo \
-# libncurses5-dev \
-# libgtk2.0-dev \
-# libgif-dev \
-# libjpeg-dev \
-# libpng-dev \
-# libxpm-dev \
-# libtiff4-dev \
-# libxml2-dev \
-# librsvg2-dev \
-# libotf-dev \
-# libm17n-dev \
-# libgpm-dev \
-# libgnutls-dev \
-# libgconf2-dev \
-# libdbus-1-dev \
-# youtube-dl \
-# ffmpeg \
-# mplayer \
-# mplayer-gui \
-# gstreamer1.0-libav \
-# gstreamer1.0-plugins-bad \
-# vlc-nox \
-# ubuntu-restricted-extras \
-# libavcodec53 \
-# lirc \
-# subversion \
-# aptitude \
-# xfce4-cpufreq-plugin \
-# mesa-utils \
-# iptraf
-
-
-### only for wifi-enabled devices (laptop etc.)
-# sudo apt-get install \
-# wavemon
 
 # view pdf files in chromium
 #sudo ln -s /opt/google/chrome/libpdf.so /usr/lib/chromium-browser/
@@ -193,25 +189,21 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 # sudo service module-init-tools restart
 # libqt4-opengl-dev libasound2-dev timidity
 
-## only for cvs
-# sudo apt-get install \
-# cvs \
-# xinetd
-
 # TODO compare definition of JAVA_HOME with dotfiles/bash/env
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
 
-# emacs configuration:
-# mkdir ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
-wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
-echo "(add-to-list \'load-path \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
-echo "(require \'transpose-frame)" >> ~/.emacs
-
 # install google-earth (gdebi is needed)
-wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
-sudo gdebi google-earth-stable_current_amd64.deb
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg -i google-chrome-stable_current_amd64.deb
+fname=google-earth-stable_current_amd64.deb
+if [ ! -f $fname ]; then
+    wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
+    sudo gdebi $fname
+fi
+
+fname=google-chrome-stable_current_amd64.deb
+if [ ! -f $fname ]; then
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo dpkg -i $fname
+fi
 
 
 # not needed on franzi
@@ -219,8 +211,8 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 #     sudo apt-get remove nvidia-current
 #echo sudo apt-get install nvidia-current-updates
 #     sudo apt-get install nvidia-current-updates
-##echo sudo apt-get install --reinstall nvidia-current
-##     sudo apt-get install --reinstall nvidia-current
+#echo sudo apt-get install --reinstall nvidia-current
+#     sudo apt-get install --reinstall nvidia-current
 
 # terminator - multiple terminals
 # pv - view copy progress
@@ -233,108 +225,118 @@ git config --global user.email thebost@gmail.com
 # add this comp to to github knows repos
 if [ ! -f ~/.ssh/id_rsa ]; then
     ssh-keygen
+    # TODO put content of id_rsa.put to clipboard - see  xsel
     cat ~/.ssh/id_rsa.pub
 fi
 
 # the git pull doesn't work
-# if [ -d ~/dev/cheatsheet ]; then
-#     cd ~/dev/cheatsheet && git pull master
-# else
-#     echo git clone git@github.com:Bost/cheatsheet.git ~/dev/cheatsheet
-#          git clone git@github.com:Bost/cheatsheet.git ~/dev/cheatsheet
-# fi
-# if [ -d ~/dev/dotfiles ]; then
-#     cd ~/dev/dotfiles && git pull master
-# else
-#     echo git clone git@github.com:Bost/dotfiles.git ~/dev/dotfiles
-#          git clone git@github.com:Bost/dotfiles.git ~/dev/dotfiles
-# fi
+if [ 0 -eq 1 ]; then
+    dname=~/dev/cheatsheet
+    if [ -d $dname ]; then
+	cd $dname && git pull master
+    else
+	echo git clone git@github.com:Bost/cheatsheet.git $dname
+        git clone git@github.com:Bost/cheatsheet.git $dname
+    fi
 
-if [ ! -f ~/dev/dotfiles/vimrc ]; then
-    ln -s ~/dev/dotfiles/vimrc ~/.vimrc
+    dname=~/dev/dotfiles
+    if [ -d $dname ]; then
+	cd $dname && git pull master
+    else
+	echo git clone git@github.com:Bost/dotfiles.git $dname
+        git clone git@github.com:Bost/dotfiles.git $dname
+    fi
 fi
 
-echo ~/.vim/bundle/vundle
+fname=~/dev/dotfiles/vimrc
+if [ ! -f $fname ]; then
+    ln -s $fname ~/.vimrc
+fi
+
+dname=~/.vim/bundle/vundle
+echo $dname
 # git clone for vundle is a workaround
-if [ ! -d ~/.vim/bundle/vundle ]; then
-    echo git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-         git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+if [ ! -d $dname ]; then
+    echo git clone https://github.com/gmarik/vundle.git $dname
+         git clone https://github.com/gmarik/vundle.git $dname
     # Remove empty directories in order do proceed with :BundleInstall
     cd ~/dev/dotfiles/vim/bundle && rm -rf YankRing.vim ctrlp.vim vim-orgmode vim-config-python-ide ack.vim vim-matchit vim-powerline tagbar SearchComplete supertab
 fi
 
-uname -a
 timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
+
 mv ~/.bashrc ~/.bashrc.$timestamp.backup
 ln -s ~/dev/dotfiles/bashrc ~/.bashrc
 
 mv ~/.vim ~/.vim.$timestamp.backup
 ln -s ~/dev/dotfiles/vim ~/.vim
 
-# rm -rf ~/bin/lein
+mv ~/.emacs ~/.emacs.$timestamp.backup
+ln -s ~/dev/dotfiles/.emacs ~/.emacs
+
+# TODO this might not be needed anymore
+fname=~/.emacs.d/elpa/transpose-frame/transpose-frame.el
+if [ ! -f $fname ]; then
+    mkdir -p ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
+    wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
+fi
+
 # mkdir -p ~/bin
 # cd ~/bin/ && curl -O https://raw.github.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
 # chmod +x ~/bin/lein
 # ~/bin/lein self-install
 
-if [ ! -f ~/dev/clojure-contrib/tools.macro-0.1.2.jar ]; then
+
+# TODO get current clojure-contrib jars
+fname=~/dev/clojure-contrib/tools.macro-0.1.2.jar
+if [ ! -f $fname ]; then
     mkdir -p ~/dev/clojure-contrib
     cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/tools.macro/0.1.2/tools.macro-0.1.2.jar > tools.macro-0.1.2.jar
 fi
-if [ ! -f ~/dev/clojure-contrib/algo.monads-0.1.0.jar ]; then
+
+fname=~/dev/clojure-contrib/algo.monads-0.1.0.jar
+if [ ! -f $fname ]; then
     mkdir -p ~/dev/clojure-contrib
     cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/algo.monads/0.1.0/algo.monads-0.1.0.jar > algo.monads-0.1.0.jar
 fi
-if [ ! -f ~/dev/clojure-contrib/math.combinatorics-0.0.3.jar ]; then
+
+fname=~/dev/clojure-contrib/math.combinatorics-0.0.3.jar
+if [ ! -f $fname ]; then
     mkdir -p ~/dev/clojure-contrib
     cd ~/dev/clojure-contrib/ && curl -O http://search.maven.org/remotecontent?filepath=org/clojure/math.combinatorics/0.0.3/math.combinatorics-0.0.3.jar > math.combinatorics-0.0.3.jar
 fi
-if [ ! -f ~/dev/vimclojure-server/server-2.3.6.jar ]; then
-    mkdir -p ~/dev/vimclojure-server
-    cd ~/dev/vimclojure-server && curl -O http://clojars.org/repo/vimclojure/server/2.3.6/server-2.3.6.jar > server-2.3.6.jar
+
+if [ 0 -eq 1 ]; then
+    dname=~/dev/clojure
+    echo $dname
+    if [ ! -d $dname ]; then
+	cd ~/dev && git clone https://github.com/clojure/clojure.git
+    else
+	cd $dname && git pull master
+	echo git checkout clojure-1.6.0
+             git checkout clojure-1.6.0
+    fi
+
+    fname=~/dev/clojure/clojure-1.6.0.jar
+    if [ ! -f $fname ]; then
+	$dname/antsetup.sh && ant
+    fi
 fi
 
-echo ~/dev/clojure
-# if [ ! -d ~/dev/clojure ]; then
-#     cd ~/dev && git clone https://github.com/clojure/clojure.git
-# else
-#     cd ~/dev/clojure && git pull master
-#     echo git checkout clojure-1.5.1
-#          git checkout clojure-1.5.1
-# fi
-
-# if [ ! -f ~/dev/clojure/clojure-1.5.1.jar ]; then
-#     ~/dev/clojure/antsetup.sh && ant
-# fi
-
-echo ~/dev/vimclojure
-# if [ ! -d ~/dev/vimclojure ]; then
-#     cd ~/dev/
-#     echo hg clone https://bitbucket.org/kotarak/vimclojure
-#          hg clone https://bitbucket.org/kotarak/vimclojure
-#     mv vimclojure/ vimclojure-nailgun-client
-#     cd vimclojure-nailgun-client/client/
-#     make
-#     rm -rf ~/bin/ng
-#     ln -s ~/dev/vimclojure-nailgun-client/client/ng ~/bin/ng
-# fi
-rm -rf ~/bin/ng-server.sh
-cp ~/dev/dotfiles/ng-server.sh ~/bin
-
-
-if [ ! -d ~/.vim/bundle/powerline-fonts ]; then
-    echo git clone git@github.com:Bost/powerline-fonts.git ~/.vim/bundle/powerline-fonts
-         git clone git@github.com:Bost/powerline-fonts.git ~/.vim/bundle/powerline-fonts
+dname=~/.vim/bundle/powerline-fonts
+if [ ! -d $dname ]; then
+    echo git clone git@github.com:Bost/powerline-fonts.git $dname
+         git clone git@github.com:Bost/powerline-fonts.git $dname
     mkdir ~/.fonts
-    cp ~/.vim/bundle/powerline-fonts/UbuntuMono/Ubuntu\ Mono\ derivative\ Powerline.ttf ~/.fonts/
+    cp $dname/UbuntuMono/Ubuntu\ Mono\ derivative\ Powerline.ttf ~/.fonts/
     # update font cache
     fc-cache -vf ~/.fonts
     # ./vim/bundle/powerline/font/fontpatcher.py
 fi
 
-echo build vim
 # Buil vim with all stuff including the +float support
 if [ 0 -eq 1 ]; then
+    echo build vim
     cd ~/dev
     (date && hg clone https://vim.googlecode.com/hg/ vim) 2>&1 |tee hg-vim.log
     cd ~/dev/vim
@@ -352,12 +354,18 @@ fi
 echo sudo apt-get autoremove
      sudo apt-get autoremove
 
-echo ''
-echo $todo
-echo "$0 terminated"
+fname=~/.config/LightTable/settings/user.behaviors
+if [ ! -f $fname ]; then
+    ln -s ~/dev/dotfiles/lighttable/user.behaviors $fname
+fi
 
-ln -s /home/bost/dev/dotfiles/lighttable/user.behaviors /home/bost/.config/LightTable/settings/user.behaviors
-ln -s /home/bost/dev/dotfiles/lighttable/user.keymap /home/bost/.config/LightTable/settings/user.keymap
+fname=~/.config/LightTable/settings/user.keymap
+if [ ! -f $fname ]; then
+    ln -s ~/dev/dotfiles/lighttable/user.keymap $fname
+fi
 
-curl -O https://yt-dl.org/downloads/2014.04.13/youtube-dl -o $HOME/bin/youtube-dl
-chmod a+x $HOME/bin/youtube-dl
+# TODO check youtube-dl current version
+# curl -O https://yt-dl.org/downloads/2014.04.13/youtube-dl -o $HOME/bin/youtube-dl
+# chmod a+x $HOME/bin/youtube-dl
+
+# TODO add guake and other stuff to session
