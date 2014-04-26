@@ -107,6 +107,9 @@ packagesBase=(
     xsel                 # clipboard
     xubuntu-desktop
     youtube-dl
+    # for the lexmark x2670
+    lib32ncurses5
+
     # app-install-data-medibuntu
     # apport-hooks-medibuntu
     # w32codecs
@@ -159,6 +162,7 @@ packagesDev=(
     python-numpy              # in python 3 python-numpy should be already included
     subversion
     visualvm                  # Java Troubleshooting Tool
+    xsane                     # scanner
 )
 
 packagesNotebook=(
