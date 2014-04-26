@@ -586,7 +586,8 @@ alias home='cd $dev/..'
 alias desktop='cd $HOME/Desktop'
 alias desk='desktop'
 
-alias downloads='cd $HOME/Downloads'
+# TODO bash: ln -s $HOME/Downloads $HOME/downloads
+alias downloads='cd $HOME/downloads'
 alias down='downloads'
 alias catg='cd $HOME/downloads/category-theory/js'
 
