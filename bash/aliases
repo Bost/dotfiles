@@ -37,7 +37,7 @@ alias prep='PsEfGrep'
 ExtractBashComments() {
     egrep "^#"
 # Usage:
-# cat myscript.sh | ExtractBashComments | wc 
+# cat myscript.sh | ExtractBashComments | wc
 # comments=$(ExtractBashComments < myscript.sh)
 }
 
@@ -402,8 +402,16 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
     #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
 
     RunGvim() {
-        echo "gvim -u $HOME/dev/dotfiles/vimrc $@ &"
-              gvim -u $HOME/dev/dotfiles/vimrc $@ &
+        fname=$HOME/dev/dotfiles/.vimrc
+        if [-f "$fname" ]; then
+            echo "vimrc already renamed to .vimrc. TODO remove this if-else"
+        else
+            echo mv $HOME/dev/dotfiles/vimrc $fname
+                 mv $HOME/dev/dotfiles/vimrc $fname
+            echo "TODO remove this if-else"
+        fi
+        echo "gvim -u $HOME/dev/dotfiles/.vimrc $@ &"
+              gvim -u $HOME/dev/dotfiles/.vimrc $@ &
     }
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_app1" -gt 0 ]; then

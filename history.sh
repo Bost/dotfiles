@@ -254,7 +254,7 @@ if [ 0 -eq 1 ]; then
     fi
 fi
 
-fname=~/dev/dotfiles/vimrc
+fname=~/dev/dotfiles/.vimrc
 if [ ! -f "$fname" ]; then
     ln -s "$fname" ~/.vimrc
 fi
@@ -266,16 +266,28 @@ if [ ! -d "$dname" ]; then
     echo git clone https://github.com/gmarik/vundle.git $dname
          git clone https://github.com/gmarik/vundle.git $dname
     # Remove empty directories in order do proceed with :BundleInstall
-    cd ~/dev/dotfiles/vim/bundle && rm -rf YankRing.vim ctrlp.vim vim-orgmode vim-config-python-ide ack.vim vim-matchit vim-powerline tagbar SearchComplete supertab
+    dirs=(
+	YankRing.vim
+	ctrlp.vim
+	vim-orgmode
+	vim-config-python-ide
+	ack.vim
+	vim-matchit
+	vim-powerline
+	tagbar
+	SearchComplete
+	supertab
+    )
+    cd ~/dev/dotfiles/.vim/bundle && rm -rf ${dirs[@]}
 fi
 
 timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
 
 mv ~/.bashrc ~/.bashrc.$timestamp.backup
-ln -s ~/dev/dotfiles/bashrc ~/.bashrc
+ln -s ~/dev/dotfiles/.bashrc ~/.bashrc
 
 mv ~/.vim ~/.vim.$timestamp.backup
-ln -s ~/dev/dotfiles/vim ~/.vim
+ln -s ~/dev/dotfiles/.vim ~/.vim
 
 mv ~/.emacs ~/.emacs.$timestamp.backup
 ln -s ~/dev/dotfiles/.emacs ~/.emacs
@@ -337,7 +349,7 @@ if [ ! -d "$dname" ]; then
     cp $dname/UbuntuMono/Ubuntu\ Mono\ derivative\ Powerline.ttf ~/.fonts/
     # update font cache
     fc-cache -vf ~/.fonts
-    # ./vim/bundle/powerline/font/fontpatcher.py
+    # ./.vim/bundle/powerline/font/fontpatcher.py
 fi
 
 # Buil vim with all stuff including the +float support
@@ -345,9 +357,9 @@ if [ 0 -eq 1 ]; then
     echo build vim
     cd ~/dev
     (date && hg clone https://vim.googlecode.com/hg/ vim) 2>&1 |tee hg-vim.log
-    cd ~/dev/vim
+    cd ~/dev/.vim
     (date && hg pull -u) 2>&1 |tee -a ../hg-vim.log
-    cd ~/dev/vim/src
+    cd ~/dev/.vim/src
     make distclean
     #./configure --with-features=huge --enable-gui=gnome2
     #./configure --with-features=huge --enable-gui=gtk2
