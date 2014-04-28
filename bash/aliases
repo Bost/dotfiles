@@ -2,13 +2,13 @@
 # -e stop on error; -x debug
 
 Run() {
-    echo $@
-         $@
+    echo "$@"
+         "$@"
 }
 
 RunBg() {
-    echo $@ \&
-         $@ &
+    echo "$@ &"
+         "$@" &
 }
 
 alias reload='Run source $HOME/.bashrc'
