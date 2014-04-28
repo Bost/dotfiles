@@ -5,11 +5,11 @@ Run() {
     echo $@
          $@
 }
+
 RunBg() {
     echo $@ \&
          $@ &
 }
-
 
 alias reload='Run source $HOME/.bashrc'
 alias      r='Run source $HOME/.bashrc'
@@ -114,7 +114,7 @@ GitLog() {
 }
 alias gl='GitLog'
 
-alias gk='Run gitk --all &'
+alias gk='Run gitk --all' &
 #alias gitk='gitk --all &'
 
 GitSearchStr () {
@@ -237,7 +237,7 @@ GitUpdateAll() {
     fi
     cd $_cd
 }
-alias ga='GitUpdateAll'
+alias  ga='GitUpdateAll'
 alias gua='GitUpdateAll'
 
 GitPushRepo() {
