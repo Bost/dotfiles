@@ -278,6 +278,7 @@ HistoryGrep() {
           history | grep $@
 }
 alias hrep='HistoryGrep'
+alias   hr='HistoryGrep'
 
 AliasGrep() {
     echo "alias | grep $@"
