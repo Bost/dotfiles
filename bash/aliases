@@ -61,7 +61,7 @@ alias cdd='cd -'
 
 alias gap='Run git add -p'
 alias gdd='Run git add .'
-alias  gg='Run git gui &'
+alias  gg='RunBg git gui'
 alias gtg='Run git tag'
 alias gcp='Run git cherry-pick'
 alias gbr='Run git branch'
@@ -114,8 +114,8 @@ GitLog() {
 }
 alias gl='GitLog'
 
-alias gk='Run gitk --all' &
-#alias gitk='gitk --all &'
+alias gk='RunBg gitk --all'
+#alias gitk='RunBg gitk --all'
 
 GitSearchStr () {
     # Search for a string in all revisions of entire git history
@@ -374,15 +374,10 @@ if [ "$isLinux" -gt 0 ]; then
     #TODO alias sea='apt-cache search'
 
     alias clojure='Run java -cp $cljcp clojure.main'
-    RunGvim() {
-        #echo gvim -c "call Maximize_Window()"
-             #gvim -c "call Maximize_Window()"
-        #echo gvim -c "call Maximize_Window()" --remote-silent
-             #gvim -c "call Maximize_Window()" --remote-silent
-        # !* - all args of the last command
-        echo "gvim $@ &"
-              gvim $@ &
-    }
+    # !* - all args of the last command
+    #alias gvim='RunBg gvim -c "call Maximize_Window()" --remote-silent'
+    #alias gvim='RunBg gvim -c "call Maximize_Window()"'
+    alias gvim='RunBg gvim'
     alias tmp='cd /tmp'
 
     alias music='cd $HOME/music/'
@@ -392,10 +387,7 @@ elif [ "$isCygwin_155" -gt 0 ]; then
     :
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
 
-    RunGvim() {
-        echo "gvim $@ &"
-              gvim $@ &
-    }
+    alias gvim='RunBg gvim'
     alias clojure='Run java -cp $(cygpath -p -w $cljcp) clojure.main'
 elif [ "$isMinGw32_155" -gt 0 ]; then
     :
@@ -410,8 +402,7 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
                  mv $HOME/dev/dotfiles/vimrc $fname
             echo "TODO remove this if-else"
         fi
-        echo "gvim -u $HOME/dev/dotfiles/.vimrc $@ &"
-              gvim -u $HOME/dev/dotfiles/.vimrc $@ &
+        RunBg gvim -u $HOME/dev/dotfiles/.vimrc $@
     }
     #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
 elif [ "$isMinGw32_app1" -gt 0 ]; then
@@ -520,7 +511,7 @@ alias genpasswd='GeneratePassw'
 # TODO is this for passing param to an alias?
 #alias 'ps?'='ps ax | grep '
 
-alias ltt='Run $dev/LightTable/deploy/LightTable &'
+alias ltt='RunBg $dev/LightTable/deploy/LightTable'
 alias clt='cd $dev/LightTable'
 # too many lct typos
 alias lct='cd $dev/LightTable'
