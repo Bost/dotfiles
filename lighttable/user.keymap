@@ -19,4 +19,5 @@
               "alt-shift-w" [:editor.watch.unwatch]
               "pmeta-i" [:smart-indent-selection]
               "alt-g" [:clear-inline-results]
+              "super-s" [:save]
               }}}
