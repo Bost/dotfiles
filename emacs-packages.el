@@ -4,6 +4,7 @@
 ; echo "(add-to-list \'load-path \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
 ; echo "(require \'transpose-frame)" >> ~/.emacs
 
+; TODO M-x package-list-packages must be called before M-x eval-buffer works
 (setq
  package-list 
  '(
