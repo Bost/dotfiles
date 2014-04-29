@@ -400,3 +400,5 @@ fi
 # chmod a+x $HOME/bin/youtube-dl
 
 # TODO add guake and other stuff to session
+
+echo "dotfilesHOME=~/dev/dotfiles" > ~/.bash_profile
