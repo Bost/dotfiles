@@ -214,9 +214,11 @@
 
 (defun get-font-height () ; font size
   (interactive)
-  (if (string= "0" (getenv "isLinuxFranzi"))
-    100
-    140))
+  (if (not (string= "0" (getenv "isLinuxFranzi")))
+      140
+    (if (not (string= "0" (getenv "isLinuxMartinJV")))
+	120
+      140)))
 (set-face-attribute 'default nil :height (get-font-height))
 
 ;; highlight current line - this is probably not needed in the default face
