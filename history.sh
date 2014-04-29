@@ -56,26 +56,27 @@ packagesBase=(
     #lirc                      # Linux Infra-red Remote Control
     ack-grep
     aptitude
-    bitcoin-qt
-    bitcoind
+#    bitcoin-qt
+#    bitcoind
     chromium-browser
     curl
     emacs24
     fdupes
-    ffmpeg
-    firestarter
+#    ffmpeg
+#    firestarter
     gdebi                 # install .deb files under gnome
     git                   # for dotfiles
     git-gui               # for dotfiles
     gnome-system-tools
-    google-chrome-stable
+ #   google-chrome-stable
     gparted
     gstreamer1.0-libav
     gstreamer1.0-plugins-bad
     guake
     htop
     iptraf
-    libavcodec53
+    libav-tools
+ #   libavcodec53
     lm-sensors
     mesa-utils
     mplayer
@@ -108,7 +109,7 @@ packagesBase=(
     xubuntu-desktop
     youtube-dl
     # for the lexmark x2670
-    lib32ncurses5
+ #   lib32ncurses5
 
     # app-install-data-medibuntu
     # apport-hooks-medibuntu
@@ -171,7 +172,7 @@ packagesNotebook=(
     # cvs      # cvs:
     # xinetd   # cvs: extended Internet daemon
 )
-sudo apt-get install -y ${packagesBase[@]}
+sudo apt-get install --yes ${packagesBase[@]}
 #${packagesDev[@]} ${packagesNotebook[@]}
 
 
@@ -196,21 +197,24 @@ sudo apt-get install -y ${packagesBase[@]}
 # libqt4-opengl-dev libasound2-dev timidity
 
 # TODO compare definition of JAVA_HOME with dotfiles/bash/env
-JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/
+JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 
 # install google-earth (gdebi is needed)
-fname=google-earth-stable_current_amd64.deb
-if [ ! -f "$fname" ]; then
-    wget https://dl.google.com/linux/direct/google-earth-stable_current_amd64.deb
-    sudo gdebi $fname
-fi
+# TODO 32bit, 64bit
+if [ 0 -eq 1 ]; then
+    instBit=32
+    fname=google-earth-stable_current_amd$instBit.deb
+    if [ ! -f "$fname" ]; then
+        wget https://dl.google.com/linux/direct/$fname
+        sudo gdebi $fname
+    fi
 
-fname=google-chrome-stable_current_amd64.deb
-if [ ! -f "$fname" ]; then
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo dpkg -i $fname
+    fname=google-chrome-stable_current_amd$instBit.deb
+    if [ ! -f "$fname" ]; then
+        wget https://dl.google.com/linux/direct/$fname
+        sudo dpkg -i $fname
+    fi
 fi
-
 
 # not needed on franzi
 #echo sudo apt-get remove nvidia-current # or nvidia-current-updates # or nvidia-experimental-304
@@ -254,34 +258,38 @@ if [ 0 -eq 1 ]; then
     fi
 fi
 
-fname=~/dev/dotfiles/.vimrc
-if [ ! -f "$fname" ]; then
-    ln -s "$fname" ~/.vimrc
+timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
+
+lname=~/.vimrc
+if [ ! -L "$lname" ]; then
+    ln -s ~/dev/dotfiles/.vimrc "$lname"
 fi
 
 dname=~/.vim/bundle/vundle
 echo $dname
 # git clone for vundle is a workaround
-if [ ! -d "$dname" ]; then
-    echo git clone https://github.com/gmarik/vundle.git $dname
-         git clone https://github.com/gmarik/vundle.git $dname
-    # Remove empty directories in order do proceed with :BundleInstall
-    dirs=(
-	YankRing.vim
-	ctrlp.vim
-	vim-orgmode
-	vim-config-python-ide
-	ack.vim
-	vim-matchit
-	vim-powerline
-	tagbar
-	SearchComplete
-	supertab
-    )
-    cd ~/dev/dotfiles/.vim/bundle && rm -rf ${dirs[@]}
-fi
 
-timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
+# directory and link existance - see:
+# http://stackoverflow.com/questions/59838/how-to-check-if-a-directory-exists-in-a-shell-script
+if [ 1 -eq 0 ] && [ ! -d "$dname" ]; then
+    if [ ! -L "$dname" ]; then
+        git clone https://github.com/gmarik/vundle.git $dname
+        # Remove empty directories in order do proceed with :BundleInstall
+        dirs=(
+        YankRing.vim
+        ctrlp.vim
+        vim-orgmode
+        vim-config-python-ide
+        ack.vim
+        vim-matchit
+        vim-powerline
+        tagbar
+        SearchComplete
+        supertab
+        )
+        cd ~/dev/dotfiles/.vim/bundle && rm -rf ${dirs[@]}
+    fi
+fi
 
 mv ~/.bashrc ~/.bashrc.$timestamp.backup
 ln -s ~/dev/dotfiles/.bashrc ~/.bashrc
@@ -289,8 +297,11 @@ ln -s ~/dev/dotfiles/.bashrc ~/.bashrc
 mv ~/.vim ~/.vim.$timestamp.backup
 ln -s ~/dev/dotfiles/.vim ~/.vim
 
-mv ~/.emacs ~/.emacs.$timestamp.backup
-ln -s ~/dev/dotfiles/.emacs ~/.emacs
+lname=~/.emacs
+if [ ! -L "$lname" ]; then
+    #mv $lname $lname.$timestamp.backup
+    ln -s ~/dev/dotfiles/.emacs $lname
+fi
 
 # TODO this might not be needed anymore
 fname=~/.emacs.d/elpa/transpose-frame/transpose-frame.el
@@ -342,7 +353,7 @@ if [ 0 -eq 1 ]; then
 fi
 
 dname=~/.vim/bundle/powerline-fonts
-if [ ! -d "$dname" ]; then
+if [ 0 -eq 1 ] && [ ! -d "$dname" ]; then
     echo git clone git@github.com:Bost/powerline-fonts.git $dname
          git clone git@github.com:Bost/powerline-fonts.git $dname
     mkdir ~/.fonts
@@ -374,11 +385,13 @@ echo sudo apt-get autoremove
 
 fname=~/.config/LightTable/settings/user.behaviors
 if [ ! -f "$fname" ]; then
+    mkdir -p $(dirname $fname)
     ln -s ~/dev/dotfiles/lighttable/user.behaviors $fname
 fi
 
 fname=~/.config/LightTable/settings/user.keymap
 if [ ! -f "$fname" ]; then
+    mkdir -p $(dirname $fname)
     ln -s ~/dev/dotfiles/lighttable/user.keymap $fname
 fi
 
