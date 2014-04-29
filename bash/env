@@ -188,8 +188,7 @@ if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0
     fi
 fi
 
-if [ "$isLinuxFranzi" -eq 0 ]; then
-#&& [ "$isLinuxMartinJV" -eq 0 ]; then
+if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ]; then
     dnameOld=$HOME/dev/dotfiles/vim
     dnameNew=$HOME/dev/dotfiles/.vim
     if [ ! -d "$dnameNew" ]; then
@@ -212,6 +211,19 @@ if [ "$isLinuxFranzi" -eq 0 ]; then
              rm $HOME/.vimrc
         echo ln -s $HOME/dev/dotfiles/.vimrc $HOME/.vimrc
              ln -s $HOME/dev/dotfiles/.vimrc $HOME/.vimrc
+    else
+        echo "WARN: $fnameOld renamed to $fnameNew already."
+    fi
+
+    fnameOld=$HOME/dev/dotfiles/bashrc
+    fnameNew=$HOME/dev/dotfiles/.bashrc
+    if [ ! -f "$dnameNew" ]; then
+        echo mv $fnameOld $fnameNew
+             mv $fnameOld $fnameNew
+        echo rm $HOME/.bashrc
+             rm $HOME/.bashrc
+        echo ln -s $HOME/dev/dotfiles/.bashrc $HOME/.bashrc
+             ln -s $HOME/dev/dotfiles/.bashrc $HOME/.bashrc
     else
         echo "WARN: $fnameOld renamed to $fnameNew already."
     fi
