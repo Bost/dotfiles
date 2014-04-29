@@ -469,8 +469,8 @@ alias g='RunGvim'
 # this is a rather speculative $home location :)
 alias home='cd $dev/..'
 
-alias desktop='cd $HOME/Desktop'
-alias    desk='cd $HOME/Desktop'
+alias desktop='cd $HOME/desktop'
+alias    desk='cd $HOME/desktop'
 
 # TODO bash: ln -s $HOME/Downloads $HOME/downloads
 alias downloads='cd $HOME/downloads'
