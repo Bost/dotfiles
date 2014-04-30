@@ -201,15 +201,15 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 
 # install google-earth (gdebi is needed)
 # TODO 32bit, 64bit
-if [ 0 -eq 1 ]; then
-    instBit=32
-    fname=google-earth-stable_current_amd$instBit.deb
+bits=$(getconf LONG_BIT)
+if [ $bits == "64" ]; then
+    fname=google-earth-stable_current_amd$bits.deb
     if [ ! -f "$fname" ]; then
         wget https://dl.google.com/linux/direct/$fname
         sudo gdebi $fname
     fi
 
-    fname=google-chrome-stable_current_amd$instBit.deb
+    fname=google-chrome-stable_current_amd$bits.deb
     if [ ! -f "$fname" ]; then
         wget https://dl.google.com/linux/direct/$fname
         sudo dpkg -i $fname
