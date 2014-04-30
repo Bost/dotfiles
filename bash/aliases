@@ -61,6 +61,8 @@ alias cdd='cd -'
 
 alias gap='Run git add -p'
 alias gad='Run git add'
+alias gdd='Run git add'
+alias glg='Run git log'
 alias gaa='Run git add .'
 alias  gg='RunBg git gui'
 alias gtg='Run git tag'
@@ -110,10 +112,19 @@ GitLog() {
     # Visualise git log (like gitk, in the terminal)
     #fmt=%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s
     fmt='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    echo git log --graph --full-history --color --pretty=format:\"$fmt\" $@
+         git log --graph --full-history --color --pretty=format:"$fmt"   $@ # --abbrev-commit"
+}
+alias glb='GitLog'
+
+GitLogAll() {
+    # Visualise git log (like gitk, in the terminal)
+    #fmt=%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s
+    fmt='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     echo git log --graph --full-history --all --color --pretty=format:\"$fmt\"
          git log --graph --full-history --all --color --pretty=format:"$fmt"   # --abbrev-commit"
 }
-alias gl='GitLog'
+alias gl='GitLog --all'
 
 alias gk='RunBg gitk --all'
 #alias gitk='RunBg gitk --all'
