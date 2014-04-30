@@ -116,14 +116,7 @@ GitLog() {
          git log --graph --full-history --color --pretty=format:"$fmt"   $@ # --abbrev-commit"
 }
 alias glb='GitLog'
-
-GitLogAll() {
-    # Visualise git log (like gitk, in the terminal)
-    #fmt=%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s
-    fmt='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-    echo git log --graph --full-history --all --color --pretty=format:\"$fmt\"
-         git log --graph --full-history --all --color --pretty=format:"$fmt"   # --abbrev-commit"
-}
+alias glh='GitLog HEAD'
 alias gl='GitLog --all'
 
 alias gk='RunBg gitk --all'
