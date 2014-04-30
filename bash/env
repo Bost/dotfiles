@@ -7,6 +7,8 @@ strLinuxFranzi="Linux franzi"
 strLinuxMartin="Linux bost-martin"
 strLinuxMartinJV="Linux martin-jv"
 strLinuxBambi="Linux bambi-small"
+strLinuxNew64="Linux bost-new-64"
+
 #echo uname: $uname
 # the system variable strMinGw32_155 is not visible under WinGit
 strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
@@ -14,6 +16,7 @@ strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
 export isLinux=$(expr match "$uname" "$strLinux")
 # TODO clean definition of isLinux_64
 export isLinux_64=0
+export isLinuxNew64=$(expr match "$uname" "$strLinuxNew64")
 export isLinuxFranzi=$(expr match "$uname" "$strLinuxFranzi")
 export isLinuxMartinJV=$(expr match "$uname" "$strLinuxMartinJV")
 export isLinuxMartin=$(expr match "$uname" "$strLinuxMartin")
@@ -26,6 +29,7 @@ export isMinGw32_155=$(expr match "$uname" "$strMinGw32_155")
 
 #echo isLinux: $isLinux
 #echo isLinux_64: $isLinux_64
+#echo isLinuxNew64: $isLinuxNew64
 #echo isLinuxFranzi: $isLinuxFranzi
 #echo isLinuxMartin: $isLinuxMartin
 #echo isLinuxMartinJV: $isLinuxMartinJV
@@ -188,7 +192,7 @@ if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0
     fi
 fi
 
-if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ]; then
+if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew64" -eq 0 ]; then
     dnameOld=$HOME/dev/dotfiles/vim
     dnameNew=$HOME/dev/dotfiles/.vim
     if [ ! -d "$dnameNew" ]; then
@@ -232,6 +236,7 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ]; then
         echo "TODO prevent this block from running on this machine:"
         echo isLinux: $isLinux
         echo isLinux_64: $isLinux_64
+        echo isLinuxNew64: $isLinuxNew64
         echo isLinuxFranzi: $isLinuxFranzi
         echo isLinuxMartin: $isLinuxMartin
         echo isLinuxMartinJV: $isLinuxMartinJV
