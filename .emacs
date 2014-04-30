@@ -215,7 +215,7 @@
 (defun get-font-height () ; font size
   (interactive)
   (if (not (string= "0" (getenv "isLinuxFranzi")))
-      140
+      130
     (if (not (string= "0" (getenv "isLinuxMartinJV")))
 	120
       140)))

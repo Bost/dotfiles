@@ -102,9 +102,14 @@ alias grc='Run git rebase --continue'
 alias gri='Run git rebase --interactive'
 alias gra='Run git rebase --abort'
 alias gdf='Run git diff'
-alias  gh='Run git push origin'
-alias  gp='Run git push origin'
+
+alias  gh='Run git push'
 alias gho='Run git push origin'
+
+alias  gl='Run git pull'
+alias glo='Run git pull --rebase origin && Run git fetch --tags'
+alias glu='Run git pull --rebase upstream master'
+
 alias gbb='Run git bisect bad'
 alias gbg='Run git bisect good'
 
@@ -115,9 +120,9 @@ GitLog() {
     echo git log --graph --full-history --color --pretty=format:\"$fmt\" $@
          git log --graph --full-history --color --pretty=format:"$fmt"   $@ # --abbrev-commit"
 }
-alias glb='GitLog'
+#alias gl='GitLog'
+alias gla='GitLog --all'
 alias glh='GitLog HEAD'
-alias gl='GitLog --all'
 
 alias gk='RunBg gitk --all'
 #alias gitk='RunBg gitk --all'
@@ -225,9 +230,6 @@ alias  lcc='Run lein cljsbuild clean'
 alias  lca='Run lein cljsbuild auto'
 alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
-alias glo='Run git pull --rebase origin && Run git fetch --tags'
-alias glu='Run git pull --rebase upstream master'
-
 GitPullOriginRepo() {
     echo cd \"$1\" \&\& GitPullOrigin
          cd  "$1"   &&  GitPullOrigin
@@ -267,6 +269,7 @@ alias gss='Run git status --short'
 alias gst='Run git status'
 alias gco='Run git checkout'
 alias gci='Run git commit'
+alias gcianoe='Run git commit --amend --no-edit'
 alias grh='Run git reset --hard'
 
 #alias gdm='git diff master'
@@ -521,7 +524,7 @@ alias ltt='RunBg $dev/LightTable/deploy/LightTable'
 #alias klt='echo "kill \$(pidof ltbin)"; kill $(pidof ltbin)'
 #alias klt='echo "kill \$(pidof ltbin)"; kill \$\(pidof ltbin\)'
 alias klt='kill \$\(pidof ltbin\)'
-alias bl='Run bash $dev/LightTable/linux_deps.sh'
+alias bl='Run bash -x $dev/LightTable/linux_deps.sh'
 alias clt='cd $dev/LightTable'
 # too many lct typos
 alias lct='cd $dev/LightTable'
