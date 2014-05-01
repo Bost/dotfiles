@@ -230,17 +230,18 @@ alias  lcc='Run lein cljsbuild clean'
 alias  lca='Run lein cljsbuild auto'
 alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
-GitPullOriginRepo() {
-    echo cd \"$1\" \&\& GitPullOrigin
-         cd  "$1"   &&  GitPullOrigin
-}
-
 GitUpdateAll() {
     _cd=`pwd`
     echo 'pwd: '$_cd
-    GitPullOriginRepo $dev/cheatsheet && GitPullOriginRepo $dev/dotfiles
+    git pull --rebase origin $dev/cheatsheet && \
+    git fetch --tags && \
+    git pull --rebase origin $dev/dotfiles && \
+    git fetch --tags
     if [ "$isCygwin_155" -gt 0 ]; then
-        GitPullOriginRepo /cygdrive/h/dev/cheatsheet && GitPullOriginRepo /cygdrive/h/dev/dotfiles
+        git pull --rebase origin /cygdrive/h/dev/cheatsheet && \
+        git fetch --tags && \
+        git pull --rebase origin /cygdrive/h/dev/dotfiles && \
+        git fetch --tags
     fi
     cd $_cd
 }
