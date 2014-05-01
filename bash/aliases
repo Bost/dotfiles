@@ -231,17 +231,25 @@ alias  lca='Run lein cljsbuild auto'
 alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
 GitUpdateAll() {
-    _cd=`pwd`
+    _cd=$(pwd)
     echo 'pwd: '$_cd
-    git pull --rebase origin $dev/cheatsheet && \
-    git fetch --tags && \
-    git pull --rebase origin $dev/dotfiles && \
-    git fetch --tags
+
+    cd $dev/cheatsheet
+    echo $(pwd)
+    git pull --rebase && git fetch --tags
+
+    cd $dev/dotfiles 
+    echo $(pwd)
+    git pull --rebase && git fetch --tags
+
     if [ "$isCygwin_155" -gt 0 ]; then
-        git pull --rebase origin /cygdrive/h/dev/cheatsheet && \
-        git fetch --tags && \
-        git pull --rebase origin /cygdrive/h/dev/dotfiles && \
-        git fetch --tags
+	cd /cygdrive/h/dev/cheatsheet
+	echo $(pwd)
+        git pull --rebase && git fetch --tags
+
+	cd /cygdrive/h/dev/dotfiles
+	echo $(pwd)
+        git pull --rebase && git fetch --tags
     fi
     cd $_cd
 }
