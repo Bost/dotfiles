@@ -234,22 +234,18 @@ GitUpdateAll() {
     _cd=$(pwd)
     echo 'pwd: '$_cd
 
-    cd $dev/cheatsheet
-    echo $(pwd)
-    git pull --rebase && git fetch --tags
+    Run cd $dev/cheatsheet
+    Run git pull --rebase origin && Run git fetch --tags
 
-    cd $dev/dotfiles 
-    echo $(pwd)
-    git pull --rebase && git fetch --tags
+    Run cd $dev/dotfiles
+    Run git pull --rebase origin && Run git fetch --tags
 
     if [ "$isCygwin_155" -gt 0 ]; then
-	cd /cygdrive/h/dev/cheatsheet
-	echo $(pwd)
-        git pull --rebase && git fetch --tags
+        Run cd /cygdrive/h/dev/cheatsheet
+        Run git pull --rebase origin && Run git fetch --tags
 
-	cd /cygdrive/h/dev/dotfiles
-	echo $(pwd)
-        git pull --rebase && git fetch --tags
+        Run cd /cygdrive/h/dev/dotfiles
+        Run git pull --rebase origin && Run git fetch --tags
     fi
     cd $_cd
 }
