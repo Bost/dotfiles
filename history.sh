@@ -204,7 +204,9 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 bits=$(getconf LONG_BIT)
 if [ $bits == "64" ]; then
     fname=google-earth-stable_current_amd$bits.deb
-    if [ ! -f "$fname" ]; then
+
+    # TODO Dependency is not satisfiable: ia32-libs
+    if [ 0 ] && [ ! -f "$fname" ]; then
         wget https://dl.google.com/linux/direct/$fname
         sudo gdebi $fname
     fi
