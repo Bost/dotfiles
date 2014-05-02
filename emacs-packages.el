@@ -42,6 +42,7 @@
    closure-lint-mode   ; what is linter good for?
    closure-template-html-mode
    color-theme
+   color-theme-buffer-local
    csv-mode
    csv-nav
    dash
@@ -82,13 +83,20 @@
    google-maps
    google-this
    google-weather
-   hackernews
    goto-chg
    goto-last-change
+   hackernews
+   haskell-mode
    helm
    helm-ack
+   helm-cmd-t
+   helm-dired-recent-dirs
+   helm-gist
+   helm-git
    helm-helm-commands
+   helm-ls-git
    helm-spaces
+   helm-themes
    highlight-symbol
    idle-highlight-mode
    ido-ubiquitous
@@ -115,6 +123,7 @@
    pcache
    pkg-info
    popup
+   project-mode
    rainbow-delimiters
    redo+
    request
