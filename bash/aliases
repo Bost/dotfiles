@@ -494,17 +494,19 @@ alias cheatsheet='cd $dev/cheatsheet'
 alias      cheat='cd $dev/cheatsheet'
 
 alias dotfiles='cd $dev/dotfiles'
-alias      dotf='cd $dev/dotfiles'
+alias     dotf='cd $dev/dotfiles'
 #alias dot='dot'  " /usr/bin/dot  filter for drawing directed graphs
 
+alias bin='cd $HOME/bin'
 alias hoch='cd $dev/hochzeit'
 alias trackle='cd $dev/trackle'
 alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
-alias  e='RunBg emacs'
-alias ea='RunBg emacs $dev/dotfiles/bash/aliases'
-alias ee='RunBg emacs $dev/dotfiles/bash/env'
+# alias e doesn't work it there's no running emacs
+alias  e='RunBg emacsclient'
+alias ea='RunBg emacsclient $dev/dotfiles/bash/aliases'
+alias ee='RunBg emacsclient $dev/dotfiles/bash/env'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'

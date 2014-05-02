@@ -40,17 +40,15 @@ export isMinGw32_155=$(expr match "$uname" "$strMinGw32_155")
 
 if [ "$isLinux" -gt 0 ]; then
     :
-    x86_64="x86_64"
-    uname_processor=$(uname -p)
-    export isLinux_64=$(expr match "$uname_processor" "$x86_64")
     #echo "### Display no message in the console if doing scp"
-    #if [ "$isLinux_64" -gt 0 ]; then
-        #echo "### isLinux: $isLinux_64 => Loading aliases for $strLinux $x86_64"
-    #elif [ "$isLinuxMartin" -gt 0 ]; then
-        #echo "### isLinux: $isLinuxMartin => Loading aliases for $strLinuxMartin"
-    #else
-        #echo "### isLinux: $isLinux => Loading aliases for $strLinux"
-    #fi
+    export ALTERNATE_EDITOR=emacs;
+    #EDITOR=gvim # use it with <C-x>e
+    #export EDITOR=emacsclient
+    export EDITOR=$HOME/bin/edit-emacsclient.sh
+    export VISUAL=emacsclient
+
+    bits=$(getconf LONG_BIT)
+    export isLinux_64=$(expr match "$bits" 64)
 
     dev=$HOME/dev
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.8
@@ -79,7 +77,6 @@ if [ "$isLinux" -gt 0 ]; then
     # remaping the Esc key to Capslock (I don't use it that much)
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
-    EDITOR=gvim # use it with <C-x>e
 elif [ "$isCygwin_155" -gt 0 ]; then
     :
     echo "### isCygwin_155: $isCygwin_155 => Loading $strCygwin_155"
