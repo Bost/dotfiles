@@ -13,6 +13,7 @@ RunBg() {
 
 # On command line I wanna have vim
 # Only git commit and git add need to do editing
+# TODO test git rebase w/o RunGit
 RunGit() {
     #echo -e "before:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
     local e=$EDITOR
@@ -88,7 +89,7 @@ alias  gg='RunBg git gui'
 alias gtg='Run git tag'
 alias gcp='Run git cherry-pick'
 alias gbr='Run git branch'
-alias gmv='RunGit git mv'
+alias gmv='Run git mv'
 
 GrepFind() {
     echo "grep -lir '$1' $\(find . -name '*.$2'\)"
@@ -119,20 +120,20 @@ alias gf=GrepFind
 #}
 
 alias  gr='RunGit git rebase'
-alias grc='RunGit git rebase --continue'
 alias gri='RunGit git rebase --interactive'
-alias gra='RunGit git rebase --abort'
-alias gdf='RunGit git diff'
+alias grc='Run git rebase --continue'
+alias gra='Run git rebase --abort'
+alias gdf='Run git diff'
 
-alias  gh='RunGit git push'
-alias gho='RunGit git push origin'
+alias  gh='Run git push'
+alias gho='Run git push origin'
 
-alias  gl='RunGit git pull'
-alias glo='RunGit git pull --rebase origin && RunGit git fetch --tags'
-alias glu='RunGit git pull --rebase upstream master'
+alias  gl='Run git pull'
+alias glo='Run git pull --rebase origin && Run git fetch --tags'
+alias glu='Run git pull --rebase upstream master'
 
-alias gbb='RunGit git bisect bad'
-alias gbg='RunGit git bisect good'
+alias gbb='Run git bisect bad'
+alias gbg='Run git bisect good'
 
 GitLog() {
     # Visualise git log (like gitk, in the terminal)
@@ -256,18 +257,18 @@ GitUpdateAll() {
     echo 'pwd: '$_cd
 
     Run cd $dev/cheatsheet
-    RunGit git pull --rebase origin && RunGit git fetch --tags
+    Run git pull --rebase origin && Run git fetch --tags
 
     Run cd $dev/dotfiles
-    RunGit git pull --rebase origin && RunGit git fetch --tags
+    Run git pull --rebase origin && Run git fetch --tags
 
     if [ "$isCygwin_155" -gt 0 ]; then
         # TODO sync from $dev/cheatsheet, $dev/dotfiles instead of github
         Run cd /cygdrive/h/dev/cheatsheet
-        RunGit git pull --rebase origin && RunGit git fetch --tags
+        Run git pull --rebase origin && Run git fetch --tags
 
         Run cd /cygdrive/h/dev/dotfiles
-        RunGit git pull --rebase origin && RunGit git fetch --tags
+        Run git pull --rebase origin && Run git fetch --tags
     fi
     cd $_cd
 }
