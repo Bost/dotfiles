@@ -12,15 +12,22 @@
    ac-nrepl
    ace-jump-buffer
    ace-jump-mode
+   achievements
    ack
    ack-and-a-half
    ack-menu
    align-cljlet        ; Space align various Clojure forms [github]
+   anzu
+   apt-utils
    auto-complete
    auto-complete-nxml
+   auto-dim-other-buffers
+   auto-highlight-symbol
+   auto-save-buffers-enhanced
    bf-mode             ; Browse file persistently on dired [github]
    browse-kill-ring
    bs-ext              ; Extensions to emacs buffer-selection library (bs.el) [wiki]
+   btc-ticker
    charmap
    cider
    clj-refactor
@@ -38,26 +45,46 @@
    csv-mode
    csv-nav
    dash
+   diff-hl
    dircmp
    dired+
+   dired-dups
+   dired-single
+   dired-toggle
+   dirtree
+   elein
    elisp-slime-nav
+   epl
+   ergoemacs-mode
    evil
+   evil-args
+   evil-exchange
    evil-indent-textobject
    evil-leader
+   evil-matchit
    evil-nerd-commenter
    evil-numbers
    evil-paredit
+   evil-terminal-cursor-changer
    evil-visualstar
    expand-region
-   ;; find-file-in-project - probably not needed because of helm
+   f
+   find-file-in-project         ; probably not needed because of helm
+   flycheck
+   fold-dwim
+   fold-this
+   fullscreen-mode
+   gh
    gist
-   gitignore-mode
    git-commit-mode
    git-rebase-mode
+   gitignore-mode
    google-maps
    google-this
    google-weather
    hackernews
+   goto-chg
+   goto-last-change
    helm
    helm-ack
    helm-helm-commands
@@ -66,17 +93,17 @@
    idle-highlight-mode
    ido-ubiquitous
    js2-mode
+   keyfreq
    latest-clojars
-   latest-clojure-libraries
    levenshtein
    linum-relative
    litable
    load-theme-buffer-local
+   logito
    mag-menu
    magit
-   magit-log-edit
    magit-commit-training-wheels
-   ;; magit-push-remote - probably not needed - test it
+   magit-push-remote             ; probably not needed
    ;; magithub - magit-log-edit-confirm-cancellation issue
    mode-icons
    move-text
@@ -85,12 +112,12 @@
    org
    paredit
    paredit-menu
+   pcache
    pkg-info
    popup
-   ;; project - probably too old
-   project-mode
    rainbow-delimiters
    redo+
+   request
    s
    simple-httpd
    skewer-mode
@@ -101,7 +128,9 @@
    spaces
    splitter
    tidy
+   tree-mode
    undo-tree
+   windata
    workgroups2
    yasnippet
    ))
