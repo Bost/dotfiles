@@ -719,8 +719,7 @@ by using nxml's indentation rules."
 
 ;; text exchange operator
 (require 'evil-exchange)
-;;change default key bindings (if you want) HERE
-;;(setq evil-exchange-key (kbd "zx"))
+(setq evil-exchange-key (kbd "zx"))
 (evil-exchange-install)
 
 (unless (display-graphic-p)
