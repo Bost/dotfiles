@@ -11,20 +11,19 @@ RunBg() {
          "$@" &
 }
 
+# On command line I wanna have vim
+# Only git commit and git add need to do editing
 RunGit() {
-    # On command line I wanna have vim
     #echo -e "before:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
-    local __EDITOR=$EDITOR
-    local __ALTERNATE_EDITOR=$ALTERNATE_EDITOR
-    local __VISUAL=$VISUAL
-    unset EDITOR
-    unset ALTERNATE_EDITOR
-    unset VISUAL
+    local e=$EDITOR
+    local a=$ALTERNATE_EDITOR
+    local v=$VISUAL
+    unset EDITOR ALTERNATE_EDITOR VISUAL
     #echo -e "during:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
     Run $@
-    EDITOR=$__EDITOR
-    ALTERNATE_EDITOR=$__ALTERNATE_EDITOR
-    VISUAL=$__VISUAL
+    EDITOR=$e
+    ALTERNATE_EDITOR=$a
+    VISUAL=$v
     #echo -e "after:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
 }
 
@@ -79,12 +78,12 @@ alias cdd='cd -'
 alias gap='RunGit git add -p'
 alias gad='RunGit git add'
 alias gdd='RunGit git add'
-alias glg='RunGit git log'
+alias glg='Run git log'
 alias gaa='RunGit git add .'
 alias  gg='RunBg git gui'
-alias gtg='RunGit git tag'
-alias gcp='RunGit git cherry-pick'
-alias gbr='RunGit git branch'
+alias gtg='Run git tag'
+alias gcp='Run git cherry-pick'
+alias gbr='Run git branch'
 alias gmv='RunGit git mv'
 
 GrepFind() {
@@ -286,15 +285,15 @@ alias gha='GitPushAll'
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
 
-alias gcl='RunGit git clone'
+alias gcl='Run git clone'
 alias gau='RunGit git add --update'
 alias gau='RunGit git add -p'
-alias gss='RunGit git status --short'
-alias gst='RunGit git status'
-alias gco='RunGit git checkout'
+alias gss='Run git status --short'
+alias gst='Run git status'
+alias gco='Run git checkout'
 alias gci='RunGit git commit'
-alias gcianoe='RunGit git commit --amend --no-edit'
-alias grh='RunGit git reset --hard'
+alias gcianoe='Run git commit --amend --no-edit'
+alias grh='Run git reset --hard'
 
 #alias gdm='git diff master'
 #alias gd='git diff | mate'
