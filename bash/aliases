@@ -11,6 +11,23 @@ RunBg() {
          "$@" &
 }
 
+RunGit() {
+    # On command line I wanna have vim
+    #echo -e "before:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
+    local __EDITOR=$EDITOR
+    local __ALTERNATE_EDITOR=$ALTERNATE_EDITOR
+    local __VISUAL=$VISUAL
+    unset EDITOR
+    unset ALTERNATE_EDITOR
+    unset VISUAL
+    #echo -e "during:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
+    Run $@
+    EDITOR=$__EDITOR
+    ALTERNATE_EDITOR=$__ALTERNATE_EDITOR
+    VISUAL=$__VISUAL
+    #echo -e "after:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
+}
+
 alias reload='Run source $HOME/.bashrc'
 alias      r='Run source $HOME/.bashrc'
 alias t='Run tail'
@@ -45,10 +62,10 @@ ExtractBashComments() {
 alias  png='Run mtr google.com'
 alias mtrg='Run mtr google.com'
 
-alias c='cat'
-alias less='less -r'
+alias c='Run cat'
+alias less='Run less -r'
 #alias rm='rm -i'
-alias whence='type -a'
+alias whence='Run type -a'
 #alias ls='ls --color=auto'
 alias dir='ls --color=auto --format=vertical'
 #alias dir='dir --color=auto'
@@ -59,15 +76,15 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias cdd='cd -'
 
-alias gap='Run git add -p'
-alias gad='Run git add'
-alias gdd='Run git add'
-alias glg='Run git log'
-alias gaa='Run git add .'
+alias gap='RunGit git add -p'
+alias gad='RunGit git add'
+alias gdd='RunGit git add'
+alias glg='RunGit git log'
+alias gaa='RunGit git add .'
 alias  gg='RunBg git gui'
-alias gtg='Run git tag'
-alias gcp='Run git cherry-pick'
-alias gbr='Run git branch'
+alias gtg='RunGit git tag'
+alias gcp='RunGit git cherry-pick'
+alias gbr='RunGit git branch'
 
 GrepFind() {
     echo "grep -lir '$1' $\(find . -name '*.$2'\)"
@@ -97,21 +114,21 @@ alias gf=GrepFind
     #   git config --global branch.autosetuprebase always
 #}
 
-alias  gr='Run git rebase'
-alias grc='Run git rebase --continue'
-alias gri='Run git rebase --interactive'
-alias gra='Run git rebase --abort'
-alias gdf='Run git diff'
+alias  gr='RunGit git rebase'
+alias grc='RunGit git rebase --continue'
+alias gri='RunGit git rebase --interactive'
+alias gra='RunGit git rebase --abort'
+alias gdf='RunGit git diff'
 
-alias  gh='Run git push'
-alias gho='Run git push origin'
+alias  gh='RunGit git push'
+alias gho='RunGit git push origin'
 
-alias  gl='Run git pull'
-alias glo='Run git pull --rebase origin && Run git fetch --tags'
-alias glu='Run git pull --rebase upstream master'
+alias  gl='RunGit git pull'
+alias glo='RunGit git pull --rebase origin && RunGit git fetch --tags'
+alias glu='RunGit git pull --rebase upstream master'
 
-alias gbb='Run git bisect bad'
-alias gbg='Run git bisect good'
+alias gbb='RunGit git bisect bad'
+alias gbg='RunGit git bisect good'
 
 GitLog() {
     # Visualise git log (like gitk, in the terminal)
@@ -235,18 +252,18 @@ GitUpdateAll() {
     echo 'pwd: '$_cd
 
     Run cd $dev/cheatsheet
-    Run git pull --rebase origin && Run git fetch --tags
+    RunGit git pull --rebase origin && RunGit git fetch --tags
 
     Run cd $dev/dotfiles
-    Run git pull --rebase origin && Run git fetch --tags
+    RunGit git pull --rebase origin && RunGit git fetch --tags
 
     if [ "$isCygwin_155" -gt 0 ]; then
-	# TODO sync from $dev/cheatsheet, $dev/dotfiles instead of github
+        # TODO sync from $dev/cheatsheet, $dev/dotfiles instead of github
         Run cd /cygdrive/h/dev/cheatsheet
-        Run git pull --rebase origin && Run git fetch --tags
+        RunGit git pull --rebase origin && RunGit git fetch --tags
 
         Run cd /cygdrive/h/dev/dotfiles
-        Run git pull --rebase origin && Run git fetch --tags
+        RunGit git pull --rebase origin && RunGit git fetch --tags
     fi
     cd $_cd
 }
@@ -268,15 +285,15 @@ alias gha='GitPushAll'
 #gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
 
-alias gcl='Run git clone'
-alias gau='Run git add --update'
-alias gau='Run git add -p'
-alias gss='Run git status --short'
-alias gst='Run git status'
-alias gco='Run git checkout'
-alias gci='Run git commit'
-alias gcianoe='Run git commit --amend --no-edit'
-alias grh='Run git reset --hard'
+alias gcl='RunGit git clone'
+alias gau='RunGit git add --update'
+alias gau='RunGit git add -p'
+alias gss='RunGit git status --short'
+alias gst='RunGit git status'
+alias gco='RunGit git checkout'
+alias gci='RunGit git commit'
+alias gcianoe='RunGit git commit --amend --no-edit'
+alias grh='RunGit git reset --hard'
 
 #alias gdm='git diff master'
 #alias gd='git diff | mate'
@@ -304,7 +321,7 @@ alias arep=AliasGrep
 #alias r='rake'
 #alias mkdir='nocorrect mkdir'
 #alias cp='nocorrect cp'
-alias md='mkdir -p'
+alias md='Run mkdir -p'
 #alias mv='nocorrect mv'
 #alias where='command -v'
 #alias ff='open -a Firefox'
@@ -346,34 +363,18 @@ alias cx='Run chmod +x'
 
 if [ "$isLinux" -gt 0 ]; then
     :
-    if [ "$isLinux_64" -gt 0 ]; then
-        export VMAIL_BROWSER='google-chrome'
-    else
-        export VMAIL_BROWSER='chromium-browser'
-    fi
-
-    alias lock="xflock4"
+    # --yes to all queries and do not prompt
     UpdateUpgradeClean() {
         echo "sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean"
               sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean
     }
-    alias u=UpdateUpgradeClean
+    alias u='UpdateUpgradeClean'
+    alias d='Run sudo apt-get dist-upgrade --yes'
 
-    DistUpgrade() {
-        echo "sudo apt-get dist-upgrade --yes"
-              sudo apt-get dist-upgrade --yes
-    }
-    alias d='DistUpgrade'
-
-    alias k9='kill -9'
-    # I guess '2> /dev/null' redirects errors to /dev/null
-    #alias f='find ./ 2> /dev/null'
-
-    # -y  Assume Yes to all queries and do not prompt
-    alias inst="Run sudo apt-get install -y"
-    alias uninst="Run sudo apt-get remove -y"
-    alias rmv="Run sudo apt-get remove -y"
-    alias armv="Run sudo apt-get autoremove -y"
+    alias inst="Run sudo apt-get install -yes"
+    alias uninst="Run sudo apt-get remove -yes"
+    alias rmv="Run sudo apt-get remove -yes"
+    alias armv="Run sudo apt-get autoremove -yes"
 
     alias reboot='Run sudo reboot'
     #alias s='Run sudo pm-suspend'
@@ -396,8 +397,15 @@ if [ "$isLinux" -gt 0 ]; then
     alias tmp='cd /tmp'
 
     alias music='cd $HOME/music/'
-    alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl'
-    alias m='mplayer'
+    # TODO check why did I install youtube-dl manually??? The current system version may work already 
+    #alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl.new'
+    alias y='Run youtube-dl'
+    alias m='Run mplayer'
+    alias lock="Run xflock4"
+    alias k9='Run kill -9'
+
+    # I guess '2> /dev/null' redirects errors to /dev/null
+    #alias f='find ./ 2> /dev/null'
 elif [ "$isCygwin_155" -gt 0 ]; then
     :
     #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"

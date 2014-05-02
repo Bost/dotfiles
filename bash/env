@@ -44,7 +44,7 @@ if [ "$isLinux" -gt 0 ]; then
     export ALTERNATE_EDITOR=emacs;
     #EDITOR=gvim # use it with <C-x>e
     #export EDITOR=emacsclient
-    export EDITOR=$HOME/bin/edit-emacsclient.sh
+    export EDITOR=$dev/dotfiles/bash/edit.sh
     export VISUAL=emacsclient
 
     bits=$(getconf LONG_BIT)
