@@ -175,10 +175,13 @@ packagesNotebook=(
 
 if [ "$isLinuxNew64" -gt 0 ]; then
     packages=${packagesBase[@]}" "${packagesDev[@]}
+    dpkg --get-selections | grep -v deinstall > packages-isLinuxNew64.sh
 elif [ "$isLinuxFranzi" -gt 0 ]; then
     packages=${packagesBase[@]}" "${packagesDev[@]}" "${packagesNotebook[@]}
+    dpkg --get-selections | grep -v deinstall > packages-isLinuxFranzi.sh
 else
     packages=${packagesBase[@]}
+    dpkg --get-selections | grep -v deinstall > packages-isLinux.sh
 fi
 sudo apt-get install --yes $packages
 
