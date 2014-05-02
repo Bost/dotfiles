@@ -208,7 +208,7 @@ JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 # install google-earth (gdebi is needed)
 # TODO 32bit, 64bit
 bits=$(getconf LONG_BIT)
-if [ $bits == "64" ]; then
+if [ $bits -eq 64 ]; then
     fname=google-earth-stable_current_amd$bits.deb
 
     # TODO Dependency is not satisfiable: ia32-libs
