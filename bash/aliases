@@ -371,10 +371,10 @@ if [ "$isLinux" -gt 0 ]; then
     alias u='UpdateUpgradeClean'
     alias d='Run sudo apt-get dist-upgrade --yes'
 
-    alias inst="Run sudo apt-get install -yes"
-    alias uninst="Run sudo apt-get remove -yes"
-    alias rmv="Run sudo apt-get remove -yes"
-    alias armv="Run sudo apt-get autoremove -yes"
+    alias inst="Run sudo apt-get install --yes"
+    alias uninst="Run sudo apt-get remove --yes"
+    alias rmv="Run sudo apt-get remove --yes"
+    alias armv="Run sudo apt-get autoremove --yes"
 
     alias reboot='Run sudo reboot'
     #alias s='Run sudo pm-suspend'
