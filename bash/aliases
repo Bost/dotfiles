@@ -85,6 +85,7 @@ alias  gg='RunBg git gui'
 alias gtg='RunGit git tag'
 alias gcp='RunGit git cherry-pick'
 alias gbr='RunGit git branch'
+alias gmv='RunGit git mv'
 
 GrepFind() {
     echo "grep -lir '$1' $\(find . -name '*.$2'\)"
