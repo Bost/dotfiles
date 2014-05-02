@@ -53,8 +53,8 @@ if [ "$isLinux" -gt 0 ]; then
     export EDITOR=$dev/dotfiles/bash/edit.sh
     export VISUAL=emacsclient
 
-    bits=$(getconf LONG_BIT)
-    export isLinux_64=$(expr match "$bits" 64)
+    local bits=$(getconf LONG_BIT)
+    export isLinux_64=$(($bits == 64))
 
     dev=$HOME/dev
     APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.8
