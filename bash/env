@@ -2,25 +2,31 @@
 
 # values used by other sripts and applications
 uname=$(uname -a)
-strLinux="Linux"
-strLinuxFranzi="Linux franzi"
-strLinuxMartin="Linux bost-martin"
-strLinuxMartinJV="Linux martin-jv"
-strLinuxBambi="Linux bambi-small"
-strLinuxNew64="Linux bost-new-64"
-
 #echo uname: $uname
+
+# TODO LE-C-155: test: uname --nodename --operating-system
+nodeName=$(uname --nodename)
+#echo nodeName: $nodeName
+
+osName=$(uname --operating-system) # returns GNU/Linux
+#echo osName: $osName
+
+#kernelName=$(uname --kernel-name)  # returns Linux
+#echo kernelName: $kernelName
+
+# strCygwin_155, strMinGw32_app1, strMinGw32_155 are defined in win sysvars
 # the system variable strMinGw32_155 is not visible under WinGit
 strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
 
-export isLinux=$(expr match "$uname" "$strLinux")
+export isLinux=$(expr match "$osName" "GNU/Linux")
+#exit
 # TODO clean definition of isLinux_64
 export isLinux_64=0
-export isLinuxNew64=$(expr match "$uname" "$strLinuxNew64")
-export isLinuxFranzi=$(expr match "$uname" "$strLinuxFranzi")
-export isLinuxMartinJV=$(expr match "$uname" "$strLinuxMartinJV")
-export isLinuxMartin=$(expr match "$uname" "$strLinuxMartin")
-export isLinuxBambi=$(expr match "$uname" "$strLinuxBambi")
+export isLinuxNew64=$(expr match "$nodeName" "bost-new-64")
+export isLinuxFranzi=$(expr match "$nodeName" "franzi")
+export isLinuxMartinJV=$(expr match "$nodeName" "martin-jv")
+export isLinuxMartin=$(expr match "$nodeName" "bost-martin")
+export isLinuxBambi=$(expr match "$nodeName" "bambi-small")
 export isMinGw32_app1=$(expr match "$uname" "$strMinGw32_app1")
 export isCygwin_155=$(expr match "$uname" "$strCygwin_155")
 export isMinGw32_155=$(expr match "$uname" "$strMinGw32_155")
@@ -105,7 +111,7 @@ fi
 
 if [ "$isLinux" -eq 0 ]; then
     :
-    echo "### isLinux: $isLinux => Loading non-$strLinux aliases"
+    echo "### isLinux: $isLinux => Loading non-$osName aliases"
 
     if [ -d "${winapp}" ]; then
         :
