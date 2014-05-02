@@ -1,17 +1,17 @@
 #!/bin/bash -e
 
 # values used by other sripts and applications
-uname=$(uname -a)
+local uname=$(uname -a)
 #echo uname: $uname
 
 # TODO LE-C-155: test: uname --nodename --operating-system
-nodeName=$(uname --nodename)
+local nodeName=$(uname --nodename)
 #echo nodeName: $nodeName
 
-osName=$(uname --operating-system) # returns GNU/Linux
+local osName=$(uname --operating-system) # returns GNU/Linux
 #echo osName: $osName
 
-#kernelName=$(uname --kernel-name)  # returns Linux
+#local kernelName=$(uname --kernel-name)  # returns Linux
 #echo kernelName: $kernelName
 
 # strCygwin_155, strMinGw32_app1, strMinGw32_155 are defined in win sysvars
