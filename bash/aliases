@@ -371,19 +371,19 @@ if [ "$isLinux" -gt 0 ]; then
     alias u='UpdateUpgradeClean'
     alias d='Run sudo apt-get dist-upgrade --yes'
 
-    alias inst="Run sudo apt-get install --yes"
+    alias   inst="Run sudo apt-get install --yes"
     alias uninst="Run sudo apt-get remove --yes"
-    alias rmv="Run sudo apt-get remove --yes"
+    alias  rmv="Run sudo apt-get remove --yes"
     alias armv="Run sudo apt-get autoremove --yes"
 
     alias reboot='Run sudo reboot'
-    #alias s='Run sudo pm-suspend'
-    alias susp='Run sudo pm-suspend'
+    #alias      s='Run sudo pm-suspend'
+    alias    susp='Run sudo pm-suspend'
     alias suspend='Run sudo pm-suspend'
-    #alias h='Run sudo pm-hibernate'
-    alias hib='Run sudo pm-hibernate'
+    #alias        h='Run sudo pm-hibernate'
+    alias       hib='Run sudo pm-hibernate'
     alias hibernate='Run sudo pm-hibernate'
-    alias shut='Run sudo shutdown -h now'
+    alias     shut='Run sudo shutdown -h now'
     alias shutdown='Run sudo shutdown -h now'
 
     #Search the package list for a regex pattern
@@ -544,10 +544,10 @@ alias bl='Run bash -x $dev/LightTable/linux_deps.sh'
 alias clt='cd $dev/LightTable'
 # too many lct typos
 alias lct='cd $dev/LightTable'
-alias lt='ls -lat'
+alias  lt='ls -lat'
 alias ltr='ls -latr'
 alias lff='ls -lrt -d -1 $PWD/{*,.*}'
-alias lT='ls -latr'
+alias  lT='ls -latr'
 
 # TODO create alias file for the eshell; runs 0.007 sec
 #alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
