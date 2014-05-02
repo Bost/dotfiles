@@ -100,7 +100,7 @@ GrepFind() {
         grep -lir $1 $foundFiles
     fi
 }
-alias gf=GrepFind
+alias gf='GrepFind'
 
 #GitRebaseContinue() {
     #git fetch # can never fail with a conflict
@@ -158,7 +158,7 @@ GitSearchStr () {
         done
     )
 }
-alias gstr=GitSearchStr
+alias gstr='GitSearchStr'
 
 # ltree: colored tree with 'less'. --RAW-CONTROL-CHARS == -R
 ltree () {
@@ -185,48 +185,37 @@ extract() {
     if [ -f "$1" ] ; then
       case $1 in
         *.tar.bz2)
-              echo tar xjf $1
-                   tar xjf $1
+              Run tar xjf $1
               ;;
         *.tar.gz)
-              echo tar xzf $1
-                   tar xzf $1
+              Run tar xzf $1
               ;;
         *.bz2)
-              echo bunzip2 $1
-                   bunzip2 $1
+              Run bunzip2 $1
               ;;
         *.rar)
-              echo unrar e $1
-                   unrar e $1
+              Run unrar e $1
               ;;
         *.gz)
-              echo gunzip $1
-                   gunzip $1
+              Run gunzip $1
               ;;
         *.tar)
-              echo tar xf $1
-                   tar xf $1
+              Run tar xf $1
               ;;
         *.tbz2)
-              echo tar xjf $1
-                   tar xjf $1
+              Run tar xjf $1
               ;;
         *.tgz)
-              echo tar xzf $1
-                   tar xzf $1
+              Run tar xzf $1
               ;;
         *.zip)
-              echo unzip $1
-                   unzip $1
+              Run unzip $1
               ;;
         *.Z)
-              echo uncompress $1
-                   uncompress $1
+              Run uncompress $1
               ;;
         *.7z)
-              echo 7z x $1
-                   7z x $1
+              Run 7z x $1
               ;;
         *)     echo "'$1' cannot be extracted via extract()" ;;
         esac
