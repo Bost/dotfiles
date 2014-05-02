@@ -43,7 +43,7 @@ alias envp='env | grep ^PATH='
 alias v='vim'
 alias cls='clear'
 
-# use pgreg under linux
+# TODO linux: use pgrep | pkill
 PsEfGrep() {
     echo "ps -ef | grep $@"
           ps -ef | grep $@
