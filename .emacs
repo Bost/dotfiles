@@ -26,7 +26,8 @@
 ;; displays 'current match/total matches' in the mode-line
 (global-anzu-mode +1)
 
-(display-battery-mode 1)
+(if (> (string-to-number (getenv "isLinuxFranzi")) 0)
+    (display-battery-mode 1))
 
 (size-indication-mode 1)  ; filesize indicator
 
