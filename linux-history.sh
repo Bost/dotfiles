@@ -129,7 +129,7 @@ packagesDev=(
     autoconf
     autogen
     automake
-    ghc6                  # Glasgow Haskell Compilation system
+    ghc                  # Glasgow Haskell Compilation system
     graphviz             # graph drawing tools
     libatk1.0-dev
     libbonoboui2-dev
@@ -172,9 +172,15 @@ packagesNotebook=(
     # cvs      # cvs:
     # xinetd   # cvs: extended Internet daemon
 )
-sudo apt-get install --yes ${packagesBase[@]}
-#${packagesDev[@]} ${packagesNotebook[@]}
 
+if [ "$isLinuxNew64" -gt 0 ]; then
+    packages=${packagesBase[@]}" "${packagesDev[@]}
+elif [ "$isLinuxFranzi" -gt 0 ]; then
+    packages=${packagesBase[@]}" "${packagesDev[@]}" "${packagesNotebook[@]}
+else
+    packages=${packagesBase[@]}
+fi
+sudo apt-get install --yes $packages
 
 #sudo apt-get install --reinstall nvidia-current
 # or nvidia-current-updates # or nvidia-experimental-304
