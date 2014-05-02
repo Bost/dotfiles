@@ -15,15 +15,19 @@
 
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")
+			 ("marmalade" . "http://marmalade-repo.org/packages/")
+			 ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
 ;; (package-refresh-contents)
 
-;(display-battery-mode 1) ; something's wrong with it
+;; displays 'current match/total matches' in the mode-line
+(global-anzu-mode +1)
+
+(display-battery-mode 1)
+
 (size-indication-mode 1)  ; filesize indicator
 
 (eval-after-load "paredit.el"
@@ -356,7 +360,7 @@ by using nxml's indentation rules."
       (nxml-mode)
       (goto-char begin)
       (while (search-forward-regexp "\>[ \\t]*\<" nil t)
-        (backward-char) (insert "\n"))
+	(backward-char) (insert "\n"))
       (indent-region begin end))
     (message "Ah, much better!"))
 
@@ -476,7 +480,7 @@ by using nxml's indentation rules."
   (menu-bar-mode gui-elements)
   (toggle-scroll-bar gui-elements)
   (message "gui-elements %s"
-           (if (= 1 gui-elements) "enabled" "disabled")))
+	   (if (= 1 gui-elements) "enabled" "disabled")))
 
 (global-set-key [f9] 'auto-upgrade)
 ;; (global-set-key [f10] 'menu-bar-mode)
@@ -648,8 +652,10 @@ by using nxml's indentation rules."
     ))
 
 ;; (abbrev-mode 1) ; turn on abbrev mode
+;;(global-set-key [f11] 'abbrev-mode)
 
-(global-set-key [f11] 'abbrev-mode)
+(fullscreen-mode) ;; uses [f11]
+
 (global-set-key [f12] 'undo-tree-visualize)
 (global-set-key (kbd "s-<f7>") 'whitespace-cleanup)
 ;; (global-set-key [scroll] 'exec-test-macro)
@@ -692,3 +698,32 @@ by using nxml's indentation rules."
 ;(defun sql-db2-g72 ()
 ;  (interactive)
 ;  (copy-line -1))
+
+
+;; (add-to-list 'load-path "path/to/evil-args")
+(require 'evil-args)
+
+;; bind evil-args text objects
+(define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+(define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+
+;; bind evil-forward/backward-args
+(define-key evil-normal-state-map "L" 'evil-forward-arg)
+(define-key evil-normal-state-map "H" 'evil-backward-arg)
+(define-key evil-motion-state-map "L" 'evil-forward-arg)
+(define-key evil-motion-state-map "H" 'evil-backward-arg)
+
+;; bind evil-jump-out-args
+(define-key evil-normal-state-map "K" 'evil-jump-out-args)
+
+
+;; text exchange operator
+(require 'evil-exchange)
+;;change default key bindings (if you want) HERE
+;;(setq evil-exchange-key (kbd "zx"))
+(evil-exchange-install)
+
+(unless (display-graphic-p)
+  (require 'evil-terminal-cursor-changer))
+
+(require 'evil-visualstar)
