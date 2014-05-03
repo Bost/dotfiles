@@ -312,7 +312,9 @@
 (global-set-key (kbd "s-v") 'yank)           ; paste
 (global-set-key (kbd "s-b") 'ido-switch-buffer)
 ;(global-set-key (kbd "s-k") 'ido-kill-buffer)
-(global-set-key (kbd "s-k") 'kill-this-buffer)
+
+;(global-set-key (kbd "s-k") 'kill-this-buffer)
+(global-set-key (kbd "s-k") 'server-edit) ; for emacsclient
 
 (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
 (global-set-key (kbd "<S-iso-lefttab>") 'other-window)
