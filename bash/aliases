@@ -534,14 +534,21 @@ alias ltt='RunBg $dev/LightTable/deploy/LightTable'
 #alias klt='echo "kill \$(pidof ltbin)"; kill $(pidof ltbin)'
 #alias klt='echo "kill \$(pidof ltbin)"; kill \$\(pidof ltbin\)'
 alias klt='kill \$\(pidof ltbin\)'
-alias bl='Run bash -x $dev/LightTable/linux_deps.sh'
+alias blm='Run bash -x $dev/LightTable-master/linux_deps.sh'
+alias bl='Run bash -x linux_deps.sh'
 alias clt='cd $dev/LightTable'
-# too many lct typos
-alias lct='cd $dev/LightTable'
+alias lct='cd $dev/LightTable'   # too many lct typos
 alias  lt='ls -lat'
 alias ltr='ls -latr'
 alias lff='ls -lrt -d -1 $PWD/{*,.*}'
 alias  lT='ls -latr'
+
+# last changed file
+LastChangedFile() {
+    echo "find . -printf '%T+ %p\n' | sort -r | head -1"
+          find . -printf '%T+ %p\n' | sort -r | head -1
+}
+alias lcf='LastChangedFile'
 
 # TODO create alias file for the eshell; runs 0.007 sec
 #alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
