@@ -314,6 +314,7 @@
 ;(global-set-key (kbd "s-k") 'ido-kill-buffer)
 
 ;(global-set-key (kbd "s-k") 'kill-this-buffer)
+; TODO server-edit doesn't work for magit
 (global-set-key (kbd "s-k") 'server-edit) ; for emacsclient
 
 (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work

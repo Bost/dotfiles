@@ -90,6 +90,7 @@ alias gtg='Run git tag'
 alias gcp='Run git cherry-pick'
 alias gbr='Run git branch'
 alias gmv='Run git mv'
+alias ghe='Run git help'
 
 GrepFind() {
     echo "grep -lir '$1' $\(find . -name '*.$2'\)"
@@ -551,6 +552,6 @@ LastChangedFile() {
           find . -printf '%T+ %p\n' | sort -r | head -1
 }
 alias lcf='LastChangedFile'
-
+alias he='head'
 # TODO create alias file for the eshell; runs 0.007 sec
 #alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
