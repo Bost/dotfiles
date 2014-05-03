@@ -530,7 +530,8 @@ alias genpasswd='GeneratePassw'
 # TODO is this for passing param to an alias?
 #alias 'ps?'='ps ax | grep '
 
-alias ltt='RunBg $dev/LightTable/deploy/LightTable'
+alias lttm='RunBg $dev/LightTable-master/deploy/LightTable'
+alias ltt='RunBg deploy/LightTable'
 #alias klt='echo "kill \$(pidof ltbin)"; kill $(pidof ltbin)'
 #alias klt='echo "kill \$(pidof ltbin)"; kill \$\(pidof ltbin\)'
 alias klt='kill \$\(pidof ltbin\)'
