@@ -300,6 +300,7 @@ alias grh='Run git reset --hard'
 #alias grm='git status | grep deleted | awk '
 
 alias sc='script/console'
+alias h5='history | tail -10 | head -5'
 alias h='history'
 
 HistoryGrep() {
