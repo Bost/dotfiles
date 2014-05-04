@@ -129,8 +129,12 @@ alias gdf='Run git diff'
 alias  gh='Run git push'
 alias gho='Run git push origin'
 
+GitPullRebase() {
+    Run git pull --rebase origin $@ && \
+    Run git fetch --tags
+}
 alias  gl='Run git pull'
-alias glo='Run git pull --rebase origin && Run git fetch --tags'
+alias glo='GitPullRebase'
 alias glu='Run git pull --rebase upstream master'
 
 alias gbb='Run git bisect bad'
