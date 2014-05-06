@@ -8,7 +8,7 @@ local uname=$(uname -a)
 local nodeName=$(uname --nodename)
 #echo nodeName: $nodeName
 
-local osName=$(uname --operating-system) # returns GNU/Linux
+local osName=$(uname --operating-system) # returns GNU/Linux or Cygwin
 #echo osName: $osName
 
 #local kernelName=$(uname --kernel-name)  # returns Linux
@@ -111,7 +111,7 @@ fi
 
 if [ "$isLinux" -eq 0 ]; then
     :
-    echo "### isLinux: $isLinux => Loading non-$osName aliases"
+    echo "### isLinux: $isLinux => Loading $osName aliases"
 
     if [ -d "${winapp}" ]; then
         :
