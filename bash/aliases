@@ -138,6 +138,8 @@ alias  gl='Run git pull'
 alias glo='GitPullRebase'
 alias glu='Run git pull --rebase upstream master'
 
+alias gbis='Run git bisect start'
+alias gbir='Run git bisect reset'
 alias gbb='Run git bisect bad'
 alias gbg='Run git bisect good'
 
