@@ -252,14 +252,14 @@
 
 (defun edit-file ()
   (interactive)
-  (find-file
-   (if (string= "0" (getenv "isCygwin_155"))
-     "~/dev/dotfiles/.emacs"
-     "$dev/credit.head.fehler/migration/changelog.txt"
-     ;"/cygdrive/c/cygwin/home/svo02896/dev/credit.head.fehler/migration/changelog.txt"
-     )))
+  (find-file "~/dev/dotfiles/.emacs"))
+
+(defun edit-changelog ()
+  (interactive)
+  (find-file "~/dev/credit/migration/changelog.txt"))
 
 (global-set-key [f7] 'edit-file)
+(global-set-key (kbd "<C-f7>") 'edit-changelog)
 (global-set-key [f8] 'transpose-frame)
 
 (defun clean-whitespaces ()
