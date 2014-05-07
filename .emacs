@@ -732,3 +732,5 @@ by using nxml's indentation rules."
   (require 'evil-terminal-cursor-changer))
 
 (require 'evil-visualstar)
+
+(load "~/bin/ci26.el")
