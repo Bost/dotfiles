@@ -76,9 +76,15 @@ alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
 #alias vdir='vdir --color=auto'
 
-alias ..='cd ..'
-alias ...='cd ../..'
-alias cdd='cd -'
+alias ..='Run cd ..'
+alias ...='Run cd ../..'
+alias ....='Run cd ../../..'
+
+alias cd..='Run cd ..'
+alias cd...='Run cd ../..'
+
+alias cd-='Run cd -'
+alias cdd='Run cd -'
 
 alias gap='RunGit git add -p'
 alias gad='RunGit git add'
