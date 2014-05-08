@@ -131,6 +131,7 @@ alias  gr='RunGit git rebase'
 alias gri='RunGit git rebase --interactive'
 alias grc='Run git rebase --continue'
 alias gra='Run git rebase --abort'
+alias grs='Run git rebase --skip'
 alias gdf='Run git diff'
 
 alias  gh='Run git push'
