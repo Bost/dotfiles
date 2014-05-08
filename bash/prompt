@@ -70,13 +70,14 @@ function nonzero_return() {
 #export PS1="\V [\t] -\`nonzero_return\`- \[\e[37m\]\u\[\e[m\]@\[\e[34m\]\h\[\e[m\]:\[\e[31m\]\w\[\e[m\] \[\e[32m\]\`parse_git_branch\`\[\e[m\]\\$ "
 
 # full qualified domain name
-#export PS1="\V [\t] -\`nonzero_return\`- \[\e[37m\]\u\[\e[m\]@\[\e[34m\]\H\[\e[m\]:\[\e[31m\]\w\[\e[m\] \[\e[32m\]\`parse_git_branch\`\[\e[m\]\\$ "
+export PS1="\V [\t] -\`nonzero_return\`- \[\e[37m\]\u\[\e[m\]@\[\e[34m\]\H\[\e[m\]:\[\e[31m\]\w\[\e[m\] \[\e[32m\]\`parse_git_branch\`\[\e[m\]\\$ "
 
 # simple fast
 #export PS1="[\t] tty:\l ret:\$? \u@\[\e[34m\]\H\[\e[m\]:\[\e[31m\]\w\[\e[m\]\$ "
-# simple fast dimmed
-export PS1="\[\e[00;37m\][\t] tty:\l ret:\$? \u@\[\e[0m\]\[\e[00;34m\]\H\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[00;31m\]\w\[\e[0m\]\[\e[00;37m\]\\$ \[\e[0m\]"
 
-# standart
+# simple fast dimmed
+#export PS1="\[\e[00;37m\][\t] tty:\l ret:\$? \u@\[\e[0m\]\[\e[00;34m\]\H\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[00;31m\]\w\[\e[0m\]\[\e[00;37m\]\\$ \[\e[0m\]"
+
+# default
 #export PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$ "
 
