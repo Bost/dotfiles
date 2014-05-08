@@ -1,4 +1,5 @@
 #!/bin/bash -e
+# -e stop on error; -x debug
 
 # shell specific options and information for prompt, shell settings
 
@@ -7,3 +8,8 @@ shopt -s histappend
 
 # run at each shell prompt; -a: write immediately the current/new lines to the history file
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+
+if [ "$isLinux" -gt 0 ]; then
+    readFile $bash_files/prompt
+    #readFile $bash_files/prompt-sexy
+fi
