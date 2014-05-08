@@ -261,18 +261,18 @@ GitUpdateAll() {
     echo 'pwd: '$_cd
 
     Run cd $dev/cheatsheet
-    Run git pull --rebase origin && Run git fetch --tags
+    Run git pull --rebase origin # && Run git fetch --tags
 
     Run cd $dev/dotfiles
-    Run git pull --rebase origin && Run git fetch --tags
+    Run git pull --rebase origin # && Run git fetch --tags
 
     if [ "$isCygwin_155" -gt 0 ]; then
         # TODO sync from $dev/cheatsheet, $dev/dotfiles instead of github
         Run cd /cygdrive/h/dev/cheatsheet
-        Run git pull --rebase origin && Run git fetch --tags
+        Run git pull --rebase origin # && Run git fetch --tags
 
         Run cd /cygdrive/h/dev/dotfiles
-        Run git pull --rebase origin && Run git fetch --tags
+        Run git pull --rebase origin # && Run git fetch --tags
     fi
     cd $_cd
 }
