@@ -47,9 +47,30 @@ export isMinGw32_155=$(expr match "$uname" "$strMinGw32_155")
 #echo isCygwin_155: $isCygwin_155
 #echo isMinGw32_155: $isMinGw32_155
 
+
+function add_to_path() {
+    new_entry=$@
+    case ":$PATH:" in
+	*":$new_entry:"*) :;; # already there
+	*) PATH="$new_entry:$PATH";; # or PATH="$PATH:$new_entry"
+    esac
+}
+
+# TODO add_to doesn't work
+# function add_to() {
+#     local sysvar=$1
+#     local new_entry=$1
+#     case ":$sysvar:" in
+# 	*":$new_entry:"*) :;; # already there
+# 	*) sysvar="$var:$new_entry";;
+#     esac
+# }
+
 if [ "$isLinux" -gt 0 ]; then
     :
     #echo "### Display no message in the console if doing scp"
+    dev=~/dev
+
     export ALTERNATE_EDITOR=emacs;
     #EDITOR=gvim # use it with <C-x>e
     #export EDITOR=emacsclient
@@ -59,29 +80,10 @@ if [ "$isLinux" -gt 0 ]; then
     local bits=$(getconf LONG_BIT)
     export isLinux_64=$(($bits == 64))
 
-    dev=$HOME/dev
-    APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.8
-
-    if [ "$isLinux_64" -gt 0 ] || [ "$isLinuxFranzi" -eq 0 ] || [ "$isLinuxMartin" -eq 0 ]; then
-        :
-        PATH=$PATH:$HOME/bin:$APPENG_PYTHON_HOME:$HOME/.cabal/bin
-    else
-        :
-        # TODO it seems like MAVEN_HOME is not needed
-        #MAVEN_HOME=$HOME/apache-maven-3.0.4
-        AAPPENG_HOME=$APPENG_JAVA_HOME
-        APPENG_JAVA_HOME=$HOME/gae/appeng-java-sdk-1.7.1
-        APPENG_PYTHON_HOME=$HOME/gae/appeng-python-1.7.2
-        CLASSPATH=$dev/appengine-magic/appengine-magic-0.5.0.jar:$CLASSPATH
-        # TODO try to use OpenJDK instead of Oracle JDK
-        JDK_16_HOME=$HOME/java/jdk1.6.0_33
-        JAVA_HOME=$HOME/java/jdk1.7.0_45
-        # I need too have $PATH at the end because I want to override the pre-preinstalled java
-        PATH=$JAVA_HOME/bin:$PATH:$HOME/bin:$APPENG_PYTHON_HOME
-    fi
-
+    # TODO paths to Google App Engine, Oracle JDK: ~/gae/appeng-python-1.8
     export CLOJURESCRIPT=$dev/clojurescript
-    PATH=$PATH:$CLOJURESCRIPT/bin
+    add_to_path $CLOJURESCRIPT/bin
+    #add_to $PATH $CLOJURESCRIPT/bin
 
     # remaping the Esc key to Capslock (I don't use it that much)
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
@@ -166,34 +168,17 @@ fi
 if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     JDK_16_HOME=$winapp/Java/1.6.0_41
     JAVA_HOME=$winapp/Java/jdk1.7.0_45
-    APPENG_JAVA_HOME=$winappX86/Google/appeng-java-sdk-1.7.1
-    APPENG_PYTHON_HOME=$winappX86/Google/google_appengine
-
-    APPENGINE_HOME=/cygdrive/c/winapp-x86/Google/appeng-java-sdk-1.7.1
-
-    PATH=$PATH:$HOME/apache-cxf-2.7.6/bin
-    PATH=$PATH:$APPENG_PYTHON_HOME
 fi
 
-if [ "$isLinux_64" -eq 0 ]; then
+if [ "$isLinux" -eq 0 ]; then
     export JDK_16_HOME
+    export JAVA_HOME
 fi
 
 export dev
 export PATH
-if [ "$isLinux" -eq 0 ]; then
-    export JAVA_HOME
-fi
-
-if [ "$isLinuxMartin" -eq 0 ]; then
-    export APPENGINE_HOME
-fi
 
 if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
     clojureJarFile=$dev/clojure/clojure-1.6.0.jar
     export clojureJarFile
-    export APPENG_PYTHON_HOME
-    if [ "$isLinuxMartin" -eq 0 ]; then
-        export APPENG_JAVA_HOME
-    fi
 fi
