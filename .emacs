@@ -141,7 +141,7 @@
 (global-linum-mode t)
 
 ;; minibuffer completion incremental feedback
-;; (icomplete-mode 99)  ; turn on icomplete-mode
+(icomplete-mode 99)  ; turn on icomplete-mode
 
 ;; press y/n instead of typing yes/no
 (defalias 'yes-or-no-p 'y-or-n-p)
