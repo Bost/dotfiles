@@ -272,7 +272,7 @@ function get_retCode() {
 # TODO https://github.com/magicmonty/bash-git-prompt
 # Define the sexy-bash-prompt
 PS1="\
-\$(echo -n \"[\[$prompt_tstmp_color\]\$(get_time)\")]\[$prompt_reset\] \
+\$(echo -n \"\[$prompt_tstmp_color\]\$(get_time)\")\[$prompt_reset\] \
 \[$prompt_tty_color\]☎\l\[$prompt_reset\] \
 \[$prompt_retCode_color\]↩\[$prompt_reset\]$(get_retCode) \
 \[$prompt_user_color\]\u\[$prompt_reset\]\
