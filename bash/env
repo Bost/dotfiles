@@ -56,7 +56,7 @@ function add_to_path() {
     esac
 }
 
-# TODO add_to doesn't work
+# TODO function add_to() doesn't work with sysvar reference
 # function add_to() {
 #     local sysvar=$1
 #     local new_entry=$1
@@ -80,7 +80,7 @@ if [ "$isLinux" -gt 0 ]; then
     local bits=$(getconf LONG_BIT)
     export isLinux_64=$(($bits == 64))
 
-    # TODO paths to Google App Engine, Oracle JDK: ~/gae/appeng-python-1.8
+    # TODO set paths to Google App Engine, Oracle JDK: ~/gae/appeng-python-1.8
     export CLOJURESCRIPT=$dev/clojurescript
     add_to_path $CLOJURESCRIPT/bin
     #add_to $PATH $CLOJURESCRIPT/bin

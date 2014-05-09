@@ -209,9 +209,11 @@ sudo apt-get install --yes $packages
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 
 # install google-earth (gdebi is needed)
-# TODO 32bit, 64bit
-bits=$(getconf LONG_BIT)
-if [ $bits -eq 64 ]; then
+local bits=$(getconf LONG_BIT)
+isLinux_64=$(($bits == 64))
+isLinux_32=$(($bits == 32))
+
+if [ $isLinux_64 ]; then
     fname=google-earth-stable_current_amd$bits.deb
 
     # TODO Dependency is not satisfiable: ia32-libs
@@ -225,6 +227,9 @@ if [ $bits -eq 64 ]; then
         wget https://dl.google.com/linux/direct/$fname
         sudo dpkg -i $fname
     fi
+elif [ $isLinux_32 ]; then
+    # TODO install google-earth and google-chrome on 32bit linux
+    :
 fi
 
 # not needed on franzi
@@ -246,7 +251,7 @@ git config --global user.email thebost@gmail.com
 # add this comp to to github knows repos
 if [ ! -f ~/.ssh/id_rsa ]; then
     ssh-keygen
-    # TODO put content of id_rsa.put to clipboard - see  xsel
+    # TODO put content of id_rsa.put to clipboard - see xsel
     cat ~/.ssh/id_rsa.pub
 fi
 
@@ -314,7 +319,7 @@ if [ ! -L "$lname" ]; then
     ln -s ~/dev/dotfiles/.emacs $lname
 fi
 
-# TODO this might not be needed anymore
+# TODO transpose-frame.el might not be needed anymore
 fname=~/.emacs.d/elpa/transpose-frame/transpose-frame.el
 if [ ! -f "$fname" ]; then
     mkdir -p ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame

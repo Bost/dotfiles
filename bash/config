@@ -13,7 +13,6 @@ if [ "$isLinuxNew64" -gt 0 ]; then
     # readFile $bash_files/prompt
     readFile $bash_files/prompt-sexy
 
-    # TODO checkUpstream makes bash-git-prompt slow
     # TODO add submodule https://github.com/magicmonty/bash-git-prompt.git
 
     # Set config variables first

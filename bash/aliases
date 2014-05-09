@@ -13,7 +13,6 @@ RunBg() {
 
 # On command line I wanna have vim
 # Only git commit and git add need to do editing
-# TODO test git rebase w/o RunGit
 RunGit() {
     #echo -e "before:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
     local e=$EDITOR
@@ -46,7 +45,6 @@ alias cls='clear'
 
 PsEfGrep() {
     if [ "$isLinux" -gt 0 ]; then
-        # TODO see pkill
         Run pgrep --list-full $@
     else
         echo "ps -ef | grep $@"
@@ -95,6 +93,7 @@ alias  gg='RunBg git gui'
 alias gtg='Run git tag'
 alias gcp='Run git cherry-pick'
 alias gbr='Run git branch'
+alias gbrm='Run git branch -m'
 alias gmv='Run git mv'
 alias grm='Run git rm'
 alias ghe='Run git help'
@@ -267,7 +266,6 @@ GitUpdateAll() {
     Run git pull --rebase origin # && Run git fetch --tags
 
     if [ "$isCygwin_155" -gt 0 ]; then
-        # TODO sync from $dev/cheatsheet, $dev/dotfiles instead of github
         Run cd /cygdrive/h/dev/cheatsheet
         Run git pull --rebase origin # && Run git fetch --tags
 
@@ -397,8 +395,8 @@ if [ "$isLinux" -gt 0 ]; then
     alias     shut='Run sudo shutdown -h now'
     alias shutdown='Run sudo shutdown -h now'
 
-    #Search the package list for a regex pattern
-    #TODO alias sea='apt-cache search'
+    # Search the package list for a regex pattern
+    # TODO alias sea='apt-cache search'
 
     alias clojure='Run java -cp $cljcp clojure.main'
     # !* - all args of the last command
@@ -430,11 +428,11 @@ elif [ "$isMinGw32_155" -gt 0 ]; then
     RunGvim() {
         fname=$HOME/dev/dotfiles/.vimrc
         if [-f "$fname" ]; then
-            echo "vimrc already renamed to .vimrc. TODO remove this if-else"
+            echo "vimrc already renamed to .vimrc. Remove this if-else"
         else
             echo mv $HOME/dev/dotfiles/vimrc $fname
                  mv $HOME/dev/dotfiles/vimrc $fname
-            echo "TODO remove this if-else"
+            echo "Remove this if-else"
         fi
         RunBg gvim -u $HOME/dev/dotfiles/.vimrc $@
     }
@@ -504,7 +502,6 @@ alias home='cd $dev/..'
 alias desktop='cd $HOME/desktop'
 alias    desk='cd $HOME/desktop'
 
-# TODO bash: ln -s $HOME/Downloads $HOME/downloads
 alias downloads='cd $HOME/downloads'
 alias      down='cd $HOME/downloads'
 alias catg='cd $HOME/downloads/category-theory/js'
@@ -553,6 +550,7 @@ alias genpasswd='GeneratePassw'
 alias  ltm='RunBg $dev/LightTable-master/deploy/LightTable'
 alias lttm='RunBg $dev/LightTable-master/deploy/LightTable'
 alias  ltt='RunBg deploy/LightTable'
+# TODO use 'pkill ltbin' instead of 'kill $(pidof ltbin)'
 #alias klt='echo "kill \$(pidof ltbin)"; kill $(pidof ltbin)'
 #alias klt='echo "kill \$(pidof ltbin)"; kill \$\(pidof ltbin\)'
 alias klt='kill \$\(pidof ltbin\)'

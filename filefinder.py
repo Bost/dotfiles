@@ -46,7 +46,7 @@ def findJavaCall():
     print 'Searching for: '+search_str
     print ''
     dirs = [
-        # TODO put hier dirnames where to search
+        # TODO put here dirnames where to search
         '',
         ]
 

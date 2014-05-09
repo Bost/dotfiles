@@ -14,7 +14,7 @@ bash_profile=$HOME/.bash_profile
 
 if [ -z $dotfilesHOME ]; then
     source "$bash_profile"
-    # TODO here is ~/.bashrc executed twice:
+    # TODO check if ~/.bashrc executed is not executed twice
     # ~/.bashrc -> ~/.bash_profile -> ~/.bashrc
 fi
 
@@ -29,7 +29,7 @@ else
     readFile $bash_files/aliases
     readFile $bash_files/fix-dir-struct
 fi
-# TODO try this
+# TODO try history-search-backward "\e[A", history-search-forward "\e[B"
 #"\e[A": history-search-backward
 #"\e[B": history-search-forward
 #set show-all-if-ambiguous on

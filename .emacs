@@ -1,9 +1,10 @@
 ;; TODO jump to last line and switch to edit mode
 ;; TODO delete to the end of line and switch to edit mode
 
-;; TODO use only one emacs instance - seems to work only for terminals
+;; TODO emacs does not come up when calling emacsclient withouth emacs server
 (load "server")
-(unless (server-running-p) (server-start))
+(unless (server-running-p)
+  (server-start))
 
 (setq inhibit-splash-screen t)
 ;; (load-theme 'light-blue)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
@@ -139,7 +140,7 @@
 ;; show line number on the left side
 (global-linum-mode t)
 
-;; TODO what is incomplete-mode good for?
+;; minibuffer completion incremental feedback
 ;; (icomplete-mode 99)  ; turn on icomplete-mode
 
 ;; press y/n instead of typing yes/no

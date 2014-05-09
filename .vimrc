@@ -1,5 +1,4 @@
 " TODO Delete buffer but do not close the viewport
-" TODO vmail: frames made of unicode chars
 " TODO 'set encoding': Test printing of ß
 " TODO ListFile() for visual mode and for a given string
 " TODO StripTrailingWhitespaces(): %s/\(\S*\)\s\+\n/\1\r/g works

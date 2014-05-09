@@ -3,6 +3,25 @@
 
 # operations on directory structure, link-setup etc.
 
+# TODO create a hashmap with machines; store renaming results for a given machine in an own directory
+if [ "$isLinuxNew64" -eq 0 ]; then
+    if [ ! -L $HOME/downloads ]; then
+	ln -s $HOME/Downloads $HOME/downloads
+    fi
+
+    echo "Prevent this block from running on this machine:"
+    echo isLinux: $isLinux
+    echo isLinux_64: $isLinux_64
+    echo isLinuxNew64: $isLinuxNew64
+    echo isLinuxFranzi: $isLinuxFranzi
+    echo isLinuxMartin: $isLinuxMartin
+    echo isLinuxMartinJV: $isLinuxMartinJV
+    echo isLinuxBambi: $isLinuxBambi
+    echo isMinGw32_app1: $isMinGw32_app1
+    echo isCygwin_155: $isCygwin_155
+    echo isMinGw32_155: $isMinGw32_155
+fi
+
 if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew64" -eq 0 ] && [ "$isCygwin_155" -eq 0 ]; then
     dnameOld=$HOME/dev/dotfiles/vim
     dnameNew=$HOME/dev/dotfiles/.vim
@@ -44,7 +63,7 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew6
     fi
 
     if [ -f "$fnameNew" ] && [ -d "$dnameNew" ]; then
-        echo "TODO prevent this block from running on this machine:"
+        echo "Prevent this block from running on this machine:"
         echo isLinux: $isLinux
         echo isLinux_64: $isLinux_64
         echo isLinuxNew64: $isLinuxNew64
@@ -55,7 +74,6 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew6
         echo isMinGw32_app1: $isMinGw32_app1
         echo isCygwin_155: $isCygwin_155
         echo isMinGw32_155: $isMinGw32_155
-        echo "TODO create a hashmap with machines; store renaming results for a given machine in an own directory"
     fi
 fi
 

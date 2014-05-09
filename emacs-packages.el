@@ -98,6 +98,7 @@
    helm-spaces
    helm-themes
    highlight-symbol
+   icomplete+                    ; minibuffer completion incremental feedback
    idle-highlight-mode
    ido-ubiquitous
    js2-mode

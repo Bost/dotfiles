@@ -269,7 +269,6 @@ function get_retCode() {
     echo "\[$clr\]$retCode\[$prompt_reset\]"
 }
 
-# TODO https://github.com/magicmonty/bash-git-prompt
 # Define the sexy-bash-prompt
 PS1="\
 \$(echo -n \"\[$prompt_tstmp_color\]\$(get_time)\")\[$prompt_reset\] \
