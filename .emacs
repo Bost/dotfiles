@@ -334,6 +334,7 @@
 (require 'helm-files)
 (setq helm-idle-delay 0.1)
 (setq helm-input-idle-delay 0.1)
+(setq helm-ack-use-ack-grep t)
 ;; (setq helm-c-locate-command "locate-with-mdfind %.0s %s")
 ;; (loop for ext in '("\\.swf$" "\\.elc$" "\\.pyc$")
 ;;       do (add-to-list 'helm-c-boring-file-regexp-list ext))
@@ -413,7 +414,9 @@ by using nxml's indentation rules."
 (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
 (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
-(global-set-key (kbd "<S-delete>") 'kill-line)
+;(global-set-key (kbd "<S-delete>") 'kill-line)
+(global-set-key (kbd "<S-delete>") 'kill-region)
+;(global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
 
 (setq evil-leader/in-all-states t)
 ;; global-evil-leader-mode must be enabled before evil-mode
