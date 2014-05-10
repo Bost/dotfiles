@@ -17,7 +17,7 @@
    ack-and-a-half
    ack-menu
    align-cljlet        ; Space align various Clojure forms [github]
-   anzu                ; display current match/total matches
+   anzu                ; 'current match/total matches' in the mode-line (pink stuff bottom left)
    apt-utils
    auto-complete
    auto-complete-nxml

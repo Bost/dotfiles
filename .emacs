@@ -24,7 +24,7 @@
 (package-initialize)
 ;; (package-refresh-contents)
 
-;; displays 'current match/total matches' in the mode-line
+;; 'current match/total matches' in the mode-line (pink stuff bottom left)
 (global-anzu-mode +1)
 
 (if (> (string-to-number (getenv "isLinuxFranzi")) 0)
