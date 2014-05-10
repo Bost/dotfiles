@@ -257,21 +257,19 @@ fi
 
 # the git pull doesn't work
 if [ 0 -eq 1 ]; then
-    dname=~/dev/cheatsheet
-    if [ -d "$dname" ]; then
-	cd $dname && git pull master
-    else
-	echo git clone git@github.com:Bost/cheatsheet.git $dname
-        git clone git@github.com:Bost/cheatsheet.git $dname
-    fi
-
-    dname=~/dev/dotfiles
-    if [ -d "$dname" ]; then
-	cd $dname && git pull master
-    else
-	echo git clone git@github.com:Bost/dotfiles.git $dname
-        git clone git@github.com:Bost/dotfiles.git $dname
-    fi
+    github_projects=(
+	~/dev/cheatsheet
+	~/dev/dotfiles
+	~/dev/bash-git-prompt
+    )
+    for project in ${github_projects[@]}; do
+	if [ -d $project ]; then
+            echo "cd $project && git pull master"
+	else
+            projectName=$(basename $project)
+            git clone git@github.com:Bost/$projectName.git
+	fi
+    done
 fi
 
 timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
