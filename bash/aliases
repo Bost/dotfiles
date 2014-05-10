@@ -32,7 +32,7 @@ alias      r='Run source $HOME/.bashrc'
 alias t='Run tail'
 
 CleanEclipseWorkspace() {
-    Run METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
+    METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
     Run rm -rf .metadata/.plugins/org.eclipse.core.resources/.history
     Run rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt
 }
@@ -149,16 +149,9 @@ alias gbir='Run git bisect reset'
 alias gbb='Run git bisect bad'
 alias gbg='Run git bisect good'
 
-GitLog() {
-    # Visualise git log (like gitk, in the terminal)
-    #fmt=%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s
-    fmt='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-    echo git log --graph --full-history --color --pretty=format:\"$fmt\" $@
-         git log --graph --full-history --color --pretty=format:"$fmt"   $@ # --abbrev-commit"
-}
-#alias gl='GitLog'
-alias gla='GitLog --all'
-alias glh='GitLog HEAD'
+alias gla='git lg-all'
+alias glh='git lg-head'
+alias  lg='git lg-head'
 
 alias gk='RunBg gitk --all'
 #alias gitk='RunBg gitk --all'
@@ -526,6 +519,7 @@ alias ee='RunBg emacsclient $dev/dotfiles/bash/env'
 alias ec='RunBg emacsclient $dev/dotfiles/bash/config'
 alias eb='RunBg emacsclient $dev/dotfiles/.bashrc'
 alias er='RunBg emacsclient $dev/dotfiles/.bashrc'
+alias el='RunBg emacsclient $dev/dotfiles/linux-history.sh'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
