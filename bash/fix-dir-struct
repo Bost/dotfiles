@@ -4,12 +4,13 @@
 # operations on directory structure, link-setup etc.
 
 # TODO create a hashmap with machines; store renaming results for a given machine in an own directory
-if [ "$isLinuxNew64" -eq 0 ]; then
+if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ]; then
     if [ ! -L $HOME/downloads ]; then
 	ln -s $HOME/Downloads $HOME/downloads
     fi
 
-    echo "Prevent this block from running on this machine:"
+    echo "$HOME/downloads created"
+    echo "Prevent this block from re-running on this machine."
     echo isLinux: $isLinux
     echo isLinux_64: $isLinux_64
     echo isLinuxNew64: $isLinuxNew64
@@ -63,7 +64,8 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew6
     fi
 
     if [ -f "$fnameNew" ] && [ -d "$dnameNew" ]; then
-        echo "Prevent this block from running on this machine:"
+        echo "rc-files renamed"
+        echo "Prevent this block from re-running on this machine."
         echo isLinux: $isLinux
         echo isLinux_64: $isLinux_64
         echo isLinuxNew64: $isLinuxNew64
