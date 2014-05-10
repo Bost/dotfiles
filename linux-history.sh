@@ -1,6 +1,7 @@
 #!/bin/bash -ex
 # -e stop on error; -x debug
 
+# TODO use python instead of bash: http://docs.python-guide.org/en/latest/
 # TODO bookmars; multiple runs
 
 mkdir -p ~/dev
