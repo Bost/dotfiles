@@ -274,6 +274,8 @@ if [ 0 -eq 1 ]; then
     cd ~/dev/bash-git-prompt
     git remote add upstream https://github.com/magicmonty/bash-git-prompt.git
     git config user.name "Rostislav Svoboda"
+    
+    # TODO evaluate https://github.com/jwiegley/git-scripts.git
 fi
 
 timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
