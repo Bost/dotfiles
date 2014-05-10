@@ -425,3 +425,5 @@ fi
 # TODO change https to git in dotfiles/.git/config
 
 echo "dotfilesHOME=~/dev/dotfiles" > ~/.bash_profile
+
+# TODO modify emacs24 xfce launcher: bash -i -c /usr/bin/emacs24 %F
