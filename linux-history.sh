@@ -259,17 +259,18 @@ fi
 # the git pull doesn't work
 if [ 0 -eq 1 ]; then
     github_projects=(
-	~/dev/cheatsheet
-	~/dev/dotfiles
-	~/dev/bash-git-prompt
+        ~/dev/cheatsheet
+        ~/dev/dotfiles
+        ~/dev/bash-git-prompt
     )
     for project in ${github_projects[@]}; do
-	if [ -d $project ]; then
-            echo "cd $project && git pull master"
-	else
+        if [ -d $project ]; then
+            cd $project
+            git pull --rebase master
+        else
             projectName=$(basename $project)
             git clone git@github.com:Bost/$projectName.git
-	fi
+        fi
     done
     cd ~/dev/bash-git-prompt
     git remote add upstream https://github.com/magicmonty/bash-git-prompt.git
@@ -359,16 +360,16 @@ if [ 0 -eq 1 ]; then
     dname=~/dev/clojure
     echo $dname
     if [ ! -d "$dname" ]; then
-	cd ~/dev && git clone https://github.com/clojure/clojure.git
+        cd ~/dev && git clone https://github.com/clojure/clojure.git
     else
-	cd $dname && git pull master
-	echo git checkout clojure-1.6.0
+        cd $dname && git pull master
+        echo git checkout clojure-1.6.0
              git checkout clojure-1.6.0
     fi
 
     fname=~/dev/clojure/clojure-1.6.0.jar
     if [ ! -f "$fname" ]; then
-	$dname/antsetup.sh && ant
+        $dname/antsetup.sh && ant
     fi
 fi
 
