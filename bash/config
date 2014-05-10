@@ -9,7 +9,7 @@ shopt -s histappend
 # run at each shell prompt; -a: write immediately the current/new lines to the history file
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
-if [ "$isLinuxNew64" -gt 0 ]; then
+if [ "$isLinuxNew64" -gt 0 ] || [ "$isLinuxFranzi" -gt 0 ]; then
     # readFile $bash_files/prompt
     readFile $bash_files/prompt-sexy
 
