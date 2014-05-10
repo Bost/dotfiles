@@ -270,6 +270,8 @@ if [ 0 -eq 1 ]; then
             git clone git@github.com:Bost/$projectName.git
 	fi
     done
+    cd ~/dev/bash-git-prompt
+    git remote add upstream https://github.com/magicmonty/bash-git-prompt.git
 fi
 
 timestamp=`date +'%Y-%m-%d_%H-%M-%S'`
@@ -290,16 +292,16 @@ if [ 1 -eq 0 ] && [ ! -d "$dname" ]; then
         git clone https://github.com/gmarik/vundle.git $dname
         # Remove empty directories in order do proceed with :BundleInstall
         dirs=(
-        YankRing.vim
-        ctrlp.vim
-        vim-orgmode
-        vim-config-python-ide
-        ack.vim
-        vim-matchit
-        vim-powerline
-        tagbar
-        SearchComplete
-        supertab
+            YankRing.vim
+            ctrlp.vim
+            vim-orgmode
+            vim-config-python-ide
+            ack.vim
+            vim-matchit
+            vim-powerline
+            tagbar
+            SearchComplete
+            supertab
         )
         cd ~/dev/dotfiles/.vim/bundle && rm -rf ${dirs[@]}
     fi
