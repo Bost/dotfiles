@@ -130,6 +130,7 @@ packagesDev=(
     autogen
     automake
     ghc                  # Glasgow Haskell Compilation system
+    gitg                 # alternative to gitk
     graphviz             # graph drawing tools
     libatk1.0-dev
     libbonoboui2-dev
