@@ -160,13 +160,21 @@ packagesDev=(
     maven
     mercurial
     openjdk-7-jdk
+    python-dev
     python-django
     python-matplotlib
+    python-m2crypto
     python-numpy              # in python 3 python-numpy should be already included
+    python-setuptools
     subversion
+    swig                      # python: Simplified Wrapper and Interface Generator
     visualvm                  # Java Troubleshooting Tool
     xsane                     # scanner
 )
+# python
+# easy_install pip
+# pip install virtualenv
+# pip install salt
 
 packagesNotebook=(
     acpi
