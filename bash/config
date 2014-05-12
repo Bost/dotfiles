@@ -9,7 +9,9 @@ shopt -s histappend
 # run at each shell prompt; -a: write immediately the current/new lines to the history file
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
-if [ "$isLinuxNew64" -gt 0 ] || [ "$isLinuxFranzi" -gt 0 ] || [ "$isCygwin_155" -gt 0 ]; then
+if     [ "$isLinuxNew64" -gt 0 ] || [ "$isLinuxFranzi" -gt 0 ] \
+    # || [ "$isCygwin_155" -gt 0 ] \   # fancy prompts are too slow for this machine
+then
     # readFile $bash_files/prompt
     readFile $bash_files/prompt-sexy
 
@@ -24,4 +26,6 @@ if [ "$isLinuxNew64" -gt 0 ] || [ "$isLinuxFranzi" -gt 0 ] || [ "$isCygwin_155" 
 elif [ "$isLinux" -gt 0 ]; then
     readFile $bash_files/prompt
     #readFile $bash_files/prompt-sexy
+else
+    : # use predefined bash prompt - see echo $PS1
 fi
