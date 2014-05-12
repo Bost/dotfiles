@@ -4,7 +4,7 @@
 # operations on directory structure, link-setup etc.
 
 # TODO create a hashmap with machines; store renaming results for a given machine in an own directory
-if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ]; then
+if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ] && [ "$isCygwin_155" -eq 0 ]; then
     if [ ! -L $HOME/downloads ]; then
 	ln -s $HOME/Downloads $HOME/downloads
     fi
