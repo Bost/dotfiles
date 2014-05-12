@@ -85,9 +85,10 @@ if [ "$isLinux" -gt 0 ]; then
     add_to_path $CLOJURESCRIPT/bin
     #add_to $PATH $CLOJURESCRIPT/bin
 
-    # remaping the Esc key to Capslock (I don't use it that much)
-    xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-
+    if [ -n "${DISPLAY+x}" ]; then # check if there is a display available
+	# remaping the Esc key to Capslock (I don't use it that much)
+	xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+    fi
 elif [ "$isCygwin_155" -gt 0 ]; then
     :
     echo "### isCygwin_155: $isCygwin_155 => Loading $strCygwin_155"
