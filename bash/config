@@ -7,7 +7,18 @@
 shopt -s histappend
 
 # run at each shell prompt; -a: write immediately the current/new lines to the history file
-PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+
+new_entry="history -a"
+case ";$PROMPT_COMMAND;" in
+    *";$new_entry;"*)
+	# echo "PROMPT_COMMAND already contains: $new_entry"
+	:;;
+    *)
+	PROMPT_COMMAND="$new_entry;$PROMPT_COMMAND"
+	# echo "PROMPT_COMMAND does not contain: $new_entry"
+	;;
+esac
+
 
 if     [ "$isLinuxNew64" -gt 0 ] || [ "$isLinuxFranzi" -gt 0 ] \
     # || [ "$isCygwin_155" -gt 0 ] \   # fancy prompts are too slow for this machine
