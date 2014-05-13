@@ -1,3 +1,6 @@
 [submodule "vundle"]
 	path = vim/bundle/vundle
 	url = https://github.com/gmarik/vundle.git
+[submodule "bash/bash-git-prompt"]
+	path = bash/bash-git-prompt
+	url = git@github.com:Bost/bash-git-prompt.git
