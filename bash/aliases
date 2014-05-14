@@ -459,6 +459,7 @@ if [ "$isLinux" -eq 0 ]; then
     #alias mbb='cd $dev/mbs/mbb'
 
     alias credit='cd $dev/credit'
+    alias migr='cd $dev/credit.migration'
     alias full='cd $dev/jacarta.full'
     alias light='cd $dev/jacarta.light'
     alias hre='cd $dev/jacarta.hre'
