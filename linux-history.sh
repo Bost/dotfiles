@@ -159,6 +159,8 @@ packagesDev=(
     linux-source
     maven
     mercurial
+    npm
+    node.js
     openjdk-7-jdk
     python-dev
     python-django
@@ -166,6 +168,7 @@ packagesDev=(
     python-m2crypto
     python-numpy              # in python 3 python-numpy should be already included
     python-setuptools
+    python-software-properties
     subversion
     swig                      # python: Simplified Wrapper and Interface Generator
     visualvm                  # Java Troubleshooting Tool
