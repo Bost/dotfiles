@@ -567,3 +567,11 @@ alias lcf='LastChangedFile'
 alias he='head'
 # TODO create alias file for the eshell; runs 0.007 sec
 #alias | sed -E "s/^alias ([^=]+)='(.*)'$/alias \1 \2 \$*/g; s/'\\\''/'/g;" >~/.emacs.d/eshell/alias
+
+# get ip addresses for every interface
+getip() {
+    /sbin/ifconfig | \
+    grep -B1 "inet addr" | \
+    awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' | \
+    awk -F: '{ print $1 ": " $3 }';
+}
