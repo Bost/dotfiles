@@ -28,7 +28,7 @@ RunGit() {
 }
 
 alias reload='Run source $HOME/.bashrc'
-alias      r='Run source $HOME/.bashrc'
+     alias r='Run source $HOME/.bashrc'
 alias t='Run tail'
 
 CleanEclipseWorkspace() {
@@ -61,7 +61,7 @@ ExtractBashComments() {
 }
 
 #ping -c 5 www.google.com
-alias  png='Run mtr google.com'
+ alias png='Run mtr google.com'
 alias mtrg='Run mtr google.com'
 
 alias c='Run cat'
@@ -89,7 +89,7 @@ alias gad='RunGit git add'
 alias gdd='RunGit git add'
 alias glg='Run git log'
 alias gaa='RunGit git add .'
-alias  gg='RunBg git gui'
+ alias gg='RunBg git gui'
 alias gtg='Run git tag'
 alias gcp='Run git cherry-pick'
 alias gbr='Run git branch'
@@ -127,21 +127,21 @@ alias gf='GrepFind'
     #   git config --global branch.autosetuprebase always
 #}
 
-alias  gr='RunGit git rebase'
+ alias gr='RunGit git rebase'
 alias gri='RunGit git rebase --interactive'
 alias grc='Run git rebase --continue'
 alias gra='Run git rebase --abort'
 alias grs='Run git rebase --skip'
 alias gdf='Run git diff'
 
-alias  gh='Run git push'
+ alias gh='Run git push'
 alias gho='Run git push origin'
 
 GitPullRebase() {
     Run git pull --rebase origin $@ && \
     Run git fetch --tags
 }
-alias  gl='Run git pull'
+alias gl='Run git pull'
 alias glo='GitPullRebase'
 alias glu='Run git pull --rebase upstream master'
 
@@ -152,7 +152,7 @@ alias gbg='Run git bisect good'
 
 alias gla='git lg-all'
 alias glh='git lg-head'
-alias  lg='git lg-head'
+ alias lg='git lg-head'
 
 alias gk='RunBg gitk --all'
 #alias gitk='RunBg gitk --all'
@@ -245,8 +245,8 @@ mkdirAndCd() {
 }
 alias take='mkdirAndCd'
 
-alias  lcc='Run lein cljsbuild clean'
-alias  lca='Run lein cljsbuild auto'
+ alias lcc='Run lein cljsbuild clean'
+ alias lca='Run lein cljsbuild auto'
 alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
 GitUpdateAll() {
@@ -268,7 +268,7 @@ GitUpdateAll() {
     fi
     cd $_cd
 }
-alias  ga='GitUpdateAll'
+ alias ga='GitUpdateAll'
 alias gua='GitUpdateAll'
 
 GitPushRepo() {
@@ -291,7 +291,7 @@ alias gau='RunGit git add --update'
 alias gau='RunGit git add -p'
 alias gss='Run git status --short'
 alias gst='Run git status'
-alias  gs='Run git status'
+ alias gs='Run git status'
 alias gco='Run git checkout'
 alias gci='RunGit git commit'
 alias gcianoe='Run git commit --amend --no-edit'
@@ -311,7 +311,7 @@ HistoryGrep() {
           history | grep $@
 }
 alias hrep='HistoryGrep'
-alias   hr='HistoryGrep'
+  alias hr='HistoryGrep'
 
 AliasGrep() {
     echo "alias | grep $@"
@@ -374,19 +374,19 @@ if [ "$isLinux" -gt 0 ]; then
     alias u='UpdateUpgradeClean'
     alias d='Run sudo apt-get dist-upgrade --yes'
 
-    alias   inst="Run sudo apt-get install --yes"
+      alias inst="Run sudo apt-get install --yes"
     alias uninst="Run sudo apt-get remove --yes"
-    alias  rmv="Run sudo apt-get remove --yes"
-    alias armv="Run sudo apt-get autoremove --yes"
+       alias rmv="Run sudo apt-get remove --yes"
+      alias armv="Run sudo apt-get autoremove --yes"
 
     alias reboot='Run sudo reboot'
-    #alias      s='Run sudo pm-suspend'
-    alias    susp='Run sudo pm-suspend'
+    #    alias s='Run sudo pm-suspend'
+       alias susp='Run sudo pm-suspend'
     alias suspend='Run sudo pm-suspend'
-    #alias        h='Run sudo pm-hibernate'
-    alias       hib='Run sudo pm-hibernate'
+    #     alias h='Run sudo pm-hibernate'
+          alias hib='Run sudo pm-hibernate'
     alias hibernate='Run sudo pm-hibernate'
-    alias     shut='Run sudo shutdown -h now'
+         alias shut='Run sudo shutdown -h now'
     alias shutdown='Run sudo shutdown -h now'
 
     # Search the package list for a regex pattern
@@ -495,17 +495,17 @@ alias g='RunGvim'
 alias home='cd $dev/..'
 
 alias desktop='cd $HOME/desktop'
-alias    desk='cd $HOME/desktop'
+   alias desk='cd $HOME/desktop'
 
 alias downloads='cd $HOME/downloads'
-alias      down='cd $HOME/downloads'
+     alias down='cd $HOME/downloads'
 alias catg='cd $HOME/downloads/category-theory/js'
 
 alias cheatsheet='cd $dev/cheatsheet'
-alias      cheat='cd $dev/cheatsheet'
+     alias cheat='cd $dev/cheatsheet'
 
 alias dotfiles='cd $dev/dotfiles'
-alias     dotf='cd $dev/dotfiles'
+    alias dotf='cd $dev/dotfiles'
 #alias dot='dot'  " /usr/bin/dot  filter for drawing directed graphs
 
 alias bin='cd $HOME/bin'
@@ -515,7 +515,7 @@ alias zark='cd $dev/zark'
 alias foo='cd $dev/foo'
 alias dev='cd $dev'
 # alias e doesn't work it there's no running emacs
-alias  e='RunBg emacsclient'
+ alias e='RunBg emacsclient'
 alias ea='RunBg emacsclient $dev/dotfiles/bash/aliases'
 alias ee='RunBg emacsclient $dev/dotfiles/bash/env'
 alias ec='RunBg emacsclient $dev/dotfiles/bash/config'
@@ -543,9 +543,9 @@ alias genpasswd='GeneratePassw'
 # TODO is this for passing param to an alias?
 #alias 'ps?'='ps ax | grep '
 
-alias  ltm='RunBg $dev/LightTable-master/deploy/LightTable'
+ alias ltm='RunBg $dev/LightTable-master/deploy/LightTable'
 alias lttm='RunBg $dev/LightTable-master/deploy/LightTable'
-alias  ltt='RunBg deploy/LightTable'
+ alias ltt='RunBg deploy/LightTable'
 # TODO use 'pkill ltbin' instead of 'kill $(pidof ltbin)'
 #alias klt='echo "kill \$(pidof ltbin)"; kill $(pidof ltbin)'
 #alias klt='echo "kill \$(pidof ltbin)"; kill \$\(pidof ltbin\)'
@@ -554,10 +554,10 @@ alias blm='Run bash -x $dev/LightTable-master/linux_deps.sh'
 alias bl='Run bash linux_deps.sh'
 alias clt='cd $dev/LightTable'
 alias lct='cd $dev/LightTable'   # too many lct typos
-alias  lt='ls -lat'
+ alias lt='ls -lat'
 alias ltr='ls -latr'
 alias lff='ls -lrt -d -1 $PWD/{*,.*}'
-alias  lT='ls -latr'
+ alias lT='ls -latr'
 
 # last changed file
 LastChangedFile() {
