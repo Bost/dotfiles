@@ -293,7 +293,7 @@ alias gss='Run git status --short'
 alias gst='Run git status'
  alias gs='Run git status'
 alias gco='Run git checkout'
-alias gci='RunGit git commit'
+alias gci='git commit'
 alias gcianoe='Run git commit --amend --no-edit'
 alias grh='Run git reset --hard'
 
