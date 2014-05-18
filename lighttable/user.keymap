@@ -19,6 +19,7 @@
            "f2" [:toggle-visible-whitespace]
            "f6" [:gitlight-status-toggle]
            "f7" [:keymap.modify-user]
+           "f10" [:toggle-hightlight.current.line]
            "f11" [:window.fullscreen]
            ; "f2" [:ace-jump-mode] ; doesn't exit yet
            "f12" [:clear-console]
