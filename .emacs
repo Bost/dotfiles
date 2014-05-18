@@ -538,6 +538,7 @@ by using nxml's indentation rules."
 (global-set-key (kbd "C-c C-M-<") 'mc/unmark-all-like-this)
 
 (global-set-key (kbd "<f2>") 'ace-jump-mode)
+(global-set-key (kbd "<f3>") 'whitespace-mode)
 
 ;; (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
