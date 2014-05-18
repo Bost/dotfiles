@@ -16,10 +16,15 @@
            "pmeta-pagedown" [:tabset.next]
            ; ctrl-space / pmeta-space doesn't work on laptop
            "pmeta-alt" [:show-commandbar-transient]
+           "f2" [:toggle-visible-whitespace]
+           "f6" [:gitlight-status-toggle]
+           "f7" [:keymap.modify-user]
+           "f11" [:window.fullscreen]
+           ; "f2" [:ace-jump-mode] ; doesn't exit yet
           }
      :editor {"alt-w" [:editor.watch.watch-selection]
               "alt-shift-w" [:editor.watch.unwatch]
               "pmeta-i" [:smart-indent-selection]
               "alt-g" [:clear-inline-results]
-              ;"super-s" [:save]
+              ;"super-s" [:save] ; super key doesn't work
               }}}
