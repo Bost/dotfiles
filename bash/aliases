@@ -246,6 +246,7 @@ mkdirAndCd() {
 alias take='mkdirAndCd'
 
  alias lcc='Run lein cljsbuild clean'
+ alias lco='Run lein cljsbuild once'
  alias lca='Run lein cljsbuild auto'
 alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
