@@ -29,7 +29,9 @@
      :editor {"alt-w" [:editor.watch.watch-selection]
               "alt-shift-w" [:editor.watch.unwatch]
               "pmeta-i" [:smart-indent-selection]
+              "pmeta-;" [:toggle-comment-selection]
               "alt-g" [:clear-inline-results]
+              "alt-i" [:smart-indent-selection]
               "alt-;" [:toggle-comment-selection]
               ;"meta-shitf-del" [:delete-line]
               ;"super-s" [:save] ; super key doesn't work
