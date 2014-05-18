@@ -21,10 +21,15 @@
            "f7" [:keymap.modify-user]
            "f11" [:window.fullscreen]
            ; "f2" [:ace-jump-mode] ; doesn't exit yet
+           "f12" [:clear-console]
+           ; "pmeta-f12" [:toggle-console] ;; doesn't work
+           "pmeta-b" [:behaviors.reload]
           }
      :editor {"alt-w" [:editor.watch.watch-selection]
               "alt-shift-w" [:editor.watch.unwatch]
               "pmeta-i" [:smart-indent-selection]
               "alt-g" [:clear-inline-results]
+              "alt-;" [:toggle-comment-selection]
+              ;"meta-shitf-del" [:delete-line]
               ;"super-s" [:save] ; super key doesn't work
               }}}
