@@ -25,6 +25,9 @@
            "f12" [:clear-console]
            ; "pmeta-f12" [:toggle-console] ;; doesn't work
            "pmeta-b" [:behaviors.reload]
+           "pmeta-h" [:toggle-console]
+
+           "alt-b" [:add-browser-tab]
           }
      :editor {"alt-w" [:editor.watch.watch-selection]
               "alt-shift-w" [:editor.watch.unwatch]
