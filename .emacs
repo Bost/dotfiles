@@ -739,4 +739,4 @@ by using nxml's indentation rules."
 (require 'evil-visualstar)
 
 (if (> (string-to-number (getenv "isCygwin_155")) 0)
-    (load "~/bin/ci26.el"))
+    (load "~/bin/cics.el"))
