@@ -128,6 +128,7 @@ alias gf='GrepFind'
 #}
 
  alias gr='RunGit git rebase'
+alias grb='RunGit git rebase'
 alias gri='RunGit git rebase --interactive'
 alias grc='Run git rebase --continue'
 alias gra='Run git rebase --abort'
