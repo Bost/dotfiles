@@ -299,6 +299,7 @@ alias gci='git commit'
 alias gcianoe='Run git commit --amend --no-edit'
 alias gcia='Run git commit --amend'
 alias grh='Run git reset --hard'
+alias ph='Run git_prompt_help'
 
 #alias gdm='git diff master'
 #alias gd='git diff | mate'
