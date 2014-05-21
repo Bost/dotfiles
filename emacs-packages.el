@@ -53,7 +53,7 @@
    dired-single
    dired-toggle
    dirtree
-   elein
+   elein               ; running leiningen commands from emacs
    elisp-slime-nav
    epl
    ergoemacs-mode
@@ -86,7 +86,6 @@
    goto-chg
    goto-last-change
    hackernews
-   haskell-mode
    helm
    helm-ack
    helm-cmd-t
@@ -144,6 +143,13 @@
    workgroups2
    yasnippet
    ))
+
+;; following packages does not need to be installed on every computer
+(setq
+ package-list-development
+ '(
+   haskell-mode
+))
 
 (package-initialize)
 ;; check if the packages is installed; if not, install it.
