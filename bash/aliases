@@ -135,8 +135,9 @@ alias gra='Run git rebase --abort'
 alias grs='Run git rebase --skip'
 alias gdf='Run git diff'
 
- alias gh='Run git push'
-alias gho='Run git push origin'
+  alias gh='Run git push'
+ alias gho='Run git push origin'
+alias ghof='Run git push origin -f'
 
 GitPullRebase() {
     Run git pull --rebase origin $@ && \
