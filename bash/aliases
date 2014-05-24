@@ -270,6 +270,7 @@ GitUpdateAll() {
         Run git pull --rebase origin # && Run git fetch --tags
     fi
     cd $_cd
+    Run source $HOME/.bashrc
 }
  alias ga='GitUpdateAll'
 alias gua='GitUpdateAll'
