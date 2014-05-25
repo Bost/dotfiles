@@ -117,8 +117,8 @@ alias gf='GrepFind'
     #git rebase origin/upstreambranch
 
     # --continue: conflict resolving per commit basis not everything-at-once
-#    echo git rebase --continue
-#         git rebase --continue
+    #echo git rebase --continue
+    #    git rebase --continue
     # use: 'git rebase --abort && git pull' if 'git rebase --continue' fails then use:
 
     # you can set up your git config to always rebase when pulling.
