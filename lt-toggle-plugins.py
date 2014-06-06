@@ -2,7 +2,8 @@
 
 # TODO auto-detect links/plugins
 
-from fabric.api import local
+# from fabric.api import local
+import os
 
 pluginDir     = '~/.config/LightTable/plugins'
 pluginDirDev  = '~/dev/lt-plugins-dev'
@@ -28,7 +29,8 @@ plugins = {
 
 def do(cmd):
     # print(cmd)
-    local(cmd)
+    os.system(cmd)
+    # local(cmd)
 
 def createLink(target, link):
     do('ln -s '+target+' '+link)
@@ -47,4 +49,4 @@ def activatePlugin(name, version):
 
 # activatePlugin(git, dev)
 # activatePlugin(syntax, dev)
-local('ls -lAh --color '+pluginDir)
+os.system('ls -lAh --color '+pluginDir)
