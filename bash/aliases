@@ -559,7 +559,7 @@ alias lttm='RunBg $dev/LightTable-master/deploy/LightTable'
 alias plugins='Run cd $dev/LightTable/deploy/plugins'
  alias plugin='Run cd $dev/LightTable/deploy/plugins'
    alias plug='Run cd $dev/LightTable/deploy/plugins'
-  alias my='Run cd $dev/LightTable/deploy/plugins/my'
+  alias my='Run cd $dev/lt-plugins-dev/my'
 
 alias vircurex='Run cd ~/vircurex'
     alias virc='Run cd ~/vircurex'
