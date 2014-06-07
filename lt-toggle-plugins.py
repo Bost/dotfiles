@@ -27,7 +27,7 @@ plugins = {
     syntax : [pluginDir+'/Syntax_Status_Bar',
               pluginDirDev+'/lt-syntaxstatusbar',
               pluginDirOrig+'/Syntax_Status_Bar'],
-    my     : [pluginDir+'/my',
+    my     : [pluginDir+'/My',
               pluginDirDev+'/my',
               None]
 }
