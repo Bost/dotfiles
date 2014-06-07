@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 # launch with: fab uuc
 from fabric.api import cd, env, prefix, run, task
 
