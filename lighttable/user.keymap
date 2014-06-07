@@ -26,6 +26,7 @@
            "pmeta-h" [:toggle-console]
 
            "alt-b" [:add-browser-tab]
+           "alt-k" [:tabs.close]
           }
      :editor {"alt-w" [:editor.watch.watch-selection]
               "alt-shift-w" [:editor.watch.unwatch]
@@ -36,7 +37,6 @@
               "alt-;" [:toggle-comment-selection]
               ;"meta-shitf-del" [:delete-line]
               ;"super-s" [:save] ; super key doesn't work
-              "alt-k" [:tabs.close]
               "f2" [:toggle-visible-whitespace]
               "f10" [:toggle-hightlight.current.line]
               }}}
