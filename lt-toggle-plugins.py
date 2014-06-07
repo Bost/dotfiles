@@ -9,22 +9,27 @@ pluginDir     = '~/.config/LightTable/plugins'
 pluginDirDev  = '~/dev/lt-plugins-dev'
 pluginDirOrig = '~/dev/lt-plugins-orig'
 
-git='git'
-syntax='syntax'
-dev='dev'
-orig='orig'
+git = 'git'
+syntax = 'syntax'
+my = 'my'
+
+dev = 'dev'
+orig = 'orig'
+none = 'none' # None is a type of: types.NoneType
 
 indexes = {dev : 1, orig : 2 } # indexes in the vector-values of pluginHashMap
 idxLink = 0
 
 plugins = {
-    git :    [pluginDir+'/Git_Status_Bar',
+    git    : [pluginDir+'/Git_Status_Bar',
               pluginDirDev+'/lt-gitstatusbar',
               pluginDirOrig+'/Git_Status_Bar'],
     syntax : [pluginDir+'/Syntax_Status_Bar',
               pluginDirDev+'/lt-syntaxstatusbar',
-              pluginDirOrig+'/Syntax_Status_Bar']
-    #, 'my'  : ['/home/bost/dev/my', 'my']
+              pluginDirOrig+'/Syntax_Status_Bar'],
+    my     : [pluginDir+'/my',
+              pluginDirDev+'/my',
+              None]
 }
 
 def do(cmd):
@@ -37,17 +42,21 @@ def createLink(target, link):
 def removeLink(link):
     do('rm -f '+link)
 
-def activatePlugin(name, version):
-    print 'name: '+name+'; version: '+version
-    idxVersion = indexes[version]
-    plugin   = plugins[name]
-    target   = plugin[idxVersion]
-    linkName = plugin[idxLink]
-    removeLink(linkName)
-    createLink(target, linkName)
+def activatePlugin(pluginName, pluginVersion):
+    # print 'name: '+pluginName+'; version: '+pluginVersion
 
-plugin = sys.argv[1]
-version = sys.argv[2]
+    plugin    = plugins[pluginName]
+    linkName  = plugin[idxLink]
+    removeLink(linkName)
+
+    if pluginVersion != none:
+        idxVersion = indexes[pluginVersion]
+        target = plugin[idxVersion]
+        createLink(target, linkName)
+
+
+plugin = sys.argv[1].lower()
+version = sys.argv[2].lower()
 
 # plugin = git
 # version = dev
