@@ -1,5 +1,9 @@
-#!/bin/bash -ex
-# -e stop on error; -x debug
+#! /usr/bin/env bash
+set -ex
+# -e stop on error; -x debug; -v verbose
+
+## Two words of arguments in the header line are not allowed in Unix:
+##! /usr/bin/env bash -xv
 
 # TODO use python instead of bash: http://docs.python-guide.org/en/latest/
 # TODO bookmars; multiple runs
