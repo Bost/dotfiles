@@ -39,4 +39,5 @@
               ;"super-s" [:save] ; super key doesn't work
               "f2" [:toggle-visible-whitespace]
               "f10" [:toggle-hightlight.current.line]
+              "f5" [:editor.open-current-file-in-browser]
               }}}
