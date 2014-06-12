@@ -23,7 +23,8 @@
            "f12" [:clear-console]
            ; "pmeta-f12" [:toggle-console] ;; doesn't work
            "pmeta-b" [:behaviors.reload]
-           "pmeta-h" [:toggle-console]
+           ;; "pmeta-h" probably colides with the 'Describe Key' plugin
+           "f3" [:toggle-console]
 
            "alt-b" [:add-browser-tab]
            "alt-k" [:tabs.close]
