@@ -252,6 +252,11 @@ alias take='mkdirAndCd'
  alias lca='Run lein cljsbuild auto'
 alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
+ alias om='Run cd $dev/om-async'
+alias oma='Run cd $dev/om-async'
+alias omt='Run cd $dev/om-tut'
+alias lcad='Run lein cljsbuild auto dev' # start it in om-async directory
+
 GitUpdateAll() {
     _cd=$(pwd)
     echo 'pwd: '$_cd
@@ -383,7 +388,9 @@ if [ "$isLinux" -gt 0 ]; then
     alias d='Run sudo apt-get dist-upgrade --yes'
 
       alias inst="Run sudo apt-get install --yes"
+    alias reinst="Run sudo apt-get --reinstall install --yes"
     alias uninst="Run sudo apt-get remove --yes"
+     alias purge="Run sudo apt-get purge --yes"
        alias rmv="Run sudo apt-get remove --yes"
       alias armv="Run sudo apt-get autoremove --yes"
 
