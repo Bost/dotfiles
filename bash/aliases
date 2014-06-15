@@ -143,9 +143,14 @@ GitPullRebase() {
     Run git pull --rebase origin $@ && \
     Run git fetch --tags
 }
+
 alias gl='Run git pull'
 alias glo='GitPullRebase'
-alias glu='Run git pull --rebase upstream master'
+GitPullRebaseUpstreamMaster() {
+    Run git pull --rebase upstream master && \
+    Run git fetch --tags upstream
+}
+alias glu='GitPullRebaseUpstreamMaster'
 
 alias gbis='Run git bisect start'
 alias gbir='Run git bisect reset'
