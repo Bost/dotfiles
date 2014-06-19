@@ -18,6 +18,7 @@
            "pmeta-alt" [:show-commandbar-transient]
            "f6" [:gitlight-status-toggle]
            "f7" [:keymap.modify-user]
+           "alt-7" [:behaviors.modify-user]
            ; "f2" [:ace-jump-mode] ; doesn't exit yet
 
            "f3" [:show-add-connection]
