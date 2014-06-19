@@ -23,7 +23,8 @@
      ;; The editor tag is applied to all editors
      :editor [:lt.objs.editor/no-wrap
               ;(:lt.objs.style/font-settings "Ubuntu Mono" 13 1)
-              (:lt.objs.style/font-settings "" 13 1)
+              (:lt.objs.style/font-settings "" 11 0.9)
+
               (:lt.objs.style/set-theme "ibdknox")
               (:lt.objs.editor/line-numbers)
               ; 'highlight-current-line' makes the editor slow
