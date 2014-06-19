@@ -18,13 +18,19 @@
            "pmeta-alt" [:show-commandbar-transient]
            "f6" [:gitlight-status-toggle]
            "f7" [:keymap.modify-user]
-           "f11" [:window.fullscreen]
            ; "f2" [:ace-jump-mode] ; doesn't exit yet
-           "f12" [:clear-console]
-           ; "pmeta-f12" [:toggle-console] ;; doesn't work
+
+           "f3" [:show-add-connection]
+           "alt-3" [:show-connect]
            "pmeta-b" [:behaviors.reload]
            ;; "pmeta-h" probably colides with the 'Describe Key' plugin
-           "f3" [:toggle-console]
+
+           ;; these two keystrokes are near to each others
+           "f12" [:clear-console]
+           "alt--" [:toggle-console]
+           ; "pmeta-f12" [:toggle-console] ;; doesn't work
+
+           "f11" [:window.fullscreen]
 
            "alt-b" [:add-browser-tab]
            "alt-k" [:tabs.close]
@@ -39,6 +45,6 @@
               ;"meta-shitf-del" [:delete-line]
               ;"super-s" [:save] ; super key doesn't work
               "f2" [:toggle-visible-whitespace]
-              "f10" [:toggle-hightlight.current.line]
               "f5" [:editor.open-current-file-in-browser]
+              "f10" [:toggle-hightlight.current.line]
               }}}
