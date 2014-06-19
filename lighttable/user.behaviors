@@ -25,10 +25,10 @@
               ;(:lt.objs.style/font-settings "Ubuntu Mono" 13 1)
               (:lt.objs.style/font-settings "" 13 1)
               (:lt.objs.style/set-theme "ibdknox")
-              :lt.objs.editor/line-numbers
+              (:lt.objs.editor/line-numbers)
               ; 'highlight-current-line' makes the editor slow
               ;::lt.objs.editor/highlight-current-line
-              :lt.plugins.vim/activate-vim
+              (:lt.plugins.vim/activate-vim)
               (:lt.plugins.vim/map-keys {"\\wr" ":ltexec paredit-plus.wrap-round"
                                          "\\ws" ":ltexec paredit-plus.wrap-square"
                                          "\\wc" ":ltexec paredit-plus.wrap-curly"
