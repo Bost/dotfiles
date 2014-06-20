@@ -341,6 +341,11 @@ AliasGrep() {
           alias | grep $@
 }
 alias arep=AliasGrep
+CheatsheetGrep() {
+    echo "grep $@ $dev/cheatsheet/rest-commands.js"
+          grep $@ $dev/cheatsheet/rest-commands.js
+}
+alias crep=CheatsheetGrep
 
 #alias tu='top -o cpu'
 #alias tm='top -o vsize'
