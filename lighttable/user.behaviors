@@ -30,15 +30,27 @@
               ; 'highlight-current-line' makes the editor slow
               ;::lt.objs.editor/highlight-current-line
               (:lt.plugins.vim/activate-vim)
-              (:lt.plugins.vim/map-keys {"\\wr" ":ltexec paredit-plus.wrap-round"
-                                         "\\ws" ":ltexec paredit-plus.wrap-square"
-                                         "\\wc" ":ltexec paredit-plus.wrap-curly"
-                                         "\\wq" ":ltexec paredit-plus.wrap-quote"
-                                         "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
-                                         "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
+              (:lt.plugins.vim/map-keys
+               {
+                "\\up" ":paredit.unwrap.parent" ;; (a b (c | d) e)  => (a b c | d e)
+                "\\gl" ":paredit.grow.left" ;; (a b (c | d) e) => (a (b c | d))
+                "\\gr" ":paredit.grow.right" ;; (a b (c | d) e) => (a b (c | d e))
+                "\\sl" ":paredit.shrink.left"  ;; (a b (c | d) e) => (a b c | (d) e)
+                "\\sr" ":paredit.shrink.right" ;; (a b (c | d) e) => (a b (c) | d e)
+                "\\uf" ":paredit.move.up.forward" ;; (a b (c | d) e) => (a b (c d)| e)
+                "\\ub" ":paredit.move.up.backward" ;; (a b (c | d) e) => (a b |(c d) e)
+                "\\df" ":paredit.move.down.forward" ;; (a b | (c d) e) => (a b (|c d) e)
+                "\\db" ":paredit.move.down.backward" ;; (a b (c d) | e) => (a b (c d|) e)
 
-                                         "\\x" ":ltexec editor.javascript.hints.result"
-                                         })              ]
+                "\\wr" ":ltexec paredit-plus.wrap-round"
+                "\\ws" ":ltexec paredit-plus.wrap-square"
+                "\\wc" ":ltexec paredit-plus.wrap-curly"
+                "\\wq" ":ltexec paredit-plus.wrap-quote"  ;; fo|o => "foo"
+                "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
+                "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
+
+                "\\x" ":ltexec editor.javascript.hints.result"
+                })]
 
      ;; Here we can add behaviors to just clojure editors
      :editor.clojure [(:lt.objs.langs.clj/print-length 1000)]
