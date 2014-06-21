@@ -23,7 +23,7 @@
      ;; The editor tag is applied to all editors
      :editor [:lt.objs.editor/no-wrap
               ;(:lt.objs.style/font-settings "Ubuntu Mono" 13 1)
-              (:lt.objs.style/font-settings "" 11 0.9)
+              (:lt.objs.console/font-settings "" 11 1)
 
               (:lt.objs.style/set-theme "ibdknox")
               (:lt.objs.editor/line-numbers)
@@ -32,24 +32,32 @@
               (:lt.plugins.vim/activate-vim)
               (:lt.plugins.vim/map-keys
                {
-                "\\up" ":paredit.unwrap.parent" ;; (a b (c | d) e)  => (a b c | d e)
-                "\\gl" ":paredit.grow.left" ;; (a b (c | d) e) => (a (b c | d))
-                "\\gr" ":paredit.grow.right" ;; (a b (c | d) e) => (a b (c | d e))
-                "\\sl" ":paredit.shrink.left"  ;; (a b (c | d) e) => (a b c | (d) e)
-                "\\sr" ":paredit.shrink.right" ;; (a b (c | d) e) => (a b (c) | d e)
-                "\\uf" ":paredit.move.up.forward" ;; (a b (c | d) e) => (a b (c d)| e)
-                "\\ub" ":paredit.move.up.backward" ;; (a b (c | d) e) => (a b |(c d) e)
-                "\\df" ":paredit.move.down.forward" ;; (a b | (c d) e) => (a b (|c d) e)
-                "\\db" ":paredit.move.down.backward" ;; (a b (c d) | e) => (a b (c d|) e)
+                "\\up" ":ltexec paredit.unwrap.parent" ;; (a b (c | d) e)  => (a b c | d e)
+                "\\gl" ":ltexec paredit.grow.left" ;; (a b (c | d) e) => (a (b c | d))
+                "\\gr" ":ltexec paredit.grow.right" ;; (a b (c | d) e) => (a b (c | d e))
+                "\\sl" ":ltexec paredit.shrink.left"  ;; (a b (c | d) e) => (a b c | (d) e)
+                "\\sr" ":ltexec paredit.shrink.right" ;; (a b (c | d) e) => (a b (c) | d e)
+                "\\uf" ":ltexec paredit.move.up.forward" ;; (a b (c | d) e) => (a b (c d)| e)
+                "\\ub" ":ltexec paredit.move.up.backward" ;; (a b (c | d) e) => (a b |(c d) e)
+                "\\df" ":ltexec paredit.move.down.forward" ;; (a b | (c d) e) => (a b (|c d) e)
+                "\\db" ":ltexec paredit.move.down.backward" ;; (a b (c d) | e) => (a b (c d|) e)
 
-                "\\wr" ":ltexec paredit-plus.wrap-round"
-                "\\ws" ":ltexec paredit-plus.wrap-square"
-                "\\wc" ":ltexec paredit-plus.wrap-curly"
-                "\\wq" ":ltexec paredit-plus.wrap-quote"  ;; fo|o => "foo"
+                "\\wr" ":ltexec paredit-plus.wrap-round" ;; foo|oo => (foooo)
+                "\\ws" ":ltexec paredit-plus.wrap-square" ;;foo|oo => [foooo]
+                "\\wc" ":ltexec paredit-plus.wrap-curly" ;; foo|oo => {foooo}
+                "\\wq" ":ltexec paredit-plus.wrap-quote" ;; foo|oo => "foooo"
                 "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
                 "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
 
-                "\\x" ":ltexec editor.javascript.hints.result"
+                "\\pk" ":ltexec paredit-plus.kill" ;; (def [x] | (test)) => (def [x] |)
+                ;; split & join
+                "\\ss" ":ltexec paredit-plus.split-sexp" ;; (abc_def) => (abc)_(def)
+                "\\js" ":ltexec paredit-plus.join-sexps" ;; (abc) def_ (ghi) => (abc def_ ghi)
+                ;; select
+                "\\sp" ":ltexec paredit.select.parent"
+                "\\sc" ":ltexec paredit.select.clear" ;; doesnt work
+
+                "\\x"  ":ltexec editor.javascript.hints.result"
                 })]
 
      ;; Here we can add behaviors to just clojure editors
@@ -60,14 +68,14 @@
      ;:opener [(:lt.objs.opener/open-standard-editor "/home/bost/dev/fb/README.md")]
 
      ; TODO: open README.md when doing init
-}
+     }
 
  ;; You can use the subtract key to remove behavior that may get added by
  ;; another diff
  :- {:app [:lt.objs.intro/show-intro
-           ;:lt.objs.menu/create-menu
-           ;:lt.objs.menu/set-menu
-            ]
+           :lt.objs.menu/create-menu
+           :lt.objs.menu/set-menu
+           ]
      ;:window [:lt.objs.menu/set-menu]
      ;:editor [:lt.objs.editor/highlight-current-line]
      ;:plugin.file [(:lt.objs.editor.file/on-save :build)]
