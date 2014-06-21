@@ -13,7 +13,10 @@
 {:+ {:app {
            "pmeta-k" [:workspace.show]
            "pmeta-pageup" [:tabset.prev]
+
            "pmeta-pagedown" [:tabset.next]
+           "alt-q" [:tabset.next]
+
            ; ctrl-space / pmeta-space doesn't work on laptop
            "pmeta-alt" [:show-commandbar-transient]
            "f6" [:gitlight-status-toggle]
@@ -47,5 +50,8 @@
               ;"super-s" [:save] ; super key doesn't work
               "f2" [:toggle-visible-whitespace]
               "f5" [:editor.open-current-file-in-browser]
+
+              ;; TODO highlight current line only in active editor; i.e.
+              ;; change highlig color when :tab.next / :tab.prev
               "f10" [:toggle-hightlight.current.line]
               }}}
