@@ -26,7 +26,7 @@
               (:lt.objs.console/font-settings "" 11 1)
 
               (:lt.objs.style/set-theme "ibdknox")
-              (:lt.objs.editor/line-numbers)
+              ;; (:lt.objs.editor/line-numbers)
               ; 'highlight-current-line' makes the editor slow
               ;::lt.objs.editor/highlight-current-line
               (:lt.plugins.vim/activate-vim)
@@ -75,6 +75,8 @@
  :- {:app [:lt.objs.intro/show-intro
            :lt.objs.menu/create-menu
            :lt.objs.menu/set-menu
+           (:lt.objs.editor/line-numbers)
+
            ]
      ;:window [:lt.objs.menu/set-menu]
      ;:editor [:lt.objs.editor/highlight-current-line]
