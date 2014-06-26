@@ -63,6 +63,10 @@
      ;; Here we can add behaviors to just clojure editors
      :editor.clojure [(:lt.objs.langs.clj/print-length 1000)]
 
+     :files [(:lt.objs.files/file-types [{:exts [:cljx],
+                                          :mime "text/x-clojure",
+                                          :name "CljX",
+                                          :tags [:editor.clj :editor.clojure]}])]
      ; all objects with tag :opener behave such that they open README.md in standard-editor,
      ; when open-standard-editor behavior is triggered (i.e. when doing :open-standard-editor)
      ;:opener [(:lt.objs.opener/open-standard-editor "/home/bost/dev/fb/README.md")]
