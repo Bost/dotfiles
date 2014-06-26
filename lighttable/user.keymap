@@ -24,18 +24,16 @@
            "alt-7" [:behaviors.modify-user]
            ; "f2" [:ace-jump-mode] ; doesn't exit yet
 
-           "f3" [:show-add-connection]
-           "alt-3" [:show-connect]
+           "f11" [:show-add-connection]
+           "alt-0" [:show-connect]
            "pmeta-b" [:behaviors.reload]
            ;; "pmeta-h" probably colides with the 'Describe Key' plugin
 
            ;; these two keystrokes are near to each others
-           "f12" [:clear-console]
-           "alt--" [:toggle-console]
-           ; "pmeta-f12" [:toggle-console] ;; doesn't work
+           "f2" [:clear-console]
+           "alt-2" [:toggle-console]
 
-           "alt-0" [:window.fullscreen]
-           ;; "f11" [:window.fullscreen]
+           "alt-3" [:window.fullscreen]
 
            "alt-b" [:add-browser-tab-localhost]
            "alt-k" [:tabs.close]
@@ -46,16 +44,23 @@
               "pmeta-;" [:toggle-comment-selection]
 
               "alt-g" [:clear-inline-results]
-              "f11"   [:clear-inline-results]
+              "f3"   [:clear-inline-results]
 
               "alt-i" [:smart-indent-selection]
               "alt-;" [:toggle-comment-selection]
               ;"meta-shitf-del" [:delete-line]
               ;"super-s" [:save] ; super key doesn't work
-              "f2" [:toggle-visible-whitespace]
+              "f12" [:toggle-visible-whitespace]
               "f5" [:editor.open-current-file-in-browser]
 
               ;; TODO highlight current line only in active editor; i.e.
               ;; change highlig color when :tab.next / :tab.prev
               "f10" [:toggle-hightlight.current.line]
-              }}}
+              }
+
+;;      :editor.clj {
+;;                   ;; intelligent del and backspace; how it works ???
+;;                   "backspace" [:subpar.delete.left]
+;;                   "delete" [:subpar.delete.right]
+;;                   }
+     }}
