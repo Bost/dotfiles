@@ -592,9 +592,11 @@ alias convert='Run cd $dev/convert'
    alias conv='Run cd $dev/convert'
 
 # TODO use 'pkill ltbin' instead of 'kill $(pidof ltbin)'
-#alias klt='echo "kill \$(pidof ltbin)"; kill $(pidof ltbin)'
-#alias klt='echo "kill \$(pidof ltbin)"; kill \$\(pidof ltbin\)'
-alias klt='kill `pidof ltbin`'
+KillLightTable() {
+    echo "kill \`pidof ltbin\`"
+          kill  `pidof ltbin`
+}
+alias klt=KillLightTable
 alias blm='Run bash -x $dev/LightTable-master/linux_deps.sh'
 alias bl='Run bash linux_deps.sh'
 alias clt='cd $dev/LightTable'
