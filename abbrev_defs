@@ -23,6 +23,8 @@
 
 (define-abbrev-table 'completion-list-mode-abbrev-table '())
 
+(define-abbrev-table 'csv-mode-abbrev-table '())
+
 (define-abbrev-table 'diff-mode-abbrev-table '())
 
 (define-abbrev-table 'display-time-world-mode-abbrev-table '())
@@ -61,7 +63,9 @@
     ("alpha" "α" nil 0)
     ("ar" "array" nil 0)
     ("ar1" "→" nil 0)
+    ("ar11" "↠" nil 0)
     ("ar2" "⇒" nil 0)
+    ("ass" "↦" nil 0)
     ("beta" "β" nil 0)
     ("c26" "ADC26TDA." nil 0)
     ("ca" "category" nil 0)
@@ -71,12 +75,15 @@
     ("co" "contract" nil 0)
     ("coi" "OBJECTIDENT" nil 0)
     ("coid" "OBJECTIDENT" nil 0)
+    ("comp" "∘" nil 0)
     ("ctg" "category" nil 0)
+    ("div" "⇸" nil 0)
     ("dk" "V60050" nil 0)
     ("dknr" "KONTONUMMER" nil 1)
     ("dv" "V60055" nil 0)
     ("eg" "e.g." nil 0)
     ("el" "element" nil 0)
+    ("epi" "↠" nil 0)
     ("eq" "equal" nil 0)
     ("exs" "∃" nil 0)
     ("fn" "function () { return ;};" nil 0)
@@ -95,6 +102,8 @@
     ("lam" "λ" nil 0)
     ("leq" "≤" nil 0)
     ("mo" "morphism" nil 0)
+    ("mono" "↣" nil 0)
+    ("mor" "→" nil 0)
     ("nr" "number" nil 0)
     ("ob" "object" nil 0)
     ("re" "return" nil 0)
@@ -117,7 +126,11 @@
 
 (define-abbrev-table 'helm-grep-mode-abbrev-table '())
 
+(define-abbrev-table 'helm-moccur-mode-abbrev-table '())
+
 (define-abbrev-table 'help-mode-abbrev-table '())
+
+(define-abbrev-table 'html-mode-abbrev-table '())
 
 (define-abbrev-table 'idl-mode-abbrev-table '())
 
@@ -155,6 +168,8 @@
 
 (define-abbrev-table 'nrepl-connections-buffer-mode-abbrev-table '())
 
+(define-abbrev-table 'nxml-mode-abbrev-table '())
+
 (define-abbrev-table 'objc-mode-abbrev-table '())
 
 (define-abbrev-table 'occur-edit-mode-abbrev-table '())
@@ -177,13 +192,19 @@
 
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '())
 
+(define-abbrev-table 'sgml-mode-abbrev-table '())
+
+(define-abbrev-table 'sh-mode-abbrev-table '())
+
 (define-abbrev-table 'shell-mode-abbrev-table '())
 
 (define-abbrev-table 'snippet-mode-abbrev-table '())
 
 (define-abbrev-table 'special-mode-abbrev-table '())
 
-(define-abbrev-table 'sql-mode-abbrev-table '())
+(define-abbrev-table 'sql-mode-abbrev-table
+  '(
+   ))
 
 (define-abbrev-table 'tabulated-list-mode-abbrev-table '())
 
