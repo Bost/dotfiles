@@ -741,4 +741,11 @@ by using nxml's indentation rules."
 (require 'evil-visualstar)
 
 (if (> (string-to-number (getenv "isCygwin_155")) 0)
-    (load "~/bin/cics.el"))
+    (load "~/bin/dbases.el"))
+
+(require 'evil-jumper) ;; C-i / C-o
+
+(require 'evil-surround)
+(global-evil-surround-mode 1)
+
+(require 'evil-visualstar)
