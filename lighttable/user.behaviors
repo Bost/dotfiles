@@ -49,7 +49,7 @@
                 "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
                 "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
 
-                "\\pk" ":ltexec paredit-plus.kill" ;; (def [x] | (test)) => (def [x] |)
+                "\\pk" ":ltexec paredit-plus.kill" ;; (def [x] | (f1 (f2 val))) => (def [x] |)
                 ;; split & join
                 "\\ss" ":ltexec paredit-plus.split-sexp" ;; (abc_def) => (abc)_(def)
                 "\\js" ":ltexec paredit-plus.join-sexps" ;; (abc) def_ (ghi) => (abc def_ ghi)
