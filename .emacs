@@ -743,9 +743,27 @@ by using nxml's indentation rules."
 (if (> (string-to-number (getenv "isCygwin_155")) 0)
     (load "~/bin/dbases.el"))
 
-(require 'evil-jumper) ;; C-i / C-o
+;; (require 'evil-jumper) ;; C-i / C-o
 
-(require 'evil-surround)
-(global-evil-surround-mode 1)
+;; (require 'evil-surround)
+(global-evil-surround-mode 0)
 
-(require 'evil-visualstar)
+;; TODO define this fn for emacs-version <= 24.4
+(defun uniq-lines (start end)
+  "Removes duplicate lines from the selected region."
+  (interactive "*r")
+  (goto-char start)
+  (beginning-of-line)
+  (let ((last ""))
+    (while (< (point) end)
+      (let* ((bol (point))
+	     (eol (progn (end-of-line) (point)))
+	     (text (buffer-substring bol eol)))
+	(forward-char)
+	(if (string= last text)
+	    (delete-region bol (point))
+	  (setq last text))))))
+;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
+
+(global-set-key (kbd "M-o") 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
