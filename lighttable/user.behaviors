@@ -21,44 +21,46 @@
      :editor.clj.instarepl [:lt.plugins.rainbow/rainbow-parens]
 
      ;; The editor tag is applied to all editors
-     :editor [:lt.objs.editor/no-wrap
-              ;(:lt.objs.style/font-settings "Ubuntu Mono" 13 1)
-              (:lt.objs.console/font-settings "" 11 1)
+     :editor
+     [(:lt.plugins.vim/map-keys
+       {
+        "\\up" ":ltexec paredit.unwrap.parent" ;; (a b (c | d) e)  => (a b c | d e)
+        "\\gl" ":ltexec paredit.grow.left" ;; (a b (c | d) e) => (a (b c | d))
+        "\\gr" ":ltexec paredit.grow.right" ;; (a b (c | d) e) => (a b (c | d e))
+        "\\sl" ":ltexec paredit.shrink.left"  ;; (a b (c | d) e) => (a b c | (d) e)
+        "\\sr" ":ltexec paredit.shrink.right" ;; (a b (c | d) e) => (a b (c) | d e)
+        "\\uf" ":ltexec paredit.move.up.forward" ;; (a b (c | d) e) => (a b (c d)| e)
+        "\\ub" ":ltexec paredit.move.up.backward" ;; (a b (c | d) e) => (a b |(c d) e)
+        "\\df" ":ltexec paredit.move.down.forward" ;; (a b | (c d) e) => (a b (|c d) e)
+        "\\db" ":ltexec paredit.move.down.backward" ;; (a b (c d) | e) => (a b (c d|) e)
 
-              (:lt.objs.style/set-theme "ibdknox")
-              (:lt.objs.editor/line-numbers)
-              ; 'highlight-current-line' makes the editor slow
-              ;::lt.objs.editor/highlight-current-line
-              (:lt.plugins.vim/activate-vim)
-              (:lt.plugins.vim/map-keys
-               {
-                "\\up" ":ltexec paredit.unwrap.parent" ;; (a b (c | d) e)  => (a b c | d e)
-                "\\gl" ":ltexec paredit.grow.left" ;; (a b (c | d) e) => (a (b c | d))
-                "\\gr" ":ltexec paredit.grow.right" ;; (a b (c | d) e) => (a b (c | d e))
-                "\\sl" ":ltexec paredit.shrink.left"  ;; (a b (c | d) e) => (a b c | (d) e)
-                "\\sr" ":ltexec paredit.shrink.right" ;; (a b (c | d) e) => (a b (c) | d e)
-                "\\uf" ":ltexec paredit.move.up.forward" ;; (a b (c | d) e) => (a b (c d)| e)
-                "\\ub" ":ltexec paredit.move.up.backward" ;; (a b (c | d) e) => (a b |(c d) e)
-                "\\df" ":ltexec paredit.move.down.forward" ;; (a b | (c d) e) => (a b (|c d) e)
-                "\\db" ":ltexec paredit.move.down.backward" ;; (a b (c d) | e) => (a b (c d|) e)
+        "\\wr" ":ltexec paredit-plus.wrap-round" ;; foo|oo => (foooo)
+        "\\ws" ":ltexec paredit-plus.wrap-square" ;;foo|oo => [foooo]
+        "\\wc" ":ltexec paredit-plus.wrap-curly" ;; foo|oo => {foooo}
+        "\\wq" ":ltexec paredit-plus.wrap-quote" ;; foo|oo => "foooo"
+        "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
+        "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
 
-                "\\wr" ":ltexec paredit-plus.wrap-round" ;; foo|oo => (foooo)
-                "\\ws" ":ltexec paredit-plus.wrap-square" ;;foo|oo => [foooo]
-                "\\wc" ":ltexec paredit-plus.wrap-curly" ;; foo|oo => {foooo}
-                "\\wq" ":ltexec paredit-plus.wrap-quote" ;; foo|oo => "foooo"
-                "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
-                "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
+        "\\pk" ":ltexec paredit-plus.kill" ;; (def [x] | (f1 (f2 val))) => (def [x] |)
+        ;; split & join
+        "\\ss" ":ltexec paredit-plus.split-sexp" ;; (abc_def) => (abc)_(def)
+        "\\js" ":ltexec paredit-plus.join-sexps" ;; (abc) def_ (ghi) => (abc def_ ghi)
+        ;; select
+        "\\sp" ":ltexec paredit.select.parent"
+        "\\sc" ":ltexec paredit.select.clear" ;; doesnt work
 
-                "\\pk" ":ltexec paredit-plus.kill" ;; (def [x] | (f1 (f2 val))) => (def [x] |)
-                ;; split & join
-                "\\ss" ":ltexec paredit-plus.split-sexp" ;; (abc_def) => (abc)_(def)
-                "\\js" ":ltexec paredit-plus.join-sexps" ;; (abc) def_ (ghi) => (abc def_ ghi)
-                ;; select
-                "\\sp" ":ltexec paredit.select.parent"
-                "\\sc" ":ltexec paredit.select.clear" ;; doesnt work
+        "\\x"  ":ltexec editor.javascript.hints.result"
+        })
+      :lt.objs.editor/no-wrap
+      ;(:lt.objs.style/font-settings "Ubuntu Mono" 13 1)
+      (:lt.objs.console/font-settings "" 11 1)
 
-                "\\x"  ":ltexec editor.javascript.hints.result"
-                })]
+      (:lt.objs.style/set-theme "ibdknox")
+      (:lt.objs.editor/line-numbers)
+      ; 'highlight-current-line' makes the editor slow
+      ;::lt.objs.editor/highlight-current-line
+      (:lt.plugins.vim/activate-vim)
+      ]
 
      ;; Here we can add behaviors to just clojure editors
      :editor.clojure [(:lt.objs.langs.clj/print-length 1000)]
