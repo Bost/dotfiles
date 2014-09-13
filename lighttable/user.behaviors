@@ -24,7 +24,7 @@
      :editor
      [(:lt.plugins.vim/map-keys
        {
-        "\\up" ":ltexec paredit.unwrap.parent" ;; (a b (c | d) e)  => (a b c | d e)
+        "\\up" ":ltexec paredit.unwrap.parent" ;; (a b c)  => a b c
         "\\gl" ":ltexec paredit.grow.left" ;; (a b (c | d) e) => (a (b c | d))
         "\\gr" ":ltexec paredit.grow.right" ;; (a b (c | d) e) => (a b (c | d e))
         "\\sl" ":ltexec paredit.shrink.left"  ;; (a b (c | d) e) => (a b c | (d) e)
@@ -40,6 +40,10 @@
         "\\wq" ":ltexec paredit-plus.wrap-quote" ;; foo|oo => "foooo"
         "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
         "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
+
+        ;; paredit.delete doesnt work
+        ;; "\\dd" ":ltexec paredit.delete" ;; (a b (c | d) e) => (a (b c | d))
+        "\\di" ":ltexec paredit-plus.delete-pair-contents" ;; (a (b c) d) =>  (a () d)
 
         "\\pk" ":ltexec paredit-plus.kill" ;; (def [x] | (f1 (f2 val))) => (def [x] |)
         ;; split & join

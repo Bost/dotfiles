@@ -599,6 +599,18 @@ KillLightTable() {
           kill  `pidof ltbin`
 }
 alias klt=KillLightTable
+KillJava() {
+    echo "kill \`pidof java\`"
+          kill  `pidof java`
+}
+alias kjava=KillJava
+KillServer() {
+    echo "TODO: auto kill the appropriate process"
+    echo "netstat -lnptu | grep 8080"
+          netstat -lnptu | grep 8080
+}
+alias ksrv=KillServer
+alias kserver=KillServer
 alias blm='Run bash -x $dev/LightTable-master/linux_deps.sh'
 alias bl='Run bash linux_deps.sh'
 alias clt='cd $dev/LightTable'
@@ -627,3 +639,12 @@ getip() {
 }
 
 # changes in lt-syntaxstatusbar
+gf() {
+    # echo grep $@ $(find src/ -regex '.*cljs\|.*clj') | grep -v 'Is a directory'
+         grep $@ $(find src/ -regex '.*cljs\|.*clj') | grep -v 'Is a directory'
+}
+# TODO do not use these on cygwin
+alias dos2unix='fromdos'
+alias d2u='fromdos'
+alias unix2dos='todos'
+alias u2d='todos'

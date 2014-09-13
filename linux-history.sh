@@ -1,5 +1,4 @@
-#! /usr/bin/env bash
-set -ex
+#!/bin/bash -ex
 # -e stop on error; -x debug; -v verbose
 
 ## Two words of arguments in the header line are not allowed in Unix:
