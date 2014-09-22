@@ -7,7 +7,6 @@
 local uname=$(uname -a)
 #echo uname: $uname
 
-# TODO LE-C-155: test: uname --nodename --operating-system
 local nodeName=$(uname --nodename)
 #echo nodeName: $nodeName
 
@@ -16,10 +15,6 @@ local osName=$(uname --operating-system) # returns GNU/Linux or Cygwin
 
 #local kernelName=$(uname --kernel-name)  # returns Linux
 #echo kernelName: $kernelName
-
-# strCygwin_155, strMinGw32_app1, strMinGw32_155 are defined in win sysvars
-# the system variable strMinGw32_155 is not visible under WinGit
-strMinGw32_155="MINGW32_NT-6.1 LE-C-155"
 
 export isLinux=$(expr match "$osName" "GNU/Linux")
 #exit
@@ -30,9 +25,7 @@ export isLinuxFranzi=$(expr match "$nodeName" "franzi")
 export isLinuxMartinJV=$(expr match "$nodeName" "martin-jv")
 export isLinuxMartin=$(expr match "$nodeName" "bost-martin")
 export isLinuxBambi=$(expr match "$nodeName" "bambi-small")
-export isMinGw32_app1=$(expr match "$uname" "$strMinGw32_app1")
-export isCygwin_155=$(expr match "$uname" "$strCygwin_155")
-export isMinGw32_155=$(expr match "$uname" "$strMinGw32_155")
+export isLinuxVB=$(expr match "$nodeName" "rsvoboda-VirtualBox")
 
 # TODO create a hashmap with machines
 
@@ -43,10 +36,7 @@ export isMinGw32_155=$(expr match "$uname" "$strMinGw32_155")
 #echo isLinuxMartin: $isLinuxMartin
 #echo isLinuxMartinJV: $isLinuxMartinJV
 #echo isLinuxBambi: $isLinuxBambi
-#echo isMinGw32_app1: $isMinGw32_app1
-#echo isCygwin_155: $isCygwin_155
-#echo isMinGw32_155: $isMinGw32_155
-
+echo isLinuxVB: $isLinuxVB
 
 function add_to_path() {
     new_entry=$@
@@ -89,27 +79,6 @@ if [ "$isLinux" -gt 0 ]; then
 	# remaping the Esc key to Capslock (I don't use it that much)
 	xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
     fi
-elif [ "$isCygwin_155" -gt 0 ]; then
-    :
-    echo "### isCygwin_155: $isCygwin_155 => Loading $strCygwin_155"
-    base=/cygdrive
-    dev=$base/c/cygwin/home/$USERNAME/dev
-    tmp=$base/c/cygwin/home/$USERNAME/tmp
-    winapp=$base/c/winapp
-    winappX86=$base/c/winapp-x86
-
-    # export DISPLAY=":0" is needed for gvim in Cygwin Terminal
-    export DISPLAY=":0"
-elif [ "$isMinGw32_155" -gt 0 ]; then
-    :
-    echo "### isMinGw32_155: $isMinGw32_155 => Loading $strMinGw32_155"
-    dev=$base/c/cygwin/home/$USERNAME/dev
-    winapp=$base/c/winapp
-elif [ "$isMinGw32_app1" -gt 0 ]; then
-    :
-    echo "### isMinGw32_app1: $isMinGw32_app1 => Loading $strMinGw32_app1 aliases"
-    dev=$base/d/users/$USERNAME/dev
-    winapp=$base/d/users/$USERNAME/winapp
 else
     :
     echo "ERROR: No environment detected"
@@ -166,11 +135,6 @@ if [ "$isLinux" -eq 0 ]; then
 #    echo "Linux aliases already loaded"
 fi
 
-if [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
-    JDK_16_HOME=$winapp/Java/1.6.0_41
-    JAVA_HOME=$winapp/Java/jdk1.7.0_45
-fi
-
 if [ "$isLinux" -eq 0 ]; then
     export JDK_16_HOME
     export JAVA_HOME
@@ -179,7 +143,7 @@ fi
 export dev
 export PATH
 
-if [ "$isLinux" -gt 0 ] || [ "$isCygwin_155" -gt 0 ] || [ "$isMinGw32_155" -gt 0 ] ; then
+if [ "$isLinux" -gt 0 ]; then
     clojureJarFile=$dev/clojure/clojure-1.6.0.jar
     export clojureJarFile
 fi
