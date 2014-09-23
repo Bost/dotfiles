@@ -35,7 +35,6 @@
    cljsbuild-mode
    clojure-cheatsheet
    clojure-mode
-   clojure-project-mode
    clojure-snippets
    clojure-test-mode
    clojurescript-mode
@@ -66,6 +65,7 @@
    evil-nerd-commenter
    evil-numbers
    evil-paredit
+   evil-surround
    evil-terminal-cursor-changer
    evil-visualstar
    expand-region
@@ -82,7 +82,6 @@
    gitignore-mode
    google-maps
    google-this
-   google-weather
    goto-chg
    goto-last-change
    hackernews
@@ -110,7 +109,6 @@
    logito
    mag-menu
    magit
-   magit-commit-training-wheels
    magit-push-remote             ; probably not needed
    ;; magithub - magit-log-edit-confirm-cancellation issue
    mode-icons
@@ -123,7 +121,6 @@
    pcache
    pkg-info
    popup
-   project-mode
    rainbow-delimiters
    redo+
    request

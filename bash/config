@@ -21,7 +21,7 @@ esac
 
 
 if     [ "$isLinuxNew64" -gt 0 ] || [ "$isLinuxFranzi" -gt 0 ] \
-    # || [ "$isCygwin_155" -gt 0 ] \   # fancy prompts are too slow for this machine
+    # || [ "$isLinuxVB" -gt 0 ] \   # fancy prompts are too slow for this machine
 then
     # readFile $bash_files/prompt
     readFile $bash_files/prompt-sexy
@@ -32,9 +32,8 @@ then
     # as last entry source the gitprompt script
     readFile $bash_files/bash-git-prompt/gitprompt.sh
 
-elif [ "$isLinux" -gt 0 ]; then
+else
     readFile $bash_files/prompt
     #readFile $bash_files/prompt-sexy
-else
     : # use predefined bash prompt - see echo $PS1
 fi

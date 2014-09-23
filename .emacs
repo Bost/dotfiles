@@ -14,6 +14,10 @@
 ;; test rainbow parenthesis:
 ;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
 
+;(setq url-proxy-services '(;("no_proxy" . "work\\.com")
+;                           ("http" . ""
+;)))
+
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
@@ -224,7 +228,7 @@
    ((> (string-to-number (getenv "isLinuxNew64")) 0) 116)
    ((> (string-to-number (getenv "isLinuxFranzi")) 0) 130)
    ((> (string-to-number (getenv "isLinuxMartinJV")) 0) 120)
-   ((> (string-to-number (getenv "isCygwin_155")) 0) 90)
+   ((> (string-to-number (getenv "isLinuxVB")) 0) 120)
    (t 140)))
 (set-face-attribute 'default nil :height (get-font-height))
 
@@ -681,13 +685,15 @@ by using nxml's indentation rules."
 
 (x11-maximize-frame)
 
-(require 'rainbow-delimiters)
+; TODO use `add-hook' to add `rainbow-delimiters-mode' to the hooks
+; of the major modes you actually want to use `rainbow-delimiters' in.
+;; (require 'rainbow-delimiters)
 ; To enable it only in certain modes, add lines like the following:
 ;(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 ; To enable it in all programming-related emacs modes (Emacs 24+):
 ;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 ; To activate the mode globally, add to your init file:
-(global-rainbow-delimiters-mode)
+;; (global-rainbow-delimiters-mode)
 ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
 
 ;; must be loaded in the end; otherwise:
@@ -740,8 +746,9 @@ by using nxml's indentation rules."
 
 (require 'evil-visualstar)
 
-(if (> (string-to-number (getenv "isCygwin_155")) 0)
-    (load "~/bin/dbases.el"))
+;; TODO (load "~/bin/dbases.el")
+;(if (> (string-to-number (getenv "isLinuxVB")) 0)
+;    (load "~/bin/dbases.el"))
 
 ;; (require 'evil-jumper) ;; C-i / C-o
 

@@ -56,94 +56,39 @@ function add_to_path() {
 #     esac
 # }
 
-if [ "$isLinux" -gt 0 ]; then
-    :
-    #echo "### Display no message in the console if doing scp"
-    dev=~/dev
+#echo "### Display no message in the console if doing scp"
+dev=$HOME/dev
 
-    export ALTERNATE_EDITOR=emacs;
-    #EDITOR=gvim # use it with <C-x>e
-    #export EDITOR=emacsclient
-    export EDITOR=$dev/dotfiles/bash/edit.sh
-    export VISUAL=emacsclient
+export ALTERNATE_EDITOR=emacs;
+#EDITOR=gvim # use it with <C-x>e
+#export EDITOR=emacsclient
+export EDITOR=$dev/dotfiles/bash/edit.sh
+export VISUAL=emacsclient
 
-    local bits=$(getconf LONG_BIT)
-    export isLinux_64=$(($bits == 64))
+local bits=$(getconf LONG_BIT)
+export isLinux_64=$(($bits == 64))
 
-    # TODO set paths to Google App Engine, Oracle JDK: ~/gae/appeng-python-1.8
-    export CLOJURESCRIPT=$dev/clojurescript
-    add_to_path $CLOJURESCRIPT/bin
-    #add_to $PATH $CLOJURESCRIPT/bin
+# TODO set paths to Google App Engine, Oracle JDK: ~/gae/appeng-python-1.8
+export CLOJURESCRIPT=$dev/clojurescript
+add_to_path $CLOJURESCRIPT/bin
+#add_to $PATH $CLOJURESCRIPT/bin
 
-    if [ -n "${DISPLAY+x}" ]; then # check if there is a display available
-	# remaping the Esc key to Capslock (I don't use it that much)
-	xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-    fi
-else
-    :
-    echo "ERROR: No environment detected"
+if [ -n "${DISPLAY+x}" ]; then # check if there is a display available
+    # remaping the Esc key to Capslock (I don't use it that much)
+    xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 fi
 
-if [ "$isLinux" -eq 0 ]; then
-    :
-    echo "### isLinux: $isLinux => Loading $osName aliases"
-
-    if [ -d "${winapp}" ]; then
-        :
-        export winapp
-    else
-        :
-        echo "ERROR: Undefined variable winapp: ${winapp}"
-        #exit
-    fi
-
-    export qDrive=$base/q
-    export rosv=$qDrive/transfer/rosv
-    export deployments_base=$rosv/mbs/deployments
-    export deployments_mce=$deployments_base/mce
-    export fDefvars=$deployments_base/defvars.sh
-    #echo "fDefvars=$fDefvars"
-    if [ -f "${fDefvars}" ]; then
-        :
-        source "${fDefvars}"
-        #echo "File loaded: ${fDefvars}"
-    else
-        :
-        echo "ERROR: File not found: ${fDefvars}"
-        exit
-    fi
-
-    export deployments_full=$deployments_mce/$rlsDate"_"$rlsVer
-
+if [ "$isLinuxVB" -gt 0 ]; then
+    #PROXY=
     export http_proxy=http://$PROXY
     export https_proxy=https://$PROXY
     export ftp_proxy=ftp://$PROXY
-
-    #echo "CVSROOT="$CVSROOT"   # this is the active CVSROOT"
-
-    echo export TERM=msys
-    echo export http_proxy=$http_proxy
-    echo export https_proxy=$https_proxy
-    echo export ftp_proxy=$ftp_proxy
-    echo export CVSROOT=$CVSROOT"        # active Jacarta CVSROOT"
-    echo export CVSROOT=$CVSROOT_ALTERNATIVE"   # alternative Jacarta CVSROOT"
-    echo export CVSROOT=$CVSROOT_MBS"    # CVSROOT for MBS"
-    echo ''
-
-#else
-#    :
-#    echo "Linux aliases already loaded"
-fi
-
-if [ "$isLinux" -eq 0 ]; then
-    export JDK_16_HOME
-    export JAVA_HOME
 fi
 
 export dev
 export PATH
 
-if [ "$isLinux" -gt 0 ]; then
-    clojureJarFile=$dev/clojure/clojure-1.6.0.jar
+clojureJarFile=$dev/clojure/clojure-1.6.0.jar
+if [ -f $clojureJarFile ]; then
     export clojureJarFile
 fi

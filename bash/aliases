@@ -273,13 +273,6 @@ GitUpdateAll() {
     Run cd $dev/dotfiles
     Run git pull --rebase origin # && Run git fetch --tags
 
-    if [ "$isCygwin_155" -gt 0 ]; then
-        Run cd /cygdrive/h/dev/cheatsheet
-        Run git pull --rebase origin # && Run git fetch --tags
-
-        Run cd /cygdrive/h/dev/dotfiles
-        Run git pull --rebase origin # && Run git fetch --tags
-    fi
     cd $_cd
     Run source $HOME/.bashrc
 }
@@ -394,95 +387,58 @@ alias cx='Run chmod +x'
 #alias mv='mv -i'
 #alias grep='grep --color'
 
-if [ "$isLinux" -gt 0 ]; then
+# --yes to all queries and do not prompt
+UpdateUpgradeClean() {
+    echo "sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean"
+          sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean
+}
+alias u='UpdateUpgradeClean'
+alias d='Run sudo apt-get dist-upgrade --yes'
+
+  alias inst="Run sudo apt-get install --yes"
+alias reinst="Run sudo apt-get --reinstall install --yes"
+alias uninst="Run sudo apt-get remove --yes"
+ alias purge="Run sudo apt-get purge --yes"
+   alias rmv="Run sudo apt-get remove --yes"
+  alias armv="Run sudo apt-get autoremove --yes"
+
+alias reboot='Run sudo reboot'
+#    alias s='Run sudo pm-suspend'
+   alias susp='Run sudo pm-suspend'
+alias suspend='Run sudo pm-suspend'
+#     alias h='Run sudo pm-hibernate'
+      alias hib='Run sudo pm-hibernate'
+alias hibernate='Run sudo pm-hibernate'
+     alias shut='Run sudo shutdown -h now'
+alias shutdown='Run sudo shutdown -h now'
+
+# Search the package list for a regex pattern
+# TODO alias sea='apt-cache search'
+
+alias clojure='Run java -cp $cljcp clojure.main'
+# !* - all args of the last command
+#alias gvim='RunBg gvim -c "call Maximize_Window()" --remote-silent'
+#alias gvim='RunBg gvim -c "call Maximize_Window()"'
+alias gvim='RunBg gvim'
+alias tmp='cd /tmp'
+
+alias music='cd $HOME/music/'
+# TODO check why did I install youtube-dl manually??? The current system version may work already 
+#alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl.new'
+alias y='Run youtube-dl'
+alias m='Run mplayer'
+alias lock="Run xflock4"
+alias k9='Run kill -9'
+
+# I guess '2> /dev/null' redirects errors to /dev/null
+#alias f='find ./ 2> /dev/null'
+
+if [ "$isLinuxVB" -gt 0 ]; then
     :
-    # --yes to all queries and do not prompt
-    UpdateUpgradeClean() {
-        echo "sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean"
-              sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean
-    }
-    alias u='UpdateUpgradeClean'
-    alias d='Run sudo apt-get dist-upgrade --yes'
-
-      alias inst="Run sudo apt-get install --yes"
-    alias reinst="Run sudo apt-get --reinstall install --yes"
-    alias uninst="Run sudo apt-get remove --yes"
-     alias purge="Run sudo apt-get purge --yes"
-       alias rmv="Run sudo apt-get remove --yes"
-      alias armv="Run sudo apt-get autoremove --yes"
-
-    alias reboot='Run sudo reboot'
-    #    alias s='Run sudo pm-suspend'
-       alias susp='Run sudo pm-suspend'
-    alias suspend='Run sudo pm-suspend'
-    #     alias h='Run sudo pm-hibernate'
-          alias hib='Run sudo pm-hibernate'
-    alias hibernate='Run sudo pm-hibernate'
-         alias shut='Run sudo shutdown -h now'
-    alias shutdown='Run sudo shutdown -h now'
-
-    # Search the package list for a regex pattern
-    # TODO alias sea='apt-cache search'
-
-    alias clojure='Run java -cp $cljcp clojure.main'
-    # !* - all args of the last command
-    #alias gvim='RunBg gvim -c "call Maximize_Window()" --remote-silent'
-    #alias gvim='RunBg gvim -c "call Maximize_Window()"'
-    alias gvim='RunBg gvim'
-    alias tmp='cd /tmp'
-
-    alias music='cd $HOME/music/'
-    # TODO check why did I install youtube-dl manually??? The current system version may work already 
-    #alias y='echo ">>> youtube-dl istalled manually - check for system updates <<<";$HOME/bin/youtube-dl.new'
-    alias y='Run youtube-dl'
-    alias m='Run mplayer'
-    alias lock="Run xflock4"
-    alias k9='Run kill -9'
-
-    # I guess '2> /dev/null' redirects errors to /dev/null
-    #alias f='find ./ 2> /dev/null'
-elif [ "$isCygwin_155" -gt 0 ]; then
-    :
-    #echo "### isCygwin_155: $isCygwin_155 ==> Loading $strCygwin_155"
-
-    alias gvim='RunBg gvim'
-    alias clojure='Run java -cp $(cygpath -p -w $cljcp) clojure.main'
-elif [ "$isMinGw32_155" -gt 0 ]; then
-    :
-    #echo "### isMinGw32_155: $isMinGw32_155 ==> Loading $strMinGw32_155"
-
-    RunGvim() {
-        fname=$HOME/dev/dotfiles/.vimrc
-        if [-f "$fname" ]; then
-            echo "vimrc already renamed to .vimrc. Remove this if-else"
-        else
-            echo mv $HOME/dev/dotfiles/vimrc $fname
-                 mv $HOME/dev/dotfiles/vimrc $fname
-            echo "Remove this if-else"
-        fi
-        RunBg gvim -u $HOME/dev/dotfiles/.vimrc $@
-    }
-    #alias clojure='$winapp/clojure-1.4.0/clojure.sh'
-elif [ "$isMinGw32_app1" -gt 0 ]; then
-    :
-    #echo "### isMinGw32_app1: $isMinGw32_app1 ==> Loading $strMinGw32_app1 aliases"
-
-    alias clojure='java -cp $winapp/clojure-1.4.0/clojure-1.4.0.jar clojure.main'
-else
-    echo "ERROR: No environment detected"
-fi
-
-if [ "$isLinux" -eq 0 ]; then
-    :
-    #echo "### isLinux: $isLinux ==> Loading non-linux aliases"
-
-    alias c:='cd $base/c'
-    alias d:='cd $base/d'
-    alias q:='cd $qDrive'
+    #echo "### isLinuxVB: $isLinuxVB"
 
     alias rosv='cd $rosv'
     #alias conf='cd $rosv/mbs/conf'
-    alias deployments='cd $deployments_mce'
     #alias scl='cd $dev/scl-directory'
 
     alias dem='cd $dev/mbs/dem'
@@ -643,8 +599,10 @@ gf() {
     # echo grep $@ $(find src/ -regex '.*cljs\|.*clj') | grep -v 'Is a directory'
          grep $@ $(find src/ -regex '.*cljs\|.*clj') | grep -v 'Is a directory'
 }
-# TODO do not use these on cygwin
 alias dos2unix='fromdos'
 alias d2u='fromdos'
 alias unix2dos='todos'
 alias u2d='todos'
+
+# TODO check leiningen installation
+#alias lein='$HOME/bin/lein'
