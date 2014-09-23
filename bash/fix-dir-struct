@@ -4,7 +4,7 @@
 # operations on directory structure, link-setup etc.
 
 # TODO create a hashmap with machines; store renaming results for a given machine in an own directory
-if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ] && [ "$isCygwin_155" -eq 0 ]; then
+if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxVB" -eq 0 ]; then
     if [ ! -L $HOME/downloads ]; then
 	ln -s $HOME/Downloads $HOME/downloads
     fi
@@ -18,12 +18,10 @@ if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ] && [ "$isCygwin_155" 
     echo isLinuxMartin: $isLinuxMartin
     echo isLinuxMartinJV: $isLinuxMartinJV
     echo isLinuxBambi: $isLinuxBambi
-    echo isMinGw32_app1: $isMinGw32_app1
-    echo isCygwin_155: $isCygwin_155
-    echo isMinGw32_155: $isMinGw32_155
+    echo isLinuxVB: $isLinuxVB
 fi
 
-if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew64" -eq 0 ] && [ "$isCygwin_155" -eq 0 ]; then
+if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxVB" -eq 0 ]; then
     dnameOld=$HOME/dev/dotfiles/vim
     dnameNew=$HOME/dev/dotfiles/.vim
     if [ ! -d "$dnameNew" ]; then
@@ -73,9 +71,6 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew6
         echo isLinuxMartin: $isLinuxMartin
         echo isLinuxMartinJV: $isLinuxMartinJV
         echo isLinuxBambi: $isLinuxBambi
-        echo isMinGw32_app1: $isMinGw32_app1
-        echo isCygwin_155: $isCygwin_155
-        echo isMinGw32_155: $isMinGw32_155
+	echo isLinuxVB: $isLinuxVB
     fi
 fi
-

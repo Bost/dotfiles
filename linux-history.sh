@@ -199,7 +199,10 @@ else
     packages=${packagesBase[@]}
     dpkg --get-selections | grep -v deinstall > packages-isLinux.sh
 fi
-sudo apt-get install --yes $packages
+
+if [ 1 -eq 0 ]; then
+    sudo apt-get install --yes $packages
+fi
 
 #sudo apt-get install --reinstall nvidia-current
 # or nvidia-current-updates # or nvidia-experimental-304
@@ -229,23 +232,25 @@ local bits=$(getconf LONG_BIT)
 isLinux_64=$(($bits == 64))
 isLinux_32=$(($bits == 32))
 
-if [ $isLinux_64 ]; then
-    fname=google-earth-stable_current_amd$bits.deb
+if [ 1 -eq 0 ]; then
+    if [ $isLinux_64 ]; then
+	fname=google-earth-stable_current_amd$bits.deb
 
-    # TODO Dependency is not satisfiable: ia32-libs
-    if [ 0 ] && [ ! -f "$fname" ]; then
-        wget https://dl.google.com/linux/direct/$fname
-        sudo gdebi $fname
-    fi
+	# TODO Dependency is not satisfiable: ia32-libs
+	if [ 0 ] && [ ! -f "$fname" ]; then
+            wget https://dl.google.com/linux/direct/$fname
+            sudo gdebi $fname
+	fi
 
-    fname=google-chrome-stable_current_amd$bits.deb
-    if [ ! -f "$fname" ]; then
-        wget https://dl.google.com/linux/direct/$fname
-        sudo dpkg -i $fname
+	fname=google-chrome-stable_current_amd$bits.deb
+	if [ ! -f "$fname" ]; then
+            wget https://dl.google.com/linux/direct/$fname
+            sudo dpkg -i $fname
+	fi
+    elif [ $isLinux_32 ]; then
+	# TODO install google-earth and google-chrome on 32bit linux
+	:
     fi
-elif [ $isLinux_32 ]; then
-    # TODO install google-earth and google-chrome on 32bit linux
-    :
 fi
 
 # not needed on franzi
@@ -265,7 +270,7 @@ git config --global user.name "Bost"
 git config --global user.email thebost@gmail.com
 
 # add this comp to to github knows repos
-if [ ! -f ~/.ssh/id_rsa ]; then
+if [ 1 -eq 0 ] && [ ! -f ~/.ssh/id_rsa ]; then
     ssh-keygen
     # TODO put content of id_rsa.put to clipboard - see xsel
     cat ~/.ssh/id_rsa.pub

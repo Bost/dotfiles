@@ -36,7 +36,7 @@ export isLinuxVB=$(expr match "$nodeName" "rsvoboda-VirtualBox")
 #echo isLinuxMartin: $isLinuxMartin
 #echo isLinuxMartinJV: $isLinuxMartinJV
 #echo isLinuxBambi: $isLinuxBambi
-echo isLinuxVB: $isLinuxVB
+#echo isLinuxVB: $isLinuxVB
 
 function add_to_path() {
     new_entry=$@
