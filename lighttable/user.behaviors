@@ -38,7 +38,11 @@
         "\\ws" ":ltexec paredit-plus.wrap-square" ;;foo|oo => [foooo]
         "\\wc" ":ltexec paredit-plus.wrap-curly" ;; foo|oo => {foooo}
         "\\wq" ":ltexec paredit-plus.wrap-quote" ;; foo|oo => "foooo"
+
+        ;; (a (b c) | ) d  => d
+        ;; (a (b c | ) ) d => (a   ) d
         "\\bs" ":ltexec paredit-plus.splice-sexp-killing-backward"
+
         "\\fs" ":ltexec paredit-plus.splice-sexp-killing-forward"
 
         ;; paredit.delete doesnt work
@@ -54,6 +58,9 @@
         "\\sc" ":ltexec paredit.select.clear" ;; doesnt work
 
         "\\x"  ":ltexec editor.javascript.hints.result"
+
+        "``" ":ltexec lt.plugins.marks/jump-to-large-move-mark"
+        "''" ":ltexec lt.plugins.marks/jump-to-last-edit-mark"
         })
       :lt.objs.editor/no-wrap
       ;(:lt.objs.style/font-settings "Ubuntu Mono" 13 1)
