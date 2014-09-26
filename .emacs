@@ -19,10 +19,11 @@
 ;)))
 
 (require 'package)
+
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
-			 ("melpa" . "http://melpa.milkbox.net/packages/")
-			 ))
+                         ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
