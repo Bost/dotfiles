@@ -756,6 +756,13 @@ by using nxml's indentation rules."
 ;; (require 'evil-surround)
 (global-evil-surround-mode 0)
 
+(setq evil-emacs-state-cursor '("red" box))
+(setq evil-normal-state-cursor '("green" box))
+(setq evil-visual-state-cursor '("orange" box))
+(setq evil-insert-state-cursor '("red" bar))
+(setq evil-replace-state-cursor '("red" bar))
+(setq evil-operator-state-cursor '("red" hollow))
+
 ;; TODO define this fn for emacs-version <= 24.4
 (defun uniq-lines (start end)
   "Removes duplicate lines from the selected region."
