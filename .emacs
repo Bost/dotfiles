@@ -436,7 +436,7 @@ by using nxml's indentation rules."
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (define-key global-map (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 
-(setq default-directory "~/dev")
+;; (setq default-directory "~/dev")
 
 (defun auto-upgrade ()
   (interactive)
