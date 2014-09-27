@@ -1,3 +1,5 @@
+;; (setq debug-on-error t)
+
 ;; TODO jump to last line and switch to edit mode
 ;; TODO delete to the end of line and switch to edit mode
 
@@ -14,9 +16,9 @@
 ;; test rainbow parenthesis:
 ;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
 
-;(setq url-proxy-services '(;("no_proxy" . "work\\.com")
-;                           ("http" . ""
-;)))
+;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
+;; (setq url-proxy-services '(("no_proxy" . "work\\.com")
+;; 			   ("http" . "")))
 
 (require 'package)
 
@@ -141,14 +143,12 @@
 (ac-config-default)
 
 ;; M-x linum-relative-toggle
-;(require 'linum-relative)
-;; show line number on the left side
+(require 'linum-relative)
 (global-linum-mode t)
 
 ;; minibuffer completion incremental feedback
 (icomplete-mode 99)  ; turn on icomplete-mode
 
-;; press y/n instead of typing yes/no
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; reload all buffers when the file is changed
@@ -243,8 +243,7 @@
 ;; default is end-of-line as a SQL statement terminator
 (setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
 
-;; no line wrap
-(setq default-truncate-lines t)
+(setq default-truncate-lines t) ;; no line wrap
 (define-key global-map [f5] 'toggle-truncate-lines)
 
 ;(defun cygpath ()
@@ -277,11 +276,6 @@
   (save-buffer)
   (goto-char current-point))
 
-
-;; buffer switching
-;; (iswitchb-mode t)			; I think this is the default
-(ido-mode t)				; probably somehow better
-
 ;; (desktop-save-mode 1)
 
 ;; (defun save-macro (name)
@@ -296,18 +290,6 @@
 ;;      (insert-kbd-macro name)               ; copy the macro
 ;;      (newline)                             ; insert a newline
 ;;      (switch-to-buffer nil))               ; return to the initial buffer
-
-;; setting the PC keyboard's various keys to
-;; Super or Hyper, for emacs running on Windows.
-;; run Local Group Policy Editor (gpedit.msc) -> User Configuration
-;; -> Administrative Templates -> Windows Components -> Windows Explorer
-;; -> Turn off Windows+X hotkeys, set it to 'Not configured' and log off
-(setq w32-pass-lwindow-to-system nil
-      w32-pass-rwindow-to-system nil
-      w32-pass-apps-to-system nil
-      w32-lwindow-modifier 'super ; Left Windows key
-      w32-rwindow-modifier 'super ; Right Windows key
-      w32-apps-modifier 'hyper) ; Menu key
 
 ;(global-set-key (kbd "M-s") 'save-buffer)
 ;; s-s is here just to have consistent key mapping.
@@ -345,8 +327,9 @@
 ;; (loop for ext in '("\\.swf$" "\\.elc$" "\\.pyc$")
 ;;       do (add-to-list 'helm-c-boring-file-regexp-list ext))
 ; (global-set-key (kbd "M-p") 'helm-for-files)
+
 ; TODO helm-mode: <tab> should work in minibuffer as without helm
-;; (helm-mode 1)
+(helm-mode 1)
 
 (require 'move-text)
 (move-text-default-bindings)
@@ -425,19 +408,15 @@ by using nxml's indentation rules."
 ;(global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
 
 (setq evil-leader/in-all-states t)
-;; global-evil-leader-mode must be enabled before evil-mode
-;; (global-evil-leader-mode)
-
-;; (setq evil-leader/no-prefix-mode-rx nil)
-;; (setq evil-leader/non-normal-prefix "C-")
-;; (message
-;;  (concat evil-leader/non-normal-prefix evil-leader/leader))
 
 (evil-leader/set-key
   "wr" 'toggle-truncate-lines
   "dd" 'kill-whole-line
-)
+  )
 
+(require 'evil-search-highlight-persist)
+(global-evil-search-highlight-persist t)
+(evil-leader/set-key "SPC" 'evil-search-highlight-persist-remove-all)
 
 (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
 (require 'transpose-frame)
@@ -453,23 +432,6 @@ by using nxml's indentation rules."
 ;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
 (global-set-key (kbd "<C-tab>") 'bury-buffer)
 (global-set-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
-
-; (define-key evil-normal-state-map [tab] #'next-buffer)
-; (define-key evil-normal-state-map [tab] #'other-window)
-; (define-key evil-normal-state-map [backtab] #'back-window)
-
-;; change mode-line color by evil state
-;(lexical-let (default-color (cons (face-background 'mode-line)
-;                                   (face-foreground 'mode-line)))
-;  (add-hook 'post-command-hook
-;            (lambda ()
-;              (let ((color (cond ((minibufferp) default-color)
-;                                 ((evil-insert-state-p) '("#e80000" . "#ffffff"))
-;                                 ((evil-emacs-state-p)  '("#444488" . "#ffffff"))
-;                                 ((buffer-modified-p)   '("#006fa0" . "#ffffff"))
-;                                 (t default-color))))
-;                (set-face-background 'mode-line (car color))
-;                (set-face-foreground 'mode-line (cdr color))))))
 
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (define-key global-map (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
@@ -504,8 +466,6 @@ by using nxml's indentation rules."
 ; pretty syntax highlighting everywhere
 (global-font-lock-mode t)
 
-
-;; (setq debug-on-error t)
 
 ;; (setq inferior-lisp-program "browser-repl")
 ;; (setq inferior-lisp-program "cljs-repl")
@@ -763,21 +723,6 @@ by using nxml's indentation rules."
 (setq evil-replace-state-cursor '("red" bar))
 (setq evil-operator-state-cursor '("red" hollow))
 
-;; TODO define this fn for emacs-version <= 24.4
-(defun uniq-lines (start end)
-  "Removes duplicate lines from the selected region."
-  (interactive "*r")
-  (goto-char start)
-  (beginning-of-line)
-  (let ((last ""))
-    (while (< (point) end)
-      (let* ((bol (point))
-	     (eol (progn (end-of-line) (point)))
-	     (text (buffer-substring bol eol)))
-	(forward-char)
-	(if (string= last text)
-	    (delete-region bol (point))
-	  (setq last text))))))
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
 (global-set-key (kbd "M-o") 'ace-window)

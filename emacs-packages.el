@@ -50,7 +50,9 @@
    evil-matchit
    evil-nerd-commenter
    evil-numbers
+   evil-org
    evil-paredit
+   evil-search-highlight-persist
    evil-visualstar
    expand-region
    f
@@ -71,6 +73,7 @@
    helm
    helm-ack
    helm-helm-commands
+   helm-package
    helm-themes
    highlight-symbol
    idle-highlight-mode
@@ -162,3 +165,12 @@
            (package-install package))))
  ;; '(dired+ magit rainbow-mode)
  package-list-melpa-stable)
+
+;; TODO check how to use require-package
+(defun require-package (package)
+  (setq-default highlight-tabs t)
+  "Install given PACKAGE."
+  (unless (package-installed-p package)
+    (unless (assoc package package-archive-contents)
+      (package-refresh-contents))
+    (package-install package)))
