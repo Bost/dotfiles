@@ -344,12 +344,16 @@ if [ ! -L "$lname" ]; then
     ln -s ~/dev/dotfiles/.emacs $lname
 fi
 
-# TODO transpose-frame.el might not be needed anymore
+# TODO install transpose-frame.el from package-archives if possible
 fname=~/.emacs.d/elpa/transpose-frame/transpose-frame.el
 if [ ! -f "$fname" ]; then
     mkdir -p ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
     wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
 fi
+
+
+# for emacs yasnippet
+mkdir -p ~/dev/dotfiles/snippets
 
 # mkdir -p ~/bin
 # cd ~/bin/ && curl -O https://raw.github.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
