@@ -98,6 +98,8 @@
    pcache
    pkg-info
    popup
+   projectile
+   helm-projectile
    rainbow-delimiters
    request
    s
