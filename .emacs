@@ -738,9 +738,9 @@ by using nxml's indentation rules."
 
 
 ;; text exchange operator
-(require 'evil-exchange)
-(setq evil-exchange-key (kbd "zx"))
-(evil-exchange-install)
+;;(require 'evil-exchange) ; not available in melpa-stable
+;;(setq evil-exchange-key (kbd "zx"))
+;;(evil-exchange-install)
 
 (unless (display-graphic-p)
   (require 'evil-terminal-cursor-changer))
@@ -753,8 +753,8 @@ by using nxml's indentation rules."
 
 ;; (require 'evil-jumper) ;; C-i / C-o
 
-;; (require 'evil-surround)
-(global-evil-surround-mode 0)
+;; (require 'evil-surround); not available in melpa-stable
+;;(global-evil-surround-mode 0)
 
 (setq evil-emacs-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("green" box))
