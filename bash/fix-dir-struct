@@ -21,7 +21,7 @@ if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxVB" -eq
     echo isLinuxVB: $isLinuxVB
 fi
 
-if [ "$isLinuxFranzi" -eq 0 ]; then
+if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxVB" -eq 0 ]; then
     # for emacs yasnippet
     echo mkdir -p ~/dev/dotfiles/snippets
          mkdir -p ~/dev/dotfiles/snippets
