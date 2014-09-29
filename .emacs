@@ -319,15 +319,6 @@
 
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
 
-; (require 'helm-files)
-; (setq helm-idle-delay 0.1)
-; (setq helm-input-idle-delay 0.1)
-; (setq helm-ack-use-ack-grep t)
-;; (setq helm-c-locate-command "locate-with-mdfind %.0s %s")
-;; (loop for ext in '("\\.swf$" "\\.elc$" "\\.pyc$")
-;;       do (add-to-list 'helm-c-boring-file-regexp-list ext))
-; (global-set-key (kbd "M-p") 'helm-for-files)
-
 ; TODO helm-mode: <tab> should work in minibuffer as without helm
 (helm-mode 1)
 
