@@ -44,6 +44,11 @@ if [ ! -L "$lname" ]; then
     fi
 fi
 
+lname=~/.gitconfig
+if [ ! -L "$lname" ]; then
+    ln -s ~/dev/dotfiles/.gitconfig "$lname"
+fi
+
 # TODO multiple run
 if [ 0 -eq 1 ]; then
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
