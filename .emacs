@@ -229,7 +229,7 @@
    ((> (string-to-number (getenv "isLinuxNew64")) 0) 116)
    ((> (string-to-number (getenv "isLinuxFranzi")) 0) 130)
    ((> (string-to-number (getenv "isLinuxMartinJV")) 0) 120)
-   ((> (string-to-number (getenv "isLinuxVB")) 0) 120)
+   ((> (string-to-number (getenv "isLinuxVB")) 0) 110)
    (t 140)))
 (set-face-attribute 'default nil :height (get-font-height))
 
@@ -237,11 +237,9 @@
 ;; (global-hl-line-mode 1)
 (column-number-mode 1)
 
-(setq sql-db2-program "/cygdrive/c/winapp/IBM/SQLLIB_9.5/BIN/db2cmd.exe")
-
 ;; -t: semicolon is the command line terminator.
 ;; default is end-of-line as a SQL statement terminator
-(setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
+;; (setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
 
 (setq default-truncate-lines t) ;; no line wrap
 (define-key global-map [f5] 'toggle-truncate-lines)
