@@ -607,3 +607,12 @@ alias u2d='todos'
 
 # TODO check leiningen installation
 #alias lein='$HOME/bin/lein'
+
+# TODO virtualbox: mount ~/shared
+# mount -t deviceFileFormat -o umask=filePermissons,gid=ownerGroupID,uid=ownerID /device /mountpoint
+# following doesn't work:
+# sudo mount -t vboxsf -o umask=0022,gid=1000,uid=1000 dev share/
+# tolin() {
+#     echo sudo chown --reference=$HOME/.bashrc $@
+#          sudo chown --reference=$HOME/.bashrc $@
+# }
