@@ -477,7 +477,7 @@ if [ "$isLinuxVB" -gt 0 ]; then
     alias mbssum='$deployments_base/mbssum.sh'
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
-    alias tmp='cd $HOME/tmp/'
+    alias share='cd $HOME/share'
 #else
 #    echo "Linux aliases already loaded"
 fi
