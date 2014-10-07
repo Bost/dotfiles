@@ -415,7 +415,16 @@ alias shutdown='Run sudo shutdown -h now'
 # Search the package list for a regex pattern
 # TODO alias sea='apt-cache search'
 
-alias clojure='Run java -cp $cljcp clojure.main'
+# TODO update 'alias clojure'
+# cljcp=$clojureJarFile
+# cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
+# cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
+# cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
+# cljcp=$cljcp:$dev/clojure-contrib/data.priority-map-0.0.2.jar
+# cljcp=$cljcp:$dev/clojure-contrib/core.cache-0.6.3.jar
+# cljcp=$cljcp:$dev/clojure-contrib/core.memoize-0.5.5.jar
+# alias clojure='Run java -cp $cljcp clojure.main'
+
 # !* - all args of the last command
 #alias gvim='RunBg gvim -c "call Maximize_Window()" --remote-silent'
 #alias gvim='RunBg gvim -c "call Maximize_Window()"'
@@ -472,14 +481,6 @@ if [ "$isLinuxVB" -gt 0 ]; then
 #else
 #    echo "Linux aliases already loaded"
 fi
-
-cljcp=$clojureJarFile
-cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
-cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
-cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
-cljcp=$cljcp:$dev/clojure-contrib/data.priority-map-0.0.2.jar
-cljcp=$cljcp:$dev/clojure-contrib/core.cache-0.6.3.jar
-cljcp=$cljcp:$dev/clojure-contrib/core.memoize-0.5.5.jar
 
 alias g='RunGvim'
 # this is a rather speculative $home location :)
