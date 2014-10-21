@@ -79,6 +79,7 @@ if [ -n "${DISPLAY+x}" ]; then # check if there is a display available
 fi
 
 if [ "$isLinuxVB" -gt 0 ]; then
+    source /home/db2inst1/sqllib/db2profile
     PROXY=ptx.proxy.corp.sopra:8080
     export http_proxy=http://$PROXY
     export https_proxy=https://$PROXY
