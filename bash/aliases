@@ -232,6 +232,9 @@ extract() {
         *.7z)
               Run 7z x $1
               ;;
+        *.tar.xz)
+              Run tar xvfJ $1
+	      ;;
         *)     echo "'$1' cannot be extracted via extract()" ;;
         esac
      else
@@ -337,8 +340,8 @@ AliasGrep() {
 }
 alias arep=AliasGrep
 CheatsheetGrep() {
-    echo "grep $@ $dev/cheatsheet/rest-commands.js"
-          grep $@ $dev/cheatsheet/rest-commands.js
+    echo "grep -i $@ $dev/cheatsheet/rest-commands.js"
+          grep -i $@ $dev/cheatsheet/rest-commands.js
 }
 alias crep=CheatsheetGrep
 
