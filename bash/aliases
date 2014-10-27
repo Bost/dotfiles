@@ -44,12 +44,7 @@ alias v='vim'
 alias cls='clear'
 
 PsEfGrep() {
-    if [ "$isLinux" -gt 0 ]; then
-        Run pgrep --list-full $@
-    else
-        echo "ps -ef | grep $@"
-              ps -ef | grep $@
-    fi
+    Run pgrep --list-full $@
 }
 alias prep='PsEfGrep'
 
@@ -482,6 +477,7 @@ if [ "$isLinuxVB" -gt 0 ]; then
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias share='cd $HOME/share'
+    alias sedt='cd $HOME/sedt'
 #else
 #    echo "Linux aliases already loaded"
 fi
