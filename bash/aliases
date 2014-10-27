@@ -97,6 +97,7 @@ alias gbrm='Run git branch -m'
 alias gbrd='Run git branch -d'
 alias gmv='Run git mv'
 alias grm='Run git rm'
+alias gsp='Run git stash pop'
 alias ghe='Run git help'
 
 GrepFind() {
