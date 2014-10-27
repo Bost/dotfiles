@@ -719,7 +719,10 @@ by using nxml's indentation rules."
 
 (projectile-global-mode)
 
-(add-to-list 'load-path "~/.emacs.d")
+
+;; avoid warning while emacs-24.4 start up
+;; (add-to-list 'load-path "~/.emacs.d")
+
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (require 'auto-complete-config)
 (ac-config-default)
