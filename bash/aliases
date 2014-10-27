@@ -472,6 +472,7 @@ if [ "$isLinuxVB" -gt 0 ]; then
     #alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
     alias prod='echo ssh rsvoboda@10.236.105.205; ssh rsvoboda@10.236.105.205'
     alias abnt='echo ssh rsvoboda@10.236.105.206; ssh rsvoboda@10.236.105.206'
+    alias hbg='echo ssh ADN0035@10.236.0.98; ssh ADN0035@10.236.0.98'
 
     alias mbssum='$deployments_base/mbssum.sh'
 
