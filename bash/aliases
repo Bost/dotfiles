@@ -93,8 +93,9 @@ alias gbrm='Run git branch -m'
 alias gbrd='Run git branch -d'
 alias gmv='Run git mv'
 alias grm='Run git rm'
-alias gsp='Run git stash pop'
 alias ghe='Run git help'
+alias  gsh='Run git stash'
+alias gshp='Run git stash pop'
 
 GrepFind() {
     echo "grep -lir '$1' $\(find . -name '*.$2'\)"
@@ -309,6 +310,7 @@ alias gcod='Run git checkout -'
 alias gcob='Run git checkout -b'
 alias gco='Run git checkout'
 alias gcom='Run git checkout master'
+alias gcome='Run git checkout merger'
 alias gci='git commit'
 alias gcianoe='Run git commit --amend --no-edit'
 alias gcia='Run git commit --amend'
