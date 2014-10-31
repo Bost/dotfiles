@@ -608,6 +608,7 @@ alias dos2unix='fromdos'
 alias d2u='fromdos'
 alias unix2dos='todos'
 alias u2d='todos'
+alias ac='ack-grep'
 
 # TODO check leiningen installation
 #alias lein='$HOME/bin/lein'
