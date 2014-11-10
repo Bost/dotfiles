@@ -1,9 +1,14 @@
-#!/bin/bash -ex
-# -e stop on error; -x debug
+#!/usr/bin/env bash
+
+# debugging
+# set -x
+# stop on error
+# set -e
 
 Run() {
     echo "$@"
          "$@"
+    # TODO return code
 }
 
 RunBg() {
