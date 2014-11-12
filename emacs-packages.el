@@ -15,6 +15,7 @@
    align-cljlet        ; Space align various Clojure forms [github]
    anzu                ; 'current match/total matches' in the mode-line (pink stuff bottom left)
    apt-utils
+   async
    auto-complete
    auto-highlight-symbol
    browse-kill-ring
@@ -74,6 +75,7 @@
    helm-ack
    helm-helm-commands
    helm-package
+   helm-projectile
    helm-themes
    highlight-symbol
    idle-highlight-mode
@@ -88,18 +90,18 @@
    magit
    magit-push-remote             ; probably not needed
    ;; magithub - magit-log-edit-confirm-cancellation issue
+   minimap
    mode-icons
    move-text
    multiple-cursors
+   neotree
    nrepl
-   org
    paredit
    paredit-menu
    pcache
    pkg-info
    popup
    projectile
-   helm-projectile
    rainbow-delimiters
    request
    s
