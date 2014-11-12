@@ -113,6 +113,7 @@
    smex
    tidy
    undo-tree
+   use-package
    yasnippet
    ))
 
