@@ -429,7 +429,7 @@ by using nxml's indentation rules."
 
 ;; (setq default-directory "~/dev")
 
-(defun auto-upgrade ()
+(defun package-auto-upgrade ()
   (interactive)
   (package-list-packages)
   (package-menu-mark-obsolete-for-deletion)
@@ -450,7 +450,9 @@ by using nxml's indentation rules."
   (message "gui-elements %s"
 	   (if (= 1 gui-elements) "enabled" "disabled")))
 
-(global-set-key [f9] 'auto-upgrade)
+(global-set-key [f9] 'package-list-packages-no-fetch)
+(global-set-key (kbd "<s-f9>") 'package-auto-upgrade)
+
 ;; (global-set-key [f10] 'menu-bar-mode)
 (global-set-key [f10] 'gui-toggle)
 
