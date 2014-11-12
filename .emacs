@@ -734,3 +734,8 @@ by using nxml's indentation rules."
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (require 'auto-complete-config)
 (ac-config-default)
+
+(global-set-key (kbd "M-s-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "M-s-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "M-s-<down>") 'enlarge-window)
+(global-set-key (kbd "M-s-<up>") 'shrink-window)
