@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# debugging
+# debugging:
 # set -x
-# stop on error
+# stop on error:
 # set -e
 
 Run() {
