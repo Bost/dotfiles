@@ -61,7 +61,10 @@ function add_to_path() {
 # }
 
 #echo "### Display no message in the console if doing scp"
-dev=$HOME/dev
+export dev=$HOME/dev
+# export music=$HOME/music
+# export down=$HOME/downloads
+export clt=$dev/LightTable
 
 export ALTERNATE_EDITOR=emacs;
 #EDITOR=gvim # use it with <C-x>e
@@ -84,13 +87,18 @@ fi
 
 if [ "$isLinuxVB" -gt 0 ]; then
     source /home/db2inst1/sqllib/db2profile
+    # TODO check if https_proxy is defined
     PROXY=ptx.proxy.corp.sopra:8080
     export http_proxy=http://$PROXY
     export https_proxy=https://$PROXY
     export ftp_proxy=ftp://$PROXY
+
+    echo "----------------------------------------"
+    echo "TODO check starting google-chrome-stable"
+    echo "http_proxy: $http_proxy"
+    echo "----------------------------------------"
 fi
 
-export dev
 export PATH
 
 clojureJarFile=$dev/clojure/clojure-1.6.0.jar
