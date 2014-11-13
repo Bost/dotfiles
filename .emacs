@@ -546,10 +546,19 @@ by using nxml's indentation rules."
 (global-set-key [C-M-up] 'copy-line-goto-next)
 (global-set-key [C-M-down] 'copy-line-goto-previous)
 
-(global-set-key [C-s-left] 'windmove-left)
-(global-set-key [C-s-right] 'windmove-right)
-(global-set-key [C-s-up] 'windmove-up)
-(global-set-key [C-s-down] 'windmove-down)
+(defun ignore-error-wrapper (fn)
+  "Funtion return new function that ignore errors.
+   The function wraps a function with `ignore-errors' macro."
+  (lexical-let ((fn fn))
+    (lambda ()
+      (interactive)
+      (ignore-errors
+        (funcall fn)))))
+
+(global-set-key [C-s-left] (ignore-error-wrapper 'windmove-left))
+(global-set-key [C-s-right] (ignore-error-wrapper 'windmove-right))
+(global-set-key [C-s-up] (ignore-error-wrapper 'windmove-up))
+(global-set-key [C-s-down] (ignore-error-wrapper 'windmove-down))
 
 (global-set-key [M-s-left] 'shrink-window-horizontally)
 (global-set-key [M-s-right] 'enlarge-window-horizontally)
