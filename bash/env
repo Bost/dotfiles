@@ -92,11 +92,6 @@ if [ "$isLinuxVB" -gt 0 ]; then
     export http_proxy=http://$PROXY
     export https_proxy=https://$PROXY
     export ftp_proxy=ftp://$PROXY
-
-    echo "----------------------------------------"
-    echo "TODO check starting google-chrome-stable"
-    echo "http_proxy: $http_proxy"
-    echo "----------------------------------------"
 fi
 
 export PATH
