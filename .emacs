@@ -542,8 +542,19 @@ by using nxml's indentation rules."
   (interactive)
   (copy-line -1))
 
-(global-set-key (kbd "C-s-<up>") 'copy-line-goto-next)
-(global-set-key (kbd "C-s-<down>") 'copy-line-goto-previous)
+;; xfce4-settings-manager -> Window Manger -> Keyboard -> ...
+(global-set-key [C-M-up] 'copy-line-goto-next)
+(global-set-key [C-M-down] 'copy-line-goto-previous)
+
+(global-set-key [C-s-left] 'windmove-left)
+(global-set-key [C-s-right] 'windmove-right)
+(global-set-key [C-s-up] 'windmove-up)
+(global-set-key [C-s-down] 'windmove-down)
+
+(global-set-key [M-s-left] 'shrink-window-horizontally)
+(global-set-key [M-s-right] 'enlarge-window-horizontally)
+(global-set-key [M-s-down] 'enlarge-window)
+(global-set-key [M-s-up] 'shrink-window)
 
 (define-abbrev-table 'global-abbrev-table
   '(("alpha" "α")
@@ -734,8 +745,3 @@ by using nxml's indentation rules."
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (require 'auto-complete-config)
 (ac-config-default)
-
-(global-set-key (kbd "M-s-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "M-s-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "M-s-<down>") 'enlarge-window)
-(global-set-key (kbd "M-s-<up>") 'shrink-window)
