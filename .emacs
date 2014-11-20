@@ -265,7 +265,9 @@
 (global-set-key (kbd "<C-f7>") 'edit-changelog)
 (global-set-key [f8] 'transpose-frame)
 
-(global-set-key (kbd "<s-f8>") 'neotree-toggle)
+(add-to-list 'load-path "~/.emacs.d/elpa/neotree")
+(require 'neotree)
+(global-set-key [s-f8] 'neotree-toggle)
 
 (defun clean-whitespaces ()
   (setq current-point (point))
