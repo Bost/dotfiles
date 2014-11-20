@@ -569,7 +569,7 @@ by using nxml's indentation rules."
 (global-set-key [M-s-down] 'enlarge-window)
 (global-set-key [M-s-up] 'shrink-window)
 
-(global-set-key (kbd "s-m") 'minimap-mode)
+(global-set-key (kbd "s-m") 'minimap-toggle)
 
 (define-abbrev-table 'global-abbrev-table
   '(("alpha" "α")
