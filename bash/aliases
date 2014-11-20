@@ -440,6 +440,7 @@ alias tmp='cd /tmp'
 
 alias music='cd $HOME/music/'
 alias y='Run youtube-dl'
+alias ys='Run youtube-dl --extract-audio --audio-format mp3'
 alias m='Run mplayer'
 alias lock="Run xflock4"
 alias k9='Run kill -9'
