@@ -47,11 +47,7 @@ alias envp='env | grep ^PATH='
 
 alias v='vim'
 alias cls='clear'
-
-PsEfGrep() {
-    Run pgrep --list-full $@
-}
-alias prep='PsEfGrep'
+alias prep='Run pgrep --list-full'
 
 ExtractBashComments() {
     egrep "^#"
