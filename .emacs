@@ -660,8 +660,15 @@ by using nxml's indentation rules."
 (fullscreen-mode) ;; uses [f11]
 
 (global-set-key [f12] 'undo-tree-visualize)
-(global-set-key (kbd "s-<f7>") 'whitespace-cleanup)
+;; (global-set-key (kbd "s-<f7>") 'whitespace-cleanup)
+(global-set-key (kbd "s-<f7>") 'whitespace-mode)
 ;; (global-set-key [scroll] 'exec-test-macro)
+
+(defun switch-to-buffer-scratch ()
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
+(global-set-key (kbd "<s-f12>") 'switch-to-buffer-scratch)
 
 (defun x11-maximize-frame ()
   "Maximize the current frame (to full screen)"
