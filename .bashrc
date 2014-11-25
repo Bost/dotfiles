@@ -1,5 +1,9 @@
-#!/bin/bash -ex
-# -e stop on error; -x debug
+#!/usr/bin/env bash
+
+# debugging:
+# set -x
+# stop on error:
+# set -e
 
 function readFile {
     if [ -f "$1" ]; then

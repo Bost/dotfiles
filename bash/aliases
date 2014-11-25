@@ -476,6 +476,7 @@ if [ "$isLinuxVB" -gt 0 ]; then
     alias prod='echo ssh rsvoboda@10.236.105.205; ssh rsvoboda@10.236.105.205'
     alias abnt='echo ssh rsvoboda@10.236.105.206; ssh rsvoboda@10.236.105.206'
     alias hbg='echo ssh ADN0035@10.236.0.98; ssh ADN0035@10.236.0.98'
+    alias sdv='echo ssh ADN0035@10.236.1.105; ssh ADN0035@10.236.1.105'
 
     alias mbssum='$deployments_base/mbssum.sh'
 
@@ -515,6 +516,7 @@ alias dev='cd $dev'
 alias ea='RunBg emacsclient $dev/dotfiles/bash/aliases'
 alias ee='RunBg emacsclient $dev/dotfiles/bash/env'
 alias ec='RunBg emacsclient $dev/dotfiles/bash/config'
+alias ecr='RunBg emacsclient $dev/cheatsheet/rest-commands.js'
 alias eb='RunBg emacsclient $dev/dotfiles/.bashrc'
 alias er='RunBg emacsclient $dev/dotfiles/.bashrc'
 alias el='RunBg emacsclient $dev/dotfiles/linux-history.sh'
