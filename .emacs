@@ -531,26 +531,10 @@ by using nxml's indentation rules."
 
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
-(defun copy-line (next)
-  (interactive)
-  (kill-whole-line)
-  (yank)
-  (yank)
-  (previous-line)
-  ;; (message (if (= 1 next) "next" "previous"))
-  (if (= 1 next) (previous-line)))
-
-(defun copy-line-goto-next ()
-  (interactive)
-  (copy-line 1))
-
-(defun copy-line-goto-previous ()
-  (interactive)
-  (copy-line -1))
-
 ;; xfce4-settings-manager -> Window Manger -> Keyboard -> ...
-(global-set-key [C-M-up] 'copy-line-goto-next)
-(global-set-key [C-M-down] 'copy-line-goto-previous)
+(require 'duplicate-thing)
+(global-set-key [C-M-up] 'duplicate-thing)
+(global-set-key [C-M-down] 'duplicate-thing)
 
 (defun ignore-error-wrapper (fn)
   "Funtion return new function that ignore errors.
