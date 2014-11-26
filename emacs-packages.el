@@ -12,14 +12,18 @@
    ace-jump-mode
    ack
    ack-and-a-half
-   align-cljlet        ; Space align various Clojure forms [github]
-   anzu                ; 'current match/total matches' in the mode-line (pink stuff bottom left)
+   ;; Space align various Clojure forms [github]
+   align-cljlet
+   anzu
+   ;; 'current match/total matches' in the mode-line (pink stuff bottom left)
    apt-utils
    async
    auto-complete
    auto-highlight-symbol
+   bind-key
    browse-kill-ring
-   bs-ext              ; Extensions to emacs buffer-selection library (bs.el) [wiki]
+   ;; Extensions to emacs buffer-selection library (bs.el) [wiki]
+   bs-ext
    charmap
    cider
    clj-refactor
@@ -30,7 +34,8 @@
    clojure-snippets
    clojure-test-mode
    clojurescript-mode
-   closure-lint-mode   ; what is linter good for?
+   ;; what is linter good for?
+   closure-lint-mode
    closure-template-html-mode
    color-theme
    color-theme-buffer-local
@@ -40,7 +45,9 @@
    dircmp
    dired-dups
    dired-single
-   elein               ; running leiningen commands from emacs
+   duplicate-thing
+   ;; running leiningen commands from emacs
+   elein
    elisp-slime-nav
    epl
    ergoemacs-mode
@@ -57,7 +64,8 @@
    evil-visualstar
    expand-region
    f
-   find-file-in-project         ; probably not needed because of helm
+   ;; probably not needed because of helm
+   find-file-in-project
    flycheck
    fold-dwim
    fold-this
@@ -67,16 +75,29 @@
    git-commit-mode
    git-rebase-mode
    gitignore-mode
+   gitlab
+   google
    google-this
    goto-chg
    goto-last-change
    hackernews
    helm
    helm-ack
+   helm-git
+   helm-git-files
+   helm-git-grep
+   helm-github-stars
+   helm-gitlab
+   helm-google
    helm-helm-commands
+   helm-ls-git
+   helm-mode-manager
+   helm-open-github
    helm-package
+   helm-proc
    helm-projectile
    helm-themes
+   highlight
    highlight-symbol
    idle-highlight-mode
    ido-ubiquitous
@@ -88,20 +109,21 @@
    load-theme-buffer-local
    logito
    magit
-   magit-push-remote             ; probably not needed
-   ;; magithub - magit-log-edit-confirm-cancellation issue
+   magit-push-remote
    minimap
    mode-icons
    move-text
    multiple-cursors
    neotree
    nrepl
+   org
    paredit
    paredit-menu
    pcache
    pkg-info
    popup
    projectile
+   queue
    rainbow-delimiters
    request
    s
@@ -121,14 +143,16 @@
  package-list-melpa ;; melpa head; potentialy not stable
  '(
    dired+
-   ac-helm                       ; helm dependency unresolved
+   ;; helm dependency unresolved
+   ac-helm
    ace-jump-buffer
    achievements
    ack-menu
    auto-complete-nxml
    auto-dim-other-buffers
    auto-save-buffers-enhanced
-   bf-mode                       ; Browse file persistently on dired [github]
+   ;; Browse file persistently on dired [github]
+   bf-mode
    btc-ticker
    csv-nav
    dired-toggle
@@ -142,8 +166,10 @@
    helm-gist
    helm-git
    helm-ls-git
-   helm-spaces                   ; spaces-0.1.0 not available
-   icomplete+                    ; minibuffer completion incremental feedback
+   ;; spaces-0.1.0 not available
+   helm-spaces
+   ;; minibuffer completion incremental feedback
+   icomplete+
    litable
    mag-menuxs
    redo+
