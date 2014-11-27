@@ -5,4 +5,10 @@
 # stop on error:
 # set -e
 
-exec emacsclient --alternate-editor="" -c "$@"
+if [ "$isLinuxVB" -gt 0 ]; then
+    emacsCli=$HOME/emacs-24.4/lib-src/emacsclient
+else
+    emacsCli=emacsclient
+fi
+# echo "emacsCli: $emacsCli"
+exec $emacsCli --alternate-editor="" -c "$@"
