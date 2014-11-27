@@ -286,7 +286,7 @@
 ;;      this name at the end of your .emacs"
 ;;      (interactive "SName of the macro :")  ; ask for the name of the macro
 ;;      (kmacro-name-last-macro name)         ; use this name for the macro
-;;      (find-file "~/.emacs")                ; open ~/.emacs or other user init file
+;;      (find-file "~/dev/dotfiles/.emacs")   ; open .emacs or other user init file
 ;;      (goto-char (point-max))               ; go to the end of the .emacs
 ;;      (newline)                             ; insert a newline
 ;;      (insert-kbd-macro name)               ; copy the macro
@@ -640,8 +640,14 @@ by using nxml's indentation rules."
 
 ;; (abbrev-mode 1) ; turn on abbrev mode
 ;;(global-set-key [f11] 'abbrev-mode)
+;;(global-set-key [f11] 'toggle-frame-fullscreen) ; this is default
 
-(fullscreen-mode) ;; uses [f11]
+(defun find-file-emacs ()
+  (interactive)
+  (find-file "~/dev/dotfiles/.emacs"))
+
+(global-set-key (kbd "s-<f11>") 'find-file-emacs)
+
 
 (global-set-key [f12] 'undo-tree-visualize)
 ;; (global-set-key (kbd "s-<f7>") 'whitespace-cleanup)
