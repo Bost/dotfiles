@@ -759,3 +759,5 @@ by using nxml's indentation rules."
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (require 'auto-complete-config)
 (ac-config-default)
+
+(powerline-evil-center-color-theme)

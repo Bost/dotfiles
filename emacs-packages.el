@@ -122,6 +122,8 @@
    pcache
    pkg-info
    popup
+   powerline
+   powerline-evil
    projectile
    queue
    rainbow-delimiters
