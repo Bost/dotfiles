@@ -761,3 +761,17 @@ by using nxml's indentation rules."
 (ac-config-default)
 
 (powerline-evil-center-color-theme)
+
+;; (setq redisplay-dont-pause t
+;;       scroll-margin 1
+;;       scroll-step 1
+;;       scroll-conservatively 10000
+;;       scroll-preserve-screen-position 1)
+
+;; (setq mouse-wheel-follow-mouse 't)
+;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+
+(require 'sticky-windows)
+(global-set-key     [(control x) (?0)]        'sticky-window-delete-window)
+(global-set-key     [(control x) (?1)]        'sticky-window-delete-other-windows)
+(global-set-key     [(control x) (?9)]        'sticky-window-keep-window-visible)

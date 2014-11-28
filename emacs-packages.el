@@ -177,6 +177,7 @@
    redo+
    spaces
    splitter
+   sticky-windows
    tree-mode
    windata
    workgroups2
