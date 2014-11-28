@@ -142,9 +142,9 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
-;; M-x linum-relative-toggle
 (require 'linum-relative)
 (global-linum-mode t)
+(global-set-key (kbd "s-n") 'linum-relative-toggle)
 
 ;; minibuffer completion incremental feedback
 (icomplete-mode 99)  ; turn on icomplete-mode
