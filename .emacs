@@ -229,7 +229,7 @@
    ((> (string-to-number (getenv "isLinuxNew64")) 0) 116)
    ((> (string-to-number (getenv "isLinuxFranzi")) 0) 130)
    ((> (string-to-number (getenv "isLinuxMartinJV")) 0) 120)
-   ((> (string-to-number (getenv "isLinuxVB")) 0) 110)
+   ((> (string-to-number (getenv "isLinuxVB")) 0) 102)
    (t 140)))
 (set-face-attribute 'default nil :height (get-font-height))
 
