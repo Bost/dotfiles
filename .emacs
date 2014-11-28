@@ -455,8 +455,8 @@ by using nxml's indentation rules."
 (global-set-key [f9] 'package-list-packages-no-fetch)
 (global-set-key (kbd "<s-f9>") 'package-auto-upgrade)
 
-;; (global-set-key [f10] 'menu-bar-mode)
-(global-set-key [f10] 'gui-toggle)
+;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
+(global-set-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
 
 ; pretty syntax highlighting everywhere
 (global-font-lock-mode t)
@@ -640,7 +640,7 @@ by using nxml's indentation rules."
 
 ;; (abbrev-mode 1) ; turn on abbrev mode
 ;;(global-set-key [f11] 'abbrev-mode)
-;;(global-set-key [f11] 'toggle-frame-fullscreen) ; this is default
+;;(global-set-key [f11] 'toggle-frame-fullscreen) ; this is the default
 
 (defun find-file-emacs ()
   (interactive)
