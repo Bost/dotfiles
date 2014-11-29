@@ -6,7 +6,8 @@
 
 ; TODO M-x package-list-packages must be called before M-x eval-buffer works
 (setq
- package-list-melpa-stable
+ ;; preferably melpa-stable
+ package-list-needed
  '(
    ac-nrepl
    ace-jump-mode
@@ -135,6 +136,7 @@
    slime-clj
    slime-repl
    smex
+   sticky-windows
    tidy
    undo-tree
    use-package
@@ -142,7 +144,8 @@
    ))
 
 (setq
- package-list-melpa ;; melpa head; potentialy not stable
+;; mostly melpa head; potentialy not stable
+ package-list-optional
  '(
    dired+
    ;; helm dependency unresolved
@@ -177,7 +180,6 @@
    redo+
    spaces
    splitter
-   sticky-windows
    tree-mode
    windata
    workgroups2
@@ -198,7 +200,7 @@
        (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
            (package-install package))))
  ;; '(dired+ magit rainbow-mode)
- package-list-melpa-stable)
+ package-list-needed)
 
 ;; TODO check how to use require-package
 (defun require-package (package)
