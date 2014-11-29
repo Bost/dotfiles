@@ -339,6 +339,7 @@ AliasGrep() {
           alias | grep $@
 }
 alias arep=AliasGrep
+  alias ar=AliasGrep
 CheatsheetGrep() {
     echo "grep -i $@ $dev/cheatsheet/*-commands.js"
           grep -i $@ $dev/cheatsheet/*-commands.js
