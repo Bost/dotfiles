@@ -8,13 +8,8 @@
 (unless (server-running-p)
   (server-start))
 
-(setq inhibit-splash-screen t)
-;; (load-theme 'light-blue)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
-(load-theme 'deeper-blue)    ;(disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
-;; (load-theme 'misterioso)  ;(disable-theme 'misterioso)  (enable-theme 'misterioso)
-;; (load-theme 'whiteboard)  ;(disable-theme 'whiteboard)  (enable-theme 'whiteboard)
-;; test rainbow parenthesis:
-;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
+(add-to-list 'load-path "~/dev/dotfiles/elisp/")
+(load-library "style")
 
 ;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
 ;; (setq url-proxy-services '(("no_proxy" . "work\\.com")
