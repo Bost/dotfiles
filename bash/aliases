@@ -513,7 +513,7 @@ alias foo='cd $dev/foo'
 alias dev='cd $dev'
 # alias e doesn't work it there's no running emacs
 
-if [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ]; then
+if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ]; then
     alias emacs=$dev/emacs/src/emacs
 fi
 
