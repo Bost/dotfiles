@@ -250,16 +250,6 @@
 ;  (eshell-send-input))
 ;(global-set-key [f7] 'cygpath)
 
-(defun edit-file ()
-  (interactive)
-  (find-file "~/dev/dotfiles/.emacs"))
-
-(defun edit-changelog ()
-  (interactive)
-  (find-file "~/dev/credit/migration/changelog.txt"))
-
-(global-set-key [f7] 'edit-file)
-(global-set-key (kbd "<C-f7>") 'edit-changelog)
 (global-set-key [f8] 'transpose-frame)
 
 (add-to-list 'load-path "~/.emacs.d/elpa/neotree")
@@ -634,6 +624,7 @@ by using nxml's indentation rules."
   (interactive)
   (find-file "~/dev/dotfiles/.emacs"))
 
+(global-set-key [f7] 'find-file-emacs)
 (global-set-key (kbd "s-<f11>") 'find-file-emacs)
 
 
