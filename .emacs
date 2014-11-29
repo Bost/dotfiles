@@ -271,15 +271,6 @@
 (require 'neotree)
 (global-set-key [s-f8] 'neotree-toggle)
 
-(defun clean-whitespaces ()
-  (setq current-point (point))
-  (goto-char (point-min))
-  (replace-regexp "\t" "    ")
-  (goto-char (point-min))
-  (replace-regexp "[\t ]+$" "")
-  (save-buffer)
-  (goto-char current-point))
-
 ;; (desktop-save-mode 1)
 
 ;; (defun save-macro (name)
