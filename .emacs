@@ -9,7 +9,7 @@
   (server-start))
 
 (add-to-list 'load-path "~/dev/dotfiles/elisp/")
-(load-library "style")
+(load-library "style-lib")
 
 ;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
 ;; (setq url-proxy-services '(("no_proxy" . "work\\.com")
@@ -48,14 +48,6 @@
 ;;     C-c C-l: (cider-load-file FILENAME)
 ;;     C-c C-k: (cider-load-current-buffer)
 
-(defun cider-save-and-load-current-buffer ()
-  (interactive)
-  (when (buffer-modified-p)
-    (save-buffer))
-  (cider-load-file (buffer-file-name))
-  ;; (cider-switch-to-relevant-repl-buffer nil)
-  )
-
 (defun emacs-lisp-mode-keys ()
   "Modify keymaps used by `emacs-lisp-mode'."
   (local-set-key (kbd "s-e") 'eval-last-sexp)
@@ -72,66 +64,7 @@
 ;; (add-hook 'js2-mode-hook 'skewer-mode-keys)
 ;(add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
-
-(defun cider-eval-last-expression-in-repl ()
-  "This doesn't work"
-  (interactive)
-  (evil-visual-char)
-  (evil-jump-item)
-  ;; (clipboard-kill-ring-save)
-  ;; (clipboard-kill-region)
-  ;; (cider-switch-to-relevant-repl-buffer)
-  ;; (clipboard-yank)
-
-  ;; (global-set-key [(shift delete)] 'clipboard-kill-region)
-  ;; (global-set-key [(control insert)] 'clipboard-kill-ring-save)
-  ;; (global-set-key [(shift insert)] 'clipboard-yank)
-  )
-
-(defun clojure-mode-keys ()
-  "Modify keymaps used by `clojure-mode'."
-  (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
-  (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
-  (local-set-key (kbd "s-z") 'cider-switch-to-relevant-repl-buffer)
-  (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
-  (local-set-key (kbd "s-n") 'cider-repl-set-ns)
-  (local-set-key (kbd "s-.") 'cider-jump)
-  (local-set-key (kbd "s-,") 'cider-jump-back)
-  )
-(add-hook 'clojure-mode-hook 'clojure-mode-keys)
-
-(defun cider-mode-keys ()
-  "Modify keymaps used by `cider-mode'."
-  (local-set-key (kbd "s-z") 'cider-switch-to-last-clojure-buffer)
-  (local-set-key (kbd "s-.") 'cider-jump)
-  (local-set-key (kbd "s-,") 'cider-jump-back)
-  )
-(add-hook 'cider-mode-hook 'cider-mode-keys)
-
-;; enable eldoc mode in clojure buffers
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-
-;; enable paredit in repl buffer
-;; (add-hook 'cider-repl-mode-hook 'paredit-mode)
-
-;; smartparens is an alternative to paredit
-;; (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode)
-
-(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
-
-;; camel case
-;; (add-hook 'cider-repl-mode-hook 'subword-mode)
-
-
-;; (global-set-key (kbd "s-.") 'cider-jump)
-;; (global-set-key (kbd "s-,") 'cider-jump-back)
-
-(defun cider-interaction-mode-keys ()
-  "Modify keymaps used by `cider-interaction-mode'."
-  ;; (local-set-key (kbd "s-o") 'cider-jump)
-  )
-(add-hook 'cider-interaction-mode-hook 'cider-interaction-mode-keys)
-
+(load-library "cider-lib")
 
 ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
 (setq nrepl-hide-special-buffers t)
@@ -348,18 +281,7 @@ by using nxml's indentation rules."
 ;; layout management
 (winner-mode 1)
 
-(require 'evil-numbers)
-(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
-(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
-
-(global-set-key (kbd "s-+") 'evil-numbers/inc-at-pt)
-(global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
-
-(global-set-key (kbd "<C-kp-add>")      'evil-numbers/inc-at-pt)
-(global-set-key (kbd "<C-kp-subtract>") 'evil-numbers/dec-at-pt)
-(global-set-key (kbd "<s-kp-add>")      'evil-numbers/inc-at-pt)
-(global-set-key (kbd "<s-kp-subtract>") 'evil-numbers/dec-at-pt)
-
+(load-library "evil-numbers-lib")
 ;; or only in evil’s normal state:
 ;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
 ;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
@@ -438,7 +360,6 @@ by using nxml's indentation rules."
 
 ; pretty syntax highlighting everywhere
 (global-font-lock-mode t)
-
 
 ;; (setq inferior-lisp-program "browser-repl")
 ;; (setq inferior-lisp-program "cljs-repl")
@@ -535,88 +456,7 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "s-m") 'minimap-toggle)
 
-;; (define-abbrev-table 'global-abbrev-table
-;;   '(("alpha" "α")
-;;     ("beta" "β")
-;;     ("gamma" "γ")
-;;     ("theta" "θ")
-;;     ("inf" "∞")
-;;     ("leq" "≤")
-;;     ("geq" "≥")
-
-;;     ("ar1" "→")
-;;     ("ar11" "↠")
-;;     ("1ar1" "↔")
-;;     ("ar2" "⇒")
-;;     ("2ar" "⇐")
-;;     ("2ar2" "⇔")
-;;     ("exs" "∃")
-;;     ("frll" "∀")
-;;     ("ie" "i.e.")
-;;     ("eg" "e.g.")  ; exempli gration - for example
-;;     ("lam" "λ")    ; ⋋
-;;     ("hmm" "homomorphism")
-;;     ("Hmm" "Homomorphism")
-;;     ("ism" "isomorphism")
-;;     ("Ism" "Isomorphism")
-;;     ("ctg" "category")
-;;     ("Ctg" "Category")
-;;     ("thr" "theory")
-;;     ("Thr" "Theory")
-;;     ("mor" "→")   ; morphism
-;;     ("ass" "↦")   ; assignment
-;;     ("mono" "↣")  ; monomorphism
-;;     ("epi" "↠")  ; epimorphism
-;;     ;("???" "↪")   ;
-;;     ("div" "⇸")   ; division
-;;     ("comp" "∘")  ; composition
-;;     ("tens" "⊗") ; tensor
-
-;;     ;; javascript
-;;     ("co" "contract")
-;;     ("Co" "Contract")
-;;     ("ar" "array")
-;;     ("Ar" "Array")
-;;     ("ob" "object")
-;;     ("Ob" "Object")
-;;     ("fu" "function")
-;;     ("fr" "functor")
-;;     ("fu" "function")
-;;     ("fn" "function () { return ;};")
-;;     ("hfn" "hom()function () { return ; };")
-;;     ("re" "return")
-;;     ("rf" "return function () { return ; };")
-;;     ("el" "element")
-;;     ("El" "Element")
-;;     ("nr" "number")
-;;     ("Nr" "Number")
-;;     ("iso" "isomorphism")
-;;     ("Iso" "Isomorphism")
-;;     ("mo" "morphism")
-;;     ("Mo" "Morphism")
-;;     ("eq" "equal")
-;;     ("sq" "square")
-;;     ("Sq" "Square")
-;;     ("ca" "category")
-;;     ("Ca" "Category")
-;;     ("sig" "signature")
-;;     ("Sig" "Signature")
-
-;;     ;; SQL
-;;     ("sl" "select * from fetch first 10 rows only;")
-;;     ("c26"   "ADC26TDA.")
-;;     ;; t-table
-;;     ("tk"    "V60050") ; KONTO
-;;     ("tv"    "V60055") ; VERTAG
-;;     ;; c-column
-;;     ("coi"   "OBJECTIDENT")
-;;     ("coid"  "OBJECTIDENT")
-;;     ("ckto"  "KONTO")
-;;     ("cknr"  "KONTONUMMER")
-;;     ("cktnr" "KONTONUMMER")
-;;     ))
-;; (abbrev-mode 1) ;; turn on abbrev mode
-
+;; (load-library "abbrev-table")
 ;;(global-set-key [f11] 'abbrev-mode)
 ;;(global-set-key [f11] 'toggle-frame-fullscreen) ; this is the default
 
