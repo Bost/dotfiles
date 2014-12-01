@@ -345,6 +345,7 @@ CheatsheetGrep() {
           grep -i $@ $dev/cheatsheet/*-commands.js
 }
 alias crep=CheatsheetGrep
+  alias cr=CheatsheetGrep
 
 #alias tu='top -o cpu'
 #alias tm='top -o vsize'
