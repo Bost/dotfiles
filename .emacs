@@ -12,8 +12,10 @@
 (load-library "style-lib")
 
 ;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
-;; (setq url-proxy-services '(("no_proxy" . "work\\.com")
-;; 			   ("http" . "")))
+(if (string= system-type "windows-nt")
+    (setq url-proxy-services '(("no_proxy" . "work\\.com")
+			       ("http" . "ptx.proxy.corp.sopra:8080")
+			       ("https" . "ptx.proxy.corp.sopra:8080"))))
 
 (require 'package)
 
@@ -30,9 +32,6 @@
 
 ;; 'current match/total matches' in the mode-line (pink stuff bottom left)
 (global-anzu-mode +1)
-
-(if (> (string-to-number (getenv "isLinuxFranzi")) 0)
-    (display-battery-mode 1))
 
 (size-indication-mode 1)  ; filesize indicator
 
@@ -153,14 +152,7 @@
 
 (setq x-select-enable-clipboard-manager nil) ; prevent: Error saving to X clipboard manager.
 
-(defun get-font-height () ; font size
-  (interactive)
-  (cond
-   ((> (string-to-number (getenv "isLinuxNew64")) 0) 116)
-   ((> (string-to-number (getenv "isLinuxFranzi")) 0) 130)
-   ((> (string-to-number (getenv "isLinuxMartinJV")) 0) 120)
-   ((> (string-to-number (getenv "isLinuxVB")) 0) 102)
-   (t 140)))
+(load-library "environment-lib")
 (set-face-attribute 'default nil :height (get-font-height))
 
 ;; highlight current line - this is probably not needed in the default face
@@ -459,10 +451,7 @@ by using nxml's indentation rules."
 ;; (load-library "abbrev-table")
 ;;(global-set-key [f11] 'abbrev-mode)
 ;;(global-set-key [f11] 'toggle-frame-fullscreen) ; this is the default
-
-(defun find-file-emacs ()
-  (interactive)
-  (find-file "~/dev/dotfiles/.emacs"))
+(toggle-frame-maximized)
 
 (global-set-key [f7] 'find-file-emacs)
 (global-set-key (kbd "s-<f11>") 'find-file-emacs)
@@ -478,14 +467,6 @@ by using nxml's indentation rules."
   (switch-to-buffer "*scratch*"))
 
 (global-set-key (kbd "<s-f12>") 'switch-to-buffer-scratch)
-
-(defun x11-maximize-frame ()
-  "Maximize the current frame (to full screen)"
-  (interactive)
-  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
-  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
-
-(x11-maximize-frame)
 
 ; TODO use `add-hook' to add `rainbow-delimiters-mode' to the hooks
 ; of the major modes you actually want to use `rainbow-delimiters' in.
