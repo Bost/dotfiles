@@ -633,3 +633,5 @@ alias g='egrep -i'
 #     echo sudo chown --reference=$HOME/.bashrc $@
 #          sudo chown --reference=$HOME/.bashrc $@
 # }
+
+# TODO define $cdpath - where to jump
