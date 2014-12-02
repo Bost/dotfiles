@@ -14,17 +14,17 @@
 ;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
 (if (string= system-type "windows-nt")
     (setq url-proxy-services '(("no_proxy" . "work\\.com")
-			       ("http" . "ptx.proxy.corp.sopra:8080")
-			       ("https" . "ptx.proxy.corp.sopra:8080"))))
+                               ("http" . "ptx.proxy.corp.sopra:8080")
+                               ("https" . "ptx.proxy.corp.sopra:8080"))))
 
 (require 'package)
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
-			 ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
-			 ))
+                         ))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -53,15 +53,15 @@
   )
 (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
-;(defun skewer-mode-keys ()
-;  "Modify keymaps used by `skewer-mode'."
-;  (local-set-key (kbd "s-e") 'skewer-eval-last-expression)
-;  (local-set-key (kbd "s-x") 'skewer-eval-defun)
-;  (local-set-key (kbd "s-l") 'skewer-load-buffer)
-;  )
+;;(defun skewer-mode-keys ()
+;;  "Modify keymaps used by `skewer-mode'."
+;;  (local-set-key (kbd "s-e") 'skewer-eval-last-expression)
+;;  (local-set-key (kbd "s-x") 'skewer-eval-defun)
+;;  (local-set-key (kbd "s-l") 'skewer-load-buffer)
+;;  )
 ;; skewer works on top of js2-mode
 ;; (add-hook 'js2-mode-hook 'skewer-mode-keys)
-;(add-hook 'skewer-mode-hook 'skewer-mode-keys)
+;; (add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
 (load-library "cider-lib")
 
@@ -137,16 +137,16 @@
 (setq org-src-preserve-indentation t)
 
 ;; Add shortcuts for ogr-agenda
-;(global-set-key "\C-cl" 'org-store-link)
-;(global-set-key "\C-cc" 'org-capture)
-;(global-set-key "\C-ca" 'org-agenda)
+;;(global-set-key "\C-cl" 'org-store-link)
+;;(global-set-key "\C-cc" 'org-capture)
+;;(global-set-key "\C-ca" 'org-agenda)
 
-; Setup custom shortcuts
-;(global-set-key "\C-x\C-g" 'goto-line)
-;(global-set-key [f1] 'compile)
-;(global-set-key [f2] 'next-error)
+;; Setup custom shortcuts
+;;(global-set-key "\C-x\C-g" 'goto-line)
+;;(global-set-key [f1] 'compile)
+;;(global-set-key [f2] 'next-error)
 
-;(add-to-list 'load-path "~/.emacs.d/edit-server/")
+;;(add-to-list 'load-path "~/.emacs.d/edit-server/")
 
 (autoload 'magit-status "magit" nil t)
 ;; (global-set-key [f6] 'split-window-horizontally)
@@ -168,14 +168,14 @@
 (setq default-truncate-lines t) ;; no line wrap
 (define-key global-map [f5] 'toggle-truncate-lines)
 
-;(defun cygpath ()
-;  (setq path (thing-at-point 'line))
-;  (split-window-below)
-;  (eshell)
-;  (interactive)
-;  (insert (concat "cygpath -u " path))
-;  (eshell-send-input))
-;(global-set-key [f7] 'cygpath)
+;;(defun cygpath ()
+;;  (setq path (thing-at-point 'line))
+;;  (split-window-below)
+;;  (eshell)
+;;  (interactive)
+;;  (insert (concat "cygpath -u " path))
+;;  (eshell-send-input))
+;;(global-set-key [f7] 'cygpath)
 
 (global-set-key [f8] 'transpose-frame)
 
@@ -198,7 +198,7 @@
 ;;      (newline)                             ; insert a newline
 ;;      (switch-to-buffer nil))               ; return to the initial buffer
 
-;(global-set-key (kbd "M-s") 'save-buffer)
+;; (global-set-key (kbd "M-s") 'save-buffer)
 ;; s-s is here just to have consistent key mapping.
 ;; If it's gonna work I can use M-s for something else
 (global-set-key (kbd "s-s") 'save-buffer)
@@ -207,12 +207,15 @@
 (global-set-key (kbd "s-x") 'kill-region)    ; cut
 (global-set-key (kbd "s-v") 'yank)           ; paste
 (global-set-key (kbd "s-b") 'ido-switch-buffer)
-;(global-set-key (kbd "s-k") 'ido-kill-buffer)
-(global-set-key (kbd "s-k") '(lambda ()
-			       (interactive)
-			       (if server-buffer-clients
-				   (server-edit)
-				 (kill-this-buffer))))
+;; (global-set-key (kbd "s-k") 'ido-kill-buffer)
+
+(defun close-buffer ()
+  (interactive)
+  (if server-buffer-clients
+      (server-edit)
+    (kill-this-buffer)))
+
+(global-set-key (kbd "s-k") 'close-buffer)
 
 (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
 (global-set-key (kbd "<S-iso-lefttab>") 'other-window)
@@ -226,7 +229,7 @@
 
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
 
-; TODO helm-mode: <tab> should work in minibuffer as without helm
+;; TODO helm-mode: <tab> should work in minibuffer as without helm
 (helm-mode 1)
 
 (require 'move-text)
@@ -251,12 +254,12 @@ nothing but whitespace between them.  It then indents the markup
 by using nxml's indentation rules."
   (interactive "r")
   (save-excursion
-      (nxml-mode)
-      (goto-char begin)
-      (while (search-forward-regexp "\>[ \\t]*\<" nil t)
-	(backward-char) (insert "\n"))
-      (indent-region begin end))
-    (message "Ah, much better!"))
+    (nxml-mode)
+    (goto-char begin)
+    (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+      (backward-char) (insert "\n"))
+    (indent-region begin end))
+  (message "Ah, much better!"))
 
 ;; When moving to parent directory by `^´, Dired by default creates a
 ;; new buffer for each movement up. The following rebinds `^´ to use
@@ -290,9 +293,9 @@ by using nxml's indentation rules."
 (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
 (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
-;(global-set-key (kbd "<S-delete>") 'kill-line)
+;; (global-set-key (kbd "<S-delete>") 'kill-line)
 (global-set-key (kbd "<S-delete>") 'kill-region)
-;(global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
+;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
 
 (setq evil-leader/in-all-states t)
 
@@ -344,7 +347,7 @@ by using nxml's indentation rules."
   (menu-bar-mode gui-elements)
   (toggle-scroll-bar gui-elements)
   (message "gui-elements %s"
-	   (if (= 1 gui-elements) "enabled" "disabled")))
+           (if (= 1 gui-elements) "enabled" "disabled")))
 
 (global-set-key [f9] 'package-list-packages-no-fetch)
 (global-set-key (kbd "<s-f9>") 'package-auto-upgrade)
@@ -352,7 +355,7 @@ by using nxml's indentation rules."
 ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
 (global-set-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
 
-; pretty syntax highlighting everywhere
+;; pretty syntax highlighting everywhere
 (global-font-lock-mode t)
 
 ;; (setq inferior-lisp-program "browser-repl")
@@ -367,7 +370,7 @@ by using nxml's indentation rules."
 (defun buffer-mode (buffer-or-string)
   "Returns the major mode associated with a buffer."
   (with-current-buffer buffer-or-string
-     major-mode))
+    major-mode))
 
 ;; (setq inferior-lisp-buffer "browser-repl")
 ;; (message inferior-lisp-buffer)
@@ -419,7 +422,7 @@ by using nxml's indentation rules."
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program
       ;; "chromium-browser" does not work properly on ubuntu 13.10
-      ;"chrome" ; cygwin
+      ;; "chrome" ; cygwin
       "google-chrome")
 
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
@@ -471,14 +474,14 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "<s-f12>") 'switch-to-buffer-scratch)
 
-; TODO use `add-hook' to add `rainbow-delimiters-mode' to the hooks
-; of the major modes you actually want to use `rainbow-delimiters' in.
+;; TODO use `add-hook' to add `rainbow-delimiters-mode' to the hooks
+;; of the major modes you actually want to use `rainbow-delimiters' in.
 ;; (require 'rainbow-delimiters)
-; To enable it only in certain modes, add lines like the following:
-;(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-; To enable it in all programming-related emacs modes (Emacs 24+):
-;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-; To activate the mode globally, add to your init file:
+;; To enable it only in certain modes, add lines like the following:
+;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+;; To enable it in all programming-related emacs modes (Emacs 24+):
+;; (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;; To activate the mode globally, add to your init file:
 ;; (global-rainbow-delimiters-mode)
 ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
 
@@ -500,9 +503,9 @@ by using nxml's indentation rules."
 ;; (global-set-key (kbd "s-z")         'wg-switch-to-workgroup)
 ;; (global-set-key (kbd "s-/")         'wg-switch-to-previous-workgroup)
 
-;(defun sql-db2-g72 ()
-;  (interactive)
-;  (copy-line -1))
+;; (defun sql-db2-g72 ()
+;;  (interactive)
+;;  (copy-line -1))
 
 
 ;; (add-to-list 'load-path "path/to/evil-args")
@@ -533,12 +536,12 @@ by using nxml's indentation rules."
 (require 'evil-visualstar)
 
 ;; TODO (load "~/bin/dbases.el")
-;(if (> (string-to-number (getenv "isLinuxVB")) 0)
-;    (load "~/bin/dbases.el"))
+;; (if (> (string-to-number (getenv "isLinuxVB")) 0)
+;;     (load "~/bin/dbases.el"))
 
 ;; (require 'evil-jumper) ;; C-i / C-o
 
-;; (require 'evil-surround); not available in melpa-stable
+;; (require 'evil-surround) ; not available in melpa-stable
 ;;(global-evil-surround-mode 0)
 
 (setq evil-emacs-state-cursor '("red" box))
@@ -575,6 +578,6 @@ by using nxml's indentation rules."
 ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
 (require 'sticky-windows)
-(global-set-key     [(control x) (?0)]        'sticky-window-delete-window)
-(global-set-key     [(control x) (?1)]        'sticky-window-delete-other-windows)
-(global-set-key     [(control x) (?9)]        'sticky-window-keep-window-visible)
+(global-set-key [(control x) (?0)] 'sticky-window-delete-window)
+(global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
+(global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
