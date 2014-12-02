@@ -581,3 +581,5 @@ by using nxml's indentation rules."
 (global-set-key [(control x) (?0)] 'sticky-window-delete-window)
 (global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
 (global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
+
+(global-set-key (kbd "s-p") 'evil-mode)
