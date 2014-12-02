@@ -95,7 +95,9 @@
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(global-hl-line-mode t)
+ '(indent-tabs-mode nil)
  '(show-paren-mode t)
+ '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
 
 (custom-set-faces
@@ -460,6 +462,7 @@ by using nxml's indentation rules."
 (global-set-key [f12] 'undo-tree-visualize)
 ;; (global-set-key (kbd "s-<f7>") 'whitespace-cleanup)
 (global-set-key (kbd "s-<f7>") 'whitespace-mode)
+(global-set-key (kbd "s-w") 'whitespace-mode)
 ;; (global-set-key [scroll] 'exec-test-macro)
 
 (defun switch-to-buffer-scratch ()
