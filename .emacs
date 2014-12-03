@@ -583,3 +583,6 @@ by using nxml's indentation rules."
 (global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
 
 (global-set-key (kbd "s-p") 'evil-mode)
+(global-set-key (kbd "s-i") '(lambda ()
+                               (interactive)
+                               (insert "git --git-dir=../credit.git/ ")))
