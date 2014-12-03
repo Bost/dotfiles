@@ -97,6 +97,7 @@ alias grm='Run git rm'
 alias ghe='Run git help'
 alias  gsh='Run git stash'
 alias gshp='Run git stash pop'
+alias gc='Run git --git-dir=~/dev-win/credit.repo.git/.git/'
 
 GrepFind() {
     echo "grep -lir '$1' $\(find . -name '*.$2'\)"
@@ -313,6 +314,7 @@ alias gco='Run git checkout'
 alias gcom='Run git checkout master'
 alias gcome='Run git checkout merger'
 alias gci='git commit'
+alias gcim='git commit -m'
 alias gcianoe='Run git commit --amend --no-edit'
 alias gcia='Run git commit --amend'
 alias grh='Run git reset --hard'
