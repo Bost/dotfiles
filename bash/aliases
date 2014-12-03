@@ -485,6 +485,7 @@ if [ "$isLinuxVB" -gt 0 ]; then
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias share='cd $HOME/share'
     alias sedt='cd $HOME/dev/sedt'
+    alias dw='cd $HOME/dev-win'
 #else
 #    echo "Linux aliases already loaded"
 fi
