@@ -43,6 +43,7 @@
    csv-mode
    dash
    diff-hl
+   diminish
    dircmp
    dired-dups
    dired-single
@@ -128,6 +129,7 @@
    projectile
    queue
    rainbow-delimiters
+   rainbow-identifiers
    request
    s
    simple-httpd
@@ -135,6 +137,7 @@
    slime
    slime-clj
    slime-repl
+   smartparens
    smex
    sticky-windows
    tidy
