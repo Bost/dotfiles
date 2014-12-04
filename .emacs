@@ -394,6 +394,7 @@ by using nxml's indentation rules."
 (global-set-key (kbd "C-c C-M-<") 'mc/unmark-all-like-this)
 
 (global-set-key (kbd "<f2>") 'ace-jump-mode)
+(global-set-key (kbd "s-a") 'ace-jump-buffer)
 
 ;; TODO install 'diminish' in order to use 'use-package'
 ;; Error during download request: Not Implemented
