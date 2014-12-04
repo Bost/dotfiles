@@ -1,15 +1,19 @@
-; # emacs configuration:
-; # mkdir ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
-; wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
-; echo "(add-to-list \'load-path \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
-; echo "(require \'transpose-frame)" >> ~/.emacs
+;; # emacs configuration:
+;; # mkdir ~/.emacs.d/elpa/transpose-frame && cd ~/.emacs.d/elpa/transpose-frame
+;; wget http://www.emacswiki.org/emacs-en/download/transpose-frame.el
+;; echo "(add-to-list \'load-path \"~/.emacs.d/elpa/transpose-frame/\")" >> ~/.emacs
+;; echo "(require \'transpose-frame)" >> ~/.emacs
 
-; TODO M-x package-list-packages must be called before M-x eval-buffer works
+;; TODO M-x package-list-packages must be called before M-x eval-buffer works
+
+;; C-h v package-activated-list
 (setq
  ;; preferably melpa-stable
  package-list-needed
  '(
+   ac-helm
    ac-nrepl
+   ace-jump-buffer
    ace-jump-mode
    ack
    ack-and-a-half
@@ -42,6 +46,7 @@
    color-theme-buffer-local
    csv-mode
    dash
+   debbugs
    diff-hl
    diminish
    dircmp
@@ -71,6 +76,7 @@
    flycheck
    fold-dwim
    fold-this
+   fringe-helper
    fullscreen-mode
    gh
    gist
