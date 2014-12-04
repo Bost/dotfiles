@@ -97,7 +97,8 @@ alias grm='Run git rm'
 alias ghe='Run git help'
 alias  gsh='Run git stash'
 alias gshp='Run git stash pop'
-alias gc='Run git --git-dir=~/dev-win/credit.repo.git/.git/'
+alias gcred='Run git --git-dir=$HOME/dev-win/credit.repo.git/.git/'
+alias gsedt='Run git --git-dir=$HOME/dev-win/sedt.git/.git'
 
 GrepFind() {
     echo "grep -lir '$1' $\(find . -name '*.$2'\)"
