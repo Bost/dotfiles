@@ -457,20 +457,10 @@ if [ "$isLinuxVB" -gt 0 ]; then
     #alias conf='cd $rosv/mbs/conf'
     #alias scl='cd $dev/scl-directory'
 
-    alias dem='cd $dev/mbs/dem'
-    alias mce='cd $dev/mbs/mce'
-    alias std='cd $dev/mbs/std'
-    #alias bmw='cd $dev/mbs/bmw'
-    #alias mbb='cd $dev/mbs/mbb'
-
     alias    cre='cd $dev/credit'
     alias   cred='cd $dev/credit'
     alias credit='cd $dev/credit'
     alias ct='cd $dev/ct'
-    alias migr='cd $dev/credit.migration'
-    alias full='cd $dev/jacarta.full'
-    alias light='cd $dev/jacarta.light'
-    alias hre='cd $dev/jacarta.hre'
     #alias pfandbrief='cd $dev/pfandbrief'
 
     #alias services='cd $dev/xml-services'
@@ -482,8 +472,6 @@ if [ "$isLinuxVB" -gt 0 ]; then
     alias abnt='echo ssh rsvoboda@10.236.105.206; ssh rsvoboda@10.236.105.206'
     alias hbg='echo ssh ADN0035@10.236.0.98; ssh ADN0035@10.236.0.98'
     alias sdv='echo ssh ADN0035@10.236.1.105; ssh ADN0035@10.236.1.105'
-
-    alias mbssum='$deployments_base/mbssum.sh'
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias share='cd $HOME/share'
