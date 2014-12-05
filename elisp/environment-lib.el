@@ -30,6 +30,8 @@
       (interactive)
       (find-file "~/.emacs"))
 
+    (load "~/bin/dbases.el"))
+
       )
   (progn
     ;; This works only when bash environment initialised. I.e. invoke emacs from CLI or
