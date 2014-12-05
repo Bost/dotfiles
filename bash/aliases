@@ -449,7 +449,7 @@ alias k9='Run kill -9'
 # I guess '2> /dev/null' redirects errors to /dev/null
 #alias f='find ./ 2> /dev/null'
 
-if [ "$isLinuxVB" -gt 0 ]; then
+if [ $isLinuxVB -gt 0 ]; then
     :
     #echo "### isLinuxVB: $isLinuxVB"
 
@@ -457,9 +457,9 @@ if [ "$isLinuxVB" -gt 0 ]; then
     #alias conf='cd $rosv/mbs/conf'
     #alias scl='cd $dev/scl-directory'
 
-    alias    cre='cd $dev/credit'
-    alias   cred='cd $dev/credit'
-    alias credit='cd $dev/credit'
+    alias    cre='cd $dev-win/credit'
+    alias   cred='cd $dev-win/credit'
+    alias credit='cd $dev-win/credit'
     alias ct='cd $dev/ct'
     #alias pfandbrief='cd $dev/pfandbrief'
 

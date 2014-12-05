@@ -94,6 +94,7 @@ if [ $isLinuxVB -gt 0 ]; then
     export ftp_proxy=ftp://$PROXY
     export rosv=$HOME/rosv
     export share=$HOME/share
+    export devwin=$HOME/dev-win
 fi
 
 export PATH
