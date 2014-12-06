@@ -30,7 +30,7 @@
       (interactive)
       (find-file "~/.emacs"))
 
-    (load "~/bin/dbases.el"))
+    (load "~/bin/dbases.el")
 
       )
   (progn
