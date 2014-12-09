@@ -60,6 +60,7 @@
    ergoemacs-mode
    evil
    evil-args
+   evil-escape
    evil-indent-textobject
    evil-leader
    evil-matchit
@@ -68,6 +69,7 @@
    evil-org
    evil-paredit
    evil-search-highlight-persist
+   evil-surround
    evil-visualstar
    expand-region
    f
