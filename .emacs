@@ -588,3 +588,6 @@ by using nxml's indentation rules."
 (global-set-key (kbd "s-i") '(lambda ()
                                (interactive)
                                (insert "git --git-dir=../credit.git/ ")))
+
+;; use following when: Source file '...' newer than byte-compiled file
+;; (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)

@@ -23,10 +23,8 @@ case ";$PROMPT_COMMAND;" in
 	;;
 esac
 
-
-if     [ "$isLinuxNew64" -gt 0 ] || [ "$isLinuxFranzi" -gt 0 ] \
-    # || [ "$isLinuxVB" -gt 0 ] \   # fancy prompts are too slow for this machine
-then
+# fancy prompts might be too slow for largers git repos
+if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ]; then
     # readFile $bash_files/prompt
     readFile $bash_files/prompt-sexy
 
@@ -36,6 +34,9 @@ then
     # as last entry source the gitprompt script
     readFile $bash_files/bash-git-prompt/gitprompt.sh
 
+elif [ $isLinuxVB -gt 0 ]; then
+    # readFile $bash_files/prompt-sexy
+    : # use predefined bash prompt - see echo $PS1
 else
     readFile $bash_files/prompt
     #readFile $bash_files/prompt-sexy
