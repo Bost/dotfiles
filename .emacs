@@ -290,6 +290,12 @@ by using nxml's indentation rules."
 (require 'evil)
 (evil-mode 1)
 
+;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
+;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
+(require 'evil-snipe)
+(global-evil-snipe-mode 1)
+
+
 (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
 (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)

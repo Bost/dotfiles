@@ -69,6 +69,7 @@
    evil-org
    evil-paredit
    evil-search-highlight-persist
+   evil-snipe
    evil-surround
    evil-visualstar
    expand-region
