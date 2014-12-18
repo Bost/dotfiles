@@ -216,6 +216,11 @@
     (kill-this-buffer)))
 
 (global-set-key (kbd "s-k") 'close-buffer)
+;; TODO C-w: close-buffer, /: search-forward in normal mode
+;; (global-set-key (kbd "<C-w>") 'close-buffer)
+
+;; TODO slash: search forward in normal mode
+;; (global-set-key (kbd "/") 'search-forward)
 
 (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
 (global-set-key (kbd "<S-iso-lefttab>") 'other-window)
