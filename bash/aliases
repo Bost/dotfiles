@@ -34,7 +34,8 @@ RunGit() {
 
 alias reload='Run source $HOME/.bashrc'
      alias r='Run source $HOME/.bashrc'
-alias t='Run tail'
+alias tf='Run tail -f'
+ alias t='Run tail'
 
 CleanEclipseWorkspace() {
     METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
