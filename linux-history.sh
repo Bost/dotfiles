@@ -76,7 +76,7 @@ packagesBase=(
     emacs24
     fdupes
 #    ffmpeg
-#    firestarter
+    gufw                  # firewall
     gdebi                 # install .deb files under gnome
     git                   # for dotfiles
     git-gui               # for dotfiles
