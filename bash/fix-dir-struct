@@ -1,16 +1,21 @@
-#!/bin/bash -e
-# -e stop on error; -x debug
+#!/usr/bin/env bash
+
+# debugging:
+# set -x
+# stop on error:
+# set -e
 
 # operations on directory structure, link-setup etc.
 
+fn=bash/fix-dir-struct
 # TODO create a hashmap with machines; store renaming results for a given machine in an own directory
-if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxVB" -eq 0 ]; then
+if [ $isLinuxNew64 -eq 0 ] && [ $isLinuxFranzi -eq 0 ] && [ $isLinuxVB -eq 0 ] && [ $isLinuxMartinJV -eq 0 ]; then
     if [ ! -L $HOME/downloads ]; then
-	ln -s $HOME/Downloads $HOME/downloads
+        ln -s $HOME/Downloads $HOME/downloads
     fi
 
-    echo "$HOME/downloads created"
-    echo "Prevent this block from re-running on this machine."
+    echo "$fn INFO: $HOME/downloads created"
+    echo "$fn INFO: Prevent this block from re-running on this machine."
     echo isLinux: $isLinux
     echo isLinux_64: $isLinux_64
     echo isLinuxNew64: $isLinuxNew64
@@ -21,13 +26,13 @@ if [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxVB" -eq
     echo isLinuxVB: $isLinuxVB
 fi
 
-if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxVB" -eq 0 ]; then
+if [ $isLinuxFranzi -eq 0 ] && [ $isLinuxNew64 -eq 0 ] && [ $isLinuxVB -eq 0 ] && [ $isLinuxMartinJV -eq 0 ]; then
     # for emacs yasnippet
     echo mkdir -p ~/dev/dotfiles/snippets
          mkdir -p ~/dev/dotfiles/snippets
 fi
 
-if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew64" -eq 0 ] && [ "$isLinuxVB" -eq 0 ]; then
+if [ $isLinuxFranzi -eq 0 ] && [ $isLinuxMartinJV -eq 0 ] && [ $isLinuxNew64 -eq 0 ] && [ $isLinuxVB -eq 0 ]; then
     dnameOld=$HOME/dev/dotfiles/vim
     dnameNew=$HOME/dev/dotfiles/.vim
     if [ ! -d "$dnameNew" ]; then
@@ -38,7 +43,7 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew6
         echo ln -s $HOME/dev/dotfiles/.vim $HOME/.vim
              ln -s $HOME/dev/dotfiles/.vim $HOME/.vim
     else
-        echo "WARN: $dnameOld renamed to $dnameNew already."
+        echo "$fn WARN: $dnameOld renamed to $dnameNew already."
     fi
 
     fnameOld=$HOME/dev/dotfiles/vimrc
@@ -51,7 +56,7 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew6
         echo ln -s $HOME/dev/dotfiles/.vimrc $HOME/.vimrc
              ln -s $HOME/dev/dotfiles/.vimrc $HOME/.vimrc
     else
-        echo "WARN: $fnameOld renamed to $fnameNew already."
+        echo "$fn WARN: $fnameOld renamed to $fnameNew already."
     fi
 
     fnameOld=$HOME/dev/dotfiles/bashrc
@@ -64,12 +69,12 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew6
         echo ln -s $HOME/dev/dotfiles/.bashrc $HOME/.bashrc
              ln -s $HOME/dev/dotfiles/.bashrc $HOME/.bashrc
     else
-        echo "WARN: $fnameOld renamed to $fnameNew already."
+        echo "$fn WARN: $fnameOld renamed to $fnameNew already."
     fi
 
     if [ -f "$fnameNew" ] && [ -d "$dnameNew" ]; then
-        echo "rc-files renamed"
-        echo "Prevent this block from re-running on this machine."
+        echo "$fn INFO: rc-files renamed"
+        echo "$fn INFO: Prevent this block from re-running on this machine."
         echo isLinux: $isLinux
         echo isLinux_64: $isLinux_64
         echo isLinuxNew64: $isLinuxNew64
@@ -77,6 +82,6 @@ if [ "$isLinuxFranzi" -eq 0 ] && [ "$isLinuxMartinJV" -eq 0 ] && [ "$isLinuxNew6
         echo isLinuxMartin: $isLinuxMartin
         echo isLinuxMartinJV: $isLinuxMartinJV
         echo isLinuxBambi: $isLinuxBambi
-	echo isLinuxVB: $isLinuxVB
+        echo isLinuxVB: $isLinuxVB
     fi
 fi
