@@ -5,7 +5,7 @@
 # stop on error:
 # set -e
 
-if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ]; then
+if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ] || [ $isLinuxMartinJV -gt 0 ]; then
     emacsCli=$dev/emacs/lib-src/emacsclient
 else
     emacsCli=emacsclient
