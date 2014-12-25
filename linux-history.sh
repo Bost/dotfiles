@@ -81,7 +81,7 @@ packagesBase=(
     git                   # for dotfiles
     git-gui               # for dotfiles
     gnome-system-tools
- #   google-chrome-stable
+    google-chrome-stable
     gparted
     gstreamer1.0-libav
     gstreamer1.0-plugins-bad
@@ -237,7 +237,7 @@ fi
 JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 
 # install google-earth (gdebi is needed)
-local bits=$(getconf LONG_BIT)
+bits=$(getconf LONG_BIT)
 isLinux_64=$(($bits == 64))
 isLinux_32=$(($bits == 32))
 
@@ -364,10 +364,9 @@ fi
 # for emacs yasnippet
 mkdir -p ~/dev/dotfiles/snippets
 
-# mkdir -p ~/bin
-# cd ~/bin/ && curl -O https://raw.github.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
-# chmod +x ~/bin/lein
-# ~/bin/lein self-install
+mkdir -p ~/bin
+cd ~/bin/ && curl -O https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
+chmod a+x ~/bin/lein
 
 
 # TODO get current clojure-contrib jars
