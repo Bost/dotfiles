@@ -66,7 +66,7 @@
 (load-library "cider-lib")
 
 ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
-(setq nrepl-hide-special-buffers t)
+;; (setq nrepl-hide-special-buffers t)
 
 (require 'auto-complete-config)
 (ac-config-default)
