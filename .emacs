@@ -94,6 +94,7 @@
  '(csv-separators (quote (";")))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
+ '(git-commit-summary-max-length 70)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
  '(show-paren-mode t)
