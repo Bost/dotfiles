@@ -390,7 +390,14 @@ alias l.='ls -d .* --color=auto'
 #alias l='ls -CF'
 #alias la='ls -A'
 
-alias f='Run find'
+# I guess '2> /dev/null' redirects errors to /dev/null
+#alias f='find ./ 2> /dev/null'
+
+FindFile() {
+    echo find . -name \"$@\"
+         find . -name "$@"
+}
+alias f='FindFile'
 alias cx='Run chmod +x'
 
 #alias cp='cp -i'
@@ -447,9 +454,6 @@ alias ys='Run youtube-dl --extract-audio --audio-format mp3'
 alias m='Run mplayer'
 alias lock="Run xflock4"
 alias k9='Run kill -9'
-
-# I guess '2> /dev/null' redirects errors to /dev/null
-#alias f='find ./ 2> /dev/null'
 
 if [ $isLinuxVB -gt 0 ]; then
     :
