@@ -558,17 +558,22 @@ alias vircurex='Run cd ~/vircurex'
 alias convert='Run cd $dev/convert'
    alias conv='Run cd $dev/convert'
 
+
 # TODO use 'pkill ltbin' instead of 'kill $(pidof ltbin)'
 KillLightTable() {
     echo "kill \`pidof ltbin\`"
           kill  `pidof ltbin`
 }
 alias klt=KillLightTable
+
+
 KillJava() {
     echo "kill \`pidof java\`"
           kill  `pidof java`
 }
 alias kjava=KillJava
+
+
 KillServer() {
     echo "TODO: auto kill the appropriate process"
     echo "netstat -lnptu | grep 8080"
@@ -576,6 +581,8 @@ KillServer() {
 }
 alias ksrv=KillServer
 alias kserver=KillServer
+
+
 alias blm='Run bash -x $dev/LightTable-master/linux_deps.sh'
 alias bl='Run bash linux_deps.sh'
 alias clt='cd $dev/LightTable'
