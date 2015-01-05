@@ -544,6 +544,7 @@ alias genpasswd='GeneratePassw'
 #alias 'ps?'='ps ax | grep '
 
  alias ltm='RunBg $dev/LightTable-master/deploy/LightTable'
+alias ltta='RunBg $dev/LightTable-atom/deploy/LightTable'
 alias lttm='RunBg $dev/LightTable-master/deploy/LightTable'
  alias ltt='RunBg $dev/LightTable/deploy/LightTable'
 alias plugins='Run cd $dev/LightTable/deploy/plugins'
