@@ -265,6 +265,7 @@ alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
 
  alias om='Run cd $dev/om-async'
 alias oma='Run cd $dev/om-async'
+alias src='Run cd src'
 alias omt='Run cd $dev/om-tut'
 alias lcad='Run lein cljsbuild auto dev' # start it in om-async directory
 alias lcxa='Run lein cljx auto' # start it in om-async directory
