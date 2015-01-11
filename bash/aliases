@@ -582,9 +582,9 @@ alias kjava=KillJava
 
 
 KillServer() {
-    echo "TODO: auto kill the appropriate process"
-    echo "netstat -lnptu | grep 8080"
-          netstat -lnptu | grep 8080
+    echo "# lsof - list open files"
+    echo "kill \$(lsof -i:8080 -t)"
+          kill  $(lsof -i:8080 -t)
 }
 alias ksrv=KillServer
 alias kserver=KillServer
