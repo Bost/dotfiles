@@ -125,7 +125,6 @@
    move-text
    multiple-cursors
    neotree
-   nrepl
    org
    paredit
    paredit-menu
