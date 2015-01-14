@@ -37,7 +37,6 @@
    clojure-cheatsheet
    clojure-mode
    clojure-snippets
-   clojure-test-mode
    clojurescript-mode
    ;; what is linter good for?
    closure-lint-mode
