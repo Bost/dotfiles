@@ -94,7 +94,9 @@
  '(csv-separators (quote (";")))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
+ '(evil-search-highlight-persist t)
  '(git-commit-summary-max-length 70)
+ '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
  '(show-paren-mode t)
@@ -106,6 +108,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-search-highlight-persist-highlight-face ((t (:background "dark olive green" :foreground "white"))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
  '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
