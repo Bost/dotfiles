@@ -103,6 +103,9 @@
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
 
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -491,17 +494,6 @@ by using nxml's indentation rules."
   (switch-to-buffer "*scratch*"))
 
 (global-set-key (kbd "<s-f12>") 'switch-to-buffer-scratch)
-
-;; TODO use `add-hook' to add `rainbow-delimiters-mode' to the hooks
-;; of the major modes you actually want to use `rainbow-delimiters' in.
-;; (require 'rainbow-delimiters)
-;; To enable it only in certain modes, add lines like the following:
-;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-;; To enable it in all programming-related emacs modes (Emacs 24+):
-;; (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-;; To activate the mode globally, add to your init file:
-;; (global-rainbow-delimiters-mode)
-;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
 
 ;; must be loaded in the end; otherwise:
 ;;    Symbol's function definition is void: mapcar*
