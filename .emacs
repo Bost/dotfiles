@@ -237,6 +237,7 @@
 
 ;; TODO helm-mode: <tab> should work in minibuffer as without helm
 (helm-mode 1)
+(global-set-key (kbd "M-x") 'helm-M-x)
 
 (require 'move-text)
 (move-text-default-bindings)
