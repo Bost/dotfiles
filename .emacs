@@ -299,14 +299,15 @@ by using nxml's indentation rules."
 ;; enable global-evil-leader-mode before evil-mode, otherwise
 ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
 (global-evil-leader-mode)
+(setq evil-leader/in-all-states t)
 
 (require 'evil)
 (evil-mode 1)
 
 ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
 ;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
-(require 'evil-snipe)
-(global-evil-snipe-mode 1)
+;; (require 'evil-snipe)
+;; (global-evil-snipe-mode 1)
 
 
 (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
@@ -316,16 +317,13 @@ by using nxml's indentation rules."
 (global-set-key (kbd "<S-delete>") 'kill-region)
 ;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
 
-(setq evil-leader/in-all-states t)
+(require 'evil-search-highlight-persist)
+(global-evil-search-highlight-persist t)
 
 (evil-leader/set-key
   "wr" 'toggle-truncate-lines
   "dd" 'kill-whole-line
-  )
-
-(require 'evil-search-highlight-persist)
-(global-evil-search-highlight-persist t)
-(evil-leader/set-key "SPC" 'evil-search-highlight-persist-remove-all)
+  "SPC" 'evil-search-highlight-persist-remove-all)
 
 (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
 (require 'transpose-frame)
