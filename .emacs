@@ -513,6 +513,9 @@ by using nxml's indentation rules."
 (global-set-key [C-s-right] (ignore-error-wrapper 'windmove-right))
 (global-set-key [C-s-up] (ignore-error-wrapper 'windmove-up))
 (global-set-key [C-s-down] (ignore-error-wrapper 'windmove-down))
+(use-package duplicate-thing
+  :bind (("C-M-up" . duplicate-thing)
+         ("C-M-down" . duplicate-thing)))
 
 (global-set-key [M-s-left] 'shrink-window-horizontally)
 (global-set-key [M-s-right] 'enlarge-window-horizontally)
