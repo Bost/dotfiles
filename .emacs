@@ -786,5 +786,11 @@ by using nxml's indentation rules."
 (use-package evil-nerd-commenter
   :bind ("C-;" . evilnc-comment-or-uncomment-lines))
 
+(use-package color-identifiers-mode)
+
+(defun my/enable-color-identifiers ()
+  (interactive)
+  (color-identifiers-mode t))
+
 ;; TODO install & use smartparens & paredit
 (setq debug-on-error nil)

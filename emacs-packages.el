@@ -41,6 +41,7 @@
    ;; what is linter good for?
    closure-lint-mode
    closure-template-html-mode
+   color-identifiers-mode
    color-theme
    color-theme-buffer-local
    csv-mode
