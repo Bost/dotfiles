@@ -1,4 +1,4 @@
-;; (setq debug-on-error t)
+(setq debug-on-error t) ;; turned off at the end
 
 ;; TODO jump to last line and switch to edit mode
 ;; TODO delete to the end of line and switch to edit mode
@@ -155,9 +155,49 @@
 
 ;;(add-to-list 'load-path "~/.emacs.d/edit-server/")
 
+(require 'use-package)
+
 (autoload 'magit-status "magit" nil t)
 ;; (global-set-key [f6] 'split-window-horizontally)
-(global-set-key [f6] 'magit-status)
+;; (global-set-key [f6] 'magit-status)
+(use-package magit
+  ;; :bind ("M-g M-g" . magit-status)
+  :bind ("<f6>" . magit-status) ;; [f6] does not work
+  ;; :config
+  ;; (progn
+  ;;   (when (eq system-type 'darwin)
+  ;;     (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
+  ;;   (defun magit-browse ()
+  ;;     "Browse to the project's github URL, if available"
+  ;;     (interactive)
+  ;;     (let ((url (with-temp-buffer
+  ;;                  (unless (zerop (call-process-shell-command
+  ;;                                  "git remote -v" nil t))
+  ;;                    (error "Failed: 'git remote -v'"))
+  ;;                  (goto-char (point-min))
+  ;;                  (when (re-search-forward
+  ;;                         "github\\.com[:/]\\(.+?\\)\\.git" nil t)
+  ;;                    (format "https://github.com/%s" (match-string 1))))))
+  ;;       (unless url
+  ;;         (error "Can't find repository URL"))
+  ;;       (browse-url url)))
+
+  ;;   (when (and (boundp 'moe-theme-which-enabled)
+  ;;              (eq moe-theme-which-enabled 'dark))
+  ;;     ;; Moe's magit colors are baaaaaaad
+  ;;     (set-face-attribute 'magit-item-highlight nil
+  ;;                         :inherit nil
+  ;;                         :foreground 'unspecified))
+
+  ;;   (define-key magit-mode-map (kbd "C-c C-b") 'magit-browse)
+  ;;   (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace)
+  ;;   (custom-set-variables '(magit-set-upstream-on-push (quote dontask)))
+  ;;   (setq magit-completing-read-function 'magit-ido-completing-read)
+  ;;   ;; Diminish the auto-revert-mode
+  ;;   (add-hook 'magit-auto-revert-mode-hook
+  ;;             (diminish 'magit-auto-revert-mode)))
+ )
+
 
 (setq x-select-enable-clipboard-manager nil) ; prevent: Error saving to X clipboard manager.
 
@@ -565,7 +605,14 @@ by using nxml's indentation rules."
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 (projectile-global-mode)
-
+;; (use-package projectile
+;;   :bind (;;("C-x f" . projectile-find-file)
+;;          ("C-c p s" . projectile-switch-project)
+;;          ("C-c p a" . projectile-ag)
+;;          ("C-c p g" . projectile-grep))
+;;   :config
+;;   (progn
+;;     (defconst projectile-mode-line-lighter " P")))
 
 ;; avoid warning while emacs-24.4 start up
 ;; (add-to-list 'load-path "~/.emacs.d")
@@ -638,3 +685,17 @@ by using nxml's indentation rules."
                               (interactive)
                               (show-all)))
 
+ ;; check on saving whether the edited file contains a shebang - if yes make it executable
+(add-hook 'after-save-hook
+  'executable-make-buffer-file-executable-if-script-p)
+
+(setq require-final-newline t)
+(set-default 'indicate-empty-lines t)
+(setq show-trailing-whitespace t)
+
+;; Always prefer to load newer files, instead of giving precedence to the .elc files
+(setq load-prefer-newer t)
+
+
+;; TODO install & use smartparens & paredit
+(setq debug-on-error nil)
