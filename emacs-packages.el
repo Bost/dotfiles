@@ -131,6 +131,7 @@
    pcache
    pkg-info
    popup
+   popwin
    powerline
    powerline-evil
    projectile

@@ -693,5 +693,82 @@ by using nxml's indentation rules."
 ;; Always prefer to load newer files, instead of giving precedence to the .elc files
 (setq load-prefer-newer t)
 
+
+(use-package popwin
+  :idle (popwin-mode 1))
+(defvar popwin:special-display-config-backup popwin:special-display-config)
+;; (setq display-buffer-function 'popwin:display-buffer)
+
+;; basic
+(push '("*Help*" :stick t :noselect t) popwin:special-display-config)
+(push '("*helm world time*" :stick t :noselect t) popwin:special-display-config)
+
+;; magit
+(push '("*magit-process*" :stick t) popwin:special-display-config)
+
+;; quickrun
+(push '("*quickrun*" :stick t) popwin:special-display-config)
+
+;; dictionaly
+(push '("*dict*" :stick t) popwin:special-display-config)
+(push '("*sdic*" :stick t) popwin:special-display-config)
+
+;; popwin for slime
+(push '(slime-repl-mode :stick t) popwin:special-display-config)
+
+;; man
+(push '(Man-mode :stick t :height 20) popwin:special-display-config)
+
+;; Elisp
+(push '("*ielm*" :stick t) popwin:special-display-config)
+(push '("*eshell pop*" :stick t) popwin:special-display-config)
+
+;; pry
+(push '(inf-ruby-mode :stick t :height 20) popwin:special-display-config)
+
+;; python
+(push '("*Python*"   :stick t) popwin:special-display-config)
+(push '("*Python Help*" :stick t :height 20) popwin:special-display-config)
+(push '("*jedi:doc*" :stick t :noselect t) popwin:special-display-config)
+
+;; Haskell
+(push '("*haskell*" :stick t) popwin:special-display-config)
+(push '("*GHC Info*") popwin:special-display-config)
+
+;; sgit
+(push '("*sgit*" :position right :width 0.5 :stick t)
+      popwin:special-display-config)
+
+;; git-gutter
+(push '("*git-gutter:diff*" :width 0.5 :stick t)
+      popwin:special-display-config)
+
+;; direx
+(push '(direx:direx-mode :position left :width 40 :dedicated t)
+      popwin:special-display-config)
+
+(push '("*Occur*" :stick t) popwin:special-display-config)
+
+;; prodigy
+(push '("*prodigy*" :stick t) popwin:special-display-config)
+
+;; malabar-mode
+(push '("*Malabar Compilation*" :stick t :height 30)
+      popwin:special-display-config)
+
+;; org-mode
+(push '("*Org tags*" :stick t :height 30)
+      popwin:special-display-config)
+
+;; Completions
+(push '("*Completions*" :stick t :noselect t) popwin:special-display-config)
+
+;; ggtags
+(push '("*ggtags-global*" :stick t :noselect t :height 30) popwin:special-display-config)
+
+;; async shell commands
+(push '("*Async Shell Command*" :stick t) popwin:special-display-config)
+
+
 ;; TODO install & use smartparens & paredit
 (setq debug-on-error nil)
