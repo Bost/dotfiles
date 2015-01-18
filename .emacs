@@ -450,16 +450,15 @@ by using nxml's indentation rules."
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c C-M-<") 'mc/unmark-all-like-this)
 
-(global-set-key (kbd "<f2>") 'ace-jump-mode)
-(global-set-key (kbd "s-a") 'ace-jump-buffer)
 (global-set-key (kbd "s-z") 'evil-ace-jump-char-mode)
 
-;; TODO install 'diminish' in order to use 'use-package'
-;; Error during download request: Not Implemented
+(use-package ace-jump-mode
+  :bind (("<f2>" . ace-jump-mode)
+         ("s-a" . ace-jump-buffer)))
+(use-package ace-jump-line-mode
+  :bind ("<C-f2>". ace-jump-line-mode))
 
-;; (require 'use-package)
-;; (use-package ace-jump-mode
-;;   :bind ("<f2>" . ace-jump-mode))
+;; (global-set-key (kbd "<C-f2>") 'ace-jump-line-mode)
 
 ;; (global-set-key (kbd "<f3>") 'whitespace-mode) ;; f3 / C-x ( and f4 / C-x ) are for macros
 ;; (global-unset-key (kbd "<f3>"))
