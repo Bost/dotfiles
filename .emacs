@@ -519,7 +519,15 @@ by using nxml's indentation rules."
 (global-set-key (kbd "s-<f11>") 'find-file-emacs)
 
 
-(global-set-key [f12] 'undo-tree-visualize)
+(use-package undo-tree
+  :idle (global-undo-tree-mode t)
+  :diminish ""
+  :config
+  (progn
+    (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize) ;; default
+    (define-key undo-tree-map (kbd "<f12>") 'undo-tree-visualize)
+    (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
+
 ;; (global-set-key (kbd "s-<f7>") 'whitespace-cleanup)
 (global-set-key (kbd "s-<f7>") 'whitespace-mode)
 (global-set-key (kbd "s-w") 'whitespace-mode)
