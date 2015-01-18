@@ -227,8 +227,8 @@
 (global-set-key [f8] 'transpose-frame)
 
 (add-to-list 'load-path "~/.emacs.d/elpa/neotree")
-(require 'neotree)
-(global-set-key [s-f8] 'neotree-toggle)
+(use-package neotree
+  :bind ("<s-f8>" . neotree-toggle))
 
 ;; (desktop-save-mode 1)
 
@@ -341,7 +341,8 @@ by using nxml's indentation rules."
 (global-evil-leader-mode)
 (setq evil-leader/in-all-states t)
 
-(require 'evil)
+(use-package evil
+  :bind ("s-p" . evil-mode))
 (evil-mode 1)
 
 ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
@@ -449,7 +450,7 @@ by using nxml's indentation rules."
    ("C-c C-<" . mc/mark-all-like-this)
    ("C-c C-M-<" . mc/unmark-all-like-this)))
 
-(global-set-key (kbd "s-z") 'evil-ace-jump-char-mode)
+(global-set-key (kbd "s-z") 'evil-ace-jump-char-mode) ;; from evil-integration.el
 
 (use-package ace-jump-mode
   :bind (("<f2>" . ace-jump-mode)
@@ -463,9 +464,8 @@ by using nxml's indentation rules."
 ;; (global-unset-key (kbd "<f3>"))
 ;; (global-set-key (kbd "<f3>") 'kmacro-start-macro)
 
-;; (require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
 
 ;; yasnippets does not to work
 ;; (add-to-list 'load-path
@@ -555,7 +555,7 @@ by using nxml's indentation rules."
 
 
 ;; (add-to-list 'load-path "path/to/evil-args")
-(require 'evil-args)
+(use-package evil-args)
 
 ;; bind evil-args text objects
 (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
@@ -635,7 +635,6 @@ by using nxml's indentation rules."
 (global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
 (global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
 
-(global-set-key (kbd "s-p") 'evil-mode)
 (global-set-key (kbd "s-i") '(lambda ()
                                (interactive)
                                (insert "git --git-dir=../credit.git/ ")))
@@ -693,7 +692,6 @@ by using nxml's indentation rules."
 
 ;; Always prefer to load newer files, instead of giving precedence to the .elc files
 (setq load-prefer-newer t)
-
 
 ;; TODO install & use smartparens & paredit
 (setq debug-on-error nil)
