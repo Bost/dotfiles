@@ -777,6 +777,8 @@ by using nxml's indentation rules."
 ;; async shell commands
 (push '("*Async Shell Command*" :stick t) popwin:special-display-config)
 
+(use-package evil-nerd-commenter
+  :bind ("C-;" . evilnc-comment-or-uncomment-lines))
 
 ;; TODO install & use smartparens & paredit
 (setq debug-on-error nil)
