@@ -628,3 +628,13 @@ by using nxml's indentation rules."
          (t
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
+
+;; Ctrl+Meta+PageUp
+(global-set-key [C-M-prior] '(lambda ()
+                               (interactive)
+                               (hide-body)))
+;; Ctrl+Meta+PageDown
+(global-set-key [C-M-next] '(lambda ()
+                              (interactive)
+                              (show-all)))
+
