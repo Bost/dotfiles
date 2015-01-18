@@ -448,7 +448,13 @@ by using nxml's indentation rules."
    ;; ("C-M-<" . mc/unmark-previous-word-like-this)
 
    ("C-c C-<" . mc/mark-all-like-this)
-   ("C-c C-M-<" . mc/unmark-all-like-this)))
+   ("C-c C-M-<" . mc/unmark-all-like-this)
+
+   ;; ("C-S-c C-S-c" . mc/edit-lines)
+   ;; ("C->" . mc/mark-next-like-this)
+   ;; ("C-<" . mc/mark-previous-like-this)
+   ;; ("C-c C-<" . mc/mark-all-like-this)
+   ))
 
 (global-set-key (kbd "s-z") 'evil-ace-jump-char-mode) ;; from evil-integration.el
 
