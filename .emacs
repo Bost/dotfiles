@@ -800,5 +800,25 @@ by using nxml's indentation rules."
   (interactive)
   (color-identifiers-mode t))
 
+(defun xah-forward-block (&optional φn)
+  "Move cursor forward to the beginning of next text block.
+A text block is separated by blank lines. In most major modes,
+this is similar to `forward-paragraph', but this command's
+behavior is the same regardless of syntax table."
+  (interactive "p")
+  (search-forward-regexp "\n[\t\n ]*\n+" nil "NOERROR" φn))
+
+(defun xah-backward-block (&optional φn)
+  "Move cursor backward to previous text block.
+See: `xah-forward-block'"
+  (interactive "p")
+  (dotimes (ξn φn) (if (search-backward-regexp "\n[\t\n ]*\n+" nil "NOERROR")
+                       (progn
+                         (skip-chars-backward "\n\t "))
+                     (progn (goto-char (point-min))))))
+
+(global-set-key (kbd "<C-up>") 'xah-backward-block)
+(global-set-key (kbd "<C-down>") 'xah-forward-block)
+
 ;; TODO install & use smartparens & paredit
 (setq debug-on-error nil)
