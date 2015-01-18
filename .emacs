@@ -432,23 +432,22 @@ by using nxml's indentation rules."
 ;; (setq inferior-lisp-buffer "browser-repl")
 ;; (message inferior-lisp-buffer)
 
-(require 'multiple-cursors)
-(global-set-key (kbd "C->") 'mc/mark-all-like-this-in-defun)
+(use-package multiple-cursors
+  :bind
+  (("C->" . mc/mark-all-like-this-in-defun)
+   ;; ("C->" .  mc/mark-next-like-this)
+   ;; ("C-M->" . mc/unmark-next-like-this)
 
-;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-;; (global-set-key (kbd "C-M->") 'mc/unmark-next-like-this)
+   ("C-<" . mc/mark-previous-like-this)
+   ("C-M-<" . mc/unmark-previous-like-this)
 
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-M-<") 'mc/unmark-previous-like-this)
+   ;; ("C->" . mc/mark-next-word-like-this)
+   ;; ("C-M->" . mc/unmark-next-word-like-this)
+   ;; ("C-<" . mc/mark-previous-word-like-this)
+   ;; ("C-M-<" . mc/unmark-previous-word-like-this)
 
-;; (global-set-key (kbd "C->") 'mc/mark-next-word-like-this)
-;; (global-set-key (kbd "C-M->") 'mc/unmark-next-word-like-this)
-
-;; (global-set-key (kbd "C-<") 'mc/mark-previous-word-like-this)
-;; (global-set-key (kbd "C-M-<") 'mc/unmark-previous-word-like-this)
-
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c C-M-<") 'mc/unmark-all-like-this)
+   ("C-c C-<" . mc/mark-all-like-this)
+   ("C-c C-M-<" . mc/unmark-all-like-this)))
 
 (global-set-key (kbd "s-z") 'evil-ace-jump-char-mode)
 
