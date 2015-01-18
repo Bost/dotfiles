@@ -61,6 +61,7 @@
    evil
    evil-args
    evil-escape
+   evil-iedit-state
    evil-indent-textobject
    evil-leader
    evil-matchit
@@ -112,6 +113,7 @@
    highlight-symbol
    idle-highlight-mode
    ido-ubiquitous
+   iedit
    js2-mode
    keyfreq
    latest-clojars
@@ -127,6 +129,7 @@
    multiple-cursors
    neotree
    org
+   paradox
    paredit
    paredit-menu
    pcache

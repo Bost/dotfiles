@@ -99,6 +99,7 @@
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
+ '(paradox-github-token nil) ;; do not be able to star packages
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
@@ -433,6 +434,10 @@ by using nxml's indentation rules."
 ;; (setq inferior-lisp-buffer "browser-repl")
 ;; (message inferior-lisp-buffer)
 
+;; edit every instance of that word/variable in the buffer - like multiple cursors
+(use-package iedit
+  :bind ("s-i" . iedit-mode))
+
 (use-package multiple-cursors
   :bind
   (("C->" . mc/mark-all-like-this-in-defun)
@@ -649,9 +654,9 @@ by using nxml's indentation rules."
 (global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
 (global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
 
-(global-set-key (kbd "s-i") '(lambda ()
-                               (interactive)
-                               (insert "git --git-dir=../credit.git/ ")))
+;; (global-set-key (kbd "s-i") '(lambda ()
+;;                                (interactive)
+;;                                (insert "git --git-dir=../credit.git/ ")))
 
 (defun switch-to-minibuffer ()
   "Switch to minibuffer window."
