@@ -378,8 +378,10 @@ alias whence='type -a'
 alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
 
-alias l="ls -lAh --color"    # -A does not print the . and .. entries
-alias ll="ls -lA --color"
+# ls: -A, --almost-all    does not print the . and .. entries
+# -h, --human-readable    filesize
+alias  l="ls -lA  --color --time-style='+%d-%m-%Y %H:%M:%S'"
+alias ll="ls -lAh --color --time-style='+%d-%m-%Y %H:%M:%S'"
 # show hidden files
 alias l.='ls -d .* --color=auto'
 #alias ls='ls -F --color=tty'
