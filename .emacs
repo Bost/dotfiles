@@ -820,5 +820,25 @@ See: `xah-forward-block'"
 (global-set-key (kbd "<C-up>") 'xah-backward-block)
 (global-set-key (kbd "<C-down>") 'xah-forward-block)
 
+
+;; I hate smart quotes, too
+(defcustom smart-to-ascii '(("\x201C" . "\"")
+                            ("\x201D" . "\"")
+                            ("\x2018" . "'")
+                            ("\x2019" . "'")
+                            ;; en-dash
+                            ("\x2013" . "-")
+                            ;; em-dash
+                            ("\x2014" . "-"))
+  "Map of smart quotes to their replacements"
+  :type '(repeat (cons (string :tag "Smart Character  ")
+                       (string :tag "Ascii Replacement"))))
+
+(defun my/smart-to-ascii (beg end)
+  "Replace smart quotes and dashes with their ASCII equivalents"
+  (interactive "r")
+  (format-replace-strings smart-to-ascii
+                          nil beg end))
+
 ;; TODO install & use smartparens & paredit
 (setq debug-on-error nil)
