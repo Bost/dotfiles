@@ -225,6 +225,9 @@ extract() {
         *.tgz)
               Run tar xzf $1
               ;;
+        *.jar)
+              Run unzip $1
+              ;;
         *.zip)
               Run unzip $1
               ;;
