@@ -25,23 +25,26 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ))
-
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
 ;; (package-refresh-contents)
+
+(require 'use-package)
 
 ;; 'current match/total matches' in the mode-line (pink stuff bottom left)
 (global-anzu-mode +1)
 
 (size-indication-mode 1)  ; filesize indicator
 
-(eval-after-load "paredit.el"
-  '(require 'paredit-menu))
+;; (eval-after-load "paredit.el"
+(use-package paredit
+  :bind(((kbd "s-<left>")  . paredit-backward-slurp-sexp)
+        ((kbd "s-<right>") . paredit-backward-barf-sexp)))
 
-(global-set-key (kbd "s-<left>") 'paredit-backward-slurp-sexp)
-(global-set-key (kbd "s-<right>") 'paredit-backward-barf-sexp)
+(use-package paredit-menu)
+
 ;; org-babel-clojure
-;; (require 'ob-clojure)
+;; (use-package ob-clojure)
 (global-set-key (kbd "s-t") 'clojure-jump-between-tests-and-code)
 ;; Attention defaults are:
 ;;     C-c C-l: (cider-load-file FILENAME)
@@ -68,12 +71,12 @@
 ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
 ;; (setq nrepl-hide-special-buffers t)
 
-(require 'auto-complete-config)
+(use-package auto-complete-config)
 (ac-config-default)
 
-(require 'linum-relative)
+(use-package linum-relative
+  :bind ("s-n" . linum-relative-toggle))
 (global-linum-mode t)
-(global-set-key (kbd "s-n") 'linum-relative-toggle)
 
 ;; minibuffer completion incremental feedback
 (icomplete-mode 99)  ; turn on icomplete-mode
@@ -123,7 +126,7 @@
 ;;(desktop-load-default)
 ;;(desktop-read)
 
-;; (require 'org-install)
+;; (use-package org-install)
 ;; (org-babel-do-load-languages
 ;; 'org-babel-load-languages
 ;; '(
@@ -155,8 +158,6 @@
 ;;(global-set-key [f2] 'next-error)
 
 ;;(add-to-list 'load-path "~/.emacs.d/edit-server/")
-
-(require 'use-package)
 
 (autoload 'magit-status "magit" nil t)
 ;; (global-set-key [f6] 'split-window-horizontally)
@@ -225,8 +226,6 @@
 ;;  (eshell-send-input))
 ;;(global-set-key [f7] 'cygpath)
 
-(global-set-key [f8] 'transpose-frame)
-
 (add-to-list 'load-path "~/.emacs.d/elpa/neotree")
 (use-package neotree
   :bind ("<s-f8>" . neotree-toggle))
@@ -286,7 +285,7 @@
 (helm-mode 1)
 (global-set-key (kbd "M-x") 'helm-M-x)
 
-(require 'move-text)
+(use-package move-text)
 (move-text-default-bindings)
 
 (defun kill-line-backward (arg)
@@ -348,7 +347,7 @@ by using nxml's indentation rules."
 
 ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
 ;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
-;; (require 'evil-snipe)
+;; (use-package evil-snipe)
 ;; (global-evil-snipe-mode 1)
 
 
@@ -359,7 +358,7 @@ by using nxml's indentation rules."
 (global-set-key (kbd "<S-delete>") 'kill-region)
 ;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
 
-(require 'evil-search-highlight-persist)
+(use-package evil-search-highlight-persist)
 (global-evil-search-highlight-persist t)
 
 (evil-leader/set-key
@@ -368,7 +367,8 @@ by using nxml's indentation rules."
   "SPC" 'evil-search-highlight-persist-remove-all)
 
 (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
-(require 'transpose-frame)
+(use-package transpose-frame
+  :bind ("<f8>" . transpose-frame))
 
 (setq display-time-24hr-format 1)
 (display-time-mode 1)
@@ -408,8 +408,9 @@ by using nxml's indentation rules."
   (message "gui-elements %s"
            (if (= 1 gui-elements) "enabled" "disabled")))
 
-(global-set-key [f9] 'package-list-packages-no-fetch)
-(global-set-key (kbd "<s-f9>") 'package-auto-upgrade)
+(use-package package
+  :bind (("<f9>"   . package-list-packages-no-fetch)
+         ("<s-f9>" . package-auto-upgrade)))
 
 ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
 (global-set-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
@@ -481,7 +482,7 @@ by using nxml's indentation rules."
 ;; yasnippets does not to work
 ;; (add-to-list 'load-path
 ;;           "~/.emacs.d/elpa/clojure-snippets-20130403.2046/snippets/clojure-mode")
-;; (require 'yasnippet)
+;; (use-package yasnippet)
 ;; (yas-global-mode 1)
 
 ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
@@ -497,8 +498,8 @@ by using nxml's indentation rules."
 
 ;; xfce4-settings-manager -> Window Manger -> Keyboard -> ...
 (use-package duplicate-thing
-  :bind (("C-M-up" . duplicate-thing)
-         ("C-M-down" . duplicate-thing)))
+  :bind (("C-M-<up>"   . duplicate-thing)
+         ("C-M-<down>" . duplicate-thing)))
 
 ;; (defun ignore-error-wrapper (fn)
 ;;   "Funtion return new function that ignore errors.
@@ -519,7 +520,8 @@ by using nxml's indentation rules."
 (global-set-key [M-s-down] 'enlarge-window)
 (global-set-key [M-s-up] 'shrink-window)
 
-(global-set-key (kbd "s-m") 'minimap-toggle)
+(use-package minimap
+  :bind ("s-m" . minimap-toggle))
 
 ;; (load-library "abbrev-table")
 ;;(global-set-key [f11] 'abbrev-mode)
@@ -539,9 +541,10 @@ by using nxml's indentation rules."
     (define-key undo-tree-map (kbd "<f12>") 'undo-tree-visualize)
     (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
 
-;; (global-set-key (kbd "s-<f7>") 'whitespace-cleanup)
-(global-set-key (kbd "s-<f7>") 'whitespace-mode)
-(global-set-key (kbd "s-w") 'whitespace-mode)
+(use-package whitespace
+  :bind (((kbd "s-w") . whitespace-mode)
+         ((kbd "s-<f7>") . whitespace-cleanup)))
+
 ;; (global-set-key [scroll] 'exec-test-macro)
 
 (defun switch-to-buffer-scratch ()
@@ -552,7 +555,7 @@ by using nxml's indentation rules."
 
 ;; must be loaded in the end; otherwise:
 ;;    Symbol's function definition is void: mapcar*
-;; (require 'workgroups2)
+;; (use-package workgroups2)
 
 ;; (desktop-save-mode t)       ; save all opened files (or disable it)
 ;; (setq wg-prefix-key (kbd "C-c z")
@@ -591,22 +594,22 @@ by using nxml's indentation rules."
 
 
 ;; text exchange operator
-;;(require 'evil-exchange) ; not available in melpa-stable
+;;(use-package evil-exchange) ; not available in melpa-stable
 ;;(setq evil-exchange-key (kbd "zx"))
 ;;(evil-exchange-install)
 
 (unless (display-graphic-p)
-  (require 'evil-terminal-cursor-changer))
+  (use-package evil-terminal-cursor-changer))
 
-(require 'evil-visualstar)
+(use-package evil-visualstar)
 
 ;; TODO (load "~/bin/dbases.el")
 ;; (if (> (string-to-number (getenv "isLinuxVB")) 0)
 ;;     (load "~/bin/dbases.el"))
 
-;; (require 'evil-jumper) ;; C-i / C-o
+;; (use-package evil-jumper) ;; C-i / C-o
 
-;; (require 'evil-surround) ; not available in melpa-stable
+;; (use-package evil-surround) ; not available in melpa-stable
 ;;(global-evil-surround-mode 0)
 
 (setq evil-emacs-state-cursor '("red" box))
@@ -635,24 +638,26 @@ by using nxml's indentation rules."
 ;; (add-to-list 'load-path "~/.emacs.d")
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(require 'auto-complete-config)
+(use-package auto-complete-config)
 (ac-config-default)
 
 (powerline-evil-center-color-theme)
 
-;; (setq redisplay-dont-pause t
-;;       scroll-margin 1
-;;       scroll-step 1
-;;       scroll-conservatively 10000
-;;       scroll-preserve-screen-position 1)
+ ;; (setq redisplay-dont-pause t
+ ;;       scroll-margin 1
+ ;;       scroll-step 1
+ ;;       scroll-conservatively 10000
+ ;;       scroll-preserve-screen-position 1)
 
-;; (setq mouse-wheel-follow-mouse 't)
-;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+ ;; (setq mouse-wheel-follow-mouse 't)
+ ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
-(require 'sticky-windows)
-(global-set-key [(control x) (?0)] 'sticky-window-delete-window)
-(global-set-key [(control x) (?1)] 'sticky-window-delete-other-windows)
-(global-set-key [(control x) (?9)] 'sticky-window-keep-window-visible)
+;; another possibility how to define a key chord:
+;; (global-set-key [(control x) (?0)] 'sticky-window-delete-window)
+(use-package sticky-windows
+  :bind (("C-x 0" . sticky-window-delete-window)
+         ("C-x 1" . sticky-window-delete-other-windows)
+         ("C-x 9" . sticky-window-keep-window-visible)))
 
 ;; (global-set-key (kbd "s-i") '(lambda ()
 ;;                                (interactive)
