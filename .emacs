@@ -228,7 +228,6 @@
 ;;  (eshell-send-input))
 ;;(global-set-key [f7] 'cygpath)
 
-(add-to-list 'load-path "~/.emacs.d/elpa/neotree")
 (use-package neotree
   :bind ("<s-f8>" . neotree-toggle))
 
@@ -344,9 +343,6 @@ by using nxml's indentation rules."
 (winner-mode 1)
 
 (load-library "evil-numbers-lib")
-;; or only in evil’s normal state:
-;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
 ;; enable global-evil-leader-mode before evil-mode, otherwise
 ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
@@ -389,8 +385,11 @@ by using nxml's indentation rules."
 (use-package transpose-frame
   :bind ("<f8>" . transpose-frame))
 
-(setq display-time-24hr-format 1)
-(display-time-mode 1)
+(use-package time
+  :init
+  (progn
+    (setq display-time-24hr-format 1)
+    (display-time-mode 1)))
 
 (defun back-window ()
   ;; opposite of other-window
