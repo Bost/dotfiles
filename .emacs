@@ -702,11 +702,48 @@ by using nxml's indentation rules."
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
+(defun toggle-selective-display (column)
+  (interactive "P")
+  (set-selective-display
+   (or column
+       (unless selective-display
+         (1+ (current-column))))))
+
+(defun toggle-hiding (column)
+  (interactive "P")
+  (if hs-minor-mode
+      (if (condition-case nil
+              (hs-toggle-hiding)
+            (error t))
+          (hs-show-all))
+    (toggle-selective-display column)))
+
+;; (load-library "hideshow")
 (use-package hideshow
   :bind (("C-M-<right>" . hs-show-block)
          ("C-M-<left>"  . hs-hide-block)
          ("C-M-<prior>" . hs-hide-all)
-         ("C-M-<next>"  . hs-show-all)))
+         ("C-M-<next>"  . hs-show-all)
+         ((kbd "M-+")   . toggle-hiding)
+         ((kbd "s-\\")  . toggle-selective-display)
+         ))
+;; (load-library "hideshow")
+;; (global-set-key (kbd "M-+") 'toggle-hiding)
+;; (global-set-key (kbd "s-\\") 'toggle-selective-display)
+;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
+;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+;; (add-hook 'java-mode-hook       'hs-minor-mode)
+;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
+;; (add-hook 'perl-mode-hook       'hs-minor-mode)
+;; (add-hook 'sh-mode-hook         'hs-minor-mode)
+
+;; (defun display-code-line-counts (ov)
+;;   (when (eq 'code (overlay-get ov 'hs))
+;;     (overlay-put ov 'help-echo
+;;                  (buffer-substring (overlay-start ov)
+;;                                    (overlay-end ov)))))
+
+;; (setq hs-set-up-overlay 'display-code-line-counts)
 
 ;; Ctrl+Meta+PageUp
 ;; (global-set-key [C-M-prior] '(lambda ()
