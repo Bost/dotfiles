@@ -95,40 +95,6 @@
     ;; reload all buffers when the file is changed
     (global-auto-revert-mode t)))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(csv-separators (quote (";")))
- '(ecb-options-version "2.40")
- '(ecb-source-path (quote ("~/dev/webcli")))
- '(evil-search-highlight-persist t)
- '(git-commit-summary-max-length 70)
- '(global-evil-search-highlight-persist t)
- '(global-hl-line-mode t)
- '(indent-tabs-mode nil)
- '(paradox-github-token nil) ;; do not be able to star packages
- '(show-paren-mode t)
- '(tab-width 4)
- '(tool-bar-mode nil nil (tool-bar)))
-
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-search-highlight-persist-highlight-face ((t (:background "dark olive green" :foreground "white"))))
- '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
- '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
- '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
- '(region ((t (:background "#006400")))))
-
-(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
-
 ;;(desktop-load-default)
 ;;(desktop-read)
 
@@ -239,7 +205,9 @@
 
     ;; C-s-backspace is the default key binding for kill-whole-line
     (global-set-key (kbd "<C-s-backspace>") 'kill-line-backward)
-    (global-set-key (kbd "<C-s-delete>") 'kill-line)))
+    (global-set-key (kbd "<C-s-delete>") 'kill-line)
+    ;; (define-key global-map [f5] 'toggle-truncate-lines)
+    ))
 
 (use-package neotree
   :bind ("<s-f8>" . neotree-toggle))
@@ -259,41 +227,6 @@
 ;;      (newline)                             ; insert a newline
 ;;      (switch-to-buffer nil))               ; return to the initial buffer
 
-;; (global-set-key (kbd "M-s") 'save-buffer)
-;; s-s is here just to have consistent key mapping.
-;; If it's gonna work I can use M-s for something else
-(global-set-key (kbd "s-s") 'save-buffer)
-(global-set-key (kbd "s-f") 'find-file)
-(global-set-key (kbd "s-c") 'kill-ring-save) ; copy
-(global-set-key (kbd "s-x") 'kill-region)    ; cut
-(global-set-key (kbd "s-v") 'yank)           ; paste
-(global-set-key (kbd "s-b") 'ido-switch-buffer)
-;; (global-set-key (kbd "s-k") 'ido-kill-buffer)
-
-(defun close-buffer ()
-  (interactive)
-  (if server-buffer-clients
-      (server-edit)
-    (kill-this-buffer)))
-
-(global-set-key (kbd "s-k") 'close-buffer)
-;; TODO C-w: close-buffer, /: search-forward in normal mode
-;; (global-set-key (kbd "<C-w>") 'close-buffer)
-
-;; TODO slash: search forward in normal mode
-;; (global-set-key (kbd "/") 'search-forward)
-
-(global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
-(global-set-key (kbd "<S-iso-lefttab>") 'other-window)
-
-(global-set-key (kbd "s-0") 'delete-window)
-(global-set-key (kbd "s-1") 'delete-other-windows)
-(global-set-key (kbd "s-2") 'split-window-below)
-(global-set-key (kbd "s-3") 'split-window-right)
-
-(global-set-key (kbd "s-h") 'describe-key)
-
-;; (define-key global-map [f5] 'toggle-truncate-lines)
 
 ;; TODO helm-mode: <tab> should work in minibuffer as without helm
 (use-package helm
@@ -378,11 +311,6 @@ by using nxml's indentation rules."
   :init
   (progn
     (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)))
-
-(use-package emacs
-  :init
-  (progn
-    (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)))
 
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
 
@@ -921,6 +849,77 @@ See: `xah-forward-block'"
   (interactive "r")
   (format-replace-strings smart-to-ascii
                           nil beg end))
+(use-package emacs
+  :init
+  (progn
+    (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
+    ;; (global-set-key (kbd "M-s") 'save-buffer)
+    ;; s-s is here just to have consistent key mapping.
+    ;; If it's gonna work I can use M-s for something else
+    (global-set-key (kbd "s-s") 'save-buffer)
+    (global-set-key (kbd "s-f") 'find-file)
+    (global-set-key (kbd "s-c") 'kill-ring-save) ; copy
+    (global-set-key (kbd "s-x") 'kill-region)    ; cut
+    (global-set-key (kbd "s-v") 'yank)           ; paste
+    (global-set-key (kbd "s-b") 'ido-switch-buffer)
+    ;; (global-set-key (kbd "s-k") 'ido-kill-buffer)
+    (defun close-buffer ()
+      (interactive)
+      (if server-buffer-clients
+          (server-edit)
+        (kill-this-buffer)))
+
+    (global-set-key (kbd "s-k") 'close-buffer)
+    ;; TODO C-w: close-buffer, /: search-forward in normal mode
+    ;; (global-set-key (kbd "<C-w>") 'close-buffer)
+
+    ;; TODO slash: search forward in normal mode
+    ;; (global-set-key (kbd "/") 'search-forward)
+
+    (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
+    (global-set-key (kbd "<S-iso-lefttab>") 'other-window)
+
+    (global-set-key (kbd "s-0") 'delete-window)
+    (global-set-key (kbd "s-1") 'delete-other-windows)
+    (global-set-key (kbd "s-2") 'split-window-below)
+    (global-set-key (kbd "s-3") 'split-window-right)
+
+    (global-set-key (kbd "s-h") 'describe-key)
+
+    (custom-set-variables
+     ;; custom-set-variables was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     '(csv-separators (quote (";")))
+     '(ecb-options-version "2.40")
+     '(ecb-source-path (quote ("~/dev/webcli")))
+     '(evil-search-highlight-persist t)
+     '(git-commit-summary-max-length 70)
+     '(global-evil-search-highlight-persist t)
+     '(global-hl-line-mode t)
+     '(indent-tabs-mode nil)
+     '(paradox-github-token nil) ;; do not be able to star packages
+     '(show-paren-mode t)
+     '(tab-width 4)
+     '(tool-bar-mode nil nil (tool-bar)))
+
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+    ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
+
+    (custom-set-faces
+     ;; custom-set-faces was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     '(evil-search-highlight-persist-highlight-face ((t (:background "dark olive green" :foreground "white"))))
+     '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
+     '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
+     '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
+     '(region ((t (:background "#006400")))))
+
+    (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+    ))
 
 ;; TODO install & use smartparens & paredit
 (setq debug-on-error nil)
