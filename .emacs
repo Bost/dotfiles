@@ -350,8 +350,16 @@ by using nxml's indentation rules."
 
 ;; enable global-evil-leader-mode before evil-mode, otherwise
 ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
-(global-evil-leader-mode)
-(setq evil-leader/in-all-states t)
+(use-package evil-leader
+  :init
+  (progn
+    (global-evil-leader-mode)
+    (setq evil-leader/in-all-states t)
+    (evil-leader/set-key
+      "wr" 'toggle-truncate-lines
+      "dd" 'kill-whole-line
+      "SPC" 'evil-search-highlight-persist-remove-all)))
+
 
 (use-package evil
   :bind ("s-p" . evil-mode)
@@ -372,13 +380,10 @@ by using nxml's indentation rules."
 (global-set-key (kbd "<S-delete>") 'kill-region)
 ;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
 
-(use-package evil-search-highlight-persist)
-(global-evil-search-highlight-persist t)
-
-(evil-leader/set-key
-  "wr" 'toggle-truncate-lines
-  "dd" 'kill-whole-line
-  "SPC" 'evil-search-highlight-persist-remove-all)
+(use-package evil-search-highlight-persist
+  :init
+  (progn
+    (global-evil-search-highlight-persist t)))
 
 (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
 (use-package transpose-frame
@@ -396,8 +401,8 @@ by using nxml's indentation rules."
 (global-set-key (kbd "<C-tab>") 'bury-buffer)
 (global-set-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
 
-(global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
-(define-key global-map (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
+(use-package evil-nerd-commenter
+  :bind ("M-;" . evilnc-comment-or-uncomment-lines))
 
 ;; (setq default-directory "~/dev")
 
@@ -476,7 +481,8 @@ by using nxml's indentation rules."
    ;; ("C-c C-<" . mc/mark-all-like-this)
    ))
 
-(global-set-key (kbd "s-z") 'evil-ace-jump-char-mode) ;; from evil-integration.el
+(use-package evil-integration
+  :bind ("s-z" . evil-ace-jump-char-mode))
 
 (use-package ace-jump-mode
   :bind (("<f2>" . ace-jump-mode)
@@ -501,11 +507,14 @@ by using nxml's indentation rules."
 ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
 ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
 
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program
-      ;; "chromium-browser" does not work properly on ubuntu 13.10
-      ;; "chrome" ; cygwin
-      "google-chrome")
+(use-package browse-url
+  :init
+  (progn
+    (setq browse-url-browser-function 'browse-url-generic
+          browse-url-generic-program
+          ;; "chromium-browser" does not work properly on ubuntu 13.10
+          ;; "chrome" ; cygwin
+          "google-chrome")))
 
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
@@ -655,8 +664,10 @@ by using nxml's indentation rules."
 ;; (add-to-list 'load-path "~/.emacs.d")
 
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(use-package auto-complete-config)
-(ac-config-default)
+(use-package auto-complete-config
+  :init
+  (progn
+    (ac-config-default)))
 
 (powerline-evil-center-color-theme)
 
@@ -738,16 +749,16 @@ by using nxml's indentation rules."
          ("C-M-<next>"  . hs-show-all)
          ((kbd "M-+")   . toggle-hiding)
          ((kbd "s-\\")  . toggle-selective-display)
-         ))
-;; (load-library "hideshow")
-;; (global-set-key (kbd "M-+") 'toggle-hiding)
-;; (global-set-key (kbd "s-\\") 'toggle-selective-display)
-;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-;; (add-hook 'java-mode-hook       'hs-minor-mode)
-;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
-;; (add-hook 'perl-mode-hook       'hs-minor-mode)
-;; (add-hook 'sh-mode-hook         'hs-minor-mode)
+         )
+  :init
+  (progn
+    ;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
+    (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+    ;; (add-hook 'java-mode-hook       'hs-minor-mode)
+    ;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
+    ;; (add-hook 'perl-mode-hook       'hs-minor-mode)
+    ;; (add-hook 'sh-mode-hook         'hs-minor-mode)
+    ))
 
 ;; (defun display-code-line-counts (ov)
 ;;   (when (eq 'code (overlay-get ov 'hs))
