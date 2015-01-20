@@ -1,4 +1,6 @@
 (setq debug-on-error t) ;; turned off at the end
+;; this is for the emacs code browser
+(setq stack-trace-on-error t)
 
 ;; TODO jump to last line and switch to edit mode
 ;; TODO delete to the end of line and switch to edit mode
@@ -31,10 +33,10 @@
 
 (require 'use-package)
 
-;; 'current match/total matches' in the mode-line (pink stuff bottom left)
-(global-anzu-mode +1)
-
-(size-indication-mode 1)  ; filesize indicator
+(use-package anzu-mode ;; mode-line  (pink - bottom left): 'current match/total matches'
+  :init
+  (progn
+    (global-anzu-mode +1)))
 
 ;; (eval-after-load "paredit.el"
 (use-package paredit
@@ -71,8 +73,10 @@
 ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
 ;; (setq nrepl-hide-special-buffers t)
 
-(use-package auto-complete-config)
-(ac-config-default)
+(use-package auto-complete-config
+  :init
+  (progn
+    (ac-config-default)))
 
 (use-package linum-relative
   :bind ("s-n" . linum-relative-toggle)
@@ -85,11 +89,11 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; reload all buffers when the file is changed
-(global-auto-revert-mode t)
-
-;; this is for the emacs code browser
-(setq stack-trace-on-error t)
+(use-package autorevert
+  :init
+  (progn
+    ;; reload all buffers when the file is changed
+    (global-auto-revert-mode t)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -161,12 +165,13 @@
 
 ;;(add-to-list 'load-path "~/.emacs.d/edit-server/")
 
-(autoload 'magit-status "magit" nil t)
 ;; (global-set-key [f6] 'split-window-horizontally)
-;; (global-set-key [f6] 'magit-status)
 (use-package magit
   ;; :bind ("M-g M-g" . magit-status)
   :bind ("<f6>" . magit-status) ;; [f6] does not work
+  :init
+  (progn
+    (autoload 'magit-status "magit" nil t))
   ;; :config
   ;; (progn
   ;;   (when (eq system-type 'darwin)
@@ -217,6 +222,7 @@
 (use-package simple
   :init
   (progn
+    (size-indication-mode 1)  ; filesize indicator
     (setq truncate-lines t) ;; no line wrap
     (define-key global-map [f5] 'toggle-truncate-lines)
     (column-number-mode 1)
