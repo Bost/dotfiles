@@ -282,8 +282,12 @@
 ;; (define-key global-map [f5] 'toggle-truncate-lines)
 
 ;; TODO helm-mode: <tab> should work in minibuffer as without helm
+(use-package helm
+  :bind (("M-x" . helm-M-x)
+         ("s-a" . helm-buffers-list) ;; see ace-jump-buffer
+         ))
 (helm-mode 1)
-(global-set-key (kbd "M-x") 'helm-M-x)
+(helm-autoresize-mode 1)
 
 (use-package move-text)
 (move-text-default-bindings)
@@ -466,7 +470,8 @@ by using nxml's indentation rules."
 
 (use-package ace-jump-mode
   :bind (("<f2>" . ace-jump-mode)
-         ("s-a" . ace-jump-buffer)))
+         ;; ("s-a" . ace-jump-buffer) ;; see helm-buffers-list
+         ))
 (use-package ace-jump-line-mode
   :bind ("<C-f2>". ace-jump-line-mode))
 
@@ -716,6 +721,7 @@ by using nxml's indentation rules."
 (add-hook 'after-save-hook
   'executable-make-buffer-file-executable-if-script-p)
 
+(use-package whitespace)
 (setq require-final-newline t)
 (set-default 'indicate-empty-lines t)
 (setq show-trailing-whitespace t)
