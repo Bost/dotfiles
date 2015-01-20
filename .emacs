@@ -803,6 +803,7 @@ by using nxml's indentation rules."
   :bind ("C-;" . evilnc-comment-or-uncomment-lines))
 
 (use-package color-identifiers-mode)
+(add-hook 'after-init-hook 'global-color-identifiers-mode)
 
 (defun my/enable-color-identifiers ()
   (interactive)
