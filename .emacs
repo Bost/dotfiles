@@ -202,7 +202,6 @@
   ;;             (diminish 'magit-auto-revert-mode)))
  )
 
-
 (setq x-select-enable-clipboard-manager nil) ; prevent: Error saving to X clipboard manager.
 
 (load-library "environment-lib")
@@ -210,14 +209,26 @@
 
 ;; highlight current line - this is probably not needed in the default face
 ;; (global-hl-line-mode 1)
-(column-number-mode 1)
 
 ;; -t: semicolon is the command line terminator.
 ;; default is end-of-line as a SQL statement terminator
 ;; (setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
 
-(setq default-truncate-lines t) ;; no line wrap
-(define-key global-map [f5] 'toggle-truncate-lines)
+(use-package simple
+  :init
+  (progn
+    (setq truncate-lines t) ;; no line wrap
+    (define-key global-map [f5] 'toggle-truncate-lines)
+    (column-number-mode 1)
+
+    (defun kill-line-backward (arg)
+      "Kill ARG lines backward."
+      (interactive "p")
+      (kill-line (- 1 arg)))
+
+    ;; C-s-backspace is the default key binding for kill-whole-line
+    (global-set-key (kbd "<C-s-backspace>") 'kill-line-backward)
+    (global-set-key (kbd "<C-s-delete>") 'kill-line)))
 
 (use-package neotree
   :bind ("<s-f8>" . neotree-toggle))
@@ -276,8 +287,8 @@
 ;; TODO helm-mode: <tab> should work in minibuffer as without helm
 (use-package helm
   :bind (("M-x" . helm-M-x)
-         ("s-a" . helm-buffers-list) ;; see ace-jump-buffer
-         )
+         ;; see ace-jump-buffer
+         ("s-a" . helm-buffers-list))
   :init
   (progn
     (helm-mode 1)
@@ -289,15 +300,6 @@
     ;; Bind move-text-up/down to M-up/down
     (move-text-default-bindings)))
 
-
-(defun kill-line-backward (arg)
-  "Kill ARG lines backward."
-  (interactive "p")
-  (kill-line (- 1 arg)))
-
-;; C-S-backspace is the default key binding for kill-whole-line
-(global-set-key (kbd "<C-S-backspace>") 'kill-line-backward)
-(global-set-key (kbd "<C-S-delete>") 'kill-line)
 
 (put 'upcase-region 'disabled nil)
 
@@ -330,8 +332,10 @@ by using nxml's indentation rules."
 ;; (diredp-mouse-find-file-reuse-dir-buffer [mouse-1])
 ;; (diredp-subst-find-alternate-for-find)
 
-;; layout management
-(winner-mode 1)
+(use-package winner ;; layout management
+  :init
+  (progn
+    (winner-mode 1)))
 
 (load-library "evil-numbers-lib")
 
@@ -346,7 +350,6 @@ by using nxml's indentation rules."
       "wr" 'toggle-truncate-lines
       "dd" 'kill-whole-line
       "SPC" 'evil-search-highlight-persist-remove-all)))
-
 
 (use-package evil
   :bind ("s-p" . evil-mode)
@@ -481,7 +484,6 @@ by using nxml's indentation rules."
 (use-package ace-jump-line-mode
   :bind ("<C-f2>". ace-jump-line-mode))
 
-;; (global-set-key (kbd "<f3>") 'whitespace-mode) ;; f3 / C-x ( and f4 / C-x ) are for macros
 ;; (global-unset-key (kbd "<f3>"))
 ;; (global-set-key (kbd "<f3>") 'kmacro-start-macro)
 
@@ -552,10 +554,6 @@ by using nxml's indentation rules."
     (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize) ;; default
     (define-key undo-tree-map (kbd "<f12>") 'undo-tree-visualize)
     (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
-
-(use-package whitespace
-  :bind (((kbd "s-w") . whitespace-mode)
-         ((kbd "s-<f7>") . whitespace-cleanup)))
 
 ;; (global-set-key [scroll] 'exec-test-macro)
 
@@ -715,23 +713,6 @@ by using nxml's indentation rules."
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
-(defun toggle-selective-display (column)
-  (interactive "P")
-  (set-selective-display
-   (or column
-       (unless selective-display
-         (1+ (current-column))))))
-
-(defun toggle-hiding (column)
-  (interactive "P")
-  (if hs-minor-mode
-      (if (condition-case nil
-              (hs-toggle-hiding)
-            (error t))
-          (hs-show-all))
-    (toggle-selective-display column)))
-
-;; (load-library "hideshow")
 (use-package hideshow
   :bind (("C-M-<right>" . hs-show-block)
          ("C-M-<left>"  . hs-hide-block)
@@ -744,10 +725,26 @@ by using nxml's indentation rules."
   (progn
     ;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
     (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-    ;; (add-hook 'java-mode-hook       'hs-minor-mode)
-    ;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
+    (add-hook 'java-mode-hook       'hs-minor-mode)
+    (add-hook 'lisp-mode-hook       'hs-minor-mode)
     ;; (add-hook 'perl-mode-hook       'hs-minor-mode)
-    ;; (add-hook 'sh-mode-hook         'hs-minor-mode)
+    (add-hook 'sh-mode-hook         'hs-minor-mode)
+
+    (defun toggle-selective-display (column)
+      (interactive "P")
+      (set-selective-display
+       (or column
+           (unless selective-display
+             (1+ (current-column))))))
+
+    (defun toggle-hiding (column)
+      (interactive "P")
+      (if hs-minor-mode
+          (if (condition-case nil
+                  (hs-toggle-hiding)
+                (error t))
+              (hs-show-all))
+        (toggle-selective-display column)))
     ))
 
 ;; (defun display-code-line-counts (ov)
@@ -771,7 +768,10 @@ by using nxml's indentation rules."
 (add-hook 'after-save-hook
   'executable-make-buffer-file-executable-if-script-p)
 
+
 (use-package whitespace
+  :bind (((kbd "s-w") . whitespace-mode)
+         ((kbd "s-<f7>") . whitespace-cleanup))
   :init
   (progn
     (setq require-final-newline t)
@@ -780,7 +780,6 @@ by using nxml's indentation rules."
 
 ;; Always prefer to load newer files, instead of giving precedence to the .elc files
 (setq load-prefer-newer t)
-
 
 (use-package popwin
   :idle (popwin-mode 1))
