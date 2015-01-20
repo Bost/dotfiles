@@ -219,15 +219,6 @@
 (setq default-truncate-lines t) ;; no line wrap
 (define-key global-map [f5] 'toggle-truncate-lines)
 
-;;(defun cygpath ()
-;;  (setq path (thing-at-point 'line))
-;;  (split-window-below)
-;;  (eshell)
-;;  (interactive)
-;;  (insert (concat "cygpath -u " path))
-;;  (eshell-send-input))
-;;(global-set-key [f7] 'cygpath)
-
 (use-package neotree
   :bind ("<s-f8>" . neotree-toggle))
 
