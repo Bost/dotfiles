@@ -697,14 +697,20 @@ by using nxml's indentation rules."
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
+(use-package hideshow
+  :bind (("C-M-<right>" . hs-show-block)
+         ("C-M-<left>"  . hs-hide-block)
+         ("C-M-<prior>" . hs-hide-all)
+         ("C-M-<next>"  . hs-show-all)))
+
 ;; Ctrl+Meta+PageUp
-(global-set-key [C-M-prior] '(lambda ()
-                               (interactive)
-                               (hide-body)))
+;; (global-set-key [C-M-prior] '(lambda ()
+;;                                (interactive)
+;;                                (hide-body)))
 ;; Ctrl+Meta+PageDown
-(global-set-key [C-M-next] '(lambda ()
-                              (interactive)
-                              (show-all)))
+;; (global-set-key [C-M-next] '(lambda ()
+;;                               (interactive)
+;;                               (show-all)))
 
  ;; check on saving whether the edited file contains a shebang - if yes make it executable
 (add-hook 'after-save-hook
