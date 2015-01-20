@@ -232,6 +232,11 @@
       (interactive "p")
       (kill-line (- 1 arg)))
 
+    ;; (global-set-key (kbd "<S-delete>") 'kill-line)
+    (global-set-key (kbd "<S-delete>") 'kill-region)
+    ;; clipboard-kill-region belongs to package menu-bar
+    ;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
+
     ;; C-s-backspace is the default key binding for kill-whole-line
     (global-set-key (kbd "<C-s-backspace>") 'kill-line-backward)
     (global-set-key (kbd "<C-s-delete>") 'kill-line)))
@@ -306,7 +311,6 @@
     ;; Bind move-text-up/down to M-up/down
     (move-text-default-bindings)))
 
-
 (put 'upcase-region 'disabled nil)
 
 (defun bf-pretty-print-xml-region (begin end)
@@ -365,23 +369,29 @@ by using nxml's indentation rules."
 
 ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
 ;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
-;; (use-package evil-snipe)
-;; (global-evil-snipe-mode 1)
+;; (use-package evil-snipe
+;;   :init
+;;   (progn
+;;     (global-evil-snipe-mode 1)))
 
+(use-package evil-commands
+  :init
+  (progn
+    (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)))
 
-(define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
-(define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
+(use-package emacs
+  :init
+  (progn
+    (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)))
+
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
-;; (global-set-key (kbd "<S-delete>") 'kill-line)
-(global-set-key (kbd "<S-delete>") 'kill-region)
-;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
 
 (use-package evil-search-highlight-persist
   :init
   (progn
     (global-evil-search-highlight-persist t)))
 
-(add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
+;; (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
 (use-package transpose-frame
   :bind ("<f8>" . transpose-frame))
 
