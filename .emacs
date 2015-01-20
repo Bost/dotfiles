@@ -38,8 +38,8 @@
 
 ;; (eval-after-load "paredit.el"
 (use-package paredit
-  :bind(((kbd "s-<left>")  . paredit-backward-slurp-sexp)
-        ((kbd "s-<right>") . paredit-backward-barf-sexp)))
+  :bind (((kbd "s-<left>")  . paredit-backward-slurp-sexp)
+         ((kbd "s-<right>") . paredit-backward-barf-sexp)))
 
 (use-package paredit-menu)
 
@@ -75,8 +75,10 @@
 (ac-config-default)
 
 (use-package linum-relative
-  :bind ("s-n" . linum-relative-toggle))
-(global-linum-mode t)
+  :bind ("s-n" . linum-relative-toggle)
+  :init
+  (progn
+    (global-linum-mode t)))
 
 ;; minibuffer completion incremental feedback
 (icomplete-mode 99)  ; turn on icomplete-mode
@@ -285,12 +287,18 @@
 (use-package helm
   :bind (("M-x" . helm-M-x)
          ("s-a" . helm-buffers-list) ;; see ace-jump-buffer
-         ))
-(helm-mode 1)
-(helm-autoresize-mode 1)
+         )
+  :init
+  (progn
+    (helm-mode 1)
+    (helm-autoresize-mode 1)))
 
-(use-package move-text)
-(move-text-default-bindings)
+(use-package move-text
+  :init
+  (progn
+    ;; Bind move-text-up/down to M-up/down
+    (move-text-default-bindings)))
+
 
 (defun kill-line-backward (arg)
   "Kill ARG lines backward."
@@ -346,8 +354,10 @@ by using nxml's indentation rules."
 (setq evil-leader/in-all-states t)
 
 (use-package evil
-  :bind ("s-p" . evil-mode))
-(evil-mode 1)
+  :bind ("s-p" . evil-mode)
+  :init
+  (progn
+    (evil-mode 1)))
 
 ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
 ;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
@@ -475,8 +485,6 @@ by using nxml's indentation rules."
 (use-package ace-jump-line-mode
   :bind ("<C-f2>". ace-jump-line-mode))
 
-;; (global-set-key (kbd "<C-f2>") 'ace-jump-line-mode)
-
 ;; (global-set-key (kbd "<f3>") 'whitespace-mode) ;; f3 / C-x ( and f4 / C-x ) are for macros
 ;; (global-unset-key (kbd "<f3>"))
 ;; (global-set-key (kbd "<f3>") 'kmacro-start-macro)
@@ -582,21 +590,21 @@ by using nxml's indentation rules."
 
 
 ;; (add-to-list 'load-path "path/to/evil-args")
-(use-package evil-args)
+(use-package evil-args
+  :init
+  (progn
+    ;; bind evil-args text objects
+    (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+    (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 
-;; bind evil-args text objects
-(define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-(define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+    ;; bind evil-forward/backward-args
+    (define-key evil-normal-state-map "L" 'evil-forward-arg)
+    (define-key evil-normal-state-map "H" 'evil-backward-arg)
+    (define-key evil-motion-state-map "L" 'evil-forward-arg)
+    (define-key evil-motion-state-map "H" 'evil-backward-arg)
 
-;; bind evil-forward/backward-args
-(define-key evil-normal-state-map "L" 'evil-forward-arg)
-(define-key evil-normal-state-map "H" 'evil-backward-arg)
-(define-key evil-motion-state-map "L" 'evil-forward-arg)
-(define-key evil-motion-state-map "H" 'evil-backward-arg)
-
-;; bind evil-jump-out-args
-(define-key evil-normal-state-map "K" 'evil-jump-out-args)
-
+    ;; bind evil-jump-out-args
+    (define-key evil-normal-state-map "K" 'evil-jump-out-args)))
 
 ;; text exchange operator
 ;;(use-package evil-exchange) ; not available in melpa-stable
@@ -617,12 +625,16 @@ by using nxml's indentation rules."
 ;; (use-package evil-surround) ; not available in melpa-stable
 ;;(global-evil-surround-mode 0)
 
-(setq evil-emacs-state-cursor '("red" box))
-(setq evil-normal-state-cursor '("green" box))
-(setq evil-visual-state-cursor '("orange" box))
-(setq evil-insert-state-cursor '("red" bar))
-(setq evil-replace-state-cursor '("red" bar))
-(setq evil-operator-state-cursor '("red" hollow))
+(use-package evil-states
+  :init
+  (progn
+    (setq evil-emacs-state-cursor '("red" box))
+    (setq evil-normal-state-cursor '("green" box))
+    (setq evil-visual-state-cursor '("orange" box))
+    (setq evil-insert-state-cursor '("red" bar))
+    (setq evil-replace-state-cursor '("red" bar))
+    (setq evil-operator-state-cursor '("red" hollow))
+    ))
 
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
@@ -758,10 +770,12 @@ by using nxml's indentation rules."
 (add-hook 'after-save-hook
   'executable-make-buffer-file-executable-if-script-p)
 
-(use-package whitespace)
-(setq require-final-newline t)
-(set-default 'indicate-empty-lines t)
-(setq show-trailing-whitespace t)
+(use-package whitespace
+  :init
+  (progn
+    (setq require-final-newline t)
+    (set-default 'indicate-empty-lines t)
+    (setq show-trailing-whitespace t)))
 
 ;; Always prefer to load newer files, instead of giving precedence to the .elc files
 (setq load-prefer-newer t)
