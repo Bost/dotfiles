@@ -108,17 +108,17 @@
     ;;   (sqlite . t)
     ;;   (perl . t)
     ;;   ))
+    ;; Show syntax highlighting per language native mode in *.org
+    (setq org-src-fontify-natively t)
+    ;; For languages with significant whitespace like Python:
+    (setq org-src-preserve-indentation t)
+
+    ;; Add shortcuts for ogr-agenda
+    ;;(global-set-key "\C-cl" 'org-store-link)
+    ;;(global-set-key "\C-cc" 'org-capture)
+    ;;(global-set-key "\C-ca" 'org-agenda)
     ))
 
-;; Show syntax highlighting per language native mode in *.org
-(setq org-src-fontify-natively t)
-;; For languages with significant whitespace like Python:
-(setq org-src-preserve-indentation t)
-
-;; Add shortcuts for ogr-agenda
-;;(global-set-key "\C-cl" 'org-store-link)
-;;(global-set-key "\C-cc" 'org-capture)
-;;(global-set-key "\C-ca" 'org-agenda)
 
 ;; Setup custom shortcuts
 ;;(global-set-key "\C-x\C-g" 'goto-line)
@@ -224,7 +224,6 @@
 ;;      (switch-to-buffer nil))               ; return to the initial buffer
 
 
-;; TODO helm-mode: <tab> should work in minibuffer as without helm
 (use-package helm
   :bind (("M-x" . helm-M-x)
          ;; see ace-jump-buffer
