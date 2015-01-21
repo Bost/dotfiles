@@ -582,15 +582,10 @@ by using nxml's indentation rules."
 (global-set-key (kbd "M-o") 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
-(projectile-global-mode)
-;; (use-package projectile
-;;   :bind (;;("C-x f" . projectile-find-file)
-;;          ("C-c p s" . projectile-switch-project)
-;;          ("C-c p a" . projectile-ag)
-;;          ("C-c p g" . projectile-grep))
-;;   :config
-;;   (progn
-;;     (defconst projectile-mode-line-lighter " P")))
+(use-package projectile
+  :init
+  (progn
+    (projectile-global-mode)))
 
 ;; avoid warning while emacs-24.4 start up
 ;; (add-to-list 'load-path "~/.emacs.d")
