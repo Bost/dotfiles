@@ -231,7 +231,20 @@
   :init
   (progn
     (helm-mode 1)
-    (helm-autoresize-mode 1)))
+    (helm-autoresize-mode 1)
+    (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
+
+    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ;; rebind tab to do persistent action
+    (define-key helm-map (kbd "C-i")   'helm-execute-persistent-action) ;; make TAB works in terminal
+    (define-key helm-map (kbd "C-z")   'helm-select-action) ;; list actions using C-z
+    (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
+    (progn ;; helm-mini
+      (setq helm-buffers-fuzzy-matching t
+            helm-recentf-fuzzy-match    t)
+
+      (global-set-key (kbd "C-x b") 'helm-mini))
+    ))
 
 (use-package move-text
   :init
