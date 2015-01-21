@@ -38,7 +38,6 @@
   (progn
     (global-anzu-mode +1)))
 
-;; (eval-after-load "paredit.el"
 (use-package paredit
   :bind (((kbd "s-<left>")  . paredit-backward-slurp-sexp)
          ((kbd "s-<right>") . paredit-backward-barf-sexp)))
@@ -91,21 +90,25 @@
 ;;(desktop-load-default)
 ;;(desktop-read)
 
-;; (use-package org-install)
-;; (org-babel-do-load-languages
-;; 'org-babel-load-languages
-;; '(
-;;   (emacs-lisp . t)
-;;   (clojure . t)
-;;   (sh . t)
-;;   (python .t)
-;;   (R . t)
-;;   (ruby . t)
-;;   (ditaa . t)
-;;   (dot . t)
-;;   (sqlite . t)
-;;   (perl . t)
-;;   ))
+(use-package org
+  :config
+  (progn
+    ;; (use-package org-install)
+    ;; (org-babel-do-load-languages
+    ;; 'org-babel-load-languages
+    ;; '(
+    ;;   (emacs-lisp . t)
+    ;;   (clojure . t)
+    ;;   (sh . t)
+    ;;   (python .t)
+    ;;   (R . t)
+    ;;   (ruby . t)
+    ;;   (ditaa . t)
+    ;;   (dot . t)
+    ;;   (sqlite . t)
+    ;;   (perl . t)
+    ;;   ))
+    ))
 
 ;; Show syntax highlighting per language native mode in *.org
 (setq org-src-fontify-natively t)
@@ -312,9 +315,11 @@ by using nxml's indentation rules."
   (progn
     (global-evil-search-highlight-persist t)))
 
-;; (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")
 (use-package transpose-frame
-  :bind ("<f8>" . transpose-frame))
+  :bind ("<f8>" . transpose-frame)
+  :init
+  (progn
+    (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")))
 
 (use-package time
   :init
