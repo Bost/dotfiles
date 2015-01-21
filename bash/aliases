@@ -483,7 +483,7 @@ if [ $isLinuxVB -gt 0 ]; then
     alias prod='echo ssh rsvoboda@10.236.105.205; ssh rsvoboda@10.236.105.205'
     alias abnt='echo ssh rsvoboda@10.236.105.206; ssh rsvoboda@10.236.105.206'
     alias hbg='echo ssh ADN0035@10.236.0.98; ssh ADN0035@10.236.0.98'
-    alias sdv='echo ssh ADN0035@10.236.1.105; ssh ADN0035@10.236.1.105'
+    alias sdve='echo ssh ADN0035@10.236.1.105; ssh ADN0035@10.236.1.105'
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias share='cd $HOME/share'
