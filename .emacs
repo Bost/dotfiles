@@ -47,16 +47,9 @@
 
 ;; org-babel-clojure
 ;; (use-package ob-clojure)
-(global-set-key (kbd "s-t") 'clojure-jump-between-tests-and-code)
 ;; Attention defaults are:
 ;;     C-c C-l: (cider-load-file FILENAME)
 ;;     C-c C-k: (cider-load-current-buffer)
-
-(defun emacs-lisp-mode-keys ()
-  "Modify keymaps used by `emacs-lisp-mode'."
-  (local-set-key (kbd "s-e") 'eval-last-sexp)
-  )
-(add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
 ;;(defun skewer-mode-keys ()
 ;;  "Modify keymaps used by `skewer-mode'."
@@ -579,24 +572,27 @@ by using nxml's indentation rules."
 
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
-(global-set-key (kbd "M-o") 'ace-window)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+(use-package ace-window
+  :init
+  (progn
+    (global-set-key (kbd "M-o") 'ace-window)
+    ;; the sequence of leading characters for each window:
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))))
 
 (use-package projectile
   :init
   (progn
     (projectile-global-mode)))
 
-;; avoid warning while emacs-24.4 start up
-;; (add-to-list 'load-path "~/.emacs.d")
-
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (use-package auto-complete-config
   :init
   (progn
     (ac-config-default)))
 
-(powerline-evil-center-color-theme)
+(use-package powerline-evil-themes
+  :init
+  (progn
+    (powerline-evil-center-color-theme)))
 
  ;; (setq redisplay-dont-pause t
  ;;       scroll-margin 1
@@ -625,7 +621,7 @@ by using nxml's indentation rules."
       (select-window (active-minibuffer-window))
     (error "Minibuffer is not active")))
 
-(global-set-key "\C-co" 'switch-to-minibuffer) ;; Bind to `C-c o'
+(global-set-key "\C-co" 'switch-to-minibuffer) ;; Bind to: C-c o
 
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
@@ -658,8 +654,7 @@ by using nxml's indentation rules."
          ("C-M-<prior>" . hs-hide-all)
          ("C-M-<next>"  . hs-show-all)
          ((kbd "M-+")   . toggle-hiding)
-         ((kbd "s-\\")  . toggle-selective-display)
-         )
+         ((kbd "s-\\")  . toggle-selective-display))
   :init
   (progn
     ;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
@@ -702,11 +697,6 @@ by using nxml's indentation rules."
 ;; (global-set-key [C-M-next] '(lambda ()
 ;;                               (interactive)
 ;;                               (show-all)))
-
- ;; check on saving whether the edited file contains a shebang - if yes make it executable
-(add-hook 'after-save-hook
-  'executable-make-buffer-file-executable-if-script-p)
-
 
 (use-package whitespace
   :bind (((kbd "s-w") . whitespace-mode)
@@ -798,8 +788,10 @@ by using nxml's indentation rules."
 (use-package evil-nerd-commenter
   :bind ("C-;" . evilnc-comment-or-uncomment-lines))
 
-(use-package color-identifiers-mode)
-(add-hook 'after-init-hook 'global-color-identifiers-mode)
+(use-package color-identifiers-mode
+  :init
+  (progn
+    (add-hook 'after-init-hook 'global-color-identifiers-mode)))
 
 (defun my/enable-color-identifiers ()
   (interactive)
@@ -902,6 +894,10 @@ See: `xah-forward-block'"
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
     ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
 
+    ;; check on saving whether the edited file contains a shebang - if yes make it executable
+    (add-hook 'after-save-hook
+              'executable-make-buffer-file-executable-if-script-p)
+
     (custom-set-faces
      ;; custom-set-faces was added by Custom.
      ;; If you edit it by hand, you could mess it up, so be careful.
@@ -914,6 +910,13 @@ See: `xah-forward-block'"
      '(region ((t (:background "#006400")))))
 
     (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+
+    (defun emacs-lisp-mode-keys ()
+      "Modify keymaps used by `emacs-lisp-mode'."
+      (local-set-key (kbd "s-e") 'eval-last-sexp))
+    (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
+
+    (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
     ))
 
 ;; TODO install & use smartparens & paredit

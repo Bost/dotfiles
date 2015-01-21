@@ -15,6 +15,7 @@
    ac-nrepl
    ace-jump-buffer
    ace-jump-mode
+   ace-window
    ack
    ack-and-a-half
    ;; Space align various Clojure forms [github]
