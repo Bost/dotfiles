@@ -582,10 +582,6 @@ by using nxml's indentation rules."
 
 (use-package evil-visualstar)
 
-;; TODO (load "~/bin/dbases.el")
-;; (if (> (string-to-number (getenv "isLinuxVB")) 0)
-;;     (load "~/bin/dbases.el"))
-
 ;; (use-package evil-jumper) ;; C-i / C-o
 
 ;; (use-package evil-surround) ; not available in melpa-stable

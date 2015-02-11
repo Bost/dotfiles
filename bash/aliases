@@ -482,8 +482,12 @@ if [ $isLinuxVB -gt 0 ]; then
     #alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
     alias prod='echo ssh rsvoboda@10.236.105.205; ssh rsvoboda@10.236.105.205'
     alias abnt='echo ssh rsvoboda@10.236.105.206; ssh rsvoboda@10.236.105.206'
-    alias hbg='echo ssh ADN0035@10.236.0.98; ssh ADN0035@10.236.0.98'
-    alias sdve='echo ssh ADN0035@10.236.1.105; ssh ADN0035@10.236.1.105'
+
+    alias hbg_uss='echo ssh ADN0035@10.236.0.98; ssh ADN0035@10.236.0.98'
+    alias hbg3270='echo x3270 -charset CP273 194.8.117.99:3023; x3270 -charset CP273 194.8.117.99:3023'
+
+    alias sdve_uss='echo ssh ADN0035@10.236.1.105; ssh ADN0035@10.236.1.105'
+    alias sdve3270='echo x3270 -charset CP273 10.236.1.105; x3270 -charset CP273 10.236.1.105'
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias share='cd $HOME/share'
@@ -528,6 +532,7 @@ fi
  alias ee='RunBg emacsclient $dev/dotfiles/bash/env'
  alias ec='RunBg emacsclient $dev/dotfiles/bash/config'
 alias ece='RunBg emacsclient $dev/cheatsheet/emacs-commands.js'
+alias ech='RunBg emacsclient $dev/cheatsheet/host-commands.js'
 alias ecg='RunBg emacsclient $dev/cheatsheet/git-commands.js'
 alias ecr='RunBg emacsclient $dev/cheatsheet/rest-commands.js'
 alias ecv='RunBg emacsclient $dev/cheatsheet/vim-commands.js'
