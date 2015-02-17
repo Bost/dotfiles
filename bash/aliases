@@ -264,13 +264,15 @@ alias take='mkdirAndCd'
  alias lcc='Run lein clean'
  alias lco='Run lein cljsbuild once'
  alias lca='Run lein cljsbuild auto'
-alias lcca='Run lein cljsbuild clean && Run lein cljsbuild auto'
+alias lccad='Run lein  clean && Run lein cljsbuild auto'
+alias lrs='Run lein ring server'
 
  alias om='Run cd $dev/om-async'
 alias oma='Run cd $dev/om-async'
 alias src='Run cd src'
 alias omt='Run cd $dev/om-tut'
 alias lcad='Run lein cljsbuild auto dev' # start it in om-async directory
+alias  lco='Run lein cljsbuild once' # start it in om-async directory
 alias lcxa='Run lein cljx auto' # start it in om-async directory
 
 GitUpdateAll() {
@@ -530,16 +532,21 @@ fi
 
   alias e='RunBg emacsclient'
  alias ea='RunBg emacsclient $dev/dotfiles/bash/aliases'
+alias eba='RunBg emacsclient $dev/dotfiles/bash/aliases'
  alias ee='RunBg emacsclient $dev/dotfiles/bash/env'
+alias ebe='RunBg emacsclient $dev/dotfiles/bash/env'
  alias ec='RunBg emacsclient $dev/dotfiles/bash/config'
+alias ebc='RunBg emacsclient $dev/dotfiles/bash/config'
 alias ece='RunBg emacsclient $dev/cheatsheet/emacs-commands.js'
 alias ech='RunBg emacsclient $dev/cheatsheet/host-commands.js'
 alias ecg='RunBg emacsclient $dev/cheatsheet/git-commands.js'
 alias ecr='RunBg emacsclient $dev/cheatsheet/rest-commands.js'
 alias ecv='RunBg emacsclient $dev/cheatsheet/vim-commands.js'
- alias eb='RunBg emacsclient $dev/dotfiles/.bashrc'
- alias er='RunBg emacsclient $dev/dotfiles/.bashrc'
- alias el='RunBg emacsclient $dev/dotfiles/linux-history.sh'
+alias ecc='RunBg emacsclient $dev/cheatsheet/clojure-commands.js'
+
+ # alias eb='RunBg emacsclient $dev/dotfiles/.bashrc'
+ # alias er='RunBg emacsclient $dev/dotfiles/.bashrc'
+ # alias el='RunBg emacsclient $dev/dotfiles/linux-history.sh'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
