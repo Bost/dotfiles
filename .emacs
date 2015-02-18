@@ -130,7 +130,9 @@
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package magit
   ;; :bind ("M-g M-g" . magit-status)
-  :bind ("<f6>" . magit-status) ;; [f6] does not work
+  :bind
+  ("<f6>" . magit-status) ;; [f6] does not work
+  ;; TODO consider ("s-m" . magit-status)
   :init
   (progn
     (autoload 'magit-status "magit" nil t))
@@ -226,11 +228,15 @@
 
 (use-package helm-config ;; or just helm ?
   :bind (("M-x" . helm-M-x)
+         ("s-g" . helm-google-suggest)
+         ("s-u" . helm-surfraw)
+         ("s-p" . helm-projectile)
          ;; see ace-jump-buffer
          ("s-a" . helm-buffers-list))
   :init
   (progn
-    (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
+    (progn ;; helm-M-x
+      (setq helm-M-x-fuzzy-match t))
 
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-unset-key (kbd "C-x c"))
@@ -253,13 +259,22 @@
     (progn ;; helm-mini
       (setq helm-buffers-fuzzy-matching t
             helm-recentf-fuzzy-match    t)
+      (global-set-key (kbd "C-x b") 'helm-mini)
+      (global-set-key (kbd "s-b") 'helm-mini))
 
-      (global-set-key (kbd "C-x b") 'helm-mini))
+    (progn ;; helm-locate
+      (setq helm-locate-fuzzy-match t))
+    (progn ;; helm-semantic
+      (setq helm-semantic-fuzzy-match t))
+    (progn ;; helm-imenu
+      (setq helm-imenu-fuzzy-match t))
+    (progn ;; helm-apropos
+      (setq helm-apropos-fuzzy-match t))
+    (progn ;; helm-lisp-completion-at-point
+      (setq helm-lisp-fuzzy-completion t))
 
     (helm-mode 1)
-    (helm-autoresize-mode 1)
-
-    ))
+    (helm-autoresize-mode 1)))
 
 (use-package move-text
   :init
@@ -318,10 +333,13 @@ by using nxml's indentation rules."
       "SPC" 'evil-search-highlight-persist-remove-all)))
 
 (use-package evil
-  :bind ("s-p" . evil-mode)
+  :bind ("s-t" . evil-mode)
   :init
   (progn
-    (evil-mode 1)))
+    ;; (interactive "r")
+    (evil-mode 1)
+    ;; (message "evil-mode 1")
+    ))
 
 ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
 ;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
@@ -448,8 +466,10 @@ by using nxml's indentation rules."
 
 (use-package ace-jump-mode
   :bind (("<f2>" . ace-jump-mode)
+         ("s-j" . ace-jump-mode)
          ;; ("s-a" . ace-jump-buffer) ;; see helm-buffers-list
          ))
+
 (use-package ace-jump-line-mode
   :bind ("<C-f2>". ace-jump-line-mode))
 
@@ -876,7 +896,7 @@ See: `xah-forward-block'"
     (global-set-key (kbd "s-c") 'kill-ring-save) ; copy
     (global-set-key (kbd "s-x") 'kill-region)    ; cut
     (global-set-key (kbd "s-v") 'yank)           ; paste
-    (global-set-key (kbd "s-b") 'ido-switch-buffer)
+    ;; (global-set-key (kbd "s-b") 'ido-switch-buffer) ; s-b used for helm-mini
     ;; (global-set-key (kbd "s-k") 'ido-kill-buffer)
     (defun close-buffer ()
       (interactive)
