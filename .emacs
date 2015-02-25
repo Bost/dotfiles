@@ -44,6 +44,16 @@
 
 (use-package paredit-menu)
 
+(use-package evil-smartparens
+  :init
+  (progn
+    ;; evil-smartparens everywhere
+    ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+    ;; evil-smartparens only in clojure
+    (add-hook 'clojure-mode-hook #'evil-smartparens-mode)
+    ;; (sp-pair "\{" "\}")
+    ))
+
 ;; org-babel-clojure
 ;; (use-package ob-clojure)
 ;; Attention defaults are:
@@ -330,7 +340,16 @@ by using nxml's indentation rules."
     (evil-leader/set-key
       "wr" 'toggle-truncate-lines
       "dd" 'kill-whole-line
-      "SPC" 'evil-search-highlight-persist-remove-all)))
+      "SPC" 'evil-search-highlight-persist-remove-all)
+
+    (if (featurep 'helm)
+        (evil-leader/set-key
+          "f" 'helm-find-files
+          "a" 'helm-buffers-list)
+      (evil-leader/set-key
+        "f" 'find-file
+        "a" 'switch-to-buffer))
+    ))
 
 (use-package evil
   :bind ("s-t" . evil-mode)
@@ -468,7 +487,14 @@ by using nxml's indentation rules."
   :bind (("<f2>" . ace-jump-mode)
          ("s-j" . ace-jump-mode)
          ;; ("s-a" . ace-jump-buffer) ;; see helm-buffers-list
-         ))
+         )
+  :init
+  (progn
+    (when (and (featurep 'evil) (featurep 'evil-leader))
+      (evil-leader/set-key
+        "c" 'ace-jump-char-mode
+        "w" 'ace-jump-word-mode
+        "l" 'ace-jump-line-mode))))
 
 (use-package ace-jump-line-mode
   :bind ("<C-f2>". ace-jump-line-mode))
@@ -477,7 +503,13 @@ by using nxml's indentation rules."
 ;; (global-set-key (kbd "<f3>") 'kmacro-start-macro)
 
 (use-package expand-region
-  :bind ("C-=" . er/expand-region))
+  :bind ("C-=" . er/expand-region)
+  :init
+  (progn
+    (when (and (featurep 'evil) (featurep 'evil-leader))
+      (progn
+        (setq expand-region-contract-fast-key "z")
+        (evil-leader/set-key "xx" 'er/expand-region)))))
 
 ;; yasnippets does not to work
 ;; (add-to-list 'load-path

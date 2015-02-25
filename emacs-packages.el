@@ -71,6 +71,7 @@
    evil-org
    evil-paredit
    evil-search-highlight-persist
+   evil-smartparens
    evil-snipe
    evil-surround
    evil-visualstar
