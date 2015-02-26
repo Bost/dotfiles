@@ -142,7 +142,7 @@
   ;; :bind ("M-g M-g" . magit-status)
   :bind
   ("<f6>" . magit-status) ;; [f6] does not work
-  ;; TODO consider ("s-m" . magit-status)
+  ("s-m" . magit-status)
   :init
   (progn
     (autoload 'magit-status "magit" nil t))
@@ -556,7 +556,7 @@ by using nxml's indentation rules."
 (global-set-key [M-s-up] 'shrink-window)
 
 (use-package minimap
-  :bind ("s-m" . minimap-toggle))
+  :bind ("s-i" . minimap-toggle))
 
 ;; (load-library "abbrev-table")
 ;;(global-set-key [f11] 'abbrev-mode)
