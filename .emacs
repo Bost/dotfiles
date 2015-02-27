@@ -1003,5 +1003,5 @@ See: `xah-forward-block'"
     ;; (setq tramp-default-method "ssh")
     ))
 
-;; TODO install & use smartparens & paredit
+;; TODO install & use egg (Emacs Got Git)
 (setq debug-on-error nil)
