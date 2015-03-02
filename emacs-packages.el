@@ -97,6 +97,7 @@
    hackernews
    helm
    helm-ack
+   helm-ag
    helm-git
    helm-git-files
    helm-git-grep
