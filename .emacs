@@ -309,19 +309,29 @@ by using nxml's indentation rules."
     (indent-region begin end))
   (message "Ah, much better!"))
 
-;; When moving to parent directory by `^´, Dired by default creates a
-;; new buffer for each movement up. The following rebinds `^´ to use
-;; the same buffer
-;; (add-hook 'dired-mode-hook
-;;  (lambda ()
-;;   (define-key dired-mode-map (kbd "^")
-;;     (lambda () (interactive) (find-alternate-file "..")))
-;;   ; was dired-up-directory
-;;  ))
-;;(toggle-diredp-find-file-reuse-dir 1)
-;; (diredp-find-file-reuse-dir-buffer 1)
-;; (diredp-mouse-find-file-reuse-dir-buffer [mouse-1])
-;; (diredp-subst-find-alternate-for-find)
+
+(use-package dired
+  :init
+  (progn
+    ;; When moving to parent directory by `^´, Dired by default creates a
+    ;; new buffer for each movement up. The following rebinds `^´ to use
+    ;; the same buffer
+    ;; (add-hook 'dired-mode-hook
+    ;;  (lambda ()
+    ;;   (define-key dired-mode-map (kbd "^")
+    ;;     (lambda () (interactive) (find-alternate-file "..")))
+    ;;   ; was dired-up-directory
+    ;;  ))
+    ;;(toggle-diredp-find-file-reuse-dir 1)
+    ;; (diredp-find-file-reuse-dir-buffer 1)
+    ;; (diredp-mouse-find-file-reuse-dir-buffer [mouse-1])
+    ;; (diredp-subst-find-alternate-for-find)
+    (defun kill-dired-buffers ()
+      (interactive)
+      (mapc (lambda (buffer)
+              (when (eq 'dired-mode (buffer-local-value 'major-mode buffer))
+                (kill-buffer buffer)))
+            (buffer-list)))))
 
 (use-package winner ;; layout management
   :init
