@@ -11,6 +11,8 @@
   (server-start))
 
 (add-to-list 'load-path "~/dev/dotfiles/elisp/")
+(add-to-list 'custom-theme-load-path "~/dev/dotfiles/elisp/")
+;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-library "style-lib")
 
 ;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
@@ -33,26 +35,12 @@
 
 (require 'use-package)
 
-(use-package anzu-mode ;; mode-line  (pink - bottom left): 'current match/total matches'
-  :init
-  (progn
-    (global-anzu-mode +1)))
-
 (use-package paredit
   :bind (((kbd "s-<left>")  . paredit-backward-slurp-sexp)
-         ((kbd "s-<right>") . paredit-backward-barf-sexp)))
-
-(use-package paredit-menu)
-
-(use-package evil-smartparens
+         ((kbd "s-<right>") . paredit-backward-barf-sexp))
   :init
   (progn
-    ;; evil-smartparens everywhere
-    ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-    ;; evil-smartparens only in clojure
-    (add-hook 'clojure-mode-hook #'evil-smartparens-mode)
-    ;; (sp-pair "\{" "\}")
-    ))
+    (use-package paredit-menu))
 
 ;; org-babel-clojure
 ;; (use-package ob-clojure)
@@ -71,6 +59,16 @@
 ;; (add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
 (load-library "cider-lib")
+
+(use-package clj-refactor
+  :init
+  (progn
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (clj-refactor-mode 1)
+                ;; eg. rename files with `C-c C-m rf`.
+                (cljr-add-keybindings-with-prefix "C-c C-m")
+                ))))
 
 ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
 ;; (setq nrepl-hide-special-buffers t)
@@ -193,7 +191,7 @@
 ;; default is end-of-line as a SQL statement terminator
 ;; (setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
 
-(use-package simple
+(use-package simple ;; is this the base package?
   :init
   (progn
     (size-indication-mode 1)  ; filesize indicator
@@ -284,13 +282,12 @@
       (setq helm-lisp-fuzzy-completion t))
 
     (helm-mode 1)
-    (helm-autoresize-mode 1)))
+    (helm-autoresize-mode 1))))
 
-(use-package move-text
+(use-package drag-stuff
   :init
   (progn
-    ;; Bind move-text-up/down to M-up/down
-    (move-text-default-bindings)))
+    (drag-stuff-global-mode t)))
 
 (put 'upcase-region 'disabled nil)
 
@@ -308,7 +305,6 @@ by using nxml's indentation rules."
       (backward-char) (insert "\n"))
     (indent-region begin end))
   (message "Ah, much better!"))
-
 
 (use-package dired
   :init
@@ -338,29 +334,6 @@ by using nxml's indentation rules."
   (progn
     (winner-mode 1)))
 
-(load-library "evil-numbers-lib")
-
-;; enable global-evil-leader-mode before evil-mode, otherwise
-;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
-(use-package evil-leader
-  :init
-  (progn
-    (global-evil-leader-mode)
-    (setq evil-leader/in-all-states t)
-    (evil-leader/set-key
-      "wr" 'toggle-truncate-lines
-      "dd" 'kill-whole-line
-      "SPC" 'evil-search-highlight-persist-remove-all)
-
-    (if (featurep 'helm)
-        (evil-leader/set-key
-          "f" 'helm-find-files
-          "a" 'helm-buffers-list)
-      (evil-leader/set-key
-        "f" 'find-file
-        "a" 'switch-to-buffer))
-    ))
-
 (use-package evil
   :bind ("s-t" . evil-mode)
   :init
@@ -368,26 +341,130 @@ by using nxml's indentation rules."
     ;; (interactive "r")
     (evil-mode 1)
     ;; (message "evil-mode 1")
-    ))
 
-;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
-;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
-;; (use-package evil-snipe
-;;   :init
-;;   (progn
-;;     (global-evil-snipe-mode 1)))
+    ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
+    ;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
+    ;; (use-package evil-snipe
+    ;;   :config
+    ;;   (progn
+    ;;     (global-evil-snipe-mode 1)))
 
-(use-package evil-commands
-  :init
-  (progn
-    (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)))
+    ;; text exchange operator
+    ;;(use-package evil-exchange) ; not available in melpa-stable
+    ;;(setq evil-exchange-key (kbd "zx"))
+    ;;(evil-exchange-install)
+
+    (use-package evil-nerd-commenter
+      :bind ("C-;" . evilnc-comment-or-uncomment-lines))
+
+    (use-package evil-visualstar)
+
+    ;; (use-package evil-jumper) ;; C-i / C-o
+
+    ;; (use-package evil-surround) ; not available in melpa-stable
+    ;;(global-evil-surround-mode 0)
+
+    (use-package evil-states
+      :init
+      (progn
+        (setq evil-emacs-state-cursor '("red" box))
+        (setq evil-normal-state-cursor '("green" box))
+        (setq evil-visual-state-cursor '("orange" box))
+        (setq evil-insert-state-cursor '("red" bar))
+        (setq evil-replace-state-cursor '("red" bar))
+        (setq evil-operator-state-cursor '("red" hollow))
+        ))
+
+    (use-package evil-args
+      :init
+      (progn
+        ;; bind evil-args text objects
+        (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+        (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+
+        ;; bind evil-forward/backward-args
+        (define-key evil-normal-state-map "L" 'evil-forward-arg)
+        (define-key evil-normal-state-map "H" 'evil-backward-arg)
+        (define-key evil-motion-state-map "L" 'evil-forward-arg)
+        (define-key evil-motion-state-map "H" 'evil-backward-arg)
+
+        ;; bind evil-jump-out-args
+        (define-key evil-normal-state-map "K" 'evil-jump-out-args)))
+
+    (use-package evil-numbers
+      :bind (((kbd "C-c +")  . evil-numbers/inc-at-pt)
+             ((kbd "C-c -")  . evil-numbers/dec-at-pt)
+
+             ((kbd "s-+")  . evil-numbers/inc-at-pt)
+             ((kbd "s--")  . evil-numbers/dec-at-pt)
+
+             ((kbd "<C-kp-add>")       . evil-numbers/inc-at-pt)
+             ((kbd "<C-kp-subtract>")  . evil-numbers/dec-at-pt)
+             ((kbd "<s-kp-add>")       . evil-numbers/inc-at-pt)
+             ((kbd "<s-kp-subtract>")  . evil-numbers/dec-at-pt)
+             ;; or only in evil’s normal state:
+             ;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+             ;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
+             ))
+
+    (use-package evil-smartparens
+      :init
+      (progn
+        ;; evil-smartparens everywhere
+        ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+        ;; evil-smartparens only in clojure
+        (add-hook 'clojure-mode-hook #'evil-smartparens-mode)
+        ;; (sp-pair "\{" "\}")
+        ))
+
+    (use-package powerline-evil-themes
+      :init
+      (progn
+        (powerline-evil-center-color-theme)))
+
+    ;; enable global-evil-leader-mode before evil-mode, otherwise
+    ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
+    (use-package evil-leader
+      :init
+      (progn
+        (global-evil-leader-mode)
+        (setq evil-leader/in-all-states t)
+        (evil-leader/set-key
+          "wr" 'toggle-truncate-lines
+          "dd" 'kill-whole-line
+          "SPC" 'evil-search-highlight-persist-remove-all)
+
+        (if (featurep 'helm)
+            (evil-leader/set-key
+              "f" 'helm-find-files
+              "a" 'helm-buffers-list)
+          (evil-leader/set-key
+            "f" 'find-file
+            "a" 'switch-to-buffer))
+        ))
+
+    (use-package evil-nerd-commenter
+      :bind ("M-;" . evilnc-comment-or-uncomment-lines))
+
+    (use-package evil-commands
+      :init
+      (progn
+        (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)))
+
+    (use-package evil-search-highlight-persist
+      :init
+      (progn
+        (global-evil-search-highlight-persist t)))
+
+    (use-package anzu ;; mode-line  (pink - bottom left): 'current match/total matches'
+      :diminish anzu-mode
+      :init
+      (progn
+        (global-anzu-mode 1)
+        (use-package evil-anzu))
+      )))
 
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
-
-(use-package evil-search-highlight-persist
-  :init
-  (progn
-    (global-evil-search-highlight-persist t)))
 
 (use-package transpose-frame
   :bind ("<f8>" . transpose-frame)
@@ -409,9 +486,6 @@ by using nxml's indentation rules."
 ;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
 (global-set-key (kbd "<C-tab>") 'bury-buffer)
 (global-set-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
-
-(use-package evil-nerd-commenter
-  :bind ("M-;" . evilnc-comment-or-uncomment-lines))
 
 ;; (setq default-directory "~/dev")
 
@@ -576,7 +650,6 @@ by using nxml's indentation rules."
 (global-set-key [f7] 'find-file-emacs)
 (global-set-key (kbd "s-<f11>") 'find-file-emacs)
 
-
 (use-package undo-tree
   :idle (global-undo-tree-mode t)
   :diminish ""
@@ -617,48 +690,8 @@ by using nxml's indentation rules."
 ;;  (copy-line -1))
 
 
-;; (add-to-list 'load-path "path/to/evil-args")
-(use-package evil-args
-  :init
-  (progn
-    ;; bind evil-args text objects
-    (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-    (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
-
-    ;; bind evil-forward/backward-args
-    (define-key evil-normal-state-map "L" 'evil-forward-arg)
-    (define-key evil-normal-state-map "H" 'evil-backward-arg)
-    (define-key evil-motion-state-map "L" 'evil-forward-arg)
-    (define-key evil-motion-state-map "H" 'evil-backward-arg)
-
-    ;; bind evil-jump-out-args
-    (define-key evil-normal-state-map "K" 'evil-jump-out-args)))
-
-;; text exchange operator
-;;(use-package evil-exchange) ; not available in melpa-stable
-;;(setq evil-exchange-key (kbd "zx"))
-;;(evil-exchange-install)
-
 (unless (display-graphic-p)
   (use-package evil-terminal-cursor-changer))
-
-(use-package evil-visualstar)
-
-;; (use-package evil-jumper) ;; C-i / C-o
-
-;; (use-package evil-surround) ; not available in melpa-stable
-;;(global-evil-surround-mode 0)
-
-(use-package evil-states
-  :init
-  (progn
-    (setq evil-emacs-state-cursor '("red" box))
-    (setq evil-normal-state-cursor '("green" box))
-    (setq evil-visual-state-cursor '("orange" box))
-    (setq evil-insert-state-cursor '("red" bar))
-    (setq evil-replace-state-cursor '("red" bar))
-    (setq evil-operator-state-cursor '("red" hollow))
-    ))
 
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
@@ -678,11 +711,6 @@ by using nxml's indentation rules."
   :init
   (progn
     (ac-config-default)))
-
-(use-package powerline-evil-themes
-  :init
-  (progn
-    (powerline-evil-center-color-theme)))
 
  ;; (setq redisplay-dont-pause t
  ;;       scroll-margin 1
@@ -874,9 +902,6 @@ by using nxml's indentation rules."
 
 ;; async shell commands
 (push '("*Async Shell Command*" :stick t) popwin:special-display-config)
-
-(use-package evil-nerd-commenter
-  :bind ("C-;" . evilnc-comment-or-uncomment-lines))
 
 (use-package color-identifiers-mode
   :init

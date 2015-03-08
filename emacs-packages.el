@@ -53,6 +53,7 @@
    dircmp
    dired-dups
    dired-single
+   drag-stuff ;; replacement for move-lines
    duplicate-thing
    ;; running leiningen commands from emacs
    elein
@@ -60,6 +61,7 @@
    epl
    ergoemacs-mode
    evil
+   evil-anzu
    evil-args
    evil-escape
    evil-iedit-state
@@ -128,7 +130,6 @@
    magit-push-remote
    minimap
    mode-icons
-   move-text
    multiple-cursors
    neotree
    org
