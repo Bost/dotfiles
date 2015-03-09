@@ -367,7 +367,11 @@ mkdir -p ~/dev/dotfiles/snippets
 mkdir -p ~/bin
 cd ~/bin/ && curl -O https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
 chmod a+x ~/bin/lein
-
+lname=~/.lein/profiles.clj
+if [ ! -L "$lname" ]; then
+    #mv $lname $lname.$timestamp.backup
+    ln -s ~/dev/dotfiles/.lein/profiles.clj $lname
+fi
 
 # TODO get current clojure-contrib jars
 fname=~/dev/clojure-contrib/tools.macro-0.1.2.jar
