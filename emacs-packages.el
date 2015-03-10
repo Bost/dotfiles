@@ -156,6 +156,8 @@
    smartparens
    smex
    sticky-windows
+   ;; underscore -> UPCASE -> CamelCase -> lowerCamelCase conversion of names
+   string-inflection
    tidy
    undo-tree
    use-package
