@@ -228,6 +228,9 @@ extract() {
         *.jar)
               Run unzip $1
               ;;
+        *.war)
+              Run unzip $1
+              ;;
         *.zip)
               Run unzip $1
               ;;
