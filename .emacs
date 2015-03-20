@@ -429,8 +429,9 @@ by using nxml's indentation rules."
         (global-evil-leader-mode)
         (setq evil-leader/in-all-states t)
         (evil-leader/set-key
-          "wr" 'toggle-truncate-lines
           "dd" 'kill-whole-line
+          ;; wr produces: (error "Key sequence w r starts with non-prefix key w")
+          ;; "wr" 'toggle-truncate-lines
           "SPC" 'evil-search-highlight-persist-remove-all)
 
         (if (featurep 'helm)
