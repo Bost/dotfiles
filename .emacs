@@ -884,16 +884,16 @@ by using nxml's indentation rules."
 (push '("*git-gutter:diff*" :width 0.5 :stick t)
       popwin:special-display-config)
 
-;; direx
+;; direx - simple directory browser
 (push '(direx:direx-mode :position left :width 40 :dedicated t)
       popwin:special-display-config)
 
 (push '("*Occur*" :stick t) popwin:special-display-config)
 
-;; prodigy
+;; prodigy - manage external services from emacs
 (push '("*prodigy*" :stick t) popwin:special-display-config)
 
-;; malabar-mode
+;; malabar-mode - better java mode
 (push '("*Malabar Compilation*" :stick t :height 30)
       popwin:special-display-config)
 
@@ -1045,5 +1045,4 @@ See: `xah-forward-block'"
     ;; (setq tramp-default-method "ssh")
     ))
 
-;; TODO install & use egg (Emacs Got Git)
 (setq debug-on-error nil)

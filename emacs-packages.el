@@ -53,9 +53,13 @@
    dircmp
    dired-dups
    dired-single
+   ;; TODO test direx: simple directory explorer
+   direx
    drag-stuff ;; replacement for move-lines
    duplicate-thing
-   ;; running leiningen commands from emacs
+   ;; TODO test egg: Emacs Got Git
+   egg
+   ;; TODO emacs + leiningen: lein/elein might be obsolete
    elein
    elisp-slime-nav
    epl
@@ -126,6 +130,8 @@
    linum-relative
    load-theme-buffer-local
    logito
+   ;; A better Java mode for Emacs
+   malabar-mode
    magit
    magit-push-remote
    minimap
