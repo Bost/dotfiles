@@ -650,7 +650,8 @@ by using nxml's indentation rules."
 (global-set-key (kbd "s-<f11>") 'find-file-emacs)
 
 (use-package undo-tree
-  ;; :idle (global-undo-tree-mode t)
+  ;; :defer probably replaced :idle
+  :defer (global-undo-tree-mode t)
   :diminish ""
   :config
   (progn
@@ -828,8 +829,13 @@ by using nxml's indentation rules."
 (setq load-prefer-newer t)
 
 (use-package popwin
-  ;; :idle (popwin-mode 1)
-  )
+  ;; there is something odd with the function popwin-mode
+  ;; :defer does not work (originaly it was :idle)
+  :init
+  (progn
+    (require 'popwin)
+    (popwin-mode 1)))
+
 (defvar popwin:special-display-config-backup popwin:special-display-config)
 ;; (setq display-buffer-function 'popwin:display-buffer)
 
