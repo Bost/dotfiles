@@ -36,11 +36,11 @@
 (require 'use-package)
 
 (use-package paredit
-  :bind (((kbd "s-<left>")  . paredit-backward-slurp-sexp)
-         ((kbd "s-<right>") . paredit-backward-barf-sexp))
+  :bind (("s-<left>"  . paredit-backward-slurp-sexp)
+         ("s-<right>" . paredit-backward-barf-sexp))
   :init
   (progn
-    (use-package paredit-menu))
+    (use-package paredit-menu)))
 
 ;; org-babel-clojure
 ;; (use-package ob-clojure)
@@ -138,9 +138,8 @@
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package magit
   ;; :bind ("M-g M-g" . magit-status)
-  :bind
-  ("<f6>" . magit-status) ;; [f6] does not work
-  ("s-m" . magit-status)
+  :bind (("<f6>" . magit-status) ;; [f6] does not work
+	 ("s-m" . magit-status))
   :init
   (progn
     (autoload 'magit-status "magit" nil t))
@@ -282,7 +281,7 @@
       (setq helm-lisp-fuzzy-completion t))
 
     (helm-mode 1)
-    (helm-autoresize-mode 1))))
+    (helm-autoresize-mode 1)))
 
 (use-package drag-stuff
   :init
@@ -392,16 +391,16 @@ by using nxml's indentation rules."
         (define-key evil-normal-state-map "K" 'evil-jump-out-args)))
 
     (use-package evil-numbers
-      :bind (((kbd "C-c +")  . evil-numbers/inc-at-pt)
-             ((kbd "C-c -")  . evil-numbers/dec-at-pt)
+      :bind (("C-c +" . evil-numbers/inc-at-pt)
+             ("C-c -" . evil-numbers/dec-at-pt)
 
-             ((kbd "s-+")  . evil-numbers/inc-at-pt)
-             ((kbd "s--")  . evil-numbers/dec-at-pt)
+             ("s-+" . evil-numbers/inc-at-pt)
+             ("s--" . evil-numbers/dec-at-pt)
 
-             ((kbd "<C-kp-add>")       . evil-numbers/inc-at-pt)
-             ((kbd "<C-kp-subtract>")  . evil-numbers/dec-at-pt)
-             ((kbd "<s-kp-add>")       . evil-numbers/inc-at-pt)
-             ((kbd "<s-kp-subtract>")  . evil-numbers/dec-at-pt)
+             ("<C-kp-add>"       . evil-numbers/inc-at-pt)
+             ("<C-kp-subtract>"  . evil-numbers/dec-at-pt)
+             ("<s-kp-add>"       . evil-numbers/inc-at-pt)
+             ("<s-kp-subtract>"  . evil-numbers/dec-at-pt)
              ;; or only in evil’s normal state:
              ;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
              ;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
@@ -651,7 +650,7 @@ by using nxml's indentation rules."
 (global-set-key (kbd "s-<f11>") 'find-file-emacs)
 
 (use-package undo-tree
-  :idle (global-undo-tree-mode t)
+  ;; :idle (global-undo-tree-mode t)
   :diminish ""
   :config
   (progn
@@ -771,8 +770,8 @@ by using nxml's indentation rules."
          ("C-M-<left>"  . hs-hide-block)
          ("C-M-<prior>" . hs-hide-all)
          ("C-M-<next>"  . hs-show-all)
-         ((kbd "M-+")   . toggle-hiding)
-         ((kbd "s-\\")  . toggle-selective-display))
+         ("M-+"   . toggle-hiding)
+         ("s-\\"  . toggle-selective-display))
   :init
   (progn
     ;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
@@ -817,8 +816,8 @@ by using nxml's indentation rules."
 ;;                               (show-all)))
 
 (use-package whitespace
-  :bind (((kbd "s-w") . whitespace-mode)
-         ((kbd "s-<f7>") . whitespace-cleanup))
+  :bind (("s-w" . whitespace-mode)
+         ("s-<f7>" . whitespace-cleanup))
   :init
   (progn
     (setq require-final-newline t)
@@ -829,7 +828,8 @@ by using nxml's indentation rules."
 (setq load-prefer-newer t)
 
 (use-package popwin
-  :idle (popwin-mode 1))
+  ;; :idle (popwin-mode 1)
+  )
 (defvar popwin:special-display-config-backup popwin:special-display-config)
 ;; (setq display-buffer-function 'popwin:display-buffer)
 
