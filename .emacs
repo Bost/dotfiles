@@ -940,17 +940,19 @@ See: `xah-forward-block'"
 
 
 ;; I hate smart quotes, too
-(defcustom smart-to-ascii '(("\x201C" . "\"")
-                            ("\x201D" . "\"")
-                            ("\x2018" . "'")
-                            ("\x2019" . "'")
-                            ;; en-dash
-                            ("\x2013" . "-")
-                            ;; em-dash
-                            ("\x2014" . "-"))
+(defcustom smart-to-ascii
+  '(("\x201C" . "\"")
+    ("\x201D" . "\"")
+    ("\x2018" . "'")
+    ("\x2019" . "'")
+    ;; en-dash
+    ("\x2013" . "-")
+    ;; em-dash
+    ("\x2014" . "-"))
   "Map of smart quotes to their replacements"
-  :type '(repeat (cons (string :tag "Smart Character  ")
-                       (string :tag "Ascii Replacement"))))
+  :type
+  '(repeat (cons (string :tag "Smart Character  ")
+                 (string :tag "Ascii Replacement"))))
 
 (defun my/smart-to-ascii (beg end)
   "Replace smart quotes and dashes with their ASCII equivalents"
