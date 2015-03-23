@@ -424,10 +424,11 @@ by using nxml's indentation rules."
         ;; (sp-pair "\{" "\}")
         ))
 
-    (use-package powerline-evil-themes
-      :init
-      (progn
-        (powerline-evil-center-color-theme)))
+    ;; powerline is buggy at the moment
+    ;; (use-package powerline-evil-themes
+    ;;   :init
+    ;;   (progn
+    ;;     (powerline-evil-center-color-theme)))
 
     ;; enable global-evil-leader-mode before evil-mode, otherwise
     ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
