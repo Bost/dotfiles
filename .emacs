@@ -13,7 +13,15 @@
 (add-to-list 'load-path "~/dev/dotfiles/elisp/")
 (add-to-list 'custom-theme-load-path "~/dev/dotfiles/elisp/")
 ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-library "style-lib")
+
+(setq inhibit-splash-screen t)
+;; (load-theme 'light-blue t)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
+(load-theme 'deeper-blue t)    ;(disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
+;; (load-theme 'misterioso t)  ;(disable-theme 'misterioso)  (enable-theme 'misterioso)
+;; (load-theme 'whiteboard t)  ;(disable-theme 'whiteboard)  (enable-theme 'whiteboard)
+;; (load-theme 'ritchie t) ;(disable-theme 'ritchie) (enable-theme 'ritchie)
+;; test rainbow parenthesis:
+;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
 
 ;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
 (if (string= system-type "windows-nt")
