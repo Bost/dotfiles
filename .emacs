@@ -958,52 +958,52 @@ See: `xah-forward-block'"
                           nil beg end))
 
 (use-package emacs
+  :bind (("s-s" . save-buffer)
+         ("s-f" . find-file)
+         ("s-c" . kill-ring-save) ; copy
+         ("s-x" . kill-region)    ; cut
+         ("s-v" . yank)           ; paste
+         ;; see evil-window-map
+         ("s-q" . other-window)   ; (kbd "s-<tab>") does not work
+         ("<S-iso-lefttab>" . other-window)
+
+         ("s-0" . delete-window)
+         ("s-1" . delete-other-windows)
+         ("s-2" . split-window-below)
+         ("s-3" . split-window-right)
+
+         ("s-h" . describe-key)
+         ("s-k" . close-buffer)
+         ;; TODO C-w: close-buffer, /: search-forward in normal mode
+         ;; (global-set-key (kbd "<C-w>") 'close-buffer)
+
+         ;; TODO slash: search forward in normal mode
+         ;; (global-set-key (kbd "/") 'search-forward)
+
+         ;; (global-set-key [C-s-left] (ignore-error-wrapper 'windmove-left))
+         ;; (global-set-key [C-s-right] (ignore-error-wrapper 'windmove-right))
+         ;; (global-set-key [C-s-up] (ignore-error-wrapper 'windmove-up))
+         ;; (global-set-key [C-s-down] (ignore-error-wrapper 'windmove-down))
+
+         ;; ("s-b" . ido-switch-buffer) ; s-b used for helm-mini
+         ;; ("s-k" . ido-kill-buffer)
+         )
   :init
   (progn
     (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
     ;; (global-set-key (kbd "M-s") 'save-buffer)
     ;; s-s is here just to have consistent key mapping.
     ;; If it's gonna work I can use M-s for something else
-    (global-set-key (kbd "s-s") 'save-buffer)
-    (global-set-key (kbd "s-f") 'find-file)
-    (global-set-key (kbd "s-c") 'kill-ring-save) ; copy
-    (global-set-key (kbd "s-x") 'kill-region)    ; cut
-    (global-set-key (kbd "s-v") 'yank)           ; paste
-    ;; (global-set-key (kbd "s-b") 'ido-switch-buffer) ; s-b used for helm-mini
-    ;; (global-set-key (kbd "s-k") 'ido-kill-buffer)
     (defun close-buffer ()
       (interactive)
       (if server-buffer-clients
           (server-edit)
         (kill-this-buffer)))
 
-    (global-set-key (kbd "s-k") 'close-buffer)
-    ;; TODO C-w: close-buffer, /: search-forward in normal mode
-    ;; (global-set-key (kbd "<C-w>") 'close-buffer)
-
-    ;; TODO slash: search forward in normal mode
-    ;; (global-set-key (kbd "/") 'search-forward)
-
-    ;; (global-set-key [C-s-left] (ignore-error-wrapper 'windmove-left))
-    ;; (global-set-key [C-s-right] (ignore-error-wrapper 'windmove-right))
-    ;; (global-set-key [C-s-up] (ignore-error-wrapper 'windmove-up))
-    ;; (global-set-key [C-s-down] (ignore-error-wrapper 'windmove-down))
-
     (global-set-key [M-s-left] 'shrink-window-horizontally)
     (global-set-key [M-s-right] 'enlarge-window-horizontally)
     (global-set-key [M-s-down] 'enlarge-window)
     (global-set-key [M-s-up] 'shrink-window)
-
-    ;; see evil-window-map
-    (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
-    (global-set-key (kbd "<S-iso-lefttab>") 'other-window)
-
-    (global-set-key (kbd "s-0") 'delete-window)
-    (global-set-key (kbd "s-1") 'delete-other-windows)
-    (global-set-key (kbd "s-2") 'split-window-below)
-    (global-set-key (kbd "s-3") 'split-window-right)
-
-    (global-set-key (kbd "s-h") 'describe-key)
 
     (custom-set-variables
      ;; custom-set-variables was added by Custom.
