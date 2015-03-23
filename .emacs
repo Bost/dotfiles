@@ -637,16 +637,6 @@ by using nxml's indentation rules."
 ;;       (ignore-errors
 ;;         (funcall fn)))))
 
-;; (global-set-key [C-s-left] (ignore-error-wrapper 'windmove-left))
-;; (global-set-key [C-s-right] (ignore-error-wrapper 'windmove-right))
-;; (global-set-key [C-s-up] (ignore-error-wrapper 'windmove-up))
-;; (global-set-key [C-s-down] (ignore-error-wrapper 'windmove-down))
-
-(global-set-key [M-s-left] 'shrink-window-horizontally)
-(global-set-key [M-s-right] 'enlarge-window-horizontally)
-(global-set-key [M-s-down] 'enlarge-window)
-(global-set-key [M-s-up] 'shrink-window)
-
 (use-package minimap
   :bind ("s-i" . minimap-toggle))
 
@@ -966,6 +956,7 @@ See: `xah-forward-block'"
   (interactive "r")
   (format-replace-strings smart-to-ascii
                           nil beg end))
+
 (use-package emacs
   :init
   (progn
@@ -993,6 +984,17 @@ See: `xah-forward-block'"
     ;; TODO slash: search forward in normal mode
     ;; (global-set-key (kbd "/") 'search-forward)
 
+    ;; (global-set-key [C-s-left] (ignore-error-wrapper 'windmove-left))
+    ;; (global-set-key [C-s-right] (ignore-error-wrapper 'windmove-right))
+    ;; (global-set-key [C-s-up] (ignore-error-wrapper 'windmove-up))
+    ;; (global-set-key [C-s-down] (ignore-error-wrapper 'windmove-down))
+
+    (global-set-key [M-s-left] 'shrink-window-horizontally)
+    (global-set-key [M-s-right] 'enlarge-window-horizontally)
+    (global-set-key [M-s-down] 'enlarge-window)
+    (global-set-key [M-s-up] 'shrink-window)
+
+    ;; see evil-window-map
     (global-set-key (kbd "s-q") 'other-window)   ; (kbd "s-<tab>") does not work
     (global-set-key (kbd "<S-iso-lefttab>") 'other-window)
 
