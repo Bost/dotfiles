@@ -721,14 +721,14 @@ by using nxml's indentation rules."
   (progn
     (ac-config-default)))
 
- ;; (setq redisplay-dont-pause t
- ;;       scroll-margin 1
- ;;       scroll-step 1
- ;;       scroll-conservatively 10000
- ;;       scroll-preserve-screen-position 1)
-
- ;; (setq mouse-wheel-follow-mouse 't)
- ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+(use-package sublimity
+  :init
+  (progn
+    ;; only smooth-scrolling together with sublimity leads to smooth scrolling really working! WTF?
+    (use-package smooth-scrolling)
+    (use-package sublimity-scroll)
+    (sublimity-mode 1)
+    ))
 
 ;; another possibility how to define a key chord:
 ;; (global-set-key [(control x) (?0)] 'sticky-window-delete-window)

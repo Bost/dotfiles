@@ -164,6 +164,11 @@
    sticky-windows
    ;; underscore -> UPCASE -> CamelCase -> lowerCamelCase conversion of names
    string-inflection
+
+   ;; only smooth-scrolling together with sublimity leads to smooth scrolling really working! WTF?
+   smooth-scrolling
+   sublimity
+
    tidy
    undo-tree
    use-package
