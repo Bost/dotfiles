@@ -342,7 +342,7 @@ by using nxml's indentation rules."
     (winner-mode 1)))
 
 (use-package evil
-  :bind ("s-t" . evil-mode)
+  :bind ("C-s-t" . evil-mode)
   :init
   (progn
     ;; (interactive "r")
