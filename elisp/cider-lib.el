@@ -37,6 +37,7 @@
 (defun cider-mode-keys ()
   "Modify keymaps used by `cider-mode'."
   (local-set-key (kbd "s-z") 'cider-switch-to-last-clojure-buffer)
+  (local-set-key (kbd "s-t") 'cider-test-run-tests)
   (local-set-key (kbd "s-.") 'cider-jump)
   (local-set-key (kbd "s-,") 'cider-jump-back)
   )
