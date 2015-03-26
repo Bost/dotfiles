@@ -12,7 +12,6 @@
  package-list-needed
  '(
    ac-helm
-   ac-nrepl
    ace-jump-buffer
    ace-jump-mode
    ace-window
