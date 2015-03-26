@@ -23,6 +23,8 @@
    ;; 'current match/total matches' in the mode-line (pink stuff bottom left)
    apt-utils
    async
+   ;; TODO compare auto-complete and company-mode (supported by cider):
+   ;; https://github.com/company-mode/company-mode/issues/68
    auto-complete
    auto-highlight-symbol
    bind-key
@@ -46,6 +48,12 @@
    color-identifiers-mode
    color-theme
    color-theme-buffer-local
+
+   ;; modular completition mechanism
+   ;; TODO compare auto-complete and company-mode (supported by cider):
+   ;; https://github.com/company-mode/company-mode/issues/68
+   ;; company
+
    csv-mode
    dash
    debbugs

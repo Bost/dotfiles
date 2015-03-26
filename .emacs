@@ -85,6 +85,12 @@
   :init
   (progn
     (ac-config-default)))
+;; TODO compare auto-complete and company-mode (supported by cider):
+;; https://github.com/company-mode/company-mode/issues/68
+;; (use-package company
+;;   :init
+;;   (progn
+;;     (add-hook 'after-init-hook 'global-company-mode)))
 
 (use-package linum-relative
   :bind ("s-n" . linum-relative-toggle)
