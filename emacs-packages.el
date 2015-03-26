@@ -32,6 +32,8 @@
    charmap
    cider
    clj-refactor
+   ;; wraps clojure refactor command with helm
+   cljr-helm
    cljdoc
    cljsbuild-mode
    clojure-cheatsheet
@@ -171,6 +173,9 @@
    tidy
    undo-tree
    use-package
+
+   ;; purpose base window management
+   window-purpose
    yasnippet
    ))
 
