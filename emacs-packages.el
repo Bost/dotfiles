@@ -26,6 +26,9 @@
    ;; TODO compare auto-complete and company-mode (supported by cider):
    ;; https://github.com/company-mode/company-mode/issues/68
    auto-complete
+   ;; auto-complete for cider
+   ac-cider
+
    auto-highlight-symbol
    bind-key
    browse-kill-ring
@@ -52,7 +55,7 @@
    ;; modular completition mechanism
    ;; TODO compare auto-complete and company-mode (supported by cider):
    ;; https://github.com/company-mode/company-mode/issues/68
-   ;; company
+   company
 
    csv-mode
    dash
@@ -241,7 +244,7 @@
 (mapc
  (lambda (package)
    (or (package-installed-p package)
-       (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
+       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
            (package-install package))))
  ;; '(dired+ magit rainbow-mode)
  package-list-needed)
