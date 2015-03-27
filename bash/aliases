@@ -489,11 +489,15 @@ if [ $isLinuxVB -gt 0 ]; then
     alias abnt='echo ssh rsvoboda@10.236.105.206; ssh rsvoboda@10.236.105.206'
 
     alias hbg_uss='echo ssh ADN0035@10.236.0.98; ssh ADN0035@10.236.0.98'
-    alias hbg_3270='echo x3270 -charset CP273 194.8.117.99:3023 \&; x3270 -charset CP273 194.8.117.99:3023 &'
+    # L: is for SSL 3279
+    alias hbg_3270='echo x3270 -charset CP273 L:194.8.117.99:1023 \&; x3270 -charset CP273 L:194.8.117.99:1023 &'
 
     alias sdve_uss='echo ssh ADN0035@10.236.1.105; ssh ADN0035@10.236.1.105'
     alias sdve_3270='echo x3270 -charset CP273 10.236.1.105 \&; x3270 -charset CP273 10.236.1.105 &'
+    #alias sdvp_3270='echo x3270 -charset CP273 10.236.1.106 \&; x3270 -charset CP273 10.236.1.106 &'
     alias sdve_ftp='echo ftp -nv 10.236.1.105; ftp -nv 10.236.1.105'
+
+    alias mce_3270='echo x3270 -charset CP273 10.236.30.173 \&; x3270 -charset CP273 10.236.30.173 &'
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias share='cd $HOME/share'
