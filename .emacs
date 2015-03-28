@@ -60,50 +60,42 @@
 ;; (add-hook 'js2-mode-hook 'skewer-mode-keys)
 ;; (add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
+(use-package tabbar
+  :init
+  (progn
+    (tabbar-mode)))
+
 (use-package cider
   :init
   (progn
     (add-hook 'cider-mode-hook #'eldoc-mode)
     (setq nrepl-log-messages t)
     (setq nrepl-hide-special-buffers t)
-    (setq cider-repl-tab-command #'indent-for-tab-command)
     (setq cider-prefer-local-resources t)
-    (setq cider-repl-pop-to-buffer-on-connect nil)
-    (setq cider-show-error-buffer nil)
-    ;; (setq cider-show-error-buffer 'except-in-repl) ; or
-    ;; (setq cider-show-error-buffer 'only-in-repl)
-    (setq cider-auto-select-error-buffer nil)
-    (setq cider-stacktrace-default-filters '(tooling dup))
-    (setq cider-stacktrace-fill-column 80)
+    ;; (setq cider-auto-select-error-buffer nil)
+    ;; (setq cider-stacktrace-default-filters '(tooling dup))
     (setq nrepl-buffer-name-separator "-")
     (setq nrepl-buffer-name-show-port t)
     (setq cider-repl-display-in-current-window t)
-    (setq cider-prompt-save-file-on-load nil)
     (setq cider-repl-result-prefix ";; => ")
-    (setq cider-interactive-eval-result-prefix ";; => ")
-    (setq cider-repl-use-clojure-font-lock t)
-    (setq cider-switch-to-repl-command #'cider-switch-to-current-repl-buffer)
+    ;; (setq cider-interactive-eval-result-prefix ";; => ")
+    ;; (setq cider-repl-use-clojure-font-lock t)
     ;; (setq cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888")))
-    (setq cider-test-show-report-on-success t)
-    (setq cider-repl-wrap-history t)
-    (setq cider-repl-history-size 1000) ; the default is 500
     ;; (setq cider-repl-history-file "path/to/file")
-    (add-hook 'cider-repl-mode-hook #'company-mode)
-    (add-hook 'cider-mode-hook #'company-mode)
 
-    ;; (add-hook 'cider-repl-mode-hook #'subword-mode)
+    (add-hook 'cider-repl-mode-hook #'subword-mode)
     ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
     ;; (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
     (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
 
 
-    ;; (defun cider-save-and-load-current-buffer ()
-    ;;   (interactive)
-    ;;   (when (buffer-modified-p)
-    ;;     (save-buffer))
-    ;;   (cider-load-file (buffer-file-name))
-    ;;   ;; (cider-switch-to-relevant-repl-buffer nil)
-    ;;   )
+    (defun cider-save-and-load-current-buffer ()
+      (interactive)
+      (when (buffer-modified-p)
+        (save-buffer))
+      (cider-load-file (buffer-file-name))
+      ;; (cider-switch-to-relevant-repl-buffer nil)
+      )
 
     ;; (defun cider-eval-last-expression-in-repl ()
     ;;   "This doesn't work"
@@ -120,45 +112,27 @@
     ;;   ;; (global-set-key [(shift insert)] 'clipboard-yank)
     ;;   )
 
-    ;; (defun clojure-mode-keys ()
-    ;;   "Modify keymaps used by `clojure-mode'."
-    ;;   (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
-    ;;   (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
-    ;;   (local-set-key (kbd "s-z") 'cider-switch-to-relevant-repl-buffer)
-    ;;   (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
-    ;;   (local-set-key (kbd "s-n") 'cider-repl-set-ns)
-    ;;   (local-set-key (kbd "s-t") 'cider-test-run-tests)
-    ;;   (local-set-key (kbd "s-.") 'cider-jump)
-    ;;   (local-set-key (kbd "s-,") 'cider-jump-back)
-    ;;   )
-    ;; (add-hook 'clojure-mode-hook 'clojure-mode-keys)
+    (defun clojure-mode-keys ()
+      "Modify keymaps used by `clojure-mode'."
+      (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
+      (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
+      (local-set-key (kbd "s-z") 'cider-switch-to-relevant-repl-buffer)
+      (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
+      (local-set-key (kbd "s-n") 'cider-repl-set-ns)
+      (local-set-key (kbd "s-t") 'cider-test-run-tests)
+      (local-set-key (kbd "s-.") 'cider-jump)
+      (local-set-key (kbd "s-,") 'cider-jump-back)
+      )
+    (add-hook 'clojure-mode-hook 'clojure-mode-keys)
 
-    ;; (defun cider-mode-keys ()
-    ;;   "Modify keymaps used by `cider-mode'."
-    ;;   (local-set-key (kbd "s-z") 'cider-switch-to-last-clojure-buffer)
-    ;;   (local-set-key (kbd "s-t") 'cider-test-run-tests)
-    ;;   (local-set-key (kbd "s-.") 'cider-jump)
-    ;;   (local-set-key (kbd "s-,") 'cider-jump-back)
-    ;;   )
-    ;; (add-hook 'cider-mode-hook 'cider-mode-keys)
-
-    ;; ;; enable eldoc mode in clojure buffers
-    ;; (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-
-    ;; ;; enable paredit in repl buffer
-    ;; ;; (add-hook 'cider-repl-mode-hook 'paredit-mode)
-
-    ;; ;; smartparens is an alternative to paredit
-    ;; ;; (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode)
-
-    ;; (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
-
-    ;; ;; camel case
-    ;; ;; (add-hook 'cider-repl-mode-hook 'subword-mode)
-
-
-    ;; ;; (global-set-key (kbd "s-.") 'cider-jump)
-    ;; ;; (global-set-key (kbd "s-,") 'cider-jump-back)
+    (defun cider-mode-keys ()
+      "Modify keymaps used by `cider-mode'."
+      (local-set-key (kbd "s-z") 'cider-switch-to-last-clojure-buffer)
+      (local-set-key (kbd "s-t") 'cider-test-run-tests)
+      (local-set-key (kbd "s-.") 'cider-jump)
+      (local-set-key (kbd "s-,") 'cider-jump-back)
+      )
+    (add-hook 'cider-mode-hook 'cider-mode-keys)
 
     ;; (defun cider-interaction-mode-keys ()
     ;;   "Modify keymaps used by `cider-interaction-mode'."
@@ -374,6 +348,13 @@
   (progn
     (progn ;; helm-M-x
       (setq helm-M-x-fuzzy-match t))
+
+    (use-package projectile
+      :init
+      (progn
+        (projectile-global-mode)
+        (helm-projectile-on)
+        ))
 
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-unset-key (kbd "C-x c"))
@@ -823,11 +804,6 @@ by using nxml's indentation rules."
     (global-set-key (kbd "M-o") 'ace-window)
     ;; the sequence of leading characters for each window:
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))))
-
-(use-package projectile
-  :init
-  (progn
-    (projectile-global-mode)))
 
 (use-package sublimity
   :init
