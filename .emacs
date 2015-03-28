@@ -13,7 +13,7 @@
 (add-to-list 'load-path "~/dev/dotfiles/elisp/")
 (add-to-list 'custom-theme-load-path "~/dev/dotfiles/elisp/")
 ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized-master/")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized/")
 
 (setq inhibit-splash-screen t)
 
