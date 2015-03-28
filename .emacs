@@ -60,14 +60,10 @@
 ;; (add-hook 'js2-mode-hook 'skewer-mode-keys)
 ;; (add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
-(use-package tabbar
-  :init
-  (progn
-    (tabbar-mode)))
-
 (use-package cider
   :init
   (progn
+    (cider-mode)
     (add-hook 'cider-mode-hook #'eldoc-mode)
     (setq nrepl-log-messages t)
     (setq nrepl-hide-special-buffers t)
@@ -116,7 +112,7 @@
       "Modify keymaps used by `clojure-mode'."
       (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
       (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
-      (local-set-key (kbd "s-z") 'cider-switch-to-relevant-repl-buffer)
+      (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
       (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
       (local-set-key (kbd "s-n") 'cider-repl-set-ns)
       (local-set-key (kbd "s-t") 'cider-test-run-tests)
