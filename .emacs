@@ -13,15 +13,9 @@
 (add-to-list 'load-path "~/dev/dotfiles/elisp/")
 (add-to-list 'custom-theme-load-path "~/dev/dotfiles/elisp/")
 ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized-master/")
 
 (setq inhibit-splash-screen t)
-;; (load-theme 'light-blue t)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
-(load-theme 'deeper-blue t)    ;(disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
-;; (load-theme 'misterioso t)  ;(disable-theme 'misterioso)  (enable-theme 'misterioso)
-;; (load-theme 'whiteboard t)  ;(disable-theme 'whiteboard)  (enable-theme 'whiteboard)
-;; (load-theme 'ritchie t) ;(disable-theme 'ritchie) (enable-theme 'ritchie)
-;; test rainbow parenthesis:
-;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
 
 ;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
 (if (string= system-type "windows-nt")
@@ -1178,5 +1172,46 @@ See: `xah-forward-block'"
 
     ;; (setq tramp-default-method "ssh")
     ))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(csv-separators (quote (";")))
+ '(custom-safe-themes
+   (quote
+    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+ '(ecb-options-version "2.40")
+ '(ecb-source-path (quote ("~/dev/webcli")))
+ '(evil-search-highlight-persist t t)
+ '(frame-background-mode (quote dark))
+ '(git-commit-summary-max-length 70)
+ '(global-evil-search-highlight-persist t)
+ '(global-hl-line-mode t)
+ '(indent-tabs-mode nil)
+ '(paradox-github-token nil)
+ '(show-paren-mode t)
+ '(tab-width 4)
+ '(tool-bar-mode nil nil (tool-bar)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-search-highlight-persist-highlight-face ((t (:background "dark olive green" :foreground "white"))))
+ '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
+ '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
+ '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
+ '(region ((t (:background "#006400")))))
+
+(load-theme 'solarized t)  ;(disable-theme 'solarized)  (enable-theme 'solarized)
+;; (load-theme 'light-blue t)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
+;; (load-theme 'deeper-blue t)    ;(disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
+;; (load-theme 'misterioso t)  ;(disable-theme 'misterioso)  (enable-theme 'misterioso)
+;; (load-theme 'whiteboard t)  ;(disable-theme 'whiteboard)  (enable-theme 'whiteboard)
+;; (load-theme 'ritchie t) ;(disable-theme 'ritchie) (enable-theme 'ritchie)
+;; test rainbow parenthesis:
+;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
 
 (setq debug-on-error nil)
