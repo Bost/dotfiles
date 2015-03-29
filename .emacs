@@ -67,27 +67,27 @@
   :init
   (progn
     (cider-mode)
-    (add-hook 'cider-mode-hook #'eldoc-mode)
-    (setq nrepl-log-messages t)
-    (setq nrepl-hide-special-buffers t)
-    (setq cider-prefer-local-resources t)
-    ;; (setq cider-auto-select-error-buffer nil)
-    ;; (setq cider-stacktrace-default-filters '(tooling dup))
-    (setq nrepl-buffer-name-separator "-")
-    (setq nrepl-buffer-name-show-port t)
-    (setq cider-repl-display-in-current-window t)
-    (setq cider-repl-result-prefix ";; => ")
-    ;; (setq cider-interactive-eval-result-prefix ";; => ")
-    ;; (setq cider-repl-use-clojure-font-lock t)
-    ;; (setq cider-known-endpoints
-    ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888")))
-    ;; (setq cider-repl-history-file "path/to/file")
+    (setq nrepl-log-messages t
+          nrepl-hide-special-buffers t
+          cider-prefer-local-resources t
+          ;; cider-auto-select-error-buffer nil
+          ;; cider-stacktrace-default-filters '(tooling dup)
+          nrepl-buffer-name-separator "-"
+          nrepl-buffer-name-show-port t
+          cider-repl-display-in-current-window t
+          cider-repl-result-prefix ";; => "
+          ;; cider-interactive-eval-result-prefix ";; => "
+          ;; cider-repl-use-clojure-font-lock t
+          ;; cider-known-endpoints
+          ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
+          ;; cider-repl-history-file "path/to/file"
+          )
 
+    (add-hook 'cider-mode-hook #'eldoc-mode)
     (add-hook 'cider-repl-mode-hook #'subword-mode)
     ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
     ;; (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
     (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
-
 
     (defun cider-save-and-load-current-buffer ()
       (interactive)
@@ -112,22 +112,9 @@
     ;;   ;; (global-set-key [(shift insert)] 'clipboard-yank)
     ;;   )
 
-    (defun clojure-mode-keys ()
-      "Modify keymaps used by `clojure-mode'."
-      (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
-      (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
-      (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
-      (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
-      (local-set-key (kbd "s-n") 'cider-repl-set-ns)
-      (local-set-key (kbd "s-t") 'cider-test-run-tests)
-      (local-set-key (kbd "s-.") 'cider-jump)
-      (local-set-key (kbd "s-,") 'cider-jump-back)
-      )
-    (add-hook 'clojure-mode-hook 'clojure-mode-keys)
-
     (defun cider-mode-keys ()
       "Modify keymaps used by `cider-mode'."
-      (local-set-key (kbd "s-z") 'cider-switch-to-last-clojure-buffer)
+      (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
       (local-set-key (kbd "s-t") 'cider-test-run-tests)
       (local-set-key (kbd "s-.") 'cider-jump)
       (local-set-key (kbd "s-,") 'cider-jump-back)
@@ -139,8 +126,24 @@
     ;;   ;; (local-set-key (kbd "s-o") 'cider-jump)
     ;;   )
     ;; (add-hook 'cider-interaction-mode-hook 'cider-interaction-mode-keys)
-    )
-  )
+    ))
+
+(use-package clojure-mode
+  :init
+  (progn
+    (clojure-mode)
+    (defun clojure-mode-keys ()
+      "Modify keymaps used by `clojure-mode'."
+      (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
+      (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
+      (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
+      (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
+      (local-set-key (kbd "s-n") 'cider-repl-set-ns)
+      (local-set-key (kbd "s-t") 'cider-test-run-tests)
+      (local-set-key (kbd "s-.") 'cider-jump)
+      (local-set-key (kbd "s-,") 'cider-jump-back))
+    (add-hook 'clojure-mode-hook 'clojure-mode-keys)))
+
 
 (use-package clj-refactor
   :init
@@ -420,6 +423,9 @@ by using nxml's indentation rules."
   (progn
     ;; (interactive "r")
     (evil-mode 1)
+    ;; TODO backspace smartparens
+    ;; (define-key evil-insert-state-map "<backspace>" 'evil-delete)
+    ;; (define-key evil-insert-state-map "<delete>" 'evil-delete)
     ;; (message "evil-mode 1")
 
     ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
