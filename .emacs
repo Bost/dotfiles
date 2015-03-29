@@ -17,7 +17,8 @@
 
 (setq inhibit-splash-screen t)
 
-;; url-proxy-services not needed if bash vars http_proxy/https_proxy/ftp_proxy are set
+;; set bash vars http_proxy/https_proxy/ftp_proxy so
+;; url-proxy-services won't be needed
 (if (string= system-type "windows-nt")
     (setq url-proxy-services '(("no_proxy" . "work\\.com")
                                ("http" . "ptx.proxy.corp.sopra:8080")
@@ -78,7 +79,8 @@
     (setq cider-repl-result-prefix ";; => ")
     ;; (setq cider-interactive-eval-result-prefix ";; => ")
     ;; (setq cider-repl-use-clojure-font-lock t)
-    ;; (setq cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888")))
+    ;; (setq cider-known-endpoints
+    ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888")))
     ;; (setq cider-repl-history-file "path/to/file")
 
     (add-hook 'cider-repl-mode-hook #'subword-mode)
@@ -239,54 +241,16 @@
 
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package magit
-  ;; :bind ("M-g M-g" . magit-status)
-  :bind (("<f6>" . magit-status) ;; [f6] does not work
-     ("s-m" . magit-status))
+  :bind ("s-m" . magit-status)
   :init
   (progn
-    (autoload 'magit-status "magit" nil t))
-  ;; :config
-  ;; (progn
-  ;;   (when (eq system-type 'darwin)
-  ;;     (setq magit-emacsclient-executable "/usr/local/bin/emacsclient"))
-  ;;   (defun magit-browse ()
-  ;;     "Browse to the project's github URL, if available"
-  ;;     (interactive)
-  ;;     (let ((url (with-temp-buffer
-  ;;                  (unless (zerop (call-process-shell-command
-  ;;                                  "git remote -v" nil t))
-  ;;                    (error "Failed: 'git remote -v'"))
-  ;;                  (goto-char (point-min))
-  ;;                  (when (re-search-forward
-  ;;                         "github\\.com[:/]\\(.+?\\)\\.git" nil t)
-  ;;                    (format "https://github.com/%s" (match-string 1))))))
-  ;;       (unless url
-  ;;         (error "Can't find repository URL"))
-  ;;       (browse-url url)))
+    (autoload 'magit-status "magit" nil t)))
 
-  ;;   (when (and (boundp 'moe-theme-which-enabled)
-  ;;              (eq moe-theme-which-enabled 'dark))
-  ;;     ;; Moe's magit colors are baaaaaaad
-  ;;     (set-face-attribute 'magit-item-highlight nil
-  ;;                         :inherit nil
-  ;;                         :foreground 'unspecified))
-
-  ;;   (define-key magit-mode-map (kbd "C-c C-b") 'magit-browse)
-  ;;   (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace)
-  ;;   (custom-set-variables '(magit-set-upstream-on-push (quote dontask)))
-  ;;   (setq magit-completing-read-function 'magit-ido-completing-read)
-  ;;   ;; Diminish the auto-revert-mode
-  ;;   (add-hook 'magit-auto-revert-mode-hook
-  ;;             (diminish 'magit-auto-revert-mode)))
- )
-
-(setq x-select-enable-clipboard-manager nil) ; prevent: Error saving to X clipboard manager.
+;; prevent: Error saving to X clipboard manager.
+(setq x-select-enable-clipboard-manager nil)
 
 (load-library "environment-lib")
 (set-face-attribute 'default nil :height (get-font-height))
-
-;; highlight current line - this is probably not needed in the default face
-;; (global-hl-line-mode 1)
 
 ;; -t: semicolon is the command line terminator.
 ;; default is end-of-line as a SQL statement terminator
@@ -344,9 +308,6 @@
          ("s-a" . helm-buffers-list))
   :init
   (progn
-    (progn ;; helm-M-x
-      (setq helm-M-x-fuzzy-match t))
-
     (use-package projectile
       :init
       (progn
@@ -357,37 +318,37 @@
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-unset-key (kbd "C-x c"))
 
-
-    ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ;; rebind tab to do persistent action
-    ;; (define-key helm-map (kbd "C-i")   'helm-execute-persistent-action) ;; make TAB works in terminal
-    ;; (define-key helm-map (kbd "C-z")   'helm-select-action) ;; list actions using C-z
+    ;; rebind tab to do persistent action
+    ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+    ;; make TAB works in terminal
+    ;; (define-key helm-map (kbd "C-i")   'helm-execute-persistent-action)
+    ;; list actions using C-z
+    ;; (define-key helm-map (kbd "C-z")   'helm-select-action)
     (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
     (when (executable-find "curl")
       (setq helm-google-suggest-use-curl-p t))
 
-    (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-          helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-          helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-          helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+    (setq helm-M-x-fuzzy-match t
+          helm-buffers-fuzzy-matching t
+          helm-recentf-fuzzy-match    t
+          helm-locate-fuzzy-match t
+          helm-semantic-fuzzy-match t
+          helm-imenu-fuzzy-match t
+          helm-apropos-fuzzy-match t
+          helm-lisp-fuzzy-completion t
+          ;; open helm buffer inside current window, not occupy whole other window
+          helm-split-window-in-side-p           t
+          ;; move to end/beginning of source when reaching top/bottom of source
+          helm-move-to-line-cycle-in-source     t
+          ;; search for library in `require' and `declare-function' sexp.
+          helm-ff-search-library-in-sexp        t
+          ;; scroll 8 lines other window using M-<next>/M-<prior>
+          helm-scroll-amount                    8
           helm-ff-file-name-history-use-recentf t)
 
-    (progn ;; helm-mini
-      (setq helm-buffers-fuzzy-matching t
-            helm-recentf-fuzzy-match    t)
-      (global-set-key (kbd "C-x b") 'helm-mini)
-      (global-set-key (kbd "s-b") 'helm-mini))
-
-    (progn ;; helm-locate
-      (setq helm-locate-fuzzy-match t))
-    (progn ;; helm-semantic
-      (setq helm-semantic-fuzzy-match t))
-    (progn ;; helm-imenu
-      (setq helm-imenu-fuzzy-match t))
-    (progn ;; helm-apropos
-      (setq helm-apropos-fuzzy-match t))
-    (progn ;; helm-lisp-completion-at-point
-      (setq helm-lisp-fuzzy-completion t))
+    (global-set-key (kbd "C-x b") 'helm-mini)
+    (global-set-key (kbd "s-b") 'helm-mini)
 
     (helm-mode 1)
     (helm-autoresize-mode 1)))
@@ -520,11 +481,7 @@ by using nxml's indentation rules."
              ("<C-kp-add>"       . evil-numbers/inc-at-pt)
              ("<C-kp-subtract>"  . evil-numbers/dec-at-pt)
              ("<s-kp-add>"       . evil-numbers/inc-at-pt)
-             ("<s-kp-subtract>"  . evil-numbers/dec-at-pt)
-             ;; or only in evil’s normal state:
-             ;; (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-             ;; (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
-             ))
+             ("<s-kp-subtract>"  . evil-numbers/dec-at-pt)))
 
     (use-package evil-smartparens
       :init
@@ -543,7 +500,8 @@ by using nxml's indentation rules."
     ;;     (powerline-evil-center-color-theme)))
 
     ;; enable global-evil-leader-mode before evil-mode, otherwise
-    ;; evil-leader won’t be enabled in initial buffers (*scratch*, *Messages*, ...)
+    ;; evil-leader won’t be enabled in the initial buffers
+    ;; (*scratch*, *Messages*, ...)
     (use-package evil-leader
       :init
       (progn
@@ -551,7 +509,7 @@ by using nxml's indentation rules."
         (setq evil-leader/in-all-states t)
         (evil-leader/set-key
           "dd" 'kill-whole-line
-          ;; wr produces: (error "Key sequence w r starts with non-prefix key w")
+          ;; wr gives: (error "Key sequence w r starts with non-prefix key w")
           ;; "wr" 'toggle-truncate-lines
           "SPC" 'evil-search-highlight-persist-remove-all)
 
@@ -577,13 +535,13 @@ by using nxml's indentation rules."
       (progn
         (global-evil-search-highlight-persist t)))
 
-    (use-package anzu ;; mode-line  (pink - bottom left): 'current match/total matches'
+    ;; mode-line (pink - bottom left): 'current match/total matches'
+    (use-package anzu
       :diminish anzu-mode
       :init
       (progn
         (global-anzu-mode 1)
-        (use-package evil-anzu))
-      )))
+        (use-package evil-anzu)))))
 
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
 
@@ -658,7 +616,7 @@ by using nxml's indentation rules."
 ;; (setq inferior-lisp-buffer "browser-repl")
 ;; (message inferior-lisp-buffer)
 
-;; edit every instance of that word/variable in the buffer - like multiple cursors
+;; edit every instance of word/variable in the buffer - like multiple cursors
 (use-package iedit
   :bind ("s-i" . iedit-mode))
 
@@ -716,11 +674,11 @@ by using nxml's indentation rules."
         (setq expand-region-contract-fast-key "z")
         (evil-leader/set-key "xx" 'er/expand-region)))))
 
-;; yasnippets does not to work
-;; (add-to-list 'load-path
-;;           "~/.emacs.d/elpa/clojure-snippets-20130403.2046/snippets/clojure-mode")
-;; (use-package yasnippet)
-;; (yas-global-mode 1)
+(use-package yasnippet
+  :init
+  (progn
+    (yas-global-mode 1)
+    (use-package clojure-snippets)))
 
 ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
 ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
