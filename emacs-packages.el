@@ -172,6 +172,7 @@
    slime-clj
    slime-repl
    smartparens
+   smart-mode-line
    smex
    sticky-windows
    ;; underscore -> UPCASE -> CamelCase -> lowerCamelCase conversion of names

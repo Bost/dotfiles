@@ -442,6 +442,17 @@ by using nxml's indentation rules."
   (progn
     (winner-mode 1)))
 
+(use-package smart-mode-line
+  :init
+  (progn
+    (setq sml/theme 'respectful
+          sml/shorten-directory t
+          sml/name-width 32
+          sml/shorten-modes t
+          sml/use-projectile-p 'before-prefixes
+          sml/projectile-replacement-format "%s/")
+    (add-hook 'after-init-hook 'sml/setup)))
+
 (use-package evil
   :bind ("C-s-t" . evil-mode)
   :init
@@ -1155,7 +1166,7 @@ See: `xah-forward-block'"
  '(csv-separators (quote (";")))
  '(custom-safe-themes
    (quote
-    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(evil-search-highlight-persist t t)
