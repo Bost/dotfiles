@@ -117,6 +117,7 @@
    helm
    helm-ack
    helm-ag
+   helm-flycheck
    helm-git
    helm-git-files
    helm-git-grep

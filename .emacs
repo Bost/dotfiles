@@ -313,6 +313,12 @@
          ("s-a" . helm-buffers-list))
   :init
   (progn
+    (use-package helm-flycheck
+      :init
+      (progn
+        (eval-after-load 'flycheck
+          '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))))
+
     (use-package projectile
       :init
       (progn
