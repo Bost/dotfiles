@@ -494,6 +494,7 @@ if [ $isLinuxVB -gt 0 ]; then
 
     alias sdve_uss='echo ssh ADN0035@10.236.1.105; ssh ADN0035@10.236.1.105'
     alias sdve_3270='echo x3270 -charset CP273 10.236.1.105 \&; x3270 -charset CP273 10.236.1.105 &'
+    # alias sdve_3270='echo x3270 -charset CP273 L:10.236.1.105 \&; x3270 -charset CP273 L:10.236.1.105 &'
     #alias sdvp_3270='echo x3270 -charset CP273 10.236.1.106 \&; x3270 -charset CP273 10.236.1.106 &'
     alias sdve_ftp='echo ftp -nv 10.236.1.105; ftp -nv 10.236.1.105'
 
