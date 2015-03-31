@@ -26,6 +26,7 @@
    ;; TODO compare auto-complete and company-mode (supported by cider):
    ;; https://github.com/company-mode/company-mode/issues/68
    auto-complete
+   auto-package-update
    ;; auto-complete for cider
    ac-cider
 

@@ -40,6 +40,8 @@
 
 (require 'use-package)
 
+(use-package auto-package-update)
+
 (use-package paredit
   :bind (("s-<left>"  . paredit-backward-slurp-sexp)
          ("s-<right>" . paredit-backward-barf-sexp))
