@@ -515,10 +515,19 @@ by using nxml's indentation rules."
       (progn
         (global-evil-leader-mode)
         (setq evil-leader/in-all-states t)
+
+        (defun delete-rest-of-cheatsheet-entry (&optional arg)
+          "kbd macro - starts in evil-normal-mode;
+          delete up to the ' (single quote) character"
+          (interactive "p")
+          (kmacro-exec-ring-item (quote ([118 116 39 120 105] 0 "%d"))
+                                 arg))
+
         (evil-leader/set-key
           "dd" 'kill-whole-line
           ;; wr gives: (error "Key sequence w r starts with non-prefix key w")
           ;; "wr" 'toggle-truncate-lines
+          "dr" 'delete-rest-of-cheatsheet-entry
           "SPC" 'evil-search-highlight-persist-remove-all)
 
         (if (featurep 'helm)
