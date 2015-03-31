@@ -1180,4 +1180,11 @@ See: `xah-forward-block'"
 ;; test rainbow parenthesis:
 ;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
 
+;; (add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/dev/dotfiles/elisp/")
+(use-package jcl
+  :init
+  (progn
+    (jcl-mode)))
+
 (setq debug-on-error nil)
