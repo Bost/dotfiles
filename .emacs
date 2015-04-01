@@ -307,7 +307,8 @@
 (use-package helm-config ;; or just helm ?
   :bind (("M-x" . helm-M-x)
          ("s-g" . helm-google-suggest)
-         ("s-u" . helm-surfraw)
+         ;; TODO what does helm-surfraw?
+         ;; ("s-u" . helm-surfraw)
          ("s-p" . helm-projectile)
          ;; see ace-jump-buffer
          ("s-a" . helm-buffers-list))
@@ -1180,11 +1181,10 @@ See: `xah-forward-block'"
 ;; test rainbow parenthesis:
 ;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
 
-;; (add-to-list 'load-path "~/.emacs.d/lisp/")
-(add-to-list 'load-path "~/dev/dotfiles/elisp/")
-(use-package jcl
-  :init
-  (progn
-    (jcl-mode)))
+;; (add-to-list 'load-path "~/dev/dotfiles/jcl/")
+;; (use-package jcl-mode
+;;   :init
+;;   (progn
+;;     (jcl-mode)))
 
 (setq debug-on-error nil)
