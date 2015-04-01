@@ -551,6 +551,7 @@ alias ecg='RunBg emacsclient $dev/cheatsheet/git-commands.js'
 alias ecr='RunBg emacsclient $dev/cheatsheet/rest-commands.js'
 alias ecv='RunBg emacsclient $dev/cheatsheet/vim-commands.js'
 alias ecc='RunBg emacsclient $dev/cheatsheet/clojure-commands.js'
+ alias ej='RunBg emacsclient $dev/dotfiles/jcl/jcl.el'
 
  # alias eb='RunBg emacsclient $dev/dotfiles/.bashrc'
  # alias er='RunBg emacsclient $dev/dotfiles/.bashrc'
