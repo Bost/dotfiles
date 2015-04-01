@@ -20,18 +20,24 @@
 ;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
- ;;; Commentary:
+;;; Commentary:
 
 ;;
 
- ;;; Code:
+;;; Code:
 
-(defconst jcl-string
-  (rx "\"" (group (0+ (or (1+ (not (any "\"" "\\"))) (seq "\\" anything)))) "\""))
-
+;; identifier job-name operands params
 (defconst jcl-keywords
   '(
-    "DD" "DUMMY" "EXEC" "DATA" "OCOPY" "BINARY"
+    ;; 1. main task - job name
+    "JOB"
+    ;; 1.1. main task is dividen into subtasks - activity name
+    "EXEC"
+    ;; 1.1.1 subtasks are dividen into datasets - dd name
+    "DD"
+
+    "DUMMY"
+    "DATA" "OCOPY" "BINARY"
 
     "PATHDISP"
     "KEEP" "DELETE"
@@ -44,17 +50,22 @@
     "PUNCH" "PATH" "UNIT" "JOB" "MSGLEVEL" "CLASS" "MSGCLASS" "DSN" "PGM"
     "REGION" "OLD" "PASS"
 
+    ;; job names
+    "S06COP" "S04COP" "S08COP" "S07FTP" "S03MBS" "S09DEL" "S05MAK"
+    "STDOUT" "STDERR" "STDIN" "STDENV"
+    "HFSOUT" "HFSERR" "JESOUT" "JESERR"
+    "SYSTSIN" "SYSTSPRT"
+    "SCRIPT"
+
     "NUCL" "TMEIIN" "TMEIOUT" "EIAPIN" "EIAPOUT" "TMMAIN" "TMMAOUT" "TM12IN"
     "MA12IN" "MA12OUT" "SU12IN" "SU12OUT" "GROUPS" "SYSOUT" "SYSPRINT" "OPTRPT"
     "DATASUM" "CONTENTS" "GRPRPT" "SUMMRY" "DETAIL" "RESOURCE" "OPTIONS"
     "SYSDA" "SPACE" "TRK" "DISP" "VOL" "REF" "DCB" "BLKSIZE" "LRECL" "RECFM"
     "RLSE" "STEP1" "STEPLIB" "DATAIN"
     "ROUTE"
-    "STDOUT" "STDERR" "STDIN" "STDENV"
-    "SYSTSIN" "SYSTSPRT" "USSCMD" "HFSOUT" "HFSERR"
-    "JESOUT" "JESERR" "INDD" "OUTDD" "PARM" "COND" "BPXBATCH" "S05MAK"
-    "S06COP" "S04COP" "S08COP" "S07FTP" "S03MBS" "S09DEL"
-    "IKJEFT01" "SCRIPT"
+    "USSCMD"
+    "INDD" "OUTDD" "PARM" "COND" "BPXBATCH"
+    "IKJEFT01"
     "BPXJCL"
     ))
 
@@ -81,12 +92,25 @@
 
 (defconst jcl-font-lock-keywords
   (list 
-    ;; ("\"\\.\\*\\?" . font-lock-string-face)
-   (cons "\"\\.\\*\\?" 'font-lock-preprocessor-face)
+   ;; ("\"\\.\\*\\?" . font-lock-string-face)
+
+   ;; statement
+   (cons "\\(^\\/\\.\\)" 'font-lock-preprocessor-face) ; label /.
+   (cons "\\(^\\/&\\)" 'font-lock-preprocessor-face) ; end-of-job /&
+   (cons "\\(^\\/\\*\\)" 'font-lock-preprocessor-face) ; end-of-data /*
+   (cons "\\(^\\/\\+\\)" 'font-lock-preprocessor-face) ; end-of-procedure /+
+
    (cons "\\(\\/\\/\\*.*\\)" 'font-lock-comment-face) ; comment starts with: //*
    ;; ("function \\(\\sw+\\)" (1 font-lock-function-name-face))
+   (cons
+    (rx "\"" (group (0+ (or (1+ (not (any "\"" "\\"))) (seq "\\" anything)))) "\"")
+    'font-lock-string-face)
+   (cons
+    (rx "'" (group (0+ (or (1+ (not (any "'" "\\"))) (seq "\\" anything)))) "'")
+    'font-lock-string-face)
    (cons (regexp-opt jcl-keywords 'words) 'font-lock-keyword-face)
    (cons (regexp-opt jcl-constants 'words) 'font-lock-constant-face)
+   ;; numbers
    (cons "\\<\\(\\+\\|-\\)?[0-9]+\\(\\.[0-9]+\\)?\\>" 'font-lock-constant-face)
    )
   "Keyword highlighting specification for `jcl-mode'.")
@@ -97,7 +121,7 @@
 (defvar jcl-outline-regexp
   nil)
 
- ;;;###autoload
+;;;###autoload
 (define-derived-mode jcl-mode fundamental-mode "jcl-script"
   "A major mode for editing Jcl files."
   :syntax-table jcl-mode-syntax-table
@@ -111,12 +135,10 @@
   (setq-local outline-regexp jcl-outline-regexp)
   )
 
-;; (define-derived-mode jcl-mode fundamental-mode "My mode"
-;;   "A demo mode."
-;;   (set (make-local-variable 'font-lock-defaults) '(my-mode-font-lock-keywords)))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.jcl$" . jcl-mode))
 
-
- ;;; Indentation
+;;; Indentation
 
 (defun jcl-indent-line ()
   "Indent current line of Jcl code."
@@ -146,5 +168,5 @@
 
 (add-hook 'jcl-mode-hook 'jcl-mode-keys)
 
-(provide 'jcl-mode)
- ;;; jcl.el ends here
+(provide 'jcl)
+;;; jcl.el ends here
