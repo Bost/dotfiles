@@ -242,7 +242,7 @@ extract() {
               ;;
         *.tar.xz)
               Run tar xvfJ $1
-	      ;;
+              ;;
         *)     echo "'$1' cannot be extracted via extract()" ;;
         esac
      else
@@ -483,6 +483,18 @@ if [ $isLinuxVB -gt 0 ]; then
     #alias services='cd $dev/xml-services'
     #alias xml='cd $dev/xml-services'
 
+    FtpCmp() {
+        #echo read -s pass; echo $pass | md5sum | base64 | cut -c -16
+        #read -s pass; echo $pass | md5sum | base64 | cut -c -16
+        # 30 character password
+        # echo "cat ~/.netrc"
+        ipAddr=$_
+        echo "grep $ipAddr ~/.netrc"
+              grep $ipAddr ~/.netrc
+        /usr/bin/ftp $@
+    }
+    alias ftp=FtpCmp
+
     #alias prod='echo ssh rsvoboda@172.17.31.184; ssh rsvoboda@172.17.31.184'
     #alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
     alias prod='echo ssh rsvoboda@10.236.105.205; ssh rsvoboda@10.236.105.205'
@@ -496,7 +508,8 @@ if [ $isLinuxVB -gt 0 ]; then
     alias sdve_3270='echo x3270 -charset CP273 10.236.1.105 \&; x3270 -charset CP273 10.236.1.105 &'
     # alias sdve_3270='echo x3270 -charset CP273 L:10.236.1.105 \&; x3270 -charset CP273 L:10.236.1.105 &'
     #alias sdvp_3270='echo x3270 -charset CP273 10.236.1.106 \&; x3270 -charset CP273 10.236.1.106 &'
-    alias sdve_ftp='echo ftp -nv 10.236.1.105; ftp -nv 10.236.1.105'
+    alias sdve_ftp='echo ftp -v 10.236.1.105; ftp -v 10.236.1.105'
+    alias mce_ftp='echo ftp -v 10.236.105.45; ftp -v 10.236.105.45'
 
     alias mce_3270='echo x3270 -charset CP273 10.236.30.173 \&; x3270 -charset CP273 10.236.30.173 &'
 

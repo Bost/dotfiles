@@ -1245,4 +1245,7 @@ See: `xah-forward-block'"
 (use-package jcl
   :load-path "~/dev/dotfiles/jcl")
 
+(use-package cobol-mode
+  :load-path "~/dev/dotfiles/jcl")
+
 (setq debug-on-error nil)
