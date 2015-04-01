@@ -26,22 +26,45 @@
 
  ;;; Code:
 
-;; (regexp-opt '(
-;;     "DD" "DUMMY" "EXEC" "DATA" "OCOPY" "BINARY"
+(defconst jcl-string
+  (rx "\"" (group (0+ (or (1+ (not (any "\"" "\\"))) (seq "\\" anything)))) "\""))
 
-;;     "PATHDISP"
-;;     "KEEP" "DELETE"
+(defconst jcl-keywords
+  '(
+    "DD" "DUMMY" "EXEC" "DATA" "OCOPY" "BINARY"
 
-;;     "PATHOPTS"
-;;     "OWRONLY" "OCREAT" "OTRUNC"
+    "PATHDISP"
+    "KEEP" "DELETE"
 
-;;     "PATHMODE"
-;;     "SIRUSR" "SIWUSR" "SIRWXU"
+    "PATHOPTS"
+    "OWRONLY" "OCREAT" "OTRUNC"
 
-;;     "PUNCH" "PATH" "UNIT" "JOB" "MSGLEVEL" "CLASS" "MSGCLASS" "DSN" "PGM" "REGION"))
+    "PATHMODE"
 
+    "PUNCH" "PATH" "UNIT" "JOB" "MSGLEVEL" "CLASS" "MSGCLASS" "DSN" "PGM"
+    "REGION" "OLD" "PASS"
 
-;; (defvar jcl-mode-map nil)
+    "NUCL" "TMEIIN" "TMEIOUT" "EIAPIN" "EIAPOUT" "TMMAIN" "TMMAOUT" "TM12IN"
+    "MA12IN" "MA12OUT" "SU12IN" "SU12OUT" "GROUPS" "SYSOUT" "SYSPRINT" "OPTRPT"
+    "DATASUM" "CONTENTS" "GRPRPT" "SUMMRY" "DETAIL" "RESOURCE" "OPTIONS"
+    "SYSDA" "SPACE" "TRK" "DISP" "VOL" "REF" "DCB" "BLKSIZE" "LRECL" "RECFM"
+    "RLSE" "STEP1" "STEPLIB" "DATAIN"
+    "ROUTE"
+    "STDOUT" "STDERR" "STDIN" "STDENV"
+    "SYSTSIN" "SYSTSPRT" "USSCMD" "HFSOUT" "HFSERR"
+    "JESOUT" "JESERR" "INDD" "OUTDD" "PARM" "COND" "BPXBATCH" "S05MAK"
+    "S06COP" "S04COP" "S08COP" "S07FTP" "S03MBS" "S09DEL"
+    "IKJEFT01" "SCRIPT"
+    "BPXJCL"
+    ))
+
+(defconst jcl-constants
+  '(
+    "FB" "VB" "LT"
+    "SIRUSR" "SIWUSR" "SIRWXU"
+    "ORDONLY"
+    ))
+
 (defvar jcl-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map [foo] 'jcl-do-foo)
@@ -56,13 +79,16 @@
     st)
   "Syntax table for `jcl-mode'.")
 
-;; (defvar jcl-font-lock-keywords nil)
-(defvar jcl-font-lock-keywords
-  '(
-    ;; ("\\(\\/\\/\\*.*\\)" (1 font-lock-comment-face)) ; comment starts with: //*
-    ("function \\(\\sw+\\)" (1 font-lock-function-name-face))
-    ;; ("\\(?:BINARY\\|CLASS\\|D\\(?:ATA\\|D\\|ELETE\\|SN\\|UMMY\\)\\|EXEC\\|JOB\\|KEEP\\|MSG\\(?:CLASS\\|LEVEL\\)\\|O\\(?:C\\(?:OPY\\|REAT\\)\\|TRUNC\\|WRONLY\\)\\|P\\(?:ATH\\(?:DISP\\|MODE\\|OPTS\\)?\\|GM\\|UNCH\\)\\|REGION\\|SI\\(?:R\\(?:USR\\|WXU\\)\\|WUSR\\)\\|UNIT\\)" (1 font-lock-builtin-face))
-    )
+(defconst jcl-font-lock-keywords
+  (list 
+    ;; ("\"\\.\\*\\?" . font-lock-string-face)
+   (cons "\"\\.\\*\\?" 'font-lock-preprocessor-face)
+   (cons "\\(\\/\\/\\*.*\\)" 'font-lock-comment-face) ; comment starts with: //*
+   ;; ("function \\(\\sw+\\)" (1 font-lock-function-name-face))
+   (cons (regexp-opt jcl-keywords 'words) 'font-lock-keyword-face)
+   (cons (regexp-opt jcl-constants 'words) 'font-lock-constant-face)
+   (cons "\\<\\(\\+\\|-\\)?[0-9]+\\(\\.[0-9]+\\)?\\>" 'font-lock-constant-face)
+   )
   "Keyword highlighting specification for `jcl-mode'.")
 
 (defvar jcl-imenu-generic-expression
@@ -72,7 +98,7 @@
   nil)
 
  ;;;###autoload
-(define-derived-mode jcl-mode fundamental-mode "Jcl"
+(define-derived-mode jcl-mode fundamental-mode "jcl-script"
   "A major mode for editing Jcl files."
   :syntax-table jcl-mode-syntax-table
   (setq-local comment-start "\/\/\* ")
@@ -84,6 +110,11 @@
               jcl-imenu-generic-expression)
   (setq-local outline-regexp jcl-outline-regexp)
   )
+
+;; (define-derived-mode jcl-mode fundamental-mode "My mode"
+;;   "A demo mode."
+;;   (set (make-local-variable 'font-lock-defaults) '(my-mode-font-lock-keywords)))
+
 
  ;;; Indentation
 
@@ -101,16 +132,17 @@
   "Return the column to which the current line should be indented."
   nil)
 
+(defun jcl-reload ()
+  (interactive)
+  (eval-buffer "jcl.el")
+  ;; (fundamental-mode)
+  (jcl-mode)
+  (message (concat "jcl-mode evaluated & reloaded: "
+                   (format-time-string "%Y-%m-%dT%T")))
+  )
 (defun jcl-mode-keys ()
   "Modify keymaps used by `jcl-mode'."
-  (local-set-key (kbd "s-r") '(lambda ()
-                                (interactive)
-                                (eval-buffer "jcl.el")
-                                ;; (fundamental-mode)
-                                (jcl-mode)
-                                (message (concat "jcl-mode evaluated & reloaded: "
-                                                 (format-time-string "%Y-%m-%dT%T")))
-                                )))
+  (local-set-key (kbd "s-r") 'jcl-reload))
 
 (add-hook 'jcl-mode-hook 'jcl-mode-keys)
 
