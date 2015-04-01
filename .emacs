@@ -40,9 +40,11 @@
 
 (require 'use-package)
 
-(use-package auto-package-update)
+(use-package auto-package-update
+  :ensure t)
 
 (use-package paredit
+  :ensure t
   :bind (("s-<left>"  . paredit-backward-slurp-sexp)
          ("s-<right>" . paredit-backward-barf-sexp))
   :init
@@ -50,7 +52,8 @@
     (use-package paredit-menu)))
 
 ;; org-babel-clojure
-;; (use-package ob-clojure)
+;; (use-package ob-clojure
+;;   :ensure t)
 ;; Attention defaults are:
 ;;     C-c C-l: (cider-load-file FILENAME)
 ;;     C-c C-k: (cider-load-current-buffer)
@@ -66,6 +69,7 @@
 ;; (add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
 (use-package cider
+  :ensure t
   :init
   (progn
     (cider-mode)
@@ -131,6 +135,7 @@
     ))
 
 (use-package clojure-mode
+  :ensure t
   :init
   (progn
     (clojure-mode)
@@ -148,6 +153,7 @@
 
 
 (use-package clj-refactor
+  :ensure t
   :init
   (progn
     (add-hook 'clojure-mode-hook
@@ -161,6 +167,7 @@
 ;; (setq nrepl-hide-special-buffers t)
 
 (use-package window-purpose
+  :ensure t
   :init
   (progn
     (purpose-mode)))
@@ -183,11 +190,13 @@
 ;; ;; TODO compare auto-complete and company-mode (supported by cider):
 ;; https://github.com/company-mode/company-mode/issues/68
 (use-package company
+  :ensure t
   :init
   (progn
     (add-hook 'after-init-hook 'global-company-mode)))
 
 (use-package linum-relative
+  :ensure t
   :bind ("s-n" . linum-relative-toggle)
   :init
   (progn
@@ -199,6 +208,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-package autorevert
+  :ensure t
   :init
   (progn
     ;; reload all buffers when the file is changed
@@ -208,6 +218,7 @@
 ;;(desktop-read)
 
 (use-package org
+  :ensure t
   :config
   (progn
     ;; (use-package org-install)
@@ -246,6 +257,7 @@
 
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package magit
+  :ensure t
   :bind ("s-m" . magit-status)
   :init
   (progn
@@ -261,7 +273,7 @@
 ;; default is end-of-line as a SQL statement terminator
 ;; (setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
 
-(use-package simple ;; is this the base package?
+(use-package simple ; this probably the base package; can't use :ensure t
   :init
   (progn
     (size-indication-mode 1)  ; filesize indicator
@@ -286,6 +298,7 @@
     ))
 
 (use-package neotree
+  :ensure t
   :bind ("<s-f8>" . neotree-toggle))
 
 ;; (desktop-save-mode 1)
@@ -304,7 +317,8 @@
 ;;      (switch-to-buffer nil))               ; return to the initial buffer
 
 
-(use-package helm-config ;; or just helm ?
+(use-package helm
+  :ensure t
   :bind (("M-x" . helm-M-x)
          ("s-g" . helm-google-suggest)
          ;; TODO what does helm-surfraw?
@@ -315,12 +329,14 @@
   :init
   (progn
     (use-package helm-flycheck
+      :ensure t
       :init
       (progn
         (eval-after-load 'flycheck
           '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))))
 
     (use-package projectile
+      :ensure t
       :init
       (progn
         (projectile-global-mode)
@@ -366,6 +382,7 @@
     (helm-autoresize-mode 1)))
 
 (use-package drag-stuff
+  :ensure t
   :init
   (progn
     (drag-stuff-global-mode t)))
@@ -387,7 +404,7 @@ by using nxml's indentation rules."
     (indent-region begin end))
   (message "Ah, much better!"))
 
-(use-package dired
+(use-package dired ; not among *Packages*; can't use :ensure t
   :init
   (progn
     ;; When moving to parent directory by `^´, Dired by default creates a
@@ -410,24 +427,28 @@ by using nxml's indentation rules."
                 (kill-buffer buffer)))
             (buffer-list)))))
 
-(use-package winner ;; layout management
+(use-package winner ; layout management
+  :ensure t
   :init
   (progn
     (winner-mode 1)))
 
 (use-package smart-mode-line
-  :init
-  (progn
+  ;; :ensure t
+  :defer
+  (1 (progn
     (setq sml/theme 'respectful
           sml/shorten-directory t
           sml/name-width 32
           sml/shorten-modes t
           sml/use-projectile-p 'before-prefixes
           sml/projectile-replacement-format "%s/")
-    (add-hook 'after-init-hook 'sml/setup)))
+    (add-hook 'after-init-hook 'sml/setup))))
 
 (use-package evil
-  :bind ("C-s-t" . evil-mode)
+  :ensure t
+  :bind (("C-s-t" . evil-mode)
+     ("s-z" . evil-ace-jump-char-mode))
   :init
   (progn
     ;; (interactive "r")
@@ -450,27 +471,28 @@ by using nxml's indentation rules."
     ;;(evil-exchange-install)
 
     (use-package evil-nerd-commenter
+      :ensure t
       :bind ("C-;" . evilnc-comment-or-uncomment-lines))
 
-    (use-package evil-visualstar)
+    (use-package evil-visualstar
+      :ensure t)
 
     ;; (use-package evil-jumper) ;; C-i / C-o
 
     ;; (use-package evil-surround) ; not available in melpa-stable
     ;;(global-evil-surround-mode 0)
 
-    (use-package evil-states
-      :init
-      (progn
+    ;; Set cursor colors depending on mode
+      (when (display-graphic-p)
         (setq evil-emacs-state-cursor '("red" box))
         (setq evil-normal-state-cursor '("green" box))
         (setq evil-visual-state-cursor '("orange" box))
         (setq evil-insert-state-cursor '("red" bar))
         (setq evil-replace-state-cursor '("red" bar))
-        (setq evil-operator-state-cursor '("red" hollow))
-        ))
+        (setq evil-operator-state-cursor '("red" hollow)))
 
     (use-package evil-args
+      :ensure t
       :init
       (progn
         ;; bind evil-args text objects
@@ -487,6 +509,7 @@ by using nxml's indentation rules."
         (define-key evil-normal-state-map "K" 'evil-jump-out-args)))
 
     (use-package evil-numbers
+      :ensure t
       :bind (("C-c +" . evil-numbers/inc-at-pt)
              ("C-c -" . evil-numbers/dec-at-pt)
 
@@ -499,6 +522,7 @@ by using nxml's indentation rules."
              ("<s-kp-subtract>"  . evil-numbers/dec-at-pt)))
 
     (use-package evil-smartparens
+      :ensure t
       :init
       (progn
         ;; evil-smartparens everywhere
@@ -518,6 +542,7 @@ by using nxml's indentation rules."
     ;; evil-leader won’t be enabled in the initial buffers
     ;; (*scratch*, *Messages*, ...)
     (use-package evil-leader
+      :ensure t
       :init
       (progn
         (global-evil-leader-mode)
@@ -547,35 +572,39 @@ by using nxml's indentation rules."
         ))
 
     (use-package evil-nerd-commenter
+      :ensure t
       :bind ("M-;" . evilnc-comment-or-uncomment-lines))
 
-    (use-package evil-commands
-      :init
-      (progn
-        (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)))
+    ;; from evil-commands
+    (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
 
     (use-package evil-search-highlight-persist
+      :ensure t
       :init
       (progn
         (global-evil-search-highlight-persist t)))
 
     ;; mode-line (pink - bottom left): 'current match/total matches'
     (use-package anzu
+      :ensure t
       :diminish anzu-mode
       :init
       (progn
         (global-anzu-mode 1)
-        (use-package evil-anzu)))))
+        (use-package evil-anzu
+          :ensure t)))))
 
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
 
 (use-package transpose-frame
+  :ensure t
   :bind ("<f8>" . transpose-frame)
   :init
   (progn
     (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")))
 
 (use-package time
+  :ensure t
   :init
   (progn
     (setq display-time-24hr-format 1)
@@ -614,6 +643,7 @@ by using nxml's indentation rules."
            (if (= 1 gui-elements) "enabled" "disabled")))
 
 (use-package package
+  :ensure t
   :bind (("<f9>"   . package-list-packages-no-fetch)
          ("<s-f9>" . package-auto-upgrade)))
 
@@ -642,9 +672,11 @@ by using nxml's indentation rules."
 
 ;; edit every instance of word/variable in the buffer - like multiple cursors
 (use-package iedit
+  :ensure t
   :bind ("s-i" . iedit-mode))
 
 (use-package multiple-cursors
+  :ensure t
   :bind
   (("C->" . mc/mark-all-like-this-in-defun)
    ;; ("C->" .  mc/mark-next-like-this)
@@ -667,14 +699,12 @@ by using nxml's indentation rules."
    ;; ("C-c C-<" . mc/mark-all-like-this)
    ))
 
-(use-package evil-integration
-  :bind ("s-z" . evil-ace-jump-char-mode))
-
 (use-package ace-jump-mode
+  :ensure t
   :bind (("<f2>" . ace-jump-mode)
          ("s-j" . ace-jump-mode)
          ;; ("s-a" . ace-jump-buffer) ;; see helm-buffers-list
-         )
+         ("<C-f2>". ace-jump-line-mode))
   :init
   (progn
     (when (and (featurep 'evil) (featurep 'evil-leader))
@@ -683,13 +713,11 @@ by using nxml's indentation rules."
         "w" 'ace-jump-word-mode
         "l" 'ace-jump-line-mode))))
 
-(use-package ace-jump-line-mode
-  :bind ("<C-f2>". ace-jump-line-mode))
-
 ;; (global-unset-key (kbd "<f3>"))
 ;; (global-set-key (kbd "<f3>") 'kmacro-start-macro)
 
 (use-package expand-region
+  :ensure t
   :bind ("C-=" . er/expand-region)
   :init
   (progn
@@ -699,15 +727,18 @@ by using nxml's indentation rules."
         (evil-leader/set-key "xx" 'er/expand-region)))))
 
 (use-package yasnippet
+  :ensure t
   :init
   (progn
     (yas-global-mode 1)
-    (use-package clojure-snippets)))
+    (use-package clojure-snippets
+      :ensure t)))
 
 ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
 ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
 
 (use-package browse-url
+  :ensure t
   :init
   (progn
     (setq browse-url-browser-function 'browse-url-generic
@@ -720,6 +751,7 @@ by using nxml's indentation rules."
 
 ;; xfce4-settings-manager -> Window Manger -> Keyboard -> ...
 (use-package duplicate-thing
+  :ensure t
   :bind (("C-M-<up>"   . duplicate-thing)
          ("C-M-<down>" . duplicate-thing)))
 
@@ -733,6 +765,7 @@ by using nxml's indentation rules."
 ;;         (funcall fn)))))
 
 (use-package minimap
+  :ensure t
   :bind ("s-i" . minimap-toggle))
 
 ;; (load-library "abbrev-table")
@@ -744,8 +777,8 @@ by using nxml's indentation rules."
 (global-set-key (kbd "s-<f11>") 'find-file-emacs)
 
 (use-package undo-tree
-  ;; :defer probably replaced :idle
-  :defer (global-undo-tree-mode t)
+  :ensure t
+  :defer (2 global-undo-tree-mode t) ; load after 2 seconds of idle time
   :diminish ""
   :config
   (progn
@@ -785,11 +818,13 @@ by using nxml's indentation rules."
 
 
 (unless (display-graphic-p)
-  (use-package evil-terminal-cursor-changer))
+  (use-package evil-terminal-cursor-changer
+    :ensure t))
 
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
 (use-package ace-window
+  :ensure t
   :init
   (progn
     (global-set-key (kbd "M-o") 'ace-window)
@@ -797,17 +832,19 @@ by using nxml's indentation rules."
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))))
 
 (use-package sublimity
+  :ensure t
   :init
   (progn
-    ;; only smooth-scrolling together with sublimity leads to smooth scrolling really working! WTF?
-    (use-package smooth-scrolling)
-    (use-package sublimity-scroll)
-    (sublimity-mode 1)
-    ))
+    ;; only smooth-scrolling together with sublimity leads to
+    ;; smooth scrolling really working! WTF?
+    (use-package smooth-scrolling) ; inside sublimity :ensure t not needed
+    (use-package sublimity-scroll); inside sublimity :ensure t not needed
+    (sublimity-mode 1)))
 
 ;; another possibility how to define a key chord:
 ;; (global-set-key [(control x) (?0)] 'sticky-window-delete-window)
 (use-package sticky-windows
+  :ensure t
   :bind (("C-x 0" . sticky-window-delete-window)
          ("C-x 1" . sticky-window-delete-other-windows)
          ("C-x 9" . sticky-window-keep-window-visible)))
@@ -851,6 +888,7 @@ by using nxml's indentation rules."
           (set-visited-file-name new-name t t)))))))
 
 (use-package hideshow
+  :ensure t
   :bind (("C-M-<right>" . hs-show-block)
          ("C-M-<left>"  . hs-hide-block)
          ("C-M-<prior>" . hs-hide-all)
@@ -901,6 +939,7 @@ by using nxml's indentation rules."
 ;;                               (show-all)))
 
 (use-package whitespace
+  :ensure t
   :bind (("s-w" . whitespace-mode)
          ("s-<f7>" . whitespace-cleanup))
   :init
@@ -994,6 +1033,7 @@ by using nxml's indentation rules."
 (push '("*Async Shell Command*" :stick t) popwin:special-display-config)
 
 (use-package color-identifiers-mode
+  :ensure t
   :init
   (progn
     (add-hook 'after-init-hook 'global-color-identifiers-mode)))
@@ -1045,6 +1085,7 @@ See: `xah-forward-block'"
                           nil beg end))
 
 (use-package emacs
+  :ensure t
   :bind (("s-s" . save-buffer)
          ("s-f" . find-file)
          ("s-c" . kill-ring-save) ; copy
