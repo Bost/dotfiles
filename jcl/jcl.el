@@ -82,18 +82,17 @@
     map)
   "Keymap for `jcl-mode'.")
 
-;; (defvar jcl-mode-syntax-table nil)
 (defvar jcl-mode-syntax-table
   (let ((st (make-syntax-table)))
     (modify-syntax-entry ?# "<" st)
     (modify-syntax-entry ?\n ">" st)
+    (modify-syntax-entry ?\' "\"'" st)   ; strings enclosed in single quotes
+    (modify-syntax-entry ?\" "\"\"" st)  ; strings enclosed in double quotes
     st)
   "Syntax table for `jcl-mode'.")
 
 (defconst jcl-font-lock-keywords
   (list
-   ;; ("\"\\.\\*\\?" . font-lock-string-face)
-
    ;; statement
    (cons "\\(^\\/\\.\\)" 'font-lock-preprocessor-face) ; label /.
    (cons "\\(^\\/&\\)" 'font-lock-preprocessor-face) ; end-of-job /&
@@ -101,13 +100,6 @@
    (cons "\\(^\\/\\+\\)" 'font-lock-preprocessor-face) ; end-of-procedure /+
 
    (cons "\\(\\/\\/\\*.*\\)" 'font-lock-comment-face) ; comment starts with: //*
-   ;; ("function \\(\\sw+\\)" (1 font-lock-function-name-face))
-   (cons
-    (rx "\"" (group (0+ (or (1+ (not (any "\"" "\\"))) (seq "\\" anything)))) "\"")
-    'font-lock-string-face)
-   (cons
-    (rx "'" (group (0+ (or (1+ (not (any "'" "\\"))) (seq "\\" anything)))) "'")
-    'font-lock-string-face)
    (cons (regexp-opt jcl-keywords 'words) 'font-lock-keyword-face)
    (cons (regexp-opt jcl-constants 'words) 'font-lock-constant-face)
    ;; numbers
