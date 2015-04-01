@@ -91,7 +91,7 @@
   "Syntax table for `jcl-mode'.")
 
 (defconst jcl-font-lock-keywords
-  (list 
+  (list
    ;; ("\"\\.\\*\\?" . font-lock-string-face)
 
    ;; statement
@@ -123,7 +123,7 @@
 
 ;;;###autoload
 (define-derived-mode jcl-mode fundamental-mode "jcl-script"
-  "A major mode for editing Jcl files."
+  "A major mode for editing Job Control Language (JCL) scripts."
   :syntax-table jcl-mode-syntax-table
   (setq-local comment-start "\/\/\* ")
   ;; (setq-local comment-start-skip "#+\\s-*")
