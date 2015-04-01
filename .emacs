@@ -309,7 +309,7 @@
 ;;      this name at the end of your .emacs"
 ;;      (interactive "SName of the macro :")  ; ask for the name of the macro
 ;;      (kmacro-name-last-macro name)         ; use this name for the macro
-;;      (find-file "~/dev/dotfiles/.emacs")   ; open .emacs or other user init file
+;;      (find-file "~/dev/dotfiles/.emacs")   ; open .emacs/other user init file
 ;;      (goto-char (point-max))               ; go to the end of the .emacs
 ;;      (newline)                             ; insert a newline
 ;;      (insert-kbd-macro name)               ; copy the macro
@@ -365,7 +365,8 @@
           helm-imenu-fuzzy-match t
           helm-apropos-fuzzy-match t
           helm-lisp-fuzzy-completion t
-          ;; open helm buffer inside current window, not occupy whole other window
+          ;; Open helm buffer inside current window.
+          ;; Don't occupy whole other window
           helm-split-window-in-side-p           t
           ;; move to end/beginning of source when reaching top/bottom of source
           helm-move-to-line-cycle-in-source     t
@@ -948,89 +949,92 @@ by using nxml's indentation rules."
     (set-default 'indicate-empty-lines t)
     (setq show-trailing-whitespace t)))
 
-;; Always prefer to load newer files, instead of giving precedence to the .elc files
+;; Always prefer to load newer files,
+;; instead of giving precedence to the .elc files
 (setq load-prefer-newer t)
 
 (use-package popwin
-  ;; there is something odd with the function popwin-mode
-  ;; :defer does not work (originaly it was :idle)
-  :init
-  (progn
-    (require 'popwin)
-    (popwin-mode 1)))
+ :ensure t
+ :init
+ (progn
+  (require 'popwin)
+  (popwin-mode 1)
 
-(defvar popwin:special-display-config-backup popwin:special-display-config)
-;; (setq display-buffer-function 'popwin:display-buffer)
 
-;; basic
-(push '("*Help*" :stick t :noselect t) popwin:special-display-config)
-(push '("*helm world time*" :stick t :noselect t) popwin:special-display-config)
+  (defvar popwin:special-display-config-backup popwin:special-display-config)
+  ;; (setq display-buffer-function 'popwin:display-buffer)
 
-;; magit
-(push '("*magit-process*" :stick t) popwin:special-display-config)
+  ;; basic
+  (push '("*Help*" :stick t :noselect t) popwin:special-display-config)
+  (push '("*helm world time*" :stick t :noselect t)
+        popwin:special-display-config)
 
-;; quickrun
-(push '("*quickrun*" :stick t) popwin:special-display-config)
+  ;; magit
+  (push '("*magit-process*" :stick t) popwin:special-display-config)
 
-;; dictionaly
-(push '("*dict*" :stick t) popwin:special-display-config)
-(push '("*sdic*" :stick t) popwin:special-display-config)
+  ;; quickrun
+  (push '("*quickrun*" :stick t) popwin:special-display-config)
 
-;; popwin for slime
-(push '(slime-repl-mode :stick t) popwin:special-display-config)
+  ;; dictionaly
+  (push '("*dict*" :stick t) popwin:special-display-config)
+  (push '("*sdic*" :stick t) popwin:special-display-config)
 
-;; man
-(push '(Man-mode :stick t :height 20) popwin:special-display-config)
+  ;; popwin for slime
+  (push '(slime-repl-mode :stick t) popwin:special-display-config)
 
-;; Elisp
-(push '("*ielm*" :stick t) popwin:special-display-config)
-(push '("*eshell pop*" :stick t) popwin:special-display-config)
+  ;; man
+  (push '(Man-mode :stick t :height 20) popwin:special-display-config)
 
-;; pry
-(push '(inf-ruby-mode :stick t :height 20) popwin:special-display-config)
+  ;; Elisp
+  (push '("*ielm*" :stick t) popwin:special-display-config)
+  (push '("*eshell pop*" :stick t) popwin:special-display-config)
 
-;; python
-(push '("*Python*"   :stick t) popwin:special-display-config)
-(push '("*Python Help*" :stick t :height 20) popwin:special-display-config)
-(push '("*jedi:doc*" :stick t :noselect t) popwin:special-display-config)
+  ;; pry
+  (push '(inf-ruby-mode :stick t :height 20) popwin:special-display-config)
 
-;; Haskell
-(push '("*haskell*" :stick t) popwin:special-display-config)
-(push '("*GHC Info*") popwin:special-display-config)
+  ;; python
+  (push '("*Python*"   :stick t) popwin:special-display-config)
+  (push '("*Python Help*" :stick t :height 20) popwin:special-display-config)
+  (push '("*jedi:doc*" :stick t :noselect t) popwin:special-display-config)
 
-;; sgit
-(push '("*sgit*" :position right :width 0.5 :stick t)
-      popwin:special-display-config)
+  ;; Haskell
+  (push '("*haskell*" :stick t) popwin:special-display-config)
+  (push '("*GHC Info*") popwin:special-display-config)
 
-;; git-gutter
-(push '("*git-gutter:diff*" :width 0.5 :stick t)
-      popwin:special-display-config)
+  ;; sgit
+  (push '("*sgit*" :position right :width 0.5 :stick t)
+        popwin:special-display-config)
 
-;; direx - simple directory browser
-(push '(direx:direx-mode :position left :width 40 :dedicated t)
-      popwin:special-display-config)
+  ;; git-gutter
+  (push '("*git-gutter:diff*" :width 0.5 :stick t)
+        popwin:special-display-config)
 
-(push '("*Occur*" :stick t) popwin:special-display-config)
+  ;; direx - simple directory browser
+  (push '(direx:direx-mode :position left :width 40 :dedicated t)
+        popwin:special-display-config)
 
-;; prodigy - manage external services from emacs
-(push '("*prodigy*" :stick t) popwin:special-display-config)
+  (push '("*Occur*" :stick t) popwin:special-display-config)
 
-;; malabar-mode - better java mode
-(push '("*Malabar Compilation*" :stick t :height 30)
-      popwin:special-display-config)
+  ;; prodigy - manage external services from emacs
+  (push '("*prodigy*" :stick t) popwin:special-display-config)
 
-;; org-mode
-(push '("*Org tags*" :stick t :height 30)
-      popwin:special-display-config)
+  ;; malabar-mode - better java mode
+  (push '("*Malabar Compilation*" :stick t :height 30)
+        popwin:special-display-config)
 
-;; Completions
-(push '("*Completions*" :stick t :noselect t) popwin:special-display-config)
+  ;; org-mode
+  (push '("*Org tags*" :stick t :height 30)
+        popwin:special-display-config)
 
-;; ggtags
-(push '("*ggtags-global*" :stick t :noselect t :height 30) popwin:special-display-config)
+  ;; Completions
+  (push '("*Completions*" :stick t :noselect t) popwin:special-display-config)
 
-;; async shell commands
-(push '("*Async Shell Command*" :stick t) popwin:special-display-config)
+  ;; ggtags
+  (push '("*ggtags-global*" :stick t :noselect t :height 30)
+        popwin:special-display-config)
+
+  ;; async shell commands
+  (push '("*Async Shell Command*" :stick t) popwin:special-display-config)))
 
 (use-package color-identifiers-mode
   :ensure t
@@ -1152,9 +1156,10 @@ See: `xah-forward-block'"
      '(tool-bar-mode nil nil (tool-bar)))
 
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-    ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}  ; test delimiters:
+    ;; test delimiters:
+    ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}
 
-    ;; check on saving whether the edited file contains a shebang - if yes make it executable
+    ;; check on saving if the file contains a shebang; if yes make it executable
     (add-hook 'after-save-hook
               'executable-make-buffer-file-executable-if-script-p)
 
@@ -1163,7 +1168,8 @@ See: `xah-forward-block'"
      ;; If you edit it by hand, you could mess it up, so be careful.
      ;; Your init file should contain only one such instance.
      ;; If there is more than one, they won't work right.
-     '(evil-search-highlight-persist-highlight-face ((t (:background "dark olive green" :foreground "white"))))
+     '(evil-search-highlight-persist-highlight-face
+       ((t (:background "dark olive green" :foreground "white"))))
      '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
      '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
      '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
@@ -1176,7 +1182,8 @@ See: `xah-forward-block'"
       (local-set-key (kbd "s-e") 'eval-last-sexp))
     (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
-    ;; (window-configuration-to-register ?w) ;; store / restore : C-x r j / C-x r j w
+    ;; store / restore : C-x r j / C-x r j w
+    ;; (window-configuration-to-register ?w)
 
     ;; (setq tramp-default-method "ssh")
     ))
@@ -1189,7 +1196,10 @@ See: `xah-forward-block'"
  '(csv-separators (quote (";")))
  '(custom-safe-themes
    (quote
-    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" default)))
+    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223"
+     "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26"
+     "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743"
+     default)))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(evil-search-highlight-persist t t)
@@ -1207,20 +1217,30 @@ See: `xah-forward-block'"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-search-highlight-persist-highlight-face ((t (:background "dark olive green" :foreground "white"))))
+ '(evil-search-highlight-persist-highlight-face
+   ((t (:background "dark olive green" :foreground "white"))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
  '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
  '(region ((t (:background "#006400")))))
 
-(load-theme 'solarized t)  ;(disable-theme 'solarized)  (enable-theme 'solarized)
-;; (load-theme 'light-blue t)  ;(disable-theme 'light-blue)  (enable-theme 'light-blue)
-;; (load-theme 'deeper-blue t)    ;(disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
-;; (load-theme 'misterioso t)  ;(disable-theme 'misterioso)  (enable-theme 'misterioso)
-;; (load-theme 'whiteboard t)  ;(disable-theme 'whiteboard)  (enable-theme 'whiteboard)
-;; (load-theme 'ritchie t) ;(disable-theme 'ritchie) (enable-theme 'ritchie)
-;; test rainbow parenthesis:
-;; (((((((())))))))   [[[[[[[[]]]]]]]]   {{{{{{{{}}}}}}}}
+(load-theme 'solarized t)
+;; (disable-theme 'solarized)  (enable-theme 'solarized)
+
+;; (load-theme 'light-blue t)
+;; (disable-theme 'light-blue)  (enable-theme 'light-blue)
+
+;; (load-theme 'deeper-blue t)
+;; (disable-theme 'deeper-blue) (enable-theme 'deeper-blue)
+
+;; (load-theme 'misterioso t)
+;; (disable-theme 'misterioso)  (enable-theme 'misterioso)
+
+;; (load-theme 'whiteboard t)
+;; (disable-theme 'whiteboard)  (enable-theme 'whiteboard)
+
+;; (load-theme 'ritchie t)
+;; (disable-theme 'ritchie) (enable-theme 'ritchie)
 
 ;; (add-to-list 'load-path "~/dev/dotfiles/jcl/")
 ;; (use-package jcl-mode
