@@ -122,7 +122,7 @@
       "Modify keymaps used by `cider-mode'."
       (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
       (local-set-key (kbd "s-t") 'cider-test-run-tests)
-      (local-set-key (kbd "s-.") 'cider-jump)
+      (local-set-key (kbd "s-.") 'cider-jump-to-var)
       (local-set-key (kbd "s-,") 'cider-jump-back)
       )
     (add-hook 'cider-mode-hook 'cider-mode-keys)
@@ -147,7 +147,7 @@
       (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
       (local-set-key (kbd "s-n") 'cider-repl-set-ns)
       (local-set-key (kbd "s-t") 'cider-test-run-tests)
-      (local-set-key (kbd "s-.") 'cider-jump)
+      (local-set-key (kbd "s-.") 'cider-jump-to-var)
       (local-set-key (kbd "s-,") 'cider-jump-back))
     (add-hook 'clojure-mode-hook 'clojure-mode-keys)))
 
