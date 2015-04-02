@@ -449,7 +449,8 @@ by using nxml's indentation rules."
 (use-package evil
   :ensure t
   :bind (("C-s-t" . evil-mode)
-     ("s-z" . evil-ace-jump-char-mode))
+         ("s-;" . evilnc-comment-or-uncomment-lines)
+         ("s-z" . evil-ace-jump-char-mode))
   :init
   (progn
     ;; (interactive "r")
