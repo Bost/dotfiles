@@ -322,8 +322,11 @@
          ("s-g" . helm-google-suggest)
          ("s-u" . helm-surfraw) ; web search for PATTERN with search ENGINE
          ("s-p" . helm-projectile)
-         ;; see ace-jump-buffer
-         ("s-a" . helm-buffers-list))
+         ("s-a" . helm-buffers-list)
+         ("C-x b" . helm-mini)
+         ("s-b" . helm-mini)
+         ("M-y" . helm-show-kill-ring)
+         ) ; see ace-jump-buffer
   :init
   (progn
     (use-package helm-flycheck
@@ -351,7 +354,6 @@
     ;; (define-key helm-map (kbd "C-i")   'helm-execute-persistent-action)
     ;; list actions using C-z
     ;; (define-key helm-map (kbd "C-z")   'helm-select-action)
-    (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
     (when (executable-find "curl")
       (setq helm-google-suggest-use-curl-p t))
@@ -374,9 +376,6 @@
           ;; scroll 8 lines other window using M-<next>/M-<prior>
           helm-scroll-amount                    8
           helm-ff-file-name-history-use-recentf t)
-
-    (global-set-key (kbd "C-x b") 'helm-mini)
-    (global-set-key (kbd "s-b") 'helm-mini)
 
     (helm-mode 1)
     (helm-autoresize-mode 1)))
@@ -704,7 +703,7 @@ by using nxml's indentation rules."
   :ensure t
   :bind (("<f2>" . ace-jump-mode)
          ("s-j" . ace-jump-mode)
-         ;; ("s-a" . ace-jump-buffer) ;; see helm-buffers-list
+         ;; ("s-a" . ace-jump-buffer) ; see helm-buffers-list
          ("<C-f2>". ace-jump-line-mode))
   :init
   (progn
