@@ -88,7 +88,7 @@
           ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
           ;; cider-repl-history-file "path/to/file"
           )
-
+    (message "cd ~/dev/cider && git pull --rebase origin && git fetch --tags # TODO !!!")
     (add-hook 'cider-mode-hook #'eldoc-mode)
     (add-hook 'cider-repl-mode-hook #'subword-mode)
     ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
