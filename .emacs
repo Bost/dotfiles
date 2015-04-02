@@ -2,10 +2,9 @@
 ;; this is for the emacs code browser
 (setq stack-trace-on-error t)
 
-;; TODO jump to last line and switch to edit mode
 ;; TODO delete to the end of line and switch to edit mode
-
 ;; TODO emacs does not come up when calling emacsclient withouth emacs server
+;; TODO cider-refresh: what does clojure.tools.namespace.repl/refresh ?
 (load "server")
 (unless (server-running-p)
   (server-start))
@@ -321,8 +320,7 @@
   :ensure t
   :bind (("M-x" . helm-M-x)
          ("s-g" . helm-google-suggest)
-         ;; TODO what does helm-surfraw?
-         ;; ("s-u" . helm-surfraw)
+         ("s-u" . helm-surfraw) ; web search for PATTERN with search ENGINE
          ("s-p" . helm-projectile)
          ;; see ace-jump-buffer
          ("s-a" . helm-buffers-list))
