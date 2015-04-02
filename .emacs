@@ -337,6 +337,7 @@
 
     (use-package projectile
       :ensure t
+      :bind (("C-s-p" . helm-projectile-ack))
       :init
       (progn
         (projectile-global-mode)
