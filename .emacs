@@ -433,15 +433,15 @@ by using nxml's indentation rules."
 
 (use-package smart-mode-line
   ;; :ensure t
-  :defer
-  (1 (progn
-    (setq sml/theme 'respectful
+  :init
+  (progn
+    (setq ;; sml/theme 'respectful
           sml/shorten-directory t
           sml/name-width 32
           sml/shorten-modes t
           sml/use-projectile-p 'before-prefixes
           sml/projectile-replacement-format "%s/")
-    (add-hook 'after-init-hook 'sml/setup))))
+    (add-hook 'after-init-hook 'sml/setup)))
 
 (use-package evil
   :ensure t
