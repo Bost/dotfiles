@@ -656,6 +656,7 @@ by using nxml's indentation rules."
 ;; (setq inferior-lisp-program "cljs-repl")
 ;; (message (concat "inferior-lisp-program: " inferior-lisp-program))
 
+;; TODO is cljs-repl a delete cantidate? See bash/cljs-repl
 (defun cljs-repl ()
   (interactive)
   (setq inferior-lisp-program "cljs-repl")
