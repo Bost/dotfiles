@@ -1206,6 +1206,37 @@ See: `xah-forward-block'"
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
+ '(package-selected-packages
+   (quote
+    (helm-flycheck window-purpose workgroups2 use-package tidy
+    sticky-windows smex smartparens slime-repl slime-clj skewer-mode
+    redo+ rainbow-identifiers rainbow-delimiters powerline-evil
+    paredit-menu nrepl neotree move-text mode-icons minimap
+    magit-push-remote magit-log-edit magit-commit-training-wheels
+    load-theme-buffer-local litable linum-relative
+    latest-clojure-libraries latest-clojars keyfreq ido-ubiquitous
+    idle-highlight-mode highlight-symbol helm-themes helm-spaces
+    helm-projectile helm-proc helm-package helm-open-github
+    helm-mode-manager helm-ls-git helm-helm-commands helm-google
+    helm-gitlab helm-github-stars helm-git-grep helm-git-files
+    helm-git helm-ack hackernews goto-last-change google-weather
+    google-this google-maps gitignore-mode gist fullscreen-mode
+    fringe-helper fold-this fold-dwim flycheck find-file-in-project
+    expand-region evil-visualstar evil-surround evil-snipe
+    evil-search-highlight-persist evil-paredit evil-org evil-numbers
+    evil-nerd-commenter evil-matchit evil-leader
+    evil-indent-textobject evil-escape evil-args ergoemacs-mode
+    elisp-slime-nav elein egg duplicate-thing drag-stuff direx
+    dired-single dired-dups dired+ dircmp diff-hl debbugs csv-nav
+    csv-mode company color-theme-buffer-local color-theme
+    color-identifiers-mode closure-template-html-mode
+    closure-lint-mode clojurescript-mode clojure-test-mode
+    clojure-snippets clojure-project-mode clojure-cheatsheet
+    cljsbuild-mode cljr-helm cljdoc charmap bs-ext browse-kill-ring
+    bf-mode auto-package-update auto-highlight-symbol
+    auto-complete-nxml apt-utils anzu align-cljlet ack-menu
+    ack-and-a-half ack ace-window ace-jump-buffer ac-nrepl ac-helm
+    ac-cider)))
  '(paradox-github-token nil)
  '(show-paren-mode t)
  '(tab-width 4)
