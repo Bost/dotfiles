@@ -4,7 +4,6 @@
 
 ;; TODO delete to the end of line and switch to edit mode
 ;; TODO emacs does not come up when calling emacsclient withouth emacs server
-;; TODO cider-refresh: what does clojure.tools.namespace.repl/refresh ?
 (load "server")
 (unless (server-running-p)
   (server-start))
@@ -86,7 +85,7 @@
           ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
           ;; cider-repl-history-file "path/to/file"
           )
-    (message "cd ~/dev/cider && git pull --rebase origin && git fetch --tags # TODO !!!")
+    (message "TODO cider-refresh: what does clojure.tools.namespace.repl/refresh ?")
     (add-hook 'cider-mode-hook #'eldoc-mode)
     (add-hook 'cider-repl-mode-hook #'subword-mode)
     ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
