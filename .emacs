@@ -71,7 +71,6 @@
   :ensure t
   :init
   (progn
-    (cider-mode)
     (setq nrepl-log-messages t
           nrepl-hide-special-buffers t
           cider-prefer-local-resources t
