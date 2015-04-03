@@ -11,69 +11,56 @@
  ;; preferably melpa-stable
  package-list-needed
  '(
+   ac-cider ; auto-complete for cider
    ac-helm
+   ac-nrepl
    ace-jump-buffer
    ace-jump-mode
    ace-window
    ack
    ack-and-a-half
-   ;; Space align various Clojure forms [github]
-   align-cljlet
+   align-cljlet ; Space align various Clojure forms [github]
    anzu
-   ;; 'current match/total matches' in the mode-line (pink stuff bottom left)
-   apt-utils
+   apt-utils ; 'current match/total matches' in the mode-line (pink stuff bottom left)
    async
-   ;; TODO compare auto-complete and company-mode (supported by cider):
-   ;; https://github.com/company-mode/company-mode/issues/68
    auto-complete
-   auto-package-update
-   ;; auto-complete for cider
-   ac-cider
-
+   auto-complete-nxml ;; TODO compare auto-complete and company-mode (supported by cider): ;; https://github.com/company-mode/company-mode/issues/68
    auto-highlight-symbol
+   auto-package-update
    bind-key
    browse-kill-ring
-   ;; Extensions to emacs buffer-selection library (bs.el) [wiki]
-   bs-ext
+   bs-ext ; Extensions to emacs buffer-selection library (bs.el) [wiki]
    charmap
    cider
    clj-refactor
-   ;; wraps clojure refactor command with helm
-   cljr-helm
    cljdoc
+   cljr-helm ; wraps clojure refactor command with helm
    cljsbuild-mode
    clojure-cheatsheet
    clojure-mode
    clojure-snippets
    clojurescript-mode
-   ;; what is linter good for?
-   closure-lint-mode
+   closure-lint-mode ; what is linter good for?
    closure-template-html-mode
    color-identifiers-mode
    color-theme
    color-theme-buffer-local
-
-   ;; modular completition mechanism
-   ;; TODO compare auto-complete and company-mode (supported by cider):
-   ;; https://github.com/company-mode/company-mode/issues/68
-   company
-
+   company ; modular completition mechanism ;; TODO compare auto-complete and company-mode (supported by cider): ;; https://github.com/company-mode/company-mode/issues/68
    csv-mode
+   csv-nav
    dash
    debbugs
    diff-hl
    diminish
    dircmp
+   dired+
    dired-dups
    dired-single
-   ;; TODO test direx: simple directory explorer
-   direx
-   drag-stuff ;; replacement for move-lines
+   direx ; TODO test direx: simple directory explorer
+   drag-stuff ; replacement for move-lines
    duplicate-thing
-   ;; TODO test egg: Emacs Got Git
-   egg
-   ;; TODO emacs + leiningen: lein/elein might be obsolete
-   elein
+   egg ; TODO test egg: Emacs Got Git
+   elein ; TODO emacs + leiningen: lein/elein might be obsolete
    elisp-slime-nav
    epl
    ergoemacs-mode
@@ -96,8 +83,7 @@
    evil-visualstar
    expand-region
    f
-   ;; probably not needed because of helm
-   find-file-in-project
+   find-file-in-project ; probably not needed because of helm
    flycheck
    fold-dwim
    fold-this
@@ -110,6 +96,7 @@
    gitignore-mode
    gitlab
    google
+   google-maps
    google-this
    goto-chg
    goto-last-change
@@ -139,17 +126,19 @@
    iedit
    js2-mode
    keyfreq
+   keyfreq
    latest-clojars
+   latest-clojure-libraries
    levenshtein
    linum-relative
    load-theme-buffer-local
    logito
-   ;; A better Java mode for Emacs
-   malabar-mode
    magit
    magit-push-remote
+   malabar-mode ; A better Java mode for Emacs
    minimap
    mode-icons
+   move-text
    multiple-cursors
    neotree
    org
@@ -173,23 +162,17 @@
    slime
    slime-clj
    slime-repl
-   smartparens
    smart-mode-line
+   smartparens
    smex
+   smooth-scrolling ; only smooth-scrolling together with sublimity leads to smooth scrolling really working! WTF?
    sticky-windows
-   ;; underscore -> UPCASE -> CamelCase -> lowerCamelCase conversion of names
-   string-inflection
-
-   ;; only smooth-scrolling together with sublimity leads to smooth scrolling really working! WTF?
-   smooth-scrolling
+   string-inflection ; underscore -> UPCASE -> CamelCase -> lowerCamelCase conversion of names
    sublimity
-
    tidy
    undo-tree
    use-package
-
-   ;; purpose base window management
-   window-purpose
+   window-purpose ; purpose base window management
    yasnippet
    ))
 
