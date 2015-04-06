@@ -321,7 +321,7 @@
   :ensure t
   :bind (("M-x" . helm-M-x)
          ("s-g" . helm-google-suggest)
-         ("s-u" . helm-surfraw) ; web search for PATTERN with search ENGINE
+         ;; ("s-u" . helm-surfraw) ; web search for PATTERN with search ENGINE
          ("s-p" . helm-projectile)
          ("s-a" . helm-buffers-list)
          ("C-x b" . helm-mini)
@@ -1180,7 +1180,9 @@ See: `xah-forward-block'"
 
     (defun emacs-lisp-mode-keys ()
       "Modify keymaps used by `emacs-lisp-mode'."
-      (local-set-key (kbd "s-e") 'eval-last-sexp))
+      (local-set-key (kbd "s-e") 'eval-last-sexp)
+      ;; see ("s-u" . helm-surfraw)
+      (local-set-key (kbd "s-u") 'eval-buffer))
     (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
     ;; store / restore : C-x r j / C-x r j w
