@@ -29,14 +29,11 @@
       (defun get-font-height () ;; font size
         (interactive)
         (cond
-         ((string= system-name "bost-new-64") 116)
-         ((string= system-name "franzi") 130)
-         ((string= system-name "bost-martin") 120)
          ((s-ends-with? "VirtualBox" system-name) 102)
          ((string= system-type "windows-nt") 102)
          (t 102)))
 
-      (when (string= system-name "franzi")
+      (when (string= system-name "VirtualBox")
         (display-battery-mode 1))
 
       (defun find-file-emacs ()
