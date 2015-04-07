@@ -29,8 +29,11 @@
         ;; ("org" . "http://orgmode.org/elpa/")
         ("marmalade" . "https://marmalade-repo.org/packages/")
         ("melpa" . "http://melpa.milkbox.net/packages/")
-        ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
         ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")))
+
+;; (add-to-list 'package-archives
+;;              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+;;              t)
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
