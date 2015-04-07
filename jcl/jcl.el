@@ -29,13 +29,6 @@
 ;; identifier job-name operands params
 (defconst jcl-keywords
   '(
-    ;; 1. main task - job name
-    "JOB"
-    ;; 1.1. main task is dividen into subtasks - activity name
-    "EXEC"
-    ;; 1.1.1 subtasks are dividen into datasets - dd name
-    "DD"
-
     "DUMMY"
     "DATA" "OCOPY" "BINARY"
 
@@ -47,7 +40,7 @@
 
     "PATHMODE"
 
-    "PUNCH" "PATH" "UNIT" "JOB" "MSGLEVEL" "CLASS" "MSGCLASS" "DSN" "PGM"
+    "PUNCH" "PATH" "UNIT" "MSGLEVEL" "CLASS" "MSGCLASS" "DSN" "PGM"
     "REGION" "OLD" "PASS"
 
     ;; job names
@@ -63,7 +56,8 @@
     "OPTRPT"
     "DATASUM" "CONTENTS" "GRPRPT" "SUMMRY" "DETAIL" "RESOURCE" "OPTIONS"
     "SYSDA" "SPACE" "TRK" "DISP" "VOL" "REF" "DCB" "BLKSIZE" "LRECL" "RECFM"
-    "RLSE" "STEP1" "STEPLIB" "DATAIN"
+    "RLSE" "STEP1" "STEP01" "STEPLIB" "DATAIN"
+    "DDNAME"
     "ROUTE"
     "USSCMD"
     "INDD" "OUTDD" "PARM" "COND" "BPXBATCH"
@@ -71,16 +65,31 @@
     "BPXJCL"
 
     "NEW" "CATLG" "DSORG"
+    "NOTIFY"
     ))
 
 (defconst jcl-constants
   '(
-    "FB" "VB" "LT"
+    "FB" "VB" "LT" "H" "A"
 
     "IEFBR14" ; IBM utility to create dataset
     "PS"
     "SIRUSR" "SIWUSR" "SIRWXU"
     "ORDONLY"
+    ))
+
+(defconst jcl-preprocessor
+  '(
+    ;; 1. main task - job name
+    "JOB"
+    ;; 1.1. main task is dividen into subtasks - activity name
+    "EXEC"
+    ;; 1.1.1 subtasks are dividen into datasets - dd name
+    "DD"
+
+    "ADN0035"
+    "SYSUID"
+    "SEND"
     ))
 
 (defvar jcl-mode-map
@@ -109,6 +118,7 @@
    (cons "\\(\\/\\/\\*.*\\)" 'font-lock-comment-face) ; comment starts with: //*
    (cons (regexp-opt jcl-keywords 'words) 'font-lock-keyword-face)
    (cons (regexp-opt jcl-constants 'words) 'font-lock-constant-face)
+   (cons (regexp-opt jcl-preprocessor 'words) 'font-lock-preprocessor-face)
    ;; numbers
    (cons "\\<\\(\\+\\|-\\)?[0-9]+\\(\\.[0-9]+\\)?\\>" 'font-lock-constant-face)
    )
