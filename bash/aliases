@@ -516,8 +516,8 @@ if [ $isLinuxVB -gt 0 ]; then
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias share='cd $HOME/share'
     alias sedt='cd $HOME/dev/sedt'
-    alias dw='cd $HOME/dev-win'
-#else
+    alias "dw='cd $HOME /dev-win$@ '"
+echo      #el $@se
 #    echo "Linux aliases already loaded"
 fi
 
@@ -548,27 +548,38 @@ alias dev='cd $dev'
 # alias e doesn't work it there's no running emacs
 
 if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ] || [ $isLinuxMartinJV -gt 0 ]; then
-    alias emacs=$dev/emacs/src/emacs
+    LaunchEmacs() {
+        Run pgrep --exact emacs
+        # 0: means One or more processes matched the criteria.
+        if [ $? == 0 ]; then
+            RunBg emacsclient $@
+        else
+            RunBg $dev/emacs/src/emacs $@
+        fi
+    }
+    alias emacs=LaunchEmacs
+else
+    echo "TODO implement alias emacs=LaunchEmacs on this platform"
 fi
 
-  alias e='RunBg emacsclient'
- alias ea='RunBg emacsclient $dev/dotfiles/bash/aliases'
-alias eba='RunBg emacsclient $dev/dotfiles/bash/aliases'
- alias ee='RunBg emacsclient $dev/dotfiles/bash/env'
-alias ebe='RunBg emacsclient $dev/dotfiles/bash/env'
- alias ec='RunBg emacsclient $dev/dotfiles/bash/config'
-alias ebc='RunBg emacsclient $dev/dotfiles/bash/config'
-alias ece='RunBg emacsclient $dev/cheatsheet/emacs-commands.js'
-alias ech='RunBg emacsclient $dev/cheatsheet/host-commands.js'
-alias ecg='RunBg emacsclient $dev/cheatsheet/git-commands.js'
-alias ecr='RunBg emacsclient $dev/cheatsheet/rest-commands.js'
-alias ecv='RunBg emacsclient $dev/cheatsheet/vim-commands.js'
-alias ecc='RunBg emacsclient $dev/cheatsheet/clojure-commands.js'
- alias ej='RunBg emacsclient $dev/dotfiles/jcl/jcl.el'
+  alias e='RunBg LaunchEmacs'
+ alias ea='RunBg LaunchEmacs $dev/dotfiles/bash/aliases'
+alias eba='RunBg LaunchEmacs $dev/dotfiles/bash/aliases'
+ alias ee='RunBg LaunchEmacs $dev/dotfiles/bash/env'
+alias ebe='RunBg LaunchEmacs $dev/dotfiles/bash/env'
+ alias ec='RunBg LaunchEmacs $dev/dotfiles/bash/config'
+alias ebc='RunBg LaunchEmacs $dev/dotfiles/bash/config'
+alias ece='RunBg LaunchEmacs $dev/cheatsheet/emacs-commands.js'
+alias ech='RunBg LaunchEmacs $dev/cheatsheet/host-commands.js'
+alias ecg='RunBg LaunchEmacs $dev/cheatsheet/git-commands.js'
+alias ecr='RunBg LaunchEmacs $dev/cheatsheet/rest-commands.js'
+alias ecv='RunBg LaunchEmacs $dev/cheatsheet/vim-commands.js'
+alias ecc='RunBg LaunchEmacs $dev/cheatsheet/clojure-commands.js'
+ alias ej='RunBg LaunchEmacs $dev/dotfiles/jcl/jcl.el'
 
- # alias eb='RunBg emacsclient $dev/dotfiles/.bashrc'
- # alias er='RunBg emacsclient $dev/dotfiles/.bashrc'
- # alias el='RunBg emacsclient $dev/dotfiles/linux-history.sh'
+ # alias eb='RunBg LaunchEmacs $dev/dotfiles/.bashrc'
+ # alias er='RunBg LaunchEmacs $dev/dotfiles/.bashrc'
+ # alias el='RunBg LaunchEmacs $dev/dotfiles/linux-history.sh'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'

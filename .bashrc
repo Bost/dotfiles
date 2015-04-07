@@ -29,7 +29,6 @@ if [ ! -d "$dotfilesHOME" ]; then
 else
     bash_files=$dotfilesHOME/bash
     readFile $bash_files/env
-    readFile $bash_files/config
     readFile $bash_files/aliases
     readFile $bash_files/fix-dir-struct
 fi

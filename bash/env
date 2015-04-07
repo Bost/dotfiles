@@ -66,12 +66,6 @@ export dev=$HOME/dev
 # export down=$HOME/downloads
 export clt=$dev/LightTable
 
-export ALTERNATE_EDITOR=emacs;
-#EDITOR=gvim # use it with <C-x>e
-#export EDITOR=emacsclient
-export EDITOR=$dev/dotfiles/bash/edit.sh
-export VISUAL=emacsclient
-
 local bits=$(getconf LONG_BIT)
 export isLinux_64=$(($bits == 64))
 
@@ -100,7 +94,42 @@ fi
 
 export PATH
 
-clojureJarFile=$dev/clojure/clojure-1.6.0.jar
-if [ -f $clojureJarFile ]; then
-    export clojureJarFile
+# change the .history file mode to append
+shopt -s histappend
+
+# run at each shell prompt; -a: write immediately the current/new lines to the history file
+
+new_entry="history -a"
+case ";$PROMPT_COMMAND;" in
+    *";$new_entry;"*)
+	# echo "PROMPT_COMMAND already contains: $new_entry"
+	:;;
+    *)
+	PROMPT_COMMAND="$new_entry;$PROMPT_COMMAND"
+	# echo "PROMPT_COMMAND does not contain: $new_entry"
+	;;
+esac
+
+# fancy prompts might be too slow for largers git repos
+if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ]; then
+    # readFile $bash_files/prompt
+    readFile $bash_files/prompt-sexy
+
+    # Set config variables first
+    GIT_PROMPT_ONLY_IN_REPO=1
+
+    # as last entry source the gitprompt script
+    readFile $bash_files/bash-git-prompt/gitprompt.sh
+
+elif [ $isLinuxVB -gt 0 ]; then
+    # readFile $bash_files/prompt-sexy
+    : # use predefined bash prompt - see echo $PS1
+else
+    readFile $bash_files/prompt
+    #readFile $bash_files/prompt-sexy
+    : # use predefined bash prompt - see echo $PS1
 fi
+
+# HACK: when starting emacs - get rid of the warning
+# WARNING **: Couldn't connect to accessibility bus: Failed to connect to socket 
+export NO_AT_BRIDGE=1

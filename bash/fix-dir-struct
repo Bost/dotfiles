@@ -28,20 +28,16 @@ fi
 
 if [ $isLinuxFranzi -eq 0 ] && [ $isLinuxNew64 -eq 0 ] && [ $isLinuxVB -eq 0 ] && [ $isLinuxMartinJV -eq 0 ]; then
     # for emacs yasnippet
-    echo mkdir -p ~/dev/dotfiles/snippets
-         mkdir -p ~/dev/dotfiles/snippets
+    Run mkdir -p ~/dev/dotfiles/snippets
 fi
 
 if [ $isLinuxFranzi -eq 0 ] && [ $isLinuxMartinJV -eq 0 ] && [ $isLinuxNew64 -eq 0 ] && [ $isLinuxVB -eq 0 ]; then
     dnameOld=$HOME/dev/dotfiles/vim
     dnameNew=$HOME/dev/dotfiles/.vim
     if [ ! -d "$dnameNew" ]; then
-        echo mv $dnameOld $dnameNew
-             mv $dnameOld $dnameNew
-        echo rm $HOME/.vim
-             rm $HOME/.vim
-        echo ln -s $HOME/dev/dotfiles/.vim $HOME/.vim
-             ln -s $HOME/dev/dotfiles/.vim $HOME/.vim
+        Run mv $dnameOld $dnameNew
+        Run rm $HOME/.vim
+        Run ln -s $HOME/dev/dotfiles/.vim $HOME/.vim
     else
         echo "$fn WARN: $dnameOld renamed to $dnameNew already."
     fi
@@ -49,12 +45,9 @@ if [ $isLinuxFranzi -eq 0 ] && [ $isLinuxMartinJV -eq 0 ] && [ $isLinuxNew64 -eq
     fnameOld=$HOME/dev/dotfiles/vimrc
     fnameNew=$HOME/dev/dotfiles/.vimrc
     if [ ! -f "$dnameNew" ]; then
-        echo mv $fnameOld $fnameNew
-             mv $fnameOld $fnameNew
-        echo rm $HOME/.vimrc
-             rm $HOME/.vimrc
-        echo ln -s $HOME/dev/dotfiles/.vimrc $HOME/.vimrc
-             ln -s $HOME/dev/dotfiles/.vimrc $HOME/.vimrc
+        Run mv $fnameOld $fnameNew
+        Run rm $HOME/.vimrc
+        Run ln -s $HOME/dev/dotfiles/.vimrc $HOME/.vimrc
     else
         echo "$fn WARN: $fnameOld renamed to $fnameNew already."
     fi
@@ -62,12 +55,9 @@ if [ $isLinuxFranzi -eq 0 ] && [ $isLinuxMartinJV -eq 0 ] && [ $isLinuxNew64 -eq
     fnameOld=$HOME/dev/dotfiles/bashrc
     fnameNew=$HOME/dev/dotfiles/.bashrc
     if [ ! -f "$dnameNew" ]; then
-        echo mv $fnameOld $fnameNew
-             mv $fnameOld $fnameNew
-        echo rm $HOME/.bashrc
-             rm $HOME/.bashrc
-        echo ln -s $HOME/dev/dotfiles/.bashrc $HOME/.bashrc
-             ln -s $HOME/dev/dotfiles/.bashrc $HOME/.bashrc
+        Run mv $fnameOld $fnameNew
+        Run rm $HOME/.bashrc
+        Run ln -s $HOME/dev/dotfiles/.bashrc $HOME/.bashrc
     else
         echo "$fn WARN: $fnameOld renamed to $fnameNew already."
     fi
