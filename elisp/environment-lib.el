@@ -2,15 +2,15 @@
 
 (when (s-ends-with? "VirtualBox" system-name)
   (progn
-    (add-to-list 'load-path "~/.emacs.d/rexx-mode")
-    (autoload 'rexx-mode "rexx-mode" "REXX mode" nil t)
-    (setq auto-mode-alist
-          (append
-           (list (cons "\\.rexx$"  'rexx-mode)
-                 (cons "\\.elx$"   'rexx-mode)
-                 (cons "\\.ncomm$" 'rexx-mode)
-                 (cons "\\.cpr$"   'rexx-mode))
-           auto-mode-alist))))
+    (use-package jcl
+      :load-path "~/dev/dotfiles/jcl")
+
+    (use-package cobol-mode
+      :load-path "~/dev/dotfiles/jcl")
+
+    (use-package rexx-mode
+      :load-path "~/.emacs.d/rexx-mode")
+    ))
 
 (if (string= system-type "windows-nt")
     (progn
@@ -42,8 +42,9 @@
 
       (load "~/bin/dbases.el"))
   (progn
-    ;; This works only when bash environment initialised. I.e. invoke emacs from CLI or
-    ;; modify emacs24 xfce launcher: bash -c -i ~/dev/emacs/src/emacs
+    ;; This works only when bash environment initialised.
+    ;; I.e. invoke emacs from CLI or modify emacs24 xfce launcher:
+    ;; bash -c -i ~/dev/emacs/src/emacs
     (defun get-font-height () ; font size
       (interactive)
       (cond

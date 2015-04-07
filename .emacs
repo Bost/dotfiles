@@ -1410,10 +1410,4 @@ See: `xah-forward-block'"
 ;; (load-theme 'ritchie t)
 ;; (disable-theme 'ritchie) (enable-theme 'ritchie)
 
-(use-package jcl
-  :load-path "~/dev/dotfiles/jcl")
-
-(use-package cobol-mode
-  :load-path "~/dev/dotfiles/jcl")
-
 (setq debug-on-error nil)
