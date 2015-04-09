@@ -47,7 +47,18 @@
     "S06COP" "S04COP" "S08COP" "S07FTP" "S03MBS" "S09DEL" "S05MAK"
     "STDOUT" "STDERR" "STDIN" "STDENV"
     "HFSOUT" "HFSERR" "JESOUT" "JESERR"
-    "SYSTSIN" "SYSOUT" "SYSPRINT" "SYSTSPRT" "SYSDUMP"
+
+    ;; DDNAME
+    "SYSTSIN"
+    "SYSIN" ; passing parameters, if not used set to DUMMY
+    "SYSOUT" ; output file for messages from a given utillity
+    "SYSUT1" ; input file
+    "SYSUT2" ; output file
+    "SYSPRINT" ; output file for printed output from a given utility
+               ; i.e. can show number of processed records, condition codes etc.
+    "SYSTSPRT"
+    "SYSDUMP"
+    "SYSUDUMP" ; output file for a system 'dump' if the program fails
     "DD1"
     "SCRIPT"
 
@@ -56,7 +67,16 @@
     "OPTRPT"
     "DATASUM" "CONTENTS" "GRPRPT" "SUMMRY" "DETAIL" "RESOURCE" "OPTIONS"
     "SYSDA" "SPACE" "TRK" "DISP" "VOL" "REF" "DCB" "BLKSIZE" "LRECL" "RECFM"
-    "RLSE" "STEP1" "STEP01" "STEPLIB" "DATAIN"
+    "RLSE"
+
+    ;; my steps
+    "STEP1" "STEP01"
+    "STEP2" "STEP02"
+    "STEP3" "STEP02"
+    "STEP4" "STEP04"
+    "STEP5" "STEP05"
+
+    "STEPLIB" "DATAIN"
     "DDNAME"
     "ROUTE"
     "USSCMD"
@@ -66,16 +86,24 @@
 
     "NEW" "CATLG" "DSORG"
     "NOTIFY"
+
+    "COPY"
     ))
 
 (defconst jcl-constants
   '(
     "FB" "VB" "LT" "H" "A"
 
-    "IEFBR14" ; IBM utility to create dataset
-    "PS"
+    "IEFBR14" ; datasets: create / delete:
+              ; PS (Physical Sequential) / PDS (Partitioned) / temporary
+
+    "IEBCOPY" ; IBM utility to copy partitioned dataset (PDS) including members
+    "IEBGENER" ; IBM utility to ???
+    "PS"       ; Physical Sequential Dataset
+    "PO"       ; Create Dataset PDS member
     "SIRUSR" "SIWUSR" "SIRWXU"
     "ORDONLY"
+    "SHR"
     ))
 
 (defconst jcl-preprocessor
@@ -89,6 +117,7 @@
 
     "ADN0035"
     "SYSUID"
+    "TEMDS" ; Temporary Pysical Squential file
     "SEND"
     ))
 
