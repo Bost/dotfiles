@@ -88,6 +88,7 @@
     "NOTIFY"
 
     "COPY"
+    "SMTP" ; emailing
     ))
 
 (defconst jcl-constants
@@ -98,9 +99,12 @@
               ; PS (Physical Sequential) / PDS (Partitioned) / temporary
 
     "IEBCOPY" ; IBM utility to copy partitioned dataset (PDS) including members
-    "IEBGENER" ; IBM utility to ???
-    "PS"       ; Physical Sequential Dataset
-    "PO"       ; Create Dataset PDS member
+    "IEBGENER" ; IBM utility to copy Physical Sequential files
+               ; records with max length 32760 bytes
+               ; can copy PDS to PS
+               ; can send: emails / files to printer
+    "PS"       ; Physical Sequential Dataset - file
+    "PO"       ; Create Dataset PDS member - directory
     "SIRUSR" "SIWUSR" "SIRWXU"
     "ORDONLY"
     "SHR"
