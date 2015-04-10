@@ -119,7 +119,7 @@
     ;; 1.1.1 subtasks are dividen into datasets - dd name
     "DD"
 
-    "ADN0035"
+    (getenv "HOST_USERNAME")
     "SYSUID"
     "TEMDS" ; Temporary Pysical Squential file
     "SEND"
@@ -204,11 +204,90 @@
   (message (concat "jcl-mode evaluated & reloaded: "
                    (format-time-string "%Y-%m-%dT%T")))
   )
+
+(defun jcl-shell-buffer (buffer-name)
+  (let* ((delim "*")
+         (shell-buffer-prefix "shell-ftp-"))
+    (concat delim shell-buffer-prefix buffer-name delim)))
+
+(defun jcl-save-on-host (buffer-name ip-addr)
+  (interactive)
+
+  (let* ((shell-buffer (jcl-shell-buffer buffer-name)))
+    (if (get-buffer shell-buffer)
+        (progn
+          (switch-to-buffer shell-buffer)
+          (insert (concat "open " ip-addr))
+          (comint-send-input)
+          )
+      (progn
+        (shell)
+
+        (insert "cd ~/dev/mainframe/host/resources/RACFBK/CNLT")
+        (comint-send-input)
+
+        (insert (concat "ftp -v " ip-addr))
+        (comint-send-input)
+
+        (rename-buffer shell-buffer)
+
+        (insert "cd RACFBK.CNTL")
+        (comint-send-input)
+
+        (insert "prompt")
+        (comint-send-input)
+        )
+      )
+    (insert (concat "mput " buffer-name))
+    (comint-send-input)
+    )
+  )
+
+(defun jcl-close-shell-buffer (buffer-name)
+  (interactive)
+  (let* ((shell-buffer (jcl-shell-buffer buffer-name)))
+    (if (equal shell-buffer (buffer-name (current-buffer)))
+        (progn
+          (end-of-buffer)
+          (insert "quit")
+          (comint-send-input) ; works even in evil normal mode
+          (insert "exit")
+          (comint-send-input)
+          (if (get-buffer-process shell-buffer)
+              (progn
+                (let* ((timeout 500))
+                  (message (concat "shell-buffer: " shell-buffer ": "
+                                   "Waiting " (number-to-string timeout)
+                                   "ms for remaining process(es) to terminate"))
+                  (sleep-for 0 timeout))))
+          (message (concat "Closing buffer: " shell-buffer))
+          (close-buffer)
+          )
+      (progn
+        (message (concat "This buffer is not the " shell-buffer))))
+    ))
+
+(defun jcl-save-on-host-EMAIL ()
+  (interactive)
+  (jcl-save-on-host "EMAIL" (getenv "IP_SDVE")))
+
+(defun jcl-close-shell-buffer-EMAIL ()
+  (interactive)
+  (jcl-close-shell-buffer "EMAIL"))
+
+(defun jcl-shell-mode-keys ()
+  "Modify keymaps used by `shell-mode'."
+  (local-set-key (kbd "s-k") 'jcl-close-shell-buffer-EMAIL)
+  )
+
 (defun jcl-mode-keys ()
   "Modify keymaps used by `jcl-mode'."
-  (local-set-key (kbd "s-r") 'jcl-reload))
+  (local-set-key (kbd "s-r") 'jcl-reload)
+  (local-set-key (kbd "s-l") 'jcl-save-on-host-EMAIL)
+  )
 
 (add-hook 'jcl-mode-hook 'jcl-mode-keys)
+(add-hook 'shell-mode-hook 'jcl-shell-mode-keys)
 
 (provide 'jcl)
 ;;; jcl.el ends here
