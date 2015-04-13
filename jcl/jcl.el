@@ -48,17 +48,17 @@
     "STDOUT" "STDERR" "STDIN" "STDENV"
     "HFSOUT" "HFSERR" "JESOUT" "JESERR"
 
-    ;; DDNAME
+    ;; Data Definition (DD) names:
     "SYSTSIN"
-    "SYSIN" ; passing parameters, if not used set to DUMMY
-    "SYSOUT" ; output file for messages from a given utillity
-    "SYSUT1" ; input file
-    "SYSUT2" ; output file
-    "SYSPRINT" ; output file for printed output from a given utility
+    "SYSIN" ; DD contains parameters for PGM utility, if not used set to DUMMY
+    "SYSOUT" ; output DD for messages from PGM utillity
+    "SYSUT1" ; input DD
+    "SYSUT2" ; output DD
+    "SYSPRINT" ; output DD  for printed output (info messages / errors) from PGM utility
                ; i.e. can show number of processed records, condition codes etc.
     "SYSTSPRT"
     "SYSDUMP"
-    "SYSUDUMP" ; output file for a system 'dump' if the program fails
+    "SYSUDUMP" ; output DD for a system 'dump' if the PGM utility fails
     "DD1"
     "SCRIPT"
 
@@ -93,7 +93,9 @@
 
 (defconst jcl-constants
   '(
-    "FB" "VB" "LT" "H" "A"
+    "FB" "FBA"     ; Fixed Block Size (with ASCII control chars)
+    "VB" "VBA"     ; Variable Block Size (with ASCII control chars)
+    "LT" "H" "A"
 
     "IEFBR14" ; datasets: create / delete:
               ; PS (Physical Sequential) / PDS (Partitioned) / temporary
@@ -102,12 +104,13 @@
     "IEBGENER" ; IBM utility to copy Physical Sequential files
                ; records with max length 32760 bytes
                ; can copy PDS to PS
-               ; can send: emails / files to printer
-    "PS"       ; Physical Sequential Dataset - file
-    "PO"       ; Create Dataset PDS member - directory
+                                        ; can send: emails / files to printer
+    ;; Dataset Organisation (DSORG):
+    "PS"       ; DSORG: Physical Sequential fataset - file
+    "PO"       ; DSORG: Partitioned Organized dataset - directory
     "SIRUSR" "SIWUSR" "SIRWXU"
     "ORDONLY"
-    "SHR"
+    "SHR"      ; signalizes - dataset already exists, and can be used by other programs while the job is running.
     ))
 
 (defun jcl-preprocessor ()
@@ -117,7 +120,7 @@
     ;; 1.1. main task is dividen into subtasks - activity name
     "EXEC"
     ;; 1.1.1 subtasks are dividen into datasets - dd name
-    "DD"
+    "DD" ; Data Definition
 
     (getenv "HOST_USERNAME")
     "SYSUID"
