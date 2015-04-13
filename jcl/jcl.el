@@ -220,6 +220,7 @@
     (if (get-buffer shell-buffer)
         (progn
           (switch-to-buffer shell-buffer)
+          (goto-char (point-max))
           (insert (concat "open " ip-addr))
           (comint-send-input)
           )
@@ -229,6 +230,7 @@
         (insert "cd ~/dev/mainframe/host/resources/RACFBK/CNLT")
         (comint-send-input)
 
+        ;; sftp takes me to Unix instead of Host
         (insert (concat "ftp -v " ip-addr))
         (comint-send-input)
 
@@ -274,6 +276,11 @@
   (interactive)
   (jcl-save-on-host (buffer-name) (getenv "IP_SDVE")))
 
+(defun jcl-upcase-buffer ()
+  "TODO do not upcase comments"
+  (interactive)
+  (upcase-region (point-min) (point-max)))
+
 (defun jcl-close-shell-buffer-any ()
   (interactive)
   (jcl-close-shell-buffer (jcl-shell-buffer nil)))
@@ -287,6 +294,7 @@
   "Modify keymaps used by `jcl-mode'."
   (local-set-key (kbd "s-r") 'jcl-reload)
   (local-set-key (kbd "s-l") 'jcl-save-on-host-buffer)
+  (local-set-key (kbd "s-u") 'jcl-upcase-buffer)
   )
 
 (add-hook 'jcl-mode-hook 'jcl-mode-keys)
