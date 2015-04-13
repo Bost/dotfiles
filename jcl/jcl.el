@@ -207,8 +207,11 @@
 
 (defun jcl-shell-buffer (buffer-name)
   (let* ((delim "*")
-         (shell-buffer-prefix "shell-ftp-"))
-    (concat delim shell-buffer-prefix buffer-name delim)))
+         (shell-buffer-prefix
+          "shell-ftp"))
+    (concat delim shell-buffer-prefix
+            ;; "-" buffer-name
+            delim)))
 
 (defun jcl-save-on-host (buffer-name ip-addr)
   (interactive)
@@ -267,23 +270,23 @@
         (message (concat "This buffer is not the " shell-buffer))))
     ))
 
-(defun jcl-save-on-host-EMAIL ()
+(defun jcl-save-on-host-buffer ()
   (interactive)
-  (jcl-save-on-host "EMAIL" (getenv "IP_SDVE")))
+  (jcl-save-on-host (buffer-name) (getenv "IP_SDVE")))
 
-(defun jcl-close-shell-buffer-EMAIL ()
+(defun jcl-close-shell-buffer-any ()
   (interactive)
-  (jcl-close-shell-buffer "EMAIL"))
+  (jcl-close-shell-buffer (jcl-shell-buffer nil)))
 
 (defun jcl-shell-mode-keys ()
   "Modify keymaps used by `shell-mode'."
-  (local-set-key (kbd "s-k") 'jcl-close-shell-buffer-EMAIL)
+  (local-set-key (kbd "s-k") 'jcl-close-shell-buffer-any)
   )
 
 (defun jcl-mode-keys ()
   "Modify keymaps used by `jcl-mode'."
   (local-set-key (kbd "s-r") 'jcl-reload)
-  (local-set-key (kbd "s-l") 'jcl-save-on-host-EMAIL)
+  (local-set-key (kbd "s-l") 'jcl-save-on-host-buffer)
   )
 
 (add-hook 'jcl-mode-hook 'jcl-mode-keys)
