@@ -110,8 +110,8 @@
     "SHR"
     ))
 
-(defconst jcl-preprocessor
-  '(
+(defun jcl-preprocessor ()
+  (list
     ;; 1. main task - job name
     "JOB"
     ;; 1.1. main task is dividen into subtasks - activity name
@@ -151,7 +151,7 @@
    (cons "\\(\\/\\/\\*.*\\)" 'font-lock-comment-face) ; comment starts with: //*
    (cons (regexp-opt jcl-keywords 'words) 'font-lock-keyword-face)
    (cons (regexp-opt jcl-constants 'words) 'font-lock-constant-face)
-   (cons (regexp-opt jcl-preprocessor 'words) 'font-lock-preprocessor-face)
+   (cons (regexp-opt (jcl-preprocessor) 'words) 'font-lock-preprocessor-face)
    ;; numbers
    (cons "\\<\\(\\+\\|-\\)?[0-9]+\\(\\.[0-9]+\\)?\\>" 'font-lock-constant-face)
    )
