@@ -206,75 +206,103 @@
   ;; (fundamental-mode)
   (jcl-mode)
   (message (concat "jcl-mode evaluated & reloaded: "
-                   (format-time-string "%Y-%m-%dT%T")))
-  )
+                   (format-time-string "%Y-%m-%dT%T"))))
 
-(defun jcl-shell-buffer (buffer-name)
+(defun jcl-shell-buffer (jcl-buffer-name)
   (let* ((delim "*")
          (shell-buffer-prefix
           "shell-ftp"))
     (concat delim shell-buffer-prefix
-            ;; "-" buffer-name
+            ;; "-" jcl-buffer-name
             delim)))
 
-(defun jcl-save-on-host (buffer-name ip-addr)
-  (interactive)
+(defun jcl-pds-names (jcl-buffer-name)
+  (switch-to-buffer jcl-buffer-name)
+  (let* (
+         (base-path (concat (getenv "HOME")
+                            "/dev/mainframe/host/resources")) ; without / at the end
 
-  (let* ((shell-buffer (jcl-shell-buffer buffer-name)))
+         (file-name (buffer-file-name (get-file-buffer (buffer-name))))
+         (pds-path (substring file-name (length (concat base-path "/"))))
+         (pds-names (split-string pds-path "/"))
+         )
+    ;; (message (concat
+    ;;           "pds-names: "
+    ;;           "1. "(first pds-names) ", 2. " (second pds-names)))
+    pds-names))
+
+(defun jcl-save-on-host (jcl-buffer-name ip-addr)
+  (interactive)
+  (let* (
+         (base-path (concat (getenv "HOME")
+                            "/dev/mainframe/host/resources")) ; without / at the end
+
+         (shell-buffer (jcl-shell-buffer jcl-buffer-name))
+         (file-name (buffer-file-name (get-file-buffer jcl-buffer-name)))
+
+         (pds-names (jcl-pds-names jcl-buffer-name))
+         (pds-name-1 (nth 0 pds-names))
+         (pds-name-2 (nth 1 pds-names))
+         )
     (if (get-buffer shell-buffer)
         (progn
           (switch-to-buffer shell-buffer)
           (goto-char (point-max))
+
           (insert (concat "open " ip-addr))
           (comint-send-input)
           )
       (progn
         (shell)
 
-        (insert "cd ~/dev/mainframe/host/resources/RACFBK/CNLT")
-        (comint-send-input)
-
         ;; sftp takes me to Unix instead of Host
         (insert (concat "ftp -v " ip-addr))
         (comint-send-input)
 
         (rename-buffer shell-buffer)
-
-        (insert "cd RACFBK.CNTL")
-        (comint-send-input)
-
-        (insert "prompt")
-        (comint-send-input)
         )
       )
-    (insert (concat "mput " buffer-name))
+
+    ;; TODO do not change the command order
+    (insert "prompt")
+    (comint-send-input)
+
+    (insert (concat "lcd " base-path "/" pds-name-1 "/" pds-name-2))
+    (comint-send-input)
+
+    (insert "cd ~")
+    (comint-send-input)
+
+    ;; TODO 'cd ~.FOO.BAR' does not work
+    (insert (concat "cd " pds-name-1 "." pds-name-2))
+    (comint-send-input)
+
+    (insert (concat "mput " jcl-buffer-name))
     (comint-send-input)
     )
   )
 
-(defun jcl-close-shell-buffer (buffer-name)
+(defun jcl-close-shell-buffer (shell-buffer)
   (interactive)
-  (let* ((shell-buffer (jcl-shell-buffer buffer-name)))
-    (if (equal shell-buffer (buffer-name (current-buffer)))
-        (progn
-          (end-of-buffer)
-          (insert "quit")
-          (comint-send-input) ; works even in evil normal mode
-          (insert "exit")
-          (comint-send-input)
-          (if (get-buffer-process shell-buffer)
-              (progn
-                (let* ((timeout 500))
-                  (message (concat "shell-buffer: " shell-buffer ": "
-                                   "Waiting " (number-to-string timeout)
-                                   "ms for remaining process(es) to terminate"))
-                  (sleep-for 0 timeout))))
-          (message (concat "Closing buffer: " shell-buffer))
-          (close-buffer)
-          )
+  (if (equal shell-buffer (buffer-name (current-buffer)))
       (progn
-        (message (concat "This buffer is not the " shell-buffer))))
-    ))
+        (end-of-buffer)
+        (insert "quit")
+        (comint-send-input) ; works even in evil normal mode
+        (insert "exit")
+        (comint-send-input)
+        (if (get-buffer-process shell-buffer)
+            (progn
+              (let* ((timeout 500))
+                (message (concat "shell-buffer: " shell-buffer ": "
+                                 "Waiting " (number-to-string timeout)
+                                 "ms for remaining process(es) to terminate"))
+                (sleep-for 0 timeout))))
+        (message (concat "Closing buffer: " shell-buffer))
+        (close-buffer)
+        )
+    (progn
+      (message (concat "This buffer is not the " shell-buffer)))))
 
 (defun jcl-save-on-host-buffer ()
   (interactive)
@@ -302,6 +330,7 @@
   )
 
 (add-hook 'jcl-mode-hook 'jcl-mode-keys)
+(add-hook 'cobol-mode-hook 'jcl-mode-keys)
 (add-hook 'shell-mode-hook 'jcl-shell-mode-keys)
 
 (provide 'jcl)
