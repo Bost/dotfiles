@@ -1,8 +1,9 @@
 ;;; jcl.el --- Jcl major mode
 
 ;; Copyright (C) 2001  Free Software Foundation, Inc.
+;;               2015  Rostislav Svoboda
 
-;; Author: StefanMonnier
+;; Author: Rostislav Svoboda
 ;; Keywords: extensions
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -72,7 +73,7 @@
     ;; my steps
     "STEP1" "STEP01"
     "STEP2" "STEP02"
-    "STEP3" "STEP02"
+    "STEP3" "STEP03"
     "STEP4" "STEP04"
     "STEP5" "STEP05"
 
