@@ -508,18 +508,19 @@ if [ $isLinuxVB -gt 0 ]; then
     alias prod='echo ssh rsvoboda@10.236.105.205; ssh rsvoboda@10.236.105.205'
     alias abnt='echo ssh rsvoboda@10.236.105.206; ssh rsvoboda@10.236.105.206'
 
-    alias hbg_uss='echo ssh $HOST_USERNAME@10.236.0.98; ssh $HOST_USERNAME@10.236.0.98'
+    alias hbg-uss='echo ssh $HOST_USERNAME@10.236.0.98; ssh $HOST_USERNAME@10.236.0.98'
     # L: is for SSL 3279
-    alias hbg_3270='echo x3270 -charset CP273 L:194.8.117.99:1023 \&; x3270 -charset CP273 L:194.8.117.99:1023 &'
+    alias hbg-3270='echo x3270 -charset CP273 L:194.8.117.99:1023 \&; x3270 -charset CP273 L:194.8.117.99:1023 &'
 
-    alias sdve_uss='echo ssh $HOST_USERNAME@$IP_SDVE; ssh $HOST_USERNAME@$IP_SDVE'
-    alias sdve_3270='echo x3270 -charset CP273 $IP_SDVE \&; x3270 -charset CP273 $IP_SDVE &'
-    # alias sdve_3270='echo x3270 -charset CP273 L:$IP_SDVE \&; x3270 -charset CP273 L:$IP_SDVE &'
-    #alias sdvp_3270='echo x3270 -charset CP273 10.236.1.106 \&; x3270 -charset CP273 10.236.1.106 &'
-    alias sdve_ftp='echo ftp -v $IP_SDVE; ftp -v $IP_SDVE'
-    alias mce_ftp='echo ftp -v $IP_MCE; ftp -v $IP_MCE'
+    alias sdve-uss='echo ssh $HOST_USERNAME@$IP_SDVE; ssh $HOST_USERNAME@$IP_SDVE'
+    alias sdve-3270='echo x3270 -charset CP273 $IP_SDVE \&; x3270 -charset CP273 $IP_SDVE &'
+    # alias sdve-3270='echo x3270 -charset CP273 L:$IP_SDVE \&; x3270 -charset CP273 L:$IP_SDVE &'
+    #alias sdvp-3270='echo x3270 -charset CP273 10.236.1.106 \&; x3270 -charset CP273 10.236.1.106 &'
+    alias sdve-ftp='echo ftp -v $IP_SDVE; ftp -v $IP_SDVE'
+    alias mce-ftp='echo ftp -v $IP_MCE; ftp -v $IP_MCE'
+    alias mce-uss='echo ssh $HOST_USERNAME@$IP_MCE; ssh $HOST_USERNAME@$IP_MCE'
 
-    alias mce_3270='echo x3270 -charset CP273 10.236.30.173 \&; x3270 -charset CP273 10.236.30.173 &'
+    alias mce-3270='echo x3270 -charset CP273 10.236.30.173 \&; x3270 -charset CP273 10.236.30.173 &'
 
     alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
     alias share='cd $HOME/share'
