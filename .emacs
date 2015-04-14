@@ -1184,7 +1184,13 @@ See: `xah-forward-block'"
       "Modify keymaps used by `emacs-lisp-mode'."
       (local-set-key (kbd "s-e") 'eval-last-sexp)
       ;; see ("s-u" . helm-surfraw)
-      (local-set-key (kbd "s-u") 'eval-buffer))
+      (local-set-key (kbd "s-u")
+                     'eval-buffer
+                     ;; TODO s-u: should print "... eval-buffer done"
+                     ;; (lambda ()
+                     ;;   (eval-buffer)
+                     ;;   (message (concat (buffer-name) ": eval-buffer done.")))
+                     ))
     (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
     ;; store / restore : C-x r j / C-x r j w
