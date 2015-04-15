@@ -427,6 +427,7 @@ UpdateUpgradeClean() {
 alias u='UpdateUpgradeClean'
 alias d='Run sudo apt-get dist-upgrade --yes'
 
+alias synaptic="RunBg gksudo synaptic"
   alias inst="Run sudo apt-get install --yes"
 alias reinst="Run sudo apt-get --reinstall install --yes"
 alias uninst="Run sudo apt-get remove --yes"
@@ -623,8 +624,8 @@ alias vircurex='Run cd ~/vircurex'
     alias virc='Run cd ~/vircurex'
      alias vir='Run cd ~/vircurex'
 
-alias convert='Run cd $dev/convert'
-   alias conv='Run cd $dev/convert'
+# alias convert='Run cd $dev/convert'
+#    alias conv='Run cd $dev/convert'
 
 
 # TODO use 'pkill ltbin' instead of 'kill $(pidof ltbin)'
