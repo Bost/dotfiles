@@ -282,12 +282,12 @@
         (comint-send-input)
 
         (rename-buffer shell-buffer)
+
+        ;; TODO do not change the command order
+        (insert "prompt")
+        (comint-send-input)
         )
       )
-
-    ;; TODO do not change the command order
-    (insert "prompt")
-    (comint-send-input)
 
     (insert (concat "lcd " base-path "/" pds-name-1 "/" pds-name-2))
     (comint-send-input)
