@@ -28,106 +28,120 @@
 ;;; Code:
 
 ;; identifier job-name operands params
+(defconst jcl-step-names
+  (list "STEP01" "STEP02" "STEP03" "STEP04" "STEP05"))
+
 (defconst jcl-keywords
-  '(
-    "DUMMY"
-    "DATA" "OCOPY" "BINARY"
+  (list
+   "DUMMY"
+   "DATA" "OCOPY" "BINARY"
 
-    "PATHDISP"
-    "KEEP" "DELETE"
+   "PATHDISP"
+   "KEEP" "DELETE"
 
-    "PATHOPTS"
-    "OWRONLY" "OCREAT" "OTRUNC"
+   "PATHOPTS"
+   "OWRONLY" "OCREAT" "OTRUNC"
 
-    "PATHMODE"
+   "PATHMODE"
 
-    "PUNCH" "PATH" "UNIT" "MSGLEVEL" "CLASS" "MSGCLASS" "DSN" "PGM"
-    "REGION" "OLD" "PASS"
+   "PUNCH" "PATH" "UNIT" "MSGLEVEL" "CLASS" "MSGCLASS" "DSN" "PGM"
+   "REGION" "OLD" "PASS"
 
-    ;; job names
-    "S06COP" "S04COP" "S08COP" "S07FTP" "S03MBS" "S09DEL" "S05MAK"
-    "STDOUT" "STDERR" "STDIN" "STDENV"
-    "HFSOUT" "HFSERR" "JESOUT" "JESERR"
+   ;; job names
+   "S06COP" "S04COP" "S08COP" "S07FTP" "S03MBS" "S09DEL" "S05MAK"
+   "STDOUT" "STDERR" "STDIN" "STDENV"
+   "HFSOUT" "HFSERR" "JESOUT" "JESERR"
 
-    ;; Data Definition (DD) names:
-    "SYSTSIN"
-    "SYSIN" ; DD contains parameters for PGM utility, if not used set to DUMMY
-    "SYSOUT" ; output DD for messages from PGM utillity
-    "SYSUT1" ; input DD
-    "SYSUT2" ; output DD
-    "SYSPRINT" ; output DD  for printed output (info messages / errors) from PGM utility
-               ; i.e. can show number of processed records, condition codes etc.
-    "SYSTSPRT"
-    "SYSDUMP"
-    "SYSUDUMP" ; output DD for a system 'dump' if the PGM utility fails
-    "DD1"
-    "SCRIPT"
+   ;; Data Definition (DD) names:
+   "SYSTSIN"
+   "SYSIN" ; DD contains parameters for PGM utility, if not used set to DUMMY
+   "SYSOUT" ; output DD for messages from PGM utillity
+   "SYSUT1" ; input DD
+   "SYSUT2" ; output DD
+   "SYSPRINT" ; output DD  for printed output (info messages / errors) from PGM utility
+                                        ; i.e. can show number of processed records, condition codes etc.
+   "SYSTSPRT"
+   "SYSDUMP"
+   "SYSUDUMP" ; output DD for a system 'dump' if the PGM utility fails
+   "DD1"
+   "SCRIPT"
 
-    "NUCL" "TMEIIN" "TMEIOUT" "EIAPIN" "EIAPOUT" "TMMAIN" "TMMAOUT" "TM12IN"
-    "MA12IN" "MA12OUT" "SU12IN" "SU12OUT" "GROUPS"
-    "OPTRPT"
-    "DATASUM" "CONTENTS" "GRPRPT" "SUMMRY" "DETAIL" "RESOURCE" "OPTIONS"
-    "SYSDA" "SPACE" "TRK" "DISP" "VOL" "REF" "DCB" "BLKSIZE" "LRECL" "RECFM"
-    "RLSE"
+   "NUCL" "TMEIIN" "TMEIOUT" "EIAPIN" "EIAPOUT" "TMMAIN" "TMMAOUT" "TM12IN"
+   "MA12IN" "MA12OUT" "SU12IN" "SU12OUT" "GROUPS"
+   "OPTRPT"
+   "DATASUM" "CONTENTS" "GRPRPT" "SUMMRY" "DETAIL" "RESOURCE" "OPTIONS"
+   "SYSDA" "SPACE" "TRK" "DISP" "VOL" "REF"
+   "DCB" ; Data Control Block
+   "BLKSIZE" "LRECL" "RECFM"
+   "RLSE"
 
-    ;; my steps
-    "STEP1" "STEP01"
-    "STEP2" "STEP02"
-    "STEP3" "STEP03"
-    "STEP4" "STEP04"
-    "STEP5" "STEP05"
+   "STEPLIB" "DATAIN"
+   "DDNAME"
+   "ROUTE"
+   "USSCMD"
+   "INDD" "OUTDD" "PARM" "COND" "BPXBATCH"
+   "IKJEFT01"
+   "BPXJCL"
 
-    "STEPLIB" "DATAIN"
-    "DDNAME"
-    "ROUTE"
-    "USSCMD"
-    "INDD" "OUTDD" "PARM" "COND" "BPXBATCH"
-    "IKJEFT01"
-    "BPXJCL"
+   "NEW" "CATLG" "DSORG"
+   "NOTIFY"
 
-    "NEW" "CATLG" "DSORG"
-    "NOTIFY"
+   "COPY"
+   "SMTP" ; emailing
+   ))
 
-    "COPY"
-    "SMTP" ; emailing
-    ))
+(defconst jcl-programs
+  (list
+   "IEFBR14" ; datasets: create / delete:
+                                        ; PS (Physical Sequential) / PDS (Partitioned) / temporary
+
+   "IEBCOPY" ; IBM utility to copy partitioned dataset (PDS) including members
+   "IEBGENER" ; IBM utility to copy Physical Sequential files
+                                        ; records with max length 32760 bytes
+                                        ; can copy PDS to PS
+                                        ; can send: emails / files to printer
+   ))
 
 (defconst jcl-constants
-  '(
-    "FB" "FBA"     ; Fixed Block Size (with ASCII control chars)
-    "VB" "VBA"     ; Variable Block Size (with ASCII control chars)
-    "LT" "H" "A"
-
-    "IEFBR14" ; datasets: create / delete:
-              ; PS (Physical Sequential) / PDS (Partitioned) / temporary
-
-    "IEBCOPY" ; IBM utility to copy partitioned dataset (PDS) including members
-    "IEBGENER" ; IBM utility to copy Physical Sequential files
-               ; records with max length 32760 bytes
-               ; can copy PDS to PS
-                                        ; can send: emails / files to printer
-    ;; Dataset Organisation (DSORG):
-    "PS"       ; DSORG: Physical Sequential fataset - file
-    "PO"       ; DSORG: Partitioned Organized dataset - directory
-    "SIRUSR" "SIWUSR" "SIRWXU"
-    "ORDONLY"
-    "SHR"      ; signalizes - dataset already exists, and can be used by other programs while the job is running.
-    ))
-
-(defun jcl-preprocessor ()
   (list
-    ;; 1. main task - job name
-    "JOB"
-    ;; 1.1. main task is dividen into subtasks - activity name
-    "EXEC"
-    ;; 1.1.1 subtasks are dividen into datasets - dd name
-    "DD" ; Data Definition
+   "FB" "FBA"     ; Fixed Block Size (with ASCII control chars)
+   "VB" "VBA"     ; Variable Block Size (with ASCII control chars)
+   "LT" "H" "A"
 
-    (getenv "HOST_USERNAME")
-    "SYSUID"
-    "TEMDS" ; Temporary Pysical Squential file
-    "SEND"
-    ))
+   ;; Dataset Organisation (DSORG):
+   "PS"       ; DSORG: Physical Sequential fataset - file
+   "PO"       ; DSORG: Partitioned Organized dataset - directory
+   "SIRUSR" "SIWUSR" "SIRWXU"
+   "ORDONLY"
+   ;; DSN=OLDFILE,DISP=SHR signalizes that OLDFILE already exists
+   ;; and can be used by other programs while the job is running.
+   "SHR"
+   ))
+
+(defun jcl-statements ()
+  (list
+   ;; statement; identifies the start of the job; information about the whole job:
+   ;; billing / run priority / time / space limits
+   "JOB"
+   ;; statement; identifies program to be executed in this step; information about the step.
+   "EXEC"
+   ;; Data Definition / Description statements; identify a data file to be used
+   ;; detailed info about that file. DD statements can be in any order within the step.
+   "DD"
+
+   ;; "&SOMETING" - the SOMETHING will be specified at the runtime
+   ;; //ADN0035  JOB (123),... - 123 is the billing information
+
+   ;; X in the column 72 followed by // in the next line extends comments
+
+   ;; Contition Codes: 0: Normal, 4: Warn, 8: Error, 12: Severe Error, 16: Terminal Error
+   "COND"
+   
+   (getenv "HOST_USERNAME")
+   "SYSUID"
+   "TEMDS" ; Temporary Pysical Squential file
+   "SEND"
+   ))
 
 (defvar jcl-mode-map
   (let ((map (make-sparse-keymap)))
@@ -146,16 +160,24 @@
 
 (defconst jcl-font-lock-keywords
   (list
-   ;; statement
+   ;; 5 fields of a JCL statement:
+   ;; Identifier-Field Name-Field Operation-Field Parameter-Field Comments-Field
+   ;;                 ^          ^               ^               ^
+   ;;              no space     space          space           space
+
    (cons "\\(^\\/\\.\\)" 'font-lock-preprocessor-face) ; label /.
    (cons "\\(^\\/&\\)" 'font-lock-preprocessor-face) ; end-of-job /&
    (cons "\\(^\\/\\*\\)" 'font-lock-preprocessor-face) ; end-of-data /*
    (cons "\\(^\\/\\+\\)" 'font-lock-preprocessor-face) ; end-of-procedure /+
-
    (cons "\\(\\/\\/\\*.*\\)" 'font-lock-comment-face) ; comment starts with: //*
-   (cons (regexp-opt jcl-keywords 'words) 'font-lock-keyword-face)
+
+   (cons (regexp-opt jcl-keywords 'words)   'font-lock-keyword-face)
+   (cons (regexp-opt jcl-step-names 'words) 'font-lock-keyword-face)
+   
    (cons (regexp-opt jcl-constants 'words) 'font-lock-constant-face)
-   (cons (regexp-opt (jcl-preprocessor) 'words) 'font-lock-preprocessor-face)
+
+   (cons (regexp-opt (jcl-statements) 'words) 'font-lock-preprocessor-face)
+   (cons (regexp-opt jcl-programs 'words)     'font-lock-preprocessor-face)
    ;; numbers
    (cons "\\<\\(\\+\\|-\\)?[0-9]+\\(\\.[0-9]+\\)?\\>" 'font-lock-constant-face)
    )
