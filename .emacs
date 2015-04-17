@@ -648,7 +648,7 @@ by using nxml's indentation rules."
 (use-package package
   :ensure t
   :bind (("<f9>"   . package-list-packages-no-fetch)
-         ("<s-f9>" . package-auto-upgrade)))
+         ("<s-f9>" . paradox-upgrade-packages)))
 
 ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
 (global-set-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
