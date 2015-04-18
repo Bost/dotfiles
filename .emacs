@@ -811,29 +811,6 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "<s-f12>") 'switch-to-buffer-scratch)
 
-;; must be loaded in the end; otherwise:
-;;    Symbol's function definition is void: mapcar*
-;; (use-package workgroups2)
-
-;; (desktop-save-mode t)       ; save all opened files (or disable it)
-;; (setq wg-prefix-key (kbd "C-c z")
-;;      wg-restore-associated-buffers nil ; all buffers opened in current WG
-;;      wg-use-default-session-file nil   ; turn off for "emacs --daemon"
-;;      wg-default-session-file "~/.emacs_files/workgroups"
-;;      wg-use-faces nil
-;;      wg-morph-on nil)    ; animation off
-;; (workgroups-mode 1)       ; Activate workgroups
-
-;; (global-set-key (kbd "<pause>")     'wg-reload-session)
-;; (global-set-key (kbd "C-S-<pause>") 'wg-save-session)
-;; (global-set-key (kbd "s-z")         'wg-switch-to-workgroup)
-;; (global-set-key (kbd "s-/")         'wg-switch-to-previous-workgroup)
-
-;; (defun sql-db2-g72 ()
-;;  (interactive)
-;;  (copy-line -1))
-
-
 (unless (display-graphic-p)
   (use-package evil-terminal-cursor-changer
     :ensure t))
@@ -1213,6 +1190,14 @@ See: `xah-forward-block'"
 
     ;; (setq tramp-default-method "ssh")
     ))
+
+;; workgroups2 is broken - it screws minibuffer
+;; (use-package workgroups2
+;;   :ensure t
+;;   :init
+;;   (progn
+;;     ;; must be called 'at the end of .emacs'
+;;     (workgroups-mode 1)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
