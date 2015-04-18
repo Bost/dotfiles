@@ -172,6 +172,13 @@
 
 (use-package window-purpose
   :ensure t
+  :bind (
+         ;; C-c , d: window-purpose
+         ("s-d" . purpose-toggle-window-purpose-dedicated)
+
+         ;; C-c , D: window-buffer
+         ("s-D" . purpose-toggle-window-buffer-dedicated)
+         )
   :init
   (progn
     (purpose-mode)))
