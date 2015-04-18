@@ -564,14 +564,21 @@ by using nxml's indentation rules."
           "dd" 'kill-whole-line
           ;; wr gives: (error "Key sequence w r starts with non-prefix key w")
           ;; "wr" 'toggle-truncate-lines
+          "q" 'other-window
           "dr" 'delete-rest-of-cheatsheet-entry
           "SPC" 'evil-search-highlight-persist-remove-all)
 
         (if (featurep 'helm)
             (evil-leader/set-key
+              ;; x gives: (error "Key sequence x x starts with non-prefix key x")
+              ;; "x" 'helm-M-x
+              ;; this doesn't help:
+              ;;   (eval-after-load 'helm "x" 'helm-M-x)
+              ;; although manual eval "after" helps
               "f" 'helm-find-files
               "a" 'helm-buffers-list)
           (evil-leader/set-key
+            ;; "x" 'execute-extended-command
             "f" 'find-file
             "a" 'switch-to-buffer))
         ))
