@@ -645,10 +645,14 @@ by using nxml's indentation rules."
   (message "gui-elements %s"
            (if (= 1 gui-elements) "enabled" "disabled")))
 
-(use-package package
+(use-package paradox
   :ensure t
   :bind (("<f9>"   . package-list-packages-no-fetch)
-         ("<s-f9>" . paradox-upgrade-packages)))
+         ("<s-f9>" . paradox-upgrade-packages))
+  :init
+  (progn
+    (setq paradox-github-token "4619f11ab5b8f7f22f55d1e548441cc61526eea6")))
+
 
 ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
 (global-set-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
