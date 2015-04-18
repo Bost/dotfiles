@@ -656,7 +656,7 @@ by using nxml's indentation rules."
 
 (use-package paradox
   :ensure t
-  :bind (("<f9>"   . package-list-packages-no-fetch)
+  :bind (("<f9>"   . paradox-list-packages) ; TODO auto enable/disable evil-mode
          ("<s-f9>" . paradox-upgrade-packages))
   :init
   (progn
