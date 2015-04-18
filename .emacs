@@ -146,6 +146,8 @@
       (local-set-key (kbd "C-s-j") 'cider-jack-in)
       (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
       (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
+      (if (featurep 'evil-leader)
+        (evil-leader/set-key "e" 'cider-eval-last-sexp))
       (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
       (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
       (local-set-key (kbd "s-n") 'cider-repl-set-ns)
@@ -1187,6 +1189,8 @@ See: `xah-forward-block'"
     (defun emacs-lisp-mode-keys ()
       "Modify keymaps used by `emacs-lisp-mode'."
       (local-set-key (kbd "s-e") 'eval-last-sexp)
+      (if (featurep 'evil-leader)
+        (evil-leader/set-key "e" 'eval-last-sexp))
       ;; see ("s-u" . helm-surfraw)
       (local-set-key (kbd "s-u")
                      'eval-buffer
