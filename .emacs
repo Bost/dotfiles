@@ -1,3 +1,5 @@
+;; TODO key descriptions (C-h k) not separated: "It is bound to C-c , D, s-D."
+
 (setq debug-on-error t) ;; turned off at the end
 ;; this is for the emacs code browser
 (setq stack-trace-on-error t)
