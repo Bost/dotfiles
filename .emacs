@@ -1388,9 +1388,9 @@ See: `xah-forward-block'"
      use-package
      window-purpose
      window-purpose ; purpose base window management
-   closure-lint-mode ; what is linter good for?
+     closure-lint-mode ; what is linter good for?
      )))
- '(paradox-github-token nil)
+ '(paradox-github-token t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
