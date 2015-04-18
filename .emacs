@@ -341,14 +341,33 @@
         (eval-after-load 'flycheck
           '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))))
 
-    (use-package projectile
+    ;; persp-mode is completely broken
+    ;; (use-package persp-mode
+    ;;  :init
+    ;;  (progn
+    ;;    (with-eval-after-load "persp-mode-autoloads"
+    ;;      (setq wg-morph-on nil) ;; switch off animation
+    ;;      (add-hook 'after-init-hook #'(lambda () (persp-mode 1))))
+    ;;    ;; (persp-mode 1)
+    ;;    ))
+
+    ;; To enable Projectile only in select modes:
+    ;; (add-hook 'ruby-mode-hook 'projectile-mode)
+    (use-package persp-projectile
       :ensure t
       :bind (("C-s-p" . helm-projectile-ack))
       :init
       (progn
+
+        ;; TODO save perspective
+        (use-package perspective
+          :ensure t
+          :init
+          (progn
+            (persp-mode)))
+
         (projectile-global-mode)
-        (helm-projectile-on)
-        ))
+        (helm-projectile-on)))
 
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-unset-key (kbd "C-x c"))
