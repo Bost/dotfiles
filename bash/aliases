@@ -575,7 +575,7 @@ fi
   alias e='RunBg LaunchEmacs'
  alias ea='RunBg LaunchEmacs $dev/dotfiles/bash/aliases'
 alias eba='RunBg LaunchEmacs $dev/dotfiles/bash/aliases'
- alias ee='RunBg LaunchEmacs $dev/dotfiles/bash/env'
+ alias ee='RunBg LaunchEmacs $dev/dotfiles/.emacs'
 alias ebe='RunBg LaunchEmacs $dev/dotfiles/bash/env'
  alias ec='RunBg LaunchEmacs $dev/dotfiles/bash/config'
 alias ebc='RunBg LaunchEmacs $dev/dotfiles/bash/config'
