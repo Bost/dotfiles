@@ -761,6 +761,7 @@
 ;; (global-set-key (kbd "<f3>") 'kmacro-start-macro)
 
 (use-package expand-region
+  :defer t
   :ensure t
   :bind ("C-=" . er/expand-region)
   :init
@@ -772,10 +773,12 @@
 
 (use-package yasnippet
   :ensure t
+  :defer t
   :init
   (progn
     (yas-global-mode 1)
     (use-package clojure-snippets
+      :defer t
       :ensure t)))
 
 ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
@@ -815,6 +818,7 @@
 
 ;; xfce4-settings-manager -> Window Manger -> Keyboard -> ...
 (use-package duplicate-thing
+  :defer t
   :ensure t
   :bind (("C-M-<up>"   . duplicate-thing)
          ("C-M-<down>" . duplicate-thing)))
@@ -865,6 +869,7 @@
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
 (use-package ace-window
+  :defer t
   :ensure t
   :init
   (progn
@@ -931,6 +936,7 @@
           (set-visited-file-name new-name t t)))))))
 
 (use-package hideshow
+  :defer t
   :ensure t
   :bind (("C-M-<right>" . hs-show-block)
          ("C-M-<left>"  . hs-hide-block)
@@ -982,6 +988,7 @@
 ;;                               (show-all)))
 
 (use-package whitespace
+  :defer t
   :ensure t
   :diminish whitespace-mode
   :init
