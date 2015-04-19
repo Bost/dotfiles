@@ -1,5 +1,3 @@
-;; TODO key descriptions (C-h k) not separated: "It is bound to C-c , D, s-D."
-
 (setq debug-on-error t) ;; turned off at the end
 ;; this is for the emacs code browser
 (setq stack-trace-on-error t)
@@ -37,9 +35,16 @@
 ;;              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
 ;;              t)
 
-;; activate all the packages (in particular autoloads)
+
+(or (file-exists-p package-user-dir)
+    (package-refresh-contents))
+
 (package-initialize)
-;; (package-refresh-contents)
+
+(if (not (package-installed-p 'use-package))
+  (progn
+    (package-install 'use-package)
+    (package-initialize)))
 
 (require 'use-package)
 
@@ -274,6 +279,8 @@
   :bind ("s-m" . magit-status)
   :init
   (progn
+    (setq magit-auto-revert-mode t)
+    (setq magit-last-seen-setup-instructions "1.4.0")
     (autoload 'magit-status "magit" nil t)))
 
 ;; prevent: Error saving to X clipboard manager.
@@ -866,7 +873,9 @@ by using nxml's indentation rules."
 ;; another possibility how to define a key chord:
 ;; (global-set-key [(control x) (?0)] 'sticky-window-delete-window)
 (use-package sticky-windows
-  :ensure t
+  ;; sticky-windows must by downloaded from
+  ;; http://www.emacswiki.org/emacs/download/sticky-windows.el
+  ;; :ensure t
   :bind (("C-x 0" . sticky-window-delete-window)
          ("C-x 1" . sticky-window-delete-other-windows)
          ("C-x 9" . sticky-window-keep-window-visible)))
