@@ -798,9 +798,11 @@
   (add-hook 'after-init-hook 'edit-server-start t))
 
 (use-package google-this
+  :defer t
   :ensure t)
 
 (use-package browse-url
+  :defer t
   :ensure t
   :init
   (progn
@@ -1238,8 +1240,8 @@ See: `xah-forward-block'"
     ;; (setq tramp-default-method "ssh")
     ))
 
-;; workgroups2 is broken - it screws minibuffer
 ;; (use-package workgroups2
+;;   :disabled t ; workgroups2 is broken - it screws minibuffer
 ;;   :ensure t
 ;;   :init
 ;;   (progn
