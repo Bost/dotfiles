@@ -476,7 +476,7 @@ by using nxml's indentation rules."
     (winner-mode 1)))
 
 (use-package smart-mode-line
-  ;; :ensure t
+  :ensure t
   :init
   (progn
     (setq ;; sml/theme 'respectful
