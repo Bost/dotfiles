@@ -775,6 +775,9 @@
 ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
 ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
 
+(use-package google-this
+  :ensure t)
+
 (use-package browse-url
   :ensure t
   :init
