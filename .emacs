@@ -215,6 +215,7 @@
 ;; https://github.com/company-mode/company-mode/issues/68
 (use-package company
   :ensure t
+  :defer t
   :init
   (progn
     (add-hook 'after-init-hook 'global-company-mode)))
@@ -984,13 +985,13 @@
 
 (use-package whitespace
   :ensure t
-  :bind (("s-w" . whitespace-mode)
-         ("s-<f7>" . whitespace-cleanup))
+  :diminish whitespace-mode
   :init
-  (progn
-    (setq require-final-newline t)
-    (set-default 'indicate-empty-lines t)
-    (setq show-trailing-whitespace t)))
+  (bind-key "s-w" 'whitespace-mode)
+  (bind-key "s-<f7>" 'whitespace-cleanup)
+  (setq require-final-newline t)
+  (set-default 'indicate-empty-lines t)
+  (setq show-trailing-whitespace t))
 
 ;; Always prefer to load newer files,
 ;; instead of giving precedence to the .elc files
