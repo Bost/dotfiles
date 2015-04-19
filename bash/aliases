@@ -112,23 +112,6 @@ GrepFind() {
 }
 alias gf='GrepFind'
 
-#GitRebaseContinue() {
-    #git fetch # can never fail with a conflict
-    #git ff    # tries to fast-forward
-    ## if fast-forward fails, then
-    #git rebase origin/upstreambranch
-
-    # --continue: conflict resolving per commit basis not everything-at-once
-    #echo git rebase --continue
-    #    git rebase --continue
-    # use: 'git rebase --abort && git pull' if 'git rebase --continue' fails then use:
-
-    # you can set up your git config to always rebase when pulling.
-    #   git config master.rebase true
-    # sets it up for master of the current repo
-    #   git config --global branch.autosetuprebase always
-#}
-
  alias gr='RunGit git rebase'
 alias grb='RunGit git rebase'
 alias gri='RunGit git rebase --interactive'
@@ -381,7 +364,7 @@ alias md='Run mkdir -p'
 #alias mv='mv -i'
 
 # example:
-# alias cvs-reset='cvs update -C -l -d -P "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java" "mbsgui/src/de/alldata/mbsgui/base/plugins/CreditKeyList.java"'
+# alias cvs-reset='cvs update -C -l -d -P "X.java" "Y.java"'
 alias cvs-reset='cvs update -C -l -d -P '
 alias less='less -r'
 
@@ -494,8 +477,7 @@ if [ $isLinuxVB -gt 0 ]; then
         # 30 character password
         # echo "cat ~/.netrc"
         ipAddr=$_
-        echo "grep $ipAddr ~/.netrc"
-              grep $ipAddr ~/.netrc
+        Run grep $ipAddr ~/.netrc
         /usr/bin/ftp $@
     }
     alias ftp=FtpCmp
@@ -577,8 +559,6 @@ fi
 alias eba='RunBg LaunchEmacs $dev/dotfiles/bash/aliases'
  alias ee='RunBg LaunchEmacs $dev/dotfiles/.emacs'
 alias ebe='RunBg LaunchEmacs $dev/dotfiles/bash/env'
- alias ec='RunBg LaunchEmacs $dev/dotfiles/bash/config'
-alias ebc='RunBg LaunchEmacs $dev/dotfiles/bash/config'
 alias ece='RunBg LaunchEmacs $dev/cheatsheet/emacs-commands.js'
 alias ech='RunBg LaunchEmacs $dev/cheatsheet/host-commands.js'
 alias ecg='RunBg LaunchEmacs $dev/cheatsheet/git-commands.js'
@@ -629,18 +609,13 @@ alias vircurex='Run cd ~/vircurex'
 
 
 # TODO use 'pkill ltbin' instead of 'kill $(pidof ltbin)'
-KillLightTable() {
-    echo "kill \`pidof ltbin\`"
-          kill  `pidof ltbin`
+KillProg() {
+    echo "kill \`pidof $1\`"
+          kill  `pidof $1`
 }
-alias klt=KillLightTable
-
-
-KillJava() {
-    echo "kill \`pidof java\`"
-          kill  `pidof java`
-}
-alias kjava=KillJava
+alias kjava='KillProg java'
+# kill LightTable
+alias klt='KillProg ltbin'
 
 
 KillServer() {
