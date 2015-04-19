@@ -344,16 +344,18 @@
 
 (use-package helm
   :ensure t
-  :bind (("M-x" . helm-M-x)
-         ("s-g" . helm-google-suggest)
-         ;; ("s-u" . helm-surfraw) ; web search for PATTERN with search ENGINE
-         ("s-p" . helm-projectile)
-         ("s-a" . helm-buffers-list)
-         ("C-x b" . helm-mini)
-         ("s-b" . helm-mini)
-         ("M-y" . helm-show-kill-ring)
-         ) ; see ace-jump-buffer
   :init
+  ;; ee ace-jump-buffer
+  (bind-key "M-x" 'helm-M-x)
+  (bind-key "s-g" 'helm-google-suggest)
+  ;; (bind-key "s-u" 'helm-surfraw) ; web search for PATTERN with search ENGINE
+  (bind-key "s-g" 'google-this-region)
+  (bind-key "s-p" 'helm-projectile)
+  (bind-key "s-a" 'helm-buffers-list)
+  (bind-key "C-x b" 'helm-mini)
+  (bind-key "s-b" 'helm-mini)
+  (bind-key "M-y" 'helm-show-kill-ring)
+
   (progn
     (use-package helm-flycheck
       :ensure t
@@ -362,8 +364,8 @@
         (eval-after-load 'flycheck
           '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))))
 
-    (use-package helm-projectile
-      :ensure t)
+  (use-package helm-projectile
+    :ensure t)
 
     ;; (use-package persp-mode
     ;;  :disabled t ; persp-mode is completely broken
@@ -506,7 +508,7 @@
       :ensure t
       :init
       (bind-key "C-;" 'evilnc-comment-or-uncomment-lines)
-      (bind-key "M-;" 'evilnc-comment-or-uncomment-lines)))
+      (bind-key "M-;" 'evilnc-comment-or-uncomment-lines))
 
     (use-package evil-visualstar
       :ensure t)
