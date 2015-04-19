@@ -62,12 +62,13 @@
   (progn
     (use-package paredit-menu)))
 
-;; org-babel-clojure
-;; (use-package ob-clojure
-;;   :ensure t)
-;; Attention defaults are:
-;;     C-c C-l: (cider-load-file FILENAME)
-;;     C-c C-k: (cider-load-current-buffer)
+(use-package ob-clojure ; org-babel-clojure
+  :disabled t
+  :ensure t
+  ;; Attention defaults are:
+  ;;     C-c C-l: (cider-load-file FILENAME)
+  ;;     C-c C-k: (cider-load-current-buffer)
+  )
 
 ;;(defun skewer-mode-keys ()
 ;;  "Modify keymaps used by `skewer-mode'."
@@ -194,6 +195,7 @@
     (purpose-mode)))
 
 ;; (use-package auto-complete-config
+;;   :disabled t
 ;;   :init
 ;;   (progn
 ;;     (ac-config-default)
@@ -362,8 +364,8 @@
     (use-package helm-projectile
       :ensure t)
 
-    ;; persp-mode is completely broken
     ;; (use-package persp-mode
+    ;;  :disabled t ; persp-mode is completely broken
     ;;  :init
     ;;  (progn
     ;;    (with-eval-after-load "persp-mode-autoloads"
@@ -561,8 +563,8 @@
         ;; (sp-pair "\{" "\}")
         ))
 
-    ;; powerline is buggy at the moment
     ;; (use-package powerline-evil-themes
+    ;;   :disabled t ; powerline is buggy at the moment
     ;;   :init
     ;;   (progn
     ;;     (powerline-evil-center-color-theme)))
