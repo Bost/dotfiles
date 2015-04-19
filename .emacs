@@ -293,7 +293,8 @@
 ;; default is end-of-line as a SQL statement terminator
 ;; (setq sql-db2-options '("-c" "-i" "-w" "db2" "-tv"))
 
-(use-package simple ; this probably the base package; can't use :ensure t
+;; simppe is probably the base package emacs; can't use :ensure t
+(use-package simple
   :init
   (progn
     (size-indication-mode 1)  ; filesize indicator
@@ -320,8 +321,6 @@
 (use-package neotree
   :ensure t
   :bind ("<s-f8>" . neotree-toggle))
-
-;; (desktop-save-mode 1)
 
 ;; (defun save-macro (name)
 ;;     "save a macro. Take a name as argument
@@ -378,6 +377,7 @@
       :init
       (progn
 
+        ;; (desktop-save-mode 1)
         ;; TODO save perspective
         (use-package perspective
           :ensure t
@@ -428,23 +428,6 @@
   :init
   (progn
     (drag-stuff-global-mode t)))
-
-(put 'upcase-region 'disabled nil)
-
-(defun bf-pretty-print-xml-region (begin end)
-  "Pretty format XML markup in region. You need to have nxml-mode
-http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
-this.  The function inserts linebreaks to separate tags that have
-nothing but whitespace between them.  It then indents the markup
-by using nxml's indentation rules."
-  (interactive "r")
-  (save-excursion
-    (nxml-mode)
-    (goto-char begin)
-    (while (search-forward-regexp "\>[ \\t]*\<" nil t)
-      (backward-char) (insert "\n"))
-    (indent-region begin end))
-  (message "Ah, much better!"))
 
 (use-package dired ; not among *Packages*; can't use :ensure t
   :init
@@ -698,7 +681,7 @@ by using nxml's indentation rules."
          ("<s-f9>" . paradox-upgrade-packages))
   :init
   (progn
-    (setq paradox-github-token "4619f11ab5b8f7f22f55d1e548441cc61526eea6")))
+    (setq paradox-github-token (getenv "PARADOX_GITHUB_TOKEN"))))
 
 
 ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
@@ -1183,7 +1166,6 @@ See: `xah-forward-block'"
      '(global-evil-search-highlight-persist t)
      '(global-hl-line-mode t)
      '(indent-tabs-mode nil)
-     '(paradox-github-token nil) ;; do not be able to star packages
      '(show-paren-mode t)
      '(tab-width 4)
      '(tool-bar-mode nil nil (tool-bar)))
@@ -1426,7 +1408,6 @@ See: `xah-forward-block'"
      window-purpose ; purpose base window management
      closure-lint-mode ; what is linter good for?
      )))
- '(paradox-github-token t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
