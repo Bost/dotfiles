@@ -355,5 +355,5 @@
 (add-hook 'cobol-mode-hook 'jcl-mode-keys)
 (add-hook 'shell-mode-hook 'jcl-shell-mode-keys)
 
-(provide 'jcl)
+(provide 'jcl-mode)
 ;;; jcl.el ends here

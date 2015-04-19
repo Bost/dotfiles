@@ -2,13 +2,20 @@
 
 (when (s-ends-with? "VirtualBox" system-name)
   (progn
-    (use-package jcl
-      :load-path "~/dev/dotfiles/jcl")
+    (use-package jcl-mode
+      :load-path "~/dev/dotfiles/jcl"
+      :defer t
+      :init
+      ;; TODO calling autoload in (use-package jcl-mode ..) might not be needed
+      ;; see autoload docu
+      (autoload 'jcl-mode "jcl" nil t))
 
     (use-package cobol-mode
+      :defer t
       :load-path "~/dev/dotfiles/jcl")
 
     (use-package rexx-mode
+      :defer t
       :load-path "~/.emacs.d/rexx-mode")
     ))
 
