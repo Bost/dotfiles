@@ -277,8 +277,6 @@
 ;;(global-set-key [f1] 'compile)
 ;;(global-set-key [f2] 'next-error)
 
-;;(add-to-list 'load-path "~/.emacs.d/edit-server/")
-
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package magit
   :ensure t
@@ -783,6 +781,21 @@
 
 ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
 ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+
+(use-package edit-server
+  ;; Repond to requests from the Emacs Chrome plugin using sockets.
+  ;; See emacs activation docu in the browser plugin
+  :disabled t
+  :defer t
+  :if window-system
+  :init
+  (add-to-list 'load-path "~/.emacs.d")
+  (setq edit-server-url-major-mode-alist
+        '(("github\\.com" . markdown-mode)
+          ("github\\.com" . md)))
+  (setq edit-server-new-frame nil)
+  (add-hook 'after-init-hook 'server-start t)
+  (add-hook 'after-init-hook 'edit-server-start t))
 
 (use-package google-this
   :ensure t)
