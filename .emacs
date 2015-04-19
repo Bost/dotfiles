@@ -503,7 +503,9 @@
 
     (use-package evil-nerd-commenter
       :ensure t
-      :bind ("C-;" . evilnc-comment-or-uncomment-lines))
+      :init
+      (bind-key "C-;" 'evilnc-comment-or-uncomment-lines)
+      (bind-key "M-;" 'evilnc-comment-or-uncomment-lines)))
 
     (use-package evil-visualstar
       :ensure t)
@@ -608,10 +610,6 @@
             "f" 'find-file
             "a" 'switch-to-buffer))
         ))
-
-    (use-package evil-nerd-commenter
-      :ensure t
-      :bind ("M-;" . evilnc-comment-or-uncomment-lines))
 
     ;; from evil-commands
     (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
