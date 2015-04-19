@@ -35,16 +35,14 @@
 ;;              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
 ;;              t)
 
+(package-initialize)
 
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 
-(package-initialize)
-
-(if (not (package-installed-p 'use-package))
-  (progn
-    (package-install 'use-package)
-    (package-initialize)))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (eval-when-compile ; reduce load time
   (require 'use-package))
