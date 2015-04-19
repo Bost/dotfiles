@@ -54,15 +54,16 @@
   :ensure t)
 
 (use-package paredit
+  :defer t
   :ensure t
-  :bind (("s-<left>"  . paredit-backward-slurp-sexp)
-         ("s-<right>" . paredit-backward-barf-sexp))
   :init
-  (progn
-    (use-package paredit-menu)))
+  (bind-key "s-<left>" 'paredit-backward-slurp-sexp)
+  (bind-key "s-<right>" 'paredit-backward-barf-sexp)
+  (use-package paredit-menu))
 
 (use-package ob-clojure ; org-babel-clojure
   :disabled t
+  :defer t
   :ensure t
   ;; Attention defaults are:
   ;;     C-c C-l: (cider-load-file FILENAME)
