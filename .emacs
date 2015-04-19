@@ -48,8 +48,9 @@
 
 (eval-when-compile ; reduce load time
   (require 'use-package))
-(require 'diminish)                ;; if you use :diminish
-(require 'bind-key)                ;; if you use any :bind variant
+;; TODO auto install of diminish and bind-key doesn't work
+(require 'diminish)
+(require 'bind-key)
 
 (use-package auto-package-update
   :ensure t)
