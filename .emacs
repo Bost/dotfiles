@@ -46,7 +46,10 @@
     (package-install 'use-package)
     (package-initialize)))
 
-(require 'use-package)
+(eval-when-compile ; reduce load time
+  (require 'use-package))
+(require 'diminish)                ;; if you use :diminish
+(require 'bind-key)                ;; if you use any :bind variant
 
 (use-package auto-package-update
   :ensure t)
