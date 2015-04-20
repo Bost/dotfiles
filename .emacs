@@ -81,6 +81,7 @@
 ;; (add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
 (use-package cider
+  :defer t
   :ensure t
   :init
   (progn
@@ -148,6 +149,7 @@
     ))
 
 (use-package clojure-mode
+  :defer t
   :ensure t
   :init
   (progn
@@ -168,6 +170,7 @@
     (add-hook 'clojure-mode-hook 'clojure-mode-keys)))
 
 (use-package clj-refactor
+  :defer t
   :ensure t
   :init
   (progn
@@ -220,6 +223,7 @@
     (add-hook 'after-init-hook 'global-company-mode)))
 
 (use-package linum-relative
+  :defer t
   :ensure t
   :bind ("s-n" . linum-relative-toggle)
   :init
@@ -232,6 +236,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-package autorevert
+  :defer t
   :ensure t
   :init
   (progn
@@ -242,6 +247,7 @@
 ;;(desktop-read)
 
 (use-package org
+  ;; :defer t - can't be done, org-mode is loaded by default
   :ensure t
   :config
   (progn
@@ -279,6 +285,7 @@
 
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package magit
+  :defer t
   :ensure t
   :bind ("s-m" . magit-status)
   :init
@@ -323,6 +330,7 @@
     ))
 
 (use-package neotree
+  :defer t
   :ensure t
   :bind ("<s-f8>" . neotree-toggle))
 
@@ -341,6 +349,7 @@
 
 
 (use-package helm
+  :defer t
   :ensure t
   :init
   ;; ee ace-jump-buffer
@@ -430,12 +439,14 @@
     (helm-autoresize-mode 1)))
 
 (use-package drag-stuff
+  :defer t
   :ensure t
   :init
   (progn
     (drag-stuff-global-mode t)))
 
 (use-package dired ; not among *Packages*; can't use :ensure t
+  :defer t
   :init
   (progn
     ;; When moving to parent directory by `^´, Dired by default creates a
@@ -459,6 +470,7 @@
             (buffer-list)))))
 
 (use-package winner ; layout management
+  :defer t
   :ensure t
   :init
   (progn
@@ -543,6 +555,7 @@
         (define-key evil-normal-state-map "K" 'evil-jump-out-args)))
 
     (use-package evil-numbers
+      :defer t
       :ensure t
       :bind (("C-c +" . evil-numbers/inc-at-pt)
              ("C-c -" . evil-numbers/dec-at-pt)
@@ -556,6 +569,7 @@
              ("<s-kp-subtract>"  . evil-numbers/dec-at-pt)))
 
     (use-package evil-smartparens
+      :defer t
       :ensure t
       :init
       (progn
@@ -623,6 +637,7 @@
 
     ;; mode-line (pink - bottom left): 'current match/total matches'
     (use-package anzu
+      :defer t
       :ensure t
       :diminish anzu-mode
       :init
@@ -634,6 +649,7 @@
 (global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
 
 (use-package transpose-frame
+  :defer t
   :ensure t
   :bind ("<f8>" . transpose-frame)
   :init
@@ -680,6 +696,7 @@
            (if (= 1 gui-elements) "enabled" "disabled")))
 
 (use-package paradox
+  :defer t
   :ensure t
   :bind (("<f9>"   . paradox-list-packages) ; TODO auto enable/disable evil-mode
          ("<s-f9>" . paradox-upgrade-packages))
@@ -714,10 +731,12 @@
 
 ;; edit every instance of word/variable in the buffer - like multiple cursors
 (use-package iedit
+  :defer t
   :ensure t
   :bind ("s-i" . iedit-mode))
 
 (use-package multiple-cursors
+  :defer t
   :ensure t
   :bind
   (("C->" . mc/mark-all-like-this-in-defun)
@@ -773,8 +792,8 @@
         (evil-leader/set-key "xx" 'er/expand-region)))))
 
 (use-package yasnippet
-  :ensure t
   :defer t
+  :ensure t
   :init
   (progn
     (yas-global-mode 1)
@@ -834,6 +853,7 @@
 ;;         (funcall fn)))))
 
 (use-package minimap
+  :defer t
   :ensure t
   :bind ("s-i" . minimap-toggle))
 
@@ -865,6 +885,7 @@
 
 (unless (display-graphic-p)
   (use-package evil-terminal-cursor-changer
+    :defer t
     :ensure t))
 
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
@@ -1004,9 +1025,9 @@
 (setq load-prefer-newer t)
 
 (use-package popwin
- :ensure t
- :init
- (progn
+  :defer t
+  :ensure t
+  :init
   (require 'popwin)
   (popwin-mode 1)
 
@@ -1084,7 +1105,7 @@
         popwin:special-display-config)
 
   ;; async shell commands
-  (push '("*Async Shell Command*" :stick t) popwin:special-display-config)))
+  (push '("*Async Shell Command*" :stick t) popwin:special-display-config))
 
 (use-package color-identifiers-mode
   :ensure t
@@ -1248,6 +1269,7 @@ See: `xah-forward-block'"
     ))
 
 ;; (use-package workgroups2
+;;   :defer t
 ;;   :disabled t ; workgroups2 is broken - it screws minibuffer
 ;;   :ensure t
 ;;   :init
