@@ -742,17 +742,20 @@
 
 (use-package ace-jump-mode
   :ensure t
-  :bind (("<f2>" . ace-jump-mode)
-         ("s-j" . ace-jump-mode)
-         ;; ("s-a" . ace-jump-buffer) ; see helm-buffers-list
-         ("<C-f2>". ace-jump-line-mode))
+  :defer t
   :init
-  (progn
-    (when (and (featurep 'evil) (featurep 'evil-leader))
-      (evil-leader/set-key
-        "c" 'ace-jump-char-mode
-        "w" 'ace-jump-word-mode
-        "l" 'ace-jump-line-mode))))
+  (autoload 'ace-jump-mode "ace-jump-mode" nil t)
+
+  (bind-key "<f2>" 'ace-jump-mode)
+  (bind-key "s-j" 'ace-jump-mode)
+  ;; (bind-key "s-a" 'ace-jump-buffer) ; see helm-buffers-list
+  (bind-key "<C-f2>" 'ace-jump-line-mode)
+
+  (when (and (featurep 'evil) (featurep 'evil-leader))
+    (evil-leader/set-key
+      "c" 'ace-jump-char-mode
+      "w" 'ace-jump-word-mode
+      "l" 'ace-jump-line-mode)))
 
 ;; (global-unset-key (kbd "<f3>"))
 ;; (global-set-key (kbd "<f3>") 'kmacro-start-macro)
