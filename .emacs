@@ -85,6 +85,10 @@
   :ensure t
   :init
   (progn
+
+    (use-package rainbow-delimiters
+      :ensure t)
+
     (setq nrepl-log-messages t
           nrepl-hide-special-buffers t
           cider-prefer-local-resources t
