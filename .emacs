@@ -32,7 +32,7 @@
         ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")))
 
 ;; (add-to-list 'package-archives
-;;              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+;;              '("melpa-stable" . "http://stable.melpa.org/packages/")
 ;;              t)
 
 (package-initialize)
