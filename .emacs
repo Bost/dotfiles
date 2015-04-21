@@ -356,11 +356,20 @@
   :defer t
   :ensure t
   :init
+
+  (use-package helm-google ; alternatively use google-this
+    :defer t
+    :ensure t
+    :init
+    (when (executable-find "curl")
+      (setq helm-google-suggest-use-curl-p t))
+    (bind-key "s-G" 'helm-google-suggest)  ; google auto-complete
+    (bind-key "s-g" 'helm-google)          ; alternative to google-this region
+    )
+
   ;; ee ace-jump-buffer
   (bind-key "M-x" 'helm-M-x)
-  (bind-key "s-g" 'helm-google-suggest)
   ;; (bind-key "s-u" 'helm-surfraw) ; web search for PATTERN with search ENGINE
-  (bind-key "s-g" 'google-this-region)
   (bind-key "s-p" 'helm-projectile)
   (bind-key "s-a" 'helm-buffers-list)
   (bind-key "C-x b" 'helm-mini)
@@ -416,9 +425,6 @@
     ;; (define-key helm-map (kbd "C-i")   'helm-execute-persistent-action)
     ;; list actions using C-z
     ;; (define-key helm-map (kbd "C-z")   'helm-select-action)
-
-    (when (executable-find "curl")
-      (setq helm-google-suggest-use-curl-p t))
 
     (setq helm-M-x-fuzzy-match t
           helm-buffers-fuzzy-matching t
@@ -622,6 +628,8 @@
               ;; this doesn't help:
               ;;   (eval-after-load 'helm "x" 'helm-M-x)
               ;; although manual eval "after" helps
+              "G" 'helm-google-suggest ; google auto-complete
+              "g" 'helm-google         ; alternative to google-this region
               "f" 'helm-find-files
               "a" 'helm-buffers-list)
           (evil-leader/set-key
@@ -822,10 +830,6 @@
   (setq edit-server-new-frame nil)
   (add-hook 'after-init-hook 'server-start t)
   (add-hook 'after-init-hook 'edit-server-start t))
-
-(use-package google-this
-  :defer t
-  :ensure t)
 
 (use-package browse-url
   :defer t
@@ -1389,7 +1393,6 @@ See: `xah-forward-block'"
      gitignore-mode
      google
      google-maps
-     google-this
      goto-chg
      goto-last-change
      hackernews
