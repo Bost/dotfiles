@@ -544,7 +544,7 @@ if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ] |
         Run pgrep --exact emacs
         # 0: means One or more processes matched the criteria.
         if [ $? == 0 ]; then
-            RunBg emacsclient $@
+            RunBg $dev/emacs/lib-src/emacsclient $@
         else
             RunBg $dev/emacs/src/emacs $@
         fi
