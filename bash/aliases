@@ -454,65 +454,6 @@ alias m='Run mplayer'
 alias lock="Run xflock4"
 alias k9='Run kill -9'
 
-if [ $isLinuxVB -gt 0 ]; then
-    :
-    #echo "### isLinuxVB: $isLinuxVB"
-
-    alias rosv='cd $rosv'
-    #alias conf='cd $rosv/mbs/conf'
-    #alias scl='cd $dev/scl-directory'
-
-    alias    cre='cd $dev-win/credit'
-    alias   cred='cd $dev-win/credit'
-    alias credit='cd $dev-win/credit'
-    alias ct='cd $dev/ct'
-    #alias pfandbrief='cd $dev/pfandbrief'
-
-    #alias services='cd $dev/xml-services'
-    #alias xml='cd $dev/xml-services'
-
-    FtpCmp() {
-        #echo read -s pass; echo $pass | md5sum | base64 | cut -c -16
-        #read -s pass; echo $pass | md5sum | base64 | cut -c -16
-        # 30 character password
-        # echo "cat ~/.netrc"
-        ipAddr=$_
-        Run grep $ipAddr ~/.netrc
-        /usr/bin/ftp $@
-    }
-    alias ftp=FtpCmp
-
-    #alias prod='echo ssh rsvoboda@172.17.31.184; ssh rsvoboda@172.17.31.184'
-    #alias abnt='echo ssh rsvoboda@172.17.31.185; ssh rsvoboda@172.17.31.185'
-    export IP_SDVE="10.236.1.105"
-    export IP_MCE="10.236.105.45"
-    export HOST_USERNAME="ADN0035"
-
-    alias prod='echo ssh rsvoboda@10.236.105.205; ssh rsvoboda@10.236.105.205'
-    alias abnt='echo ssh rsvoboda@10.236.105.206; ssh rsvoboda@10.236.105.206'
-
-    alias hbg-uss='echo ssh $HOST_USERNAME@10.236.0.98; ssh $HOST_USERNAME@10.236.0.98'
-    # L: is for SSL 3279
-    alias hbg-3270='echo x3270 -charset CP273 L:194.8.117.99:1023 \&; x3270 -charset CP273 L:194.8.117.99:1023 &'
-
-    alias sdve-uss='echo ssh $HOST_USERNAME@$IP_SDVE; ssh $HOST_USERNAME@$IP_SDVE'
-    alias sdve-3270='echo x3270 -charset CP273 $IP_SDVE \&; x3270 -charset CP273 $IP_SDVE &'
-    # alias sdve-3270='echo x3270 -charset CP273 L:$IP_SDVE \&; x3270 -charset CP273 L:$IP_SDVE &'
-    #alias sdvp-3270='echo x3270 -charset CP273 10.236.1.106 \&; x3270 -charset CP273 10.236.1.106 &'
-    alias sdve-ftp='echo ftp -v $IP_SDVE; ftp -v $IP_SDVE'
-    alias mce-ftp='echo ftp -v $IP_MCE; ftp -v $IP_MCE'
-    alias mce-uss='echo ssh $HOST_USERNAME@$IP_MCE; ssh $HOST_USERNAME@$IP_MCE'
-
-    alias mce-3270='echo x3270 -charset CP273 10.236.30.173 \&; x3270 -charset CP273 10.236.30.173 &'
-
-    alias depl='mkdir -p $deployments_full/lib && mkdir -p $deployments_full/deploy; ls -la $deployments_full/..'
-    alias share='cd $HOME/share'
-    alias sedt='cd $HOME/dev/sedt'
-    alias "dw='cd $HOME /dev-win$@ '"
-echo      #el $@se
-#    echo "Linux aliases already loaded"
-fi
-
 alias g='RunGvim'
 # this is a rather speculative $home location :)
 alias home='cd $dev/..'

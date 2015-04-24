@@ -80,18 +80,6 @@ if [ -n "${DISPLAY+x}" ]; then # check if there is a display available
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 fi
 
-if [ $isLinuxVB -gt 0 ]; then
-    source /home/db2inst1/sqllib/db2profile
-    # TODO check if https_proxy is defined
-    PROXY=ptx.proxy.corp.sopra:8080
-    export http_proxy=http://$PROXY
-    export https_proxy=https://$PROXY
-    export ftp_proxy=ftp://$PROXY
-    export rosv=$HOME/rosv
-    export share=$HOME/share
-    export devwin=$HOME/dev-win
-fi
-
 export PATH
 
 # change the .history file mode to append
