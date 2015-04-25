@@ -480,7 +480,8 @@ alias foo='cd $dev/foo'
 alias dev='cd $dev'
 # alias e doesn't work it there's no running emacs
 
-if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ] || [ $isLinuxMartinJV -gt 0 ]; then
+if [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ] || [ $isLinuxMartinJV -gt 0 ]; then
+    # with '/' at the end
     LaunchEmacs() {
         Run pgrep --exact emacs
         # 0: means One or more processes matched the criteria.
@@ -490,10 +491,18 @@ if [ $isLinuxFranzi -gt 0 ] || [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ] |
             RunBg $dev/emacs/src/emacs $@
         fi
     }
-    alias emacs=LaunchEmacs
 else
-    echo "TODO implement alias emacs=LaunchEmacs on this platform"
+    LaunchEmacs() {
+        Run pgrep --exact emacs
+        # 0: means One or more processes matched the criteria.
+        if [ $? == 0 ]; then
+            RunBg emacsclient $@
+        else
+            RunBg emacs $@
+        fi
+    }
 fi
+alias emacs=LaunchEmacs
 
   alias e='RunBg LaunchEmacs'
  alias ea='RunBg LaunchEmacs $dev/dotfiles/bash/aliases'
