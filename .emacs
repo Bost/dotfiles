@@ -1471,6 +1471,7 @@ See: `xah-forward-block'"
      window-purpose ; purpose base window management
      closure-lint-mode ; what is linter good for?
      )))
+ '(paradox-automatically-star t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
