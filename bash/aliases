@@ -58,8 +58,7 @@ ExtractBashComments() {
 }
 
 #ping -c 5 www.google.com
- alias png='Run mtr google.com'
-alias mtrg='Run mtr google.com'
+alias png='Run mtr google.com'
 
 alias c='Run cat'
 alias less='Run less -r'
@@ -246,14 +245,12 @@ mkdirAndCd() {
 }
 alias take='mkdirAndCd'
 
- alias  lc='Run lein clean'
- alias lcc='Run lein clean'
- alias lco='Run lein cljsbuild once'
- alias lca='Run lein cljsbuild auto'
-alias lccad='Run lein  clean && Run lein cljsbuild auto'
+alias  lc='Run lein clean'
+alias lcc='Run lein clean'
+alias lco='Run lein cljsbuild once'
+alias lca='Run lein cljsbuild auto'
 alias lrs='Run lein ring server'
 
- alias om='Run cd $dev/om-async'
 alias oma='Run cd $dev/om-async'
 alias src='Run cd src'
 alias omt='Run cd $dev/om-tut'
@@ -322,19 +319,18 @@ alias ph='Run git_prompt_help'
 
  alias sc='script/console'
 alias h10='history | tail -10'
+alias h20='history | tail -20'
  alias h='history'
 
 HistoryGrep() {
     Run history | grep $@
 }
 alias hrep='HistoryGrep'
-  alias hr='HistoryGrep'
 
 AliasGrep() {
     Run alias | grep $@
 }
 alias arep=AliasGrep
-  alias ar=AliasGrep
 
 CheatsheetGrep() {
     Run grep -i $@ $dev/cheatsheet/*-commands.js
@@ -346,7 +342,6 @@ CheatsheetGrepHost() {
     Run grep -i $@ $dev/cheatsheet/host-commands.js
 }
 alias creph=CheatsheetGrepHost
-  alias crh=CheatsheetGrepHost
 
 #alias tu='top -o cpu'
 #alias tm='top -o vsize'
@@ -455,21 +450,16 @@ alias lock="Run xflock4"
 alias k9='Run kill -9'
 
 alias g='RunGvim'
-# this is a rather speculative $home location :)
-alias home='cd $dev/..'
 
 alias desktop='cd $HOME/desktop'
    alias desk='cd $HOME/desktop'
 
-alias downloads='cd $HOME/downloads'
-     alias down='cd $HOME/downloads'
+alias down='cd $HOME/downloads'
 alias catg='cd $HOME/downloads/category-theory/js'
 
-alias cheatsheet='cd $dev/cheatsheet'
-     alias cheat='cd $dev/cheatsheet'
+alias cheat='cd $dev/cheatsheet'
 
-alias dotfiles='cd $dev/dotfiles'
-    alias dotf='cd $dev/dotfiles'
+alias dotf='cd $dev/dotfiles'
 #alias dot='dot'  " /usr/bin/dot  filter for drawing directed graphs
 
 alias bin='cd $HOME/bin'
@@ -545,10 +535,6 @@ alias plugins='Run cd $dev/LightTable/deploy/plugins'
  alias plugin='Run cd $dev/LightTable/deploy/plugins'
    alias plug='Run cd $dev/LightTable/deploy/plugins'
   alias my='Run cd $dev/lt-plugins-dev/my'
-
-alias vircurex='Run cd ~/vircurex'
-    alias virc='Run cd ~/vircurex'
-     alias vir='Run cd ~/vircurex'
 
 # alias convert='Run cd $dev/convert'
 #    alias conv='Run cd $dev/convert'
