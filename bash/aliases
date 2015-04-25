@@ -480,28 +480,24 @@ alias foo='cd $dev/foo'
 alias dev='cd $dev'
 # alias e doesn't work it there's no running emacs
 
-if [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ] || [ $isLinuxMartinJV -gt 0 ]; then
-    # with '/' at the end
-    LaunchEmacs() {
-        Run pgrep --exact emacs
-        # 0: means One or more processes matched the criteria.
-        if [ $? == 0 ]; then
-            RunBg $dev/emacs/lib-src/emacsclient $@
-        else
-            RunBg $dev/emacs/src/emacs $@
-        fi
-    }
-else
-    LaunchEmacs() {
-        Run pgrep --exact emacs
-        # 0: means One or more processes matched the criteria.
-        if [ $? == 0 ]; then
-            RunBg emacsclient $@
-        else
-            RunBg emacs $@
-        fi
-    }
-fi
+LaunchEmacs() {
+    local params=$@
+    if [ -z "${params[@]}" ]; then
+        params=.
+    fi
+    local emacsBin=""
+    Run pgrep --exact emacs
+    # 0: means One or more processes matched the criteria.
+    if [ $? == 0 ]; then
+        emacsBin=emacsclient
+    else
+        emacsBin=emacs
+    fi
+    if [ $isLinuxNew64 -gt 0 ] || [ $isLinuxVB -gt 0 ] || [ $isLinuxMartinJV -gt 0 ]; then
+        emacsBin=$dev/emacs/src/$emacsBin
+    fi
+    RunBg $emacsBin $params
+}
 alias emacs=LaunchEmacs
 
   alias e='RunBg LaunchEmacs'
