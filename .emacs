@@ -458,10 +458,10 @@
 (use-package dired ; not among *Packages*; can't use :ensure t
   :defer t
   :init
+  (bind-key "s-d" 'dired-jump)
   (use-package dired-rainbow
     :defer t
     :ensure t)
-  (bind-key "s-d" 'dired-jump)
   ;; When moving to parent directory by `^´, Dired by default creates a
   ;; new buffer for each movement up. The following rebinds `^´ to use
   ;; the same buffer
@@ -486,27 +486,26 @@
   :defer t
   :ensure t
   :init
-  (progn
-    (winner-mode 1)))
+  (winner-mode 1))
 
 (use-package smart-mode-line
   :ensure t
   :init
-  (progn
-    (setq ;; sml/theme 'respectful
-          sml/shorten-directory t
-          sml/name-width 32
-          sml/shorten-modes t
-          sml/use-projectile-p 'before-prefixes
-          sml/projectile-replacement-format "%s/")
-    (add-hook 'after-init-hook 'sml/setup)))
+  (setq sml/shorten-directory t
+        ;; sml/theme 'respectful
+        sml/name-width 32
+        sml/shorten-modes t
+        sml/use-projectile-p 'before-prefixes
+        sml/projectile-replacement-format "%s/")
+  (add-hook 'after-init-hook 'sml/setup))
 
 (use-package evil
   :ensure t
-  :bind (("C-s-t" . evil-mode)
-         ("s-;" . evilnc-comment-or-uncomment-lines)
-         ("s-z" . evil-ace-jump-char-mode))
   :init
+  (bind-key "s-SPC" 'evil-search-highlight-persist-remove-all)
+  (bind-key "C-s-t" 'evil-mode)
+  (bind-key "s-;" 'evilnc-comment-or-uncomment-lines)
+  (bind-key "s-z" 'evil-ace-jump-char-mode)
   (progn
     ;; (interactive "r")
     (evil-mode 1)
@@ -570,28 +569,26 @@
     (use-package evil-numbers
       :defer t
       :ensure t
-      :bind (("C-c +" . evil-numbers/inc-at-pt)
-             ("C-c -" . evil-numbers/dec-at-pt)
-
-             ("s-+" . evil-numbers/inc-at-pt)
-             ("s--" . evil-numbers/dec-at-pt)
-
-             ("<C-kp-add>"       . evil-numbers/inc-at-pt)
-             ("<C-kp-subtract>"  . evil-numbers/dec-at-pt)
-             ("<s-kp-add>"       . evil-numbers/inc-at-pt)
-             ("<s-kp-subtract>"  . evil-numbers/dec-at-pt)))
+      :init
+      (bind-key "C-c +" 'evil-numbers/inc-at-pt)
+      (bind-key "C-c -" 'evil-numbers/dec-at-pt)
+      (bind-key "s-+" 'evil-numbers/inc-at-pt)
+      (bind-key "s--" 'evil-numbers/dec-at-pt)
+      (bind-key (kbd "<C-kp-add>")       'evil-numbers/inc-at-pt)
+      (bind-key (kbd "<C-kp-subtract>")  'evil-numbers/dec-at-pt)
+      (bind-key (kbd "<s-kp-add>")       'evil-numbers/inc-at-pt)
+      (bind-key (kbd "<s-kp-subtract>")  'evil-numbers/dec-at-pt))
 
     (use-package evil-smartparens
       :defer t
       :ensure t
       :init
-      (progn
-        ;; evil-smartparens everywhere
-        ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-        ;; evil-smartparens only in clojure
-        (add-hook 'clojure-mode-hook #'evil-smartparens-mode)
-        ;; (sp-pair "\{" "\}")
-        ))
+      ;; evil-smartparens everywhere
+      ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+      ;; evil-smartparens only in clojure
+      (add-hook 'clojure-mode-hook #'evil-smartparens-mode)
+      ;; (sp-pair "\{" "\}")
+      )
 
     ;; (use-package powerline-evil-themes
     ;;   :disabled t ; powerline is buggy at the moment
@@ -605,41 +602,40 @@
     (use-package evil-leader
       :ensure t
       :init
-      (progn
-        (global-evil-leader-mode)
-        (setq evil-leader/in-all-states t)
+      (global-evil-leader-mode)
+      (setq evil-leader/in-all-states t)
 
-        (defun delete-rest-of-cheatsheet-entry (&optional arg)
-          "kbd macro - starts in evil-normal-mode;
+      (defun delete-rest-of-cheatsheet-entry (&optional arg)
+        "kbd macro - starts in evil-normal-mode;
           delete up to the ' (single quote) character"
-          (interactive "p")
-          (kmacro-exec-ring-item (quote ([118 116 39 120 105] 0 "%d"))
-                                 arg))
+        (interactive "p")
+        (kmacro-exec-ring-item (quote ([118 116 39 120 105] 0 "%d"))
+                               arg))
 
-        (evil-leader/set-key
-          "dd" 'kill-whole-line
-          ;; wr gives: (error "Key sequence w r starts with non-prefix key w")
-          ;; "wr" 'toggle-truncate-lines
-          "q" 'other-window
-          "dr" 'delete-rest-of-cheatsheet-entry
-          "SPC" 'evil-search-highlight-persist-remove-all)
+      (evil-leader/set-key
+        "dd" 'kill-whole-line
+        ;; wr gives: (error "Key sequence w r starts with non-prefix key w")
+        ;; "wr" 'toggle-truncate-lines
+        "q" 'other-window
+        "dr" 'delete-rest-of-cheatsheet-entry
+        "SPC" 'evil-search-highlight-persist-remove-all)
 
-        (if (featurep 'helm)
-            (evil-leader/set-key
-              ;; x gives: (error "Key sequence x x starts with non-prefix key x")
-              ;; "x" 'helm-M-x
-              ;; this doesn't help:
-              ;;   (eval-after-load 'helm "x" 'helm-M-x)
-              ;; although manual eval "after" helps
-              "G" 'helm-google-suggest ; google auto-complete
-              "g" 'helm-google         ; alternative to google-this region
-              "f" 'helm-find-files
-              "a" 'helm-buffers-list)
+      (if (featurep 'helm)
           (evil-leader/set-key
-            ;; "x" 'execute-extended-command
-            "f" 'find-file
-            "a" 'switch-to-buffer))
-        ))
+            ;; x gives: (error "Key sequence x x starts with non-prefix key x")
+            ;; "x" 'helm-M-x
+            ;; this doesn't help:
+            ;;   (eval-after-load 'helm "x" 'helm-M-x)
+            ;; although manual eval "after" helps
+            "G" 'helm-google-suggest ; google auto-complete
+            "g" 'helm-google         ; alternative to google-this region
+            "f" 'helm-find-files
+            "a" 'helm-buffers-list)
+        (evil-leader/set-key
+          ;; "x" 'execute-extended-command
+          "f" 'find-file
+          "a" 'switch-to-buffer))
+      )
 
     ;; from evil-commands
     (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
@@ -656,27 +652,22 @@
       :ensure t
       :diminish anzu-mode
       :init
-      (progn
-        (global-anzu-mode 1)
-        (use-package evil-anzu
-          :ensure t)))))
-
-(global-set-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
+      (global-anzu-mode 1)
+      (use-package evil-anzu
+        :ensure t))))
 
 (use-package transpose-frame
   :defer t
   :ensure t
   :bind ("<f8>" . transpose-frame)
   :init
-  (progn
-    (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/")))
+  (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/"))
 
 (use-package time
   :ensure t
   :init
-  (progn
-    (setq display-time-24hr-format 1)
-    (display-time-mode 1)))
+  (setq display-time-24hr-format 1)
+  (display-time-mode 1))
 
 (defun back-window ()
   ;; opposite of other-window
@@ -865,18 +856,14 @@
 ;;(global-set-key [f11] 'toggle-frame-fullscreen) ; this is the default
 (toggle-frame-maximized)
 
-(global-set-key [f7] 'find-file-emacs)
-(global-set-key (kbd "s-<f11>") 'find-file-emacs)
-
 (use-package undo-tree
   :ensure t
   :defer (2 global-undo-tree-mode t) ; load after 2 seconds of idle time
   :diminish ""
   :config
-  (progn
-    (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize) ;; default
-    (define-key undo-tree-map (kbd "<f12>") 'undo-tree-visualize)
-    (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
+  (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize) ;; default
+  (define-key undo-tree-map (kbd "<f12>") 'undo-tree-visualize)
+  (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo))
 
 ;; (global-set-key [scroll] 'exec-test-macro)
 
@@ -1203,6 +1190,9 @@ See: `xah-forward-block'"
   (bind-key [M-s-right] 'enlarge-window-horizontally)
   (bind-key [M-s-down] 'enlarge-window)
   (bind-key [M-s-up] 'shrink-window)
+  (bind-key [f7] 'find-file-emacs)
+  (bind-key (kbd "s-<f11>") 'find-file-emacs)
+  (bind-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
 
   ;; (setq default-directory "~/dev")
 
