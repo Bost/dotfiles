@@ -643,8 +643,7 @@
     (use-package evil-search-highlight-persist
       :ensure t
       :init
-      (progn
-        (global-evil-search-highlight-persist t)))
+      (global-evil-search-highlight-persist t))
 
     ;; mode-line (pink - bottom left): 'current match/total matches'
     (use-package anzu
@@ -699,8 +698,7 @@
   :bind (("<f9>"   . paradox-list-packages) ; TODO auto enable/disable evil-mode
          ("<s-f9>" . paradox-upgrade-packages))
   :init
-  (progn
-    (setq paradox-github-token (getenv "PARADOX_GITHUB_TOKEN"))))
+  (setq paradox-github-token (getenv "PARADOX_GITHUB_TOKEN")))
 
 
 ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
@@ -731,7 +729,8 @@
 (use-package iedit
   :defer t
   :ensure t
-  :bind ("s-i" . iedit-mode))
+  :init
+  (bind-key "s-i" 'iedit-mode))
 
 (use-package multiple-cursors
   :defer t
@@ -783,21 +782,19 @@
   :ensure t
   :bind ("C-=" . er/expand-region)
   :init
-  (progn
-    (when (and (featurep 'evil) (featurep 'evil-leader))
-      (progn
-        (setq expand-region-contract-fast-key "z")
-        (evil-leader/set-key "xx" 'er/expand-region)))))
+  (when (and (featurep 'evil) (featurep 'evil-leader))
+    (progn
+      (setq expand-region-contract-fast-key "z")
+      (evil-leader/set-key "xx" 'er/expand-region))))
 
 (use-package yasnippet
   :defer t
   :ensure t
   :init
-  (progn
-    (yas-global-mode 1)
-    (use-package clojure-snippets
-      :defer t
-      :ensure t)))
+  (yas-global-mode 1)
+  (use-package clojure-snippets
+    :defer t
+    :ensure t))
 
 ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
 ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
@@ -821,12 +818,11 @@
   :defer t
   :ensure t
   :init
-  (progn
-    (setq browse-url-browser-function 'browse-url-generic
-          browse-url-generic-program
-          ;; "chromium-browser" does not work properly on ubuntu 13.10
-          ;; "chrome" ; cygwin
-          "google-chrome")))
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program
+        ;; "chromium-browser" does not work properly on ubuntu 13.10
+        ;; "chrome" ; cygwin
+        "google-chrome"))
 
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
@@ -884,20 +880,18 @@
   :defer t
   :ensure t
   :init
-  (progn
-    (global-set-key (kbd "M-o") 'ace-window)
-    ;; the sequence of leading characters for each window:
-    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))))
+  (global-set-key (kbd "M-o") 'ace-window)
+  ;; the sequence of leading characters for each window:
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package sublimity
   :ensure t
   :init
-  (progn
-    ;; only smooth-scrolling together with sublimity leads to
-    ;; smooth scrolling really working! WTF?
-    (use-package smooth-scrolling) ; inside sublimity :ensure t not needed
-    (use-package sublimity-scroll); inside sublimity :ensure t not needed
-    (sublimity-mode 1)))
+  ;; only smooth-scrolling together with sublimity leads to
+  ;; smooth scrolling really working! WTF?
+  (use-package smooth-scrolling) ; inside sublimity :ensure t not needed
+  (use-package sublimity-scroll); inside sublimity :ensure t not needed
+  (sublimity-mode 1))
 
 ;; another possibility how to define a key chord:
 ;; (global-set-key [(control x) (?0)] 'sticky-window-delete-window)
@@ -957,30 +951,28 @@
          ("M-+"   . toggle-hiding)
          ("s-\\"  . toggle-selective-display))
   :init
-  (progn
-    ;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
-    (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-    (add-hook 'java-mode-hook       'hs-minor-mode)
-    (add-hook 'lisp-mode-hook       'hs-minor-mode)
-    ;; (add-hook 'perl-mode-hook       'hs-minor-mode)
-    (add-hook 'sh-mode-hook         'hs-minor-mode)
+  ;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
+  (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+  (add-hook 'java-mode-hook       'hs-minor-mode)
+  (add-hook 'lisp-mode-hook       'hs-minor-mode)
+  ;; (add-hook 'perl-mode-hook       'hs-minor-mode)
+  (add-hook 'sh-mode-hook         'hs-minor-mode)
 
-    (defun toggle-selective-display (column)
-      (interactive "P")
-      (set-selective-display
-       (or column
-           (unless selective-display
-             (1+ (current-column))))))
+  (defun toggle-selective-display (column)
+    (interactive "P")
+    (set-selective-display
+     (or column
+         (unless selective-display
+           (1+ (current-column))))))
 
-    (defun toggle-hiding (column)
-      (interactive "P")
-      (if hs-minor-mode
-          (if (condition-case nil
-                  (hs-toggle-hiding)
-                (error t))
-              (hs-show-all))
-        (toggle-selective-display column)))
-    ))
+  (defun toggle-hiding (column)
+    (interactive "P")
+    (if hs-minor-mode
+        (if (condition-case nil
+                (hs-toggle-hiding)
+              (error t))
+            (hs-show-all))
+      (toggle-selective-display column))))
 
 ;; (defun display-code-line-counts (ov)
 ;;   (when (eq 'code (overlay-get ov 'hs))
@@ -1146,8 +1138,7 @@ See: `xah-forward-block'"
 (defun my/smart-to-ascii (beg end)
   "Replace smart quotes and dashes with their ASCII equivalents"
   (interactive "r")
-  (format-replace-strings smart-to-ascii
-                          nil beg end))
+  (format-replace-strings smart-to-ascii nil beg end))
 
 (use-package emacs
   :ensure t
