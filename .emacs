@@ -459,6 +459,13 @@
   :defer t
   :init
   (bind-key "s-d" 'dired-jump)
+  (use-package dired-subtree
+    :defer t
+    :ensure t
+    :init
+    (define-key dired-mode-map (kbd "<C-return>") 'dired-subtree-insert)
+    (define-key dired-mode-map (kbd "<C-M-return>") 'dired-subtree-remove))
+
   (use-package dired-rainbow
     :defer t
     :ensure t)
