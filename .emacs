@@ -683,12 +683,6 @@
   (interactive)
   (other-window -1))
 
-;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
-(global-set-key (kbd "<C-tab>") 'bury-buffer)
-(global-set-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
-
-;; (setq default-directory "~/dev")
-
 (defun package-auto-upgrade ()
   (interactive)
   (package-list-packages)
@@ -696,11 +690,9 @@
   (package-menu-mark-upgrades)
   (package-menu-execute))
 
-
 (setq gui-elements -1)
 (menu-bar-mode gui-elements)
 (scroll-bar-mode gui-elements)
-
 
 (defun gui-toggle ()
   (interactive)
@@ -1172,112 +1164,117 @@ See: `xah-forward-block'"
 
 (use-package emacs
   :ensure t
-  :bind (("s-s" . save-buffer)
-         ("s-f" . find-file)
-         ("s-c" . kill-ring-save) ; copy
-         ("s-x" . kill-region)    ; cut
-         ("s-v" . yank)           ; paste
-         ;; see evil-window-map
-         ("s-q" . other-window)   ; (kbd "s-<tab>") does not work
-         ("<S-iso-lefttab>" . other-window)
-
-         ("s-0" . delete-window)
-         ("s-1" . delete-other-windows)
-         ("s-2" . split-window-below)
-         ("s-3" . split-window-right)
-
-         ("s-h" . describe-key)
-         ("s-k" . close-buffer)
-         ;; TODO C-w: close-buffer, /: search-forward in normal mode
-         ;; (global-set-key (kbd "<C-w>") 'close-buffer)
-
-         ;; TODO slash: search forward in normal mode
-         ;; (global-set-key (kbd "/") 'search-forward)
-
-         ;; (global-set-key [C-s-left] (ignore-error-wrapper 'windmove-left))
-         ;; (global-set-key [C-s-right] (ignore-error-wrapper 'windmove-right))
-         ;; (global-set-key [C-s-up] (ignore-error-wrapper 'windmove-up))
-         ;; (global-set-key [C-s-down] (ignore-error-wrapper 'windmove-down))
-
-         ;; ("s-b" . ido-switch-buffer) ; s-b used for helm-mini
-         ;; ("s-k" . ido-kill-buffer)
-         )
   :init
-  (progn
-    (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
-    ;; (global-set-key (kbd "M-s") 'save-buffer)
-    ;; s-s is here just to have consistent key mapping.
-    ;; If it's gonna work I can use M-s for something else
-    (defun close-buffer ()
-      (interactive)
-      (if server-buffer-clients
-          (server-edit)
-        (kill-this-buffer)))
+  (bind-key "s-s" 'save-buffer)
+  (bind-key "s-f" 'find-file)
+  (bind-key "s-c" 'kill-ring-save) ; copy
+  (bind-key "s-x" 'kill-region)    ; cut
+  (bind-key "s-v" 'yank)           ; paste
+  ;; see evil-window-map
+  (bind-key "s-q" 'other-window)   ; (kbd "s-<tab>") does not work
+  (bind-key (kbd "<S-iso-lefttab>") 'other-window)
 
-    (global-set-key [M-s-left] 'shrink-window-horizontally)
-    (global-set-key [M-s-right] 'enlarge-window-horizontally)
-    (global-set-key [M-s-down] 'enlarge-window)
-    (global-set-key [M-s-up] 'shrink-window)
+  (bind-key "s-0" 'delete-window)
+  (bind-key "s-1" 'delete-other-windows)
+  (bind-key "s-2" 'split-window-below)
+  (bind-key "s-3" 'split-window-right)
 
-    (custom-set-variables
-     ;; custom-set-variables was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     '(csv-separators (quote (";")))
-     '(ecb-options-version "2.40")
-     '(ecb-source-path (quote ("~/dev/webcli")))
-     '(evil-search-highlight-persist t)
-     '(git-commit-summary-max-length 70)
-     '(global-evil-search-highlight-persist t)
-     '(global-hl-line-mode t)
-     '(indent-tabs-mode nil)
-     '(show-paren-mode t)
-     '(tab-width 4)
-     '(tool-bar-mode nil nil (tool-bar)))
+  (bind-key "s-h" 'describe-key)
+  (bind-key "s-k" 'close-buffer)
+  ;; TODO C-w: close-buffer, /: search-forward in normal mode
+  ;; (bind-key (kbd "<C-w>") 'close-buffer)
 
-    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-    ;; test delimiters:
-    ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}
+  ;; TODO slash: search forward in normal mode
+  ;; (bind-key "/" 'search-forward)
 
-    ;; check on saving if the file contains a shebang; if yes make it executable
-    (add-hook 'after-save-hook
-              'executable-make-buffer-file-executable-if-script-p)
+  ;; (bind-key [C-s-left] (ignore-error-wrapper 'windmove-left))
+  ;; (bind-key [C-s-right] (ignore-error-wrapper 'windmove-right))
+  ;; (bind-key [C-s-up] (ignore-error-wrapper 'windmove-up))
+  ;; (bind-key [C-s-down] (ignore-error-wrapper 'windmove-down))
 
-    (custom-set-faces
-     ;; custom-set-faces was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     '(evil-search-highlight-persist-highlight-face
-       ((t (:background "dark olive green" :foreground "white"))))
-     '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
-     '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
-     '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
-     '(region ((t (:background "#006400")))))
+  ;; (bind-key "s-b" 'ido-switch-buffer) ; s-b used for helm-mini
+  ;; (bind-key "s-k" 'ido-kill-buffer)
+  ;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
+  (bind-key (kbd "<C-tab>") 'bury-buffer)
+  (bind-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
+  (bind-key (kbd "C-`") 'unbury-buffer)
 
-    (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+  (bind-key [M-s-left] 'shrink-window-horizontally)
+  (bind-key [M-s-right] 'enlarge-window-horizontally)
+  (bind-key [M-s-down] 'enlarge-window)
+  (bind-key [M-s-up] 'shrink-window)
 
-    (defun emacs-lisp-mode-keys ()
-      "Modify keymaps used by `emacs-lisp-mode'."
-      (local-set-key (kbd "s-e") 'eval-last-sexp)
-      (if (featurep 'evil-leader)
+  ;; (setq default-directory "~/dev")
+
+  (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
+  ;; (global-set-key (kbd "M-s") 'save-buffer)
+  ;; s-s is here just to have consistent key mapping.
+  ;; If it's gonna work I can use M-s for something else
+  (defun close-buffer ()
+    (interactive)
+    (if server-buffer-clients
+        (server-edit)
+      (kill-this-buffer)))
+
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(csv-separators (quote (";")))
+   '(ecb-options-version "2.40")
+   '(ecb-source-path (quote ("~/dev/webcli")))
+   '(evil-search-highlight-persist t)
+   '(git-commit-summary-max-length 70)
+   '(global-evil-search-highlight-persist t)
+   '(global-hl-line-mode t)
+   '(indent-tabs-mode nil)
+   '(show-paren-mode t)
+   '(tab-width 4)
+   '(tool-bar-mode nil nil (tool-bar)))
+
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+  ;; test delimiters:
+  ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}
+
+  ;; check on saving if the file contains a shebang; if yes make it executable
+  (add-hook 'after-save-hook
+            'executable-make-buffer-file-executable-if-script-p)
+
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(evil-search-highlight-persist-highlight-face
+     ((t (:background "dark olive green" :foreground "white"))))
+   '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
+   '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
+   '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
+   '(region ((t (:background "#006400")))))
+
+  (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+
+  (defun emacs-lisp-mode-keys ()
+    "Modify keymaps used by `emacs-lisp-mode'."
+    (local-set-key (kbd "s-e") 'eval-last-sexp)
+    (if (featurep 'evil-leader)
         (evil-leader/set-key "e" 'eval-last-sexp))
-      ;; see ("s-u" . helm-surfraw)
-      (local-set-key (kbd "s-u")
-                     'eval-buffer
-                     ;; TODO s-u: should print "... eval-buffer done"
-                     ;; (lambda ()
-                     ;;   (eval-buffer)
-                     ;;   (message (concat (buffer-name) ": eval-buffer done.")))
-                     ))
-    (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
+    ;; see ("s-u" . helm-surfraw)
+    (local-set-key (kbd "s-u")
+                   'eval-buffer
+                   ;; TODO s-u: should print "... eval-buffer done"
+                   ;; (lambda ()
+                   ;;   (eval-buffer)
+                   ;;   (message (concat (buffer-name) ": eval-buffer done.")))
+                   ))
+  (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
-    ;; store / restore : C-x r j / C-x r j w
-    ;; (window-configuration-to-register ?w)
+  ;; store / restore : C-x r j / C-x r j w
+  ;; (window-configuration-to-register ?w)
 
-    ;; (setq tramp-default-method "ssh")
-    ))
+  ;; (setq tramp-default-method "ssh")
+  )
 
 ;; (use-package workgroups2
 ;;   :defer t
