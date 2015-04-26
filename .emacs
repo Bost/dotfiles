@@ -1288,6 +1288,7 @@ See: `xah-forward-block'"
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
+ ;; TODO use :ensure t instead of package-selected-packages
  '(package-selected-packages
    (quote
     (
