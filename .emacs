@@ -1099,12 +1099,11 @@
 (use-package color-identifiers-mode
   :ensure t
   :init
-  (progn
-    (add-hook 'after-init-hook 'global-color-identifiers-mode)))
+  (add-hook 'after-init-hook 'global-color-identifiers-mode)
 
-(defun my/enable-color-identifiers ()
-  (interactive)
-  (color-identifiers-mode t))
+  (defun my/enable-color-identifiers ()
+    (interactive)
+    (color-identifiers-mode t)))
 
 (defun xah-forward-block (&optional φn)
   "Move cursor forward to the beginning of next text block.
