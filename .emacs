@@ -10,8 +10,8 @@
 
 (add-to-list 'load-path "~/dev/dotfiles/elisp/")
 (add-to-list 'custom-theme-load-path "~/dev/dotfiles/elisp/")
-;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized/")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-color-theme-solarized/")
 
 (setq inhibit-splash-screen t)
 
@@ -1281,6 +1281,7 @@ See: `xah-forward-block'"
  '(custom-safe-themes
    (quote
     (
+     "24b6225bcacfe14f74b927db3020d1ff24fe17b674ee952963b4c4e9f0a7d231"
      "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa"
      "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223"
      "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26"
