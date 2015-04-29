@@ -121,3 +121,8 @@ fi
 # HACK: when starting emacs - get rid of the warning
 # WARNING **: Couldn't connect to accessibility bus: Failed to connect to socket 
 export NO_AT_BRIDGE=1
+
+# TODO # Set git to use the credential memory cache
+# TODO git config --global credential.helper cache
+# TODO # To change the default password cache timeout, enter the following:
+# TODO git config --global credential.helper 'cache --timeout=3600'
