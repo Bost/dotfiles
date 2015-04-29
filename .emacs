@@ -1211,6 +1211,17 @@ See: `xah-forward-block'"
         (server-edit)
       (kill-this-buffer)))
 
+
+  ;; TODO insert shebang when opening empty sh-file (use yasnippets):
+  ;; #!/usr/bin/env bash
+  ;; # -*- coding:utf-8 -*-
+
+  ;; # debugging:
+  ;; # set -x
+  ;; # stop on error:
+  ;; # set -e
+
+
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
