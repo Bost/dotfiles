@@ -1142,6 +1142,11 @@ See: `xah-forward-block'"
   (interactive "r")
   (format-replace-strings smart-to-ascii nil beg end))
 
+(use-package gist
+  :disabled t ; see https://github.com/defunkt/gist.el/issues/64
+  :ensure t
+  :defer t)
+
 (use-package emacs
   :ensure t
   :init
