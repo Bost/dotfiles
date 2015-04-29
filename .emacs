@@ -1500,7 +1500,10 @@ See: `xah-forward-block'"
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
  '(region ((t (:background "#006400")))))
 
-(load-theme 'solarized t)
+(load-theme 'zenburn t)
+;; (disable-theme 'zenburn)  (enable-theme 'zenburn)
+
+;; (load-theme 'solarized t)
 ;; (disable-theme 'solarized)  (enable-theme 'solarized)
 
 ;; (load-theme 'light-blue t)
