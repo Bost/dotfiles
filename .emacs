@@ -338,20 +338,6 @@
   :ensure t
   :bind ("<s-f8>" . neotree-toggle))
 
-;; (defun save-macro (name)
-;;     "save a macro. Take a name as argument
-;;      and save the last defined macro under
-;;      this name at the end of your .emacs"
-;;      (interactive "SName of the macro :")  ; ask for the name of the macro
-;;      (kmacro-name-last-macro name)         ; use this name for the macro
-;;      (find-file "~/dev/dotfiles/.emacs")   ; open .emacs/other user init file
-;;      (goto-char (point-max))               ; go to the end of the .emacs
-;;      (newline)                             ; insert a newline
-;;      (insert-kbd-macro name)               ; copy the macro
-;;      (newline)                             ; insert a newline
-;;      (switch-to-buffer nil))               ; return to the initial buffer
-
-
 (use-package helm
   :defer t
   :ensure t
@@ -544,9 +530,6 @@
 
     ;; (use-package evil-jumper) ;; C-i / C-o
 
-    ;; (use-package evil-surround) ; not available in melpa-stable
-    ;;(global-evil-surround-mode 0)
-
     ;; Set cursor colors depending on mode
       (when (display-graphic-p)
         (setq evil-emacs-state-cursor '("red" box))
@@ -559,19 +542,32 @@
     (use-package evil-args
       :ensure t
       :init
-      (progn
-        ;; bind evil-args text objects
-        (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-        (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 
-        ;; bind evil-forward/backward-args
-        (define-key evil-normal-state-map "L" 'evil-forward-arg)
-        (define-key evil-normal-state-map "H" 'evil-backward-arg)
-        (define-key evil-motion-state-map "L" 'evil-forward-arg)
-        (define-key evil-motion-state-map "H" 'evil-backward-arg)
+      (use-package evil-surround
+        :ensure t
+        :init
+        (defun visual-double-quote-string (&optional arg)
+          "Select string inside double quote chars"
+          (evil-normal-state)
+          (interactive "p")
+          (kmacro-exec-ring-item (quote ("vi\"" 0 "%d")) arg))
 
-        ;; bind evil-jump-out-args
-        (define-key evil-normal-state-map "K" 'evil-jump-out-args)))
+        (bind-key "s-\"" 'visual-double-quote-string)
+        (bind-key "M-\"" 'visual-double-quote-string)
+        (global-evil-surround-mode 1))
+
+      ;; bind evil-args text objects
+      (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+      (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+
+      ;; bind evil-forward/backward-args
+      (define-key evil-normal-state-map "L" 'evil-forward-arg)
+      (define-key evil-normal-state-map "H" 'evil-backward-arg)
+      (define-key evil-motion-state-map "L" 'evil-forward-arg)
+      (define-key evil-motion-state-map "H" 'evil-backward-arg)
+
+      ;; bind evil-jump-out-args
+      (define-key evil-normal-state-map "K" 'evil-jump-out-args))
 
     (use-package evil-numbers
       :defer t
@@ -1194,6 +1190,18 @@ See: `xah-forward-block'"
   ;; (setq default-directory "~/dev")
 
   (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
+
+  (defun save-macro (name)
+    "Save the last defined macro under 'name' at the end of .emacs"
+    (interactive "SName of the macro :")  ; ask for the name of the macro
+    (kmacro-name-last-macro name)         ; use this name for the macro
+    (find-file "~/dev/dotfiles/.emacs")   ; open .emacs/other user init file
+    (goto-char (point-max))               ; go to the end of the .emacs
+    (newline)                             ; insert a newline
+    (insert-kbd-macro name)               ; copy the macro
+    (newline)                             ; insert a newline
+    (switch-to-buffer nil))               ; return to the initial buffer
+
   ;; (global-set-key (kbd "M-s") 'save-buffer)
   ;; s-s is here just to have consistent key mapping.
   ;; If it's gonna work I can use M-s for something else
