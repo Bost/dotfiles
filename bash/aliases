@@ -599,6 +599,28 @@ alias ac='ack-grep'
 alias ag='ack-grep'
 alias g='egrep -i'
 
+IpAddress() {
+    echo "######################################################"
+    echo "### 'ifconfig' is obsolete. Using: 'ip address'    ###"
+    echo "######################################################"
+    Run ip address $@
+    echo "######################################################"
+    echo "### 'ifconfig' is obsolete. Using: 'ip address'    ###"
+    echo "######################################################"
+}
+alias ifconfig='IpAddress'
+
+SocketStatistics() {
+    echo "#############################################################"
+    echo "### 'netstat' is obsolete. Using: 'ss' (SocketStatistics) ###"
+    echo "#############################################################"
+    Run ss $@
+    echo "#############################################################"
+    echo "### 'netstat' is obsolete. Using: 'ss' (SocketStatistics) ###"
+    echo "#############################################################"
+}
+alias netstat='SocketStatistics'
+
 # TODO check leiningen installation
 #alias lein='$HOME/bin/lein'
 
