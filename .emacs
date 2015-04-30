@@ -343,14 +343,21 @@
   :ensure t
   :init
 
+  (use-package google-this
+    :defer t
+    :ensure t
+    :init
+    (bind-key "s-g" 'google-this))
+
   (use-package helm-google ; alternatively use google-this
     :defer t
     :ensure t
     :init
-    (when (executable-find "curl")
-      (setq helm-google-suggest-use-curl-p t))
+    ;; (when (executable-find "curl")
+    ;;   (setq helm-google-suggest-use-curl-p t))
     (bind-key "s-G" 'helm-google-suggest)  ; google auto-complete
-    (bind-key "s-g" 'helm-google)          ; alternative to google-this region
+    ;; helm-google does not work
+    ;; (bind-key "s-g" 'helm-google)          ; alternative to google-this region
     )
 
   ;; ee ace-jump-buffer
@@ -1093,6 +1100,8 @@
   (push '("*Async Shell Command*" :stick t) popwin:special-display-config))
 
 (use-package color-identifiers-mode
+  ;; TODO disable color-identifiers-mode only for specific modes: clojure-mode
+  :disabled t ; color-identifiers-mode is nice but noisy
   :ensure t
   :init
   (add-hook 'after-init-hook 'global-color-identifiers-mode)
