@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# -*- coding:utf-8 -*-
+
+# debugging:
+# set -x
+# stop on error:
+# set -e
 
 # get current branch in git repo
 function parse_git_branch() {

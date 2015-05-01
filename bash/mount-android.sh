@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# -*- coding:utf-8 -*-
+
+# debugging:
+# set -x
+# stop on error:
+# set -e
 
 # Find the path to MTP/PTP connected device by USB ID
 find_path_by_usbid () {
