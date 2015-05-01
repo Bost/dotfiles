@@ -709,6 +709,8 @@
   :init
 
   (use-package spinner
+    :disabled t ; spinner is buggy at the moment: 2015-05-01
+    :defer t
     :ensure t)
 
   (bind-key "<f9>"  'paradox-list-packages) ; TODO auto enable/disable evil-mode
