@@ -713,7 +713,7 @@
 
   (bind-key "<f9>"  'paradox-list-packages) ; TODO auto enable/disable evil-mode
   (bind-key "<s-f9>" 'paradox-upgrade-packages)
-  (setq paradox-github-token (getenv "PARADOX_GITHUB_TOKEN")
+  (setq paradox-github-token (getenv "GITHUB_TOKEN")
         paradox-automatically-star t))
 
 ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
