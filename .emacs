@@ -703,13 +703,18 @@
            (if (= 1 gui-elements) "enabled" "disabled")))
 
 (use-package paradox
+  :disabled t ; spinner is buggy at the moment: 2015-05-01
   :defer t
   :ensure t
-  :bind (("<f9>"   . paradox-list-packages) ; TODO auto enable/disable evil-mode
-         ("<s-f9>" . paradox-upgrade-packages))
   :init
-  (setq paradox-github-token (getenv "PARADOX_GITHUB_TOKEN")))
 
+  (use-package spinner
+    :ensure t)
+
+  (bind-key "<f9>"  'paradox-list-packages) ; TODO auto enable/disable evil-mode
+  (bind-key "<s-f9>" 'paradox-upgrade-packages)
+  (setq paradox-github-token (getenv "PARADOX_GITHUB_TOKEN")
+        paradox-automatically-star t))
 
 ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
 (global-set-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
@@ -1459,7 +1464,6 @@ See: `xah-forward-block'"
      multiple-cursors
      neotree
      org
-     paradox
      paredit
      paredit-menu
      pcache
@@ -1493,7 +1497,6 @@ See: `xah-forward-block'"
      window-purpose ; purpose base window management
      closure-lint-mode ; what is linter good for?
      )))
- '(paradox-automatically-star t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
