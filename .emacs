@@ -250,6 +250,18 @@
 ;;(desktop-load-default)
 ;;(desktop-read)
 
+(use-package jedi
+  :ensure t
+  :defer t
+  :init
+  (use-package company-jedi
+    :ensure t
+    :defer t
+    :init
+    (defun my/python-mode-hook ()
+      (add-to-list 'company-backends 'company-jedi))
+    (add-hook 'python-mode-hook 'my/python-mode-hook)))
+
 (use-package org
   ;; :defer t - can't be done, org-mode is loaded by default
   :ensure t
