@@ -815,7 +815,9 @@
   :defer t
   :ensure t
   :init
-  (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
+  (let ((yasnippet-dir "~/.emacs.d/plugins/yasnippet"))
+    (shell-command-to-string (concat "mkdir -p " yasnippet-dir))
+    (add-to-list 'load-path yasnippet-dir))
   (yas-global-mode 1)
   (use-package clojure-snippets
     :defer t
