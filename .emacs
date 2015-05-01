@@ -243,9 +243,8 @@
   :defer t
   :ensure t
   :init
-  (progn
-    ;; reload all buffers when the file is changed
-    (global-auto-revert-mode t)))
+  ;; reload all buffers when the file is changed
+  (global-auto-revert-mode t))
 
 ;;(desktop-load-default)
 ;;(desktop-read)
@@ -824,10 +823,10 @@
   (yas-global-mode 1)
   (use-package clojure-snippets
     :defer t
-    :ensure t))
-
-;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
-;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+    :ensure t)
+  ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
+  ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+  )
 
 (use-package edit-server
   ;; Repond to requests from the Emacs Chrome plugin using sockets.
