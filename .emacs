@@ -1208,6 +1208,11 @@ See: `xah-forward-block'"
 
   ;; (setq default-directory "~/dev")
 
+  (defun timestamp ()
+    "Use bash function 'timestamp' defined in bash/aliases"
+    (interactive)
+    (insert (shell-command-to-string "timestamp")))
+
   (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
 
   (defun save-macro (name)

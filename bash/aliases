@@ -634,3 +634,8 @@ alias netstat='SocketStatistics'
 # }
 
 # TODO define $cdpath - where to jump
+
+timestamp() {
+    # date +"%T" - prints just Hous %H:%M:%S
+    date "+%F_%H-%M-%S" # same as "+%Y-%m-%d_%H-%M-%S"
+}
