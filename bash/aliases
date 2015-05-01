@@ -592,12 +592,12 @@ gf() {
     # echo grep $@ $(find src/ -regex '.*cljs\|.*clj') | grep -v 'Is a directory'
          grep $@ $(find src/ -regex '.*cljs\|.*clj') | grep -v 'Is a directory'
 }
-alias dos2unix='fromdos'
-alias d2u='fromdos'
-alias unix2dos='todos'
-alias u2d='todos'
-alias ac='ack-grep'
-alias ag='ack-grep'
+alias dos2unix='Run fromdos'
+alias d2u='Run fromdos'
+alias unix2dos='Run todos'
+alias u2d='Run todos'
+alias ac='Run ack-grep'
+alias ag='Run ack-grep'
 alias g='egrep -i'
 
 IpAddress() {
