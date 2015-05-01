@@ -27,9 +27,9 @@ RunGit() {
     unset EDITOR ALTERNATE_EDITOR VISUAL
     #echo -e "during:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
     Run $@
-    EDITOR=$e
-    ALTERNATE_EDITOR=$a
-    VISUAL=$v
+    EDITOR=${e}
+    ALTERNATE_EDITOR=${a}
+    VISUAL=${v}
     #echo -e "after:\n EDITOR: $EDITOR\n ALTERNATE_EDITOR: $ALTERNATE_EDITOR\n VISUAL: $VISUAL"
 }
 
@@ -41,7 +41,7 @@ alias tf='Run tail -f'
 CleanEclipseWorkspace() {
     METADA_CORE=.metadata/.plugins/org.eclipse.jdt.core
     Run rm -rf .metadata/.plugins/org.eclipse.core.resources/.history
-    Run rm $METADA_CORE/*.index $METADA_CORE/savedIndexNames.txt
+    Run rm ${METADA_CORE}/*.index ${METADA_CORE}/savedIndexNames.txt
 }
 alias clean-ws='CleanEclipseWorkspace'
 alias unexport='unset'
@@ -74,6 +74,8 @@ alias vdir='ls --color=auto --format=long'
 alias ..='Run cd ..'
 alias ...='Run cd ../..'
 alias ....='Run cd ../../..'
+alias ..4="Run cd ../../../.."
+alias ..5="Run cd ../../../../.."
 
 alias cd..='Run cd ..'
 alias cd...='Run cd ../..'
@@ -105,9 +107,9 @@ GrepFind() {
     echo "grep -lir '$1' $\(find . -name '*.$2'\)"
     echo "###"
     if [ $# -eq 2 ] ; then
-        foundFiles=$(find . -name \*.$2)
+        foundFiles=$(find . -name \*.${2})
         # echo "foundFiles: "$foundFiles
-        grep -lir $1 $foundFiles
+        grep -lir ${1} ${foundFiles}
     fi
 }
 alias gf='GrepFind'
@@ -183,53 +185,53 @@ findreplace () {
 
 extract() {
     if [ -f "$1" ] ; then
-      case $1 in
+      case ${1} in
         *.tar.bz2)
-              Run tar xjf $1
+              Run tar xjf ${1}
               ;;
         *.tar.gz)
-              Run tar xzf $1
+              Run tar xzf ${1}
               ;;
         *.bz2)
-              Run bunzip2 $1
+              Run bunzip2 ${1}
               ;;
         *.rar)
-              Run unrar e $1
+              Run unrar e ${1}
               ;;
         *.gz)
-              Run gunzip $1
+              Run gunzip ${1}
               ;;
         *.tar)
-              Run tar xf $1
+              Run tar xf ${1}
               ;;
         *.tbz2)
-              Run tar xjf $1
+              Run tar xjf ${1}
               ;;
         *.tgz)
-              Run tar xzf $1
+              Run tar xzf ${1}
               ;;
         *.jar)
-              Run unzip $1
+              Run unzip ${1}
               ;;
         *.war)
-              Run unzip $1
+              Run unzip ${1}
               ;;
         *.zip)
-              Run unzip $1
+              Run unzip ${1}
               ;;
         *.Z)
-              Run uncompress $1
+              Run uncompress ${1}
               ;;
         *.7z)
-              Run 7z x $1
+              Run 7z x ${1}
               ;;
         *.tar.xz)
-              Run tar xvfJ $1
+              Run tar xvfJ ${1}
               ;;
-        *)     echo "'$1' cannot be extracted via extract()" ;;
+        *)     echo "'${1}' cannot be extracted via extract()" ;;
         esac
      else
-         echo "'$1' is not a valid file"
+         echo "'${1}' is not a valid file"
      fi
 }
 
@@ -252,42 +254,45 @@ alias lco='Run lein cljsbuild once'
 alias lca='Run lein cljsbuild auto'
 alias lrs='Run lein ring server'
 
-alias oma='Run cd $dev/om-async'
+alias oma='Run cd ${dev}/om-async'
 alias src='Run cd src'
-alias omt='Run cd $dev/om-tut'
+alias omt='Run cd ${dev}/om-tut'
 alias lcad='Run lein cljsbuild auto dev' # start it in om-async directory
 alias  lco='Run lein cljsbuild once' # start it in om-async directory
 alias lcxa='Run lein cljx auto' # start it in om-async directory
 
 GitUpdateAll() {
-    _cd=$(pwd)
-    echo 'pwd: '$_cd
+    local _pwd=$(pwd)
+    local _oldpwd=${OLDPWD}
 
-    Run cd $dev/cheatsheet
+    Run cd ${dev}/cheatsheet
     Run git pull --rebase origin # && Run git fetch --tags
 
-    Run cd $dev/dotfiles
+    Run cd ${dev}/dotfiles
     Run git pull --rebase origin # && Run git fetch --tags
 
-    cd $_cd
-    Run source $HOME/.bashrc
+    cd ${_cd}
+    Run source ${HOME}/.bashrc
+    cd ${_pwd}
+    OLDPWD=${_oldpwd}
 }
  alias ga='GitUpdateAll'
 alias gua='GitUpdateAll'
 
 GitPushRepo() {
-    echo 'cd '$1' && git push'
-          cd  $1  && git push
+    echo 'cd '${1}' && git push'
+          cd  ${1}  && git push
 }
 
 GitPushAll() {
-    _cd=$(pwd)
-    echo 'pwd: '$_cd
-    GitPushRepo $dev/cheatsheet && GitPushRepo $dev/dotfiles
-    cd $_cd
+    local _pwd=$(pwd)
+    local _oldpwd=${OLDPWD}
+    GitPushRepo ${dev}/cheatsheet && GitPushRepo ${dev}/dotfiles
+    cd ${_pwd}
+    OLDPWD=${_oldpwd}
 }
 alias gha='GitPushAll'
-#gpl_dotfiles='echo "$dev/dotfiles"; cd $dev/dotfiles && git pull'
+#gpl_dotfiles='echo "${dev}/dotfiles"; cd ${dev}/dotfiles && git pull'
 #alias gps='cd $dotfilesHOME/vim-pathogen && git submodule foreach git pull origin master'
 
 alias gcl='Run git clone'
@@ -334,15 +339,33 @@ AliasGrep() {
 alias arep=AliasGrep
 
 CheatsheetGrep() {
-    Run grep -i $@ $dev/cheatsheet/*-commands.js
+    local _pwd=$(pwd)
+    local _oldpwd=${OLDPWD}
+    cd ${dev}/cheatsheet/
+    ack-grep *-commands.js \
+             --nogroup \--break --with-filename --color-filename=grey13 \
+             --color-lineno=grey13 --color-match="bold blue" \
+             --ignore-case --match ${@}
+    # Run grep -i $@ ${dev}/cheatsheet/*-commands.js
+    cd ${_pwd}
+    OLDPWD=${_oldpwd}
 }
-alias crep=CheatsheetGrep
-  alias cr=CheatsheetGrep
+alias crep='CheatsheetGrep'
+  alias cr='CheatsheetGrep'
 
 CheatsheetGrepHost() {
-    Run grep -i $@ $dev/cheatsheet/host-commands.js
+    local _pwd=$(pwd)
+    local _oldpwd=${OLDPWD}
+    cd ${dev}/cheatsheet/
+    ack-grep host-commands.js \
+             --nogroup \--break --with-filename --color-filename=grey13 \
+             --color-lineno=grey13 --color-match="bold blue" \
+             --ignore-case --match ${@}
+    # Run grep -i $@ ${dev}/cheatsheet/*-commands.js
+    cd ${_pwd}
+    OLDPWD=${_oldpwd}
 }
-alias creph=CheatsheetGrepHost
+alias creph='CheatsheetGrepHost'
 
 #alias tu='top -o cpu'
 #alias tm='top -o vsize'
@@ -429,21 +452,21 @@ alias shutdown='Run sudo shutdown -h now'
 
 # TODO update 'alias clojure'
 # cljcp=$clojureJarFile
-# cljcp=$cljcp:$dev/clojure-contrib/math.combinatorics-0.0.3.jar
-# cljcp=$cljcp:$dev/clojure-contrib/algo.monads-0.1.4.jar
-# cljcp=$cljcp:$dev/clojure-contrib/tools.macro-0.1.1.jar
-# cljcp=$cljcp:$dev/clojure-contrib/data.priority-map-0.0.2.jar
-# cljcp=$cljcp:$dev/clojure-contrib/core.cache-0.6.3.jar
-# cljcp=$cljcp:$dev/clojure-contrib/core.memoize-0.5.5.jar
+# cljcp=$cljcp:${dev}/clojure-contrib/math.combinatorics-0.0.3.jar
+# cljcp=$cljcp:${dev}/clojure-contrib/algo.monads-0.1.4.jar
+# cljcp=$cljcp:${dev}/clojure-contrib/tools.macro-0.1.1.jar
+# cljcp=$cljcp:${dev}/clojure-contrib/data.priority-map-0.0.2.jar
+# cljcp=$cljcp:${dev}/clojure-contrib/core.cache-0.6.3.jar
+# cljcp=$cljcp:${dev}/clojure-contrib/core.memoize-0.5.5.jar
 # alias clojure='Run java -cp $cljcp clojure.main'
 
 # !* - all args of the last command
 #alias gvim='RunBg gvim -c "call Maximize_Window()" --remote-silent'
 #alias gvim='RunBg gvim -c "call Maximize_Window()"'
 alias gvim='RunBg gvim'
-alias tmp='cd /tmp'
+alias tmp='Run cd /tmp'
 
-alias music='cd $HOME/music/'
+alias music='Run cd $HOME/music/'
 alias y='Run youtube-dl'
 alias ys='Run youtube-dl --extract-audio --audio-format mp3'
 alias m='Run mplayer'
@@ -452,23 +475,23 @@ alias k9='Run kill -9'
 
 alias g='RunGvim'
 
-alias desktop='cd $HOME/desktop'
-   alias desk='cd $HOME/desktop'
+alias desktop='Run cd $HOME/desktop'
+   alias desk='Run cd $HOME/desktop'
 
-alias down='cd $HOME/downloads'
-alias catg='cd $HOME/downloads/category-theory/js'
+alias down='Run cd $HOME/downloads'
+alias catg='Run cd $HOME/downloads/category-theory/js'
 
-alias cheat='cd $dev/cheatsheet'
+alias cheat='Run cd ${dev}/cheatsheet'
 
-alias dotf='cd $dev/dotfiles'
+alias dotf='Run cd ${dev}/dotfiles'
 #alias dot='dot'  " /usr/bin/dot  filter for drawing directed graphs
 
-alias bin='cd $HOME/bin'
-alias hoch='cd $dev/hochzeit'
-alias trackle='cd $dev/trackle'
-alias zark='cd $dev/zark'
-alias foo='cd $dev/foo'
-alias dev='cd $dev'
+alias bin='Run cd $HOME/bin'
+alias hoch='Run cd ${dev}/hochzeit'
+alias trackle='Run cd ${dev}/trackle'
+alias zark='Run cd ${dev}/zark'
+alias foo='Run cd ${dev}/foo'
+alias dev='Run cd ${dev}'
 # alias e doesn't work it there's no running emacs
 
 LaunchEmacs() {
@@ -485,28 +508,28 @@ LaunchEmacs() {
         emacsBin=emacs
     fi
     if [ $isLinuxMartinJV -gt 0 ]; then
-        emacsBin=$dev/emacs/src/$emacsBin
+        emacsBin=${dev}/emacs/src/$emacsBin
     fi
     RunBg $emacsBin $params
 }
-alias emacs=LaunchEmacs
+alias emacs='LaunchEmacs'
 
   alias e='RunBg LaunchEmacs'
- alias ea='RunBg LaunchEmacs $dev/dotfiles/bash/aliases'
-alias eba='RunBg LaunchEmacs $dev/dotfiles/bash/aliases'
- alias ee='RunBg LaunchEmacs $dev/dotfiles/.emacs'
-alias ebe='RunBg LaunchEmacs $dev/dotfiles/bash/env'
-alias ece='RunBg LaunchEmacs $dev/cheatsheet/emacs-commands.js'
-alias ech='RunBg LaunchEmacs $dev/cheatsheet/host-commands.js'
-alias ecg='RunBg LaunchEmacs $dev/cheatsheet/git-commands.js'
-alias ecr='RunBg LaunchEmacs $dev/cheatsheet/rest-commands.js'
-alias ecv='RunBg LaunchEmacs $dev/cheatsheet/vim-commands.js'
-alias ecc='RunBg LaunchEmacs $dev/cheatsheet/clojure-commands.js'
- alias ej='RunBg LaunchEmacs $dev/dotfiles/jcl/jcl.el'
+ alias ea='RunBg LaunchEmacs ${dev}/dotfiles/bash/aliases'
+alias eba='RunBg LaunchEmacs ${dev}/dotfiles/bash/aliases'
+ alias ee='RunBg LaunchEmacs ${dev}/dotfiles/.emacs'
+alias ebe='RunBg LaunchEmacs ${dev}/dotfiles/bash/env'
+alias ece='RunBg LaunchEmacs ${dev}/cheatsheet/emacs-commands.js'
+alias ech='RunBg LaunchEmacs ${dev}/cheatsheet/host-commands.js'
+alias ecg='RunBg LaunchEmacs ${dev}/cheatsheet/git-commands.js'
+alias ecr='RunBg LaunchEmacs ${dev}/cheatsheet/rest-commands.js'
+alias ecv='RunBg LaunchEmacs ${dev}/cheatsheet/vim-commands.js'
+alias ecc='RunBg LaunchEmacs ${dev}/cheatsheet/clojure-commands.js'
+ alias ej='RunBg LaunchEmacs ${dev}/dotfiles/jcl/jcl.el'
 
- # alias eb='RunBg LaunchEmacs $dev/dotfiles/.bashrc'
- # alias er='RunBg LaunchEmacs $dev/dotfiles/.bashrc'
- # alias el='RunBg LaunchEmacs $dev/dotfiles/linux-history.sh'
+ # alias eb='RunBg LaunchEmacs ${dev}/dotfiles/.bashrc'
+ # alias er='RunBg LaunchEmacs ${dev}/dotfiles/.bashrc'
+ # alias el='RunBg LaunchEmacs ${dev}/dotfiles/linux-history.sh'
 
 # Show which commands you use the most
 alias freq='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
@@ -528,17 +551,17 @@ alias genpasswd='GeneratePassw'
 # TODO is this for passing param to an alias?
 #alias 'ps?'='ps ax | grep '
 
- alias ltm='RunBg $dev/LightTable-master/deploy/LightTable'
-alias ltta='RunBg $dev/LightTable-atom/deploy/LightTable'
-alias lttm='RunBg $dev/LightTable-master/deploy/LightTable'
- alias ltt='RunBg $dev/LightTable/deploy/LightTable'
-alias plugins='Run cd $dev/LightTable/deploy/plugins'
- alias plugin='Run cd $dev/LightTable/deploy/plugins'
-   alias plug='Run cd $dev/LightTable/deploy/plugins'
-  alias my='Run cd $dev/lt-plugins-dev/my'
+ alias ltm='RunBg ${dev}/LightTable-master/deploy/LightTable'
+alias ltta='RunBg ${dev}/LightTable-atom/deploy/LightTable'
+alias lttm='RunBg ${dev}/LightTable-master/deploy/LightTable'
+ alias ltt='RunBg ${dev}/LightTable/deploy/LightTable'
+alias plugins='Run cd ${dev}/LightTable/deploy/plugins'
+ alias plugin='Run cd ${dev}/LightTable/deploy/plugins'
+   alias plug='Run cd ${dev}/LightTable/deploy/plugins'
+  alias my='Run cd ${dev}/lt-plugins-dev/my'
 
-# alias convert='Run cd $dev/convert'
-#    alias conv='Run cd $dev/convert'
+# alias convert='Run cd ${dev}/convert'
+#    alias conv='Run cd ${dev}/convert'
 
 
 # TODO use 'pkill ltbin' instead of 'kill $(pidof ltbin)'
@@ -556,14 +579,14 @@ KillServer() {
     echo "kill \$(lsof -i:8080 -t)"
           kill  $(lsof -i:8080 -t)
 }
-alias ksrv=KillServer
-alias kserver=KillServer
+alias ksrv='KillServer'
+alias kserver='KillServer'
 
 
-alias blm='Run bash -x $dev/LightTable-master/linux_deps.sh'
+alias blm='Run bash -x ${dev}/LightTable-master/linux_deps.sh'
 alias bl='Run bash linux_deps.sh'
-alias clt='cd $dev/LightTable'
-alias lct='cd $dev/LightTable'   # too many lct typos
+alias clt='cd ${dev}/LightTable'
+alias lct='cd ${dev}/LightTable'   # too many lct typos
  alias lt='ls -lat'
 alias ltr='ls -latr'
 alias lff='ls -lrt -d -1 $PWD/{*,.*}'
