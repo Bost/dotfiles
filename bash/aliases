@@ -483,7 +483,7 @@ LaunchEmacs() {
     else
         emacsBin=emacs
     fi
-    if [ $isLinuxNew64 -gt 0 ] || [ $isLinuxMartinJV -gt 0 ]; then
+    if [ $isLinuxMartinJV -gt 0 ]; then
         emacsBin=$dev/emacs/src/$emacsBin
     fi
     RunBg $emacsBin $params
