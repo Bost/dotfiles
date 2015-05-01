@@ -639,3 +639,13 @@ timestamp() {
     # date +"%T" - prints just Hous %H:%M:%S
     date "+%F_%H-%M-%S" # same as "+%Y-%m-%d_%H-%M-%S"
 }
+
+backup() {
+    # TODO define backupDest in .bash_profile
+    local backupDest="."
+    local orig=$1
+    local backupCopy="$backupDest/$(timestamp)__$orig"
+    # Run rsync --archive --verbose $orig $backupCopy
+    # Run rsync --archive --info=stats2,misc1,flist0 $orig $backupCopy
+    Run rsync --archive --info=progress2 $orig $backupCopy
+}
