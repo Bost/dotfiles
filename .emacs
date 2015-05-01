@@ -302,12 +302,11 @@
 (use-package magit
   :defer t
   :ensure t
-  :bind ("s-m" . magit-status)
   :init
-  (progn
-    (setq magit-auto-revert-mode t)
-    (setq magit-last-seen-setup-instructions "1.4.0")
-    (autoload 'magit-status "magit" nil t)))
+  (bind-key "s-m" 'magit-status)
+  (setq magit-auto-revert-mode t)
+  (setq magit-last-seen-setup-instructions "1.4.0")
+  (autoload 'magit-status "magit" nil t))
 
 ;; prevent: Error saving to X clipboard manager.
 (setq x-select-enable-clipboard-manager nil)
@@ -347,7 +346,8 @@
 (use-package neotree
   :defer t
   :ensure t
-  :bind ("<s-f8>" . neotree-toggle))
+  :init
+  (bind-key "<s-f8>" 'neotree-toggle))
 
 (use-package helm
   :defer t
@@ -384,12 +384,11 @@
     (use-package helm-flycheck
       :ensure t
       :init
-      (progn
-        (eval-after-load 'flycheck
-          '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))))
+      (eval-after-load 'flycheck
+        '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck)))
 
-  (use-package helm-projectile
-    :ensure t)
+    (use-package helm-projectile
+      :ensure t)
 
     ;; (use-package persp-mode
     ;;  :disabled t ; persp-mode is completely broken
@@ -405,20 +404,17 @@
     ;; (add-hook 'ruby-mode-hook 'projectile-mode)
     (use-package persp-projectile
       :ensure t
-      :bind (("C-s-p" . helm-projectile-ack))
       :init
-      (progn
+      (bind-key "C-s-p" 'helm-projectile-ack)
+      ;; (desktop-save-mode 1)
+      ;; TODO save perspective
+      (use-package perspective
+        :ensure t
+        :init
+        (persp-mode))
 
-        ;; (desktop-save-mode 1)
-        ;; TODO save perspective
-        (use-package perspective
-          :ensure t
-          :init
-          (progn
-            (persp-mode)))
-
-        (projectile-global-mode)
-        (helm-projectile-on)))
+      (projectile-global-mode)
+      (helm-projectile-on))
 
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-unset-key (kbd "C-x c"))
