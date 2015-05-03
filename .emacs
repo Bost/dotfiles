@@ -509,6 +509,13 @@
   (bind-key "C-s-t" 'evil-mode)
   (bind-key "s-;" 'evilnc-comment-or-uncomment-lines)
   (bind-key "s-z" 'evil-ace-jump-char-mode)
+
+  (use-package evil-visual-mark-mode ; TODO see helm-bookmarks
+    :ensure t
+    :defer t
+    :init
+    (evil-visual-mark-mode))
+
   (progn
     ;; (interactive "r")
     (evil-mode 1)
