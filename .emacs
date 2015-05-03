@@ -607,16 +607,19 @@
     ;; (sp-pair "\{" "\}")
     )
 
-  ;; (use-package powerline-evil-themes
-  ;;   :disabled t ; powerline is buggy at the moment
-  ;;   :init
-  ;;   (powerline-evil-center-color-theme))
+  (use-package powerline-evil
+    :disabled t ; powerline-evil looks like it has no effect on GUI.
+    :ensure t
+    :defer t
+    :init
+    (powerline-evil-center-color-theme))
 
   ;; enable global-evil-leader-mode before evil-mode, otherwise
   ;; evil-leader won’t be enabled in the initial buffers
   ;; (*scratch*, *Messages*, ...)
   (use-package evil-leader
     :ensure t
+    :defer t
     :init
     (global-evil-leader-mode)
     (setq evil-leader/in-all-states t)
