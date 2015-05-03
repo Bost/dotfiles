@@ -1101,10 +1101,11 @@ See: `xah-forward-block'"
   (interactive "r")
   (format-replace-strings smart-to-ascii nil beg end))
 
-(use-package gist
-  :disabled t ; see https://github.com/defunkt/gist.el/issues/64
+(use-package yagist
   :ensure t
-  :defer t)
+  :defer t
+  :init
+  (setq yagist-github-token (getenv "GITHUB_TOKEN")))
 
 (use-package emacs
   :ensure t
