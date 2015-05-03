@@ -1102,6 +1102,10 @@ See: `xah-forward-block'"
   (format-replace-strings smart-to-ascii nil beg end))
 
 (use-package yagist
+  ;; TODO yagist RSA fingerprint
+  ;; # The authenticity of host 'gist.github.com (192.30.252.141)' can't be established.
+  ;; # RSA key fingerprint is ...
+  ;; # Are you sure you want to continue connecting (yes/no)? yes
   :ensure t
   :defer t
   :init
