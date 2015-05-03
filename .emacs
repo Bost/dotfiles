@@ -2,8 +2,6 @@
 ;; this is for the emacs code browser
 (setq stack-trace-on-error t)
 
-;; TODO delete to the end of line and switch to edit mode
-;; TODO emacs does not come up when calling emacsclient withouth emacs server
 (load "server")
 (unless (server-running-p)
   (server-start))
