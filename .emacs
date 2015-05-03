@@ -339,7 +339,7 @@
 
     ;; C-s-backspace is the default key binding for kill-whole-line
     (global-set-key (kbd "<C-s-backspace>") 'kill-line-backward)
-    (global-set-key (kbd "<C-s-delete>") 'kill-line)
+    (global-set-key (kbd "<C-S-delete>") 'kill-line)
     ;; (define-key global-map [f5] 'toggle-truncate-lines)
     ))
 
