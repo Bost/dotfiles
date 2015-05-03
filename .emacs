@@ -164,7 +164,7 @@
       (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
       (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
       (if (featurep 'evil-leader)
-        (evil-leader/set-key "e" 'cider-eval-last-sexp))
+          (evil-leader/set-key "e" 'cider-eval-last-sexp))
       (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
       (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
       (local-set-key (kbd "s-n") 'cider-repl-set-ns)
@@ -190,16 +190,12 @@
 
 (use-package window-purpose
   :ensure t
-  :bind (
-         ;; C-c , d: window-purpose
-         ("C-s-d" . purpose-toggle-window-purpose-dedicated)
-
-         ;; C-c , D: window-buffer
-         ("C-s-D" . purpose-toggle-window-buffer-dedicated)
-         )
   :init
-  (progn
-    (purpose-mode)))
+  ;; C-c , d: window-purpose
+  (bind-key "C-s-d" 'purpose-toggle-window-purpose-dedicated)
+  ;; C-c , D: window-buffer
+  (bind-key "C-s-D" 'purpose-toggle-window-buffer-dedicated)
+  (purpose-mode))
 
 ;; (use-package auto-complete-config
 ;;   :disabled t
@@ -545,13 +541,13 @@
     ;; (use-package evil-jumper) ;; C-i / C-o
 
     ;; Set cursor colors depending on mode
-      (when (display-graphic-p)
-        (setq evil-emacs-state-cursor '("red" box))
-        (setq evil-normal-state-cursor '("green" box))
-        (setq evil-visual-state-cursor '("orange" box))
-        (setq evil-insert-state-cursor '("red" bar))
-        (setq evil-replace-state-cursor '("red" bar))
-        (setq evil-operator-state-cursor '("red" hollow)))
+    (when (display-graphic-p)
+      (setq evil-emacs-state-cursor '("red" box)
+            evil-normal-state-cursor '("green" box)
+            evil-visual-state-cursor '("orange" box)
+            evil-insert-state-cursor '("red" bar)
+            evil-replace-state-cursor '("red" bar)
+            evil-operator-state-cursor '("red" hollow)))
 
     (use-package evil-args
       :ensure t
@@ -624,7 +620,7 @@
 
       (defun delete-rest-of-cheatsheet-entry (&optional arg)
         "kbd macro - starts in evil-normal-mode;
-          delete up to the ' (single quote) character"
+      delete up to the ' (single quote) character"
         (interactive "p")
         (kmacro-exec-ring-item (quote ([118 116 39 120 105] 0 "%d"))
                                arg))
@@ -697,18 +693,6 @@
   (package-menu-mark-upgrades)
   (package-menu-execute))
 
-(setq gui-elements -1)
-(menu-bar-mode gui-elements)
-(scroll-bar-mode gui-elements)
-
-(defun gui-toggle ()
-  (interactive)
-  (setq gui-elements (* -1 gui-elements))
-  (menu-bar-mode gui-elements)
-  (toggle-scroll-bar gui-elements)
-  (message "gui-elements %s"
-           (if (= 1 gui-elements) "enabled" "disabled")))
-
 (use-package paradox
   :disabled t ; spinner is buggy at the moment: 2015-05-01
   :defer t
@@ -724,9 +708,6 @@
   (bind-key "<s-f9>" 'paradox-upgrade-packages)
   (setq paradox-github-token (getenv "GITHUB_TOKEN")
         paradox-automatically-star t))
-
-;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
-(global-set-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
 
 ;; pretty syntax highlighting everywhere
 (global-font-lock-mode t)
@@ -857,8 +838,9 @@
 (use-package duplicate-thing
   :defer t
   :ensure t
-  :bind (("C-M-<up>"   . duplicate-thing)
-         ("C-M-<down>" . duplicate-thing)))
+  :init
+  (bind-key (kbd "C-M-<up>") 'duplicate-thing)
+  (bind-key (kbd "C-M-<down>") 'duplicate-thing))
 
 ;; (defun ignore-error-wrapper (fn)
 ;;   "Funtion return new function that ignore errors.
@@ -926,9 +908,10 @@
   ;; sticky-windows must by downloaded from
   ;; http://www.emacswiki.org/emacs/download/sticky-windows.el
   ;; :ensure t
-  :bind (("C-x 0" . sticky-window-delete-window)
-         ("C-x 1" . sticky-window-delete-other-windows)
-         ("C-x 9" . sticky-window-keep-window-visible)))
+  :init
+  (bind-key "C-x 0" 'sticky-window-delete-window)
+  (bind-key "C-x 1" 'sticky-window-delete-other-windows)
+  (bind-key "C-x 9" 'sticky-window-keep-window-visible))
 
 ;; (global-set-key (kbd "s-i") '(lambda ()
 ;;                                (interactive)
@@ -971,13 +954,14 @@
 (use-package hideshow
   :defer t
   :ensure t
-  :bind (("C-M-<right>" . hs-show-block)
-         ("C-M-<left>"  . hs-hide-block)
-         ("C-M-<prior>" . hs-hide-all)
-         ("C-M-<next>"  . hs-show-all)
-         ("M-+"   . toggle-hiding)
-         ("s-\\"  . toggle-selective-display))
   :init
+  (bind-key (kbd "C-M-<right>") 'hs-show-block)
+  (bind-key (kbd "C-M-<left>" ) 'hs-hide-block)
+  (bind-key (kbd "C-M-<prior>") 'hs-hide-all)
+  (bind-key (kbd "C-M-<next>" ) 'hs-show-all)
+  (bind-key (kbd "M-+") 'toggle-hiding)
+  (bind-key (kbd "s-\\") 'toggle-selective-display)
+
   ;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
   (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
   (add-hook 'java-mode-hook       'hs-minor-mode)
@@ -1176,6 +1160,22 @@ See: `xah-forward-block'"
 (use-package emacs
   :ensure t
   :init
+
+  (setq gui-elements -1)
+  (menu-bar-mode gui-elements)
+  (scroll-bar-mode gui-elements)
+
+  (defun gui-toggle ()
+    (interactive)
+    (setq gui-elements (* -1 gui-elements))
+    (menu-bar-mode gui-elements)
+    (toggle-scroll-bar gui-elements)
+    (message "gui-elements %s"
+             (if (= 1 gui-elements) "enabled" "disabled")))
+
+  ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
+  (bind-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
+
   (bind-key "s-s" 'save-buffer)
   (bind-key "s-f" 'find-file)
   (bind-key "s-c" 'kill-ring-save) ; copy
