@@ -294,6 +294,9 @@
   :defer t
   :ensure t
   :init
+  (use-package magit-popup
+    :defer t
+    :ensure t)
   (bind-key "s-m" 'magit-status)
   (setq magit-auto-revert-mode t)
   (setq magit-last-seen-setup-instructions "1.4.0")
