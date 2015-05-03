@@ -494,6 +494,13 @@ alias foo='Run cd ${dev}/foo'
 alias dev='Run cd ${dev}'
 # alias e doesn't work it there's no running emacs
 
+DebugEmacs() {
+    local emacsBinary=$(which emacs)
+    echo ${emacsBinary} --debug-init $@
+         ${emacsBinary} --debug-init $@
+}
+alias edbg='DebugEmacs'
+
 LaunchEmacs() {
     local params=$@
     if [ -z "${params[@]}" ]; then

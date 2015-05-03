@@ -671,8 +671,8 @@
 (use-package transpose-frame
   :defer t
   :ensure t
-  :bind ("<f8>" . transpose-frame)
   :init
+  (bind-key "<f8>" 'transpose-frame)
   (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/"))
 
 (use-package time
