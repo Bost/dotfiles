@@ -690,13 +690,11 @@
   (package-menu-execute))
 
 (use-package paradox
-  :disabled t ; spinner is buggy at the moment: 2015-05-01
   :defer t
   :ensure t
   :init
 
   (use-package spinner
-    :disabled t ; spinner is buggy at the moment: 2015-05-01
     :defer t
     :ensure t)
 
