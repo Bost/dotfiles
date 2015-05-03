@@ -503,6 +503,9 @@
   (bind-key "s-;" 'evilnc-comment-or-uncomment-lines)
   (bind-key "s-z" 'evil-ace-jump-char-mode)
 
+  ;; require for evil folding
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
+
   (use-package evil-visual-mark-mode ; TODO see helm-bookmarks
     :ensure t
     :defer t
@@ -948,40 +951,6 @@
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
-;; (use-package hideshow
-;;   :defer t
-;;   :ensure t
-;;   :init
-;;   (bind-key (kbd "C-M-<right>") 'hs-show-block)
-;;   (bind-key (kbd "C-M-<left>" ) 'hs-hide-block)
-;;   (bind-key (kbd "C-M-<prior>") 'hs-hide-all)
-;;   (bind-key (kbd "C-M-<next>" ) 'hs-show-all)
-;;   (bind-key (kbd "M-+") 'toggle-hiding)
-;;   (bind-key (kbd "s-\\") 'toggle-selective-display)
-
-;;   ;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
-;;   (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-;;   (add-hook 'java-mode-hook       'hs-minor-mode)
-;;   (add-hook 'lisp-mode-hook       'hs-minor-mode)
-;;   ;; (add-hook 'perl-mode-hook       'hs-minor-mode)
-;;   (add-hook 'sh-mode-hook         'hs-minor-mode)
-
-;;   (defun toggle-selective-display (column)
-;;     (interactive "P")
-;;     (set-selective-display
-;;      (or column
-;;          (unless selective-display
-;;            (1+ (current-column))))))
-
-;;   (defun toggle-hiding (column)
-;;     (interactive "P")
-;;     (if hs-minor-mode
-;;         (if (condition-case nil
-;;                 (hs-toggle-hiding)
-;;               (error t))
-;;             (hs-show-all))
-;;       (toggle-selective-display column))))
-
 ;; (defun display-code-line-counts (ov)
 ;;   (when (eq 'code (overlay-get ov 'hs))
 ;;     (overlay-put ov 'help-echo
@@ -989,15 +958,6 @@
 ;;                                    (overlay-end ov)))))
 
 ;; (setq hs-set-up-overlay 'display-code-line-counts)
-
-;; Ctrl+Meta+PageUp
-;; (global-set-key [C-M-prior] '(lambda ()
-;;                                (interactive)
-;;                                (hide-body)))
-;; Ctrl+Meta+PageDown
-;; (global-set-key [C-M-next] '(lambda ()
-;;                               (interactive)
-;;                               (show-all)))
 
 (use-package whitespace
   :defer t
