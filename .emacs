@@ -607,13 +607,6 @@
     ;; (sp-pair "\{" "\}")
     )
 
-  (use-package powerline-evil
-    :disabled t ; powerline-evil looks like it has no effect on GUI.
-    :ensure t
-    :defer t
-    :init
-    (powerline-evil-center-color-theme))
-
   ;; enable global-evil-leader-mode before evil-mode, otherwise
   ;; evil-leader won’t be enabled in the initial buffers
   ;; (*scratch*, *Messages*, ...)
@@ -918,10 +911,6 @@
   (bind-key "C-x 1" 'sticky-window-delete-other-windows)
   (bind-key "C-x 9" 'sticky-window-keep-window-visible))
 
-;; (global-set-key (kbd "s-i") '(lambda ()
-;;                                (interactive)
-;;                                (insert "git --git-dir=../credit.git/ ")))
-
 (defun switch-to-minibuffer ()
   "Switch to minibuffer window."
   (interactive)
@@ -1122,6 +1111,11 @@ See: `xah-forward-block'"
 (use-package emacs
   :ensure t
   :init
+
+  ;; (global-set-key (kbd "s-i")
+  ;;                 '(lambda ()
+  ;;                    (interactive)
+  ;;                    (insert "git --git-dir=../credit.git/ ")))
 
   (setq gui-elements -1)
   (menu-bar-mode gui-elements)
@@ -1449,8 +1443,6 @@ See: `xah-forward-block'"
      pkg-info
      popup
      popwin
-     powerline
-     powerline-evil
      projectile
      queue
      rainbow-delimiters
