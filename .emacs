@@ -1182,6 +1182,7 @@ See: `xah-forward-block'"
   (bind-key "s-x" 'kill-region)    ; cut
   (bind-key "s-v" 'yank)           ; paste
   ;; see evil-window-map
+  ;; TODO s-q should work like C-tab if only one window is visible
   (bind-key "s-q" 'other-window)   ; (kbd "s-<tab>") does not work
   (bind-key (kbd "<S-iso-lefttab>") 'other-window)
 
