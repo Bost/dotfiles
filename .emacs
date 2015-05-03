@@ -51,6 +51,8 @@
 (require 'bind-key)
 
 (use-package auto-package-update
+  ;; TODO auto-package-update, use-package :ensure dependend on inet availability
+  ;; :disabled t
   :ensure t)
 
 (use-package paredit
