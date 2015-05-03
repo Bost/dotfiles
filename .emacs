@@ -84,106 +84,104 @@
   :defer t
   :ensure t
   :init
-  (progn
 
-    (use-package rainbow-delimiters
-      :ensure t)
+  (use-package rainbow-delimiters
+    :ensure t
+    :defer t)
 
-    (setq nrepl-log-messages t
-          nrepl-hide-special-buffers t
-          cider-prefer-local-resources t
-          ;; cider-auto-select-error-buffer nil
-          ;; cider-stacktrace-default-filters '(tooling dup)
-          nrepl-buffer-name-separator "-"
-          nrepl-buffer-name-show-port t
-          cider-repl-display-in-current-window t
-          cider-repl-result-prefix ";; => "
-          ;; cider-interactive-eval-result-prefix ";; => "
-          ;; cider-repl-use-clojure-font-lock t
-          ;; cider-known-endpoints
-          ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
-          ;; cider-repl-history-file "path/to/file"
-          )
-    (message "TODO cider-refresh: what does clojure.tools.namespace.repl/refresh ?")
-    (add-hook 'cider-mode-hook #'eldoc-mode)
-    (add-hook 'cider-repl-mode-hook #'subword-mode)
-    ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
-    ;; (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
-    (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
+  (setq nrepl-log-messages t
+        nrepl-hide-special-buffers t
+        cider-prefer-local-resources t
+        ;; cider-auto-select-error-buffer nil
+        ;; cider-stacktrace-default-filters '(tooling dup)
+        nrepl-buffer-name-separator "-"
+        nrepl-buffer-name-show-port t
+        cider-repl-display-in-current-window t
+        cider-repl-result-prefix ";; => "
+        ;; cider-interactive-eval-result-prefix ";; => "
+        ;; cider-repl-use-clojure-font-lock t
+        ;; cider-known-endpoints
+        ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
+        ;; cider-repl-history-file "path/to/file"
+        )
+  (message "TODO cider-refresh: what does clojure.tools.namespace.repl/refresh ?")
+  (add-hook 'cider-mode-hook #'eldoc-mode)
+  (add-hook 'cider-repl-mode-hook #'subword-mode)
+  ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
+  ;; (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+  (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
 
-    (defun cider-save-and-load-current-buffer ()
-      (interactive)
-      (when (buffer-modified-p)
-        (save-buffer))
-      (cider-load-file (buffer-file-name))
-      ;; (cider-switch-to-relevant-repl-buffer nil)
-      )
+  (defun cider-save-and-load-current-buffer ()
+    (interactive)
+    (when (buffer-modified-p)
+      (save-buffer))
+    (cider-load-file (buffer-file-name))
+    ;; (cider-switch-to-relevant-repl-buffer nil)
+    )
 
-    ;; (defun cider-eval-last-expression-in-repl ()
-    ;;   "This doesn't work"
-    ;;   (interactive)
-    ;;   (evil-visual-char)
-    ;;   (evil-jump-item)
-    ;;   ;; (clipboard-kill-ring-save)
-    ;;   ;; (clipboard-kill-region)
-    ;;   ;; (cider-switch-to-relevant-repl-buffer)
-    ;;   ;; (clipboard-yank)
+  ;; (defun cider-eval-last-expression-in-repl ()
+  ;;   "This doesn't work"
+  ;;   (interactive)
+  ;;   (evil-visual-char)
+  ;;   (evil-jump-item)
+  ;;   ;; (clipboard-kill-ring-save)
+  ;;   ;; (clipboard-kill-region)
+  ;;   ;; (cider-switch-to-relevant-repl-buffer)
+  ;;   ;; (clipboard-yank)
 
-    ;;   ;; (global-set-key [(shift delete)] 'clipboard-kill-region)
-    ;;   ;; (global-set-key [(control insert)] 'clipboard-kill-ring-save)
-    ;;   ;; (global-set-key [(shift insert)] 'clipboard-yank)
-    ;;   )
+  ;;   ;; (global-set-key [(shift delete)] 'clipboard-kill-region)
+  ;;   ;; (global-set-key [(control insert)] 'clipboard-kill-ring-save)
+  ;;   ;; (global-set-key [(shift insert)] 'clipboard-yank)
+  ;;   )
 
-    (defun cider-mode-keys ()
-      "Modify keymaps used by `cider-mode'."
-      (local-set-key (kbd "s-z")
-                     ;; 'cider-switch-to-repl-buffer
-                     'cider-switch-to-last-clojure-buffer)
-      (local-set-key (kbd "s-t") 'cider-test-run-tests)
-      (local-set-key (kbd "s-.") 'cider-jump-to-var)
-      (local-set-key (kbd "s-,") 'cider-jump-back)
-      )
-    (add-hook 'cider-mode-hook 'cider-mode-keys)
+  (defun cider-mode-keys ()
+    "Modify keymaps used by `cider-mode'."
+    (local-set-key (kbd "s-z")
+                   ;; 'cider-switch-to-repl-buffer
+                   'cider-switch-to-last-clojure-buffer)
+    (local-set-key (kbd "s-t") 'cider-test-run-tests)
+    (local-set-key (kbd "s-.") 'cider-jump-to-var)
+    (local-set-key (kbd "s-,") 'cider-jump-back)
+    )
+  (add-hook 'cider-mode-hook 'cider-mode-keys)
 
-    ;; (defun cider-interaction-mode-keys ()
-    ;;   "Modify keymaps used by `cider-interaction-mode'."
-    ;;   ;; (local-set-key (kbd "s-o") 'cider-jump)
-    ;;   )
-    ;; (add-hook 'cider-interaction-mode-hook 'cider-interaction-mode-keys)
-    ))
+  ;; (defun cider-interaction-mode-keys ()
+  ;;   "Modify keymaps used by `cider-interaction-mode'."
+  ;;   ;; (local-set-key (kbd "s-o") 'cider-jump)
+  ;;   )
+  ;; (add-hook 'cider-interaction-mode-hook 'cider-interaction-mode-keys)
+  )
 
 (use-package clojure-mode
   :defer t
   :ensure t
   :init
-  (progn
-    (clojure-mode)
-    (defun clojure-mode-keys ()
-      "Modify keymaps used by `clojure-mode'."
-      (local-set-key (kbd "C-s-j") 'cider-jack-in)
-      (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
-      (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
-      (if (featurep 'evil-leader)
-          (evil-leader/set-key "e" 'cider-eval-last-sexp))
-      (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
-      (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
-      (local-set-key (kbd "s-n") 'cider-repl-set-ns)
-      (local-set-key (kbd "s-t") 'cider-test-run-tests)
-      (local-set-key (kbd "s-.") 'cider-jump-to-var)
-      (local-set-key (kbd "s-,") 'cider-jump-back))
-    (add-hook 'clojure-mode-hook 'clojure-mode-keys)))
+  (clojure-mode)
+  (defun clojure-mode-keys ()
+    "Modify keymaps used by `clojure-mode'."
+    (local-set-key (kbd "C-s-j") 'cider-jack-in)
+    (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
+    (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
+    (if (featurep 'evil-leader)
+        (evil-leader/set-key "e" 'cider-eval-last-sexp))
+    (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
+    (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
+    (local-set-key (kbd "s-n") 'cider-repl-set-ns)
+    (local-set-key (kbd "s-t") 'cider-test-run-tests)
+    (local-set-key (kbd "s-.") 'cider-jump-to-var)
+    (local-set-key (kbd "s-,") 'cider-jump-back))
+  (add-hook 'clojure-mode-hook 'clojure-mode-keys))
 
 (use-package clj-refactor
   :defer t
   :ensure t
   :init
-  (progn
-    (add-hook 'clojure-mode-hook
-              (lambda ()
-                (clj-refactor-mode 1)
-                ;; eg. rename files with `C-c C-m rf`.
-                (cljr-add-keybindings-with-prefix "C-c C-m")
-                ))))
+  (add-hook 'clojure-mode-hook
+            (lambda ()
+              (clj-refactor-mode 1)
+              ;; eg. rename files with `C-c C-m rf`.
+              (cljr-add-keybindings-with-prefix "C-c C-m")
+              )))
 
 ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
 ;; (setq nrepl-hide-special-buffers t)
@@ -200,35 +198,31 @@
 ;; (use-package auto-complete-config
 ;;   :disabled t
 ;;   :init
-;;   (progn
-;;     (ac-config-default)
-;;     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-;;     (use-package ac-cider
-;;       :init
-;;       (progn
-;;         (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-;;         (add-hook 'cider-mode-hook 'ac-cider-setup)
-;;         (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
-;;         (eval-after-load "auto-complete"
-;;           '(progn
-;;              (add-to-list 'ac-modes 'cider-mode)
-;;              (add-to-list 'ac-modes 'cider-repl-mode))))))
+;;   (ac-config-default)
+;;   (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+;;   (use-package ac-cider
+;;     :init
+;;     (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+;;     (add-hook 'cider-mode-hook 'ac-cider-setup)
+;;     (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+;;     (eval-after-load "auto-complete"
+;;       '(progn
+;;          (add-to-list 'ac-modes 'cider-mode)
+;;          (add-to-list 'ac-modes 'cider-repl-mode))))
 ;; ;; TODO compare auto-complete and company-mode (supported by cider):
 ;; https://github.com/company-mode/company-mode/issues/68
 (use-package company
   :ensure t
   :defer t
   :init
-  (progn
-    (add-hook 'after-init-hook 'global-company-mode)))
+  (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package linum-relative
   :defer t
   :ensure t
-  :bind ("s-n" . linum-relative-toggle)
   :init
-  (progn
-    (global-linum-mode t)))
+  (bind-key "s-n" 'linum-relative-toggle)
+  (global-linum-mode t))
 
 ;; minibuffer completion incremental feedback
 (icomplete-mode 99)  ; turn on icomplete-mode
@@ -244,6 +238,8 @@
 
 ;;(desktop-load-default)
 ;;(desktop-read)
+
+;; (use-package elpy)
 
 (use-package jedi
   :ensure t
@@ -261,32 +257,31 @@
   ;; :defer t - can't be done, org-mode is loaded by default
   :ensure t
   :config
-  (progn
-    ;; (use-package org-install)
-    ;; (org-babel-do-load-languages
-    ;; 'org-babel-load-languages
-    ;; '(
-    ;;   (emacs-lisp . t)
-    ;;   (clojure . t)
-    ;;   (sh . t)
-    ;;   (python .t)
-    ;;   (R . t)
-    ;;   (ruby . t)
-    ;;   (ditaa . t)
-    ;;   (dot . t)
-    ;;   (sqlite . t)
-    ;;   (perl . t)
-    ;;   ))
-    ;; Show syntax highlighting per language native mode in *.org
-    (setq org-src-fontify-natively t)
-    ;; For languages with significant whitespace like Python:
-    (setq org-src-preserve-indentation t)
+  ;; (use-package org-install)
+  ;; (org-babel-do-load-languages
+  ;; 'org-babel-load-languages
+  ;; '(
+  ;;   (emacs-lisp . t)
+  ;;   (clojure . t)
+  ;;   (sh . t)
+  ;;   (python .t)
+  ;;   (R . t)
+  ;;   (ruby . t)
+  ;;   (ditaa . t)
+  ;;   (dot . t)
+  ;;   (sqlite . t)
+  ;;   (perl . t)
+  ;;   ))
+  ;; Show syntax highlighting per language native mode in *.org
+  (setq org-src-fontify-natively t)
+  ;; For languages with significant whitespace like Python:
+  (setq org-src-preserve-indentation t)
 
-    ;; Add shortcuts for ogr-agenda
-    ;;(global-set-key "\C-cl" 'org-store-link)
-    ;;(global-set-key "\C-cc" 'org-capture)
-    ;;(global-set-key "\C-ca" 'org-agenda)
-    ))
+  ;; Add shortcuts for ogr-agenda
+  ;;(global-set-key "\C-cl" 'org-store-link)
+  ;;(global-set-key "\C-cc" 'org-capture)
+  ;;(global-set-key "\C-ca" 'org-agenda)
+  )
 
 
 ;; Setup custom shortcuts
@@ -317,27 +312,26 @@
 ;; simppe is probably the base package emacs; can't use :ensure t
 (use-package simple
   :init
-  (progn
-    (size-indication-mode 1)  ; filesize indicator
-    (setq truncate-lines t) ;; no line wrap
-    (define-key global-map [f5] 'toggle-truncate-lines)
-    (column-number-mode 1)
+  (size-indication-mode 1)  ; filesize indicator
+  (setq truncate-lines t) ;; no line wrap
+  (define-key global-map [f5] 'toggle-truncate-lines)
+  (column-number-mode 1)
 
-    (defun kill-line-backward (arg)
-      "Kill ARG lines backward."
-      (interactive "p")
-      (kill-line (- 1 arg)))
+  (defun kill-line-backward (arg)
+    "Kill ARG lines backward."
+    (interactive "p")
+    (kill-line (- 1 arg)))
 
-    ;; (global-set-key (kbd "<S-delete>") 'kill-line)
-    (global-set-key (kbd "<S-delete>") 'kill-region)
-    ;; clipboard-kill-region belongs to package menu-bar
-    ;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
+  ;; (global-set-key (kbd "<S-delete>") 'kill-line)
+  (global-set-key (kbd "<S-delete>") 'kill-region)
+  ;; clipboard-kill-region belongs to package menu-bar
+  ;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
 
-    ;; C-s-backspace is the default key binding for kill-whole-line
-    (global-set-key (kbd "<C-s-backspace>") 'kill-line-backward)
-    (global-set-key (kbd "<C-S-delete>") 'kill-line)
-    ;; (define-key global-map [f5] 'toggle-truncate-lines)
-    ))
+  ;; C-s-backspace is the default key binding for kill-whole-line
+  (global-set-key (kbd "<C-s-backspace>") 'kill-line-backward)
+  (global-set-key (kbd "<C-S-delete>") 'kill-line)
+  ;; (define-key global-map [f5] 'toggle-truncate-lines)
+  )
 
 (use-package neotree
   :defer t
@@ -376,80 +370,77 @@
   (bind-key "s-b" 'helm-mini)
   (bind-key "M-y" 'helm-show-kill-ring)
 
-  (progn
-    (use-package helm-flycheck
+  (use-package helm-flycheck
+    :ensure t
+    :init
+    (eval-after-load 'flycheck
+      '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck)))
+
+  (use-package helm-projectile
+    :ensure t)
+
+  ;; (use-package persp-mode
+  ;;  :disabled t ; persp-mode is completely broken
+  ;;  :init
+  ;;  (with-eval-after-load "persp-mode-autoloads"
+  ;;    (setq wg-morph-on nil) ;; switch off animation
+  ;;    (add-hook 'after-init-hook #'(lambda () (persp-mode 1))))
+  ;;  ;; (persp-mode 1)
+  ;;  )
+
+  ;; To enable Projectile only in select modes:
+  ;; (add-hook 'ruby-mode-hook 'projectile-mode)
+  (use-package persp-projectile
+    :ensure t
+    :init
+    (bind-key "C-s-p" 'helm-projectile-ack)
+    ;; (desktop-save-mode 1)
+    ;; TODO save perspective
+    (use-package perspective
       :ensure t
       :init
-      (eval-after-load 'flycheck
-        '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck)))
+      (persp-mode))
 
-    (use-package helm-projectile
-      :ensure t)
+    (projectile-global-mode)
+    (helm-projectile-on))
 
-    ;; (use-package persp-mode
-    ;;  :disabled t ; persp-mode is completely broken
-    ;;  :init
-    ;;  (progn
-    ;;    (with-eval-after-load "persp-mode-autoloads"
-    ;;      (setq wg-morph-on nil) ;; switch off animation
-    ;;      (add-hook 'after-init-hook #'(lambda () (persp-mode 1))))
-    ;;    ;; (persp-mode 1)
-    ;;    ))
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
 
-    ;; To enable Projectile only in select modes:
-    ;; (add-hook 'ruby-mode-hook 'projectile-mode)
-    (use-package persp-projectile
-      :ensure t
-      :init
-      (bind-key "C-s-p" 'helm-projectile-ack)
-      ;; (desktop-save-mode 1)
-      ;; TODO save perspective
-      (use-package perspective
-        :ensure t
-        :init
-        (persp-mode))
+  ;; rebind tab to do persistent action
+  ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  ;; make TAB works in terminal
+  ;; (define-key helm-map (kbd "C-i")   'helm-execute-persistent-action)
+  ;; list actions using C-z
+  ;; (define-key helm-map (kbd "C-z")   'helm-select-action)
 
-      (projectile-global-mode)
-      (helm-projectile-on))
+  (setq helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match    t
+        helm-locate-fuzzy-match t
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-apropos-fuzzy-match t
+        helm-lisp-fuzzy-completion t
+        ;; Open helm buffer inside current window.
+        ;; Don't occupy whole other window
+        helm-split-window-in-side-p           t
+        ;; move to end/beginning of source when reaching top/bottom of source
+        helm-move-to-line-cycle-in-source     t
+        ;; search for library in `require' and `declare-function' sexp.
+        helm-ff-search-library-in-sexp        t
+        ;; scroll 8 lines other window using M-<next>/M-<prior>
+        helm-scroll-amount                    8
+        helm-ff-file-name-history-use-recentf t)
 
-    (global-set-key (kbd "C-c h") 'helm-command-prefix)
-    (global-unset-key (kbd "C-x c"))
-
-    ;; rebind tab to do persistent action
-    ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-    ;; make TAB works in terminal
-    ;; (define-key helm-map (kbd "C-i")   'helm-execute-persistent-action)
-    ;; list actions using C-z
-    ;; (define-key helm-map (kbd "C-z")   'helm-select-action)
-
-    (setq helm-M-x-fuzzy-match t
-          helm-buffers-fuzzy-matching t
-          helm-recentf-fuzzy-match    t
-          helm-locate-fuzzy-match t
-          helm-semantic-fuzzy-match t
-          helm-imenu-fuzzy-match t
-          helm-apropos-fuzzy-match t
-          helm-lisp-fuzzy-completion t
-          ;; Open helm buffer inside current window.
-          ;; Don't occupy whole other window
-          helm-split-window-in-side-p           t
-          ;; move to end/beginning of source when reaching top/bottom of source
-          helm-move-to-line-cycle-in-source     t
-          ;; search for library in `require' and `declare-function' sexp.
-          helm-ff-search-library-in-sexp        t
-          ;; scroll 8 lines other window using M-<next>/M-<prior>
-          helm-scroll-amount                    8
-          helm-ff-file-name-history-use-recentf t)
-
-    (helm-mode 1)
-    (helm-autoresize-mode 1)))
+  (helm-mode 1)
+  (helm-autoresize-mode 1))
 
 (use-package drag-stuff
   :defer t
   :ensure t
   :init
-  (progn
-    (drag-stuff-global-mode t)))
+  (drag-stuff-global-mode t))
 
 (use-package dired ; not among *Packages*; can't use :ensure t
   :defer t
@@ -614,8 +605,7 @@
   ;; (use-package powerline-evil-themes
   ;;   :disabled t ; powerline is buggy at the moment
   ;;   :init
-  ;;   (progn
-  ;;     (powerline-evil-center-color-theme)))
+  ;;   (powerline-evil-center-color-theme))
 
   ;; enable global-evil-leader-mode before evil-mode, otherwise
   ;; evil-leader won’t be enabled in the initial buffers
@@ -1331,9 +1321,8 @@ See: `xah-forward-block'"
 ;;   :disabled t ; workgroups2 is broken - it screws minibuffer
 ;;   :ensure t
 ;;   :init
-;;   (progn
-;;     ;; must be called 'at the end of .emacs'
-;;     (workgroups-mode 1)))
+;;   ;; must be called 'at the end of .emacs'
+;;   (workgroups-mode 1))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
