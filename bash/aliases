@@ -672,10 +672,15 @@ timestamp() {
 }
 
 backup() {
-    # TODO define backupDest in .bash_profile
-    local backupDest="."
+    # See parameter expansion http://goo.gl/bXn8rO
+    if [ -z ${backupDest+x} ]; then
+        local backupDir="."  # echo "var unset";
+    else
+        local backupDir=${backupDest}  # echo "var set to '$var'";
+    fi
+
     local orig=$1
-    local backupCopy="$backupDest/$(timestamp)__$orig"
+    local backupCopy="${backupDir}/$(timestamp)__$orig"
     # Run rsync --archive --verbose $orig $backupCopy
     # Run rsync --archive --info=stats2,misc1,flist0 $orig $backupCopy
     Run rsync --archive --info=progress2 $orig $backupCopy
