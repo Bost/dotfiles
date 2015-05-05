@@ -21,12 +21,13 @@
                                ("https" . "ptx.proxy.corp.sopra:8080"))))
 
 (require 'package)
+(setq package-enable-at-startup nil)
 
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ;; ("org" . "http://orgmode.org/elpa/")
         ("marmalade" . "https://marmalade-repo.org/packages/")
-        ("melpa" . "http://melpa.milkbox.net/packages/")
+        ("melpa" . "http://melpa.org/packages/")
         ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")))
 
 ;; (add-to-list 'package-archives
