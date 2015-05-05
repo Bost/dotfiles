@@ -50,7 +50,7 @@
 
 (use-package auto-package-update
   ;; TODO auto-package-update, use-package :ensure dependend on inet availability
-  ;; :disabled t
+  ;; see :disabled t and :if condition
   :ensure t)
 
 (use-package paredit
@@ -1060,6 +1060,22 @@
   (defun my/enable-color-identifiers ()
     (interactive)
     (color-identifiers-mode t)))
+
+(use-package volatile-highlights
+  :ensure t
+  :config
+  (volatile-highlights-mode t))
+
+(use-package markdown-mode
+  :ensure t
+  :init
+  (add-hook 'markdown-mode-hook
+            (lambda () (electric-indent-local-mode -1))))
+
+(use-package mmm-mode
+  :ensure t
+  :config
+  (setq mmm-global-mode 'maybe))
 
 (defun xah-forward-block (&optional φn)
   "Move cursor forward to the beginning of next text block.
