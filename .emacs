@@ -1139,8 +1139,14 @@ See: `xah-forward-block'"
   ;;                    (insert "git --git-dir=../credit.git/ ")))
 
   (setq gui-elements -1)
-  (menu-bar-mode gui-elements)
-  (scroll-bar-mode gui-elements)
+
+  ;; disable most of this stuff early in the process so it doesn’t flicker.
+  ;; (if (fboundp 'tool-bar-mode) (tool-bar-mode gui-elements))
+  ;; TODO test fboundp - is it faster?
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode gui-elements))
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode gui-elements))
+  ;; (menu-bar-mode gui-elements)
+  ;; (scroll-bar-mode gui-elements)
 
   (defun gui-toggle ()
     (interactive)
