@@ -669,11 +669,13 @@
       :ensure t)))
 
 (use-package transpose-frame
+  :load-path "~/dev/dotfiles/elisp/transpose-frame"
   :defer t
   :ensure t
   :init
-  (bind-key "<f8>" 'transpose-frame)
-  (add-to-list 'load-path "~/.emacs.d/elpa/transpose-frame/"))
+  (require 'transpose-frame) ; neccessary - otherwise: transpose-frame undefined
+  ;; TODO check how to automate byte-compilation of transpose-frame
+  (bind-key "<f8>" 'transpose-frame))
 
 (use-package time
   :ensure t
