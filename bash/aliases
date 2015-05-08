@@ -6,6 +6,8 @@
 # stop on error:
 # set -e
 
+# \[command]    # escape any command aliases
+
 Run() {
     echo "$@"
          "$@"
