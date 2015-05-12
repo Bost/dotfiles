@@ -105,7 +105,6 @@
         ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
         ;; cider-repl-history-file "path/to/file"
         )
-  (message "TODO cider-refresh: what does clojure.tools.namespace.repl/refresh ?")
   (add-hook 'cider-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'subword-mode)
   ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
@@ -449,7 +448,10 @@
 (use-package dired ; not among *Packages*; can't use :ensure t
   :defer t
   :init
+
   (bind-key "s-d" 'dired-jump)
+  (bind-key "s-r" 'dired-do-rename dired-mode-map)
+
   (use-package dired-subtree
     :defer t
     :ensure t
@@ -704,8 +706,8 @@
     :defer t
     :ensure t)
 
-  (bind-key "<f9>"  'paradox-list-packages) ; TODO auto enable/disable evil-mode
-  (bind-key "<s-f9>" 'paradox-upgrade-packages)
+  (bind-key [f9]  'paradox-list-packages) ; TODO auto enable/disable evil-mode
+  (bind-key (kbd "<s-f9>") 'paradox-upgrade-packages)
   (setq paradox-github-token (getenv "GITHUB_TOKEN")
         paradox-automatically-star t))
 
@@ -934,19 +936,6 @@
 ;; use following when: Source file '...' newer than byte-compiled file
 ;; (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
 
-(defun rename-file-and-buffer ()
-  "Rename the current buffer and file it is visiting."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (if (not (and filename (file-exists-p filename)))
-        (message "Buffer is not visiting a file!")
-      (let ((new-name (read-file-name "New name: " filename)))
-        (cond
-         ((vc-backend filename) (vc-rename-file filename new-name))
-         (t
-          (rename-file filename new-name t)
-          (set-visited-file-name new-name t t)))))))
-
 ;; (defun display-code-line-counts (ov)
 ;;   (when (eq 'code (overlay-get ov 'hs))
 ;;     (overlay-put ov 'help-echo
@@ -1080,27 +1069,6 @@
   :config
   (setq mmm-global-mode 'maybe))
 
-(defun xah-forward-block (&optional φn)
-  "Move cursor forward to the beginning of next text block.
-A text block is separated by blank lines. In most major modes,
-this is similar to `forward-paragraph', but this command's
-behavior is the same regardless of syntax table."
-  (interactive "p")
-  (search-forward-regexp "\n[\t\n ]*\n+" nil "NOERROR" φn))
-
-(defun xah-backward-block (&optional φn)
-  "Move cursor backward to previous text block.
-See: `xah-forward-block'"
-  (interactive "p")
-  (dotimes (ξn φn) (if (search-backward-regexp "\n[\t\n ]*\n+" nil "NOERROR")
-                       (progn
-                         (skip-chars-backward "\n\t "))
-                     (progn (goto-char (point-min))))))
-
-(global-set-key (kbd "<C-up>") 'xah-backward-block)
-(global-set-key (kbd "<C-down>") 'xah-forward-block)
-
-
 ;; I hate smart quotes, too
 (defcustom smart-to-ascii
   '(("\x201C" . "\"")
@@ -1134,6 +1102,25 @@ See: `xah-forward-block'"
 (use-package emacs
   :ensure t
   :init
+
+  (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
+  (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
+  (bind-key [f3] 'find-grep)
+
+  (defun rename-file-and-buffer ()
+    "Rename the current buffer and file it is visiting."
+    (interactive)
+    (let ((filename (buffer-file-name)))
+      (if (not (and filename (file-exists-p filename)))
+          (message "Buffer is not visiting a file!")
+        (let ((new-name (read-file-name "New name: " filename)))
+          (cond
+           ((vc-backend filename) (vc-rename-file filename new-name))
+           (t
+            (rename-file filename new-name t)
+            (set-visited-file-name new-name t t)))))))
+
+  (bind-key "s-r" 'rename-file-and-buffer)
 
   ;; (global-set-key (kbd "s-i")
   ;;                 '(lambda ()
@@ -1201,10 +1188,30 @@ See: `xah-forward-block'"
   (bind-key [M-s-down] 'enlarge-window)
   (bind-key [M-s-up] 'shrink-window)
   (bind-key [f7] 'find-file-emacs)
-  (bind-key (kbd "s-<f11>") 'find-file-emacs)
+  (bind-key (kbd "<s-f11>") 'find-file-emacs)
   (bind-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
 
   ;; (setq default-directory "~/dev")
+
+  (defun xah-forward-block (&optional φn)
+    "Move cursor forward to the beginning of next text block.
+A text block is separated by blank lines. In most major modes,
+this is similar to `forward-paragraph', but this command's
+behavior is the same regardless of syntax table."
+    (interactive "p")
+    (search-forward-regexp "\n[\t\n ]*\n+" nil "NOERROR" φn))
+
+  (defun xah-backward-block (&optional φn)
+    "Move cursor backward to previous text block.
+See: `xah-forward-block'"
+    (interactive "p")
+    (dotimes (ξn φn) (if (search-backward-regexp "\n[\t\n ]*\n+" nil "NOERROR")
+                         (progn
+                           (skip-chars-backward "\n\t "))
+                       (progn (goto-char (point-min))))))
+
+  (bind-key (kbd "<C-up>") 'xah-backward-block)
+  (bind-key (kbd "<C-down>") 'xah-forward-block)
 
   (defun timestamp ()
     "Use bash function 'timestamp' defined in bash/aliases"
