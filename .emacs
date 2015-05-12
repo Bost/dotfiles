@@ -781,9 +781,6 @@
       "w" 'ace-jump-word-mode
       "l" 'ace-jump-line-mode)))
 
-;; (global-unset-key (kbd "<f3>"))
-;; (global-set-key (kbd "<f3>") 'kmacro-start-macro)
-
 (use-package expand-region
   :defer t
   :ensure t
@@ -1106,6 +1103,7 @@
   (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
   (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
   (bind-key [f3] 'find-grep)
+  (bind-key (kbd "C-h") 'find-grep) ; as in eclipse
 
   (defun rename-file-and-buffer ()
     "Rename the current buffer and file it is visiting."

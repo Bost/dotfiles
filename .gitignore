@@ -5,5 +5,9 @@
 
 # compiled python files (byte code)
 *pyc
+
+# compiled emacs files
+*elc
+
 google-chrome-stable_current_amd64.deb
 google-earth-stable_current_amd64.deb
