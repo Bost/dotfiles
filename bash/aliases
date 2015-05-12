@@ -396,6 +396,7 @@ alias vdir='ls --color=auto --format=long'
 
 # ls: -A, --almost-all    does not print the . and .. entries
 # -h, --human-readable    filesize
+alias lx='ls -la $(find . -maxdepth 1 -perm -111 -type f)'
 alias  l="ls -lA  --color --time-style='+%d-%m-%Y %H:%M:%S'"
 alias ll="ls -lAh --color --time-style='+%d-%m-%Y %H:%M:%S'"
 # show hidden files
