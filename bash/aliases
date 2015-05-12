@@ -428,6 +428,8 @@ alias cx='Run chmod +x'
 UpdateUpgradeClean() {
     echo "sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean"
           sudo apt-get update && sudo apt-get upgrade --yes && sudo apt-get clean
+    echo "sudo checkrestart"
+          sudo checkrestart
 }
 alias u='UpdateUpgradeClean'
 alias d='Run sudo apt-get dist-upgrade --yes'
@@ -632,6 +634,10 @@ alias u2d='Run todos'
 alias ac='Run ack-grep'
 alias ag='Run ack-grep'
 alias g='egrep -i'
+alias logout='Run xfce4-session-logout'
+alias lout='Run xfce4-session-logout'
+alias logoff='Run xfce4-session-logout'
+alias loff='Run xfce4-session-logout'
 
 IpAddress() {
     echo "######################################################"
