@@ -694,3 +694,14 @@ backup() {
     # Run rsync --archive --info=stats2,misc1,flist0 $orig $backupCopy
     Run rsync --archive --info=progress2 $orig $backupCopy
 }
+
+shebang() {
+  echo "#!/usr/bin/env bash" >> ${1}
+  echo "# -*- coding:utf-8 -*-" >> ${1}
+  echo "" >> ${1}
+  echo "# debugging:" >> ${1}
+  echo "# set -x" >> ${1}
+  echo "# stop on error:" >> ${1}
+  echo "# set -e" >> ${1}
+  echo "" >> ${1}
+}

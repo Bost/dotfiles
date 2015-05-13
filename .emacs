@@ -1164,19 +1164,12 @@
 
   (bind-key "s-h" 'describe-key)
   (bind-key "s-k" 'close-buffer)
-  ;; TODO C-w: close-buffer, /: search-forward in normal mode
-  ;; (bind-key (kbd "<C-w>") 'close-buffer)
-
-  ;; TODO slash: search forward in normal mode
-  ;; (bind-key "/" 'search-forward)
-
   ;; (bind-key [C-s-left] (ignore-error-wrapper 'windmove-left))
   ;; (bind-key [C-s-right] (ignore-error-wrapper 'windmove-right))
   ;; (bind-key [C-s-up] (ignore-error-wrapper 'windmove-up))
   ;; (bind-key [C-s-down] (ignore-error-wrapper 'windmove-down))
 
   ;; (bind-key "s-b" 'ido-switch-buffer) ; s-b used for helm-mini
-  ;; (bind-key "s-k" 'ido-kill-buffer)
   ;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
   (bind-key (kbd "<C-tab>") 'bury-buffer)
   (bind-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
@@ -1238,17 +1231,6 @@ See: `xah-forward-block'"
     (if server-buffer-clients
         (server-edit)
       (kill-this-buffer)))
-
-
-  ;; TODO insert shebang when opening empty sh-file (use yasnippets):
-  ;; #!/usr/bin/env bash
-  ;; # -*- coding:utf-8 -*-
-
-  ;; # debugging:
-  ;; # set -x
-  ;; # stop on error:
-  ;; # set -e
-
 
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
