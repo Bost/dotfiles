@@ -897,7 +897,8 @@
   :init
   ;; only smooth-scrolling together with sublimity leads to
   ;; smooth scrolling really working! WTF?
-  (use-package smooth-scrolling) ; inside sublimity :ensure t not needed
+  (use-package smooth-scrolling
+    :ensure t)
   (use-package sublimity-scroll); inside sublimity :ensure t not needed
   (sublimity-mode 1))
 
