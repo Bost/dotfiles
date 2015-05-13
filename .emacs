@@ -7,7 +7,6 @@
   (server-start))
 
 (add-to-list 'load-path "~/dev/dotfiles/elisp/")
-(add-to-list 'custom-theme-load-path "~/dev/dotfiles/elisp/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-color-theme-solarized/")
 
