@@ -43,7 +43,7 @@ export isLinuxVB=$(expr match "$nodeName" "rsvoboda-VirtualBox")
 #echo isLinuxBambi: $isLinuxBambi
 #echo isLinuxVB: $isLinuxVB
 
-function add_to_path() {
+function addTo_PATH() {
     new_entry=$@
     case ":$PATH:" in
 	*":$new_entry:"*) :;; # already there
@@ -51,8 +51,19 @@ function add_to_path() {
     esac
 }
 
-# TODO function add_to() doesn't work with sysvar reference
-# function add_to() {
+function addTo_LD_LIBRARY_PATH() {
+    new_entry=$@
+    case ":$LD_LIBRARY_PATH:" in
+	*":$new_entry:"*) :;; # already there
+	*) LD_LIBRARY_PATH="$new_entry:$LD_LIBRARY_PATH";; # or LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$new_entry"
+    esac
+}
+# compiling x3270
+addTo_LD_LIBRARY_PATH /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server
+export LD_LIBRARY_PATH
+
+# TODO function addTo() doesn't work with sysvar reference
+# function addTo() {
 #     local sysvar=$1
 #     local new_entry=$1
 #     case ":$sysvar:" in
@@ -70,11 +81,7 @@ export clt=$dev/LightTable
 local bits=$(getconf LONG_BIT)
 export isLinux_64=$(($bits == 64))
 
-# TODO set paths to Google App Engine, Oracle JDK: ~/gae/appeng-python-1.8
-# export CLOJURESCRIPT=$dev/clojurescript
-# add_to_path $CLOJURESCRIPT/bin
-add_to_path $HOME/bin
-#add_to $PATH $CLOJURESCRIPT/bin
+addTo_PATH $HOME/bin
 
 if [ -n "${DISPLAY+x}" ]; then # check if there is a display available
     # remaping the Esc key to Capslock (I don't use it that much)
