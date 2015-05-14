@@ -67,11 +67,6 @@ alias c='Run cat'
 alias less='Run less -r'
 #alias rm='rm -i'
 alias whence='Run type -a'
-#alias ls='ls --color=auto'
-alias dir='ls --color=auto --format=vertical'
-#alias dir='dir --color=auto'
-alias vdir='ls --color=auto --format=long'
-#alias vdir='vdir --color=auto'
 
 alias ..='Run cd ..'
 alias ...='Run cd ../..'
@@ -393,6 +388,10 @@ alias less='less -r'
 alias whence='type -a'
 alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
+alias ldir='ls --color=auto -la -d1 */'
+#alias ls='ls --color=auto'
+#alias dir='dir --color=auto'
+#alias vdir='vdir --color=auto'
 
 # ls: -A, --almost-all    does not print the . and .. entries
 # -h, --human-readable    filesize
