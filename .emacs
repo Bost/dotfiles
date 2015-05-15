@@ -1104,7 +1104,9 @@
   (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
   (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
   (bind-key [f3] 'find-grep)
-  (bind-key (kbd "C-h") 'find-grep) ; as in eclipse
+
+  ;; C-h clashes with "help"
+  ;; (bind-key (kbd "C-h") 'find-grep) ; as in eclipse
 
   (defun rename-file-and-buffer ()
     "Rename the current buffer and file it is visiting."
