@@ -59,7 +59,8 @@
   :init
   (bind-key "s-<left>" 'paredit-backward-slurp-sexp)
   (bind-key "s-<right>" 'paredit-backward-barf-sexp)
-  (use-package paredit-menu))
+  (use-package paredit-menu
+    :ensure t))
 
 (use-package ob-clojure ; org-babel-clojure
   :disabled t
