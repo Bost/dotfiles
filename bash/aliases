@@ -450,6 +450,7 @@ alias suspend='Run sudo pm-suspend'
 alias hibernate='Run sudo pm-hibernate'
      alias shut='Run sudo shutdown -h now'
 alias shutdown='Run sudo shutdown -h now'
+alias update-grub='Run sudo update-grub'
 
 # Search the package list for a regex pattern
 # TODO alias sea='apt-cache search'
