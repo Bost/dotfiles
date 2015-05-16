@@ -705,3 +705,6 @@ shebang() {
   echo "# set -e" >> ${1}
   echo "" >> ${1}
 }
+
+# alias nt='Run nmcli -terse -fields STATE general status'
+alias nt='Run nmcli general status'
