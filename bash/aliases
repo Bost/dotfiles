@@ -323,6 +323,10 @@ alias ph='Run git_prompt_help'
  alias sc='script/console'
 alias h10='history | tail -10'
 alias h20='history | tail -20'
+alias h1='history | tail -10'
+alias h2='history | tail -20'
+alias h3='history | tail -30'
+alias h4='history | tail -40'
  alias h='history'
 
 HistoryGrep() {
