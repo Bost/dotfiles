@@ -948,7 +948,10 @@
   :diminish whitespace-mode
   :init
   (bind-key "s-w" 'whitespace-mode)
-  (bind-key "s-<f7>" 'whitespace-cleanup)
+  (bind-key "s-<f7>" '(lambda ()
+                       (whitespace-cleanup)
+                       (interactive)
+                       (message "whitespace-cleanup done.")))
   (setq require-final-newline t)
   (set-default 'indicate-empty-lines t)
   (setq show-trailing-whitespace t))
