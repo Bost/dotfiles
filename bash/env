@@ -74,6 +74,7 @@ export LD_LIBRARY_PATH
 
 #echo "### Display no message in the console if doing scp"
 export dev=$HOME/dev
+export bin=$HOME/bin
 # export music=$HOME/music
 # export down=$HOME/downloads
 export clt=$dev/LightTable
