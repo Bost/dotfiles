@@ -1327,6 +1327,8 @@ See: `xah-forward-block'"
  '(git-commit-summary-max-length 70)
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
+ '(grep-find-template
+   "find . <X> -type f ! -name '*~' <F> -exec grep <C> -nH -e <R> {} +")
  '(indent-tabs-mode nil)
  ;; TODO use :ensure t instead of package-selected-packages
  '(package-selected-packages
