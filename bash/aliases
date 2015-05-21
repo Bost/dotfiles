@@ -422,6 +422,7 @@ FindFile() {
 }
 alias f='FindFile'
 alias cx='Run chmod +x'
+alias cw='Run chmod +w'
 
 #alias cp='cp -i'
 #alias mv='mv -i'
