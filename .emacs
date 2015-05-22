@@ -1104,9 +1104,19 @@
   :ensure t
   :init
 
+  (bind-key "C-<f12>" '(lambda ()
+                       (interactive)
+                       (shell-command "cvs-test.sh")))
+
   (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
   (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
   (bind-key [f3] 'find-grep)
+  ;; (grep-apply-setting
+  ;;  'grep-find-command
+  ;;  (concat "find ~/dev/cvs-1.12.13+real"
+  ;;          " -type f"
+  ;;          " ! -name '*~' -and ! -name '*.o' ! -name 'config.log'"
+  ;;          " -and ! -name 'ChangeLog*' -exec grep -nH -e '' {} +"))
 
   ;; C-h clashes with "help"
   ;; (bind-key (kbd "C-h") 'find-grep) ; as in eclipse
@@ -1327,8 +1337,6 @@ See: `xah-forward-block'"
  '(git-commit-summary-max-length 70)
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
- '(grep-find-template
-   "find . <X> -type f ! -name '*~' <F> -exec grep <C> -nH -e <R> {} +")
  '(indent-tabs-mode nil)
  ;; TODO use :ensure t instead of package-selected-packages
  '(package-selected-packages
