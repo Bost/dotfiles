@@ -16,8 +16,8 @@
 ;; url-proxy-services won't be needed
 (if (string= system-type "windows-nt")
     (setq url-proxy-services '(("no_proxy" . "work\\.com")
-                               ("http" . "ptx.proxy.corp.sopra:8080")
-                               ("https" . "ptx.proxy.corp.sopra:8080"))))
+                               ("http" . (getenv "proxy"))
+                               ("https" . (getenv "proxy")))))
 
 (require 'package)
 (setq package-enable-at-startup nil)
