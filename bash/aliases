@@ -323,6 +323,8 @@ alias ph='Run git_prompt_help'
  alias sc='script/console'
 alias h10='history | tail -10'
 alias h20='history | tail -20'
+alias h30='history | tail -30'
+alias h40='history | tail -40'
 alias h1='history | tail -10'
 alias h2='history | tail -20'
 alias h3='history | tail -30'
@@ -400,7 +402,8 @@ alias ldir='ls --color=auto -la -d1 */'
 # ls: -A, --almost-all    does not print the . and .. entries
 # -h, --human-readable    filesize
 alias lx='ls -la $(find . -maxdepth 1 -perm -111 -type f)'
-alias  l="ls -lA  --color --time-style='+%d-%m-%Y %H:%M:%S'"
+ alias l="ls -lA  --color --time-style='+%d-%m-%Y %H:%M:%S'"
+alias lh="ls -lAh --color --time-style='+%d-%m-%Y %H:%M:%S'"
 alias ll="ls -lAh --color --time-style='+%d-%m-%Y %H:%M:%S'"
 # show hidden files
 alias l.='ls -d .* --color=auto'
