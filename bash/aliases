@@ -698,11 +698,11 @@ backup() {
         local backupDir=${backupDest}  # echo "var set to '$var'";
     fi
 
-    local orig=$1
-    local backupCopy="${backupDir}/$(timestamp)__$orig"
-    # Run rsync --archive --verbose $orig $backupCopy
-    # Run rsync --archive --info=stats2,misc1,flist0 $orig $backupCopy
-    Run rsync --archive --info=progress2 $orig $backupCopy
+    local orig=$(dirname $1)/$(basename $1) # get rid of last '/'
+    local backupCopy="${backupDir}/${orig}__$(timestamp)"
+    # Run rsync --archive --verbose ${orig} ${backupCopy}
+    # Run rsync --archive --info=stats2,misc1,flist0 ${orig} ${backupCopy}
+    Run rsync --archive --info=progress2 ${orig} ${backupCopy}
 }
 
 shebang() {
