@@ -1104,9 +1104,15 @@
   :ensure t
   :init
 
+  (bind-key "C-<f11>" '(lambda ()
+                       (interactive)
+                       (shell-command "" ; "cvs-ci-hooks.sh"
+                                      )))
+
   (bind-key "C-<f12>" '(lambda ()
                        (interactive)
-                       (shell-command "cvs-test.sh")))
+                       (shell-command "" ; "cvs-test.sh"
+                                      )))
 
   (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
   (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
