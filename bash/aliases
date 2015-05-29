@@ -8,8 +8,16 @@
 
 # \[command]    # escape any command aliases
 
-# TODO use maven 3.3.3 only if it exists; fall back to default installation
-alias mvn='$dev/apache-maven-3.3.3/bin/mvn'
+mavenBin () {
+    local mvnBin=mvn
+    if [ -f ${dev}/apache-maven-3.3.3/bin/mvn ]; then
+        mvnBin=${dev}/apache-maven-3.3.3/bin/mvn 
+    fi
+    ${mvnBin} "$@"
+}
+
+alias mvn='mavenBin'
+
 Run() {
     echo "$@"
          "$@"
