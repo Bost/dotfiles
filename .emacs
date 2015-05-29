@@ -1189,6 +1189,8 @@
 
   (bind-key "s-h" 'describe-key)
   (bind-key "s-k" 'close-buffer)
+  (bind-key "C-s-k" 'delete-file-and-close-its-buffer)
+
   ;; (bind-key [C-s-left] (ignore-error-wrapper 'windmove-left))
   ;; (bind-key [C-s-right] (ignore-error-wrapper 'windmove-right))
   ;; (bind-key [C-s-up] (ignore-error-wrapper 'windmove-up))
@@ -1256,6 +1258,12 @@ See: `xah-forward-block'"
     (if server-buffer-clients
         (server-edit)
       (kill-this-buffer)))
+  (defun delete-file-and-close-its-buffer ()
+    (interactive)
+    (let ((file-name (buffer-file-name (current-buffer))))
+      (delete-file file-name)
+      (message (concat "File deleted: " file-name)))
+    (close-buffer))
 
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
