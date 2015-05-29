@@ -290,6 +290,10 @@
 ;;(global-set-key [f2] 'next-error)
 
 ;; (global-set-key [f6] 'split-window-horizontally)
+(use-package git-timemachine
+  :ensure t
+  :defer t)
+
 (use-package magit
   :defer t
   :ensure t
