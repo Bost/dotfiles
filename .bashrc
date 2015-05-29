@@ -39,4 +39,4 @@ fi
 #"\e[B": history-search-forward
 #set show-all-if-ambiguous on
 #set completion-ignore-case on
-export PATH=~/.local/bin:$PATH
+export PATH=~/.local/bin:${PATH}
