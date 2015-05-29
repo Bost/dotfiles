@@ -105,7 +105,7 @@ alias gbrd='Run git branch -d'
 alias gmv='Run git mv'
 alias grm='Run git rm'
 alias ghe='Run git help'
-alias  gsh='Run git stash'
+ alias gsh='Run git stash'
 alias gshp='Run git stash pop'
 alias gcred='Run git --git-dir=$HOME/dev-win/credit.repo.git/.git/'
 alias gsedt='Run git --git-dir=$HOME/dev-win/sedt.git/.git'
@@ -250,7 +250,7 @@ mkdirAndCd() {
 }
 alias take='mkdirAndCd'
 
-alias  lc='Run lein clean'
+ alias lc='Run lein clean'
 alias lcc='Run lein clean'
 alias lco='Run lein cljsbuild once'
 alias lca='Run lein cljsbuild auto'
@@ -260,7 +260,7 @@ alias oma='Run cd ${dev}/om-async'
 alias src='Run cd src'
 alias omt='Run cd ${dev}/om-tut'
 alias lcad='Run lein cljsbuild auto dev' # start it in om-async directory
-alias  lco='Run lein cljsbuild once' # start it in om-async directory
+ alias lco='Run lein cljsbuild once' # start it in om-async directory
 alias lcxa='Run lein cljx auto' # start it in om-async directory
 
 GitUpdateAll() {
