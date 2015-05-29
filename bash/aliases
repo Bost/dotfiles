@@ -111,13 +111,8 @@ alias gcred='Run git --git-dir=$HOME/dev-win/credit.repo.git/.git/'
 alias gsedt='Run git --git-dir=$HOME/dev-win/sedt.git/.git'
 
 GrepFind() {
-    echo "grep -lir '${1}' $\(find . -name '*.${2}'\)"
-    echo "###"
-    if [ $# -eq 2 ] ; then
-        local foundFiles=$(find . -name \*.${2})
-        # echo "foundFiles: "$foundFiles
-        grep -lir ${1} ${foundFiles}
-    fi
+     echo "find . -name '${1}' -print0 | xargs -0 grep -lir '${2}'"
+           find . -name '${1}' -print0 | xargs -0 grep -lir '${2}'
 }
 alias gf='GrepFind'
 
@@ -640,11 +635,6 @@ getip() {
     awk -F: '{ print ${1} ": " ${3} }';
 }
 
-# changes in lt-syntaxstatusbar
-gf() {
-    # echo grep $@ $(find src/ -regex '.*cljs\|.*clj') | grep -v 'Is a directory'
-         grep $@ $(find src/ -regex '.*cljs\|.*clj') | grep -v 'Is a directory'
-}
 alias dos2unix='Run fromdos'
 alias d2u='Run fromdos'
 alias unix2dos='Run todos'
