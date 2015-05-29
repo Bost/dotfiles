@@ -282,8 +282,8 @@ GitUpdateAll() {
 alias gua='GitUpdateAll'
 
 GitPushRepo() {
-    echo 'cd '${1}' && git push'
-          cd  ${1}  && git push
+    echo "cd ${1} && git push"
+          cd ${1} && git push
 }
 
 GitPushAll() {
@@ -337,14 +337,16 @@ alias h4='history | tail -40'
  alias h='history'
 
 HistoryGrep() {
-    Run history | grep $@
+    echo "history | grep $@"
+          history | grep $@
 }
 alias hrep='HistoryGrep'
 
 AliasGrep() {
-    Run alias | grep $@
+    echo "alias | grep $@"
+          alias | grep $@
 }
-alias arep=AliasGrep
+alias arep='AliasGrep'
 
 CheatsheetGrep() {
     local _pwd=$(pwd)
