@@ -508,9 +508,6 @@
   :init
   (evil-mode 1)
 
-  (use-package evil-paredit
-    :ensure t)
-
   (bind-key "s-SPC" 'evil-search-highlight-persist-remove-all)
   (bind-key "C-s-t" 'evil-mode)
   (bind-key "s-;" 'evilnc-comment-or-uncomment-lines)
@@ -1106,6 +1103,10 @@
   :defer t
   :init
   (setq yagist-github-token (getenv "GITHUB_TOKEN")))
+
+(use-package fish-mode
+  :ensure t
+  :defer t)
 
 (use-package emacs
   :ensure t
