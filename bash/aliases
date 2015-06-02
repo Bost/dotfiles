@@ -690,6 +690,7 @@ timestamp() {
     date "+%F_%H-%M-%S" # same as "+%Y-%m-%d_%H-%M-%S"
 }
 
+# TODO implement: backup .
 backup() {
     local _pwd=$(pwd)
     local _oldpwd=${OLDPWD}
