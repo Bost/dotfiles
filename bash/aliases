@@ -426,11 +426,13 @@ alias l.='ls -d .* --color=auto'
 # I guess '2> /dev/null' redirects errors to /dev/null
 #alias f='find ./ 2> /dev/null'
 
-FindFile() {
-    echo find . -name \"$@\"
-         find . -name "$@"
-}
-alias f='FindFile'
+# TODO FindFile doesn't work as expected.
+# TODO bash-bind "s-f" to get 'find . -name' string on the prompt
+# FindFile() {
+#     echo find . -name \"$@\"
+#          find . -name  "$@"
+# }
+# alias f='FindFile'
 alias cx='Run chmod +x'
 alias cw='Run chmod +w'
 
