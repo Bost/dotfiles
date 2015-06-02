@@ -11,7 +11,7 @@
 mavenBin () {
     local mvnBin=mvn
     if [ -f ${dev}/apache-maven-3.3.3/bin/mvn ]; then
-        mvnBin=${dev}/apache-maven-3.3.3/bin/mvn 
+        mvnBin=${dev}/apache-maven-3.3.3/bin/mvn
     fi
     ${mvnBin} "$@"
 }
@@ -691,6 +691,9 @@ timestamp() {
 }
 
 backup() {
+    local _pwd=$(pwd)
+    local _oldpwd=${OLDPWD}
+
     # See parameter expansion http://goo.gl/bXn8rO
     if [ -z ${backupDest+x} ]; then
         local backupDir="."  # echo "var unset";
@@ -699,10 +702,16 @@ backup() {
     fi
 
     local orig=$(dirname ${1})/$(basename ${1}) # get rid of last '/'
-    local backupCopy="${backupDir}/${orig}__$(timestamp)"
-    # Run rsync --archive --verbose ${orig} ${backupCopy}
-    # Run rsync --archive --info=stats2,misc1,flist0 ${orig} ${backupCopy}
-    Run rsync --archive --info=progress2 ${orig} ${backupCopy}
+    cd $(dirname ${orig})
+    local dirToBackup=$(basename ${orig})
+
+    local backupCopy="${backupDir}/${dirToBackup}__$(timestamp)"
+    # Run rsync --archive --verbose ${dirToBackup} ${backupCopy}
+    # Run rsync --archive --info=stats2,misc1,flist0 ${dirToBackup} ${backupCopy}
+    Run rsync --archive --info=progress2 ${dirToBackup} ${backupCopy}
+
+    cd ${_pwd}
+    OLDPWD=${_oldpwd}
 }
 
 shebang() {
