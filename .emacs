@@ -349,6 +349,7 @@
 (use-package helm
   :defer t
   :ensure t
+  ;; :pin melpa-stable
   :init
 
   (use-package google-this
@@ -360,6 +361,7 @@
   (use-package helm-google ; alternatively use google-this
     :defer t
     :ensure t
+    ;; :pin melpa-stable
     :init
     ;; (when (executable-find "curl")
     ;;   (setq helm-google-suggest-use-curl-p t))
@@ -378,12 +380,16 @@
   (bind-key "M-y" 'helm-show-kill-ring)
 
   (use-package helm-flycheck
+    :defer t
     :ensure t
+    ;; :pin melpa-stable
     :init
     (eval-after-load 'flycheck
       '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck)))
 
   (use-package helm-projectile
+    :defer t
+    ;; :pin melpa-stable
     :ensure t)
 
   ;; (use-package persp-mode
@@ -398,18 +404,23 @@
   ;; To enable Projectile only in select modes:
   ;; (add-hook 'ruby-mode-hook 'projectile-mode)
   (use-package persp-projectile
+    :defer t
     :ensure t
+    ;; :pin melpa-stable
     :init
     (bind-key "C-s-p" 'helm-projectile-ack)
     ;; (desktop-save-mode 1)
     ;; TODO save perspective
     (use-package perspective
+      :defer t
       :ensure t
+      ;; :pin melpa-stable
       :init
       (persp-mode))
 
     (projectile-global-mode)
-    (helm-projectile-on))
+    ;; (helm-projectile-on)
+    )
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   (global-unset-key (kbd "C-x c"))
@@ -1355,173 +1366,11 @@ See: `xah-forward-block'"
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(evil-search-highlight-persist t t)
- '(frame-background-mode (quote dark))
  '(git-commit-summary-max-length 70)
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
- ;; TODO use :ensure t instead of package-selected-packages
- '(package-selected-packages
-   (quote
-    (
-     ac-cider ; auto-complete for cider
-     ac-helm
-     ac-nrepl
-     ace-jump-buffer
-     ace-jump-mode
-     ace-window
-     ack
-     ack-and-a-half
-     ack-menu
-     align-cljlet ; Space align various Clojure forms [github]
-     anzu
-     apt-utils ; 'current match/total matches' in the mode-line (pink stuff bottom left)
-     auto-complete
-     auto-complete-nxml
-     auto-highlight-symbol
-     auto-package-update
-     bf-mode
-     bind-key
-     browse-kill-ring
-     bs-ext ; Extensions to emacs buffer-selection library (bs.el) [wiki]
-     charmap
-     cider
-     clj-refactor
-     cljdoc
-     cljr-helm ; wraps clojure refactor command with helm
-     cljsbuild-mode
-     clojure-cheatsheet
-     clojure-mode
-     clojure-snippets
-     clojurescript-mode
-     closure-template-html-mode
-     color-identifiers-mode
-     color-theme
-     color-theme-buffer-local
-     company ; modular completition mechanism ;; TODO compare auto-complete and company-mode (supported by cider): ;; https://github.com/company-mode/company-mode/issues/68
-     csv-mode
-     csv-nav
-     dash
-     debbugs
-     diff-hl
-     diminish
-     dircmp
-     dired+
-     dired-dups
-     dired-single
-     direx ; TODO test direx: simple directory explorer
-     drag-stuff ; replacement for move-lines
-     duplicate-thing
-     egg ; TODO test egg: Emacs Got Git
-     elein ; TODO emacs + leiningen: lein/elein might be obsolete
-     elisp-slime-nav
-     epl
-     ergoemacs-mode
-     evil
-     evil-args
-     evil-escape
-     evil-indent-textobject
-     evil-leader
-     evil-matchit
-     evil-nerd-commenter
-     evil-numbers
-     evil-org
-     evil-paredit
-     evil-search-highlight-persist
-     evil-smartparens
-     evil-snipe
-     evil-surround
-     evil-visualstar
-     expand-region
-     f
-     find-file-in-project ; probably not needed because of helm
-     flycheck
-     fold-dwim
-     fold-this
-     fringe-helper
-     fullscreen-mode
-     gh
-     gist
-     git-commit-mode
-     git-rebase-mode
-     gitignore-mode
-     google
-     google-maps
-     goto-chg
-     goto-last-change
-     hackernews
-     helm
-     helm-ack
-     helm-ag
-     helm-flycheck
-     helm-git
-     helm-git-files
-     helm-git-grep
-     helm-github-stars
-     helm-gitlab
-     helm-google
-     helm-helm-commands
-     helm-ls-git
-     helm-mode-manager
-     helm-open-github
-     helm-package
-     helm-proc
-     helm-projectile
-     helm-spaces
-     helm-themes
-     highlight
-     highlight-symbol
-     idle-highlight-mode
-     ido-ubiquitous
-     iedit
-     keyfreq
-     latest-clojars
-     latest-clojure-libraries
-     levenshtein
-     linum-relative
-     litable
-     load-theme-buffer-local
-     logito
-     magit
-     magit-push-remote
-     malabar-mode ; A better Java mode for Emacs
-     minimap
-     mode-icons
-     move-text
-     multiple-cursors
-     neotree
-     org
-     paredit
-     paredit-menu
-     pcache
-     pkg-info
-     popup
-     popwin
-     projectile
-     queue
-     rainbow-delimiters
-     rainbow-identifiers
-     redo+
-     request
-     s
-     simple-httpd
-     skewer-mode
-     slime
-     slime-clj
-     slime-repl
-     smart-mode-line
-     smartparens
-     smex
-     smooth-scrolling ; only smooth-scrolling together with sublimity leads to smooth scrolling really working! WTF?
-     sticky-windows
-     string-inflection ; underscore -> UPCASE -> CamelCase -> lowerCamelCase conversion of names
-     tidy
-     undo-tree
-     use-package
-     window-purpose
-     window-purpose ; purpose base window management
-     closure-lint-mode ; what is linter good for?
-     )))
+ '(paradox-github-token t t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
