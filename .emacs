@@ -1356,13 +1356,7 @@ See: `xah-forward-block'"
  '(csv-separators (quote (";")))
  '(custom-safe-themes
    (quote
-    (
-     "24b6225bcacfe14f74b927db3020d1ff24fe17b674ee952963b4c4e9f0a7d231"
-     "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa"
-     "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223"
-     "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26"
-     "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743"
-     default)))
+    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(evil-search-highlight-persist t t)
@@ -1379,8 +1373,7 @@ See: `xah-forward-block'"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-search-highlight-persist-highlight-face
-   ((t (:background "dark olive green" :foreground "white"))))
+ '(evil-search-highlight-persist-highlight-face ((t (:background "dark olive green" :foreground "white"))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
  '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
