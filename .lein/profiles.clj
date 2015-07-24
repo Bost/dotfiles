@@ -13,4 +13,9 @@
   :dependencies
   [
    [org.clojure/tools.nrepl "0.2.10"]
+
+   [alembic "0.3.2"] ; dynamic classpath loader and dependencies resolver
+   ;; Usage:
+   ;; (require 'alembic.still)
+   ;; (alembic.still/distill '[clj-time-ext "0.4.5"])
    ]}}
