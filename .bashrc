@@ -40,3 +40,4 @@ fi
 #set show-all-if-ambiguous on
 #set completion-ignore-case on
 export PATH=~/.local/bin:${PATH}
+unset JAVA_TOOL_OPTIONS
