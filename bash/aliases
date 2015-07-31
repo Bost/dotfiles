@@ -646,10 +646,10 @@ alias u2d='Run todos'
 alias ac='Run ack-grep'
 alias ag='Run ack-grep'
 alias g='egrep -i'
-alias logout='Run xfce4-session-logout'
-alias lout='Run xfce4-session-logout'
-alias logoff='Run xfce4-session-logout'
-alias loff='Run xfce4-session-logout'
+alias logout='Run xfce4-session-logout --logout'
+alias lout='Run xfce4-session-logout --logout'
+alias logoff='Run xfce4-session-logout --logout'
+alias loff='Run xfce4-session-logout --logout'
 
 IpAddress() {
     echo "######################################################"
