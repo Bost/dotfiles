@@ -458,15 +458,21 @@ alias uninst="Run sudo apt-get remove --yes"
    alias rmv="Run sudo apt-get remove --yes"
   alias armv="Run sudo apt-get autoremove --yes"
 
-alias reboot='Run sudo reboot'
-#    alias s='Run sudo pm-suspend'
-   alias susp='Run sudo pm-suspend'
-alias suspend='Run sudo pm-suspend'
-#     alias h='Run sudo pm-hibernate'
-      alias hib='Run sudo pm-hibernate'
-alias hibernate='Run sudo pm-hibernate'
-     alias shut='Run sudo shutdown -h now'
-alias shutdown='Run sudo shutdown -h now'
+# alias reboot='Run sudo reboot'
+# # alias s='Run sudo pm-suspend'
+# alias susp='Run sudo pm-suspend'
+# alias suspend='Run sudo pm-suspend'
+# # alias h='Run sudo pm-hibernate'
+# alias hib='Run sudo pm-hibernate'
+# alias hibernate='Run sudo pm-hibernate'
+# alias shut='Run sudo shutdown -h now'
+# alias shutdown='Run sudo shutdown -h now'
+
+alias shut='xfce4-session-logout --halt'
+alias shutdown='xfce4-session-logout --halt'
+alias reboot='xfce4-session-logout --reboot'
+alias suspend='xfce4-session-logout --suspend'
+alias susp='xfce4-session-logout --suspend'
 alias update-grub='Run sudo update-grub'
 
 # Search the package list for a regex pattern
