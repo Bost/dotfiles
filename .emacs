@@ -81,6 +81,20 @@
 ;; (add-hook 'js2-mode-hook 'skewer-mode-keys)
 ;; (add-hook 'skewer-mode-hook 'skewer-mode-keys)
 
+;; (use-package inf-clojure
+;;   :defer t
+;;   :ensure t
+;;   :init
+
+;;   ;; (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode)
+
+;;   (defun cljs-node-repl ()
+;;     (interactive)
+;;     (run-clojure
+;;      "java -cp cljs.jar clojure.main repl.clj"
+;;      ;; "lein trampoline run -m clojure.main repl.clj"
+;;      )))
+
 (use-package cider
   :defer t
   :ensure t
@@ -1353,6 +1367,7 @@ See: `xah-forward-block'"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cider-cljs-repl "(cemerick.piggieback/cljs-repl (cljs.repl.node/repl-env))")
  '(csv-separators (quote (";")))
  '(custom-safe-themes
    (quote
@@ -1368,6 +1383,7 @@ See: `xah-forward-block'"
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
