@@ -1138,14 +1138,24 @@
   :init
 
   (bind-key "C-<f11>" '(lambda ()
-                       (interactive)
-                       (shell-command "" ; "cvs-ci-hooks.sh"
-                                      )))
+                         (interactive)
+                         (shell-command
+                          ;; "cvs-ci-hooks.sh"
+                          "")))
 
+  (bind-key "C-<f8>" '(lambda ()
+                        (interactive)
+                        (shell-command
+                         ;; "cvs-test.sh -lo :pserver:faizal@localhost:/myrepos"
+                         "")))
   (bind-key "C-<f12>" '(lambda ()
-                       (interactive)
-                       (shell-command "" ; "cvs-test.sh"
-                                      )))
+                         (interactive)
+                         (shell-command
+                          ;; (concat "cvs-test.sh -fr "
+                          ;;         ":pserver:"
+                          ;;         "rsvoboda@dlnxcvshooksdev01.ptx.fr.sopra"
+                          ;;         ":2401/cvscorfja")
+                          "")))
 
   (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
   (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
