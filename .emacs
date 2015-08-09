@@ -201,6 +201,7 @@
 ;; (setq nrepl-hide-special-buffers t)
 
 (use-package window-purpose
+  :defer t
   :ensure t
   :init
   ;; C-c , d: window-purpose
@@ -1379,9 +1380,6 @@ See: `xah-forward-block'"
  ;; If there is more than one, they won't work right.
  '(cider-cljs-repl "(cemerick.piggieback/cljs-repl (cljs.repl.node/repl-env))")
  '(csv-separators (quote (";")))
- '(custom-safe-themes
-   (quote
-    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(evil-search-highlight-persist t t)
