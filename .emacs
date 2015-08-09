@@ -1380,6 +1380,15 @@ See: `xah-forward-block'"
  ;; If there is more than one, they won't work right.
  '(cider-cljs-repl "(cemerick.piggieback/cljs-repl (cljs.repl.node/repl-env))")
  '(csv-separators (quote (";")))
+
+
+ ;; activate following when using (load-theme 'solarized t)
+ ;; '(custom-safe-themes
+ ;;   (quote
+ ;;    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+ ;; '(frame-background-mode (quote dark))
+
+
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(evil-search-highlight-persist t t)
