@@ -9,5 +9,7 @@ function ebe
     else
         set emacsBin emacs
     end
-    eval $emacsBin $dev/dotfiles/bash/env &
+    set cmd "$emacsBin $dev/dotfiles/bash/env &"
+    echo $cmd
+    eval $cmd
 end

@@ -9,5 +9,7 @@ function ea
     else
         set emacsBin emacs
     end
-    eval $emacsBin $dev/dotfiles/bash/aliases &
+    set cmd "$emacsBin $dev/dotfiles/bash/aliases &"
+    echo $cmd
+    eval $cmd
 end

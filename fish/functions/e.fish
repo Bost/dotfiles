@@ -14,5 +14,6 @@ function e
         set emacsBin emacsclient
     end
     set cmd "$emacsBin $params &"
+    echo $cmd
     eval $cmd
 end

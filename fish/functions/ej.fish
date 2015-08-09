@@ -11,5 +11,7 @@ function ej
     else
         set emacsBin emacsclient
     end
-    eval $emacsBin $dev/dotfiles/jcl/jcl.el &
+    set cmd "$emacsBin $dev/dotfiles/jcl/jcl.el &"
+    echo $cmd
+    eval $cmd
 end
