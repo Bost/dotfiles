@@ -6,13 +6,12 @@ function e
         set params $argv
     end
     
-    set pgrepResults pgrep --exact emacs
-    set cntResults (count $pgrepResults)
-    if test $cntResults = 0
-        set emacsBin emacs
-    else
+    if pgrep --exact emacs
         set emacsBin emacsclient
+    else
+        set emacsBin emacs
     end
+
     set cmd "$emacsBin $params &"
     echo $cmd
     eval $cmd
