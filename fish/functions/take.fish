@@ -1,3 +1,5 @@
 function take
-    mkdirAndCd $argv
+    set cmd "mkdir -p $argv; and cd $argv"
+    echo $cmd
+    eval $cmd
 end

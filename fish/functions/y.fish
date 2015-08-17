@@ -1,3 +1,5 @@
 function y
-    youtube-dl $argv
+    set cmd youtube-dl $argv
+    echo $cmd
+    eval $cmd
 end
