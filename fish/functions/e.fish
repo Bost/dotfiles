@@ -5,14 +5,13 @@ function e
     else
         set params $argv
     end
-    
-    if pgrep --exact emacs
-        set emacsBin emacsclient
-    else
-        set emacsBin emacs
-    end
 
-    set cmd "$emacsBin $params &"
-    echo $cmd
-    eval $cmd
+    # DYI violation because variables may not be used as commands
+    if pgrep --exact emacs
+        echo emacsclient $params &
+             emacsclient $params &
+    else
+        echo emacs $params &
+             emacs $params &
+    end
 end
