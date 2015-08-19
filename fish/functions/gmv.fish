@@ -1,3 +1,4 @@
 function gmv
-    git mv $argv
+    echo git mv \$argv
+         git mv  $argv
 end

@@ -1,8 +1,6 @@
 function glo
-    set cmd "git pull --rebase origin $argv"
-    echo $cmd
-    eval $cmd
-    set cmd "git fetch --tags"
-    echo $cmd
-    eval $cmd
+    echo git pull --rebase origin \$argv
+         git pull --rebase origin  $argv
+    echo git fetch --tags
+         git fetch --tags
 end

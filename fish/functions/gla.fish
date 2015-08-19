@@ -1,5 +1,4 @@
 function gla
-    set cmd "git lg-all $argv"
-    echo $cmd
-    eval $cmd
+    echo git lg-all \$argv
+         git lg-all  $argv
 end

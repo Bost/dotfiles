@@ -1,3 +1,4 @@
 function gmr
-    git merge $argv
+    echo git merge \$argv
+         git merge  $argv
 end

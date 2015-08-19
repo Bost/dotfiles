@@ -1,3 +1,4 @@
 function glu
-    GitPullRebaseUpstreamMaster $argv
+    echo "git pull --rebase upstream master; and git fetch --tags upstream"
+          git pull --rebase upstream master; and git fetch --tags upstream
 end
