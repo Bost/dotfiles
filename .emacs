@@ -1382,11 +1382,12 @@ See: `xah-forward-block'"
  '(csv-separators (quote (";")))
 
 
+ ;; TODO use git submodules for themes
  ;; activate following when using (load-theme 'solarized t)
- ;; '(custom-safe-themes
- ;;   (quote
- ;;    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
- ;; '(frame-background-mode (quote dark))
+ '(custom-safe-themes
+   (quote
+    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+ '(frame-background-mode (quote dark))
 
 
  '(ecb-options-version "2.40")
@@ -1412,10 +1413,10 @@ See: `xah-forward-block'"
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
  '(region ((t (:background "#006400")))))
 
-(load-theme 'zenburn t)
+;; (load-theme 'zenburn t)
 ;; (disable-theme 'zenburn)  (enable-theme 'zenburn)
 
-;; (load-theme 'solarized t)
+(load-theme 'solarized t)
 ;; (disable-theme 'solarized)  (enable-theme 'solarized)
 
 (setq debug-on-error nil)
