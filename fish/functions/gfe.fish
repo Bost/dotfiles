@@ -1,3 +1,4 @@
 function gfe
-    git fetch $argv
+    echo git fetch \$argv
+         git fetch  $argv
 end
