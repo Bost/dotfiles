@@ -512,6 +512,10 @@
               (kill-buffer buffer)))
           (buffer-list))))
 
+(use-package dired+
+  :defer t
+  :ensure t)
+
 (use-package winner ; layout management
   :defer t
   :ensure t
