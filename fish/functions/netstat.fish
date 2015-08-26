@@ -1,3 +1,5 @@
 function netstat
-    SocketStatistics $argv
+    echo "# 'netstat' is obsolete. Using: 'ss'"
+    echo ss \$argv
+         ss  $argv
 end
