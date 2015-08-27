@@ -737,3 +737,4 @@ shebang() {
 # alias nt='Run nmcli -terse -fields STATE general status'
 # nmcli - command‐line tool for controlling NetworkManager
 alias nt='Run nmcli general status'
+alias goodies='Run sudo checkrestart'
