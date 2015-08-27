@@ -1,3 +1,4 @@
 function grb
-    RunGit git rebase $argv
+    echo git rebase \$argv
+         git rebase $argv
 end
