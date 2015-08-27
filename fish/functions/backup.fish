@@ -12,7 +12,15 @@ function backup
     set baseName (basename $argv[1])
     set orig $dirName/$baseName # get rid of last '/'
     set dirNameOrig (dirname $orig)
-    set baseNameOrig (basename $orig)
+    set baseNameOrigX (basename $orig)
+
+    if test $baseNameOrigX = ".git"
+        set parendDir (basename (pwd))
+        set baseNameOrig $parendDir""$baseNameOrigX
+    else
+        set baseNameOrig $baseNameOrigX
+    end
+
     cd $dirNameOrig
     set tstp (eval timestamp)
     set backupCopy $backupDir"/"$baseNameOrig"__"$tstp
@@ -25,4 +33,3 @@ function backup
 
     # cd $_pwd
 end
-
