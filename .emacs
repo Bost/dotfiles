@@ -488,6 +488,19 @@
   (bind-key "s-d" 'dired-jump)
   (bind-key "s-r" 'dired-do-rename dired-mode-map)
 
+  (use-package dired+
+    :defer t
+    :ensure t
+    :init
+    ;; Use '(' ')' to show/hide file details
+    ;; Does it use dired-show-file-type ?
+    (require 'dired+)
+
+    (use-package dired-details+
+      :defer t
+      :ensure t
+      :init (require 'dired-details+))
+
   (use-package dired-subtree
     :defer t
     :ensure t
@@ -495,7 +508,7 @@
     (define-key dired-mode-map (kbd "<C-return>") 'dired-subtree-insert)
     (define-key dired-mode-map (kbd "<C-M-return>") 'dired-subtree-remove))
 
-  (use-package dired-rainbow
+  (use-package dired-rainbow ; file highlighting
     :defer t
     :ensure t)
   ;; When moving to parent directory by `^´, Dired by default creates a
@@ -518,9 +531,6 @@
               (kill-buffer buffer)))
           (buffer-list))))
 
-(use-package dired+
-  :defer t
-  :ensure t)
 
 (use-package winner ; layout management
   :defer t
