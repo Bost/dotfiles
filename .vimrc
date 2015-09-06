@@ -4,22 +4,22 @@
 " TODO StripTrailingWhitespaces(): %s/\(\S*\)\s\+\n/\1\r/g works
 
 " Live reload web editing
-" Bundle 'jaxbot/brolink.vim'
+" Plugin 'jaxbot/brolink.vim'
 
 " Narrowing
-" Bundle 'chrisbra/NrrwRgn.git'
+" Plugin 'chrisbra/NrrwRgn'
 
-" Bundle 'vim-scripts/ZoomWin.git'
-" Bundle 'jeetsukumaran/vim-buffergator.git'
-" Bundle 'Shougo/vimshell'
+" Plugin 'vim-scripts/ZoomWin'
+" Plugin 'jeetsukumaran/vim-buffergator'
+" Plugin 'Shougo/vimshell'
 
 " For git
-" Bundle 'gregsexton/gitv'
+" Plugin 'gregsexton/gitv'
 
 " Git diff in the 'gutter' (sign column)
-" Bundle 'airblade/vim-gitgutter.git'
+" Plugin 'airblade/vim-gitgutter'
 "
-" Bundle 'mattn/gist-vim.git'
+" Plugin 'mattn/gist-vim'
 
 " {{{ Environment detection: see how is it made in bash
 let isLinux = has('unix') && !has('win32unix')
@@ -52,10 +52,10 @@ if isWin
     set runtimepath+=$HOME/dev/dotfiles/vim
     set runtimepath+=$HOME/dev/dotfiles/vim/bundle/vundle
 else
-    set runtimepath+=~/.vim/bundle/vundle/
+    set runtimepath+=~/.vim/bundle/Vundle.vim
 endif
 
-call vundle#rc()
+call vundle#begin()
 
 if isWin
     let g:bundle_dir = expand('$HOME/dev/dotfiles/vim/bundle', 1)
@@ -63,14 +63,14 @@ if isWin
 endif
 
 " let Vundle manage Vundle - required!
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
 " {{{ Plugings:
 
-"Bundle 'terryma/vim-multiple-cursors'
+"Plugin 'terryma/vim-multiple-cursors'
 
 " {{{ GoldenView
-Bundle 'zhaocai/GoldenView.Vim'
+Plugin 'zhaocai/GoldenView.Vim'
 let g:goldenview__enable_default_mapping = 0
 " 1. split to tiled windows
 nmap <C-k>  <Plug>GoldenViewSplit
@@ -91,7 +91,7 @@ nmap <C-t> :ToggleGoldenViewAutoResize<Cr>
 " }}} GoldenView
 
 " {{{ Emailing shortcuts
-"Bundle 'Bost/vim-email.git'
+"Plugin 'Bost/vim-email'
 
 function! EmailHallo(receiver, mode)
     if a:receiver == 'k'
@@ -146,7 +146,7 @@ endif
 " }}} Emailing shortcuts
 
 " {{{ Clojure plugins
-Bundle 'vim-scripts/VimClojure.git'
+Plugin 'vim-scripts/VimClojure'
 " {{{ VimClojure - using ParenRaibow
 "let vimclojure#FuzzyIndent=1
 let vimclojure#HighlightBuiltins=1
@@ -158,16 +158,16 @@ let vimclojure#ParenRainbow=1
 "if isLinux
 if 0
     " {{{ The plugin rainbow_parentheses is buggy so I need VimClojure back
-    "Bundle 'kien/rainbow_parentheses.vim.git'
+    "Plugin 'kien/rainbow_parentheses.vim'
     "au VimEnter * RainbowParenthesesToggle
     "au Syntax * RainbowParenthesesLoadRound
     "au Syntax * RainbowParenthesesLoadSquare
     "au Syntax * RainbowParenthesesLoadBraces
     " }}}
 
-    Bundle 'tpope/vim-fireplace.git'
-    Bundle 'tpope/vim-classpath.git'
-    Bundle 'guns/vim-clojure-static.git'
+    Plugin 'tpope/vim-fireplace'
+    Plugin 'tpope/vim-classpath'
+    Plugin 'guns/vim-clojure-static'
 
     nnoremap <A-e> :Eval<CR>
     vnoremap <A-e> :Eval<CR>
@@ -234,21 +234,23 @@ else
 endif
 " }}} Clojure plugins
 
-"Bundle 'vim-scripts/SearchComplete.git'
-Bundle 'Shougo/neocomplcache.git'
-Bundle 'Shougo/neosnippet.git'
+"Plugin 'vim-scripts/SearchComplete'
+Plugin 'Shougo/neocomplete'
+Plugin 'Shougo/neosnippet'
+Plugin 'Shougo/neosnippet-snippets'
 
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'rstacruz/sparkup', {'runtimepath': 'vim/'}
+
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " vim-scripts repos
 
 " YankRing colides with ctrlp
-Bundle 'vim-scripts/YankRing.vim.git'
+Plugin 'vim-scripts/YankRing.vim'
 
 "" {{{ plugins for nodejs and coffee-script
-"Bundle 'digitaltoad/vim-jade.git'
+"Plugin 'digitaltoad/vim-jade'
 "" {{{
-"Bundle 'kchmck/vim-coffee-script.git'
+"Plugin 'kchmck/vim-coffee-script'
 "" To recompile a file when it's written, add an autocmd like this to your vimrc:
 "au BufWritePost *.coffee silent CoffeeMake!
 "" All of the customizations above can be used, too. This one compiles silently and with the -b option, but shows any errors:
@@ -256,35 +258,35 @@ Bundle 'vim-scripts/YankRing.vim.git'
 "" }}}
 
 "" {{{
-"Bundle 'guileen/vim-node.git'
+"Plugin 'guileen/vim-node'
 "au FileType javascript set dictionary+=$HOME/.vim/dict/node.dict
 "" }}}
-"Bundle 'myhere/vim-nodejs-complete.git'
+"Plugin 'myhere/vim-nodejs-complete'
 
 "" }}}
 
 " {{{ Finder plugins:
 " L9 is required by FuzzyFinder
-"Bundle 'L9'
-"Bundle 'FuzzyFinder'
+"Plugin 'L9'
+"Plugin 'FuzzyFinder'
 
 " Let the ctrlp overwrite the <C-p> used by YankRing
-Bundle 'kien/ctrlp.vim.git'
+Plugin 'kien/ctrlp.vim'
 
 " LustyExplorer - requires Ruby
-"Bundle 'sjbach/lusty.git'
+"Plugin 'sjbach/lusty'
 
 " Command-T - requires Ruby
-"Bundle 'git://git.wincent.com/command-t.git'
-"Bundle 'wincent/Command-T.git'
+"Plugin 'git://git.wincent.com/command-t'
+"Plugin 'wincent/Command-T'
 " }}}
 
 " python_ifold doesn't work somehow
-"Bundle 'python_ifold'
+"Plugin 'python_ifold'
 
-Bundle 'skyl/vim-config-python-ide.git'
+Plugin 'skyl/vim-config-python-ide'
 
-"Bundle 'vim-scripts/csv.vim.git'
+"Plugin 'vim-scripts/csv.vim'
 
 " {{{ Buffer Explorers:
 
@@ -297,7 +299,7 @@ inoremap <S-Tab> <Esc>:bprevious<CR>i
 " }}}
 
 " {{{ bufstop
-"Bundle 'mihaifm/bufstop.git'
+"Plugin 'mihaifm/bufstop'
 "map <leader>b :Bufstop<CR>
 "map <leader>f :BufstopModeFast<CR>
 "map <C-tab>   :BufstopBack<CR>
@@ -306,14 +308,14 @@ inoremap <S-Tab> <Esc>:bprevious<CR>i
 " }}}
 
 " {{{ BufExplorer
-Bundle 'c9s/bufexplorer.git'
+Plugin 'c9s/bufexplorer'
 " Show a list of all open buffers with BufExplorer
 nnoremap <Leader>b :BufExplorer<CR>
 nnoremap <A-b> :vertical ball<CR>
 " }}}
 
 " {{{ MiniBufExplorer is just bugging me
-"Bundle 'fholgado/minibufexpl.vim.git'
+"Plugin 'fholgado/minibufexpl.vim'
 "autocmd VimEnter * <Plug>CMiniBufExplorer
 "autocmd MiniBufExplorer VimEnter    * call <SID>DEBUG('-=> VimEnter AutoCmd', 10) |let g:miniBufExplorerAutoUpdate = 1 |call <SID>AutoUpdate(-1,bufnr("%"))
 
@@ -338,14 +340,14 @@ nnoremap <A-b> :vertical ball<CR>
 
 " }}} Buffer Explorers:
 
-Bundle 'scrooloose/nerdcommenter.git'
+Plugin 'scrooloose/nerdcommenter'
 
 " {{{
 " vimpanel should replace nerdtree
-"Bundle 'mihaifm/vimpanel.git'
+"Plugin 'mihaifm/vimpanel'
 
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'jistr/vim-nerdtree-tabs.git'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 "autocmd VimEnter * NERDTree
 "nnoremap <F9> :NERDTreesToggle<CR>
 nnoremap <F9> :NERDTreeTabsToggle<CR>
@@ -354,26 +356,26 @@ inoremap <F9> <Esc><F9>
 let g:nerdtree_tabs_open_on_gui_startup=0
 " }}}
 
-"Bundle 'hsitz/VimOrganizer.git'
+"Plugin 'hsitz/VimOrganizer'
 
-Bundle 'sjl/gundo.vim.git'
-"Bundle 'xolox/vim-session.git'
-"Bundle 'tpope/vim-rails.git'
-Bundle 'tpope/vim-unimpaired.git'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-surround.git'
-Bundle 'tpope/vim-repeat.git'
-Bundle 'mileszs/ack.vim'
+Plugin 'sjl/gundo.vim.git'
+"Plugin 'xolox/vim-session'
+"Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'mileszs/ack.vim'
 
-"Bundle 'tsaleh/vim-matchit.git' " this location no longer exists
-Bundle 'vim-scripts/matchit.zip.git'
+"Plugin 'tsaleh/vim-matchit' " this location no longer exists
+"Plugin 'vim-scripts/matchit.zip'
 
 " {{{ Powerline
 
 if isLinux || isCygwin
     set runtimepath+=$HOME/.vim/bundle/powerline/powerline/bindings/vim
-    Bundle 'Bost/powerline.git'
-    Bundle 'Lokaltog/powerline-fonts.git'
+    Plugin 'Bost/powerline'
+    Plugin 'Lokaltog/powerline-fonts'
 
     " In terminal: leave the insert mode immediately
     if ! has('gui_running')
@@ -386,7 +388,7 @@ if isLinux || isCygwin
     endif
 else
     " vim-powerline does no refresh when saving .vimrc; restart needed
-    Bundle 'Lokaltog/vim-powerline.git'
+    Plugin 'Lokaltog/vim-powerline'
     let g:Powerline_symbols = 'unicode'
     " fancy symbols don't work
     "let g:Powerline_symbols = 'fancy'
@@ -394,15 +396,15 @@ endif
 " }}} Powerline
 
 " Easily interact with tmux from vim
-"Bundle 'benmills/vimux.git'
+"Plugin 'benmills/vimux'
 
 " majutsushi/tagbar seems to be nicer than vim-scripts/taglist;
 " both plugins need exuberant ctags
-Bundle 'majutsushi/tagbar'
-"Bundle 'vim-scripts/taglist.vim.git'
+Plugin 'majutsushi/tagbar'
+"Plugin 'vim-scripts/taglist.vim'
 
 " {{{ insert completion: <Tab> <C-Tab>
-Bundle 'ervandew/supertab.git'
+Plugin 'ervandew/supertab'
 let g:SuperTabMappingBackward = '<C-Tab>'
 " {{{ insert completion: Alternative mapping: <C-Space> / <S-C-Space>
 "let g:SuperTabMappingForward = '<C-Space>'
@@ -411,33 +413,34 @@ let g:SuperTabMappingBackward = '<C-Tab>'
 " }}}
 
 " {{{ increase / decrease font size: <A-i> / <C-A-i>
-Bundle 'Bost/vim-zoom.git'
-nmap <A-i> :ZoomIn<CR>
-nmap <C-A-i> :ZoomOut<CR>
+" Plugin 'Bost/vim-zoom'
+" nmap <A-i> :ZoomIn<CR>
+" nmap <C-A-i> :ZoomOut<CR>
 " }}}
 
 " Vim over ssh/scp
-"Bundle 'vim-scripts/netrw.vim.git'
+"Plugin 'vim-scripts/netrw.vim'
 
-" Align.git is needed by SQLUtilities.git
-"Bundle 'vim-scripts/Align.git'
-"Bundle 'vim-scripts/SQLUtilities.git'
+" Align is needed by SQLUtilities
+"Plugin 'vim-scripts/Align'
+"Plugin 'vim-scripts/SQLUtilities'
 "
 " {{{ TODO Evaluate plugins:
-"Bundle 'vim-scripts/The-Mail-Suite-tms.git'
-"Bundle 'vim-scripts/showmarks--Politz.git'
-"Bundle 'juanpabloaj/ShowMarks.git'
+"Plugin 'vim-scripts/The-Mail-Suite-tms'
+"Plugin 'vim-scripts/showmarks--Politz'
+"Plugin 'juanpabloaj/ShowMarks'
 " Shows java file class, package in a tree as in IDEs. Java source browser.
 " Rating 258/92, Downloaded by 7798
-Bundle 'vim-scripts/JavaBrowser.git'
+Plugin 'vim-scripts/JavaBrowser'
 
 " Compile and run Java program Rating 273/145, Downloaded by 8783
-"Bundle 'vim-scripts/JavaRun.git'
+"Plugin 'vim-scripts/JavaRun'
 
 " }}}
 
-" Comments after Bundle command are not allowed
+" Comments after Plugin command are not allowed
 " }}}
+call vundle#end()
 
 " behave mswin
 behave xterm
@@ -572,8 +575,8 @@ vnoremap <C-A-s> <Esc>:wall<CR>gv
 nnoremap <Leader>q :q<CR>
 
 " {{{ BufClose
-" TODO try out Bundle 'szw/vim-smartclose.git'
-Bundle 'vim-scripts/BufClose.vim'
+" TODO try out Plugin 'szw/vim-smartclose'
+Plugin 'vim-scripts/BufClose.vim'
 " Load the alternate buffer.  See ":help :_#"
 "let g:BufClose_AltBuffer = '#'    " this doesn't work as expected.
 " Call BufClose twice does the job
@@ -1535,7 +1538,7 @@ set noshowmode
 "set autochdir
 
 " Immediate change of the cursor - I may need following plugin to make it work
-" Bundle 'sjl/vitality.vim;
+" Plugin 'sjl/vitality.vim;
 "inoremap <Esc> <Esc><Esc>
 
 " de_20 is german new spelling
