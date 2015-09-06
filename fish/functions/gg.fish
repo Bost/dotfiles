@@ -1,5 +1,4 @@
 function gg
-    set cmd "git gui $argv"
-    echo $cmd
-    eval $cmd    
+    echo git gui \$argv \&
+         git gui  $argv  &
 end
