@@ -479,6 +479,7 @@
   :defer t
   :ensure t
   :init
+  (require 'vimrc-mode)
   (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode)))
 
 (use-package dired ; not among *Packages*; can't use :ensure t
@@ -488,18 +489,24 @@
   (bind-key "s-d" 'dired-jump)
   (bind-key "s-r" 'dired-do-rename dired-mode-map)
 
-  (use-package dired+
+  (use-package dired-details
+    :defer t
+    :ensure t ; try :ensure marmalade if not available on melpa
+    :init
+    (require 'dired-details)
+    (dired-details-install))
+
+  (use-package
+   dired-details+
+   :defer t
+   :ensure t
+   :init
+   (use-package dired+ ;; show / hide file details: ( / )
     :defer t
     :ensure t
     :init
-    ;; Use '(' ')' to show/hide file details
-    ;; Does it use dired-show-file-type ?
-    (require 'dired+)
-
-    (use-package dired-details+
-      :defer t
-      :ensure t
-      :init (require 'dired-details+))
+    (require 'dired+))
+   (require 'dired-details+))
 
   (use-package dired-subtree
     :defer t
