@@ -475,6 +475,12 @@
   :init
   (drag-stuff-global-mode t))
 
+(use-package vimrc-mode
+  :defer t
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode)))
+
 (use-package dired ; not among *Packages*; can't use :ensure t
   :defer t
   :init
