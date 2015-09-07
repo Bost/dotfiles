@@ -370,31 +370,6 @@ Plugin 'mileszs/ack.vim'
 "Plugin 'tsaleh/vim-matchit' " this location no longer exists
 "Plugin 'vim-scripts/matchit.zip'
 
-" {{{ Powerline
-
-if isLinux || isCygwin
-    set runtimepath+=$HOME/.vim/bundle/powerline/powerline/bindings/vim
-    Plugin 'Bost/powerline'
-    Plugin 'Lokaltog/powerline-fonts'
-
-    " In terminal: leave the insert mode immediately
-    if ! has('gui_running')
-        set ttimeoutlen=10
-        augroup FastEscape
-            autocmd!
-            au InsertEnter * set timeoutlen=0
-            au InsertLeave * set timeoutlen=1000
-        augroup END
-    endif
-else
-    " vim-powerline does no refresh when saving .vimrc; restart needed
-    Plugin 'Lokaltog/vim-powerline'
-    let g:Powerline_symbols = 'unicode'
-    " fancy symbols don't work
-    "let g:Powerline_symbols = 'fancy'
-endif
-" }}} Powerline
-
 " Easily interact with tmux from vim
 "Plugin 'benmills/vimux'
 
@@ -474,27 +449,6 @@ set virtualedit=block   " Makes visual block mode awesome
 set scrolloff=3         " Context lines at top and bottom of display.
 set sidescrolloff=5     " Context columns at left and right.
 set sidescroll=1        " Number of chars to scroll when scrolling sideways.
-
-if isLinux
-    " Ubuntu\ Mono\ 12 is too large for bambi-small
-    if isUserBambi
-        "set guifont=Ubuntu\ Mono\ 10
-        set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 10
-    else
-        set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
-    endif
-    "set guifont=Bitstream\ Vera\ Sans\ Mono\ 12
-    "set guifont=DejaVu\ Sans\ Mono\ 12
-elseif isCygwin
-    "set guifont=Bitstream\ Vera\ Sans\ Mono\ 8
-    set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 11
-elseif isWin
-    set guifont=Consolas:w5,Lucida_Console:h8:w5
-endif
-"set guifont=Monospace\ 9
-"set guifont=Lucida_Console:h8:cDEFAULT
-"set guifont=lucida_console:h8:w5
-"set lines=64 columns=160
 
 set cursorline          " highlight current line
 " wrap long lines at 'breakat' not the last char on the screen; doesn't insert
