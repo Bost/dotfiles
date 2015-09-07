@@ -1187,7 +1187,7 @@
 
   (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
   (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
-  (bind-key [f3] 'find-grep)
+  (bind-key [f3] 'find-grep) ; Use -e '...' instead of -e "..."
   ;; (grep-apply-setting
   ;;  'grep-find-command
   ;;  (concat "find ~/dev/cvs-1.12.13+real"

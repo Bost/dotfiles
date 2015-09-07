@@ -1,4 +1,4 @@
 function gg
-    echo git gui \$argv \&
-         git gui  $argv  &
+    echo git gui $argv \&
+         git gui $argv  &
 end
