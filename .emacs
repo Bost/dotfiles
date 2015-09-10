@@ -100,6 +100,19 @@
   :ensure t
   :init
 
+  (use-package kibit-helper
+    ;;  kibit - lein plugin for detecting / improving non-idiomatic clj code
+    :defer t
+    :ensure t
+    )
+  (use-package cider-eval-sexp-fu
+    :defer t
+    :ensure t)
+
+  (use-package ac-cider
+    :ensure t
+    :defer t)
+
   (use-package rainbow-delimiters
     :ensure t
     :defer t)
@@ -361,23 +374,55 @@
   :init
   (bind-key "<s-f8>" 'neotree-toggle))
 
+;; (use-package icicles ; TODO try out
+;;  :ensure t
+;;  :defer t)
+
 (use-package helm
   :defer t
   :ensure t
   ;; :pin melpa-stable
   :init
 
-  (use-package google-this
+  ;; (use-package helm-dictionary ; local offline dictionaries
+  ;;  :ensure t
+  ;;  :defer t)
+
+  ;; (use-package helm-themes
+  ;;  :ensure t
+  ;;  :defer t)
+
+  (use-package cljr-helm
     :defer t
     :ensure t
     :init
-    (bind-key "s-g" 'google-this))
+    ;; TODO bind `cljr-helm` to a key (I'd suggest C-c r) in Clojure mode
+    )
+
+  (use-package helm-commandlinefu
+   :ensure t
+   :defer t)
+
+  (use-package helm-ack
+   :ensure t
+   :defer t)
+
+  (use-package helm-cider-history
+   :ensure t
+   :defer t)
 
   (use-package helm-google ; alternatively use google-this
     :defer t
     :ensure t
     ;; :pin melpa-stable
     :init
+
+    (use-package google-this
+     :defer t
+     :ensure t
+     :init
+     (bind-key "s-g" 'google-this))
+
     ;; (when (executable-find "curl")
     ;;   (setq helm-google-suggest-use-curl-p t))
     (bind-key "s-G" 'helm-google-suggest)  ; google auto-complete
@@ -1187,6 +1232,13 @@
 
   (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
   (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
+
+  (use-package grep+
+    :defer t
+    :ensure t
+    :init
+    (require 'grep+))
+
   (bind-key [f3] 'find-grep) ; Use -e '...' instead of -e "..."
   ;; (grep-apply-setting
   ;;  'grep-find-command
