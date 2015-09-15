@@ -1479,7 +1479,8 @@ See: `xah-forward-block'"
  '(paradox-github-token t t)
  '(show-paren-mode t)
  '(tab-width 4)
- '(tool-bar-mode nil nil (tool-bar)))
+ '(tool-bar-mode nil nil (tool-bar))
+ '(vc-follow-symlinks nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
