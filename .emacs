@@ -95,6 +95,11 @@
 ;;      ;; "lein trampoline run -m clojure.main repl.clj"
 ;;      )))
 
+(use-package slamhound
+  ;; rip and reconstruct clojure namespace
+  :defer t
+  :ensure t)
+
 (use-package cider
   :defer t
   :ensure t

@@ -14,6 +14,7 @@
    ]
   :dependencies
   [
+   [slamhound "1.5.5"] ; rip and reconstruct namespace
    [org.clojure/tools.nrepl "0.2.10"]
    [org.clojure/core.typed "0.3.11"]
 
@@ -21,4 +22,7 @@
    ;; Usage:
    ;; (require 'alembic.still)
    ;; (alembic.still/distill '[clj-time-ext "0.4.5"])
-   ]}}
+   ]
+
+  :aliases {"slamhound" ["run" "-m" "slam.hound"]}
+  }}
