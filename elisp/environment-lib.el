@@ -17,7 +17,8 @@
     (use-package rexx-mode
       :defer t
       :load-path "~/.emacs.d/rexx-mode")
-    )
+    :init
+    (add-to-list 'auto-mode-alist '("\\.rexx$" . rexx-mode)))
 
   (use-package eww
     :init
