@@ -906,9 +906,6 @@
     (shell-command-to-string (concat "mkdir -p " yasnippet-dir))
     (add-to-list 'load-path yasnippet-dir))
   (yas-global-mode 1)
-  (use-package clojure-snippets
-    :defer t
-    :ensure t)
   ;; (define-key yas-minor-mode-map (kbd "s-y") 'yas/expand)
   ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
   )
