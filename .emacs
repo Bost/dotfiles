@@ -174,6 +174,8 @@
     (local-set-key (kbd "s-t") 'cider-test-run-tests)
     (local-set-key (kbd "s-.") 'cider-jump-to-var)
     (local-set-key (kbd "s-,") 'cider-jump-back)
+    ;; <menu> key does not work
+    ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
     )
   (add-hook 'cider-mode-hook 'cider-mode-keys)
 
@@ -185,24 +187,28 @@
   )
 
 (use-package clojure-mode
-  :defer t
-  :ensure t
-  :init
-  (clojure-mode)
-  (defun clojure-mode-keys ()
-    "Modify keymaps used by `clojure-mode'."
-    (local-set-key (kbd "C-s-j") 'cider-jack-in)
-    (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
-    (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
-    (if (featurep 'evil-leader)
-        (evil-leader/set-key "e" 'cider-eval-last-sexp))
-    (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
-    (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
-    (local-set-key (kbd "s-n") 'cider-repl-set-ns)
-    (local-set-key (kbd "s-t") 'cider-test-run-tests)
-    (local-set-key (kbd "s-.") 'cider-jump-to-var)
-    (local-set-key (kbd "s-,") 'cider-jump-back))
-  (add-hook 'clojure-mode-hook 'clojure-mode-keys))
+ :defer t
+ :ensure t
+ :init
+ (clojure-mode)
+ (defun repl-mode-keys ()
+   "Modify keymaps used by `repl-mode'."
+   (local-set-key (kbd "C-s-j") 'cider-jack-in)
+   (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
+   (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
+   (if (featurep 'evil-leader)
+     (evil-leader/set-key "e" 'cider-eval-last-sexp))
+   (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
+   (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
+   (local-set-key (kbd "s-n") 'cider-repl-set-ns)
+   (local-set-key (kbd "s-t") 'cider-test-run-tests)
+   (local-set-key (kbd "s-.") 'cider-find-var)
+   (local-set-key (kbd "s-,") 'cider-jump-back)
+   (local-set-key (kbd "M-m") '(lambda ()
+                                       (interactive)
+                                       (end-of-buffer)
+                                       (message "(-main \"-a\")"))))
+ (add-hook 'repl-mode-hook 'repl-mode-keys))
 
 (use-package clj-refactor
   :defer t
@@ -211,9 +217,9 @@
   (add-hook 'clojure-mode-hook
             (lambda ()
               (clj-refactor-mode 1)
+              (yas-minor-mode 1) ; for adding require/use/import
               ;; eg. rename files with `C-c C-m rf`.
-              (cljr-add-keybindings-with-prefix "C-c C-m")
-              )))
+              (cljr-add-keybindings-with-prefix "C-c C-m"))))
 
 ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
 ;; (setq nrepl-hide-special-buffers t)
@@ -1495,10 +1501,10 @@ See: `xah-forward-block'"
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
  '(region ((t (:background "#006400")))))
 
-;; (load-theme 'zenburn t)
+(load-theme 'zenburn t)
 ;; (disable-theme 'zenburn)  (enable-theme 'zenburn)
 
-(load-theme 'solarized t)
+;; (load-theme 'solarized t)
 ;; (disable-theme 'solarized)  (enable-theme 'solarized)
 
 (setq debug-on-error nil)

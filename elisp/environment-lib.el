@@ -11,11 +11,11 @@
       (autoload 'jcl-mode "jcl" nil t))
 
     (use-package cobol-mode
-      :defer t
+      ;; :defer t
       :load-path "~/dev/dotfiles/jcl")
 
     (use-package rexx-mode
-      :defer t
+      ;; :defer t
       :load-path "~/.emacs.d/rexx-mode")
     :init
     (add-to-list 'auto-mode-alist '("\\.rexx$" . rexx-mode)))
@@ -92,13 +92,13 @@ buffer."
     (defun get-font-height () ; font size
       (interactive)
       (cond
-       ((> (string-to-number (getenv "isLinuxNew64")) 0) 116)
-       ((> (string-to-number (getenv "isLinuxFranzi")) 0) 130)
-       ((> (string-to-number (getenv "isLinuxMartinJV")) 0) 120)
-       ((> (string-to-number (getenv "isLinuxVB")) 0) 102)
+       ((getenv "isLinuxNew64") 116)
+       ((getenv "isLinuxFranzi") 130)
+       ((getenv "isLinuxMartinJV") 120)
+       ((s-ends-with? "VirtualBox" system-name) 102)
        (t 140)))
 
-    (if (> (string-to-number (getenv "isLinuxFranzi")) 0)
+    (if (getenv "isLinuxFranzi")
         (display-battery-mode 1))
 
     (defun find-file-emacs ()
