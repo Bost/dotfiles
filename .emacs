@@ -790,7 +790,8 @@
   :init
   (require 'transpose-frame) ; neccessary - otherwise: transpose-frame undefined
   ;; TODO check how to automate byte-compilation of transpose-frame
-  (bind-key "<f8>" 'transpose-frame))
+  (bind-key "<f8>" 'transpose-frame)
+  (bind-key "M-<f8>" 'flop-frame))
 
 (use-package time
   :ensure t
