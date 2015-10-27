@@ -191,7 +191,7 @@
  :ensure t
  :init
  (clojure-mode)
- (defun repl-mode-keys ()
+ (defun clojure-mode-keys ()
    "Modify keymaps used by `repl-mode'."
    (local-set-key (kbd "C-s-j") 'cider-jack-in)
    (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
@@ -208,7 +208,7 @@
                                        (interactive)
                                        (end-of-buffer)
                                        (message "(-main \"-a\")"))))
- (add-hook 'repl-mode-hook 'repl-mode-keys))
+ (add-hook 'clojure-mode-hook 'clojure-mode-keys))
 
 (use-package clj-refactor
   :defer t
