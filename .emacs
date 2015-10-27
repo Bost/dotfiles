@@ -1313,7 +1313,10 @@
   (bind-key "s-0" 'delete-window)
   (bind-key "s-1" 'delete-other-windows)
   (bind-key "s-2" 'split-window-below)
-  (bind-key "s-3" 'split-window-right)
+  (bind-key "s-3" '(lambda ()
+                     (interactive)
+                     (split-window-right)
+                     (other-window 1)))
 
   (bind-key "s-h" 'describe-key)
   (bind-key "s-k" 'close-buffer)
