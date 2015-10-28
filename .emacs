@@ -172,12 +172,25 @@
                    ;; 'cider-switch-to-repl-buffer
                    'cider-switch-to-last-clojure-buffer)
     (local-set-key (kbd "s-t") 'cider-test-run-tests)
-    (local-set-key (kbd "s-.") 'cider-jump-to-var)
+    (local-set-key (kbd "s-.") 'cider-find-var)
     (local-set-key (kbd "s-,") 'cider-jump-back)
     ;; <menu> key does not work
     ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
     )
   (add-hook 'cider-mode-hook 'cider-mode-keys)
+
+  (defun cider-repl-mode-keys ()
+    "Modify keymaps used by `cider-repl-mode'."
+    (local-set-key (kbd "s-z")
+                   ;; 'cider-switch-to-repl-buffer
+                   'cider-switch-to-last-clojure-buffer)
+    (local-set-key (kbd "s-t") 'cider-test-run-tests)
+    (local-set-key (kbd "s-.") 'cider-find-var)
+    (local-set-key (kbd "s-,") 'cider-jump-back)
+    ;; <menu> key does not work
+    ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
+    )
+  (add-hook 'cider-repl-mode-hook 'cider-repl-mode-keys)
 
   ;; (defun cider-interaction-mode-keys ()
   ;;   "Modify keymaps used by `cider-interaction-mode'."
@@ -523,7 +536,86 @@
         helm-ff-file-name-history-use-recentf t)
 
   (helm-mode 1)
-  (helm-autoresize-mode 1))
+  (helm-autoresize-mode 1)
+
+  ;; (helm :sources (helm-build-sync-source "test"
+  ;;                  :candidates '(foo foa fob bar baz)
+  ;;                  :fuzzy-match t)
+  ;;       :buffer "*helm test*")
+
+  ;; (defun helm-clojure-headlines ()
+  ;;   "Display headlines for the current Clojure file."
+  ;;   (interactive)
+  ;;   (helm-mode t)
+  ;;   (helm :sources '(((name . "Clojure Headlines")
+  ;;                     (volatile)
+  ;;                     (headline "^[;(]")))))
+
+  ;; (defun helm-clojure-headlines ()
+  ;;   "Display headlines for the current Clojure file."
+  ;;   (interactive)
+  ;;   (setq helm-current-buffer (current-buffer)) ;; Fixes bug where the current buffer sometimes isn't used
+  ;;   (jit-lock-fontify-now) ;; https://groups.google.com/forum/#!topic/emacs-helm/YwqsyRRHjY4
+  ;;   (helm :sources (helm-build-in-buffer-source "Clojure Headlines"
+  ;;                    :data (with-helm-current-buffer
+  ;;                            (goto-char (point-min))
+  ;;                            (cl-loop while (re-search-forward "^(\\|testing\\|^;.*[a-zA-Z]+" nil t)
+  ;;                                     for line = (buffer-substring (point-at-bol) (point-at-eol))
+  ;;                                     for pos = (line-number-at-pos)
+  ;;                                     collect (propertize line 'helm-realvalue pos)))
+  ;;                    :get-line 'buffer-substring
+  ;;                    :action (lambda (c) (helm-goto-line c)))
+  ;;         :buffer "helm-clojure-headlines"))
+
+  ;; see https://gist.github.com/tjg/4903f00a62e02bbe6217
+  (defun helm-headlines (headline buffer-name good-regex exception-regex)
+    "Display headlines for the current file.
+   Displays lines where good-regex matches, except for those
+   which also match exception-regex."
+    ;; Fixes bug where the current buffer sometimes isn't used
+    (setq helm-current-buffer (current-buffer))
+
+    ;; https://groups.google.com/forum/#!topic/emacs-helm/YwqsyRRHjY4
+    (jit-lock-fontify-now)
+    (let* ((line-count 0)
+           (data (with-helm-current-buffer
+                   (goto-char (point-min))
+                   (cl-loop while (re-search-forward good-regex nil t)
+                            for line = (buffer-substring (point-at-bol)
+                                                         (point-at-eol))
+                            for pos = (line-number-at-pos)
+                            unless (and exception-regex
+                                        (string-match-p exception-regex line))
+                            collect (propertize line 'helm-realvalue pos)
+                            and do (incf line-count))))
+           (headline (if (< helm-candidate-number-limit line-count)
+                         (format "%s (initially showing only %s lines; %s is %s)"
+                                 headline
+                                 line-count
+                                 'helm-candidate-number-limit
+                                 helm-candidate-number-limit)
+                       headline)))
+      (helm :sources (helm-build-in-buffer-source headline
+                       :data data
+                       :get-line 'buffer-substring
+                       :action (lambda (c) (helm-goto-line c)))
+            :buffer buffer-name)))
+
+  (defun helm-clojure-headlines ()
+    "Display headlines for the current Clojure file."
+    (interactive)
+    (helm-headlines "Clojure headlines"
+                    "helm-clojure-headlines"
+                    "^(\\|^;* [a-zA-Z]+"
+                    nil))
+
+  (defun helm-python-headlines ()
+    "Display headlines for the current Python file."
+    (interactive)
+    (helm-headlines "Python headlines"
+                    "helm-python-headlines"
+                    "\\(^[[:space:]]*\\(def\\|class\\)\\)\\|^#"
+                    nil)))
 
 (use-package drag-stuff
   :defer t
@@ -1362,7 +1454,10 @@ want to use in the modeline *in lieu of* the original.")
 
   (bind-key "s-0" 'delete-window)
   (bind-key "s-1" 'delete-other-windows)
-  (bind-key "s-2" 'split-window-below)
+  (bind-key "s-2" '(lambda ()
+                     (interactive)
+                     (split-window-below)
+                     (other-window 1)))
   (bind-key "s-3" '(lambda ()
                      (interactive)
                      (split-window-right)
