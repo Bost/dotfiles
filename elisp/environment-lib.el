@@ -92,9 +92,10 @@ buffer."
     (defun get-font-height () ; font size
       (interactive)
       (cond
-       ((getenv "isLinuxNew64") 116)
-       ((getenv "isLinuxFranzi") 130)
-       ((getenv "isLinuxMartinJV") 120)
+       ;; TODO fix get-font-height() for Franzi, MartinJV
+       ((s-ends-with? "new-64" system-name) 116)
+       ;; (> (getenv "isLinuxFranzi") 130)
+       ;; (> (getenv "isLinuxMartinJV") 120)
        ((s-ends-with? "VirtualBox" system-name) 102)
        (t 140)))
 
