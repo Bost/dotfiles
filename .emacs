@@ -608,6 +608,7 @@
                     "helm-clojure-headlines"
                     "^(\\|^;* [a-zA-Z]+"
                     nil))
+  (bind-key "s-h" 'helm-clojure-headlines)
 
   (defun helm-python-headlines ()
     "Display headlines for the current Python file."
@@ -1463,7 +1464,6 @@ want to use in the modeline *in lieu of* the original.")
                      (split-window-right)
                      (other-window 1)))
 
-  (bind-key "s-h" 'describe-key)
   (bind-key "s-k" 'close-buffer)
   (bind-key "C-s-k" 'delete-file-and-close-its-buffer)
 
