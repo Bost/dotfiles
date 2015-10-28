@@ -1616,24 +1616,18 @@ See: `xah-forward-block'"
  ;; If there is more than one, they won't work right.
  '(cider-cljs-repl "(cemerick.piggieback/cljs-repl (cljs.repl.node/repl-env))")
  '(csv-separators (quote (";")))
-
-
- ;; TODO use git submodules for themes
- ;; activate following when using (load-theme 'solarized t)
  '(custom-safe-themes
    (quote
     ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
- '(frame-background-mode (quote dark))
-
-
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(evil-search-highlight-persist t t)
+ '(frame-background-mode (quote dark))
  '(git-commit-summary-max-length 70)
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
- '(paradox-github-token t t)
+ '(paradox-github-token t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar))
