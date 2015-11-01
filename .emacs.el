@@ -100,104 +100,7 @@
   :defer t
   :ensure t)
 
-(use-package cider
-  :defer t
-  :ensure t
-  :init
-
-  (use-package kibit-helper
-    ;;  kibit - lein plugin for detecting / improving non-idiomatic clj code
-    :defer t
-    :ensure t
-    )
-  (use-package cider-eval-sexp-fu
-    :defer t
-    :ensure t)
-
-  (use-package ac-cider
-    :ensure t
-    :defer t)
-
-  (use-package rainbow-delimiters
-    :ensure t
-    :defer t)
-
-  (setq nrepl-log-messages t
-        nrepl-hide-special-buffers t
-        cider-prefer-local-resources t
-        ;; cider-auto-select-error-buffer nil
-        ;; cider-stacktrace-default-filters '(tooling dup)
-        nrepl-buffer-name-separator "-"
-        nrepl-buffer-name-show-port t
-        cider-repl-display-in-current-window t
-        cider-repl-result-prefix ";; => "
-        ;; cider-interactive-eval-result-prefix ";; => "
-        ;; cider-repl-use-clojure-font-lock t
-        ;; cider-known-endpoints
-        ;;       '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
-        ;; cider-repl-history-file "path/to/file"
-        )
-  (add-hook 'cider-mode-hook #'eldoc-mode)
-  (add-hook 'cider-repl-mode-hook #'subword-mode)
-  ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
-  ;; (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
-  (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
-
-  (defun cider-save-and-load-current-buffer ()
-    (interactive)
-    (when (buffer-modified-p)
-      (save-buffer))
-    (cider-load-file (buffer-file-name))
-    ;; (cider-switch-to-relevant-repl-buffer nil)
-    )
-
-  ;; (defun cider-eval-last-expression-in-repl ()
-  ;;   "This doesn't work"
-  ;;   (interactive)
-  ;;   (evil-visual-char)
-  ;;   (evil-jump-item)
-  ;;   ;; (clipboard-kill-ring-save)
-  ;;   ;; (clipboard-kill-region)
-  ;;   ;; (cider-switch-to-relevant-repl-buffer)
-  ;;   ;; (clipboard-yank)
-
-  ;;   ;; (global-set-key [(shift delete)] 'clipboard-kill-region)
-  ;;   ;; (global-set-key [(control insert)] 'clipboard-kill-ring-save)
-  ;;   ;; (global-set-key [(shift insert)] 'clipboard-yank)
-  ;;   )
-
-  (defun cider-mode-keys ()
-    "Modify keymaps used by `cider-mode'."
-    (local-set-key (kbd "s-z")
-                   ;; 'cider-switch-to-repl-buffer
-                   'cider-switch-to-last-clojure-buffer)
-    (local-set-key (kbd "s-t") 'cider-test-run-tests)
-    (local-set-key (kbd "s-.") 'cider-find-var)
-    (local-set-key (kbd "s-,") 'cider-jump-back)
-    ;; <menu> key does not work
-    ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
-    )
-  (add-hook 'cider-mode-hook 'cider-mode-keys)
-
-  (defun cider-repl-mode-keys ()
-    "Modify keymaps used by `cider-repl-mode'."
-    (local-set-key (kbd "s-z")
-                   ;; 'cider-switch-to-repl-buffer
-                   'cider-switch-to-last-clojure-buffer)
-    (local-set-key (kbd "s-t") 'cider-test-run-tests)
-    (local-set-key (kbd "s-.") 'cider-find-var)
-    (local-set-key (kbd "s-,") 'cider-jump-back)
-    ;; <menu> key does not work
-    ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
-    )
-  (add-hook 'cider-repl-mode-hook 'cider-repl-mode-keys)
-
-  ;; (defun cider-interaction-mode-keys ()
-  ;;   "Modify keymaps used by `cider-interaction-mode'."
-  ;;   ;; (local-set-key (kbd "s-o") 'cider-jump)
-  ;;   )
-  ;; (add-hook 'cider-interaction-mode-hook 'cider-interaction-mode-keys)
-  )
+(use-package cider-startup)
 
 (use-package clojure-mode
  :defer t
@@ -402,8 +305,7 @@
 ;;  :ensure t
 ;;  :defer t)
 
-(use-package helm-init)
-(load-library "helm-init")
+(use-package helm-startup)
 
 (use-package drag-stuff
   :defer t
@@ -474,7 +376,6 @@
               (kill-buffer buffer)))
           (buffer-list))))
 
-
 (use-package winner ; layout management
   :defer t
   :ensure t
@@ -492,176 +393,8 @@
         sml/projectile-replacement-format "%s/")
   (add-hook 'after-init-hook 'sml/setup))
 
-(use-package evil
-  :ensure t
-  :init
-  (evil-mode 1)
+(use-package evil-startup)
 
-  (bind-key "s-SPC" 'evil-search-highlight-persist-remove-all)
-  (bind-key "C-s-t" 'evil-mode)
-  (bind-key "s-;" 'evilnc-comment-or-uncomment-lines)
-  (bind-key "s-z" 'evil-ace-jump-char-mode)
-
-  ;; require for evil folding
-  (add-hook 'prog-mode-hook 'hs-minor-mode)
-
-  (use-package evil-visual-mark-mode ; TODO see helm-bookmarks
-    :ensure t
-    :defer t
-    :init
-    (evil-visual-mark-mode))
-
-  ;; (interactive "r")
-  ;; TODO backspace smartparens
-  ;; (define-key evil-insert-state-map "<backspace>" 'evil-delete)
-  ;; (define-key evil-insert-state-map "<delete>" 'evil-delete)
-  ;; (message "evil-mode 1")
-
-  ;; f/F/t/T; emulates vim-sneak, vim-seek for evil-mode by default
-  ;; bound to s/S in normal mode and z/Z/x/X in visual or operator mode.
-  ;; (use-package evil-snipe
-  ;;   :config
-  ;;   (progn
-  ;;     (global-evil-snipe-mode 1)))
-
-  ;; text exchange operator
-  ;;(use-package evil-exchange) ; not available in melpa-stable
-  ;;(setq evil-exchange-key (kbd "zx"))
-  ;;(evil-exchange-install)
-
-  (use-package evil-nerd-commenter
-    :ensure t
-    :init
-    (bind-key "C-;" 'evilnc-comment-or-uncomment-lines)
-    (bind-key "M-;" 'evilnc-comment-or-uncomment-lines))
-
-  (use-package evil-visualstar
-    :ensure t
-    :defer t)
-
-  ;; (use-package evil-jumper) ;; C-i / C-o
-
-  ;; Set cursor colors depending on mode
-  (when (display-graphic-p)
-    (setq evil-emacs-state-cursor '("red" box)
-          evil-normal-state-cursor '("green" box)
-          evil-visual-state-cursor '("orange" box)
-          evil-insert-state-cursor '("red" bar)
-          evil-replace-state-cursor '("red" bar)
-          evil-operator-state-cursor '("red" hollow)))
-
-  (use-package evil-args
-    :ensure t
-    :init
-
-    (use-package evil-surround
-      :ensure t
-      :init
-      (defun visual-double-quote-string (&optional arg)
-        "Select string inside double quote chars"
-        (evil-normal-state)
-        (interactive "p")
-        (kmacro-exec-ring-item (quote ("vi\"" 0 "%d")) arg))
-
-      (bind-key "s-\"" 'visual-double-quote-string)
-      (bind-key "M-\"" 'visual-double-quote-string)
-      (global-evil-surround-mode 1))
-
-    ;; bind evil-args text objects
-    (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-    (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
-
-    ;; bind evil-forward/backward-args
-    (define-key evil-normal-state-map "L" 'evil-forward-arg)
-    (define-key evil-normal-state-map "H" 'evil-backward-arg)
-    (define-key evil-motion-state-map "L" 'evil-forward-arg)
-    (define-key evil-motion-state-map "H" 'evil-backward-arg)
-
-    ;; bind evil-jump-out-args
-    (define-key evil-normal-state-map "K" 'evil-jump-out-args))
-
-  (use-package evil-numbers
-    :defer t
-    :ensure t
-    :init
-    (bind-key "C-c +" 'evil-numbers/inc-at-pt)
-    (bind-key "C-c -" 'evil-numbers/dec-at-pt)
-    (bind-key "s-+" 'evil-numbers/inc-at-pt)
-    (bind-key "s--" 'evil-numbers/dec-at-pt)
-    (bind-key (kbd "<C-kp-add>")       'evil-numbers/inc-at-pt)
-    (bind-key (kbd "<C-kp-subtract>")  'evil-numbers/dec-at-pt)
-    (bind-key (kbd "<s-kp-add>")       'evil-numbers/inc-at-pt)
-    (bind-key (kbd "<s-kp-subtract>")  'evil-numbers/dec-at-pt))
-
-  (use-package evil-smartparens
-    :defer t
-    :ensure t
-    :init
-    ;; evil-smartparens everywhere
-    ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-    ;; evil-smartparens only in clojure
-    (add-hook 'clojure-mode-hook #'evil-smartparens-mode)
-    ;; (sp-pair "\{" "\}")
-    )
-
-  ;; enable global-evil-leader-mode before evil-mode, otherwise
-  ;; evil-leader won’t be enabled in the initial buffers
-  ;; (*scratch*, *Messages*, ...)
-  (use-package evil-leader
-    :ensure t
-    :defer t
-    :init
-    (global-evil-leader-mode)
-    (setq evil-leader/in-all-states t)
-
-    (defun delete-rest-of-cheatsheet-entry (&optional arg)
-      "kbd macro - starts in evil-normal-mode;
-      delete up to the ' (single quote) character"
-      (interactive "p")
-      (kmacro-exec-ring-item (quote ([118 116 39 120 105] 0 "%d"))
-                             arg))
-
-    (evil-leader/set-key
-      "dd" 'kill-whole-line
-      ;; wr gives: (error "Key sequence w r starts with non-prefix key w")
-      ;; "wr" 'toggle-truncate-lines
-      "q" 'other-window
-      "dr" 'delete-rest-of-cheatsheet-entry
-      "SPC" 'evil-search-highlight-persist-remove-all)
-
-    (if (featurep 'helm)
-        (evil-leader/set-key
-          ;; x gives: (error "Key sequence x x starts with non-prefix key x")
-          ;; "x" 'helm-M-x
-          ;; this doesn't help:
-          ;;   (eval-after-load 'helm "x" 'helm-M-x)
-          ;; although manual eval "after" helps
-          "G" 'helm-google-suggest ; google auto-complete
-          "g" 'helm-google         ; alternative to google-this region
-          "f" 'helm-find-files
-          "a" 'helm-buffers-list)
-      (evil-leader/set-key
-        ;; "x" 'execute-extended-command
-        "f" 'find-file
-        "a" 'switch-to-buffer)))
-
-  ;; from evil-commands
-  (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
-
-  (use-package evil-search-highlight-persist
-    :ensure t
-    :init
-    (global-evil-search-highlight-persist t))
-
-  ;; mode-line (pink - bottom left): 'current match/total matches'
-  (use-package anzu
-    :defer t
-    :ensure t
-    :diminish anzu-mode
-    :init
-    (global-anzu-mode 1)
-    (use-package evil-anzu
-      :ensure t)))
 
 (use-package transpose-frame ; see package buffer-move
   :load-path "~/dev/dotfiles/elisp/transpose-frame"
