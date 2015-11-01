@@ -80,10 +80,6 @@ buffer."
       (when (string= system-name "VirtualBox")
         (display-battery-mode 1))
 
-      (defun find-file-emacs ()
-        (interactive)
-        (find-file "~/.emacs"))
-
       (load "~/bin/dbases.el"))
   (progn
     ;; This works only when bash environment initialised.
@@ -100,8 +96,4 @@ buffer."
        (t 140)))
 
     (if (getenv "isLinuxFranzi")
-        (display-battery-mode 1))
-
-    (defun find-file-emacs ()
-      (interactive)
-      (find-file "~/dev/dotfiles/.emacs"))))
+        (display-battery-mode 1))))
