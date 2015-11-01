@@ -41,3 +41,6 @@ fi
 #set completion-ignore-case on
 export PATH=~/.local/bin:${PATH}
 unset JAVA_TOOL_OPTIONS
+
+export NVM_DIR="/home/bost/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
