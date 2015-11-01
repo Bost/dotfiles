@@ -95,5 +95,5 @@ buffer."
        ((s-ends-with? "VirtualBox" system-name) 102)
        (t 140)))
 
-    (if (getenv "isLinuxFranzi")
+    (if (s-ends-with? "franzi" system-name)
         (display-battery-mode 1))))
