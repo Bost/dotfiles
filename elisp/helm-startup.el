@@ -227,8 +227,7 @@
         (interactive)
         (helm-headlines "Clojure headlines"
                         "helm-clojure-headlines"
-                        ;; "^(\\|^;* [a-zA-Z]+"
-                        "^(defn"
+                        "^(def"
                         nil))
       ;; TODO see helm-occur
       (bind-key "s-h" 'helm-clojure-headlines clojure-mode-map)))
