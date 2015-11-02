@@ -397,7 +397,6 @@
 
 
 (use-package transpose-frame ; see package buffer-move
-  :load-path "~/dev/dotfiles/elisp/transpose-frame"
   :defer t
   :ensure t
   :init

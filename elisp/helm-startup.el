@@ -1,4 +1,4 @@
-;;; helm-startup.el --- startup file for helm. -*- lexical-binding: t -*- 
+;;; helm-startup.el --- startup file for helm. -*- lexical-binding: t -*-
 ;;; Code:
 
 ;;; Enable Modes (This is loading nearly everything).
@@ -212,24 +212,44 @@
                        :data data
                        :get-line 'buffer-substring
                        :action (lambda (c) (helm-goto-line c)))
-            :buffer buffer-name)))
+            :buffer "*helm M-x*"
+            ;; buffer-name
+            ;; "*helm mini*"
 
-  (defun helm-clojure-headlines ()
-    "Display headlines for the current Clojure file."
-    (interactive)
-    (helm-headlines "Clojure headlines"
-                    "helm-clojure-headlines"
-                    "^(\\|^;* [a-zA-Z]+"
-                    nil))
-  (bind-key "s-h" 'helm-clojure-headlines)
+            ;; :ff-transformer-show-only-basename nil
+            :truncate-lines helm-buffers-truncate-lines)))
 
-  (defun helm-python-headlines ()
-    "Display headlines for the current Python file."
-    (interactive)
-    (helm-headlines "Python headlines"
-                    "helm-python-headlines"
-                    "\\(^[[:space:]]*\\(def\\|class\\)\\)\\|^#"
-                    nil))
-)
+  ;; TODO consider using :if from use-package
+  (when (and (featurep 'helm) (featurep 'clojure-mode))
+    (progn
+      (defun helm-clojure-headlines ()
+        "Display headlines for the current Clojure file."
+        (interactive)
+        (helm-headlines "Clojure headlines"
+                        "helm-clojure-headlines"
+                        ;; "^(\\|^;* [a-zA-Z]+"
+                        "^(defn"
+                        nil))
+      ;; TODO see helm-occur
+      (bind-key "s-h" 'helm-clojure-headlines clojure-mode-map)))
+
+  (progn
+    (defun helm-emacs-lisp-headlines ()
+      "Display headlines for the current Emacs Lisp file."
+      (interactive)
+      (helm-headlines "Emacs Lisp headlines"
+                      "helm-emacs-lisp-headlines"
+                      "^(\\|^;* [a-zA-Z]+"
+                      nil))
+    ;; TODO see helm-occur
+    (bind-key "s-h" 'helm-emacs-lisp-headlines emacs-lisp-mode-map))
+
+    (defun helm-python-headlines ()
+      "Display headlines for the current Python file."
+      (interactive)
+      (helm-headlines "Python headlines"
+                      "helm-python-headlines"
+                      "\\(^[[:space:]]*\\(def\\|class\\)\\)\\|^#"
+                      nil)))
 
 (provide 'helm-startup)
