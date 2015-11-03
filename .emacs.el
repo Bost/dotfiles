@@ -432,7 +432,7 @@
     :defer t
     :ensure t)
 
-  (bind-key [f9]  'paradox-list-packages) ; TODO auto enable/disable evil-mode
+  ;; (bind-key [f9]  'paradox-list-packages) ; TODO auto enable/disable evil-mode
   (bind-key (kbd "<s-f9>") 'paradox-upgrade-packages)
   (setq paradox-github-token (getenv "GITHUB_TOKEN")
         paradox-automatically-star t))

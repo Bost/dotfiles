@@ -78,6 +78,7 @@
   (bind-key "C-x b" 'helm-mini)
   (bind-key "s-b" 'helm-mini)
   (bind-key "M-y" 'helm-show-kill-ring)
+  (bind-key [f9]  'helm-list-elisp-packages-no-fetch)
 
   (use-package helm-flycheck
     :defer t
