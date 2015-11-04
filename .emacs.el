@@ -499,13 +499,12 @@
 (use-package ace-jump-mode
   :ensure t
   :defer t
+  :bind (("<f2>" . ace-jump-mode)
+         ("s-j"  . ace-jump-mode)
+         ;; ("s-a" . ace-jump-buffer) ; see helm-buffers-list
+         ("<C-f2>" . ace-jump-line-mode))
   :init
   (autoload 'ace-jump-mode "ace-jump-mode" nil t)
-
-  (bind-key "<f2>" 'ace-jump-mode)
-  (bind-key "s-j" 'ace-jump-mode)
-  ;; (bind-key "s-a" 'ace-jump-buffer) ; see helm-buffers-list
-  (bind-key "<C-f2>" 'ace-jump-line-mode)
 
   (when (and (featurep 'evil) (featurep 'evil-leader))
     (evil-leader/set-key
