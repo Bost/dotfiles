@@ -14,6 +14,12 @@
 
 ;; set bash vars http_proxy/https_proxy/ftp_proxy so
 ;; url-proxy-services won't be needed
+;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII 
+;; TODO (if (eq system-type 'gnu/linux))
+;; TODO do macro expansion for use-package
+;; TODO :bind (:map ...-mode-map); :bind is (bin-key)
+;; TODO M-x describe-personal-keybindings
+;; TODO (or (use-package foo) (use-package bar))
 (if (string= system-type "windows-nt")
     (setq url-proxy-services '(("no_proxy" . "work\\.com")
                                ("http" . (getenv "proxy"))
