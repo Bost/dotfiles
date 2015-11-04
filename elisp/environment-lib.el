@@ -1,5 +1,22 @@
 (require 's)
 
+(progn
+  ;; This works only when bash environment initialised.
+  ;; I.e. invoke emacs from CLI or modify emacs24 xfce launcher:
+  ;; bash -c -i ~/dev/emacs/src/emacs
+  (defun get-font-height () ; font size
+    (interactive)
+    (cond
+     ;; TODO fix get-font-height() for MartinJV
+     ((s-ends-with? "new-64" system-name) 116)
+     ((s-ends-with? "franzi" system-name) 130)
+     ;; (> (getenv "isLinuxMartinJV") 120)
+     ((s-ends-with? "VirtualBox" system-name) 102)
+     (t 140)))
+
+  (if (s-ends-with? "franzi" system-name)
+      (display-battery-mode 1)))
+
 (when (s-ends-with? "VirtualBox" system-name)
   (progn
     (use-package jcl-mode
@@ -55,45 +72,3 @@ buffer."
                           (point-max)))
             (when (eq (car prop) 'image)
               (add-text-properties left pos (list from nil to prop) object))))))))
-
-(if (string= system-type "windows-nt")
-    (progn
-      ;; setting the PC keyboard's various keys to
-      ;; Super or Hyper, for emacs running on Windows.
-      ;; run Local Group Policy Editor (gpedit.msc) -> User Configuration
-      ;; -> Administrative Templates -> Windows Components -> Windows Explorer
-      ;; -> Turn off Windows+X hotkeys, set it to 'Not configured' and log off
-      (setq w32-pass-lwindow-to-system nil
-            w32-pass-rwindow-to-system nil
-            w32-pass-apps-to-system nil
-            w32-lwindow-modifier 'super ; Left Windows key
-            w32-rwindow-modifier 'super ; Right Windows key
-            w32-apps-modifier 'hyper) ; Menu key
-
-      (defun get-font-height () ;; font size
-        (interactive)
-        (cond
-         ((s-ends-with? "VirtualBox" system-name) 102)
-         ((string= system-type "windows-nt") 102)
-         (t 102)))
-
-      (when (string= system-name "VirtualBox")
-        (display-battery-mode 1))
-
-      (load "~/bin/dbases.el"))
-  (progn
-    ;; This works only when bash environment initialised.
-    ;; I.e. invoke emacs from CLI or modify emacs24 xfce launcher:
-    ;; bash -c -i ~/dev/emacs/src/emacs
-    (defun get-font-height () ; font size
-      (interactive)
-      (cond
-       ;; TODO fix get-font-height() for MartinJV
-       ((s-ends-with? "new-64" system-name) 116)
-       ((s-ends-with? "franzi" system-name) 130)
-       ;; (> (getenv "isLinuxMartinJV") 120)
-       ((s-ends-with? "VirtualBox" system-name) 102)
-       (t 140)))
-
-    (if (s-ends-with? "franzi" system-name)
-        (display-battery-mode 1))))
