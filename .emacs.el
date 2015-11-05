@@ -97,7 +97,8 @@
 
 ;; slamhound: rip and reconstruct clojure namespace
 (use-package slamhound :defer t :ensure t)
-(use-package cider-startup :defer t
+;; TODO cider-startup ":defer t" does not work
+(use-package cider-startup
   :load-path "~/dev/dotfiles/elisp")
 
 (use-package clj-refactor :defer t :ensure t
