@@ -1,27 +1,43 @@
 ;;; cider-startup.el --- startup file for cider. -*- lexical-binding: t -*- 
 ;;; Code:
 
-(use-package cider
-  :defer t
-  :ensure t
+(use-package cider :defer t :ensure t
+  :bind (
+         ("s-z"   . cider-switch-to-repl-buffer)
+         ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
+         ("s-t"   . cider-test-run-tests)
+         ("s-."   . cider-find-var)
+         ("s-,"   . cider-jump-back)
+         ("C-s-j" . cider-jack-in)
+         ("s-r"   . cider-eval-last-expression-in-repl)
+         ("s-e"   . cider-eval-last-sexp)
+         ("s-l"   . cider-save-and-load-current-buffer)
+         ("s-n"   . cider-repl-set-ns)
+         ("s-t"   . cider-test-run-tests)
+         ("s-."   . cider-find-var)
+         ("s-,"   . cider-jump-back)
+         ("M-m"   . main-all))
   :init
+  (defun main-all ()
+    (interactive)
+    (end-of-buffer)
+    (message "(-main \"-a\")"))
 
-  (use-package kibit-helper
-    ;;  kibit - lein plugin for detecting / improving non-idiomatic clj code
-    :defer t
-    :ensure t
-    )
-  (use-package cider-eval-sexp-fu
-    :defer t
-    :ensure t)
+  ;; cider depends on clojure mode
+  (use-package clojure-mode :defer t :ensure t
+    :init
+    (clojure-mode)
+    (defun clojure-mode-keys ()
+      "Modify keymaps used by `repl-mode'."
+      (if (featurep 'evil-leader)
+          (evil-leader/set-key "e" 'cider-eval-last-sexp)))
+    (add-hook 'clojure-mode-hook 'clojure-mode-keys))
 
-  (use-package ac-cider
-    :ensure t
-    :defer t)
-
-  (use-package rainbow-delimiters
-    :ensure t
-    :defer t)
+  ;;  kibit - lein plugin for detecting / improving non-idiomatic clj code
+  (use-package kibit-helper :defer t :ensure t)
+  (use-package cider-eval-sexp-fu :defer t :ensure t)
+  (use-package ac-cider :ensure t :defer t)
+  (use-package rainbow-delimiters :ensure t :defer t)
 
   (setq nrepl-log-messages t
         nrepl-hide-special-buffers t
@@ -67,31 +83,31 @@
   ;;   ;; (global-set-key [(shift insert)] 'clipboard-yank)
   ;;   )
 
-  (defun cider-mode-keys ()
-    "Modify keymaps used by `cider-mode'."
-    (local-set-key (kbd "s-z")
-                   ;; 'cider-switch-to-repl-buffer
-                   'cider-switch-to-last-clojure-buffer)
-    (local-set-key (kbd "s-t") 'cider-test-run-tests)
-    (local-set-key (kbd "s-.") 'cider-find-var)
-    (local-set-key (kbd "s-,") 'cider-jump-back)
-    ;; <menu> key does not work
-    ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
-    )
-  (add-hook 'cider-mode-hook 'cider-mode-keys)
+  ;; (defun cider-mode-keys ()
+  ;;   "Modify keymaps used by `cider-mode'."
+  ;;   (local-set-key (kbd "s-z")
+  ;;                  ;; 'cider-switch-to-repl-buffer
+  ;;                  'cider-switch-to-last-clojure-buffer)
+  ;;   (local-set-key (kbd "s-t") 'cider-test-run-tests)
+  ;;   (local-set-key (kbd "s-.") 'cider-find-var)
+  ;;   (local-set-key (kbd "s-,") 'cider-jump-back)
+  ;;   ;; <menu> key does not work
+  ;;   ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
+  ;;   )
+  ;; (add-hook 'cider-mode-hook 'cider-mode-keys)
 
-  (defun cider-repl-mode-keys ()
-    "Modify keymaps used by `cider-repl-mode'."
-    (local-set-key (kbd "s-z")
-                   ;; 'cider-switch-to-repl-buffer
-                   'cider-switch-to-last-clojure-buffer)
-    (local-set-key (kbd "s-t") 'cider-test-run-tests)
-    (local-set-key (kbd "s-.") 'cider-find-var)
-    (local-set-key (kbd "s-,") 'cider-jump-back)
-    ;; <menu> key does not work
-    ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
-    )
-  (add-hook 'cider-repl-mode-hook 'cider-repl-mode-keys)
+  ;; (defun cider-repl-mode-keys ()
+  ;;   "Modify keymaps used by `cider-repl-mode'."
+  ;;   (local-set-key (kbd "s-z")
+  ;;                  ;; 'cider-switch-to-repl-buffer
+  ;;                  'cider-switch-to-last-clojure-buffer)
+  ;;   (local-set-key (kbd "s-t") 'cider-test-run-tests)
+  ;;   (local-set-key (kbd "s-.") 'cider-find-var)
+  ;;   (local-set-key (kbd "s-,") 'cider-jump-back)
+  ;;   ;; <menu> key does not work
+  ;;   ;; (local-set-key (kbd "<menu>-c") 'cider-repl-clear-buffer)
+  ;;   )
+  ;; (add-hook 'cider-repl-mode-hook 'cider-repl-mode-keys)
 
   ;; (defun cider-interaction-mode-keys ()
   ;;   "Modify keymaps used by `cider-interaction-mode'."

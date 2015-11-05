@@ -1,12 +1,18 @@
-(setq debug-on-error t) ;; turned off at the end
+;; (setq debug-on-error t) ;; turned off at the end
 ;; this is for the emacs code browser
-(setq stack-trace-on-error t)
+;; (setq stack-trace-on-error t)
 
 (load "server")
 (unless (server-running-p)
   (server-start))
 
-(add-to-list 'load-path "~/dev/dotfiles/elisp/")
+;; (defconst emacs-start-time (current-time))
+;; (unless noninteractive
+;;   (message "Loading %s..." load-file-name))
+
+;; max nr of lines to keep in the message log buffer
+(setq message-log-max 16384)
+
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-color-theme-solarized/")
 
@@ -14,7 +20,7 @@
 
 ;; set bash vars http_proxy/https_proxy/ftp_proxy so
 ;; url-proxy-services won't be needed
-;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII 
+;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII
 ;; TODO (if (eq system-type 'gnu/linux))
 ;; TODO do macro expansion for use-package
 ;; TODO :bind (:map ...-mode-map); :bind is (bin-key)
@@ -54,28 +60,16 @@
 (require 'diminish)
 (require 'bind-key)
 
-(use-package auto-package-update
-  ;; TODO auto-package-update, use-package :ensure dependend on inet availability
-  ;; see :disabled t and :if condition
-  :ensure t)
+;; TODO auto-package-update, use-package :ensure dependend on inet availability
+;; see :disabled t and :if condition
+(use-package auto-package-update :ensure t)
 
-(use-package paredit
-  :defer t
-  :ensure t
+(use-package paredit :defer t :ensure t
+  :bind (("s-<left>"  . paredit-backward-slurp-sexp)
+         ("s-<right>" . paredit-backward-barf-sexp))
   :init
-  (bind-key "s-<left>" 'paredit-backward-slurp-sexp)
-  (bind-key "s-<right>" 'paredit-backward-barf-sexp)
-  (use-package paredit-menu ; works only with enabled gui elements: see s-f10
-    :ensure t))
-
-(use-package ob-clojure ; org-babel-clojure
-  :disabled t
-  :defer t
-  :ensure t
-  ;; Attention defaults are:
-  ;;     C-c C-l: (cider-load-file FILENAME)
-  ;;     C-c C-k: (cider-load-current-buffer)
-  )
+    ;; works only with enabled gui elements: see s-f10
+  (use-package paredit-menu :ensure t))
 
 ;;(defun skewer-mode-keys ()
 ;;  "Modify keymaps used by `skewer-mode'."
@@ -101,40 +95,12 @@
 ;;      ;; "lein trampoline run -m clojure.main repl.clj"
 ;;      )))
 
-(use-package slamhound
-  ;; rip and reconstruct clojure namespace
-  :defer t
-  :ensure t)
+;; slamhound: rip and reconstruct clojure namespace
+(use-package slamhound :defer t :ensure t)
+(use-package cider-startup :defer t
+  :load-path "~/dev/dotfiles/elisp")
 
-(use-package cider-startup)
-
-(use-package clojure-mode
- :defer t
- :ensure t
- :init
- (clojure-mode)
- (defun clojure-mode-keys ()
-   "Modify keymaps used by `repl-mode'."
-   (local-set-key (kbd "C-s-j") 'cider-jack-in)
-   (local-set-key (kbd "s-r") 'cider-eval-last-expression-in-repl)
-   (local-set-key (kbd "s-e") 'cider-eval-last-sexp)
-   (if (featurep 'evil-leader)
-     (evil-leader/set-key "e" 'cider-eval-last-sexp))
-   (local-set-key (kbd "s-z") 'cider-switch-to-repl-buffer)
-   (local-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
-   (local-set-key (kbd "s-n") 'cider-repl-set-ns)
-   (local-set-key (kbd "s-t") 'cider-test-run-tests)
-   (local-set-key (kbd "s-.") 'cider-find-var)
-   (local-set-key (kbd "s-,") 'cider-jump-back)
-   (local-set-key (kbd "M-m") '(lambda ()
-                                       (interactive)
-                                       (end-of-buffer)
-                                       (message "(-main \"-a\")"))))
- (add-hook 'clojure-mode-hook 'clojure-mode-keys))
-
-(use-package clj-refactor
-  :defer t
-  :ensure t
+(use-package clj-refactor :defer t :ensure t
   :init
   (add-hook 'clojure-mode-hook
             (lambda ()
@@ -146,18 +112,15 @@
 ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
 ;; (setq nrepl-hide-special-buffers t)
 
-(use-package window-purpose
-  :defer t
-  :ensure t
+(use-package window-purpose :defer t :ensure t
+  :bind (;; C-c , d: window-purpose
+         ("C-s-d" . purpose-toggle-window-purpose-dedicated)
+         ;; C-c , D: window-buffer
+         ("C-s-D" . purpose-toggle-window-buffer-dedicated))
   :init
-  ;; C-c , d: window-purpose
-  (bind-key "C-s-d" 'purpose-toggle-window-purpose-dedicated)
-  ;; C-c , D: window-buffer
-  (bind-key "C-s-D" 'purpose-toggle-window-buffer-dedicated)
   (purpose-mode))
 
-;; (use-package auto-complete-config
-;;   :disabled t
+;; (use-package auto-complete-config :disabled t
 ;;   :init
 ;;   (ac-config-default)
 ;;   (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
@@ -172,27 +135,16 @@
 ;;          (add-to-list 'ac-modes 'cider-repl-mode))))
 ;; ;; TODO compare auto-complete and company-mode (supported by cider):
 ;; https://github.com/company-mode/company-mode/issues/68
-(use-package company
-  :ensure t
-  :defer t
+(use-package company :ensure t :defer t
   :init
   (add-hook 'after-init-hook 'global-company-mode))
 
-(use-package linum-relative
-  :defer t
-  :ensure t
+(use-package linum-relative :defer t :ensure t
+  :bind ("C-s-n" . linum-relative-toggle)
   :init
-  (bind-key "s-n" 'linum-relative-toggle)
   (global-linum-mode t))
 
-;; minibuffer completion incremental feedback
-(icomplete-mode 99)  ; turn on icomplete-mode
-
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-(use-package autorevert
-  :defer t
-  :ensure t
+(use-package autorevert :defer t :ensure t
   :init
   ;; reload all buffers when the file is changed
   (global-auto-revert-mode t))
@@ -202,21 +154,16 @@
 
 ;; (use-package elpy)
 
-(use-package jedi
-  :ensure t
-  :defer t
+(use-package jedi :ensure t :defer t
   :init
-  (use-package company-jedi
-    :ensure t
-    :defer t
+  (use-package company-jedi :ensure t :defer t
     :init
     (defun my/python-mode-hook ()
       (add-to-list 'company-backends 'company-jedi))
     (add-hook 'python-mode-hook 'my/python-mode-hook)))
 
-(use-package org
-  ;; :defer t - can't be done, org-mode is loaded by default
-  :ensure t
+;; org-mode is loaded by default - can't be ":defer t"
+(use-package org :ensure t
   :config
   ;; (use-package org-install)
   ;; (org-babel-do-load-languages
@@ -251,27 +198,18 @@
 ;;(global-set-key [f2] 'next-error)
 
 ;; (global-set-key [f6] 'split-window-horizontally)
-(use-package git-timemachine
-  :ensure t
-  :defer t)
+(use-package git-timemachine :ensure t :defer t)
 
-(use-package magit
-  :defer t
-  :ensure t
+(use-package magit :defer t :ensure t
+  :bind ("s-m" . magit-status)
   :init
-  (use-package magit-popup
-    :defer t
-    :ensure t)
-  (bind-key "s-m" 'magit-status)
+  (use-package magit-popup :defer t :ensure t)
   (setq magit-auto-revert-mode t)
   (setq magit-last-seen-setup-instructions "1.4.0")
   (autoload 'magit-status "magit" nil t))
 
-;; prevent: Error saving to X clipboard manager.
-(setq x-select-enable-clipboard-manager nil)
-
-(load-library "environment-lib")
-(set-face-attribute 'default nil :height (get-font-height))
+(use-package environment-lib
+  :load-path "~/dev/dotfiles/elisp")
 
 ;; -t: semicolon is the command line terminator.
 ;; default is end-of-line as a SQL statement terminator
@@ -279,89 +217,96 @@
 
 ;; simppe is probably the base package emacs; can't use :ensure t
 (use-package simple
+ :bind (;; ("<S-delete>". kill-line)
+        ("<S-delete>" . kill-region)
+        ;; clipboard-kill-region belongs to package menu-bar
+        ;; ("<S-delete>" . clipboard-kill-region)
+
+        ;; C-s-backspace is the default key binding for kill-whole-line
+        ("<C-s-backspace>" . kill-line-backward)
+        ("<C-S-delete>"    . kill-line)
+        ;; (define-key global-map [f5] 'toggle-truncate-lines)
+        )
   :init
+  (defun buffer-mode (buffer-or-string)
+    "Returns the major mode associated with a buffer."
+    (with-current-buffer buffer-or-string
+      major-mode))
+
+  (defun this-buffer-mode ()
+    "Returns the major mode associated with current buffer."
+    (interactive)
+    (message (concat "Major mode: "
+                     (prin1-to-string (buffer-mode (buffer-name))))))
+
+  ;; prevent: Error saving to X clipboard manager.
+  (setq x-select-enable-clipboard-manager nil)
+
+  (set-face-attribute 'default nil :height (get-font-height))
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; minibuffer completion incremental feedback
+  (icomplete-mode 99)  ; turn on icomplete-mode
+
+  ;; pretty syntax highlighting everywhere
+  (global-font-lock-mode t)
+
   (size-indication-mode 1)  ; filesize indicator
   (setq truncate-lines t) ;; no line wrap
-  (define-key global-map [f5] 'toggle-truncate-lines)
   (column-number-mode 1)
 
   (defun kill-line-backward (arg)
     "Kill ARG lines backward."
     (interactive "p")
-    (kill-line (- 1 arg)))
+    (kill-line (- 1 arg))))
 
-  ;; (global-set-key (kbd "<S-delete>") 'kill-line)
-  (global-set-key (kbd "<S-delete>") 'kill-region)
-  ;; clipboard-kill-region belongs to package menu-bar
-  ;; (global-set-key (kbd "<S-delete>") 'clipboard-kill-region)
+(use-package neotree :defer t :ensure t
+  :bind ("<s-f8>" . neotree-toggle))
 
-  ;; C-s-backspace is the default key binding for kill-whole-line
-  (global-set-key (kbd "<C-s-backspace>") 'kill-line-backward)
-  (global-set-key (kbd "<C-S-delete>") 'kill-line)
-  ;; (define-key global-map [f5] 'toggle-truncate-lines)
-  )
+;; icicles - Minibuf input completion & cycling of completion candidates
+;; (use-package icicles :ensure t  :defer t)
 
-(use-package neotree
-  :defer t
-  :ensure t
-  :init
-  (bind-key "<s-f8>" 'neotree-toggle))
+(use-package helm-startup
+  :load-path "~/dev/dotfiles/elisp")
 
-;; (use-package icicles ; TODO try out
-;;  :ensure t
-;;  :defer t)
-
-(use-package helm-startup)
-
-(use-package drag-stuff
-  :defer t
-  :ensure t
+(use-package drag-stuff :defer t :ensure t
   :init
   (drag-stuff-global-mode t))
 
-(use-package vimrc-mode
-  :defer t
-  :ensure t
+(use-package vimrc-mode :defer t :ensure t
   :init
   (require 'vimrc-mode)
   (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode)))
 
-(use-package dired ; not among *Packages*; can't use :ensure t
-  :defer t
+;; dired is not among *Packages*; can't use :ensure t
+(use-package dired :defer t
+  :bind ("s-d" . dired-jump)
+  :config
+  (bind-keys :map dired-mode-map
+             ("s-r" . dired-do-rename))
   :init
-
-  (bind-key "s-d" 'dired-jump)
-  (bind-key "s-r" 'dired-do-rename dired-mode-map)
-
-  (use-package dired-details
-    :defer t
-    :ensure t ; try :ensure marmalade if not available on melpa
+  (use-package dired-details :defer t :ensure t
+    ;; try :ensure marmalade if not available on melpa
     :init
     (require 'dired-details)
     (dired-details-install))
 
-  (use-package
-   dired-details+
-   :defer t
-   :ensure t
+  (use-package dired-details+ :defer t :ensure t
    :init
-   (use-package dired+ ;; show / hide file details: ( / )
-    :defer t
-    :ensure t
+   (use-package dired+ :defer t :ensure t
+     ;; show / hide file details: ( / )
     :init
     (require 'dired+))
    (require 'dired-details+))
 
-  (use-package dired-subtree
-    :defer t
-    :ensure t
-    :init
-    (define-key dired-mode-map (kbd "<C-return>") 'dired-subtree-insert)
-    (define-key dired-mode-map (kbd "<C-M-return>") 'dired-subtree-remove))
+  (use-package dired-subtree :defer t :ensure t
+    :config
+    (bind-keys :map dired-mode-map
+            ("<C-return>"   . dired-subtree-insert)
+            ("<C-M-return>" . dired-subtree-remove)))
 
-  (use-package dired-rainbow ; file highlighting
-    :defer t
-    :ensure t)
+  ;; file highlighting
+  (use-package dired-rainbow :defer t :ensure t)
   ;; When moving to parent directory by `^´, Dired by default creates a
   ;; new buffer for each movement up. The following rebinds `^´ to use
   ;; the same buffer
@@ -382,15 +327,12 @@
               (kill-buffer buffer)))
           (buffer-list))))
 
-(use-package winner ; layout management
-  :defer t
-  :ensure t
+;; layout management
+(use-package winner :defer t :ensure t
   :init
   (winner-mode 1))
 
-(use-package smart-mode-line
-  :ensure t
-  :init
+(use-package smart-mode-line :ensure t :init
   (setq sml/shorten-directory t
         ;; sml/theme 'respectful
         sml/name-width 32
@@ -399,20 +341,21 @@
         sml/projectile-replacement-format "%s/")
   (add-hook 'after-init-hook 'sml/setup))
 
-(use-package evil-startup)
+(use-package evil-startup
+  :load-path "~/dev/dotfiles/elisp")
 
 
-(use-package transpose-frame ; see package buffer-move
-  :defer t
-  :ensure t
+;; see package buffer-move
+(use-package transpose-frame :defer t :ensure t
+  :load-path "~/dev/dotfiles/elisp"
+  :bind (("<f8>"   . transpose-frame)
+         ("M-<f8>" . flop-frame))
   :init
-  (require 'transpose-frame) ; neccessary - otherwise: transpose-frame undefined
   ;; TODO check how to automate byte-compilation of transpose-frame
-  (bind-key "<f8>" 'transpose-frame)
-  (bind-key "M-<f8>" 'flop-frame))
+  ;; it's neccessary to require transpose-frame -  otherwise undef
+  (require 'transpose-frame))
 
-(use-package time
-  :ensure t
+(use-package time :ensure t
   :init
   (setq display-time-24hr-format 1)
   (display-time-mode 1))
@@ -422,83 +365,55 @@
   (interactive)
   (other-window -1))
 
-(defun package-auto-upgrade ()
-  (interactive)
-  (package-list-packages)
-  (package-menu-mark-obsolete-for-deletion)
-  (package-menu-mark-upgrades)
-  (package-menu-execute))
-
-(use-package paradox
-  :defer t
-  :ensure t
+(use-package paradox :defer t :ensure t
+  :bind (;; ("f9" . paradox-list-packages) ; TODO auto enable/disable evil-mode
+         ("<s-f9>" . paradox-upgrade-packages))
   :init
+  (defun package-auto-upgrade ()
+    (interactive)
+    (package-list-packages)
+    (package-menu-mark-obsolete-for-deletion)
+    (package-menu-mark-upgrades)
+    (package-menu-execute))
 
-  (use-package spinner
-    :defer t
-    :ensure t)
-
-  ;; (bind-key [f9]  'paradox-list-packages) ; TODO auto enable/disable evil-mode
-  (bind-key (kbd "<s-f9>") 'paradox-upgrade-packages)
+  (use-package spinner :defer t :ensure t)
   (setq paradox-github-token (getenv "GITHUB_TOKEN")
         paradox-automatically-star t))
-
-;; pretty syntax highlighting everywhere
-(global-font-lock-mode t)
 
 ;; (setq inferior-lisp-program "browser-repl")
 ;; (setq inferior-lisp-program "cljs-repl")
 ;; (message (concat "inferior-lisp-program: " inferior-lisp-program))
 
-;; TODO is cljs-repl a delete cantidate? See bash/cljs-repl
-(defun cljs-repl ()
-  (interactive)
-  (setq inferior-lisp-program "cljs-repl")
-  (run-lisp))
-
-(defun buffer-mode (buffer-or-string)
-  "Returns the major mode associated with a buffer."
-  (with-current-buffer buffer-or-string
-    major-mode))
-
 ;; (setq inferior-lisp-buffer "browser-repl")
 ;; (message inferior-lisp-buffer)
 
 ;; edit every instance of word/variable in the buffer - like multiple cursors
-(use-package iedit
-  :defer t
-  :ensure t
-  :init
-  (bind-key "s-i" 'iedit-mode))
+(use-package iedit :defer t :ensure t
+  :bind ("s-i" . iedit-mode))
 
-(use-package multiple-cursors
-  :defer t
-  :ensure t
-  :bind
-  (("C->" . mc/mark-all-like-this-in-defun)
-   ;; ("C->" .  mc/mark-next-like-this)
-   ;; ("C-M->" . mc/unmark-next-like-this)
+(use-package multiple-cursors :defer t :ensure t
+  :bind (("C->" . mc/mark-all-like-this-in-defun)
+         ;; ("C->" .  mc/mark-next-like-this)
+         ;; ("C-M->" . mc/unmark-next-like-this)
 
-   ("C-<" . mc/mark-previous-like-this)
-   ("C-M-<" . mc/unmark-previous-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-M-<" . mc/unmark-previous-like-this)
 
-   ;; ("C->" . mc/mark-next-word-like-this)
-   ;; ("C-M->" . mc/unmark-next-word-like-this)
-   ;; ("C-<" . mc/mark-previous-word-like-this)
-   ;; ("C-M-<" . mc/unmark-previous-word-like-this)
+         ;; ("C->" . mc/mark-next-word-like-this)
+         ;; ("C-M->" . mc/unmark-next-word-like-this)
+         ;; ("C-<" . mc/mark-previous-word-like-this)
+         ;; ("C-M-<" . mc/unmark-previous-word-like-this)
 
-   ("C-c C-<" . mc/mark-all-like-this)
-   ("C-c C-M-<" . mc/unmark-all-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)
+         ("C-c C-M-<" . mc/unmark-all-like-this)
 
-   ;; ("C-S-c C-S-c" . mc/edit-lines)
-   ;; ("C->" . mc/mark-next-like-this)
-   ;; ("C-<" . mc/mark-previous-like-this)
-   ;; ("C-c C-<" . mc/mark-all-like-this)
-   ))
+         ;; ("C-S-c C-S-c" . mc/edit-lines)
+         ;; ("C->" . mc/mark-next-like-this)
+         ;; ("C-<" . mc/mark-previous-like-this)
+         ;; ("C-c C-<" . mc/mark-all-like-this)
+         ))
 
-(use-package ace-jump-mode
-  :ensure t
-  :defer t
+(use-package ace-jump-mode :ensure t :defer t
   :bind (("<f2>" . ace-jump-mode)
          ("s-j"  . ace-jump-mode)
          ;; ("s-a" . ace-jump-buffer) ; see helm-buffers-list
@@ -512,9 +427,7 @@
       "w" 'ace-jump-word-mode
       "l" 'ace-jump-line-mode)))
 
-(use-package expand-region
-  :defer t
-  :ensure t
+(use-package expand-region :defer t :ensure t
   :bind ("C-=" . er/expand-region)
   :init
   (when (and (featurep 'evil) (featurep 'evil-leader))
@@ -522,9 +435,7 @@
       (setq expand-region-contract-fast-key "z")
       (evil-leader/set-key "xx" 'er/expand-region))))
 
-(use-package yasnippet
-  :defer t
-  :ensure t
+(use-package yasnippet :defer t :ensure t
   :init
   (let ((yasnippet-dir "~/.emacs.d/plugins/yasnippet"))
     (shell-command-to-string (concat "mkdir -p " yasnippet-dir))
@@ -534,11 +445,9 @@
   ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
   )
 
-(use-package edit-server
-  ;; Repond to requests from the Emacs Chrome plugin using sockets.
-  ;; See emacs activation docu in the browser plugin
-  :disabled t
-  :defer t
+;; Repond to requests from the Emacs Chrome plugin using sockets.
+;; See emacs activation docu in the browser plugin
+(use-package edit-server :disabled t :defer t
   :if window-system
   :init
   (add-to-list 'load-path "~/.emacs.d")
@@ -549,9 +458,7 @@
   (add-hook 'after-init-hook 'server-start t)
   (add-hook 'after-init-hook 'edit-server-start t))
 
-(use-package browse-url
-  :defer t
-  :ensure t
+(use-package browse-url :defer t :ensure t
   :init
   (setq browse-url-browser-function 'browse-url-generic
         browse-url-generic-program
@@ -562,12 +469,9 @@
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
 ;; xfce4-settings-manager -> Window Manger -> Keyboard -> ...
-(use-package duplicate-thing
-  :defer t
-  :ensure t
-  :init
-  (bind-key (kbd "C-M-<up>") 'duplicate-thing)
-  (bind-key (kbd "C-M-<down>") 'duplicate-thing))
+(use-package duplicate-thing :defer t :ensure t
+  :bind (("C-M-<up>"   . duplicate-thing)
+         ("C-M-<down>" . duplicate-thing)))
 
 ;; (defun ignore-error-wrapper (fn)
 ;;   "Funtion return new function that ignore errors.
@@ -578,24 +482,20 @@
 ;;       (ignore-errors
 ;;         (funcall fn)))))
 
-(use-package minimap
-  :defer t
-  :ensure t
-  :bind ("s-i" . minimap-toggle))
+(use-package minimap :defer t :ensure t
+  :bind ("C-c C-m" . minimap-toggle))
 
 ;; (load-library "abbrev-table")
 ;;(global-set-key [f11] 'abbrev-mode)
 ;;(global-set-key [f11] 'toggle-frame-fullscreen) ; this is the default
 (toggle-frame-maximized)
 
-(use-package undo-tree
-  :ensure t
+(use-package undo-tree :ensure t
   :defer (2 global-undo-tree-mode t) ; load after 2 seconds of idle time
   :diminish ""
-  :config
-  (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize) ;; default
-  (define-key undo-tree-map (kbd "<f12>") 'undo-tree-visualize)
-  (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo))
+  :bind (("C-x u" . undo-tree-visualize) ;; default
+         ("<f12>" . undo-tree-visualize)
+         ("C-/"   . undo-tree-undo)))
 
 ;; (global-set-key [scroll] 'exec-test-macro)
 
@@ -603,30 +503,22 @@
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-(global-set-key (kbd "<s-f12>") 'switch-to-buffer-scratch)
-
 (unless (display-graphic-p)
-  (use-package evil-terminal-cursor-changer
-    :defer t
-    :ensure t))
+  (use-package evil-terminal-cursor-changer :defer t :ensure t))
 
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
-(use-package ace-window
-  :defer t
-  :ensure t
+(use-package ace-window :defer t :ensure t
+  :bind ("M-o" . ace-window)
   :init
-  (global-set-key (kbd "M-o") 'ace-window)
   ;; the sequence of leading characters for each window:
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(use-package sublimity
-  :ensure t
+(use-package sublimity :ensure t
   :init
   ;; only smooth-scrolling together with sublimity leads to
   ;; smooth scrolling really working! WTF?
-  (use-package smooth-scrolling
-    :ensure t)
+  (use-package smooth-scrolling :ensure t)
   (use-package sublimity-scroll); inside sublimity :ensure t not needed
   (sublimity-mode 1))
 
@@ -636,10 +528,9 @@
   ;; sticky-windows must by downloaded from
   ;; http://www.emacswiki.org/emacs/download/sticky-windows.el
   ;; :ensure t
-  :init
-  (bind-key "C-x 0" 'sticky-window-delete-window)
-  (bind-key "C-x 1" 'sticky-window-delete-other-windows)
-  (bind-key "C-x 9" 'sticky-window-keep-window-visible))
+  :bind (("C-x 0" . sticky-window-delete-window)
+         ("C-x 1" . sticky-window-delete-other-windows)
+         ("C-x 9" . sticky-window-keep-window-visible)))
 
 (defun switch-to-minibuffer ()
   "Switch to minibuffer window."
@@ -670,16 +561,16 @@
 
 ;; (setq hs-set-up-overlay 'display-code-line-counts)
 
-(use-package whitespace
-  :defer t
-  :ensure t
+(use-package whitespace :defer t :ensure t
   :diminish whitespace-mode
+  :bind (("s-w"    . whitespace-mode)
+         ("<s-f7>" . whitespace-cleanup)
+         ;; ((kbd "s-<f7>") . (lambda ()
+         ;;                           (whitespace-cleanup)
+         ;;                           (interactive)
+         ;;                           (message "whitespace-cleanup done.")))
+         )
   :init
-  (bind-key "s-w" 'whitespace-mode)
-  (bind-key "s-<f7>" '(lambda ()
-                       (whitespace-cleanup)
-                       (interactive)
-                       (message "whitespace-cleanup done.")))
   (setq require-final-newline t)
   (set-default 'indicate-empty-lines t)
   (setq show-trailing-whitespace t))
@@ -688,9 +579,7 @@
 ;; instead of giving precedence to the .elc files
 (setq load-prefer-newer t)
 
-(use-package popwin
-  :defer t
-  :ensure t
+(use-package popwin :defer t :ensure t
   :init
   (require 'popwin)
   (popwin-mode 1)
@@ -771,10 +660,9 @@
   ;; async shell commands
   (push '("*Async Shell Command*" :stick t) popwin:special-display-config))
 
-(use-package color-identifiers-mode
-  ;; TODO disable color-identifiers-mode only for specific modes: clojure-mode
+;; TODO disable color-identifiers-mode only for specific modes: clojure-mode
+(use-package color-identifiers-mode :ensure t
   :disabled t ; color-identifiers-mode is nice but noisy
-  :ensure t
   :init
   (add-hook 'after-init-hook 'global-color-identifiers-mode)
 
@@ -782,19 +670,16 @@
     (interactive)
     (color-identifiers-mode t)))
 
-(use-package volatile-highlights
-  :ensure t
+(use-package volatile-highlights :ensure t
   :config
   (volatile-highlights-mode t))
 
-(use-package markdown-mode
-  :ensure t
+(use-package markdown-mode :ensure t
   :init
   (add-hook 'markdown-mode-hook
             (lambda () (electric-indent-local-mode -1))))
 
-(use-package mmm-mode
-  :ensure t
+(use-package mmm-mode :ensure t
   :config
   (setq mmm-global-mode 'maybe))
 
@@ -818,29 +703,20 @@
   (interactive "r")
   (format-replace-strings smart-to-ascii nil beg end))
 
-(use-package yagist
-  ;; TODO yagist RSA fingerprint
-  ;; # The authenticity of host 'gist.github.com (192.30.252.141)' can't be established.
-  ;; # RSA key fingerprint is ...
-  ;; # Are you sure you want to continue connecting (yes/no)? yes
-  :ensure t
-  :defer t
+;; TODO yagist RSA fingerprint
+;; # The authenticity of host 'gist.github.com (192.30.252.141)' can't be established.
+;; # RSA key fingerprint is ...
+;; # Are you sure you want to continue connecting (yes/no)? yes
+(use-package yagist :ensure t :defer t
   :init
   (setq yagist-github-token (getenv "GITHUB_TOKEN")))
 
-(use-package fish-mode
-  :ensure t
-  :defer t)
+(use-package fish-mode :ensure t :defer t)
 
-(use-package powerline
-  :defer t
-  :ensure t
+(use-package powerline :defer t :ensure t
   :init
-  (use-package powerline-evil
-    :defer t
-    :ensure t
-    :init
-    ;; (powerline-evil-center-color-theme)
+  (use-package powerline-evil :defer t :ensure t
+    ;; :init (powerline-evil-center-color-theme)
     )
   (defvar mode-line-cleaner-alist
     `((auto-complete-mode . " α")
@@ -882,40 +758,95 @@ want to use in the modeline *in lieu of* the original.")
 ;;; ς ε ρ τ υ θ ι ο π α σ δ φ γ η ξ κ λ ζ χ ψ ω β ν μ
   )
 
-(use-package emacs
-  :ensure t
+(use-package emacs :ensure t
+  :bind
+  (
+  ("<f10>" . menu-bar-open) ; this is the default
+  ("s-s"   . save-buffer)
+  ("s-f"   . find-file)
+  ("s-c"   . kill-ring-save) ; copy
+  ("s-x"   . kill-region)    ; cut
+  ("s-v"   . yank)           ; paste
+  ;; see evil-window-map
+  ;; TODO s-q should work like C-tab if only one window is visible
+  ("s-q"               . other-window)
+  ("s-0"               . delete-window)
+  ("s-1"               . delete-other-windows)
+  ("C-s-r"             . rename-file-and-buffer)
+  ("<f3>"              . find-grep) ; Use -e '...' instead of -e "..."
+  ("<f7>"              . find-file-emacs)
+  ("s-k"               . close-buffer)
+  ("C-s-k"             . delete-file-and-close-its-buffer)
+  ("s-2"               . split-other-window-below)
+  ("s-3"               . split-other-window-right)
+  ("<s-f11>"           . find-emacs-init-file)
+  ("<s-f12>"           . switch-to-buffer-scratch)
+  ("<C-tab>"           . bury-buffer)
+  ("<C-S-iso-lefttab>" . unbury-buffer)
+  ("C-`"               . unbury-buffer)
+  ("M-s-<left>"        . shrink-window-horizontally)
+  ("M-s-<right>"       . enlarge-window-horizontally)
+  ("M-s-<down>"        . enlarge-window)
+  ("M-s-<up>"          . shrink-window)
+  ("s-u"               . eval-buffer) ; might be in lisp-mode-keys see ("s-u" . helm-surfraw)
+
+
+  ;; (bind-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
+  ;; (bind-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
+  ;; (bind-key (kbd "<s-tab>") 'other-window)
+
+;  ((kbd "C-<f11>") . (lambda ()
+;                (interactive)
+;                (shell-command
+;                 ;; "cvs-ci-hooks.sh"
+;                 "")))
+;
+;  ((kbd "C-<f8>") . (lambda ()
+;               (interactive)
+;               (shell-command
+;                ;; "cvs-test.sh -lo :pserver:faizal@localhost:/myrepos"
+;                "")))
+;  ((kbd "C-<f12>") . (lambda ()
+;                         (interactive)
+;                         (shell-command
+;                          ;; (concat "cvs-test.sh -fr "
+;                          ;;         ":pserver:"
+;                          ;;         "rsvoboda@dlnxcvshooksdev01.ptx.fr.sopra"
+;                          ;;         ":2401/cvscorfja")
+;                          "")))
+;
+;  ((kbd "<s-f3>") . kmacro-start-macro-or-insert-counter)
+;  ((kbd "<s-f4>") . kmacro-end-or-call-macro)
+   )
   :init
+  (defun find-emacs-init-file ()
+    (interactive)
+    (find-file "~/dev/dotfiles/.emacs.el"))
 
-  (bind-key "C-<f11>" '(lambda ()
-                         (interactive)
-                         (shell-command
-                          ;; "cvs-ci-hooks.sh"
-                          "")))
+  (defun split-other-window-and (f)
+    (funcall f)
+    (other-window 1))
 
-  (bind-key "C-<f8>" '(lambda ()
-                        (interactive)
-                        (shell-command
-                         ;; "cvs-test.sh -lo :pserver:faizal@localhost:/myrepos"
-                         "")))
-  (bind-key "C-<f12>" '(lambda ()
-                         (interactive)
-                         (shell-command
-                          ;; (concat "cvs-test.sh -fr "
-                          ;;         ":pserver:"
-                          ;;         "rsvoboda@dlnxcvshooksdev01.ptx.fr.sopra"
-                          ;;         ":2401/cvscorfja")
-                          "")))
+  (defun split-other-window-below ()
+    (interactive)
+    (split-other-window-and 'split-window-below))
 
-  (bind-key (kbd "<s-f3>") 'kmacro-start-macro-or-insert-counter)
-  (bind-key (kbd "<s-f4>") 'kmacro-end-or-call-macro)
+  (defun split-other-window-right ()
+    (interactive)
+    (split-other-window-and 'split-window-right))
 
-  (use-package grep+
-    :defer t
-    :ensure t
+  ;; (bind-key [C-s-left] (ignore-error-wrapper 'windmove-left))
+  ;; (bind-key [C-s-right] (ignore-error-wrapper 'windmove-right))
+  ;; (bind-key [C-s-up] (ignore-error-wrapper 'windmove-up))
+  ;; (bind-key [C-s-down] (ignore-error-wrapper 'windmove-down))
+
+  ;; (bind-key "s-b" 'ido-switch-buffer) ; s-b used for helm-mini
+  ;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
+
+  (use-package grep+ :defer t :ensure t
     :init
     (require 'grep+))
 
-  (bind-key [f3] 'find-grep) ; Use -e '...' instead of -e "..."
   ;; (grep-apply-setting
   ;;  'grep-find-command
   ;;  (concat "find ~/dev/cvs-1.12.13+real"
@@ -938,8 +869,6 @@ want to use in the modeline *in lieu of* the original.")
            (t
             (rename-file filename new-name t)
             (set-visited-file-name new-name t t)))))))
-
-  (bind-key "s-r" 'rename-file-and-buffer)
 
   ;; (global-set-key (kbd "s-i")
   ;;                 '(lambda ()
@@ -964,53 +893,6 @@ want to use in the modeline *in lieu of* the original.")
     (message "gui-elements %s"
              (if (= 1 gui-elements) "enabled" "disabled")))
 
-  ;; (global-set-key [f10] 'menu-bar-open)     ;; this is the default
-  (bind-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
-
-  (bind-key "s-s" 'save-buffer)
-  (bind-key "s-f" 'find-file)
-  (bind-key "s-c" 'kill-ring-save) ; copy
-  (bind-key "s-x" 'kill-region)    ; cut
-  (bind-key "s-v" 'yank)           ; paste
-  ;; see evil-window-map
-  ;; TODO s-q should work like C-tab if only one window is visible
-  (bind-key "s-q" 'other-window)
-  (bind-key (kbd "<s-tab>") 'other-window)
-
-  (bind-key "s-0" 'delete-window)
-  (bind-key "s-1" 'delete-other-windows)
-  (bind-key "s-2" '(lambda ()
-                     (interactive)
-                     (split-window-below)
-                     (other-window 1)))
-  (bind-key "s-3" '(lambda ()
-                     (interactive)
-                     (split-window-right)
-                     (other-window 1)))
-
-  (bind-key "s-k" 'close-buffer)
-  (bind-key "C-s-k" 'delete-file-and-close-its-buffer)
-
-  ;; (bind-key [C-s-left] (ignore-error-wrapper 'windmove-left))
-  ;; (bind-key [C-s-right] (ignore-error-wrapper 'windmove-right))
-  ;; (bind-key [C-s-up] (ignore-error-wrapper 'windmove-up))
-  ;; (bind-key [C-s-down] (ignore-error-wrapper 'windmove-down))
-
-  ;; (bind-key "s-b" 'ido-switch-buffer) ; s-b used for helm-mini
-  ;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
-  (bind-key (kbd "<C-tab>") 'bury-buffer)
-  (bind-key (kbd "<C-S-iso-lefttab>") 'unbury-buffer)
-  (bind-key (kbd "C-`") 'unbury-buffer)
-
-  (bind-key [M-s-left] 'shrink-window-horizontally)
-  (bind-key [M-s-right] 'enlarge-window-horizontally)
-  (bind-key [M-s-down] 'enlarge-window)
-  (bind-key [M-s-up] 'shrink-window)
-  (bind-key [f7] 'find-file-emacs)
-  (bind-key (kbd "<s-f11>") '(lambda ()
-                               (interactive)
-                               (find-file "~/dev/dotfiles/.emacs.el")))
-  (bind-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
 
   ;; (setq default-directory "~/dev")
 
@@ -1110,15 +992,7 @@ See: `xah-forward-block'"
     "Modify keymaps used by `emacs-lisp-mode'."
     (local-set-key (kbd "s-e") 'eval-last-sexp)
     (if (featurep 'evil-leader)
-        (evil-leader/set-key "e" 'eval-last-sexp))
-    ;; see ("s-u" . helm-surfraw)
-    (local-set-key (kbd "s-u")
-                   'eval-buffer
-                   ;; TODO s-u: should print "... eval-buffer done"
-                   ;; (lambda ()
-                   ;;   (eval-buffer)
-                   ;;   (message (concat (buffer-name) ": eval-buffer done.")))
-                   ))
+        (evil-leader/set-key "e" 'eval-last-sexp)))
   (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
 
   ;; store / restore : C-x r j / C-x r j w
@@ -1176,4 +1050,4 @@ See: `xah-forward-block'"
 ;; (load-theme 'solarized t)
 ;; (disable-theme 'solarized)  (enable-theme 'solarized)
 
-(setq debug-on-error nil)
+;; (setq debug-on-error nil)

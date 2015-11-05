@@ -9,7 +9,7 @@
   (bind-key "s-SPC" 'evil-search-highlight-persist-remove-all)
   (bind-key "C-s-t" 'evil-mode)
   (bind-key "s-;" 'evilnc-comment-or-uncomment-lines)
-  (bind-key "s-z" 'evil-ace-jump-char-mode)
+  (bind-key "C-s-z" 'evil-ace-jump-char-mode)
 
   ;; require for evil folding
   (add-hook 'prog-mode-hook 'hs-minor-mode)
