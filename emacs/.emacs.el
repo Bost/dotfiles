@@ -1,7 +1,3 @@
-;; (setq debug-on-error t) ;; turned off at the end
-;; this is for the emacs code browser
-;; (setq stack-trace-on-error t)
-
 (load "server")
 (unless (server-running-p)
   (server-start))
@@ -27,7 +23,7 @@
 
 ;; set bash vars http_proxy/https_proxy/ftp_proxy so
 ;; url-proxy-services won't be needed
-;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII
+;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII - paredit keys at 27:20
 ;; TODO (if (eq system-type 'gnu/linux))
 ;; TODO do macro expansion for use-package
 ;; TODO :bind (:map ...-mode-map); :bind is (bin-key); :bind ("M-h" . ace-jump-mode)
@@ -38,6 +34,7 @@
                                ("http" . (getenv "proxy"))
                                ("https" . (getenv "proxy")))))
 
+
 (require 'package)
 (setq package-enable-at-startup nil)
 
@@ -47,6 +44,7 @@
         ("marmalade" . "https://marmalade-repo.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
         ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")))
+
 
 ;; (add-to-list 'package-archives
 ;;              '("melpa-stable" . "http://stable.melpa.org/packages/")
@@ -62,6 +60,7 @@
   (package-install 'use-package))
 
 (eval-when-compile ; reduce load time
+  ;; (defvar use-package-verbose t) ; measure startup time
   (require 'use-package))
 ;; TODO auto install of diminish and bind-key doesn't work
 (require 'diminish)
@@ -105,10 +104,11 @@
 ;; slamhound: rip and reconstruct clojure namespace
 (use-package slamhound :defer t :ensure t)
 
-(use-package cider-startup :defer t
+(use-package cider-startup :defer 3
   :load-path elisp-dir
-  ;; :init (add-to-list 'auto-mode-alist '(".clj\\(s\\)?$" . cider-mode))
-  )
+  ;; :mode ("\\.clj'\\" . clojure-mode)
+  :config
+  (message "cider-startup loaded with :defer 3"))
 
 (use-package clj-refactor :defer t :ensure t
   :init
@@ -210,13 +210,15 @@
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package git-timemachine :ensure t :defer t)
 
-(use-package magit :defer t :ensure t
+(use-package magit :defer 5 :ensure t
   :bind ("s-m" . magit-status)
   :init
   (use-package magit-popup :defer t :ensure t)
   (setq magit-auto-revert-mode t)
   (setq magit-last-seen-setup-instructions "1.4.0")
-  (autoload 'magit-status "magit" nil t))
+  (autoload 'magit-status "magit" nil t)
+  :config
+  (message "magit loaded with :defer 5"))
 
 (use-package environment-lib
   :load-path elisp-dir)
@@ -276,8 +278,7 @@
 ;; icicles - Minibuf input completion & cycling of completion candidates
 ;; (use-package icicles :ensure t  :defer t)
 
-(use-package helm-startup
-  :load-path elisp-dir)
+(use-package helm-startup :load-path elisp-dir)
 
 (use-package drag-stuff :defer t :ensure t
   :init
@@ -1039,5 +1040,3 @@ See: `xah-forward-block'"
 
 (load-theme 'solarized t)
 ;; (disable-theme 'solarized)  (enable-theme 'solarized)
-
-;; (setq debug-on-error nil)

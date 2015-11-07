@@ -115,5 +115,4 @@
   ;;   )
   ;; (add-hook 'cider-interaction-mode-hook 'cider-interaction-mode-keys)
   )
-(message "cider-startup loaded")
 (provide 'cider-startup)
