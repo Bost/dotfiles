@@ -13,10 +13,10 @@
 ;; max nr of lines to keep in the message log buffer
 (setq message-log-max 16384)
 
-(setq dotf-dir "~/dev/dotfiles")
-(setq config-dir (concat dotf-dir "/emacs"))
-(setq elisp-dir  (concat config-dir "/elisp"))
-(setq themes-dir (concat config-dir "/themes"))
+(setq dotf-dir "~/dev/dotfiles"
+      config-dir (concat dotf-dir "/emacs")
+      elisp-dir  (concat config-dir "/elisp")
+      themes-dir (concat config-dir "/themes"))
 
 (add-to-list 'custom-theme-load-path
              (concat themes-dir "/zenburn-emacs/"))
