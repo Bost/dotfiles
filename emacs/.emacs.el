@@ -828,7 +828,7 @@ want to use in the modeline *in lieu of* the original.")
   :init
   (defun find-emacs-init-file ()
     (interactive)
-    (find-file (concat config-dir ".emacs.el")))
+    (find-file (concat config-dir "/.emacs.el")))
 
   (defun split-other-window-and (f)
     (funcall f)
