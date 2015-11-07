@@ -30,7 +30,7 @@
 ;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII
 ;; TODO (if (eq system-type 'gnu/linux))
 ;; TODO do macro expansion for use-package
-;; TODO :bind (:map ...-mode-map); :bind is (bin-key)
+;; TODO :bind (:map ...-mode-map); :bind is (bin-key); :bind ("M-h" . ace-jump-mode)
 ;; TODO M-x describe-personal-keybindings
 ;; TODO (or (use-package foo) (use-package bar))
 (if (string= system-type "windows-nt")
@@ -172,7 +172,7 @@
 
 ;; org-mode is loaded by default - can't be ":defer t"
 (use-package org :ensure t
-  :config
+  :config ; executed after require
   ;; (use-package org-install)
   ;; (org-babel-do-load-languages
   ;; 'org-babel-load-languages

@@ -1,39 +1,43 @@
 (require 's)
 
-(progn
-  ;; This works only when bash environment initialised.
-  ;; I.e. invoke emacs from CLI or modify emacs24 xfce launcher:
-  ;; bash -c -i ~/dev/emacs/src/emacs
-  (defun get-font-height () ; font size
-    (interactive)
-    (cond
-     ;; TODO fix get-font-height() for MartinJV
-     ((s-ends-with? "new-64" system-name) 116)
-     ((s-ends-with? "franzi" system-name) 130)
-     ;; (> (getenv "isLinuxMartinJV") 120)
-     ((s-ends-with? "VirtualBox" system-name) 102)
-     (t 140)))
+;; This works only when bash environment initialised.
+;; I.e. invoke emacs from CLI or modify emacs24 xfce launcher:
+;; bash -c -i ~/dev/emacs/src/emacs
+(defun is-virtual-box ()
+  (s-ends-with? "VirtualBox" system-name))
 
-  (if (s-ends-with? "franzi" system-name)
-      (display-battery-mode 1)))
+(defun get-font-height () ; font size
+  (interactive)
+  (cond
+   ;; TODO fix get-font-height() for MartinJV
+   ((s-ends-with? "new-64" system-name) 116)
+   ((s-ends-with? "franzi" system-name) 130)
+   ;; (> (getenv "isLinuxMartinJV") 120)
+   ((is-virtual-box) 102)
+   (t 140)))
+
+(if (s-ends-with? "franzi" system-name)
+    (display-battery-mode 1))
+
+(use-package jcl-mode :defer t
+  :if (is-virtual-box)
+  :load-path (dotf-dir "/jcl") ; auto concatenation
+  :init
+  ;; TODO calling autoload in (use-package jcl-mode ..) might not be needed
+  ;; see autoload docu
+  (autoload 'jcl-mode "jcl" nil t))
+
+(use-package cobol-mode ;; :defer t
+  :if (is-virtual-box)
+  :load-path (dotf-dir "/jcl"))
+
+(use-package rexx-mode ;; :defer t
+  :if (is-virtual-box)
+  :load-path "~/.emacs.d/rexx-mode"
+  :init
+  (add-to-list 'auto-mode-alist '("\\.rexx$" . rexx-mode)))
 
 (when (s-ends-with? "VirtualBox" system-name)
-  (progn
-    (use-package jcl-mode :defer t
-      :load-path (concat dotf-dir "/jcl")
-      :init
-      ;; TODO calling autoload in (use-package jcl-mode ..) might not be needed
-      ;; see autoload docu
-      (autoload 'jcl-mode "jcl" nil t))
-
-    (use-package cobol-mode ;; :defer t
-      :load-path (concat dotf-dir "/jcl"))
-
-    (use-package rexx-mode ;; :defer t
-      :load-path "~/.emacs.d/rexx-mode")
-    :init
-    (add-to-list 'auto-mode-alist '("\\.rexx$" . rexx-mode)))
-
   (use-package eww
     :init
     (defvar-local endless/display-images t)
