@@ -38,10 +38,11 @@
   ;;  :defer t)
 
   ;; TODO bind `cljr-helm` to a key (I'd suggest C-c r) in Clojure mode
-  (use-package cljr-helm :defer t :ensure t)
-  (use-package helm-commandlinefu :ensure t :defer t)
-  (use-package helm-ack :ensure t :defer t)
-  (use-package helm-cider-history :ensure t :defer t)
+  (use-package cljr-helm          :defer t :ensure t)
+  (use-package helm-commandlinefu :defer t :ensure t)
+  (use-package helm-ack           :defer t :ensure t)
+  (use-package helm-cider-history :defer t :ensure t)
+  (use-package macrostep          :defer t :ensure t) ; M-x macrostep-expand
 
   ;; see helm-surfraw; use google-this as an alternative
   (use-package helm-google :defer t :ensure t ; :pin melpa-stable
