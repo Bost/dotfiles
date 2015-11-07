@@ -16,3 +16,9 @@
 [submodule "emacs/themes/zenburn-emacs"]
 	path = emacs/themes/zenburn-emacs
 	url = https://github.com/bbatsov/zenburn-emacs.git
+[submodule ".vim/bundle/GoldenView.Vim"]
+	ignore = dirty
+[submodule ".vim/bundle/VimClojure"]
+	ignore = dirty
+[submodule ".vim/bundle/YankRing"]
+	ignore = dirty
