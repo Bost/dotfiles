@@ -17,8 +17,16 @@
   (shell-command-to-string
    "git log --pretty='format:%H' -1"))
 
-(use-package helm :defer t :ensure t
-  ;; :pin melpa-stable
+(use-package helm :defer t :ensure t ; :pin melpa-stable
+  :bind (;; web search for PATTERN with search ENGINE
+         ;; ("s-u"   . helm-surfraw)
+         ("M-x"   . helm-M-x)
+         ("s-p"   . helm-projectile)
+         ("s-a"   . helm-buffers-list)
+         ("C-x b" . helm-mini)
+         ("s-b"   . helm-mini)
+         ("M-y"   . helm-show-kill-ring)
+         ("<f9>"   . helm-list-elisp-packages-no-fetch))
   :init ; Code to run before PACKAGE-NAME has been loaded.
 
   ;; (use-package helm-dictionary ; local offline dictionaries
@@ -36,17 +44,7 @@
   (use-package helm-cider-history :ensure t :defer t)
 
   ;; see helm-surfraw; use google-this as an alternative
-  (use-package helm-google :defer t :ensure t
-    ;; :pin melpa-stable
-    :bind (;; web search for PATTERN with search ENGINE
-           ;; ("s-u"   . helm-surfraw)
-           ("M-x"   . helm-M-x)
-           ("s-p"   . helm-projectile)
-           ("s-a"   . helm-buffers-list)
-           ("C-x b" . helm-mini)
-           ("s-b"   . helm-mini)
-           ("M-y"   . helm-show-kill-ring)
-           ("<9>"   . helm-list-elisp-packages-no-fetch))
+  (use-package helm-google :defer t :ensure t ; :pin melpa-stable
     :init
     (use-package google-this :defer t :ensure t
       :bind (("s-g" . google-this)
