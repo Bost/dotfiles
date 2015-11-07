@@ -104,9 +104,11 @@
 
 ;; slamhound: rip and reconstruct clojure namespace
 (use-package slamhound :defer t :ensure t)
-;; TODO cider-startup ":defer t" does not work
-(use-package cider-startup
-  :load-path elisp-dir)
+
+(use-package cider-startup :defer t
+  :load-path elisp-dir
+  ;; :init (add-to-list 'auto-mode-alist '(".clj\\(s\\)?$" . cider-mode))
+  )
 
 (use-package clj-refactor :defer t :ensure t
   :init
@@ -283,7 +285,6 @@
 
 (use-package vimrc-mode :defer t :ensure t
   :init
-  (require 'vimrc-mode)
   (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode)))
 
 ;; dired is not among *Packages*; can't use :ensure t
@@ -293,19 +294,15 @@
   (bind-keys :map dired-mode-map
              ("s-r" . dired-do-rename))
   :init
-  (use-package dired-details :defer t :ensure t
+  ;; show / hide file details: ( / )
+  (use-package dired+ :ensure t)
+
+  (use-package dired-details :ensure t
     ;; try :ensure marmalade if not available on melpa
     :init
-    (require 'dired-details)
-    (dired-details-install))
-
-  (use-package dired-details+ :defer t :ensure t
-   :init
-   (use-package dired+ :defer t :ensure t
-     ;; show / hide file details: ( / )
-    :init
-    (require 'dired+))
-   (require 'dired-details+))
+    (use-package dired-details+ :ensure t
+      :init
+      (use-package dired-details+ :ensure t)))
 
   (use-package dired-subtree :defer t :ensure t
     :config
@@ -356,11 +353,7 @@
 (use-package transpose-frame :defer t :ensure t
   :load-path elisp-dir
   :bind (("<f8>"   . transpose-frame)
-         ("M-<f8>" . flop-frame))
-  :init
-  ;; TODO check how to automate byte-compilation of transpose-frame
-  ;; it's neccessary to require transpose-frame -  otherwise undef
-  (require 'transpose-frame))
+         ("M-<f8>" . flop-frame)))
 
 (use-package time :ensure t
   :init
@@ -586,11 +579,9 @@
 ;; instead of giving precedence to the .elc files
 (setq load-prefer-newer t)
 
-(use-package popwin :defer t :ensure t
+(use-package popwin :defer t :ensure t ; no annoying buffers 
   :init
-  (require 'popwin)
   (popwin-mode 1)
-
 
   (defvar popwin:special-display-config-backup popwin:special-display-config)
   ;; (setq display-buffer-function 'popwin:display-buffer)
@@ -677,7 +668,8 @@
     (interactive)
     (color-identifiers-mode t)))
 
-(use-package volatile-highlights :ensure t
+;; visual feedback on some operation
+(use-package volatile-highlights :defer t :ensure t
   :config
   (volatile-highlights-mode t))
 
@@ -686,7 +678,7 @@
   (add-hook 'markdown-mode-hook
             (lambda () (electric-indent-local-mode -1))))
 
-(use-package mmm-mode :ensure t
+(use-package mmm-mode :ensure t ; Allow Multiple Major Modes in a buffer
   :config
   (setq mmm-global-mode 'maybe))
 
@@ -797,7 +789,6 @@ want to use in the modeline *in lieu of* the original.")
   ("M-s-<up>"          . shrink-window)
   ("s-u"               . eval-buffer) ; might be in lisp-mode-keys see ("s-u" . helm-surfraw)
 
-
   ;; (bind-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
   ;; (bind-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
   ;; (bind-key (kbd "<s-tab>") 'other-window)
@@ -851,8 +842,8 @@ want to use in the modeline *in lieu of* the original.")
   ;; cycle through buffers with Ctrl-Tab / Shift-Ctrl-Tab
 
   (use-package grep+ :defer t :ensure t
-    :init
-    (require 'grep+))
+    ;; :config (grepp-remove-comments)
+    )
 
   ;; (grep-apply-setting
   ;;  'grep-find-command
@@ -894,7 +885,6 @@ want to use in the modeline *in lieu of* the original.")
     (toggle-scroll-bar gui-elements)
     (message "gui-elements %s"
              (if (= 1 gui-elements) "enabled" "disabled")))
-
 
   (defun xah-forward-block (&optional φn)
     "Move cursor forward to the beginning of next text block.
