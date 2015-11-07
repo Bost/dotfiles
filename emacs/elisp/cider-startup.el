@@ -34,10 +34,10 @@
     (add-hook 'clojure-mode-hook 'clojure-mode-keys))
 
   ;;  kibit - lein plugin for detecting / improving non-idiomatic clj code
-  (use-package kibit-helper :defer t :ensure t)
+  (use-package kibit-helper       :defer t :ensure t)
   (use-package cider-eval-sexp-fu :defer t :ensure t)
-  (use-package ac-cider :ensure t :defer t)
-  (use-package rainbow-delimiters :ensure t :defer t)
+  (use-package ac-cider           :defer t :ensure t)
+  (use-package rainbow-delimiters :defer t :ensure t)
 
   (setq nrepl-log-messages t
         nrepl-hide-special-buffers t

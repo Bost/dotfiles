@@ -13,8 +13,15 @@
 ;; max nr of lines to keep in the message log buffer
 (setq message-log-max 16384)
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-color-theme-solarized/")
+(setq dotf-dir "~/dev/dotfiles")
+(setq config-dir (concat dotf-dir "/emacs"))
+(setq elisp-dir  (concat config-dir "/elisp"))
+(setq themes-dir (concat config-dir "/themes"))
+
+(add-to-list 'custom-theme-load-path
+             (concat themes-dir "/zenburn-emacs/"))
+(add-to-list 'custom-theme-load-path
+             (concat themes-dir "/emacs-color-theme-solarized/"))
 
 (setq inhibit-splash-screen t)
 
@@ -99,7 +106,7 @@
 (use-package slamhound :defer t :ensure t)
 ;; TODO cider-startup ":defer t" does not work
 (use-package cider-startup
-  :load-path "~/dev/dotfiles/elisp")
+  :load-path elisp-dir)
 
 (use-package clj-refactor :defer t :ensure t
   :init
@@ -210,7 +217,7 @@
   (autoload 'magit-status "magit" nil t))
 
 (use-package environment-lib
-  :load-path "~/dev/dotfiles/elisp")
+  :load-path elisp-dir)
 
 ;; -t: semicolon is the command line terminator.
 ;; default is end-of-line as a SQL statement terminator
@@ -268,7 +275,7 @@
 ;; (use-package icicles :ensure t  :defer t)
 
 (use-package helm-startup
-  :load-path "~/dev/dotfiles/elisp")
+  :load-path elisp-dir)
 
 (use-package drag-stuff :defer t :ensure t
   :init
@@ -343,12 +350,11 @@
   (add-hook 'after-init-hook 'sml/setup))
 
 (use-package evil-startup
-  :load-path "~/dev/dotfiles/elisp")
-
+  :load-path elisp-dir)
 
 ;; see package buffer-move
 (use-package transpose-frame :defer t :ensure t
-  :load-path "~/dev/dotfiles/elisp"
+  :load-path elisp-dir
   :bind (("<f8>"   . transpose-frame)
          ("M-<f8>" . flop-frame))
   :init
@@ -822,7 +828,7 @@ want to use in the modeline *in lieu of* the original.")
   :init
   (defun find-emacs-init-file ()
     (interactive)
-    (find-file "~/dev/dotfiles/.emacs.el"))
+    (find-file (concat config-dir ".emacs.el")))
 
   (defun split-other-window-and (f)
     (funcall f)
@@ -871,11 +877,6 @@ want to use in the modeline *in lieu of* the original.")
             (rename-file filename new-name t)
             (set-visited-file-name new-name t t)))))))
 
-  ;; (global-set-key (kbd "s-i")
-  ;;                 '(lambda ()
-  ;;                    (interactive)
-  ;;                    (insert "git --git-dir=../credit.git/ ")))
-
   (setq gui-elements -1)
 
   ;; disable most of this stuff early in the process so it doesn’t flicker.
@@ -894,8 +895,6 @@ want to use in the modeline *in lieu of* the original.")
     (message "gui-elements %s"
              (if (= 1 gui-elements) "enabled" "disabled")))
 
-
-  ;; (setq default-directory "~/dev")
 
   (defun xah-forward-block (&optional φn)
     "Move cursor forward to the beginning of next text block.
@@ -928,7 +927,7 @@ See: `xah-forward-block'"
     "Save the last defined macro under 'name' at the end of .emacs"
     (interactive "SName of the macro :")  ; ask for the name of the macro
     (kmacro-name-last-macro name)         ; use this name for the macro
-    (find-file "~/dev/dotfiles/.emacs")   ; open .emacs/other user init file
+    (find-file (concat config-dir ".emacs.el")) ; open .emacs/other user init file
     (goto-char (point-max))               ; go to the end of the .emacs
     (newline)                             ; insert a newline
     (insert-kbd-macro name)               ; copy the macro
@@ -1045,10 +1044,10 @@ See: `xah-forward-block'"
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
  '(region ((t (:background "#006400")))))
 
-(load-theme 'zenburn t)
+;; (load-theme 'zenburn t)
 ;; (disable-theme 'zenburn)  (enable-theme 'zenburn)
 
-;; (load-theme 'solarized t)
+(load-theme 'solarized t)
 ;; (disable-theme 'solarized)  (enable-theme 'solarized)
 
 ;; (setq debug-on-error nil)
