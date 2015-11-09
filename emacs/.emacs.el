@@ -104,6 +104,7 @@
 ;; slamhound: rip and reconstruct clojure namespace
 (use-package slamhound :defer t :ensure t)
 
+;; TODO cider-startup :defer 3 messes us with s-l
 (use-package cider-startup :defer 3
   :load-path elisp-dir
   ;; :mode ("\\.clj'\\" . clojure-mode)
