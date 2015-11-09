@@ -1,10 +1,8 @@
-function crep -d "TODO all crep*.fish should use the same code basis"
+function crepc
     set -x _pwd (pwd)
     set -x _oldpwd $OLDPWD
     cd $dev/cheatsheet/
-    # --before-context=1 --after-context=1
-    ack-grep git-commands.sh rest-commands.sh \
-             clojure-commands.clj emacs-commands.js \
+    ack-grep clojure-commands.clj \
              --context=1 \
              --nogroup \
              --break --with-filename --color-filename=grey13 \

@@ -1,4 +1,4 @@
-function creph -d "TODO crep/cr and creph should use the same code basis"
+function creph
     set -x _pwd (pwd)
     set -x _oldpwd $OLDPWD
     cd $dev/cheatsheet/
