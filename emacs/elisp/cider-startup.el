@@ -2,6 +2,8 @@
 ;;; Code:
 
 (use-package cider :defer t :ensure t
+  :config (bind-keys :map cider-repl-mode-map
+                     ("s-c" . cider-repl-clear-buffer))
   :bind (
          ("s-z"   . cider-switch-to-repl-buffer)
          ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
