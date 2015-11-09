@@ -2,10 +2,7 @@
 ;;; Code:
 
 (use-package cider :defer t :ensure t
-  :config (bind-keys :map cider-repl-mode-map
-                     ("s-c" . cider-repl-clear-buffer))
-  :bind (
-         ("s-z"   . cider-switch-to-repl-buffer)
+  :bind (("s-z"   . cider-switch-to-repl-buffer)
          ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
          ("s-t"   . cider-test-run-tests)
          ("s-."   . cider-find-var)
@@ -19,6 +16,9 @@
          ("s-."   . cider-find-var)
          ("s-,"   . cider-jump-back)
          ("M-m"   . main-all))
+  :config
+  (bind-keys :map cider-repl-mode-map
+             ("s-c" . cider-repl-clear-buffer))
   :init
   (defun main-all ()
     (interactive)

@@ -580,7 +580,7 @@
 ;; instead of giving precedence to the .elc files
 (setq load-prefer-newer t)
 
-(use-package popwin :defer t :ensure t ; no annoying buffers 
+(use-package popwin :defer t :ensure t ; no annoying buffers
   :config
   (popwin-mode 1)
 
