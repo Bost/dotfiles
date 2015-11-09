@@ -758,6 +758,35 @@ want to use in the modeline *in lieu of* the original.")
 ;;; ς ε ρ τ υ θ ι ο π α σ δ φ γ η ξ κ λ ζ χ ψ ω β ν μ
   )
 
+;; TODO auto-dim-other-buffers should use other font color
+;; (use-package auto-dim-other-buffers :defer t :ensure t)
+
+;; Cycle through buffers with the same `major-mode
+(use-package cbm :defer t :ensure t
+  :bind ("C-'" . cbm-cycle))
+
+(use-package uzumaki
+  :disabled t ; TODO uzumaki messes up with s-l from cider
+  ;; :defer t
+  :ensure t
+  :config
+  ;; (uzumaki-set-cycle-mode 'regex)
+  ;; (uzumaki-add-regex "^\\*\\.clj$")
+  ;; (uzumaki-add-regex "^*cider-repl\\**")
+  (defun my:uzumaki-next ()
+    (interactive)
+    (message "next-default")
+    (uzumaki-cycle-to-next-buffer))
+  (defun my:uzumaki-prev ()
+    (interactive)
+    (message "prev-default")
+    (uzumaki-cycle-to-prev-buffer))
+
+  (bind-keys :map uzumaki-minor-mode-map
+             ("<C-tab>" . my:uzumaki-next)
+             ("C-`" . my:uzumaki-prev))
+  (uzumaki-minor-mode 1))
+
 (use-package emacs :ensure t
   :bind
   (
@@ -780,9 +809,15 @@ want to use in the modeline *in lieu of* the original.")
   ("s-3"               . split-other-window-right)
   ("<s-f11>"           . find-emacs-init-file)
   ("<s-f12>"           . switch-to-buffer-scratch)
-  ("<C-tab>"           . bury-buffer)
+
+  ;; (unbind-key "<C-tab>")
+  ;; (unbind-key "C-`")
+  ;; ("<C-tab>"           . bury-buffer)
+  ;; ("C-`"               . unbury-buffer)
+  ;; ("<C-tab>"           . next-buffer)
+  ;; ("C-`"               . previous-buffer)
+
   ("<C-S-iso-lefttab>" . unbury-buffer)
-  ("C-`"               . unbury-buffer)
   ("M-s-<left>"        . shrink-window-horizontally)
   ("M-s-<right>"       . enlarge-window-horizontally)
   ("M-s-<down>"        . enlarge-window)
