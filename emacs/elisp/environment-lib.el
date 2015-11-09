@@ -8,16 +8,16 @@
  ;; (s-ends-with?  system-name) ; s-ends-with? needs (require 's)
  ((string= "bost-new-64" system-name) (setq is-new-64 t))
  ((string= "franzi" system-name)      (setq is-franzi t))
- ((string= "VirtualBox" system-name)  (setq is-virt-box t)))
+ ((string= "VirtualBox" (substring system-name 9 19))  (setq is-virt-box t)))
 
 (defun get-font-height () ; font size
   (interactive)
   (cond
-   ;;  ;; TODO fix get-font-height() for MartinJV
-   ((string= "bost-new-64" system-name) 116)
-   ((string= "franzi"      system-name) 130)
-   ;;  ;; (> (getenv "isLinuxMartinJV") 120)
-   ((string= "VirtualBox"  system-name) 102)
+   ;; TODO fix get-font-height() for MartinJV
+   ((boundp 'is-new-64) 116)
+   ((boundp 'is-franzi) 130)
+   ;; TODO (> (getenv "isLinuxMartinJV") 120)
+   ((boundp 'is-virt-box) 102)
    (t 140)))
 
 (if (boundp 'is-franzi)
@@ -26,7 +26,7 @@
 (use-package jcl-mode :defer t
   :if (boundp 'is-virt-box)
   :load-path (dotf-dir "/jcl") ; auto concatenation
-  :init
+  :config
   ;; TODO calling autoload in (use-package jcl-mode ..) might not be needed
   ;; see autoload docu
   (autoload 'jcl-mode "jcl" nil t))
@@ -38,12 +38,12 @@
 (use-package rexx-mode ;; :defer t
   :if (boundp 'is-virt-box)
   :load-path "~/.emacs.d/rexx-mode"
-  :init
+  :config
   (add-to-list 'auto-mode-alist '("\\.rexx$" . rexx-mode)))
 
 (if (boundp 'is-virt-box)
     (use-package eww :defer t :ensure t
-      :init
+      :config
       (defvar-local endless/display-images t)
 
       (defun endless/toggle-image-display ()

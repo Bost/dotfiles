@@ -581,7 +581,7 @@
 (setq load-prefer-newer t)
 
 (use-package popwin :defer t :ensure t ; no annoying buffers 
-  :init
+  :config
   (popwin-mode 1)
 
   (defvar popwin:special-display-config-backup popwin:special-display-config)

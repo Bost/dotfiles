@@ -81,14 +81,14 @@
     (define-key evil-normal-state-map "K" 'evil-jump-out-args))
 
   (use-package evil-numbers :defer t :ensure t
-    :bind (("C-c +"                 . evil-numbers/inc-at-pt)
-           ("C-c -"                 . evil-numbers/dec-at-pt)
-           ("s-+"                   . evil-numbers/inc-at-pt)
-           ("s--"                   . evil-numbers/dec-at-pt)
-           ((kbd "<C-kp-add>")      . evil-numbers/inc-at-pt)
-           ((kbd "<C-kp-subtract>") . evil-numbers/dec-at-pt)
-           ((kbd "<s-kp-add>")      . evil-numbers/inc-at-pt)
-           ((kbd "<s-kp-subtract>") . evil-numbers/dec-at-pt)))
+    :bind (("C-c +"           . evil-numbers/inc-at-pt)
+           ("C-c -"           . evil-numbers/dec-at-pt)
+           ("s-+"             . evil-numbers/inc-at-pt)
+           ("s--"             . evil-numbers/dec-at-pt)
+           ("<C-kp-add>"      . evil-numbers/inc-at-pt)
+           ("<C-kp-subtract>" . evil-numbers/dec-at-pt)
+           ("<s-kp-add>"      . evil-numbers/inc-at-pt)
+           ("<s-kp-subtract>" . evil-numbers/dec-at-pt)))
 
   (use-package evil-smartparens :defer t :ensure t
     :init
