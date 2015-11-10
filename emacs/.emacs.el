@@ -652,7 +652,7 @@ want to use in the modeline *in lieu of* the original.")
   (
   ("<f10>" . menu-bar-open) ; this is the default
   ("s-s"   . save-buffer)
-  ("s-f"   . find-file)
+  ("s-f"   . helm-find-files)
   ("s-x"   . kill-region)    ; cut
   ("s-v"   . yank)           ; paste
   ;; see evil-window-map
