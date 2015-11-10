@@ -1,4 +1,4 @@
-;;; evil-startup.el --- startup file for evil. -*- lexical-binding: t -*- 
+;;; evil-startup.el --- startup file for evil. -*- lexical-binding: t -*-
 ;;; Code:
 
 (use-package evil :ensure t
@@ -54,6 +54,18 @@
           evil-operator-state-cursor '("red" hollow)))
 
   (use-package evil-args :defer t :ensure t
+    :config
+    (bind-keys :map evil-inner-text-objects-map
+               ("a" . evil-inner-arg))
+    (bind-keys :map evil-outer-text-objects-map
+               ("a" . evil-outer-arg))
+    (bind-keys :map evil-normal-state-map
+               ("K" . evil-jump-out-args)
+               ("L" . evil-forward-arg)
+               ("H" . evil-backward-arg))
+    (bind-keys :map evil-motion-state-map
+               ("L" . evil-forward-arg)
+               ("H" . evil-backward-arg))
     :init
     (use-package evil-surround :defer t :ensure t
       :bind (("s-\"" . visual-double-quote-string)
@@ -65,20 +77,7 @@
         (interactive "p")
         (kmacro-exec-ring-item (quote ("vi\"" 0 "%d")) arg))
 
-      (global-evil-surround-mode 1))
-
-    ;; bind evil-args text objects
-    (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-    (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
-
-    ;; bind evil-forward/backward-args
-    (define-key evil-normal-state-map "L" 'evil-forward-arg)
-    (define-key evil-normal-state-map "H" 'evil-backward-arg)
-    (define-key evil-motion-state-map "L" 'evil-forward-arg)
-    (define-key evil-motion-state-map "H" 'evil-backward-arg)
-
-    ;; bind evil-jump-out-args
-    (define-key evil-normal-state-map "K" 'evil-jump-out-args))
+      (global-evil-surround-mode 1)))
 
   (use-package evil-numbers :defer t :ensure t
     :bind (("C-c +"           . evil-numbers/inc-at-pt)

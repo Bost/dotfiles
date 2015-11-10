@@ -5,21 +5,18 @@
 ;; (defconst emacs-start-time (current-time))
 ;; (unless noninteractive
 ;;   (message "Loading %s..." load-file-name))
-
-;; max nr of lines to keep in the message log buffer
-(setq message-log-max 16384)
-
 (setq dotf-dir "~/dev/dotfiles"
       config-dir (concat dotf-dir "/emacs")
       elisp-dir  (concat config-dir "/elisp")
-      themes-dir (concat config-dir "/themes"))
+      themes-dir (concat config-dir "/themes")
+      message-log-max 16384 ;; max lines to keep in the message log buffer
+      inhibit-splash-screen t)
 
 (add-to-list 'custom-theme-load-path
              (concat themes-dir "/zenburn-emacs/"))
 (add-to-list 'custom-theme-load-path
              (concat themes-dir "/emacs-color-theme-solarized/"))
 
-(setq inhibit-splash-screen t)
 
 ;; set bash vars http_proxy/https_proxy/ftp_proxy so
 ;; url-proxy-services won't be needed
@@ -29,21 +26,17 @@
 ;; TODO :bind (:map ...-mode-map); :bind is (bin-key); :bind ("M-h" . ace-jump-mode)
 ;; TODO M-x describe-personal-keybindings
 ;; TODO (or (use-package foo) (use-package bar))
-(if (string= system-type "windows-nt")
+(if (eq system-type 'windows-nt)
     (setq url-proxy-services '(("no_proxy" . "work\\.com")
                                ("http" . (getenv "proxy"))
                                ("https" . (getenv "proxy")))))
 
-
 (require 'package)
-(setq package-enable-at-startup nil)
-
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ;; ("org" . "http://orgmode.org/elpa/")
-        ("marmalade" . "https://marmalade-repo.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")))
+(setq package-enable-at-startup nil
+      package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ;; ("org" . "http://orgmode.org/elpa/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")))
 
 
 ;; (add-to-list 'package-archives
@@ -70,7 +63,7 @@
 ;; see :disabled t and :if condition
 (use-package auto-package-update :ensure t)
 
-(use-package paredit :defer t :ensure t
+(use-package paredit :ensure t
   :bind (("s-<left>"  . paredit-backward-slurp-sexp)
          ("s-<right>" . paredit-backward-barf-sexp))
   :init
@@ -105,11 +98,11 @@
 (use-package slamhound :defer t :ensure t)
 
 ;; TODO cider-startup :defer 3 messes us with s-l
-(use-package cider-startup :defer 3
+(use-package cider-startup ; :defer 3
   :load-path elisp-dir
   ;; :mode ("\\.clj'\\" . clojure-mode)
-  :config
-  (message "cider-startup loaded with :defer 3"))
+  ;; :config (message "cider-startup loaded with :defer 3")
+  )
 
 (use-package clj-refactor :defer t :ensure t
   :init
@@ -155,6 +148,9 @@
   :init
   (global-linum-mode t))
 
+(use-package eshell :defer t :ensure t
+  :bind ("s-<f1>" . eshell))
+
 (use-package autorevert :defer t :ensure t
   :init
   ;; reload all buffers when the file is changed
@@ -164,14 +160,6 @@
 ;;(desktop-read)
 
 ;; (use-package elpy)
-
-(use-package jedi :ensure t :defer t
-  :init
-  (use-package company-jedi :ensure t :defer t
-    :init
-    (defun my/python-mode-hook ()
-      (add-to-list 'company-backends 'company-jedi))
-    (add-hook 'python-mode-hook 'my/python-mode-hook)))
 
 ;; org-mode is loaded by default - can't be ":defer t"
 (use-package org :ensure t
@@ -202,7 +190,6 @@
   ;;(global-set-key "\C-ca" 'org-agenda)
   )
 
-
 ;; Setup custom shortcuts
 ;;(global-set-key "\C-x\C-g" 'goto-line)
 ;;(global-set-key [f1] 'compile)
@@ -211,18 +198,12 @@
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package git-timemachine :ensure t :defer t)
 
-(use-package magit :defer 5 :ensure t
+(use-package magit :defer t :ensure t
   :bind ("s-m" . magit-status)
   :init
-  (use-package magit-popup :defer t :ensure t)
-  (setq magit-auto-revert-mode t)
-  (setq magit-last-seen-setup-instructions "1.4.0")
-  (autoload 'magit-status "magit" nil t)
-  :config
-  (message "magit loaded with :defer 5"))
+  (use-package magit-popup :defer t :ensure t))
 
-(use-package environment-lib
-  :load-path elisp-dir)
+(use-package environment-lib :load-path elisp-dir)
 
 ;; -t: semicolon is the command line terminator.
 ;; default is end-of-line as a SQL statement terminator
@@ -241,6 +222,10 @@
         ;; (define-key global-map [f5] 'toggle-truncate-lines)
         )
   :init
+  ;; Always prefer to load newer files,
+  ;; instead of giving precedence to the .elc files
+  (setq load-prefer-newer t)
+
   (defun buffer-mode (buffer-or-string)
     "Returns the major mode associated with a buffer."
     (with-current-buffer buffer-or-string
@@ -281,12 +266,12 @@
 
 (use-package helm-startup :load-path elisp-dir)
 
-(use-package drag-stuff :defer t :ensure t
-  :init
+(use-package drag-stuff :ensure t
+  :config
   (drag-stuff-global-mode t))
 
 (use-package vimrc-mode :defer t :ensure t
-  :init
+  :config
   (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode)))
 
 ;; dired is not among *Packages*; can't use :ensure t
@@ -348,24 +333,13 @@
         sml/projectile-replacement-format "%s/")
   (add-hook 'after-init-hook 'sml/setup))
 
-(use-package evil-startup
-  :load-path elisp-dir)
+(use-package evil-startup :load-path elisp-dir)
 
 ;; see package buffer-move
 (use-package transpose-frame :defer t :ensure t
   :load-path elisp-dir
   :bind (("<f8>"   . transpose-frame)
          ("M-<f8>" . flop-frame)))
-
-(use-package time :ensure t
-  :init
-  (setq display-time-24hr-format 1)
-  (display-time-mode 1))
-
-(defun back-window ()
-  ;; opposite of other-window
-  (interactive)
-  (other-window -1))
 
 (use-package paradox :defer t :ensure t
   :bind (;; ("f9" . paradox-list-packages) ; TODO auto enable/disable evil-mode
@@ -381,13 +355,6 @@
   (use-package spinner :defer t :ensure t)
   (setq paradox-github-token (getenv "GITHUB_TOKEN")
         paradox-automatically-star t))
-
-;; (setq inferior-lisp-program "browser-repl")
-;; (setq inferior-lisp-program "cljs-repl")
-;; (message (concat "inferior-lisp-program: " inferior-lisp-program))
-
-;; (setq inferior-lisp-buffer "browser-repl")
-;; (message inferior-lisp-buffer)
 
 ;; edit every instance of word/variable in the buffer - like multiple cursors
 (use-package iedit :defer t :ensure t
@@ -430,7 +397,8 @@
       "l" 'ace-jump-line-mode)))
 
 (use-package expand-region :defer t :ensure t
-  :bind ("C-=" . er/expand-region)
+  :bind (("C-="        . er/expand-region)
+         ("<C-return>" . er/expand-region))
   :init
   (when (and (featurep 'evil) (featurep 'evil-leader))
     (progn
@@ -455,8 +423,8 @@
   (add-to-list 'load-path "~/.emacs.d")
   (setq edit-server-url-major-mode-alist
         '(("github\\.com" . markdown-mode)
-          ("github\\.com" . md)))
-  (setq edit-server-new-frame nil)
+          ("github\\.com" . md))
+        edit-server-new-frame nil)
   (add-hook 'after-init-hook 'server-start t)
   (add-hook 'after-init-hook 'edit-server-start t))
 
@@ -467,8 +435,6 @@
         ;; "chromium-browser" does not work properly on ubuntu 13.10
         ;; "chrome" ; cygwin
         "google-chrome"))
-
-(setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
 ;; xfce4-settings-manager -> Window Manger -> Keyboard -> ...
 (use-package duplicate-thing :defer t :ensure t
@@ -500,10 +466,6 @@
          ("C-/"   . undo-tree-undo)))
 
 ;; (global-set-key [scroll] 'exec-test-macro)
-
-(defun switch-to-buffer-scratch ()
-  (interactive)
-  (switch-to-buffer "*scratch*"))
 
 (unless (display-graphic-p)
   (use-package evil-terminal-cursor-changer :defer t :ensure t))
@@ -573,92 +535,13 @@
          ;;                           (message "whitespace-cleanup done.")))
          )
   :init
-  (setq require-final-newline t)
-  (set-default 'indicate-empty-lines t)
-  (setq show-trailing-whitespace t))
-
-;; Always prefer to load newer files,
-;; instead of giving precedence to the .elc files
-(setq load-prefer-newer t)
+  (setq require-final-newline t
+        show-trailing-whitespace t)
+  (set-default 'indicate-empty-lines t))
 
 (use-package popwin :defer t :ensure t ; no annoying buffers
   :config
-  (popwin-mode 1)
-
-  (defvar popwin:special-display-config-backup popwin:special-display-config)
-  ;; (setq display-buffer-function 'popwin:display-buffer)
-
-  ;; basic
-  (push '("*Help*" :stick t :noselect t) popwin:special-display-config)
-  (push '("*helm world time*" :stick t :noselect t)
-        popwin:special-display-config)
-
-  ;; magit
-  (push '("*magit-process*" :stick t) popwin:special-display-config)
-
-  ;; quickrun
-  (push '("*quickrun*" :stick t) popwin:special-display-config)
-
-  ;; dictionaly
-  (push '("*dict*" :stick t) popwin:special-display-config)
-  (push '("*sdic*" :stick t) popwin:special-display-config)
-
-  ;; popwin for slime
-  (push '(slime-repl-mode :stick t) popwin:special-display-config)
-
-  ;; man
-  (push '(Man-mode :stick t :height 20) popwin:special-display-config)
-
-  ;; Elisp
-  (push '("*ielm*" :stick t) popwin:special-display-config)
-  (push '("*eshell pop*" :stick t) popwin:special-display-config)
-
-  ;; pry
-  (push '(inf-ruby-mode :stick t :height 20) popwin:special-display-config)
-
-  ;; python
-  (push '("*Python*"   :stick t) popwin:special-display-config)
-  (push '("*Python Help*" :stick t :height 20) popwin:special-display-config)
-  (push '("*jedi:doc*" :stick t :noselect t) popwin:special-display-config)
-
-  ;; Haskell
-  (push '("*haskell*" :stick t) popwin:special-display-config)
-  (push '("*GHC Info*") popwin:special-display-config)
-
-  ;; sgit
-  (push '("*sgit*" :position right :width 0.5 :stick t)
-        popwin:special-display-config)
-
-  ;; git-gutter
-  (push '("*git-gutter:diff*" :width 0.5 :stick t)
-        popwin:special-display-config)
-
-  ;; direx - simple directory browser
-  (push '(direx:direx-mode :position left :width 40 :dedicated t)
-        popwin:special-display-config)
-
-  (push '("*Occur*" :stick t) popwin:special-display-config)
-
-  ;; prodigy - manage external services from emacs
-  (push '("*prodigy*" :stick t) popwin:special-display-config)
-
-  ;; malabar-mode - better java mode
-  (push '("*Malabar Compilation*" :stick t :height 30)
-        popwin:special-display-config)
-
-  ;; org-mode
-  (push '("*Org tags*" :stick t :height 30)
-        popwin:special-display-config)
-
-  ;; Completions
-  (push '("*Completions*" :stick t :noselect t) popwin:special-display-config)
-
-  ;; ggtags
-  (push '("*ggtags-global*" :stick t :noselect t :height 30)
-        popwin:special-display-config)
-
-  ;; async shell commands
-  (push '("*Async Shell Command*" :stick t) popwin:special-display-config))
+  (popwin-mode 1))
 
 ;; TODO disable color-identifiers-mode only for specific modes: clojure-mode
 (use-package color-identifiers-mode :ensure t
@@ -675,7 +558,7 @@
   :config
   (volatile-highlights-mode t))
 
-(use-package markdown-mode :ensure t
+(use-package markdown-mode :defer t :ensure t
   :init
   (add-hook 'markdown-mode-hook
             (lambda () (electric-indent-local-mode -1))))
@@ -716,9 +599,7 @@
 
 (use-package powerline :defer t :ensure t
   :init
-  (use-package powerline-evil :defer t :ensure t
-    ;; :init (powerline-evil-center-color-theme)
-    )
+  (use-package powerline-evil :defer t :ensure t)
   (defvar mode-line-cleaner-alist
     `((auto-complete-mode . " α")
       (yas-minor-mode . " γ")
@@ -762,31 +643,9 @@ want to use in the modeline *in lieu of* the original.")
 ;; TODO auto-dim-other-buffers should use other font color
 ;; (use-package auto-dim-other-buffers :defer t :ensure t)
 
-;; Cycle through buffers with the same `major-mode
+;; Cycle through buffers with the same `major-mode; see also uzumaki
 (use-package cbm :defer t :ensure t
   :bind ("C-'" . cbm-cycle))
-
-(use-package uzumaki
-  :disabled t ; TODO uzumaki messes up with s-l from cider
-  ;; :defer t
-  :ensure t
-  :config
-  ;; (uzumaki-set-cycle-mode 'regex)
-  ;; (uzumaki-add-regex "^\\*\\.clj$")
-  ;; (uzumaki-add-regex "^*cider-repl\\**")
-  (defun my:uzumaki-next ()
-    (interactive)
-    (message "next-default")
-    (uzumaki-cycle-to-next-buffer))
-  (defun my:uzumaki-prev ()
-    (interactive)
-    (message "prev-default")
-    (uzumaki-cycle-to-prev-buffer))
-
-  (bind-keys :map uzumaki-minor-mode-map
-             ("<C-tab>" . my:uzumaki-next)
-             ("C-`" . my:uzumaki-prev))
-  (uzumaki-minor-mode 1))
 
 (use-package emacs :ensure t
   :bind
@@ -810,14 +669,6 @@ want to use in the modeline *in lieu of* the original.")
   ("s-3"               . split-other-window-right)
   ("<s-f11>"           . find-emacs-init-file)
   ("<s-f12>"           . switch-to-buffer-scratch)
-
-  ;; (unbind-key "<C-tab>")
-  ;; (unbind-key "C-`")
-  ;; ("<C-tab>"           . bury-buffer)
-  ;; ("C-`"               . unbury-buffer)
-  ;; ("<C-tab>"           . next-buffer)
-  ;; ("C-`"               . previous-buffer)
-
   ("<C-S-iso-lefttab>" . unbury-buffer)
   ("M-s-<left>"        . shrink-window-horizontally)
   ("M-s-<right>"       . enlarge-window-horizontally)
@@ -853,6 +704,10 @@ want to use in the modeline *in lieu of* the original.")
 ;  ((kbd "<s-f4>") . kmacro-end-or-call-macro)
    )
   :init
+  (defun switch-to-buffer-scratch ()
+    (interactive)
+    (switch-to-buffer "*scratch*"))
+
   (defun find-emacs-init-file ()
     (interactive)
     (find-file (concat config-dir "/.emacs.el")))

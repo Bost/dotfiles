@@ -5,29 +5,55 @@
 ;;
 ;; see https://github.com/thierryvolpiatto/emacs-tv-config/blob/master/init-helm-thierry.el
 (use-package helm-config
-  :config ; Code to run after PACKAGE-NAME has been loaded
-  (progn
-    (helm-mode 1)
-    (helm-autoresize-mode 1)
-    (helm-adaptive-mode 1)  ; adaptive sorting in all sources
-    (helm-push-mark-mode 1) ; improved version of `push-mark'
-    ))
+;; :init
+;;  (progn
+;;   (helm-mode 1)
+;;    (helm-autoresize-mode 1)
+;;    (helm-adaptive-mode 1)  ; adaptive sorting in all sources
+;;    (helm-push-mark-mode 1) ; improved version of `push-mark'
+;;    )
+  )
 
 (defun helm-git-version ()
   (shell-command-to-string
    "git log --pretty='format:%H' -1"))
 
 (use-package helm :defer t :ensure t ; :pin melpa-stable
+  :config
+  (bind-keys :map helm-buffer-map
+             ("s-a" . helm-next-line)
+             ("<C-tab>" . helm-next-line-exit-minibuf)
+             ("C-`" . helm-prev-line-exit-minibuf)
+             )
   :bind (;; web search for PATTERN with search ENGINE
          ;; ("s-u"   . helm-surfraw)
+         ("<C-tab>" . helm-buffers-list)
+         ("C-`"     . helm-buffers-list)
+
          ("M-x"   . helm-M-x)
          ("s-p"   . helm-projectile)
          ("s-a"   . helm-buffers-list)
          ("C-x b" . helm-mini)
          ("s-b"   . helm-mini)
          ("M-y"   . helm-show-kill-ring)
-         ("<f9>"   . helm-list-elisp-packages-no-fetch))
+         ("<f9>"  . helm-list-elisp-packages-no-fetch))
   :init ; Code to run before PACKAGE-NAME has been loaded.
+   (helm-mode 1)
+    (helm-autoresize-mode 1)
+    (helm-adaptive-mode 1)  ; adaptive sorting in all sources
+    (helm-push-mark-mode 1) ; improved version of `push-mark'
+  (defun helm-next-line-exit-minibuf ()
+    (interactive)
+    (helm-move-line-exit-minibuf 'helm-next-line))
+
+  (defun helm-prev-line-exit-minibuf ()
+    (interactive)
+    (helm-move-line-exit-minibuf 'helm-previous-line))
+
+  (defun helm-move-line-exit-minibuf (f)
+    (funcall f)
+    ;; (helm-maybe-exit-minibuffer)
+    (helm-exit-minibuffer))
 
   ;; (use-package helm-dictionary ; local offline dictionaries
   ;;  :ensure t
@@ -43,6 +69,11 @@
   (use-package helm-ack           :defer t :ensure t)
   (use-package helm-cider-history :defer t :ensure t)
   (use-package macrostep          :defer t :ensure t) ; M-x macrostep-expand
+  (use-package helm-descbinds     :defer t :ensure t
+    :config (helm-descbinds-mode))
+  (use-package helm-ls-git        :defer t :ensure t
+    :bind (("C-x C-d" . helm-browse-project)
+           ("C-<f6>" . helm-ls-git-ls)))
 
   ;; see helm-surfraw; use google-this as an alternative
   (use-package helm-google :defer t :ensure t ; :pin melpa-stable
@@ -54,9 +85,10 @@
 
     ;; see ace-jump-buffer
     (use-package helm-flycheck :defer t :ensure t
-      :init
-      (eval-after-load 'flycheck
-        '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck)))
+      :config
+      (bind-keys :map flycheck-mode-map
+                 ("C-c ! h" . helm-flycheck)))
+
 
     (use-package helm-projectile :defer t :ensure t)
 
@@ -73,19 +105,15 @@
     ;; (add-hook 'ruby-mode-hook 'projectile-mode)
     (use-package persp-projectile :defer t :ensure t
       :bind ("C-s-p" . helm-projectile-ack)
-      :init
+      :config
       ;; (desktop-save-mode 1)
       ;; TODO save perspective
       (use-package perspective :defer t :ensure t
-        :init
+        :config
         (persp-mode))
 
-      (projectile-global-mode)
       ;; (helm-projectile-on)
-      )
-
-    (global-set-key (kbd "C-c h") 'helm-command-prefix)
-    (global-unset-key (kbd "C-x c"))
+      (projectile-global-mode))
 
     ;; rebind tab to do persistent action
     ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
