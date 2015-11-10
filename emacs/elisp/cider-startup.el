@@ -17,6 +17,7 @@
          ("s-,"   . cider-jump-back)
          ("M-m"   . main-all))
   :config
+  (setq gui-elements t) ; because of CIDER menu
   (bind-keys :map cider-repl-mode-map
              ("s-c" . cider-repl-clear-buffer))
   :init

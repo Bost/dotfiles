@@ -704,6 +704,8 @@ want to use in the modeline *in lieu of* the original.")
 ;  ((kbd "<s-f4>") . kmacro-end-or-call-macro)
    )
   :init
+  (setq gui-elements -1)
+
   (defun switch-to-buffer-scratch ()
     (interactive)
     (switch-to-buffer "*scratch*"))
@@ -758,8 +760,6 @@ want to use in the modeline *in lieu of* the original.")
            (t
             (rename-file filename new-name t)
             (set-visited-file-name new-name t t)))))))
-
-  (setq gui-elements -1)
 
   ;; disable most of this stuff early in the process so it doesn’t flicker.
   ;; (if (fboundp 'tool-bar-mode) (tool-bar-mode gui-elements))
