@@ -352,8 +352,10 @@
   :bind (("<f8>"   . transpose-frame)
          ("M-<f8>" . flop-frame)))
 
+;; (use-package ack-menu :defer t :ensure t)
+
 (use-package paradox :defer t :ensure t
-  :bind (;; ("f9" . paradox-list-packages) ; TODO auto enable/disable evil-mode
+  :bind (("<f9>"   . paradox-list-packages) ; TODO auto enable/disable evil-mode
          ("<s-f9>" . paradox-upgrade-packages))
   :init
   (defun package-auto-upgrade ()
@@ -659,61 +661,62 @@ want to use in the modeline *in lieu of* the original.")
   :bind ("C-'" . cbm-cycle))
 
 (use-package emacs :ensure t
-  :bind
-  (
-  ("<f10>" . menu-bar-open) ; this is the default
-  ("s-s"   . save-buffer)
-  ("s-f"   . helm-find-files)
-  ("s-x"   . kill-region)    ; cut
-  ("s-v"   . yank)           ; paste
-  ;; see evil-window-map
-  ;; TODO s-q should work like C-tab if only one window is visible
-  ("s-q"               . other-window)
-  ("s-0"               . delete-window)
-  ("s-1"               . delete-other-windows)
-  ("C-s-r"             . rename-file-and-buffer)
-  ("<f3>"              . find-grep) ; Use -e '...' instead of -e "..."
-  ("<f7>"              . find-file-emacs)
-  ("s-k"               . close-buffer)
-  ("C-s-k"             . delete-file-and-close-its-buffer)
-  ("s-2"               . split-other-window-below)
-  ("s-3"               . split-other-window-right)
-  ("<s-f11>"           . find-emacs-init-file)
-  ("<s-f12>"           . switch-to-buffer-scratch)
-  ("<C-S-iso-lefttab>" . unbury-buffer)
-  ;; ("M-s-<left>"        . shrink-window-horizontally)
-  ;; ("M-s-<right>"       . enlarge-window-horizontally)
-  ("M-s-<down>"        . enlarge-window)
-  ("M-s-<up>"          . shrink-window)
-  ("s-u"               . eval-buffer) ; might be in lisp-mode-keys see ("s-u" . helm-surfraw)
+  :bind (("<f10>" . menu-bar-open) ; this is the default
+         ("s-e"   . eval-last-sexp)
+         ("s-E"   . eval-defun)
+         ("s-D"   . eval-defun)
+         ("s-s"   . save-buffer)
+         ("s-f"   . helm-find-files)
+         ("s-x"   . kill-region)    ; cut
+         ("s-v"   . yank)           ; paste
+         ;; see evil-window-map
+         ;; TODO s-q should work like C-tab if only one window is visible
+         ("s-q"               . other-window)
+         ("s-0"               . delete-window)
+         ("s-1"               . delete-other-windows)
+         ("C-s-r"             . rename-file-and-buffer)
+         ;; ("<f3>"              . find-grep) ; Use -e '...' instead of -e "..."
+         ("<f7>"              . find-file-emacs)
+         ("s-k"               . close-buffer)
+         ("C-s-k"             . delete-file-and-close-its-buffer)
+         ("s-2"               . split-other-window-below)
+         ("s-3"               . split-other-window-right)
+         ("<s-f11>"           . find-emacs-init-file)
+         ("<s-f12>"           . switch-to-buffer-scratch)
+         ("<C-S-iso-lefttab>" . unbury-buffer)
+         ;; ("M-s-<left>"        . shrink-window-horizontally)
+         ;; ("M-s-<right>"       . enlarge-window-horizontally)
+         ("M-s-<down>"        . enlarge-window)
+         ("M-s-<up>"          . shrink-window)
+         ("s-u"               . eval-buffer) ; might be in lisp-mode-keys see ("s-u" . helm-surfraw)
 
-  ;; (bind-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
-  ;; (bind-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
-  ;; (bind-key (kbd "<s-tab>") 'other-window)
+         ;; (bind-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
+         ;; (bind-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
+         ;; (bind-key (kbd "<s-tab>") 'other-window)
 
-;  ((kbd "C-<f11>") . (lambda ()
-;                (interactive)
-;                (shell-command
-;                 ;; "cvs-ci-hooks.sh"
-;                 "")))
-;
-;  ((kbd "C-<f8>") . (lambda ()
-;               (interactive)
-;               (shell-command
-;                ;; "cvs-test.sh -lo :pserver:faizal@localhost:/myrepos"
-;                "")))
-;  ((kbd "C-<f12>") . (lambda ()
-;                         (interactive)
-;                         (shell-command
-;                          ;; (concat "cvs-test.sh -fr "
-;                          ;;         ":pserver:"
-;                          ;;         "rsvoboda@dlnxcvshooksdev01.ptx.fr.sopra"
-;                          ;;         ":2401/cvscorfja")
-;                          "")))
-;
-;  ((kbd "<s-f3>") . kmacro-start-macro-or-insert-counter)
-;  ((kbd "<s-f4>") . kmacro-end-or-call-macro)
-   )
+         ;;  ((kbd "C-<f11>") . (lambda ()
+         ;;                (interactive)
+         ;;                (shell-command
+         ;;                 ;; "cvs-ci-hooks.sh"
+         ;;                 "")))
+         ;;
+         ;;  ((kbd "C-<f8>") . (lambda ()
+         ;;               (interactive)
+         ;;               (shell-command
+         ;;                ;; "cvs-test.sh -lo :pserver:faizal@localhost:/myrepos"
+         ;;                "")))
+         ;;  ((kbd "C-<f12>") . (lambda ()
+         ;;                         (interactive)
+         ;;                         (shell-command
+         ;;                          ;; (concat "cvs-test.sh -fr "
+         ;;                          ;;         ":pserver:"
+         ;;                          ;;         "rsvoboda@dlnxcvshooksdev01.ptx.fr.sopra"
+         ;;                          ;;         ":2401/cvscorfja")
+         ;;                          "")))
+         ;;
+         ;;  ((kbd "<s-f3>") . kmacro-start-macro-or-insert-counter)
+         ;;  ((kbd "<s-f4>") . kmacro-end-or-call-macro)
+         )
   :init
   (setq gui-elements -1)
 
@@ -882,7 +885,6 @@ See: `xah-forward-block'"
 
   (defun emacs-lisp-mode-keys ()
     "Modify keymaps used by `emacs-lisp-mode'."
-    (local-set-key (kbd "s-e") 'eval-last-sexp)
     (if (featurep 'evil-leader)
         (evil-leader/set-key "e" 'eval-last-sexp)))
   (add-hook 'emacs-lisp-mode-hook 'emacs-lisp-mode-keys)
