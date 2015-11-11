@@ -32,8 +32,9 @@
          ("s-a"   . helm-buffers-list)
          ("C-x b" . helm-mini)
          ("s-b"   . helm-mini)
-         ("M-y"   . helm-show-kill-ring)
-         ("<f9>"  . helm-list-elisp-packages-no-fetch))
+         ;; ("<f9>"  . helm-list-elisp-packages-no-fetch)
+         ;; ("<f9>"  . helm-list-elisp-packages)
+         ("M-y"   . helm-show-kill-ring))
   :init ; Code to run before PACKAGE-NAME has been loaded.
    (helm-mode 1)
     (helm-autoresize-mode 1)
@@ -63,7 +64,10 @@
   ;; TODO bind `cljr-helm` to a key (I'd suggest C-c r) in Clojure mode
   (use-package cljr-helm          :defer t :ensure t)
   (use-package helm-commandlinefu :defer t :ensure t)
-  (use-package helm-ack           :defer t :ensure t)
+  (use-package helm-ag            :defer t :ensure t
+    :config (setq helm-ag-base-command
+                  "ag --nocolor --nogroup --ignore *~ --ignore-case")
+    :bind ("<f3>" . helm-ag))
   (use-package helm-cider-history :defer t :ensure t)
   (use-package macrostep          :defer t :ensure t) ; M-x macrostep-expand
   (use-package helm-descbinds     :defer t :ensure t
