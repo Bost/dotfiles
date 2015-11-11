@@ -1,4 +1,4 @@
-;;; cider-startup.el --- startup file for cider. -*- lexical-binding: t -*- 
+;;; cider-startup.el --- startup file for cider. -*- lexical-binding: t -*-
 ;;; Code:
 
 (use-package cider :defer t :ensure t
@@ -17,7 +17,7 @@
          ("s-,"   . cider-jump-back)
          ("M-m"   . main-all))
   :config
-  (setq gui-elements t) ; because of CIDER menu
+  (setq gui-elements 1) ; because of CIDER menu
   (bind-keys :map cider-repl-mode-map
              ("s-c" . cider-repl-clear-buffer))
   :init
@@ -29,6 +29,7 @@
   ;; cider depends on clojure mode
   (use-package clojure-mode :defer t :ensure t
     :init
+    (use-package clojure-mode-extra-font-locking :ensure t)
     (clojure-mode)
     (defun clojure-mode-keys ()
       "Modify keymaps used by `repl-mode'."

@@ -5,14 +5,11 @@
 ;;
 ;; see https://github.com/thierryvolpiatto/emacs-tv-config/blob/master/init-helm-thierry.el
 (use-package helm-config
-;; :init
-;;  (progn
-;;   (helm-mode 1)
-;;    (helm-autoresize-mode 1)
-;;    (helm-adaptive-mode 1)  ; adaptive sorting in all sources
-;;    (helm-push-mark-mode 1) ; improved version of `push-mark'
-;;    )
-  )
+  :init
+  (helm-mode 1)
+  (helm-autoresize-mode 1)
+  (helm-adaptive-mode 1)  ; adaptive sorting in all sources
+  (helm-push-mark-mode 1)) ; improved version of `push-mark'
 
 (defun helm-git-version ()
   (shell-command-to-string

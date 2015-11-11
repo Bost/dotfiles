@@ -64,8 +64,16 @@
 (use-package auto-package-update :ensure t)
 
 (use-package paredit :ensure t
-  :bind (("s-<left>"  . paredit-backward-slurp-sexp)
-         ("s-<right>" . paredit-backward-barf-sexp))
+  :bind (;; Move the sexp
+         ;; ("M-s-<left>"  . paredit-forward-slurp-sexp)
+         ;; ("M-s-<right>" . paredit-forward-barf-sexp)
+         ;; ("C-s-<left>"  . paredit-backward-barf-sexp)
+         ;; ("C-s-<right>" . paredit-backward-slurp-sexp)
+         ;; Move the parenthesis
+         ("M-s-<left>"  . paredit-forward-barf-sexp)
+         ("M-s-<right>" . paredit-forward-slurp-sexp)
+         ("C-s-<left>"  . paredit-backward-slurp-sexp)
+         ("C-s-<right>" . paredit-backward-barf-sexp))
   :init
     ;; works only with enabled gui elements: see s-f10
   (use-package paredit-menu :ensure t))
@@ -204,6 +212,9 @@
   (use-package magit-popup :defer t :ensure t))
 
 (use-package environment-lib :load-path elisp-dir)
+
+(use-package discover :ensure t ; might be useless
+  :config (global-discover-mode 1))
 
 ;; -t: semicolon is the command line terminator.
 ;; default is end-of-line as a SQL statement terminator
@@ -670,8 +681,8 @@ want to use in the modeline *in lieu of* the original.")
   ("<s-f11>"           . find-emacs-init-file)
   ("<s-f12>"           . switch-to-buffer-scratch)
   ("<C-S-iso-lefttab>" . unbury-buffer)
-  ("M-s-<left>"        . shrink-window-horizontally)
-  ("M-s-<right>"       . enlarge-window-horizontally)
+  ;; ("M-s-<left>"        . shrink-window-horizontally)
+  ;; ("M-s-<right>"       . enlarge-window-horizontally)
   ("M-s-<down>"        . enlarge-window)
   ("M-s-<up>"          . shrink-window)
   ("s-u"               . eval-buffer) ; might be in lisp-mode-keys see ("s-u" . helm-surfraw)
