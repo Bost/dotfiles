@@ -15,7 +15,7 @@
          ("s-t"   . cider-test-run-tests)
          ("s-."   . cider-find-var)
          ("s-,"   . cider-jump-back)
-         ("M-m"   . main-all))
+         ("s-M"   . main-all))
   :config
   (setq gui-elements 1) ; because of CIDER menu
   (bind-keys :map cider-repl-mode-map
@@ -23,8 +23,9 @@
   :init
   (defun main-all ()
     (interactive)
+    (cider-switch-to-repl-buffer)
     (end-of-buffer)
-    (message "(-main \"-a\")"))
+    (insert "(-main \"-a\")"))
 
   ;; cider depends on clojure mode
   (use-package clojure-mode :defer t :ensure t
@@ -50,7 +51,6 @@
         ;; cider-stacktrace-default-filters '(tooling dup)
         nrepl-buffer-name-separator "-"
         nrepl-buffer-name-show-port t
-        cider-repl-display-in-current-window t
         cider-repl-result-prefix ";; => "
         ;; cider-interactive-eval-result-prefix ";; => "
         ;; cider-repl-use-clojure-font-lock t
