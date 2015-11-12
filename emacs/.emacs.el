@@ -129,8 +129,7 @@
          ("C-s-d" . purpose-toggle-window-purpose-dedicated)
          ;; C-c , D: window-buffer
          ("C-s-D" . purpose-toggle-window-buffer-dedicated))
-  :init
-  (purpose-mode))
+  :init (purpose-mode))
 
 ;; (use-package auto-complete-config :disabled t
 ;;   :init
@@ -153,16 +152,14 @@
 
 (use-package linum-relative :defer t :ensure t
   :bind ("C-s-n" . linum-relative-toggle)
-  :init
-  (global-linum-mode t))
+  :init (global-linum-mode t))
 
 (use-package eshell :defer t :ensure t
   :bind ("s-<f1>" . eshell))
 
+;; reload all buffers when the file is changed
 (use-package autorevert :defer t :ensure t
-  :init
-  ;; reload all buffers when the file is changed
-  (global-auto-revert-mode t))
+  :init (global-auto-revert-mode t))
 
 ;;(desktop-load-default)
 ;;(desktop-read)
@@ -208,8 +205,7 @@
 
 (use-package magit :defer t :ensure t
   :bind ("s-m" . magit-status)
-  :init
-  (use-package magit-popup :defer t :ensure t))
+  :init (use-package magit-popup :defer t :ensure t))
 
 (use-package environment-lib :load-path elisp-dir)
 
@@ -278,12 +274,10 @@
 (use-package helm-startup :load-path elisp-dir)
 
 (use-package drag-stuff :ensure t
-  :config
-  (drag-stuff-global-mode t))
+  :config (drag-stuff-global-mode t))
 
 (use-package vimrc-mode :defer t :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode)))
+  :config (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode)))
 
 ;; dired is not among *Packages*; can't use :ensure t
 (use-package dired :defer t
@@ -299,8 +293,7 @@
     ;; try :ensure marmalade if not available on melpa
     :init
     (use-package dired-details+ :ensure t
-      :init
-      (use-package dired-details+ :ensure t)))
+      :init (use-package dired-details+ :ensure t)))
 
   (use-package dired-subtree :defer t :ensure t
     :config
@@ -332,8 +325,7 @@
 
 ;; layout management
 (use-package winner :defer t :ensure t
-  :init
-  (winner-mode 1))
+  :init (winner-mode 1))
 
 (use-package smart-mode-line :ensure t :init
   (setq sml/shorten-directory t
@@ -561,8 +553,7 @@
   (set-default 'indicate-empty-lines t))
 
 (use-package popwin :defer t :ensure t ; no annoying buffers
-  :config
-  (popwin-mode 1))
+  :config (popwin-mode 1))
 
 ;; TODO disable color-identifiers-mode only for specific modes: clojure-mode
 (use-package color-identifiers-mode :ensure t
@@ -576,17 +567,12 @@
 
 ;; visual feedback on some operation
 (use-package volatile-highlights :defer t :ensure t
-  :config
-  (volatile-highlights-mode t))
+  :config (volatile-highlights-mode t))
 
-(use-package markdown-mode :defer t :ensure t
-  :init
-  (add-hook 'markdown-mode-hook
-            (lambda () (electric-indent-local-mode -1))))
+(use-package markdown-mode :defer t :ensure t)
 
 (use-package mmm-mode :ensure t ; Allow Multiple Major Modes in a buffer
-  :config
-  (setq mmm-global-mode 'maybe))
+  :config (setq mmm-global-mode 'maybe))
 
 ;; I hate smart quotes, too
 (defcustom smart-to-ascii
