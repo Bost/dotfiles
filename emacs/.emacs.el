@@ -485,13 +485,6 @@
 
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
-(use-package ace-window :defer t :ensure t
-  :bind ("M-o" . ace-window)
-  :init
-  ;; the sequence of leading characters for each window:
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
-
-(use-package sublimity :ensure t
   :init
   ;; only smooth-scrolling together with sublimity leads to
   ;; smooth scrolling really working! WTF?
