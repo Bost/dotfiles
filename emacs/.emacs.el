@@ -75,7 +75,7 @@
          ("C-s-<left>"  . paredit-backward-slurp-sexp)
          ("C-s-<right>" . paredit-backward-barf-sexp))
   :init
-    ;; works only with enabled gui elements: see s-f10
+  ;; works only with enabled gui elements: see s-f10
   (use-package paredit-menu :ensure t))
 
 ;;(defun skewer-mode-keys ()
@@ -485,11 +485,11 @@
 
 ;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
+(use-package sublimity :ensure t :defer t
   :init
-  ;; only smooth-scrolling together with sublimity leads to
-  ;; smooth scrolling really working! WTF?
-  (use-package smooth-scrolling :ensure t)
-  (use-package sublimity-scroll); inside sublimity :ensure t not needed
+  ;; sublimity-scroll is loaded together with sublimity - no :ensure needed
+  ;; sublimity-scroll does not work if defered
+  (use-package sublimity-scroll)
   (sublimity-mode 1))
 
 ;; another possibility how to define a key chord:
