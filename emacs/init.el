@@ -204,6 +204,7 @@
   :bind ("s-m" . magit-status)
   :init (use-package magit-popup :defer t :ensure t))
 
+;; BUG: environment-lib can't be called in the beginning
 (use-package environment-lib :load-path elisp-dir)
 
 (use-package discover :ensure t ; might be useless
