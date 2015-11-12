@@ -58,9 +58,12 @@
 ;; this is a mess: use-package-chords must be called before
 ;; using keyword :chord
 (use-package use-package-chords :ensure t
-	     :config (key-chord-mode 1))
+  :config (key-chord-mode 1))
 
 (use-package paredit :ensure t
+  :config
+  (unbind-key "<C-left>" paredit-mode-map)
+  (unbind-key "<C-right>" paredit-mode-map)
   :bind (;; Move the sexp
          ;; ("M-s-<left>"  . paredit-forward-slurp-sexp)
          ;; ("M-s-<right>" . paredit-forward-barf-sexp)
@@ -72,8 +75,16 @@
          ("C-s-<left>"  . paredit-backward-slurp-sexp)
          ("C-s-<right>" . paredit-backward-barf-sexp))
   :init
+  (enable-paredit-mode)
   ;; works only with enabled gui elements: see s-f10
-  (use-package paredit-menu :ensure t))
+  (use-package paredit-menu :ensure t)
+  ;; TODO see sp-forward-sexp sp-backward-sexp, sp-down-sexp, sp-up-sexp
+  ;; TODO see sp-next-sexp
+  (use-package smartparens :ensure t
+    :init
+    (require 'smartparens-config)
+    (smartparens-global-mode)
+    (show-smartparens-mode)))
 
 ;;(defun skewer-mode-keys ()
 ;;  "Modify keymaps used by `skewer-mode'."
@@ -485,6 +496,7 @@
   :init
   ;; sublimity-scroll is loaded together with sublimity - no :ensure needed
   ;; sublimity-scroll does not work if defered
+  (use-package smooth-scrolling :ensure t) ; do I really need smooth-scrolling package?
   (use-package sublimity-scroll)
   (sublimity-mode 1))
 
@@ -639,8 +651,8 @@ want to use in the modeline *in lieu of* the original.")
 ;; TODO auto-dim-other-buffers should use other font color
 ;; (use-package auto-dim-other-buffers :defer t :ensure t)
 
-;; Cycle through buffers with the same `major-mode; see also uzumaki
-(use-package cbm :defer t :ensure t
+;; Cycle bufffers - see also uzumaki
+(use-package cbm :defer t :ensure t ;; Cycle through buffers with the same `major-mode
   :bind ("C-'" . cbm-cycle))
 
 (use-package emacs :ensure t

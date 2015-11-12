@@ -15,8 +15,7 @@
 
   ;; TODO see helm-bookmarks
   (use-package evil-visual-mark-mode :defer t :ensure t
-    :init
-    (evil-visual-mark-mode))
+    :init (evil-visual-mark-mode))
 
   ;; (interactive "r")
   ;; TODO backspace smartparens
@@ -89,7 +88,7 @@
            ("<s-kp-add>"      . evil-numbers/inc-at-pt)
            ("<s-kp-subtract>" . evil-numbers/dec-at-pt)))
 
-  (use-package evil-smartparens :defer t :ensure t
+  (use-package evil-smartparens :ensure t
     :init
     ;; evil-smartparens everywhere
     ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)

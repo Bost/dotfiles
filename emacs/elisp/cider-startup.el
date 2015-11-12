@@ -15,6 +15,7 @@
          ("s-t"   . cider-test-run-tests)
          ("s-."   . cider-find-var)
          ("s-,"   . cider-jump-back)
+         ;; TODO s-M does not work in REPL buffer
          ("s-M"   . main-all))
   :config
   (setq gui-elements 1) ; because of CIDER menu
