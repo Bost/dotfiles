@@ -17,7 +17,6 @@
 (add-to-list 'custom-theme-load-path
              (concat themes-dir "/emacs-color-theme-solarized/"))
 
-
 ;; set bash vars http_proxy/https_proxy/ftp_proxy so
 ;; url-proxy-services won't be needed
 ;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII - paredit keys at 27:20
@@ -26,10 +25,6 @@
 ;; TODO :bind (:map ...-mode-map); :bind is (bin-key); :bind ("M-h" . ace-jump-mode)
 ;; TODO M-x describe-personal-keybindings
 ;; TODO (or (use-package foo) (use-package bar))
-(if (eq system-type 'windows-nt)
-    (setq url-proxy-services '(("no_proxy" . "work\\.com")
-                               ("http" . (getenv "proxy"))
-                               ("https" . (getenv "proxy")))))
 
 (require 'package)
 (setq package-enable-at-startup nil
@@ -62,6 +57,11 @@
 ;; TODO auto-package-update, use-package :ensure dependend on inet availability
 ;; see :disabled t and :if condition
 (use-package auto-package-update :ensure t)
+
+;; this is a mess: use-package-chords must be called before
+;; using keyword :chord
+(use-package use-package-chords :ensure t
+	     :config (key-chord-mode 1))
 
 (use-package paredit :ensure t
   :bind (;; Move the sexp
@@ -401,7 +401,15 @@
          ;; ("s-a" . ace-jump-buffer) ; see helm-buffers-list
          ("<C-f2>" . ace-jump-line-mode))
   :init
-  (autoload 'ace-jump-mode "ace-jump-mode" nil t)
+  (bind-chords :map global-map
+               ("jj" . ace-jump-char-mode)
+               ("jk" . ace-jump-word-mode)
+               ("jl" . ace-jump-line-mode)
+               ("ss" . ace-jump-mode-pop-mark))
+
+  (autoload 'ace-jump-mode-pop-mark "ace-jump-mode" "Ace jump back:-)" t)
+  (eval-after-load "ace-jump-mode" '(ace-jump-mode-enable-mark-sync))
+
 
   (when (and (featurep 'evil) (featurep 'evil-leader))
     (evil-leader/set-key
