@@ -21,10 +21,7 @@
 ;; url-proxy-services won't be needed
 ;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII - paredit keys at 27:20
 ;; TODO (if (eq system-type 'gnu/linux))
-;; TODO do macro expansion for use-package
-;; TODO :bind (:map ...-mode-map); :bind is (bin-key); :bind ("M-h" . ace-jump-mode)
 ;; TODO M-x describe-personal-keybindings
-;; TODO (or (use-package foo) (use-package bar))
 
 (require 'package)
 (setq package-enable-at-startup nil
@@ -48,7 +45,7 @@
   (package-install 'use-package))
 
 (eval-when-compile ; reduce load time
-  ;; (defvar use-package-verbose t) ; measure startup time
+  (defvar use-package-verbose t) ; measure startup time
   (require 'use-package))
 ;; TODO auto install of diminish and bind-key doesn't work
 (require 'diminish)
@@ -388,8 +385,8 @@
          ))
 
 (use-package ace-jump-mode :ensure t :defer t
-  :bind (("<f2>" . ace-jump-mode)
-         ("s-j"  . ace-jump-mode)
+  :bind (("<f2>" . ace-jump-char-mode)
+         ("s-j"  . ace-jump-char-mode)
          ;; ("s-a" . ace-jump-buffer) ; see helm-buffers-list
          ("<C-f2>" . ace-jump-line-mode))
   :init
@@ -482,8 +479,6 @@
 
 (unless (display-graphic-p)
   (use-package evil-terminal-cursor-changer :defer t :ensure t))
-
-;; (define-key global-map [(control ?z) ?u] 'uniq-lines)
 
 (use-package sublimity :ensure t :defer t
   :init
@@ -713,7 +708,7 @@ want to use in the modeline *in lieu of* the original.")
 
   (defun find-emacs-init-file ()
     (interactive)
-    (find-file (concat config-dir "/.emacs.el")))
+    (find-file (concat config-dir "/init.el")))
 
   (defun split-other-window-and (f)
     (funcall f)
