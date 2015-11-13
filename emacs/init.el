@@ -345,9 +345,8 @@
 
 (use-package evil-startup :load-path elisp-dir)
 
-;; see package buffer-move
+;; see also the package buffer-move
 (use-package transpose-frame :defer t :ensure t
-  :load-path elisp-dir
   :bind (("<f8>"   . transpose-frame)
          ("M-<f8>" . flop-frame)))
 
