@@ -20,7 +20,6 @@
 ;; set bash vars http_proxy/https_proxy/ftp_proxy so
 ;; url-proxy-services won't be needed
 ;; TODO use-package https://www.youtube.com/watch?v=2TSKxxYEbII - paredit keys at 27:20
-;; TODO (if (eq system-type 'gnu/linux))
 ;; TODO M-x describe-personal-keybindings
 
 (require 'package)
@@ -29,7 +28,6 @@
                          ;; ("org" . "http://orgmode.org/elpa/")
                          ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
-
 
 ;; (add-to-list 'package-archives
 ;;              '("melpa-stable" . "http://stable.melpa.org/packages/")
@@ -496,7 +494,7 @@
   :init
   ;; sublimity-scroll is loaded together with sublimity - no :ensure needed
   ;; sublimity-scroll does not work if defered
-  (use-package smooth-scrolling :ensure t) ; do I really need smooth-scrolling package?
+  (use-package smooth-scrolling :ensure t) ; is smooth-scrolling package really needed
   (use-package sublimity-scroll)
   (sublimity-mode 1))
 
@@ -515,7 +513,7 @@
   (interactive)
   (if (active-minibuffer-window)
       (select-window (active-minibuffer-window))
-    (error "Minibuffer is not active")))
+    (error "Minibuffer not active")))
 
 (global-set-key "\C-co" 'switch-to-minibuffer) ;; Bind to: C-c o
 
@@ -526,7 +524,6 @@
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-
 
 ;; use following when: Source file '...' newer than byte-compiled file
 ;; (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
@@ -557,10 +554,8 @@
   :config (popwin-mode 1))
 
 ;; TODO disable color-identifiers-mode only for specific modes: clojure-mode
-(use-package color-identifiers-mode :ensure t
-  :disabled t ; color-identifiers-mode is nice but noisy
-  :init
-  (add-hook 'after-init-hook 'global-color-identifiers-mode)
+(use-package color-identifiers-mode :ensure t :disabled t ; nice but noisy
+  :init (add-hook 'after-init-hook 'global-color-identifiers-mode)
 
   (defun my/enable-color-identifiers ()
     (interactive)
@@ -575,8 +570,7 @@
 (use-package mmm-mode :ensure t ; Allow Multiple Major Modes in a buffer
   :config (setq mmm-global-mode 'maybe))
 
-;; I hate smart quotes, too
-(defcustom smart-to-ascii
+(defcustom smart-to-ascii ; no smart quotes
   '(("\x201C" . "\"")
     ("\x201D" . "\"")
     ("\x2018" . "'")
@@ -600,8 +594,7 @@
 ;; # RSA key fingerprint is ...
 ;; # Are you sure you want to continue connecting (yes/no)? yes
 (use-package yagist :ensure t :defer t
-  :init
-  (setq yagist-github-token (getenv "GITHUB_TOKEN")))
+  :init (setq yagist-github-token (getenv "GITHUB_TOKEN")))
 
 (use-package fish-mode :ensure t :defer t)
 
