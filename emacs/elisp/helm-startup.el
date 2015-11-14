@@ -229,7 +229,8 @@
         (interactive)
         (helm-headlines "Emacs Lisp headlines"
                         "helm-emacs-lisp-headlines"
-                        "^(\\|^;* [a-zA-Z]+"
+                        "^("                    ; don't display any comments
+                        ;; "^(\\|^;* [a-zA-Z]+" ; also display comments
                         nil))
       ;; TODO see helm-occur
       (bind-key "s-h" 'helm-emacs-lisp-headlines emacs-lisp-mode-map))
