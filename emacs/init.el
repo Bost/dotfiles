@@ -393,27 +393,22 @@
          ;; ("C-c C-<" . mc/mark-all-like-this)
          ))
 
-(use-package ace-jump-mode :ensure t :defer t
-  :bind (("<f2>" . ace-jump-char-mode)
-         ("s-j"  . ace-jump-char-mode)
-         ;; ("s-a" . ace-jump-buffer) ; see helm-buffers-list
-         ("<C-f2>" . ace-jump-line-mode))
-  :init
-  (bind-chords :map global-map
-               ("jj" . ace-jump-char-mode)
-               ("jk" . ace-jump-word-mode)
-               ("jl" . ace-jump-line-mode)
-               ("ss" . ace-jump-mode-pop-mark))
-
-  (autoload 'ace-jump-mode-pop-mark "ace-jump-mode" "Ace jump back:-)" t)
-  (eval-after-load "ace-jump-mode" '(ace-jump-mode-enable-mark-sync))
-
-
-  (when (and (featurep 'evil) (featurep 'evil-leader))
-    (evil-leader/set-key
-      "c" 'ace-jump-char-mode
-      "w" 'ace-jump-word-mode
-      "l" 'ace-jump-line-mode)))
+(use-package avy :ensure t :defer t
+  :bind (("<f2>" . avy-goto-char)
+         ("s-j" . avy-goto-char-2)
+         ("<c-f2>" . avy-goto-line))
+  ;;   :init
+  ;;   (bind-chords :map global-map
+  ;;                ("jj" . ace-jump-char-mode)
+  ;;                ("jk" . ace-jump-word-mode)
+  ;;                ("jl" . ace-jump-line-mode)
+  ;;                ("ss" . ace-jump-mode-pop-mark))
+  ;; (when (and (featurep 'evil) (featurep 'evil-leader))
+  ;;   (evil-leader/set-key
+  ;;     "c" 'ace-jump-char-mode
+  ;;     "w" 'ace-jump-word-mode
+  ;;     "l" 'ace-jump-line-mode)
+  )
 
 (use-package expand-region :defer t :ensure t
   :bind (("C-="        . er/expand-region)
