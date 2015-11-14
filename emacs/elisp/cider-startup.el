@@ -21,6 +21,7 @@
 
          ("<s-kp-insert>" . typed-unicode-symbols)
          ("<s-kp-0>"      . typed-unicode-symbols)
+         ("s-'"           . typed-unicode-symbols)
          ;; (unbind-key "<C-insert>")
          ;; ("<C-insert>"    . typed-unicode-symbols)
 
@@ -56,6 +57,7 @@
     (setq is-pretty 1)
     (defun typed-unicode-symbols ()
       (interactive)
+      (switch-to-buffer "rps_async.clj")
       (setq prettify-symbols-alist nil)
       (push '("->" . ?→) prettify-symbols-alist)
 
@@ -119,9 +121,8 @@
 
       (setq is-pretty (* -1 is-pretty))
       (prettify-symbols-mode is-pretty)
-      ;; (prettify-symbols-mode -1) ; disable
-      ;; (prettify-symbols-mode +1) ; enable
-      (message (concat "typed-unicode-symbols" (timestamp))))
+      (switch-to-buffer "cider-startup.el")
+      (message (concat "typed-unicode-symbols: " (timestamp))))
 
     ;; (add-hook 'clojure-mode-hook typed-unicode-symbols)
     :init
