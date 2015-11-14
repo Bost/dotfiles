@@ -9,18 +9,28 @@
          ("s-,"   . cider-jump-back)
          ("C-s-j" . cider-jack-in)
          ("s-r"   . cider-eval-last-expression-in-repl)
-         ("s-e"   . cider-eval-last-sexp)
          ("s-l"   . cider-save-and-load-current-buffer)
          ("s-n"   . cider-repl-set-ns)
          ("s-t"   . cider-test-run-tests)
          ("s-."   . cider-find-var)
          ("s-,"   . cider-jump-back)
          ;; TODO s-M does not work in REPL buffer
+         ("s-o"   . cider-clear-compilation-highlights)
+
+         ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
+
+         ("<s-kp-insert>" . typed-unicode-symbols)
+         ("<s-kp-0>"      . typed-unicode-symbols)
+         ;; (unbind-key "<C-insert>")
+         ;; ("<C-insert>"    . typed-unicode-symbols)
+
          ("s-M"   . main-all))
   :config
   (setq gui-elements 1) ; because of CIDER menu
   (bind-keys :map cider-repl-mode-map
-             ("s-c" . cider-repl-clear-buffer))
+             ("s-c" . cider-repl-clear-buffer)
+             ("s-e" . cider-eval-last-sexp)
+             )
   :init
   (defun main-all ()
     (interactive)
@@ -28,9 +38,95 @@
     (end-of-buffer)
     (insert "(-main \"-a\")"))
 
+  (defun zark-colors ()
+    (beginning-of-defun)
+    (beginning-of-sexp)
+    (end-of-sexp))
+
   ;; cider depends on clojure mode
   (use-package clojure-mode :defer t :ensure t
+    :config
+  ;; (defconst lisp--prettify-symbols-alist
+  ;;   '((">="  . ?≥)
+  ;;     ("defun "  . ?​) ; Unicode Char 'ZERO WIDTH SPACE' (U+200B)
+  ;;     ("defun"  . ?φ)
+      ;; (push '("t/loop" . ?#x27F3) prettify-symbols-alist)
+  ;;     ("lambda"  . ?λ)))
+
+    (setq is-pretty 1)
+    (defun typed-unicode-symbols ()
+      (interactive)
+      (setq prettify-symbols-alist nil)
+      (push '("->" . ?→) prettify-symbols-alist)
+
+      (push '("Move" . ?Ѻ) prettify-symbols-alist)
+      (push '("PlayerName" . ?⛹) prettify-symbols-alist)
+      (push '("PlayerMove" . ?🚶) prettify-symbols-alist)
+      (push '("RPSResult" . ?☻) prettify-symbols-alist)
+
+      ;; 🢀 🢁 🢂 🢃 🢄 🢅 🢆 🢇
+      (push '("t/Int" . ?🢀) prettify-symbols-alist)
+      (push '("t/Str" . ?🢁) prettify-symbols-alist)
+      (push '("t/Vec" . ?🢂) prettify-symbols-alist)
+      (push '("t/Map" . ?⚑) prettify-symbols-alist)
+
+      (push '("t/U"   . ?🢅) prettify-symbols-alist) ; union
+      (push '("t/IFn" . ?Ƒ) prettify-symbols-alist)
+      (push '("t/Any" . ?☂) prettify-symbols-alist)
+      (push '("t/ann" . ?🢄) prettify-symbols-alist)
+
+      (push '("t/loop" . ?🔃) prettify-symbols-alist)
+      (push '("nil" . ?🍀) prettify-symbols-alist)
+
+      (push '("ta/Chan" . ?🚌) prettify-symbols-alist)
+      (push '("ta/chan" . ?⛴) prettify-symbols-alist)
+
+      ;; (push '("\"Alice\"" . ?🌓) prettify-symbols-alist)
+      ;; (push '("\"Bob\"" . ?🌗) prettify-symbols-alist)
+
+      ;; (push '("move1" . ?◒) prettify-symbols-alist)
+      ;; (push '("move2" . ?◓) prettify-symbols-alist)
+      ;; (push '("name1" . ?🙼) prettify-symbols-alist)
+      ;; (push '("name2" . ?🙽) prettify-symbols-alist)
+
+      (push '("t/defalias " . ?​) prettify-symbols-alist); 'ZERO WIDTH SPACE' (U+200B)
+      (push '("t/ann " . ?​) prettify-symbols-alist); 'ZERO WIDTH SPACE' (U+200B)
+      ;; (push '("defn" . ?⚑) prettify-symbols-alist); 'ZERO WIDTH SPACE' (U+200B)
+      (push '("defn " . ?​) prettify-symbols-alist); 'ZERO WIDTH SPACE' (U+200B)
+      (push '("def " . ?​) prettify-symbols-alist); 'ZERO WIDTH SPACE' (U+200B)
+      ;; ⊢⊣⊤⊥
+      ;; ⏩⏪⏫⏬
+      ;; ❏❐❑❒
+      ;; ⬖⬗⬘⬙
+      ;; ☗⛊⛔🟆⚑
+      ;; ◰ ◱ ◲ ◳
+      ;; ▲▶▼◀
+      ;; ◐ ◑ ◒ ◓
+      ;; 🢀 🢁 🢂 🢃 🢄 🢅 🢆 🢇 🠈🠉🠊🠋
+      ;; 1F650🙐🙑🙒🙓🙔🙕🙖🙗🙨🙩🙪🙫🙬🙭🙮🙯1F670🙰🙱🙲🙳🙴🙵🙶🙷🙸🙹🙺🙻🙼🙽
+
+      ;; (push '("MOVES" . ?◀) prettify-symbols-alist)
+      ;; (push '("BEATS" . ?◼) prettify-symbols-alist)
+      ;; (push '("judge" . ?◼) prettify-symbols-alist)
+      ;; (push '("rand-player" . ?⯁) prettify-symbols-alist)
+      ;; (push '("winner" . ?⬢) prettify-symbols-alist)
+      ;; (push '("judge" . ?⬬) prettify-symbols-alist)
+      ;; (push '("init" . ?◢) prettify-symbols-alist)
+      ;; (push '("report" . ?◖) prettify-symbols-alist)
+      ;; (push '("play" . ?◔) prettify-symbols-alist)
+      ;; (push '("play-many" . ?▼) prettify-symbols-alist)
+      ;; (push '("t/defalias " . ?#x200B) prettify-symbols-alist); 'ZERO WIDTH SPACE' (U+200B)
+
+      (setq is-pretty (* -1 is-pretty))
+      (prettify-symbols-mode is-pretty)
+      ;; (prettify-symbols-mode -1) ; disable
+      ;; (prettify-symbols-mode +1) ; enable
+      (message (concat "typed-unicode-symbols" (timestamp))))
+
+    ;; (add-hook 'clojure-mode-hook typed-unicode-symbols)
     :init
+    ;; (setq prettify-symbols-alist nil)
+
     (use-package clojure-mode-extra-font-locking :ensure t)
     (clojure-mode)
     (defun clojure-mode-keys ()

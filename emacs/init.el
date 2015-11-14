@@ -396,6 +396,7 @@
 (use-package avy :ensure t :defer t
   :bind (("<f2>" . avy-goto-char)
          ("s-j" . avy-goto-char-2)
+         ;; avy-goto-word-1
          ("<c-f2>" . avy-goto-line))
   ;;   :init
   ;;   (bind-chords :map global-map
@@ -776,18 +777,18 @@ want to use in the modeline *in lieu of* the original.")
   ;; disable most of this stuff early in the process so it doesn’t flicker.
   ;; (if (fboundp 'tool-bar-mode) (tool-bar-mode gui-elements))
   ;; TODO test fboundp - is it faster?
-  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode gui-elements))
-  (if (fboundp 'menu-bar-mode) (menu-bar-mode gui-elements))
+  ;; (if (fboundp 'scroll-bar-mode) (scroll-bar-mode gui-elements))
+  ;; (if (fboundp 'menu-bar-mode) (menu-bar-mode gui-elements))
   ;; (menu-bar-mode gui-elements)
   ;; (scroll-bar-mode gui-elements)
 
-  (defun gui-toggle ()
-    (interactive)
-    (setq gui-elements (* -1 gui-elements))
-    (menu-bar-mode gui-elements)
-    (toggle-scroll-bar gui-elements)
-    (message "gui-elements %s"
-             (if (= 1 gui-elements) "enabled" "disabled")))
+  ;; (defun gui-toggle ()
+  ;;   (interactive)
+  ;;   (setq gui-elements (* -1 gui-elements))
+  ;;   (menu-bar-mode gui-elements)
+  ;;   (toggle-scroll-bar gui-elements)
+  ;;   (message "gui-elements %s"
+  ;;            (if (= 1 gui-elements) "enabled" "disabled")))
 
   (defun xah-forward-block (&optional φn)
     "Move cursor forward to the beginning of next text block.
@@ -806,10 +807,17 @@ See: `xah-forward-block'"
                            (skip-chars-backward "\n\t "))
                        (progn (goto-char (point-min))))))
 
+  (defvar current-date-time-format "%a %b %d %H:%M:%S %Z %Y"
+    "Format of date to insert with `insert-current-date-time' func
+See help of `format-time-string' for possible replacements")
+
+  (defvar current-time-format "%a %H:%M:%S"
+    "Format of date to insert with `insert-current-time' func.
+Note the weekly scope of the command's precision.")
+
   (defun timestamp ()
-    "Use bash function 'timestamp' defined in bash/aliases"
     (interactive)
-    (insert (shell-command-to-string "timestamp")))
+    (format-time-string current-time-format (current-time)))
 
   (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
 
@@ -916,6 +924,9 @@ See: `xah-forward-block'"
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
+ '(package-selected-packages
+   (quote
+    (ace-window avy-window avy bug-hunter grep+ cbm powerline-evil powerline fish-mode yagist mmm-mode markdown-mode volatile-highlights popwin smooth-scrolling sublimity minimap duplicate-thing expand-region ace-jump-mode iedit paradox transpose-frame evil-anzu anzu evil-search-highlight-persist evil-leader evil-smartparens evil-numbers evil-surround evil-args evil-nerd-commenter evil-visualstar evil-visual-mark-mode evil smart-mode-line dired-rainbow dired-subtree dired-details+ dired-details dired+ vimrc-mode drag-stuff persp-projectile helm-projectile helm-flycheck google-this helm-google helm-ls-git helm-descbinds macrostep helm-cider-history helm-ag helm-commandlinefu cljr-helm helm neotree discover magit git-timemachine linum-relative company window-purpose clj-refactor rainbow-delimiters ac-cider cider-eval-sexp-fu kibit-helper clojure-mode-extra-font-locking cider slamhound smartparens paredit-menu paredit use-package-chords auto-package-update use-package)))
  '(paradox-github-token t)
  '(show-paren-mode t)
  '(tab-width 4)
