@@ -642,11 +642,13 @@ want to use in the modeline *in lieu of* the original.")
 (use-package cbm :defer t :ensure t ;; Cycle through buffers with the same `major-mode
   :bind ("C-'" . cbm-cycle))
 
+;; (use-package bug-hunter :ensure t)
+
 (use-package emacs :ensure t
   :bind (("<f10>" . menu-bar-open) ; this is the default
          ("s-e"   . eval-last-sexp)
          ("s-E"   . eval-defun)
-         ("s-D"   . eval-defun)
+         ("s-D"   . eval-defun) ; also C-M-x
          ("s-s"   . save-buffer)
          ("s-f"   . helm-find-files)
          ("s-x"   . kill-region)    ; cut
@@ -666,15 +668,22 @@ want to use in the modeline *in lieu of* the original.")
          ("<s-f11>"           . find-emacs-init-file)
          ("<s-f12>"           . switch-to-buffer-scratch)
          ("<C-S-iso-lefttab>" . unbury-buffer)
-         ;; ("M-s-<left>"        . shrink-window-horizontally)
-         ;; ("M-s-<right>"       . enlarge-window-horizontally)
-         ("M-s-<down>"        . enlarge-window)
-         ("M-s-<up>"          . shrink-window)
+         ("M-s-h"             . shrink-window-horizontally)
+         ("M-s-l"             . enlarge-window-horizontally)
+         ("M-s-j"             . enlarge-window)
+         ("M-s-k"             . shrink-window)
          ("s-u"               . eval-buffer) ; might be in lisp-mode-keys see ("s-u" . helm-surfraw)
+         ("<C-up>"            . xah-backward-block)
+         ("<C-down>"          . xah-forward-block)
+         ("<C-prior>"         . hs-hide-block)
+         ("<C-next>"          . hs-show-block)
+         ;; ("<C-M-prior>"       . hs-toggle-hiding)
+         ("<C-M-prior>"       . hs-hide-all)
+         ("<C-M-next>"        . hs-show-all)
 
-         ;; (bind-key (kbd "<C-kp-multiply>") 'highlight-symbol-at-point)
-         ;; (bind-key (kbd "<s-f10>") 'gui-toggle) ;; shows also scrollbars
-         ;; (bind-key (kbd "<s-tab>") 'other-window)
+         ;; ("<C-kp-multiply>" . highlight-symbol-at-point)
+         ;; ("<s-f10>"         . gui-toggle) ;; shows also scrollbars
+         ;; ("<s-tab>"         . other-window)
 
          ;;  ((kbd "C-<f11>") . (lambda ()
          ;;                (interactive)
@@ -699,9 +708,16 @@ want to use in the modeline *in lieu of* the original.")
          ;;  ((kbd "<s-f3>") . kmacro-start-macro-or-insert-counter)
          ;;  ((kbd "<s-f4>") . kmacro-end-or-call-macro)
          )
-  :init
-  (setq gui-elements -1)
+  :config
+  ;; (defalias 'qrr 'query-replace-regexp) ; M-x qrr
+  (global-prettify-symbols-mode +1)
 
+  (prefer-coding-system 'utf-8)
+  (setq backup-inhibited t)
+
+  ;; (setq gui-elements -1)
+
+  :init
   (defun switch-to-buffer-scratch ()
     (interactive)
     (switch-to-buffer "*scratch*"))
@@ -789,9 +805,6 @@ See: `xah-forward-block'"
                          (progn
                            (skip-chars-backward "\n\t "))
                        (progn (goto-char (point-min))))))
-
-  (bind-key (kbd "<C-up>") 'xah-backward-block)
-  (bind-key (kbd "<C-down>") 'xah-forward-block)
 
   (defun timestamp ()
     "Use bash function 'timestamp' defined in bash/aliases"
