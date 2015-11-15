@@ -819,6 +819,12 @@ Note the weekly scope of the command's precision.")
     (interactive)
     (format-time-string current-time-format (current-time)))
 
+  (defun emacs-build-time-formated ()
+    (interactive)
+    (let ((ebt (format-time-string current-date-time-format
+                                   emacs-build-time)))
+      (message (concat "emacs-build-time: " ebt))))
+
   (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
 
   (defun save-macro (name)
