@@ -19,9 +19,9 @@
 
          ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
 
-         ("<s-kp-insert>" . typed-unicode-symbols)
-         ("<s-kp-0>"      . typed-unicode-symbols)
-         ("s-'"           . typed-unicode-symbols)
+         ("<s-kp-insert>" . zark-symbols)
+         ("<s-kp-0>"      . zark-symbols)
+         ("s-'"           . zark-symbols)
          ;; (unbind-key "<C-insert>")
          ;; ("<C-insert>"    . typed-unicode-symbols)
 

@@ -50,7 +50,7 @@
   (font-lock-flush)
   (message (zarking-str zarking)))
 
-(defun typed-unicode-symbols ()
+(defun zark-symbols ()
   (interactive)
   (save-buffer)
   (switch-to-buffer "rps_async.clj")
