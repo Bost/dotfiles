@@ -55,8 +55,8 @@
 
 ;; this is a mess: use-package-chords must be called before
 ;; using keyword :chord
-(use-package use-package-chords :ensure t
-  :config (key-chord-mode 1))
+;; (use-package use-package-chords :ensure t
+;;   :config (key-chord-mode 1))
 
 (use-package paredit :ensure t
   :config
