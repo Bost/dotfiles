@@ -12,6 +12,8 @@
 (defcustom zark-pattern3 "\\(\\<PlayerMove\\>\\)" "" :type 'regexp :group 'zark)
 (defcustom zark-mask3    "████"                   "" :type 'string :group 'zark)
 
+;; '(a  b  c)   ; => (a b c)
+;; `(,a b ,c)   ; => ("a's value" b "c's value")
 (defun zark-font-lock-keywords ()
   `(
     (,zark-pattern1 1 (zark-render1))
