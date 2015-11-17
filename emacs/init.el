@@ -682,6 +682,7 @@ want to use in the modeline *in lieu of* the original.")
          ;; ("<C-M-prior>"       . hs-toggle-hiding)
          ("<C-M-prior>"       . hs-hide-all)
          ("<C-M-next>"        . hs-show-all)
+         ("<s-delete>"        . kill-sexp)
 
          ;; ("<C-kp-multiply>" . highlight-symbol-at-point)
          ;; ("<s-f10>"         . gui-toggle) ;; shows also scrollbars
