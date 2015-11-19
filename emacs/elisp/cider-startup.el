@@ -8,7 +8,7 @@
          ("s-."   . cider-find-var)
          ("s-,"   . cider-jump-back)
          ("C-s-j" . cider-jack-in)
-         ("s-r"   . cider-eval-last-expression-in-repl)
+         ;; ("s-r"   . cider-eval-last-expression-in-repl)
          ("s-l"   . cider-save-and-load-current-buffer)
          ("s-n"   . cider-repl-set-ns)
          ("s-t"   . cider-test-run-tests)
@@ -43,6 +43,9 @@
     (beginning-of-defun)
     (beginning-of-sexp)
     (end-of-sexp))
+
+  (use-package clj-refactor :ensure t
+    :bind ("s-r"   . cljr-rename-symbol))
 
   ;; cider depends on clojure mode
   (use-package clojure-mode :defer t :ensure t
