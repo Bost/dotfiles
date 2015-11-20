@@ -218,7 +218,7 @@
           (interactive)
           (helm-headlines "Clojure headlines"
                           "helm-clojure-headlines"
-                          "^(def"
+                          "^(def\\|.*defconstrainedfn"
                           nil))
         ;; TODO see helm-occur
         (bind-key "s-h" 'helm-clojure-headlines clojure-mode-map)))
