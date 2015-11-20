@@ -58,6 +58,7 @@
 ;; (use-package use-package-chords :ensure t
 ;;   :config (key-chord-mode 1))
 
+;; TODO see lispy the advanced paredit
 (use-package paredit :ensure t
   :config
   (unbind-key "<C-left>" paredit-mode-map)
