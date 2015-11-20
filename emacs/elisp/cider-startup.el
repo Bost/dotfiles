@@ -25,13 +25,13 @@
          ;; (unbind-key "<C-insert>")
          ;; ("<C-insert>"    . typed-unicode-symbols)
 
-         ("s-M"   . main-all))
+         ("s-M"   . main-all)) ; invoke from *.clj buffer
   :config
   (setq gui-elements 1) ; because of CIDER menu
   (bind-keys :map cider-repl-mode-map
              ("s-c" . cider-repl-clear-buffer)
              ("s-e" . cider-eval-last-sexp)
-             )
+             ("s-M"   . main-all)) ; invoke from REPL buffer
   :init
   (defun main-all ()
     (interactive)
