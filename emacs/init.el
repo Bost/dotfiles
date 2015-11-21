@@ -292,7 +292,7 @@
   :bind ("s-d" . dired-jump)
   :config
   (bind-keys :map dired-mode-map
-             ("s-r" . dired-do-rename))
+             ("s-R" . dired-do-rename))
   :init
   ;; show / hide file details: ( / )
   (use-package dired+ :ensure t)
@@ -660,7 +660,7 @@ want to use in the modeline *in lieu of* the original.")
          ("s-q"               . other-window)
          ("s-0"               . delete-window)
          ("s-1"               . delete-other-windows)
-         ("C-s-r"             . rename-file-and-buffer)
+         ("s-R"               . rename-file-and-buffer)
          ;; ("<f3>"              . find-grep) ; Use -e '...' instead of -e "..."
          ("<f7>"              . find-file-emacs)
          ("s-k"               . close-buffer)
