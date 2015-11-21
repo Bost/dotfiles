@@ -571,6 +571,22 @@
          ;;                           (message "whitespace-cleanup done.")))
          )
   :init
+  (defun untabify-buffer ()
+    (interactive)
+    (untabify (point-min) (point-max)))
+
+  (defun indent-buffer ()
+    (interactive)
+    (indent-region (point-min) (point-max)))
+
+  (defun cleanup-buffer ()
+    "Perform a bunch of operations on the whitespace content of a buffer.
+Including indent-buffer, which should not be called automatically on save."
+    (interactive)
+    (untabify-buffer)
+    (delete-trailing-whitespace)
+    (indent-buffer))
+
   (setq require-final-newline t
         show-trailing-whitespace t)
   (set-default 'indicate-empty-lines t))
@@ -622,7 +638,11 @@
 (use-package yagist :ensure t :defer t
   :init (setq yagist-github-token (getenv "GITHUB_TOKEN")))
 
-(use-package fish-mode :ensure t :defer t)
+(use-package fish-mode :ensure t :defer t) ; fish shell files
+
+;; Elisp go-to-definition with M-. and back again with M-,
+;; (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
+;; (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
 
 (use-package powerline :ensure t
   :config
@@ -774,6 +794,53 @@ want to use in the modeline *in lieu of* the original.")
   ;; (setq gui-elements -1)
 
   :init
+  (defun eval-and-replace ()
+    "Replace the preceding sexp with its value."
+    (interactive)
+    (backward-kill-sexp)
+    (condition-case nil
+        (prin1 (eval (read (current-kill 0)))
+               (current-buffer))
+      (error (message "Invalid expression")
+             (insert (current-kill 0)))))
+
+  ;; Increase/decrease selective display - indentation
+  (defun inc-selective-display (arg)
+    (interactive "P")
+    (if (numberp arg)
+        (set-selective-display arg)
+      (if (numberp selective-display)
+          (set-selective-display (+ 2 selective-display))
+        (set-selective-display 2)))
+    (create-temp-selective-display-keymap))
+
+  (defun dec-selective-display ()
+    (interactive)
+    (when (and (numberp selective-display)
+               (> selective-display 2))
+      (set-selective-display (- selective-display 2)))
+    (create-temp-selective-display-keymap))
+
+  (defun clear-selective-display ()
+    (interactive)
+    (when (numberp selective-display)
+      (set-selective-display nil)))
+
+  (defun create-temp-selective-display-keymap ()
+    (set-temporary-overlay-map
+     (let ((map (make-sparse-keymap)))
+       (define-key map (kbd "+") 'inc-selective-display)
+       (define-key map (kbd "-") 'dec-selective-display)
+       (define-key map (kbd "0") 'clear-selective-display)
+       map))
+    (message "Type + to reveal more, - for less, 0 to reset."))
+
+  ;; shorthand for interactive lambdas
+  (defmacro interactive-lambda (&rest body)
+    `(lambda ()
+       (interactive)
+       ,@body))
+
   (defun switch-to-buffer-scratch ()
     (interactive)
     (switch-to-buffer "*scratch*"))
