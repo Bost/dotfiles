@@ -386,7 +386,6 @@
 (use-package evil-startup :load-path elisp-dir)
 
 (use-package buffer-move :ensure t ; see also tramspose-frame
-  :init (windmove-default-keybindings)
   :bind (("<C-s-kp-up>"    . buf-move-up)
          ("<C-s-kp-8>"     . buf-move-up)
          ("<C-s-kp-down>"  . buf-move-down)
