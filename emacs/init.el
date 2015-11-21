@@ -561,6 +561,8 @@
 
 ;; (setq hs-set-up-overlay 'display-code-line-counts)
 
+(use-package debbugs :defer t :ensure t) ; emacs bug tracker
+
 (use-package whitespace :defer t :ensure t
   :diminish whitespace-mode
   :bind (("s-w"    . whitespace-mode)
