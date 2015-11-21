@@ -59,10 +59,6 @@
         '("C-x r" "C-x 4" "C-x v" "C-x 8"))
   (guide-key-mode 1))
 
-;; TODO auto-package-update, use-package :ensure dependend on inet availability
-;; see :disabled t and :if condition
-(use-package auto-package-update :ensure t)
-
 ;; this is a mess: use-package-chords must be called before
 ;; using keyword :chord
 ;; (use-package use-package-chords :ensure t
