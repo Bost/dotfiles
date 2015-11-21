@@ -541,9 +541,9 @@
 (toggle-frame-maximized)
 
 (use-package undo-tree :ensure t
-  :defer (2 global-undo-tree-mode t) ; load after 2 seconds of idle time
-  :diminish ""
-  :bind (("C-x u" . undo-tree-visualize) ;; default
+  :defer t ; (2 global-undo-tree-mode t) ; load after 2 idle secs
+  :diminish " ⅄"
+  :bind (("C-x u" . undo-tree-visualize) ;; default keybinding
          ("<f12>" . undo-tree-visualize)
          ("C-/"   . undo-tree-undo)))
 
@@ -699,7 +699,6 @@ Including indent-buffer, which should not be called automatically on save."
       (paredit-mode             . " Φ")
       (eldoc-mode               . "")
       (abbrev-mode              . "")
-      (undo-tree-mode           . " ⅄")
       (volatile-highlights-mode . " υ")
       (elisp-slime-nav-mode     . " δ")
       (nrepl-mode               . " ηζ")
