@@ -1078,11 +1078,21 @@ Note the weekly scope of the command's precision.")
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
  '(region ((t (:background "#006400")))))
 
-(if (boundp 'is-virt-box)
-    (use-package color-theme-zenburn :ensure t :defer t
-      :init (load-theme 'zenburn 'no-confirm))
-  (use-package color-theme-solarized :ensure t :defer t
-    :init (load-theme 'solarized 'no-confirm)))
+(use-package zenburn-theme :ensure t :defer t
+  :if (boundp 'is-virt-box)
+  :init (load-theme 'zenburn 'no-confirm))
+
+(use-package solarized-theme :ensure t :defer t
+  :if (not (boundp 'is-virt-box))
+  :init (progn
+          (setq solarized-high-contrast-mode-line t
+                solarized-use-less-bold t
+                solarized-emphasize-indicators nil
+                solarized-scale-org-headlines nil
+                x-underline-at-descent-line t)
+          ;; (load-theme 'solarized-light 'no-confirm)
+          (load-theme 'solarized 'no-confirm))
+  :config (setq color-theme-is-global t))
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
