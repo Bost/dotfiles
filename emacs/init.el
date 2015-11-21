@@ -369,6 +369,32 @@
         sml/projectile-replacement-format "%s/")
   (add-hook 'after-init-hook 'sml/setup))
 
+;; git-gutter / git-gutter-fringe - +/- signs for changes lines
+;; (use-package git-gutter :ensure t :diminish "")
+(use-package git-gutter-fringe :ensure t
+  :config (progn (set-face-foreground 'git-gutter-fr:added    "green4")
+                 (set-face-foreground 'git-gutter-fr:modified "grey50")
+                 (set-face-foreground 'git-gutter-fr:deleted  "red3")
+                 (fringe-helper-define 'git-gutter-fr:added nil
+                   "........"
+                   "...XX..."
+                   "...XX..."
+                   "XXXXXXXX"
+                   "XXXXXXXX"
+                   "...XX..."
+                   "...XX..."
+                   "........")
+                 (fringe-helper-define 'git-gutter-fr:modified nil
+                   "........"
+                   "XXXXX..."
+                   "XXXXX..."
+                   "XXXXX..."
+                   "XXXXX..."
+                   "XXXXX..."
+                   "XXXXX..."
+                   "........")
+                 (global-git-gutter-mode)))
+
 (use-package evil-startup :load-path elisp-dir)
 
 (use-package buffer-move :ensure t ; see also tramspose-frame
