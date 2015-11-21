@@ -633,7 +633,11 @@ Including indent-buffer, which should not be called automatically on save."
 (use-package volatile-highlights :defer t :ensure t
   :config (volatile-highlights-mode t))
 
-(use-package markdown-mode :defer t :ensure t)
+(use-package markdown-mode :defer t :ensure t
+  :mode (("\\.markdown\\'" . markdown-mode)
+         ("\\.md\\'" . markdown-mode))
+  :init
+  (use-package markdown-mode+ :defer t :ensure t))
 
 ;; TODO mmm-mode might be the reason for jumps between a lisp and clojure mode
 (use-package mmm-mode :ensure t ; Allow Multiple Major Modes in a buffer
