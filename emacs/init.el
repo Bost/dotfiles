@@ -1,10 +1,12 @@
+(defconst emacs-start-time (current-time))
+(unless noninteractive
+   ;; Emacs is running without interactive terminal
+  (message "Loading %s..." load-file-name))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))
 
-;; (defconst emacs-start-time (current-time))
-;; (unless noninteractive
-;;   (message "Loading %s..." load-file-name))
 (setq dotf-dir "~/dev/dotfiles"
       config-dir (concat dotf-dir "/emacs")
       elisp-dir  (concat config-dir "/elisp")
@@ -39,15 +41,22 @@
     (package-refresh-contents))
 
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+  (package-install 'use-package)
+  (package-refresh-contents))
+
+(unless (package-installed-p 'diminish)
+  (package-install 'diminish)
+  (package-refresh-contents))
+(require 'diminish) ;  remove useless strings from mode-line
+
+(unless (package-installed-p 'bind-key)
+  (package-install 'bind-key)
+  (package-refresh-contents))
+(require 'bind-key)
 
 (eval-when-compile ; reduce load time
   (defvar use-package-verbose t) ; measure startup time
   (require 'use-package))
-;; TODO auto install of diminish and bind-key doesn't work
-(require 'diminish)
-(require 'bind-key)
 
 (use-package guide-key :ensure t
   :commands guide-key-mode
@@ -441,6 +450,7 @@
       (evil-leader/set-key "xx" 'er/expand-region))))
 
 (use-package yasnippet :defer t :ensure t
+  :disabled t
   :init
   (let ((yasnippet-dir "~/.emacs.d/plugins/yasnippet"))
     (shell-command-to-string (concat "mkdir -p " yasnippet-dir))
@@ -980,7 +990,7 @@ Note the weekly scope of the command's precision.")
  '(package-selected-packages
    (quote
     (ace-window avy-window avy bug-hunter grep+ cbm powerline-evil powerline fish-mode yagist mmm-mode markdown-mode volatile-highlights popwin smooth-scrolling sublimity minimap duplicate-thing expand-region ace-jump-mode iedit paradox transpose-frame evil-anzu anzu evil-search-highlight-persist evil-leader evil-smartparens evil-numbers evil-surround evil-args evil-nerd-commenter evil-visualstar evil-visual-mark-mode evil smart-mode-line dired-rainbow dired-subtree dired-details+ dired-details dired+ vimrc-mode drag-stuff persp-projectile helm-projectile helm-flycheck google-this helm-google helm-ls-git helm-descbinds macrostep helm-cider-history helm-ag helm-commandlinefu cljr-helm helm neotree discover magit git-timemachine linum-relative company window-purpose clj-refactor rainbow-delimiters ac-cider cider-eval-sexp-fu kibit-helper clojure-mode-extra-font-locking cider slamhound smartparens paredit-menu paredit use-package-chords auto-package-update use-package)))
- '(paradox-github-token t)
+ '(paradox-github-token t t)
  '(show-paren-mode t)
  '(tab-width 4)
  '(tool-bar-mode nil nil (tool-bar))
@@ -1002,3 +1012,16 @@ Note the weekly scope of the command's precision.")
 
 (load-theme 'solarized t)
 ;; (disable-theme 'solarized)  (enable-theme 'solarized)
+
+(when window-system
+  (let ((elapsed (float-time (time-subtract (current-time)
+                                            emacs-start-time))))
+    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+
+  (add-hook 'after-init-hook
+            `(lambda ()
+               (let ((elapsed (float-time (time-subtract (current-time)
+                                                         emacs-start-time))))
+                 (message "Loading %s...done (%.3fs) [after-init]"
+                          ,load-file-name elapsed)))
+            t))
