@@ -140,18 +140,6 @@
   ;; :config (message "cider-startup loaded with :defer 3")
   )
 
-(use-package clj-refactor :defer t :ensure t
-  :init
-  (add-hook 'clojure-mode-hook
-            (lambda ()
-              (clj-refactor-mode 1)
-              (yas-minor-mode 1) ; for adding require/use/import
-              ;; eg. rename files with `C-c C-m rf`.
-              (cljr-add-keybindings-with-prefix "C-c C-m"))))
-
-;; hide *nrepl-connection* and *nrepl-server* when switching buffers
-;; (setq nrepl-hide-special-buffers t)
-
 (use-package window-purpose :defer t :ensure t
   :bind (;; C-c , d: window-purpose
          ("C-s-d" . purpose-toggle-window-purpose-dedicated)
@@ -693,7 +681,7 @@ Including indent-buffer, which should not be called automatically on save."
 
   :init
   (use-package powerline-evil :ensure t)
-  (defvar mode-line-cleaner-alist
+  (defvar mode-line-cleaner-alist ; diminishing majore modes
     `((auto-complete-mode       . " α")
       (yas-minor-mode           . " γ")
       (paredit-mode             . " Φ")
@@ -705,8 +693,7 @@ Including indent-buffer, which should not be called automatically on save."
       (nrepl-interaction-mode   . " ηζ")
       ;; Major modes
       (lisp-mode                . " λ")
-      (clojure-mode             . "γλ")
-      (clj-refactor-mode        . "ρλ")
+      (clojure-mode             . "Cλ")
       (hi-lock-mode             . "")
       (python-mode              . "Py")
       (emacs-lisp-mode          . "ξλ") ; "EL"

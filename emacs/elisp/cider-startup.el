@@ -2,6 +2,8 @@
 ;;; Code:
 
 (use-package cider :defer t :ensure t
+  ;; TODO cider-repl-mode :diminish "Ç»"
+  :diminish " ç"
   :bind (("s-z"   . cider-switch-to-repl-buffer)
          ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
          ("s-t"   . cider-test-run-tests)
@@ -44,11 +46,24 @@
     (beginning-of-sexp)
     (end-of-sexp))
 
-  (use-package clj-refactor :ensure t
-    :bind ("s-r"   . cljr-rename-symbol))
+  (use-package clj-refactor :defer t :ensure t
+    :diminish "" ; "Rλ"
+    :bind ("s-r"   . cljr-rename-symbol)
+    :init
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (clj-refactor-mode 1)
+                (yas-minor-mode 1) ; for adding require/use/import
+                ;; eg. rename files with `C-c C-m rf`.
+                (cljr-add-keybindings-with-prefix "C-c C-m"))))
+
+  ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
+  ;; (setq nrepl-hide-special-buffers t)
 
   ;; cider depends on clojure mode
   (use-package clojure-mode :defer t :ensure t
+    ;; We're in a majore mode diminishing works only for minor modes
+    ;; :diminish "Cλ"
     :init
     ;; (setq prettify-symbols-alist nil)
 
@@ -141,4 +156,5 @@
   ;;   )
   ;; (add-hook 'cider-interaction-mode-hook 'cider-interaction-mode-keys)
   )
+
 (provide 'cider-startup)
