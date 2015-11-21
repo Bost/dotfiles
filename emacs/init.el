@@ -694,22 +694,25 @@ Including indent-buffer, which should not be called automatically on save."
   :init
   (use-package powerline-evil :ensure t)
   (defvar mode-line-cleaner-alist
-    `((auto-complete-mode . " α")
-      (yas-minor-mode . " γ")
-      (paredit-mode . " Φ")
-      (eldoc-mode . "")
-      (abbrev-mode . "")
-      (undo-tree-mode . " τ")
+    `((auto-complete-mode       . " α")
+      (yas-minor-mode           . " γ")
+      (paredit-mode             . " Φ")
+      (eldoc-mode               . "")
+      (abbrev-mode              . "")
+      (undo-tree-mode           . " ⅄")
       (volatile-highlights-mode . " υ")
-      (elisp-slime-nav-mode . " δ")
-      (nrepl-mode . " ηζ")
-      (nrepl-interaction-mode . " ηζ")
+      (elisp-slime-nav-mode     . " δ")
+      (nrepl-mode               . " ηζ")
+      (nrepl-interaction-mode   . " ηζ")
       ;; Major modes
-      (clojure-mode . "λ")
-      (hi-lock-mode . "")
-      (python-mode . "Py")
-      (emacs-lisp-mode . "EL")
-      (markdown-mode . "md"))
+      (lisp-mode                . " λ")
+      (clojure-mode             . "γλ")
+      (clj-refactor-mode        . "ρλ")
+      (hi-lock-mode             . "")
+      (python-mode              . "Py")
+      (emacs-lisp-mode          . "ξλ") ; "EL"
+      (markdown-mode            . "md")
+      (slime-repl-mode          . "π»"))
     "Alist for `clean-mode-line'.
 
 When you add a new element to the alist, keep in mind that you
