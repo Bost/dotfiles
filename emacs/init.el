@@ -975,6 +975,11 @@ Note the weekly scope of the command's precision.")
       (message (concat "File deleted: " file-name)))
     (close-buffer))
 
+  (dolist (mode '(tool-bar-mode
+                  ;; menu-bar-mode
+                  scroll-bar-mode))
+    (when (fboundp mode) (funcall mode -1)))
+
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
@@ -989,8 +994,7 @@ Note the weekly scope of the command's precision.")
    '(global-hl-line-mode t)
    '(indent-tabs-mode nil)
    '(show-paren-mode t)
-   '(tab-width 4)
-   '(tool-bar-mode nil nil (tool-bar)))
+   '(tab-width 4))
 
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   ;; test delimiters:
@@ -1056,7 +1060,6 @@ Note the weekly scope of the command's precision.")
  '(paradox-github-token t t)
  '(show-paren-mode t)
  '(tab-width 4)
- '(tool-bar-mode nil nil (tool-bar))
  '(vc-follow-symlinks nil))
 
 (custom-set-faces
