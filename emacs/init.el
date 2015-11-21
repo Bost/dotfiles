@@ -371,11 +371,23 @@
 
 (use-package evil-startup :load-path elisp-dir)
 
-;; see also the package buffer-move
-(use-package transpose-frame :defer t :ensure t
+(use-package buffer-move :ensure t ; see also tramspose-frame
+  :init (windmove-default-keybindings)
+  :bind (("<C-s-kp-up>"    . buf-move-up)
+         ("<C-s-kp-8>"     . buf-move-up)
+         ("<C-s-kp-down>"  . buf-move-down)
+         ("<C-s-kp-2>"     . buf-move-down)
+         ("<C-s-kp-left>"  . buf-move-left)
+         ("<C-s-kp-4>"     . buf-move-left)
+         ("<C-s-kp-right>" . buf-move-right)
+         ("<C-s-kp-6>"     . buf-move-right)))
+
+(use-package transpose-frame :defer t :ensure t ; see also buffer-move
   :bind (("<f8>"   . transpose-frame)
-         ("M-<f8>" . flop-frame)   ; left <-> right
-         ("C-<f8>" . flip-frame))) ; top  <-> bottom
+         ("M-<f8>" . flop-frame) ; left <-> right
+         ("C-<f8>" . flip-frame) ; top  <-> bottom
+         ("s-("    . rotate-frame-anticlockwise)
+         ("s-)"    . rotate-frame-clockwise)))
 
 ;; (use-package ack-menu :defer t :ensure t)
 
