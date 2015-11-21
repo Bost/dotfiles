@@ -421,9 +421,9 @@
          ))
 
 (use-package avy :ensure t :defer t
-  :bind (("<f2>" . avy-goto-char)
-         ("s-j" . avy-goto-char-2)
-         ;; avy-goto-word-1
+  :bind (("<f2>" . avy-goto-word-1)
+         ;; Autoloading failed to define function avy-goto-char-1
+         ("s-j" . avy-goto-char-1)
          ("<c-f2>" . avy-goto-line))
   ;;   :init
   ;;   (bind-chords :map global-map
