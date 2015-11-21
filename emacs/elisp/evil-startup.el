@@ -15,6 +15,16 @@
 
   ;; require for evil folding
   (add-hook 'prog-mode-hook 'hs-minor-mode)
+  ;; (use-package prog-mode
+  ;;   :init (setq font-lock-maximum-decoration t)
+  ;;   :config
+  ;;   (defun add-watchwords ()
+  ;;     (font-lock-add-keywords ; TODO works only after saving buffer. WTF ???
+  ;;      nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
+  ;;             1 font-lock-warning-face t))))
+  ;;   (progn
+  ;;     (show-paren-mode)
+  ;;     (add-watchwords)))
 
   ;; TODO see helm-bookmarks
   (use-package evil-visual-mark-mode :defer t :ensure t
@@ -142,8 +152,7 @@
   (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
 
   (use-package evil-search-highlight-persist :defer t :ensure t
-    :init
-    (global-evil-search-highlight-persist t))
+    :init (global-evil-search-highlight-persist t))
 
   ;; mode-line (pink - bottom left): 'current match/total matches'
   (use-package anzu :defer t :ensure t
