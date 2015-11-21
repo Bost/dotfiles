@@ -52,6 +52,10 @@
   (defvar use-package-verbose t) ; measure startup time
   (require 'use-package))
 
+;; (use-package server ; TODO analyse 'use-package server'
+;;   :if window-system
+;;   :init (add-hook 'after-init-hook 'server-start t))
+
 (use-package guide-key :ensure t
   :commands guide-key-mode
   :diminish guide-key-mode
@@ -436,7 +440,8 @@
 
 (use-package expand-region :defer t :ensure t
   :bind (("C-="        . er/expand-region)
-         ("<C-return>" . er/expand-region))
+         ("<C-return>" . er/expand-region)
+         ("C--"        . er/contract-region))
   :init
   (when (and (featurep 'evil) (featurep 'evil-leader))
     (progn
