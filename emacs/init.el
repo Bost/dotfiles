@@ -10,14 +10,8 @@
 (setq dotf-dir "~/dev/dotfiles"
       config-dir (concat dotf-dir "/emacs")
       elisp-dir  (concat config-dir "/elisp")
-      themes-dir (concat config-dir "/themes")
       message-log-max 16384 ;; max lines to keep in the message log buffer
       inhibit-splash-screen t)
-
-(add-to-list 'custom-theme-load-path
-             (concat themes-dir "/zenburn-emacs/"))
-(add-to-list 'custom-theme-load-path
-             (concat themes-dir "/emacs-color-theme-solarized/"))
 
 ;; set bash vars http_proxy/https_proxy/ftp_proxy so
 ;; url-proxy-services won't be needed
