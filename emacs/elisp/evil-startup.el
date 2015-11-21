@@ -8,6 +8,9 @@
          ("C-s-z" . evil-ace-jump-char-mode))
 
   :init
+  ;; (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
+  ;;   (evil-scroll-line-to-center (line-number-at-pos)))
+
   (evil-mode 1)
 
   ;; require for evil folding

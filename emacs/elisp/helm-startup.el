@@ -15,6 +15,8 @@
   (shell-command-to-string
    "git log --pretty='format:%H' -1"))
 
+(use-package projectile :ensure t)
+
 (use-package helm :defer t :ensure t ; :pin melpa-stable
   :config
   (bind-keys :map helm-buffer-map

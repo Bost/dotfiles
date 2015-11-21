@@ -1,4 +1,4 @@
-(load "server")
+(require 'server)
 (unless (server-running-p)
   (server-start))
 
@@ -49,6 +49,15 @@
 (require 'diminish)
 (require 'bind-key)
 
+(use-package guide-key :ensure t
+  ;; :commands guide-key-mode
+  ;; :diminish guide-key-mode
+  :init
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4"
+                                       ;; "C-x v" "C-x 8"
+                                       ))
+  (guide-key-mode 1))
+
 ;; TODO auto-package-update, use-package :ensure dependend on inet availability
 ;; see :disabled t and :if condition
 (use-package auto-package-update :ensure t)
@@ -59,7 +68,15 @@
 ;;   :config (key-chord-mode 1))
 
 ;; TODO see lispy the advanced paredit
+;; (use-package lispy :ensure t)
+;; (use-package eclipse-theme :ensure t)
+;; (load-theme 'eclipse t)
+;; (require 'eclipse-theme)
+;; (disable-theme 'eclipse)  (enable-theme 'eclipse)
+
+
 (use-package paredit :ensure t
+  ;; :disabled t
   :config
   (unbind-key "<C-left>" paredit-mode-map)
   (unbind-key "<C-right>" paredit-mode-map)
@@ -289,8 +306,12 @@
 
 ;; dired is not among *Packages*; can't use :ensure t
 (use-package dired :defer t
+  :commands dired
   :bind ("s-d" . dired-jump)
   :config
+  (setq dired-listing-switches
+        "-laGh1v --group-directories-first")
+
   (bind-keys :map dired-mode-map
              ("s-R" . dired-do-rename))
   :init
@@ -349,7 +370,8 @@
 ;; see also the package buffer-move
 (use-package transpose-frame :defer t :ensure t
   :bind (("<f8>"   . transpose-frame)
-         ("M-<f8>" . flop-frame)))
+         ("M-<f8>" . flop-frame)   ; left <-> right
+         ("C-<f8>" . flip-frame))) ; top  <-> bottom
 
 ;; (use-package ack-menu :defer t :ensure t)
 
@@ -563,6 +585,7 @@
 
 (use-package markdown-mode :defer t :ensure t)
 
+;; TODO mmm-mode might be the reason for jumps between a lisp and clojure mode
 (use-package mmm-mode :ensure t ; Allow Multiple Major Modes in a buffer
   :config (setq mmm-global-mode 'maybe))
 
@@ -594,9 +617,16 @@
 
 (use-package fish-mode :ensure t :defer t)
 
-(use-package powerline :defer t :ensure t
+(use-package powerline :ensure t
+  :config
+  (setq powerline-display-buffer-size nil)
+  (setq powerline-display-mule-info nil)
+  (setq powerline-display-hud nil)
+  (when (display-graphic-p)
+    (powerline-default-theme))
+
   :init
-  (use-package powerline-evil :defer t :ensure t)
+  (use-package powerline-evil :ensure t)
   (defvar mode-line-cleaner-alist
     `((auto-complete-mode . " α")
       (yas-minor-mode . " γ")
@@ -646,13 +676,23 @@ want to use in the modeline *in lieu of* the original.")
 
 ;; (use-package bug-hunter :ensure t)
 
+;; TODO test uniquify
+;; (use-package uniquify :ensure t
+;;     :init
+;;   (setq uniquify-buffer-name-style 'reverse)
+;;   (setq uniquify-separator "/")
+;;   (setq uniquify-ignore-buffers-re "^\\*"))
+
+;; TODO test emacs-ycmd + ycmd, the code completion system.
+
 (use-package emacs :ensure t
   :bind (("<f10>" . menu-bar-open) ; this is the default
          ("s-e"   . eval-last-sexp)
-         ("s-E"   . eval-defun)
          ("s-D"   . eval-defun) ; also C-M-x
+         ("s-E"   . eval-defun)
+         ("s-f"   . eval-defun)
+         ("s-F"   . helm-find-files)
          ("s-s"   . save-buffer)
-         ("s-f"   . helm-find-files)
          ("s-x"   . kill-region)    ; cut
          ("s-v"   . yank)           ; paste
          ;; see evil-window-map
@@ -901,8 +941,6 @@ Note the weekly scope of the command's precision.")
    '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
    '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
    '(region ((t (:background "#006400")))))
-
-  (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
   (defun emacs-lisp-mode-keys ()
     "Modify keymaps used by `emacs-lisp-mode'."
