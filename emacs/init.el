@@ -50,12 +50,13 @@
 (require 'bind-key)
 
 (use-package guide-key :ensure t
-  ;; :commands guide-key-mode
-  ;; :diminish guide-key-mode
+  :commands guide-key-mode
+  :diminish guide-key-mode
   :init
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4"
-                                       ;; "C-x v" "C-x 8"
-                                       ))
+  ;; All the sequencies do something different
+  ;; TODO find out what is guide-key exactly good for
+  (setq guide-key/guide-key-sequence
+        '("C-x r" "C-x 4" "C-x v" "C-x 8"))
   (guide-key-mode 1))
 
 ;; TODO auto-package-update, use-package :ensure dependend on inet availability
