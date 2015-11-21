@@ -10,12 +10,6 @@
 [submodule ".vim/bundle/neosnippet-snippets"]
 	path = .vim/bundle/neosnippet-snippets
 	url = https://github.com/Shougo/neosnippet-snippets.git
-[submodule "emacs/themes/emacs-color-theme-solarized"]
-	path = emacs/themes/emacs-color-theme-solarized
-	url = https://github.com/sellout/emacs-color-theme-solarized.git
-[submodule "emacs/themes/zenburn-emacs"]
-	path = emacs/themes/zenburn-emacs
-	url = https://github.com/bbatsov/zenburn-emacs.git
 [submodule ".vim/bundle/GoldenView.Vim"]
 	ignore = dirty
 [submodule ".vim/bundle/VimClojure"]

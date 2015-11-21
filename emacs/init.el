@@ -1007,11 +1007,11 @@ Note the weekly scope of the command's precision.")
  '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
  '(region ((t (:background "#006400")))))
 
-;; (load-theme 'zenburn t)
-;; (disable-theme 'zenburn)  (enable-theme 'zenburn)
-
-(load-theme 'solarized t)
-;; (disable-theme 'solarized)  (enable-theme 'solarized)
+(if (boundp 'is-virt-box)
+    (use-package color-theme-zenburn :ensure t :defer t
+      :init (load-theme 'zenburn 'no-confirm))
+  (use-package color-theme-solarized :ensure t :defer t
+    :init (load-theme 'solarized 'no-confirm)))
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
