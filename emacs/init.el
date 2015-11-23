@@ -358,7 +358,6 @@
   (add-hook 'after-init-hook 'sml/setup))
 
 ;; git-gutter / git-gutter-fringe - +/- signs for changes lines
-;; (use-package git-gutter :ensure t :diminish "")
 (use-package git-gutter-fringe :ensure t
   :config (progn (set-face-foreground 'git-gutter-fr:added    "green4")
                  (set-face-foreground 'git-gutter-fr:modified "grey50")
@@ -381,7 +380,8 @@
                    "XXXXX..."
                    "XXXXX..."
                    "........")
-                 (global-git-gutter-mode)))
+                 (global-git-gutter-mode))
+  :init (use-package git-gutter :ensure t :diminish ""))
 
 (use-package evil-startup :load-path elisp-dir)
 
