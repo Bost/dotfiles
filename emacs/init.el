@@ -1076,7 +1076,6 @@ Note the weekly scope of the command's precision.")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cider-cljs-repl "(cemerick.piggieback/cljs-repl (cljs.repl.node/repl-env))")
  '(csv-separators (quote (";")))
  '(custom-safe-themes
    (quote
@@ -1094,8 +1093,7 @@ Note the weekly scope of the command's precision.")
     (ace-window avy-window avy bug-hunter grep+ cbm powerline-evil powerline fish-mode yagist mmm-mode markdown-mode volatile-highlights popwin smooth-scrolling sublimity minimap duplicate-thing expand-region ace-jump-mode iedit paradox transpose-frame evil-anzu anzu evil-search-highlight-persist evil-leader evil-smartparens evil-numbers evil-surround evil-args evil-nerd-commenter evil-visualstar evil-visual-mark-mode evil smart-mode-line dired-rainbow dired-subtree dired-details+ dired-details dired+ vimrc-mode drag-stuff persp-projectile helm-projectile helm-flycheck google-this helm-google helm-ls-git helm-descbinds macrostep helm-cider-history helm-ag helm-commandlinefu cljr-helm helm neotree discover magit git-timemachine linum-relative company window-purpose clj-refactor rainbow-delimiters ac-cider cider-eval-sexp-fu kibit-helper clojure-mode-extra-font-locking cider slamhound smartparens paredit-menu paredit use-package-chords auto-package-update use-package)))
  '(paradox-github-token t t)
  '(show-paren-mode t)
- '(tab-width 4)
- '(vc-follow-symlinks nil))
+ '(tab-width 4))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
