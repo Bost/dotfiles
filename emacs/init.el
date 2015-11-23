@@ -1110,7 +1110,7 @@ Note the weekly scope of the command's precision.")
   :if nil ; (boundp 'is-virt-box)
   :init (load-theme 'zenburn 'no-confirm))
 
-(use-package solarized-theme :ensure t :defer t
+(use-package color-theme-solarized :ensure t :defer t
   :if (not (boundp 'is-virt-box))
   :init (progn
           (setq solarized-high-contrast-mode-line t
@@ -1119,7 +1119,7 @@ Note the weekly scope of the command's precision.")
                 solarized-scale-org-headlines nil
                 x-underline-at-descent-line t)
           ;; (load-theme 'solarized-light 'no-confirm)
-          (load-theme 'solarized 'no-confirm))
+          (load-theme 'solarized-dark 'no-confirm))
   :config (setq color-theme-is-global t))
 
 (when window-system
