@@ -18,6 +18,7 @@
 (use-package projectile :ensure t)
 
 (use-package helm :defer t :ensure t ; :pin melpa-stable
+  :diminish "⎈"
   :config
   (bind-keys :map helm-buffer-map
              ("s-a" . helm-next-line)

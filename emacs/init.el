@@ -687,6 +687,7 @@ Including indent-buffer, which should not be called automatically on save."
   (defvar mode-line-cleaner-alist ; diminishing majore modes
     `((auto-complete-mode       . " α")
       (yas-minor-mode           . " γ")
+      (magit-mode               . "ɱ")
       (paredit-mode             . " Φ")
       (eldoc-mode               . "")
       (abbrev-mode              . "")
@@ -1106,7 +1107,7 @@ Note the weekly scope of the command's precision.")
  '(region ((t (:background "#006400")))))
 
 (use-package zenburn-theme :ensure t :defer t
-  :if (boundp 'is-virt-box)
+  :if nil ; (boundp 'is-virt-box)
   :init (load-theme 'zenburn 'no-confirm))
 
 (use-package solarized-theme :ensure t :defer t
