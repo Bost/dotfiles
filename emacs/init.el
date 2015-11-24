@@ -348,6 +348,7 @@
   :init (winner-mode 1))
 
 (use-package smart-mode-line :ensure t
+  :disabled t ; default stuff seems to be Ok
   :config
   ;; (setq sml/name-width 32
   ;;       sml/use-projectile-p 'before-prefixes
@@ -1077,14 +1078,9 @@ Note the weekly scope of the command's precision.")
 
 (use-package color-theme-solarized :ensure t :defer t
   :if (not (boundp 'is-virt-box))
-  :init (progn
-          (setq solarized-high-contrast-mode-line t
-                solarized-use-less-bold t
-                solarized-emphasize-indicators nil
-                solarized-scale-org-headlines nil
-                x-underline-at-descent-line t)
-          ;; (load-theme 'solarized-light 'no-confirm)
-          (load-theme 'solarized-dark 'no-confirm))
+  :init
+  (setq solarized-high-contrast-mode-line t)
+  (load-theme 'solarized-dark 'no-confirm)
   :config (setq color-theme-is-global t))
 
 ;; TODO try out (setq echo-keystrokes 0.4)
