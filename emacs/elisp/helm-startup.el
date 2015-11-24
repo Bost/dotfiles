@@ -26,18 +26,19 @@
              ("C-`" . helm-prev-line-exit-minibuf)
              )
   :bind (;; web search for PATTERN with search ENGINE
-         ;; ("s-u"   . helm-surfraw)
+         ;; ("s-u"  . helm-surfraw)
+         ("s-h"     . helm-imenu)
          ("<C-tab>" . helm-buffers-list)
          ("C-`"     . helm-buffers-list)
 
-         ("M-x"   . helm-M-x)
-         ("s-p"   . helm-projectile)
-         ("s-a"   . helm-buffers-list)
-         ("C-x b" . helm-mini)
-         ("s-b"   . helm-mini)
-         ;; ("<f9>"  . helm-list-elisp-packages-no-fetch)
-         ;; ("<f9>"  . helm-list-elisp-packages)
-         ("M-y"   . helm-show-kill-ring))
+         ("M-x"     . helm-M-x)
+         ("s-p"     . helm-projectile)
+         ("s-a"     . helm-buffers-list)
+         ("C-x b"   . helm-mini)
+         ("s-b"     . helm-mini)
+         ;; ("<f9>" . helm-list-elisp-packages-no-fetch)
+         ;; ("<f9>" . helm-list-elisp-packages)
+         ("M-y"     . helm-show-kill-ring))
   :init ; Code to run before PACKAGE-NAME has been loaded.
    (helm-mode 1)
     (helm-autoresize-mode 1)
@@ -145,35 +146,6 @@
           helm-scroll-amount                    8
           helm-ff-file-name-history-use-recentf t)
 
-    ;; (helm :sources (helm-build-sync-source "test"
-    ;;                  :candidates '(foo foa fob bar baz)
-    ;;                  :fuzzy-match t)
-    ;;       :buffer "*helm test*")
-
-    ;; (defun helm-clojure-headlines ()
-    ;;   "Display headlines for the current Clojure file."
-    ;;   (interactive)
-    ;;   (helm-mode t)
-    ;;   (helm :sources '(((name . "Clojure Headlines")
-    ;;                     (volatile)
-    ;;                     (headline "^[;(]")))))
-
-    ;; (defun helm-clojure-headlines ()
-    ;;   "Display headlines for the current Clojure file."
-    ;;   (interactive)
-    ;;   (setq helm-current-buffer (current-buffer)) ;; Fixes bug where the current buffer sometimes isn't used
-    ;;   (jit-lock-fontify-now) ;; https://groups.google.com/forum/#!topic/emacs-helm/YwqsyRRHjY4
-    ;;   (helm :sources (helm-build-in-buffer-source "Clojure Headlines"
-    ;;                    :data (with-helm-current-buffer
-    ;;                            (goto-char (point-min))
-    ;;                            (cl-loop while (re-search-forward "^(\\|testing\\|^;.*[a-zA-Z]+" nil t)
-    ;;                                     for line = (buffer-substring (point-at-bol) (point-at-eol))
-    ;;                                     for pos = (line-number-at-pos)
-    ;;                                     collect (propertize line 'helm-realvalue pos)))
-    ;;                    :get-line 'buffer-substring
-    ;;                    :action (lambda (c) (helm-goto-line c)))
-    ;;         :buffer "helm-clojure-headlines"))
-
     ;; see https://gist.github.com/tjg/4903f00a62e02bbe6217
     (defun helm-headlines (headline buffer-name good-regex exception-regex)
       "Display headlines for the current file.
@@ -223,8 +195,8 @@
                           "helm-clojure-headlines"
                           "^(def\\|.*defconstrainedfn"
                           nil))
-        ;; TODO see helm-occur
-        (bind-key "s-h" 'helm-clojure-headlines clojure-mode-map)))
+        ;; see also "s-h" . helm-imenu; TODO see helm-occur
+        (bind-key "C-s-h" 'helm-clojure-headlines clojure-mode-map)))
 
     (progn
       (defun helm-emacs-lisp-headlines ()
@@ -235,8 +207,8 @@
                         "^("                    ; don't display any comments
                         ;; "^(\\|^;* [a-zA-Z]+" ; also display comments
                         nil))
-      ;; TODO see helm-occur
-      (bind-key "s-h" 'helm-emacs-lisp-headlines emacs-lisp-mode-map))
+      ;; see also "s-h" . helm-imenu; TODO see helm-occur
+      (bind-key "C-s-h" 'helm-emacs-lisp-headlines emacs-lisp-mode-map))
 
     (defun helm-python-headlines ()
       "Display headlines for the current Python file."
