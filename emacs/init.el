@@ -359,6 +359,7 @@
 
 ;; git-gutter / git-gutter-fringe - +/- signs for changes lines
 (use-package git-gutter-fringe :ensure t
+  :disabled t
   :config (progn (set-face-foreground 'git-gutter-fr:added    "green4")
                  (set-face-foreground 'git-gutter-fr:modified "grey50")
                  (set-face-foreground 'git-gutter-fr:deleted  "red3")
