@@ -1087,6 +1087,8 @@ Note the weekly scope of the command's precision.")
           (load-theme 'solarized-dark 'no-confirm))
   :config (setq color-theme-is-global t))
 
+;; TODO try out (setq echo-keystrokes 0.4)
+
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
                                             emacs-start-time))))
