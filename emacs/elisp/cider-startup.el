@@ -33,7 +33,7 @@
   (bind-keys :map cider-repl-mode-map
              ("s-c" . cider-repl-clear-buffer)
              ("s-e" . cider-eval-last-sexp)
-             ("s-M"   . main-all)) ; invoke from REPL buffer
+             ("s-M" . main-all)) ; invoke from REPL buffer
   :init
   (defun main-all ()
     (interactive)
@@ -48,7 +48,7 @@
 
   (use-package clj-refactor :defer t :ensure t
     :diminish "" ; "Rλ"
-    :bind ("s-r"   . cljr-rename-symbol)
+    :bind ("s-r" . cljr-rename-symbol)
     :init
     (add-hook 'clojure-mode-hook
               (lambda ()

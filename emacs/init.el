@@ -344,18 +344,17 @@
               (kill-buffer buffer)))
           (buffer-list))))
 
-;; layout management
-(use-package winner :defer t :ensure t
+(use-package winner :defer t :ensure t ; window layout management
   :init (winner-mode 1))
 
-(use-package smart-mode-line :ensure t :init
-  (setq sml/shorten-directory t
-        ;; sml/theme 'respectful
-        sml/name-width 32
-        sml/shorten-modes t
-        sml/use-projectile-p 'before-prefixes
-        sml/projectile-replacement-format "%s/")
-  (add-hook 'after-init-hook 'sml/setup))
+(use-package smart-mode-line :ensure t
+  :config
+  ;; (setq sml/name-width 32
+  ;;       sml/use-projectile-p 'before-prefixes
+  ;;       sml/projectile-replacement-format "%s/")
+  (setq sml/no-confirm-load-theme t)    ; workaround; (custom-set-variables ...)
+                                        ; should be at the very top of init.el
+  (sml/setup))
 
 ;; git-gutter / git-gutter-fringe - +/- signs for changes lines
 (use-package git-gutter-fringe :ensure t
@@ -1016,22 +1015,6 @@ Note the weekly scope of the command's precision.")
                   scroll-bar-mode))
     (when (fboundp mode) (funcall mode -1)))
 
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(csv-separators (quote (";")))
-   '(ecb-options-version "2.40")
-   '(ecb-source-path (quote ("~/dev/webcli")))
-   '(evil-search-highlight-persist t)
-   '(git-commit-summary-max-length 70)
-   '(global-evil-search-highlight-persist t)
-   '(global-hl-line-mode t)
-   '(indent-tabs-mode nil)
-   '(show-paren-mode t)
-   '(tab-width 4))
-
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   ;; test delimiters:
   ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}
@@ -1039,18 +1022,6 @@ Note the weekly scope of the command's precision.")
   ;; check on saving if the file contains a shebang; if yes make it executable
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p)
-
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(evil-search-highlight-persist-highlight-face
-     ((t (:background "dark olive green" :foreground "white"))))
-   '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
-   '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
-   '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
-   '(region ((t (:background "#006400")))))
 
   (defun emacs-lisp-mode-keys ()
     "Modify keymaps used by `emacs-lisp-mode'."
@@ -1078,9 +1049,6 @@ Note the weekly scope of the command's precision.")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(csv-separators (quote (";")))
- '(custom-safe-themes
-   (quote
-    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(ecb-options-version "2.40")
  '(ecb-source-path (quote ("~/dev/webcli")))
  '(evil-search-highlight-persist t t)
@@ -1088,9 +1056,6 @@ Note the weekly scope of the command's precision.")
  '(global-evil-search-highlight-persist t)
  '(global-hl-line-mode t)
  '(indent-tabs-mode nil)
- '(package-selected-packages
-   (quote
-    (ace-window avy-window avy bug-hunter grep+ cbm powerline-evil powerline fish-mode yagist mmm-mode markdown-mode volatile-highlights popwin smooth-scrolling sublimity minimap duplicate-thing expand-region ace-jump-mode iedit paradox transpose-frame evil-anzu anzu evil-search-highlight-persist evil-leader evil-smartparens evil-numbers evil-surround evil-args evil-nerd-commenter evil-visualstar evil-visual-mark-mode evil smart-mode-line dired-rainbow dired-subtree dired-details+ dired-details dired+ vimrc-mode drag-stuff persp-projectile helm-projectile helm-flycheck google-this helm-google helm-ls-git helm-descbinds macrostep helm-cider-history helm-ag helm-commandlinefu cljr-helm helm neotree discover magit git-timemachine linum-relative company window-purpose clj-refactor rainbow-delimiters ac-cider cider-eval-sexp-fu kibit-helper clojure-mode-extra-font-locking cider slamhound smartparens paredit-menu paredit use-package-chords auto-package-update use-package)))
  '(paradox-github-token t t)
  '(show-paren-mode t)
  '(tab-width 4))
