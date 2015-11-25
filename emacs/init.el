@@ -22,12 +22,9 @@
 (setq package-enable-at-startup nil
       package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ;; ("org" . "http://orgmode.org/elpa/")
+                         ;; '("melpa-stable" . "http://stable.melpa.org/packages/")
                          ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
-
-;; (add-to-list 'package-archives
-;;              '("melpa-stable" . "http://stable.melpa.org/packages/")
-;;              t)
 
 (package-initialize)
 
@@ -106,32 +103,7 @@
     (smartparens-global-mode)
     (show-smartparens-mode)))
 
-;;(defun skewer-mode-keys ()
-;;  "Modify keymaps used by `skewer-mode'."
-;;  (local-set-key (kbd "s-e") 'skewer-eval-last-expression)
-;;  (local-set-key (kbd "s-x") 'skewer-eval-defun)
-;;  (local-set-key (kbd "s-l") 'skewer-load-buffer)
-;;  )
-;; skewer works on top of js2-mode
-;; (add-hook 'js2-mode-hook 'skewer-mode-keys)
-;; (add-hook 'skewer-mode-hook 'skewer-mode-keys)
-
-;; (use-package inf-clojure
-;;   :defer t
-;;   :ensure t
-;;   :init
-
-;;   ;; (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode)
-
-;;   (defun cljs-node-repl ()
-;;     (interactive)
-;;     (run-clojure
-;;      "java -cp cljs.jar clojure.main repl.clj"
-;;      ;; "lein trampoline run -m clojure.main repl.clj"
-;;      )))
-
-;; slamhound: rip and reconstruct clojure namespace
-(use-package slamhound :defer t :ensure t)
+(use-package slamhound :defer t :ensure t) ;; rip'n'reconstruct clj namespace
 
 ;; TODO cider-startup :defer 3 messes us with s-l
 (use-package cider-startup ; :defer 3
@@ -163,8 +135,7 @@
 ;; ;; TODO compare auto-complete and company-mode (supported by cider):
 ;; https://github.com/company-mode/company-mode/issues/68
 (use-package company :ensure t :defer t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  :init (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package linum-relative :defer t :ensure t
   :bind ("C-s-n" . linum-relative-toggle)
@@ -176,11 +147,6 @@
 ;; reload all buffers when the file is changed
 (use-package autorevert :defer t :ensure t
   :init (global-auto-revert-mode t))
-
-;;(desktop-load-default)
-;;(desktop-read)
-
-;; (use-package elpy)
 
 ;; org-mode is loaded by default - can't be ":defer t"
 (use-package org :ensure t
@@ -210,11 +176,6 @@
   ;;(global-set-key "\C-cc" 'org-capture)
   ;;(global-set-key "\C-ca" 'org-agenda)
   )
-
-;; Setup custom shortcuts
-;;(global-set-key "\C-x\C-g" 'goto-line)
-;;(global-set-key [f1] 'compile)
-;;(global-set-key [f2] 'next-error)
 
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package git-timemachine :ensure t :defer t)
@@ -765,7 +726,9 @@ want to use in the modeline *in lieu of* the original.")
 ;;               ("C-l" . counsel-info-lookup-symbol)))
 
 (use-package emacs :ensure t
-  :bind (("<f10>" . menu-bar-open) ; this is the default
+  :bind (;; ("C-x C-g" . goto-line)
+         ;; ("<f2>"    . next-error)
+         ("<f10>" . menu-bar-open) ; this is the default
          ("s-F"   . helm-find-files)
          ("s-s"   . save-buffer)
          ("s-x"   . kill-region)    ; cut
@@ -776,7 +739,7 @@ want to use in the modeline *in lieu of* the original.")
          ("s-0"               . delete-window)
          ("s-1"               . delete-other-windows)
          ("s-R"               . rename-file-and-buffer)
-         ;; ("<f3>"              . find-grep) ; Use -e '...' instead of -e "..."
+         ;; ("<f3>"           . find-grep) ; Use -e '...' instead of -e "..."
          ("<f7>"              . find-file-emacs)
          ("s-k"               . close-buffer)
          ("C-s-k"             . delete-file-and-close-its-buffer)
@@ -799,11 +762,11 @@ want to use in the modeline *in lieu of* the original.")
          ("<C-M-prior>"       . hs-hide-all)
          ("<C-M-next>"        . hs-show-all)
 
-         ;; ("<s-delete>"        . kill-sexp)
+         ;; ("<s-delete>"     . kill-sexp)
          ("<s-backspace>"     . paredit-backward-kill-word)
          ("<s-delete>"        . paredit-forward-kill-word)
          ;; default key binding; transpose current sexp with sexp on the right from cursor
-         ;; ("C-M-t"             . transpose-sexp)
+         ;; ("C-M-t"           . transpose-sexp)
 
          ;; ("<C-kp-multiply>" . highlight-symbol-at-point)
          ;; ("<s-f10>"         . gui-toggle) ;; shows also scrollbars
@@ -842,10 +805,8 @@ want to use in the modeline *in lieu of* the original.")
   (global-prettify-symbols-mode +1)
 
   (prefer-coding-system 'utf-8)
-  (setq backup-inhibited t)
-
-  ;; (setq gui-elements -1)
-
+  (setq ;;setq gui-elements -1
+        backup-inhibited t)
   :init
   (defun eval-and-replace ()
     "Replace the preceding sexp with its value."
@@ -1017,9 +978,6 @@ Note the weekly scope of the command's precision.")
     (newline)                             ; insert a newline
     (switch-to-buffer nil))               ; return to the initial buffer
 
-  ;; (global-set-key (kbd "M-s") 'save-buffer)
-  ;; s-s is here just to have consistent key mapping.
-  ;; If it's gonna work I can use M-s for something else
   (defun close-buffer ()
     (interactive)
     (if server-buffer-clients
