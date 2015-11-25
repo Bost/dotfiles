@@ -322,6 +322,30 @@
             ("<C-return>"   . dired-subtree-insert)
             ("<C-M-return>" . dired-subtree-remove)))
 
+  (use-package rainbow-delimiters :defer t :ensure t
+    :init
+    (if nil '(((((((((((((((((())))))))))))))))))) ; testing ground
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+    ;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+    ;; (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
+    ;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+    ;; (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
+
+    (custom-set-faces
+     ;; '(rainbow-delimiters-depth-1-face ((t (:foreground "dark goldenrod"))))
+     ;; '(rainbow-delimiters-depth-2-face ((t (:foreground "goldenrod"))))
+     ;; '(rainbow-delimiters-depth-3-face ((t (:foreground "light goldenrod"))))
+
+     ;; '(rainbow-delimiters-depth-1-face ((t (:foreground "dark orange"))))
+     ;; '(rainbow-delimiters-depth-2-face ((t (:foreground "deep pink"))))
+     ;; '(rainbow-delimiters-depth-3-face ((t (:foreground "chartreuse"))))
+     ;; '(rainbow-delimiters-depth-4-face ((t (:foreground "deep sky blue"))))
+     ;; '(rainbow-delimiters-depth-5-face ((t (:foreground "yellow"))))
+     ;; '(rainbow-delimiters-depth-6-face ((t (:foreground "orchid"))))
+     ;; '(rainbow-delimiters-depth-7-face ((t (:foreground "spring green"))))
+     ;; '(rainbow-delimiters-depth-8-face ((t (:foreground "sienna1"))))
+     ))
+
   ;; file highlighting
   (use-package dired-rainbow :defer t :ensure t)
   ;; When moving to parent directory by `^´, Dired by default creates a
@@ -1010,10 +1034,6 @@ Note the weekly scope of the command's precision.")
                   ;; menu-bar-mode
                   scroll-bar-mode))
     (when (fboundp mode) (funcall mode -1)))
-
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-  ;; test delimiters:
-  ;; (((( ((( () ))) )))) [[[[ [[[ [] ]]] ]]]] {{{{ {{{ {} }}} }}}}
 
   ;; check on saving if the file contains a shebang; if yes make it executable
   (add-hook 'after-save-hook

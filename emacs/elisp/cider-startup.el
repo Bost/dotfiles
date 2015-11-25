@@ -81,7 +81,6 @@
   (use-package kibit-helper       :defer t :ensure t)
   (use-package cider-eval-sexp-fu :defer t :ensure t)
   (use-package ac-cider           :defer t :ensure t)
-  (use-package rainbow-delimiters :defer t :ensure t)
 
   (setq nrepl-log-messages t
         nrepl-hide-special-buffers t
@@ -101,7 +100,6 @@
   (add-hook 'cider-repl-mode-hook #'subword-mode)
   ;; (add-hook 'cider-repl-mode-hook #'paredit-mode)
   ;; (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
-  (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
 
   (defun cider-save-and-load-current-buffer ()
     (interactive)
