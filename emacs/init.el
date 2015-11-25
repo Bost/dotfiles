@@ -744,6 +744,14 @@ want to use in the modeline *in lieu of* the original.")
 ;;   (setq uniquify-ignore-buffers-re "^\\*"))
 
 ;; TODO test emacs-ycmd + ycmd, the code completion system.
+;; TODO test counsel - completion functions using Ivy
+;; (use-package counsel :defer t :ensure t ; completion functions using Ivy
+;;   :bind (("s-z" . counsel-M-x)
+;;          ("C-s-f" . counsel-find-file))
+;;   :bind (:map help-map
+;;               ("f" . counsel-describe-function)
+;;               ("v" . counsel-describe-variable)
+;;               ("C-l" . counsel-info-lookup-symbol)))
 
 (use-package emacs :ensure t
   :bind (("<f10>" . menu-bar-open) ; this is the default
