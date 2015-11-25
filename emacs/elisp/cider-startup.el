@@ -4,7 +4,7 @@
 (use-package cider :defer t :ensure t
   ;; TODO cider-repl-mode :diminish "Ç»"
   :diminish " ç"
-  :bind (("s-z"   . cider-switch-to-repl-buffer)
+  :bind (;; ("s-z"   . cider-switch-to-repl-buffer)
          ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
          ("s-t"   . cider-test-run-tests)
          ("s-."   . cider-find-var)
@@ -28,6 +28,8 @@
          ;; ("<C-insert>"    . typed-unicode-symbols)
 
          ("s-M"   . main-all)) ; invoke from *.clj buffer
+  :bind (:map cider-mode-map
+              ("s-z"   . cider-switch-to-repl-buffer))
   :config
   (setq gui-elements 1) ; because of CIDER menu
   (bind-keys :map cider-repl-mode-map

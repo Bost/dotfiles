@@ -747,10 +747,6 @@ want to use in the modeline *in lieu of* the original.")
 
 (use-package emacs :ensure t
   :bind (("<f10>" . menu-bar-open) ; this is the default
-         ("s-e"   . eval-last-sexp)
-         ("s-D"   . eval-defun) ; also C-M-x
-         ("s-E"   . eval-defun)
-         ("s-f"   . eval-defun)
          ("s-F"   . helm-find-files)
          ("s-s"   . save-buffer)
          ("s-x"   . kill-region)    ; cut
@@ -817,6 +813,11 @@ want to use in the modeline *in lieu of* the original.")
          ;;  ((kbd "<s-f3>") . kmacro-start-macro-or-insert-counter)
          ;;  ((kbd "<s-f4>") . kmacro-end-or-call-macro)
          )
+  :bind (:map emacs-lisp-mode-map
+              ("s-e"   . eval-last-sexp)
+              ("s-D"   . eval-defun) ; also C-M-x
+              ("s-E"   . eval-defun)
+              ("s-f"   . eval-defun))
   :config
   ;; (defalias 'qrr 'query-replace-regexp) ; M-x qrr
   (global-prettify-symbols-mode +1)
