@@ -405,21 +405,6 @@
 
 ;; (use-package ack-menu :defer t :ensure t)
 
-(use-package paradox :defer t :ensure t
-  :bind (("<f9>"   . paradox-list-packages) ; TODO auto enable/disable evil-mode
-         ("<s-f9>" . paradox-upgrade-packages))
-  :init
-  (defun package-auto-upgrade ()
-    (interactive)
-    (package-list-packages)
-    (package-menu-mark-obsolete-for-deletion)
-    (package-menu-mark-upgrades)
-    (package-menu-execute))
-
-  (use-package spinner :defer t :ensure t)
-  (setq paradox-github-token (getenv "GITHUB_TOKEN")
-        paradox-automatically-star t))
-
 ;; edit every instance of word/variable in the buffer - like multiple cursors
 (use-package iedit :defer t :ensure t
   :bind ("s-i" . iedit-mode))

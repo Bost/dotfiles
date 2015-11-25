@@ -76,6 +76,23 @@ buffer."
               (setq pos (or (next-single-property-change left from object)
                             (point-max)))
               (when (eq (car prop) 'image)
-                (add-text-properties left pos (list from nil to prop) object))))))))
+                (add-text-properties left pos (list from nil to prop) object)))))))
+
+  ;;;;;;;;;;;;;;;;;;;;;;; else: non-virt-box machines
+
+  (use-package paradox :defer t :ensure t
+    :bind (("<f9>"   . paradox-list-packages) ; TODO auto enable/disable evil-mode
+           ("<s-f9>" . paradox-upgrade-packages))
+    :init
+    (defun package-auto-upgrade ()
+      (interactive)
+      (package-list-packages)
+      (package-menu-mark-obsolete-for-deletion)
+      (package-menu-mark-upgrades)
+      (package-menu-execute))
+
+    (use-package spinner :defer t :ensure t)
+    (setq paradox-github-token (getenv "GITHUB_TOKEN")
+          paradox-automatically-star t)))
 
 (provide 'environment-lib)
