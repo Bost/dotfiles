@@ -12,8 +12,7 @@
   (helm-push-mark-mode 1)) ; improved version of `push-mark'
 
 (defun helm-git-version ()
-  (shell-command-to-string
-   "git log --pretty='format:%H' -1"))
+  (shell-command-to-string "git log --pretty='format:%H' -1"))
 
 (use-package projectile :ensure t)
 
@@ -21,10 +20,9 @@
   :diminish "⎈"
   :config
   (bind-keys :map helm-buffer-map
-             ("s-a" . helm-next-line)
+             ("s-a"     . helm-next-line)
              ("<C-tab>" . helm-next-line-exit-minibuf)
-             ("C-`" . helm-prev-line-exit-minibuf)
-             )
+             ("C-`"     . helm-prev-line-exit-minibuf))
   :bind (;; web search for PATTERN with search ENGINE
          ;; ("s-u"  . helm-surfraw)
          ("s-h"     . helm-imenu)
@@ -57,13 +55,9 @@
     ;; (helm-maybe-exit-minibuffer)
     (helm-exit-minibuffer))
 
-  ;; (use-package helm-dictionary ; local offline dictionaries
-  ;;  :ensure t
-  ;;  :defer t)
-
-  ;; (use-package helm-themes
-  ;;  :ensure t
-  ;;  :defer t)
+  ;; helm-dictionary: local offline dictionaries
+  ;; (use-package helm-dictionary :ensure t :defer t)
+  ;; (use-package helm-themes :ensure t :defer t)
 
   ;; TODO bind `cljr-helm` to a key (I'd suggest C-c r) in Clojure mode
   (use-package cljr-helm          :defer t :ensure t)
@@ -111,14 +105,12 @@
     (use-package persp-projectile :defer t :ensure t
       :bind ("C-s-p" . helm-projectile-ack)
       :config
+      ;; (helm-projectile-on)
+      (projectile-global-mode)
       ;; (desktop-save-mode 1)
       ;; TODO save perspective
       (use-package perspective :defer t :ensure t
-        :config
-        (persp-mode))
-
-      ;; (helm-projectile-on)
-      (projectile-global-mode))
+        :config (persp-mode)))
 
     ;; rebind tab to do persistent action
     ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)

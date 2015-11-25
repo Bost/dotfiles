@@ -117,13 +117,6 @@
     (global-evil-leader-mode)
     (setq evil-leader/in-all-states t)
 
-    (defun delete-rest-of-cheatsheet-entry (&optional arg)
-      "kbd macro - starts in evil-normal-mode;
-      delete up to the ' (single quote) character"
-      (interactive "p")
-      (kmacro-exec-ring-item (quote ([118 116 39 120 105] 0 "%d"))
-                             arg))
-
     (evil-leader/set-key
       "dd" 'kill-whole-line
       ;; wr gives: (error "Key sequence w r starts with non-prefix key w")
@@ -152,13 +145,6 @@
   (define-key evil-normal-state-map (kbd "<C-O>") 'evil-jump-forward)
 
   (use-package evil-search-highlight-persist :defer t :ensure t
-    :init (global-evil-search-highlight-persist t))
-
-  ;; mode-line (pink - bottom left): 'current match/total matches'
-  (use-package anzu :defer t :ensure t
-    :diminish anzu-mode
-    :init
-    (global-anzu-mode 1)
-    (use-package evil-anzu :defer t :ensure t)))
+    :init (global-evil-search-highlight-persist t)))
 
 (provide 'evil-startup)
