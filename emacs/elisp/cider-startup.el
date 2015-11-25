@@ -2,8 +2,7 @@
 ;;; Code:
 
 (use-package cider :defer t :ensure t
-  ;; TODO cider-repl-mode :diminish "Ç»"
-  :diminish " ç"
+  ;; :diminish "C♻" ; works only for minor not major modes
   :bind (;; ("s-z"   . cider-switch-to-repl-buffer)
          ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
          ("s-t"   . cider-test-run-tests)
@@ -27,21 +26,36 @@
          ;; (unbind-key "<C-insert>")
          ;; ("<C-insert>"    . typed-unicode-symbols)
 
-         ("s-M"   . main-all)) ; invoke from *.clj buffer
-  :bind (:map cider-mode-map
-              ("s-z"   . cider-switch-to-repl-buffer))
+         ;; invoke from *.clj buffer
+         ("s-M" . main-a)
+         ("s-S" . main-s))
   :config
+  (bind-keys :map cider-mode-map
+         ("s-z"   . cider-switch-to-repl-buffer))
   (setq gui-elements 1) ; because of CIDER menu
-  (bind-keys :map cider-repl-mode-map
-             ("s-c" . cider-repl-clear-buffer)
-             ("s-e" . cider-eval-last-sexp)
-             ("s-M" . main-all)) ; invoke from REPL buffer
   :init
-  (defun main-all ()
-    (interactive)
+  (use-package cider-repl
+    :config
+    (bind-keys :map cider-repl-mode-map
+           ("s-c" . cider-repl-clear-buffer)
+           ("s-e" . cider-eval-last-sexp)
+           ;; invoke from *.clj buffer
+           ("s-M" . main-a)
+           ("s-S" . main-s)))
+
+  (defun main-x (x)
     (cider-switch-to-repl-buffer)
     (end-of-buffer)
-    (insert "(-main \"-a\")"))
+    (insert (concat "(-main \"-" x "\")"))
+    (evil-insert-state))
+
+  (defun main-a ()
+    (interactive)
+    (main-x "a"))
+
+  (defun main-s ()
+    (interactive)
+    (main-x "s"))
 
   (defun zark-colors ()
     (beginning-of-defun)
@@ -64,8 +78,7 @@
 
   ;; cider depends on clojure mode
   (use-package clojure-mode :defer t :ensure t
-    ;; We're in a majore mode diminishing works only for minor modes
-    ;; :diminish "Cλ"
+    ;; :diminish "Cλ" ; works only for minor not major modes
     :init
     ;; (setq prettify-symbols-alist nil)
 

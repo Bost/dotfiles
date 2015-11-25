@@ -291,6 +291,7 @@
 (use-package helm-startup :load-path elisp-dir)
 
 (use-package drag-stuff :ensure t
+  :diminish "⟺"
   :config (drag-stuff-global-mode t))
 
 (use-package vimrc-mode :defer t :ensure t
@@ -703,11 +704,12 @@ Including indent-buffer, which should not be called automatically on save."
       (abbrev-mode              . "")
       (volatile-highlights-mode . " υ")
       (elisp-slime-nav-mode     . " δ")
-      (nrepl-mode               . " ηζ")
-      (nrepl-interaction-mode   . " ηζ")
+      (nrepl-mode               . "ηζ")
+      (nrepl-interaction-mode   . "ηζ")
       ;; Major modes
-      (lisp-mode                . " λ")
       (clojure-mode             . "Cλ")
+      (cider-repl-mode          . "C♻")
+      (lisp-mode                . " λ")
       (hi-lock-mode             . "")
       (python-mode              . "Py")
       (emacs-lisp-mode          . "ξλ") ; "EL"
