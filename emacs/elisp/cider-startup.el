@@ -28,7 +28,8 @@
 
          ;; invoke from *.clj buffer
          ("s-M" . main-a)
-         ("s-S" . main-s))
+         ("s-S" . main-s)
+         ("s-_" . clojure-ignore-next-form))
   :config
   (bind-keys :map cider-mode-map
          ("s-z"   . cider-switch-to-repl-buffer))
@@ -49,6 +50,10 @@
     (end-of-buffer)
     (insert (concat "(-main \"-" x "\")"))
     (evil-insert-state))
+
+  (defun clojure-ignore-next-form ()
+    (interactive)
+    (insert "#_"))
 
   (defun main-a ()
     (interactive)
