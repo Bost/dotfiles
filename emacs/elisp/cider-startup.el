@@ -86,8 +86,8 @@
   (use-package clojure-mode :defer t :ensure t
     ;; :diminish "Cλ" ; works only for minor not major modes
     :init
+    (use-package typed-clojure-mode :defer t :ensure t)
     ;; (setq prettify-symbols-alist nil)
-
     (use-package clojure-mode-extra-font-locking :ensure t)
     (clojure-mode)
     (defun clojure-mode-keys ()
