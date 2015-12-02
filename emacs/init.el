@@ -732,6 +732,10 @@ want to use in the modeline *in lieu of* the original.")
   (global-anzu-mode 1)
   (use-package evil-anzu :defer t :ensure t))
 
+(use-package beacon :defer t :ensure t
+  :disabled t
+  :init (beacon-mode 1)) ; highlight the cursor whenever the window scrolls
+
 (use-package emacs-startup :load-path elisp-dir)
 
 (custom-set-variables

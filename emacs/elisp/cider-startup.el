@@ -72,29 +72,30 @@
     :diminish "" ; "Rλ"
     :bind ("s-r" . cljr-rename-symbol)
     :init
+    ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
+    ;; (setq nrepl-hide-special-buffers t)
+
+    ;; cider depends on clojure mode
+    (use-package clojure-mode :defer t :ensure t
+      :load-path "~/dev/clojure-mode"
+      ;; :diminish "Cλ" ; works only for minor not major modes
+      :init
+      (use-package typed-clojure-mode :defer t :ensure t)
+      ;; (setq prettify-symbols-alist nil)
+      (use-package clojure-mode-extra-font-locking :ensure t)
+      (clojure-mode)
+      (defun clojure-mode-keys ()
+        "Modify keymaps used by `repl-mode'."
+        (if (featurep 'evil-leader)
+            (evil-leader/set-key "e" 'cider-eval-last-sexp)))
+      (add-hook 'clojure-mode-hook 'clojure-mode-keys))
+
     (add-hook 'clojure-mode-hook
               (lambda ()
                 (clj-refactor-mode 1)
                 (yas-minor-mode 1) ; for adding require/use/import
                 ;; eg. rename files with `C-c C-m rf`.
                 (cljr-add-keybindings-with-prefix "C-c C-m"))))
-
-  ;; hide *nrepl-connection* and *nrepl-server* when switching buffers
-  ;; (setq nrepl-hide-special-buffers t)
-
-  ;; cider depends on clojure mode
-  (use-package clojure-mode :defer t :ensure t
-    ;; :diminish "Cλ" ; works only for minor not major modes
-    :init
-    (use-package typed-clojure-mode :defer t :ensure t)
-    ;; (setq prettify-symbols-alist nil)
-    (use-package clojure-mode-extra-font-locking :ensure t)
-    (clojure-mode)
-    (defun clojure-mode-keys ()
-      "Modify keymaps used by `repl-mode'."
-      (if (featurep 'evil-leader)
-          (evil-leader/set-key "e" 'cider-eval-last-sexp)))
-    (add-hook 'clojure-mode-hook 'clojure-mode-keys))
 
   ;;  kibit - lein plugin for detecting / improving non-idiomatic clj code
   (use-package kibit-helper       :defer t :ensure t)
