@@ -38,7 +38,9 @@
          ("<C-M-prior>"       . hs-hide-all)
          ("<C-M-next>"        . hs-show-all)
 
-         ;; ("<s-delete>"     . kill-sexp)
+         ("<C-M-delete>"      . kill-sexp)
+         ("<C-M-backspace>"   . backward-kill-sexp)
+
          ("<s-backspace>"     . paredit-backward-kill-word)
          ("<s-delete>"        . paredit-forward-kill-word)
          ;; default key binding; transpose current sexp with sexp on the right from cursor
