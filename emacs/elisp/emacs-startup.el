@@ -29,7 +29,7 @@
          ("M-s-l"             . enlarge-window-horizontally)
          ("M-s-j"             . enlarge-window)
          ("M-s-k"             . shrink-window)
-         ("s-u"               . eval-buffer) ; might be in lisp-mode-keys see ("s-u" . helm-surfraw)
+         ("s-u"               . eval-buffer-and-notify) ; might be in lisp-mode-keys see ("s-u" . helm-surfraw)
          ("<C-up>"            . xah-backward-block)
          ("<C-down>"          . xah-forward-block)
          ("<C-prior>"         . hs-hide-block)
@@ -84,6 +84,11 @@
   (setq ;;setq gui-elements -1
         backup-inhibited t)
   :init
+  (defun eval-buffer-and-notify ()
+    (interactive)
+    (eval-buffer)
+    (message (concat "Buffer evaluated :timestamp \"" (timestamp) "\"")))
+
   (defun eval-and-replace ()
     "Replace the preceding sexp with its value."
     (interactive)
