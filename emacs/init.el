@@ -773,8 +773,9 @@ want to use in the modeline *in lieu of* the original.")
 (use-package color-theme-solarized :ensure t :defer t
   :if (not (boundp 'is-virt-box))
   :init
-  (setq solarized-high-contrast-mode-line t)
-  (load-theme 'solarized-dark 'no-confirm)
+  (setq solarized-high-contrast-mode-line t
+        frame-background-mode 'dark)
+  (load-theme 'solarized 'no-confirm)
   :config (setq color-theme-is-global t))
 
 ;; TODO try out (setq echo-keystrokes 0.4)
