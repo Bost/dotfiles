@@ -770,12 +770,12 @@ want to use in the modeline *in lieu of* the original.")
   :if nil ; (boundp 'is-virt-box)
   :init (load-theme 'zenburn 'no-confirm))
 
-(use-package color-theme-solarized :ensure t :defer t
+(use-package solarized-theme :ensure t :defer t
   :if (not (boundp 'is-virt-box))
   :init
   (setq solarized-high-contrast-mode-line t
         frame-background-mode 'dark)
-  (load-theme 'solarized 'no-confirm)
+  (load-theme 'solarized-dark 'no-confirm)
   :config (setq color-theme-is-global t))
 
 ;; TODO try out (setq echo-keystrokes 0.4)
