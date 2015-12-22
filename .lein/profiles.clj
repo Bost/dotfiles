@@ -9,7 +9,7 @@
 
    [lein-ancient "0.6.7"]
    [lein-localrepo "0.5.3"]
-   [lein-kibit "0.1.2"]
+   [lein-kibit "0.1.2"] ; lein kibit - check style
    [lein-typed "0.3.5"]
    ]
   :dependencies
