@@ -23,6 +23,10 @@
          ("s-3"               . split-other-window-right)
          ("<s-f10>"           . find-zark-file)
          ("<s-f11>"           . find-emacs-init-file)
+
+         ;; ("<f11>"             . point-to-register) ; set a point with
+         ;; ("<f12>"             . jump-to-register)  ; jump to point
+
          ("<s-f12>"           . switch-to-buffer-scratch)
          ("<C-S-iso-lefttab>" . unbury-buffer)
          ("M-s-h"             . shrink-window-horizontally)

@@ -28,7 +28,9 @@
 
          ;; invoke from *.clj buffer
          ("s-M" . main-a)
+         ("s-A" . main-a)
          ("s-S" . main-s)
+         ("s-U" . main-u)
          ("s-_" . clojure-ignore-next-form))
   :config
   (bind-keys :map cider-mode-map
@@ -63,6 +65,10 @@
     (interactive)
     (main-x "s"))
 
+  (defun main-u ()
+    (interactive)
+    (main-x "u"))
+
   (defun zark-colors ()
     (beginning-of-defun)
     (beginning-of-sexp)
@@ -77,7 +83,7 @@
 
     ;; cider depends on clojure mode
     (use-package clojure-mode :defer t :ensure t
-      :load-path "~/dev/clojure-mode"
+      ;; :load-path "~/dev/clojure-mode"
       ;; :diminish "Cλ" ; works only for minor not major modes
       :init
       (use-package typed-clojure-mode :defer t :ensure t)
