@@ -1,7 +1,7 @@
 ;;; cider-startup.el --- startup file for cider. -*- lexical-binding: t -*-
 ;;; Code:
 
-(use-package cider :defer t :ensure t
+(use-package cider :ensure t
   ;; :diminish "C♻" ; works only for minor not major modes
   :bind (;; ("s-z"   . cider-switch-to-repl-buffer)
          ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
@@ -74,7 +74,7 @@
     (beginning-of-sexp)
     (end-of-sexp))
 
-  (use-package clj-refactor :defer t :ensure t
+  (use-package clj-refactor :ensure t
     :diminish "" ; "Rλ"
     :bind ("s-r" . cljr-rename-symbol)
     :init

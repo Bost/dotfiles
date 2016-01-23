@@ -16,7 +16,7 @@
 
 (use-package projectile :ensure t)
 
-(use-package helm :defer t :ensure t ; :pin melpa-stable
+(use-package helm :ensure t ; :pin melpa-stable
   :diminish "⎈"
   :config
   (bind-keys :map helm-buffer-map
@@ -62,7 +62,7 @@
   ;; TODO bind `cljr-helm` to a key (I'd suggest C-c r) in Clojure mode
   (use-package cljr-helm          :defer t :ensure t)
   (use-package helm-commandlinefu :defer t :ensure t)
-  (use-package helm-ag            :defer t :ensure t
+  (use-package helm-ag            :ensure t
     :config (setq helm-ag-base-command
                   "ag --nocolor --nogroup --ignore *~ --ignore-case")
     :bind ("<f3>" . helm-ag))
@@ -70,14 +70,14 @@
   (use-package macrostep          :defer t :ensure t) ; M-x macrostep-expand
   (use-package helm-descbinds     :defer t :ensure t
     :config (helm-descbinds-mode))
-  (use-package helm-ls-git        :defer t :ensure t
+  (use-package helm-ls-git        :ensure t
     :bind (("C-x C-d" . helm-browse-project)
            ("C-<f6>" . helm-ls-git-ls)))
 
   ;; see helm-surfraw; use google-this as an alternative
   (use-package helm-google :defer t :ensure t ; :pin melpa-stable
     :init
-    (use-package google-this :defer t :ensure t
+    (use-package google-this :ensure t
       :bind (("s-g" . google-this)
              ;; google auto-complete
              ("s-G" . helm-google-suggest)))
@@ -102,7 +102,7 @@
 
     ;; To enable Projectile only in select modes:
     ;; (add-hook 'ruby-mode-hook 'projectile-mode)
-    (use-package persp-projectile :defer t :ensure t
+    (use-package persp-projectile :ensure t
       :bind ("C-s-p" . helm-projectile-ack)
       :config
       ;; (helm-projectile-on)

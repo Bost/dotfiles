@@ -80,7 +80,7 @@ buffer."
 
   ;;;;;;;;;;;;;;;;;;;;;;; else: non-virt-box machines
 
-  (use-package paradox :defer t :ensure t
+  (use-package paradox :ensure t
     :bind (("<f9>"   . paradox-list-packages) ; TODO auto enable/disable evil-mode
            ("<s-f9>" . paradox-upgrade-packages))
     :init

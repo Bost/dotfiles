@@ -112,7 +112,7 @@
   ;; :config (message "cider-startup loaded with :defer 3")
   )
 
-(use-package window-purpose :defer t :ensure t
+(use-package window-purpose :ensure t
   :bind (;; C-c , d: window-purpose
          ("C-s-d" . purpose-toggle-window-purpose-dedicated)
          ;; C-c , D: window-buffer
@@ -137,11 +137,11 @@
 (use-package company :ensure t :defer t
   :init (add-hook 'after-init-hook 'global-company-mode))
 
-(use-package linum-relative :defer t :ensure t
+(use-package linum-relative :ensure t
   :bind ("C-s-n" . linum-relative-toggle)
   :init (global-linum-mode t))
 
-(use-package eshell :defer t :ensure t
+(use-package eshell :ensure t
   :bind ("s-<f1>" . eshell))
 
 ;; reload all buffers when the file is changed
@@ -180,7 +180,7 @@
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package git-timemachine :ensure t :defer t)
 
-(use-package magit :defer t :ensure t
+(use-package magit :ensure t
   :bind ("s-m" . magit-status)
   :init (use-package magit-popup :defer t :ensure t))
 
@@ -243,7 +243,7 @@
     (interactive "p")
     (kill-line (- 1 arg))))
 
-(use-package neotree :defer t :ensure t
+(use-package neotree :ensure t
   :bind ("<s-f8>" . neotree-toggle))
 
 ;; icicles - Minibuf input completion & cycling of completion candidates
@@ -259,7 +259,7 @@
   :config (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode)))
 
 ;; dired is not among *Packages*; can't use :ensure t
-(use-package dired :defer t
+(use-package dired
   :commands dired
   :bind ("s-d" . dired-jump)
   :config
@@ -382,7 +382,7 @@
          ("<C-s-kp-right>" . buf-move-right)
          ("<C-s-kp-6>"     . buf-move-right)))
 
-(use-package transpose-frame :defer t :ensure t ; see also buffer-move
+(use-package transpose-frame :ensure t ; see also buffer-move
   :bind (("<f8>"   . transpose-frame)
          ("M-<f8>" . flop-frame) ; left <-> right
          ("C-<f8>" . flip-frame) ; top  <-> bottom
@@ -392,10 +392,10 @@
 ;; (use-package ack-menu :defer t :ensure t)
 
 ;; edit every instance of word/variable in the buffer - like multiple cursors
-(use-package iedit :defer t :ensure t
+(use-package iedit :ensure t
   :bind ("s-i" . iedit-mode))
 
-(use-package multiple-cursors :defer t :ensure t
+(use-package multiple-cursors :ensure t
   :bind (("C->" . mc/mark-all-like-this-in-defun)
          ;; ("C->" .  mc/mark-next-like-this)
          ;; ("C-M->" . mc/unmark-next-like-this)
@@ -417,7 +417,7 @@
          ;; ("C-c C-<" . mc/mark-all-like-this)
          ))
 
-(use-package avy :ensure t :defer t
+(use-package avy :ensure t
   :bind (("<f2>" . avy-goto-word-1)
          ;; Autoloading failed to define function avy-goto-char-1
          ("s-j" . avy-goto-char-1)
@@ -435,7 +435,7 @@
   ;;     "l" 'ace-jump-line-mode)
   )
 
-(use-package expand-region :defer t :ensure t
+(use-package expand-region :ensure t
   :bind (("C-="        . er/expand-region)
          ("<C-return>" . er/expand-region)
          ("C--"        . er/contract-region))
@@ -478,7 +478,7 @@
         "google-chrome"))
 
 ;; xfce4-settings-manager -> Window Manger -> Keyboard -> ...
-(use-package duplicate-thing :defer t :ensure t
+(use-package duplicate-thing :ensure t
   :bind (("C-M-<up>"   . duplicate-thing)
          ("C-M-<down>" . duplicate-thing)))
 
@@ -491,7 +491,7 @@
 ;;       (ignore-errors
 ;;         (funcall fn)))))
 
-(use-package minimap :defer t :ensure t
+(use-package minimap :ensure t
   :bind ("C-c C-m" . minimap-toggle))
 
 ;; (load-library "abbrev-table")
@@ -500,7 +500,6 @@
 (toggle-frame-maximized)
 
 (use-package undo-tree :ensure t
-  :defer t ; (2 global-undo-tree-mode t) ; load after 2 idle secs
   :diminish " ⅄"
   :bind (("C-x u" . undo-tree-visualize) ;; default keybinding
          ("<f12>" . undo-tree-visualize)
@@ -559,7 +558,7 @@
 
 (use-package debbugs :defer t :ensure t) ; emacs bug tracker
 
-(use-package whitespace :defer t :ensure t
+(use-package whitespace :ensure t
   :diminish whitespace-mode
   :bind (("s-w"    . whitespace-mode)
          ("<s-f7>" . whitespace-cleanup)
@@ -703,7 +702,7 @@ want to use in the modeline *in lieu of* the original.")
 ;; (use-package auto-dim-other-buffers :defer t :ensure t)
 
 ;; Cycle bufffers - see also uzumaki
-(use-package cbm :defer t :ensure t ;; Cycle through buffers with the same `major-mode
+(use-package cbm :ensure t ;; Cycle through buffers with the same `major-mode
   :bind ("C-'" . cbm-cycle))
 
 ;; (use-package bug-hunter :ensure t)
@@ -717,7 +716,7 @@ want to use in the modeline *in lieu of* the original.")
 
 ;; TODO test emacs-ycmd + ycmd, the code completion system.
 ;; TODO test counsel - completion functions using Ivy
-;; (use-package counsel :defer t :ensure t ; completion functions using Ivy
+;; (use-package counsel :ensure t ; completion functions using Ivy
 ;;   :bind (("s-z" . counsel-M-x)
 ;;          ("C-s-f" . counsel-find-file))
 ;;   :bind (:map help-map

@@ -50,7 +50,7 @@
 
   (use-package evil-visualstar     :defer t :ensure t)
 
-  (use-package evil-nerd-commenter :defer t :ensure t
+  (use-package evil-nerd-commenter :ensure t
     :bind (("C-;" . evilnc-comment-or-uncomment-lines)
            ("M-;" . evilnc-comment-or-uncomment-lines)))
 
@@ -79,7 +79,7 @@
                ("L" . evil-forward-arg)
                ("H" . evil-backward-arg))
     :init
-    (use-package evil-surround :defer t :ensure t
+    (use-package evil-surround :ensure t
       :bind (("s-\"" . visual-double-quote-string)
              ("M-\"" . visual-double-quote-string))
       :init
@@ -91,7 +91,7 @@
 
       (global-evil-surround-mode 1)))
 
-  (use-package evil-numbers :defer t :ensure t
+  (use-package evil-numbers :ensure t
     :bind (("C-c +"           . evil-numbers/inc-at-pt)
            ("C-c -"           . evil-numbers/dec-at-pt)
            ("s-+"             . evil-numbers/inc-at-pt)
