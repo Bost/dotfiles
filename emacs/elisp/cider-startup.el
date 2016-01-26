@@ -69,6 +69,14 @@
     (interactive)
     (main-x "u"))
 
+  (defun figwheel ()
+    (interactive)
+    (insert "(use 'figwheel-sidecar.repl-api)")
+    (insert "(start-figwheel!)")
+    (insert "(cljs-repl)")
+    (if (not (evil-insert-state-p))
+        (evil-insert 0)))
+
   (defun zark-colors ()
     (beginning-of-defun)
     (beginning-of-sexp)
