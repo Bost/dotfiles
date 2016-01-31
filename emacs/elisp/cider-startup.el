@@ -41,12 +41,12 @@
   (use-package cider-repl
     :config
     (bind-keys :map cider-repl-mode-map
-           ("s-c" . cider-repl-clear-buffer)
-           ("s-e" . cider-eval-last-sexp)
-           ("s-z" . cider-switch-to-last-clojure-buffer)
-           ;; invoke from *.clj buffer
-           ("s-M" . main-a)
-           ("s-S" . main-s)))
+               ("s-c" . cider-repl-clear-buffer)
+               ("s-e" . cider-eval-last-sexp)
+               ("s-z" . cider-switch-to-last-clojure-buffer)
+               ;; invoke from *.clj buffer
+               ("s-M" . main-a)
+               ("s-S" . main-s)))
 
   (defun main-x (x)
     (cider-switch-to-repl-buffer)
