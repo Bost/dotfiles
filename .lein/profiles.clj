@@ -4,7 +4,7 @@
    [refactor-nrepl "2.0.0-SNAPSHOT"]
    ;; [refactor-nrepl "1.1.0"]  ; otherwise LightTable doesn't connect to REPL
 
-   [cider/cider-nrepl "0.10.0"]
+   [cider/cider-nrepl "0.10.2"]
    ;; [cider/cider-nrepl "0.9.1"]
 
    [lein-ancient "0.6.7"]
