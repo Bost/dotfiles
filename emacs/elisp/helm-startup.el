@@ -38,10 +38,10 @@
          ;; ("<f9>" . helm-list-elisp-packages)
          ("M-y"     . helm-show-kill-ring))
   :init ; Code to run before PACKAGE-NAME has been loaded.
-   (helm-mode 1)
-    (helm-autoresize-mode 1)
-    (helm-adaptive-mode 1)  ; adaptive sorting in all sources
-    (helm-push-mark-mode 1) ; improved version of `push-mark'
+  (helm-mode 1)
+  (helm-autoresize-mode 1)
+  (helm-adaptive-mode 1)  ; adaptive sorting in all sources
+  (helm-push-mark-mode 1) ; improved version of `push-mark'
   (defun helm-next-line-exit-minibuf ()
     (interactive)
     (helm-move-line-exit-minibuf 'helm-next-line))
