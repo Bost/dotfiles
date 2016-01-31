@@ -34,7 +34,8 @@
          ("s-_" . clojure-ignore-next-form))
   :config
   (bind-keys :map cider-mode-map
-         ("s-z"   . cider-switch-to-repl-buffer))
+             ("s-z" . cider-switch-to-repl-buffer)
+             ("s-e" . cider-eval-last-sexp))
   (setq gui-elements 1) ; because of CIDER menu
   :init
   (use-package cider-repl
