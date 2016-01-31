@@ -88,7 +88,6 @@
       (bind-keys :map flycheck-mode-map
                  ("C-c ! h" . helm-flycheck)))
 
-
     (use-package helm-projectile :defer t :ensure t)
 
     ;; (use-package persp-mode
@@ -112,6 +111,10 @@
       (use-package perspective :defer t :ensure t
         :config (persp-mode)))
 
+    (use-package helm-swoop :ensure t ; search / narow down
+      :bind ("M-i" . helm-swoop))
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;; rebind tab to do persistent action
     ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
     ;; make TAB works in terminal

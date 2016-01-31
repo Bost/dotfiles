@@ -3,11 +3,17 @@
 
 (use-package evil :ensure t
   :bind (("s-SPC" . evil-search-highlight-persist-remove-all)
-         ("C-s-t" . evil-mode)
+         ("C-s-t" . evil-mode-toggle)
          ("s-;"   . evilnc-comment-or-uncomment-lines)
          ("C-s-z" . evil-ace-jump-char-mode))
 
   :init
+  (defun evil-mode-toggle ()
+    (interactive)
+    (evil-mode (if (eq evil-mode t) 0 1))
+    (message (concat ":evil-mode " (if (eq evil-mode t) "1" "0") " "
+                     ":timestamp \"" (timestamp) "\"")))
+
   ;; (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
   ;;   (evil-scroll-line-to-center (line-number-at-pos)))
 
