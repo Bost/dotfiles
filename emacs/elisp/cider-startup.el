@@ -71,6 +71,7 @@
     (main-x "u"))
 
   ;; TODO <f2> can jump straight to the desired char; t/f should do the same
+  ;; TODO C-c M-f: cider-jack-in + figwheel
   (defun figwheel ()
     ;; TODO see cider-jack-in-clojurescript
     (interactive)
