@@ -81,6 +81,11 @@
     (if (not (evil-insert-state-p))
         (evil-insert 0)))
 
+  (defun figwheel-cider ()
+    (cider-interactive-eval "(use 'figwheel-sidecar.repl-api)")
+    (cider-interactive-eval "(start-figwheel!)")
+    (cider-interactive-eval "(cljs-repl)"))
+
   (defun zark-colors ()
     (beginning-of-defun)
     (beginning-of-sexp)
