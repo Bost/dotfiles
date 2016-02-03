@@ -31,7 +31,9 @@
          ("s-A" . main-a)
          ("s-S" . main-s)
          ("s-U" . main-u)
-         ("s-_" . clojure-ignore-next-form))
+         ("s-_" . clojure-ignore-next-form)
+         ;; on the german keyboard the '#' is next to Enter
+         ("s-\\" . clojure-ignore-next-form))
   :config
   (bind-keys :map cider-mode-map
              ("s-z" . cider-switch-to-repl-buffer)
