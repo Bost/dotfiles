@@ -33,6 +33,8 @@
          ("s-U" . main-u)
          ("s-_" . clojure-ignore-next-form)
          ;; on the german keyboard the '#' is next to Enter
+         ;; TODO move cursor using
+         ;; paredit-copy-as-kill / paredit-backward / paredit-backward-up(down)
          ("s-\\" . clojure-ignore-next-form))
   :config
   (bind-keys :map cider-mode-map
