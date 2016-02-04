@@ -28,6 +28,8 @@
          ;; ("<f12>"             . jump-to-register)  ; jump to point
 
          ("<s-f12>"           . switch-to-buffer-scratch)
+         ("<s-print>"         . find-cider-startup-file)
+         ("<s-Scroll_Lock>"   . find-emacs-startup-file)
          ("<C-S-iso-lefttab>" . unbury-buffer)
          ("M-s-h"             . shrink-window-horizontally)
          ("M-s-l"             . enlarge-window-horizontally)
@@ -149,6 +151,14 @@
   (defun find-emacs-init-file ()
     (interactive)
     (find-file (concat config-dir "/init.el")))
+
+  (defun find-cider-startup-file ()
+    (interactive)
+    (find-file (concat config-dir "/elisp/cider-startup.el")))
+
+  (defun find-emacs-startup-file ()
+    (interactive)
+    (find-file (concat config-dir "/elisp/emacs-startup.el")))
 
   (defun find-zark-file ()
     (interactive)
