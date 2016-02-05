@@ -76,16 +76,9 @@
 
   ;; TODO <f2> can jump straight to the desired char; t/f should do the same
   ;; TODO C-c M-f: cider-jack-in + figwheel
-  (defun figwheel ()
-    ;; TODO see cider-jack-in-clojurescript
-    (interactive)
-    (insert "(use 'figwheel-sidecar.repl-api)")
-    (insert "(start-figwheel!)")
-    (insert "(cljs-repl)")
-    (if (not (evil-insert-state-p))
-        (evil-insert 0)))
-
+  ;; TODO see cider-jack-in-clojurescript
   (defun figwheel-cider ()
+    (interactive)
     (cider-interactive-eval "(use 'figwheel-sidecar.repl-api)")
     (cider-interactive-eval "(start-figwheel!)")
     (cider-interactive-eval "(cljs-repl)"))
