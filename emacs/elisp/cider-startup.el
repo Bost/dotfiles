@@ -27,6 +27,8 @@
          ;; ("<C-insert>"    . typed-unicode-symbols)
 
          ;; invoke from *.clj buffer
+         ("C-s-l" . clojure-insert-let)
+         ("M-s-p" . clojure-insert-println)
          ("s-M" . main-a)
          ("s-A" . main-a)
          ("s-S" . main-s)
@@ -62,6 +64,16 @@
     (interactive)
     (insert "#_"))
 
+  (defun clojure-insert-println ()
+    (interactive)
+    (insert "(println \"\")")
+    (left-char 2))
+
+  (defun clojure-insert-let ()
+    (interactive)
+    (insert "(let [ ])")
+    (left-char 3))
+
   (defun main-a ()
     (interactive)
     (main-x "a"))
@@ -81,7 +93,15 @@
     (interactive)
     (cider-interactive-eval "(use 'figwheel-sidecar.repl-api)")
     (cider-interactive-eval "(start-figwheel!)")
-    (cider-interactive-eval "(cljs-repl)"))
+    (cider-interactive-eval "(cljs-repl)")
+    ;; TODO (rename-buffer "*figwheel-cider*")
+    (if (not (evil-insert-state-p))
+        (evil-insert 0)))
+
+  (defun figwheel-restart ()
+    (interactive)
+    (cider-restart t) ; t - RESTART-ALL
+    (figwheel-cider))
 
   (defun zark-colors ()
     (beginning-of-defun)
