@@ -148,39 +148,10 @@
 (use-package autorevert :defer t :ensure t
   :init (global-auto-revert-mode t))
 
-;; org-mode is loaded by default - can't be ":defer t"
-(use-package org :ensure t
-  :config ; executed after require
-  ;; (use-package org-install)
-  ;; (org-babel-do-load-languages
-  ;; 'org-babel-load-languages
-  ;; '(
-  ;;   (emacs-lisp . t)
-  ;;   (clojure . t)
-  ;;   (sh . t)
-  ;;   (python .t)
-  ;;   (R . t)
-  ;;   (ruby . t)
-  ;;   (ditaa . t)
-  ;;   (dot . t)
-  ;;   (sqlite . t)
-  ;;   (perl . t)
-  ;;   ))
-  ;; Show syntax highlighting per language native mode in *.org
-  (setq org-src-fontify-natively t)
-  ;; For languages with significant whitespace like Python:
-  (setq org-src-preserve-indentation t)
-
-  ;; Add shortcuts for ogr-agenda
-  ;;(global-set-key "\C-cl" 'org-store-link)
-  ;;(global-set-key "\C-cc" 'org-capture)
-  ;;(global-set-key "\C-ca" 'org-agenda)
-  )
-
 ;; (global-set-key [f6] 'split-window-horizontally)
 (use-package git-timemachine :ensure t :defer t)
 
-(use-package magit :ensure t
+(use-package magit :defer t :ensure t
   :bind ("s-m" . magit-status)
   :init (use-package magit-popup :defer t :ensure t))
 
