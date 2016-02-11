@@ -107,14 +107,6 @@
            ("<s-kp-add>"      . evil-numbers/inc-at-pt)
            ("<s-kp-subtract>" . evil-numbers/dec-at-pt)))
 
-  (use-package evil-smartparens :ensure t
-    :init
-    ;; evil-smartparens everywhere
-    ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-    ;; evil-smartparens only in clojure
-    ;; (sp-pair "\{" "\}")
-    (add-hook 'clojure-mode-hook #'evil-smartparens-mode))
-
   ;; enable global-evil-leader-mode before evil-mode, otherwise
   ;; evil-leader won’t be enabled in the initial buffers
   ;; (*scratch*, *Messages*, ...)

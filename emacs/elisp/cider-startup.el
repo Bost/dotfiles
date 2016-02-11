@@ -122,7 +122,6 @@
       :init
       (use-package typed-clojure-mode :defer t :ensure t)
       ;; (setq prettify-symbols-alist nil)
-      (use-package clojure-mode-extra-font-locking :ensure t)
       (clojure-mode)
       (defun clojure-mode-keys ()
         "Modify keymaps used by `repl-mode'."
@@ -133,6 +132,17 @@
     (add-hook 'clojure-mode-hook
               (lambda ()
                 (clj-refactor-mode 1)
+
+                (use-package evil-smartparens :ensure t
+                  :config
+                  ;; evil-smartparens everywhere
+                  ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+                  ;; evil-smartparens only in clojure
+                  ;; (sp-pair "\{" "\}")
+                  (add-hook 'clojure-mode-hook #'evil-smartparens-mode))
+
+                (use-package clojure-mode-extra-font-locking :ensure t)
+
                 (yas-minor-mode 1) ; for adding require/use/import
                 ;; eg. rename files with `C-c C-m rf`.
                 (cljr-add-keybindings-with-prefix "C-c C-m"))))
