@@ -4,21 +4,18 @@
 ;;; Enable Modes (This is loading nearly everything).
 ;;
 ;; see https://github.com/thierryvolpiatto/emacs-tv-config/blob/master/init-helm-thierry.el
-(use-package helm-config
-  :init
-  (helm-mode 1)
-  (helm-autoresize-mode 1)
-  (helm-adaptive-mode 1)  ; adaptive sorting in all sources
-  (helm-push-mark-mode 1)) ; improved version of `push-mark'
 
-(defun helm-git-version ()
-  (shell-command-to-string "git log --pretty='format:%H' -1"))
+(use-package projectile
+  :defer f
+  :ensure t)
 
-(use-package projectile :ensure t)
-
-(use-package helm :ensure t ; :pin melpa-stable
+(use-package helm
+  :ensure t ; :pin melpa-stable
   :diminish "⎈"
   :config
+  (helm-autoresize-mode 1)
+  (helm-adaptive-mode 1)  ; adaptive sorting in all sources
+  (helm-push-mark-mode 1) ; improved version of `push-mark'
   (bind-keys :map helm-buffer-map
              ("s-a"     . helm-next-line)
              ("<C-tab>" . helm-next-line-exit-minibuf)
@@ -38,10 +35,9 @@
          ;; ("<f9>" . helm-list-elisp-packages)
          ("M-y"     . helm-show-kill-ring))
   :init ; Code to run before PACKAGE-NAME has been loaded.
-  (helm-mode 1)
-  (helm-autoresize-mode 1)
-  (helm-adaptive-mode 1)  ; adaptive sorting in all sources
-  (helm-push-mark-mode 1) ; improved version of `push-mark'
+  (defun helm-git-version ()
+    (shell-command-to-string "git log --pretty='format:%H' -1"))
+
   (defun helm-next-line-exit-minibuf ()
     (interactive)
     (helm-move-line-exit-minibuf 'helm-next-line))
@@ -62,7 +58,7 @@
   ;; TODO bind `cljr-helm` to a key (I'd suggest C-c r) in Clojure mode
   (use-package cljr-helm          :defer t :ensure t)
   (use-package helm-commandlinefu :defer t :ensure t)
-  (use-package helm-ag            :ensure t
+  (use-package helm-ag            :defer f :ensure t
     :config (setq helm-ag-base-command
                   "ag --nocolor --nogroup --ignore *~ --ignore-case")
     :bind ("<f3>" . helm-ag))
@@ -75,7 +71,7 @@
            ("C-<f6>" . helm-ls-git-ls)))
 
   ;; see helm-surfraw; use google-this as an alternative
-  (use-package helm-google :defer t :ensure t ; :pin melpa-stable
+  (use-package helm-google        :defer t :ensure t ; :pin melpa-stable
     :init
     (use-package google-this :ensure t
       :bind (("s-g" . google-this)
