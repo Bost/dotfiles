@@ -4,8 +4,9 @@
    ;; [refactor-nrepl "2.0.0-SNAPSHOT"]
    ;; [cider/cider-nrepl "0.10.2"]
 
-   [refactor-nrepl "1.1.0"]  ; otherwise LightTable doesn't connect to REPL
-   [cider/cider-nrepl "0.9.1"]
+   ;; see use-package clj-refactor :pin melpa-stable for newer versions
+   [refactor-nrepl "2.0.0"]
+   [cider/cider-nrepl "0.11.0"]
 
    [lein-ancient "0.6.8"]
    [lein-localrepo "0.5.3"]

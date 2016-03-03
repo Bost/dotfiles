@@ -22,7 +22,7 @@
 (setq package-enable-at-startup nil
       package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ;; ("org" . "http://orgmode.org/elpa/")
-                         ;; '("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ;; ("melpa-stable" . "http://stable.melpa.org/packages/")
                          ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
 
@@ -741,7 +741,7 @@ want to use in the modeline *in lieu of* the original.")
   :init (load-theme 'zenburn 'no-confirm))
 
 (use-package solarized-theme :ensure t :defer t
-  :if (not (boundp 'is-virt-box))
+  ;; :if (not (boundp 'is-virt-box))
   :init
   (setq solarized-high-contrast-mode-line t
         frame-background-mode 'dark)

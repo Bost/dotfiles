@@ -108,7 +108,12 @@
     (beginning-of-sexp)
     (end-of-sexp))
 
-  (use-package clj-refactor :ensure t
+  ;; TODO eval discover-clj-refactor
+  ;; TODO clj-helm depends on clj-refactor
+  (use-package clj-refactor
+    :ensure t
+    ;; :pin melpa-stable ; version 2.0.0; see ~/.lein/profiles.clj
+    ;; but cljr-helm needs clj-refactor-0.13.
     :diminish "" ; "Rλ"
     :bind ("s-r" . cljr-rename-symbol)
     :init
