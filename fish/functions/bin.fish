@@ -1,3 +1,3 @@
 function bin
-    cd $bin
+    cd ~/bin
 end
