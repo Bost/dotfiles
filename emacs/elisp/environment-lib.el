@@ -8,7 +8,8 @@
  ;; (s-ends-with?  system-name) ; s-ends-with? needs (require 's)
  ((string= "bost-new-64" system-name) (setq is-new-64 t))
  ((string= "franzi" system-name)      (setq is-franzi t))
- ((string= "VirtualBox" (substring system-name 9 19))  (setq is-virt-box t)))
+ ((string= "martin-jv" system-name)   (setq is-martin-jv t))
+ ((string= "VirtualBox" (substring system-name 9 19)) (setq is-virt-box t)))
 
 (defun get-font-height () ; font size
   (interactive)
@@ -16,7 +17,7 @@
    ;; TODO fix get-font-height() for MartinJV
    ((boundp 'is-new-64) 116)
    ((boundp 'is-franzi) 130)
-   ;; TODO (> (getenv "isLinuxMartinJV") 120)
+   ((boundp 'is-martin-jv) 122)
    ((boundp 'is-virt-box) 102)
    (t 140)))
 
