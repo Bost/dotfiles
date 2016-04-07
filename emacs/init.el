@@ -90,7 +90,8 @@
          ("M-s-<left>"  . paredit-forward-barf-sexp)
          ("M-s-<right>" . paredit-forward-slurp-sexp)
          ("C-s-<left>"  . paredit-backward-slurp-sexp)
-         ("C-s-<right>" . paredit-backward-barf-sexp))
+         ("C-s-<right>" . paredit-backward-barf-sexp)
+         ("s-c"         . paredit-copy-as-kill))
   :init
   (enable-paredit-mode)
   ;; works only with enabled gui elements: see s-f10
