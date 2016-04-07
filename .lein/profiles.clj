@@ -8,7 +8,7 @@
    [refactor-nrepl "2.0.0"]
    [cider/cider-nrepl "0.11.0"]
 
-   [lein-ancient "0.6.8"]
+   [lein-ancient "0.6.10"]
    [lein-localrepo "0.5.3"]
    [lein-kibit "0.1.2"] ; lein kibit - check style
    [lein-typed "0.3.5"]
