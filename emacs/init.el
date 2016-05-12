@@ -53,15 +53,10 @@
 ;;   :if window-system
 ;;   :init (add-hook 'after-init-hook 'server-start t))
 
-(use-package guide-key :ensure t
-  :commands guide-key-mode
-  :diminish guide-key-mode
-  :init
-  ;; All the sequencies do something different
-  ;; TODO find out what is guide-key exactly good for
-  (setq guide-key/guide-key-sequence
-        '("C-x r" "C-x 4" "C-x v" "C-x 8"))
-  (guide-key-mode 1))
+(use-package which-key :ensure t
+  :config
+  (which-key-setup-side-window-right)
+  (which-key-mode))
 
 ;; this is a mess: use-package-chords must be called before
 ;; using keyword :chord
