@@ -1,4 +1,6 @@
+;; -*- mode: emacs-lisp -*-
 (defconst emacs-start-time (current-time))
+(setq user-emacs-directory (file-truename "~/.emacs.d.normal/"))
 (unless noninteractive
    ;; Emacs is running without interactive terminal
   (message "Loading %s..." load-file-name))
@@ -118,7 +120,8 @@
 ;; (use-package auto-complete-config :disabled t
 ;;   :init
 ;;   (ac-config-default)
-;;   (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+;;   (add-to-list 'ac-dictionary-directories
+;;                (concat user-emacs-directory "ac-dict"))
 ;;   (use-package ac-cider
 ;;     :init
 ;;     (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
@@ -415,7 +418,7 @@
 (use-package yasnippet :defer t :ensure t
   :disabled t
   :init
-  (let ((yasnippet-dir "~/.emacs.d/plugins/yasnippet"))
+  (let ((yasnippet-dir (concat user-emacs-directory "plugins/yasnippet")))
     (shell-command-to-string (concat "mkdir -p " yasnippet-dir))
     (add-to-list 'load-path yasnippet-dir))
   (yas-global-mode 1)
@@ -428,7 +431,7 @@
 (use-package edit-server :disabled t :defer t
   :if window-system
   :init
-  (add-to-list 'load-path "~/.emacs.d")
+  (add-to-list 'load-path user-emacs-directory)
   (setq edit-server-url-major-mode-alist
         '(("github\\.com" . markdown-mode)
           ("github\\.com" . md))
@@ -513,7 +516,7 @@
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
 ;; use following when: Source file '...' newer than byte-compiled file
-;; (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
+;; (byte-recompile-directory (expand-file-name user-emacs-directory) 0)
 
 ;; (defun display-code-line-counts (ov)
 ;;   (when (eq 'code (overlay-get ov 'hs))
