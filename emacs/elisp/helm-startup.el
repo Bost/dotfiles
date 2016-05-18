@@ -28,9 +28,7 @@
 
          ("M-x"     . helm-M-x)
          ("s-p"     . helm-projectile)
-         ("s-a"     . helm-buffers-list)
-         ("C-x b"   . helm-mini)
-         ("s-b"     . helm-mini)
+         ("s-a"     . helm-mini) ; helm-buffers-list
          ;; ("<f9>" . helm-list-elisp-packages-no-fetch)
          ;; ("<f9>" . helm-list-elisp-packages)
          ("M-y"     . helm-show-kill-ring))
