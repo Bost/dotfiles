@@ -1,7 +1,7 @@
 function crepe
     # --before-context=1 --after-context=1
     ack-grep \
-    $dev/cheatsheet/emacs-commands.js \
+    $dev/cheatsheet/emacs-commands.el \
     --context=1 \
     --nogroup \
     --break --with-filename --color-filename=grey13 \
