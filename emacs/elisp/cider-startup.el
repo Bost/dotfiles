@@ -33,10 +33,10 @@
          ("s-A" . main-a)
          ("s-S" . main-s)
          ("s-U" . main-u)
-         ("s-_" . clojure-ignore-next-form)
+         ("s-_" . clojure-ignore-backward-up)
          ;; on the german keyboard the '#' is next to Enter
          ;; TODO move cursor using paredit-backward / paredit-backward-up(down)
-         ("s-\\" . clojure-ignore-next-form))
+         ("s-\\" . clojure-ignore-backward-up))
   :config
   (bind-keys :map cider-mode-map
              ("s-z" . cider-switch-to-repl-buffer)
@@ -59,8 +59,13 @@
     (insert (concat "(-main \"-" x "\")"))
     (evil-insert-state))
 
-  (defun clojure-ignore-next-form ()
+  (defun clojure-ignore-backward-up ()
     (interactive)
+    (let ((cur-char (following-char)))
+      (if (not (or (char-equal ?\{ cur-char)
+                   (char-equal ?\[ cur-char)
+                   (char-equal ?\( cur-char)))
+          (paredit-backward-up)))
     (insert "#_"))
 
   (defun clojure-insert-println ()
