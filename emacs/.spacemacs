@@ -295,7 +295,11 @@ you should place your code here."
 
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
   (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
-
+  (global-set-key (kbd "s-SPC") 'evil-search-highlight-persist-remove-all)
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
+  (global-set-key (kbd "s-g") 'helm-google-suggest) ; ("s-g" . google-this)
+  (global-set-key (kbd "s-8") 'er/expand-region)
+  (global-set-key (kbd "s-*") 'er/contract-region)
 
   ;; ("<S-delete>" . kill-region)
   ;; ("<C-s-backspace>" . kill-line-backward)
