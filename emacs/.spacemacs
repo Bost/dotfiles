@@ -301,6 +301,14 @@ you should place your code here."
   (global-set-key (kbd "s-8") 'er/expand-region)
   (global-set-key (kbd "s-*") 'er/contract-region)
 
+  (setq vc-follow-symlinks t) ; auto follow symbolic links
+
+  (global-set-key (kbd "<f2>") 'avy-goto-word-1)
+  ;; Autoloading failed to define function avy-goto-char-1
+  (global-set-key (kbd "s-j") 'avy-goto-char-1)
+  (global-set-key (kbd "<c-f2>") 'avy-goto-line)
+
+
   ;; ("<S-delete>" . kill-region)
   ;; ("<C-s-backspace>" . kill-line-backward)
   ;; ("<C-S-delete>"    . kill-line)
@@ -332,6 +340,13 @@ you should place your code here."
     ;; (cider-switch-to-relevant-repl-buffer nil)
     )
 
+  (defun clojure-insert-println ()
+    (interactive)
+    (insert "(println \"\")")
+    (left-char 2))
+
+  ;; (global-set-key (kbd "M-s-p") 'clojure-insert-println)
+  (global-set-key (kbd "<s-insert>") 'clojure-insert-println)
 
   (global-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
   (use-package cider :ensure t
