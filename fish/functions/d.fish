@@ -1,3 +1,4 @@
 function d
-    sudo apt-get dist-upgrade --yes
+    echo "sudo apt-get dist-upgrade --yes"
+          sudo apt-get dist-upgrade --yes
 end
