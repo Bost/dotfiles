@@ -9,7 +9,7 @@ function ech
     else
         set emacsBin emacs
     end
-    set cmd "$emacsBin $dev/cheatsheet/host-commands.js &"
+    set cmd "$emacsBin $dev/cheatsheet/commands-host.js &"
     echo $cmd
     eval $cmd
 end

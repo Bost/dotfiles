@@ -9,7 +9,7 @@ function ecg
     else
         set emacsBin emacs
     end
-    set cmd "$emacsBin $dev/cheatsheet/git-commands.js &"
+    set cmd "$emacsBin $dev/cheatsheet/commands-git.js &"
     echo $cmd
     eval $cmd
 end

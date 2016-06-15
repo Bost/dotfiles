@@ -9,7 +9,7 @@ function ecr
     else
         set emacsBin emacs
     end
-    set cmd "$emacsBin $dev/cheatsheet/rest-commands.js &"
+    set cmd "$emacsBin $dev/cheatsheet/commands-rest.js &"
     echo $cmd
     eval $cmd
 end

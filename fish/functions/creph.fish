@@ -1,6 +1,6 @@
 function creph
     ack-grep \
-    $dev/cheatsheet/host-commands.sh \
+    $dev/cheatsheet/commands-host.sh \
     --context=1 \
     --nogroup \
     --break --with-filename --color-filename=grey13 \

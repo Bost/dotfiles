@@ -1,7 +1,7 @@
 function crepr
     # --before-context=1 --after-context=1
     ack-grep \
-    $dev/cheatsheet/rest-commands.sh \
+    $dev/cheatsheet/commands-rest.sh \
     --context=1 \
     --nogroup \
     --break --with-filename --color-filename=grey13 \

@@ -9,7 +9,7 @@ function ecc
     else
         set emacsBin emacs
     end
-    set cmd "$emacsBin $dev/cheatsheet/clojure-commands.js &"
+    set cmd "$emacsBin $dev/cheatsheet/commands-clojure.js &"
     echo $cmd
     eval $cmd
 end

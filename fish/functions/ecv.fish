@@ -9,7 +9,7 @@ function ecv
     else
         set emacsBin emacs
     end
-    set cmd "$emacsBin $dev/cheatsheet/vim-commands.js &"
+    set cmd "$emacsBin $dev/cheatsheet/commands-vim.js &"
     echo $cmd
     eval $cmd
 end
