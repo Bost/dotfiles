@@ -307,7 +307,10 @@ you should place your code here."
   ;; Autoloading failed to define function avy-goto-char-1
   (global-set-key (kbd "s-j") 'avy-goto-char-1)
   (global-set-key (kbd "<c-f2>") 'avy-goto-line)
-
+  (global-set-key (kbd "s-i") 'iedit-mode)
+  ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
+  (global-set-key (kbd "s-h") 'helm-imenu)
+  (global-set-key (kbd "s-n") 'cider-repl-set-ns)
 
   ;; ("<S-delete>" . kill-region)
   ;; ("<C-s-backspace>" . kill-line-backward)
