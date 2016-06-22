@@ -284,6 +284,13 @@ you should place your code here."
   (global-set-key (kbd "s-d") 'dired-jump)
   ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
   (global-set-key (kbd "s-c") 'sp-copy-sexp)
+
+  ;; Move the parenthesis
+  (global-set-key (kbd "M-s-<left>")  'paredit-forward-barf-sexp)
+  (global-set-key (kbd "M-s-<right>") 'paredit-forward-slurp-sexp)
+  (global-set-key (kbd "C-s-<left>")  'paredit-backward-slurp-sexp)
+  (global-set-key (kbd "C-s-<right>") 'paredit-backward-barf-sexp)
+
   (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
   (global-set-key (kbd "s-<f1>") 'eshell)
   (global-set-key (kbd "s-p") 'helm-projectile)
