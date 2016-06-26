@@ -318,6 +318,7 @@ you should place your code here."
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
   (global-set-key (kbd "s-h") 'helm-imenu)
   (global-set-key (kbd "s-n") 'cider-repl-set-ns)
+  (global-set-key (kbd "<f12>") 'undo-tree-visualize)
 
   ;; ("<S-delete>" . kill-region)
   ;; ("<C-s-backspace>" . kill-line-backward)
