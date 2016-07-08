@@ -328,22 +328,11 @@ you should place your code here."
   (global-set-key (kbd "s-i") 'iedit-mode)
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
   (global-set-key (kbd "s-h") 'helm-imenu)
-  (global-set-key (kbd "s-n") 'cider-repl-set-ns)
   (global-set-key (kbd "<f12>") 'undo-tree-visualize)
 
   ;; ("<S-delete>" . kill-region)
   ;; ("<C-s-backspace>" . kill-line-backward)
   ;; ("<C-S-delete>"    . kill-line)
-
-  (defun clojure-ignore-backward-up ()
-    (interactive)
-    ;; (let ((cur-char (following-char)))
-    ;;   (if (not (or (char-equal ?\{ cur-char)
-    ;;                (char-equal ?\[ cur-char)
-    ;;                (char-equal ?\( cur-char)))
-    ;;       (paredit-backward-up)))
-    (insert "#_"))
-  (global-set-key (kbd "s-\\") 'clojure-ignore-backward-up)
 
   (defun figwheel-cider ()
     (interactive)
@@ -371,58 +360,70 @@ you should place your code here."
   (global-set-key (kbd "<s-insert>") 'clojure-insert-println)
 
   (global-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
-  (use-package cider :ensure t
-               ;; :diminish "C♻" ; works only for minor not major modes
-               ;; :bind (;; ("s-z"   . cider-switch-to-repl-buffer)
-               ;;        ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
-               ;;        ("s-t"   . cider-test-run-tests)
-               ;;        ("s-."   . cider-find-var)
-               ;;        ("s-,"   . cider-jump-back)
-               ;;        ("C-s-j" . cider-jack-in)
-               ;;        ;; ("s-r"   . cider-eval-last-expression-in-repl)
-               ;;        ("s-l"   . cider-save-and-load-current-buffer)
-               ;;        ("s-n"   . cider-repl-set-ns)
-               ;;        ("s-t"   . cider-test-run-tests)
-               ;;        ("s-."   . cider-find-var)
-               ;;        ("s-,"   . cider-jump-back)
-               ;;        ;; TODO s-M does not work in REPL buffer
-               ;;        ("s-o"   . cider-clear-compilation-highlights)
+  (use-package
+      cider :ensure t
+      ;; :diminish "C♻" ; works only for minor not major modes
+      :config
+      (defun clojure-ignore-backward-up ()
+        (interactive)
+        ;; (let ((cur-char (following-char)))
+        ;;   (if (not (or (char-equal ?\{ cur-char)
+        ;;                (char-equal ?\[ cur-char)
+        ;;                (char-equal ?\( cur-char)))
+        ;;       (paredit-backward-up)))
+        (insert "#_"))
 
-               ;;        ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
+      :bind (
+             ("s-z"   . cider-switch-to-repl-buffer)
+             ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
+             ("s-t"   . cider-test-run-tests)
+             ("s-."   . cider-find-var)
+             ("s-,"   . cider-jump-back)
+             ("C-s-j" . cider-jack-in)
+             ;; ("s-r"   . cider-eval-last-expression-in-repl)
+             ("s-l"   . cider-save-and-load-current-buffer)
+             ("s-n"   . cider-repl-set-ns)
+             ("s-t"   . cider-test-run-tests)
+             ("s-."   . cider-find-var)
+             ("s-,"   . cider-jump-back)
+             ;; TODO s-M does not work in REPL buffer
+             ("s-o"   . cider-clear-compilation-highlights)
 
-               ;;        ("<s-kp-insert>" . zark-symbols)
-               ;;        ("<s-kp-0>"      . zark-symbols)
-               ;;        ("s-'"           . zark-symbols)
-               ;;        ;; (unbind-key "<C-insert>")
-               ;;        ;; ("<C-insert>"    . typed-unicode-symbols)
+             ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
 
-               ;;        ;; invoke from *.clj buffer
-               ;;        ("C-s-l" . clojure-insert-let)
-               ;;        ("M-s-p" . clojure-insert-println)
-               ;;        ("s-M" . main-a)
-               ;;        ("s-A" . main-a)
-               ;;        ("s-S" . main-s)
-               ;;        ("s-U" . main-u)
-               ;;        ("s-_" . clojure-ignore-next-form)
-               ;;        ;; on the german keyboard the '#' is next to Enter
-               ;;        ;; TODO move cursor using paredit-backward / paredit-backward-up(down)
-               ;;        ("s-\\" . clojure-ignore-next-form))
-               :config
-               (bind-keys :map cider-mode-map
-                          ("s-z" . cider-switch-to-repl-buffer)
-                          ("s-e" . cider-eval-last-sexp))
-               ;; (setq gui-elements 1) ; because of CIDER menu
-               :init
-               (use-package cider-repl
-                 ;; :bind (unbind-key "s-c")
-                 :config
-                 (bind-keys :map cider-repl-mode-map
-                            ("<s-delete>" . cider-repl-clear-buffer)
-                            ("s-e" . cider-eval-last-sexp)
-                            ("s-z" . cider-switch-to-last-clojure-buffer)
-                            ;; invoke from *.clj buffer
-                            ("s-M" . main-a)
-                            ("s-S" . main-s)))))
+             ("<s-kp-insert>" . zark-symbols)
+             ("<s-kp-0>"      . zark-symbols)
+             ("s-'"           . zark-symbols)
+             ;; (unbind-key "<C-insert>")
+             ;; ("<C-insert>"    . typed-unicode-symbols)
+
+             ;; invoke from *.clj buffer
+             ("C-s-l" . clojure-insert-let)
+             ("M-s-p" . clojure-insert-println)
+             ("s-M" . main-a)
+             ("s-A" . main-a)
+             ("s-S" . main-s)
+             ("s-U" . main-u)
+             ;; ("s-_" . clojure-ignore-next-form)
+             ;; on the german keyboard the '#' is next to Enter
+             ;; TODO move cursor using paredit-backward / paredit-backward-up(down)
+             ("s-\\" . clojure-ignore-backward-up)
+             )
+      :config
+      (bind-keys :map cider-mode-map
+                 ("s-z" . cider-switch-to-repl-buffer)
+                 ("s-e" . cider-eval-last-sexp))
+      ;; (setq gui-elements 1) ; because of CIDER menu
+      :init
+      (use-package cider-repl
+        :config
+        (bind-keys :map cider-repl-mode-map
+                   ("<s-delete>" . cider-repl-clear-buffer)
+                   ("s-e" . cider-eval-last-sexp)
+                   ("s-z" . cider-switch-to-last-clojure-buffer)
+                   ;; invoke from *.clj buffer
+                   ("s-M" . main-a)
+                   ("s-S" . main-s)))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
