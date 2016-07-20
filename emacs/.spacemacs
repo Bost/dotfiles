@@ -359,7 +359,7 @@ you should place your code here."
   ;; (global-set-key (kbd "M-s-p") 'clojure-insert-println)
   (global-set-key (kbd "<s-insert>") 'clojure-insert-println)
 
-  (global-set-key (kbd "s-l") 'cider-save-and-load-current-buffer)
+  (global-set-key (kbd "s-l") 'spacemacs/last-search-buffer)
   (use-package
       cider :ensure t
       ;; :diminish "C♻" ; works only for minor not major modes
@@ -381,7 +381,7 @@ you should place your code here."
              ("s-,"   . cider-jump-back)
              ("C-s-j" . cider-jack-in)
              ;; ("s-r"   . cider-eval-last-expression-in-repl)
-             ("s-l"   . cider-save-and-load-current-buffer)
+             ("s-L"   . cider-save-and-load-current-buffer)
              ("s-n"   . cider-repl-set-ns)
              ("s-t"   . cider-test-run-tests)
              ("s-."   . cider-find-var)
