@@ -283,7 +283,14 @@ you should place your code here."
   (global-set-key (kbd "s-a") 'helm-mini)
   (global-set-key (kbd "s-d") 'dired-jump)
   ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
-  (global-set-key (kbd "s-c") 'sp-copy-sexp)
+
+  (defun sp-copy-sexp-msg ()
+    (interactive)
+    (sp-copy-sexp)
+    (message (format "sexp (%d chars) copied to kill ring"
+                     (length (car kill-ring)))))
+
+  (global-set-key (kbd "s-c") 'sp-copy-sexp-msg)
 
   ;; Move the parenthesis
   (global-set-key (kbd "M-s-<left>")  'paredit-forward-barf-sexp)
