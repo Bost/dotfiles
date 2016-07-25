@@ -371,11 +371,11 @@ you should place your code here."
       ;; (global-set-key (kbd "M-s-p") 'clojure-insert-println)
       (defun clojure-ignore-backward-up ()
         (interactive)
-        ;; (let ((cur-char (following-char)))
-        ;;   (if (not (or (char-equal ?\{ cur-char)
-        ;;                (char-equal ?\[ cur-char)
-        ;;                (char-equal ?\( cur-char)))
-        ;;       (paredit-backward-up)))
+        (insert "#_"))
+
+      (defun clojure-ignore-backward-line ()
+        (interactive)
+        (evil-insert-line 0)
         (insert "#_"))
 
       (setq cider-cljs-lein-repl
@@ -418,7 +418,8 @@ you should place your code here."
              ;; ("s-_" . clojure-ignore-next-form)
              ;; on the german keyboard the '#' is next to Enter
              ;; TODO move cursor using paredit-backward / paredit-backward-up(down)
-             ("s-\\" . clojure-ignore-backward-up)
+             ("s-\\" . clojure-ignore-backward-line)
+             ("C-s-\\" . clojure-ignore-backward-up)
              )
       :config
       (bind-keys :map cider-mode-map
