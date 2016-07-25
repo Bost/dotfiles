@@ -341,36 +341,34 @@ you should place your code here."
   ;; ("<C-s-backspace>" . kill-line-backward)
   ;; ("<C-S-delete>"    . kill-line)
 
-  (defun figwheel-cider ()
-    (interactive)
-    (cider-interactive-eval "(use 'figwheel-sidecar.repl-api)")
-    (cider-interactive-eval "(start-figwheel!)")
-    (cider-interactive-eval "(cljs-repl)")
-    ;; TODO (rename-buffer "*figwheel-cider*")
-    (if (not (evil-insert-state-p))
-        (evil-insert 0)))
-
-  (defun cider-save-and-load-current-buffer ()
-    (interactive)
-    (when (buffer-modified-p)
-      (save-buffer))
-    (cider-load-file (buffer-file-name))
-    ;; (cider-switch-to-relevant-repl-buffer nil)
-    )
-
-  (defun clojure-insert-println ()
-    (interactive)
-    (insert "(println \"\")")
-    (left-char 2))
-
-  ;; (global-set-key (kbd "M-s-p") 'clojure-insert-println)
-  (global-set-key (kbd "<s-insert>") 'clojure-insert-println)
-
   (global-set-key (kbd "s-l") 'spacemacs/last-search-buffer)
   (use-package
       cider :ensure t
       ;; :diminish "C♻" ; works only for minor not major modes
       :config
+      (defun figwheel-cider ()
+        (interactive)
+        (cider-interactive-eval "(use 'figwheel-sidecar.repl-api)")
+        (cider-interactive-eval "(start-figwheel!)")
+        (cider-interactive-eval "(cljs-repl)")
+        ;; TODO (rename-buffer "*figwheel-cider*")
+        (if (not (evil-insert-state-p))
+            (evil-insert 0)))
+
+      (defun cider-save-and-load-current-buffer ()
+        (interactive)
+        (when (buffer-modified-p)
+          (save-buffer))
+        (cider-load-file (buffer-file-name))
+        ;; (cider-switch-to-relevant-repl-buffer nil)
+        )
+
+      (defun clojure-insert-println ()
+        (interactive)
+        (insert "(println \"\")")
+        (left-char 2))
+
+      ;; (global-set-key (kbd "M-s-p") 'clojure-insert-println)
       (defun clojure-ignore-backward-up ()
         (interactive)
         ;; (let ((cur-char (following-char)))
@@ -380,8 +378,14 @@ you should place your code here."
         ;;       (paredit-backward-up)))
         (insert "#_"))
 
+      (setq cider-cljs-lein-repl
+            "(do (require 'figwheel-sidecar.repl-api)
+           (figwheel-sidecar.repl-api/start-figwheel!)
+           (figwheel-sidecar.repl-api/cljs-repl))")
+
       :bind (
              ("s-z"   . cider-switch-to-repl-buffer)
+             ("<s-insert>" . clojure-insert-println)
              ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
              ("s-t"   . cider-test-run-tests)
              ("s-."   . cider-find-var)
@@ -422,6 +426,8 @@ you should place your code here."
                  ("s-e" . cider-eval-last-sexp))
       ;; (setq gui-elements 1) ; because of CIDER menu
       :init
+      (use-package helm-cider :ensure t :config (helm-cider-mode 1))
+
       (use-package cider-repl
         :config
         (bind-keys :map cider-repl-mode-map
