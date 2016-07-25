@@ -6,7 +6,7 @@
 
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    [refactor-nrepl "2.2.0"]
-   [cider/cider-nrepl "0.12.0"]
+   [cider/cider-nrepl "0.13.0"]
 
    [lein-ancient "0.6.10"]
    [lein-localrepo "0.5.3"]
