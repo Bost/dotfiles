@@ -57,6 +57,7 @@ You should not put any user code in there besides modifying the variable
 values."
   (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
   (push '(cider . "melpa-stable") package-pinned-packages)
+  (push '(clj-refactor . "melpa-stable") package-pinned-packages)
   (push '(projectile . "melpa-stable") package-pinned-packages)
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
