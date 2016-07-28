@@ -55,6 +55,9 @@ This function is called at the very startup of Spacemacs initialization
 before layers configuration.
 You should not put any user code in there besides modifying the variable
 values."
+  (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
+  (push '(cider . "melpa-stable") package-pinned-packages)
+  (push '(projectile . "melpa-stable") package-pinned-packages)
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -342,12 +345,8 @@ you should place your code here."
   ;; ("<C-S-delete>"    . kill-line)
 
   (global-set-key (kbd "s-l") 'spacemacs/last-search-buffer)
-  (use-package
-      cider :ensure t :pin melpa-stable
-      ;; :diminish "C♻" ; works only for minor not major modes
+  (use-package cider
       :config
-      (use-package cider-eval-sexp-fu :ensure t :pin melpa-stable)
-
       ;; (setq gui-elements 1) ; because of CIDER menu
       (bind-keys :map cider-repl-mode-map
                  ("<s-delete>" . cider-repl-clear-buffer)
@@ -446,18 +445,7 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-
-;;  .emacs.d.spacemacs/core:
-;;  modified   core/core-configuration-layer.el
-;;  @@ -111,7 +111,8 @@
-;;     "If non-nil this package is excluded from all layers.")))
-
-;; (defvar configuration-layer--elpa-archives
-;;   -  '(("melpa" . "melpa.org/packages/")
-;;        +  '(("melpa-stable" . "stable.melpa.org/packages/")
-;;             +    ("melpa" . "melpa.org/packages/")
-
- '(package-archive-priorities (quote (("melpa-stable" . 0) ("melpa" . 1))))
+ '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
     (helm-cider parent-mode flx s spinner pkg-info epl bind-key highlight clojure-mode anzu bind-map sql-indent package-build powerline popup packed smartparens projectile evil hydra avy iedit helm helm-core async helm-company helm-c-yasnippet company-statistics company-quickhelp pos-tip auto-yasnippet ac-ispell solarized-theme clj-refactor inflections edn multiple-cursors paredit cider queue orgit magit-gitflow helm-gitignore request evil-magit magit magit-popup git-commit company yasnippet auto-complete smeargle gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger with-editor peg cider-eval-sexp-fu bracketed-paste ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe use-package spacemacs-theme spaceline smooth-scrolling restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines org-plus-contrib open-junk-file neotree move-text macrostep lorem-ipsum linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
