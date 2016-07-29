@@ -365,7 +365,10 @@ you should place your code here."
             (delete-char cmtstr-len)
           (insert cmtstr))))
     (bind-keys :map clojure-mode-map
-               ("s-;" . clj-cmt-uncmt-line-sexp)))
+               ;; ("s-_" . clojure-ignore-next-form)
+               ;; on the german keyboard the '#' is next to Enter
+               ("C-s-\\" . (lambda () (interactive) (insert "#_")))
+               ("s-\\" . clj-cmt-uncmt-line-sexp)))
 
   (use-package cider
       :config
@@ -403,10 +406,17 @@ you should place your code here."
         (insert "(println \"\")")
         (left-char 2))
 
-      ;; (global-set-key (kbd "M-s-p") 'clojure-insert-println)
-      (defun clojure-ignore-backward-up ()
+      (defun clj-cmt-uncmt-line-sexp ()
         (interactive)
-        (insert "#_"))
+        (evil-insert-line 0)
+        (let* ((cmtstr "#_")
+               (cmtstr-len (length cmtstr))
+               (point-pos (point))
+               (line-start (buffer-substring-no-properties
+                            point-pos (+ point-pos cmtstr-len))))
+          (if (string= cmtstr line-start)
+              (delete-char cmtstr-len)
+            (insert cmtstr))))
 
       (setq cider-cljs-lein-repl
             "(do (require 'figwheel-sidecar.repl-api)
@@ -445,11 +455,6 @@ you should place your code here."
              ("s-A" . main-a)
              ("s-S" . main-s)
              ("s-U" . main-u)
-             ;; ("s-_" . clojure-ignore-next-form)
-             ;; on the german keyboard the '#' is next to Enter
-             ;; TODO move cursor using paredit-backward / paredit-backward-up(down)
-             ("s-\\" . clojure-ignore-backward-line)
-             ("C-s-\\" . clojure-ignore-backward-up)
              )
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
