@@ -285,6 +285,11 @@ you should place your code here."
   (global-linum-mode) ; Show line numbers by default
   ;; Default theme applied at startup
   (global-set-key (kbd "s-a") 'helm-mini)
+  (global-set-key (kbd "s-z") '(lambda ()
+                                 (interactive)
+                                 (bs-show nil)
+                                 (if (not (evil-insert-state-p))
+                                     (evil-insert 0))))
   (global-set-key (kbd "s-d") 'dired-jump)
   ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
 
@@ -302,7 +307,22 @@ you should place your code here."
   (global-set-key (kbd "C-s-<left>")  'paredit-backward-slurp-sexp)
   (global-set-key (kbd "C-s-<right>") 'paredit-backward-barf-sexp)
 
-  (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
+  (defun clj-cmt-uncmt-line-sexp ()
+    (interactive)
+    (evil-insert-line 0)
+    (let* ((cmt "#_")
+           (cmtws (concat cmt " "))
+           (cmtws-len (length cmtws))
+           (point-pos (point))
+           (my-sexp-ws (buffer-substring-no-properties
+                        point-pos (+ point-pos cmtws-len))))
+      (if (string= comment-str-ws my-sexp-ws)
+          (delete-char (length cmtws))
+        (insert cmtws))))
+
+  (global-set-key (kbd "s-;")
+                  ;; 'spacemacs/comment-or-uncomment-lines
+                  'clj-cmt-uncmt-line-sexp)
   (global-set-key (kbd "s-<f1>") 'eshell)
   (global-set-key (kbd "s-p") 'helm-projectile)
   (global-set-key (kbd "s-w") 'whitespace-mode)
@@ -352,12 +372,12 @@ you should place your code here."
       (bind-keys :map cider-repl-mode-map
                  ("<s-delete>" . cider-repl-clear-buffer)
                  ("s-e" . cider-eval-last-sexp)
-                 ("s-z" . cider-switch-to-last-clojure-buffer)
+                 ("s-x" . cider-switch-to-last-clojure-buffer)
                  ;; invoke from *.clj buffer
                  ("s-M" . main-a)
                  ("s-S" . main-s))
       (bind-keys :map cider-mode-map
-                 ("s-z" . cider-switch-to-repl-buffer)
+                 ("s-x" . cider-switch-to-repl-buffer)
                  ("s-e" . cider-eval-last-sexp))
 
       (defun figwheel-cider ()
@@ -387,20 +407,15 @@ you should place your code here."
         (interactive)
         (insert "#_"))
 
-      (defun clojure-ignore-backward-line ()
-        (interactive)
-        (evil-insert-line 0)
-        (insert "#_"))
-
       (setq cider-cljs-lein-repl
             "(do (require 'figwheel-sidecar.repl-api)
            (figwheel-sidecar.repl-api/start-figwheel!)
            (figwheel-sidecar.repl-api/cljs-repl))")
 
       :bind (
-             ("s-z"   . cider-switch-to-repl-buffer)
+             ("s-x"   . cider-switch-to-repl-buffer)
              ("<s-insert>" . clojure-insert-println)
-             ;; ("s-z"   . cider-switch-to-last-clojure-buffer)
+             ;; ("s-x"   . cider-switch-to-last-clojure-buffer)
              ("s-t"   . cider-test-run-tests)
              ("s-."   . cider-find-var)
              ("s-,"   . cider-jump-back)
