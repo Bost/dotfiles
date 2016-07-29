@@ -307,22 +307,7 @@ you should place your code here."
   (global-set-key (kbd "C-s-<left>")  'paredit-backward-slurp-sexp)
   (global-set-key (kbd "C-s-<right>") 'paredit-backward-barf-sexp)
 
-  (defun clj-cmt-uncmt-line-sexp ()
-    (interactive)
-    (evil-insert-line 0)
-    (let* ((cmt "#_")
-           (cmtws (concat cmt " "))
-           (cmtws-len (length cmtws))
-           (point-pos (point))
-           (my-sexp-ws (buffer-substring-no-properties
-                        point-pos (+ point-pos cmtws-len))))
-      (if (string= comment-str-ws my-sexp-ws)
-          (delete-char (length cmtws))
-        (insert cmtws))))
-
-  (global-set-key (kbd "s-;")
-                  ;; 'spacemacs/comment-or-uncomment-lines
-                  'clj-cmt-uncmt-line-sexp)
+  (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
   (global-set-key (kbd "s-<f1>") 'eshell)
   (global-set-key (kbd "s-p") 'helm-projectile)
   (global-set-key (kbd "s-w") 'whitespace-mode)
@@ -366,6 +351,22 @@ you should place your code here."
   ;; ("<C-S-delete>"    . kill-line)
 
   (global-set-key (kbd "s-l") 'spacemacs/last-search-buffer)
+  (use-package clojure-mode
+    :config
+    (defun clj-cmt-uncmt-line-sexp ()
+      (interactive)
+      (evil-insert-line 0)
+      (let* ((cmtstr "#_")
+             (cmtstr-len (length cmtstr))
+             (point-pos (point))
+             (line-start (buffer-substring-no-properties
+                          point-pos (+ point-pos cmtstr-len))))
+        (if (string= cmtstr line-start)
+            (delete-char cmtstr-len)
+          (insert cmtstr))))
+    (bind-keys :map clojure-mode-map
+               ("s-;" . clj-cmt-uncmt-line-sexp)))
+
   (use-package cider
       :config
       ;; (setq gui-elements 1) ; because of CIDER menu
