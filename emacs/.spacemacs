@@ -415,6 +415,11 @@ you should place your code here."
         (insert "(println \"\")")
         (left-char 2))
 
+      (defun clojure-insert-let ()
+        (interactive)
+        (insert "(let [])")
+        (left-char 2))
+
       (defun clj-cmt-uncmt-line-sexp ()
         (interactive)
         (evil-insert-line 0)
@@ -435,6 +440,9 @@ you should place your code here."
       :bind (
              ("s-x"   . cider-switch-to-repl-buffer)
              ("<s-insert>" . clojure-insert-println)
+             ("C-s-l" . clojure-insert-let)
+             ;; (bind-key "C-s-p" 'clojure-insert-println)
+             ("C-s-p" . clojure-insert-println)
              ;; ("s-x"   . cider-switch-to-last-clojure-buffer)
              ("s-t"   . cider-test-run-tests)
              ("s-."   . cider-find-var)
@@ -458,8 +466,6 @@ you should place your code here."
              ;; ("<C-insert>"    . typed-unicode-symbols)
 
              ;; invoke from *.clj buffer
-             ("C-s-l" . clojure-insert-let)
-             ("M-s-p" . clojure-insert-println)
              ("s-M" . main-a)
              ("s-A" . main-a)
              ("s-S" . main-s)
