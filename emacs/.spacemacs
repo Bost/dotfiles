@@ -390,6 +390,10 @@ you should place your code here."
 
   (use-package cider
       :config
+      (add-hook 'cider-mode-hook #'eldoc-mode)
+      (add-hook 'cider-repl-mode-hook #'eldoc-mode)
+      (add-hook 'cider-repl-mode-hook #'paredit-mode)
+      (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
       ;; (setq gui-elements 1) ; because of CIDER menu
       (bind-keys :map cider-repl-mode-map
                  ("<s-delete>" . cider-repl-clear-buffer)
@@ -499,7 +503,8 @@ you should place your code here."
              )
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
-      ))
+      )
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
