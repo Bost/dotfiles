@@ -431,29 +431,29 @@ you should place your code here."
         ;; (cider-switch-to-relevant-repl-buffer nil)
         )
 
+      (defun clojure-insert-sexp (str-sexp n-chars-back)
+        (insert str-sexp)
+        (left-char n-chars-back))
+
       (defun clojure-insert-println ()
         (interactive)
-        (insert "(println \"\")")
-        (left-char 2))
+        (clojure-insert-sexp "(println \"\")" 2))
 
       (defun clojure-insert-let ()
         (interactive)
-        (insert "(let [])")
-        (left-char 2))
+        (clojure-insert-sexp "(let [])" 2))
 
       (defun clojure-insert-for ()
         (interactive)
-        (insert "(for [])")
-        (left-char 2))
+        (clojure-insert-sexp "(for [])" 2))
 
       (defun clojure-insert-doseq ()
         (interactive)
-        (insert "(doseq [])")
-        (left-char 2))
+        (clojure-insert-sexp "(doseq [])" 2))
+
       (defun clojure-insert-do ()
         (interactive)
-        (insert "(do )")
-        (left-char 1))
+        (clojure-insert-sexp "(do )" 1))
 
       (defun clj-cmt-uncmt-line-sexp ()
         (interactive)
