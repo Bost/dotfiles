@@ -235,8 +235,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
-   ))
+   dotspacemacs-whitespace-cleanup nil))
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
@@ -244,8 +243,7 @@ It is called immediately after `dotspacemacs/init', before layer configuration
 executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
-`dotspacemacs/user-config' first."
-  )
+`dotspacemacs/user-config' first.")
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -361,13 +359,16 @@ you should place your code here."
 
   (global-set-key (kbd "s-l") 'spacemacs/last-search-buffer)
 
+  (use-package zop-to-char
+    :ensure t
+    :bind (("M-z" . zop-up-to-char)
+           ("M-Z" . zop-to-char)))
+
   (use-package crux
     :ensure t
-    :bind (
-           ("C-c d" . crux-duplicate-current-line-or-region)
+    :bind (("C-c d" . crux-duplicate-current-line-or-region)
            ("C-c t" . crux-transpose-windows)
-           ("<C-s-backspace>" . crux-kill-line-backwards)
-           ))
+           ("<C-s-backspace>" . crux-kill-line-backwards)))
 
   (use-package clojure-mode
     :config
@@ -388,7 +389,14 @@ you should place your code here."
                ("C-s-\\" . (lambda () (interactive) (insert "#_")))
                ("s-\\" . clj-cmt-uncmt-line-sexp)))
 
+  (use-package super-save ;; better auto-save-mode
+    :ensure t
+    :config
+    (super-save-mode +1))
+
   (use-package cider
+      ;; :init
+      ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
       :config
       (add-hook 'cider-mode-hook #'eldoc-mode)
       (add-hook 'cider-repl-mode-hook #'eldoc-mode)
@@ -464,8 +472,7 @@ you should place your code here."
            (figwheel-sidecar.repl-api/start-figwheel!)
            (figwheel-sidecar.repl-api/cljs-repl))")
 
-      :bind (
-             ("s-x"   . cider-switch-to-repl-buffer)
+      :bind (("s-x"   . cider-switch-to-repl-buffer)
              ("<s-insert>" . clojure-insert-println)
              ;; (bind-key "C-s-p" 'clojure-insert-println)
              ("C-s-p" . clojure-insert-println)
@@ -499,12 +506,7 @@ you should place your code here."
              ("s-M" . main-a)
              ("s-A" . main-a)
              ("s-S" . main-s)
-             ("s-U" . main-u)
-             )
-      ;; :init
-      ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
-      )
-  )
+             ("s-U" . main-u))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -516,7 +518,7 @@ you should place your code here."
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
-    (crux helm-cider parent-mode flx s spinner pkg-info epl bind-key highlight clojure-mode anzu bind-map sql-indent package-build powerline popup packed smartparens projectile evil hydra avy iedit helm helm-core async helm-company helm-c-yasnippet company-statistics company-quickhelp pos-tip auto-yasnippet ac-ispell solarized-theme clj-refactor inflections edn multiple-cursors paredit cider queue orgit magit-gitflow helm-gitignore request evil-magit magit magit-popup git-commit company yasnippet auto-complete smeargle gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger with-editor peg cider-eval-sexp-fu bracketed-paste ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe use-package spacemacs-theme spaceline smooth-scrolling restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines org-plus-contrib open-junk-file neotree move-text macrostep lorem-ipsum linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+    (super-save zop-to-char crux helm-cider parent-mode flx s spinner pkg-info epl bind-key highlight clojure-mode anzu bind-map sql-indent package-build powerline popup packed smartparens projectile evil hydra avy iedit helm helm-core async helm-company helm-c-yasnippet company-statistics company-quickhelp pos-tip auto-yasnippet ac-ispell solarized-theme clj-refactor inflections edn multiple-cursors paredit cider queue orgit magit-gitflow helm-gitignore request evil-magit magit magit-popup git-commit company yasnippet auto-complete smeargle gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger with-editor peg cider-eval-sexp-fu bracketed-paste ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe use-package spacemacs-theme spaceline smooth-scrolling restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines org-plus-contrib open-junk-file neotree move-text macrostep lorem-ipsum linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
  '(paradox-github-token t))
 
 (custom-set-faces
