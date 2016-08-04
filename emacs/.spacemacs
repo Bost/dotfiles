@@ -447,6 +447,10 @@ you should place your code here."
         (interactive)
         (clojure-insert-sexp "(for [])" 2))
 
+      (defun clojure-insert-defn ()
+        (interactive)
+        (clojure-insert-sexp "(defn [])" 3))
+
       (defun clojure-insert-doseq ()
         (interactive)
         (clojure-insert-sexp "(doseq [])" 2))
@@ -478,6 +482,7 @@ you should place your code here."
              ("C-s-p" . clojure-insert-println)
              ("C-s-l" . clojure-insert-let)
              ("C-s-f" . clojure-insert-for)
+             ("C-s-n" . clojure-insert-defn)
              ("C-s-s" . clojure-insert-doseq)
              ("C-s-d" . clojure-insert-do)
              ;; ("s-x"   . cider-switch-to-last-clojure-buffer)
