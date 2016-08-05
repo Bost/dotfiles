@@ -9,8 +9,8 @@
     bi = bisect
     who = shortlog -s --
     undo = reset --hard
-    lg-head-20 = log --graph -20                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' HEAD
-    lg-head    = log --graph -10                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' HEAD
+    lg-all-30  = log --graph -30                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' HEAD
+    lg-all-20  = log --graph -20                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' HEAD
     lg-all     = log --graph --full-history             --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
     lg         = log --graph                            --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
     alg        = log --graph --abbrev-commit            --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --
