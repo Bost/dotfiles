@@ -1,3 +1,4 @@
 function lg
-    git lg-head $argv
+    echo "git lg-head $argv"
+          git lg-head $argv
 end
