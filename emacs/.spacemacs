@@ -349,7 +349,14 @@ you should place your code here."
   ;; Autoloading failed to define function avy-goto-char-1
   (global-set-key (kbd "s-j") 'avy-goto-char-1)
   (global-set-key (kbd "<c-f2>") 'avy-goto-line)
-  (global-set-key (kbd "s-i") 'iedit-mode)
+
+  (defun replace-occurenes-in-fun ()
+    (interactive)
+    (iedit-mode 0))
+
+  (global-set-key (kbd "s-i") 'replace-occurenes-in-fun)
+  (global-set-key (kbd "s-I") 'iedit-mode)
+
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
   (global-set-key (kbd "s-h") 'helm-imenu)
   (global-set-key (kbd "<f12>") 'undo-tree-visualize)
