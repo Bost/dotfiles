@@ -254,6 +254,30 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  (defun hilight-line-dups ()
+    (interactive)
+    (let ((count  0)
+          line-re)
+      (save-excursion
+        (goto-char (point-min))
+        (while (not (eobp))
+          (setq count    0
+                line-re  (concat "^" (regexp-quote (buffer-substring-no-properties
+                                                    (line-beginning-position)
+                                                    (line-end-position)))
+                                 "$"))
+          (save-excursion
+            (goto-char (point-min))
+            (while (not (eobp))
+              (if (not (re-search-forward line-re nil t))
+                  (goto-char (point-max))
+                (setq count  (1+ count))
+                (unless (< count 2)
+                  (hlt-highlight-region (line-beginning-position) (line-end-position)
+                                        'font-lock-warning-face)
+                  (forward-line 1)))))
+          (forward-line 1)))))
+
   (defun close-buffer ()
     (interactive)
     (if server-buffer-clients
