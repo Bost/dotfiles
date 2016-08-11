@@ -519,15 +519,13 @@ you should place your code here."
              ("C-s-d" . clojure-insert-do)
              ;; ("s-x"   . cider-switch-to-last-clojure-buffer)
              ("s-t"   . cider-test-run-tests)
-             ("s-."   . cider-find-var)
-             ("s-,"   . cider-jump-back)
              ("C-s-j" . cider-jack-in)
              ;; ("s-r"   . cider-eval-last-expression-in-repl)
              ("M-s-l" . cider-save-and-load-current-buffer)
              ("M-s-n" . cider-repl-set-ns)
              ("s-t"   . cider-test-run-tests)
              ("s-."   . cider-find-var)
-             ("s-,"   . cider-jump-back)
+             ("s-,"   . cider-pop-back)
              ;; TODO s-M does not work in REPL buffer
              ("s-o"   . cider-clear-compilation-highlights)
 
