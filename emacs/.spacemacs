@@ -42,7 +42,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
-   '(crux)
+   '(crux super-save zop-to-char)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -308,11 +308,11 @@ you should place your code here."
   (global-linum-mode) ; Show line numbers by default
   ;; Default theme applied at startup
   (global-set-key (kbd "s-a") 'helm-mini)
-  (global-set-key (kbd "s-z") '(lambda ()
-                                 (interactive)
-                                 (bs-show nil)
-                                 (if (not (evil-insert-state-p))
-                                     (evil-insert 0))))
+  (global-set-key (kbd "s-z") (lambda ()
+                                (interactive)
+                                (bs-show nil)
+                                (if (not (evil-insert-state-p))
+                                    (evil-insert 0))))
   (global-set-key (kbd "s-d") 'dired-jump)
   ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
 
