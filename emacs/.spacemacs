@@ -369,25 +369,29 @@ you should place your code here."
 
   (setq vc-follow-symlinks t) ; auto follow symbolic links
 
-  (global-set-key (kbd "<f2>") 'avy-goto-word-1)
-  ;; Autoloading failed to define function avy-goto-char-1
-  (global-set-key (kbd "s-j") 'avy-goto-char-1)
-  (global-set-key (kbd "<c-f2>") 'avy-goto-line)
+  (global-set-key (kbd "<f2>")   'avy-goto-word-1)
+  (global-set-key (kbd "<M-f2>") 'avy-goto-subword-1)
+  (global-set-key (kbd "<C-f2>") 'avy-goto-line)
+  ;; (global-set-key (kbd "s-j") 'avy-goto-char)
 
-  (defun replace-occurenes-in-fun ()
-    (interactive)
-    (iedit-mode 0))
+  (global-set-key (kbd "<C-mouse-5>")
+                  (lambda () (interactive) (message "zoom-out")))
+  (global-set-key (kbd "<C-mouse-4>")
+                  (lambda () (interactive) (message "zoom-out")))
 
-  (global-set-key (kbd "s-i") 'replace-occurenes-in-fun)
-  (global-set-key (kbd "s-I") 'iedit-mode)
+  ;; fd - evil-escape from insert state and everything else
+
+  (global-set-key (kbd "s-i") ;; occurences - function scope
+                  (lambda () (interactive) (iedit-mode 0)))
+  (global-set-key (kbd "s-I") 'iedit-mode) ;; all occurences
 
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
   (global-set-key (kbd "s-h") 'helm-imenu)
   (global-set-key (kbd "<f12>") 'undo-tree-visualize)
 
-  ;; ("<S-delete>" . kill-region)
+  ;; ("<S-delete>"      . kill-region)
   ;; ("<C-s-backspace>" . kill-line-backward)
-  ;; ("<C-S-delete>"    . kill-line)
+  (global-set-key (kbd "<C-S-delete>") 'kill-line)
 
   (global-set-key (kbd "s-l") 'spacemacs/last-search-buffer)
 
