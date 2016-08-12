@@ -512,7 +512,8 @@ you should place your code here."
            (figwheel-sidecar.repl-api/start-figwheel!)
            (figwheel-sidecar.repl-api/cljs-repl))")
 
-      :bind (("s-x"   . cider-switch-to-repl-buffer)
+      :bind (;; lambdas are not supported
+             ("s-x"   . cider-switch-to-repl-buffer)
              ("<s-insert>" . clojure-insert-println)
              ;; (bind-key "C-s-p" 'clojure-insert-println)
              ("C-s-p" . clojure-insert-println)
