@@ -367,6 +367,8 @@ you should place your code here."
   (global-set-key (kbd "s-8") 'er/expand-region)
   (global-set-key (kbd "s-*") 'er/contract-region)
 
+  (global-set-key (kbd "s-y") 'avy-goto-line)
+
   (setq vc-follow-symlinks t) ; auto follow symbolic links
 
   (global-set-key (kbd "<f2>")   'avy-goto-word-1)
