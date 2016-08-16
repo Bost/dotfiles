@@ -395,6 +395,22 @@ you should place your code here."
 
   (global-set-key (kbd "s-l") 'spacemacs/last-search-buffer)
 
+  (defun toggle-large-file-setting ()
+    (interactive)
+    (cond ((not (and smooth-scrolling-mode linum-mode))
+           (progn
+             (spacemacs/toggle-smooth-scrolling-on)
+             (spacemacs/toggle-line-numbers-on)
+             (message "large-file-settings enabled")))
+          (t ;; default
+           (progn
+             (spacemacs/toggle-smooth-scrolling-off)
+             (spacemacs/toggle-line-numbers-off)
+             (message "large-file-settings disabled")))))
+
+  ;; (add-hook 'find-file-hook ''toggle-large-file-setting)
+  (global-set-key (kbd "s-L") 'toggle-large-file-setting)
+
   (use-package zop-to-char
     :ensure t
     :bind (("M-z" . zop-up-to-char)
