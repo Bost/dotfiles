@@ -1,15 +1,11 @@
 function ee
-    set params $argv
-    if eval $argv
-        set params "."
-    end
-    
-    if pgrep --exact emacs
-        set emacsBin emacsclient
+    set cnt (count $argv)
+    if test $cnt = 0
+        set params "./"
     else
-        set emacsBin emacs
+        set params $argv
     end
-    set cmd "$emacsBin $dev/dotfiles/.emacs &"
-    echo $cmd
-    eval $cmd
+
+    echo emacs $params &
+         emacs $params &
 end
