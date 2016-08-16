@@ -397,16 +397,25 @@ you should place your code here."
 
   (defun toggle-large-file-setting ()
     (interactive)
-    (cond ((not (and smooth-scrolling-mode linum-mode))
-           (progn
-             (spacemacs/toggle-smooth-scrolling-on)
-             (spacemacs/toggle-line-numbers-on)
-             (message "large-file-settings enabled")))
-          (t ;; default
-           (progn
-             (spacemacs/toggle-smooth-scrolling-off)
-             (spacemacs/toggle-line-numbers-off)
-             (message "large-file-settings disabled")))))
+    (let* ((msg "large-file-settings"))
+      (cond
+       ((not (and smooth-scrolling-mode linum-mode))
+        (progn
+          ;; fontification is only deferred while there is input pending
+          (setq jit-lock-defer-time 0)
+          (spacemacs/toggle-smooth-scrolling-on)
+          (spacemacs/toggle-line-numbers-on)
+          (message (format "%s enabled" msg))))
+
+       (t ;; default
+        (progn
+          (spacemacs/toggle-smooth-scrolling-off)
+          (spacemacs/toggle-line-numbers-off)
+          ;; fontification is not deferre.
+          (setq jit-lock-defer-time nil)
+          (if (> (buffer-size) (* 1024 1024))
+              (message (format "WARN %s disabled on a large file!" msg))
+            (message (format "%s disabled" msg))))))))
 
   ;; (add-hook 'find-file-hook ''toggle-large-file-setting)
   (global-set-key (kbd "s-L") 'toggle-large-file-setting)
