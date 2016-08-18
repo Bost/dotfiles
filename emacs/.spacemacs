@@ -256,6 +256,11 @@ you should place your code here."
 
   (spacemacs/toggle-menu-bar-on)
 
+  ;; (define-key evil-visual-state-map "J"
+  ;;   (concat ":m '>+1" (kbd "RET") "gv=gv"))
+  ;; (define-key evil-visual-state-map "K"
+  ;;   (concat ":m '<-2" (kbd "RET") "gv=gv"))
+
   (defun hilight-line-dups ()
     (interactive)
     (let ((count  0)
