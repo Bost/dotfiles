@@ -461,6 +461,7 @@ you should place your code here."
     (bind-keys :map clojure-mode-map
                ;; ("s-_" . clojure-ignore-next-form)
                ;; on the german keyboard the '#' is next to Enter
+               ("s-i" . cljr-rename-symbol)
                ("C-s-\\" . (lambda () (interactive) (insert "#_")))
                ("s-\\" . clj-cmt-uncmt-line-sexp)))
 
@@ -514,9 +515,10 @@ you should place your code here."
         (interactive)
         (clojure-insert-sexp "(println \"\")" 2))
 
-      (defun clojure-insert-let ()
-        (interactive)
-        (clojure-insert-sexp "(let [])" 2))
+      ;; TODO remove this if cljr-introduce-let works as expected
+      ;; (defun clojure-insert-let ()
+      ;;   (interactive)
+      ;;   (clojure-insert-sexp "(let [])" 2))
 
       (defun clojure-insert-for ()
         (interactive)
@@ -556,7 +558,8 @@ you should place your code here."
              ("<s-insert>" . clojure-insert-println)
              ;; (bind-key "C-s-p" 'clojure-insert-println)
              ("C-s-p" . clojure-insert-println)
-             ("C-s-l" . clojure-insert-let)
+             ;; ("C-s-l" . clojure-insert-let)
+             ("C-s-l" . cljr-introduce-let)
              ("C-s-f" . clojure-insert-for)
              ("C-s-n" . clojure-insert-defn)
              ("C-s-s" . clojure-insert-doseq)
