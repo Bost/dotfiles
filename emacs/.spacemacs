@@ -261,6 +261,9 @@ you should place your code here."
   ;; (define-key evil-visual-state-map "K"
   ;;   (concat ":m '<-2" (kbd "RET") "gv=gv"))
 
+  ;; (define-key evil-visual-state-map (kbd "[ e") ":move'<--1")
+  ;; (define-key evil-visual-state-map (kbd "] e") ":move'>+1")
+
   (defun hilight-line-dups ()
     (interactive)
     (let ((count  0)
