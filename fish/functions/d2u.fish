@@ -1,3 +1,4 @@
 function d2u
-    fromdos $argv
+    echo "fromdos $argv"
+          fromdos $argv
 end

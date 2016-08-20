@@ -1,3 +1,4 @@
 function hibernate
-    sudo pm-hibernate $argv
+    echo "sudo pm-hibernate $argv"
+          sudo pm-hibernate $argv
 end

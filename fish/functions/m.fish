@@ -1,3 +1,4 @@
 function m
-    mplayer $argv
+    echo "mplayer $argv"
+          mplayer $argv
 end

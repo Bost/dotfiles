@@ -1,3 +1,4 @@
 function fish
-    cd ~/.config/fish/
+    echo "cd ~/.config/fish/"
+          cd ~/.config/fish/
 end

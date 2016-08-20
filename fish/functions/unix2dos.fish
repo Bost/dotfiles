@@ -1,3 +1,4 @@
 function unix2dos
-    todos $argv
+    echo "todos $argv"
+          todos $argv
 end

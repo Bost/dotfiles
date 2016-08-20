@@ -1,3 +1,4 @@
 function k9
-    kill -9 $argv
+    echo "kill -9 $argv"
+          kill -9 $argv
 end

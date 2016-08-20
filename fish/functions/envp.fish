@@ -1,3 +1,4 @@
 function envp
-    env | grep "^PATH=.*"
+    echo "env | grep '^PATH=.*'"
+          env | grep '^PATH=.*'
 end

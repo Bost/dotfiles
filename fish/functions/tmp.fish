@@ -1,3 +1,4 @@
 function tmp
-    cd /tmp $argv
+    echo "cd /tmp $argv"
+          cd /tmp $argv
 end

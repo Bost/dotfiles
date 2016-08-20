@@ -1,3 +1,4 @@
 function ll
-    ls -lh $argv
+    echo "ls -lh $argv"
+          ls -lh $argv
 end

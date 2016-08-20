@@ -1,5 +1,4 @@
 function prep
-    set cmd "pgrep --list-full $argv"
-    echo $cmd
-    eval $cmd
+    echo "pgrep --list-full $argv"
+          pgrep --list-full $argv
 end

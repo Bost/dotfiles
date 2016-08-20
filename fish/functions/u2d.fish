@@ -1,3 +1,4 @@
 function u2d
-    todos $argv
+    echo "todos $argv"
+          todos $argv
 end

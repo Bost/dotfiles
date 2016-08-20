@@ -1,3 +1,4 @@
 function ..4
-    cd ../../../.. $argv
+    echo "cd ../../../.. $argv"
+          cd ../../../.. $argv
 end

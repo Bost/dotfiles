@@ -1,3 +1,4 @@
 function g
-    egrep -i $argv
+    echo "egrep -i $argv"
+          egrep -i $argv
 end

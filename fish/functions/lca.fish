@@ -1,3 +1,4 @@
 function lca
-    lein cljsbuild auto $argv
+  echo "lein cljsbuild auto $argv"
+        lein cljsbuild auto $argv
 end

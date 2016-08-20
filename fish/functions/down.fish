@@ -1,3 +1,4 @@
 function down
-    cd $HOME/downloads
+    echo "cd $HOME/downloads"
+          cd $HOME/downloads
 end

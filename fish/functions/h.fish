@@ -1,5 +1,4 @@
 function h
-    set cmd "history $argv"
-    echo $cmd
-    eval $cmd
+    echo "history $argv"
+          history $argv
 end

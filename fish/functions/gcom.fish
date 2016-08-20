@@ -1,5 +1,4 @@
 function gcom
-    set cmd "git checkout master $argv"
-    echo $cmd
-    eval $cmd    
+    echo "git checkout master $argv"
+          git checkout master $argv
 end

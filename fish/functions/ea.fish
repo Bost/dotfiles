@@ -3,7 +3,7 @@ function ea
     if eval $argv
         set params "."
     end
-    
+
     if pgrep --exact emacs
         set emacsBin emacsclient
     else

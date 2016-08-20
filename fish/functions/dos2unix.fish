@@ -1,3 +1,4 @@
 function dos2unix
-    fromdos $argv
+    echo "fromdos $argv"
+          fromdos $argv
 end

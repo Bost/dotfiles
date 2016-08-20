@@ -1,3 +1,4 @@
 function gbr
-    git branch $argv
+    echo "git branch $argv"
+          git branch $argv
 end

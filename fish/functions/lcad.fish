@@ -1,3 +1,4 @@
 function lcad
-    lein cljsbuild auto dev $argv
+    echo "lein cljsbuild auto dev $argv"
+          lein cljsbuild auto dev $argv
 end

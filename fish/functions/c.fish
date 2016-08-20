@@ -1,3 +1,4 @@
 function c
-    cat $argv
+    echo "cat $argv"
+          cat $argv
 end

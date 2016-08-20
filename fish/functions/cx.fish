@@ -1,3 +1,4 @@
 function cx
-    chmod +x $argv
+    echo "chmod +x $argv"
+          chmod +x $argv
 end

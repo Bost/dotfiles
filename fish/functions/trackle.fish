@@ -1,3 +1,4 @@
 function trackle
-    cd $dev/trackle $argv
+    echo "cd $dev/trackle $argv"
+          cd $dev/trackle $argv
 end

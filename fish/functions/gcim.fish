@@ -1,3 +1,4 @@
 function gcim
-    git commit -m $argv
+    echo "git commit -m $argv"
+          git commit -m $argv
 end

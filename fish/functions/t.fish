@@ -1,3 +1,4 @@
 function t
-    tail $argv
+    echo "tail $argv"
+          tail $argv
 end

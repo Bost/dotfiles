@@ -1,3 +1,4 @@
 function susp
-    xfce4-session-logout --suspend
+    echo "xfce4-session-logout --suspend"
+          xfce4-session-logout --suspend
 end

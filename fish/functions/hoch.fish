@@ -1,3 +1,4 @@
 function hoch
-    cd $dev/hochzeit $argv
+    echo "cd $dev/hochzeit $argv"
+          cd $dev/hochzeit $argv
 end

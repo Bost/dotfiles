@@ -1,3 +1,4 @@
 function cvs-reset
-    cvs update -C -l -d -P  $argv
+    echo "cvs update -C -l -d -P  $argv"
+          cvs update -C -l -d -P  $argv
 end

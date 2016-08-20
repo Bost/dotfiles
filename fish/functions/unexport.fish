@@ -1,3 +1,4 @@
 function unexport
-    unset $argv
+    echo "unset $argv"
+          unset $argv
 end

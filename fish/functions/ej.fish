@@ -3,7 +3,7 @@ function ej
     if eval $argv
         set params "."
     end
-    
+
     set pgrepResults pgrep --exact emacs
     set cntResults (count $pgrepResults)
     if test $cntResults = 0

@@ -1,3 +1,4 @@
 function lcc
-    lein clean $argv
+    echo "lein clean $argv"
+          lein clean $argv
 end

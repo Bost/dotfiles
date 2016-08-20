@@ -1,3 +1,4 @@
 function fishf
-    cd ~/.config/fish/functions
+    echo "cd ~/.config/fish/functions"
+          cd ~/.config/fish/functions
 end

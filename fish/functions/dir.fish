@@ -1,3 +1,4 @@
 function dir
-    ls --color=auto --format=vertical $argv
+    echo "ls --color=auto --format=vertical $argv"
+          ls --color=auto --format=vertical $argv
 end

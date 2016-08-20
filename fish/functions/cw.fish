@@ -1,3 +1,4 @@
 function cw
-    chmod +w $argv
+    echo "chmod +w $argv"
+          chmod +w $argv
 end

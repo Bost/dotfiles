@@ -1,3 +1,4 @@
 function he
-    head $argv
+    echo "head $argv"
+          head $argv
 end

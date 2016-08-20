@@ -1,3 +1,4 @@
 function cd..
-    cd ..
+    echo "cd .."
+          cd ..
 end
