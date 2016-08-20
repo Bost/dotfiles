@@ -258,13 +258,51 @@ you should place your code here."
 
   (spacemacs/toggle-menu-bar-on)
 
-  ;; (define-key evil-visual-state-map "J"
-  ;;   (concat ":m '>+1" (kbd "RET") "gv=gv"))
-  ;; (define-key evil-visual-state-map "K"
-  ;;   (concat ":m '<-2" (kbd "RET") "gv=gv"))
+  (defun duplicate-block ()
+    (interactive)
+    (message "block-down")
+    (unless (evil-visual-state-p)
+      (evil-visual-line))
+    (evil-delete-char (first (evil-visual-range))
+                      (second (evil-visual-range)))
+    (evil-next-line)
+    (evil-paste-before 2))
 
-  ;; (define-key evil-visual-state-map (kbd "[ e") ":move'<--1")
-  ;; (define-key evil-visual-state-map (kbd "] e") ":move'>+1")
+  (defun block-down ()
+    (interactive)
+    (unless (evil-visual-state-p)
+      (evil-visual-line))
+    (let* ((range (evil-visual-range)))
+      (message (format "block-down: range: %s" range))
+      ;; (evil-delete-char (first (evil-visual-range))
+      ;;                   (second (evil-visual-range)))
+      ;; (evil-next-line)
+      ;; (evil-paste-before 2)
+      )
+    )
+
+  ;; 111 bbb ccc
+  ;; 333 bbb ccc
+  ;; 444 bbb ccc
+  ;; 222 bbb ccc
+
+  (defun block-up ()
+    (interactive)
+    (message "block-up")
+    (unless (evil-visual-state-p)
+      (evil-visual-line))
+    (evil-delete-char '(evil-visual-range))
+    (evil-previous-line))
+
+  (global-set-key (kbd "<M-down>") 'block-down)
+  (global-set-key (kbd "<M-up>")   'block-up)
+  (global-set-key (kbd "<C-s-down>") 'duplicate-block)
+  ;; (global-unset-key (kbd "<M-down>"))
+  ;; (global-unset-key (kbd "<M-up>"))
+  ;; (define-key evil-visual-state-map (kbd "<M-down>")
+  ;; (concat ":m '>+1" (kbd "RET") "gv=gv"))
+  ;; (define-key evil-visual-state-map (kbd "<M-up>")
+  ;; (concat ":m '<-2" (kbd "RET") "gv=gv"))
 
   (defun hilight-line-dups ()
     (interactive)
