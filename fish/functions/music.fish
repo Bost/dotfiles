@@ -1,3 +1,4 @@
 function music
-    cd $HOME/music/ $argv
+    echo "cd $HOME/music $argv"
+          cd $HOME/music $argv
 end

@@ -1,3 +1,4 @@
 function rmv
-    sudo apt-get remove --yes $argv
+    echo "sudo apt-get remove --yes $argv"
+          sudo apt-get remove --yes $argv
 end
