@@ -472,6 +472,10 @@ you should place your code here."
   ;; (add-hook 'find-file-hook ''toggle-large-file-setting)
   (global-set-key (kbd "s-L") 'toggle-large-file-setting)
 
+  (use-package fish-mode
+    :config
+    (add-hook 'fish-mode-hook #'paredit-mode))
+
   (use-package zop-to-char
     :ensure t
     :bind (("M-z" . zop-up-to-char)
