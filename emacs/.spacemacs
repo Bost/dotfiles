@@ -258,16 +258,6 @@ you should place your code here."
 
   (spacemacs/toggle-menu-bar-on)
 
-  (defun duplicate-block ()
-    (interactive)
-    (message "block-down")
-    (unless (evil-visual-state-p)
-      (evil-visual-line))
-    (evil-delete-char (first (evil-visual-range))
-                      (second (evil-visual-range)))
-    (evil-next-line)
-    (evil-paste-before 2))
-
   (defun block-down ()
     (interactive)
     (unless (evil-visual-state-p)
@@ -296,7 +286,6 @@ you should place your code here."
 
   (global-set-key (kbd "<M-down>") 'block-down)
   (global-set-key (kbd "<M-up>")   'block-up)
-  (global-set-key (kbd "<C-s-down>") 'duplicate-block)
   ;; (global-unset-key (kbd "<M-down>"))
   ;; (global-unset-key (kbd "<M-up>"))
   ;; (define-key evil-visual-state-map (kbd "<M-down>")
@@ -483,9 +472,11 @@ you should place your code here."
 
   (use-package crux
     :ensure t
-    :bind (("C-c d" . crux-duplicate-current-line-or-region)
-           ("C-c t" . crux-transpose-windows)
-           ("<C-s-backspace>" . crux-kill-line-backwards)))
+    :bind
+    (("C-c d"           . crux-duplicate-current-line-or-region)
+     ("<C-s-down>"      . crux-duplicate-current-line-or-region)
+     ("C-c t"           . crux-transpose-windows)
+     ("<C-s-backspace>" . crux-kill-line-backwards)))
 
   (use-package clojure-mode
     :config
