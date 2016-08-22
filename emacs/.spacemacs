@@ -456,7 +456,8 @@ you should place your code here."
     (clojure-insert-sexp "(message (format \"\"))" 3))
 
   (use-package emacs
-    :bind (("C-s-m" . elisp-insert-message)))
+    :bind (("C-s-m" . elisp-insert-message)
+           ("s-e"   . eval-last-sexp)))
 
   (use-package clojure-mode
     :config
