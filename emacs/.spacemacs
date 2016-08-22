@@ -36,6 +36,13 @@ values."
      ;; syntax-checking
      ;; version-control
      clojure
+     ;; shell
+     ;; command-log - log keystrokes
+     ;; search-engine
+     ;; TODO eyebrowse - window management
+     ;; TODO spacemacs-layout - window management
+     ;; smex ; smart M-x enhacements - recent & most used commands
+     ;; gnus
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -62,6 +69,7 @@ values."
   (push '(cider . "melpa-stable") package-pinned-packages)
   (push '(clj-refactor . "melpa-stable") package-pinned-packages)
   (push '(projectile . "melpa-stable") package-pinned-packages)
+
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -256,6 +264,11 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  ;; (push '(clojuredocs
+  ;;         :name "Clojure Docs"
+  ;;         :url "http://clojuredocs.org/clojure.core/%s")
+  ;;       search-engine-alist)
+
   (spacemacs/toggle-menu-bar-on)
 
   ;; TODO Compile with gnutls support! See:
@@ -380,7 +393,10 @@ you should place your code here."
 
   (global-set-key (kbd "s-y") 'avy-goto-line)
 
+  (setq create-lockfiles nil) ; do not create .# lockfiles
   (setq vc-follow-symlinks t) ; auto follow symbolic links
+  ;; disable mouse support in X11 terminals - enables copy/paste with mouse
+  (xterm-mouse-mode -1)
 
   (global-set-key (kbd "<f2>")   'avy-goto-word-1)
   (global-set-key (kbd "<M-f2>") 'avy-goto-subword-1)
