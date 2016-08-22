@@ -258,6 +258,10 @@ you should place your code here."
 
   (spacemacs/toggle-menu-bar-on)
 
+  ;; TODO Compile with gnutls support! See:
+  ;; 1. /configure output
+  ;; 2. e -e "(gnutls-available-p)"
+
   (defun hilight-line-dups ()
     (interactive)
     (let ((count  0)
