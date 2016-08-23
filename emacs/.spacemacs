@@ -518,12 +518,14 @@ you should place your code here."
       ;; (setq gui-elements 1) ; because of CIDER menu
       (bind-keys :map cider-repl-mode-map
                  ("<s-delete>" . cider-repl-clear-buffer)
+                 ("s-j" . cider-format-defun)
                  ("s-e" . cider-eval-last-sexp)
                  ("s-x" . cider-switch-to-last-clojure-buffer)
                  ;; invoke from *.clj buffer
                  ("s-M" . main-a)
                  ("s-S" . main-s))
       (bind-keys :map cider-mode-map
+                 ("s-j" . cider-format-defun)
                  ("s-x" . cider-switch-to-repl-buffer)
                  ("s-e" . cider-eval-last-sexp))
 
