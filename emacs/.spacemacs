@@ -407,6 +407,8 @@ you should place your code here."
                   (lambda () (interactive) (message "zoom-out")))
   (global-set-key (kbd "<C-mouse-4>")
                   (lambda () (interactive) (message "zoom-out")))
+  (global-set-key (kbd "<menu>")
+                  (lambda () (interactive) (message "context-menu")))
 
   ;; fd - evil-escape from insert state and everything else
 
