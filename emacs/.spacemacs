@@ -310,6 +310,7 @@ you should place your code here."
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "s-0") 'delete-window)
   (global-set-key (kbd "s-1") 'delete-other-windows)
+  (global-set-key (kbd "<f8>") 'transpose-frame)
 
   (defun split-other-window-and (f)
     (funcall f)
@@ -436,17 +437,21 @@ you should place your code here."
           (setq jit-lock-defer-time 0)
           (spacemacs/toggle-smooth-scrolling-on)
           (spacemacs/toggle-line-numbers-on)
-          (message (format "%s enabled" msg))))
+          (buffer-enable-undo)
+          (font-lock-mode 1)
+          (if (> (buffer-size) (* 1024 1024))
+              (message (format "WARN %s disabled on a large file!" msg))
+            (message (format "%s disabled" msg)))))
 
        (t ;; default
         (progn
           (spacemacs/toggle-smooth-scrolling-off)
           (spacemacs/toggle-line-numbers-off)
-          ;; fontification is not deferre.
+          (buffer-disable-undo)
+          (font-lock-mode -1)
+          ;; fontification is not deferred.
           (setq jit-lock-defer-time nil)
-          (if (> (buffer-size) (* 1024 1024))
-              (message (format "WARN %s disabled on a large file!" msg))
-            (message (format "%s disabled" msg))))))))
+          (message (format "%s enabled" msg)))))))
 
   ;; (add-hook 'find-file-hook ''toggle-large-file-setting)
   (global-set-key (kbd "s-L") 'toggle-large-file-setting)
@@ -638,7 +643,7 @@ you should place your code here."
  '(package-selected-packages
    (quote
     '(paradox-github-token t))
-   (drag-stuff fish-mode super-save zop-to-char crux helm-cider parent-mode flx s spinner pkg-info epl bind-key highlight clojure-mode anzu bind-map sql-indent package-build powerline popup packed smartparens projectile evil hydra avy iedit helm helm-core async helm-company helm-c-yasnippet company-statistics company-quickhelp pos-tip auto-yasnippet ac-ispell solarized-theme clj-refactor inflections edn multiple-cursors paredit cider queue orgit magit-gitflow helm-gitignore request evil-magit magit magit-popup git-commit company yasnippet auto-complete smeargle gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger with-editor peg cider-eval-sexp-fu bracketed-paste ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe use-package spacemacs-theme spaceline smooth-scrolling restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines org-plus-contrib open-junk-file neotree move-text macrostep lorem-ipsum linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+   (transpose-frame drag-stuff fish-mode super-save zop-to-char crux helm-cider parent-mode flx s spinner pkg-info epl bind-key highlight clojure-mode anzu bind-map sql-indent package-build powerline popup packed smartparens projectile evil hydra avy iedit helm helm-core async helm-company helm-c-yasnippet company-statistics company-quickhelp pos-tip auto-yasnippet ac-ispell solarized-theme clj-refactor inflections edn multiple-cursors paredit cider queue orgit magit-gitflow helm-gitignore request evil-magit magit magit-popup git-commit company yasnippet auto-complete smeargle gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger with-editor peg cider-eval-sexp-fu bracketed-paste ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe use-package spacemacs-theme spaceline smooth-scrolling restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines org-plus-contrib open-junk-file neotree move-text macrostep lorem-ipsum linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
