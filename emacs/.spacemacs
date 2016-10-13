@@ -426,17 +426,16 @@ you should place your code here."
   ;; ("<C-s-backspace>" . kill-line-backward)
   (global-set-key (kbd "<C-s-delete>") 'kill-line)
 
-  (global-set-key (kbd "s-l") 'spacemacs/last-search-buffer)
+  (global-set-key (kbd "s-l") 'spacemacs/resume-last-search-buffer)
 
   (defun toggle-large-file-setting ()
     (interactive)
     (let* ((msg "large-file-settings"))
       (cond
-       ((not (and smooth-scrolling-mode linum-mode))
+       ((not linum-mode)
         (progn
           ;; fontification is only deferred while there is input pending
           (setq jit-lock-defer-time 0)
-          (spacemacs/toggle-smooth-scrolling-on)
           (spacemacs/toggle-line-numbers-on)
           (buffer-enable-undo)
           (font-lock-mode 1)
@@ -446,7 +445,6 @@ you should place your code here."
 
        (t ;; default
         (progn
-          (spacemacs/toggle-smooth-scrolling-off)
           (spacemacs/toggle-line-numbers-off)
           (buffer-disable-undo)
           (font-lock-mode -1)
