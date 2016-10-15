@@ -1,3 +1,4 @@
+;; $ ln -s ~/dev/dotfiles/.lein/profiles.clj ~/.lein/profiles.clj
 {:user
  {:plugins
   [
@@ -6,7 +7,7 @@
 
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    [refactor-nrepl "2.2.0"]
-   [cider/cider-nrepl "0.13.0"]
+   [cider/cider-nrepl "0.14.0"]
 
    [lein-ancient "0.6.10"]
    [lein-localrepo "0.5.3"]
@@ -17,9 +18,9 @@
   [
    [slamhound "1.5.5"] ; rip and reconstruct namespace
    [org.clojure/tools.nrepl "0.2.12"]
-   [org.clojure/core.typed "0.3.23"]
+   [org.clojure/core.typed "0.3.26"]
 
-   [alembic "0.3.2"] ; dynamic classpath loader and dependencies resolver
+   [alembic "0.3.2"] ; dynamically load / resolve / add classpath deps
    ;; Usage:
    ;; (require 'alembic.still)
    ;; (alembic.still/distill '[clj-time-ext "0.4.5"])
