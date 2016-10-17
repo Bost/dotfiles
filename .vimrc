@@ -177,16 +177,6 @@ if 0
     inoremap <C-e> <Esc>:%Eval<CR>
 else
     " {{{ VimClojure
-    let vimclojure#WantNailgun = 1
-
-    if isLinux
-        let vimclojure#NailgunClient = "ng"  "ng is defined in $PATH
-    elseif isWin || isCygwin
-        let vimclojure#NailgunClient = $HOME.'/dev/vimclojure/client/ng.exe'
-    endif
-
-    "let vimclojure#NailgunServer = "192.168.178.20"  " 127.0.0.1
-    let vimclojure#NailgunPort = "2113"
     if isUserBambi " open the split window on ...
         let vimclojure#SplitPos = 'bottom'
     else
