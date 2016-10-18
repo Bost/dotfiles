@@ -495,15 +495,17 @@ you should place your code here."
     :config
     (defun clj-cmt-uncmt-line-sexp ()
       (interactive)
-      (evil-insert-line 0)
-      (let* ((cmtstr "#_")
-             (cmtstr-len (length cmtstr))
-             (point-pos (point))
-             (line-start (buffer-substring-no-properties
-                          point-pos (+ point-pos cmtstr-len))))
-        (if (string= cmtstr line-start)
-            (delete-char cmtstr-len)
-          (insert cmtstr))))
+      (let* ((point-pos1 (point)))
+        (evil-insert-line 0)
+        (let* ((point-pos2 (point))
+               (cmtstr "#_")
+               (cmtstr-len (length cmtstr))
+               (line-start (buffer-substring-no-properties
+                            point-pos2 (+ point-pos2 cmtstr-len))))
+          (if (string= cmtstr line-start)
+              (delete-char cmtstr-len)
+            (insert cmtstr))
+          (goto-char point-pos1))))
     (bind-keys :map clojure-mode-map
                ;; ("s-_" . clojure-ignore-next-form)
                ;; on the german keyboard the '#' is next to Enter
