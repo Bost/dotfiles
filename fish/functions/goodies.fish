@@ -1,4 +1,4 @@
 function goodies
-    echo "sudo checkrestart"
-          sudo checkrestart
+  echo "sudo checkrestart $argv"
+        sudo checkrestart $argv
 end
