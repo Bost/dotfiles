@@ -54,7 +54,8 @@ values."
    dotspacemacs-additional-packages
    '(
      ;; suggest - discovering elisp fns; doesn't work because of loop-1.3
-     crux super-save zop-to-char fish-mode drag-stuff)
+     crux super-save zop-to-char fish-mode drag-stuff helm-cider helm-cider-history
+          typed-clojure-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -69,6 +70,8 @@ before layers configuration.
 You should not put any user code in there besides modifying the variable
 values."
   (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
+  (push '(helm . "melpa-stable") package-pinned-packages)
+  (push '(helm-core . "melpa-stable") package-pinned-packages)
   (push '(cider . "melpa-stable") package-pinned-packages)
   (push '(clj-refactor . "melpa-stable") package-pinned-packages)
   (push '(projectile . "melpa-stable") package-pinned-packages)
@@ -493,6 +496,7 @@ you should place your code here."
 
   (use-package clojure-mode
     :config
+    (add-hook 'clojure-mode-hook 'typed-clojure-mode)
     (defun clj-cmt-uncmt-line-sexp ()
       (interactive)
       (let* ((point-pos1 (point)))
@@ -634,7 +638,32 @@ you should place your code here."
              ("s-M" . main-a)
              ("s-A" . main-a)
              ("s-S" . main-s)
-             ("s-U" . main-u))))
+             ("s-U" . main-u)))
+
+  (defun copy-to-clipboard ()
+    "Copies selection to x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (message "Yanked region to x-clipboard!")
+          (call-interactively 'clipboard-kill-ring-save))
+      (if (region-active-p)
+          (progn
+            (shell-command-on-region (region-beginning) (region-end) "xsel -i -b")
+            (message "Yanked region to clipboard!")
+            (deactivate-mark))
+        (message "No region active; can't yank to clipboard!"))))
+
+  (defun paste-from-clipboard ()
+    "Pastes from x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (clipboard-yank)
+          (message "graphics active"))
+      (insert (shell-command-to-string "xsel -o -b"))))
+  (evil-leader/set-key "o y" 'copy-to-clipboard)
+  (evil-leader/set-key "o p" 'paste-from-clipboard))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -646,8 +675,25 @@ you should place your code here."
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
-    (web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode quote
-                  (paradox-github-token t)))))
+    (typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode quote
+                        (paradox-github-token t))))
+ '(paradox-github-token t)
+ '(safe-local-variable-values
+   (quote
+    ((eval progn
+           (let
+               ((local-map
+                 (or
+                  (current-local-map)
+                  (make-keymap))))
+             (use-local-map local-map)
+             (setq ufo-dir "~/dev/zark")
+             (define-key local-map
+               (kbd "<s-f2>")
+               (lambda nil
+                 (interactive)
+                 (find-file
+                  (concat ufo-dir "/src/zark/reasoned-schemer.clj"))))))))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
