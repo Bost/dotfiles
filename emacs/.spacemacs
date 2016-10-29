@@ -159,7 +159,7 @@ values."
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font
    '(
-     "Source Code Pro" :size 13 :weight light :width light :powerline-scale 1.1
+     ;; "Source Code Pro" :size 13 :weight normal :width normal :powerline-scale 1.1
      ;; "Consolas" :size 16 :weight normal :width normal :powerline-offset 2
      ;; "Ubuntu Mono" :size 16 :weight normal :width normal :powerline-scale 1.1
      )
@@ -466,8 +466,8 @@ you should place your code here."
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
 
-  (global-set-key (kbd "<f2>")   'avy-goto-word-1)
-  (global-set-key (kbd "C-a")    'avy-goto-char)
+  (global-set-key (kbd "<f2>")   'evil-avy-goto-char)
+  (global-set-key (kbd "C-a")    'evil-avy-goto-char)
   (global-set-key (kbd "<M-f2>") 'avy-goto-subword-1)
   (global-set-key (kbd "<C-f2>") 'avy-goto-line)
   ;; (global-set-key (kbd "s-j") 'avy-goto-char)
