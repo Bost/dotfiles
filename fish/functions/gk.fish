@@ -1,4 +1,6 @@
 function gk
-    echo gitk --all $argv \&
-         gitk --all $argv  &
+  echo gitg $argv \&
+       gitg $argv  &
+  # echo gitk --all $argv \&
+  #      gitk --all $argv  &
 end
