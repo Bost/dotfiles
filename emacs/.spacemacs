@@ -443,6 +443,10 @@ you should place your code here."
   (global-set-key (kbd "<C-M-prior>") 'hs-hide-all)
   (global-set-key (kbd "<C-M-next>") 'hs-show-all)
 
+  ;; (global-set-key (kbd "<C-M-right>") 'sp-forward-sexp)
+  (global-set-key (kbd "<C-M-right>") 'forward-paragraph)  ; end-of-defun
+  (global-set-key (kbd "<C-M-left>")  'backward-paragraph) ; beginning-of-defun
+
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
   (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
   (global-set-key (kbd "<s-backspace>") 'paredit-backward-kill-word)
@@ -462,6 +466,7 @@ you should place your code here."
   (xterm-mouse-mode -1)
 
   (global-set-key (kbd "<f2>")   'avy-goto-word-1)
+  (global-set-key (kbd "C-a")    'avy-goto-char)
   (global-set-key (kbd "<M-f2>") 'avy-goto-subword-1)
   (global-set-key (kbd "<C-f2>") 'avy-goto-line)
   ;; (global-set-key (kbd "s-j") 'avy-goto-char)
@@ -595,9 +600,11 @@ you should place your code here."
                  ("s-M" . main-a)
                  ("s-S" . main-s))
       (bind-keys :map cider-mode-map
-                 ("s-j" . cider-format-defun)
-                 ("s-x" . cider-switch-to-repl-buffer)
-                 ("s-e" . cider-eval-last-sexp))
+                 ("<C-M-right>" . end-of-defun)       ; forward-paragraph
+                 ("<C-M-left>"  . beginning-of-defun) ; backward-paragraph
+                 ("s-j"         . cider-format-defun)
+                 ("s-x"         . cider-switch-to-repl-buffer)
+                 ("s-e"         . cider-eval-last-sexp))
 
       (defun figwheel-cider ()
         (interactive)
