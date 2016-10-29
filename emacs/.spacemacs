@@ -397,6 +397,7 @@ you should place your code here."
                                 (bs-show nil)
                                 (if (not (evil-insert-state-p))
                                     (evil-insert 0))))
+  ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
   (global-set-key (kbd "s-d") 'dired-jump)
   ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
 
