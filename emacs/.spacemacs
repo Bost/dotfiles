@@ -726,7 +726,14 @@ you should place your code here."
           (message "graphics active"))
       (insert (shell-command-to-string "xsel -o -b"))))
   (evil-leader/set-key "o y" 'copy-to-clipboard)
-  (evil-leader/set-key "o p" 'paste-from-clipboard))
+  (evil-leader/set-key "o p" 'paste-from-clipboard)
+
+  ;; Move by screen lines instead of logical (long) lines
+  (define-key evil-motion-state-map "j" 'evil-next-visual-line)
+  (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
+  ;; Also in visual mode
+  (define-key evil-visual-state-map "j" 'evil-next-visual-line)
+  (define-key evil-visual-state-map "k" 'evil-previous-visual-line))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
