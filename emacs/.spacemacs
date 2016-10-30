@@ -159,6 +159,7 @@ values."
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font
    '(
+     "Fira Code" :size 13 :weight normal :width normal :powerline-scale 1.1
      ;; "Source Code Pro" :size 13 :weight normal :width normal :powerline-scale 1.1
      ;; "Consolas" :size 16 :weight normal :width normal :powerline-offset 2
      ;; "Ubuntu Mono" :size 16 :weight normal :width normal :powerline-scale 1.1
@@ -558,6 +559,7 @@ you should place your code here."
   (use-package clojure-mode
     :config
     (add-hook 'clojure-mode-hook 'typed-clojure-mode)
+    (add-hook 'clojure-mode-hook (lambda () (prettify-symbols-mode)))
     (defun clj-cmt-uncmt-line-sexp ()
       (interactive)
       (let* ((point-pos1 (point)))
@@ -587,6 +589,7 @@ you should place your code here."
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
       :config
+      (setq cider-repl-use-pretty-printing t)
       (add-hook 'cider-mode-hook #'eldoc-mode)
       (add-hook 'cider-repl-mode-hook #'eldoc-mode)
       (add-hook 'cider-repl-mode-hook #'paredit-mode)
@@ -733,7 +736,39 @@ you should place your code here."
   (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
   ;; Also in visual mode
   (define-key evil-visual-state-map "j" 'evil-next-visual-line)
-  (define-key evil-visual-state-map "k" 'evil-previous-visual-line))
+  (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
+
+  ;; (when (window-system) (set-default-font "Fira Code"))
+  (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+                 (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+                 (36 . ".\\(?:>\\)")
+                 (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+                 (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+                 (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+                 (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+                 (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+                 ;; (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+                 (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+                 (48 . ".\\(?:x[a-zA-Z]\\)")
+                 (58 . ".\\(?:::\\|[:=]\\)")
+                 (59 . ".\\(?:;;\\|;\\)")
+                 (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+                 (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+                 (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+                 (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+                 (91 . ".\\(?:]\\)")
+                 (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+                 (94 . ".\\(?:=\\)")
+                 (119 . ".\\(?:ww\\)")
+                 (123 . ".\\(?:-\\)")
+                 (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+                 (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+                 )
+               ))
+    (dolist (char-regexp alist)
+      (set-char-table-range composition-function-table (car char-regexp)
+                            `([,(cdr char-regexp) 0 font-shape-gstring]))))
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -745,8 +780,7 @@ you should place your code here."
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
-    (evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode
-                   )))
+    (pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
