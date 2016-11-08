@@ -377,6 +377,10 @@ you should place your code here."
   (global-set-key (kbd "s-1") 'delete-other-windows)
   (global-set-key (kbd "<f8>") 'transpose-frame)
 
+  ;; TODO create toggle-narrow-to-defun
+  (global-set-key (kbd "s-n") 'narrow-to-defun)
+  (global-set-key (kbd "s-N") 'widen)
+
   (defun split-other-window-and (f)
     (funcall f)
     (other-window 1))
