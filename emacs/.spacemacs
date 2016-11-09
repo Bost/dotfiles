@@ -737,13 +737,40 @@ you should place your code here."
   (evil-leader/set-key "o y" 'copy-to-clipboard)
   (evil-leader/set-key "o p" 'paste-from-clipboard)
 
-  (defun subst-word (&optional arg)
-    "Insert ':%s/\<\>//gc' and move 5 chars to the left so the point stays
-between the chars '<' and '>'."
+  (defun fabricate-subst-cmd (&optional arg)
+    "Place prepared subst command to the echo area.
+Example 1.:
+        :%s/\<\>//gc     - moves the point between '\<' and '\>'
+Example 2.:
+        :%s/fox/fox/gc   - moves the point after first 'x'"
     (interactive "p")
+    (sp-copy-sexp)
     (evil-normal-state)
-    (evil-ex '("%s/\\<\\>//gc" . 6)))
-  (global-set-key (kbd "s-:") 'subst-word)
+    (let* (;; Example 1.:
+           ;; (sexp-str "%s/\\<\\>//gc")
+           ;; (offset 6)
+           ;;
+           ;; Example 2.:
+           (search-regex (format "%s" (car kill-ring)))
+           (replace-regex (format "%s" (car kill-ring)))
+           (sexp-str (format "%%s/%s/%s/gc" search-regex replace-regex))
+           (offset (+ (length search-regex) 4)) ;; 4 means: jump to the 2nd slash
+           )
+      ;; (cons .. offset) moves the point
+      (evil-ex (cons sexp-str offset))))
+  (global-set-key (kbd "s-:") 'fabricate-subst-cmd)
+
+  ;; Center buffer on search-next
+  (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
+    (evil-scroll-line-to-center (line-number-at-pos)))
+
+  ;; Center buffer on search-next
+  (defadvice evil-search-next (after advice-for-evil-search-next activate)
+    (evil-scroll-line-to-center (line-number-at-pos)))
+
+  ;; Center buffer on search-forward
+  (defadvice evil-search-forward (after advice-for-evil-search-forward activate)
+    (evil-scroll-line-to-center (line-number-at-pos)))
 
   ;; Move by screen lines instead of logical (long) lines
   (define-key evil-motion-state-map "j" 'evil-next-visual-line)
