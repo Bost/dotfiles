@@ -737,6 +737,14 @@ you should place your code here."
   (evil-leader/set-key "o y" 'copy-to-clipboard)
   (evil-leader/set-key "o p" 'paste-from-clipboard)
 
+  (defun subst-word (&optional arg)
+    "Insert ':%s/\<\>//gc' and move 5 chars to the left so the point stays
+between the chars '<' and '>'."
+    (interactive "p")
+    (evil-normal-state)
+    (evil-ex '("%s/\\<\\>//gc" . 6)))
+  (global-set-key (kbd "s-:") 'subst-word)
+
   ;; Move by screen lines instead of logical (long) lines
   (define-key evil-motion-state-map "j" 'evil-next-visual-line)
   (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
