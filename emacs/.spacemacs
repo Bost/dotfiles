@@ -417,7 +417,7 @@ you should place your code here."
   (defun sp-copy-back-sexp-msg ()
     (interactive)
     (let* ((point-pos (point)))
-      (paredit-backward)
+      (sp-backward-sexp)
       (sp-copy-sexp-msg)
       (goto-char point-pos)))
 
