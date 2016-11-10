@@ -1,3 +1,4 @@
 function ghof
-    git push origin -f $argv
+  echo "git push origin -f $argv"
+        git push origin -f $argv
 end
