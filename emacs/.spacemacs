@@ -279,6 +279,18 @@ values."
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
    dotspacemacs-line-numbers nil
+   ;; TODO dotspacemacs-line-numbers
+   ;; '(:relative
+   ;;   nil
+   ;;   :disabled-for
+   ;;   (dired-mode    ; works
+   ;;    doc-view-mode ; ?
+   ;;    markdown-mode ; gets overriden
+   ;;    org-mode      ; gets overriden
+   ;;    pdf-view-mode ; ?
+   ;;    text-mode     ; gets overriden
+   ;;    )
+   ;;   :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -396,7 +408,6 @@ you should place your code here."
   (global-set-key (kbd "s-2") 'split-other-window-below)
   (global-set-key (kbd "s-3") 'split-other-window-right)
 
-  (global-linum-mode) ; Show line numbers by default
   ;; Default theme applied at startup
   (global-set-key (kbd "s-a") 'helm-mini)
   (global-set-key (kbd "s-z") (lambda ()
