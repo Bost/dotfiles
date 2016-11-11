@@ -591,6 +591,18 @@ you should place your code here."
     :config
     (super-save-mode +1))
 
+  (defun progress-report (orig-fun &rest args)
+    (let ((progress-reporter
+           (make-progress-reporter
+            (format "Evaluating (%s %s)..." orig-fun args))))
+      (let ((res (apply orig-fun args)))
+        (progress-reporter-done progress-reporter)
+        res)))
+
+  (advice-add 'eval-buffer :around #'progress-report)
+  ;; (advice-remove 'eval-buffer #'progress-report)
+  (global-set-key (kbd "s-u") 'eval-buffer)
+
   (use-package cider
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
