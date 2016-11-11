@@ -438,10 +438,10 @@ you should place your code here."
   (global-set-key (kbd "s-b") 'sp-copy-back-sexp-msg)
 
   ;; Move the parenthesis
-  (global-set-key (kbd "M-s-<left>")  'paredit-forward-barf-sexp)
-  (global-set-key (kbd "M-s-<right>") 'paredit-forward-slurp-sexp)
-  (global-set-key (kbd "C-s-<left>")  'paredit-backward-slurp-sexp)
-  (global-set-key (kbd "C-s-<right>") 'paredit-backward-barf-sexp)
+  (global-set-key (kbd "M-s-<left>")  'sp-forward-barf-sexp)
+  (global-set-key (kbd "M-s-<right>") 'sp-forward-slurp-sexp)
+  (global-set-key (kbd "C-s-<left>")  'sp-backward-slurp-sexp)
+  (global-set-key (kbd "C-s-<right>") 'sp-backward-barf-sexp)
 
   (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
   (global-set-key (kbd "s-<f1>") 'eshell)
