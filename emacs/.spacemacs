@@ -603,6 +603,11 @@ you should place your code here."
   ;; (advice-remove 'eval-buffer #'progress-report)
   (global-set-key (kbd "s-u") 'eval-buffer)
 
+  (global-set-key (kbd "s-.") 'spacemacs/jump-to-definition)
+  ;; (global-set-key (kbd "s-,") 'evil-jump-backward)
+  ;; (global-set-key (kbd "s-,") 'cider-pop-back)
+  (global-set-key (kbd "s-,") 'dumb-jump-back)
+
   (use-package cider
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
@@ -705,8 +710,10 @@ you should place your code here."
              ("M-s-l" . cider-save-and-load-current-buffer)
              ("M-s-n" . cider-repl-set-ns)
              ("s-t"   . cider-test-run-tests)
-             ("s-."   . cider-find-var)
-             ("s-,"   . cider-pop-back)
+
+             ;; TODO see global-set-key settings
+             ;; ("s-."   . cider-find-var)
+             ;; ("s-,"   . cider-pop-back)
              ;; TODO s-M does not work in REPL buffer
              ("s-o"   . cider-clear-compilation-highlights)
 
