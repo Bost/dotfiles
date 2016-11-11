@@ -406,6 +406,7 @@ you should place your code here."
                                     (evil-insert 0))))
   ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
   (global-set-key (kbd "s-d") 'dired-jump)
+  (global-set-key (kbd "s-D") 'spacemacs/find-dotfile)
   ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
 
   (defun sp-copy-sexp-msg ()
