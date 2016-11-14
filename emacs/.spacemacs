@@ -69,10 +69,12 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(
-     ;; suggest - discovering elisp fns; doesn't work because of loop-1.3
+   dotspacemacs-additional-packages
+   '(
+     suggest ;; discover elisp fns
      crux super-save zop-to-char fish-mode drag-stuff helm-cider helm-cider-history
-          typed-clojure-mode)
+     transpose-frame typed-clojure-mode
+     )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; Defines the behaviour of Spacemacs when installing packages.
@@ -279,19 +281,18 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
-   ;; TODO dotspacemacs-line-numbers
-   ;; '(:relative
-   ;;   nil
-   ;;   :disabled-for
-   ;;   (dired-mode    ; works
-   ;;    doc-view-mode ; ?
-   ;;    markdown-mode ; gets overriden
-   ;;    org-mode      ; gets overriden
-   ;;    pdf-view-mode ; ?
-   ;;    text-mode     ; gets overriden
-   ;;    )
-   ;;   :size-limit-kb 1000)
+   dotspacemacs-line-numbers
+   '(:relative
+     nil
+     :disabled-for
+     (dired-mode    ; works
+      doc-view-mode ; ?
+      markdown-mode ; gets overriden
+      org-mode      ; gets overriden
+      pdf-view-mode ; ?
+      text-mode     ; gets overriden
+      )
+     :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -417,9 +418,7 @@ you should place your code here."
                                 (if (not (evil-insert-state-p))
                                     (evil-insert 0))))
   ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
-  (global-set-key (kbd "s-d") 'dired-jump)
-  (global-set-key (kbd "s-D") 'spacemacs/find-dotfile)
-  ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
+  (global-set-key (kbd "s-D") 'dired-jump)
 
   (defun sp-copy-sexp-msg ()
     (interactive)
@@ -434,6 +433,7 @@ you should place your code here."
       (sp-copy-sexp-msg)
       (goto-char point-pos)))
 
+  ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
   (global-set-key (kbd "s-c") 'sp-copy-sexp-msg)
   (global-set-key (kbd "s-C") 'sp-copy-back-sexp-msg)
   (global-set-key (kbd "s-b") 'sp-copy-back-sexp-msg)
@@ -642,6 +642,7 @@ you should place your code here."
       (bind-keys :map cider-mode-map
                  ("<C-M-right>" . end-of-defun)       ; forward-paragraph
                  ("<C-M-left>"  . beginning-of-defun) ; backward-paragraph
+                 ("s-d"         . cider-eval-defun-at-point)
                  ("s-j"         . cider-format-defun)
                  ("s-x"         . cider-switch-to-repl-buffer)
                  ("s-e"         . cider-eval-last-sexp))
@@ -853,7 +854,7 @@ Example 2.:
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
-    (pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
+    (suggest loop transpose-frame grep+ orgit org magit-gitflow helm-c-yasnippet evil-magit magit magit-popup git-commit company-statistics edn multiple-cursors paredit seq auto-yasnippet auto-compile ac-ispell smeargle macrostep gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger elisp-slime-nav peg cider-eval-sexp-fu yasnippet packed auto-complete drag-stuff highlight info+ sass-mode company-web company package-build dash web-mode tagedit slim-mode scss-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode web-completion-data pretty-lambdada evil-surround clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote

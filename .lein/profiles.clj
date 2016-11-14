@@ -19,6 +19,7 @@
    [slamhound "1.5.5"] ; rip and reconstruct namespace
    [org.clojure/tools.nrepl "0.2.12"]
    [org.clojure/core.typed "0.3.26"]
+   [org.clojure/test.check "0.9.0"] ;; clojure.spec
 
    [alembic "0.3.2"] ; dynamically load / resolve / add classpath deps
    ;; Usage:
