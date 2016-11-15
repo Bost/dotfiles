@@ -555,7 +555,7 @@ you should place your code here."
     :bind (("<M-up>"   . drag-stuff-up)
            ("<M-down>" . drag-stuff-down)))
 
-  (use-package crux
+  (use-package crux ;; Coll of Ridiculously Useful eXtensions bbatsov/crux
     :ensure t
     :bind
     (("C-c d"           . crux-duplicate-current-line-or-region)
@@ -575,25 +575,26 @@ you should place your code here."
     :bind (("C-s-m" . elisp-insert-message)
            ("s-e"   . eval-last-sexp)))
 
+  (defun clj-cmt-uncmt-line-sexp ()
+    (interactive)
+    (let* ((point-pos1 (point)))
+      (evil-insert-line 0)
+      (let* ((point-pos2 (point))
+             (cmtstr "#_")
+             (cmtstr-len (length cmtstr))
+             (line-start (buffer-substring-no-properties
+                          point-pos2 (+ point-pos2 cmtstr-len))))
+        (if (string= cmtstr line-start)
+            (delete-char cmtstr-len)
+          (insert cmtstr))
+        (goto-char point-pos1))))
+
   (use-package clojure-mode
     :config
     (add-hook 'clojure-mode-hook 'typed-clojure-mode)
     (add-hook 'clojure-mode-hook (lambda () (prettify-symbols-mode)))
-    (defun clj-cmt-uncmt-line-sexp ()
-      (interactive)
-      (let* ((point-pos1 (point)))
-        (evil-insert-line 0)
-        (let* ((point-pos2 (point))
-               (cmtstr "#_")
-               (cmtstr-len (length cmtstr))
-               (line-start (buffer-substring-no-properties
-                            point-pos2 (+ point-pos2 cmtstr-len))))
-          (if (string= cmtstr line-start)
-              (delete-char cmtstr-len)
-            (insert cmtstr))
-          (goto-char point-pos1))))
     (bind-keys :map clojure-mode-map
-               ;; ("s-_" . clojure-ignore-next-form)
+               ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
                ("s-i" . cljr-rename-symbol)
                ("C-s-\\" . (lambda () (interactive) (insert "#_")))
@@ -632,6 +633,12 @@ you should place your code here."
       (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
       ;; (setq gui-elements 1) ; because of CIDER menu
       (bind-keys :map cider-repl-mode-map
+                 ;; followind 3 bindings are same as in clojure-mode
+                 ;; on the german keyboard the '#' is next to Enter
+                 ("s-i" . cljr-rename-symbol)
+                 ("C-s-\\" . (lambda () (interactive) (insert "#_")))
+                 ("s-\\" . clj-cmt-uncmt-line-sexp)
+
                  ("<s-delete>" . cider-repl-clear-buffer)
                  ("s-j" . cider-format-defun)
                  ("s-e" . cider-eval-last-sexp)
