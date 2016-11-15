@@ -1,6 +1,6 @@
-function gle
-  echo "cd ~/dev/emacs-25"
-        cd ~/dev/emacs-25
+function gls
+  echo "cd ~/.emacs.d/"
+        cd ~/.emacs.d/
   echo "git pull --rebase origin $argv"
         git pull --rebase origin $argv
   echo "git fetch --tags"
