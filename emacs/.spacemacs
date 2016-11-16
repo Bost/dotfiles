@@ -153,20 +153,20 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes
    '(
+     ;; dark themes
+     solarized-dark spacemacs-dark leuven zenburn
      ;; light themes
      default tsdh-light dichromacy apropospriate-light espresso soft-morning eclipse
-             spacemacs-light solarized-light
-     ;; dark themes
-             solarized-dark spacemacs-dark leuven zenburn
-             )
+     spacemacs-light solarized-light
+     )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font
    '(
-     "Fira Code" :size 13 :weight normal :width normal :powerline-scale 1.1
-     ;; "Source Code Pro" :size 13 :weight normal :width normal :powerline-scale 1.1
+     ;; "Fira Code" :size 13 :weight normal :width normal :powerline-scale 1.1
+     "Source Code Pro" :size 13 :weight normal :width normal :powerline-scale 1.1
      ;; "Consolas" :size 16 :weight normal :width normal :powerline-offset 2
      ;; "Ubuntu Mono" :size 16 :weight normal :width normal :powerline-scale 1.1
      )
@@ -862,7 +862,7 @@ Example 2.:
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
-    (suggest loop transpose-frame grep+ orgit org magit-gitflow helm-c-yasnippet evil-magit magit magit-popup git-commit company-statistics edn multiple-cursors paredit seq auto-yasnippet auto-compile ac-ispell smeargle macrostep gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger elisp-slime-nav peg cider-eval-sexp-fu yasnippet packed auto-complete drag-stuff highlight info+ sass-mode company-web company package-build dash web-mode tagedit slim-mode scss-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode web-completion-data pretty-lambdada evil-surround clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
+    (drag-stuff web-mode transpose-frame tagedit suggest loop slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data highlight pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
