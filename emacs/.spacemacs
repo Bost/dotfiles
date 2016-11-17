@@ -623,6 +623,9 @@ you should place your code here."
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
   (global-set-key (kbd "s-,") 'dumb-jump-back)
 
+  ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
+  (setq ediff-window-setup-function 'ediff-setup-windows-default)
+
   (use-package cider
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
