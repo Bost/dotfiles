@@ -450,10 +450,14 @@ you should place your code here."
   (global-set-key (kbd "s-p") 'helm-projectile)
   (global-set-key (kbd "s-w") 'whitespace-mode)
   (global-set-key (kbd "s-m") 'magit-status)
+
   ;; search only in certain file-types:
   ;; 1. ag --list-file-types
   ;; 2. search only in .el files: TextToFind -G\.el$
-  (global-set-key (kbd "<f3>") 'helm-ag)
+  ;; (global-set-key (kbd "<f3>") 'helm-ag)
+
+  ;; See also: SPC s
+  (global-set-key (kbd "<f3>") 'spacemacs/helm-project-smart-do-search)
   (global-set-key (kbd "s-f") 'helm-find-files)
   ;; ("s-F"   . helm-find-files)
 
