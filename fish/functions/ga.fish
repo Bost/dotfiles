@@ -1,11 +1,9 @@
-function ga -d "GitUpdateAll"
-    # ; and git fetch --tags
-    set cmd "cd $dev/cheatsheet; and git pull --rebase origin"
-    echo $cmd
-    eval $cmd
+function ga
+  # ; and git fetch --tags
+  echo "cd $dev/cheatsheet; and git pull --rebase origin $argv"
+        cd $dev/cheatsheet; and git pull --rebase origin $argv
 
-    # ; and git fetch --tags
-    set cmd "cd $dev/dotfiles; and git pull --rebase origin"
-    echo $cmd
-    eval $cmd
+  # ; and git fetch --tags
+  echo "cd $dev/dotfiles; and git pull --rebase origin $argv"
+        cd $dev/dotfiles; and git pull --rebase origin $argv
 end

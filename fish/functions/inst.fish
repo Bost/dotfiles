@@ -1,5 +1,4 @@
 function inst
-    set cmd "sudo apt-get install --yes $argv"
-    echo $cmd
-    eval $cmd
+  echo "sudo apt-get install --yes $argv"
+        sudo apt-get install --yes $argv
 end

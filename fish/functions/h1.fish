@@ -1,3 +1,4 @@
 function h1
-    history | tail -10 $argv
+  echo "history | tail -10 $argv"
+        history | tail -10 $argv
 end

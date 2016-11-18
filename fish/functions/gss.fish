@@ -1,3 +1,4 @@
 function gss
-    git status --short $argv
+  echo "git status --short $argv"
+        git status --short $argv
 end

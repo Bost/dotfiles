@@ -1,3 +1,4 @@
 function gst
-    git status $argv
+  echo "git status $argv"
+        git status $argv
 end

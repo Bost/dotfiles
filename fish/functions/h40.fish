@@ -1,3 +1,4 @@
 function h40
-    history | tail -40 $argv
+  echo "history | tail -40 $argv"
+        history | tail -40 $argv
 end

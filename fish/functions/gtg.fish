@@ -1,3 +1,4 @@
 function gtg
-    git tag $argv
+  echo "git tag $argv"
+        git tag $argv
 end

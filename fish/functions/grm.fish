@@ -1,3 +1,4 @@
 function grm
-    git rm $argv
+  echo "git rm $argv"
+        git rm $argv
 end

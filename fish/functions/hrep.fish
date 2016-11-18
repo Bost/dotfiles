@@ -1,5 +1,4 @@
 function hrep
-    set cmd "history | grep $argv"
-    echo $cmd
-    eval $cmd
+  echo "history | grep $argv"
+        history | grep $argv
 end
