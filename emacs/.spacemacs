@@ -385,6 +385,15 @@ you should place your code here."
         (server-edit)
       (kill-this-buffer)))
 
+  (defun kill-all-magit-buffers ()
+    (interactive)
+    (mapc
+     'spacemacs/kill-matching-buffers-rudely
+     '("\*magit: .*" "\*magit-.*"))
+    (message "All magit buffers killed"))
+
+  (global-set-key (kbd "s-K") 'kill-all-magit-buffers)
+
   (global-set-key (kbd "s-q") 'other-window)
   (global-set-key (kbd "s-k") 'close-buffer)
   (global-set-key (kbd "s-s") 'save-buffer)
@@ -578,6 +587,7 @@ you should place your code here."
 
   (use-package emacs
     :bind (("C-s-m" . elisp-insert-message)
+           ("s-d"   . eval-defun)
            ("s-e"   . eval-last-sexp)))
 
   (defun clj-cmt-uncmt-line-sexp ()
