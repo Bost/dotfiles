@@ -434,8 +434,22 @@ you should place your code here."
   (defun sp-copy-sexp-msg ()
     (interactive)
     (sp-copy-sexp)
-    (message (format "sexp (%d chars) copied to kill ring"
-                     (length (car kill-ring)))))
+    (let* ((sexp (car kill-ring))
+           (sexp-lines (split-string sexp "\n"))
+           (sexp-len (length sexp))
+           (cnt-sexp-lines (length sexp-lines))
+           (fst-line (car sexp-lines))
+           (fst-line-len (length fst-line))
+           (maxchars 40))
+      (message (format "sexp (%d chars, %d lines) copied to kill-ring: %s..."
+                       sexp-len
+                       cnt-sexp-lines
+                       fst-line
+                       ;; (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
+                       ;; (if (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
+                       ;;     (concat (subseq fst-line 0 (- maxchars 3)) "...")
+                       ;;   fst-line)
+                       ))))
 
   (defun sp-copy-back-sexp-msg ()
     (interactive)
