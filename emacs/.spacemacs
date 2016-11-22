@@ -384,13 +384,29 @@ you should place your code here."
         (server-edit)
       (kill-this-buffer)))
 
+  (defun spacemacs/my-kill-matching-buffers-rudely (regexp &optional internal-too)
+    "Kill buffers whose name matches the specified REGEXP. This
+function, unlike the built-in `kill-matching-buffers` does so
+WITHOUT ASKING. The optional second argument indicates whether to
+kill internal buffers too. Returns count of killed buffers"
+    (interactive "sKill buffers matching this regular expression: \nP")
+    (let* ((buffers (remove-if-not
+                     (lambda (buffer)
+                       ;; (fi buffer regexp internal-too)
+                       (let ((name (buffer-name buffer)))
+                         (and name (not (string-equal name ""))
+                              (or internal-too (/= (aref name 0) ?\s))
+                              (string-match regexp name))))
+                     (buffer-list))))
+      (mapc 'kill-buffer buffers)
+      (length buffers)))
+
   (defun kill-all-magit-buffers ()
     (interactive)
-    (mapc
-     'spacemacs/kill-matching-buffers-rudely
-     '("\*magit: .*" "\*magit-.*"))
-    ;; TODO display count of killed buffers
-    (message "All magit buffers killed"))
+    (let* ((counts (mapcar
+                    'spacemacs/my-kill-matching-buffers-rudely
+                    '("\*magit: .*" "\*magit-.*"))))
+      (message (format "%d buffer(s) killed" (reduce #'+ counts)))))
 
   (global-set-key (kbd "s-K") 'kill-all-magit-buffers)
 
