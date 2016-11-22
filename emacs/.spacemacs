@@ -390,6 +390,7 @@ you should place your code here."
     (mapc
      'spacemacs/kill-matching-buffers-rudely
      '("\*magit: .*" "\*magit-.*"))
+    ;; TODO display count of killed buffers
     (message "All magit buffers killed"))
 
   (global-set-key (kbd "s-K") 'kill-all-magit-buffers)
@@ -755,6 +756,7 @@ you should place your code here."
              ;; ("s-,"   . cider-pop-back)
              ;; TODO s-M does not work in REPL buffer
              ("s-o"   . cider-clear-compilation-highlights)
+             ("s-H"   . helm-cider-history)
 
              ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
 
