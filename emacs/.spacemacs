@@ -410,6 +410,20 @@ kill internal buffers too. Returns count of killed buffers"
 
   (global-set-key (kbd "s-K") 'kill-all-magit-buffers)
 
+  (defun kill-all-dired-buffers ()
+    "Kill all dired buffers."
+    (interactive)
+    (save-excursion
+      (let ((count 0))
+        (dolist (buffer (buffer-list))
+          (set-buffer buffer)
+          (when (equal major-mode 'dired-mode)
+            (setq count (1+ count))
+            (kill-buffer buffer)))
+        (message "Killed %i dired buffer(s)." count))))
+
+  (global-set-key (kbd "s-C-K") 'kill-all-dired-buffers)
+
   (global-set-key (kbd "s-q") 'other-window)
   (global-set-key (kbd "s-k") 'close-buffer)
   (global-set-key (kbd "s-s") 'save-buffer)
