@@ -384,15 +384,14 @@ you should place your code here."
         (server-edit)
       (kill-this-buffer)))
 
-  (defun spacemacs/my-kill-matching-buffers-rudely (regexp &optional internal-too)
-    "Kill buffers whose name matches the specified REGEXP. This
-function, unlike the built-in `kill-matching-buffers` does so
-WITHOUT ASKING. The optional second argument indicates whether to
-kill internal buffers too. Returns count of killed buffers"
-    (interactive "sKill buffers matching this regular expression: \nP")
+  (defun my/rudekill-matching-buffers (regexp &optional internal-too)
+    "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP. See
+the `kill-matching-buffers` for grateful killing. The optional 2nd argument
+indicates whether to kill internal buffers too.
+
+Returns the count of killed buffers."
     (let* ((buffers (remove-if-not
                      (lambda (buffer)
-                       ;; (fi buffer regexp internal-too)
                        (let ((name (buffer-name buffer)))
                          (and name (not (string-equal name ""))
                               (or internal-too (/= (aref name 0) ?\s))
@@ -401,12 +400,20 @@ kill internal buffers too. Returns count of killed buffers"
       (mapc 'kill-buffer buffers)
       (length buffers)))
 
+  (defun my/kill-matching-buffers-rudely (regexp &optional internal-too)
+    "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP. See
+the `kill-matching-buffers` for grateful killing. The optional 2nd argument
+indicates whether to kill internal buffers too.
+
+Returns a message with the count of killed buffers."
+    (interactive "sKill buffers matching this regular expression: \nP")
+    (message
+     (format "%d buffer(s) killed."
+             (my/rudekill-matching-buffers regexp internal-too))))
+
   (defun kill-all-magit-buffers ()
     (interactive)
-    (let* ((counts (mapcar
-                    'spacemacs/my-kill-matching-buffers-rudely
-                    '("\*magit: .*" "\*magit-.*"))))
-      (message (format "%d buffer(s) killed" (reduce #'+ counts)))))
+    (my/kill-matching-buffers-rudely "\*magit: .*\\|\*magit-.*"))
 
   (global-set-key (kbd "s-K") 'kill-all-magit-buffers)
 
