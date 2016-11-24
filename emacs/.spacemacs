@@ -546,6 +546,10 @@ Returns a message with the count of killed buffers."
 
   (global-set-key (kbd "s-y") 'avy-goto-line)
 
+  ;; Fix projectile-regenerate-tags: ctags: invalid option -- ’e’
+  ;; See https://github.com/bbatsov/projectile/issues/133
+  (setq projectile-tags-command "ctags-exuberant -Re -f \"%s\" %s")
+
   (setq create-lockfiles nil) ; do not create .# lockfiles
   (setq vc-follow-symlinks t) ; auto follow symbolic links
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
