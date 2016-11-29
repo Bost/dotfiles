@@ -1,3 +1,4 @@
 function gbrd
-    git branch -d $argv
+  echo "git branch -d $argv"
+        git branch -d $argv
 end

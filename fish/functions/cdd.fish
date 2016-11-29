@@ -1,3 +1,3 @@
 function cdd
-    cd -
+    cd-
 end

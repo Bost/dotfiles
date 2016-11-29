@@ -1,3 +1,3 @@
 function gcoo
-    git checkout - $argv
+   gcod
 end

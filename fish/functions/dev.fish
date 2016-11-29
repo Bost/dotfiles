@@ -1,4 +1,4 @@
 function dev
-    echo "cd $dev $argv"
-          cd $dev $argv
+    echo "cd $HOME/dev"
+          cd $HOME/dev
 end

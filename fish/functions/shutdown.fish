@@ -1,3 +1,4 @@
 function shutdown
-    sudo shutdown -h now $argv
+  echo "sudo shutdown -h now $argv"
+        sudo shutdown -h now $argv
 end

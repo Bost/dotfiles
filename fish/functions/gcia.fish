@@ -1,3 +1,4 @@
 function gcia
-    git commit --amend $argv
+  echo "git commit --amend $argv"
+        git commit --amend $argv
 end

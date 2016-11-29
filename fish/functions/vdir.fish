@@ -1,3 +1,4 @@
 function vdir
-    ls --color=auto --format=long $argv
+  echo "ls --color=auto --format=long $argv"
+        ls --color=auto --format=long $argv
 end

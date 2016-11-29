@@ -1,4 +1,4 @@
 function foo
-    echo "cd $dev/foo"
-          cd $dev/foo
+    echo "cd $HOME/dev/foo"
+          cd $HOME/dev/foo
 end

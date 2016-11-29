@@ -1,4 +1,4 @@
 function dotf
-    echo "cd $dev/dotfiles"
-          cd $dev/dotfiles
+    echo "cd $HOME/dev/dotfiles"
+          cd $HOME/dev/dotfiles
 end

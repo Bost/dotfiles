@@ -1,3 +1,3 @@
 function ag
-    ack-grep $argv
+    ac
 end

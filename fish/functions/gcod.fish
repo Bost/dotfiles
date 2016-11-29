@@ -1,5 +1,4 @@
 function gcod
-    set cmd "git checkout - $argv"
-    echo $cmd
-    eval $cmd    
+  echo "git checkout - $argv"
+        git checkout - $argv
 end

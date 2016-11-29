@@ -1,3 +1,4 @@
 function gbir
-    git bisect reset $argv
+  echo "git bisect reset $argv"
+        git bisect reset $argv
 end

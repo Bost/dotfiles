@@ -1,3 +1,4 @@
 function gcianoe
-    git commit --amend --no-edit $argv
+  echo "git commit --amend --no-edit $argv"
+        git commit --amend --no-edit $argv
 end

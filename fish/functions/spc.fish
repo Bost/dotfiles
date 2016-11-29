@@ -1,4 +1,4 @@
 function spc
-  echo "cd ~/.emacs.d/"
-        cd ~/.emacs.d/
+  echo "cd $HOME/.emacs.d/"
+        cd $HOME/.emacs.d/
 end

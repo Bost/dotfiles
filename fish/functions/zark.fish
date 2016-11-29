@@ -1,3 +1,4 @@
 function zark
-    cd $dev/zark $argv
+  echo "cd $HOME/dev/zark"
+        cd $HOME/dev/zark
 end
