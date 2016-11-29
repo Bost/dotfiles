@@ -1,3 +1,3 @@
 function gdd
-    RunGit git add $argv
+  gad
 end
