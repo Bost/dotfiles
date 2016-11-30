@@ -1,4 +1,4 @@
 function gho
-    echo "git push origin $argv"
-          git push origin $argv
+  echo "git push origin $argv"
+        git push origin $argv
 end

@@ -1,3 +1,4 @@
 function gfeo
-    git fetch origin $argv
+  echo "git fetch origin $argv"
+        git fetch origin $argv
 end

@@ -1,3 +1,4 @@
 function gdf
-    git diff $argv
+  echo "git diff $argv"
+        git diff $argv
 end
