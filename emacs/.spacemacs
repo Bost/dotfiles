@@ -412,10 +412,38 @@ Returns a message with the count of killed buffers."
              (my/rudekill-matching-buffers regexp internal-too))))
 
   (defun kill-all-magit-buffers ()
+    "Kill all Magit buffers."
     (interactive)
-    (my/kill-matching-buffers-rudely "\*magit: .*\\|\*magit-.*"))
+    ;; (my/kill-matching-buffers-rudely "\*magit: .*\\|\*magit-.*")
+    (save-excursion
+      (let ((count 0))
+        (dolist (buffer (buffer-list))
+          (set-buffer buffer)
+          (when (find major-mode '(magit-status-mode
+                                   magit-log-mode
+                                   magit-diff-mode
+                                   magit-process-mode))
+            (setq count (1+ count))
+            (kill-buffer buffer)))
+        (message "Killed %i Magit buffer(s)." count))))
 
-  (global-set-key (kbd "s-K") 'kill-all-magit-buffers)
+  (defun kill-unwanted-buffers ()
+    (interactive)
+    (save-excursion
+      (let ((count 0))
+        (dolist (buffer (buffer-list))
+          (set-buffer buffer)
+          (when (find major-mode '(magit-status-mode
+                                   magit-log-mode
+                                   magit-diff-mode
+                                   magit-process-mode
+                                   help-mode
+                                   dired-mode))
+            (setq count (1+ count))
+            (kill-buffer buffer)))
+        (message "Buffer(s) killed: %i" count))))
+
+  (global-set-key (kbd "s-K") 'kill-unwanted-buffers)
 
   (defun kill-all-dired-buffers ()
     "Kill all dired buffers."
