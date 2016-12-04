@@ -350,8 +350,6 @@ you should place your code here."
   ;; https://github.com/trishume/dotfiles/blob/master/emacs%2B/spacemacs.symlink
   ;; TODO (global-set-key [(hyper a)] 'mark-whole-buffer)
 
-  ;; TODO helm-available-repls: what is ielm
-
   ;; (push '(clojuredocs
   ;;         :name "Clojure Docs"
   ;;         :url "http://clojuredocs.org/clojure.core/%s")
