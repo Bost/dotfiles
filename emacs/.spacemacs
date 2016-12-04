@@ -669,6 +669,11 @@ Returns a message with the count of killed buffers."
     :bind (("M-z" . zop-up-to-char)
            ("M-Z" . zop-to-char)))
 
+  ;; Functions spacemacs/move-text-transient-state/move-text-up/down don't drag
+  ;; (global-set-key (kbd "<M-up>")
+  ;;                 'spacemacs/move-text-transient-state/move-text-up)
+  ;; (global-set-key (kbd "<M-down>")
+  ;;                 'spacemacs/move-text-transient-state/move-text-down)
   (use-package drag-stuff
     :bind (("<M-up>"   . drag-stuff-up)
            ("<M-down>" . drag-stuff-down)))
