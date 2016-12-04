@@ -810,10 +810,10 @@ Returns a message with the count of killed buffers."
         (interactive)
         (clojure-insert-sexp "(println \"\")" 2))
 
-      ;; TODO remove this if cljr-introduce-let works as expected
-      ;; (defun clojure-insert-let ()
-      ;;   (interactive)
-      ;;   (clojure-insert-sexp "(let [])" 2))
+      (defun clojure-insert-let ()
+        (interactive)
+        ;; (cljr-introduce-let) ; TODO see docu for cljr-introduce-let
+        (clojure-insert-sexp "(let [])" 2))
 
       (defun clojure-insert-for ()
         (interactive)
@@ -853,8 +853,7 @@ Returns a message with the count of killed buffers."
              ("<s-insert>" . clojure-insert-println)
              ;; (bind-key "C-s-p" 'clojure-insert-println)
              ("C-s-p" . clojure-insert-println)
-             ;; ("C-s-l" . clojure-insert-let)
-             ("C-s-l" . cljr-introduce-let)
+             ("C-s-l" . clojure-insert-let)
              ("C-s-f" . clojure-insert-for)
              ("C-s-n" . clojure-insert-defn)
              ("C-s-s" . clojure-insert-doseq)
