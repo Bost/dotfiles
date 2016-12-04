@@ -484,6 +484,7 @@ Returns a message with the count of killed buffers."
   (global-set-key (kbd "s-0") 'delete-window)
   (global-set-key (kbd "s-1") 'delete-other-windows)
   (global-set-key (kbd "<f8>") 'transpose-frame)
+  (global-set-key (kbd "<M-f8>") 'spacemacs/rotate-windows)
 
   ;; TODO create toggle-narrow-to-defun
   (global-set-key (kbd "s-n") 'narrow-to-defun)
