@@ -606,6 +606,16 @@ Returns a message with the count of killed buffers."
 
   (global-set-key (kbd "<f2>")   'evil-avy-goto-char)
   (global-set-key (kbd "C-a")    'evil-avy-goto-char)
+
+  ;; TODO make it run under "t"
+  ;; (global-set-key (kbd "s-t")    'evil-avy-goto-char
+  ;;                                 ;; This doesn't work
+  ;;                                 ;; (lambda ()
+  ;;                                 ;;   (interactive)
+  ;;                                 ;;   (if (evil-normal-state-p)
+  ;;                                 ;;       (evil-avy-goto-char)))
+  ;;                 )
+
   (global-set-key (kbd "<M-f2>") 'avy-goto-subword-1)
   (global-set-key (kbd "<C-f2>") 'avy-goto-line)
   ;; (global-set-key (kbd "s-j") 'avy-goto-char)
@@ -852,7 +862,6 @@ Returns a message with the count of killed buffers."
              ("C-s-s" . clojure-insert-doseq)
              ("C-s-d" . clojure-insert-do)
              ;; ("s-x"   . cider-switch-to-last-clojure-buffer)
-             ("s-t"   . cider-test-run-tests)
              ("C-s-j" . cider-jack-in)
              ;; ("s-r"   . cider-eval-last-expression-in-repl)
              ("M-s-l" . cider-save-and-load-current-buffer)
