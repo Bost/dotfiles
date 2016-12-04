@@ -350,6 +350,8 @@ you should place your code here."
   ;; https://github.com/trishume/dotfiles/blob/master/emacs%2B/spacemacs.symlink
   ;; TODO (global-set-key [(hyper a)] 'mark-whole-buffer)
 
+  ;; TODO helm-available-repls: what is ielm
+
   ;; (push '(clojuredocs
   ;;         :name "Clojure Docs"
   ;;         :url "http://clojuredocs.org/clojure.core/%s")
@@ -357,8 +359,14 @@ you should place your code here."
 
   (spacemacs/toggle-menu-bar-on)
 
-  (setq eclim-eclipse-dirs "~/eclipse-java-neon"
-        eclim-executable "~/eclipse-java-neon/eclim")
+  (setq
+   browse-url-browser-function 'browse-url-chrome
+                               ;; '(("wikipedia\\.org" . browse-url-firefox)
+                               ;;   ("github" . browse-url-chromium)
+                               ;;   ("thefreedictionary\\.com" . eww-browse-url)
+                               ;;   ("." . browse-url-default-browser))
+   eclim-eclipse-dirs "~/eclipse-java-neon"
+   eclim-executable "~/eclipse-java-neon/eclim")
 
   ;; TODO Compile with gnutls support! See:
   ;; 1. ./configure output
@@ -469,6 +477,7 @@ Returns a message with the count of killed buffers."
 
   (global-set-key (kbd "s-C-K") 'kill-all-dired-buffers)
 
+  (global-set-key (kbd "s-R") 'spacemacs/rename-current-buffer-file)
   (global-set-key (kbd "s-q") 'other-window)
   (global-set-key (kbd "s-k") 'close-buffer)
   (global-set-key (kbd "s-s") 'save-buffer)
