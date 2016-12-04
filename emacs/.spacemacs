@@ -347,9 +347,6 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  ;; https://github.com/trishume/dotfiles/blob/master/emacs%2B/spacemacs.symlink
-  ;; TODO (global-set-key [(hyper a)] 'mark-whole-buffer)
-
   ;; (push '(clojuredocs
   ;;         :name "Clojure Docs"
   ;;         :url "http://clojuredocs.org/clojure.core/%s")
