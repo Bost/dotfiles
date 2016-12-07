@@ -438,10 +438,16 @@ Returns a message with the count of killed buffers."
           (when (find major-mode '(magit-status-mode
                                    magit-log-mode
                                    magit-diff-mode
+                                   magit-revision-mode
                                    magit-process-mode))
             (setq count (1+ count))
             (kill-buffer buffer)))
         (message "Killed %i Magit buffer(s)." count))))
+
+  (defun buffer-mode (buffer-or-string)
+    "Returns the major mode associated with a buffer."
+    (with-current-buffer buffer-or-string
+      major-mode))
 
   (defun kill-unwanted-buffers ()
     (interactive)
@@ -449,11 +455,18 @@ Returns a message with the count of killed buffers."
       (let ((count 0))
         (dolist (buffer (buffer-list))
           (set-buffer buffer)
+          ;; find out buffer's major mode: (message "%s" major-mode)
           (when (find major-mode '(magit-status-mode
                                    magit-log-mode
                                    magit-diff-mode
+                                   magit-revision-mode
                                    magit-process-mode
-                                   help-mode
+                                   bs-mode ; *buffer-selection*
+                                   ;; *package-build-checkout* is in fundamenatal-mode
+                                   ;; *cider-refresh-log* is in fundamenatal-mode
+                                   cider-browse-ns-mode ; *cider-ns-browser*
+                                   cider-stacktrace-mode ; *cider-error* - doesn't work
+                                   help-mode ; *Help*
                                    dired-mode))
             (setq count (1+ count))
             (kill-buffer buffer)))
@@ -667,6 +680,10 @@ Returns a message with the count of killed buffers."
 
   ;; (add-hook 'find-file-hook ''toggle-large-file-setting)
   (global-set-key (kbd "s-L") 'toggle-large-file-setting)
+
+  (use-package yasnippet
+    :load-path "/home/rsvoboda/dev/yasnippet/"
+    :pin manual)
 
   (use-package fish-mode
     :config
