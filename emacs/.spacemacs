@@ -369,10 +369,6 @@ you should place your code here."
    eclim-eclipse-dirs "~/eclipse-java-neon"
    eclim-executable "~/eclipse-java-neon/eclim")
 
-  ;; TODO Compile with gnutls support! See:
-  ;; 1. ./configure output
-  ;; 2. e -e "(gnutls-available-p)"
-
   (defun hilight-line-dups ()
     (interactive)
     (let ((count 0)
