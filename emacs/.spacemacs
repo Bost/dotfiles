@@ -679,16 +679,17 @@ Returns a message with the count of killed buffers."
   (global-set-key (kbd "s-L") 'toggle-large-file-setting)
 
   (use-package yasnippet
-    :load-path "/home/rsvoboda/dev/yasnippet/"
+    :load-path "~/dev/yasnippet/"
     :pin manual)
 
   (use-package fish-mode
     :config
     (add-hook 'fish-mode-hook #'paredit-mode))
 
-  (use-package zop-to-char
+  (use-package zop-to-char ; jump like f/t in vim
     :ensure t
-    :bind (("M-z" . zop-up-to-char)
+    ;; TODO integrate zop-to-char with 'y' in evil
+    :bind (("M-z" . zop-up-to-char) ; as zop-to-char but stop just before target
            ("M-Z" . zop-to-char)))
 
   ;; Functions spacemacs/move-text-transient-state/move-text-up/down don't drag
@@ -977,7 +978,7 @@ Example 2.:
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
-    (eclim company-emacs-eclim evil-matchit info+ spinner spaceline powerline drag-stuff web-mode transpose-frame tagedit suggest loop slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data highlight pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
+    (emacs-eclim bind-map magit magit-popup git-commit eclim company-emacs-eclim evil-matchit info+ spinner spaceline powerline drag-stuff web-mode transpose-frame tagedit suggest loop slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data highlight pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
