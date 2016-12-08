@@ -436,6 +436,7 @@ Returns a message with the count of killed buffers."
                                    magit-log-mode
                                    magit-diff-mode
                                    magit-revision-mode
+                                   magit-stash-mode
                                    magit-process-mode))
             (setq count (1+ count))
             (kill-buffer buffer)))
@@ -457,6 +458,7 @@ Returns a message with the count of killed buffers."
                                    magit-log-mode
                                    magit-diff-mode
                                    magit-revision-mode
+                                   magit-stash-mode
                                    magit-process-mode
                                    bs-mode ; *buffer-selection*
                                    ;; *package-build-checkout* is in fundamenatal-mode
