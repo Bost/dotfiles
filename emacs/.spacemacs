@@ -72,16 +72,17 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
-     (emacs-eclim :location (recipe :fetcher github :repo "emacs-eclim/emacs-eclim"
-                                    ;; :min-version "1"
-                                    ))
+     (emacs-eclim :location
+                  (recipe :fetcher github :repo "emacs-eclim/emacs-eclim"
+                          ;; :min-version "1"
+                          ))
      (yasnippet :location ;; local
                 (recipe :fetcher github :repo "Bost/yasnippet"
                         ;; :min-version "1"
                         ))
      suggest ;; discover elisp fns
-     crux super-save zop-to-char fish-mode drag-stuff helm-cider helm-cider-history
-     transpose-frame typed-clojure-mode
+     crux super-save zop-to-char fish-mode drag-stuff helm-cider
+     helm-cider-history transpose-frame typed-clojure-mode
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(tern) ;; avoid "tern binary not found!"
@@ -100,7 +101,8 @@ This function is called at the very startup of Spacemacs initialization
 before layers configuration.
 You should not put any user code in there besides modifying the variable
 values."
-  (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
+  (push '("melpa-stable" . "stable.melpa.org/packages/")
+        configuration-layer--elpa-archives)
   ;; (push '(helm . "melpa-stable") package-pinned-packages)
   ;; (push '(helm-core . "melpa-stable") package-pinned-packages)
   ;; (push '(cider . "melpa-stable") package-pinned-packages)
@@ -164,8 +166,8 @@ values."
      ;; dark themes
      solarized-dark spacemacs-dark leuven zenburn
      ;; light themes
-     default tsdh-light dichromacy apropospriate-light espresso soft-morning eclipse
-     spacemacs-light solarized-light
+     default tsdh-light dichromacy apropospriate-light espresso soft-morning
+     eclipse spacemacs-light solarized-light
      )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -373,24 +375,26 @@ you should place your code here."
 
   (defun hilight-line-dups ()
     (interactive)
-    (let ((count  0)
+    (let ((count 0)
           line-re)
       (save-excursion
         (goto-char (point-min))
         (while (not (eobp))
-          (setq count    0
-                line-re  (concat "^" (regexp-quote (buffer-substring-no-properties
-                                                    (line-beginning-position)
-                                                    (line-end-position)))
-                                 "$"))
+          (setq count 0
+                line-re (concat "^" (regexp-quote
+                                     (buffer-substring-no-properties
+                                      (line-beginning-position)
+                                      (line-end-position)))
+                                "$"))
           (save-excursion
             (goto-char (point-min))
             (while (not (eobp))
               (if (not (re-search-forward line-re nil t))
                   (goto-char (point-max))
-                (setq count  (1+ count))
+                (setq count (1+ count))
                 (unless (< count 2)
-                  (hlt-highlight-region (line-beginning-position) (line-end-position)
+                  (hlt-highlight-region (line-beginning-position)
+                                        (line-end-position)
                                         'font-lock-warning-face)
                   (forward-line 1)))))
           (forward-line 1)))))
@@ -402,8 +406,8 @@ you should place your code here."
       (kill-this-buffer)))
 
   (defun my/rudekill-matching-buffers (regexp &optional internal-too)
-    "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP. See
-the `kill-matching-buffers` for grateful killing. The optional 2nd argument
+    "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP.
+See the `kill-matching-buffers` for grateful killing. The optional 2nd argument
 indicates whether to kill internal buffers too.
 
 Returns the count of killed buffers."
@@ -418,8 +422,8 @@ Returns the count of killed buffers."
       (length buffers)))
 
   (defun my/kill-matching-buffers-rudely (regexp &optional internal-too)
-    "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP. See
-the `kill-matching-buffers` for grateful killing. The optional 2nd argument
+    "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP.
+See the `kill-matching-buffers` for grateful killing. The optional 2nd argument
 indicates whether to kill internal buffers too.
 
 Returns a message with the count of killed buffers."
@@ -458,19 +462,20 @@ Returns a message with the count of killed buffers."
         (dolist (buffer (buffer-list))
           (set-buffer buffer)
           ;; find out buffer's major mode: (message "%s" major-mode)
-          (when (find major-mode '(magit-status-mode
-                                   magit-log-mode
-                                   magit-diff-mode
-                                   magit-revision-mode
-                                   magit-stash-mode
-                                   magit-process-mode
-                                   bs-mode ; *buffer-selection*
-                                   ;; *package-build-checkout* is in fundamenatal-mode
-                                   ;; *cider-refresh-log* is in fundamenatal-mode
-                                   cider-browse-ns-mode ; *cider-ns-browser*
-                                   cider-stacktrace-mode ; *cider-error* - doesn't work
-                                   help-mode ; *Help*
-                                   dired-mode))
+          (when (find major-mode
+                      '(magit-status-mode
+                        magit-log-mode
+                        magit-diff-mode
+                        magit-revision-mode
+                        magit-stash-mode
+                        magit-process-mode
+                        bs-mode ; *buffer-selection*
+                        ;; *package-build-checkout* is in fundamenatal-mode
+                        ;; *cider-refresh-log* is in fundamenatal-mode
+                        cider-browse-ns-mode ; *cider-ns-browser*
+                        cider-stacktrace-mode ; *cider-error* - doesn't work
+                        help-mode ; *Help*
+                        dired-mode))
             (setq count (1+ count))
             (kill-buffer buffer)))
         (message "Buffer(s) killed: %i" count))))
@@ -539,15 +544,16 @@ Returns a message with the count of killed buffers."
            (fst-line (car sexp-lines))
            (fst-line-len (length fst-line))
            (maxchars 40))
-      (message (format "sexp (%d chars, %d lines) copied to kill-ring: %s..."
-                       sexp-len
-                       cnt-sexp-lines
-                       fst-line
-                       ;; (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
-                       ;; (if (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
-                       ;;     (concat (subseq fst-line 0 (- maxchars 3)) "...")
-                       ;;   fst-line)
-                       ))))
+      (message
+       (format "sexp (%d chars, %d lines) copied to kill-ring: %s..."
+               sexp-len
+               cnt-sexp-lines
+               fst-line
+               ;; (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
+               ;; (if (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
+               ;;     (concat (subseq fst-line 0 (- maxchars 3)) "...")
+               ;;   fst-line)
+               ))))
 
   (defun sp-copy-back-sexp-msg ()
     (interactive)
