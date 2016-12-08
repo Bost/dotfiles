@@ -75,6 +75,10 @@ values."
      (emacs-eclim :location (recipe :fetcher github :repo "emacs-eclim/emacs-eclim"
                                     ;; :min-version "1"
                                     ))
+     (yasnippet :location ;; local
+                (recipe :fetcher github :repo "Bost/yasnippet"
+                        ;; :min-version "1"
+                        ))
      suggest ;; discover elisp fns
      crux super-save zop-to-char fish-mode drag-stuff helm-cider helm-cider-history
      transpose-frame typed-clojure-mode
