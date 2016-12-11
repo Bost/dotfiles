@@ -1,6 +1,6 @@
-function crepg
+function crh
     ack-grep \
-    $dev/cheatsheet/commands-git.sh \
+    $dev/cheatsheet/commands-host.sh \
     --context=1 \
     --nogroup \
     --break --with-filename --color-filename=grey13 \

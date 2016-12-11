@@ -1,4 +1,4 @@
-function crepe
+function cre
   # --before-context=1 --after-context=1
   ack-grep \
   $dev/cheatsheet/commands-emacs.txt \

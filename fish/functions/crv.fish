@@ -1,4 +1,4 @@
-function crepv -d "TODO all crep*.fish should use the same code basis"
+function crv -d "TODO all crep*.fish should use the same code basis"
   # --before-context=1 --after-context=1
   ack-grep \
   $dev/cheatsheet/commands-vim.vim \

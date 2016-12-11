@@ -1,7 +1,7 @@
-function crepc
+function crr
+    # --before-context=1 --after-context=1
     ack-grep \
-    $dev/cider/README.md \
-    $dev/cheatsheet/commands-clojure.clj \
+    $dev/cheatsheet/commands-rest.sh \
     --context=1 \
     --nogroup \
     --break --with-filename --color-filename=grey13 \
