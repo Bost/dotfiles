@@ -622,6 +622,7 @@ Returns a message with the count of killed buffers."
 
   (global-set-key (kbd "<f2>")   'evil-avy-goto-char)
   (global-set-key (kbd "C-a")    'evil-avy-goto-char)
+  (global-set-key (kbd "s-/")    'evil-avy-goto-char)
 
   ;; TODO make it run under "t"
   ;; (global-set-key (kbd "s-t")    'evil-avy-goto-char
