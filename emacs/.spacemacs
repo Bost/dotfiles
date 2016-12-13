@@ -80,6 +80,9 @@ values."
                 (recipe :fetcher github :repo "Bost/yasnippet"
                         ;; :min-version "1"
                         ))
+     ;; send files marked in dired via MTP to Android
+     ;; dired-mtp     ; not found
+     ;; android-mode  ; doesn't work
      suggest ;; discover elisp fns
      crux super-save zop-to-char fish-mode drag-stuff helm-cider
      helm-cider-history transpose-frame typed-clojure-mode
@@ -588,8 +591,8 @@ Returns a message with the count of killed buffers."
 
   (global-set-key (kbd "<C-up>") 'xah-backward-block)
   (global-set-key (kbd "<C-down>") 'xah-forward-block)
-  (global-set-key (kbd "<C-prior>") 'hs-hide-block)
-  (global-set-key (kbd "<C-next>") 'hs-show-block)
+  (global-set-key (kbd "<C-prior>") 'hs-hide-block) ; pg-up
+  (global-set-key (kbd "<C-next>") 'hs-show-block)  ; pg-down
   ;; (global-set-key (kbd "<C-M-prior>") 'hs-toggle-hiding)
   (global-set-key (kbd "<C-M-prior>") 'hs-hide-all)
   (global-set-key (kbd "<C-M-next>") 'hs-show-all)
@@ -868,9 +871,12 @@ Returns a message with the count of killed buffers."
             (insert cmtstr))))
 
       (setq cider-cljs-lein-repl
-            "(do (require 'figwheel-sidecar.repl-api)
-           (figwheel-sidecar.repl-api/start-figwheel!)
-           (figwheel-sidecar.repl-api/cljs-repl))")
+            ;; "(do (require 'figwheel-sidecar.repl-api)
+            ;;      (figwheel-sidecar.repl-api/start-figwheel!)
+            ;;      (figwheel-sidecar.repl-api/cljs-repl))"
+            "(do (use 'figwheel-sidecar.repl-api)
+                 (start-figwheel!)
+                 (cljs-repl))")
 
       :bind (;; lambdas are not supported
              ("s-x"   . cider-switch-to-repl-buffer)
