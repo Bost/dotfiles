@@ -4,7 +4,7 @@ function crep -d "TODO all crep*.fish should use the same code basis"
   $dev/cheatsheet/commands-git.sh \
   $dev/cheatsheet/commands-rest.sh \
   $dev/cheatsheet/commands-clojure.clj \
-  $dev/cheatsheet/commands-emacs.txt \
+  $dev/cheatsheet/commands-emacs.el \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \
