@@ -612,7 +612,8 @@ Returns a message with the count of killed buffers."
   (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
   (global-set-key (kbd "s-g") 'helm-google-suggest) ; ("s-g" . google-this)
   (global-set-key (kbd "s-8") 'er/expand-region)
-  (global-set-key (kbd "s-*") 'er/contract-region)
+  ;; TODO see * [Josh Johnston](https://github.com/joshwnj) contributed `er/contract-region`
+  ;; (global-set-key (kbd "s-*") 'er/contract-region)
 
   (global-set-key (kbd "s-y") 'avy-goto-line)
 
