@@ -878,7 +878,7 @@ Returns a message with the count of killed buffers."
               (delete-char cmtstr-len)
             (insert cmtstr))))
 
-      (setq cider-cljs-lein-repl
+      (setq cider-cljs-lein-repl ;; set how CIDER starts cljs-lein-repl
             ;; "(do (require 'figwheel-sidecar.repl-api)
             ;;      (figwheel-sidecar.repl-api/start-figwheel!)
             ;;      (figwheel-sidecar.repl-api/cljs-repl))"
