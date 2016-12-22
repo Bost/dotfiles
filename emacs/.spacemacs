@@ -372,6 +372,12 @@ you should place your code here."
    eclim-eclipse-dirs "~/eclipse-java-neon"
    eclim-executable "~/eclipse-java-neon/eclim")
 
+  (defun what-face (pos)
+    (interactive "d")
+    (let ((face (or (get-char-property (point) 'read-face-name)
+                    (get-char-property (point) 'face))))
+      (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
   (defun hilight-line-dups ()
     (interactive)
     (let ((count 0)
