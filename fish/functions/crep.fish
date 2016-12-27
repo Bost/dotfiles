@@ -11,6 +11,5 @@ function crep -d "TODO all crep*.fish should use the same code basis"
   --color-lineno=grey13 --color-match="bold blue" \
   --ignore-case --match $argv
 
-  echo "Consider running:"
-  echo "    man -k $argv"
+  consider-hint $argv
 end
