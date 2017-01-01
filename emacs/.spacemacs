@@ -590,8 +590,7 @@ Returns a message with the count of killed buffers."
   ;; (global-set-key (kbd "<f3>") 'helm-ag)
 
   ;; See also: SPC s
-  (global-set-key (kbd "<f3>") (lambda () (interactive)
-                                 (spacemacs/helm-project-smart-do-search t)))
+  (global-set-key (kbd "<f3>") 'spacemacs/helm-project-smart-do-search)
 
   (global-set-key (kbd "s-f") 'helm-find-files)
   (global-set-key (kbd "s-F") 'recentf-open-files)
