@@ -86,6 +86,7 @@ values."
      suggest ;; discover elisp fns
      crux super-save zop-to-char fish-mode drag-stuff helm-cider
      helm-cider-history transpose-frame typed-clojure-mode
+     google-this
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(tern) ;; avoid "tern binary not found!"
@@ -591,6 +592,9 @@ Returns a message with the count of killed buffers."
 
   ;; See also: SPC s
   (global-set-key (kbd "<f3>") 'spacemacs/helm-project-smart-do-search)
+  (global-set-key (kbd "<M-f3>") (lambda ()
+                                   (interactive)
+                                   (spacemacs/helm-project-smart-do-search t)))
 
   (global-set-key (kbd "s-f") 'helm-find-files)
   (global-set-key (kbd "s-F") 'recentf-open-files)
@@ -615,7 +619,8 @@ Returns a message with the count of killed buffers."
 
   (global-set-key (kbd "s-SPC") 'evil-search-highlight-persist-remove-all)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
-  (global-set-key (kbd "s-g") 'helm-google-suggest) ; ("s-g" . google-this)
+  (global-set-key (kbd "s-g") 'helm-google-suggest)
+  (global-set-key (kbd "s-G") 'google-this)
   (global-set-key (kbd "s-8") 'er/expand-region)
   ;; TODO see * [Josh Johnston](https://github.com/joshwnj) contributed `er/contract-region`
   ;; (global-set-key (kbd "s-*") 'er/contract-region)
@@ -1006,7 +1011,7 @@ Example 2.:
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
-    (emacs-eclim bind-map magit magit-popup git-commit eclim company-emacs-eclim evil-matchit info+ spinner spaceline powerline drag-stuff web-mode transpose-frame tagedit suggest loop slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data highlight pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
+    (google-this emacs-eclim bind-map magit magit-popup git-commit eclim company-emacs-eclim evil-matchit info+ spinner spaceline powerline drag-stuff web-mode transpose-frame tagedit suggest loop slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data highlight pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
