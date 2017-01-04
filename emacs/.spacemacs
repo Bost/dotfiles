@@ -827,6 +827,10 @@ Returns a message with the count of killed buffers."
                  ("s-d"         . cider-eval-defun-at-point)
                  ("s-j"         . cider-format-defun)
                  ("s-x"         . cider-switch-to-repl-buffer)
+                 ("s-X"         . (lambda ()
+                                    (interactive)
+                                    (cider-switch-to-repl-buffer)
+                                    (cider-figwheel-repl)))
                  ("s-e"         . cider-eval-last-sexp))
 
       (defun cider-figwheel-repl ()
