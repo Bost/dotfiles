@@ -1,4 +1,4 @@
 function reboot
-    echo "xfce4-session-logout --reboot"
-          xfce4-session-logout --reboot
+    echo "xfce4-session-logout --reboot --fast"
+          xfce4-session-logout --reboot --fast
 end
