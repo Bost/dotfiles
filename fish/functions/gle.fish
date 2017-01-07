@@ -5,6 +5,5 @@ function gle
         git pull --rebase origin $argv
   echo "git fetch --tags"
         git fetch --tags
-  echo "gitk --all &"
-        gitk --all &
+  lg # git lg-20
 end
