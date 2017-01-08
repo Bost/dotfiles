@@ -6,7 +6,7 @@
 	ci = commit
 	br = branch
 	co = checkout
-	df = diff
+	df = diff --word-diff
 	bi = bisect
 	who = shortlog -s --
 	undo = reset --hard
@@ -20,8 +20,12 @@
 	alg       = log --graph --abbrev-commit            --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --
 	lg1       = log --graph --abbrev-commit --decorate --date=relative --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
 	lg2       = log --graph --abbrev-commit --decorate                 --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+
+	# Read, modify and delete symbolic refs
 	cb = symbolic-ref HEAD --short
 	sb = !ls .git/refs/remotes/*/$(git cb) | cut -d/ -f4,5 | xargs git show-branch $(git cb)
+
+	# text-mode interface for Git
 	tig = !tig
 
 	# files modified in last commit
@@ -32,6 +36,11 @@
 
 	# find a file path in the codebase
 	f = "!git ls-files | grep -i"
+
+	sl = stash list
+	sa = stash pop
+	ss = stash save
+
 [user]
 	name = Bost
 	email = thebost@gmail.com

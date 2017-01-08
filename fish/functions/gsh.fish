@@ -1,4 +1,4 @@
 function gsh
-    echo "git stash $argv"
-          git stash $argv
+    echo "git stash save $argv"
+          git stash save $argv
 end
