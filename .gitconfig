@@ -1,4 +1,5 @@
 [alias]
+	# see http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
 	au = add --update
 	ss = status --short
 	st = status
@@ -11,7 +12,8 @@
 	undo = reset --hard
 	lg-30     = log --graph -30                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
 	lg-all-30 = log --graph -30                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-	lg-20     = log --graph -20                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+	# lg-20     = log --graph -20                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --decorate --date=short
+	lg-20     = log         -20                        --color               --pretty=format:'%Cred%h%Creset%C(yellow) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --date=short
 	lg-all-20 = log --graph -20                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
 	lg        = log --graph                            --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
 	lg-all    = log --graph --full-history             --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
@@ -22,6 +24,14 @@
 	sb = !ls .git/refs/remotes/*/$(git cb) | cut -d/ -f4,5 | xargs git show-branch $(git cb)
 	tig = !tig
 
+	# files modified in last commit
+	dl = "!git log -u -1"
+
+	# show files modified in last commit - another
+	# dlc = diff --cached HEAD^
+
+	# find a file path in the codebase
+	f = "!git ls-files | grep -i"
 [user]
 	name = Bost
 	email = thebost@gmail.com
