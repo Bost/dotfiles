@@ -878,7 +878,7 @@ Returns a message with the count of killed buffers."
 
       (defun clojure-insert-do ()
         (interactive)
-        (clojure-insert-sexp "(do )" 1))
+        (clojure-insert-sexp "(do)" 1))
 
       (defun clj-cmt-uncmt-line-sexp ()
         (interactive)
