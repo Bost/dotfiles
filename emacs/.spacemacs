@@ -83,6 +83,7 @@ values."
      ;; send files marked in dired via MTP to Android
      ;; dired-mtp     ; not found
      ;; android-mode  ; doesn't work
+     key-chord
      suggest ;; discover elisp fns
      crux super-save zop-to-char fish-mode drag-stuff helm-cider
      helm-cider-history transpose-frame typed-clojure-mode
@@ -795,6 +796,14 @@ Returns a message with the count of killed buffers."
   (global-set-key (kbd "s-,") 'dumb-jump-back)
   (global-set-key (kbd "<pause>") 'goto-last-change)
   (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
+  (global-set-key (kbd "s-j") 'evil-join)
+
+  (defun switch-to-previous-buffer ()
+    "Switch to previously open buffer.
+Repeated invocations toggle between the two most recently open buffers."
+    (interactive)
+    (switch-to-buffer (other-buffer (current-buffer) 1)))
+  (key-chord-define-global "JJ" 'switch-to-previous-buffer)
 
   ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
   (setq ediff-window-setup-function 'ediff-setup-windows-default)
