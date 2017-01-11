@@ -1,4 +1,5 @@
 function hrep
-  echo "history | grep $argv"
-        history | grep $argv
+  # grep history in reversed order
+  echo "history | tac | grep $argv"
+        history | tac | grep $argv
 end
