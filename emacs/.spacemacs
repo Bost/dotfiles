@@ -793,6 +793,8 @@ Returns a message with the count of killed buffers."
   ;; (global-set-key (kbd "s-,") 'evil-jump-backward) ;; C-o: evil-jump-backward
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
   (global-set-key (kbd "s-,") 'dumb-jump-back)
+  (global-set-key (kbd "<pause>") 'goto-last-change)
+  (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
 
   ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
   (setq ediff-window-setup-function 'ediff-setup-windows-default)
