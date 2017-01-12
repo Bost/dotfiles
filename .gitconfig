@@ -52,3 +52,5 @@
 	user = Bost
 [diff]
 	indentHeuristic = true
+[rebase]
+	autostash = true
