@@ -803,7 +803,7 @@ Returns a message with the count of killed buffers."
 Repeated invocations toggle between the two most recently open buffers."
     (interactive)
     (switch-to-buffer (other-buffer (current-buffer) 1)))
-  (key-chord-define-global "JJ" 'switch-to-previous-buffer)
+  (key-chord-define-global "KK" 'switch-to-previous-buffer)
 
   ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
   (setq ediff-window-setup-function 'ediff-setup-windows-default)
