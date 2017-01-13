@@ -1,4 +1,4 @@
 function lr
-  echo "lein repl"
-        lein repl
+  echo "lein repl $argv"
+        lein repl $argv
 end
