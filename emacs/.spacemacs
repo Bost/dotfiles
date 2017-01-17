@@ -573,6 +573,11 @@ Returns a message with the count of killed buffers."
   (global-set-key (kbd "s-c") 'sp-copy-sexp-msg)
   (global-set-key (kbd "s-C") 'sp-copy-back-sexp-msg)
   (global-set-key (kbd "s-b") 'sp-copy-back-sexp-msg)
+  (global-set-key (kbd "s-[")
+                  (fset 'select-inner-bracket
+                        (lambda (&optional arg) "Keyboard macro."
+                          (interactive "p")
+                          (kmacro-exec-ring-item (quote ("vi[" 0 "%d")) arg))))
 
   ;; Move the parenthesis
   (global-set-key (kbd "M-s-<left>")  'sp-forward-barf-sexp)
