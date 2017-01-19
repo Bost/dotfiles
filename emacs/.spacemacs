@@ -573,18 +573,21 @@ Returns a message with the count of killed buffers."
   (global-set-key (kbd "s-c") 'sp-copy-sexp-msg)
   (global-set-key (kbd "s-C") 'sp-copy-back-sexp-msg)
   (global-set-key (kbd "s-b") 'sp-copy-back-sexp-msg)
-  (global-set-key (kbd "s-[") (lambda (&optional arg) "select-inner-bracket"
-                                (interactive "p")
-                                (evil-normal-state)
-                                (kmacro-exec-ring-item (quote ("vi[" 0 "%d")) arg)))
-  (global-set-key (kbd "s-(") (lambda (&optional arg) "select-inner-paren"
-                                (interactive "p")
-                                (evil-normal-state)
-                                (kmacro-exec-ring-item (quote ("vi(" 0 "%d")) arg)))
-  (global-set-key (kbd "s-{") (lambda (&optional arg) "select-inner-curly"
-                                (interactive "p")
-                                (evil-normal-state)
-                                (kmacro-exec-ring-item (quote ("vi{" 0 "%d")) arg)))
+  (global-set-key (kbd "s-[")
+                  (lambda (&optional arg) "select-inner-bracket"
+                    (interactive "p")
+                    (evil-normal-state)
+                    (kmacro-exec-ring-item (quote ("vi[" 0 "%d")) arg)))
+  (global-set-key (kbd "s-(")
+                  (lambda (&optional arg) "select-inner-paren"
+                    (interactive "p")
+                    (evil-normal-state)
+                    (kmacro-exec-ring-item (quote ("vi(" 0 "%d")) arg)))
+  (global-set-key (kbd "s-{")
+                  (lambda (&optional arg) "select-inner-curly"
+                    (interactive "p")
+                    (evil-normal-state)
+                    (kmacro-exec-ring-item (quote ("vi{" 0 "%d")) arg)))
 
   (global-set-key (kbd "<s-Scroll_Lock>")
                   (lambda (&optional arg) "ediff-buffers-left-right"
