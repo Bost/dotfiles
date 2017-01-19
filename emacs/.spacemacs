@@ -589,6 +589,12 @@ Returns a message with the count of killed buffers."
                     (evil-normal-state)
                     (kmacro-exec-ring-item (quote ("vi{" 0 "%d")) arg)))
 
+  (defun disable-y-or-n-p (orig-fun &rest args)
+    (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
+      (apply orig-fun args)))
+
+  (advice-add 'ediff-quit :around #'disable-y-or-n-p)
+
   (global-set-key (kbd "<s-Scroll_Lock>")
                   (lambda (&optional arg) "ediff-buffers-left-right"
                     (interactive "p")
