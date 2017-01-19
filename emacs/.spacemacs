@@ -577,17 +577,17 @@ Returns a message with the count of killed buffers."
                   (lambda (&optional arg) "select-inner-bracket"
                     (interactive "p")
                     (evil-normal-state)
-                    (kmacro-exec-ring-item (quote ("vi[" 0 "%d")) arg)))
+                    (kmacro-exec-ring-item '("vi[" 0 "%d") arg)))
   (global-set-key (kbd "s-(")
                   (lambda (&optional arg) "select-inner-paren"
                     (interactive "p")
                     (evil-normal-state)
-                    (kmacro-exec-ring-item (quote ("vi(" 0 "%d")) arg)))
+                    (kmacro-exec-ring-item '("vi(" 0 "%d") arg)))
   (global-set-key (kbd "s-{")
                   (lambda (&optional arg) "select-inner-curly"
                     (interactive "p")
                     (evil-normal-state)
-                    (kmacro-exec-ring-item (quote ("vi{" 0 "%d")) arg)))
+                    (kmacro-exec-ring-item '("vi{" 0 "%d") arg)))
 
   (defun disable-y-or-n-p (orig-fun &rest args)
     (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
@@ -1086,7 +1086,7 @@ Example 2.:
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
-    (google-this emacs-eclim bind-map magit magit-popup git-commit eclim company-emacs-eclim evil-matchit info+ spinner spaceline powerline drag-stuff web-mode transpose-frame tagedit suggest loop slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data highlight pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
+    (neotree evil-escape persp-mode ws-butler seq google-this emacs-eclim bind-map magit magit-popup git-commit eclim company-emacs-eclim evil-matchit info+ spinner spaceline powerline drag-stuff web-mode transpose-frame tagedit suggest loop slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data highlight pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
