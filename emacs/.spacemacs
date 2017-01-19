@@ -586,6 +586,12 @@ Returns a message with the count of killed buffers."
                                 (evil-normal-state)
                                 (kmacro-exec-ring-item (quote ("vi{" 0 "%d")) arg)))
 
+  (global-set-key (kbd "<s-Scroll_Lock>")
+                  (lambda (&optional arg) "ediff-buffers-left-right"
+                    (interactive "p")
+                    (ediff-buffers (buffer-name) ;; this gives the current buffer
+                                   (buffer-name (other-window 1)))))
+
   ;; Move the parenthesis
   (global-set-key (kbd "M-s-<left>")  'sp-forward-barf-sexp)
   (global-set-key (kbd "M-s-<right>") 'sp-forward-slurp-sexp)
