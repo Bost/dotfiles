@@ -366,6 +366,15 @@ you should place your code here."
   (spacemacs/toggle-menu-bar-on)
 
   (setq
+   ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
+   ediff-window-setup-function 'ediff-setup-windows-default
+
+   ;; Fix projectile-regenerate-tags: ctags: invalid option -- ’e’
+   ;; See https://github.com/bbatsov/projectile/issues/133
+   projectile-tags-command "ctags-exuberant -Re -f \"%s\" %s"
+
+   create-lockfiles nil ;; do not create .# lockfiles
+   vc-follow-symlinks t ;; auto follow symbolic links
    browse-url-browser-function 'browse-url-chrome
                                ;; '(("wikipedia\\.org" . browse-url-firefox)
                                ;;   ("github" . browse-url-chromium)
@@ -655,12 +664,6 @@ Returns a message with the count of killed buffers."
 
   (global-set-key (kbd "s-y") 'avy-goto-line)
 
-  ;; Fix projectile-regenerate-tags: ctags: invalid option -- ’e’
-  ;; See https://github.com/bbatsov/projectile/issues/133
-  (setq projectile-tags-command "ctags-exuberant -Re -f \"%s\" %s")
-
-  (setq create-lockfiles nil) ; do not create .# lockfiles
-  (setq vc-follow-symlinks t) ; auto follow symbolic links
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
 
@@ -871,11 +874,8 @@ Repeated invocations toggle between the two most recently open buffers."
   ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
   ;; Max time delay between two presses of the same key to be considered a key chord.
   ;; Should normally be a little longer than `key-chord-two-keys-delay'.
-  ;; (setq key-chord-one-key-delay 0.2) ; default 0.2
+  ; (setq key-chord-one-key-delay 0.2) ; default 0.2
   (key-chord-define-global "KK" 'switch-to-previous-buffer)
-
-  ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
-  (setq ediff-window-setup-function 'ediff-setup-windows-default)
 
   (use-package cider
       ;; :init
