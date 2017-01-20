@@ -41,7 +41,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     auto-completion
+     (auto-completion :variables auto-completion-enable-help-tooltip t)
      better-defaults
      emacs-lisp
      git
