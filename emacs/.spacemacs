@@ -1058,17 +1058,12 @@ Example 2.:
       (evil-ex (cons sexp-str offset))))
   (global-set-key (kbd "s-:") 'fabricate-subst-cmd)
 
-  ;; Center buffer on search-next
-  (defadvice evil-ex-search-next (after advice-for-evil-ex-search-next activate)
-    (evil-scroll-line-to-center (line-number-at-pos)))
-
-  ;; Center buffer on search-next
-  (defadvice evil-search-next (after advice-for-evil-search-next activate)
-    (evil-scroll-line-to-center (line-number-at-pos)))
-
-  ;; Center buffer on search-forward
-  (defadvice evil-search-forward (after advice-for-evil-search-forward activate)
-    (evil-scroll-line-to-center (line-number-at-pos)))
+  ;; advice, defadvice and letf shouldn't be used:
+  ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
+  ;; Emacs 24.4 replaces this mechanism with advice-add
+  (advice-add 'evil-ex-search-next :before #'spacemacs-buffer//center-line)
+  (advice-add 'evil-search-next    :before #'spacemacs-buffer//center-line)
+  (advice-add 'evil-search-forward :before #'spacemacs-buffer//center-line)
 
   ;; Move by screen lines instead of logical (long) lines
   (define-key evil-motion-state-map "j" 'evil-next-visual-line)
