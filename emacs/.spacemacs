@@ -579,26 +579,16 @@ Returns a message with the count of killed buffers."
   (global-set-key (kbd "s-c") 'sp-copy-sexp-msg)
   (global-set-key (kbd "s-C") 'sp-copy-back-sexp-msg)
   (global-set-key (kbd "s-b") 'sp-copy-back-sexp-msg)
-  (global-set-key (kbd "s-<")
-                  (lambda (&optional arg) "select-inner-tag"
-                    (interactive "p")
-                    (evil-normal-state)
-                    (kmacro-exec-ring-item '("vi<" 0 "%d") arg)))
-  (global-set-key (kbd "s-[")
-                  (lambda (&optional arg) "select-inner-bracket"
-                    (interactive "p")
-                    (evil-normal-state)
-                    (kmacro-exec-ring-item '("vi[" 0 "%d") arg)))
-  (global-set-key (kbd "s-(")
-                  (lambda (&optional arg) "select-inner-paren"
-                    (interactive "p")
-                    (evil-normal-state)
-                    (kmacro-exec-ring-item '("vi(" 0 "%d") arg)))
-  (global-set-key (kbd "s-{")
-                  (lambda (&optional arg) "select-inner-curly"
-                    (interactive "p")
-                    (evil-normal-state)
-                    (kmacro-exec-ring-item '("vi{" 0 "%d") arg)))
+
+  (defun select-inner (vi-str)
+    (interactive "p")
+    (evil-normal-state)
+    (execute-kbd-macro vi-str))
+
+  (global-set-key (kbd "s-<") (lambda () (interactive) (select-inner "vi<")))
+  (global-set-key (kbd "s-[") (lambda () (interactive) (select-inner "vi[")))
+  (global-set-key (kbd "s-(") (lambda () (interactive) (select-inner "vi(")))
+  (global-set-key (kbd "s-{") (lambda () (interactive) (select-inner "vi{")))
 
   (defun disable-y-or-n-p (orig-fun &rest args)
     (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
