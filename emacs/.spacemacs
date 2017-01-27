@@ -534,8 +534,10 @@ Returns a message with the count of killed buffers."
     (interactive)
     (split-other-window-and 'split-window-right))
 
-  (global-set-key (kbd "s-2") 'split-other-window-below)
-  (global-set-key (kbd "s-3") 'split-other-window-right)
+  ;; (global-set-key (kbd "s-2") 'split-other-window-below)
+  ;; (global-set-key (kbd "s-3") 'split-other-window-right)
+  (global-set-key (kbd "s-2") 'split-window-below) ;; SPC w -
+  (global-set-key (kbd "s-3") 'spacemacs/layout-double-columns) ; SPC w 2
 
   ;; Default theme applied at startup
   (global-set-key (kbd "s-a") 'helm-mini)
