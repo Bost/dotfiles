@@ -1061,9 +1061,14 @@ Example 2.:
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
   ;; Emacs 24.4 replaces this mechanism with advice-add
-  (advice-add 'evil-ex-search-next :before #'spacemacs-buffer//center-line)
-  (advice-add 'evil-search-next    :before #'spacemacs-buffer//center-line)
-  (advice-add 'evil-search-forward :before #'spacemacs-buffer//center-line)
+  ;; advice-add doesn't work well with evil-search-next
+  ;; (advice-add 'evil-ex-search-next :before #'spacemacs-buffer//center-line)
+  ;; (advice-add 'evil-search-next    :before #'spacemacs-buffer//center-line)
+  ;; (advice-add 'evil-search-forward :before #'spacemacs-buffer//center-line)
+
+  ;; (advice-remove 'magit-stash :after)
+  ;; (defun magit-stash-no-msg () (magit-stash ""))
+  ;; (advice-add 'magit-stash :after #'magit-stash-no-msg)
 
   ;; Move by screen lines instead of logical (long) lines
   (define-key evil-motion-state-map "j" 'evil-next-visual-line)
