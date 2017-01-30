@@ -363,6 +363,7 @@ you should place your code here."
   (spacemacs/toggle-menu-bar-on)
 
   (setq
+   bookmark-default-file "~/dev/dotfiles/emacs/bookmarks"
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
    ediff-window-setup-function 'ediff-setup-windows-default
 
@@ -580,6 +581,8 @@ Returns a message with the count of killed buffers."
   (global-set-key (kbd "s-c") 'sp-copy-sexp-msg)
   (global-set-key (kbd "s-b") 'sp-copy-back-sexp-msg)
   (global-set-key (kbd "s-B") 'helm-filtered-bookmarks)
+  (global-set-key (kbd "<f9>") 'helm-filtered-bookmarks)
+  (global-set-key (kbd "<f11>") 'bookmark-set)
 
   (defun select-inner (vi-str)
     (evil-normal-state)
