@@ -596,7 +596,6 @@ Returns a message with the count of killed buffers."
   (defun disable-y-or-n-p (orig-fun &rest args)
     (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
       (apply orig-fun args)))
-
   (advice-add 'ediff-quit :around #'disable-y-or-n-p)
 
   (global-set-key (kbd "<s-Scroll_Lock>")
@@ -812,15 +811,14 @@ Returns a message with the count of killed buffers."
     :config
     (super-save-mode +1))
 
-  (defun progress-report (orig-fun &rest args)
-    (let ((progress-reporter
-           (make-progress-reporter
-            (format "Evaluating (%s %s)..." orig-fun args))))
-      (let ((res (apply orig-fun args)))
-        (progress-reporter-done progress-reporter)
-        res)))
-
-  (advice-add 'eval-buffer :around #'progress-report)
+  ;; (defun progress-report (orig-fun &rest args)
+  ;;   (let ((progress-reporter
+  ;;          (make-progress-reporter
+  ;;           (format "Evaluating (%s %s)..." orig-fun args))))
+  ;;     (let ((res (apply orig-fun args)))
+  ;;       (progress-reporter-done progress-reporter)
+  ;;       res)))
+  ;; (advice-add 'eval-buffer :around #'progress-report)
   ;; (advice-remove 'eval-buffer #'progress-report)
   (global-set-key (kbd "s-u") 'eval-buffer)
 
