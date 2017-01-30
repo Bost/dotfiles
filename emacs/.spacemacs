@@ -577,13 +577,11 @@ Returns a message with the count of killed buffers."
       (sp-copy-sexp-msg)
       (goto-char point-pos)))
 
-  ;; (global-set-key (kbd "s-c") 'paredit-copy-as-kill)
   (global-set-key (kbd "s-c") 'sp-copy-sexp-msg)
-  (global-set-key (kbd "s-C") 'sp-copy-back-sexp-msg)
   (global-set-key (kbd "s-b") 'sp-copy-back-sexp-msg)
+  (global-set-key (kbd "s-B") 'helm-filtered-bookmarks)
 
   (defun select-inner (vi-str)
-    (interactive "p")
     (evil-normal-state)
     (execute-kbd-macro vi-str))
 
