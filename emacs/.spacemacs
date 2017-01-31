@@ -745,20 +745,17 @@ Returns a message with the count of killed buffers."
     :config
     (add-hook 'fish-mode-hook #'paredit-mode))
 
-  (use-package zop-to-char ; jump like f/t in vim
-    :ensure t
-    ;; TODO integrate zop-to-char with 'y' in evil
-    :bind (("M-z" . zop-up-to-char) ; as zop-to-char but stop just before target
-           ("M-Z" . zop-to-char)))
+  ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
+  (global-set-key (kbd "M-z") 'zop-up-to-char) ; as zop-to-char but stop just before target
+  (global-set-key (kbd "M-Z") 'zop-to-char)
 
-  ;; Functions spacemacs/move-text-transient-state/move-text-up/down don't drag
-  ;; (global-set-key (kbd "<M-up>")
-  ;;                 'spacemacs/move-text-transient-state/move-text-up)
-  ;; (global-set-key (kbd "<M-down>")
-  ;;                 'spacemacs/move-text-transient-state/move-text-down)
-  (use-package drag-stuff
-    :bind (("<M-up>"   . drag-stuff-up)
-           ("<M-down>" . drag-stuff-down)))
+  ;; spacemacs orig fns don't drag
+  (global-set-key (kbd "M-<up>")
+                  ;; 'spacemacs/move-text-transient-state/move-text-up
+                  'drag-stuff-up)
+  (global-set-key (kbd "M-<down>")
+                  ;; 'spacemacs/move-text-transient-state/move-text-down
+                  'drag-stuff-down)
 
   (use-package crux ;; Coll of Ridiculously Useful eXtensions bbatsov/crux
     :ensure t
