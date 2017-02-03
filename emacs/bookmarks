@@ -2,12 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("aaa"
- (filename . "~/dev/dotfiles/emacs/.spacemacs")
- (front-context-string . "line-len (length")
- (rear-context-string . "           (fst-")
- (position . 25589))
-(".spacemacs"
+(("dired: .emacs.d"
+ (filename . "~/.emacs.d/")
+ (front-context-string . "private\n  -rw-rw")
+ (rear-context-string . "96 Jan 27 17:56 ")
+ (position . 1266))
+("edit: .spacemacs"
  (filename . "~/dev/dotfiles/emacs/.spacemacs")
  (front-context-string . "-default-file \"~")
  (rear-context-string . "  (setq bookmark")

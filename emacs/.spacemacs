@@ -34,7 +34,9 @@ values."
    dotspacemacs-configuration-layers
    '(
      python
-     java
+     ;; (java :variables
+     ;;       eclim-eclipse-dirs "~/eclipse-java-neon"
+     ;;       eclim-executable "~/eclipse-java-neon/eclim")
      html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -378,8 +380,7 @@ you should place your code here."
                                ;;   ("github" . browse-url-chromium)
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
-   eclim-eclipse-dirs "~/eclipse-java-neon"
-   eclim-executable "~/eclipse-java-neon/eclim")
+   )
 
   (defun what-face (pos)
     (interactive "d")
@@ -604,7 +605,7 @@ Returns a message with the count of killed buffers."
                     (ediff-buffers (buffer-name) ;; this gives the current buffer
                                    (buffer-name (other-window 1)))))
 
-  ;; Move the parenthesis
+  ;; Move the parenthesis - see SPC k b/B/f/F
   (global-set-key (kbd "M-s-<left>")  'sp-forward-barf-sexp)
   (global-set-key (kbd "M-s-<right>") 'sp-forward-slurp-sexp)
   (global-set-key (kbd "C-s-<left>")  'sp-backward-slurp-sexp)
