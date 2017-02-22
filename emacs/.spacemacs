@@ -87,10 +87,14 @@ values."
      suggest ;; discover elisp fns
      crux super-save zop-to-char fish-mode drag-stuff helm-cider
      helm-cider-history transpose-frame typed-clojure-mode
-     google-this
+     google-this super-save crux
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(tern) ;; avoid "tern binary not found!"
+   dotspacemacs-excluded-packages
+   '(
+     tern ;; avoid "tern binary not found!"
+     anaconda-mode ;; needs working proxy
+     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -760,7 +764,6 @@ Returns a message with the count of killed buffers."
                   'drag-stuff-down)
 
   (use-package crux ;; Coll of Ridiculously Useful eXtensions bbatsov/crux
-    :ensure t
     :bind
     (("C-c d"           . crux-duplicate-current-line-or-region)
      ("<C-s-down>"      . crux-duplicate-current-line-or-region)
@@ -806,9 +809,7 @@ Returns a message with the count of killed buffers."
                ("s-\\" . clj-cmt-uncmt-line-sexp)))
 
   (use-package super-save ;; better auto-save-mode
-    :ensure t
-    :config
-    (super-save-mode +1))
+    :config (super-save-mode +1))
 
   ;; (defun progress-report (orig-fun &rest args)
   ;;   (let ((progress-reporter
