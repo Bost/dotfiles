@@ -88,6 +88,7 @@ values."
      crux super-save zop-to-char fish-mode drag-stuff helm-cider
      helm-cider-history transpose-frame typed-clojure-mode
      google-this super-save crux
+     agda2-mode
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
@@ -386,6 +387,21 @@ you should place your code here."
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
    )
+
+  ;; inst agda agda-mode
+  ;; (load-file (let ((coding-system-for-read 'utf-8))
+  ;;              (shell-command-to-string "agda-mode locate")))
+
+  (add-hook 'agda2-mode-hook
+            '(lambda ()
+                                        ; If you do not want to use any input method:
+               (deactivate-input-method)
+                                        ; (In some versions of Emacs you should use
+                                        ; inactivate-input-method instead of
+                                        ; deactivate-input-method.)
+
+                                        ; If you want to use the X input method:
+               (set-input-method "X")))
 
   (defun what-face (pos)
     (interactive "d")
