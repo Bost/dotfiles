@@ -10,7 +10,7 @@
    [cider/cider-nrepl "0.14.0"]
 
    [lein-ancient "0.6.10"]
-   [lein-localrepo "0.5.3"]
+   [lein-localrepo "0.5.3" :exclusions [org.clojure/clojure]]
    ;; lein kibit - check style
    [lein-kibit "0.1.3" :exclusions [org.clojure/clojure
                                     org.clojure/tools.cli]]
