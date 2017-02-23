@@ -33,6 +33,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     haskell
      csv
      python
      ;; (java :variables
