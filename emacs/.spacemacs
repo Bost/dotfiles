@@ -89,7 +89,6 @@ values."
      crux super-save zop-to-char fish-mode drag-stuff helm-cider
      helm-cider-history transpose-frame typed-clojure-mode
      google-this super-save crux
-     agda2-mode
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
@@ -390,8 +389,8 @@ you should place your code here."
    )
 
   ;; inst agda agda-mode
-  ;; (load-file (let ((coding-system-for-read 'utf-8))
-  ;;              (shell-command-to-string "agda-mode locate")))
+  (load-file (let ((coding-system-for-read 'utf-8))
+               (shell-command-to-string "~/.cabal/bin/agda-mode locate")))
 
   (add-hook 'agda2-mode-hook
             '(lambda ()
