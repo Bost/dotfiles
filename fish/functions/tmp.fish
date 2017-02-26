@@ -1,4 +1,4 @@
 function tmp
-    echo "cd /tmp"
-          cd /tmp
+  echo "cd /tmp"
+        cd /tmp
 end

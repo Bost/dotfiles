@@ -1,3 +1,3 @@
 function cls
-    clear
+  clear
 end

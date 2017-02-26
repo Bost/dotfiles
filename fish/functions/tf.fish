@@ -1,4 +1,4 @@
 function tf
-    echo "tail -f $argv"
-          tail -f $argv
+  echo "tail -f $argv"
+        tail -f $argv
 end

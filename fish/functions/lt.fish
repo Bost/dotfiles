@@ -1,3 +1,4 @@
 function lt
-    ls -lat $argv
+  echo "ls -lat $argv"
+        ls -lat $argv
 end

@@ -1,3 +1,4 @@
 function lcxa
-    lein cljx auto $argv
+  echo "lein cljx auto $argv"
+        lein cljx auto $argv
 end

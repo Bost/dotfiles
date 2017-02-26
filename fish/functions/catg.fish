@@ -1,3 +1,3 @@
 function catg
-    cd ~/downloads/category-theory/js
+  cd ~/downloads/category-theory/js
 end

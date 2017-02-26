@@ -1,3 +1,4 @@
 function lco
-    lein cljsbuild once $argv
+  echo "lein cljsbuild once $argv"
+        lein cljsbuild once $argv
 end

@@ -1,3 +1,4 @@
 function ltr
-    ls -latr $argv
+  echo "ls -latr $argv"
+        ls -latr $argv
 end

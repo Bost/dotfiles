@@ -1,4 +1,4 @@
 function cd..
-    echo "cd .."
-          cd ..
+  echo "cd .."
+        cd ..
 end

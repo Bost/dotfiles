@@ -1,3 +1,4 @@
 function lc
-    lein clean $argv
+  echo "lein clean $argv"
+        lein clean $argv
 end

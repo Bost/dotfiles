@@ -1,4 +1,4 @@
 function u2d
-    echo "todos $argv"
-          todos $argv
+  echo "todos $argv"
+        todos $argv
 end
