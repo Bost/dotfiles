@@ -487,7 +487,8 @@ Returns a message with the count of killed buffers."
         (message "Killed %i Magit buffer(s)." count))))
 
   (defun buffer-mode (buffer-or-string)
-    "Returns the major mode associated with a buffer."
+    "Returns the major mode associated with a buffer.
+Example: (buffer-mode (current-buffer))"
     (with-current-buffer buffer-or-string
       major-mode))
 
@@ -508,9 +509,11 @@ Returns a message with the count of killed buffers."
                         bs-mode ; *buffer-selection*
                         ;; *package-build-checkout* is in fundamenatal-mode
                         ;; *cider-refresh-log* is in fundamenatal-mode
-                        cider-browse-ns-mode ; *cider-ns-browser*
-                        cider-stacktrace-mode ; *cider-error* - doesn't work
-                        help-mode ; *Help*
+                        cider-browse-ns-mode  ; for *cider-ns-browser*
+                        cider-stacktrace-mode ; for *cider-error*
+                        cider-docview-mode    ; for *cider-doc*
+                        cider-inspector-mode  ; for *cider-inspect*
+                        help-mode             ; for *Help*
                         dired-mode))
             (setq count (1+ count))
             (kill-buffer buffer)))
