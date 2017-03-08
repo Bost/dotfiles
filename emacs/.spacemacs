@@ -817,10 +817,31 @@ Example: (buffer-mode (current-buffer))"
           (insert cmtstr))
         (goto-char point-pos1))))
 
+  (defun hs-clojure-hide-namespace-and-folds ()
+    "Hide the first (ns ...) expression in the file, and also all
+the (^:fold ...) expressions."
+    (interactive)
+    (hs-life-goes-on
+     (save-excursion
+       (goto-char (point-min))
+       (when (ignore-errors (re-search-forward "^(ns "))
+         (hs-hide-block))
+
+       (while (ignore-errors (re-search-forward "\\^:fold"))
+         (hs-hide-block)
+         (next-line)))))
+
+  (defun hs-clojure-mode-hook ()
+    (interactive)
+    (hs-minor-mode 1)
+    (hs-clojure-hide-namespace-and-folds))
+
   (use-package clojure-mode
     :config
     (add-hook 'clojure-mode-hook 'typed-clojure-mode)
     (add-hook 'clojure-mode-hook (lambda () (prettify-symbols-mode)))
+    ;; 1st invocation (clojure mode cold start) doesn't work
+    (add-hook 'clojure-mode-hook 'hs-clojure-mode-hook)
     (bind-keys :map clojure-mode-map
                ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
