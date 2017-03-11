@@ -1100,6 +1100,21 @@ Example 2.:
       (evil-ex (cons sexp-str offset))))
   (global-set-key (kbd "s-:") 'fabricate-subst-cmd)
 
+  (global-centered-cursor-mode +1)
+  ;; ;; keep the cursor centered to avoid sudden scroll jumps
+  ;; (require 'centered-cursor-mode)
+
+  ;; ;; disable in terminal modes
+  ;; ;; http://stackoverflow.com/a/6849467/519736
+  ;; ;; also disable in Info mode, because it breaks going back with the backspace key
+  ;; (define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
+  ;;   (lambda ()
+  ;;     (when (not (memq major-mode
+  ;;                      (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
+  ;;       (centered-cursor-mode))))
+  ;; (my-global-centered-cursor-mode 1)
+
+
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
   ;; Emacs 24.4 replaces this mechanism with advice-add
@@ -1107,6 +1122,23 @@ Example 2.:
   ;; (advice-add 'evil-ex-search-next :before #'spacemacs-buffer//center-line)
   ;; (advice-add 'evil-search-next    :before #'spacemacs-buffer//center-line)
   ;; (advice-add 'evil-search-forward :before #'spacemacs-buffer//center-line)
+
+  ;; (defadvice isearch-update (before my-isearch-update activate)
+  ;;   (sit-for 0)
+  ;;   (if (and
+  ;;        ;; not the scrolling command
+  ;;        (not (eq this-command 'isearch-other-control-char))
+  ;;        ;; not the empty string
+  ;;        (> (length isearch-string) 0)
+  ;;        ;; not the first key (to lazy highlight all matches w/o recenter)
+  ;;        (> (length isearch-cmds) 2)
+  ;;        ;; the point in within the given window boundaries
+  ;;        (let ((line (count-screen-lines (point) (window-start))))
+  ;;          (or (> line (* (/ (window-height) 4) 3))
+  ;;              (< line (* (/ (window-height) 9) 1)))))
+  ;;       (let ((recenter-position 0.3))
+  ;;         (recenter '(4)))))
+
 
   ;; (advice-remove 'magit-stash :after)
   ;; (defun magit-stash-no-msg () (magit-stash ""))
