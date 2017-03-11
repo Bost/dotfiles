@@ -94,7 +94,7 @@ values."
    dotspacemacs-excluded-packages
    '(
      tern ;; avoid "tern binary not found!"
-     anaconda-mode ;; needs working proxy
+     anaconda-mode ;; for python - needs working proxy
      )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
