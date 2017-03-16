@@ -1,3 +1,4 @@
 function grc
-    git rebase --continue $argv
+  echo "git rebase --continue $argv"
+        git rebase --continue $argv
 end

@@ -1,4 +1,3 @@
-function gri
-  echo "git rebase --interactive $argv"
-        git rebase --interactive $argv
+function grbi
+  gri $argv
 end
