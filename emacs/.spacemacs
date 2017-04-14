@@ -1085,7 +1085,6 @@ Example 2.:
       (evil-ex (cons sexp-str offset))))
   (global-set-key (kbd "s-:") 'fabricate-subst-cmd)
 
-  (global-centered-cursor-mode +1)
   ;; ;; keep the cursor centered to avoid sudden scroll jumps
   ;; (require 'centered-cursor-mode)
 
