@@ -1,11 +1,7 @@
-function crep -d "TODO all crep*.fish should use the same code basis"
+function crl
   # --before-context=1 --after-context=1
   ack-grep \
-  $dev/cheatsheet/commands-git.sh \
   $dev/cheatsheet/commands-linux.sh \
-  $dev/cheatsheet/commands-win.bat \
-  $dev/cheatsheet/commands-clojure.clj \
-  $dev/cheatsheet/commands-emacs.el \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \
