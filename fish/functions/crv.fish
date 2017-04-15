@@ -1,6 +1,6 @@
 function crv -d "TODO all crep*.fish should use the same code basis"
   # --before-context=1 --after-context=1
-  ack-grep \
+  ack \
   $dev/cheatsheet/commands-vim.vim \
   --context=1 \
   --nogroup \

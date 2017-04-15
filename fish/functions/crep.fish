@@ -1,6 +1,6 @@
 function crep -d "TODO all crep*.fish should use the same code basis"
   # --before-context=1 --after-context=1
-  ack-grep \
+  ack \
   $dev/cheatsheet/commands-git.sh \
   $dev/cheatsheet/commands-linux.sh \
   $dev/cheatsheet/commands-win.bat \

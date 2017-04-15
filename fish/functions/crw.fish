@@ -1,6 +1,6 @@
 function crw
   # --before-context=1 --after-context=1
-  ack-grep \
+  ack \
   $dev/cheatsheet/commands-win.bat \
   --context=1 \
   --nogroup \

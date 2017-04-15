@@ -1,4 +1,4 @@
 function ac
-  echo "ack-grep $argv"
-        ack-grep $argv
+  echo "ack $argv"
+        ack $argv
 end

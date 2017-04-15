@@ -352,7 +352,7 @@ CheatsheetGrep() {
     local _pwd=$(pwd)
     local _oldpwd=${OLDPWD}
     cd ${dev}/cheatsheet/
-    ack-grep *-commands.js \
+    ack *-commands.js \
              --nogroup \--break --with-filename --color-filename=grey13 \
              --color-lineno=grey13 --color-match="bold blue" \
              --ignore-case --match ${@}
@@ -367,10 +367,10 @@ CheatsheetGrepHost() {
     local _pwd=$(pwd)
     local _oldpwd=${OLDPWD}
     cd ${dev}/cheatsheet/
-    ack-grep host-commands.js \
-             --nogroup \--break --with-filename --color-filename=grey13 \
-             --color-lineno=grey13 --color-match="bold blue" \
-             --ignore-case --match ${@}
+    ack host-commands.js \
+        --nogroup \--break --with-filename --color-filename=grey13 \
+        --color-lineno=grey13 --color-match="bold blue" \
+        --ignore-case --match ${@}
     # Run grep -i $@ ${dev}/cheatsheet/*-commands.js
     cd ${_pwd}
     OLDPWD=${_oldpwd}

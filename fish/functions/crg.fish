@@ -1,5 +1,5 @@
 function crg
-  ack-grep \
+  ack \
   $dev/cheatsheet/commands-git.sh \
   $dev/dotfiles/.gitconfig \
   --context=1 \
