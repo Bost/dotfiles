@@ -718,6 +718,14 @@ Example: (buffer-mode (current-buffer))"
 
   (global-set-key (kbd "s-l") 'spacemacs/resume-last-search-buffer)
 
+  (defun my/evil-select-pasted ()
+    (interactive)
+    (let ((start-marker (evil-get-marker ?[))
+                        (end-marker (evil-get-marker ?])))
+      (evil-visual-select start-marker end-marker)))
+
+  ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
+
   (defun toggle-large-file-setting ()
     (interactive)
     (let* ((msg "large-file-settings"))
@@ -744,10 +752,6 @@ Example: (buffer-mode (current-buffer))"
 
   ;; (add-hook 'find-file-hook ''toggle-large-file-setting)
   (global-set-key (kbd "s-L") 'toggle-large-file-setting)
-
-  (use-package yasnippet
-    :load-path "~/dev/yasnippet/"
-    :pin manual)
 
   (use-package fish-mode
     :config
