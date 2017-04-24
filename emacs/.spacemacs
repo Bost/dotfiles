@@ -1,8 +1,6 @@
-;; -*- mode: dotspacemacs -*-
+;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
-
-;; -*- mode: emacs-lisp -*-
 
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
@@ -90,7 +88,9 @@ values."
      helm-cider-history transpose-frame typed-clojure-mode
      google-this super-save crux
      )
-   ;; A list of packages and/or extensions that will not be install and loaded.
+   ;; A list of packages that cannot be updated.
+   dotspacemacs-frozen-packages '()
+   ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages
    '(
      tern ;; avoid "tern binary not found!"
@@ -183,12 +183,11 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font
-   '(
-     "Source Code Pro" :size 13 :weight normal :width normal :powerline-scale 1.1
-     ;; "Consolas" :size 16 :weight normal :width normal :powerline-offset 2
-     ;; "Ubuntu Mono" :size 16 :weight normal :width normal :powerline-scale 1.1
-     )
+   dotspacemacs-default-font '("Source Code Pro"
+                               :size 13
+                               :weight normal
+                               :width normal
+                               :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -298,20 +297,18 @@ values."
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
-   ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
-   ;; derivatives. If set to `relative', also turns on relative line numbers.
-   ;; (default nil)
+   ;; Control line numbers activation.
+   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
+   ;; This variable can also be set to a property list for finer control:
    dotspacemacs-line-numbers
-   '(:relative
-     nil
-     :disabled-for
-     (dired-mode    ; works
-      doc-view-mode ; ?
-      markdown-mode ; gets overriden
-      org-mode      ; gets overriden
-      pdf-view-mode ; ?
-      text-mode     ; gets overriden
-      )
+   '(:relative nil
+     :disabled-for-modes dired-mode    ; works
+                         doc-view-mode ; ?
+                         markdown-mode ; gets overriden
+                         org-mode      ; gets overriden
+                         pdf-view-mode ; ?
+                         text-mode     ; gets overriden!
      :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
@@ -1143,9 +1140,7 @@ Example 2.:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
- '(package-selected-packages
-   (quote
-    (neotree evil-escape persp-mode ws-butler seq google-this emacs-eclim bind-map magit magit-popup git-commit eclim company-emacs-eclim evil-matchit info+ spinner spaceline powerline drag-stuff web-mode transpose-frame tagedit suggest loop slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data highlight pretty-lambdada evil-surround yasnippet clj-refactor projectile spacemacs-theme help-fns+ evil-mc inflections with-editor sql-indent typed-clojure-mode helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-c-yasnippet helm-ag helm helm-core helm-cider-history helm-cider vimrc-mode mmm-mode markdown-toc markdown-mode hide-comnt gh-md dactyl-mode helm-company cider undo-tree uuidgen toc-org org-plus-contrib org-bullets mwim link-hint git-link eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump f column-enforce-mode clojure-snippets web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode)))
+ '(package-selected-packages (quote ()))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
