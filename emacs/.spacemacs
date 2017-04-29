@@ -668,14 +668,17 @@ Example: (buffer-mode (current-buffer))"
   ;; TODO see * [Josh Johnston](https://github.com/joshwnj) contributed `er/contract-region`
   ;; (global-set-key (kbd "s-*") 'er/contract-region)
 
-  (global-set-key (kbd "s-y") 'avy-goto-line)
-
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
 
-  (global-set-key (kbd "<f2>")   'evil-avy-goto-char)
-  (global-set-key (kbd "C-a")    'evil-avy-goto-char)
-  (global-set-key (kbd "s-/")    'evil-avy-goto-char)
+  (defun my-evil-avy-goto-char ()
+    (interactive)
+    (evil-avy-goto-char)
+    (message (format "evil-avy-goto-char: SPC j j, <f2>, <s-tab>, s-/")))
+
+  (global-set-key (kbd "<f2>")    'my-evil-avy-goto-char)
+  (global-set-key (kbd "<s-tab>") 'my-evil-avy-goto-char)
+  (global-set-key (kbd "s-/")     'my-evil-avy-goto-char)
 
   ;; TODO evaluate: paste copied text multiple times
   (defun evil-paste-after-from-0 ()
@@ -695,9 +698,13 @@ Example: (buffer-mode (current-buffer))"
   ;;                                 ;;       (evil-avy-goto-char)))
   ;;                 )
 
-  (global-set-key (kbd "<M-f2>") 'avy-goto-subword-1)
-  (global-set-key (kbd "<C-f2>") 'avy-goto-line)
-  ;; (global-set-key (kbd "s-j") 'avy-goto-char)
+  (defun my-avy-goto-line ()
+    (interactive)
+    (avy-goto-line)
+    (message (format "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
+
+  (global-set-key (kbd "<C-f2>") 'my-avy-goto-line)
+  (global-set-key (kbd "C-s-/")  'my-avy-goto-line)
 
   (global-set-key (kbd "<C-mouse-5>")
                   (lambda () (interactive) (message "zoom-out")))
