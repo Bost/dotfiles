@@ -624,8 +624,9 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-p") 'helm-projectile)
   (global-set-key (kbd "s-w") (lambda ()
                                 (interactive)
-                                (message (format "s-n / s-N : narrow-to-defun / widen"))
-                                (whitespace-mode)))
+                                (whitespace-mode 'toggle)
+                                (message (format "s-n / s-N : narrow-to-defun / widen"))))
+
   (global-set-key (kbd "s-m") 'magit-status)
 
   ;; search only in certain file-types:
@@ -677,8 +678,13 @@ Example: (buffer-mode (current-buffer))"
     (message (format "evil-avy-goto-char: SPC j j, <f2>, <s-tab>, s-/")))
 
   (global-set-key (kbd "<f2>")    'my-evil-avy-goto-char)
-  (global-set-key (kbd "<s-tab>") 'my-evil-avy-goto-char)
   (global-set-key (kbd "s-/")     'my-evil-avy-goto-char)
+
+  (global-set-key (kbd "<s-tab>")
+                  (lambda ()
+                    (interactive)
+                    (spacemacs/alternate-buffer)
+                    (message (format "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))))
 
   ;; TODO evaluate: paste copied text multiple times
   (defun evil-paste-after-from-0 ()
