@@ -610,7 +610,7 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "<s-Scroll_Lock>")
                   (lambda (&optional arg) "ediff-buffers-left-right"
                     (interactive "p")
-                    (ediff-buffers (buffer-name) ;; this gives the current buffer
+                    (ediff-buffers (buffer-name) ;; gives the current buffer
                                    (buffer-name (other-window 1)))))
 
   ;; Move the parenthesis - see SPC k b/B/f/F
@@ -622,10 +622,11 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
   (global-set-key (kbd "s-<f1>") 'eshell)
   (global-set-key (kbd "s-p") 'helm-projectile)
-  (global-set-key (kbd "s-w") (lambda ()
-                                (interactive)
-                                (whitespace-mode 'toggle)
-                                (message (format "s-n / s-N : narrow-to-defun / widen"))))
+  (global-set-key (kbd "s-w")
+                  (lambda ()
+                    (interactive)
+                    (whitespace-mode 'toggle)
+                    (message (format "s-n / s-N : narrow-to-defun / widen"))))
 
   (global-set-key (kbd "s-m") 'magit-status)
 
@@ -666,7 +667,7 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-g") 'helm-google-suggest)
   (global-set-key (kbd "s-G") 'google-this)
   (global-set-key (kbd "s-8") 'er/expand-region)
-  ;; TODO see * [Josh Johnston](https://github.com/joshwnj) contributed `er/contract-region`
+  ;; TODO see https://github.com/joshwnj `er/contract-region`
   ;; (global-set-key (kbd "s-*") 'er/contract-region)
 
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
@@ -680,11 +681,11 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "<f2>")    'my-evil-avy-goto-char)
   (global-set-key (kbd "s-/")     'my-evil-avy-goto-char)
 
-  (global-set-key (kbd "<s-tab>")
-                  (lambda ()
+  (global-set-key (kbd "<s-tab>") (lambda ()
                     (interactive)
                     (spacemacs/alternate-buffer)
-                    (message (format "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))))
+                    (message (format
+                              "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))))
 
   ;; TODO evaluate: paste copied text multiple times
   (defun evil-paste-after-from-0 ()
@@ -776,7 +777,8 @@ Example: (buffer-mode (current-buffer))"
     (add-hook 'fish-mode-hook #'paredit-mode))
 
   ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
-  (global-set-key (kbd "M-z") 'zop-up-to-char) ; as zop-to-char but stop just before target
+  ;; zop-up-to-char works as zop-to-char but stop just before target
+  (global-set-key (kbd "M-z") 'zop-up-to-char)
   (global-set-key (kbd "M-Z") 'zop-to-char)
 
   ;; spacemacs orig fns don't drag
@@ -1065,7 +1067,8 @@ Repeated invocations toggle between the two most recently open buffers."
           (call-interactively 'clipboard-kill-ring-save))
       (if (region-active-p)
           (progn
-            (shell-command-on-region (region-beginning) (region-end) "xsel -i -b")
+            (shell-command-on-region (region-beginning)
+                                     (region-end) "xsel -i -b")
             (message "Yanked region to clipboard!")
             (deactivate-mark))
         (message "No region active; can't yank to clipboard!"))))
@@ -1098,8 +1101,8 @@ Example 2.:
            (search-regex (format "%s" (car kill-ring)))
            (replace-regex (format "%s" (car kill-ring)))
            (sexp-str (format "%%s/%s/%s/gc" search-regex replace-regex))
-           (offset (+ (length search-regex) 4)) ;; 4 means: jump to the 2nd slash
-           )
+           ;; 4 means: jump to the 2nd slash
+           (offset (+ (length search-regex) 4)))
       ;; (cons .. offset) moves the point
       (evil-ex (cons sexp-str offset))))
   (global-set-key (kbd "s-:") 'fabricate-subst-cmd)
