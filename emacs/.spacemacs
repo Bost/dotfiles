@@ -600,6 +600,7 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-[") (lambda () (interactive) (select-inner "vi[")))
   (global-set-key (kbd "s-(") (lambda () (interactive) (select-inner "vi(")))
   (global-set-key (kbd "s-{") (lambda () (interactive) (select-inner "vi{")))
+  (global-set-key (kbd "s-\"") (lambda () (interactive) (select-inner "vi\"")))
 
   (defun disable-y-or-n-p (orig-fun &rest args)
     (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
@@ -621,7 +622,10 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
   (global-set-key (kbd "s-<f1>") 'eshell)
   (global-set-key (kbd "s-p") 'helm-projectile)
-  (global-set-key (kbd "s-w") 'whitespace-mode)
+  (global-set-key (kbd "s-w") (lambda ()
+                                (interactive)
+                                (message (format "s-n / s-N : narrow-to-defun / widen"))
+                                (whitespace-mode)))
   (global-set-key (kbd "s-m") 'magit-status)
 
   ;; search only in certain file-types:
@@ -704,9 +708,9 @@ Example: (buffer-mode (current-buffer))"
 
   ;; fd - evil-escape from insert state and everything else
 
-  (global-set-key (kbd "s-i") ;; occurences - function scope
+  (global-set-key (kbd "s-I") ;; occurences - function scope
                   (lambda () (interactive) (iedit-mode 0)))
-  (global-set-key (kbd "s-I") 'iedit-mode) ;; all occurences
+  (global-set-key (kbd "s-i") 'iedit-mode) ;; all occurences
 
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
   (global-set-key (kbd "s-h") 'helm-imenu)
