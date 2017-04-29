@@ -725,8 +725,8 @@ Example: (buffer-mode (current-buffer))"
 
   ;; ("<S-delete>"      . kill-region)
   ;; ("<C-s-backspace>" . kill-line-backward)
-  (global-set-key (kbd "<C-s-delete>") 'kill-line)
-  (global-set-key (kbd "<C-S-delete>") 'kill-line)
+  (global-set-key (kbd "<C-s-delete>") 'kill-line) ; super-key
+  (global-set-key (kbd "<C-S-delete>") 'kill-line) ; shift-key
 
   (global-set-key (kbd "s-l") 'spacemacs/resume-last-search-buffer)
 
