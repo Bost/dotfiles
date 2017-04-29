@@ -34,12 +34,15 @@
 	# show files modified in last commit - another
 	# dlc = diff --cached HEAD^
 
-	# find a file path in the codebase
-	f = "!git ls-files | grep -i"
+	# find-file
+	ff = "!git ls-files | grep -i"
 
 	sl = stash list
 	sa = stash pop
 	ss = stash save
+
+	# find-string; ! is needed to pass argument correctly to -S
+  fs = "!git log --color --patch -S "
 
 [user]
 	name = Bost
