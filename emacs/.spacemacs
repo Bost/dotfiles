@@ -525,7 +525,8 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-0") 'delete-window)
   (global-set-key (kbd "s-1") 'delete-other-windows)
   (global-set-key (kbd "<f8>") 'transpose-frame)
-  (global-set-key (kbd "<M-f8>") 'spacemacs/rotate-windows)
+  (global-set-key (kbd "<M-f8>") 'spacemacs/rotate-windows-forward)
+
 
   ;; TODO create toggle-narrow-to-defun
   (global-set-key (kbd "s-n") 'narrow-to-defun)
