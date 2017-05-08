@@ -366,6 +366,7 @@ you should place your code here."
   ;;       search-engine-alist)
 
   (spacemacs/toggle-menu-bar-on)
+  (global-prettify-symbols-mode +1)
 
   (setq
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
@@ -846,7 +847,10 @@ the (^:fold ...) expressions."
   (use-package clojure-mode
     :config
     (add-hook 'clojure-mode-hook 'typed-clojure-mode)
-    (add-hook 'clojure-mode-hook (lambda () (prettify-symbols-mode)))
+
+    ;; see (global-prettify-symbols-mode +1)
+    ;; (add-hook 'clojure-mode-hook (lambda () (prettify-symbols-mode)))
+
     ;; 1st invocation (clojure mode cold start) doesn't work
     (add-hook 'clojure-mode-hook 'hs-clojure-mode-hook)
     (bind-keys :map clojure-mode-map
