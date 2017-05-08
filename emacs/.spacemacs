@@ -876,7 +876,7 @@ the (^:fold ...) expressions."
   (global-set-key (kbd "s-,") 'dumb-jump-back)
   (global-set-key (kbd "<pause>") 'goto-last-change)
   (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
-  (global-set-key (kbd "s-j") 'evil-join)
+  (global-set-key (kbd "s-J") 'evil-join)
 
   (defun smarter-move-beginning-of-line (arg)
     "Move point back to indentation of beginning of line.
