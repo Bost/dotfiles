@@ -17,12 +17,6 @@
    ]
   :dependencies
   [
-   [org.clojure/tools.nrepl "0.2.13-SNAPSHOT"]
-   [org.clojure/core.typed
-    "0.3.25"   ;; works
-    #_"0.3.26" ;; CIDER's version (0.14.0) does not match cider-nrepl's version (nil)
-    #_"0.3.32" ;; CIDER's version (0.14.0) does not match cider-nrepl's version (nil)
-    ]
    ]
   }
  }
