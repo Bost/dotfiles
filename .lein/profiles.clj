@@ -17,19 +17,12 @@
    ]
   :dependencies
   [
-   [slamhound "1.5.5"] ; rip and reconstruct namespace
    [org.clojure/tools.nrepl "0.2.13-SNAPSHOT"]
    [org.clojure/core.typed
     "0.3.25"   ;; works
     #_"0.3.26" ;; CIDER's version (0.14.0) does not match cider-nrepl's version (nil)
     #_"0.3.32" ;; CIDER's version (0.14.0) does not match cider-nrepl's version (nil)
     ]
-   [org.clojure/test.check "0.9.0"] ;; clojure.spec
-   [alembic "0.3.2"] ; dynamically load / resolve / add classpath deps
-   ;; Usage:
-   ;; (require 'alembic.still)
-   ;; (alembic.still/distill '[clj-time-ext "0.4.5"])
    ]
-  :aliases {"slamhound" ["run" "-m" "slam.hound"]}
   }
  }
