@@ -1,4 +1,4 @@
 function ema
-  echo "cd $HOME/dev/emacs-25"
-        cd $HOME/dev/emacs-25
+  echo "cd ~/dev/emacs-25; and glo emacs-25"
+        cd ~/dev/emacs-25; and glo emacs-25
 end

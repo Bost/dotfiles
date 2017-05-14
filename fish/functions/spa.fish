@@ -1,4 +1,4 @@
 function spa
-  echo "cd $HOME/.emacs.d/"
-        cd $HOME/.emacs.d/
+  echo "cd ~/.emacs.d; and glo release-0.200"
+        cd ~/.emacs.d; and glo release-0.200
 end
