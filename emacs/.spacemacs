@@ -520,7 +520,43 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-C-K") 'kill-all-dired-buffers)
 
   (global-set-key (kbd "s-R") 'spacemacs/rename-current-buffer-file)
-  (global-set-key (kbd "s-q") 'other-window)
+
+  ;; Alternativelly in the package auto-dim-other-buffers
+  ;; define and use some of the faces:
+  ;;     font-lock-builtin-face
+  ;;     font-lock-comment-delimiter-face
+  ;;     font-lock-comment-face
+  ;;     font-lock-constant-face
+  ;;     font-lock-function-name-face
+  ;;     font-lock-negation-char-face
+  ;;     font-lock-preprocessor-face
+  ;;     font-lock-regexp-grouping-construct
+  ;;     font-lock-regexp-grouping-backslash
+  ;;     font-lock-string-face
+  ;;     font-lock-type-face
+  ;;     font-lock-variable-name-face
+  ;;     font-lock-warning-face
+  ;;     font-lock-doc-face
+  ;;     font-lock-keyword-face
+  ;;     font-lock-comment-face
+  ;; analog to auto-dim-other-buffers-face
+  (make-face 'flash-active-buffer-face)
+
+  (set-face-attribute 'flash-active-buffer-face nil
+                      :background "black"
+                      :foreground nil)
+  (defun flash-active-buffer ()
+    (interactive)
+    (run-at-time "200 millisec" nil
+                 (lambda (remap-cookie)
+                   (face-remap-remove-relative remap-cookie))
+                 (face-remap-add-relative 'default 'flash-active-buffer-face)))
+
+  (global-set-key (kbd "s-q") (lambda ()
+                                (interactive)
+                                (other-window 1)
+                                (flash-active-buffer)))
+
   (global-set-key (kbd "s-k") 'close-buffer)
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "s-0") 'delete-window)
