@@ -547,7 +547,7 @@ Example: (buffer-mode (current-buffer))"
                       :foreground nil)
   (defun flash-active-buffer ()
     (interactive)
-    (run-at-time "200 millisec" nil
+    (run-at-time "100 millisec" nil
                  (lambda (remap-cookie)
                    (face-remap-remove-relative remap-cookie))
                  (face-remap-add-relative 'default 'flash-active-buffer-face)))
@@ -1018,7 +1018,9 @@ Repeated invocations toggle between the two most recently open buffers."
 
       (defun clojure-insert-println ()
         (interactive)
-        (clojure-insert-sexp "(println \"\")" 2))
+        ;; (clojure-insert-sexp"(.log js/console \"\")" 2) TODO for cljs
+        (clojure-insert-sexp"(println \"\")" 2)
+      )
 
       (defun clojure-insert-let ()
         (interactive)
