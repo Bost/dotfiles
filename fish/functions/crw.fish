@@ -8,5 +8,7 @@ function crw
   --color-lineno=grey13 --color-match="bold blue" \
   --ignore-case --match $argv
 
-  consider-hint $argv
+  echo "Consider running:"
+  echo "    help $argv"
+  echo "    $argv /?"
 end
