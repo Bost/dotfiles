@@ -645,7 +645,7 @@ Example: (buffer-mode (current-buffer))"
       (apply orig-fun args)))
   (advice-add 'ediff-quit :around #'disable-y-or-n-p)
 
-  (global-set-key (kbd "<s-Scroll_Lock>")
+  (global-set-key (kbd "<s-print>")
                   (lambda (&optional arg) "ediff-buffers-left-right"
                     (interactive "p")
                     (ediff-buffers (buffer-name) ;; gives the current buffer
