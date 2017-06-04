@@ -814,6 +814,28 @@ Example: (buffer-mode (current-buffer))"
     :config
     (add-hook 'fish-mode-hook #'paredit-mode))
 
+  (defun my/org-mode-hook ()
+    (progn
+      ;; do not set "TODO"; use default key bindings
+      (define-key org-mode-map (kbd "<S-right>") nil)
+      (define-key org-mode-map (kbd "<S-left>") nil)
+      (define-key org-mode-map (kbd "<C-S-right>") nil)
+      (define-key org-mode-map (kbd "<C-S-left>") nil)
+
+      ;; Don't increase the org-level header text height
+      (dolist (face '(org-level-1
+                      org-level-2
+                      org-level-3
+                      org-level-4
+                      org-level-5))
+        (set-face-attribute face nil :weight 'semi-bold :height 1.0))))
+
+  (add-hook 'org-mode-hook 'my/org-mode-hook)
+  ;; (eval-after-load 'org ; alternative invocation
+  ;;   (progn
+  ;;     (define-key org-mode-map (kbd "<S-right>") nil)
+  ;;     (define-key org-mode-map (kbd "<S-left>") nil)))
+
   ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
   ;; zop-up-to-char works as zop-to-char but stop just before target
   (global-set-key (kbd "M-z") 'zop-up-to-char)
