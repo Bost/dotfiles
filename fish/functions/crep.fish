@@ -6,6 +6,7 @@ function crep -d "TODO all crep*.fish should use the same code basis"
   $dev/cheatsheet/commands-win.bat \
   $dev/cheatsheet/commands-clojure.clj \
   $dev/cheatsheet/commands-emacs.el \
+  $dev/cheatsheet/commands-utf8.txt \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \

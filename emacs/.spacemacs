@@ -173,8 +173,9 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes
    '(
+     leuven ; light-theme
      ;; dark themes
-     solarized-dark spacemacs-dark leuven zenburn
+     solarized-dark spacemacs-dark zenburn
      ;; light themes
      default tsdh-light dichromacy apropospriate-light espresso soft-morning
      eclipse spacemacs-light solarized-light
