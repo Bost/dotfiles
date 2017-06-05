@@ -884,16 +884,15 @@ Example: (buffer-mode (current-buffer))"
      ("C-c t"           . crux-transpose-windows)
      ("<C-s-backspace>" . crux-kill-line-backwards)))
 
-  (defun clojure-insert-sexp (str-sexp n-chars-back)
+  (defun insert-sexp (str-sexp n-chars-back)
     (insert str-sexp)
     (left-char n-chars-back))
 
-  (defun elisp-insert-message ()
-    (interactive)
-    (clojure-insert-sexp "(message (format \"\"))" 3))
-
   (use-package emacs
-    :bind (("C-s-m" . elisp-insert-message)
+    :init (defun elisp-insert-message ()
+            (interactive)
+            (insert-sexp "(message (format \"\"))" 3))
+    :bind (("C-s-m" . elisp-insert-message )
            ("s-d"   . eval-defun)
            ("s-e"   . eval-last-sexp)))
 
@@ -1065,30 +1064,29 @@ Repeated invocations toggle between the two most recently open buffers."
 
       (defun clojure-insert-println ()
         (interactive)
-        ;; (clojure-insert-sexp"(.log js/console \"\")" 2) TODO for cljs
-        (clojure-insert-sexp"(println \"\")" 2)
-      )
+        ;; (insert-sexp "(.log js/console \"\")" 2) TODO for cljs
+        (insert-sexp "(println \"\")" 2))
 
       (defun clojure-insert-let ()
         (interactive)
         ;; (cljr-introduce-let) ; TODO see docu for cljr-introduce-let
-        (clojure-insert-sexp "(let [])" 2))
+        (insert-sexp "(let [])" 2))
 
       (defun clojure-insert-for ()
         (interactive)
-        (clojure-insert-sexp "(for [])" 2))
+        (insert-sexp "(for [])" 2))
 
       (defun clojure-insert-defn ()
         (interactive)
-        (clojure-insert-sexp "(defn [])" 3))
+        (insert-sexp "(defn [])" 3))
 
       (defun clojure-insert-doseq ()
         (interactive)
-        (clojure-insert-sexp "(doseq [])" 2))
+        (insert-sexp "(doseq [])" 2))
 
       (defun clojure-insert-do ()
         (interactive)
-        (clojure-insert-sexp "(do)" 1))
+        (insert-sexp "(do)" 1))
 
       (defun clj-cmt-uncmt-line-sexp ()
         (interactive)
