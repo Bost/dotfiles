@@ -925,20 +925,16 @@ the (^:fold ...) expressions."
          (hs-hide-block)
          (next-line)))))
 
-  (defun hs-clojure-mode-hook ()
-    (interactive)
-    (hs-minor-mode 1)
-    (hs-clojure-hide-namespace-and-folds))
-
-  (use-package clojure-mode
+    (use-package clojure-mode
     :config
     (add-hook 'clojure-mode-hook 'typed-clojure-mode)
-
-    ;; see (global-prettify-symbols-mode +1)
-    ;; (add-hook 'clojure-mode-hook (lambda () (prettify-symbols-mode)))
-
     ;; 1st invocation (clojure mode cold start) doesn't work
-    (add-hook 'clojure-mode-hook 'hs-clojure-mode-hook)
+    (add-hook 'clojure-mode-hook (lambda ()
+                                   (interactive)
+                                   ;; see (global-prettify-symbols-mode +1)
+                                   ;; (prettify-symbols-mode)
+                                   (hs-minor-mode 1)
+                                   (hs-clojure-hide-namespace-and-folds)))
     (bind-keys :map clojure-mode-map
                ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
