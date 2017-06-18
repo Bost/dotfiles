@@ -1,3 +1,0 @@
-function ag
-  ac
-end
