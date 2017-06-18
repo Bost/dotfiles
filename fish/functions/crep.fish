@@ -1,12 +1,12 @@
 function crep -d "TODO all crep*.fish should use the same code basis"
   # --before-context=1 --after-context=1
   ack \
-  $dev/cheatsheet/commands-git.sh \
-  $dev/cheatsheet/commands-linux.sh \
-  $dev/cheatsheet/commands-win.bat \
-  $dev/cheatsheet/commands-clojure.clj \
-  $dev/cheatsheet/commands-emacs.el \
-  $dev/cheatsheet/commands-utf8.txt \
+  $dev/cheatsheet/cmds/git.sh \
+  $dev/cheatsheet/cmds/linux.sh \
+  $dev/cheatsheet/cmds/win.bat \
+  $dev/cheatsheet/cmds/clojure.clj \
+  $dev/cheatsheet/cmds/emacs.el \
+  $dev/cheatsheet/cmds/utf8.txt \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \

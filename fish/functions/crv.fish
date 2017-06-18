@@ -1,7 +1,7 @@
 function crv -d "TODO all crep*.fish should use the same code basis"
   # --before-context=1 --after-context=1
   ack \
-  $dev/cheatsheet/commands-vim.vim \
+  $dev/cheatsheet/cmds/vim.vim \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \

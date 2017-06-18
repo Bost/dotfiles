@@ -1,7 +1,7 @@
 function crc
   ack \
   $dev/cider/README.md \
-  $dev/cheatsheet/commands-clojure.clj \
+  $dev/cheatsheet/cmds/clojure.clj \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \

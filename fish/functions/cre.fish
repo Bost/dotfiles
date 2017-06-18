@@ -1,7 +1,7 @@
 function cre
   # --before-context=1 --after-context=1
   ack \
-  $dev/cheatsheet/commands-emacs.el \
+  $dev/cheatsheet/cmds/emacs.el \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \

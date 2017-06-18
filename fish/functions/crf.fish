@@ -1,6 +1,6 @@
 function crf
   ack \
-  $dev/cheatsheet/commands-findgrep.sh \
+  $dev/cheatsheet/cmds/findgrep.sh \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \

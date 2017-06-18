@@ -1,6 +1,6 @@
 function crh
   ack \
-  $dev/cheatsheet/commands-host.sh \
+  $dev/cheatsheet/cmds/host.sh \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \

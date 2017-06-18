@@ -1,6 +1,6 @@
 function crg
   ack \
-  $dev/cheatsheet/commands-git.sh \
+  $dev/cheatsheet/cmds/git.sh \
   $dev/dotfiles/.gitconfig \
   --context=1 \
   --nogroup \

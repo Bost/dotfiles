@@ -1,6 +1,6 @@
 function cru
   ack \
-  $dev/cheatsheet/commands-utf8.txt \
+  $dev/cheatsheet/cmds/utf8.txt \
   --context=1 \
   --nogroup \
   --break --with-filename --color-filename=grey13 \
