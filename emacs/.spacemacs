@@ -426,6 +426,8 @@ you should place your code here."
         (server-edit)
       (kill-this-buffer)))
 
+  (defalias 'save-selected-text 'write-region)
+
   (defun my/rudekill-matching-buffers (regexp &optional internal-too)
     "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP.
 See the `kill-matching-buffers` for grateful killing. The optional 2nd argument
