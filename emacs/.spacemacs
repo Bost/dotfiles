@@ -370,6 +370,7 @@ you should place your code here."
   (global-prettify-symbols-mode +1)
 
   (setq
+   goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
    bookmark-default-file "~/dev/dotfiles/emacs/bookmarks"
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
