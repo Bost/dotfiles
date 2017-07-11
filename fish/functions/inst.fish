@@ -1,4 +1,4 @@
 function inst
-  echo "sudo apt-get install --yes $argv"
-        sudo apt-get install --yes $argv
+  echo "sudo apt install --yes $argv"
+        sudo apt install --yes $argv
 end

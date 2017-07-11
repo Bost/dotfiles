@@ -1,4 +1,4 @@
 function armv
-  echo "sudo apt-get autoremove --yes $argv"
-        sudo apt-get autoremove --yes $argv
+  echo "sudo apt autoremove --yes $argv"
+        sudo apt autoremove --yes $argv
 end
