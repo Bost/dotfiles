@@ -811,6 +811,10 @@ Example: (my/buffer-mode (current-buffer))"
           (setq jit-lock-defer-time nil)
           (message (format "%s enabled" msg)))))))
 
+  (use-package multiple-cursors
+    :ensure t
+    :bind (("C-S-<mouse-1>" . mc/add-cursor-on-click)))
+
   ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
   (global-set-key (kbd "s-L") 'my/toggle-large-file-setting)
 
