@@ -1,4 +1,5 @@
 function extract
+  # TODO see climate extract
   # TODO loop for every arg
   set file $argv[1]
   switch $file
