@@ -395,7 +395,7 @@ you should place your code here."
                     (get-char-property (point) 'face))))
       (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
-  (defun hilight-line-dups ()
+  (defun my/hilight-duplicate-lines()
     (interactive)
     (let ((count 0)
           line-re)

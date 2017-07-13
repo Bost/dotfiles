@@ -399,7 +399,7 @@
   ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
   )
 
-;; Repond to requests from the Emacs Chrome plugin using sockets.
+;; Respond to requests from the Emacs Chrome plugin using sockets.
 ;; See emacs activation docu in the browser plugin
 (use-package edit-server :disabled t :defer t
   :if window-system
