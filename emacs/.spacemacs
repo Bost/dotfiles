@@ -389,8 +389,8 @@ you should place your code here."
                                ;;   ("." . browse-url-default-browser))
    )
 
-  ;; shorthand for interactive lambdas
-  (defmacro interactivelambda (&rest body)
+  (defmacro interactive-lambda (&rest body)
+    ;; (defmacro interactive-lambda ...) prettyfied to "Λ"
     `(lambda ()
        (interactive)
        ,@body))
@@ -563,8 +563,7 @@ Example: (my/buffer-mode (current-buffer))"
                    (face-remap-remove-relative remap-cookie))
                  (face-remap-add-relative 'default 'flash-active-buffer-face)))
 
-  (global-set-key (kbd "s-q") (lambda ()
-                                (interactive)
+  (global-set-key (kbd "s-q") (interactive-lambda ()
                                 (other-window 1)
                                 (my/flash-active-buffer)))
 
@@ -599,8 +598,7 @@ Example: (my/buffer-mode (current-buffer))"
 
   ;; Default theme applied at startup
   (global-set-key (kbd "s-a") 'helm-mini)
-  (global-set-key (kbd "s-z") (lambda ()
-                                (interactive)
+  (global-set-key (kbd "s-z") (interactive-lambda ()
                                 (bs-show nil)
                                 (if (not (evil-insert-state-p))
                                     (evil-insert 0))))
@@ -646,11 +644,11 @@ Example: (my/buffer-mode (current-buffer))"
     (evil-normal-state)
     (execute-kbd-macro vi-str))
 
-  (global-set-key (kbd "s-<") (lambda () (interactive) (my/select-inner "vi<")))
-  (global-set-key (kbd "s-[") (lambda () (interactive) (my/select-inner "vi[")))
-  (global-set-key (kbd "s-(") (lambda () (interactive) (my/select-inner "vi(")))
-  (global-set-key (kbd "s-{") (lambda () (interactive) (my/select-inner "vi{")))
-  (global-set-key (kbd "s-\"") (lambda () (interactive) (my/select-inner "vi\"")))
+  (global-set-key (kbd "s-<")  (interactive-lambda () (my/select-inner "vi<")))
+  (global-set-key (kbd "s-[")  (interactive-lambda () (my/select-inner "vi[")))
+  (global-set-key (kbd "s-(")  (interactive-lambda () (my/select-inner "vi(")))
+  (global-set-key (kbd "s-{")  (interactive-lambda () (my/select-inner "vi{")))
+  (global-set-key (kbd "s-\"") (interactive-lambda () (my/select-inner "vi\"")))
 
   (defun my/disable-y-or-n-p (orig-fun &rest args)
     (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
@@ -673,10 +671,9 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "s-<f1>") 'eshell)
   (global-set-key (kbd "s-p") 'helm-projectile)
   (global-set-key (kbd "s-w")
-                  (lambda ()
-                    (interactive)
-                    (whitespace-mode 'toggle)
-                    (message (format "s-n / s-N : narrow-to-defun / widen"))))
+                  (interactive-lambda ()
+                     (whitespace-mode 'toggle)
+                     (message (format "s-n / s-N : narrow-to-defun / widen"))))
 
   (global-set-key (kbd "s-m") 'magit-status)
 
@@ -687,9 +684,8 @@ Example: (my/buffer-mode (current-buffer))"
 
   ;; See also: SPC s
   (global-set-key (kbd "<f3>") 'spacemacs/helm-project-smart-do-search)
-  (global-set-key (kbd "<M-f3>") (lambda ()
-                                   (interactive)
-                                   (spacemacs/helm-project-smart-do-search t)))
+  (global-set-key (kbd "<M-f3>") (interactive-lambda ()
+                                    (spacemacs/helm-project-smart-do-search t)))
 
   (global-set-key (kbd "s-f") 'helm-find-files)
   (global-set-key (kbd "s-F") 'recentf-open-files)
@@ -731,11 +727,11 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "<f2>")    'my/evil-avy-goto-char)
   (global-set-key (kbd "s-/")     'my/evil-avy-goto-char)
 
-  (global-set-key (kbd "<s-tab>") (lambda ()
-                    (interactive)
-                    (spacemacs/alternate-buffer)
-                    (message (format
-                              "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))))
+  (global-set-key (kbd "<s-tab>")
+                  (interactive-lambda ()
+                     (spacemacs/alternate-buffer)
+                     (message
+                      (format "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))))
 
   ;; TODO evaluate: paste copied text multiple times
   (defun my/evil-paste-after-from-0 ()
@@ -749,8 +745,7 @@ Example: (my/buffer-mode (current-buffer))"
   ;; TODO make it run under "t"
   ;; (global-set-key (kbd "s-t")    'evil-avy-goto-char
   ;;                                 ;; This doesn't work
-  ;;                                 ;; (lambda ()
-  ;;                                 ;;   (interactive)
+  ;;                                 ;; (interactive-lambda ()
   ;;                                 ;;   (if (evil-normal-state-p)
   ;;                                 ;;       (evil-avy-goto-char)))
   ;;                 )
@@ -763,17 +758,14 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "<C-f2>") 'my/avy-goto-line)
   (global-set-key (kbd "C-s-/")  'my/avy-goto-line)
 
-  (global-set-key (kbd "<C-mouse-5>")
-                  (lambda () (interactive) (message "zoom-out")))
-  (global-set-key (kbd "<C-mouse-4>")
-                  (lambda () (interactive) (message "zoom-out")))
-  (global-set-key (kbd "<menu>")
-                  (lambda () (interactive) (message "context-menu")))
+  (global-set-key (kbd "<C-mouse-5>") (interactive-lambda () (message "zoom-out")))
+  (global-set-key (kbd "<C-mouse-4>") (interactive-lambda () (message "zoom-out")))
+  (global-set-key (kbd "<menu>")      (interactive-lambda () (message "context-menu")))
 
   ;; fd - evil-escape from insert state and everything else
 
-  (global-set-key (kbd "s-I") ;; occurences - function scope
-                  (lambda () (interactive) (iedit-mode 0)))
+  ;; occurences - function scope
+  (global-set-key (kbd "s-I") (interactive-lambda () (iedit-mode 0)))
   (global-set-key (kbd "s-i") 'iedit-mode) ;; all occurences
 
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
@@ -900,10 +892,15 @@ Example: (my/buffer-mode (current-buffer))"
     (left-char n-chars-back))
 
   (use-package emacs
+    :config (add-hook 'emacs-lisp-mode-hook
+                      (lambda () ;; "Λ"
+                        (push '("interactive-lambda" . 923) prettify-symbols-alist)))
     :init (defun my/elisp-insert-message ()
             (interactive)
             (my/insert-sexp "(message (format \"\"))" 3))
-    :bind (("C-s-m" . my/elisp-insert-message )
+
+    :bind ;; lambdas are not supported
+    (("C-s-m" . my/elisp-insert-message)
            ("s-d"   . eval-defun)
            ("s-e"   . eval-last-sexp)))
 
@@ -939,8 +936,7 @@ the (^:fold ...) expressions."
     :config
     (add-hook 'clojure-mode-hook 'typed-clojure-mode)
     ;; 1st invocation (clojure mode cold start) doesn't work
-    (add-hook 'clojure-mode-hook (lambda ()
-                                   (interactive)
+    (add-hook 'clojure-mode-hook (interactive-lambda ()
                                    ;; see (global-prettify-symbols-mode +1)
                                    ;; (prettify-symbols-mode)
                                    (hs-minor-mode 1)
@@ -949,7 +945,7 @@ the (^:fold ...) expressions."
                ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
                ("s-i" . cljr-rename-symbol)
-               ("C-s-\\" . (lambda () (interactive) (insert "#_")))
+               ("C-s-\\" . (interactive-lambda () (insert "#_")))
                ("s-\\" . my/clj-cmt-uncmt-line-sexp)))
 
   (use-package super-save ;; better auto-save-mode
@@ -1029,7 +1025,7 @@ Repeated invocations toggle between the two most recently open buffers."
                  ;; followind 3 bindings are same as in clojure-mode
                  ;; on the german keyboard the '#' is next to Enter
                  ("s-i" . cljr-rename-symbol)
-                 ("C-s-\\" . (lambda () (interactive) (insert "#_")))
+                 ("C-s-\\" . (interactive-lambda () (insert "#_")))
                  ("s-\\" . my/clj-cmt-uncmt-line-sexp)
 
                  ("<s-delete>" . cider-repl-clear-buffer)
@@ -1045,8 +1041,7 @@ Repeated invocations toggle between the two most recently open buffers."
                  ("s-d"         . cider-eval-defun-at-point)
                  ("s-j"         . cider-format-defun)
                  ("s-x"         . cider-switch-to-repl-buffer)
-                 ("s-X"         . (lambda ()
-                                    (interactive)
+                 ("s-X"         . (interactive-lambda ()
                                     (cider-switch-to-repl-buffer)
                                     (my/cider-figwheel-repl)))
                  ("s-e"         . cider-eval-last-sexp))
