@@ -389,7 +389,13 @@ you should place your code here."
                                ;;   ("." . browse-url-default-browser))
    )
 
-  (defun what-face (pos)
+  ;; shorthand for interactive lambdas
+  (defmacro interactivelambda (&rest body)
+    `(lambda ()
+       (interactive)
+       ,@body))
+
+  (defun my/what-face (pos)
     (interactive "d")
     (let ((face (or (get-char-property (point) 'read-face-name)
                     (get-char-property (point) 'face))))
@@ -421,7 +427,7 @@ you should place your code here."
                   (forward-line 1)))))
           (forward-line 1)))))
 
-  (defun close-buffer ()
+  (defun my/close-buffer ()
     (interactive)
     (if server-buffer-clients
         (server-edit)
@@ -456,7 +462,7 @@ Returns a message with the count of killed buffers."
      (format "%d buffer(s) killed."
              (my/rudekill-matching-buffers regexp internal-too))))
 
-  (defun kill-all-magit-buffers ()
+  (defun my/kill-all-magit-buffers ()
     "Kill all Magit buffers."
     (interactive)
     ;; (my/kill-matching-buffers-rudely "\*magit: .*\\|\*magit-.*")
@@ -474,13 +480,13 @@ Returns a message with the count of killed buffers."
             (kill-buffer buffer)))
         (message "Killed %i Magit buffer(s)." count))))
 
-  (defun buffer-mode (buffer-or-string)
+  (defun my/buffer-mode (buffer-or-string)
     "Returns the major mode associated with a buffer.
-Example: (buffer-mode (current-buffer))"
+Example: (my/buffer-mode (current-buffer))"
     (with-current-buffer buffer-or-string
       major-mode))
 
-  (defun kill-unwanted-buffers ()
+  (defun my/kill-unwanted-buffers ()
     (interactive)
     (save-excursion
       (let ((count 0))
@@ -507,9 +513,9 @@ Example: (buffer-mode (current-buffer))"
             (kill-buffer buffer)))
         (message "Buffer(s) killed: %i" count))))
 
-  (global-set-key (kbd "s-K") 'kill-unwanted-buffers)
+  (global-set-key (kbd "s-K") 'my/kill-unwanted-buffers)
 
-  (defun kill-all-dired-buffers ()
+  (defun my/kill-all-dired-buffers ()
     "Kill all dired buffers."
     (interactive)
     (save-excursion
@@ -521,7 +527,7 @@ Example: (buffer-mode (current-buffer))"
             (kill-buffer buffer)))
         (message "Killed %i dired buffer(s)." count))))
 
-  (global-set-key (kbd "s-C-K") 'kill-all-dired-buffers)
+  (global-set-key (kbd "s-C-K") 'my/kill-all-dired-buffers)
 
   (global-set-key (kbd "s-R") 'spacemacs/rename-current-buffer-file)
 
@@ -549,7 +555,8 @@ Example: (buffer-mode (current-buffer))"
   (set-face-attribute 'flash-active-buffer-face nil
                       :background "black"
                       :foreground nil)
-  (defun flash-active-buffer ()
+  (defun my/flash-active-buffer ()
+    "Blip background color of the active buffer."
     (interactive)
     (run-at-time "100 millisec" nil
                  (lambda (remap-cookie)
@@ -559,9 +566,9 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-q") (lambda ()
                                 (interactive)
                                 (other-window 1)
-                                (flash-active-buffer)))
+                                (my/flash-active-buffer)))
 
-  (global-set-key (kbd "s-k") 'close-buffer)
+  (global-set-key (kbd "s-k") 'my/close-buffer)
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "s-0") 'delete-window)
   (global-set-key (kbd "s-1") 'delete-other-windows)
@@ -573,20 +580,20 @@ Example: (buffer-mode (current-buffer))"
   (global-set-key (kbd "s-n") 'narrow-to-defun)
   (global-set-key (kbd "s-N") 'widen)
 
-  (defun split-other-window-and (f)
+  (defun my/split-other-window-and (f)
     (funcall f)
     (other-window 1))
 
-  (defun split-other-window-below ()
+  (defun my/split-other-window-below ()
     (interactive)
-    (split-other-window-and 'split-window-below))
+    (my/split-other-window-and 'split-window-below))
 
-  (defun split-other-window-right ()
+  (defun my/split-other-window-right ()
     (interactive)
-    (split-other-window-and 'split-window-right))
+    (my/split-other-window-and 'split-window-right))
 
-  ;; (global-set-key (kbd "s-2") 'split-other-window-below)
-  ;; (global-set-key (kbd "s-3") 'split-other-window-right)
+  ;; (global-set-key (kbd "s-2") 'my/split-other-window-below)
+  ;; (global-set-key (kbd "s-3") 'my/split-other-window-right)
   (global-set-key (kbd "s-2") 'split-window-below) ;; SPC w -
   (global-set-key (kbd "s-3") 'spacemacs/layout-double-columns) ; SPC w 2
 
@@ -600,7 +607,7 @@ Example: (buffer-mode (current-buffer))"
   ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
   (global-set-key (kbd "s-D") 'dired-jump)
 
-  (defun sp-copy-sexp-msg ()
+  (defun my/sp-copy-sexp-msg ()
     (interactive)
     (sp-copy-sexp)
     (let* ((sexp (car kill-ring))
@@ -621,33 +628,34 @@ Example: (buffer-mode (current-buffer))"
                ;;   fst-line)
                ))))
 
-  (defun sp-copy-back-sexp-msg ()
+  (defun my/sp-copy-back-sexp-msg ()
     (interactive)
     (let* ((point-pos (point)))
       (sp-backward-sexp)
-      (sp-copy-sexp-msg)
+      (my/sp-copy-sexp-msg)
       (goto-char point-pos)))
 
-  (global-set-key (kbd "s-c") 'sp-copy-sexp-msg)
-  (global-set-key (kbd "s-b") 'sp-copy-back-sexp-msg)
+  (global-set-key (kbd "s-c") 'my/sp-copy-sexp-msg)
+  (global-set-key (kbd "s-b") 'my/sp-copy-back-sexp-msg)
   (global-set-key (kbd "s-B") 'helm-filtered-bookmarks)
   (global-set-key (kbd "<f9>") 'helm-filtered-bookmarks)
   (global-set-key (kbd "<f11>") 'bookmark-set)
 
-  (defun select-inner (vi-str)
+  (defun my/select-inner (vi-str)
+    "Select inner part of a string surrounded by bracket / quotation chars."
     (evil-normal-state)
     (execute-kbd-macro vi-str))
 
-  (global-set-key (kbd "s-<") (lambda () (interactive) (select-inner "vi<")))
-  (global-set-key (kbd "s-[") (lambda () (interactive) (select-inner "vi[")))
-  (global-set-key (kbd "s-(") (lambda () (interactive) (select-inner "vi(")))
-  (global-set-key (kbd "s-{") (lambda () (interactive) (select-inner "vi{")))
-  (global-set-key (kbd "s-\"") (lambda () (interactive) (select-inner "vi\"")))
+  (global-set-key (kbd "s-<") (lambda () (interactive) (my/select-inner "vi<")))
+  (global-set-key (kbd "s-[") (lambda () (interactive) (my/select-inner "vi[")))
+  (global-set-key (kbd "s-(") (lambda () (interactive) (my/select-inner "vi(")))
+  (global-set-key (kbd "s-{") (lambda () (interactive) (my/select-inner "vi{")))
+  (global-set-key (kbd "s-\"") (lambda () (interactive) (my/select-inner "vi\"")))
 
-  (defun disable-y-or-n-p (orig-fun &rest args)
+  (defun my/disable-y-or-n-p (orig-fun &rest args)
     (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
       (apply orig-fun args)))
-  (advice-add 'ediff-quit :around #'disable-y-or-n-p)
+  (advice-add 'ediff-quit :around #'my/disable-y-or-n-p)
 
   (global-set-key (kbd "<s-print>")
                   (lambda (&optional arg) "ediff-buffers-left-right"
@@ -715,13 +723,13 @@ Example: (buffer-mode (current-buffer))"
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
 
-  (defun my-evil-avy-goto-char ()
+  (defun my/evil-avy-goto-char ()
     (interactive)
     (evil-avy-goto-char)
     (message (format "evil-avy-goto-char: SPC j j, <f2>, <s-tab>, s-/")))
 
-  (global-set-key (kbd "<f2>")    'my-evil-avy-goto-char)
-  (global-set-key (kbd "s-/")     'my-evil-avy-goto-char)
+  (global-set-key (kbd "<f2>")    'my/evil-avy-goto-char)
+  (global-set-key (kbd "s-/")     'my/evil-avy-goto-char)
 
   (global-set-key (kbd "<s-tab>") (lambda ()
                     (interactive)
@@ -730,12 +738,12 @@ Example: (buffer-mode (current-buffer))"
                               "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))))
 
   ;; TODO evaluate: paste copied text multiple times
-  (defun evil-paste-after-from-0 ()
+  (defun my/evil-paste-after-from-0 ()
     (interactive)
     (let ((evil-this-register ?0))
       (call-interactively 'evil-paste-after)))
 
-  (define-key evil-visual-state-map "p" 'evil-paste-after-from-0)
+  (define-key evil-visual-state-map "p" 'my/evil-paste-after-from-0)
 
 
   ;; TODO make it run under "t"
@@ -747,13 +755,13 @@ Example: (buffer-mode (current-buffer))"
   ;;                                 ;;       (evil-avy-goto-char)))
   ;;                 )
 
-  (defun my-avy-goto-line ()
+  (defun my/avy-goto-line ()
     (interactive)
     (avy-goto-line)
     (message (format "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
 
-  (global-set-key (kbd "<C-f2>") 'my-avy-goto-line)
-  (global-set-key (kbd "C-s-/")  'my-avy-goto-line)
+  (global-set-key (kbd "<C-f2>") 'my/avy-goto-line)
+  (global-set-key (kbd "C-s-/")  'my/avy-goto-line)
 
   (global-set-key (kbd "<C-mouse-5>")
                   (lambda () (interactive) (message "zoom-out")))
@@ -787,7 +795,7 @@ Example: (buffer-mode (current-buffer))"
 
   ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
 
-  (defun toggle-large-file-setting ()
+  (defun my/toggle-large-file-setting ()
     (interactive)
     (let* ((msg "large-file-settings"))
       (cond
@@ -811,8 +819,8 @@ Example: (buffer-mode (current-buffer))"
           (setq jit-lock-defer-time nil)
           (message (format "%s enabled" msg)))))))
 
-  ;; (add-hook 'find-file-hook ''toggle-large-file-setting)
-  (global-set-key (kbd "s-L") 'toggle-large-file-setting)
+  ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
+  (global-set-key (kbd "s-L") 'my/toggle-large-file-setting)
 
   (use-package fish-mode
     :config
@@ -887,19 +895,19 @@ Example: (buffer-mode (current-buffer))"
      ("C-c t"           . crux-transpose-windows)
      ("<C-s-backspace>" . crux-kill-line-backwards)))
 
-  (defun insert-sexp (str-sexp n-chars-back)
+  (defun my/insert-sexp (str-sexp n-chars-back)
     (insert str-sexp)
     (left-char n-chars-back))
 
   (use-package emacs
-    :init (defun elisp-insert-message ()
+    :init (defun my/elisp-insert-message ()
             (interactive)
-            (insert-sexp "(message (format \"\"))" 3))
-    :bind (("C-s-m" . elisp-insert-message )
+            (my/insert-sexp "(message (format \"\"))" 3))
+    :bind (("C-s-m" . my/elisp-insert-message )
            ("s-d"   . eval-defun)
            ("s-e"   . eval-last-sexp)))
 
-  (defun clj-cmt-uncmt-line-sexp ()
+  (defun my/clj-cmt-uncmt-line-sexp ()
     (interactive)
     (let* ((point-pos1 (point)))
       (evil-insert-line 0)
@@ -913,7 +921,7 @@ Example: (buffer-mode (current-buffer))"
           (insert cmtstr))
         (goto-char point-pos1))))
 
-  (defun hs-clojure-hide-namespace-and-folds ()
+  (defun my/hs-clojure-hide-namespace-and-folds ()
     "Hide the first (ns ...) expression in the file, and also all
 the (^:fold ...) expressions."
     (interactive)
@@ -936,26 +944,26 @@ the (^:fold ...) expressions."
                                    ;; see (global-prettify-symbols-mode +1)
                                    ;; (prettify-symbols-mode)
                                    (hs-minor-mode 1)
-                                   (hs-clojure-hide-namespace-and-folds)))
+                                   (my/hs-clojure-hide-namespace-and-folds)))
     (bind-keys :map clojure-mode-map
                ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
                ("s-i" . cljr-rename-symbol)
                ("C-s-\\" . (lambda () (interactive) (insert "#_")))
-               ("s-\\" . clj-cmt-uncmt-line-sexp)))
+               ("s-\\" . my/clj-cmt-uncmt-line-sexp)))
 
   (use-package super-save ;; better auto-save-mode
     :config (super-save-mode +1))
 
-  ;; (defun progress-report (orig-fun &rest args)
+  ;; (defun my/progress-report (orig-fun &rest args)
   ;;   (let ((progress-reporter
   ;;          (make-progress-reporter
   ;;           (format "Evaluating (%s %s)..." orig-fun args))))
   ;;     (let ((res (apply orig-fun args)))
   ;;       (progress-reporter-done progress-reporter)
   ;;       res)))
-  ;; (advice-add 'eval-buffer :around #'progress-report)
-  ;; (advice-remove 'eval-buffer #'progress-report)
+  ;; (advice-add 'eval-buffer :around #'my/progress-report)
+  ;; (advice-remove 'eval-buffer #'my/progress-report)
   (global-set-key (kbd "s-u") 'eval-buffer)
 
   (global-set-key (kbd "s-.") 'spacemacs/jump-to-definition)
@@ -966,7 +974,7 @@ the (^:fold ...) expressions."
   (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
   (global-set-key (kbd "s-J") 'evil-join)
 
-  (defun smarter-move-beginning-of-line (arg)
+  (defun my/smarter-move-beginning-of-line (arg)
     "Move point back to indentation of beginning of line.
 
 Move point to the first non-whitespace character on this line.
@@ -989,11 +997,11 @@ point reaches the beginning or end of the buffer, stop there."
       (when (= orig-point (point))
         (move-beginning-of-line 1))))
 
-  ;; remap C-a/<home> to `smarter-move-beginning-of-line'
+  ;; remap C-a/<home> to `my/smarter-move-beginning-of-line'
   (global-set-key [remap move-beginning-of-line]
-                  'smarter-move-beginning-of-line)
+                  'my/smarter-move-beginning-of-line)
 
-  (defun switch-to-previous-buffer ()
+  (defun my/switch-to-previous-buffer ()
     "Switch to previously open buffer.
 Repeated invocations toggle between the two most recently open buffers."
     (interactive)
@@ -1004,7 +1012,7 @@ Repeated invocations toggle between the two most recently open buffers."
   ;; Max time delay between two presses of the same key to be considered a key chord.
   ;; Should normally be a little longer than `key-chord-two-keys-delay'.
   ; (setq key-chord-one-key-delay 0.2) ; default 0.2
-  (key-chord-define-global "KK" 'switch-to-previous-buffer)
+  (key-chord-define-global "KK" 'my/switch-to-previous-buffer)
 
   (use-package cider
       ;; :init
@@ -1022,7 +1030,7 @@ Repeated invocations toggle between the two most recently open buffers."
                  ;; on the german keyboard the '#' is next to Enter
                  ("s-i" . cljr-rename-symbol)
                  ("C-s-\\" . (lambda () (interactive) (insert "#_")))
-                 ("s-\\" . clj-cmt-uncmt-line-sexp)
+                 ("s-\\" . my/clj-cmt-uncmt-line-sexp)
 
                  ("<s-delete>" . cider-repl-clear-buffer)
                  ("s-j" . cider-format-defun)
@@ -1040,10 +1048,10 @@ Repeated invocations toggle between the two most recently open buffers."
                  ("s-X"         . (lambda ()
                                     (interactive)
                                     (cider-switch-to-repl-buffer)
-                                    (cider-figwheel-repl)))
+                                    (my/cider-figwheel-repl)))
                  ("s-e"         . cider-eval-last-sexp))
 
-      (defun cider-figwheel-repl ()
+      (defun my/cider-figwheel-repl ()
         (interactive)
         (save-some-buffers)
         (with-current-buffer (cider-current-repl-buffer)
@@ -1057,7 +1065,7 @@ Repeated invocations toggle between the two most recently open buffers."
           (if (not (evil-insert-state-p))
               (evil-insert 0))))
 
-      (defun cider-save-and-load-current-buffer ()
+      (defun my/cider-save-and-load-current-buffer ()
         (interactive)
         (when (buffer-modified-p)
           (save-buffer))
@@ -1065,33 +1073,33 @@ Repeated invocations toggle between the two most recently open buffers."
         ;; (cider-switch-to-relevant-repl-buffer nil)
         )
 
-      (defun clojure-insert-println ()
+      (defun my/clojure-insert-println ()
         (interactive)
-        ;; (insert-sexp "(.log js/console \"\")" 2) TODO for cljs
-        (insert-sexp "(println \"\")" 2))
+        ;; (my/insert-sexp "(.log js/console \"\")" 2) TODO for cljs
+        (my/insert-sexp "(println \"\")" 2))
 
-      (defun clojure-insert-let ()
+      (defun my/clojure-insert-let ()
         (interactive)
         ;; (cljr-introduce-let) ; TODO see docu for cljr-introduce-let
-        (insert-sexp "(let [])" 2))
+        (my/insert-sexp "(let [])" 2))
 
-      (defun clojure-insert-for ()
+      (defun my/clojure-insert-for ()
         (interactive)
-        (insert-sexp "(for [])" 2))
+        (my/insert-sexp "(for [])" 2))
 
-      (defun clojure-insert-defn ()
+      (defun my/clojure-insert-defn ()
         (interactive)
-        (insert-sexp "(defn [])" 3))
+        (my/insert-sexp "(defn [])" 3))
 
-      (defun clojure-insert-doseq ()
+      (defun my/clojure-insert-doseq ()
         (interactive)
-        (insert-sexp "(doseq [])" 2))
+        (my/insert-sexp "(doseq [])" 2))
 
-      (defun clojure-insert-do ()
+      (defun my/clojure-insert-do ()
         (interactive)
-        (insert-sexp "(do)" 1))
+        (my/insert-sexp "(do)" 1))
 
-      (defun clj-cmt-uncmt-line-sexp ()
+      (defun my/clj-cmt-uncmt-line-sexp ()
         (interactive)
         (evil-insert-line 0)
         (let* ((cmtstr "#_")
@@ -1113,18 +1121,18 @@ Repeated invocations toggle between the two most recently open buffers."
 
       :bind (;; lambdas are not supported
              ("s-x"   . cider-switch-to-repl-buffer)
-             ("<s-insert>" . clojure-insert-println)
-             ;; (bind-key "C-s-p" 'clojure-insert-println)
-             ("C-s-p" . clojure-insert-println)
-             ("C-s-l" . clojure-insert-let)
-             ("C-s-f" . clojure-insert-for)
-             ("C-s-n" . clojure-insert-defn)
-             ("C-s-s" . clojure-insert-doseq)
-             ("C-s-d" . clojure-insert-do)
+             ("<s-insert>" . my/clojure-insert-println)
+             ;; (bind-key "C-s-p" 'my/clojure-insert-println)
+             ("C-s-p" . my/clojure-insert-println)
+             ("C-s-l" . my/clojure-insert-let)
+             ("C-s-f" . my/clojure-insert-for)
+             ("C-s-n" . my/clojure-insert-defn)
+             ("C-s-s" . my/clojure-insert-doseq)
+             ("C-s-d" . my/clojure-insert-do)
              ;; ("s-x"   . cider-switch-to-last-clojure-buffer)
              ("C-s-j" . cider-jack-in)
              ;; ("s-r"   . cider-eval-last-expression-in-repl)
-             ("M-s-l" . cider-save-and-load-current-buffer)
+             ("M-s-l" . my/cider-save-and-load-current-buffer)
              ("M-s-n" . cider-repl-set-ns)
              ("s-t"   . cider-test-run-tests)
 
@@ -1149,7 +1157,7 @@ Repeated invocations toggle between the two most recently open buffers."
              ("s-S" . main-s)
              ("s-U" . main-u)))
 
-  (defun copy-to-clipboard ()
+  (defun my/copy-to-clipboard ()
     "Copies selection to x-clipboard."
     (interactive)
     (if (display-graphic-p)
@@ -1164,7 +1172,7 @@ Repeated invocations toggle between the two most recently open buffers."
             (deactivate-mark))
         (message "No region active; can't yank to clipboard!"))))
 
-  (defun paste-from-clipboard ()
+  (defun my/paste-from-clipboard ()
     "Pastes from x-clipboard."
     (interactive)
     (if (display-graphic-p)
@@ -1172,10 +1180,10 @@ Repeated invocations toggle between the two most recently open buffers."
           (clipboard-yank)
           (message "graphics active"))
       (insert (shell-command-to-string "xsel -o -b"))))
-  (evil-leader/set-key "o y" 'copy-to-clipboard)
-  (evil-leader/set-key "o p" 'paste-from-clipboard)
+  (evil-leader/set-key "o y" 'my/copy-to-clipboard)
+  (evil-leader/set-key "o p" 'my/paste-from-clipboard)
 
-  (defun fabricate-subst-cmd (&optional arg)
+  (defun my/fabricate-subst-cmd (&optional arg)
     "Place prepared subst command to the echo area.
 Example 1.:
         :%s/\<\>//gc     - moves the point between '\<' and '\>'
@@ -1191,12 +1199,12 @@ Example 2.:
            ;; Example 2.:
            (search-regex (format "%s" (car kill-ring)))
            (replace-regex (format "%s" (car kill-ring)))
-           (sexp-str (format "%%s/%s/%s/gc" search-regex replace-regex))
+           (sexp-str (format "%%s/%s/my\\/%s/gc" search-regex replace-regex))
            ;; 4 means: jump to the 2nd slash
            (offset (+ (length search-regex) 4)))
       ;; (cons .. offset) moves the point
       (evil-ex (cons sexp-str offset))))
-  (global-set-key (kbd "s-:") 'fabricate-subst-cmd)
+  (global-set-key (kbd "s-:") 'my/fabricate-subst-cmd)
 
   ;; ;; keep the cursor centered to avoid sudden scroll jumps
   ;; (require 'centered-cursor-mode)
@@ -1238,8 +1246,8 @@ Example 2.:
 
 
   ;; (advice-remove 'magit-stash :after)
-  ;; (defun magit-stash-no-msg () (magit-stash ""))
-  ;; (advice-add 'magit-stash :after #'magit-stash-no-msg)
+  ;; (defun my/magit-stash-no-msg () (magit-stash ""))
+  ;; (advice-add 'magit-stash :after #'my/magit-stash-no-msg)
 
   ;; Move by screen lines instead of logical (long) lines
   (define-key evil-motion-state-map "j" 'evil-next-visual-line)

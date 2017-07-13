@@ -17,7 +17,7 @@
          ("s-R"               . rename-file-and-buffer)
          ;; ("<f3>"           . find-grep) ; Use -e '...' instead of -e "..."
          ("<f7>"              . find-file-emacs)
-         ("s-k"               . close-buffer)
+         ("s-k"               . my/close-buffer)
          ("C-s-k"             . delete-file-and-close-its-buffer)
          ("s-2"               . split-other-window-below)
          ("s-3"               . split-other-window-right)
@@ -275,7 +275,7 @@ Note the weekly scope of the command's precision.")
     (newline)                             ; insert a newline
     (switch-to-buffer nil))               ; return to the initial buffer
 
-  (defun close-buffer ()
+  (defun my/close-buffer ()
     (interactive)
     (if server-buffer-clients
         (server-edit)
@@ -285,7 +285,7 @@ Note the weekly scope of the command's precision.")
     (let ((file-name (buffer-file-name (current-buffer))))
       (delete-file file-name)
       (message (concat "File deleted: " file-name)))
-    (close-buffer))
+    (my/close-buffer))
 
   (dolist (mode '(tool-bar-mode
                   ;; menu-bar-mode
