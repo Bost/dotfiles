@@ -9,11 +9,11 @@
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    [refactor-nrepl "2.3.1"]
    [lein-ancient "0.6.10"]
-   [lein-localrepo "0.5.3" :exclusions [org.clojure/clojure]]
+   [lein-localrepo "0.5.4" :exclusions [org.clojure/clojure]]
    ;; lein kibit - check style
-   [lein-kibit "0.1.3" :exclusions [org.clojure/clojure
+   [lein-kibit "0.1.5" :exclusions [org.clojure/clojure
                                     org.clojure/tools.cli]]
-   [lein-typed "0.3.5"]
+   [lein-typed "0.4.0"]
    ]
   :dependencies
   [
