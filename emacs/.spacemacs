@@ -370,6 +370,7 @@ you should place your code here."
   (global-prettify-symbols-mode +1)
 
   (setq
+   python-shell-interpreter "python3"
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
    bookmark-default-file "~/dev/dotfiles/emacs/bookmarks"
