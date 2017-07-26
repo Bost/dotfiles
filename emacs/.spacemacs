@@ -657,11 +657,12 @@ Example: (my/buffer-mode (current-buffer))"
       (apply orig-fun args)))
   (advice-add 'ediff-quit :around #'my/disable-y-or-n-p)
 
-  (global-set-key (kbd "<s-print>")
-                  (lambda (&optional arg) "ediff-buffers-left-right"
-                    (interactive "p")
-                    (ediff-buffers (buffer-name) ;; gives the current buffer
-                                   (buffer-name (other-window 1)))))
+  (defun my/ediff-buffers-left-right (&optional arg)
+    "ediff buffers in the left and right panel"
+    (interactive "p")
+    (ediff-buffers (buffer-name) ;; gives the current buffer
+                   (buffer-name (other-window 1))))
+  (global-set-key (kbd "<s-print>") 'my/ediff-buffers-left-right)
 
   ;; Move the parenthesis - see SPC k b/B/f/F
   (global-set-key (kbd "M-s-<left>")  'sp-forward-barf-sexp)
