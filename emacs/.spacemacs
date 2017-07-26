@@ -510,7 +510,11 @@ Example: (my/buffer-mode (current-buffer))"
                         cider-docview-mode    ; for *cider-doc*
                         cider-inspector-mode  ; for *cider-inspect*
                         help-mode             ; for *Help*
-                        dired-mode))
+                        dired-mode
+                        ediff-meta-mode       ; for *Ediff Registry*
+                        Info-mode             ; for *info*
+                        spacemacs-buffer-mode ; for *spacemacs*
+                        ))
             (setq count (1+ count))
             (kill-buffer buffer)))
         (message "Buffer(s) killed: %i" count))))
