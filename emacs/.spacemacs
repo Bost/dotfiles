@@ -947,7 +947,7 @@ the (^:fold ...) expressions."
     :config
     (add-hook 'clojure-mode-hook 'typed-clojure-mode)
     ;; 1st invocation (clojure mode cold start) doesn't work
-    (add-hook 'clojure-mode-hook (interactive-lambda ()
+    (add-hook 'clojure-mode-hook (lambda ()
                                    ;; see (global-prettify-symbols-mode +1)
                                    ;; (prettify-symbols-mode)
                                    (hs-minor-mode 1)
@@ -956,7 +956,8 @@ the (^:fold ...) expressions."
                ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
                ("s-i" . cljr-rename-symbol)
-               ("C-s-\\" . (interactive-lambda () (insert "#_")))
+               ;; interactive-lambda doesn't work
+               ("C-s-\\" . (lambda () (interactive) (insert "#_")))
                ("s-\\" . my/clj-cmt-uncmt-line-sexp)))
 
   (use-package super-save ;; better auto-save-mode
