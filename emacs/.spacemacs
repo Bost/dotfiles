@@ -906,14 +906,26 @@ Example: (my/buffer-mode (current-buffer))"
     :config (add-hook 'emacs-lisp-mode-hook
                       (lambda () ;; "Λ"
                         (push '("interactive-lambda" . 923) prettify-symbols-alist)))
-    :init (defun my/elisp-insert-message ()
-            (interactive)
-            (my/insert-sexp "(message (format \"\"))" 3))
+    :init
+    (defun my/eval-defun (arg)
+      "eval-defun doesn't work properly"
+      (interactive "P")
+      (let* ((point-pos (point)))
+        (end-of-line)
+        ;; separate the bracket from the string enables self-eval this function
+        (search-backward (format "(%s" "defun") nil t)
+        (sp-forward-sexp)
+        (eval-last-sexp arg)
+        (goto-char point-pos)))
+
+    (defun my/elisp-insert-message ()
+      (interactive)
+      (my/insert-sexp "(message (format \"\"))" 3))
 
     :bind ;; lambdas are not supported
     (("C-s-m" . my/elisp-insert-message)
-           ("s-d"   . eval-defun)
-           ("s-e"   . eval-last-sexp)))
+     ("s-d"   . my/eval-defun)
+     ("s-e"   . eval-last-sexp)))
 
   (defun my/clj-cmt-uncmt-line-sexp ()
     (interactive)
