@@ -1219,9 +1219,9 @@ Example 2.:
            ;; Example 2.:
            (search-regex (format "%s" (car kill-ring)))
            (replace-regex (format "%s" (car kill-ring)))
-           (sexp-str (format "%%s/%s/my\\/%s/gc" search-regex replace-regex))
+           (sexp-str (format "%%s/\\<%s\\>/%s/gc" search-regex replace-regex))
            ;; 4 means: jump to the 2nd slash
-           (offset (+ (length search-regex) 4)))
+           (offset (+ (length search-regex) 9)))
       ;; (cons .. offset) moves the point
       (evil-ex (cons sexp-str offset))))
   (global-set-key (kbd "s-:") 'my/fabricate-subst-cmd)
