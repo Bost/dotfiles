@@ -963,7 +963,8 @@ the (^:fold ...) expressions."
                                    ;; see (global-prettify-symbols-mode +1)
                                    ;; (prettify-symbols-mode)
                                    (hs-minor-mode 1)
-                                   (my/hs-clojure-hide-namespace-and-folds)))
+                                   ;; (my/hs-clojure-hide-namespace-and-folds)
+                                   ))
     (bind-keys :map clojure-mode-map
                ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
