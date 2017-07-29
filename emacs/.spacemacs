@@ -988,9 +988,9 @@ the (^:fold ...) expressions."
   (global-set-key (kbd "s-u") 'eval-buffer)
 
   (global-set-key (kbd "s-.") 'spacemacs/jump-to-definition)
-  ;; (global-set-key (kbd "s-,") 'evil-jump-backward) ;; C-o: evil-jump-backward
+  (global-set-key (kbd "s-,") 'evil-jump-backward) ;; C-o: evil-jump-backward
+  ;; (global-set-key (kbd "s-,") 'dumb-jump-back)
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
-  (global-set-key (kbd "s-,") 'dumb-jump-back)
   (global-set-key (kbd "<pause>") 'goto-last-change)
   (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
   (global-set-key (kbd "s-J") 'evil-join)
