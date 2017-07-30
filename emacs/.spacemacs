@@ -907,8 +907,13 @@ Example: (my/buffer-mode (current-buffer))"
                       (lambda () ;; "Λ"
                         (push '("interactive-lambda" . 923) prettify-symbols-alist)))
     :init
-    (defun my/eval-defun (arg)
-      "eval-defun doesn't work properly"
+    (defun my/eval-current-defun (arg)
+      "Evaluate the current i.e. inner defun.
+E.g. in the (defun a () (defun b () (defun c ()))) this function allows
+selective evaluation 'c' or 'b' or 'a' according to the point possition in
+contrast to `eval-defun' which always evaluates just 'a' no matter where the
+point is.
+TODO still buggy - when not in a defun it evaluates preceding defun"
       (interactive "P")
       (let* ((point-pos (point)))
         (end-of-line)
@@ -924,7 +929,7 @@ Example: (my/buffer-mode (current-buffer))"
 
     :bind ;; lambdas are not supported
     (("C-s-m" . my/elisp-insert-message)
-     ("s-d"   . my/eval-defun)
+     ("s-d"   . my/eval-current-defun)
      ("s-e"   . eval-last-sexp)))
 
   (defun my/clj-cmt-uncmt-line-sexp ()
