@@ -945,17 +945,18 @@ Example: (my/buffer-mode (current-buffer))"
         (goto-char point-pos)))
 
     (defun my/eval-current-defun (arg)
-      "Evaluate the current i.e. inner defun.
-E.g. in the (defun a () (defun b () (defun c ()))) this function allows
+      "Evaluate the current i.e. inner def un.
+E.g. in the (def un a () (def un b () (def un c ()))) this function allows
 selective evaluation 'c' or 'b' or 'a' according to the point possition in
 contrast to `eval-defun' which always evaluates just 'a' no matter where the
 point is.
-TODO still buggy - when not in a defun it evaluates preceding defun"
+TODO still buggy - when not in a defun it evaluates preceding def un"
       (interactive "P")
       (let* ((point-pos (point)))
-        (end-of-line)
+        (evil-insert-state nil)
+        (goto-char (+ point-pos (length (concat "(def" "un"))))
         ;; separate the bracket from the string enables self-eval this function
-        (search-backward (format "(%s" "defun") nil t)
+        (search-backward (concat "(def" "un") nil t)
         (sp-forward-sexp)
         (eval-last-sexp arg)
         (goto-char point-pos)))
