@@ -569,6 +569,7 @@ Example: (my/buffer-mode (current-buffer))"
                    (face-remap-remove-relative remap-cookie))
                  (face-remap-add-relative 'default 'flash-active-buffer-face)))
 
+  ;; straight jump to a window: SPC 0, SPC 1, SPC 2, ...
   (global-set-key (kbd "s-q") (interactive-lambda ()
                                 (other-window 1)
                                 (my/flash-active-buffer)))
@@ -907,6 +908,42 @@ Example: (my/buffer-mode (current-buffer))"
                       (lambda () ;; "Λ"
                         (push '("interactive-lambda" . 923) prettify-symbols-alist)))
     :init
+    (defun my/eval-current-defun1 (arg)
+      "Doesn't work if there's a \"\" or () at the end of the function"
+      (interactive "P")
+      (let* ((point-pos (point)))
+        (while (and (not (my/is-defun))
+                    (not (= (point) (point-min))))
+          (sp-backward-symbol))
+        (if t ;; (not (= point-pos (point)))
+            (let* ((before-up (point)))
+              (sp-up-sexp)
+              (if (= before-up (point))
+                  (sp-forward-sexp))))
+        ;; eval-sexp-fu-flash-mode is buggy
+        (eval-last-sexp arg)
+        (goto-char point-pos)))
+
+    ;; (defun afoo () (message (format "")))
+
+    ;; (defun af ()
+    ;;   (defun bf ()
+    ;;     (defun cf ())))
+
+    (defun my/eval-current-defun2 (arg)
+      (interactive "P")
+      (let* ((point-pos (point)))
+        ;; (end-of-line)
+        (search-backward (format "defun") nil t)
+        (if t ;; (not (= point-pos (point)))
+            (let* ((before-up (point)))
+              (sp-up-sexp)
+              (if (= before-up (point))
+                  (sp-forward-sexp))))
+        (eval-last-sexp arg)
+        ;; (message (format "search-backward"))
+        (goto-char point-pos)))
+
     (defun my/eval-current-defun (arg)
       "Evaluate the current i.e. inner defun.
 E.g. in the (defun a () (defun b () (defun c ()))) this function allows
