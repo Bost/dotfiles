@@ -519,6 +519,7 @@ Example: (my/buffer-mode (current-buffer))"
                         ))
             (setq count (1+ count))
             (kill-buffer buffer)))
+        (spacemacs/toggle-maximize-buffer)
         (message "Buffer(s) killed: %i" count))))
 
   (global-set-key (kbd "s-K") 'my/kill-unwanted-buffers)
