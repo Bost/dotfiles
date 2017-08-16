@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 
 from subprocess import Popen, PIPE
-import operator
 import os
 import re
-import datetime
-import time
-from functools import reduce
 from pathlib import Path
 
 # return code index in the list returned by do_exec
