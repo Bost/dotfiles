@@ -9,7 +9,7 @@ function start-altcoin-daemons
   # echo $tststr | grep --word-regexp "inet\|dlink\|maty-home\|Dodo"
   if test $status = 0
     /usr/bin/nice -n 20 bitcoind -daemon
-    /usr/bin/nice -n 20 ~/litecoin-latest/bin/litecoind -daemon
+    /usr/bin/nice -n 20 $HOME/litecoin-latest/bin/litecoind -daemon
     # echo "bitcoin-cli stop"
     #       bitcoin-cli stop
     # echo "/home/bost/litecoin-latest/bin/litecoin-cli stop"

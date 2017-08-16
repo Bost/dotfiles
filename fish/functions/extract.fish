@@ -1,6 +1,9 @@
 function extract
   # TODO see climate extract
-  # TODO loop for every arg
+
+  # This alias does not loop over args
+  # set argv_rest $argv[2..(count $argv)] # argv starts indexing with 1
+
   set file $argv[1]
   switch $file
     case "*.tar.bz2"
@@ -50,6 +53,9 @@ function extract
     case "*.tar.xz"
       echo "tar xvfJ $file"
             tar xvfJ $file
+    case "*.pax"
+      echo "pax -r < $file"
+            pax -r < $file
     case "'*'"
       echo "ERROR: $file cannot be extracted."
   end
