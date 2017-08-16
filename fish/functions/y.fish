@@ -1,3 +1,5 @@
 function y
-  python3 $HOME/dev/dotfiles/fish/functions/y.py $argv
+  set cmd "youtube-dl --write-auto-sub --sub-lang 'fr' '$argv'"
+  echo $cmd
+  eval $cmd
 end

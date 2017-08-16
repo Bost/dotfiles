@@ -1,4 +1,5 @@
 function ys
-  echo "youtube-dl --extract-audio $argv"
-        youtube-dl --extract-audio $argv
+  set cmd "youtube-dl --extract-audio $argv"
+  echo $cmd
+  eval $cmd
 end
