@@ -845,8 +845,8 @@ Example: (my/buffer-mode (current-buffer))"
        (emacs-lisp . t)
        (clojure . t)
        (sh . t)
+       ;; (R . t) ;; prevent 'Error ... org-babel-header-args-safe-fn'
        (python .t)
-       (R . t)
        (ruby . t)
        (ditaa . t)
        (dot . t)
