@@ -8,11 +8,11 @@ function e
 
   # DYI violation because variables may not be used as commands
   if pgrep --exact emacs
-    echo emacsclient $prms &
-         emacsclient $prms &
+    set cmd emacsclient $prms \& disown
   else
     # Don't use the --daemon switch. It producess a mess in the shell
-    echo emacs $prms &
-         emacs $prms &
+    set cmd emacs $prms \& disown
   end
+  echo $cmd
+  eval $cmd
 end
