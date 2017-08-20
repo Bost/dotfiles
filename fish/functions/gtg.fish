@@ -1,4 +1,5 @@
 function gtg
-  echo "git tag $argv"
-        git tag $argv
+  set cmd "git tag --sort version:refname $argv"
+  echo $cmd
+  eval $cmd
 end
