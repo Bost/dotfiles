@@ -4,8 +4,8 @@ import common as c
 
 dev = c.dev
 cmds = [
-    ["git", "--git-dir="+dev+"/cheatsheet/.git", "pull", "--rebase", "origin",],
-    ["git", "--git-dir="+dev+"/dotfiles/.git",   "pull", "--rebase", "origin",],
+    ["git", "--git-dir="+dev+"/cheatsheet/.git", "pull", "--rebase", "origin", "master",],
+    ["git", "--git-dir="+dev+"/dotfiles/.git",   "pull", "--rebase", "origin", "master",],
     ["git", "--git-dir="+dev+"/git/.git",        "fetch", "--tags",],
     ["git", "--git-dir="+dev+"/fish-shell/.git", "fetch", "--tags",],
     ["git", "--git-dir="+dev+"/emacs-25/.git",   "fetch", "--tags",],
