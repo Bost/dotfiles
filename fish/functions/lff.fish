@@ -1,4 +1,5 @@
 function lff
-  echo "ls -lrt -d -1 $PWD/*,. * $argv"
-        ls -lrt -d -1 $PWD/*,.* $argv
+  # "show full paths"
+  echo "ls -lrt -d -1 ./* .* $argv"
+        ls -lrt -d -1 ./* .* $argv
 end
