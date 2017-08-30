@@ -1,10 +1,11 @@
 ;; $ ln -s ~/dev/dotfiles/.lein/profiles.clj ~/.lein/profiles.clj
 
 {
- :repl {:plugins [[cider/cider-nrepl "0.15.0"]]}
+ ;; :repl {:plugins [[cider/cider-nrepl "0.15.0"]]}
  :user
  {:plugins
   [
+   [cider/cider-nrepl "0.15.0"]
    ;; [refactor-nrepl "2.0.0-SNAPSHOT"]
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    [refactor-nrepl "2.3.1"]
