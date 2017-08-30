@@ -18,4 +18,5 @@ function ack-grep
 
   echo "Consider running:"
   echo "    man -k $argv_rest / apropos -r $argv_rest"
+  echo "http://www.google.com/search?q=clojure+$argv_rest"
 end
