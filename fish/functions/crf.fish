@@ -1,3 +1,3 @@
 function crf
-  ack-grep $dev/cheatsheet/cmds/findgrep.sh $argv
+  ack-cheat $dev/cheatsheet/cmds/findgrep.sh $argv
 end

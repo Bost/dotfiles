@@ -1,3 +1,3 @@
 function cre
-  ack-grep $dev/cheatsheet/cmds/emacs.el $argv
+  ack-cheat $dev/cheatsheet/cmds/emacs.el $argv
 end

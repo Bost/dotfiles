@@ -1,4 +1,4 @@
-function ack-grep
+function ack-cheat
   # argv starts indexing with 1
   set argv_rest $argv[2..(count $argv)]
   # --before-context=1 --after-context=1

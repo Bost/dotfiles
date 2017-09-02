@@ -1,3 +1,3 @@
 function crl
-  ack-grep $dev/cheatsheet/cmds/linux.sh $argv
+  ack-cheat $dev/cheatsheet/cmds/linux.sh $argv
 end

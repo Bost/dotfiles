@@ -1,3 +1,3 @@
 function crh
-  ack-grep $dev/cheatsheet/cmds/host.sh $argv
+  ack-cheat $dev/cheatsheet/cmds/host.sh $argv
 end

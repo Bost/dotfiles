@@ -1,3 +1,3 @@
 function crv
-  ack-grep $dev/cheatsheet/cmds/vim.vim $argv
+  ack-cheat $dev/cheatsheet/cmds/vim.vim $argv
 end

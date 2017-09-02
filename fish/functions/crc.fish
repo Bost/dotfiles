@@ -1,3 +1,3 @@
 function crc
-  ack-grep "$dev/cheatsheet/cmds/clojure/*" $argv
+  ack-cheat "$dev/cheatsheet/cmds/clojure/*" $argv
 end

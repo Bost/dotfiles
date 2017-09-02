@@ -1,3 +1,3 @@
 function crep
-  ack-grep "$dev/cheatsheet/cmds/crep/*" $argv
+  ack-cheat "$dev/cheatsheet/cmds/crep/*" $argv
 end
