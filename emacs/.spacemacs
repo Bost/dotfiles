@@ -1139,10 +1139,12 @@ Repeated invocations toggle between the two most recently open buffers."
         ;; (cider-switch-to-relevant-repl-buffer nil)
         )
 
-      (defun my/clojure-insert-println ()
+      (defun my/clojure-insert-log ()
         (interactive)
-        ;; (my/insert-sexp "(.log js/console \"\")" 2) TODO for cljs
-        (my/insert-sexp "(println \"\")" 2))
+        (let* ((msg (if (equal major-mode 'clojurescript-mode)
+                        "(.log js/console \"\")"
+                      "(println \"\")")))
+          (my/insert-sexp msg 2)))
 
       (defun my/clojure-insert-let ()
         (interactive)
@@ -1187,9 +1189,9 @@ Repeated invocations toggle between the two most recently open buffers."
 
       :bind (;; lambdas are not supported
              ("s-x"   . cider-switch-to-repl-buffer)
-             ("<s-insert>" . my/clojure-insert-println)
-             ;; (bind-key "C-s-p" 'my/clojure-insert-println)
-             ("C-s-p" . my/clojure-insert-println)
+             ("<s-insert>" . my/clojure-insert-log)
+             ;; (bind-key "C-s-p" 'my/clojure-insert-log)
+             ("C-s-p" . my/clojure-insert-log)
              ("C-s-l" . my/clojure-insert-let)
              ("C-s-f" . my/clojure-insert-for)
              ("C-s-n" . my/clojure-insert-defn)
