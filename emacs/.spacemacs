@@ -733,7 +733,7 @@ Example: (my/buffer-mode (current-buffer))"
   (defun my/evil-avy-goto-char ()
     (interactive)
     (evil-avy-goto-char)
-    (message (format "evil-avy-goto-char: SPC j j, <f2>, <s-tab>, s-/")))
+    (message (format "evil-avy-goto-char: SPC j j, <f2>, s-/")))
 
   (global-set-key (kbd "<f2>")    'my/evil-avy-goto-char)
   (global-set-key (kbd "s-/")     'my/evil-avy-goto-char)
