@@ -1,3 +1,3 @@
-function bin
-  cd ~/bin
+function eac
+  cd ~/dev/eac
 end
