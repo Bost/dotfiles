@@ -1254,20 +1254,20 @@ Repeated invocations toggle between the two most recently open buffers."
   (defun my/fabricate-subst-cmd (&optional arg)
     "Place prepared subst command to the echo area.
 Example 1.:
-        :%s/\<\>//gc     - moves the point between '\<' and '\>'
+        :%s#\<\>##gc     - moves the point between '\<' and '\>'
 Example 2.:
-        :%s/fox/fox/gc   - moves the point after first 'x'"
+        :%s#fox#fox#gc   - moves the point after first 'x'"
     (interactive "p")
     (sp-copy-sexp)
     (evil-normal-state)
     (let* (;; Example 1.:
-           ;; (sexp-str "%s/\\<\\>//gc")
+           ;; (sexp-str "%s#\\<\\>##gc")
            ;; (offset 6)
            ;;
            ;; Example 2.:
            (search-regex (format "%s" (car kill-ring)))
            (replace-regex (format "%s" (car kill-ring)))
-           (sexp-str (format "%%s/\\<%s\\>/%s/gc" search-regex replace-regex))
+           (sexp-str (format "%%s#\\<%s\\>#%s#gc" search-regex replace-regex))
            ;; 4 means: jump to the 2nd slash
            (offset (+ (length search-regex) 9)))
       ;; (cons .. offset) moves the point
