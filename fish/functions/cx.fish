@@ -1,5 +1,6 @@
 function cx
   echo "# chmod a+rx $argv"
-  echo "chmod +x $argv"
-        chmod +x $argv
+  set cmd "chmod +x $argv"
+  echo $cmd
+  eval $cmd
 end

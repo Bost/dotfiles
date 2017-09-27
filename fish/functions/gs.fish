@@ -1,4 +1,5 @@
 function gs
-  echo "git status --short $argv"
-        git status --short $argv
+  set cmd "git status --short --branch $argv"
+  echo $cmd
+  eval $cmd
 end

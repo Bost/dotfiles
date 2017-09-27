@@ -1,4 +1,5 @@
 function gbrd
-  echo "git branch -d $argv"
-        git branch -d $argv
+  set cmd "git branch --delete $argv"
+  echo $cmd
+  eval $cmd
 end

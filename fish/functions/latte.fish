@@ -1,4 +1,5 @@
 function latte
-  echo "cd ~/dev/LaTTe"
-        cd ~/dev/LaTTe
+  set cmd "cd ~/dev/LaTTe"
+  echo $cmd
+  eval $cmd
 end
