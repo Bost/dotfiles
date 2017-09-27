@@ -1,4 +1,6 @@
 function ack-cheat
+  # TODO use ag: like grep or ack, but faster.
+
   # argv starts indexing with 1
   set argv_rest $argv[2..(count $argv)]
   # --before-context=1 --after-context=1
