@@ -973,20 +973,6 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
      ("s-d"   . my/eval-current-defun)
      ("s-e"   . eval-last-sexp)))
 
-  (defun my/clj-cmt-uncmt-line-sexp ()
-    (interactive)
-    (let* ((point-pos1 (point)))
-      (evil-insert-line 0)
-      (let* ((point-pos2 (point))
-             (cmtstr "#_")
-             (cmtstr-len (length cmtstr))
-             (line-start (buffer-substring-no-properties
-                          point-pos2 (+ point-pos2 cmtstr-len))))
-        (if (string= cmtstr line-start)
-            (delete-char cmtstr-len)
-          (insert cmtstr))
-        (goto-char point-pos1))))
-
   (defun my/hs-clojure-hide-namespace-and-folds ()
     "Hide the first (ns ...) expression in the file, and also all
 the (^:fold ...) expressions."
@@ -1016,8 +1002,8 @@ the (^:fold ...) expressions."
                ;; on the german keyboard the '#' is next to Enter
                ("s-i" . cljr-rename-symbol)
                ;; interactive-lambda doesn't work
-               ("C-s-\\" . (lambda () (interactive) (insert "#_")))
-               ("s-\\" . my/clj-cmt-uncmt-line-sexp)))
+               ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
+               ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)))
 
   (use-package super-save ;; better auto-save-mode
     :config (super-save-mode +1))
@@ -1096,8 +1082,8 @@ Repeated invocations toggle between the two most recently open buffers."
                  ;; followind 3 bindings are same as in clojure-mode
                  ;; on the german keyboard the '#' is next to Enter
                  ("s-i" . cljr-rename-symbol)
-                 ("C-s-\\" . (interactive-lambda () (insert "#_")))
-                 ("s-\\" . my/clj-cmt-uncmt-line-sexp)
+                 ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
+                 ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)
 
                  ("<s-delete>" . cider-repl-clear-buffer)
                  ("s-j" . cider-format-defun)
@@ -1167,17 +1153,29 @@ Repeated invocations toggle between the two most recently open buffers."
         (interactive)
         (my/insert-sexp "(do)" 1))
 
-      (defun my/clj-cmt-uncmt-line-sexp ()
+      (defun my/clojure-toggle-reader-comment-fst-sexp-on-line ()
         (interactive)
-        (evil-insert-line 0)
-        (let* ((cmtstr "#_")
-               (cmtstr-len (length cmtstr))
-               (point-pos (point))
-               (line-start (buffer-substring-no-properties
-                            point-pos (+ point-pos cmtstr-len))))
-          (if (string= cmtstr line-start)
-              (delete-char cmtstr-len)
-            (insert cmtstr))))
+        (let* ((point-pos1 (point)))
+          (evil-insert-line 0)
+          (let* ((point-pos2 (point))
+                 (cmtstr "#_")
+                 (cmtstr-len (length cmtstr))
+                 (line-start (buffer-substring-no-properties
+                              point-pos2 (+ point-pos2 cmtstr-len))))
+            (if (string= cmtstr line-start)
+                (progn
+                  (delete-char cmtstr-len)
+                  (goto-char point-pos1)
+                  (left-char cmtstr-len))
+              (progn
+                (insert cmtstr)
+                (goto-char point-pos1)
+                (right-char cmtstr-len))))))
+
+      (defun my/clojure-toggle-reader-comment-current-sexp ()
+        (interactive)
+        (newline-and-indent)
+        (my/clojure-toggle-reader-comment-fst-sexp-on-line))
 
       (setq cider-cljs-lein-repl ;; set how CIDER starts cljs-lein-repl
             ;; "(do (require 'figwheel-sidecar.repl-api)
