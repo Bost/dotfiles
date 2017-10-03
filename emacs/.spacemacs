@@ -681,10 +681,20 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
   (global-set-key (kbd "s-<f1>") 'eshell)
   (global-set-key (kbd "s-p") 'helm-projectile)
+  (global-set-key (kbd "s-W")
+                  (interactive-lambda ()
+                     (whitespace-cleanup)
+                     (message (format
+                               (concat
+                                "s-n / s-N : narrow-to-defun / widen;"
+                                " s-W : whitespace-cleanup")))))
   (global-set-key (kbd "s-w")
                   (interactive-lambda ()
                      (whitespace-mode 'toggle)
-                     (message (format "s-n / s-N : narrow-to-defun / widen"))))
+                     (message (format
+                               (concat
+                                "s-n / s-N : narrow-to-defun / widen;"
+                                " s-W : whitespace-cleanup")))))
 
   (global-set-key (kbd "s-m") 'magit-status)
 
