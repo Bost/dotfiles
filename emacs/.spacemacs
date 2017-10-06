@@ -113,7 +113,7 @@ You should not put any user code in there besides modifying the variable
 values."
   (push '("melpa-stable" . "stable.melpa.org/packages/")
         configuration-layer--elpa-archives)
-  ;; (push '(helm . "melpa-stable") package-pinned-packages)
+  (push '(helm . "melpa-stable") package-pinned-packages)
   ;; (push '(helm-core . "melpa-stable") package-pinned-packages)
   ;; (push '(cider . "melpa-stable") package-pinned-packages)
   ;; (push '(clj-refactor . "melpa-stable") package-pinned-packages)
