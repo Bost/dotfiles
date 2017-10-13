@@ -14,7 +14,7 @@
    ;; lein kibit - check style
    [lein-kibit "0.1.5" :exclusions [org.clojure/clojure
                                     org.clojure/tools.cli]]
-   [lein-typed "0.4.0"]
+   [lein-typed "0.4.2"]
    ]
   :dependencies
   [
