@@ -113,7 +113,7 @@ You should not put any user code in there besides modifying the variable
 values."
   (push '("melpa-stable" . "stable.melpa.org/packages/")
         configuration-layer--elpa-archives)
-  (push '(helm . "melpa-stable") package-pinned-packages)
+  ;; (push '(helm . "melpa-stable") package-pinned-packages)
   ;; (push '(helm-core . "melpa-stable") package-pinned-packages)
   ;; (push '(cider . "melpa-stable") package-pinned-packages)
   ;; (push '(clj-refactor . "melpa-stable") package-pinned-packages)
@@ -392,6 +392,9 @@ you should place your code here."
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
    )
+
+  ;; better workaround for https://github.com/syl20bnr/spacemacs/issues/9549
+  (require 'helm-bookmark)
 
   (defmacro interactive-lambda (&rest body)
     ;; (defmacro interactive-lambda ...) prettyfied to "Λ"
