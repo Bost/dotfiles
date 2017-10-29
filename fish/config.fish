@@ -1,6 +1,6 @@
 set fish_greeting ""
 set -U dev ~/dev
-set -U dec $dev/cljlein
+set -U dec ~/dec
 set -U bin ~/bin
 
 # set normal (set_color normal)
