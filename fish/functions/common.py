@@ -27,4 +27,4 @@ def do_exec(cmd):
 
 # os.environ['...'] doesn't work
 dev = str(Path.home())+"/dev"
-dec = str(Path.home())+"/dev/cljlein"
+dec = str(Path.home())+"/dec"
