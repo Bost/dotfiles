@@ -1,4 +1,5 @@
 function zark
-  echo "cd $HOME/dev/zark"
-        cd $HOME/dev/zark
+  set cmd "cd $HOME/dev/cljlein/zark"
+  echo $cmd
+  eval $cmd
 end
