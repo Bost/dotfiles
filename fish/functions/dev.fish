@@ -1,4 +1,5 @@
 function dev
-    echo "cd $HOME/dev"
-          cd $HOME/dev
-end
+  set cmd "cd $dev"
+  echo $cmd
+  eval $cmd
+rnd
