@@ -1,3 +1,5 @@
 function ga
-  python3.6 $HOME/dev/dotfiles/fish/functions/ga.py
+  set cmd "python3.6 $dev/dotfiles/fish/functions/ga.py"
+  echo $cmd
+  eval $cmd
 end

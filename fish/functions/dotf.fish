@@ -1,4 +1,5 @@
 function dotf
-    echo "cd $HOME/dev/dotfiles"
-          cd $HOME/dev/dotfiles
+  set cmd "cd $dev/dotfiles"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function ufo
-  echo "cd ~/dev/ufo"
-        cd ~/dev/ufo
+  set cmd "cd $dev/ufo"
+  echo $cmd
+  eval $cmd
 end

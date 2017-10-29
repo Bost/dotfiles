@@ -1,4 +1,5 @@
 function trackle
-  echo "cd $HOME/dev/trackle"
-        cd $HOME/dev/trackle
+  set cmd "cd $dev/trackle"
+  echo $cmd
+  eval $cmd
 end

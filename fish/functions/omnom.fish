@@ -1,4 +1,5 @@
 function omnom
-  echo "cd $HOME/dev/omnom"
-        cd $HOME/dev/omnom
+  set "cd $dev/omnom"
+  echo $cmd
+  eval $cmd
 end

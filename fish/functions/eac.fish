@@ -1,3 +1,5 @@
 function eac
-  cd ~/dev/eac
+  set cmd "cd $dev/eac"
+  echo $cmd
+  eval $cmd
 end

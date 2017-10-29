@@ -1,5 +1,5 @@
 function zark
-  set cmd "cd $HOME/dev/cljlein/zark"
+  set cmd "cd $dev/cljlein/zark"
   echo $cmd
   eval $cmd
 end

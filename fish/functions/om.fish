@@ -1,4 +1,5 @@
 function om
-  echo "cd $HOME/dev/om"
-        cd $HOME/dev/om
+  set cmd "cd $dev/om"
+  echo $cmd
+  eval $cmd
 end

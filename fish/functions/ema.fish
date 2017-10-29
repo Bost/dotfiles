@@ -1,4 +1,5 @@
 function ema
-  echo "cd ~/dev/emacs-25"
-        cd ~/dev/emacs-25
+  set cmd "cd $dev/emacs-25"
+  echo $cmd
+  eval $cmd
 end
