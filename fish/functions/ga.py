@@ -3,7 +3,11 @@
 import common as c
 
 dev = c.dev
+dec = c.dec
+
 cmds = [
+    ["git", "--git-dir="+dec+"/zark/.git",       "pull", "--rebase", "origin", "master",],
+    ["git", "--git-dir="+dec+"/ufo/.git",        "pull", "--rebase", "origin", "master",],
     ["git", "--git-dir="+dev+"/cheatsheet/.git", "pull", "--rebase", "origin", "master",],
     ["git", "--git-dir="+dev+"/dotfiles/.git",   "pull", "--rebase", "origin", "master",],
     ["git", "--git-dir="+dev+"/git/.git",        "fetch", "--tags",],

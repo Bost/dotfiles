@@ -25,4 +25,6 @@ def do_exec(cmd):
     print(output.decode("utf-8"))
     return res
 
+# os.environ['...'] doesn't work
 dev = str(Path.home())+"/dev"
+dec = str(Path.home())+"/dev/cljlein"
