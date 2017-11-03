@@ -1,5 +1,7 @@
 function ack-cheat
   # TODO use ag: like grep or ack, but faster.
+  # problem: ag uses color encoding for bash:
+  # https://misc.flogisoft.com/bash/tip_colors_and_formatting
 
   # argv starts indexing with 1
   set argv_rest $argv[2..(count $argv)]
