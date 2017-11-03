@@ -393,9 +393,6 @@ you should place your code here."
                                ;;   ("." . browse-url-default-browser))
    )
 
-  ;; better workaround for https://github.com/syl20bnr/spacemacs/issues/9549
-  (require 'helm-bookmark)
-
   (defmacro interactive-lambda (&rest body)
     ;; (defmacro interactive-lambda ...) prettyfied to "Λ"
     `(lambda ()
