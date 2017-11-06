@@ -854,14 +854,9 @@ Example: (my/buffer-mode (current-buffer))"
      '(
        (emacs-lisp . t)
        (clojure . t)
-       (sh . t)
-       ;; (R . t) ;; prevent 'Error ... org-babel-header-args-safe-fn'
+       (shell . t)
        (python .t)
-       (ruby . t)
-       (ditaa . t)
-       (dot . t)
        (sqlite . t)
-       (perl . t)
        ))
     ;; do not set "TODO"; use default key bindings
     (define-key org-mode-map (kbd "<S-right>") nil)
