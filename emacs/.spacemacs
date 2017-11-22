@@ -401,6 +401,7 @@ you should place your code here."
 
   (defun my/what-face (pos)
     (interactive "d")
+    ;; (clojure-mode)
     (let ((face (or (get-char-property (point) 'read-face-name)
                     (get-char-property (point) 'face))))
       (if face (message "Face: %s" face) (message "No face at %d" pos))))
@@ -1028,6 +1029,7 @@ the (^:fold ...) expressions."
   (global-set-key (kbd "s-,") 'evil-jump-backward) ;; C-o: evil-jump-backward
   ;; (global-set-key (kbd "s-,") 'dumb-jump-back)
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
+  (global-set-key (kbd "<print>") 'my/what-face)
   (global-set-key (kbd "<pause>") 'goto-last-change)
   (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
   (global-set-key (kbd "s-J") 'evil-join)
