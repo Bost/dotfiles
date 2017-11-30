@@ -1,4 +1,5 @@
 function gmv
-  echo "git mv $argv"
-        git mv $argv
+  set cmd "git mv $argv"
+  echo $cmd
+  eval $cmd
 end
