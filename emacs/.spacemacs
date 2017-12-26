@@ -202,7 +202,7 @@ values."
    dotspacemacs-ex-command-key ":"
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
-   dotspacemacs-emacs-leader-key "M-m"
+   dotspacemacs-emacs-leader-key "s-SPC"
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
    dotspacemacs-major-mode-leader-key ","
@@ -733,7 +733,7 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "<s-backspace>") 'paredit-backward-kill-word)
   (global-set-key (kbd "<s-delete>") 'paredit-forward-kill-word)
 
-  (global-set-key (kbd "s-SPC") 'evil-search-highlight-persist-remove-all)
+  (global-set-key (kbd "s-M-SPC") 'evil-search-highlight-persist-remove-all)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
   (global-set-key (kbd "s-g") 'helm-google-suggest)
   (global-set-key (kbd "s-G") 'google-this)
