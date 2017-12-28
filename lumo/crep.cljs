@@ -31,9 +31,15 @@
       (->> data
            (split #"\n")
            #_(take 15)
-           (map-indexed (fn [idx line] (str idx ":" line "\n")))
+           (map-indexed (fn [idx line] (str
+                                       #_idx
+                                       (str "e +" idx " " file)
+                                       ":" line "\n")))
            (reduce str)
-           (re-seq (re-pattern (str "\\d+:# .*?\n.*" ptrn ".*\n")))
+           (re-seq (re-pattern (str
+                                #_"\\d+"
+                                ".*?"
+                                ":# .*?\n.*" ptrn ".*\n")))
            (map #(->> (re-pattern ptrn)
                       (cs/split %)
                       (interpose (.-green ptrn))
