@@ -16,30 +16,15 @@
 (defn read-file [file cont-fn]
   (.readFile (js/require "fs") file (clj->js {:encoding "utf8"}) cont-fn))
 
-(defn decorate-input [data]
-  (as-> (cs/split data #"\n") w
-    #_(take 15 w)
-    (map-indexed (fn [idx line]
-                   (str idx ":" line "\n"))
-                 w)
-    (reduce str w)))
+(defn split [ptrn s] (cs/split s ptrn))
 
-(defn decorate-output [ptrn m]
-  (as-> (re-pattern ptrn) v
-    (cs/split m v)
-    (interpose (.-green ptrn) v)
-    (reduce str v)))
+(defn decorate-output [ptrn s]
+  (->> (re-pattern ptrn)
+       (cs/split s)
+       (interpose (.-green ptrn))
+       (reduce str)))
 
-(defn search [ptrn data]
-  (doseq [m (->> data
-                 decorate-input
-                 (re-seq (re-pattern (str "\\d+:# .*?\n.*" ptrn ".*\n")))
-                 #_(map #(decorate-output ptrn %))
-                 #_vector)
-          ]
-    (->
-     (decorate-output ptrn m)
-     println)))
+(defn prnt [out] (doseq [o out] (println o)))
 
 ;; (println "*command-line-args*" *command-line-args*)
 ;; (def process (js/require "process"))
@@ -51,8 +36,12 @@
            (fn [err data]
              (if err
                (throw (js/Error. err))
-               (search
-                (first *command-line-args*
-                       ;; args
-                       )
-                data))))
+               (let [ptrn (first *command-line-args* #_args)]
+                 (->> data
+                      (split #"\n")
+                      #_(take 15)
+                      (map-indexed (fn [idx line] (str idx ":" line "\n")))
+                      (reduce str)
+                      (re-seq (re-pattern (str "\\d+:# .*?\n.*" ptrn ".*\n")))
+                      (map #(decorate-output ptrn %))
+                      prnt)))))
