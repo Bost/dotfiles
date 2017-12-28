@@ -2,8 +2,9 @@
 ;; -*- clojure -*-
 
 ;; sudo npm install -g lumo-cljs --unsafe-perm
-;; sudo npm install -g colour
-;; lumo crep.cljs sed
+;; npm install colors
+;; TODO make it work: npm install -g colors
+;; example: lumo crep.cljs sed
 
 (ns crep.core
   (:require
