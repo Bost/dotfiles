@@ -9,10 +9,13 @@
 (ns crep.core
   (:require
    [clojure.string :as cs]
-   [cljs.nodejs :as node]))
+   [cljs.nodejs :as node]
+   [clojure.tools.reader.edn :as reader]))
 
-(defonce clr (node/require "colors"))
-(def file "/home/bost/dev/cheatsheet/cmds/linux.sh")
+;; (defonce clr (node/require "colors"))
+(defonce fs (js/require "fs"))
+
+(def current-dir (.resolve (js/require "path") "."))
 
 (defn split [ptrn s] (cs/split s ptrn))
 
@@ -25,26 +28,42 @@
 ;; (println "(.-argv process)" (.-argv process))
 ;; (doseq [arg args] (println arg))
 
-(defn search [err data]
+(defn search [file ptrn err data]
   (if err
     (throw (js/Error. err))
-    (let [ptrn (first *command-line-args* #_args)]
-      (->> data
-           (split #"\n")
-           #_(take 15)
-           (map-indexed (fn [idx line] (str
-                                       #_idx
-                                       (str "e +" idx " " file)
-                                       ":" line "\n")))
-           (reduce str)
-           (re-seq (re-pattern (str
-                                #_"\\d+"
-                                ".*?"
-                                ":# .*?\n.*" ptrn ".*\n")))
-           (map #(->> (re-pattern ptrn)
-                      (cs/split %)
-                      (interpose (.-green ptrn))
-                      (reduce str)))
-           prnt))))
+    (->> data
+         (split #"\n")
+         #_(take 15)
+         (map-indexed (fn [idx line] (str
+                                     #_idx
+                                     (str "e +" idx " " file)
+                                     ":" line "\n")))
+         (reduce str)
+         (re-seq (re-pattern (str
+                              #_"\\d+"
+                              ".*?"
+                              ":# .*?\n.*" ptrn ".*\n")))
+         (map #(->> (re-pattern ptrn)
+                    (cs/split %)
+                    ;; (interpose (.-green ptrn))
+                    (reduce str)))
+         prnt)))
 
-(.readFile (js/require "fs") file (clj->js {:encoding "utf8"}) search)
+#_(let [
+      [file ptrn] *command-line-args*
+      files [file]]
+  (doall
+   (map #(.readFile fs % enc (partial search % ptrn))
+        files)))
+
+(let [enc (clj->js {:encoding "utf8"})
+      [files-hm ptrn] *command-line-args*
+      {:keys [files]} (reader/read-string files-hm)]
+  #_(do
+    (println "files-hm" files-hm)
+    (println "files" files)
+    (println "ptrn" ptrn))
+  (doall
+   (map #(.readFile fs % enc (partial search % ptrn))
+        files))
+  )
