@@ -1,4 +1,5 @@
 function lr
-  echo "lein repl $argv"
-        lein repl $argv
+  set cmd "lein repl $argv"
+  echo $cmd
+  eval $cmd
 end

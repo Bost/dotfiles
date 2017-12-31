@@ -1,4 +1,5 @@
 function gri
-  echo "git rebase --interactive $argv"
-        git rebase --interactive $argv
+  set cmd "git rebase --interactive $argv"
+  echo $cmd
+  eval $cmd
 end

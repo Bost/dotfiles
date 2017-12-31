@@ -1,5 +1,6 @@
 function nt
-    echo "NetworkManager:"
-    echo "nmcli general status $argv"
-          nmcli general status $argv
+  echo "NetworkManager:"
+  set cmd "nmcli general status $argv"
+  echo $cmd
+  eval $cmd
 end

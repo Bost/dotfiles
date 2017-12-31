@@ -1,4 +1,5 @@
 function gci
-  echo "git commit $argv"
-        git commit $argv
+  set cmd "git commit $argv"
+  echo $cmd
+  eval $cmd
 end

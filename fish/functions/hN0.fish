@@ -1,4 +1,5 @@
 function hN0
-  echo "history | tail $argv"
-        history | tail $argv
+  set cmd "history | tail $argv"
+  echo $cmd
+  eval $cmd
 end

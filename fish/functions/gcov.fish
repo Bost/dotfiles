@@ -1,4 +1,5 @@
 function gcov
-  echo "git checkout virtbox $argv"
-        git checkout virtbox $argv
+  set cmd "git checkout virtbox $argv"
+  echo $cmd
+  eval $cmd
 end

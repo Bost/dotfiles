@@ -1,4 +1,5 @@
 function gmr
-  echo "git merge $argv"
-        git merge $argv
+  set cmd "git merge $argv"
+  echo $cmd
+  eval $cmd
 end

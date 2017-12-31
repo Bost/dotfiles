@@ -1,4 +1,5 @@
 function fish-conf
-  echo "cd $HOME/.config/fish/"
-        cd $HOME/.config/fish/
+  set cmd "cd $HOME/.config/fish/"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function gcob
-  echo "git checkout -b $argv"
-        git checkout -b $argv
+  set cmd "git checkout -b $argv"
+  echo $cmd
+  eval $cmd
 end

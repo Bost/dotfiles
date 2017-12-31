@@ -1,4 +1,5 @@
 function gbb
-  echo "git bisect bad $argv"
-        git bisect bad $argv
+  set cmd "git bisect bad $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function lca
-  echo "lein cljsbuild auto $argv"
-        lein cljsbuild auto $argv
+  set cmd "lein cljsbuild auto $argv"
+  echo $cmd
+  eval $cmd
 end

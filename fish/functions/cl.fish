@@ -1,4 +1,5 @@
 function cl
-  echo "xsel --clipboard"
-        xsel --clipboard
+  set cmd "xsel --clipboard"
+  echo $cmd
+  eval $cmd
 end

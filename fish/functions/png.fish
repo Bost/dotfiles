@@ -1,4 +1,5 @@
 function png
-  echo "mtr google.com $argv"
-        mtr google.com $argv
+  set cmd "mtr google.com $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function gshp
-    echo "git stash pop $argv"
-          git stash pop $argv
+  set cmd "git stash pop $argv"
+  echo $cmd
+  eval $cmd
 end

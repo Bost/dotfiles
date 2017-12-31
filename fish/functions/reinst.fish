@@ -1,4 +1,5 @@
 function reinst
-  echo "sudo apt --reinstall install --yes $argv"
-        sudo apt --reinstall install --yes $argv
+  set cmd "sudo apt --reinstall install --yes $argv"
+  echo $cmd
+  eval $cmd
 end

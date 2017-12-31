@@ -1,4 +1,5 @@
 function grb
-  echo "git rebase $argv"
-        git rebase $argv
+  set cmd "git rebase $argv"
+  echo $cmd
+  eval $cmd
 end

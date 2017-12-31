@@ -1,4 +1,5 @@
 function gcp
-  echo "git cherry-pick $argv"
-        git cherry-pick $argv
+  set cmd "git cherry-pick $argv"
+  echo $cmd
+  eval $cmd
 end

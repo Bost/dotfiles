@@ -1,4 +1,5 @@
 function gfeu
-  echo "git fetch upstream $argv"
-        git fetch upstream $argv
+  set cmd "git fetch upstream $argv"
+  echo $cmd
+  eval $cmd
 end

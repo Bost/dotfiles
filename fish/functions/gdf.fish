@@ -1,4 +1,5 @@
 function gdf
-  echo "git diff --word-diff $argv"
-        git diff --word-diff $argv
+  set cmd "git diff --word-diff $argv"
+  echo $cmd
+  eval $cmd
 end

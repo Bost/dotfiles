@@ -1,4 +1,5 @@
 function take
-  echo "mkdir -p $argv; and cd $argv"
-        mkdir -p $argv; and cd $argv
+  set cmd "mkdir -p $argv; and cd $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function lf
-  echo "lein figwheel $argv"
-        lein figwheel $argv
+  set cmd "lein figwheel $argv"
+  echo $cmd
+  eval $cmd
 end

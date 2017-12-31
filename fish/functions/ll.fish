@@ -1,4 +1,5 @@
 function ll
-  echo "ls -lh $argv"
-        ls -lh $argv
+  set cmd "ls -lh $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function shutdown
-  echo "sudo shutdown -h now $argv"
-        sudo shutdown -h now $argv
+  set cmd "sudo shutdown -h now $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function k9
-  echo "kill -9 $argv"
-        kill -9 $argv
+  set cmd "kill -9 $argv"
+  echo $cmd
+  eval $cmd
 end

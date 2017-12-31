@@ -1,4 +1,5 @@
 function gbra
-  echo "git branch -a $argv"
-        git branch -a $argv
+  set cmd "git branch -a $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function d2u
-  echo "fromdos $argv"
-        fromdos $argv
+  set cmd "fromdos $argv"
+  echo $cmd
+  eval $cmd
 end

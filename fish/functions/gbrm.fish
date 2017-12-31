@@ -1,4 +1,5 @@
 function gbrm
-    echo "git branch -m $argv"
-          git branch -m $argv
+  set cmd "git branch -m $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function gaa
-  echo "git add . $argv"
-        git add . $argv
+  set cmd "git add . $argv"
+  echo $cmd
+  eval $cmd
 end

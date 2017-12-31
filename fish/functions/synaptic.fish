@@ -1,4 +1,5 @@
 function synaptic
-  echo "gksudo synaptic $argv"
-        gksudo synaptic $argv
+  set cmd "gksudo synaptic $argv"
+  echo $cmd
+  eval $cmd
 end

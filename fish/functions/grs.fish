@@ -1,4 +1,5 @@
 function grs
-  echo "git rebase --skip $argv"
-        git rebase --skip $argv
+  set cmd "git rebase --skip $argv"
+  echo $cmd
+  eval $cmd
 end

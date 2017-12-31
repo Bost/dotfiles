@@ -1,4 +1,5 @@
 function gk
-  echo "gitk --all $argv &"
-        gitk --all $argv &
+  set cmd "gitk --all $argv &"
+  echo $cmd
+  eval $cmd
 end

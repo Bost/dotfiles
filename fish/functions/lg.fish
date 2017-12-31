@@ -1,4 +1,5 @@
 function lg
-  echo "git lg-20 $argv"
-        git lg-20 $argv
+  set cmd "git lg-20 $argv"
+  echo $cmd
+  eval $cmd
 end

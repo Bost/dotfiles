@@ -3,4 +3,6 @@ function glo
          git pull --rebase origin $argv
     echo git fetch --tags
          git fetch --tags
+         echo $cmd
+         eval $cmd
 end

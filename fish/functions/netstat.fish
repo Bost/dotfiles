@@ -1,5 +1,6 @@
 function netstat
   echo "# 'netstat' is obsolete. Using: 'ss' - socket statistics"
-  echo "ss $argv"
-        ss $argv
+  set cmd "ss $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function cheat
-  echo "cd $dev/cheatsheet"
-        cd $dev/cheatsheet
+  set cmd "cd $dev/cheatsheet"
+  echo $cmd
+  eval $cmd
 end

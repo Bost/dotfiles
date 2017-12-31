@@ -1,4 +1,5 @@
 function c
-  echo "cat $argv"
-        cat $argv
+  set cmd "cat $argv"
+  echo $cmd
+  eval $cmd
 end

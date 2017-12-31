@@ -1,4 +1,5 @@
 function u2d
-  echo "todos $argv"
-        todos $argv
+  set cmd "todos $argv"
+  echo $cmd
+  eval $cmd
 end

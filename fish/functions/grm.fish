@@ -1,4 +1,5 @@
 function grm
-  echo "git rm $argv"
-        git rm $argv
+  set cmd "git rm $argv"
+  echo $cmd
+  eval $cmd
 end

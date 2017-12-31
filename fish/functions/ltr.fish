@@ -1,4 +1,5 @@
 function ltr
-  echo "ls -latr $argv"
-        ls -latr $argv
+  set cmd "ls -latr $argv"
+  echo $cmd
+  eval $cmd
 end

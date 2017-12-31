@@ -1,4 +1,5 @@
 function ghe
-  echo "git help $argv"
-        git help $argv
+  set cmd "git help $argv"
+  echo $cmd
+  eval $cmd
 end

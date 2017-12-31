@@ -1,4 +1,5 @@
 function shut
-  echo "xfce4-session-logout --halt --fast"
-        xfce4-session-logout --halt --fast
+  set cmd "xfce4-session-logout --halt --fast"
+  echo $cmd
+  eval $cmd
 end

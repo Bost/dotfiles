@@ -1,4 +1,5 @@
 function vdir
-  echo "ls --color=auto --format=long $argv"
-        ls --color=auto --format=long $argv
+  set cmd "ls --color=auto --format=long $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function gap
-  echo "git add -p $argv"
-        git add -p $argv
+  set cmd "git add -p $argv"
+  echo $cmd
+  eval $cmd
 end

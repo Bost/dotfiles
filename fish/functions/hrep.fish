@@ -1,4 +1,5 @@
 function hrep
-  echo "history --search --contains $argv"
-        history --search --contains $argv
+  set cmd "history --search --contains $argv"
+  echo $cmd
+  eval $cmd
 end

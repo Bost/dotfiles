@@ -1,4 +1,5 @@
 function wipe
-  echo "printf '\ec' $argv"
-        printf '\ec' $argv
+  set cmd "printf '\ec' $argv"
+  echo $cmd
+  eval $cmd
 end

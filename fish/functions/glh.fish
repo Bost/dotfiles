@@ -1,4 +1,5 @@
 function glh
-    echo git lg-head $argv
-         git lg-head $argv
+  set cmd git lg-head $argv
+  echo $cmd
+  eval $cmd
 end

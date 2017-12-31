@@ -1,4 +1,5 @@
 function down
-    echo "cd $HOME/downloads"
-          cd $HOME/downloads
+  set cmd "cd $HOME/downloads"
+  echo $cmd
+  eval $cmd
 end

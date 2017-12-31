@@ -1,4 +1,5 @@
 function gh
-  echo "git push $argv"
-        git push $argv
+  set cmd "git push $argv"
+  echo $cmd
+  eval $cmd
 end

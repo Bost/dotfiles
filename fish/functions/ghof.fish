@@ -1,4 +1,5 @@
 function ghof
-  echo "git push origin -f $argv"
-        git push origin -f $argv
+  set cmd "git push origin -f $argv"
+  echo $cmd
+  eval $cmd
 end

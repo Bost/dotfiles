@@ -1,4 +1,5 @@
 function lcc
-  echo "lein clean $argv"
-        lein clean $argv
+  set cmd "lein clean $argv"
+  echo $cmd
+  eval $cmd
 end

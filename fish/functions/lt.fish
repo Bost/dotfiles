@@ -1,4 +1,5 @@
 function lt
-  echo "ls -lat $argv"
-        ls -lat $argv
+  set cmd "ls -lat $argv"
+  echo $cmd
+  eval $cmd
 end

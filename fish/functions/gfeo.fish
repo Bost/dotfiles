@@ -1,4 +1,5 @@
 function gfeo
-  echo "git fetch origin $argv"
-        git fetch origin $argv
+  set cmd "git fetch origin $argv"
+  echo $cmd
+  eval $cmd
 end

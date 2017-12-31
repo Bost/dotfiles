@@ -1,4 +1,5 @@
 function uninst
-  echo "sudo apt remove --yes $argv"
-        sudo apt remove --yes $argv
+  set cmd "sudo apt remove --yes $argv"
+  echo $cmd
+  eval $cmd
 end

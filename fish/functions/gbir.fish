@@ -1,4 +1,5 @@
 function gbir
-  echo "git bisect reset $argv"
-        git bisect reset $argv
+  set cmd "git bisect reset $argv"
+  echo $cmd
+  eval $cmd
 end

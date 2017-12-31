@@ -1,4 +1,5 @@
 function gl
-    echo git pull $argv
-         git pull $argv
+  set cmd git pull $argv
+  echo $cmd
+  eval $cmd
 end

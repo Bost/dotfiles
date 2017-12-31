@@ -1,4 +1,5 @@
 function spa
-  echo "cd ~/.emacs.d"
-        cd ~/.emacs.d
+  set cmd "cd ~/.emacs.d"
+  echo $cmd
+  eval $cmd
 end

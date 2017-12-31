@@ -1,4 +1,5 @@
 function tmp
-  echo "cd /tmp"
-        cd /tmp
+  set cmd "cd /tmp"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function gfe
-    echo "git fetch $argv"
-          git fetch $argv
+  set cmd "git fetch $argv"
+  echo $cmd
+  eval $cmd
 end

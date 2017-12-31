@@ -1,4 +1,5 @@
 function unexport
-  echo "unset $argv"
-        unset $argv
+  set cmd "unset $argv"
+  echo $cmd
+  eval $cmd
 end

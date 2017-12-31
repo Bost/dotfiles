@@ -1,4 +1,5 @@
 function f
-  echo "find . -name $argv"
-        find . -name $argv
+  set cmd "find . -name $argv"
+  echo $cmd
+  eval $cmd
 end

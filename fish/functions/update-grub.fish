@@ -1,4 +1,5 @@
 function update-grub
-  echo "sudo update-grub $argv"
-        sudo update-grub $argv
+  set cmd "sudo update-grub $argv"
+  echo $cmd
+  eval $cmd
 end

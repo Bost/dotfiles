@@ -1,4 +1,5 @@
 function dir
-    echo "ls --color=auto --format=vertical $argv"
-          ls --color=auto --format=vertical $argv
+  set cmd "ls --color=auto --format=vertical $argv"
+  echo $cmd
+  eval $cmd
 end

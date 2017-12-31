@@ -1,4 +1,5 @@
 function v
-  echo "vim $argv"
-        vim $argv
+  set cmd "vim $argv"
+  echo $cmd
+  eval $cmd
 end

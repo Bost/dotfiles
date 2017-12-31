@@ -1,4 +1,5 @@
 function li
-  echo "lein install $argv"
-        lein install $argv
+  set cmd "lein install $argv"
+  echo $cmd
+  eval $cmd
 end

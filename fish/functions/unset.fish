@@ -1,4 +1,5 @@
 function unset
-  echo "set --erase $argv"
-        set --erase $argv
+  set cmd "set --erase $argv"
+  echo $cmd
+  eval $cmd
 end

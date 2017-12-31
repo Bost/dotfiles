@@ -1,4 +1,5 @@
 function cd..
-  echo "cd .."
-        cd ..
+  set cmd "cd .."
+  echo $cmd
+  eval $cmd
 end

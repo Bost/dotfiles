@@ -3,4 +3,6 @@ function whence
   echo "-a: all possible definitions"
   echo "type -a $argv"
         type -a $argv
+        echo $cmd
+        eval $cmd
 end

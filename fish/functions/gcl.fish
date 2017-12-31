@@ -1,4 +1,5 @@
 function gcl
-    echo "git clone $argv"
-          git clone $argv
+  set cmd "git clone $argv"
+  echo $cmd
+  eval $cmd
 end

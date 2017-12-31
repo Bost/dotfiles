@@ -1,4 +1,5 @@
 function glg
-    echo git log $argv
-         git log $argv
+  set cmd git log $argv
+  echo $cmd
+  eval $cmd
 end

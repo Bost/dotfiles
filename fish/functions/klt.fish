@@ -1,4 +1,5 @@
 function klt
-  echo "kill -9 ltbin $argv"
-        kill -9 ltbin $argv
+  set cmd "kill -9 ltbin $argv"
+  echo $cmd
+  eval $cmd
 end

@@ -1,4 +1,5 @@
 function glu
-  echo "git pull --rebase upstream master; and git fetch --tags upstream"
-        git pull --rebase upstream master; and git fetch --tags upstream
+  set cmd "git pull --rebase upstream master; and git fetch --tags upstream"
+  echo $cmd
+  eval $cmd
 end

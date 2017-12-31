@@ -1,4 +1,5 @@
 function gcianoe
-  echo "git commit --amend --no-edit $argv"
-        git commit --amend --no-edit $argv
+  set cmd "git commit --amend --no-edit $argv"
+  echo $cmd
+  eval $cmd
 end
