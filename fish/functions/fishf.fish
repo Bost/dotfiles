@@ -1,5 +1,5 @@
 function fishf
-  set cmd "cd $HOME/.config/fish/functions"
+  set cmd cd ~/.config/fish/functions
   echo $cmd
   eval $cmd
 end

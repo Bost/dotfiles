@@ -1,5 +1,5 @@
 function gci
-  set cmd "git commit $argv"
+  set cmd git commit $argv
   echo $cmd
   eval $cmd
 end

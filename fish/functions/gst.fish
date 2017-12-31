@@ -1,5 +1,5 @@
 function gst
-  set cmd "git status $argv"
+  set cmd git status $argv
   echo $cmd
   eval $cmd
 end

@@ -1,5 +1,5 @@
 function gss
-  set cmd "git status --short $argv"
+  set cmd git status --short $argv
   echo $cmd
   eval $cmd
 end

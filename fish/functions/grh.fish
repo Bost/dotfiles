@@ -1,5 +1,5 @@
 function grh
-  set cmd "git reset --hard $argv"
+  set cmd git reset --hard $argv
   echo $cmd
   eval $cmd
 end

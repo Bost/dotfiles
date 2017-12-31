@@ -1,5 +1,5 @@
 function gbra
-  set cmd "git branch -a $argv"
+  set cmd git branch --all $argv
   echo $cmd
   eval $cmd
 end

@@ -1,5 +1,5 @@
 function lcxa
-  set cmd "lein cljx auto $argv"
+  set cmd lein cljx auto $argv
   echo $cmd
   eval $cmd
 end

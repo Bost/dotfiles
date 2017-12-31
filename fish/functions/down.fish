@@ -1,5 +1,5 @@
 function down
-  set cmd "cd $HOME/downloads"
+  set cmd cd ~/downloads
   echo $cmd
   eval $cmd
 end

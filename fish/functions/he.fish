@@ -1,5 +1,5 @@
 function he
-  set cmd "head $argv"
+  set cmd head $argv
   echo $cmd
   eval $cmd
 end
