@@ -29,6 +29,7 @@
 ;; (doseq [arg args] (println arg))
 
 ;; TODO implement proper block parsing
+;; TODO utf8.txt doesn't use block syntax
 (defn search [file ptrn cmt-str err data]
   (if err
     (throw (js/Error. err))
