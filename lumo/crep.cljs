@@ -40,12 +40,18 @@
                                      ":" line "\n")))
          (reduce str)
          (re-seq (re-pattern (str
-                              #_"\\d+"
-                              ".*?"
-                              ":# .*?\n.*" ptrn ".*\n")))
+                              "e \\+\\d+ .*?:# .+\n"
+                              "e \\+\\d+ .*?:.*" ptrn ".*\n"
+
+                              "|"
+                              "e \\+\\d+ .*?:# .*" ptrn ".*\n"
+                              "e \\+\\d+ .*?:.+\n"
+                              )))
          (map #(->> (re-pattern ptrn)
                     (cs/split %)
-                    ;; (interpose (.-green ptrn))
+                    (interpose (identity
+                                #_.-green
+                                ptrn))
                     (reduce str)))
          prnt)))
 
