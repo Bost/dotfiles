@@ -49,21 +49,10 @@
                     (reduce str)))
          prnt)))
 
-#_(let [
-      [file ptrn] *command-line-args*
-      files [file]]
-  (doall
-   (map #(.readFile fs % enc (partial search % ptrn))
-        files)))
 
 (let [enc (clj->js {:encoding "utf8"})
       [files-hm ptrn] *command-line-args*
       {:keys [files]} (reader/read-string files-hm)]
-  #_(do
-    (println "files-hm" files-hm)
-    (println "files" files)
-    (println "ptrn" ptrn))
   (doall
    (map #(.readFile fs % enc (partial search % ptrn))
-        files))
-  )
+        files)))
