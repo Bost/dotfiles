@@ -1,4 +1,5 @@
 function g
-  echo "egrep -i $argv"
-        egrep -i $argv
+  set cmd "egrep -i $argv"
+  echo $cmd
+  eval $cmd
 end

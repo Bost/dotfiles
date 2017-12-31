@@ -1,4 +1,5 @@
 function envp
-    echo "env | grep '^PATH=.*'"
-          env | grep '^PATH=.*'
+  set cmd "env | grep '^PATH=.*'"
+  echo $cmd
+  eval $cmd
 end
