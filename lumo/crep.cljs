@@ -28,7 +28,8 @@
 ;; (println "(.-argv process)" (.-argv process))
 ;; (doseq [arg args] (println arg))
 
-(defn search [file ptrn err data]
+;; TODO implement proper block parsing
+(defn search [file ptrn cmt-str err data]
   (if err
     (throw (js/Error. err))
     (->> data
@@ -40,11 +41,11 @@
                                      ":" line "\n")))
          (reduce str)
          (re-seq (re-pattern (str
-                              "e \\+\\d+ .*?:# .+\n"
+                              "e \\+\\d+ .*?:" cmt-str ".+\n"
                               "e \\+\\d+ .*?:.*" ptrn ".*\n"
 
                               "|"
-                              "e \\+\\d+ .*?:# .*" ptrn ".*\n"
+                              "e \\+\\d+ .*?:" cmt-str ".*" ptrn ".*\n"
                               "e \\+\\d+ .*?:.+\n"
                               )))
          (map #(->> (re-pattern ptrn)
@@ -58,7 +59,7 @@
 
 (let [enc (clj->js {:encoding "utf8"})
       [files-hm ptrn] *command-line-args*
-      {:keys [files]} (reader/read-string files-hm)]
+      {:keys [cmt-str files]} (reader/read-string files-hm)]
   (doall
-   (map #(.readFile fs % enc (partial search % ptrn))
+   (map #(.readFile fs % enc (partial search % ptrn cmt-str))
         files)))
