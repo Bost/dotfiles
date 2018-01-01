@@ -374,6 +374,7 @@ you should place your code here."
   (global-prettify-symbols-mode +1)
 
   (setq
+   x-select-enable-clipboard-manager nil ; prevent: Error saving to X clipboard manager
    clojure-enable-fancify-symbols t
    ;; cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
    python-shell-interpreter "python3.6"
