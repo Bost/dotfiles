@@ -1,5 +1,5 @@
 #!/usr/bin/env lumo
-;; -*- clojure -*-
+;; -*- clojurescript -*-
 
 ;;;; in config.fish:
 ;; set -x NODE_PATH ~/node_modules
