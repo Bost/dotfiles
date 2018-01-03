@@ -12,7 +12,7 @@
    [cljs.nodejs :as node]
    [clojure.tools.reader.edn :as reader]))
 
-;; (defonce clr (node/require "colors"))
+(defonce clr (node/require "colors"))
 (defonce fs (js/require "fs"))
 
 (def current-dir (.resolve (js/require "path") "."))
@@ -22,9 +22,10 @@
 #_(defn prnt [out] (doseq [o out] (println o)))
 (defn prnt [out] (doall (map println out)))
 
-;; (println "*command-line-args*" *command-line-args*)
-;; (def process (js/require "process"))
-;; (def args (.slice (.-argv process) 3))
+;; *command-line-args* is nil
+#_(println "*command-line-args*" *command-line-args*)
+(def process (js/require "process"))
+(def args (.slice (.-argv process) 3))
 ;; (println "(.-argv process)" (.-argv process))
 ;; (doseq [arg args] (println arg))
 
@@ -51,15 +52,13 @@
                               )))
          (map #(->> (re-pattern ptrn)
                     (cs/split %)
-                    (interpose (identity
-                                #_.-green
-                                ptrn))
+                    (interpose (.-green ptrn))
                     (reduce str)))
          prnt)))
 
 
 (let [enc (clj->js {:encoding "utf8"})
-      [files-hm ptrn] *command-line-args*
+      [files-hm ptrn] args
       {:keys [cmt-str files]} (reader/read-string files-hm)]
   (doall
    (map #(.readFile fs % enc (partial search % ptrn cmt-str))
