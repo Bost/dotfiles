@@ -1,10 +1,24 @@
 #!/usr/bin/env lumo
 ;; -*- clojure -*-
 
+;;;; in config.fish:
+;; set -x NODE_PATH ~/node_modules
+
+;;;; instal lumo-cljs:
 ;; sudo npm install -g lumo-cljs --unsafe-perm
-;; npm install colors
-;; TODO make it work: npm install -g colors
-;; example: lumo crep.cljs sed
+;;;; or:
+;; yarn global add colors
+;;;; or manual installation:
+;; wget https://github.com/anmonteiro/lumo/releases/download/1.7.0/lumo_linux64.zip
+;; unzip lumo_linux64.zip
+
+;;;; instal colors:
+;; npm install --global colors
+;;;; or:
+;; yarn global add colors
+
+;;;; Usage example:
+;; lumo crep.cljs www.google.com
 
 (ns crep.core
   (:require
