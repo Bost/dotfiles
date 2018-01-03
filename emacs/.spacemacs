@@ -371,7 +371,7 @@ you should place your code here."
   ;;       search-engine-alist)
 
   (spacemacs/toggle-menu-bar-on)
-  (global-prettify-symbols-mode +1)
+  ;; (global-prettify-symbols-mode +1)
 
   (setq
    x-select-enable-clipboard-manager nil ; prevent: Error saving to X clipboard manager
