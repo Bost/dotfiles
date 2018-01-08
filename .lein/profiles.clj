@@ -5,7 +5,7 @@
  :user
  {:plugins
   [
-   [cider/cider-nrepl "0.15.1"]
+   [cider/cider-nrepl "0.16.0"]
    ;; [refactor-nrepl "2.0.0-SNAPSHOT"]
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    [refactor-nrepl "2.3.1"]
