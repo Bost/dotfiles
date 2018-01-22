@@ -43,7 +43,41 @@
 ;; (println "(.-argv process)" (.-argv process))
 ;; (doseq [arg args] (println arg))
 
-;; TODO implement proper block parsing
+#_(m/defmonad parser-m
+  [;; m-result is required
+   m-result (fn [x]
+              (fn [strn]
+                (list x strn)))
+
+   ;; m-bind is required
+   m-bind (fn [parser func]
+            (fn [strn]
+              (let [result (parser strn)]
+                (when (not= nil result)
+                  ((func (first result)) (second result))))))
+
+   ;; m-zero is optional
+   m-zero (fn [strn]
+            nil)
+
+   ;; m-plus is optional
+   m-plus (fn [& parsers]
+            (fn [strn]
+              (first
+               (drop-while nil?
+                           (map #(% strn) parsers)))))])
+
+#_(defn any-char [strn]
+  (if (= "" strn)
+    nil
+    (list (first strn) (.substring strn 1))))
+
+#_(defn char-test [pred]
+    (m/domonad parser-m
+               [c any-char
+                :when (pred c)]
+               (str c)))
+
 ;; TODO utf8.txt doesn't use block syntax
 (defn search [file ptrn cmt-str err data]
   (if err
