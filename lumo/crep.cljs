@@ -43,41 +43,6 @@
 ;; (println "(.-argv process)" (.-argv process))
 ;; (doseq [arg args] (println arg))
 
-#_(m/defmonad parser-m
-  [;; m-result is required
-   m-result (fn [x]
-              (fn [strn]
-                (list x strn)))
-
-   ;; m-bind is required
-   m-bind (fn [parser func]
-            (fn [strn]
-              (let [result (parser strn)]
-                (when (not= nil result)
-                  ((func (first result)) (second result))))))
-
-   ;; m-zero is optional
-   m-zero (fn [strn]
-            nil)
-
-   ;; m-plus is optional
-   m-plus (fn [& parsers]
-            (fn [strn]
-              (first
-               (drop-while nil?
-                           (map #(% strn) parsers)))))])
-
-#_(defn any-char [strn]
-  (if (= "" strn)
-    nil
-    (list (first strn) (.substring strn 1))))
-
-#_(defn char-test [pred]
-    (m/domonad parser-m
-               [c any-char
-                :when (pred c)]
-               (str c)))
-
 ;; TODO utf8.txt doesn't use block syntax
 (defn search [file ptrn cmt-str err data]
   (if err
@@ -93,7 +58,6 @@
          (re-seq (re-pattern (str
                               "e \\+\\d+ .*?:" cmt-str ".+\n"
                               "e \\+\\d+ .*?:.*" ptrn ".*\n"
-
                               "|"
                               "e \\+\\d+ .*?:" cmt-str ".*" ptrn ".*\n"
                               "e \\+\\d+ .*?:.+\n"
@@ -104,10 +68,10 @@
                     (reduce str)))
          prnt)))
 
-
-(let [enc (clj->js {:encoding "utf8"})
-      [files-hm ptrn] args
-      {:keys [cmt-str files]} (reader/read-string files-hm)]
-  (doall
-   (map #(.readFile fs % enc (partial search % ptrn cmt-str))
-        files)))
+(->> (let [enc (clj->js {:encoding "utf8"})
+           [files-hm ptrn] args
+           {:keys [cmt-str files]} (reader/read-string files-hm)]
+       (doall
+        (map #(.readFile fs % enc (partial search % ptrn cmt-str))
+             files)))
+     time)
