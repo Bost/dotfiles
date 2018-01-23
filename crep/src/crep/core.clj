@@ -1,7 +1,6 @@
 (ns crep.core
   (:require
    [clojure.tools.reader.edn :as edn]
-   [clojure.string :refer [split]]
    [clojure.algo.monads :as m])
   (:gen-class))
 
