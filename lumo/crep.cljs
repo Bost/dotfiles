@@ -72,10 +72,10 @@
                               "e \\+\\d+ .*?:" cmt-str ".*" ptrn ".*\n"
                               "e \\+\\d+ .*?:.+\n"
                               )))
-         (map # (->> (re-pattern (str case-switch ptrn))
-                     (cs/split %)
-                     (interpose (.-green ptrn))
-                     (reduce str)))
+         (map #(->> (re-pattern (str case-switch ptrn))
+                    (cs/split %)
+                    (interpose (.-green ptrn))
+                    (reduce str)))
          prnt)))
 
 (->> (let [enc (clj->js {:encoding "utf8"})
