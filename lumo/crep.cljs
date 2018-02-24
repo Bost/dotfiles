@@ -50,6 +50,8 @@
 ;; (println "(.-argv process)" (.-argv process))
 ;; (doseq [arg args] (println arg))
 
+(def case-switch "(?i)")
+
 ;; TODO utf8.txt doesn't use block syntax
 (defn search [file ptrn cmt-str err data]
   (if err
@@ -63,16 +65,17 @@
                                      ":" line "\n")))
          (reduce str)
          (re-seq (re-pattern (str
+                              case-switch
                               "e \\+\\d+ .*?:" cmt-str ".+\n"
                               "e \\+\\d+ .*?:.*" ptrn ".*\n"
                               "|"
                               "e \\+\\d+ .*?:" cmt-str ".*" ptrn ".*\n"
                               "e \\+\\d+ .*?:.+\n"
                               )))
-         (map #(->> (re-pattern ptrn)
-                    (cs/split %)
-                    (interpose (.-green ptrn))
-                    (reduce str)))
+         (map # (->> (re-pattern (str case-switch ptrn))
+                     (cs/split %)
+                     (interpose (.-green ptrn))
+                     (reduce str)))
          prnt)))
 
 (->> (let [enc (clj->js {:encoding "utf8"})
