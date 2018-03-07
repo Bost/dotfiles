@@ -1078,6 +1078,25 @@ Repeated invocations toggle between the two most recently open buffers."
   ; (setq key-chord-one-key-delay 0.2) ; default 0.2
   (key-chord-define-global "KK" 'my/switch-to-previous-buffer)
 
+  (defun my/cider-figwheel-repl ()
+    (interactive)
+    (save-some-buffers)
+    (with-current-buffer (cider-current-repl-buffer)
+      (goto-char (point-max))
+      (insert "(require 'figwheel-sidecar.repl-api)
+;; start-figwheel can be repeatedly called (is idempotent)
+(figwheel-sidecar.repl-api/start-figwheel!)
+(figwheel-sidecar.repl-api/cljs-repl)")
+      (cider-repl-return)
+      ;; TODO (rename-buffer "*figwheel-cider*")
+      (if (not (evil-insert-state-p))
+          (evil-insert 0))))
+
+  (defun my/s-X ()
+    (interactive)
+    (cider-switch-to-repl-buffer)
+    (my/cider-figwheel-repl))
+
   (use-package cider
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
@@ -1109,24 +1128,12 @@ Repeated invocations toggle between the two most recently open buffers."
                  ("s-d"         . cider-eval-defun-at-point)
                  ("s-j"         . cider-format-defun)
                  ("s-x"         . cider-switch-to-repl-buffer)
-                 ("s-X"         . (interactive-lambda ()
-                                    (cider-switch-to-repl-buffer)
-                                    (my/cider-figwheel-repl)))
+                 ("s-X"         . my/s-X)
                  ("s-e"         . cider-eval-last-sexp))
 
-      (defun my/cider-figwheel-repl ()
-        (interactive)
-        (save-some-buffers)
-        (with-current-buffer (cider-current-repl-buffer)
-          (goto-char (point-max))
-          (insert "(require 'figwheel-sidecar.repl-api)
-;; start-figwheel can be repeatedly called (is idempotent)
-(figwheel-sidecar.repl-api/start-figwheel!)
-(figwheel-sidecar.repl-api/cljs-repl)")
-          (cider-repl-return)
-          ;; TODO (rename-buffer "*figwheel-cider*")
-          (if (not (evil-insert-state-p))
-              (evil-insert 0))))
+      ;; (evil-leader/set-key "o c" 'my/s-X) works too
+      (spacemacs/set-leader-keys "oc" 'my/s-X)
+      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c"  'my/s-X)
 
       (defun my/cider-save-and-load-current-buffer ()
         (interactive)
@@ -1257,8 +1264,11 @@ Repeated invocations toggle between the two most recently open buffers."
           (clipboard-yank)
           (message "graphics active"))
       (insert (shell-command-to-string "xsel -o -b"))))
-  (evil-leader/set-key "o y" 'my/copy-to-clipboard)
-  (evil-leader/set-key "o p" 'my/paste-from-clipboard)
+
+  ;; TODO consider using spacemacs/set-leader-keys
+  ;; (spacemacs/set-leader-keys "oy" 'my/copy-to-clipboard)
+  (evil-leader/set-key "o y" 'my/copy-to-clipboard)    ;; SPC o y
+  (evil-leader/set-key "o p" 'my/paste-from-clipboard) ;; SPC o p
 
   (defun my/fabricate-subst-cmd (&optional arg)
     "Place prepared subst command to the echo area.
