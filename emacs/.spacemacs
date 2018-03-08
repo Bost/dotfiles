@@ -1134,6 +1134,7 @@ Repeated invocations toggle between the two most recently open buffers."
       ;; (evil-leader/set-key "o c" 'my/s-X) works too
       (spacemacs/set-leader-keys "oc" 'my/s-X)
       (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c"  'my/s-X)
+      (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode "c"  'my/s-X)
 
       (defun my/cider-save-and-load-current-buffer ()
         (interactive)
