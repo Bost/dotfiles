@@ -395,6 +395,7 @@ you should place your code here."
                                ;;   ("github" . browse-url-chromium)
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
+   cider-font-lock-dynamically '(macro core function var)
    )
 
   (defmacro interactive-lambda (&rest body)
