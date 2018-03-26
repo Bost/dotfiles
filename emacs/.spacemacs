@@ -113,7 +113,7 @@ You should not put any user code in there besides modifying the variable
 values."
   ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
   (load-file (format "%s/dev/clojure-mode/clojure-mode.el" (getenv "HOME")))
-  ;; (load-file "/home/bost/dev/clojure-mode/clojure-mode.el")
+  ;; (load-file (format "%s/dev/clojure-mode.5.6.1/clojure-mode.el" (getenv "HOME")))
   (push '("melpa-stable" . "stable.melpa.org/packages/")
         configuration-layer--elpa-archives)
   ;; (push '(helm . "melpa-stable") package-pinned-packages)
@@ -176,12 +176,13 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes
    '(
+     dichromacy
      spacemacs-dark
      leuven ; light-theme
      ;; dark themes
      solarized-dark zenburn
      ;; light themes
-     default tsdh-light dichromacy apropospriate-light espresso soft-morning
+     default tsdh-light apropospriate-light espresso soft-morning
      eclipse spacemacs-light solarized-light
      )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
