@@ -395,6 +395,7 @@ you should place your code here."
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
    ;; cider-font-lock-dynamically '(macro core function var)
+   my/narrowed-to-defun nil
    )
   ;; CIDER's dynamic syntax highlighting
   ;; (setq cider-font-lock-dynamically '(macro core deprecated)) ;; default val
@@ -589,12 +590,19 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "s-0") 'delete-window)
   (global-set-key (kbd "s-1") 'delete-other-windows)
-  (global-set-key (kbd "<f8>") 'transpose-frame)
-  (global-set-key (kbd "<M-f8>") 'spacemacs/rotate-windows-forward)
+  (global-set-key (kbd "<f8>") 'next-buffer)
+  (global-set-key (kbd "<s-f8>") 'transpose-frame)
+  ;; (global-set-key (kbd "<s-f9>") 'spacemacs/rotate-windows-forward) ; SPC w r
 
+  ;; TODO send to my/toggle-narrow-to-defun spacemacs upstream
+  (defun my/toggle-narrow-to-defun ()
+    (interactive)
+    (if my/narrowed-to-defun
+        (widen)
+      (narrow-to-defun))
+    (setq my/narrowed-to-defun (not my/narrowed-to-defun)))
 
-  ;; TODO create toggle-narrow-to-defun
-  (global-set-key (kbd "s-n") 'narrow-to-defun)
+  (global-set-key (kbd "s-n") 'my/toggle-narrow-to-defun)
   (global-set-key (kbd "s-N") 'widen)
 
   (defun my/split-other-window-and (f)
