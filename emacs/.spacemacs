@@ -111,9 +111,7 @@ This function is called at the very startup of Spacemacs initialization
 before layers configuration.
 You should not put any user code in there besides modifying the variable
 values."
-  ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
-  (load-file (format "%s/dev/clojure-mode/clojure-mode.el" (getenv "HOME")))
-  ;; (load-file (format "%s/dev/clojure-mode.5.6.1/clojure-mode.el" (getenv "HOME")))
+
   (push '("melpa-stable" . "stable.melpa.org/packages/")
         configuration-layer--elpa-archives)
   ;; (push '(helm . "melpa-stable") package-pinned-packages)
@@ -1039,7 +1037,29 @@ the (^:fold ...) expressions."
   ;; (global-set-key (kbd "s-,") 'dumb-jump-back)
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
   (global-set-key (kbd "<print>") 'describe-text-properties) ;; 'my/what-face
-  (global-set-key (kbd "<pause>") 'goto-last-change)
+
+  ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
+  (defun load-clojure-mode (file)
+    (if (load-file file)
+        (if (string= major-mode "clojure-mode")
+            (progn
+              (clojure-mode)
+              (message (format "file loaded & clojure-mode set: %s" file)))
+          (message (format "file loaded: %s" file)))
+      (message (format "loading failed: %s" file))))
+
+  (global-set-key (kbd "<Scroll_Lock>")
+                  (interactive-lambda ()
+                     (load-clojure-mode
+                      (format "%s/dev/clojure-mode.5.6.1/clojure-mode.el"
+                              (getenv "HOME")))))
+  (global-set-key (kbd "<pause>")
+                  (interactive-lambda ()
+                     (load-clojure-mode
+                      (format "%s/dev/clojure-mode/clojure-mode.el"
+                              (getenv "HOME")))))
+
+  ;; (global-set-key (kbd "<pause>") 'goto-last-change)
   (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
   (global-set-key (kbd "s-J") 'evil-join)
 
