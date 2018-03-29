@@ -371,10 +371,11 @@ you should place your code here."
 
   (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
+  (global-prettify-symbols-mode nil)  ;; seems like this gets overriden
 
   (setq
    x-select-enable-clipboard-manager nil ; prevent: Error saving to X clipboard manager
-   clojure-enable-fancify-symbols t
+   ;; clojure-enable-fancify-symbols t
    ;; cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
    python-shell-interpreter "python3.6"
    goto-address-mode nil
@@ -397,9 +398,6 @@ you should place your code here."
    ;; cider-font-lock-dynamically '(macro core function var)
    my/narrowed-to-defun nil
    )
-  ;; CIDER's dynamic syntax highlighting
-  ;; (setq cider-font-lock-dynamically '(macro core deprecated)) ;; default val
-  (setq cider-font-lock-dynamically '(macro core function var))
 
   (defmacro interactive-lambda (&rest body)
     ;; (defmacro interactive-lambda ...) prettyfied to "Λ"
@@ -1142,7 +1140,33 @@ Repeated invocations toggle between the two most recently open buffers."
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
       :config
-      (setq cider-repl-use-pretty-printing t)
+      (setq cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
+                                  (concat (getenv "HOME") "/dev/openjdk-8-source")))
+      ;; (setq cider-font-lock-dynamically '(macro core deprecated)) ;; default val
+      ;; (setq cider-font-lock-dynamically '(macro core function var))
+      (setq
+       ;; cider-font-lock-dynamically '(macro core function var)
+       ;; CIDER's dynamic syntax highlighting
+       cider-font-lock-dynamically '(macro core function var)
+
+       cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
+                             ;; sudo apt install openjdk-8-source
+                             ;; mkdir -p ~/dev/openjdk-8-source
+                             ;; cd ~/dev/openjdk-8-source
+                             ;; unzip /usr/lib/jvm/openjdk-8/src.zip .
+                             (concat (getenv "HOME") "/dev/openjdk-8-source"))
+       cider-repl-use-pretty-printing t
+       ;; set how CIDER starts cljs-lein-repl
+       cider-cljs-lein-repl
+       ;; "(do (require 'figwheel-sidecar.repl-api)
+       ;;      (figwheel-sidecar.repl-api/start-figwheel!)
+       ;;      (figwheel-sidecar.repl-api/cljs-repl))"
+       "(do (use 'figwheel-sidecar.repl-api)
+            (start-figwheel!)
+            (cljs-repl))")
+
+      (setq cider-latest-clojure-version "1.9.0")
+      ;; (setq cider-jack-in-auto-inject-clojure "1.9.0")
       ;; (setq org-babel-clojure-backend 'cider)
       (add-hook 'cider-mode-hook #'eldoc-mode)
       (add-hook 'cider-repl-mode-hook #'eldoc-mode)
@@ -1237,14 +1261,6 @@ Repeated invocations toggle between the two most recently open buffers."
         (interactive)
         (newline-and-indent)
         (my/clojure-toggle-reader-comment-fst-sexp-on-line))
-
-      (setq cider-cljs-lein-repl ;; set how CIDER starts cljs-lein-repl
-            ;; "(do (require 'figwheel-sidecar.repl-api)
-            ;;      (figwheel-sidecar.repl-api/start-figwheel!)
-            ;;      (figwheel-sidecar.repl-api/cljs-repl))"
-            "(do (use 'figwheel-sidecar.repl-api)
-                 (start-figwheel!)
-                 (cljs-repl))")
 
       :bind (;; lambdas are not supported
              ("s-x"   . cider-switch-to-repl-buffer)
