@@ -1048,20 +1048,28 @@ the (^:fold ...) expressions."
 
   ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
   (defun load-clojure-mode (file)
+    ;; (message (format "loading failed: %s" file))
     (if (load-file file)
         (if (string= major-mode "clojure-mode")
             (progn
               (clojure-mode)
               (message (format "file loaded & clojure-mode set: %s" file)))
           (message (format "file loaded: %s" file)))
-      (message (format "loading failed: %s" file))))
+      (message (format "loading failed: %s" file)))
+    )
 
-  (global-set-key (kbd "<Scroll_Lock>")
+  (global-set-key (kbd
+                   "<s-f10>"
+                   ;; "<Scroll_Lock>"
+                   )
                   (interactive-lambda ()
                      (load-clojure-mode
                       (format "%s/dev/clojure-mode.5.6.1/clojure-mode.el"
                               (getenv "HOME")))))
-  (global-set-key (kbd "<pause>")
+  (global-set-key (kbd
+                   "<s-f11>"
+                   ;; "<pause>"
+                   )
                   (interactive-lambda ()
                      (load-clojure-mode
                       (format "%s/dev/clojure-mode/clojure-mode.el"
