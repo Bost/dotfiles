@@ -112,6 +112,10 @@ before layers configuration.
 You should not put any user code in there besides modifying the variable
 values."
 
+  ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
+  (load-file (format "%s/dev/clojure-mode/clojure-mode.el" (getenv "HOME")))
+  ;; (load-file (format "%s/dev/clojure-mode.5.6.1/clojure-mode.el" (getenv "HOME")))
+
   (push '("melpa-stable" . "stable.melpa.org/packages/")
         configuration-layer--elpa-archives)
   ;; (push '(helm . "melpa-stable") package-pinned-packages)
