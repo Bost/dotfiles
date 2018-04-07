@@ -378,7 +378,9 @@ you should place your code here."
   (global-prettify-symbols-mode nil)  ;; seems like this gets overriden
 
   (setq
-   x-select-enable-clipboard-manager nil ; prevent: Error saving to X clipboard manager
+   ;; prevent: Error saving to X clipboard manager
+   x-select-enable-clipboard-manager nil
+
    ;; clojure-enable-fancify-symbols t
    ;; cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
    python-shell-interpreter "python3.6"
@@ -400,6 +402,7 @@ you should place your code here."
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
    ;; cider-font-lock-dynamically '(macro core function var)
+   ;; cider-font-lock-dynamically '(macro core deprecated) ;; default
    my/narrowed-to-defun nil
    )
 
