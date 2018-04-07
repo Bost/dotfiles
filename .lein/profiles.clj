@@ -1,7 +1,7 @@
 ;; $ ln -s ~/dev/dotfiles/.lein/profiles.clj ~/.lein/profiles.clj
 
 {
- ;; :repl {:plugins [[cider/cider-nrepl "0.15.0"]]}
+ ;; :repl {:plugins [[cider/cider-nrepl "0.16.0"]]}
  :user
  {:plugins
   [
