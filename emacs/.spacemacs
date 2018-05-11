@@ -402,8 +402,6 @@ you should place your code here."
                                ;;   ("github" . browse-url-chromium)
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
-   ;; cider-font-lock-dynamically '(macro core function var)
-   ;; cider-font-lock-dynamically '(macro core deprecated) ;; default
    my/narrowed-to-defun nil
    )
 
@@ -744,8 +742,8 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "<C-M-next>") 'hs-show-all)
 
   ;; (global-set-key (kbd "<C-M-right>") 'sp-forward-sexp)
-  (global-set-key (kbd "<C-M-right>") 'forward-paragraph)  ; end-of-defun
-  (global-set-key (kbd "<C-M-left>")  'backward-paragraph) ; beginning-of-defun
+  (global-set-key (kbd "<C-M-right>") 'forward-paragraph)  ; C-M-e end-of-defun
+  (global-set-key (kbd "<C-M-left>")  'backward-paragraph) ; C-M-b beginning-of-defun
 
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
   (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
@@ -1150,14 +1148,13 @@ Repeated invocations toggle between the two most recently open buffers."
       ;; :init
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
       :config
-      (setq cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
-                                  (concat (getenv "HOME") "/dev/openjdk-8-source")))
-      ;; (setq cider-font-lock-dynamically '(macro core deprecated)) ;; default val
-      ;; (setq cider-font-lock-dynamically '(macro core function var))
       (setq
-       ;; cider-font-lock-dynamically '(macro core function var)
-       ;; CIDER's dynamic syntax highlighting
-       cider-font-lock-dynamically '(macro core function var)
+       cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
+                             (concat (getenv "HOME") "/dev/openjdk-8-source"))
+
+       cider-font-lock-dynamically ;; dynamic syntax highlighting
+       ;; '(macro core deprecated) ;; default value
+       '(macro core function var)
 
        cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
                              ;; sudo apt install openjdk-8-source
