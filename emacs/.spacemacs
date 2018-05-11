@@ -57,6 +57,7 @@ values."
      ;; syntax-checking
      ;; version-control
      clojure
+     scala
      sql
      vimscript
      markdown
