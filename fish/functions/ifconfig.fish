@@ -1,8 +1,5 @@
 function ifconfig
-  echo "######################################################"
-  echo "### 'ifconfig' is obsolete. Using: 'ip address'    ###"
-  echo "######################################################"
-  set ip addr show $argv
-  echo $cmd
-  eval $cmd
+  echo "#############################################"
+  echo "# 'ifconfig' is obsolete. Use: 'ip address' #"
+  echo "#############################################"
 end
