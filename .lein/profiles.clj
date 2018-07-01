@@ -11,7 +11,7 @@
    ;;     Unable to resolve var: refactor-nrepl.middleware/wrap-refactor
    ;; [refactor-nrepl "2.3.1"]
    ;; collection of nREPL middleware designed to enhance CIDER
-   [cider/cider-nrepl "0.17.0" :exclusions [org.clojure/tools.nrepl]]
+   ;; [cider/cider-nrepl "0.17.0"]
 
    ;; check for outdated dependencies and plugins
    [lein-ancient "0.6.15"]
