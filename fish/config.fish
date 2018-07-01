@@ -30,4 +30,5 @@ set -U bin ~/bin
 # Some spacemacs layers require certain tools to be available on $PATH
 # see http://spacemacs.org/doc/FAQ.html#setup-path
 # set -x PATH ~/.local/bin $PATH
+set -x JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 set -x NODE_PATH ~/.config/yarn/global/node_modules
