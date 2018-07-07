@@ -50,11 +50,8 @@
 ;; (println "(.-argv process)" (.-argv process))
 ;; (doseq [arg args] (println arg))
 
-(def case-switch "(?i)")
-
-(def prefix
-  "e \\+\\d+ .*?:"
-  #_"")
+(def case-switch "(?i)" #_"")
+(def prefix "e \\+\\d+ .*?:" #_"")
 
 ;; TODO utf8.txt doesn't use block syntax
 (defn search [file ptrn cmt-str err data]
@@ -68,21 +65,21 @@
                                       (str "e +" idx " " file)
                                       ":" line "\n")))
          (reduce str)
-         (re-seq (re-pattern (str
-                              case-switch
-                              (cs/join
-                               "|"
-                               [
-                                (str
-                                 "(" prefix cmt-str           ".*\n" "){1,}"  ;; greedy: at least
-                                 "(" prefix              ptrn ".*\n" "){1,}?" ;; lazy:   at least
-                                     prefix                     "\n"
-                                 )
-                                (str
-                                 "(" prefix cmt-str ".*" ptrn ".*\n" "){1,}"  ;; greedy: at least
-                                 "(" prefix                   ".*\n" "){1,}?" ;; lazy:   at least
-                                     prefix                     "\n"
-                                 )]))))
+         (re-seq
+          (re-pattern
+           (str
+            case-switch
+            (cs/join
+             "|"
+             [
+              (str
+               "(" prefix cmt-str           ".*\n" "){1,}"  ; greedy
+               "(" prefix              ptrn ".*\n" "){1,}?" ; lazy
+               prefix                         "\n")
+              (str
+               "(" prefix cmt-str ".*" ptrn ".*\n" "){1,}"  ; greedy
+               "(" prefix                   ".*\n" "){1,}?" ; lazy
+               prefix                         "\n")]))))
          (map (fn [e]
                 #_(.log js/console "(count e)" (count e))
                 (->> e
