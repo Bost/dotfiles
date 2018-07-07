@@ -53,7 +53,7 @@
 (def case-switch "(?i)")
 
 (def prefix
-  #_"e \\+\\d+ .*?:"
+  "e \\+\\d+ .*?:"
   #_"")
 
 ;; TODO utf8.txt doesn't use block syntax
@@ -64,17 +64,35 @@
          (split #"\n")
          #_(take 15)
          (map-indexed (fn [idx line] (str
-                                     #_idx
-                                     (str "e +" idx " " file)
-                                     ":" line "\n")))
+                                      #_idx
+                                      (str "e +" idx " " file)
+                                      ":" line "\n")))
          (reduce str)
          (re-seq (re-pattern (str
                               case-switch
-                              prefix cmt-str            ".*\n"
-                              prefix          ".*" ptrn ".*\n"
-                              "|"
-                              prefix cmt-str ".*" ptrn ".*\n"
-                              prefix                   ".*\n")))
+                              (cs/join
+                               "|"
+                               [
+                                (str
+                                 "(" prefix cmt-str           ".*\n" "){1,}"  ;; greedy: at least
+                                 "(" prefix              ptrn ".*\n" "){1,}?" ;; lazy:   at least
+                                     prefix                     "\n"
+                                 )
+                                (str
+                                 "(" prefix cmt-str ".*" ptrn ".*\n" "){1,}"  ;; greedy: at least
+                                 "(" prefix                   ".*\n" "){1,}?" ;; lazy:   at least
+                                     prefix                     "\n"
+                                 )]))))
+         (map (fn [e]
+                #_(.log js/console "(count e)" (count e))
+                (->> e
+                     (remove nil?)
+                     (map #(split #"\n" %))
+                     (map drop-last)
+                     (reduce into [])
+                     (map (fn [s] (str s "\n")))
+                     distinct
+                     (reduce str))))
          (map #(->> (re-pattern (str case-switch ptrn))
                     (cs/split %)
                     (interpose (.-green ptrn))
