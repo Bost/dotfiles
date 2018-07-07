@@ -74,8 +74,8 @@
              [
               (str
                "(" prefix cmt-str           ".*\n" "){1,}"  ; greedy
-               "(" prefix              ptrn ".*\n" "){1,}?" ; lazy
-               prefix                         "\n")
+               "(" prefix         ".*" ptrn ".*\n" "){1,}?" ; lazy
+                   prefix                     "\n")
               (str
                "(" prefix cmt-str ".*" ptrn ".*\n" "){1,}"  ; greedy
                "(" prefix                   ".*\n" "){1,}?" ; lazy
