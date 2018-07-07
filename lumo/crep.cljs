@@ -70,11 +70,11 @@
          (reduce str)
          (re-seq (re-pattern (str
                               case-switch
-                              prefix cmt-str            ".+\n"
+                              prefix cmt-str            ".*\n"
                               prefix          ".*" ptrn ".*\n"
                               "|"
                               prefix cmt-str ".*" ptrn ".*\n"
-                              prefix                   ".+\n")))
+                              prefix                   ".*\n")))
          (map #(->> (re-pattern (str case-switch ptrn))
                     (cs/split %)
                     (interpose (.-green ptrn))
