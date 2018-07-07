@@ -52,6 +52,10 @@
 
 (def case-switch "(?i)")
 
+(def prefix
+  #_"e \\+\\d+ .*?:"
+  #_"")
+
 ;; TODO utf8.txt doesn't use block syntax
 (defn search [file ptrn cmt-str err data]
   (if err
@@ -66,12 +70,11 @@
          (reduce str)
          (re-seq (re-pattern (str
                               case-switch
-                              "e \\+\\d+ .*?:" cmt-str ".+\n"
-                              "e \\+\\d+ .*?:.*" ptrn ".*\n"
+                              prefix cmt-str            ".+\n"
+                              prefix          ".*" ptrn ".*\n"
                               "|"
-                              "e \\+\\d+ .*?:" cmt-str ".*" ptrn ".*\n"
-                              "e \\+\\d+ .*?:.+\n"
-                              )))
+                              prefix cmt-str ".*" ptrn ".*\n"
+                              prefix                   ".+\n")))
          (map #(->> (re-pattern (str case-switch ptrn))
                     (cs/split %)
                     (interpose (.-green ptrn))
