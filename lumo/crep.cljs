@@ -59,13 +59,11 @@
        #_(take 2)
        (map-indexed (fn [idx txt] [idx (count (split #"\n" txt)) txt]))))
 
-(defn parse
-  [ptrn [idx cnt txt]]
+(defn parse [ptrn [idx cnt txt]]
   (if (seq (re-seq (re-pattern (str case-switch ".*" ptrn ".*\n?")) txt))
     idx))
 
-(defn find-txt [idx-data idx]
-  [idx (nth (nth idx-data idx) 2)])
+(defn find-txt [idx-data idx] [idx (nth (nth idx-data idx) 2)])
 
 (defn prepend [idx file txt] (str #_idx (str "e +" idx " " file) ":\n" txt))
 
@@ -81,57 +79,52 @@
 (defn search [file ptrn cmt-str err data]
   (if err
     (throw (js/Error. err))
-    (let [idx-data (line-indexed-data data)
-          simple-ptrn (re-pattern (str case-switch ptrn))]
-      (->> idx-data
-           (map #(parse ptrn %))
-           (remove nil?)
-           (map #(find-txt idx-data %))
-           (map #(embelish file simple-ptrn ptrn %))
+    (let [simple-ptrn (re-pattern (str case-switch ptrn))]
+      (let [idx-data (line-indexed-data data)]
+        (->> idx-data
+               (map #(parse ptrn %))
+               (remove nil?)
+               (map #(find-txt idx-data %))
+               (map #(embelish file simple-ptrn ptrn %))
+               prnt))
+      #_(->> data
+           (split #"\n")
+           #_(take 15)
+           (map-indexed (fn [idx line] (str
+                                       #_idx
+                                       (str "e +" idx " " file)
+                                       ":" line "\n")))
+           (reduce str)
+           (re-seq
+            (re-pattern
+             (str
+              case-switch
+              (cs/join
+               "|"
+               [
+                (str
+                 "(" prefix cmt-str           ".*\n" "){1,}"  ; greedy
+                 "(" prefix         ".*" ptrn ".*\n" "){1,}?" ; lazy
+                 prefix                     "\n")
+                (str
+                 "(" prefix cmt-str ".*" ptrn ".*\n" "){1,}"  ; greedy
+                 "(" prefix                   ".*\n" "){1,}?" ; lazy
+                 prefix                         "\n")]))))
+           (map (fn [e]
+                  #_(.log js/console "(count e)" (count e))
+                  (->> e
+                       (remove nil?)
+                       (map #(split #"\n" %))
+                       (map drop-last)
+                       (reduce into [])
+                       (map (fn [s] (str s "\n")))
+                       distinct
+                       (reduce str))))
+           (map #(->> simple-ptrn
+                      (cs/split %)
+                      (interpose (.-green ptrn))
+                      (reduce str)))
            prnt))))
-
-#_(defn search [file ptrn cmt-str err data]
-   (if err
-     (throw (js/Error. err))
-     (let [simple-ptrn (re-pattern (str case-switch ptrn))]
-       (->> data
-            (split #"\n")
-            #_(take 15)
-            (map-indexed (fn [idx line] (str
-                                        #_idx
-                                        (str "e +" idx " " file)
-                                        ":" line "\n")))
-            (reduce str)
-            (re-seq
-             (re-pattern
-              (str
-               case-switch
-               (cs/join
-                "|"
-                [
-                 (str
-                  "(" prefix cmt-str           ".*\n" "){1,}"  ; greedy
-                  "(" prefix         ".*" ptrn ".*\n" "){1,}?" ; lazy
-                  prefix                     "\n")
-                 (str
-                  "(" prefix cmt-str ".*" ptrn ".*\n" "){1,}"  ; greedy
-                  "(" prefix                   ".*\n" "){1,}?" ; lazy
-                  prefix                         "\n")]))))
-            (map (fn [e]
-                   #_(.log js/console "(count e)" (count e))
-                   (->> e
-                        (remove nil?)
-                        (map #(split #"\n" %))
-                        (map drop-last)
-                        (reduce into [])
-                        (map (fn [s] (str s "\n")))
-                        distinct
-                        (reduce str))))
-            (map #(->> simple-ptrn
-                       (cs/split %)
-                       (interpose (.-green ptrn))
-                       (reduce str)))
-            prnt))))
 
 (->> (let [enc (clj->js {:encoding "utf8"})
            [files-hm ptrn] args
