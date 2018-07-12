@@ -65,7 +65,7 @@
 
 (defn find-txt [idx-data idx] [idx (nth (nth idx-data idx) 2)])
 
-(defn prepend [idx file txt] (str #_idx (str "e +" idx " " file) ":\n" txt))
+(defn prepend [idx file txt] (str #_idx (str "e +" idx " " file) "\n" txt))
 
 (defn embelish [file simple-ptrn ptrn [idx txt]]
   (->> simple-ptrn
