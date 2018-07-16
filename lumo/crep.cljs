@@ -53,6 +53,9 @@
 (def case-switch "(?i)" #_"")
 (def prefix "e \\+\\d+ .*?:" #_"")
 
+(defn block-idx [idx beg txt]
+  [idx beg (count (split #"\n" txt)) txt])
+
 (defn line-indexed-data [data]
   (->> data
        (split #"\n{2,}")
@@ -132,4 +135,5 @@
        (doall
         (map #(.readFile fs % enc (partial search % ptrn cmt-str))
              files)))
-     time)
+     ;; produces: "Elapsed time: 1.384022 msecs"
+     #_time)
