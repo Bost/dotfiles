@@ -13,7 +13,7 @@ function c
   set prm '{:cmt-str "#" :files ["'$f1'" "'$f2'"]}'
   lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
 
-  set f1 $dev/cheatsheet/cmds/utf8.txt
-  set prm '{:cmt-str "" :files ["'$f1'"]}'
-  lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
+  # set f1 $dev/cheatsheet/cmds/utf8.txt
+  # set prm '{:cmt-str "" :files ["'$f1'"]}'
+  # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
 end
