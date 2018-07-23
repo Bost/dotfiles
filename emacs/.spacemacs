@@ -90,6 +90,18 @@ values."
      zop-to-char fish-mode drag-stuff helm-cider
      helm-cider-history transpose-frame typed-clojure-mode
      google-this
+
+     ;; doom-themes
+
+     ;; (load-file (format "%s/dev/clj-refactor.el/clj-refactor.el" (getenv "HOME")))
+     ;; (clj-refactor
+     ;;  :location
+     ;;  ;; local ;; i.e. ~/.emacs.d/private/local/clj-refactor
+     ;;  (recipe :fetcher github :repo "clojure-emacs/clj-refactor.el"
+     ;;          :commit "632be9e9bab1045fd5c1dcacd4f5781c2a49db81"
+     ;;          ;; :min-version "1"
+     ;;          )
+     ;;  )
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
