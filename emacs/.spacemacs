@@ -735,17 +735,22 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "s-F") 'recentf-open-files)
   ;; ("s-F"   . helm-find-files)
 
+  ;; C-M-down does not work
+  ;; (global-set-key (kbd "<C-M-down>") 'crux-duplicate-current-line-or-region)
+  ;; (global-set-key (kbd "C-M-<down>") 'crux-duplicate-current-line-or-region)
+  ;; (global-set-key [C-M-down] 'crux-duplicate-current-line-or-region)
+
   (global-set-key (kbd "<C-up>") 'xah-backward-block)
   (global-set-key (kbd "<C-down>") 'xah-forward-block)
   (global-set-key (kbd "<C-prior>") 'hs-hide-block) ; pg-up
   (global-set-key (kbd "<C-next>") 'hs-show-block)  ; pg-down
   ;; (global-set-key (kbd "<C-M-prior>") 'hs-toggle-hiding)
-  (global-set-key (kbd "<C-M-prior>") 'hs-hide-all)
-  (global-set-key (kbd "<C-M-next>") 'hs-show-all)
+  (global-set-key (kbd "<C-M-prior>") 'hs-hide-all) ; pg-up
+  (global-set-key (kbd "<C-M-next>") 'hs-show-all)  ; pg-down
 
   ;; (global-set-key (kbd "<C-M-right>") 'sp-forward-sexp)
-  (global-set-key (kbd "<C-M-right>") 'forward-paragraph)  ; C-M-e end-of-defun
-  (global-set-key (kbd "<C-M-left>")  'backward-paragraph) ; C-M-b beginning-of-defun
+  (global-set-key (kbd "<C-M-right>") 'forward-paragraph) ; C-M-e end-of-defun
+  (global-set-key (kbd "<C-M-left>") 'backward-paragraph) ; C-M-b beginning-of-defun
 
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
   (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
@@ -927,11 +932,16 @@ Example: (my/buffer-mode (current-buffer))"
     :bind
     (("C-c d"           . crux-duplicate-current-line-or-region)
      ("<C-s-down>"      . crux-duplicate-current-line-or-region)
+
+     ;; C-M-down does not work
+     ;; ("<C-M-down>"      . crux-duplicate-current-line-or-region)
+     ;; ("C-M<down>"      . crux-duplicate-current-line-or-region)
+     ;; ([C-M-down]      . crux-duplicate-current-line-or-region)
+
      ("C-c t"           . crux-transpose-windows)
      ("<C-s-backspace>" . crux-kill-line-backwards)
      ;; (global-set-key (kbd "s-j") 'crux-top-join-line)
-     ("s-j"             . crux-top-join-line)
-     ))
+     ("s-j"             . crux-top-join-line)))
 
   (defun my/insert-sexp (str-sexp n-chars-back)
     (insert str-sexp)
@@ -1227,10 +1237,10 @@ Repeated invocations toggle between the two most recently open buffers."
 
       ;; (evil-leader/set-key "o c" 'my/s-X) works too
       (spacemacs/set-leader-keys "oc" 'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c"  'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'clojure-modec "c"  'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "c"  'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode "c"  'my/s-X)
+      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" 'my/s-X)
+      (spacemacs/set-leader-keys-for-major-mode 'clojure-modec "c" 'my/s-X)
+      (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "c" 'my/s-X)
+      (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode "c" 'my/s-X)
 
       (defun my/cider-save-and-load-current-buffer ()
         (interactive)
