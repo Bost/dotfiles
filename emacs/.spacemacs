@@ -85,9 +85,11 @@ values."
      ;; android-mode  ; doesn't work
      key-chord
      suggest ;; discover elisp fns
-     crux super-save zop-to-char fish-mode drag-stuff helm-cider
+     crux
+     super-save ;; save buffers when they lose focux
+     zop-to-char fish-mode drag-stuff helm-cider
      helm-cider-history transpose-frame typed-clojure-mode
-     google-this super-save crux
+     google-this
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -926,7 +928,10 @@ Example: (my/buffer-mode (current-buffer))"
     (("C-c d"           . crux-duplicate-current-line-or-region)
      ("<C-s-down>"      . crux-duplicate-current-line-or-region)
      ("C-c t"           . crux-transpose-windows)
-     ("<C-s-backspace>" . crux-kill-line-backwards)))
+     ("<C-s-backspace>" . crux-kill-line-backwards)
+     ;; (global-set-key (kbd "s-j") 'crux-top-join-line)
+     ("s-j"             . crux-top-join-line)
+     ))
 
   (defun my/insert-sexp (str-sexp n-chars-back)
     (insert str-sexp)
