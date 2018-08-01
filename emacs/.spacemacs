@@ -744,8 +744,7 @@ Example: (my/buffer-mode (current-buffer))"
                                     (spacemacs/helm-project-smart-do-search t)))
 
   (global-set-key (kbd "s-f") 'helm-find-files)
-  (global-set-key (kbd "s-F") 'recentf-open-files)
-  ;; ("s-F"   . helm-find-files)
+  (global-set-key (kbd "s-F") 'helm-recentf) ;; 'recentf-open-files
 
   ;; C-M-down does not work
   ;; (global-set-key (kbd "<C-M-down>") 'crux-duplicate-current-line-or-region)
