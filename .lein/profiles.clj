@@ -21,8 +21,9 @@
    ;; type checking for Clojure with Clojure core.typed
    [lein-typed "0.4.6"]
    ]
-  :dependencies
-  [
-   ]
+
+  ;; A Clojure(Script); debug single- and multi-threaded apps
+  :dependencies [[spyscope "0.1.6"]]
+  :injections [(require 'spyscope.core)]
   }
  }
