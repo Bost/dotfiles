@@ -91,8 +91,6 @@ values."
      helm-cider-history transpose-frame typed-clojure-mode
      google-this
 
-     doom-themes
-
      ;; (load-file (format "%s/dev/clj-refactor.el/clj-refactor.el" (getenv "HOME")))
      ;; (clj-refactor
      ;;  :location
