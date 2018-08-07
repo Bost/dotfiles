@@ -49,7 +49,6 @@ values."
      better-defaults
      emacs-lisp
      git
-     ;; markdown
      org
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -88,9 +87,15 @@ values."
      suggest ;; discover elisp fns
      crux
      super-save ;; save buffers when they lose focux
-     zop-to-char fish-mode drag-stuff helm-cider
-     helm-cider-history transpose-frame typed-clojure-mode
+     zop-to-char
+     fish-mode
+     drag-stuff
+     transpose-frame
      google-this
+
+     helm-cider
+     helm-cider-history
+     typed-clojure-mode
 
      ;; (load-file (format "%s/dev/clj-refactor.el/clj-refactor.el" (getenv "HOME")))
      ;; (clj-refactor
