@@ -135,6 +135,16 @@ values."
   ;; (load-file (format "%s/dev/clojure-mode/clojure-mode.el" (getenv "HOME")))
   ;; (load-file (format "%s/dev/clojure-mode.5.8.0/clojure-mode.el" (getenv "HOME")))
 
+  ;; TODO it looks like only package-archives and not
+  ;; configuration-layer--elpa-archives is checked when calling M-x
+  ;; install-package
+  ;; (setq package-archives
+  ;;       '(
+  ;;         ("gnu" . "https://elpa.gnu.org/packages/")
+  ;;         ("marmalade" . "https://marmalade-repo.org/packages/")
+  ;;         ("melpa" . "https://melpa.org/packages/")
+  ;;         ("melpa-stable" . "https://stable.melpa.org/packages/"))
+  ;;       )
   (push '("melpa-stable" . "stable.melpa.org/packages/")
         configuration-layer--elpa-archives)
   ;; (push '(helm . "melpa-stable") package-pinned-packages)
