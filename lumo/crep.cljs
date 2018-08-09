@@ -66,17 +66,22 @@
   (if (seq (re-seq (re-pattern (str case-switch ".*" ptrn ".*\n?")) txt))
     idx))
 
-(defn find-txt [idx-data idx] [idx (nth (nth idx-data idx) 2)])
+(defn find-txt [data idx]
+  (let [nth-data (nth data idx)]
+    [idx
+     (nth nth-data 1)
+     (nth nth-data 2)]))
 
-(defn prepend [idx file txt] (str #_idx (str "e +" idx " " file) "\n" txt))
+;; TODO cnt of the previous should be passed recursivelly - use monad
+(defn prepend [idx cnt file txt] (str #_idx (str "e +" (+ idx cnt) " " file) "\n" txt))
 
-(defn embelish [file simple-ptrn ptrn [idx txt]]
+(defn embelish [file simple-ptrn ptrn [idx cnt txt]]
   (->> simple-ptrn
        (clojure.string/split #_txt
                              (str txt "\n"))
        (interpose (.-green ptrn))
        (reduce str)
-       (prepend idx file)))
+       (prepend idx cnt file)))
 
 ;; TODO utf8.txt doesn't use block syntax
 (defn search [file ptrn cmt-str err data]
@@ -85,11 +90,20 @@
     (let [simple-ptrn (re-pattern (str case-switch ptrn))]
       (let [idx-data (line-indexed-data data)]
         (->> idx-data
+             ;; (map #(parse ptrn %))
+             ;; (remove nil?)
+             ;; (map #(find-txt idx-data %))
+             ;; (map #(embelish file simple-ptrn ptrn %))
+             ;; transducing avoids garbage collection on JVM (speed gain?).
+             ;; transducing under lumo doesn't make it really faster
+             (transduce
+              (comp
                (map #(parse ptrn %))
                (remove nil?)
                (map #(find-txt idx-data %))
-               (map #(embelish file simple-ptrn ptrn %))
-               prnt))
+               (map #(embelish file simple-ptrn ptrn %)))
+              conj [])
+             prnt))
       #_(->> data
            (split #"\n")
            #_(take 15)
