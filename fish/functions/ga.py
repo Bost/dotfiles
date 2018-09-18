@@ -12,7 +12,7 @@ cmds = [
     ["git", "--git-dir="+dev+"/dotfiles/.git",   "pull", "--rebase", "origin", "master",],
     ["git", "--git-dir="+dev+"/git/.git",        "fetch", "--tags",],
     ["git", "--git-dir="+dev+"/fish-shell/.git", "fetch", "--tags",],
-    ["git", "--git-dir="+dev+"/emacs-25/.git",   "fetch", "--tags",],
+    ["git", "--git-dir="+dev+"/emacs-26/.git",   "fetch", "--tags",],
     ["git", "--git-dir=$HOME/.emacs.d/.git",     "pull",  "--rebase", "origin", "release-0.200",],
 ]
 
