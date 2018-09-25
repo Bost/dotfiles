@@ -1,0 +1,20 @@
+# Keybindings require three things to be fully defined: A selector that is
+# matched against the focused element, the keystroke and the command to
+# execute.
+#
+# Below is a basic keybinding which registers on all platforms by applying to
+# the root atom-workspace element.
+
+# For more detailed documentation see
+# https://atom.io/docs/latest/advanced/keymaps
+
+# keymaps for OSX
+'.platform-darwin atom-workspace atom-text-editor:not([mini])':
+ 'cmd-shift-enter': 'maximize-panes:maximize'
+
+# commands for windows and Linux due to their lack of an cmd key
+'.platform-win32 atom-workspace atom-text-editor:not([mini])':
+ 'ctrl-shift-enter': 'maximize-panes:maximize'
+
+'.platform-linux atom-workspace atom-text-editor:not([mini])':
+ 'ctrl-shift-enter': 'maximize-panes:maximize'
