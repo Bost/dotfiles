@@ -19,11 +19,8 @@
    ;; lein kibit - check style: There's a function for that!
    [lein-kibit "0.1.6"]
    ;; type checking for Clojure with Clojure core.typed
-   [lein-typed "0.4.6"]
-   ]
+   [lein-typed "0.4.6"]]
 
   ;; A Clojure(Script); debug single- and multi-threaded apps
   :dependencies [[spyscope "0.1.6"]]
-  :injections [(require 'spyscope.core)]
-  }
- }
+  :injections [(require 'spyscope.core)]}}
