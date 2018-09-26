@@ -11,8 +11,8 @@
       "minimap-hide"
       "minimap-pigments"
       "minimap-linter"
-      "relative-numbers"
       "test-proton-atom"
+      "relative-numbers"
       "linter-jshint"
     ]
     telemetryConsent: "no"

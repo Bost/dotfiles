@@ -57,6 +57,7 @@
   ;; Will get uninstalled so choose wisely!
   :additional-packages
   [
+    :lisp-paredit
     ;; :pigments
   ]
 
