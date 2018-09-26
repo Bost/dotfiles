@@ -31,11 +31,11 @@
     ;; -----------------------------------
     :lang/clojure
     ;; :lang/csharp
-    ;; :lang/python
+    :lang/python
     ;; :lang/julia
     ;; :lang/latex
     ;; :lang/elixir
-    ;; :lang/markdown
+    :lang/markdown
     ;; :lang/rust
     :lang/javascript
 

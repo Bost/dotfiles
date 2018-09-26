@@ -26,6 +26,13 @@
 
 'atom-text-editor':
   'cmd-q': 'window:focus-next-pane'
+  'cmd-\'': 'editor:toggle-line-comments'
+  'cmd-s': 'core:save'
+  'cmd-k': 'core:close'
+  'cmd-m': 'github:toggle-git-tab'
+  'ctrl-alt-k': 'lisp-paredit:kill-sexp-forwards'
+  'ctrl-alt-backspace': 'lisp-paredit:kill-sexp-backwards'
+
 
 # jump out of the file tree
 'atom-workspace':
