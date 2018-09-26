@@ -28,12 +28,11 @@
   'cmd-q': 'window:focus-next-pane'
   'cmd-\'': 'editor:toggle-line-comments'
   'cmd-s': 'core:save'
-  'cmd-k': 'core:close'
-  'cmd-m': 'github:toggle-git-tab'
+  'cmd-0': 'pane:close'
   'ctrl-alt-k': 'lisp-paredit:kill-sexp-forwards'
   'ctrl-alt-backspace': 'lisp-paredit:kill-sexp-backwards'
 
-
-# jump out of the file tree
 'atom-workspace':
-  'cmd-q': 'window:focus-pane-on-right'
+  'cmd-q': 'window:focus-pane-on-right' # jump out of the file tree
+  'cmd-m': 'github:toggle-git-tab'
+  'cmd-k': 'core:close'

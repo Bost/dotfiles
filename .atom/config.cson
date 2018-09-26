@@ -28,6 +28,7 @@
   "exception-reporting": {}
   "linter-clojure":
     clojureExecutablePath: "/home/bost/.m2/repository/org/clojure/clojure/1.9.0/clojure-1.9.0.jar"
+  "lisp-paredit": {}
   minimap: {}
   proton:
     core:
