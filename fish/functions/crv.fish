@@ -1,5 +1,5 @@
 function crv
-  # ack-cheat $dev/cheatsheet/cmds/vim.vim $argv
-  set files '{:cmt-str "\"" :files ["'$dev/dotfiles/.vimrc'"]}'
-  lumo $dev/dotfiles/lumo/crep.cljs $files $argv
+    set f1 $dev/dotfiles/.vimrc
+    set prm '{:cmt-str "#" :files ["'$f1'"]}'
+    lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
 end
