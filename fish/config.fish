@@ -32,4 +32,5 @@ set -U bin ~/bin
 # set -x PATH ~/.local/bin $PATH
 set -x JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 set -x NODE_PATH ~/.config/yarn/global/node_modules
-set -x PATH $HOME/.yarn/bin $HOME/.config/yarn/global/node_modules/.bin $PATH
+set -x ANDROID_HOME /usr/lib/android-sdk
+set -x PATH $HOME/.config/yarn/global/node_modules/.bin $PATH
