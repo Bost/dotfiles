@@ -5,7 +5,8 @@ function glo
     # Fetch all tags from the remote (i.e., fetch remote tags refs/tags/* into
     # local tags with the same name), in addition to whatever else would
     # otherwise be fetched.
-    set cmd "git fetch --tags origin $argv; and git rebase origin $argv"
+    set remote origin
+    set cmd "git fetch --tags $remote $argv; and git rebase $argv"
     echo $cmd
     eval $cmd
 end
