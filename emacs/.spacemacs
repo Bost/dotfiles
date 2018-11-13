@@ -475,9 +475,11 @@ you should place your code here."
 
   (defun my/close-buffer ()
     (interactive)
-    (if server-buffer-clients
-        (server-edit)
-      (kill-this-buffer)))
+    (if (member (current-buffer) (cider-repls))
+        (cider-quit)
+      (if server-buffer-clients
+          (server-edit)
+        (kill-this-buffer))))
 
   (defalias 'save-selected-text 'write-region)
 
