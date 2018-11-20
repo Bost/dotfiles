@@ -8,9 +8,9 @@
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    ;; doesn't work with cider/cider-nrepl "0.17.0"; it yields the
    ;;     Unable to resolve var: refactor-nrepl.middleware/wrap-refactor
-   ;; [refactor-nrepl "2.3.1"]
+   [refactor-nrepl "2.4.0"]
    ;; collection of nREPL middleware designed to enhance CIDER
-   [cider/cider-nrepl "0.17.0"]
+   [cider/cider-nrepl "0.18.0"]
 
    ;; check for outdated dependencies and plugins
    [lein-ancient "0.6.15"]
