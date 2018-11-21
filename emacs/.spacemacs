@@ -475,7 +475,8 @@ you should place your code here."
 
   (defun my/close-buffer ()
     (interactive)
-    (if (member (current-buffer) (cider-repls))
+    (if (and (fboundp 'cider-repls) ;; is cider loaded?
+             (member (current-buffer) (cider-repls)))
         (cider-quit)
       (if server-buffer-clients
           (server-edit)
