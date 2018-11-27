@@ -5,6 +5,7 @@
  {
   :plugins
   [
+   [lein-figwheel "0.5.17"]
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    ;; doesn't work with cider/cider-nrepl "0.17.0"; it yields the
    ;;     Unable to resolve var: refactor-nrepl.middleware/wrap-refactor
@@ -19,7 +20,9 @@
    ;; lein kibit - check style: There's a function for that!
    [lein-kibit "0.1.6"]
    ;; type checking for Clojure with Clojure core.typed
-   [lein-typed "0.4.6"]]
+   [lein-typed "0.4.6"]
+   [lein-cljsbuild "1.1.7"]
+   [lein-garden "0.3.0"]]
 
   ;; A Clojure(Script); debug single- and multi-threaded apps
   :dependencies [[spyscope "0.1.6"]]

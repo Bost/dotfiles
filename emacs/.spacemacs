@@ -1067,6 +1067,10 @@ the (^:fold ...) expressions."
                                    (hs-minor-mode 1)
                                    ;; (my/hs-clojure-hide-namespace-and-folds)
                                    ))
+    ;; (define-clojure-indent ;; doesn't work?
+    ;;   (->  1)
+    ;;   (->> 1))
+
     (bind-keys :map clojure-mode-map
                ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
@@ -1192,9 +1196,6 @@ Repeated invocations toggle between the two most recently open buffers."
       ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
       :config
       (setq
-       cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
-                             (concat (getenv "HOME") "/dev/openjdk-8-source"))
-
        cider-font-lock-dynamically ;; dynamic syntax highlighting
        ;; '(macro core deprecated) ;; default value
        '(macro core function var)
@@ -1204,7 +1205,8 @@ Repeated invocations toggle between the two most recently open buffers."
                              ;; mkdir -p ~/dev/openjdk-8-source
                              ;; cd ~/dev/openjdk-8-source
                              ;; unzip /usr/lib/jvm/openjdk-8/src.zip .
-                             (concat (getenv "HOME") "/dev/openjdk-8-source"))
+                             ;; (concat (getenv "HOME") "/dev/openjdk-8-source")
+                             )
        cider-repl-use-pretty-printing t
        ;; set how CIDER starts cljs-lein-repl
        ;; see https://lambdaisland.com/episodes/figwheel-emacs-cider
