@@ -22,7 +22,10 @@
    ;; type checking for Clojure with Clojure core.typed
    [lein-typed "0.4.6"]
    [lein-cljsbuild "1.1.7"]
-   [lein-garden "0.3.0"]]
+   [lein-garden "0.3.0"]
+   ;; genere API docu from clj or cljs source
+   [lein-codox "0.10.5"]
+   ]
 
   ;; A Clojure(Script); debug single- and multi-threaded apps
   :dependencies [[spyscope "0.1.6"]]
