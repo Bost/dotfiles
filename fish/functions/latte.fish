@@ -1,5 +1,5 @@
 function latte
-  set cmd cd $dev/LaTTe
+  set cmd cd $dec/latte-central/LaTTe
   echo $cmd
   eval $cmd
 end

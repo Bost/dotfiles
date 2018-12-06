@@ -484,6 +484,50 @@ you should place your code here."
 
   (defalias 'save-selected-text 'write-region)
 
+(defun my/grep (command-args)
+  "Run Grep with user-specified COMMAND-ARGS, collect output in a buffer.
+While Grep runs asynchronously, you can use \\[next-error] (M-x next-error),
+or \\<grep-mode-map>\\[compile-goto-error] in the *grep* \
+buffer, to go to the lines where Grep found
+matches.  To kill the Grep job before it finishes, type \\[kill-compilation].
+
+Noninteractively, COMMAND-ARGS should specify the Grep command-line
+arguments.
+
+For doing a recursive `grep', see the `rgrep' command.  For running
+Grep in a specific directory, see `lgrep'.
+
+This command uses a special history list for its COMMAND-ARGS, so you
+can easily repeat a grep command.
+
+A prefix argument says to default the COMMAND-ARGS based on the current
+tag the cursor is over, substituting it into the last Grep command
+in the Grep command history (or into `grep-command' if that history
+list is empty)."
+  (interactive
+   (progn
+     (grep-compute-defaults)
+     (let ((default (grep-default-command)))
+       (list (read-shell-command "Run grep (like this): "
+                                 (if current-prefix-arg default
+                                   ;; grep-command
+                                   (format "%s %s %s %s %s %s"
+                                           "grep"
+                                           "-nir"
+                                           "\"latte \\\"1.0b1-SNAPSHOT\\\"\""
+                                           "--exclude-dir={.git,LaTTe-upstream}"
+                                           "--include=\*.{el,clj,cljs,cljc}"
+                                           (format "%s/dec/latte-central/" (getenv "HOME"))))
+                                 'grep-history
+                                 (if current-prefix-arg nil default))))))
+  (grep--save-buffers)
+  ;; Setting process-setup-function makes exit-message-function work
+  ;; even when async processes aren't supported.
+  (compilation-start (if (and grep-use-null-device null-device)
+			 (concat command-args " " null-device)
+		       command-args)
+		     'grep-mode))
+
   (defun my/rudekill-matching-buffers (regexp &optional internal-too)
     "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP.
 See the `kill-matching-buffers` for grateful killing. The optional 2nd argument
