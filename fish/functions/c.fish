@@ -3,7 +3,7 @@ function c
     # set prm '{:cmt-str "#" :files ["'$f1'"]}'
     # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
     if test -e $argv
-        set cmd cat $argv
+        set cmd cat (string escape -- $argv)
         # echo $cmd # otherwise c <file> | jq '.' doesn't work
         eval $cmd
     else

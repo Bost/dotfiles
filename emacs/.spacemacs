@@ -135,6 +135,14 @@ values."
   ;; (load-file (format "%s/dev/clojure-mode/clojure-mode.el" (getenv "HOME")))
   ;; (load-file (format "%s/dev/clojure-mode.5.8.0/clojure-mode.el" (getenv "HOME")))
 
+
+  ;; TODO install crosshairs and deps via dotspacemacs-additional-packages
+  (add-to-list 'load-path (format "%s/dev/dotfiles/emacs/crosshairs" (getenv "HOME")))
+  (require 'hl-line+)
+  (require 'vline)
+  (require 'col-highlight)
+  (require 'crosshairs)
+
   ;; TODO it looks like only package-archives and not
   ;; configuration-layer--elpa-archives is checked when calling M-x
   ;; install-package
@@ -1524,6 +1532,7 @@ Example 2.:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(cider-boot-parameters "cider repl -s wait")
+ '(magit-log-section-commit-count 25)
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
    (quote
