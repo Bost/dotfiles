@@ -97,6 +97,8 @@ values."
      helm-cider-history
      typed-clojure-mode
 
+     lean-mode
+
      ;; (load-file (format "%s/dev/clj-refactor.el/clj-refactor.el" (getenv "HOME")))
      ;; (clj-refactor
      ;;  :location
@@ -1532,6 +1534,8 @@ Example 2.:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(cider-boot-parameters "cider repl -s wait")
+ '(evil-want-Y-yank-to-eol nil)
+ '(lean-rootdir (format "%s/lean-3.4.1-linux/" (getenv "HOME")))
  '(magit-log-section-commit-count 25)
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
  '(package-selected-packages
