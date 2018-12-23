@@ -1,6 +1,5 @@
 function gg
-  # string delims needed because of the '&'
-  set cmd "git gui $argv &"
+  set cmd git gui (string escape -- $argv) \&
   echo $cmd
   eval $cmd
 end

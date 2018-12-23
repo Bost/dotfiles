@@ -1,6 +1,5 @@
 function gk
-  # string delims needed because of the '&'
-  set cmd "gitk --all $argv &"
+  set cmd gitk --all (string escape -- $argv) \&
   echo $cmd
   eval $cmd
 end

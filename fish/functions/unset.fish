@@ -1,6 +1,5 @@
 function unset
-  # TODO test if the string delims are needed?
-  set cmd "set --erase $argv"
+  set cmd set --erase (string escape -- $argv)
   echo $cmd
   eval $cmd
 end

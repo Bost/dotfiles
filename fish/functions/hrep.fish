@@ -1,5 +1,5 @@
 function hrep
-  set cmd history --search --contains $argv
+  set cmd history --search --contains (string escape -- $argv)
   echo $cmd
   eval $cmd
 end

@@ -13,12 +13,12 @@ function search
     # -n, --line-number
     # -r, --recursive
     set opts --ignore-case --line-number --recursive
-    set cmd grep $opts $argv --exclude-dir={.git} --include="\*.{clj,cljs,cljc}" $projects
+    set cmd grep $opts (string escape -- $argv) --exclude-dir={.git} --include="\*.{clj,cljs,cljc}" $projects
 
     # -i --ignore-case
     # -r --recurse
     # set opts --ignore-case --recurse
-    # set cmd ag $opts $argv --ignore-dir={.git} --clojure $projects
+    # set cmd ag $opts (string escape -- $argv) --ignore-dir={.git} --clojure $projects
 
     # echo $cmd
     eval $cmd

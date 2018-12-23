@@ -1,5 +1,5 @@
 function gad
-  set cmd git add $argv
+  set cmd git add (string escape -- $argv)
   echo $cmd
   eval $cmd
 end

@@ -1,6 +1,7 @@
 function cx
-  echo "# chmod a+rx $argv"
-  set cmd chmod +x $argv
+  set cmd chmod +x (string escape -- $argv)
   echo $cmd
   eval $cmd
+  echo "### Try alternative"
+  echo "# chmod a+rx (string escape -- $argv)"
 end

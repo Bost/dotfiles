@@ -1,5 +1,5 @@
 function lc
-  set cmd lein clean $argv
+  set cmd lein clean (string escape -- $argv)
   echo $cmd
   eval $cmd
 end
