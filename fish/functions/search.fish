@@ -1,4 +1,4 @@
-function search
+function search --description "See also grepc.fish"
     set lcr "$dec/latte-central"
     set projects \
         $lcr/LaTTe \
@@ -13,12 +13,14 @@ function search
     # -n, --line-number
     # -r, --recursive
     set opts --ignore-case --line-number --recursive
-    set cmd grep $opts (string escape -- $argv) --exclude-dir={.git} --include="\*.{clj,cljs,cljc}" $projects
+    set fdirs "--exclude-dir={.git} --include=\*.{clj,cljs,cljc}"
+    set cmd grep $opts $fdirs (string escape -- $argv) $projects
 
     # -i --ignore-case
     # -r --recurse
     # set opts --ignore-case --recurse
-    # set cmd ag $opts (string escape -- $argv) --ignore-dir={.git} --clojure $projects
+    # set fdirs "--ignore-dir={.git} --clojure"
+    # set cmd ag $opts $fdirs (string escape -- $argv) $projects
 
     # echo $cmd
     eval $cmd
