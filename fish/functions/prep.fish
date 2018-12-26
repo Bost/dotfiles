@@ -11,11 +11,15 @@ function prep --description "See glances, cputool"
     echo $cmd
     set pid (eval $cmd)
 
-    # Process 'niceness' vs. 'priority' https://askubuntu.com/a/656787
+    if test $pid
+        # Process 'niceness' vs. 'priority' https://askubuntu.com/a/656787
 
-    # set cmd ps -o euser,ruser,suser,fuser,f,comm,label -p $pid
-    # set cmd ps -o pid,tid,class,rtprio,ni,pri,psr,pcpu,stat,wchan:14,comm -p $pid
-    set cmd ps -o pid,user,command,nice,priority,pri,%cpu,%mem -p $pid
-    echo $cmd
-    eval $cmd
+        # set cmd ps -o euser,ruser,suser,fuser,f,comm,label -p $pid
+        # set cmd ps -o pid,tid,class,rtprio,ni,pri,psr,pcpu,stat,wchan:14,comm -p $pid
+        set cmd ps -o pid,user,command,nice,priority,pri,%cpu,%mem -p $pid
+        echo $cmd
+        eval $cmd
+    else
+        echo "No PID found: pidof status/retCode $status"
+    end
 end
