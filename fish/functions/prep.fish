@@ -16,7 +16,7 @@ function prep --description "See glances, cputool"
 
         # set cmd ps -o euser,ruser,suser,fuser,f,comm,label -p $pid
         # set cmd ps -o pid,tid,class,rtprio,ni,pri,psr,pcpu,stat,wchan:14,comm -p $pid
-        set cmd ps -o pid,user,command,nice,priority,pri,%cpu,%mem -p $pid
+        set cmd ps -o ppid,pid,user,nice,%cpu,%mem,command --sort ppid -p $pid
         echo $cmd
         eval $cmd
     else
