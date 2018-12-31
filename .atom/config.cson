@@ -23,7 +23,7 @@
   "easy-motion-redux":
     replaceCharacters: "abcdefghijklmnopqrstuvwxyz"
   editor:
-    fontFamily: "Hack"
+    fontSize: 12
     softWrap: true
   "exception-reporting": {}
   "linter-clojure":
