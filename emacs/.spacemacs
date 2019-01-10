@@ -97,6 +97,7 @@ values."
      typed-clojure-mode
      cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
      lean-mode
+     helm-lean
      ;; (load-file (format "%s/dev/clj-refactor.el/clj-refactor.el" (getenv "HOME")))
      ;; (clj-refactor
      ;;  :location
