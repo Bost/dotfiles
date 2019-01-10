@@ -92,13 +92,11 @@ values."
      drag-stuff
      transpose-frame
      google-this
-
      helm-cider
      helm-cider-history
      typed-clojure-mode
-
+     cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
      lean-mode
-
      ;; (load-file (format "%s/dev/clj-refactor.el/clj-refactor.el" (getenv "HOME")))
      ;; (clj-refactor
      ;;  :location
