@@ -25,6 +25,7 @@
    [lein-garden "0.3.0"]
    ;; genere API docu from clj or cljs source
    [lein-codox "0.10.5"]
+   [lein-viz "0.3.0"]
    ]
 
   ;; A Clojure(Script); debug single- and multi-threaded apps
