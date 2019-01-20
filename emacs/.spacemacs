@@ -524,7 +524,7 @@ list is empty)."
                                            "grep"
                                            "-nir"
                                            "\"latte \\\"1.0b1-SNAPSHOT\\\"\""
-                                           "--exclude-dir={.git,LaTTe-upstream,latte-euroclojure-2016}"
+                                           "--exclude-dir={.git,target,LaTTe-upstream,latte-euroclojure-2016}"
                                            "--include=\*.{clj,cljs,cljc}"
                                            (format "%s/dec/latte-central/" (getenv "HOME"))))
                                  'grep-history
