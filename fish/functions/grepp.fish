@@ -1,5 +1,5 @@
-function grepc --description "See also grepl.fish"
-    # example: grepc "\<project\>"
+function grepp --description "See also grepc.fish"
+    # example: grepp "\<python\>"
 
     # -n, --line-number
     # -i, --ignore-case
@@ -7,7 +7,7 @@ function grepc --description "See also grepl.fish"
 
     # set opts -nir
     set opts --ignore-case --line-number --recursive
-    set fdirs "--exclude-dir={.git,target} --include=\*.{el,clj,cljs,cljc}"
+    set fdirs "--exclude-dir={.git,target} --include=\*.{py}"
     # wdir is undefined i.e. examine the working directory
     # set wdir ./
     set cmd grep $opts $fdirs (string escape -- $argv) $wdir
