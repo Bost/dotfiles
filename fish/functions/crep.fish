@@ -6,8 +6,10 @@ function crep
     # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
 
     # -P --perl-regexp
+    # -E --extended-regexp
     # -z --null-data
     # -o --only-matching
-    # insert separating line   | greate matching groups  | grep for desired pattern
-    sed 's/^$/\n/' $f1 $f2 $f3 | grep -Pzo "\n(\S.*\n)*" | grep -Pz $argv
+    set prms -Pzo
+    # insert separating line   | greate matching groups   | grep for desired pattern
+    sed 's/^$/\n/' $f1 $f2 $f3 | grep $prms "\n(\S.*\n)*" | grep -Pz $argv
 end
