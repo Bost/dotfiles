@@ -1,5 +1,5 @@
 function ga
-  set cmd python3 $dev/dotfiles/fish/functions/ga.py
+  set cmd python3 $dev/dotfiles/python/projects-git.py
   echo $cmd
   eval $cmd
 end
