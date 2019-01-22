@@ -216,14 +216,15 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes
    '(
-     dichromacy
+     spacemacs-light
+     ;; dichromacy
      spacemacs-dark
      leuven ; light-theme
      ;; dark themes
      solarized-dark zenburn
      ;; light themes
      default tsdh-light apropospriate-light espresso soft-morning
-     eclipse spacemacs-light solarized-light
+     eclipse solarized-light
      )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
