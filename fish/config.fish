@@ -30,7 +30,14 @@ set -U bin ~/bin
 # Some spacemacs layers require certain tools to be available on $PATH
 # see http://spacemacs.org/doc/FAQ.html#setup-path
 # set -x PATH ~/.local/bin $PATH
-set -x JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+
+# see /etc/profile.d/jdk.csh /etc/profile.d/jdk.sh /etc/environment ~/.config/fish/config.fish
+# changes require logout and login
+# set -x JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+# set -x JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+
 set -x NODE_PATH ~/.config/yarn/global/node_modules
+
 set -x ANDROID_HOME /usr/lib/android-sdk
+
 set -x PATH $HOME/.config/yarn/global/node_modules/.bin $PATH
