@@ -7,6 +7,7 @@ function crf
     # -P --perl-regexp
     # -z --null-data
     # -o --only-matching
-    # insert separating line   | greate matching groups  | grep for desired pattern
-    sed 's/^$/\n/' $f1 | grep -Pzo "\n(\S.*\n)*" | grep -Pz $argv
+    # -e PATTERN, --regepx=PATTERN
+    # insert separating line | greate matching groups  | grep for desired pattern
+    sed 's/^$/\n/' $f1       | grep -Pzo "\n(\S.*\n)*" | grep -Pz -e (string escape -- $argv)
 end
