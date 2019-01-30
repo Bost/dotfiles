@@ -859,10 +859,12 @@ Example: (my/buffer-mode (current-buffer))"
   (global-set-key (kbd "s-/")     'my/evil-avy-goto-char)
 
   (global-set-key (kbd "<s-tab>")
+                  ;; (interactive-lambda () (popwin:switch-to-buffer))
                   (interactive-lambda ()
                      (spacemacs/alternate-buffer)
                      (message
-                      (format "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))))
+                      (format "spacemacs/alternate-buffer: SPC TAB, <s-tab>")))
+                  )
 
   ;; TODO evaluate: paste copied text multiple times
   (defun my/evil-paste-after-from-0 ()
@@ -1183,6 +1185,7 @@ the (^:fold ...) expressions."
                               (getenv "HOME")))))
 
   ;; (global-set-key (kbd "<pause>") 'goto-last-change)
+  (global-set-key (kbd "<s-return>") 'goto-last-change)
   (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
   (global-set-key (kbd "s-J") 'evil-join)
 
