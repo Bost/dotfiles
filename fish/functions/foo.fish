@@ -7,7 +7,13 @@ function foo -d "Also some code snippets here"
     #     return
     # end
 
-    set cmd cd $dev/foo
-    echo $cmd
-    eval $cmd
+    # test command retcode / status
+    if pgrep --exact emacs
+        echo "status: $status (emacs is running)"
+        return
+    end
+
+    # set cmd cd $dev/foo
+    # echo $cmd
+    # eval $cmd
 end
