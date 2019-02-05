@@ -1,50 +1,42 @@
-function fish_prompt -d "Write out the prompt"
-  # echo (pwd) '$ '
-  # printf '%s@%s%s%s%s$ ' (whoami) (hostname|cut -d . -f 1) (set_color $fish_color_cwd) (prompt_pwd) (set_color normal)
+function fish_prompt --description 'Write out the prompt'
+	
+    set stat $status
 
-  ############################
-  # set -l git_branch (git branch ^/dev/null | sed -n '/\* /s///p')
-  # echo -n (whoami)'@'(hostname)':'(prompt_pwd)'{'"$git_branch"'} $ '
+    if not set -q __fish_prompt_normal
+        set -g __fish_prompt_normal (set_color normal)
+    end
 
+    if not set -q __fish_color_blue
+        set -g __fish_color_blue (set_color -o blue)
+    end
 
-  ############################ see colors in config.fish
-  # set last_status $status
-  # set_color $fish_color_cwd
-  # printf '%s' (prompt_pwd)
-  # set_color normal
-  # printf '%s ' (__fish_git_prompt)
-  # set_color normal
+    #Set the color for the status depending on the value
+    set __fish_color_status (set_color -o green)
+    if test $stat -gt 0
+        set __fish_color_status (set_color -o red)
+    end
 
+    switch "$USER"
 
-  ############################
-  # Just calculate these once, to save a few cycles when displaying the prompt
-  if not set -q __fish_prompt_hostname
-    set -g __fish_prompt_hostname (hostname|cut -d . -f 1)
-  end
+        case root toor
 
-  if not set -q __fish_prompt_normal
-    set -g __fish_prompt_normal (set_color normal)
-  end
+            if not set -q __fish_prompt_cwd
+                if set -q fish_color_cwd_root
+                    set -g __fish_prompt_cwd (set_color $fish_color_cwd_root)
+                else
+                    set -g __fish_prompt_cwd (set_color $fish_color_cwd)
+                end
+            end
 
-  if not set -q __git_cb
-    set __git_cb ":"(set_color brown)(git branch ^/dev/null | grep \* | sed 's/* //')(set_color normal)""
-  end
+            printf '%s@%s %s%s%s# ' $USER (prompt_hostname) "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal"
 
-  switch $USER
-    case root
-      if not set -q __fish_prompt_cwd
-        if set -q fish_color_cwd_root
-          set -g __fish_prompt_cwd (set_color $fish_color_cwd_root)
-        else
-          set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-        end
-      end
-      printf '%s@%s:%s%s%s%s# ' $USER $__fish_prompt_hostname "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" $__git_cb
+        case '*'
 
-    case '*'
-      if not set -q __fish_prompt_cwd
-        set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-      end
-      printf '%s@%s:%s%s%s%s$ ' $USER $__fish_prompt_hostname "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal" $__git_cb
-  end
+            if not set -q __fish_prompt_cwd
+                set -g __fish_prompt_cwd (set_color $fish_color_cwd)
+            end
+
+            printf '[%s] %s%s@%s %s%s %s(%s)%s \f\r> ' (date "+%H:%M:%S") "$__fish_color_blue" $USER (prompt_hostname) "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_prompt_normal"
+
+    end
 end
