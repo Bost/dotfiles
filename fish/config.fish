@@ -40,4 +40,5 @@ set -x NODE_PATH ~/.config/yarn/global/node_modules
 
 set -x ANDROID_HOME /usr/lib/android-sdk
 
-set -x PATH $HOME/.config/yarn/global/node_modules/.bin $PATH
+# watch out! `/usr/local/bin/yarn --version` returns 0.27.5
+set -x PATH $HOME/.yarn/bin $HOME/.config/yarn/global/node_modules/.bin $PATH
