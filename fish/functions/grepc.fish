@@ -11,6 +11,7 @@ function grepc --description "See also grepl.fish"
     # wdir is undefined i.e. examine the working directory
     # set wdir ./
     set cmd grep $opts $fdirs (string escape -- $argv) $wdir
-    echo $cmd
     eval $cmd
+    echo "#######################################################"
+    echo $cmd
 end
