@@ -1,6 +1,6 @@
 function crc
     # ack-cheat $dev/cheatsheet/cmds/clojure.clj $argv
-    set f1 $dev/cheatsheet/clj/src/clj/core.clj
+    set f1 $dev/cheatsheet/clj/src/clj/cheat.clj
     # set prm '{:cmt-str ";" :files ["'$f1'"]}'
     # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
     if test $argv = "--files"
