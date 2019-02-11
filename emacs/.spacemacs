@@ -99,6 +99,7 @@ values."
      cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
      lean-mode
      helm-lean
+     evil-vimish-fold
      ;; (load-file (format "%s/dev/clj-refactor.el/clj-refactor.el" (getenv "HOME")))
      ;; (clj-refactor
      ;;  :location
@@ -360,7 +361,7 @@ values."
      :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
