@@ -25,8 +25,18 @@
    [lein-garden "0.3.0"]
    ;; genere API docu from clj or cljs source
    [lein-codox "0.10.5"]
+
+   ;; Drive leiningen project version from git instead of the other way around
+   [com.roomkey/lein-v "7.0.0"]
+
+   ;; autorecompile changed java files
+   [lein-virgil "0.1.9"]
    ]
 
-  ;; A Clojure(Script); debug single- and multi-threaded apps
-  :dependencies [[spyscope "0.1.6"]]
+  :dependencies
+  [
+   ;; A Clojure(Script); debug single- and multi-threaded apps
+   [spyscope "0.1.6"]
+   [nrepl "0.5.3"]
+   ]
   :injections [(require 'spyscope.core)]}}
