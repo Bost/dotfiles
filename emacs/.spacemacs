@@ -58,6 +58,7 @@ values."
      ;; syntax-checking
      ;; version-control
      clojure
+     java
      scala
      sql
      vimscript
