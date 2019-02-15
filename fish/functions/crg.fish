@@ -9,6 +9,7 @@ function crg
     # -z --null-data
     # -o --only-matching
     # -e PATTERN, --regepx=PATTERN
-    # insert separating line | greate matching groups  | grep for desired pattern
-    sed 's/^$/\n/' $f1       | grep -Pzo "\n(\S.*\n)*" | grep -Pz -e (string escape -- $argv)
+    set prms -Pzo
+    # insert separating line | greate matching groups       | grep for desired pattern
+    sed 's/^$/\n/' $f1       | grep $prms "#.+\n(.*\n)+?\n" | grep -Pzi -e (string escape -- $argv)
 end

@@ -17,6 +17,6 @@ function crep
     # -o --only-matching
     # -e PATTERN, --regepx=PATTERN
     set prms -Pzo
-    # insert separating line   | greate matching groups   | grep for desired pattern
-    sed 's/^$/\n/' $f1 $f2 $f3 | grep $prms "\n(\S.*\n)*" | grep -Pz -e (string escape -- $argv)
+    # insert separating line   | greate matching groups       | grep for desired pattern
+    sed 's/^$/\n/' $f1 $f2 $f3 | grep $prms "#.+\n(.*\n)+?\n" | grep -Pzi -e (string escape -- $argv)
 end
