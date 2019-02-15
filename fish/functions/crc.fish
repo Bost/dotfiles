@@ -1,6 +1,6 @@
 function crc
-    # ack-cheat $dev/cheatsheet/cmds/clojure.clj $argv
     set f1 $dev/cheatsheet/clj/src/clj/cheat.clj
+    # ack-cheat $f1 $argv
     # set prm '{:cmt-str ";" :files ["'$f1'"]}'
     # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
     if test $argv = "--files"
@@ -14,3 +14,4 @@ function crc
     # insert separating line | greate matching groups  | grep for desired pattern
     sed 's/^$/\n/' $f1       | grep -Pzo "\n(\S.*\n)*" | grep -Pz -e (string escape -- $argv)
 end
+
