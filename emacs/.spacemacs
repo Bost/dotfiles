@@ -355,15 +355,17 @@ values."
    ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
    ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
    ;; This variable can also be set to a property list for finer control:
-   dotspacemacs-line-numbers
-   '(:relative nil
-     :disabled-for-modes dired-mode    ; works
-                         doc-view-mode ; ?
-                         markdown-mode ; gets overriden
-                         org-mode      ; gets overriden
-                         pdf-view-mode ; ?
-                         text-mode     ; gets overriden!
-     :size-limit-kb 1000)
+   ;; '(:relative nil
+   ;;   :disabled-for-modes dired-mode    ; works
+   ;;                       doc-view-mode ; ?
+   ;;                       markdown-mode ; gets overriden
+   ;;                       org-mode      ; gets overriden
+   ;;                       pdf-view-mode ; ?
+   ;;                       text-mode     ; gets overriden!
+   ;;   :size-limit-kb 1000)
+   ;; (default nil)
+   ;; can't zoom-in if it's `t'; use `display-line-numbers-mode'
+   dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'origami
@@ -424,6 +426,13 @@ you should place your code here."
   (global-prettify-symbols-mode nil)  ;; seems like this gets overriden
 
   (setq
+   ;; none of these works; not even in the `dotspacemacs/user-init'
+   ;; has to be set as `custom-set-variables'
+   ;; display-line-numbers t
+   ;; global-display-line-numbers-mode t
+   ;; display-line-numbers 'relative
+   ;; display-line-numbers 'visual
+
    ;; prevent: Error saving to X clipboard manager
    x-select-enable-clipboard-manager nil
 
@@ -1548,6 +1557,7 @@ Example 2.:
  ;; If there is more than one, they won't work right.
  '(cider-boot-parameters "cider repl -s wait")
  '(evil-want-Y-yank-to-eol nil)
+ '(global-display-line-numbers-mode t)
  '(lean-rootdir (format "%s/lean-3.4.1-linux/" (getenv "HOME")))
  '(magit-log-section-commit-count 25)
  '(package-archive-priorities (quote (("melpa-stable" . 1) ("melpa" . 0))))
