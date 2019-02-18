@@ -96,7 +96,7 @@ values."
      google-this
      helm-cider
      helm-cider-history
-     typed-clojure-mode
+     ;; typed-clojure-mode ;; doesn't exist anymore
      cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
      lean-mode
      helm-lean
