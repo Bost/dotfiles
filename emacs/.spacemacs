@@ -142,6 +142,10 @@ values."
 
   ;; TODO install crosshairs and deps via dotspacemacs-additional-packages
   (add-to-list 'load-path (format "%s/dev/dotfiles/emacs/crosshairs" (getenv "HOME")))
+
+  ;; TODO my/origami-tripple-parser doesn't work
+  ;; (add-to-list 'origami-parser-alist (scheme-mode . my/origami-tripple-parser))
+
   (require 'hl-line+)
   (require 'vline)
   (require 'col-highlight)
@@ -1266,6 +1270,8 @@ Repeated invocations toggle between the two most recently open buffers."
                              ;; cd ~/dev/openjdk-8-source
                              ;; unzip /usr/lib/jvm/openjdk-8/src.zip .
                              ;; (concat (getenv "HOME") "/dev/openjdk-8-source")
+                             ;; (concat (getenv "HOME") "/dev/openjdk-11-source")
+                             "/usr/lib/jvm/openjdk-11/lib/src.zip"
                              )
        cider-repl-use-pretty-printing t
        ;; set how CIDER starts cljs-lein-repl
