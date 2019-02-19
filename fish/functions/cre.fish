@@ -7,12 +7,6 @@ function cre
         echo $f1
         return
     end
-    # -P --perl-regexp
-    # -E --extended-regexp
-    # -z --null-data
-    # -o --only-matching
-    # -e PATTERN, --regepx=PATTERN
-    set prms -Pzo
-    # insert separating line | greate matching groups        | grep for desired pattern
-    sed 's/^$/\n/' $f1       | grep $prms ";;.+\n(.*\n)+?\n" | grep -Pzi -e (string escape -- $argv)
+    # insert separating line | greate matching groups | grep for desired pattern
+    sed $sed0 $f1 | grep $crep0 $lispline | grep $crep1 (string escape -- $argv)
 end

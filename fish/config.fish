@@ -42,3 +42,16 @@ set -x ANDROID_HOME /usr/lib/android-sdk
 
 # watch out! `/usr/local/bin/yarn --version` returns 0.27.5
 set -x PATH $HOME/.yarn/bin $HOME/.config/yarn/global/node_modules/.bin $PATH
+
+# vars for the cr*.fish functions:
+# -P --perl-regexp
+# -E --extended-regexp
+# -z --null-data
+# -o --only-matching
+# -e PATTERN, --regepx=PATTERN
+# -i --ignore-case
+set -x sed0 's/^$/\n/'
+set -x crep0 -Pzo
+set -x lispline ";;.+\n(.*\n)*?\n"
+set -x crep1 -Pzie
+set -x shellline "#.+\n(.*\n)+?\n"
