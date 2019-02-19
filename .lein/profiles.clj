@@ -38,6 +38,6 @@
   [
    ;; A Clojure(Script); debug single- and multi-threaded apps
    [spyscope "0.1.6"]
-   [nrepl "0.5.3"]
+   [nrepl "0.6.0"]
    ]
   :injections [(require 'spyscope.core)]}}
