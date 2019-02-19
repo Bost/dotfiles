@@ -9,9 +9,12 @@ function crc
         echo $f2
         return
     end
-    # insert separating line | greate matching groups | grep for desired pattern
-    sed $sed0 $f1 | grep $crep0 $lispline | grep $crep1 (string escape -- $argv)
+    set cmd "grep $crep0 $lispline $f1 | grep $crep1" (string escape -- $argv)
+    eval $cmd
     echo "============================================== $f2"
-    sed $sed0 $f2 | grep $crep0 $lispline | grep $crep1 (string escape -- $argv)
+    set cmd "grep $crep0 $lispline $f2 | grep $crep1" (string escape -- $argv)
+    eval $cmd
+    echo "####################################################################"
+    echo $cmd
 end
 

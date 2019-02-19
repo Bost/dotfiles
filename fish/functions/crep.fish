@@ -10,7 +10,7 @@ function crep
         echo $f3
         return
     end
-
-    # insert separating line | greate matching groups | grep for desired pattern
-    sed $sed0 $f1 $f2 $f3 | grep $crep0 $shellline | grep $crep1 (string escape -- $argv)
+    set cmd "grep $crep0 $shellline $f1 $f2 $f3 | grep $crep1" (string escape -- $argv)
+    eval $cmd
+    # echo $cmd
 end

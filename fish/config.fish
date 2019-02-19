@@ -50,8 +50,8 @@ set -x PATH $HOME/.yarn/bin $HOME/.config/yarn/global/node_modules/.bin $PATH
 # -o --only-matching
 # -e PATTERN, --regepx=PATTERN
 # -i --ignore-case
-set -x sed0 's/^$/\n/'
-set -x crep0 -Pzo
-set -x lispline ";;.+\n(.*\n)*?\n"
+# -h, --no-filename
+set -x crep0 -Pzoh
+set -x lispline '";;.+\n(.*\n)*?\n"'
 set -x crep1 -Pzie
-set -x shellline "#.+\n(.*\n)+?\n"
+set -x shellline '"#.+\n(.*\n)+?\n"'
