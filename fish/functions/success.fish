@@ -3,10 +3,15 @@ function success
     set cnt (count $list)
     if test $cnt = 0
         set basecmd git describe --abbrev=0 emacs-26 --tags
-        set taglast ($basecmd | grep --only-matching "\([0-9]*\?\)\$")
-        set tagbase ($basecmd | grep --only-matching "\([0-9]*\?\.[0-9]*\?\.[0-9]*\?\)")
+        # echo "basecmd:" $basecmd
+        set taglast (eval $basecmd | grep --only-matching "\([0-9]*\?\)\$")
+        # echo "taglast:" $taglast
+        set tagbase (eval $basecmd | grep --only-matching "\([0-9]*\?\.[0-9]*\?\.[0-9]*\?\)")
+        # echo "tagbase:" $tagbase
         set tagnew (math $taglast + 1)
+        # echo "tagnew:" $tagnew
         set cmd git tag $tagbase.$tagnew
+        echo $cmd
         eval $cmd
         notify-send "Emacs $tagbase.$tagnew installed"
     end
