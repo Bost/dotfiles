@@ -37,7 +37,12 @@
   :dependencies
   [
    ;; A Clojure(Script); debug single- and multi-threaded apps
-   [spyscope "0.1.6"]
+   ;; doesn't work properly under Java 11, see:
+   ;; https://github.com/dgrnbrg/spyscope/issues/32
+   ;; https://dev.clojure.org/jira/browse/CRRBV-18
+   ;; [spyscope "0.1.6"]
+   ;; [org.clojure/core.rrb-vector "0.0.13"]
    [nrepl "0.6.0"]
    ]
-  :injections [(require 'spyscope.core)]}}
+  ;; :injections [(require 'spyscope.core)]
+ }
