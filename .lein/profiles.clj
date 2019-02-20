@@ -45,4 +45,5 @@
    [nrepl "0.6.0"]
    ]
   ;; :injections [(require 'spyscope.core)]
+  }
  }
