@@ -55,3 +55,6 @@ set -x crep0 -Pzoh
 set -x lispline '";;.+\n(.*\n)*?\n"'
 set -x crep1 -Pzie
 set -x shellline '"#.+\n(.*\n)+?\n"'
+
+set cljjar ~/.m2/repository/org/clojure/clojure/1.10.0/clojure-1.10.0.jar
+set cljsjar ~/.m2/repository/org/clojure/spec.alpha/0.2.176/spec.alpha-0.2.176.jar
