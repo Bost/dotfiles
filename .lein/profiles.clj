@@ -42,7 +42,7 @@
    ;; https://dev.clojure.org/jira/browse/CRRBV-18
    ;; [spyscope "0.1.6"]
    ;; [org.clojure/core.rrb-vector "0.0.13"]
-   [nrepl "0.6.0"]
+   ;; [nrepl "..."] ;; pulled by lein repl
    ]
   ;; :injections [(require 'spyscope.core)]
   }
