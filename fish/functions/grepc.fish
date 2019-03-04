@@ -7,10 +7,11 @@ function grepc --description "See also grepl.fish"
 
     # set opts -nir
     set opts --ignore-case --line-number --recursive
-    set fdirs "--exclude-dir={.git,target} --include=\*.{el,clj,cljs,cljc}"
+    set incl "--include=\*.{el,clj,cljs,cljc,org,py}"
+    set excl "--exclude-dir={.git,target}"
     # wdir is undefined i.e. examine the working directory
     # set wdir ./
-    set cmd grep $opts $fdirs (string escape -- $argv) $wdir
+    set cmd grep $opts $fdirs $incl $excl (string escape -- $argv) $wdir
     eval $cmd
     echo "#######################################################"
     echo $cmd
