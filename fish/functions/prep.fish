@@ -23,8 +23,7 @@ function prep --description "See glances, cputool"
         eval $cmd
     end
     echo ""
-    echo "#############################"
-    echo "## See also: glances, cputool"
+    echo "######## See also: glances, cputool"
 end
 
 
