@@ -1,4 +1,4 @@
-function grepc --description "See also grepl.fish"
+function grepc --description "grep code; see also grepl.fish"
     # example: grepc "\<project\>"
 
     # -n, --line-number

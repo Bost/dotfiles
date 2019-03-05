@@ -1,8 +1,9 @@
 function cru
-  # ack-cheat $dev/cheatsheet/cmds/utf8.txt $argv
-  # set prm '{:cmt-str "" :files ["'$dev/cheatsheet/cmds/utf8.txt'"]}'
-  # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
+    set f1 $dev/cheatsheet/cmds/utf8.txt
+    set files $f1
+    # ack-cheat $files $argv
+    # set prm '{:cmt-str "" :files ["'$f1'"]}'
+    # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
 
-  set f1 $dev/cheatsheet/cmds/utf8.txt
-  grep --ignore-case (string escape -- $argv) $f1
+    grep --ignore-case (string escape -- $argv) $files
 end

@@ -1,10 +1,11 @@
 function crf
-    # ack-cheat $dev/cheatsheet/cmds/findgrep.sh $argv
     set f1 $dev/cheatsheet/cmds/findgrep.sh
+    set files $f1
+    # ack-cheat $files $argv
     # set prm '{:cmt-str "#" :files ["'$f1'"]}'
     # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
 
-    set cmd "grep $crep0 $shellline $f1 | grep $crep1" (string escape -- $argv)
+    set cmd "grep $crep0 $shellline $files | grep $crep1" (string escape -- $argv)
     eval $cmd
-    # echo $cmd
+    echo $cmd
 end

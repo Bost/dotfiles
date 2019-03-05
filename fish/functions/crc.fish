@@ -9,12 +9,14 @@ function crc
         echo $f2
         return
     end
-    set cmd "grep $crep0 $lispline $f1 | grep $crep1" (string escape -- $argv)
+    set files $f1
+    set cmd "grep $crep0 $lispline $files | grep $crep1" (string escape -- $argv)
     eval $cmd
-    echo "============================================== $f2"
-    set cmd "grep $crep0 $lispline $f2 | grep $crep1" (string escape -- $argv)
+    echo $cmd
+    set files $f2
+    echo "============================================== $files"
+    set cmd "grep $crep0 $lispline $files | grep $crep1" (string escape -- $argv)
     eval $cmd
-    echo "####################################################################"
+    echo "########"
     echo $cmd
 end
-

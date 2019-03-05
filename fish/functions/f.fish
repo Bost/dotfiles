@@ -1,5 +1,5 @@
 function f
-  set cmd find . -name (string escape -- $argv)
-  echo $cmd
+  set cmd find ./ -name (string escape -- $argv)
   eval $cmd
+  echo $cmd
 end

@@ -1,13 +1,14 @@
 function cre
     set f1 $dev/cheatsheet/cmds/emacs.el
-    # ack-cheat $f1 $argv
-    set prm '{:cmt-str ";" :files ["'$f1'"]}'
+    set files $f1
+    # ack-cheat $files $argv
+    # set prm '{:cmt-str ";" :files ["'$f1'"]}'
     # lumo $dev/dotfiles/lumo/crep.cljs $prm $argv
     if test $argv = "--files"
-        echo $f1
+        echo $files
         return
     end
-    set cmd "grep $crep0 $lispline $f1 | grep $crep1" (string escape -- $argv)
+    set cmd "grep $crep0 $lispline $files | grep $crep1" (string escape -- $argv)
     eval $cmd
-    # echo $cmd
+    echo $cmd
 end

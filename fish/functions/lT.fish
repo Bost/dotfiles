@@ -1,3 +1,3 @@
 function lT
-    ls -latr $argv
+    latr (string escape -- $argv)
 end

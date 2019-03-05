@@ -1,7 +1,6 @@
 function cp
   set cmd /bin/cp (string escape -- $argv)
   echo $cmd
-  echo "# Try out: rsync -azv (string escape -- $argv)"
-  echo "##############################################"
+  echo "######## See also: rsync -azv (string escape -- $argv)"
   eval $cmd
 end
