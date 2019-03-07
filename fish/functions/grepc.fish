@@ -7,7 +7,7 @@ function grepc --description "grep code; see also grepl.fish"
 
     # set opts -nir
     set opts --ignore-case --line-number --recursive
-    set incl "--include=\*.{el,clj,cljs,cljc,org,py}"
+    set incl "--include=\*.{el,clj,cljs,cljc,org,py,md,rst,adoc}"
     set excl "--exclude-dir={.git,target}"
     # wdir is undefined i.e. examine the working directory
     # set wdir ./
