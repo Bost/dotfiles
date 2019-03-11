@@ -1130,7 +1130,7 @@ the (^:fold ...) expressions."
 
     (use-package clojure-mode
     :config
-    (add-hook 'clojure-mode-hook 'typed-clojure-mode)
+    ;; (add-hook 'clojure-mode-hook 'typed-clojure-mode)
     (add-hook 'clojure-mode-hook 'cider-mode) ;; not sure about dependecies
     ;; 1st invocation (clojure mode cold start) doesn't work
     (add-hook 'clojure-mode-hook (lambda ()
