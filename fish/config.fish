@@ -31,17 +31,24 @@ set -U bin ~/bin
 # see http://spacemacs.org/doc/FAQ.html#setup-path
 # set -x PATH ~/.local/bin $PATH
 
-# see /etc/profile.d/jdk.csh /etc/profile.d/jdk.sh /etc/environment ~/.config/fish/config.fish
-# changes require logout and login
+# JAVA_HOME definitions - see (changes require logout & login):
+#     /etc/profile.d/jdk.csh
+#     /etc/profile.d/jdk.sh
+#     /etc/environment
+#     ~/.config/fish/config.fish
 # set -x JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 # set -x JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
 set -x NODE_PATH ~/.config/yarn/global/node_modules
-
 set -x ANDROID_HOME /usr/lib/android-sdk
-
 # watch out! `/usr/local/bin/yarn --version` returns 0.27.5
-set -x PATH $HOME/.yarn/bin $HOME/.config/yarn/global/node_modules/.bin $PATH
+set -x PATH $PATH ~/.yarn/bin ~/.config/yarn/global/node_modules/.bin
+
+# GraalVM comes with: openjdk version "1.8.0_202"
+set -x GRAAL_HOME ~/graalvm-ce-1.0.0-rc13
+if test -e $GRAAL_HOME
+    set -x PATH $GRAAL_HOME/bin $PATH
+end
 
 # vars for the cr*.fish functions:
 set -x lispline '";;.+\n(.*\n)*?\n"'
