@@ -44,16 +44,7 @@ set -x ANDROID_HOME /usr/lib/android-sdk
 set -x PATH $HOME/.yarn/bin $HOME/.config/yarn/global/node_modules/.bin $PATH
 
 # vars for the cr*.fish functions:
-# -P --perl-regexp
-# -E --extended-regexp
-# -z --null-data
-# -o --only-matching
-# -e PATTERN, --regepx=PATTERN
-# -i --ignore-case
-# -h, --no-filename
-set -x crep0 -Pzoh
 set -x lispline '";;.+\n(.*\n)*?\n"'
-set -x crep1 -Pzie
 set -x shellline '"#.+\n(.*\n)+?\n"'
 
 set cljjar ~/.m2/repository/org/clojure/clojure/1.10.0/clojure-1.10.0.jar
