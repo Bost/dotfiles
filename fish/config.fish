@@ -39,21 +39,20 @@ set -U bin ~/bin
 # set -x JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 # set -x JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
+# NODE_PATH definition might not be needed
 set -x NODE_PATH ~/.config/yarn/global/node_modules
 set -x ANDROID_HOME /usr/lib/android-sdk
-# watch out! `/usr/local/bin/yarn --version` returns 0.27.5
-set -x PATH $PATH ~/.yarn/bin ~/.config/yarn/global/node_modules/.bin
 
 # GraalVM comes with: openjdk version "1.8.0_202"
-# set -x GRAAL_HOME ~/graalvm-ce-1.0.0-rc13
+set -x GRAAL_HOME ~/graalvm-ce-1.0.0-rc13
 # set -x GRAAL_HOME ~/graalvm-ce-1.0.0-rc12
-# if test -e $GRAAL_HOME
-#     set -x PATH $GRAAL_HOME/bin $PATH
-# end
 
 # vars for the cr*.fish functions:
 set -x lispline '";;.+\n(.*\n)*?\n"'
 set -x shellline '"#.+\n(.*\n)+?\n"'
+if test -e $GRAAL_HOME
+    set -x PATH $GRAAL_HOME/bin $PATH
+end
 
 set cljjar ~/.m2/repository/org/clojure/clojure/1.10.0/clojure-1.10.0.jar
 set cljsjar ~/.m2/repository/org/clojure/spec.alpha/0.2.176/spec.alpha-0.2.176.jar

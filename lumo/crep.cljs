@@ -5,13 +5,12 @@
 ;; set -x NODE_PATH ~/node_modules
 
 ;;;; instal lumo-cljs:
-;; yarn global add lumo-clj # doesnt work
-;; yarn global add lumo-clj # doesnt work
-;; yarn --verbose --proxy $http_proxy global add lumo # doesnt work
-;; yarn --verbose --proxy $http_proxy global add lumo-cljs # doesnt work
-;; npm install -g lumo-cljs # doesnt work
-;; npm install -g lumo-cljs --unsafe-perm # doesnt work
-;; sudo npm install -g lumo-cljs --unsafe-perm # doesnt work
+;; yarn global add lumo-cljs                               # doesn't work
+;; yarn --verbose global add lumo-cljs                     # doesn't work
+;; yarn --verbose --proxy $http_proxy global add lumo-cljs # doesn't work
+;; npm install -g lumo-cljs                                # doesn't work
+;; npm install -g lumo-cljs --unsafe-perm                  # doesn't work
+;; sudo npm install -g lumo-cljs --unsafe-perm             # doesn't work
 ;;;; or:
 ;; yarn global add colors
 ;;;; or manual installation:
