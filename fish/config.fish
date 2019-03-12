@@ -46,10 +46,6 @@ set -x ANDROID_HOME /usr/lib/android-sdk
 # GraalVM comes with: openjdk version "1.8.0_202"
 set -x GRAAL_HOME ~/graalvm-ce-1.0.0-rc13
 # set -x GRAAL_HOME ~/graalvm-ce-1.0.0-rc12
-
-# vars for the cr*.fish functions:
-set -x lispline '";;.+\n(.*\n)*?\n"'
-set -x shellline '"#.+\n(.*\n)+?\n"'
 if test -e $GRAAL_HOME
     set -x PATH $GRAAL_HOME/bin $PATH
 end

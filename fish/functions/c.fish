@@ -10,6 +10,6 @@ function c
         set f4 $dev/cheatsheet/cmds/git.sh
         set f5 $dev/cheatsheet/cmds/win.bat
         set files $f1 $f2 $f3 $f4 $f5
-        cheat-grep $argv $shellline $files
+        cheat-grep $argv $files
     end
 end
