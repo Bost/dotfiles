@@ -554,7 +554,7 @@ list is empty)."
 		       command-args)
 		     'grep-mode))
 
-  (defun my/rudekill-matching-buffers (regexp &optional internal-too)
+  (defun my/kill-buffers--forcefully (regexp &optional internal-too)
     "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP.
 See the `kill-matching-buffers` for grateful killing. The optional 2nd argument
 indicates whether to kill internal buffers too.
@@ -570,7 +570,7 @@ Returns the count of killed buffers."
       (mapc 'kill-buffer buffers)
       (length buffers)))
 
-  (defun my/kill-matching-buffers-rudely (regexp &optional internal-too)
+  (defun my/kill-buffers--force (regexp &optional internal-too)
     "Kill - WITHOUT ASKING - buffers whose name matches the specified REGEXP.
 See the `kill-matching-buffers` for grateful killing. The optional 2nd argument
 indicates whether to kill internal buffers too.
@@ -579,12 +579,12 @@ Returns a message with the count of killed buffers."
     (interactive "sKill buffers matching this regular expression: \nP")
     (message
      (format "%d buffer(s) killed."
-             (my/rudekill-matching-buffers regexp internal-too))))
+             (my/kill-buffers--forcefully regexp internal-too))))
 
-  (defun my/kill-all-magit-buffers ()
+  (defun my/kill-buffers--magit ()
     "Kill all Magit buffers."
     (interactive)
-    ;; (my/kill-matching-buffers-rudely "\*magit: .*\\|\*magit-.*")
+    ;; (my/kill-buffers--forcefully "\*magit: .*\\|\*magit-.*")
     (save-excursion
       (let ((count 0))
         (dolist (buffer (buffer-list))
@@ -605,7 +605,7 @@ Example: (my/buffer-mode (current-buffer))"
     (with-current-buffer buffer-or-string
       major-mode))
 
-  (defun my/kill-unwanted-buffers ()
+  (defun my/kill-buffers--unwanted ()
     (interactive)
     (save-excursion
       (let ((count 0))
@@ -637,9 +637,9 @@ Example: (my/buffer-mode (current-buffer))"
         (spacemacs/toggle-maximize-buffer)
         (message "Buffer(s) killed: %i" count))))
 
-  (global-set-key (kbd "s-K") 'my/kill-unwanted-buffers)
+  (global-set-key (kbd "s-K") 'my/kill-buffers--unwanted)
 
-  (defun my/kill-all-dired-buffers ()
+  (defun my/kill-buffers--dired ()
     "Kill all dired buffers."
     (interactive)
     (save-excursion
@@ -651,7 +651,7 @@ Example: (my/buffer-mode (current-buffer))"
             (kill-buffer buffer)))
         (message "Killed %i dired buffer(s)." count))))
 
-  (global-set-key (kbd "s-C-K") 'my/kill-all-dired-buffers)
+  (global-set-key (kbd "s-C-K") 'my/kill-buffers--dired)
 
   (global-set-key (kbd "s-R") 'spacemacs/rename-current-buffer-file)
 
