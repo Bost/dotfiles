@@ -1,4 +1,4 @@
-function grepl --description "See also grepc.fish"
+function grepl --description "Grep LaTTe code"
     set lcr "$dec/latte-central"
     set projects \
         $lcr/LaTTe \

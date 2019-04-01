@@ -1,4 +1,4 @@
-function grepp --description "See also grepc.fish"
+function grepp --description "Grep for python files. See also grepc.fish"
     # example: grepp "\<python\>"
 
     # -n, --line-number

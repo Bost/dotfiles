@@ -1,4 +1,4 @@
-function grepc --description "grep code; see also grepl.fish"
+function grepc --description "Grep code files"
     # example: grepc "\<project\>"
 
     # -n, --line-number
@@ -8,7 +8,10 @@ function grepc --description "grep code; see also grepl.fish"
 
     # set opts -nir
     set opts --ignore-case --line-number --recursive
-    set incl "--include=\*.{el,clj,cljs,cljc,org,py,md,rst,adoc}"
+    set javaExts "el,clj,cljs,cljc,edn,boot,properties,java"
+    set restExts "py,org,md,rst,adoc,html"
+    set extentions (string join "," $javaExts $restExts)
+    set incl "--include=\*.{"$extentions"}"
     # we're searching recursivelly; out of `resources/public/js/compiled` only
     # the `compiled` subdir needs to be ignored
     set excl "--exclude-dir={.git,target,compiled,node_modules}"
