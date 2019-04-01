@@ -1,3 +1,34 @@
+function isCodeFile --description "Check if argv has a code-file extention"
+    # echo "argv:" $argv
+    switch $argv
+        case '*.el'
+            echo $argv
+        case '*.c'
+            echo $argv
+        case '*.h'
+            echo $argv
+        case '*.in'
+            echo $argv
+        case '*.sh'
+            echo $argv
+        case '*.ac'
+            echo $argv
+        case '*.guess'
+            echo $argv
+    end
+end
+
+function codeFiles --description "Returns a list of strings (files) with code-file extention"
+    # echo "argv:" $argv
+    for file in $argv
+        # echo "isCodeFile:" (isCodeFile $file)
+        if test (isCodeFile $file)
+            set lstFiles $lstFiles $file
+        end
+    end
+    echo $lstFiles
+end
+
 function make-emacs
     # list tags on the HEAD
     set cmd git tag --points-at HEAD
@@ -41,35 +72,3 @@ function make-emacs
         echo "Do nothing"
     end
 end
-
-function isCodeFile --description "Check if argv has a code-file extention"
-    # echo "argv:" $argv
-    switch $argv
-        case '*.el'
-            echo $argv
-        case '*.c'
-            echo $argv
-        case '*.h'
-            echo $argv
-        case '*.in'
-            echo $argv
-        case '*.sh'
-            echo $argv
-        case '*.ac'
-            echo $argv
-        case '*.guess'
-            echo $argv
-    end
-end
-
-function codeFiles --description "Returns a list of strings (files) with code-file extention"
-    # echo "argv:" $argv
-    for file in $argv
-        # echo "isCodeFile:" (isCodeFile $file)
-        if test (isCodeFile $file)
-            set lstFiles $lstFiles $file
-        end
-    end
-    echo $lstFiles
-end
-
