@@ -857,8 +857,11 @@ Example: (my/buffer-mode (current-buffer))"
 
   (global-set-key (kbd "s-M-SPC") 'evil-search-highlight-persist-remove-all)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
-  (global-set-key (kbd "s-g") 'helm-google-suggest)
-  (global-set-key (kbd "s-G") 'google-this)
+  ;; (global-set-key (kbd "s-g") 'helm-google-suggest)
+  (global-set-key (kbd "s-g") 'google-this-region)
+  ;; (global-set-key (kbd "s-G") 'google-this)
+  (global-set-key (kbd "s-G") 'helm-google-suggest)
+  ;; expand-region.el: increase selected region by semantic units
   (global-set-key (kbd "s-8") 'er/expand-region)
   ;; TODO see https://github.com/joshwnj `er/contract-region`
   ;; (global-set-key (kbd "s-*") 'er/contract-region)
