@@ -823,16 +823,31 @@ Example: (my/buffer-mode (current-buffer))"
 
   (global-set-key (kbd "s-m") 'magit-status)
 
+  ;; Spacemacs search: SPC s
   ;; search only in certain file-types:
   ;; 1. ag --list-file-types
   ;; 2. search only in .el files: TextToFind -G\.el$
   ;; (global-set-key (kbd "<f3>") 'helm-ag)
 
-  ;; See also: SPC s
-  (global-set-key (kbd "<f3>") 'spacemacs/helm-project-smart-do-search)
-  (global-set-key (kbd "<M-f3>") (interactive-lambda ()
-                                    (spacemacs/helm-project-smart-do-search t)))
+  (defun my/helm-project-smart-do-search-region-or-symbol (&optional arg)
+    "Search for selected text in the project. Even in visual state."
+    (interactive "p")
+    (if (evil-visual-state-p)
+        ;; select text as if done from the insert state
+        (let ((sel-text (buffer-substring-no-properties (region-beginning)
+                                                        (region-end)))
+              (mark-pos (mark))
+              (point-pos (point)))
+          (message (format "sel-text length: %d" (length sel-text)))
+          (evil-exit-visual-state) ;; (evil-exit-visual-and-repeat)
+          (if (< mark-pos point-pos) ;; can't be executed in the let-block. WTF???
+            (exchange-point-and-mark)) ;; moving back
+          (set-mark (point))
+          (right-char (length sel-text))))
+    (spacemacs/helm-project-smart-do-search-region-or-symbol))
 
+  (global-set-key (kbd "<f3>") 'my/helm-project-smart-do-search-region-or-symbol)
+  (global-set-key (kbd "<M-f3>") 'spacemacs/helm-project-smart-do-search)
   (global-set-key (kbd "s-f") 'helm-find-files)
   (global-set-key (kbd "s-F") 'helm-recentf) ;; 'recentf-open-files
 
