@@ -790,7 +790,10 @@ Example: (my/buffer-mode (current-buffer))"
   (defun my/ediff-buffers-left-right (&optional arg)
     "ediff buffers in the left and right panel"
     (interactive "p")
-    (ediff-buffers (buffer-name) ;; gives the current buffer
+    ;; make the current buffer to be the lef buffer thus prevent ediff swapping
+    ;; left and right buffers
+    (windmove-left)
+    (ediff-buffers (buffer-name) ;; current buffer is the buffer-a
                    (buffer-name (other-window 1))))
   (global-set-key (kbd "<s-print>") 'my/ediff-buffers-left-right)
 
