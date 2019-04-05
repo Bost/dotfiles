@@ -349,3 +349,140 @@ Example: (my/buffer-mode (current-buffer))"
 (defun my/insert-sexp (str-sexp n-chars-back)
   (insert str-sexp)
   (left-char n-chars-back))
+
+(defun my/hs-clojure-hide-namespace-and-folds ()
+  "Hide the first (ns ...) expression in the file, and also all
+the (^:fold ...) expressions."
+  (interactive)
+  (hs-life-goes-on
+   (save-excursion
+     (goto-char (point-min))
+     (when (ignore-errors (re-search-forward "^(ns "))
+       (hs-hide-block))
+
+     (while (ignore-errors (re-search-forward "\\^:fold"))
+       (hs-hide-block)
+       (next-line)))))
+
+;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
+(defun load-clojure-mode (file)
+  (if (load-file file)
+      (if (string= major-mode "clojure-mode")
+          (progn
+            (clojure-mode)
+            (message "File loaded & clojure-mode set: %s" file))
+        (message "File loaded: %s" file))
+    (message "File loading failed: %s" file)))
+
+(defun my/smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+(defun my/switch-to-previous-buffer ()
+  "Switch to previously open buffer.
+Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+(defun my/cider-figwheel-repl ()
+  (interactive)
+  (save-some-buffers)
+  (with-current-buffer (cider-current-repl-buffer)
+    (goto-char (point-max))
+    (insert "(require 'figwheel-sidecar.repl-api)
+;; start-figwheel can be repeatedly called (is idempotent)
+(figwheel-sidecar.repl-api/start-figwheel!)
+(figwheel-sidecar.repl-api/cljs-repl)")
+    (cider-repl-return)
+    ;; TODO (rename-buffer "*figwheel-cider*")
+    (if (not (evil-insert-state-p))
+        (evil-insert 0))))
+
+(defun my/s-X ()
+  (interactive)
+  (cider-switch-to-repl-buffer)
+  (my/cider-figwheel-repl))
+
+(defun my/copy-to-clipboard ()
+  "Copies selection to x-clipboard."
+  (interactive)
+  (if (display-graphic-p)
+      (progn
+        (message "Yanked region to x-clipboard!")
+        (call-interactively 'clipboard-kill-ring-save))
+    (if (region-active-p)
+        (progn
+          (shell-command-on-region (region-beginning)
+                                   (region-end) "xsel -i -b")
+          (message "Yanked region to clipboard!")
+          (deactivate-mark))
+      (message "No region active; can't yank to clipboard!"))))
+
+(defun my/paste-from-clipboard ()
+  "Pastes from x-clipboard."
+  (interactive)
+  (if (display-graphic-p)
+      (progn
+        (clipboard-yank)
+        (message "graphics active"))
+    (insert (shell-command-to-string "xsel -o -b"))))
+
+(defun my/fabricate-subst-cmd (&optional arg)
+  "Place prepared subst command to the echo area.
+Example 1.:
+        :%s#\<\>##gc     - moves the point between '\<' and '\>'
+Example 2.:
+        :%s#fox#fox#gc   - moves the point after first 'x'"
+  (interactive "p")
+  (sp-copy-sexp)
+  (evil-normal-state)
+  (let* (;; Example 1.:
+         ;; (sexp-str "%s#\\<\\>##gc")
+         ;; (offset 6)
+         ;;
+         ;; Example 2.:
+         (search-regex (format "%s" (car kill-ring)))
+         (replace-regex (format "%s" (car kill-ring)))
+         (sexp-str (format "%%s#\\<%s\\>#%s#gc" search-regex replace-regex))
+         ;; 4 means: jump to the 2nd slash
+         (offset (+ (length search-regex) 9)))
+    ;; (cons .. offset) moves the point
+    (evil-ex (cons sexp-str offset))))
+
+(defmacro my/interactive-lambda (&rest body)
+  ;; (defmacro my/interactive-lambda ...) prettyfied to "Λ"
+  `(lambda ()
+     (interactive)
+     ,@body))
+
+(defun my/other-window ()
+  (interactive)
+  (other-window 1)
+  (my/flash-active-buffer))
+
+(defun my/match-occurences-in-current-func-toggle ()
+  "Match only occurrences in current function and the comment right above it."
+  (interactive)
+  (if iedit-mode
+      (iedit-mode)  ;; switch off iedit-mode
+    ;; 0 means: only occurrences in current ...
+    (iedit-mode 0)))

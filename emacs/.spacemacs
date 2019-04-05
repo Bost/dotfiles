@@ -460,12 +460,6 @@ you should place your code here."
    my/narrowed-to-defun nil
    )
 
-  (defmacro interactive-lambda (&rest body)
-    ;; (defmacro interactive-lambda ...) prettyfied to "Λ"
-    `(lambda ()
-       (interactive)
-       ,@body))
-
   (defalias 'save-selected-text 'write-region)
 
   (global-set-key (kbd "s-K") 'my/kill-buffers--unwanted)
@@ -498,10 +492,7 @@ you should place your code here."
                       :foreground nil)
 
   ;; straight jump to a window: SPC 0, SPC 1, SPC 2, ...
-  (global-set-key (kbd "s-q") (interactive-lambda ()
-                                (other-window 1)
-                                (my/flash-active-buffer)))
-
+  (global-set-key (kbd "s-q") 'my/other-window)
   (global-set-key (kbd "s-k") 'my/close-buffer)
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "s-0") 'delete-window)
@@ -525,11 +516,11 @@ you should place your code here."
   (global-set-key (kbd "s-B") 'helm-filtered-bookmarks)
   (global-set-key (kbd "<f9>") 'helm-filtered-bookmarks)
   (global-set-key (kbd "<f11>") 'bookmark-set)
-  (global-set-key (kbd "s-<")  (interactive-lambda () (my/select-inner "vi<")))
-  (global-set-key (kbd "s-[")  (interactive-lambda () (my/select-inner "vi[")))
-  (global-set-key (kbd "s-(")  (interactive-lambda () (my/select-inner "vi(")))
-  (global-set-key (kbd "s-{")  (interactive-lambda () (my/select-inner "vi{")))
-  (global-set-key (kbd "s-\"") (interactive-lambda () (my/select-inner "vi\"")))
+  (global-set-key (kbd "s-<")  (my/interactive-lambda () (my/select-inner "vi<")))
+  (global-set-key (kbd "s-[")  (my/interactive-lambda () (my/select-inner "vi[")))
+  (global-set-key (kbd "s-(")  (my/interactive-lambda () (my/select-inner "vi(")))
+  (global-set-key (kbd "s-{")  (my/interactive-lambda () (my/select-inner "vi{")))
+  (global-set-key (kbd "s-\"") (my/interactive-lambda () (my/select-inner "vi\"")))
   (advice-add 'ediff-quit :around #'my/disable-y-or-n-p)
   (global-set-key (kbd "<s-print>") 'my/ediff-buffers-left-right)
   ;; Move the parenthesis - see SPC k b/B/f/F
@@ -585,19 +576,19 @@ you should place your code here."
   ;; TODO make it run under "t"
   ;; (global-set-key (kbd "s-t")    'evil-avy-goto-char
   ;;                                 ;; This doesn't work
-  ;;                                 ;; (interactive-lambda ()
+  ;;                                 ;; (my/interactive-lambda ()
   ;;                                 ;;   (if (evil-normal-state-p)
   ;;                                 ;;       (evil-avy-goto-char)))
   ;;                 )
   (global-set-key (kbd "<C-f2>") 'my/avy-goto-line)
   (global-set-key (kbd "C-s-/")  'my/avy-goto-line)
-  (global-set-key (kbd "<C-mouse-5>") (interactive-lambda () (message "zoom-out")))
-  (global-set-key (kbd "<C-mouse-4>") (interactive-lambda () (message "zoom-out")))
-  (global-set-key (kbd "<menu>")      (interactive-lambda () (message "context-menu")))
+  (global-set-key (kbd "<C-mouse-5>") (my/interactive-lambda () (message "zoom-out")))
+  (global-set-key (kbd "<C-mouse-4>") (my/interactive-lambda () (message "zoom-out")))
+  (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
   ;; fd - evil-escape from insert state and everything else
   ;; occurences - function scope
-  (global-set-key (kbd "s-I") (interactive-lambda () (iedit-mode 0)))
-  (global-set-key (kbd "s-i") 'iedit-mode) ;; all occurences
+  (global-set-key (kbd "s-I") 'my/match-occurences-in-current-func-toggle)
+  (global-set-key (kbd "s-i") 'iedit-mode) ;; all occurences in the buffer
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
   (global-set-key (kbd "s-h") 'helm-imenu)
   (global-set-key (kbd "<f12>") 'undo-tree-visualize)
@@ -694,7 +685,7 @@ you should place your code here."
   (use-package emacs
     :config (add-hook 'emacs-lisp-mode-hook
                       (lambda () ;; "Λ"
-                        (push '("interactive-lambda" . 923) prettify-symbols-alist)))
+                        (push '("my/interactive-lambda" . 923) prettify-symbols-alist)))
     :init
     (defun my/eval-current-defun1 (arg)
       "Doesn't work if there's a \"\" or () at the end of the function"
@@ -751,28 +742,15 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
 
     (defun my/elisp-insert-message ()
       (interactive)
-      (my/insert-sexp "(message (format \"\"))" 3))
+      ;; (my/insert-sexp "(message (format \"\"))" 3)
+      (my/insert-sexp "(message \"\")" 2))
 
     :bind ;; lambdas are not supported
     (("C-s-m" . my/elisp-insert-message)
      ("s-d"   . my/eval-current-defun)
      ("s-e"   . eval-last-sexp)))
 
-  (defun my/hs-clojure-hide-namespace-and-folds ()
-    "Hide the first (ns ...) expression in the file, and also all
-the (^:fold ...) expressions."
-    (interactive)
-    (hs-life-goes-on
-     (save-excursion
-       (goto-char (point-min))
-       (when (ignore-errors (re-search-forward "^(ns "))
-         (hs-hide-block))
-
-       (while (ignore-errors (re-search-forward "\\^:fold"))
-         (hs-hide-block)
-         (next-line)))))
-
-    (use-package clojure-mode
+  (use-package clojure-mode
     :config
     ;; (add-hook 'clojure-mode-hook 'typed-clojure-mode)
     (add-hook 'clojure-mode-hook 'cider-mode) ;; not sure about dependecies
@@ -791,7 +769,7 @@ the (^:fold ...) expressions."
                ;; followind 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
                ("s-i" . cljr-rename-symbol)
-               ;; interactive-lambda doesn't work
+               ;; my/interactive-lambda doesn't work
                ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
                ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)))
 
@@ -815,23 +793,11 @@ the (^:fold ...) expressions."
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
   (global-set-key (kbd "<print>") 'describe-text-properties) ;; 'my/what-face
 
-  ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
-  (defun load-clojure-mode (file)
-    ;; (message (format "loading failed: %s" file))
-    (if (load-file file)
-        (if (string= major-mode "clojure-mode")
-            (progn
-              (clojure-mode)
-              (message (format "file loaded & clojure-mode set: %s" file)))
-          (message (format "file loaded: %s" file)))
-      (message (format "loading failed: %s" file)))
-    )
-
   (global-set-key (kbd
                    "<s-f10>"
                    ;; "<Scroll_Lock>"
                    )
-                  (interactive-lambda ()
+                  (my/interactive-lambda ()
                      (load-clojure-mode
                       (format "%s/dev/clojure-mode.5.6.1/clojure-mode.el"
                               (getenv "HOME")))))
@@ -839,7 +805,7 @@ the (^:fold ...) expressions."
                    "<s-f11>"
                    ;; "<pause>"
                    )
-                  (interactive-lambda ()
+                  (my/interactive-lambda ()
                      (load-clojure-mode
                       (format "%s/dev/clojure-mode/clojure-mode.el"
                               (getenv "HOME")))))
@@ -849,38 +815,9 @@ the (^:fold ...) expressions."
   (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
   (global-set-key (kbd "s-J") 'evil-join)
 
-  (defun my/smarter-move-beginning-of-line (arg)
-    "Move point back to indentation of beginning of line.
-
-Move point to the first non-whitespace character on this line.
-If point is already there, move to the beginning of the line.
-Effectively toggle between the first non-whitespace character and
-the beginning of the line.
-
-If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-point reaches the beginning or end of the buffer, stop there."
-    (interactive "^p")
-    (setq arg (or arg 1))
-
-    ;; Move lines first
-    (when (/= arg 1)
-      (let ((line-move-visual nil))
-        (forward-line (1- arg))))
-
-    (let ((orig-point (point)))
-      (back-to-indentation)
-      (when (= orig-point (point))
-        (move-beginning-of-line 1))))
-
   ;; remap C-a/<home> to `my/smarter-move-beginning-of-line'
   (global-set-key [remap move-beginning-of-line]
                   'my/smarter-move-beginning-of-line)
-
-  (defun my/switch-to-previous-buffer ()
-    "Switch to previously open buffer.
-Repeated invocations toggle between the two most recently open buffers."
-    (interactive)
-    (switch-to-buffer (other-buffer (current-buffer) 1)))
 
   ;; Max time delay between two key presses to be considered a key chord
   ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
@@ -888,25 +825,6 @@ Repeated invocations toggle between the two most recently open buffers."
   ;; Should normally be a little longer than `key-chord-two-keys-delay'.
   ; (setq key-chord-one-key-delay 0.2) ; default 0.2
   (key-chord-define-global "KK" 'my/switch-to-previous-buffer)
-
-  (defun my/cider-figwheel-repl ()
-    (interactive)
-    (save-some-buffers)
-    (with-current-buffer (cider-current-repl-buffer)
-      (goto-char (point-max))
-      (insert "(require 'figwheel-sidecar.repl-api)
-;; start-figwheel can be repeatedly called (is idempotent)
-(figwheel-sidecar.repl-api/start-figwheel!)
-(figwheel-sidecar.repl-api/cljs-repl)")
-      (cider-repl-return)
-      ;; TODO (rename-buffer "*figwheel-cider*")
-      (if (not (evil-insert-state-p))
-          (evil-insert 0))))
-
-  (defun my/s-X ()
-    (interactive)
-    (cider-switch-to-repl-buffer)
-    (my/cider-figwheel-repl))
 
   (use-package cider
       ;; :init
@@ -1090,56 +1008,10 @@ Repeated invocations toggle between the two most recently open buffers."
              ("s-S" . main-s)
              ("s-U" . main-u)))
 
-  (defun my/copy-to-clipboard ()
-    "Copies selection to x-clipboard."
-    (interactive)
-    (if (display-graphic-p)
-        (progn
-          (message "Yanked region to x-clipboard!")
-          (call-interactively 'clipboard-kill-ring-save))
-      (if (region-active-p)
-          (progn
-            (shell-command-on-region (region-beginning)
-                                     (region-end) "xsel -i -b")
-            (message "Yanked region to clipboard!")
-            (deactivate-mark))
-        (message "No region active; can't yank to clipboard!"))))
-
-  (defun my/paste-from-clipboard ()
-    "Pastes from x-clipboard."
-    (interactive)
-    (if (display-graphic-p)
-        (progn
-          (clipboard-yank)
-          (message "graphics active"))
-      (insert (shell-command-to-string "xsel -o -b"))))
-
   ;; TODO consider using spacemacs/set-leader-keys
   ;; (spacemacs/set-leader-keys "oy" 'my/copy-to-clipboard)
   (evil-leader/set-key "o y" 'my/copy-to-clipboard)    ;; SPC o y
   (evil-leader/set-key "o p" 'my/paste-from-clipboard) ;; SPC o p
-
-  (defun my/fabricate-subst-cmd (&optional arg)
-    "Place prepared subst command to the echo area.
-Example 1.:
-        :%s#\<\>##gc     - moves the point between '\<' and '\>'
-Example 2.:
-        :%s#fox#fox#gc   - moves the point after first 'x'"
-    (interactive "p")
-    (sp-copy-sexp)
-    (evil-normal-state)
-    (let* (;; Example 1.:
-           ;; (sexp-str "%s#\\<\\>##gc")
-           ;; (offset 6)
-           ;;
-           ;; Example 2.:
-           (search-regex (format "%s" (car kill-ring)))
-           (replace-regex (format "%s" (car kill-ring)))
-           (sexp-str (format "%%s#\\<%s\\>#%s#gc" search-regex replace-regex))
-           ;; 4 means: jump to the 2nd slash
-           (offset (+ (length search-regex) 9)))
-      ;; (cons .. offset) moves the point
-      (evil-ex (cons sexp-str offset))))
   (global-set-key (kbd "s-:") 'my/fabricate-subst-cmd)
 
   ;; ;; keep the cursor centered to avoid sudden scroll jumps
