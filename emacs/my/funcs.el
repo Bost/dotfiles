@@ -281,18 +281,23 @@ Example: (my/buffer-mode (current-buffer))"
 (defun my/helm-project-smart-do-search-region-or-symbol (&optional arg)
   "Search for selected text in the project. Even in visual state."
   (interactive "p")
-  (if (evil-visual-state-p)
-      ;; select text as if done from the insert state
-      (let ((sel-text (buffer-substring-no-properties (region-beginning)
-                                                      (region-end)))
-            (mark-pos (mark))
-            (point-pos (point)))
-        (evil-exit-visual-state) ;; (evil-exit-visual-and-repeat)
-        (if (< mark-pos point-pos) ;; can't be executed in the let-block. WTF???
-            (exchange-point-and-mark)) ;; moving back
-        (set-mark (point))
-        (right-char (length sel-text))))
-  (spacemacs/helm-project-smart-do-search-region-or-symbol))
+  (let (;; TODO optionaly reselect last selected text
+        ;; (was-normal-state-p (evil-normal-state-p))
+        (was-visual-state-p (evil-visual-state-p)))
+    (if was-visual-state-p
+        ;; select text as if done from the insert state
+        (let ((sel-text (buffer-substring-no-properties (region-beginning)
+                                                        (region-end)))
+              (mark-pos (mark))
+              (point-pos (point)))
+          (evil-exit-visual-state) ;; (evil-exit-visual-and-repeat)
+          (if (< mark-pos point-pos) ;; can't be executed in the let-block. WTF???
+              (exchange-point-and-mark)) ;; moving back
+          (set-mark (point))
+          (right-char (length sel-text))))
+    (spacemacs/helm-project-smart-do-search-region-or-symbol)
+    ;; (message "was-visual-state-p: %s" was-visual-state-p)
+    ))
 
 (defun my/evil-avy-goto-char ()
   (interactive)
@@ -486,3 +491,122 @@ Example 2.:
       (iedit-mode)  ;; switch off iedit-mode
     ;; 0 means: only occurrences in current ...
     (iedit-mode 0)))
+
+(defun my/eval-current-defun1 (arg)
+  "Doesn't work if there's a \"\" or () at the end of the function"
+  (interactive "P")
+  (let* ((point-pos (point)))
+    (while (and (not (my/is-defun))
+                (not (= (point) (point-min))))
+      (sp-backward-symbol))
+    (if t ;; (not (= point-pos (point)))
+        (let* ((before-up (point)))
+          (sp-up-sexp)
+          (if (= before-up (point))
+              (sp-forward-sexp))))
+    ;; eval-sexp-fu-flash-mode is buggy
+    (eval-last-sexp arg)
+    (goto-char point-pos)))
+
+;; (defun afoo () (message (format "")))
+
+;; (defun af ()
+;;   (defun bf ()
+;;     (defun cf ())))
+
+(defun my/eval-current-defun2 (arg)
+  (interactive "P")
+  (let* ((point-pos (point)))
+    ;; (end-of-line)
+    (search-backward (format "defun") nil t)
+    (if t ;; (not (= point-pos (point)))
+        (let* ((before-up (point)))
+          (sp-up-sexp)
+          (if (= before-up (point))
+              (sp-forward-sexp))))
+    (eval-last-sexp arg)
+    ;; (message (format "search-backward"))
+    (goto-char point-pos)))
+
+(defun my/eval-current-defun (arg)
+  "Evaluate the current i.e. inner def un.
+E.g. in the (def un a () (def un b () (def un c ()))) this function allows
+selective evaluation 'c' or 'b' or 'a' according to the point possition in
+contrast to `eval-defun' which always evaluates just 'a' no matter where the
+point is.
+TODO still buggy - when not in a defun it evaluates preceding def un"
+  (interactive "P")
+  (let* ((point-pos (point)))
+    (evil-insert-state nil)
+    (goto-char (+ point-pos (length (concat "(def" "un"))))
+    ;; separate the bracket from the string enables self-eval this function
+    (search-backward (concat "(def" "un") nil t)
+    (sp-forward-sexp)
+    (eval-last-sexp arg)
+    (goto-char point-pos)))
+
+(defun my/elisp-insert-message ()
+  (interactive)
+  ;; (my/insert-sexp "(message (format \"\"))" 3)
+  (my/insert-sexp "(message \"\")" 2))
+
+(defun my/cider-save-and-load-current-buffer ()
+  (interactive)
+  (when (buffer-modified-p)
+    (save-buffer))
+  (cider-load-file (buffer-file-name))
+  ;; (cider-switch-to-relevant-repl-buffer nil)
+  )
+
+(defun my/clojure-insert-log ()
+  (interactive)
+  (let* ((msg (if (equal major-mode 'clojurescript-mode)
+                  "(.log js/console \"\")"
+                "(println \"\")")))
+    (my/insert-sexp msg 2)))
+
+(defun my/clojure-insert-let ()
+  (interactive)
+  ;; (cljr-introduce-let) ; TODO see docu for cljr-introduce-let
+  (my/insert-sexp "(let [])" 2))
+
+(defun my/clojure-insert-for ()
+  (interactive)
+  (my/insert-sexp "(for [])" 2))
+
+(defun my/clojure-insert-defn ()
+  (interactive)
+  (my/insert-sexp "(defn [])" 3))
+
+(defun my/clojure-insert-doseq ()
+  (interactive)
+  (my/insert-sexp "(doseq [])" 2))
+
+(defun my/clojure-insert-do ()
+  (interactive)
+  (my/insert-sexp "(do)" 1))
+
+(defun my/clojure-toggle-reader-comment-fst-sexp-on-line ()
+  (interactive)
+  (let* ((point-pos1 (point)))
+    (evil-insert-line 0)
+    (let* ((point-pos2 (point))
+           (cmtstr "#_")
+           (cmtstr-len (length cmtstr))
+           (line-start (buffer-substring-no-properties
+                        point-pos2 (+ point-pos2 cmtstr-len))))
+      (if (string= cmtstr line-start)
+          (progn
+            (delete-char cmtstr-len)
+            (goto-char point-pos1)
+            (left-char cmtstr-len))
+        (progn
+          (insert cmtstr)
+          (goto-char point-pos1)
+          (right-char cmtstr-len))))))
+
+(defun my/clojure-toggle-reader-comment-current-sexp ()
+  (interactive)
+  (newline-and-indent)
+  (my/clojure-toggle-reader-comment-fst-sexp-on-line))
+
