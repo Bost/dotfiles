@@ -108,9 +108,7 @@ indicates whether to kill internal buffers too.
 
 Returns a message with the count of killed buffers."
   (interactive "sKill buffers matching this regular expression: \nP")
-  (message
-   (format "%d buffer(s) killed."
-           (my/kill-buffers--forcefully regexp internal-too))))
+  (message "%d buffer(s) killed." (my/kill-buffers--forcefully regexp internal-too)))
 
 (defun my/kill-buffers--magit ()
   "Kill all Magit buffers."
@@ -227,15 +225,15 @@ Example: (my/buffer-mode (current-buffer))"
          (fst-line-len (length fst-line))
          (maxchars 40))
     (message
-     (format "sexp (%d chars, %d lines) copied to kill-ring: %s..."
-             sexp-len
-             cnt-sexp-lines
-             fst-line
-             ;; (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
-             ;; (if (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
-             ;;     (concat (subseq fst-line 0 (- maxchars 3)) "...")
-             ;;   fst-line)
-             ))))
+     "sexp (%d chars, %d lines) copied to kill-ring: %s..."
+     sexp-len
+     cnt-sexp-lines
+     fst-line
+     ;; (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
+     ;; (if (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
+     ;;     (concat (subseq fst-line 0 (- maxchars 3)) "...")
+     ;;   fst-line)
+     )))
 
 (defun my/sp-copy-back-sexp-msg ()
   (interactive)
@@ -265,19 +263,14 @@ Example: (my/buffer-mode (current-buffer))"
 (defun my/whitespace-cleanup ()
   (interactive)
   (whitespace-cleanup)
-  (message (format
-            (concat
-             "s-n / s-N : narrow-to-defun / widen;"
-             " s-W : whitespace-cleanup"))))
+  (message (concat "s-n / s-N : narrow-to-defun / widen;"
+                   " s-W : whitespace-cleanup")))
 
 (defun my/whitespace-mode-toggle ()
   (interactive)
   (whitespace-mode 'toggle)
-  (message (format
-            (concat
-             "s-n / s-N : narrow-to-defun / widen;"
-             " s-W : whitespace-cleanup"))))
-
+  (message (concat "s-n / s-N : narrow-to-defun / widen;"
+                   " s-W : whitespace-cleanup")))
 
 ;; Spacemacs search: SPC s
 ;; search only in certain file-types:
@@ -305,14 +298,13 @@ Example: (my/buffer-mode (current-buffer))"
 (defun my/evil-avy-goto-char ()
   (interactive)
   (evil-avy-goto-char)
-  (message (format "evil-avy-goto-char: SPC j j, <f2>, s-/")))
+  (message "evil-avy-goto-char: SPC j j, <f2>, s-/"))
 
 (defun my/alternate-buffer ()
   (interactive)
   ;; (popwin:switch-to-buffer)
   (spacemacs/alternate-buffer)
-  (message
-   (format "spacemacs/alternate-buffer: SPC TAB, <s-tab>")))
+  (message "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))
 
 (defun my/evil-paste-after-from-0 ()
   ;; TODO evaluate: paste copied text multiple times
@@ -323,7 +315,7 @@ Example: (my/buffer-mode (current-buffer))"
 (defun my/avy-goto-line ()
   (interactive)
   (avy-goto-line)
-  (message (format "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
+  (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/"))
 
 (defun my/evil-select-pasted ()
   (interactive)
@@ -343,8 +335,8 @@ Example: (my/buffer-mode (current-buffer))"
         (buffer-enable-undo)
         (font-lock-mode 1)
         (if (> (buffer-size) (* 1024 1024))
-            (message (format "WARN %s disabled on a large file!" msg))
-          (message (format "%s disabled" msg)))))
+            (message "WARN %s disabled on a large file!" msg)
+          (message "%s disabled" msg))))
 
      (t ;; default
       (progn
@@ -353,7 +345,7 @@ Example: (my/buffer-mode (current-buffer))"
         (font-lock-mode -1)
         ;; fontification is not deferred.
         (setq jit-lock-defer-time nil)
-        (message (format "%s enabled" msg)))))))
+        (message "%s enabled" msg))))))
 
 (defun my/insert-sexp (str-sexp n-chars-back)
   (insert str-sexp)
