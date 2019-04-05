@@ -190,7 +190,7 @@ Example: (my/buffer-mode (current-buffer))"
 (defun my/toggle-narrow-to-defun ()
   ;; TODO send to my/toggle-narrow-to-defun spacemacs upstream
   (interactive)
-  (if my/narrowed-to-defun
+  (if my/narrowed-to-defun ;; global variable
       (widen)
     (narrow-to-defun))
   (setq my/narrowed-to-defun (not my/narrowed-to-defun)))
@@ -287,7 +287,6 @@ Example: (my/buffer-mode (current-buffer))"
                                                       (region-end)))
             (mark-pos (mark))
             (point-pos (point)))
-        (message (format "sel-text length: %d" (length sel-text)))
         (evil-exit-visual-state) ;; (evil-exit-visual-and-repeat)
         (if (< mark-pos point-pos) ;; can't be executed in the let-block. WTF???
             (exchange-point-and-mark)) ;; moving back
