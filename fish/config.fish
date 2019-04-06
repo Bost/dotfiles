@@ -47,7 +47,7 @@ set -x ANDROID_HOME /usr/lib/android-sdk
 set -x GRAAL_HOME ~/graalvm-ce-1.0.0-rc13
 # set -x GRAAL_HOME ~/graalvm-ce-1.0.0-rc12
 if test -e $GRAAL_HOME
-    set -x PATH $GRAAL_HOME/bin $PATH
+    # set -x PATH $GRAAL_HOME/bin $PATH
 end
 
 set cljjar ~/.m2/repository/org/clojure/clojure/1.10.0/clojure-1.10.0.jar
