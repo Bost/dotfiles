@@ -59,6 +59,10 @@ function make-emacs
                     # echo "tagPostfix:" $tagPostfix
                     set remoteTag (eval $cmdLastTag | grep --only-matching "\([0-9]*\?\.[0-9]*\?\.[0-9]*\?\)")
                     # echo "remoteTag:" $remoteTag
+                    if test $status = 1
+                        set remoteTag "26.2.50"  # TODO parse `emacs --version`
+                        echo "remoteTag not defined. Using:" $remoteTag
+                    end
                     set tagPostfixInc (math $tagPostfix + 1)
                     # echo "tagPostfixInc:" $tagPostfixInc
                     set cmd git tag $remoteTag.$tagPostfixInc
