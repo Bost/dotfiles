@@ -852,7 +852,6 @@ you should place your code here."
       (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode "c" 'my/s-X)
 
       :bind (;; lambdas are not supported
-             ("s-x"   . cider-switch-to-repl-buffer)
              ("<s-insert>" . my/clojure-insert-log)
              ;; (bind-key "C-s-p" 'my/clojure-insert-log)
              ("C-s-p" . my/clojure-insert-log)
@@ -861,7 +860,6 @@ you should place your code here."
              ("C-s-n" . my/clojure-insert-defn)
              ("C-s-s" . my/clojure-insert-doseq)
              ("C-s-d" . my/clojure-insert-do)
-             ;; ("s-x"   . cider-switch-to-last-clojure-buffer)
              ("C-s-j" . cider-jack-in)
              ;; ("s-r"   . cider-eval-last-expression-in-repl)
              ("M-s-l" . my/cider-save-and-load-current-buffer)
@@ -943,7 +941,17 @@ you should place your code here."
   (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
   ;; Also in visual mode
   (define-key evil-visual-state-map "j" 'evil-next-visual-line)
-  (define-key evil-visual-state-map "k" 'evil-previous-visual-line))
+  (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
+
+  (add-hook
+   'clojure-mode-hook
+   (lambda ()
+     (define-key clojure-mode-map (kbd "s-x") 'cider-switch-to-repl-buffer)))
+  (add-hook
+   'python-mode-hook
+   (lambda ()
+     (define-key python-mode-map (kbd "s-x") 'python-start-or-switch-repl)))
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
