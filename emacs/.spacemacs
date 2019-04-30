@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     rust
      scheme ;; requires guile-2.2; M-x run-guile
      shell-scripts
      haskell
