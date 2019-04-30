@@ -407,6 +407,10 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  ;; TODO remove this when the upstream Hydra and/or Melpa issue is solved
+  ;; https://github.com/syl20bnr/spacemacs/issues/12124#issuecomment-480219954
+  (add-to-list 'load-path (format "%s/dev/dotfiles/emacs/lv" (getenv "HOME")))
+  (require 'lv)
   )
 
 (defun dotspacemacs/user-config ()
