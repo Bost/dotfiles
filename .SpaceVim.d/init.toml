@@ -37,3 +37,7 @@ default_height = 30
 
 [[layers]]
 name = "git"
+
+[[layers]]
+name = "lang#clojure"
+
