@@ -152,9 +152,6 @@ It should only modify the values of Spacemacs settings."
   ;; TODO install crosshairs and deps via dotspacemacs-additional-packages
   (add-to-list 'load-path (format "%s/dev/dotfiles/emacs/crosshairs" (getenv "HOME")))
 
-  ;; TODO my/origami-tripple-parser doesn't work
-  ;; (add-to-list 'origami-parser-alist (scheme-mode . my/origami-tripple-parser))
-
   (require 'hl-line+)
   (require 'vline)
   (require 'col-highlight)
