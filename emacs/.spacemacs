@@ -162,7 +162,7 @@ It should only modify the values of Spacemacs settings."
   (require 'crosshairs)
 
   ;; TODO it looks like only package-archives and not
-  ;; configuration-layer--elpa-archives is checked when calling M-x
+  ;; configuration-layer-elpa-archives is checked when calling M-x
   ;; install-package
   ;; (setq package-archives
   ;;       '(
@@ -172,7 +172,7 @@ It should only modify the values of Spacemacs settings."
   ;;         ("melpa-stable" . "https://stable.melpa.org/packages/"))
   ;;       )
   (push '("melpa-stable" . "stable.melpa.org/packages/")
-        configuration-layer--elpa-archives)
+        configuration-layer-elpa-archives)
   ;; (push '(helm . "melpa-stable") package-pinned-packages)
   ;; (push '(helm-core . "melpa-stable") package-pinned-packages)
   ;; (push '(cider . "melpa-stable") package-pinned-packages)
