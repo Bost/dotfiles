@@ -45,6 +45,7 @@ This function should only modify configuration layer settings."
      git
      helm
      markdown
+     multiple-cursors
      org
      rust
      scheme ;; requires guile-2.2; M-x run-guile
@@ -716,10 +717,6 @@ before packages are loaded."
   (global-set-key (kbd "<C-S-delete>") 'kill-line) ; shift-key
   (global-set-key (kbd "s-l") 'spacemacs/resume-last-search-buffer)
   ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
-
-  (use-package multiple-cursors
-    :ensure t
-    :bind (("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
   ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
   (global-set-key (kbd "s-L") 'my/toggle-large-file-setting)
