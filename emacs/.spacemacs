@@ -39,6 +39,13 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     (auto-completion :variables auto-completion-enable-help-tooltip t)
+     better-defaults
+     emacs-lisp
+     git
+     helm
+     markdown
+     org
      rust
      scheme ;; requires guile-2.2; M-x run-guile
      shell-scripts
@@ -49,12 +56,6 @@ This function should only modify configuration layer settings."
      ;;       eclim-eclipse-dirs "~/eclipse-java-neon"
      ;;       eclim-executable "~/eclipse-java-neon/eclim")
      html
-     helm
-     (auto-completion :variables auto-completion-enable-help-tooltip t)
-     better-defaults
-     emacs-lisp
-     git
-     org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -66,7 +67,6 @@ This function should only modify configuration layer settings."
      scala
      sql
      vimscript
-     markdown
      javascript
      ;; shell
      ;; command-log - log keystrokes
