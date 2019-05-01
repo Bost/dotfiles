@@ -715,6 +715,7 @@ before packages are loaded."
   (global-set-key (kbd "<C-s-delete>") 'kill-line) ; super-key
   (global-set-key (kbd "<C-S-delete>") 'kill-line) ; shift-key
   (global-set-key (kbd "s-l") 'spacemacs/resume-last-search-buffer)
+  ;; `s-SPC v' but it overrides the `expand region' menu point
   ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
 
   ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)

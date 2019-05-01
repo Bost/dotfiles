@@ -322,11 +322,15 @@ Example: (my/buffer-mode (current-buffer))"
   (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/"))
 
 (defun my/evil-select-pasted ()
+  "See also https://emacs.stackexchange.com/a/21093"
   (interactive)
-  ;; TODO commented out just to get rid of a false warning
-  ;; (let ((start-marker (evil-get-marker ?[))
-  ;;                     (end-marker (evil-get-marker ?])))
+  ;; TODO this doesn't work properly
+  ;; (let ((start-marker (evil-get-marker ?\[))
+  ;;                     (end-marker (evil-get-marker ?\])))
   ;;   (evil-visual-select start-marker end-marker))
+  (evil-goto-mark ?\[)
+  (evil-visual-char)
+  (evil-goto-mark ?\])
   )
 
 (defun my/toggle-large-file-setting ()
