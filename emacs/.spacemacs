@@ -161,24 +161,6 @@ It should only modify the values of Spacemacs settings."
   (require 'col-highlight)
   (require 'crosshairs)
 
-  ;; TODO it looks like only package-archives and not
-  ;; configuration-layer-elpa-archives is checked when calling M-x
-  ;; install-package
-  ;; (setq package-archives
-  ;;       '(
-  ;;         ("gnu" . "https://elpa.gnu.org/packages/")
-  ;;         ("marmalade" . "https://marmalade-repo.org/packages/")
-  ;;         ("melpa" . "https://melpa.org/packages/")
-  ;;         ("melpa-stable" . "https://stable.melpa.org/packages/"))
-  ;;       )
-  (push '("melpa-stable" . "stable.melpa.org/packages/")
-        configuration-layer-elpa-archives)
-  ;; (push '(helm . "melpa-stable") package-pinned-packages)
-  ;; (push '(helm-core . "melpa-stable") package-pinned-packages)
-  ;; (push '(cider . "melpa-stable") package-pinned-packages)
-  ;; (push '(clj-refactor . "melpa-stable") package-pinned-packages)
-  ;; (push '(projectile . "melpa-stable") package-pinned-packages)
-
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
