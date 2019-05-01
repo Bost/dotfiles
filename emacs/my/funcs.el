@@ -323,9 +323,11 @@ Example: (my/buffer-mode (current-buffer))"
 
 (defun my/evil-select-pasted ()
   (interactive)
-  (let ((start-marker (evil-get-marker ?[))
-                      (end-marker (evil-get-marker ?])))
-    (evil-visual-select start-marker end-marker)))
+  ;; TODO commented out just to get rid of a false warning
+  ;; (let ((start-marker (evil-get-marker ?[))
+  ;;                     (end-marker (evil-get-marker ?])))
+  ;;   (evil-visual-select start-marker end-marker))
+  )
 
 (defun my/toggle-large-file-setting ()
   (interactive)
