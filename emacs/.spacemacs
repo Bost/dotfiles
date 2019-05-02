@@ -623,7 +623,7 @@ before packages are loaded."
   ;; (global-set-key (kbd "s-2") 'my/split-other-window-below)
   ;; (global-set-key (kbd "s-3") 'my/split-other-window-right)
   (global-set-key (kbd "s-2") 'split-window-below) ;; SPC w -
-  (global-set-key (kbd "s-3") 'spacemacs/layout-double-columns) ; SPC w 2
+  (global-set-key (kbd "s-3") 'spacemacs/window-split-double-columns) ; SPC w 2
   ;; Default theme applied at startup
   (global-set-key (kbd "s-a") 'helm-mini)
   (global-set-key (kbd "s-z") 'my/buffer-selection-show)
