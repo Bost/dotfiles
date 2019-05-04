@@ -674,6 +674,12 @@ before packages are loaded."
   (global-set-key (kbd "<C-M-left>") 'backward-paragraph)
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
   (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
+
+  ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+  ;; layers/+misc/multiple-cursors/packages.el
+  (dolist (state-map `(,evil-normal-state-map ,evil-insert-state-map))
+    (define-key state-map (kbd "C-M-k") 'kill-sexp))
+
   (global-set-key (kbd "<s-backspace>") 'paredit-backward-kill-word)
   (global-set-key (kbd "<s-delete>") 'paredit-forward-kill-word)
   (global-set-key (kbd "s-M-SPC") 'evil-search-highlight-persist-remove-all)
