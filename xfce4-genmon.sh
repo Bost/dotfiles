@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # Script for the xfce4-genmon-plugin
+# must be used with an absolute path /home/<user>/...
+
 # obtain the info about the process consuming most of the CPU
 cmd=$(ps ax -o %cpu,pid,comm --sort=-%cpu | head -n 2 | tail -1)
 # echo ${cmd}
