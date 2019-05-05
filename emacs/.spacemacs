@@ -668,8 +668,10 @@ before packages are loaded."
   (global-set-key (kbd "<C-M-prior>") 'hs-hide-all) ; pg-up
   (global-set-key (kbd "<C-M-next>") 'hs-show-all)  ; pg-down
   ;; (global-set-key (kbd "<C-M-right>") 'sp-forward-sexp)
-  (global-set-key (kbd "<C-M-right>") 'forward-paragraph) ; C-M-e end-of-defun
-  (global-set-key (kbd "<C-M-left>") 'backward-paragraph) ; C-M-b beginning-of-defun
+  ;; C-M-e end-of-defun
+  (global-set-key (kbd "<C-M-right>") 'forward-paragraph)
+  ;; C-M-b beginning-of-defun
+  (global-set-key (kbd "<C-M-left>") 'backward-paragraph)
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
   (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
   (global-set-key (kbd "<s-backspace>") 'paredit-backward-kill-word)
@@ -754,9 +756,10 @@ before packages are loaded."
      ("s-j"             . crux-top-join-line)))
 
   (use-package emacs
-    :config (add-hook 'emacs-lisp-mode-hook
-                      (lambda () ;; "Λ"
-                        (push '("my/interactive-lambda" . 923) prettify-symbols-alist)))
+    :config (add-hook
+             'emacs-lisp-mode-hook
+             (lambda () ;; "Λ"
+               (push '("my/interactive-lambda" . 923) prettify-symbols-alist)))
     :bind ;; lambdas are not supported
     (("C-s-m" . my/elisp-insert-message)
      ("s-d"   . my/eval-current-defun)
