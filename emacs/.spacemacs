@@ -725,50 +725,6 @@ before packages are loaded."
     :config
     (add-hook 'fish-mode-hook #'paredit-mode))
 
-  ;; org-mode is loaded by default - can't be ":defer t"
-  (use-package org :ensure t
-    :config ; executed after require
-    (use-package org-install)
-    ;; (use-package ob-clojure)
-    (setq org-babel-clojure-backend 'cider)
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '(
-       (emacs-lisp . t)
-       (clojure . t)
-       (shell . t)
-       (python .t)
-       (sqlite . t)
-       ))
-    ;; do not set "TODO"; use default key bindings
-    (define-key org-mode-map (kbd "<S-right>") nil)
-    (define-key org-mode-map (kbd "<S-left>") nil)
-    (define-key org-mode-map (kbd "<C-S-right>") nil)
-    (define-key org-mode-map (kbd "<C-S-left>") nil)
-
-    ;; Show syntax highlighting per language native mode in *.org
-    (setq org-src-fontify-natively t)
-    ;; For languages with significant whitespace like Python:
-    (setq org-src-preserve-indentation t)
-    ;; Add shortcuts for ogr-agenda
-    ;;(global-set-key "\C-cl" 'org-store-link)
-    ;;(global-set-key "\C-cc" 'org-capture)
-    ;;(global-set-key "\C-ca" 'org-agenda)
-
-    ;; Don't increase the org-level header text height
-    (dolist (face '(org-level-1
-                    org-level-2
-                    org-level-3
-                    org-level-4
-                    org-level-5))
-      (set-face-attribute face nil :weight 'semi-bold :height 1.0))
-    ;; (add-hook 'org-mode-hook 'my/org-mode-hook)
-    ;; (eval-after-load 'org ; alternative invocation
-    ;;   (progn
-    ;;     (define-key org-mode-map (kbd "<S-right>") nil)
-    ;;     (define-key org-mode-map (kbd "<S-left>") nil)))
-    )
-
   ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
   ;; zop-up-to-char works as zop-to-char but stop just before target
   (global-set-key (kbd "M-z") 'zop-up-to-char)
