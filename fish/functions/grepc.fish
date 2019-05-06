@@ -19,6 +19,7 @@ function grepc --description "Grep code files"
     # wdir is undefined i.e. examine the working directory
     # set wdir ./
     set cmd grep $opts $fdirs $incl $excl (string escape -- $argv) $wdir
+    echo $cmd
     eval $cmd
     echo "### TODO repeat w/ --word-regex if nothing found, i.e. \$status == 1"
     echo $cmd
