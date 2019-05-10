@@ -7,12 +7,13 @@ function e
         set prms $argv
     end
 
+    set prms $prms \& disown
     # DYI violation because variables may not be used as commands
     if pgrep --exact emacs
-        set cmd emacsclient $prms \& disown
+        set cmd emacsclient $prms
     else
         # Don't use the --daemon switch. It producess a mess in the shell
-        set cmd emacs $prms \& disown
+        set cmd emacs $prms
     end
     echo $cmd
     eval $cmd
