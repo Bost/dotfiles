@@ -78,6 +78,7 @@ This function should only modify configuration layer settings."
      ;; TODO spacemacs-layout - window management
      ;; smex ; smart M-x enhacements - recent & most used commands
      ;; gnus
+     systemd
      my
      )
 
