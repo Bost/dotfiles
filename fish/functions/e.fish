@@ -1,6 +1,5 @@
 function e
-  # TODO create e25: cd $dev/emacs-25; and rm elpa; and ln -s elpa-emacs-25 elpa
-  # TODO create e26: cd $dev/emacs-25; and rm elpa; and ln -s elpa-emacs-26 elpa
+  # TODO systemctl --user enable emacs
   set cnt (count $argv)
   if test $cnt = 0
     set prms "./"
