@@ -9,8 +9,10 @@ function grepc --description "Grep code files"
     # set opts -nir
     set opts --ignore-case --line-number --recursive
     set javaExts "el,clj,cljs,cljc,edn,boot,properties,java"
-    set restExts "py,org,md,rst,adoc,html"
-    set extentions (string join "," $javaExts $restExts)
+    set shellExts "sh,fish"
+    set palmExts "py,json,cfg,conf,mime,c,h"
+    set docsExts "org,md,rst,adoc,html"
+    set extentions (string join "," $javaExts $shellExts $palmExts $docsExts)
     set incl "--include=\*.{"$extentions"}"
     # we're searching recursivelly; out of `resources/public/js/compiled` only
     # the `compiled` subdir needs to be ignored
