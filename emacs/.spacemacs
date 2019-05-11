@@ -79,6 +79,7 @@ This function should only modify configuration layer settings."
      ;; smex ; smart M-x enhacements - recent & most used commands
      ;; gnus
      systemd
+     hy ;; hylang
      my
      )
 
