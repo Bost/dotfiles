@@ -79,7 +79,8 @@ This function should only modify configuration layer settings."
      ;; smex ; smart M-x enhacements - recent & most used commands
      ;; gnus
      systemd
-     hy ;; hylang
+     hy ;; hylang - lisp embedded in python
+     go
      my
      )
 
@@ -684,7 +685,7 @@ before packages are loaded."
 
   (global-set-key (kbd "<s-backspace>") 'paredit-backward-kill-word)
   (global-set-key (kbd "<s-delete>") 'paredit-forward-kill-word)
-  (global-set-key (kbd "s-M-SPC") 'evil-search-highlight-persist-remove-all)
+  (global-set-key (kbd "s-M-SPC") 'spacemacs/evil-search-clear-highlight)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
   ;; (global-set-key (kbd "s-g") 'helm-google-suggest)
   (global-set-key (kbd "s-g") 'google-this-region)
