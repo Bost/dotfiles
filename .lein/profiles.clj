@@ -10,9 +10,9 @@
    ;; doesn't work with cider/cider-nrepl "0.17.0"; it yields the
    ;;     Unable to resolve var: refactor-nrepl.middleware/wrap-refactor
    ;; nREPL middleware to support editor refactorings
-   #_[refactor-nrepl "2.4.0"]
+   [refactor-nrepl "2.4.0"]
    ;; collection of nREPL middleware designed to enhance CIDER
-   #_[cider/cider-nrepl "0.21.1"]
+   [cider/cider-nrepl "0.22.0-beta1" #_"0.21.1"]
 
    ;; network REPL providing Srv, Cli, some common APIs etc.
    [nrepl "0.6.0"]
@@ -41,14 +41,9 @@
 
   :dependencies
   [
-   ;; A Clojure(Script); debug single- and multi-threaded apps
-   ;; doesn't work properly under Java 11, see:
-   ;; https://github.com/dgrnbrg/spyscope/issues/32
-   ;; https://dev.clojure.org/jira/browse/CRRBV-18
-   ;; [spyscope "0.1.6"]
-   ;; [org.clojure/core.rrb-vector "0.0.13"]
-   ;; [nrepl "..."] ;; pulled by lein repl
+   [spyscope "0.1.7-SNAPSHOT"] ;; the SNAPSHOT must be build from the source
    ]
   ;; :injections [(require 'spyscope.core)]
   }
+  :signing {:gpg-key "1CDDA5034D7C10F6"}
  }

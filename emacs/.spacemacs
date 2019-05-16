@@ -65,7 +65,11 @@ This function should only modify configuration layer settings."
      ;; syntax-checking
      treemacs
      ;; version-control
-     clojure
+     (clojure :variables
+              ;; Sayid (siy EED) - debugging & profiling clojure
+              ;; http://clojure-emacs.github.io/sayid/
+              clojure-enable-sayid t
+              clojure-enable-clj-refactor t)
      java
      scala
      sql
