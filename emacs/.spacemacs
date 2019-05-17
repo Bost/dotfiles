@@ -69,7 +69,8 @@ This function should only modify configuration layer settings."
               ;; Sayid (siy EED) - debugging & profiling clojure
               ;; http://clojure-emacs.github.io/sayid/
               clojure-enable-sayid t
-              clojure-enable-clj-refactor t)
+              clojure-enable-clj-refactor t
+              cljr-warn-on-eval nil)
      java
      scala
      sql
