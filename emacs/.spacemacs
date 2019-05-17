@@ -931,13 +931,18 @@ before packages are loaded."
                  ("s-X"         . my/s-X)
                  ("s-e"         . cider-eval-last-sexp))
 
-      ;; (evil-leader/set-key "o c" 'my/s-X) works too
-      (spacemacs/set-leader-keys "oc" 'my/s-X)
-      (spacemacs/set-leader-keys "or" 'rotate-frame)
-      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "c" 'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'clojure-modec "c" 'my/s-X)
+      ;; TODO prefix name is not added
+      (add-to-list 'spacemacs/key-binding-prefixes '("og"  "google-this"))
+      (spacemacs/set-leader-keys
+        "ogg" 'google-this
+        "ogr" 'google-this-region
+        "oc"  'my/s-X
+        "or"  'rotate-frame)
+
+      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode       "c" 'my/s-X)
+      (spacemacs/set-leader-keys-for-major-mode 'clojure-modec      "c" 'my/s-X)
       (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "c" 'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode "c" 'my/s-X)
+      (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode    "c" 'my/s-X)
 
       :bind (;; lambdas are not supported
              ("<s-insert>" . my/clojure-insert-log)
