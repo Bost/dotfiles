@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# get all the PPAs installed on a system ready to share for reininstall
+for APT in `find /etc/apt/ -name \*.list`; do
+    # list found files - helps in case of: '... public key is not available: NO_PUBKEY'
+    echo $APT
+    grep -o "^deb http://ppa.launchpad.net/[a-z0-9\-]\+/[a-z0-9\-]\+" $APT | while read ENTRY ; do
+        USER=`echo $ENTRY | cut -d/ -f4`
+        PPA=`echo $ENTRY | cut -d/ -f5`
+        echo sudo apt-add-repository ppa:$USER/$PPA
+        echo sudo ppa-purge ppa:$USER/$PPA
+    done
+done
