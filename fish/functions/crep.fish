@@ -1,7 +1,4 @@
 function crep
-    set f1 $dev/cheatsheet/cmds/linux.sh
-    set f2 $dev/cheatsheet/cmds/systemd.sh
-    set f3 $dev/cheatsheet/cmds/rest.sh
-    set files $f1 $f2 $f3
-    cheat-grep $argv $files
+    set pth $dev/cheatsheet/cmds
+    cheat-grep $argv $pth/shells.sh $pth/linux.sh $pth/systemd.sh $pth/rest.sh
 end
