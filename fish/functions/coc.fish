@@ -1,5 +1,5 @@
 function coc
-  set cmd cd $dev/coconut
+  set cmd cd $dec/coconut
   echo $cmd
   eval $cmd
 end
