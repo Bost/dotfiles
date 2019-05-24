@@ -14,6 +14,7 @@ function ctd -d "Compile td/example/java"
     set build_type -DCMAKE_BUILD_TYPE=Release
     set install_prefix -DCMAKE_INSTALL_PREFIX:PATH=..
     set jni -DTD_ENABLE_JNI=ON
+    set -x CMAKE_BUILD_PARALLEL_LEVEL (nproc)
     set cmd cmake $build_type $jni $install_prefix"/example/java/td" ..
     echo $cmd
     eval $cmd
