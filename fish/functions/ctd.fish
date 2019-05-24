@@ -1,6 +1,7 @@
 function ctd -d "Compile td/example/java"
+    set currWorkingDir (pwd)
     set coconutHome $dec/coconut
-    set tdHome $coconutHome/td
+    set tdHome $dev/td
     set tdJavaHome $tdHome/example/java
 
     set cmd cd $tdHome
@@ -42,21 +43,37 @@ function ctd -d "Compile td/example/java"
             echo $cmd
             eval $cmd
             if test $status = 0
+                # set cmd ln -s $tdJavaHome/bin $coconutHome/lib
+                # echo $cmd
+                # eval $cmd
+
                 set cmd cd $tdJavaHome/bin
                 echo $cmd
                 eval $cmd
-                set cmd jar cf td.jar *
-                echo $cmd
-                eval $cmd
-                set cmd cp td.jar $coconutHome/lib
-                echo $cmd
-                eval $cmd
+
+                # set cmd jar cf td.jar *
+                # echo $cmd
+                # eval $cmd
+
+                # set cmd mkdir $coconutHome/lib/
+                # echo $cmd
+                # eval $cmd
+
+                # set cmd cp td.jar $coconutHome/lib/
+                # echo $cmd
+                # eval $cmd
 
                 set mainClass org/drinkless/tdlib/example/Example
                 echo "#################"
+                set cmd cd $tdJavaHome/bin
+                echo $cmd
                 set cmd java '-Djava.library.path=.' $mainClass
                 echo $cmd
+                echo "#################"
             end
         end
     end
+    set cmd cd $currWorkingDir
+    echo $cmd
+    eval $cmd
 end
