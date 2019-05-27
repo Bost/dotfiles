@@ -490,13 +490,14 @@ Example 2.:
   (other-window 1)
   (my/flash-active-buffer))
 
-(defun my/match-occurences-in-current-func-toggle ()
+(defun my/iedit-mode-toggle ()
   "Match only occurrences in current function and the comment right above it."
   (interactive)
   (if iedit-mode
-      (iedit-mode)  ;; switch off iedit-mode
+      (evil-iedit-state/quit-iedit-mode)
     ;; 0 means: only occurrences in current ...
-    (iedit-mode 0)))
+    ;; (evil-iedit-state/iedit-mode 0)
+    (evil-iedit-state/iedit-mode)))
 
 (defun my/eval-current-defun1 (arg)
   "Doesn't work if there's a \"\" or () at the end of the function"

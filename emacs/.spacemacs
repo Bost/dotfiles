@@ -721,7 +721,7 @@ before packages are loaded."
   (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
   ;; fd - evil-escape from insert state and everything else
   ;; occurences - function scope
-  (global-set-key (kbd "s-I") 'my/match-occurences-in-current-func-toggle)
+  (global-set-key (kbd "s-I") 'my/iedit-mode-toggle)
   (global-set-key (kbd "s-i") 'iedit-mode) ;; all occurences in the buffer
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
   (global-set-key (kbd "s-h") 'helm-imenu)
