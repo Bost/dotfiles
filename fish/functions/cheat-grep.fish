@@ -19,7 +19,8 @@ function cheat-grep
         # -i --ignore-case
         # -h, --no-filename
         # first grep matches blocks of text separated by blank lines
-        set cmd "grep -Pzoh '.+\n(.*\n)+?\n' $files | grep -Pzie" $str
+        # \Z  matches the EOF end-of-file
+        set cmd "grep -Pzoh '.+\n(.*\n)+?(\n|\Z)' $files | grep -Pzie" $str
         eval $cmd
         # echo "########"
         echo $cmd
