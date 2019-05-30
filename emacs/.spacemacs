@@ -660,7 +660,7 @@ before packages are loaded."
   (global-set-key (kbd "s-W") 'my/whitespace-cleanup)
   (global-set-key (kbd "s-w") 'my/whitespace-mode-toggle)
   (global-set-key (kbd "s-m") 'magit-status)
-  (global-set-key (kbd "<f3>") 'my/helm-project-smart-do-search-region-or-symbol)
+  (global-set-key (kbd "<f3>") 'my/search-region-or-symbol)
   (global-set-key (kbd "<M-f3>") 'spacemacs/helm-project-smart-do-search)
   (global-set-key (kbd "s-f") 'helm-find-files)
   (global-set-key (kbd "s-F") 'helm-recentf) ;; 'recentf-open-files

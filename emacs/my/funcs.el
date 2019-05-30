@@ -269,8 +269,7 @@ Example: (my/buffer-mode (current-buffer))"
 (defun my/whitespace-mode-toggle ()
   (interactive)
   (whitespace-mode 'toggle)
-  (message (concat "s-n / s-N : narrow-to-defun / widen;"
-                   " s-W : whitespace-cleanup")))
+  (spacemacs/toggle-fill-column-indicator))
 
 ;; Spacemacs search: SPC s
 ;; search only in certain file-types:
@@ -278,7 +277,7 @@ Example: (my/buffer-mode (current-buffer))"
 ;; 2. search only in .el files: TextToFind -G\.el$
 ;; (global-set-key (kbd "<f3>") 'helm-ag)
 
-(defun my/helm-project-smart-do-search-region-or-symbol (&optional arg)
+(defun my/search-region-or-symbol (&optional arg)
   "Search for selected text in the project. Even in visual state."
   (interactive "p")
   (let (;; TODO optionaly reselect last selected text
