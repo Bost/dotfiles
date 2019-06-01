@@ -565,7 +565,8 @@ before packages are loaded."
 
    ;; clojure-enable-fancify-symbols t
    ;; cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
-   python-shell-interpreter "python3.6"
+   ;; TODO use a list of prefered python interpreters
+   python-shell-interpreter "python3.7" ; "python3.6"
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
    bookmark-default-file "~/dev/dotfiles/emacs/bookmarks"
