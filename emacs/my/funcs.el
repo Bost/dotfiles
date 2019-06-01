@@ -135,6 +135,8 @@ Example: (my/buffer-mode (current-buffer))"
     major-mode))
 
 (defun my/kill-buffers--unwanted ()
+  "Kill all unwanted buffers and delete other windows so that only one remains
+displayed."
   (interactive)
   (save-excursion
     (let ((count 0))
@@ -160,10 +162,11 @@ Example: (my/buffer-mode (current-buffer))"
                       ediff-meta-mode       ; for *Ediff Registry*
                       Info-mode             ; for *info*
                       spacemacs-buffer-mode ; for *spacemacs*
+                      compilation-mode      ; for *Compile-Log*
                       ))
           (setq count (1+ count))
           (kill-buffer buffer)))
-      (spacemacs/toggle-maximize-buffer)
+      (delete-other-windows)
       (message "Buffer(s) killed: %i" count))))
 
 (defun my/kill-buffers--dired ()
