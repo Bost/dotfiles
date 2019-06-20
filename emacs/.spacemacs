@@ -86,6 +86,8 @@ This function should only modify configuration layer settings."
      systemd
      hy ;; hylang - lisp embedded in python
      go
+     yaml
+     docker
      my
      )
 
