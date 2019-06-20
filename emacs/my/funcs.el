@@ -228,15 +228,14 @@ displayed."
          (fst-line-len (length fst-line))
          (maxchars 40))
     (message
-     "sexp (%d chars, %d lines) copied to kill-ring: %s..."
+     "sexp (%d chars, %d lines) copied to kill-ring: %s%s"
      sexp-len
      cnt-sexp-lines
      fst-line
      ;; (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
-     ;; (if (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
-     ;;     (concat (subseq fst-line 0 (- maxchars 3)) "...")
-     ;;   fst-line)
-     )))
+     (if (or (>= fst-line-len maxchars) (> cnt-sexp-lines 1))
+         "..."
+       ""))))
 
 (defun my/sp-copy-back-sexp-msg ()
   (interactive)
