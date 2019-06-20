@@ -51,5 +51,12 @@ if test -e $GRAAL_HOME
     # set -x PATH $GRAAL_HOME/bin $PATH
 end
 
+# Remedy against:
+# $ lein uberjar
+# Release versions may not depend upon snapshots.
+# Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
+# environment variable to override.
+set -x LEIN_SNAPSHOTS_IN_RELEASE allowed
+
 set cljjar ~/.m2/repository/org/clojure/clojure/1.10.0/clojure-1.10.0.jar
 set cljsjar ~/.m2/repository/org/clojure/spec.alpha/0.2.176/spec.alpha-0.2.176.jar
