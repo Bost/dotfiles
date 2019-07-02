@@ -5,7 +5,7 @@
  {
   :plugins
   [
-   [lein-figwheel "0.5.18"]
+   [lein-figwheel "0.5.19"]
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    ;; doesn't work with cider/cider-nrepl "0.17.0"; it yields the
    ;;     Unable to resolve var: refactor-nrepl.middleware/wrap-refactor
