@@ -524,11 +524,6 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-
-  ;; TODO remove this when the upstream Hydra and/or Melpa issue is solved
-  ;; https://github.com/syl20bnr/spacemacs/issues/12124#issuecomment-480219954
-  (add-to-list 'load-path (format "%s/dev/dotfiles/emacs/lv" (getenv "HOME")))
-  (require 'lv)
   )
 
 (defun dotspacemacs/user-load ()
@@ -737,8 +732,10 @@ before packages are loaded."
   ;; `s-SPC v' but it overrides the `expand region' menu point
   ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
 
+  (global-set-key (kbd "s-L") 'spacemacs/toggle-line-numbers)
+  ;; TODO my/toggle-large-file-setting - is it needed?
   ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
-  (global-set-key (kbd "s-L") 'my/toggle-large-file-setting)
+  ;; (global-set-key (kbd "C-s-L") 'my/toggle-large-file-setting)
 
   (use-package fish-mode
     :config
