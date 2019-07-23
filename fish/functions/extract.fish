@@ -50,7 +50,7 @@ function extract
     case "*.7z"
       echo "7z x $file"
             7z x $file
-    case "*.tar.xz"
+    case "*.tar.xz"             # LZMA/LZMA2 algorithms
       echo "tar xvfJ $file"
             tar xvfJ $file
     case "*.pax"
