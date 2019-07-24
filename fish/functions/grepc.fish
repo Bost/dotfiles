@@ -12,8 +12,9 @@ function grepc --description "Grep code files"
     set shellExts "sh,fish"
     set palmExts "py,json,cfg,conf,mime,c,h"
     set docsExts "org,md,rst,adoc,html,pdf"
-    # functional programming rkt - raket; nix - NixOS; hs - Haskell
-    set funcExts "cabal,elm,hs,json,nix,rkt"
+    # functional programming:
+    # rkt - raket; nix - NixOS; hs - Haskell; scm - Scheme
+    set funcExts "cabal,elm,hs,json,nix,rkt,scm"
     set extentions (string join "," \
         $javaExts $shellExts $palmExts $docsExts $funcExts \
     )
