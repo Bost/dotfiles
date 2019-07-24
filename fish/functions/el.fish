@@ -1,3 +1,3 @@
 function el
-    e $dev/cheatsheet/cmds/linux.sh
+    e $dev/cheat/cmds/linux.sh
 end

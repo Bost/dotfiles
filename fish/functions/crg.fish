@@ -1,3 +1,3 @@
 function crg
-    cheat-grep $argv $files $dev/cheatsheet/cmds/git.sh
+    cheat-grep $argv $files $dev/cheat/cmds/git.sh
 end

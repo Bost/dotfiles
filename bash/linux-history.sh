@@ -288,7 +288,7 @@ fi
 # the git pull doesn't work
 if [ 0 -eq 1 ]; then
     github_projects=(
-        ~/dev/cheatsheet
+        ~/dev/cheat
         ~/dev/dotfiles
         ~/dev/bash-git-prompt
     )

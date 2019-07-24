@@ -12,7 +12,7 @@ prmsFetch = ["fetch", "--tags",]
 myRepos = [
      dec+"/zark"
     ,dec+"/ufo"
-    ,dev+"/cheatsheet"
+    ,dev+"/cheat"
     ,dev+"/dotfiles"
 ]
 
@@ -31,7 +31,7 @@ def cmdPOM(path):
 # cmds = [
 #     ["git", "--git-dir="+dec+"/zark/.git",      ] + prmsPOM,
 #     ["git", "--git-dir="+dec+"/ufo/.git",       ] + prmsPOM,
-#     ["git", "--git-dir="+dev+"/cheatsheet/.git",] + prmsPOM,
+#     ["git", "--git-dir="+dev+"/cheat/.git",] + prmsPOM,
 #     ["git", "--git-dir="+dev+"/dotfiles/.git",  ] + prmsPOM,
 #     ["git", "--git-dir="+dev+"/git/.git",       ] + prmsFetch,
 #     ["git", "--git-dir="+dev+"/fish-shell/.git",] + prmsFetch,

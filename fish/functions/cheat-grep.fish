@@ -23,6 +23,7 @@ function cheat-grep
         set cmd "grep -Pzoh '.+\n(.*\n)+?(\n|\Z)' $files | grep -Pzie" $str
         eval $cmd
         # echo "########"
-        echo $cmd
+        # echo $cmd
+        echo (string replace $dev "\$dev" $files)
     end
 end
