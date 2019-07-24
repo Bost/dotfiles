@@ -30,6 +30,9 @@ function codeFiles --description "Returns a list of strings (files) with code-fi
 end
 
 function make-emacs
+    # ./configure --with-x-toolkit=gtk
+    # see also
+    # https://github.com/adobe-fonts/source-code-pro/issues/17#issuecomment-487894024
     # list tags on the HEAD
     set cmd git tag --points-at HEAD
     echo $cmd

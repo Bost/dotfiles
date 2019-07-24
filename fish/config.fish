@@ -30,7 +30,9 @@ set -U bin ~/bin
 # Some spacemacs layers require certain tools to be available on $PATH
 # see http://spacemacs.org/doc/FAQ.html#setup-path
 # Warning! ~/.profile ignores existence of ~/bin
-set -x PATH ~/.yarn/bin ~/bin ~/.local/bin $PATH
+# Warning! the path to guix might be wrong. In bash it should be configured as:
+#    export PATH="$HOME/.guix-profile/bin${PATH:+:}$PATH"
+set -x PATH ~/.guix-profile/bin/ ~/.yarn/bin ~/bin ~/.local/bin $PATH
 
 # JAVA_HOME definitions - see (changes require logout & login):
 #     /etc/profile.d/jdk.csh
