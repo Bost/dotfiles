@@ -18,7 +18,7 @@ function prep --description "See glances, cputool"
         # Process 'niceness' vs. 'priority' https://askubuntu.com/a/656787
         # set cmd ps -o euser,ruser,suser,fuser,f,comm,label -p $pid
         # set cmd ps -o pid,tid,class,rtprio,ni,pri,psr,pcpu,stat,wchan:14,comm -p $pid
-        set cmd ps -o ppid,pid,user,nice,%cpu,%mem,command --sort ppid -p $pid
+        set cmd ps -o ppid,pid,user,nice,%cpu,%mem,etime,command --sort ppid -p $pid
         echo $cmd
         eval $cmd
     end
