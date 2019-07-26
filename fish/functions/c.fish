@@ -1,13 +1,16 @@
 function c
-    # is a regular file?
-    if test -f $argv
-        set cmd cat (string escape -- $argv)
+    set escArgv (string escape -- $argv)
+    if test -z "$escArgv"
+        # echo "Udefined or empty escArgv:" $escArgv
+        l
+    else if test -d $escArgv # is it a directory?
+        l $estArgv
+    else if test -f $estArgv # is it a regular file?
+        set cmd cat $escArgv
         # echo $cmd # otherwise c <file> | jq '.' doesn't work
         eval $cmd
-    # is a directory?
-    else if test -d $argv
-        l $argv
+        # is a directory?
     else
-        crep $argv $files
+        crep $escArgv $files
     end
 end
