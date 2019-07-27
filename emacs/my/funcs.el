@@ -151,8 +151,12 @@ displayed."
                       magit-stash-mode
                       magit-process-mode
                       bs-mode ; *buffer-selection*
-                      ;; *package-build-checkout* is in fundamenatal-mode
-                      ;; *cider-refresh-log* is in fundamenatal-mode
+                      ;; in fundamenatal-mode:
+                      ;; *package-build-checkout*
+                      ;; *cider-refresh-log*
+                      ;; *edn*
+                      ;; *Backtrace*
+                      ;; *Help*
                       cider-browse-ns-mode  ; for *cider-ns-browser*
                       cider-stacktrace-mode ; for *cider-error*
                       cider-docview-mode    ; for *cider-doc*
