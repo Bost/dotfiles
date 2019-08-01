@@ -45,5 +45,4 @@
    ]
   ;; :injections [(require 'spyscope.core)]
   }
-  :signing {:gpg-key "1CDDA5034D7C10F6"}
  }
