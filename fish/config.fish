@@ -8,13 +8,11 @@ set --universal bin ~/bin
 # Warning! ~/.profile ignores existence of ~/bin
 # Warning! the path to guix might be wrong. In bash it should be configured as:
 #    export PATH="$HOME/.guix-profile/bin${PATH:+:}$PATH"
-set --export PATH \
-    ~/.cabal/bin \
-    ~/.guix-profile/bin \
-    ~/.yarn/bin \
-    ~/bin \
-    ~/.local/bin \
-    $PATH
+set --export PATH ~/.cabal/bin        $PATH
+set --export PATH ~/.guix-profile/bin $PATH
+set --export PATH ~/.yarn/bin         $PATH
+set --export PATH ~/bin               $PATH
+set --export PATH ~/.local/bin        $PATH
 
 # JAVA_HOME definitions - see (changes require logout & login):
 #     /etc/profile.d/jdk.csh
