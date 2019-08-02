@@ -7,56 +7,46 @@ function extract
   set file $argv[1]
   switch $file
     case "*.tar.bz2"
-      echo "tar xjf $file"
-            tar xjf $file
+      set cmd tar xjf $file
     case "*.tar.gz"
-      echo "tar xzf $file"
-            tar xzf $file
+      set cmd tar xzf $file
       if test $status -eq 2
         echo "WARN: The archive is propably is a tar, not a GZip. Trying alterternative:"
-        echo "tar xvf $file"
-              tar xvf $file
+        set cmd tar xvf $file
       end
     case "*.bz2"
-      echo "bunzip2 $file"
-            bunzip2 $file
+      set cmd bunzip2 $file
     case "*.rar"
-      echo "unrar e $file"
-            unrar e $file
+      set cmd unrar e $file
     case "*.gz"
-      echo "gunzip $file"
-            gunzip $file
+      set cmd gunzip $file
     case "*.tar"
-      echo "tar xf $file"
-            tar xf $file
+      set cmd tar xf $file
     case "*.tbz2"
-      echo "tar xjf $file"
-            tar xjf $file
+      set cmd tar xjf $file
     case "*.tgz"
-      echo "tar xzf $file"
-            tar xzf $file
+      set cmd tar xzf $file
     case "*.jar"
-      echo "unzip $file"
-            unzip $file
+      set cmd unzip $file
     case "*.war"
-      echo "unzip $file"
-            unzip $file
+      set cmd unzip $file
     case "*.zip"
-      echo "unzip $file"
-            unzip $file
+      set cmd unzip $file
     case "*.Z"
-      echo "uncompress $file"
-            uncompress $file
+      set cmd uncompress $file
     case "*.7z"
-      echo "7z x $file"
-            7z x $file
+      set cmd 7z x $file
     case "*.tar.xz"             # LZMA/LZMA2 algorithms
-      echo "tar xvfJ $file"
-            tar xvfJ $file
+      set cmd tar xvfJ $file
     case "*.pax"
-      echo "pax -r < $file"
-            pax -r < $file
+      set cmd pax -r < $file
     case "'*'"
-      echo "ERROR: $file cannot be extracted."
+      echo "ERROR: single quotes should not match the file type"
+    case "*"
+      echo "ERROR: Unknown file type:" $file "can't be extracted."
+  end
+  if test -n "$cmd"
+      echo $cmd
+      eval $cmd
   end
 end
