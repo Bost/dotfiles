@@ -5,6 +5,13 @@
 
 # obtain the info about the process consuming most of the CPU
 cmd=$(ps ax -o %cpu,pid,comm --sort=-%cpu | head -n 2 | tail -1)
+
+# man ps - TODO fix CPU usage in %
+# CPU usage is currently expressed as the percentage of time spent running
+# during the entire lifetime of a process. This is not ideal, and it does not
+# conform to the standards that ps otherwise conforms to. CPU usage is unlikely
+# to add up to exactly 100%.
+
 # echo ${cmd}
 cpu=$(grep --only-matching -e "[-+]\?[0-9]*\.\?[0-9]\+" <<< ${cmd} | head -n 1)
 pid=$(grep --only-matching -e "[-+]\?[0-9]*\.\?[0-9]\+" <<< ${cmd} | tail -n 1)
