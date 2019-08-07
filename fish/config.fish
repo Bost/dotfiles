@@ -40,5 +40,9 @@ end
 # environment variable to override.
 set --export LEIN_SNAPSHOTS_IN_RELEASE allowed
 
-set cljjar ~/.m2/repository/org/clojure/clojure/1.10.0/clojure-1.10.0.jar
-set cljsjar ~/.m2/repository/org/clojure/spec.alpha/0.2.176/spec.alpha-0.2.176.jar
+set --local clojureDir ~/.m2/repository/org/clojure
+set --local cljver 1.10.1
+set cljjar $clojureDir/clojure/$cljver/clojure-$cljver.jar
+
+set --local cljsver 0.2.176
+set cljsjar $clojureDir/spec.alpha/$cljsver/spec.alpha-$cljsver.jar
