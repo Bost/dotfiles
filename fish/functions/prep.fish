@@ -1,6 +1,7 @@
 function prep --description "See glances, cputool"
     # https://www.tecmint.com/cputool-limit-linux-process-cpu-usage-load/
     # https://www.tecmint.com/glances-an-advanced-real-time-system-monitoring-tool-for-linux/
+    # http://morningcoffee.io/killing-a-process-and-all-of-its-descendants.html
 
     # set cmd pgrep --list-full (string escape -- $argv)
     # echo $cmd
