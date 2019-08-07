@@ -498,7 +498,7 @@ Example 2.:
 (defun my/iedit-mode-toggle ()
   "Match only occurrences in current function and the comment right above it."
   (interactive)
-  (if iedit-mode
+  (if iedit-mode ;; TODO consider evaluation (iedit-mode)
       (evil-iedit-state/quit-iedit-mode)
     ;; 0 means: only occurrences in current ...
     ;; (evil-iedit-state/iedit-mode 0)
