@@ -9,8 +9,6 @@
 # compiled emacs files
 .elc
 
-google-chrome-stable_current_amd64.deb
-google-earth-stable_current_amd64.deb
 fish/fishd.*
 fish/fish_variables
 fish/fish_history*
