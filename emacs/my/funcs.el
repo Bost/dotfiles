@@ -304,9 +304,9 @@ displayed."
     ;; (message "was-visual-state-p: %s" was-visual-state-p)
     ))
 
-(defun my/evil-avy-goto-char ()
+(defun my/evil-avy-goto-char-timer ()
   (interactive)
-  (evil-avy-goto-char)
+  (evil-avy-goto-char-timer)
   (message "evil-avy-goto-char: SPC j j, <f2>, s-/"))
 
 (defun my/alternate-buffer ()

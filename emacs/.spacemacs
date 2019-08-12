@@ -700,8 +700,8 @@ before packages are loaded."
   ;; (global-set-key (kbd "s-*") 'er/contract-region)
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
-  (global-set-key (kbd "<f2>")    'my/evil-avy-goto-char)
-  (global-set-key (kbd "s-/")     'my/evil-avy-goto-char)
+  (global-set-key (kbd "<f2>")    'my/evil-avy-goto-char-timer)
+  (global-set-key (kbd "s-/")     'my/evil-avy-goto-char-timer)
   (global-set-key (kbd "<s-tab>") 'my/alternate-buffer)
   (define-key evil-visual-state-map "p" 'my/evil-paste-after-from-0)
 
