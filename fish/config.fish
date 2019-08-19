@@ -1,4 +1,4 @@
-set fish_greeting "set fish_greeting \"A note to myself\""
+set fish_greeting "set fish_greeting \"cider-enlighten-mode\"" "neovim" "spacevim update"
 set --universal dev ~/dev
 set --universal dec ~/dec
 set --universal bin ~/bin
@@ -13,6 +13,8 @@ set --export PATH ~/.guix-profile/bin $PATH
 set --export PATH ~/.yarn/bin         $PATH
 set --export PATH ~/bin               $PATH
 set --export PATH ~/.local/bin        $PATH
+
+set --export GUIX_LOCPATH "$HOME/.guix-profile/lib/locale"
 
 # JAVA_HOME definitions - see (changes require logout & login):
 #     /etc/profile.d/jdk.csh
