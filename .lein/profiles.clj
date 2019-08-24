@@ -12,7 +12,7 @@
    ;; nREPL middleware to support editor refactorings
    [refactor-nrepl "2.5.0-SNAPSHOT"]
    ;; collection of nREPL middleware designed to enhance CIDER
-   [cider/cider-nrepl "0.22.0-beta9"]
+   [cider/cider-nrepl "0.22.0"]
 
    ;; network REPL providing Srv, Cli, some common APIs etc.
    [nrepl "0.6.0"]
