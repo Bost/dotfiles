@@ -14,7 +14,8 @@ set --export PATH ~/.cabal/bin        $PATH
 set --export PATH ~/.guix-profile/bin $PATH
 set --export PATH ~/.yarn/bin         $PATH
 set --export PATH ~/.local/bin        $PATH
-set --export PATH ~/anaconda3/bin     $PATH
+# anaconda installation may or may not break emacs builds
+# set --export PATH ~/anaconda3/bin     $PATH
 # printenv PATH
 
 set --export GUIX_LOCPATH "$HOME/.guix-profile/lib/locale"
