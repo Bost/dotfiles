@@ -15,6 +15,7 @@ set --export PATH ~/.guix-profile/bin $PATH
 set --export PATH ~/.yarn/bin         $PATH
 set --export PATH ~/.local/bin        $PATH
 # anaconda installation may or may not break emacs builds
+# see also the notes.fish function
 # set --export PATH ~/anaconda3/bin     $PATH
 # printenv PATH
 
