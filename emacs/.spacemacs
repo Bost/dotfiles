@@ -661,6 +661,7 @@ before packages are loaded."
   (global-set-key (kbd "<f3>") 'my/search-region-or-symbol)
   (global-set-key (kbd "<M-f3>") 'spacemacs/helm-project-smart-do-search)
   (global-set-key (kbd "s-f") 'helm-find-files)
+  (global-set-key (kbd "M-s-f") 'helm-projectile-find-file)
   (global-set-key (kbd "s-F") 'helm-recentf) ;; 'recentf-open-files
   ;; C-M-down does not work
   ;; (global-set-key (kbd "<C-M-down>") 'crux-duplicate-current-line-or-region)
