@@ -1,5 +1,11 @@
 function gcl
-  set cmd git clone (string escape -- $argv)
-  echo $cmd
-  eval $cmd
+    set escArgv (string escape -- $argv)
+    set cmd git clone $escArgv
+    echo $cmd
+    eval $cmd
+    if test $status = 0
+        set cmd cd (filename (basename $escArgv))
+        echo $cmd
+        eval $cmd
+    end
 end
