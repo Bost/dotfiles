@@ -7,7 +7,7 @@ function grepc --description "Grep code files"
     # -w, --word-regexp
 
     # set opts -nir
-    set opts --ignore-case --line-number --recursive
+    set opts --color=always --ignore-case --line-number --recursive
     set javaExts "el,clj,cljs,cljc,edn,boot,properties,java"
     set shellExts "sh,fish"
     set palmExts "py,json,cfg,conf,mime,c,h"
@@ -29,5 +29,5 @@ function grepc --description "Grep code files"
     echo $cmd
     eval $cmd
     echo "### TODO repeat w/ --word-regex if nothing found, i.e. \$status == 1"
-    echo $cmd
+    echo $cmd "| less -r"
 end
