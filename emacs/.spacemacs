@@ -993,44 +993,19 @@ before packages are loaded."
   (evil-leader/set-key "o p" 'my/paste-from-clipboard) ;; SPC o p
   (global-set-key (kbd "s-:") 'my/fabricate-subst-cmd)
 
-  ;; ;; keep the cursor centered to avoid sudden scroll jumps
-  ;; (require 'centered-cursor-mode)
-
-  ;; ;; disable in terminal modes
-  ;; ;; http://stackoverflow.com/a/6849467/519736
-  ;; ;; also disable in Info mode, because it breaks going back with the backspace key
-  ;; (define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
-  ;;   (lambda ()
-  ;;     (when (not (memq major-mode
-  ;;                      (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
-  ;;       (centered-cursor-mode))))
-  ;; (my-global-centered-cursor-mode 1)
-
-
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
   ;; Emacs 24.4 replaces this mechanism with advice-add
-  ;; advice-add doesn't work well with evil-search-next
-  ;; (advice-add 'evil-ex-search-next :before #'spacemacs-buffer//center-line)
-  ;; (advice-add 'evil-search-next    :before #'spacemacs-buffer//center-line)
-  ;; (advice-add 'evil-search-forward :before #'spacemacs-buffer//center-line)
 
-  ;; (defadvice isearch-update (before my-isearch-update activate)
-  ;;   (sit-for 0)
-  ;;   (if (and
-  ;;        ;; not the scrolling command
-  ;;        (not (eq this-command 'isearch-other-control-char))
-  ;;        ;; not the empty string
-  ;;        (> (length isearch-string) 0)
-  ;;        ;; not the first key (to lazy highlight all matches w/o recenter)
-  ;;        (> (length isearch-cmds) 2)
-  ;;        ;; the point in within the given window boundaries
-  ;;        (let ((line (count-screen-lines (point) (window-start))))
-  ;;          (or (> line (* (/ (window-height) 4) 3))
-  ;;              (< line (* (/ (window-height) 9) 1)))))
-  ;;       (let ((recenter-position 0.3))
-  ;;         (recenter '(4)))))
+  ;; Difference between `evil-search-forward` and `evil-ex-search-forward`:
+  ;; evil-search-forward - wrap emacs isearch-forward
+  ;; evil-ex-search-forward - invoke the evil internal search
+  ;; https://emacs.stackexchange.com/a/24913
 
+  ;; See
+  ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
+  (advice-add 'evil-ex-search-next :after 'evil-scroll-line-to-center)
+  (advice-add 'evil-ex-search-previous :after 'evil-scroll-line-to-center)
 
   ;; (advice-remove 'magit-stash :after)
   ;; (defun my/magit-stash-no-msg () (magit-stash ""))
