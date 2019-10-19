@@ -630,8 +630,12 @@ before packages are loaded."
   ;; (global-set-key (kbd "s-3") 'my/split-other-window-right)
   (global-set-key (kbd "s-2") 'split-window-below) ;; SPC w -
   (global-set-key (kbd "s-3") 'spacemacs/window-split-double-columns) ; SPC w 2
-  ;; Default theme applied at startup
+
   (global-set-key (kbd "s-a") 'helm-mini)
+  ;; (define-key helm-map (kbd "s-a") nil)
+  ;; (unbind-key (kbd "s-a") helm-map)
+  (define-key helm-map (kbd "s-a") 'helm-next-line)
+
   (global-set-key (kbd "s-z") 'my/buffer-selection-show)
   ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
   (global-set-key (kbd "s-D") 'dired-jump)
