@@ -909,6 +909,8 @@ before packages are loaded."
       (add-hook 'cider-repl-mode-hook #'paredit-mode)
       (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
       ;; (setq gui-elements 1) ; because of CIDER menu
+      ;; (define-key cider-repl-mode-map "<s-delete>" nil)
+      ;; (unbind-key "<s-delete>" cider-repl-mode-map)
       (bind-keys :map cider-repl-mode-map
                  ;; followind 3 bindings are same as in clojure-mode
                  ;; on the german keyboard the '#' is next to Enter
@@ -916,7 +918,7 @@ before packages are loaded."
                  ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
                  ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)
 
-                 ("<s-delete>" . cider-repl-clear-buffer)
+                 ("<C-s-delete>" . cider-repl-clear-buffer)
                  ("s-j" . cider-format-defun)
                  ("s-e" . cider-eval-last-sexp)
                  ("s-x" . cider-switch-to-last-clojure-buffer)
