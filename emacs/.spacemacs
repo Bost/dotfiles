@@ -632,9 +632,7 @@ before packages are loaded."
   (global-set-key (kbd "s-3") 'spacemacs/window-split-double-columns) ; SPC w 2
 
   (global-set-key (kbd "s-a") 'helm-mini)
-  ;; (define-key helm-map (kbd "s-a") nil)
-  ;; (unbind-key (kbd "s-a") helm-map)
-  (define-key helm-map (kbd "s-a") 'helm-next-line)
+  (advice-add 'helm-mini :before 'my/helm-mini)
 
   (global-set-key (kbd "s-z") 'my/buffer-selection-show)
   ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html

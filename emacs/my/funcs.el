@@ -622,3 +622,9 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
   (newline-and-indent)
   (my/clojure-toggle-reader-comment-fst-sexp-on-line))
 
+(defun my/helm-mini ()
+  ;; (define-key helm-map (kbd "s-a") nil)
+  ;; (unbind-key (kbd "s-a") helm-map)
+  (if (boundp 'helm-map)
+      (define-key helm-map (kbd "s-a") 'helm-next-line)))
+
