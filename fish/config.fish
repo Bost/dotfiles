@@ -53,3 +53,10 @@ set cljjar $clojureDir/clojure/$cljver/clojure-$cljver.jar
 
 set --local cljsver 0.2.176
 set cljsjar $clojureDir/spec.alpha/$cljsver/spec.alpha-$cljsver.jar
+
+# -n, --line-number
+# -i, --ignore-case
+# -r, --recursive
+# -w, --word-regexp
+# set optsGrepC --color=always -nir
+set optsGrepC --color=always --ignore-case --line-number --recursive
