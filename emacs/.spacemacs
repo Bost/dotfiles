@@ -545,6 +545,7 @@ before packages are loaded."
   ;;         :url "http://clojuredocs.org/clojure.core/%s")
   ;;       search-engine-alist)
 
+  (blink-cursor-mode t)
   (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
   (global-prettify-symbols-mode nil)  ;; seems like this gets overriden
