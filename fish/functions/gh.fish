@@ -1,5 +1,7 @@
 function gh
-  set cmd git push (string escape -- $argv)
-  echo $cmd
-  eval $cmd
+    set escArgv (string escape -- $argv)
+    set cmd git push --verbose $escArgv
+    # set cmd git push --verbose master:refs/heads/master
+    echo $cmd
+    eval $cmd
 end
