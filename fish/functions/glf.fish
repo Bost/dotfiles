@@ -1,12 +1,12 @@
 function glf
-    # i.e. git pull --origin (string escape -- $argv); and git fetch --tags
-    # where:
-    #      git fetch --tags
-    # Fetch all tags from the remote (i.e., fetch remote tags refs/tags/* into
-    # local tags with the same name), in addition to whatever else would
-    # otherwise be fetched.
+    set escArgv (string escape -- $argv)
     set remote franzi
-    set cmd git fetch --tags $remote (string escape -- $argv); and git rebase (string escape -- $argv)
+    set cmd git fetch --tags $remote $escArgs
     echo $cmd
     eval $cmd
+    if test $status = 0
+        set cmd git rebase $escArgs
+        echo $cmd
+        eval $cmd
+    end
 end
