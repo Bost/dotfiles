@@ -1,11 +1,12 @@
 (ns script
-  (:require [clojure.repl :refer :all]))
+  (:require
+   [clojure.pprint :refer [pprint]]
+   [clojure.repl :refer [apropos doc] #_:all]))
 
 (doseq [arg *command-line-args*]
-  (printf ";; > (clojure.repl/doc %s)" arg)
+  (printf ";; > (clojure.repl/doc %s)\n" arg)
   (eval (read-string (str "(clojure.repl/doc " arg ")")))
-  (printf "%s%s%s\n"
+  (printf "%s%s"
           (str "\n;; > (clojure.repl/apropos \"" arg "\")\n")
-          "-------------------------\n"
-          (clojure.repl/apropos arg)))
-
+          "-------------------------\n")
+  (pprint (clojure.repl/apropos arg)))
