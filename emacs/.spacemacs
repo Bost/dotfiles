@@ -1045,8 +1045,26 @@ before packages are loaded."
 
   ;; See
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
-  (advice-add 'evil-ex-search-next :after 'evil-scroll-line-to-center)
-  (advice-add 'evil-ex-search-previous :after 'evil-scroll-line-to-center)
+
+  (advice-add 'evil-ex-search-next :before 'my/adjust-point-pos-before-search)
+  (advice-add 'evil-ex-search-next :after 'my/adjust-point-pos-after-search)
+
+  (advice-add 'evil-ex-search-previous :before 'my/adjust-point-pos-before-search)
+  (advice-add 'evil-ex-search-previous :after 'my/adjust-point-pos-after-search)
+
+  (advice-add 'evil-goto-line :before 'my/adjust-point-pos-before-search)
+  (advice-add 'evil-goto-line :after 'my/adjust-point-pos-after-search)
+
+  ;; (advice-remove 'evil-ex-search-next 'my/adjust-point-pos-after-search)
+  ;; (advice-remove 'evil-ex-search-previous 'my/adjust-point-pos-after-search)
+  ;; (advice-remove 'evil-goto-line 'my/adjust-point-pos-after-search)
+
+  ;; (advice-remove 'evil-ex-search-next 'evil-scroll-line-to-center)
+  ;; (advice-remove 'evil-ex-search-previous 'evil-scroll-line-to-center)
+  ;; (advice-remove 'evil-goto-line 'evil-scroll-line-to-center)
+
+  (global-set-key (kbd "s-*") 'spacemacs/enter-ahs-backward)
+  (global-set-key (kbd "<s-kp-multiply>") 'spacemacs/enter-ahs-backward)
 
   ;; (advice-remove 'magit-stash :after)
   ;; (defun my/magit-stash-no-msg () (magit-stash ""))
