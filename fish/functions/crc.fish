@@ -10,8 +10,11 @@ function crc
     # cheat-grep $argv $files
 
     set escArgv (string escape -- $argv)
-    set script $dev/dotfiles/fish/functions/script.clj
-    set cmd clojure $script $escArgv "|" grep -Pzie $escArgv
+    set base $dev/dotfiles/fish/functions
+    set script $base/script.clj
+    set deps $base/deps.edn
+    set cmd clojure -Sdeps $deps $script $escArgv "|" grep -Pzie $escArgv
+    # set cmd clojure $script $escArgv "|" grep -Pzie $escArgv
     echo $cmd
     eval $cmd
 end
