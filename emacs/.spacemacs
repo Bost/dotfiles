@@ -40,6 +40,7 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      ;; (auto-completion :variables auto-completion-enable-help-tooltip t)
+     swift
      auto-completion
      better-defaults
      emacs-lisp
