@@ -12,24 +12,40 @@ function crc
     # echo $cmd
     # eval $cmd
 
-
+    set port 5555
     # test if the server is running: nc localhost 5555
-    set cmd nmap localhost "|" grep 5555
-    echo $cmd
+    set cmd nmap localhost "|" grep $port ">" /dev/null
+    # echo $cmd
     eval $cmd
     if test $status != 0
-        set cmd boot socket-server --port 5555 --accept clojure.core.server/io-prepl wait "&; disown"
+        set cmd boot -d cheshire:5.9.0 \
+            socket-server --port $port \
+                          --accept clojure.core.server/io-prepl wait "&;" disown
         echo $cmd
         eval $cmd
-        # set cmd disown
-        # echo $cmd
-        # eval $cmd
+        set cmd sleep 10
+        echo $cmd
+        eval $cmd
     else
-        echo "Already running"
+        # echo "Port" $port "is open. Assuming the server is running already."
     end
-    echo -e "(clojure.core/+ 1 2)\n:repl/quit" | nc localhost 5555
 
-    # set script $dev/dotfiles/fish/functions/script.clj
+    # set script $dev/dotfiles/fish/functions/server.clj
+    # set deps "''"
+    # set cmd clojure \
+    #          -Sdeps $deps \
+    #          $script $escArgv \
+    #         # "|" grep --color=always -Pzie $escArgv \
+    #         # "|" less -r \
+    #         ""
+    # echo $cmd
+    # eval $cmd
+
+    set script $dev/dotfiles/fish/functions/script.clj
+    # echo -e "(clojure.core/+ 1 2)\n:repl/quit" | nc localhost 5555
+    set cmd nc localhost 5555 "<" $script
+    echo $cmd
+    eval $cmd
     # set deps "'{:deps {cheshire {:mvn/version \"5.9.0\"}}}'"
     # set cmd clojure \
     #          -J-Dclojure.server.jvm="'{:port 5555 :accept clojure.core.server/io-prepl}'" \

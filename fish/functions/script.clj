@@ -41,3 +41,4 @@
                             (map :examples))]
     (doseq [example all-examples]
       (println example))))
+:repl/quit
