@@ -8,7 +8,9 @@
 #_(println "pwd" (System/getProperty "user.dir"))
 #_(println "home" (System/getProperty "user.home"))
 
-(def vars
+(defonce vars
+  #_[{:name "def" :examples ["def 1" "def 2"]}
+     {:name "x" :examples ["x1" "x2"]}]
   (->> (str (System/getProperty "user.home")
             "/dev/dotfiles/fish/functions/"
             "clojuredocs-export.json")
@@ -23,6 +25,7 @@
               {:name (:name hm)
                :examples (->> (:examples hm)
                               (mapv :body))}))))
+
 (def separator "-------------------------\n")
 (doseq [arg *command-line-args*]
   (printf "user=> (clojure.repl/doc %s)\n" arg)
@@ -33,10 +36,7 @@
   (pprint (clojure.repl/apropos arg))
   (println)
   #_(println separator)
-  (doseq [all-examples (->>
-                        #_[{:name "def" :examples ["def 1" "def 2"]}
-                             {:name "x" :examples ["x1" "x2"]}]
-                            vars
+  (doseq [all-examples (->> vars
                             (filter (fn [hm] (= arg (:name hm))))
                             (map :examples))]
     (doseq [example all-examples]
