@@ -1,4 +1,5 @@
-set fish_greeting "set fish_greeting \"cider-enlighten-mode\"" "neovim" "spacevim update"
+set fish_greeting "set fish_greeting \"cider-enlighten-mode\"" "neovim" "useful-command-line-tools"
+# TODO https://www.wezm.net/technical/2019/10/useful-command-line-tools/
 set --universal dev ~/dev
 set --universal dec ~/dec
 set --universal bin ~/bin
