@@ -6,9 +6,7 @@ function c
     else if test -d $escArgv # is it a directory?
         l $estArgv
     else if test -f $estArgv # is it a regular file?
-        echo "# TODO use `bat`"
-        echo "#####################"
-        set cmd cat $escArgv
+        set cmd bat $escArgv
         # echo $cmd # otherwise c <file> | jq '.' doesn't work
         eval $cmd
         # is a directory?
