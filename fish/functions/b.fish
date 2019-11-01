@@ -1,4 +1,4 @@
-function c
+function b
     set escArgv (string escape -- $argv)
     if test -z "$escArgv"
         # echo "Udefined or empty escArgv:" $escArgv
