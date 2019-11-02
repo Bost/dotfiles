@@ -8,6 +8,15 @@
 #_(println "pwd" (System/getProperty "user.dir"))
 #_(println "home" (System/getProperty "user.home"))
 
+;; user=> (in-ns 'clojure.main)
+;; user=>
+;; (defn repl-prompt
+;;   "Default :prompt hook for repl"
+;;   []
+;;   (printf "%s===> " (ns-name *ns*)))
+;; clojure.main=> (clojure.main/repl :prompt repl-prompt)
+;; clojure.main===>
+
 (defonce vars
   #_[{:name "def" :examples ["def 1" "def 2"]}
      {:name "x" :examples ["x1" "x2"]}]

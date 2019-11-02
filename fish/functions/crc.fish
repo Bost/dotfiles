@@ -21,6 +21,7 @@ function crc
         set cmd boot -d cheshire:5.9.0 \
             socket-server --port $port \
                           --accept clojure.core.server/io-prepl wait "&;" disown
+                          # --accept clojure.core.server/repl wait "&;" disown
         echo $cmd
         eval $cmd
         set cmd sleep 10
