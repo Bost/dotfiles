@@ -1,4 +1,5 @@
 function crep
+    # echo "crep:" $argv
     set pth $dev/cheat/cmds
     set files $files $pth/emacs.el
     set files $files $pth/vim.vim
@@ -12,5 +13,5 @@ function crep
     # set files $dev/cheat-github/cheat/cheatsheets/*
     # set files $files $pth/win.bat
     # set files $files $pth/host.sh
-    cheat-grep $argv $files
+    cheat-grep --grep-args="$argv" --files="$files"
 end
