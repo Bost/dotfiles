@@ -304,6 +304,12 @@ displayed."
     ;; (message "was-visual-state-p: %s" was-visual-state-p)
     ))
 
+(defun my/google-this-or-region (&optional arg)
+  (interactive "p")
+  (if (region-active-p)
+      (google-this-region arg)
+    (google-this arg)))
+
 (defun my/evil-avy-goto-char-timer ()
   (interactive)
   (evil-avy-goto-char-timer)

@@ -696,7 +696,7 @@ before packages are loaded."
   (global-set-key (kbd "s-M-SPC") 'spacemacs/evil-search-clear-highlight)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
   ;; (global-set-key (kbd "s-g") 'helm-google-suggest)
-  (global-set-key (kbd "s-g") 'google-this-region)
+  (global-set-key (kbd "s-g") 'my/google-this-or-region)
   ;; (global-set-key (kbd "s-G") 'google-this)
   (global-set-key (kbd "s-G") 'helm-google-suggest)
   ;; expand-region.el: increase selected region by semantic units
