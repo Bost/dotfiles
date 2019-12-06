@@ -89,6 +89,7 @@ This function should only modify configuration layer settings."
      go
      yaml
      docker
+     racket
      my
      )
 

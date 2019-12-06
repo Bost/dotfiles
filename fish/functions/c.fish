@@ -1,4 +1,5 @@
 function c
+    # TODO see `od` - dump files in octal and other formats
     set escArgv (string escape -- $argv)
     if test -z "$escArgv"
         # echo "Udefined or empty escArgv:" $escArgv
