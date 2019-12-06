@@ -1,3 +1,5 @@
 function cre
-    cheat-grep $argv $dev/cheat/cmds/emacs.el
+    set pth $dev/cheat/cmds
+    set files $files $pth/emacs.el
+    cheat-grep --grep-args="$argv" --files="$files"
 end

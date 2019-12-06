@@ -1,3 +1,5 @@
 function crv
-    cheat-grep $argv $dev/cheat/cmds/vim.vim
+    set pth $dev/cheat/cmds
+    set files $files $pth/vim.vim
+    cheat-grep --grep-args="$argv" --files="$files"
 end

@@ -4,11 +4,11 @@ function crc
     # set f2 $dev/cheat/clj/src/clj/cheat.clj
     # set f3 ~/.lein/profiles.clj
     # set files $f1
-    # cheat-grep $escArgv $files
+    # cheat-grep --grep-args="$argv" --files="$files"
     # set files $f2 $f3
     # set separator "=============================================="
     # echo $separator $files $separator
-    # cheat-grep $escArgv $files
+    # cheat-grep --grep-args="$argv" --files="$files"
     # echo $cmd
     # eval $cmd
 

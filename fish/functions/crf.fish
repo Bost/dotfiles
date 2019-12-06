@@ -1,3 +1,5 @@
 function crf
-    cheat-grep $argv $dev/cheat/cmds/findgrep.sh
+    set pth $dev/cheat/cmds
+    set files $files $pth/findgrep.sh
+    cheat-grep --grep-args="$argv" --files="$files"
 end

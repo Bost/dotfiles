@@ -5,6 +5,7 @@ function cheat-grep
     set --local files
 
     getopts $argv | while read -l key value
+        # echo "key:" $key
         switch $key
             case g grep-args
                 set grepArgs $value
@@ -12,6 +13,8 @@ function cheat-grep
                 set files $value
         end
     end
+    # echo "grepArgs:" $grepArgs
+    # echo "files:" $files
 
     if false; # test -e $GRAAL_HOME
         set prm '{:cmt-str "#" :files ["'(string join '" "' $files)'"]}'
