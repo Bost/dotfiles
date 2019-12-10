@@ -62,3 +62,4 @@ set cljsjar $clojureDir/spec.alpha/$cljsver/spec.alpha-$cljsver.jar
 # set optsGrepC --color=always -nir
 set optsGrepC --color=always --ignore-case --line-number --recursive
 set remotes origin gitlab # used in ghog.fish, glog.fish
+set usbDevice /dev/sdc1
