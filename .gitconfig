@@ -23,6 +23,7 @@
 
 	# Read, modify and delete symbolic refs
 	cb = symbolic-ref HEAD --short
+	# show branches
 	sb = !ls .git/refs/remotes/*/$(git cb) | cut -d/ -f4,5 | xargs git show-branch $(git cb)
 
 	# text-mode interface for Git
@@ -38,8 +39,8 @@
 	ff = "!git ls-files | grep -i"
 
 	sl = stash list
-	sa = stash pop
 	ss = stash save
+	sp = stash pop
 
 	# find-string; ! is needed to pass argument correctly to -S
   fs = "!git log --color --patch -S "
