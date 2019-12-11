@@ -3,6 +3,8 @@ set fish_greeting "set fish_greeting \"cider-enlighten-mode\"" "neovim" "useful-
 set --universal dev ~/dev
 set --universal dec ~/dec
 set --universal bin ~/bin
+set --universal cheat $dev/cheat
+set --universal dotf $dev/dotfiles
 
 # Some spacemacs layers require certain tools to be available on $PATH
 # see http://spacemacs.org/doc/FAQ.html#setup-path

@@ -38,7 +38,7 @@ function cheat-grep
         # echo $cmd
         eval $cmd
         # echo "# show files used in the search"
-        set --local dFiles (string replace --all --regex $dev "dev" $files)
+        set --local dFiles (string replace --all --regex $cheat "cheat" $files)
         set --local rFiles (string replace --all --regex "\s+" " " $dFiles)
         set --local sFiles (string split " " $rFiles)
         set --local tFiles

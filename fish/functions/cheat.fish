@@ -1,5 +1,5 @@
 function cheat
-  set cmd cd $dev/cheat
+  set cmd cd $cheat
   echo $cmd
   eval $cmd
 end
