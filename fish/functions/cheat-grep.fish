@@ -37,8 +37,14 @@ function cheat-grep
         set cmd "grep -Pzoh '.+\n(.*\n)+?(\n|\Z)'" $files "|" grep -Pzie $grepArgs
         # echo $cmd
         eval $cmd
-        # echo "########"
-        # echo $cmd
-        echo (string replace $dev "\$dev" $files)
+        # echo "# show files used in the search"
+        set --local dFiles (string replace --all --regex $dev "dev" $files)
+        set --local rFiles (string replace --all --regex "\s+" " " $dFiles)
+        set --local sFiles (string split " " $rFiles)
+        set --local tFiles
+        for f in $sFiles
+            set tFiles $tFiles "\$"$f
+        end
+        echo $tFiles
     end
 end
