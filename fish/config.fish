@@ -20,6 +20,11 @@ set --export PATH ~/.local/bin        $PATH
 # anaconda installation may or may not break emacs builds
 # see also the notes.fish function
 # set --export PATH ~/anaconda3/bin     $PATH
+
+# ~/.profile is not read if the shell is of a non-login shell type
+if test ! (string match $bin $PATH)
+    set --export PATH $PATH $bin
+end
 # printenv PATH
 
 set --export GUIX_LOCPATH "$HOME/.guix-profile/lib/locale"
