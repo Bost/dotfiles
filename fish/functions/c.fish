@@ -19,6 +19,9 @@ function c
         eval $cmd
         # is a directory?
     else
+        # TODO: if $escArgv does not contains 'pathSeparator' then exec crep
+        # else "No such file or directory" or try to `ls $escArgv` so the error
+        # is indicated by the `ls` command
         crep $escArgv $files
     end
 end
