@@ -1,0 +1,17 @@
+;; emacs - set major mode: SPC h M racket-mode
+;; (require rash/demo/demo-rc)
+
+(current-repl-display-startup-hints? #f)
+
+(define-simple-pipeline-alias l    ls -la --color=auto)
+(define-simple-pipeline-alias lock xflock4)
+
+(define-line-macro ff
+  (λ (_)
+    #'(current-directory (string-append (getenv "HOME")
+                                        "/.config/fish/functions"))))
+
+(define-line-macro rr
+  (λ (_)
+    #'(current-directory (string-append (getenv "HOME")
+                                        "/.config/rash"))))
