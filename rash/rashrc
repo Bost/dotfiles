@@ -54,13 +54,16 @@
 ;; #,    adds unsyntax
 ;; #,@   adds unsyntax-splicing
 
+
+;; &bg is a background pipeline flag - like & in bash
+;; TODO find a disown pipeline
 ;; (define-simple-pipeline-alias e emacs -q)
 ;; (define/contract (launch-emacs args)
 ;;   (-> number? void?)
 ;;   (let ([a (if (equal? args "") "./" args)])
 ;;     #'(in-dir ./ {
-;;                   echo emacs -q a
-;;                   emacs -q a
+;;                   echo emacs -q a &bg
+;;                   emacs -q a &bg
 ;;                   })))
 
 (require racket/undefined)
