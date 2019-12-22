@@ -25,6 +25,9 @@ set --export PATH ~/.local/bin        $PATH
 if test ! (string match $bin $PATH)
     set --export PATH $PATH $bin
 end
+if test -d ~/.racket/7.5/bin
+    set --export PATH ~/.racket/7.5/bin $PATH
+end
 # printenv PATH
 
 set --export GUIX_LOCPATH "$HOME/.guix-profile/lib/locale"

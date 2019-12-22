@@ -5,10 +5,12 @@ function grepc --description "Grep projects / code files"
     set palmExts "py,json,cfg,conf,mime,c,h"
     set docsExts "org,md,rst,adoc,html,pdf"
     # functional programming:
-    # rkt - raket; nix - NixOS; hs - Haskell; scm - Scheme
-    set funcExts "cabal,elm,hs,json,nix,rkt,scm"
+    # rkt - raket; scrbl - racket scribble
+    set racketExts "rkt,scrbl"
+    # nix - NixOS; hs - Haskell; scm - Scheme
+    set funcExts "cabal,elm,hs,json,nix,scm"
     set extentions (string join "," \
-        $javaExts $shellExts $palmExts $docsExts $funcExts \
+        $javaExts $shellExts $palmExts $docsExts $funcExts $racketExts \
     )
     set incl "--include=\*.{"$extentions"}"
     # we're searching recursivelly; out of `resources/public/js/compiled` only

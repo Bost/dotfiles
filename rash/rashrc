@@ -8,10 +8,18 @@
 
 (define-line-macro ff
   (λ (_)
-    #'(current-directory (string-append (getenv "HOME")
-                                        "/.config/fish/functions"))))
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/.config/fish/functions"))))
 
 (define-line-macro rr
   (λ (_)
-    #'(current-directory (string-append (getenv "HOME")
-                                        "/.config/rash"))))
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/.config/rash"))))
+;; '     adds quote
+;; `     adds quasiquote
+;; ,     adds unquote
+;; ,@    adds unquote-splicing
+;; #'    adds syntax
+;; #`    adds quasisyntax
+;; #,    adds unsyntax
+;; #,@   adds unsyntax-splicing
