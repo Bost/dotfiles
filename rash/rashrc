@@ -3,8 +3,38 @@
 
 (current-repl-display-startup-hints? #f)
 
+(require racket/string
+         racket/function
+         linea/line-macro
+         shell/pipeline-macro
+         (only-in shell/pipeline path-string-symbol?)
+         racket/contract/base
+         racket/contract/region
+         ;; shell/utils/bourne-expansion-utils ; needed?
+         ;; needed?
+         ;; (for-syntax
+         ;;  racket/base
+         ;;  syntax/parse
+         ;;  )
+         )
+
+;; (require racket/string)
+;; (require racket/function)
+;; (require racket/format)
+;; (require racket/runtime-path)
+;; (require racket/port)
+
+(require rash/demo/setup) ;; defines in-dir
+
 (define-simple-pipeline-alias l    ls -la --color=auto)
 (define-simple-pipeline-alias lock xflock4)
+
+(define/contract (change-directory dir)
+  (-> path-string-symbol? void?)
+  (let ([ps (if (symbol? dir) (symbol->string dir) dir)])
+    (if (directory-exists? ps)
+        (current-directory ps)
+        (error 'change-directory (format "directory doesn't exist: ~a" ps)))))
 
 (define-line-macro ff
   (λ (_)
@@ -23,3 +53,21 @@
 ;; #`    adds quasisyntax
 ;; #,    adds unsyntax
 ;; #,@   adds unsyntax-splicing
+
+;; (define-simple-pipeline-alias e emacs -q)
+;; (define/contract (launch-emacs args)
+;;   (-> number? void?)
+;;   (let ([a (if (equal? args "") "./" args)])
+;;     #'(in-dir ./ {
+;;                   echo emacs -q a
+;;                   emacs -q a
+;;                   })))
+
+(require racket/undefined)
+
+(define launch-emacs (lambda (args) (println (format "~a" args))))
+(define-line-macro e
+  (λ (stx)
+    (syntax-parse stx
+      [(_ arg) #'(launch-emacs arg)]
+      [(_) #'(launch-emacs #'stx)])))

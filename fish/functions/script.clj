@@ -1,12 +1,16 @@
-(ns script
+#_(ns script
   (:require
+   [clojure.main :as main]
    [cheshire.core :refer :all]
    [clojure.walk :refer [keywordize-keys]]
    [clojure.pprint :refer [pprint]]
    [clojure.repl :refer [apropos doc] #_:all]))
 
-#_(println "pwd" (System/getProperty "user.dir"))
-#_(println "home" (System/getProperty "user.home"))
+(clojure.main/repl
+ ;; :need-prompt (fn [] false)
+ ;; :prompt (fn [] (printf "my> "))
+ ;; :print (fn [x] (println x))
+ )
 
 ;; user=> (in-ns 'clojure.main)
 ;; user=>
@@ -14,10 +18,15 @@
 ;;   "Default :prompt hook for repl"
 ;;   []
 ;;   (printf "%s===> " (ns-name *ns*)))
-;; clojure.main=> (clojure.main/repl :prompt repl-prompt)
-;; clojure.main===>
+;; clojure.main=> (clojure.main/repl :prompt #(printf "%s===> " (ns-name *ns*)))
+;; clojure.main===> (System/exit 0)
 
-(defonce vars
+(clojure.main/repl :prompt (fn [x] (print x))
+ ;; Exit the repl whenever the user enters "exit" at the prompt.
+ :read (fn [request-prompt request-exit]
+         (let [form (clojure.main/repl-read request-prompt request-exit)]
+           (if (= 'exit form) request-exit form))))
+#_(defonce vars
   #_[{:name "def" :examples ["def 1" "def 2"]}
      {:name "x" :examples ["x1" "x2"]}]
   (->> (str (System/getProperty "user.home")
@@ -35,8 +44,8 @@
                :examples (->> (:examples hm)
                               (mapv :body))}))))
 
-(def separator "-------------------------\n")
-(doseq [arg *command-line-args*]
+#_(def separator "-------------------------\n")
+#_(doseq [arg *command-line-args*]
   (printf "user=> (clojure.repl/doc %s)\n" arg)
   (eval (read-string (str "(clojure.repl/doc " arg ")")))
   (printf "%s"
