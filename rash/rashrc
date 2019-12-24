@@ -1,3 +1,4 @@
+#! /usr/bin/env racket
 ;; emacs - set major mode: SPC h M racket-mode
 ;; (require rash/demo/demo-rc)
 
@@ -18,11 +19,11 @@
          ;;  )
          )
 
-;; (require racket/string)
-;; (require racket/function)
-;; (require racket/format)
-;; (require racket/runtime-path)
-;; (require racket/port)
+(require racket/string)
+(require racket/function)
+(require racket/format)
+(require racket/runtime-path)
+(require racket/port)
 
 (require rash/demo/setup) ;; defines in-dir
 
@@ -45,6 +46,21 @@
   (λ (_)
     #'(change-directory (string-append (getenv "HOME")
                                        "/.config/rash"))))
+
+(define-line-macro dev
+  (λ (_)
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/dev"))))
+
+(define-line-macro dotf
+  (λ (_)
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/dev/dotf"))))
+(define-line-macro cheat
+  (λ (_)
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/dev/cheat"))))
+
 ;; '     adds quote
 ;; `     adds quasiquote
 ;; ,     adds unquote
@@ -67,6 +83,13 @@
 ;;                   })))
 
 (require racket/undefined)
+
+;; (require xrepl) ; interactive exploration and development
+
+;; lambda not surrounded by brackets:
+;; https://docs.racket-lang.org/guide/lambda.html
+(define my-echo (lambda args (displayln (string-join (map ~a args) " "))))
+;; (define (my-echo args) (displayln (string-join (map ~a args) " ")))
 
 (define launch-emacs (lambda (args) (println (format "~a" args))))
 (define-line-macro e
