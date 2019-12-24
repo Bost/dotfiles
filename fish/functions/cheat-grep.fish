@@ -34,9 +34,11 @@ function cheat-grep
         # \Z  matches the EOF end-of-file
         # echo "files:" $files
         # echo "grepArgs:" $grepArgs
+        # TODO combine with fzf the fuzzy finder
         set cmd "grep -Pzoh '.+\n(.*\n)+?(\n|\Z)'" $files "|" grep -Pzie $grepArgs
         # echo $cmd
         eval $cmd
+
         # echo "# show files used in the search"
         set --local dFiles (string replace --all --regex $cheat "cheat" $files)
         set --local rFiles (string replace --all --regex "\s+" " " $dFiles)
