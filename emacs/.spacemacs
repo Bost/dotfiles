@@ -125,7 +125,7 @@ This function should only modify configuration layer settings."
      lean-mode
      helm-lean
      evil-vimish-fold
-     ;; (load-file (format "%s/dev/clj-refactor.el/clj-refactor.el" (getenv "HOME")))
+     ;; (load-file "~/dev/clj-refactor.el/clj-refactor.el")
      ;; (clj-refactor
      ;;  :location
      ;;  ;; local ;; i.e. ~/.emacs.d/private/local/clj-refactor
@@ -134,6 +134,7 @@ This function should only modify configuration layer settings."
      ;;          ;; :min-version "1"
      ;;          )
      ;;  )
+     ;; ox-latex ; not available - installing manually in the dotspacemacs/init
      )
 
    ;; A list of packages that cannot be updated.
@@ -158,16 +159,37 @@ before layer configuration.
 It should only modify the values of Spacemacs settings."
 
   ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
-  ;; (load-file (format "%s/dev/clojure-mode/clojure-mode.el" (getenv "HOME")))
-  ;; (load-file (format "%s/dev/clojure-mode.5.8.0/clojure-mode.el" (getenv "HOME")))
+  ;; (load-file "~/dev/clojure-mode/clojure-mode.el")
+  ;; (load-file "~/dev/clojure-mode.5.8.0/clojure-mode.el")
 
   ;; TODO install crosshairs and deps via dotspacemacs-additional-packages
-  (add-to-list 'load-path (format "%s/dev/dotfiles/emacs/crosshairs" (getenv "HOME")))
+  (add-to-list 'load-path "~/dev/dotfiles/emacs/crosshairs")
 
+  ;; prefer `use-package' over `require'? `use-package' doesn't work
+  ;; see https://github.com/syl20bnr/spacemacs/issues/8884#issuecomment-347284030
   (require 'hl-line+)
   (require 'vline)
   (require 'col-highlight)
   (require 'crosshairs)
+
+  (add-to-list 'load-path "~/dev/dotfiles/emacs/org/lisp")
+  ;; ox-latex requires a python syntax highlighting: pip install Pygments
+  ;; Attention: it might be installed only in
+  ;;     ~/anaconda3/lib/python3.7/site-packages
+  ;; and not in a general, non-anaconda directory
+  ;; prefer `use-package' over `require' ??? `use-package' doesn't work
+  ;; TODO Test `use-package' in the dotspacemacs/user-config
+  ;; (use-package ox-latex :after org)
+  (load-file "~/dev/dotfiles/emacs/org/lisp/ox-latex.el")
+
+  ;; `with-eval-after-load' doesn't work here
+  ;; TODO Test `with-eval-after-load' in the dotspacemacs/user-config
+  ;; (with-eval-after-load 'org
+  ;;   (load-file "~/dev/dotfiles/emacs/org/lisp/ox-latex.el")
+  ;;   ;; ... or even better try:
+  ;;   ;; (ox-latex :location (recipe :fetcher github :repo "emacsmirror/org")
+  ;;   ;;           :files ("lisp/ox-latex.el"))
+  ;;   )
 
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
@@ -552,6 +574,8 @@ before packages are loaded."
   ;; (global-prettify-symbols-mode +1)
   (global-prettify-symbols-mode nil)  ;; seems like this gets overriden
 
+  (add-to-list 'org-latex-packages-alist '("" "listingsutf8"))
+
   (setq
    ;; none of these works; not even in the `dotspacemacs/user-init'
    ;; has to be set as `custom-set-variables'
@@ -585,7 +609,18 @@ before packages are loaded."
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
    my/narrowed-to-defun nil
+   org-latex-listings 'minted
+   org-latex-pdf-process
+   '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+     "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+     "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+   org-src-fontify-natively t
    )
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (latex . t)))
 
   (defalias 'save-selected-text 'write-region)
 
@@ -828,22 +863,14 @@ before packages are loaded."
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
   (global-set-key (kbd "<print>") 'describe-text-properties) ;; 'my/what-face
 
-  (global-set-key (kbd
-                   "<s-f10>"
-                   ;; "<Scroll_Lock>"
-                   )
-                  (my/interactive-lambda ()
-                     (load-clojure-mode
-                      (format "%s/dev/clojure-mode.5.6.1/clojure-mode.el"
-                              (getenv "HOME")))))
-  (global-set-key (kbd
-                   "<s-f11>"
-                   ;; "<pause>"
-                   )
-                  (my/interactive-lambda ()
-                     (load-clojure-mode
-                      (format "%s/dev/clojure-mode/clojure-mode.el"
-                              (getenv "HOME")))))
+  (global-set-key (kbd "<s-f10>") ;; "<Scroll_Lock>"
+                  (my/interactive-lambda
+                   () (load-clojure-mode
+                       "~/dev/clojure-mode.5.6.1/clojure-mode.el")))
+  (global-set-key (kbd "<s-f11>") ;; "<pause>"
+                  (my/interactive-lambda
+                   () (load-clojure-mode
+                       "~/dev/clojure-mode/clojure-mode.el")))
 
   ;; (global-set-key (kbd "<pause>") 'goto-last-change)
   (global-set-key (kbd "<s-return>") 'goto-last-change)
