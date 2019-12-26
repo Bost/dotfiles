@@ -41,7 +41,9 @@ function make-emacs
     set cntTags (count $lstTags)
     echo "cntTags on HEAD:" $cntTags
     if test $cntTags = 0
-        set cmdLastTag git describe --abbrev=0 emacs-26 --tags
+        # doesn't work - there are no tags on the emacs-27 branch at the moment
+        set cmdLastTag git describe --abbrev=0 emacs-27 --tags
+        # set cmdLastTag git describe --abbrev=0 emacs-26 --tags
         # echo "cmdLastTag:" $cmdLastTag
         set changedFiles (git diff --name-only HEAD..(eval $cmdLastTag))
         # echo $changedFiles
@@ -63,7 +65,8 @@ function make-emacs
                     set remoteTag (eval $cmdLastTag | grep --only-matching "\([0-9]*\?\.[0-9]*\?\.[0-9]*\?\)")
                     echo "remoteTag:" $remoteTag
                     if test $status = 1
-                        set remoteTag "26.2.50"  # TODO parse `emacs --version`
+                        set remoteTag "27.0.60"  # TODO parse `emacs --version`
+                        # set remoteTag "26.2.50"  # TODO parse `emacs --version`
                         echo "remoteTag not defined. Using:" $remoteTag
                     end
                     set tagPostfixInc (math $tagPostfix + 1)
