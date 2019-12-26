@@ -820,6 +820,13 @@ before packages are loaded."
      ("s-d"   . my/eval-current-defun)
      ("s-e"   . eval-last-sexp)))
 
+(use-package racket-mode
+    :config
+    (bind-keys :map racket-mode-map
+               ;; my/interactive-lambda doesn't work
+               ("C-s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)
+               ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)))
+
   (use-package clojure-mode
     :config
     ;; (add-hook 'clojure-mode-hook 'typed-clojure-mode)
