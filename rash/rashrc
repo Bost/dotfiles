@@ -37,27 +37,53 @@
         (current-directory ps)
         (error 'change-directory (format "directory doesn't exist: ~a" ps)))))
 
+
+(define-line-macro utils
+  (lambda (_)
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/dec/utils"))))
+
+(define-line-macro ufo
+  (lambda (_)
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/dec/ufo"))))
+
+(define-line-macro zark
+  (lambda (_)
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/dec/zark"))))
+
+(define-line-macro spa
+  (lambda (_)
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/.emacs.d"))))
+
+(define-line-macro ema
+  (lambda (_)
+    #'(change-directory (string-append (getenv "HOME")
+                                       "/dev/emacs"))))
+
 (define-line-macro ff
-  (λ (_)
+  (lambda (_)
     #'(change-directory (string-append (getenv "HOME")
                                        "/.config/fish/functions"))))
 
 (define-line-macro rr
-  (λ (_)
+  (lambda (_)
     #'(change-directory (string-append (getenv "HOME")
                                        "/.config/rash"))))
 
 (define-line-macro dev
-  (λ (_)
+  (lambda (_)
     #'(change-directory (string-append (getenv "HOME")
                                        "/dev"))))
 
 (define-line-macro dotf
-  (λ (_)
+  (lambda (_)
     #'(change-directory (string-append (getenv "HOME")
                                        "/dev/dotf"))))
 (define-line-macro cheat
-  (λ (_)
+  (lambda (_)
     #'(change-directory (string-append (getenv "HOME")
                                        "/dev/cheat"))))
 
@@ -69,6 +95,47 @@
 ;; #`    adds quasisyntax
 ;; #,    adds unsyntax
 ;; #,@   adds unsyntax-splicing
+
+#| racket block comment begin to end |#
+
+;; \|    =unix-pipe=
+;; |>    send the result of the previous pipeline segment to a Racket function.
+;; \|>   =basic-object-pipe=
+;; |>>   =object-pipe=
+
+;; #%   see http://willghatch.net/publications/rash-gpce-2018-preprint.pdf
+
+;; (define x 1234)
+;; ;; Now let's see the value of x.
+;; ;; We can't just write `x`, but we can do any of these:
+;; (values x)
+;; |> values x
+;; echo $x
+;; (require rash/demo/setup)
+;; val x
+
+;; {} brace-form
+;; Braces read a block of code in line mode. Braces can be used in line mode as
+;; this example shows, or they can be used inside parenthesised S-expressions to
+;; escape back to line mode. Braces implicitly act like Racket’s begin form,
+;; which evaluates its sub-forms, in this case, lines, sequentially.
+
+;; #{}   hash-brace-form
+;; - implicitly set subprocess input to an empty port, converts subprocess
+;;   output to a string, and trims trailing whitespace from it.
+
+;; #%hash-braces parameterizes the default input, output, and error redirection
+;; for the run-pipeline macro and executes its sub-form
+
+;; produces the same result as a ⟨brace-form⟩, except that it is wrapped in a list
+;; prefixed with #%hash-braces.
+
+(define type
+  (lambda (x)
+    (cond ((number? x) "Number")
+          ((pair? x) "Pair")
+          ((string? x) "String")
+          ((list? x) "List"))))
 
 (require racket/undefined)
 
@@ -88,15 +155,49 @@
 (define my-echo (lambda args (displayln (string-join (map ~a args) " "))))
 #;(define (my-echo args) (displayln (string-join (map ~a args) " ")))
 
+(require racket/list)
+
+;;; contains? : return true if list contains a given element
+(define (contains? elem lst) (number? (index-of lst elem)))
+
+(define (emacs-processes)
+  (let* (
+         [pids #{pgrep --exact emacs}]
+         [lpids (string-split pids)]
+         )
+    ;; (displayln (string-join (map type lpids) " # "))
+    (map (lambda (pid)
+           ;; (displayln (format "pid: ~a" pid))
+           (let* ([proc-user #{ps -o user= -p $pid}])
+             #;(displayln (format "pid: ~a; proc-user: ~a; USER: ~a; equal? ~a"
+                                pid proc-user (getenv "USER")
+                                (equal? (getenv "USER") proc-user)
+                                ))
+             ;; TODO filter out "*defunct*" zombie processes
+             (if (equal? (getenv "USER") proc-user)
+                 'emacsclient
+                 'emacs
+                 ;; #{ ps -o command= -p $pid }
+                 )
+             )
+           ;; {echo $USER}
+           )
+         lpids)))
+
 (define launch
   (lambda args
     #;(run-pipeline =unix-pipe= emacs -q $args &bg)
-    {emacs -q $args &bg}
-    ))
+    (let ([emacs-cmd (if (contains? 'emacsclient (emacs-processes))
+                   'emacsclient
+                   'emacs
+                   ;; #{emacs $args &bg}
+                   )])
+      #{ $emacs-cmd $args &bg })))
 
 (define-line-macro e
   (lambda (stx)
     (syntax-parse stx
       [(_)          #'(launch "./")]
-      [(_ arg ...)  #'(launch arg ...)]
+      [(_ arg ...)  #'(launch `arg ...)]
       )))
+
