@@ -161,43 +161,29 @@
 (define (contains? elem lst) (number? (index-of lst elem)))
 
 (define (emacs-processes)
-  (let* (
-         [pids #{pgrep --exact emacs}]
-         [lpids (string-split pids)]
-         )
-    ;; (displayln (string-join (map type lpids) " # "))
+  (let* ([pids-str #{pgrep --exact emacs}]
+         [pids (string-split pids-str)])
     (map (lambda (pid)
-           ;; (displayln (format "pid: ~a" pid))
            (let* ([proc-user #{ps -o user= -p $pid}])
-             #;(displayln (format "pid: ~a; proc-user: ~a; USER: ~a; equal? ~a"
-                                pid proc-user (getenv "USER")
-                                (equal? (getenv "USER") proc-user)
-                                ))
-             ;; TODO filter out "*defunct*" zombie processes
              (if (equal? (getenv "USER") proc-user)
-                 'emacsclient
-                 'emacs
-                 ;; #{ ps -o command= -p $pid }
-                 )
-             )
-           ;; {echo $USER}
-           )
-         lpids)))
+                 (let* ([proc-cmd #{ps -o command= -p $pid}])
+                   (if (string-contains? proc-cmd "defunct")
+                       'zombie
+                       'emacsclient))
+                 'emacs)))
+         pids)))
 
 (define launch
   (lambda args
     #;(run-pipeline =unix-pipe= emacs -q $args &bg)
     (let ([emacs-cmd (if (contains? 'emacsclient (emacs-processes))
                    'emacsclient
-                   'emacs
-                   ;; #{emacs $args &bg}
-                   )])
-      #{ $emacs-cmd $args &bg })))
+                   'emacs)])
+      #{$emacs-cmd $args &bg})))
 
 (define-line-macro e
   (lambda (stx)
     (syntax-parse stx
       [(_)          #'(launch "./")]
-      [(_ arg ...)  #'(launch `arg ...)]
-      )))
+      [(_ arg ...)  #'(launch `arg ...)])))
 

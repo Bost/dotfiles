@@ -18,7 +18,9 @@ function e
         if test $USER = $procUser
             set procCmd (ps -o command= -p $pid)
             # echo "procCmd:" $procCmd
-            if string match -q -- "*defunct*" $procCmd
+            # does $procCmd contain the "*defunct*" substring?
+            # [zombie] <defunct>
+            if string match --quiet -- "*defunct*" $procCmd
                 # echo "pid:" $pid "is defunct"
             else
                 set emacsCmd emacsclient
