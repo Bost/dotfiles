@@ -70,30 +70,35 @@
 ;; #,    adds unsyntax
 ;; #,@   adds unsyntax-splicing
 
-
-;; &bg is a background pipeline flag - like & in bash
-;; TODO find a disown pipeline
-;; (define-simple-pipeline-alias e emacs -q)
-;; (define/contract (launch-emacs args)
-;;   (-> number? void?)
-;;   (let ([a (if (equal? args "") "./" args)])
-;;     #'(in-dir ./ {
-;;                   echo emacs -q a &bg
-;;                   emacs -q a &bg
-;;                   })))
-
 (require racket/undefined)
 
 ;; (require xrepl) ; interactive exploration and development
 
-;; lambda not surrounded by brackets:
+;; &bg is a background pipeline flag - like & in bash
+(define-line-macro e
+  (lambda (stx)
+    (syntax-parse stx
+      [(_)          #'(run-pipeline =unix-pipe= emacs -q "./" &bg)]
+      [(_ arg ...)  #'(run-pipeline =unix-pipe= emacs -q arg ... &bg)]
+      )))
+
+;; lambda not surrounded by brackets accepts any number of args, and the args
+;; are put into a list bound to my-echo
 ;; https://docs.racket-lang.org/guide/lambda.html
 (define my-echo (lambda args (displayln (string-join (map ~a args) " "))))
 ;; (define (my-echo args) (displayln (string-join (map ~a args) " ")))
 
-(define launch-emacs (lambda (args) (println (format "~a" args))))
-(define-line-macro e
-  (λ (stx)
+;; (define launch (lambda args (displayln (string-join (map ~a args) " "))))
+;; TODO apply 'run-pipeline =unix-pipe= echo' on args
+(define launch
+  (lambda args
+    ;; (displayln (string-join (map ~a args) " #0# "))
+    (apply (lambda (v) (run-pipeline =unix-pipe= echo v)) args)
+    ))
+
+(define-line-macro ee
+  (lambda (stx)
     (syntax-parse stx
-      [(_ arg) #'(launch-emacs arg)]
-      [(_) #'(launch-emacs #'stx)])))
+      [(_)          #'(launch "./")]
+      [(_ arg ...)  #'(launch arg ...)]
+      )))
