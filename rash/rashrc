@@ -4,28 +4,14 @@
 
 (current-repl-display-startup-hints? #f)
 
-(require racket/string
-         racket/function
-         linea/line-macro
-         shell/pipeline-macro
-         (only-in shell/pipeline path-string-symbol?)
-         racket/contract/base
-         racket/contract/region
-         ;; shell/utils/bourne-expansion-utils ; needed?
-         ;; needed?
-         ;; (for-syntax
-         ;;  racket/base
-         ;;  syntax/parse
-         ;;  )
-         )
-
-(require racket/string)
-(require racket/function)
-(require racket/format)
-(require racket/runtime-path)
-(require racket/port)
-
-(require rash/demo/setup) ;; defines in-dir
+(require
+ linea/line-macro
+ (only-in shell/pipeline path-string-symbol?)
+ racket/contract/base
+ racket/contract/region
+ racket/string
+ racket/list
+ )
 
 (define-simple-pipeline-alias l    ls -la --color=auto)
 (define-simple-pipeline-alias lock xflock4)
@@ -37,6 +23,7 @@
         (current-directory ps)
         (error 'change-directory (format "directory doesn't exist: ~a" ps)))))
 
+(define foo (λ (_) 1))
 
 (define-line-macro utils
   (lambda (_)
@@ -81,7 +68,7 @@
 (define-line-macro dotf
   (lambda (_)
     #'(change-directory (string-append (getenv "HOME")
-                                       "/dev/dotf"))))
+                                       "/dev/dotfiles"))))
 (define-line-macro cheat
   (lambda (_)
     #'(change-directory (string-append (getenv "HOME")
@@ -137,8 +124,6 @@
           ((string? x) "String")
           ((list? x) "List"))))
 
-(require racket/undefined)
-
 #;(require xrepl) ; interactive exploration and development
 
 ;; &bg is a background pipeline flag - like & in bash
@@ -154,8 +139,6 @@
 ;; https://docs.racket-lang.org/guide/lambda.html
 (define my-echo (lambda args (displayln (string-join (map ~a args) " "))))
 #;(define (my-echo args) (displayln (string-join (map ~a args) " ")))
-
-(require racket/list)
 
 ;;; contains? : return true if list contains a given element
 (define (contains? elem lst) (number? (index-of lst elem)))
@@ -187,3 +170,48 @@
       [(_)          #'(launch "./")]
       [(_ arg ...)  #'(launch `arg ...)])))
 
+#;(define launch-inst
+  (lambda args
+    (if (string-suffix? args ".deb")
+        ;; TODO test installation of multiple deb files
+        #{sudo dpkg --install $args}
+        #{sudo snap install $args}
+
+        #{sudo apt install --yes $args})))
+
+(define-line-macro inst
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg)  #'(launch-inst `arg)])))
+
+;; (require rash/demo/with-transactional-file-list)
+
+(require rash/demo/setup)
+
+;; in-dir /tmp {
+;;   try {
+;;    apt show foobar
+;;    }
+;;   catch e
+;;   {
+;;    echo An error occured!
+;;    echo $f could not be deleted!
+;;    }
+;;  }
+
+#;(with-rash-config
+  #:out (compose string-trim port->string)
+  #:err string-trim
+  {apt show foo})
+
+#;(with-rash-config
+  #:out (compose string-trim port->string)
+  #:err (displayln "error")
+  {apt show foo}
+  #;{grep -i "computer store" purchases.csv \
+        | wc -l})
+
+#;(with-rash-config
+  #:out (compose string-trim port->string)
+  #:err ("/tmp/error.txt" 'append)
+    {apt show foo})
