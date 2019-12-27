@@ -623,30 +623,11 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
 
 (defun my/racket-toggle-reader-comment-fst-sexp-on-line ()
   (interactive)
-  (my/clojure-toggle-reader-comment-fst-sexp-on-line "#;"))
+  (my/toggle-reader-comment-fst-sexp-on-line "#;"))
 
 (defun my/clojure-toggle-reader-comment-fst-sexp-on-line ()
   (interactive)
-  (my/clojure-toggle-reader-comment-fst-sexp-on-line "#_"))
-
-;; (defun my/clojure-toggle-reader-comment-fst-sexp-on-line ()
-;;   (interactive)
-;;   (let* ((point-pos1 (point)))
-;;     (evil-insert-line 0)
-;;     (let* ((point-pos2 (point))
-;;            (cmtstr "#_")
-;;            (cmtstr-len (length cmtstr))
-;;            (line-start (buffer-substring-no-properties
-;;                         point-pos2 (+ point-pos2 cmtstr-len))))
-;;       (if (string= cmtstr line-start)
-;;           (progn
-;;             (delete-char cmtstr-len)
-;;             (goto-char point-pos1)
-;;             (left-char cmtstr-len))
-;;         (progn
-;;           (insert cmtstr)
-;;           (goto-char point-pos1)
-;;           (right-char cmtstr-len))))))
+  (my/toggle-reader-comment-fst-sexp-on-line "#_"))
 
 (defun my/racket-toggle-reader-comment-current-sexp ()
   (interactive)
