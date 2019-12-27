@@ -3,6 +3,7 @@
 # Script for the xfce4-genmon-plugin
 # must be used with an absolute path /home/<user>/...
 
+# TODO show IO: example: git gc in the emacs directory
 # man ps - TODO fix CPU (and also MEM) usage in %
 # CPU usage is currently expressed as the percentage of time spent running
 # during the entire lifetime of a process. This is not ideal, and it does not

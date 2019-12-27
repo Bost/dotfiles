@@ -1,4 +1,5 @@
-set fish_greeting "set fish_greeting \"cider-enlighten-mode\"" "neovim" "useful-command-line-tools"
+set fish_greeting ""
+# set --erase fish_greeting   # this doesn't remove the greeting?!?
 # TODO https://www.wezm.net/technical/2019/10/useful-command-line-tools/
 set --universal dev ~/dev
 set --universal dec ~/dec
