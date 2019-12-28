@@ -11,11 +11,9 @@
  racket/contract/region
  racket/string
  racket/list
- rackjure      ;; raco pkg install rackjure
+ rackjure        ;; raco pkg install rackjure
+ ;; rash/demo/setup ;; in-dir macro etc.
  )
-
-(define-simple-pipeline-alias l    ls -la --color=auto)
-(define-simple-pipeline-alias lock xflock4)
 
 ;; TODO pasteboard%
 
@@ -34,18 +32,96 @@
 ;; https://docs.racket-lang.org/racket-cheat/index.html
 ;; https://github.com/greghendershott/racket-clojure-cheat-sheet
 ;; https://www.greghendershott.com/2015/08/at-expressions.html
-(define-line-macro notes (λ (_) #'(cd "~/dev/notes")))
-(define-line-macro utils (λ (_) #'(cd "~/dec/utils")))
-(define-line-macro ufo   (λ (_) #'(cd "~/dec/ufo")))
-(define-line-macro zark  (λ (_) #'(cd "~/dec/zark")))
-(define-line-macro spa   (λ (_) #'(cd "~/.emacs.d")))
-(define-line-macro ema   (λ (_) #'(cd "~/dev/emacs")))
-(define-line-macro ff    (λ (_) #'(cd "~/dev/dotfiles/fish/functions")))
-(define-line-macro rr    (λ (_) #'(cd "~/dev/dotfiles/rash")))
-(define-line-macro dev   (λ (_) #'(cd "~/dev")))
-(define-line-macro dec   (λ (_) #'(cd "~/dec")))
-(define-line-macro dotf  (λ (_) #'(cd "~/dev/dotfiles")))
-(define-line-macro cheat (λ (_) #'(cd "~/dev/cheat")))
+(define-line-macro            dev   (λ (_) #'(cd "~/dev")))
+(define-line-macro            notes (λ (_) #'(cd "~/dev/notes")
+                                       ;; if test $status = 0
+                                       ;; set dir ~/anaconda3/bin
+                                       ;; if test $PATH[1] != $dir
+                                       ;; set cmd set --export PATH $dir $PATH
+                                       ;; echo $cmd
+                                       ;; eval $cmd
+                                       ;; else
+                                       ;; # remove $dir from $PATH
+                                       ;; # set PATH (string match -v $dir $PATH)
+                                       ;; end
+                                       ;; end
+                                       ))
+(define-line-macro            ema   (λ (_) #'(cd "~/dev/emacs")))
+(define-line-macro            ff    (λ (_) #'(cd "~/dev/dotfiles/fish/functions")))
+(define-line-macro            rr    (λ (_) #'(cd "~/dev/dotfiles/rash")))
+(define-line-macro            dotf  (λ (_) #'(cd "~/dev/dotfiles")))
+(define-line-macro            cheat (λ (_) #'(cd "~/dev/cheat")))
+(define-line-macro            dec   (λ (_) #'(cd "~/dec")))
+(define-line-macro            utils (λ (_) #'(cd "~/dec/utils")))
+(define-line-macro            ufo   (λ (_) #'(cd "~/dec/ufo")))
+(define-line-macro            zark  (λ (_) #'(cd "~/dec/zark")))
+(define-line-macro            tmp   (λ (_) #'(cd "/tmp")))
+(define-line-macro            bin   (λ (_) #'(cd "~/bin")))
+(define-line-macro            spa   (λ (_) #'(cd "~/.emacs.d")))
+(define-simple-pipeline-alias goodies sudo needrestart)
+(define-simple-pipeline-alias c    bat)
+(define-simple-pipeline-alias lg   git lg-20)
+;; Sort by modification time, newest first, reversed
+(define-simple-pipeline-alias lat  ls --color=auto -lt -all) ;; ls -lat
+(define-simple-pipeline-alias latr ls --color=auto --sort=time -l --almost-all --reverse) ;; ls -latr
+(define-simple-pipeline-alias l    ls --color=auto -la)
+(define-simple-pipeline-alias lock   xflock4)
+(define-simple-pipeline-alias loff   xfce4-session-logout --logout --fast)
+(define-simple-pipeline-alias shut   xfce4-session-logout --halt   --fast)
+(define-simple-pipeline-alias reboot xfce4-session-logout --reboot --fast)
+(define-simple-pipeline-alias susp   xfce4-session-logout --suspend)
+(define-simple-pipeline-alias shutdown sudo shutdown -h now)
+(define-simple-pipeline-alias ys   youtube-dl --extract-audio)
+(define-simple-pipeline-alias y    youtube-dl --write-auto-sub --sub-lang fr)
+(define-simple-pipeline-alias gs   git status --short --branch)
+(define-simple-pipeline-alias gst  git status)
+(define-simple-pipeline-alias gtg  git tag --sort version:refname)
+(define-simple-pipeline-alias gb   git brach)
+(define-simple-pipeline-alias gba  git brach --all)
+(define-simple-pipeline-alias gmv  git mv)
+(define-simple-pipeline-alias gra  git rebase --abort)
+(define-simple-pipeline-alias grc  git rebase --continue)
+(define-simple-pipeline-alias grs  git rebase --skip)
+(define-simple-pipeline-alias grh  git reset  --hard)
+(define-simple-pipeline-alias grm  git rm)
+(define-simple-pipeline-alias gsh  git stash save)
+(define-simple-pipeline-alias gshp git stash pop)
+(define-simple-pipeline-alias gbb  git bisect bad)
+(define-simple-pipeline-alias gbg  git bisect good)
+(define-simple-pipeline-alias gcom git checkout master)
+(define-simple-pipeline-alias gcod git checkout -)
+(define-simple-pipeline-alias armv  sudo apt autoremove --yes)
+(define-simple-pipeline-alias purge sudo apt purge --yes)
+;; (define-simple-pipeline-alias cdd)
+;; (define-simple-pipeline-alias cd-)
+(define-simple-pipeline-alias cw   chmod +w)
+(define-simple-pipeline-alias cx   chmod +x)
+(define-simple-pipeline-alias d2u  fromdos)
+(define-simple-pipeline-alias u2d  todos)
+(define-simple-pipeline-alias f    fdfind)
+(define-simple-pipeline-alias v    vim)
+(define-simple-pipeline-alias tf   tail -f) ;; TODO tail replacement?
+(define-simple-pipeline-alias timestamp date "+%F_%H-%M-%S") ;; same as "+%Y-%m-%d_%H-%M-%S"
+(define-simple-pipeline-alias ext  extract)
+
+;; TODO test the extract function
+(define (extract file)
+    (match file
+      [
+       "*.tar.bz2"
+       {echo tar xjf file}
+       ]
+      ["*.tar.gz"
+       {echo tar xzf file}
+       ;; if test $status -eq 2
+       ;; echo "WARN: The archive is propably is a tar, not a GZip. Trying alterternative:"
+       ;; set cmd tar xvf $file
+       ;; end
+       ]
+
+      ["*.bz2"
+       {echo bunzip2 file}]
+      ))
 
 ;; '     adds quote
 ;; `     adds quasiquote
@@ -143,12 +219,7 @@
       [(_)          #'(launch "./")]
       [(_ arg ...)  #'(launch `arg ...)])))
 
-(define-line-macro gs
-  (λ (stx)
-    (syntax-parse stx
-      [(_)          #'(run-pipeline =unix-pipe= git status --short --branch)]
-      [(_ arg ...)  #'(run-pipeline =unix-pipe= git status --short --branch `arg ...)])))
-
+;; (define-simple-pipeline-alias reinst sudo apt --reinstall install --yes)
 #;(define launch-inst
     (λ args
       (if (string-suffix? args ".deb")
@@ -163,10 +234,8 @@
     (syntax-parse stx
       [(_ arg)  #'(launch-inst `arg)])))
 
+;; TODO try doesn't work
 ;; (require rash/demo/with-transactional-file-list)
-
-(require rash/demo/setup)
-
 ;; in-dir /tmp {
 ;;   try {
 ;;    apt show foobar
@@ -180,12 +249,7 @@
 
 #;(with-rash-config
     #:out (compose string-trim port->string)
-    #:err string-trim
-    {apt show foo})
-
-#;(with-rash-config
-    #:out (compose string-trim port->string)
-    #:err (displayln "error")
+    #:err (displayln 'error)
     {apt show foo}
     #;{grep -i "computer store" purchases.csv \
             | wc -l})
@@ -194,3 +258,6 @@
     #:out (compose string-trim port->string)
     #:err ("/tmp/error.txt" 'append)
     {apt show foo})
+
+;; redirect
+;; cat *.fish &> files.fish
