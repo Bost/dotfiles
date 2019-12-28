@@ -758,6 +758,12 @@ before packages are loaded."
   (global-set-key (kbd "<C-mouse-5>") (my/interactive-lambda () (message "zoom-out")))
   (global-set-key (kbd "<C-mouse-4>") (my/interactive-lambda () (message "zoom-out")))
   (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
+  (use-package org
+    :config
+    (bind-keys :map org-mode-map
+               ;; my/interactive-lambda doesn't work
+               ("<menu>" . org-latex-export-to-pdf)))
+
   ;; fd - evil-escape from insert state and everything else
   ;; occurences - function scope
   (global-set-key (kbd "s-I") 'my/iedit-mode-toggle)
