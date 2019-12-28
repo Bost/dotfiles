@@ -11,68 +11,41 @@
  racket/contract/region
  racket/string
  racket/list
+ rackjure      ;; raco pkg install rackjure
  )
 
 (define-simple-pipeline-alias l    ls -la --color=auto)
 (define-simple-pipeline-alias lock xflock4)
 
-(define/contract (change-directory dir)
-  (-> path-string-symbol? void?)
-  (let ([ps (if (symbol? dir) (symbol->string dir) dir)])
-    (if (directory-exists? ps)
-        (current-directory ps)
-        (error 'change-directory (format "directory doesn't exist: ~a" ps)))))
+;; TODO pasteboard%
 
-(define foo (λ (_) 1))
+;; raco pkg install describe
+;; (require describe)
+;; (describe (sqrt 10))
 
-(define-line-macro utils
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/dec/utils"))))
+;; Mark Engelberg: racket vs. clojure
+;; http://programming-puzzler.blogspot.com/2010/08/racket-vs-clojure.html
+;; immutable vectors:
+;; http://programming-puzzler.blogspot.com/2010/08/racket-vs-clojure.html
+;; generic collections:
+;; https://docs.racket-lang.org/collections/index.html
 
-(define-line-macro ufo
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/dec/ufo"))))
-
-(define-line-macro zark
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/dec/zark"))))
-
-(define-line-macro spa
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/.emacs.d"))))
-
-(define-line-macro ema
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/dev/emacs"))))
-
-(define-line-macro ff
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/.config/fish/functions"))))
-
-(define-line-macro rr
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/.config/rash"))))
-
-(define-line-macro dev
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/dev"))))
-
-(define-line-macro dotf
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/dev/dotfiles"))))
-(define-line-macro cheat
-  (lambda (_)
-    #'(change-directory (string-append (getenv "HOME")
-                                       "/dev/cheat"))))
+;; https://docs.racket-lang.org/guide/intro.html
+;; https://docs.racket-lang.org/racket-cheat/index.html
+;; https://github.com/greghendershott/racket-clojure-cheat-sheet
+;; https://www.greghendershott.com/2015/08/at-expressions.html
+(define-line-macro notes (λ (_) #'(cd "~/dev/notes")))
+(define-line-macro utils (λ (_) #'(cd "~/dec/utils")))
+(define-line-macro ufo   (λ (_) #'(cd "~/dec/ufo")))
+(define-line-macro zark  (λ (_) #'(cd "~/dec/zark")))
+(define-line-macro spa   (λ (_) #'(cd "~/.emacs.d")))
+(define-line-macro ema   (λ (_) #'(cd "~/dev/emacs")))
+(define-line-macro ff    (λ (_) #'(cd "~/dev/dotfiles/fish/functions")))
+(define-line-macro rr    (λ (_) #'(cd "~/dev/dotfiles/rash")))
+(define-line-macro dev   (λ (_) #'(cd "~/dev")))
+(define-line-macro dec   (λ (_) #'(cd "~/dec")))
+(define-line-macro dotf  (λ (_) #'(cd "~/dev/dotfiles")))
+(define-line-macro cheat (λ (_) #'(cd "~/dev/cheat")))
 
 ;; '     adds quote
 ;; `     adds quasiquote
