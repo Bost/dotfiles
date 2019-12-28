@@ -91,7 +91,7 @@
 ;; prefixed with #%hash-braces.
 
 (define type
-  (lambda (x)
+  (λ (x)
     (cond ((number? x) "Number")
           ((pair? x) "Pair")
           ((string? x) "String")
@@ -101,16 +101,16 @@
 
 ;; &bg is a background pipeline flag - like & in bash
 #;(define-line-macro ee
-  (lambda (stx)
-    (syntax-parse stx
-      [(_)          #'(run-pipeline =unix-pipe= emacs -q "./" &bg)]
-      [(_ arg ...)  #'(run-pipeline =unix-pipe= emacs -q arg ... &bg)]
-      )))
+    (λ (stx)
+      (syntax-parse stx
+        [(_)          #'(run-pipeline =unix-pipe= emacs -q "./" &bg)]
+        [(_ arg ...)  #'(run-pipeline =unix-pipe= emacs -q arg ... &bg)]
+        )))
 
 ;; lambda not surrounded by brackets accepts any number of args, and the args
 ;; are put into a list bound to my-echo
 ;; https://docs.racket-lang.org/guide/lambda.html
-(define my-echo (lambda args (displayln (string-join (map ~a args) " "))))
+(define my-echo (λ args (displayln (string-join (map ~a args) " "))))
 #;(define (my-echo args) (displayln (string-join (map ~a args) " ")))
 
 ;;; contains? : return true if list contains a given element
@@ -119,7 +119,7 @@
 (define (emacs-processes)
   (let* ([pids-str #{pgrep --exact emacs}]
          [pids (string-split pids-str)])
-    (map (lambda (pid)
+    (map (λ (pid)
            (let* ([proc-user #{ps -o user= -p $pid}])
              (if (equal? (getenv "USER") proc-user)
                  (let* ([proc-cmd #{ps -o command= -p $pid}])
@@ -130,30 +130,36 @@
          pids)))
 
 (define launch
-  (lambda args
+  (λ args
     #;(run-pipeline =unix-pipe= emacs -q $args &bg)
     (let ([emacs-cmd (if (contains? 'emacsclient (emacs-processes))
-                   'emacsclient
-                   'emacs)])
+                         'emacsclient
+                         'emacs)])
       #{$emacs-cmd $args &bg})))
 
 (define-line-macro e
-  (lambda (stx)
+  (λ (stx)
     (syntax-parse stx
       [(_)          #'(launch "./")]
       [(_ arg ...)  #'(launch `arg ...)])))
 
-#;(define launch-inst
-  (lambda args
-    (if (string-suffix? args ".deb")
-        ;; TODO test installation of multiple deb files
-        #{sudo dpkg --install $args}
-        #{sudo snap install $args}
+(define-line-macro gs
+  (λ (stx)
+    (syntax-parse stx
+      [(_)          #'(run-pipeline =unix-pipe= git status --short --branch)]
+      [(_ arg ...)  #'(run-pipeline =unix-pipe= git status --short --branch `arg ...)])))
 
-        #{sudo apt install --yes $args})))
+#;(define launch-inst
+    (λ args
+      (if (string-suffix? args ".deb")
+          ;; TODO test installation of multiple deb files
+          #{sudo dpkg --install $args}
+          #{sudo snap install $args}
+
+          #{sudo apt install --yes $args})))
 
 (define-line-macro inst
-  (lambda (stx)
+  (λ (stx)
     (syntax-parse stx
       [(_ arg)  #'(launch-inst `arg)])))
 
@@ -173,18 +179,18 @@
 ;;  }
 
 #;(with-rash-config
-  #:out (compose string-trim port->string)
-  #:err string-trim
-  {apt show foo})
+    #:out (compose string-trim port->string)
+    #:err string-trim
+    {apt show foo})
 
 #;(with-rash-config
-  #:out (compose string-trim port->string)
-  #:err (displayln "error")
-  {apt show foo}
-  #;{grep -i "computer store" purchases.csv \
-        | wc -l})
+    #:out (compose string-trim port->string)
+    #:err (displayln "error")
+    {apt show foo}
+    #;{grep -i "computer store" purchases.csv \
+            | wc -l})
 
 #;(with-rash-config
-  #:out (compose string-trim port->string)
-  #:err ("/tmp/error.txt" 'append)
+    #:out (compose string-trim port->string)
+    #:err ("/tmp/error.txt" 'append)
     {apt show foo})
