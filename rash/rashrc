@@ -1,6 +1,5 @@
 #! /usr/bin/env racket
 ;; emacs - set major mode: SPC h M racket-mode
-;; (require rash/demo/demo-rc)
 
 (current-repl-display-startup-hints? #f)
 
@@ -175,14 +174,6 @@
 
 #;(require xrepl) ; interactive exploration and development
 
-;; &bg is a background pipeline flag - like & in bash
-#;(define-line-macro ee
-    (λ (stx)
-      (syntax-parse stx
-        [(_)          #'(run-pipeline =unix-pipe= emacs -q "./" &bg)]
-        [(_ arg ...)  #'(run-pipeline =unix-pipe= emacs -q arg ... &bg)]
-        )))
-
 ;; lambda not surrounded by brackets accepts any number of args, and the args
 ;; are put into a list bound to my-echo
 ;; https://docs.racket-lang.org/guide/lambda.html
@@ -205,8 +196,9 @@
                  'emacs)))
          pids)))
 
-(define launch
+(define launch-emacs
   (λ args
+    ;; &bg is a background pipeline flag - like & in bash
     #;(run-pipeline =unix-pipe= emacs -q $args &bg)
     (let ([emacs-cmd (if (contains? 'emacsclient (emacs-processes))
                          'emacsclient
@@ -216,17 +208,15 @@
 (define-line-macro e
   (λ (stx)
     (syntax-parse stx
-      [(_)          #'(launch "./")]
-      [(_ arg ...)  #'(launch `arg ...)])))
-
-(define remotes '(origin gitlab))
+      [(_)          #'(launch-emacs "./")]
+      [(_ arg ...)  #'(launch-emacs `arg ...)])))
 
 (define-line-macro ghog
   (λ (stx)
     (syntax-parse stx
       [(_ arg ...) #'(map (λ (remote)
                             {git push --verbose $remote `arg ...})
-                          remotes)])))
+                          '(origin gitlab))])))
 
 
 ;; (define-simple-pipeline-alias reinst sudo apt --reinstall install --yes)
