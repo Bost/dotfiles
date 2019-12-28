@@ -219,6 +219,16 @@
       [(_)          #'(launch "./")]
       [(_ arg ...)  #'(launch `arg ...)])))
 
+(define remotes '(origin gitlab))
+
+(define-line-macro ghog
+  (λ (stx)
+    (syntax-parse stx
+      [(_ arg ...) #'(map (λ (remote)
+                            {git push --verbose $remote `arg ...})
+                          remotes)])))
+
+
 ;; (define-simple-pipeline-alias reinst sudo apt --reinstall install --yes)
 #;(define launch-inst
     (λ args
