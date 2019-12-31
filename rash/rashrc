@@ -11,8 +11,14 @@
  racket/string
  racket/list
  rackjure        ;; raco pkg install rackjure
- ;; rash/demo/setup ;; in-dir macro etc.
+ rash/demo/setup ;; in-dir macro etc.
  )
+
+;; from rash/demo/with-transactional-file-list.rkt
+(define-line-macro try
+  (syntax-parser [(_ body (~datum catch) catch-body)
+                  #'(with-handlers ([(λ (e) #t) (λ (e) catch-body)])
+                      body)]))
 
 ;; TODO pasteboard%
 
@@ -183,8 +189,10 @@
 ;;; contains? : return true if list contains a given element
 (define (contains? elem lst) (number? (index-of lst elem)))
 
+(define (pgrep-fn) (try   { (str #{pgrep --exact emacs}) }
+                    catch { (str "") } ))
 (define (emacs-processes)
-  (let* ([pids-str #{pgrep --exact emacs}]
+  (let* ([pids-str (pgrep-fn)]
          [pids (string-split pids-str)])
     (map (λ (pid)
            (let* ([proc-user #{ps -o user= -p $pid}])
@@ -233,19 +241,6 @@
   (λ (stx)
     (syntax-parse stx
       [(_ arg)  #'(launch-inst `arg)])))
-
-;; TODO try doesn't work
-;; (require rash/demo/with-transactional-file-list)
-;; in-dir /tmp {
-;;   try {
-;;    apt show foobar
-;;    }
-;;   catch e
-;;   {
-;;    echo An error occured!
-;;    echo $f could not be deleted!
-;;    }
-;;  }
 
 #;(with-rash-config
     #:out (compose string-trim port->string)
