@@ -11,7 +11,8 @@
  racket/string
  racket/list
  rackjure        ;; raco pkg install rackjure
- rash/demo/setup ;; in-dir macro etc.
+ #;typed/racket    ;; TODO  racket/undefined
+ #;rash/demo/setup ;; in-dir macro etc.
  )
 
 ;; TODO pasteboard%
@@ -63,7 +64,7 @@
 (define-line-macro            bin   (λ (_) #'(cd "~/bin")))
 (define-line-macro            spa   (λ (_) #'(cd "~/.emacs.d")))
 
-;; TODO create module
+;; TODO create module: is found only when started only from ~/dev/dotfiles/rash
 (load "simple-aliases.rkt")
 
 ;; TODO test the extract function
@@ -128,12 +129,31 @@
 ;; produces the same result as a ⟨brace-form⟩, except that it is wrapped in a list
 ;; prefixed with #%hash-braces.
 
+;; TODO see typed/racket
+;; https://docs.racket-lang.org/ts-guide/quick.html?q=racket%20typed
+#|
 (define type
   (λ (x)
     (cond ((number? x) "Number")
           ((pair? x) "Pair")
           ((string? x) "String")
-          ((list? x) "List"))))
+          ((list? x) "List")
+          ;; TODO 'symbol #:keyword ?vector?
+          ;; (else undefined)
+          )))
+
+(define empty?
+  (λ (x)
+    (cond ((string? x) (string=? "" x))
+          ((list? x) (empty? x))
+          ;; (else undefined)
+          )))
+
+(define eq-test
+  (λ (x)
+    (cond ((eq? x #t) "yes")
+          ((eq? x #f) "no")
+          (else "else"))))
 
 #;(require xrepl) ; interactive exploration and development
 
@@ -142,6 +162,7 @@
 ;; https://docs.racket-lang.org/guide/lambda.html
 (define my-echo (λ args (displayln (string-join (map ~a args) " "))))
 #;(define (my-echo args) (displayln (string-join (map ~a args) " ")))
+|#
 
 ;;; contains? : return true if list contains a given element
 (define (contains? elem lst) (number? (index-of lst elem)))
@@ -152,12 +173,11 @@
                   #'(with-handlers ([(λ (e) #t) (λ (e) catch-body)])
                       body)]))
 
-#;(define (pgrep-fn)
-    (try   { (str #{pgrep --exact emacs}) }
-     catch { (str "") } ))
-#;(with-handlers ([predicate-expr handler-expr ] ...)
-    body ...+)
 (define (pgrep-fn)
+  #;(try   { (str #{pgrep --exact emacs}) }
+     catch { (str "") } )
+  #;(with-handlers ([predicate-expr handler-expr ] ...)
+      body ...+)
   (with-handlers ([(λ (e) #t) ;; predicate - i.e. handle any exception
                    (λ (e) "") ;; handler
                    ])
