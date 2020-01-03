@@ -32,19 +32,24 @@
 ;; https://github.com/greghendershott/racket-clojure-cheat-sheet
 ;; https://www.greghendershott.com/2015/08/at-expressions.html
 (define-line-macro            dev   (λ (_) #'(cd "~/dev")))
-(define-line-macro            notes (λ (_) #'(cd "~/dev/notes")
-                                       ;; if test $status = 0
-                                       ;; set dir ~/anaconda3/bin
-                                       ;; if test $PATH[1] != $dir
-                                       ;; set cmd set --export PATH $dir $PATH
-                                       ;; echo $cmd
-                                       ;; eval $cmd
-                                       ;; else
-                                       ;; # remove $dir from $PATH
-                                       ;; # set PATH (string match -v $dir $PATH)
-                                       ;; end
-                                       ;; end
-                                       ))
+
+(define ( cd-notes) ((cd "~/dev/notes")
+                     (let ([dir "~/anaconda3/bin"])
+                       (if (string-contains? (getenv "PATH") dir)
+                           (putenv "PATH" (str $dir $PATH)))
+                       )
+
+                     ;; if test $PATH[1] != $dir
+                     ;; set cmd set --export PATH $dir $PATH
+                     ;; echo $cmd
+                     ;; eval $cmd
+                     ;; else
+                     ;; # remove $dir from $PATH
+                     ;; # (putenv PATH (str $dir $PATH))
+                     ;; end
+                     ;; end
+                     ))
+(define-line-macro            notes (λ (_) #'(cd-notes)))
 (define-line-macro            ema   (λ (_) #'(cd "~/dev/emacs")))
 (define-line-macro            ff    (λ (_) #'(cd "~/dev/dotfiles/fish/functions")))
 (define-line-macro            rr    (λ (_) #'(cd "~/dev/dotfiles/rash")))
@@ -150,9 +155,12 @@
 #;(define (pgrep-fn)
     (try   { (str #{pgrep --exact emacs}) }
      catch { (str "") } ))
-
+#;(with-handlers ([predicate-expr handler-expr ] ...)
+    body ...+)
 (define (pgrep-fn)
-  (with-handlers ([(λ (e) #t) (λ (e) "")])
+  (with-handlers ([(λ (e) #t) ;; predicate - i.e. handle any exception
+                   (λ (e) "") ;; handler
+                   ])
     #{pgrep --exact emacs}))
 
 (define (emacs-processes)
