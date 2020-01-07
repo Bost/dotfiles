@@ -34,22 +34,28 @@
 ;; https://www.greghendershott.com/2015/08/at-expressions.html
 (define-line-macro            dev   (λ (_) #'(cd "~/dev")))
 
-(define ( cd-notes) ((cd "~/dev/notes")
-                     (let ([dir "~/anaconda3/bin"])
-                       (if (string-contains? (getenv "PATH") dir)
-                           (putenv "PATH" (str $dir $PATH)))
-                       )
+;; if test $PATH[1] != $dir
+;; set cmd set --export PATH $dir $PATH
+;; echo $cmd
+;; eval $cmd
+;; else
+;; # remove $dir from $PATH
+;; # (putenv PATH (str $dir $PATH))
+;; end
+;; end
 
-                     ;; if test $PATH[1] != $dir
-                     ;; set cmd set --export PATH $dir $PATH
-                     ;; echo $cmd
-                     ;; eval $cmd
-                     ;; else
-                     ;; # remove $dir from $PATH
-                     ;; # (putenv PATH (str $dir $PATH))
-                     ;; end
-                     ;; end
-                     ))
+(require racket/block)
+(define (cd-notes)
+  (block
+   (cd "~/dev/notes")
+   (let ([dir "~/anaconda3/bin"]
+         [path (getenv "PATH")])
+     (if (string-contains? path dir)
+         (displayln (str "PATH contains '" dir "' already"))
+         (block
+          (putenv "PATH" (str dir ":" path))
+          (displayln (str "PATH prepended by '" dir "'")))))))
+
 (define-line-macro            notes (λ (_) #'(cd-notes)))
 (define-line-macro            ema   (λ (_) #'(cd "~/dev/emacs")))
 (define-line-macro            ff    (λ (_) #'(cd "~/dev/dotfiles/fish/functions")))
