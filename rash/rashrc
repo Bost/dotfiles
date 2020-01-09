@@ -32,7 +32,7 @@
 ;; https://docs.racket-lang.org/racket-cheat/index.html
 ;; https://github.com/greghendershott/racket-clojure-cheat-sheet
 ;; https://www.greghendershott.com/2015/08/at-expressions.html
-(define-line-macro            dev   (λ (_) #'(cd "~/dev")))
+(define-line-macro            dev   (lambda (_) #'(cd "~/dev")))
 
 (require racket/block)
 (define (cd-notes)
@@ -46,19 +46,19 @@
           (putenv "PATH" (str dir ":" path))
           (displayln (str "PATH prepended by '" dir "'")))))))
 
-(define-line-macro            notes (λ (_) #'(cd-notes)))
-(define-line-macro            ema   (λ (_) #'(cd "~/dev/emacs")))
-(define-line-macro            ff    (λ (_) #'(cd "~/dev/dotfiles/fish/functions")))
-(define-line-macro            rr    (λ (_) #'(cd "~/dev/dotfiles/rash")))
-(define-line-macro            dotf  (λ (_) #'(cd "~/dev/dotfiles")))
-(define-line-macro            cheat (λ (_) #'(cd "~/dev/cheat")))
-(define-line-macro            dec   (λ (_) #'(cd "~/dec")))
-(define-line-macro            utils (λ (_) #'(cd "~/dec/utils")))
-(define-line-macro            ufo   (λ (_) #'(cd "~/dec/ufo")))
-(define-line-macro            zark  (λ (_) #'(cd "~/dec/zark")))
-(define-line-macro            tmp   (λ (_) #'(cd "/tmp")))
-(define-line-macro            bin   (λ (_) #'(cd "~/bin")))
-(define-line-macro            spa   (λ (_) #'(cd "~/.emacs.d")))
+(define-line-macro            notes (lambda (_) #'(cd-notes)))
+(define-line-macro            ema   (lambda (_) #'(cd "~/dev/emacs")))
+(define-line-macro            ff    (lambda (_) #'(cd "~/dev/dotfiles/fish/functions")))
+(define-line-macro            rr    (lambda (_) #'(cd "~/dev/dotfiles/rash")))
+(define-line-macro            dotf  (lambda (_) #'(cd "~/dev/dotfiles")))
+(define-line-macro            cheat (lambda (_) #'(cd "~/dev/cheat")))
+(define-line-macro            dec   (lambda (_) #'(cd "~/dec")))
+(define-line-macro            utils (lambda (_) #'(cd "~/dec/utils")))
+(define-line-macro            ufo   (lambda (_) #'(cd "~/dec/ufo")))
+(define-line-macro            zark  (lambda (_) #'(cd "~/dec/zark")))
+(define-line-macro            tmp   (lambda (_) #'(cd "/tmp")))
+(define-line-macro            bin   (lambda (_) #'(cd "~/bin")))
+(define-line-macro            spa   (lambda (_) #'(cd "~/.emacs.d")))
 
 ;; TODO create module: is found only when started only from ~/dev/dotfiles/rash
 (load "simple-aliases.rkt")
@@ -129,7 +129,7 @@
 ;; https://docs.racket-lang.org/ts-guide/quick.html?q=racket%20typed
 #|
 (define type
-  (λ (x)
+  (lambda (x)
     (cond ((number? x) "Number")
           ((pair? x) "Pair")
           ((string? x) "String")
@@ -139,14 +139,14 @@
           )))
 
 (define empty?
-  (λ (x)
+  (lambda (x)
     (cond ((string? x) (string=? "" x))
           ((list? x) (empty? x))
           ;; (else undefined)
           )))
 
 (define eq-test
-  (λ (x)
+  (lambda (x)
     (cond ((eq? x #t) "yes")
           ((eq? x #f) "no")
           (else "else"))))
@@ -156,7 +156,7 @@
 ;; lambda not surrounded by brackets accepts any number of args, and the args
 ;; are put into a list bound to my-echo
 ;; https://docs.racket-lang.org/guide/lambda.html
-(define my-echo (λ args (displayln (string-join (map ~a args) " "))))
+(define my-echo (lambda args (displayln (string-join (map ~a args) " "))))
 #;(define (my-echo args) (displayln (string-join (map ~a args) " ")))
 |#
 
@@ -166,7 +166,7 @@
 ;; from rash/demo/with-transactional-file-list.rkt
 #;(define-line-macro try
   (syntax-parser [(_ body (~datum catch) catch-body)
-                  #'(with-handlers ([(λ (e) #t) (λ (e) catch-body)])
+                  #'(with-handlers ([(lambda (e) #t) (lambda (e) catch-body)])
                       body)]))
 
 (define (pgrep-fn)
@@ -174,15 +174,15 @@
      catch { (str "") } )
   #;(with-handlers ([predicate-expr handler-expr ] ...)
       body ...+)
-  (with-handlers ([(λ (e) #t) ;; predicate - i.e. handle any exception
-                   (λ (e) "") ;; handler
+  (with-handlers ([(lambda (e) #t) ;; predicate - i.e. handle any exception
+                   (lambda (e) "") ;; handler
                    ])
     #{pgrep --exact emacs}))
 
 (define (emacs-processes)
   (let* ([pids-str (pgrep-fn)]
          [pids (string-split pids-str)])
-    (map (λ (pid)
+    (map (lambda (pid)
            (let* ([proc-user #{ps -o user= -p $pid}])
              (if (equal? (getenv "USER") proc-user)
                  (let* ([proc-cmd #{ps -o command= -p $pid}])
@@ -193,7 +193,7 @@
          pids)))
 
 (define launch-emacs
-  (λ args
+  (lambda args
     ;; &bg is a background pipeline flag - like & in bash
     #;(run-pipeline =unix-pipe= emacs -q $args &bg)
     (let ([emacs-cmd (if (contains? 'emacsclient (emacs-processes))
@@ -202,22 +202,22 @@
       #{$emacs-cmd $args &bg})))
 
 (define-line-macro e
-  (λ (stx)
+  (lambda (stx)
     (syntax-parse stx
       [(_)          #'(launch-emacs "./")]
       [(_ arg ...)  #'(launch-emacs `arg ...)])))
 
 (define-line-macro ghog
-  (λ (stx)
+  (lambda (stx)
     (syntax-parse stx
-      [(_ arg ...) #'(map (λ (remote)
+      [(_ arg ...) #'(map (lambda (remote)
                             {git push --verbose $remote `arg ...})
                           '(origin gitlab))])))
 
 
 ;; (define-simple-pipeline-alias reinst sudo apt --reinstall install --yes)
 #;(define launch-inst
-    (λ args
+    (lambda args
       (if (string-suffix? args ".deb")
           ;; TODO test installation of multiple deb files
           #{sudo dpkg --install $args}
@@ -226,7 +226,7 @@
           #{sudo apt install --yes $args})))
 
 (define-line-macro inst
-  (λ (stx)
+  (lambda (stx)
     (syntax-parse stx
       [(_ arg)  #'(launch-inst `arg)])))
 
@@ -244,6 +244,21 @@
 
 ;; redirect
 ;; cat *.fish &> files.fish
+
+;; (define-simple-pipeline-alias c    bat)
+(define launch-bat
+  (lambda (args)
+    (with-rash-config
+      {
+       bat $args
+       echo ""
+       echo ";; See https://www.root.cz/clanky/nahrada-utility-cat-nastrojem-bat-a-ccat/"
+       })))
+
+(define-line-macro c
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg ...)  #'(launch-bat `arg ...)])))
 
 (define (cheat-grep)
   (let* ([files
@@ -268,4 +283,4 @@
     (run-pipeline =unix-pipe= grep --color=auto -Pzoh $ptrn $files)
     ))
 
-(define-line-macro x (λ (_) #'(cheat-grep)))
+(define-line-macro x (lambda (_) #'(cheat-grep)))

@@ -1,7 +1,6 @@
 #! /usr/bin/env racket
 
 (define-simple-pipeline-alias goodies sudo needrestart)
-(define-simple-pipeline-alias c    bat)
 (define-simple-pipeline-alias lg   git lg-20)
 ;; Sort by modification time, newest first, reversed
 (define-simple-pipeline-alias lat  ls --color=auto -lt -all) ;; ls -lat
