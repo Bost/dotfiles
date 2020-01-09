@@ -244,3 +244,28 @@
 
 ;; redirect
 ;; cat *.fish &> files.fish
+
+(define (cheat-grep)
+  (let* ([files
+          '(
+            /home/bost/dev/cheat/cmds/emacs.el
+            /home/bost/dev/cheat/cmds/vim.vim
+            /home/bost/dev/cheat/cmds/shells.sh
+            /home/bost/dev/cheat/cmds/linux.sh
+            /home/bost/dev/cheat/cmds/rest.sh
+            /home/bost/dev/cheat/cmds/findgrep.sh
+            /home/bost/dev/cheat/cmds/systemd.sh
+            /home/bost/dev/cheat/cmds/git.sh
+            /home/bost/dev/cheat/cmds/packaging.sh
+            )]
+         [grepArgs "wifi"]
+         ;; [ptrn "\".\\+\\n(.*\\n)+?(\\n|\\Z)\""]
+         [ptrn #rx"'define'" ]
+         ;; [prms #{echo --color=auto -Pzoh $ptrn $files}]
+         )
+    ;; {grep --color=auto -Pzoh $ptrn $files | grep --color=auto -Pzie $grepArgs}
+    ;; (displayln prms)
+    (run-pipeline =unix-pipe= grep --color=auto -Pzoh $ptrn $files)
+    ))
+
+(define-line-macro x (λ (_) #'(cheat-grep)))
