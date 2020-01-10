@@ -1,7 +1,10 @@
 #! /usr/bin/env racket
-;; emacs - set major mode: SPC h M racket-mode
-
+;; emacs - set major mode: SPC h M racket-mode rashrc is NOT a module, and gets
+;; none of them. rashrc is mainly there to let you muck up the namespace that
+;; you use interactively. Prefer rashrc.rkt
 (current-repl-display-startup-hints? #f)
+
+;; (displayln "rashrc")
 
 (require
  linea/line-macro
@@ -12,7 +15,7 @@
  racket/list
  rackjure        ;; raco pkg install rackjure
  #;typed/racket    ;; TODO  racket/undefined
- #;rash/demo/setup ;; in-dir macro etc.
+ ;; rash/demo/setup ;; in-dir macro, my-grep etc.
  )
 
 ;; TODO pasteboard%
@@ -59,9 +62,6 @@
 (define-line-macro            tmp   (lambda (_) #'(cd "/tmp")))
 (define-line-macro            bin   (lambda (_) #'(cd "~/bin")))
 (define-line-macro            spa   (lambda (_) #'(cd "~/.emacs.d")))
-
-;; TODO create module: is found only when started only from ~/dev/dotfiles/rash
-(load "simple-aliases.rkt")
 
 ;; TODO test the extract function
 (define (extract file)
@@ -260,27 +260,28 @@
     (syntax-parse stx
       [(_ arg ...)  #'(launch-bat `arg ...)])))
 
-(define (cheat-grep)
-  (let* ([files
-          '(
-            /home/bost/dev/cheat/cmds/emacs.el
-            /home/bost/dev/cheat/cmds/vim.vim
-            /home/bost/dev/cheat/cmds/shells.sh
-            /home/bost/dev/cheat/cmds/linux.sh
-            /home/bost/dev/cheat/cmds/rest.sh
-            /home/bost/dev/cheat/cmds/findgrep.sh
-            /home/bost/dev/cheat/cmds/systemd.sh
-            /home/bost/dev/cheat/cmds/git.sh
-            /home/bost/dev/cheat/cmds/packaging.sh
-            )]
-         [grepArgs "wifi"]
-         ;; [ptrn "\".\\+\\n(.*\\n)+?(\\n|\\Z)\""]
-         [ptrn #rx"'define'" ]
-         ;; [prms #{echo --color=auto -Pzoh $ptrn $files}]
-         )
-    ;; {grep --color=auto -Pzoh $ptrn $files | grep --color=auto -Pzie $grepArgs}
-    ;; (displayln prms)
-    (run-pipeline =unix-pipe= grep --color=auto -Pzoh $ptrn $files)
-    ))
+(define cheat-grep
+  (lambda pattern
+    (let* ([files
+            '(
+              /home/bost/dev/cheat/cmds/emacs.el
+              /home/bost/dev/cheat/cmds/vim.vim
+              /home/bost/dev/cheat/cmds/shells.sh
+              /home/bost/dev/cheat/cmds/linux.sh
+              /home/bost/dev/cheat/cmds/rest.sh
+              /home/bost/dev/cheat/cmds/findgrep.sh
+              /home/bost/dev/cheat/cmds/systemd.sh
+              /home/bost/dev/cheat/cmds/git.sh
+              /home/bost/dev/cheat/cmds/packaging.sh
+              )]
+           ;; .+\n(.*\n)+?(\n|\z)
+           [split-re '".+\\n(.*\\n)+?(\\n|\\z)"])
+      { grep -Pzoh $split-re $files | grep --color=auto -Pzie $pattern }
+      #;(run-pipeline =unix-pipe= grep -Pzoh $split-re $files
+                      =unix-pipe= grep --color=auto -Pzie $patter)
+      )))
 
-(define-line-macro x (lambda (_) #'(cheat-grep)))
+(define-line-macro crl
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg) #'(cheat-grep `arg)])))
