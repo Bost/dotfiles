@@ -570,7 +570,7 @@ before packages are loaded."
   ;;       search-engine-alist)
 
   (blink-cursor-mode t)
-  (spacemacs/toggle-menu-bar-on)
+  ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
   (global-prettify-symbols-mode nil)  ;; seems like this gets overriden
 
