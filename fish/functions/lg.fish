@@ -4,4 +4,5 @@ function lg
     # set cmd git lg-all-20 (string escape -- $argv)
     echo $cmd
     eval $cmd
+    echo "### See: git lg-all-20"
 end
