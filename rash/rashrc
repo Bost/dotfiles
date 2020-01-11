@@ -260,28 +260,76 @@
     (syntax-parse stx
       [(_ arg ...)  #'(launch-bat `arg ...)])))
 
-(define cheat-grep
-  (lambda pattern
-    (let* ([files
-            '(
-              /home/bost/dev/cheat/cmds/emacs.el
-              /home/bost/dev/cheat/cmds/vim.vim
-              /home/bost/dev/cheat/cmds/shells.sh
-              /home/bost/dev/cheat/cmds/linux.sh
-              /home/bost/dev/cheat/cmds/rest.sh
-              /home/bost/dev/cheat/cmds/findgrep.sh
-              /home/bost/dev/cheat/cmds/systemd.sh
-              /home/bost/dev/cheat/cmds/git.sh
-              /home/bost/dev/cheat/cmds/packaging.sh
-              )]
-           ;; .+\n(.*\n)+?(\n|\z)
-           [split-re '".+\\n(.*\\n)+?(\\n|\\z)"])
-      { grep -Pzoh $split-re $files | grep --color=auto -Pzie $pattern }
-      #;(run-pipeline =unix-pipe= grep -Pzoh $split-re $files
-                      =unix-pipe= grep --color=auto -Pzie $patter)
-      )))
+
+(define (simple-grep pattern fnames)
+  (let* ([files (map (lambda (fname)
+                       (str (getenv "HOME") "/" fname))
+                     fnames)])
+    ;; (displayln files)
+    (with-rash-config
+      { grep --color=auto --ignore-case $pattern $files })))
+
+(define (cheat-grep pattern fnames)
+  (let* ([files (map (lambda (fname)
+                       (str (getenv "HOME") "/" fname))
+                     fnames)]
+         ;; .+\n(.*\n)+?(\n|\z)
+         [split-re '".+\\n(.*\\n)+?(\\n|\\z)"])
+    ;; (displayln files)
+    (with-rash-config
+      { grep -Pzoh $split-re $files | grep --color=auto -Pzie $pattern
+        echo "####################### See also http://cb.vu/unixtoolbox.xhtml"
+        })
+    #;(run-pipeline =unix-pipe= grep -Pzoh $split-re $files
+                    =unix-pipe= grep --color=auto -Pzie $patter)))
 
 (define-line-macro crl
   (lambda (stx)
     (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg)])))
+      [(_ arg) #'(cheat-grep `arg '(
+                                    dev/cheat/cmds/emacs.el
+                                    dev/cheat/cmds/vim.vim
+                                    dev/cheat/cmds/shells.sh
+                                    dev/cheat/cmds/linux.sh
+                                    dev/cheat/cmds/rest.sh
+                                    dev/cheat/cmds/findgrep.sh
+                                    dev/cheat/cmds/systemd.sh
+                                    dev/cheat/cmds/git.sh
+                                    dev/cheat/cmds/packaging.sh
+                                    ))])))
+
+(define-line-macro cre
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg) #'(cheat-grep `arg '(dev/cheat/cmds/emacs.el))])))
+
+(define-line-macro crf
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg) #'(cheat-grep `arg '(dev/cheat/cmds/findgrep.sh))])))
+
+(define-line-macro crg
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg) #'(cheat-grep `arg '(dev/cheat/cmds/git.sh))])))
+
+(define-line-macro crn
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg) #'(cheat-grep `arg '(
+                                    dev/notes/category-theory.md
+                                    dev/notes/computer-sciences.md
+                                    dev/notes/logics.org
+                                    dev/notes/math.org
+                                    dev/notes/notes.org
+                                    dev/notes/math-structures.md
+                                    ))])))
+(define-line-macro cru
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg) #'(simple-grep `arg '(dev/cheat/cmds/utf8.txt))])))
+
+(define-line-macro crv
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg) #'(cheat-grep `arg '(dev/cheat/cmds/vim.vim))])))
