@@ -703,6 +703,7 @@ before packages are loaded."
   (global-set-key (kbd "s-f") 'helm-find-files)
   (global-set-key (kbd "M-s-f") 'helm-projectile-find-file)
   (global-set-key (kbd "s-F") 'helm-recentf) ;; 'recentf-open-files
+  (global-set-key (kbd "s-r") 'helm-recentf)
   ;; C-M-down does not work
   ;; (global-set-key (kbd "<C-M-down>") 'crux-duplicate-current-line-or-region)
   ;; (global-set-key (kbd "C-M-<down>") 'crux-duplicate-current-line-or-region)
@@ -757,6 +758,8 @@ before packages are loaded."
   (global-set-key (kbd "C-s-/")  'my/avy-goto-line)
   (global-set-key (kbd "<C-mouse-5>") (my/interactive-lambda () (message "zoom-out")))
   (global-set-key (kbd "<C-mouse-4>") (my/interactive-lambda () (message "zoom-out")))
+  ;; <menu> is not a prefix key. See:
+  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
   (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
   (use-package org
     :config
