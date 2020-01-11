@@ -237,15 +237,9 @@
     #;{grep -i "computer store" purchases.csv \
             | wc -l})
 
-#;(with-rash-config
-    #:out (compose string-trim port->string)
-    #:err ("/tmp/error.txt" 'append)
-    {apt show foo})
-
 ;; redirect
 ;; cat *.fish &> files.fish
 
-;; (define-simple-pipeline-alias c    bat)
 (define launch-bat
   (lambda (args)
     (with-rash-config
