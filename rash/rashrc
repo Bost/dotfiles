@@ -6,6 +6,9 @@
 ;; @secref["Interactive_Use" #:doc '(lib "rash/scribblings/rash.scrbl")]
 (current-repl-display-startup-hints? #f)
 
+;; TODO switch off `git status` when changing dirs
+;; TODO read-in all *.rkt files in ~/.config/rash; not just rashrc, rashrc.rkt
+
 ;; (displayln "rashrc")
 
 (require

@@ -10,6 +10,11 @@
 
 (provide (all-defined-out))
 
+;; (lambda (_) 1)
+;; (require linea/line-macro)
+;; TODO why is lambda undefined in rashrc.rkt and defined in rashrc?
+;; (define-line-macro x (lambda (_) #'(+ 1 2)))
+
 (define-simple-pipeline-alias goodies sudo needrestart)
 (define-simple-pipeline-alias lg   git lg-20)
 ;; Sort by modification time, newest first, reversed
