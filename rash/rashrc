@@ -298,19 +298,26 @@
                                     ))])))
 
 (define-line-macro cre
+  ;; TODO combile cre with grep of .spacemacs
   (lambda (stx)
     (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(dev/cheat/cmds/emacs.el))])))
+      [(_ arg) #'(cheat-grep `arg '(
+                                    dev/cheat/cmds/emacs.el
+                                    ))])))
 
 (define-line-macro crf
   (lambda (stx)
     (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(dev/cheat/cmds/findgrep.sh))])))
+      [(_ arg) #'(cheat-grep `arg '(
+                                    dev/cheat/cmds/findgrep.sh
+                                    ))])))
 
 (define-line-macro crg
   (lambda (stx)
     (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(dev/cheat/cmds/git.sh))])))
+      [(_ arg) #'(cheat-grep `arg '(
+                                    dev/cheat/cmds/git.sh
+                                    ))])))
 
 (define-line-macro crn
   (lambda (stx)
@@ -326,9 +333,13 @@
 (define-line-macro cru
   (lambda (stx)
     (syntax-parse stx
-      [(_ arg) #'(simple-grep `arg '(dev/cheat/cmds/utf8.txt))])))
+      [(_ arg) #'(simple-grep `arg '(
+                                     dev/cheat/cmds/utf8.txt
+                                     ))])))
 
 (define-line-macro crv
   (lambda (stx)
     (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(dev/cheat/cmds/vim.vim))])))
+      [(_ arg) #'(cheat-grep `arg '(
+                                    dev/cheat/cmds/vim.vim
+                                    ))])))
