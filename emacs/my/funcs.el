@@ -306,7 +306,7 @@ displayed."
 
 (defun my/google-this-or-region (&optional arg)
   (interactive "p")
-  (if (region-active-p)
+  (if (or (evil-visual-state-p) (region-active-p))
       (google-this-region arg)
     (google-this arg)))
 
