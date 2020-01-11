@@ -27,6 +27,7 @@ if test ! (string match $bin $PATH)
     set --export PATH $PATH $bin
 end
 if test -d ~/.racket/7.5/bin
+    # put the rash-repl script on the PATH
     set --export PATH ~/.racket/7.5/bin $PATH
 end
 # printenv PATH
