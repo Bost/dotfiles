@@ -76,4 +76,6 @@ set optsGrepC --color=always --ignore-case --line-number --recursive
 set remotes origin gitlab # used in ghog.fish, glog.fish
 
 # see: lsblk, mount, sudo fdisk -l
-set usbDevice /dev/sdc1 # TODO this varies among machines
+# TODO usbDevice varies among machines
+# set usbDevice /dev/sdg1
+set usbDevice /dev/sdc1
