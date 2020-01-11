@@ -1,7 +1,9 @@
 #! /usr/bin/env racket
-;; emacs - set major mode: SPC h M racket-mode rashrc is NOT a module, and gets
-;; none of them. rashrc is mainly there to let you muck up the namespace that
-;; you use interactively. Prefer rashrc.rkt
+;; emacs - set major mode: SPC h M racket-mode
+
+;; rashrc is NOT a module, and gets none of them. rashrc is mainly there to let
+;; you muck up the namespace that you use interactively. Prefer rashrc.rkt
+;; @secref["Interactive_Use" #:doc '(lib "rash/scribblings/rash.scrbl")]
 (current-repl-display-startup-hints? #f)
 
 ;; (displayln "rashrc")
