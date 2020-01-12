@@ -939,7 +939,8 @@ before packages are loaded."
        ;; see https://lambdaisland.com/episodes/figwheel-emacs-cider
        cider-cljs-lein-repl
        "(cond
-        (and (resolve 'user/run) (resolve 'user/browser-repl)) ;; Chestnut projects
+        ;; Chestnut projects
+        (and (resolve 'user/run) (resolve 'user/browser-repl))
         (eval '(do (user/run)
                    (user/browser-repl)))
 
@@ -958,7 +959,11 @@ before packages are loaded."
         (eval '(cemerick.piggieback/cljs-repl (cljs.repl.rhino/repl-env)))
 
         :else
-        (throw (ex-info \"Failed to initialize CLJS repl. Add com.cemerick/piggieback and optionally figwheel-sidecar to your project.\" {})))"
+        (throw
+          (ex-info
+            (str \"Failed to initialize CLJS repl. \"
+                 \"Add com.cemerick/piggieback and optionally \"
+                 \"figwheel-sidecar to your project.\") {})))"
        )
 
       (setq cider-latest-clojure-version "1.9.0")
