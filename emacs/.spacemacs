@@ -884,8 +884,9 @@ before packages are loaded."
   ;; (advice-remove 'eval-buffer #'my/progress-report)
   (global-set-key (kbd "s-u") 'eval-buffer)
 
-  (global-set-key (kbd "s-.") 'spacemacs/jump-to-definition)
+  (global-set-key (kbd "s->") 'spacemacs/jump-to-definition)
   (global-set-key (kbd "s-,") 'evil-jump-backward) ;; C-o: evil-jump-backward
+  (global-set-key (kbd "s-.") 'evil-jump-forward)
   ;; (global-set-key (kbd "s-,") 'dumb-jump-back)
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
   (global-set-key (kbd "<print>") 'describe-text-properties) ;; 'my/what-face
