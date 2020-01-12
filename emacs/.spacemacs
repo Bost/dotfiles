@@ -763,6 +763,17 @@ before packages are loaded."
   (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
   (use-package org
     :config
+
+    (add-hook
+     'org-mode-hook
+     (lambda ()
+       "Don't increase the height relative to the other text."
+       (dolist (face
+                '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5))
+         (set-face-attribute face nil
+                             :weight 'bold ;; 'semi-bold
+                             :height 1.0))))
+
     (bind-keys :map org-mode-map
                ;; my/interactive-lambda doesn't work
                ("<menu>" . org-latex-export-to-pdf)))
