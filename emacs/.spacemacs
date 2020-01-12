@@ -62,7 +62,11 @@ This function should only modify configuration layer settings."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     ;; spell-checking
+
+     ;; requires:
+     ;; sudo apt install --yes aspell-en aspell-fr aspell-de aspell-sk
+     spell-checking  ;; SPC S / M-x flyspell-mode
+
      ;; syntax-checking
      treemacs
      ;; version-control
