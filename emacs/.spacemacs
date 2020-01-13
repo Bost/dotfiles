@@ -748,7 +748,7 @@ before packages are loaded."
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
   (global-set-key (kbd "<f2>")    'my/evil-avy-goto-char-timer)
-  (global-set-key (kbd "s-/")     'my/evil-avy-goto-char-timer)
+  (global-set-key (kbd "s-/")     'helm-swoop)
   (global-set-key (kbd "<s-tab>") 'my/alternate-buffer)
   (define-key evil-visual-state-map "p" 'my/evil-paste-after-from-0)
 
@@ -1084,7 +1084,7 @@ before packages are loaded."
   (define-key evil-visual-state-map "j" 'evil-next-visual-line)
   (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
 
-  ;; see also binding for <f2> and s-/
+  ;; see also binding for <f2>
   (define-key evil-normal-state-map "f" 'my/evil-avy-goto-char-timer)
   ;; (global-set-key (kbd "f") 'my/evil-avy-goto-char)
 

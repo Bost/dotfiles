@@ -313,7 +313,7 @@ displayed."
 (defun my/evil-avy-goto-char-timer ()
   (interactive)
   (evil-avy-goto-char-timer)
-  (message "evil-avy-goto-char: SPC j j, <f2>, s-/"))
+  (message "evil-avy-goto-char-timer: SPC j j, f, <f2>"))
 
 (defun my/alternate-buffer ()
   (interactive)
