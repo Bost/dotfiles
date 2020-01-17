@@ -94,6 +94,7 @@ This function should only modify configuration layer settings."
      yaml
      docker
      racket
+     latex
      my
      )
 
