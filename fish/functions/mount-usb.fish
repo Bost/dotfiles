@@ -1,6 +1,7 @@
 function mount-usb
     # set cmd mount $usbDevice /media/bost/usb-drive
     # set cmd mount --all
+    # see also: udisksctl status
     set cmd udisksctl info --block-device $usbDevice "|" grep MountPoints: "|" grep /
     echo $cmd
     eval $cmd

@@ -504,11 +504,16 @@ Example 2.:
 (defun my/iedit-mode-toggle ()
   "Match only occurrences in current function and the comment right above it."
   (interactive)
-  (if iedit-mode ;; TODO consider evaluation (iedit-mode)
-      (evil-iedit-state/quit-iedit-mode)
-    ;; 0 means: only occurrences in current ...
-    ;; (evil-iedit-state/iedit-mode 0)
-    (evil-iedit-state/iedit-mode)))
+  ;; TODO when C-g pressed and (= my/iedit-mode t) then (setq my/iedit-mode nil)
+  (if my/iedit-mode
+      (progn
+        (evil-iedit-state/quit-iedit-mode)
+        (setq my/iedit-mode nil))
+    (progn
+      ;; 0 means: only occurrences in current ...
+      (evil-iedit-state/iedit-mode 0)
+      ;; (evil-iedit-state/iedit-mode) ;; M-H iedit-restrict-function
+      (setq my/iedit-mode t))))
 
 (defun my/eval-current-defun1 (arg)
   "Doesn't work if there's a \"\" or () at the end of the function"

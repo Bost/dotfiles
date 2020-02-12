@@ -31,9 +31,9 @@
    [lein-codox "0.10.5"]
 
    ;; Drive leiningen project version from git instead of the other way around
-   ;; it looks like it must be always specified in the project.cjl otherwise
+   ;; it looks like it must be always specified in the project.clj otherwise
    ;; `class clojure.lang.Keyword cannot be cast to class java.lang.String`
-   ;; [com.roomkey/lein-v "7.0.0"]
+   ;; [com.roomkey/lein-v "7.1.0"]
 
    ;; autorecompile changed java files
    [lein-virgil "0.1.9"]

@@ -34,6 +34,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     windows-scripts
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -614,6 +615,7 @@ before packages are loaded."
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
                                ;;   ("." . browse-url-default-browser))
    my/narrowed-to-defun nil
+   my/iedit-mode nil
    org-latex-listings 'minted
    org-latex-pdf-process
    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -769,7 +771,7 @@ before packages are loaded."
   (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
   (use-package org
     :config
-
+    ;; TODO check if the customization holds (org-support-shift-select 'always)
     (add-hook
      'org-mode-hook
      (lambda ()
