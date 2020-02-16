@@ -79,3 +79,9 @@ set remotes origin gitlab # used in ghog.fish, glog.fish
 # TODO usbDevice varies among machines
 # set usbDevice /dev/sdg1
 set usbDevice /dev/sdc1
+
+# update PATH for the Google Cloud SDK
+set --local incFile ~/google-cloud-sdk/path.fish.inc
+if test -e $incFile
+    . $incFile
+end

@@ -609,7 +609,7 @@ before packages are loaded."
 
    create-lockfiles nil ;; do not create .# lockfiles
    vc-follow-symlinks t ;; auto follow symbolic links
-   browse-url-browser-function 'browse-url-chrome
+   browse-url-browser-function 'browse-url-default-browser
                                ;; '(("wikipedia\\.org" . browse-url-firefox)
                                ;;   ("github" . browse-url-chromium)
                                ;;   ("thefreedictionary\\.com" . eww-browse-url)
