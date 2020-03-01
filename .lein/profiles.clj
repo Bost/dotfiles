@@ -10,7 +10,7 @@
    ;; doesn't work with cider/cider-nrepl "0.17.0"; it yields the
    ;;     Unable to resolve var: refactor-nrepl.middleware/wrap-refactor
    ;; nREPL middleware to support editor refactorings
-   [refactor-nrepl "2.5.0-SNAPSHOT"]
+   [refactor-nrepl "2.5.0"]
    ;; collection of nREPL middleware designed to enhance CIDER
    [cider/cider-nrepl "0.24.0"]
 
