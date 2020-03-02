@@ -67,6 +67,7 @@
 (define-line-macro            tmp   (lambda (_) #'(cd "/tmp")))
 (define-line-macro            bin   (lambda (_) #'(cd "~/bin")))
 (define-line-macro            spa   (lambda (_) #'(cd "~/.emacs.d")))
+(define-line-macro            down  (lambda (_) #'(cd "~/Downloads")))
 
 ;; TODO test the extract function
 (define (extract file)
