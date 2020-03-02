@@ -14,6 +14,7 @@ set --universal dotf $dev/dotfiles
 #    export PATH="$HOME/.guix-profile/bin${PATH:+:}$PATH"
 
 # appending to PATH in reverse order
+set --export PATH /usr/racket/bin     $PATH # racket 7.6 installed manually
 set --export PATH ~/.cabal/bin        $PATH
 set --export PATH ~/.guix-profile/bin $PATH
 set --export PATH ~/.yarn/bin         $PATH
@@ -26,9 +27,9 @@ set --export PATH ~/.local/bin        $PATH
 if test ! (string match $bin $PATH)
     set --export PATH $PATH $bin
 end
-if test -d ~/.racket/7.5/bin
+if test -d ~/.racket/7.6/bin
     # put the rash-repl script on the PATH
-    set --export PATH ~/.racket/7.5/bin $PATH
+    set --export PATH ~/.racket/7.6/bin $PATH
 end
 # printenv PATH
 
