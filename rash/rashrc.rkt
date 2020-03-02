@@ -60,3 +60,4 @@
 (define-simple-pipeline-alias tf   tail -f) ;; TODO tail replacement?
 (define-simple-pipeline-alias timestamp date "+%F_%H-%M-%S") ;; same as "+%Y-%m-%d_%H-%M-%S"
 (define-simple-pipeline-alias ext  extract)
+(define-simple-pipeline-alias wp   clear)
