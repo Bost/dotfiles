@@ -36,6 +36,7 @@
 (define-simple-pipeline-alias gb   git brach)
 (define-simple-pipeline-alias gba  git brach --all)
 (define-simple-pipeline-alias gmv  git mv)
+(define-simple-pipeline-alias glo  git pull --rebase)
 (define-simple-pipeline-alias gra  git rebase --abort)
 (define-simple-pipeline-alias grc  git rebase --continue)
 (define-simple-pipeline-alias grs  git rebase --skip)

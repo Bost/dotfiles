@@ -99,6 +99,8 @@
 
 #| racket block comment begin to end |#
 
+;; Special chars: ( ) [ ] { } " , ' ` ; # | \
+
 ;; \|    =unix-pipe=
 ;; |>    send the result of the previous pipeline segment to a Racket function.
 ;; \|>   =basic-object-pipe=
@@ -206,6 +208,12 @@
                          'emacsclient
                          'emacs)])
       #{$emacs-cmd $args &bg})))
+
+(define-line-macro gk
+  (lambda (stx)
+    (syntax-parse stx
+      [(_)          #'{gitk --all &bg}])))
+
 
 (define-line-macro e
   (lambda (stx)
