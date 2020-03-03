@@ -344,88 +344,84 @@
       [(_ arg) #'(cheat-grep `arg '(
                                     dev/cheat/cmds/vim.vim
                                     ))])))
-(require file/glob)
-(require shell/demo/more-pipeline-operators)
+(define-line-macro grepc
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ ptrn) #'(run-pipeline
+                   rg
+                   -t clojure -t config -t edn -t elisp -t fish -t html -t java
+                   -t org -t py -t readme -t sh -t sql -t tex -t txt -t xml
+                   `ptrn)])))
+
+;; (require file/glob)
+;; (require shell/demo/more-pipeline-operators)
 ;; (run-pipeline ls (glob "*.pdf"))
 ;; (run-pipeline ls *.pdf)
 
+;; (define (dbg v)
+;;   #;(run-pipeline echo (str "$v        : ") $v)
+;;   (run-pipeline echo (str "v         : ") v)
+;;   (run-pipeline echo (str "(values v): ") (values v))
+;;   (run-pipeline echo (str "(glob v)  : ") (glob v))
+;;   #;(run-pipeline =globbing-basic-unix-pipe= echo (str "$v      : =globbing-basic-unix-pipe= ") $v)
+;;   (run-pipeline =globbing-basic-unix-pipe= echo (str "v          : =globbing-basic-unix-pipe= ") v)
+;;   (run-pipeline =globbing-basic-unix-pipe= echo (str "(values v) : =globbing-basic-unix-pipe= ") (values v))
+;;   (run-pipeline =globbing-basic-unix-pipe= echo (str "(glob v)   : =globbing-basic-unix-pipe= ") (glob v)))
 
-(define (grepc)
-  (let* ([es
-          '(
-            el clj cljs cljc edn boot properties java
-            ;; set shellExts
-            sh fish
-            ;; set palmExts
-            py json cfg conf mime c h
-            ;; set docsExts
-            org md rst adoc html pdf
-            ;; functional programming:
-            ;; rkt - raket; scrbl - racket scribble
-            ;; set racketExts
-            rkt scrbl
-            ;; # nix - NixOS; hs - Haskell; scm - Scheme
-            ;; set funcExts
-            cabal elm hs json nix scm
-            )]
-         [exts (string-join (map (lambda (e) (str e)) es) ","
-                            #:before-first ""
-                            #:before-last ""
-                            #:after-last "")]
+;; (define (search-code ptrn)
+;;   (let* ([es
+;;           '(
+;;             el clj cljs cljc edn boot properties java
+;;             ;; set shellExts
+;;             sh fish
+;;             ;; set palmExts
+;;             py json cfg conf mime c h
+;;             ;; set docsExts
+;;             org md rst adoc html pdf
+;;             ;; functional programming:
+;;             ;; rkt - raket; scrbl - racket scribble
+;;             ;; set racketExts
+;;             rkt scrbl
+;;             ;; # nix - NixOS; hs - Haskell; scm - Scheme
+;;             ;; set funcExts
+;;             cabal elm hs json nix scm
+;;             )]
+;;          [exts (string-join (map (lambda (e) (str e)) es) ","
+;;                             #:before-first ""
+;;                             #:before-last ""
+;;                             #:after-last "")]
 
-         ;; Using {...} can only work as a brace expansion, which is a nonstandard (not POSIX-compliant) feature of bash, ksh, and zsh; rash-repl runs under /bin/sh
-         ;; https://docs.racket-lang.org/file/glob.html?q=file%2Fglob
-         [incl
-          ;; (str "\"--include=*.{" exts "}\"")
-          "--include=*.{rkt,scrbl}"
-          #;'(
-            "--include=*.{rkt,scrbl}"
-            ;; "--include=*"
-            ;; "--include=*.rkt"
-            ;; "--include=*.scrbl"
-            )
-          ]
-         [excl "--exclude-dir={.git,target,compiled,node_modules}"]
-         [opts '(--color=always -nir)] ;; neither '"..." nor "..." works
-         [fdirs ""]
-         [wdir ""])
-    ;; (displayln)
+;;          ;; Using {...} can only work as a brace expansion, which is a
+;;          ;; nonstandard (not POSIX-compliant) feature of bash, ksh, and zsh;
+;;          ;; rash-repl runs under /bin/sh
+;;          ;; https://docs.racket-lang.org/file/glob.html?q=file%2Fglob
+;;          [incl
+;;           (str "--include=\\*.{" exts "}")
+;;           #;"--include=\\*.{rkt,scrbl}"
+;;           #;'(
+;;             "--include=*.{rkt,scrbl}"
+;;             ;; "--include=*"
+;;             ;; "--include=*.rkt"
+;;             ;; "--include=*.scrbl"
+;;             )
+;;           ]
+;;          [excl "--exclude-dir={.git,target,compiled,node_modules}"]
+;;          [opts '(--color=always -nir)] ;; neither '"..." nor "..." works
+;;          [fdirs ""]
+;;          [wdir ""]
+;;          #;[ptrn "define-line-macro"]
+;;          )
+;;     ;; (displayln)
 
-    (with-rash-config
-      {
-       dotf
-       })
+;;     (run-pipeline
+;;      ;; =globbing-basic-unix-pipe=
+;;      grep --color=always -nir (glob (str incl " " excl)) (str ptrn)
+;;      )))
 
-    (run-pipeline echo "      : " $incl)
-    (run-pipeline echo "values: " (values incl))
-    (run-pipeline echo "glob  : " (glob incl))
-    (run-pipeline =globbing-basic-unix-pipe= echo "      =globbing-basic-unix-pipe= " $incl)
-    (run-pipeline =globbing-basic-unix-pipe= echo "      =globbing-basic-unix-pipe= " incl)
-    (run-pipeline =globbing-basic-unix-pipe= echo "glob: =globbing-basic-unix-pipe= " (glob incl))
+;; (define-line-macro x
+;;   (lambda (stx)
+;;     (syntax-parse stx
+;;       [(_ ptrn) #'(search-code `ptrn)])))
 
-    #;(run-pipeline
-     ;; =globbing-basic-unix-pipe=
-     ;; grep --color=always -nir (glob "--include=*.{rkt,scrbl}") "--exclude-dir={.git}" "define-line-macro"
-     ;; grep --color=always -nir "--include=*.{rkt,scrbl}" "--exclude-dir={.git}" "define-line-macro"
-     ;; grep --color=always -nir (glob incl) "--exclude-dir={.git}" "define-line-macro"
-     ;; grep --color=always -nir (value incl) "--exclude-dir={.git}" "define-line-macro"
-     echo incl
-     echo ""
-     echo $incl
-     echo ""
-     echo (values incl)
-     echo ""
-     ;; echo (value $incl)
-     echo ""
-     ;; echo (glob incl)
-     echo ""
-     ;; echo (glob $incl)
-     )))
+;; (let* ([ptrn "{foo,qux}-{bar,baz}.rkt"]) (glob ptrn))
 
-(define-line-macro x
-  (lambda (stx)
-    (syntax-parse stx
-      [(_) #'(grepc)])))
-
-
-(let* ([ptrn "{foo,qux}-{bar,baz}.rkt"]) (glob ptrn))
