@@ -42,15 +42,14 @@
 ;; https://www.greghendershott.com/2015/08/at-expressions.html
 (define-line-macro            dev   (lambda (_) #'(cd "~/dev")))
 
-(require racket/block)
 (define (cd-notes)
-  (block
+  (begin
    (cd "~/dev/notes")
    (let ([dir "~/anaconda3/bin"]
          [path (getenv "PATH")])
      (if (string-contains? path dir)
          (displayln (str "PATH contains '" dir "' already"))
-         (block
+         (begin
           (putenv "PATH" (str dir ":" path))
           (displayln (str "PATH prepended by '" dir "'")))))))
 
