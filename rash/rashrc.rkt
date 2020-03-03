@@ -21,6 +21,7 @@
 (define-simple-pipeline-alias lat  ls --color=auto -lt -all) ;; ls -lat
 (define-simple-pipeline-alias latr ls --color=auto --sort=time -l --almost-all --reverse) ;; ls -latr
 (define-simple-pipeline-alias l    ls --color=auto -la)
+(define-simple-pipeline-alias lr   lein repl)
 (define-simple-pipeline-alias lock   xflock4)
 (define-simple-pipeline-alias loff   xfce4-session-logout --logout --fast)
 (define-simple-pipeline-alias shut   xfce4-session-logout --halt   --fast)
