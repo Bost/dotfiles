@@ -348,8 +348,9 @@
   (lambda (stx)
     (syntax-parse stx
       [(_ ptrn) #'(run-pipeline
-                   rg
+                   rg --color always
                    -t clojure -t config -t edn -t elisp -t fish -t html -t java
+                   --type-add '"racket:*.rkt"' -t racket
                    -t org -t py -t readme -t sh -t sql -t tex -t txt -t xml
                    `ptrn)])))
 
