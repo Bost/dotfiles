@@ -433,3 +433,9 @@
 
 ;; (let* ([ptrn "{foo,qux}-{bar,baz}.rkt"]) (glob ptrn))
 
+(define-simple-pipeline-alias u
+  {
+   sudo apt update
+   sudo apt full-upgrade --yes
+   sudo needrestart
+   })
