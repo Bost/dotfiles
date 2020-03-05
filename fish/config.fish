@@ -65,8 +65,10 @@ set --local clojureDir ~/.m2/repository/org/clojure
 set --local cljver 1.10.1
 set cljjar $clojureDir/clojure/$cljver/clojure-$cljver.jar
 
-set --local cljsver 0.2.176
+set --local cljsver 0.2.187
 set cljsjar $clojureDir/spec.alpha/$cljsver/spec.alpha-$cljsver.jar
+# test
+# java $JVM_OPTS -cp $cljjar:$cljsjar clojure.main
 
 # -n, --line-number
 # -i, --ignore-case
