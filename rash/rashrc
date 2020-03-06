@@ -224,8 +224,20 @@
   (lambda (stx)
     (syntax-parse stx
       [(_ arg ...) #'(map (lambda (remote)
-                            {git push --verbose $remote `arg ...})
+                            {
+                             git push --verbose $remote `arg ...
+                             })
                           '(origin gitlab))])))
+
+(define-line-macro glo
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg ...) #'(map (lambda (remote)
+                            {
+                             git fetch --tags $remote `arg ...
+                             git rebase `arg ...
+                             })
+                          '(origin))])))
 
 
 ;; (define-simple-pipeline-alias reinst sudo apt --reinstall install --yes)
