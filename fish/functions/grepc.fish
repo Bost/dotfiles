@@ -25,10 +25,25 @@ function grepc --description "(Rip)Grep projects / code files"
     # echo "### TODO repeat w/ --word-regex if nothing found, i.e. \$status == 1"
     # echo $cmd "| less -r"
 
+    # command line history in spacemacs: :'<,'>s/-t/ \\\n-t/g
     set cmd rg --color always \
-        -t clojure -t config -t edn -t elisp -t fish -t html -t java \
+        -t clojure \
+        -t config \
+        -t edn \
+        -t elisp \
+        -t fish \
+        -t html \
+        -t java \
         --type-add "'racket:*.rkt'" -t racket \
-        -t org -t py -t readme -t sh -t sql -t tex -t txt -t xml \
+        -t org \
+        -t py \
+        -t readme \
+        -t sh \
+        -t sql \
+        -t tex \
+        -t txt \
+        -t xml \
+        -t yaml \
         $argv
     echo $cmd
     eval $cmd
