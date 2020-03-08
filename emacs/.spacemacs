@@ -747,6 +747,7 @@ before packages are loaded."
   ;; C-M-b beginning-of-defun
   (global-set-key (kbd "<C-M-left>") 'backward-paragraph)
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
+  (global-set-key (kbd "<C-M-s-delete>") 'my/delete-sexp)
   (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
 
   ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by

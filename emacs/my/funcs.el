@@ -372,6 +372,15 @@ displayed."
   (insert str-sexp)
   (left-char n-chars-back))
 
+(defun my/delete-sexp (&optional arg)
+  "Delete the sexp (balanced expression) following point w/o
+yanking it. See `kill-sexp'."
+  (interactive "p")
+  (let ((beg (point)))
+    (forward-sexp 1)
+    (let ((end (point)))
+      (delete-region beg end))))
+
 (defun my/hs-clojure-hide-namespace-and-folds ()
   "Hide the first (ns ...) expression in the file, and also all
 the (^:fold ...) expressions."
