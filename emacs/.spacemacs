@@ -911,9 +911,13 @@ before packages are loaded."
   ;; (advice-remove 'eval-buffer #'my/progress-report)
   (global-set-key (kbd "s-u") 'eval-buffer)
 
-  (global-set-key (kbd "s->") 'spacemacs/jump-to-definition)
+  (global-set-key (kbd "s-.") 'spacemacs/jump-to-definition)
   (global-set-key (kbd "s-,") 'evil-jump-backward) ;; C-o: evil-jump-backward
-  (global-set-key (kbd "s-.") 'evil-jump-forward)
+
+  ;; just for the convenience - when the Super-key is pressed already
+  (global-set-key (kbd "s-<") 'evil-jump-backward) ;; C-o: evil-jump-backward
+  (global-set-key (kbd "s->") 'evil-jump-forward)
+
   ;; (global-set-key (kbd "s-,") 'dumb-jump-back)
   ;; (global-set-key (kbd "s-,") 'cider-pop-back)
   (global-set-key (kbd "<print>") 'describe-text-properties) ;; 'my/what-face
@@ -993,8 +997,6 @@ before packages are loaded."
                  \"figwheel-sidecar to your project.\") {})))"
        )
 
-      (setq cider-latest-clojure-version "1.9.0")
-      ;; (setq cider-jack-in-auto-inject-clojure "1.9.0")
       ;; (setq org-babel-clojure-backend 'cider)
       (add-hook 'cider-mode-hook #'eldoc-mode)
       (add-hook 'cider-repl-mode-hook #'eldoc-mode)
@@ -1051,6 +1053,7 @@ before packages are loaded."
              ("C-s-j" . cider-jack-in)
              ;; ("s-r"   . cider-eval-last-expression-in-repl)
              ("M-s-l" . my/cider-save-and-load-current-buffer)
+             ("s-u"   . my/cider-save-and-load-current-buffer)
              ("M-s-n" . cider-repl-set-ns)
              ("s-t"   . cider-test-run-tests)
 
