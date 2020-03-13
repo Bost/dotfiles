@@ -45,6 +45,7 @@ function extract
     case "*"
       echo "ERROR: Unknown file type:" $file "can't be extracted."
   end
+  # check if it's set/empty - https://stackoverflow.com/a/47743269
   if test -n "$cmd"
       echo $cmd
       eval $cmd
