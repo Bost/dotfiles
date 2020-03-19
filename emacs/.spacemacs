@@ -700,8 +700,8 @@ before packages are loaded."
   (global-set-key (kbd "s-z") 'my/buffer-selection-show)
   ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
   (global-set-key (kbd "s-D") 'dired-jump)
-  (global-set-key (kbd "s-c") 'my/sp-copy-sexp-msg)
-  (global-set-key (kbd "s-b") 'my/sp-copy-back-sexp-msg)
+  (global-set-key (kbd "s-c") 'my/sp-copy-next-sexp-msg)
+  (global-set-key (kbd "s-b") 'my/sp-copy-prev-sexp-msg)
   (global-set-key (kbd "s-B") 'helm-filtered-bookmarks)
   (global-set-key (kbd "<f9>") 'helm-filtered-bookmarks)
   (global-set-key (kbd "<f11>") 'bookmark-set)
@@ -747,7 +747,8 @@ before packages are loaded."
   ;; C-M-b beginning-of-defun
   (global-set-key (kbd "<C-M-left>") 'backward-paragraph)
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
-  (global-set-key (kbd "<C-M-s-delete>") 'my/delete-sexp)
+  (global-set-key (kbd "<C-M-s-delete>") 'my/delete-next-sexp)
+  (global-set-key (kbd "<C-M-s-backspace>") 'my/delete-prev-sexp)
   (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
 
   ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
@@ -788,6 +789,12 @@ before packages are loaded."
   ;; <menu> is not a prefix key. See:
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
   (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
+
+  (use-package helm
+    :config
+    (bind-keys :map prog-mode-map
+               ("s-h" . helm-imenu)))
+
   (use-package org
     :config
     ;; TODO check if the customization holds (org-support-shift-select 'always)
@@ -810,7 +817,6 @@ before packages are loaded."
   (global-set-key (kbd "s-I") 'my/iedit-mode-toggle)
   (global-set-key (kbd "s-i") 'iedit-mode) ;; all occurences in the buffer
   ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
-  (global-set-key (kbd "s-h") 'helm-imenu)
   (global-set-key (kbd "<f12>") 'undo-tree-visualize)
   ;; ("<S-delete>"      . kill-region)
   ;; ("<C-s-backspace>" . kill-line-backward)
@@ -862,12 +868,13 @@ before packages are loaded."
              'emacs-lisp-mode-hook
              (lambda () ;; "Λ"
                (push '("my/interactive-lambda" . 923) prettify-symbols-alist)))
-    :bind ;; lambdas are not supported
-    (("C-s-m" . my/elisp-insert-message)
-     ("s-d"   . my/eval-current-defun)
-     ("s-e"   . eval-last-sexp)))
+    ;; lambdas are not supported
+    (bind-keys :map emacs-lisp-mode-map
+               ("C-s-m" . my/elisp-insert-message)
+               ("s-d"   . my/eval-current-defun)
+               ("s-e"   . eval-last-sexp)))
 
-(use-package racket-mode
+  (use-package racket-mode
     :config
     (bind-keys :map racket-mode-map
                ;; my/interactive-lambda doesn't work
@@ -890,7 +897,20 @@ before packages are loaded."
     ;;   (->> 1))
 
     (bind-keys :map clojure-mode-map
-               ;; followind 3 bindings are same as in cider
+               ;; TODO see global-set-key settings
+               ;; ("s-."   . cider-find-var)
+               ;; ("s-,"   . cider-pop-back)
+               ;; TODO s-M does not work in REPL buffer
+
+               ;; Reload modified and unloaded namespaces on the classpath.
+               ("s-o" . cider-ns-refresh)
+
+               ;; Send a (require ’ns :reload) to the REPL.
+               ;; ("s-o" . cider-ns-reload)
+
+               ("C-s-o" . my/cider-clear-compilation-highlights)
+
+               ;; following 3 bindings are same as in cider
                ;; on the german keyboard the '#' is next to Enter
                ("s-i" . cljr-rename-symbol)
                ;; my/interactive-lambda doesn't work
@@ -1011,6 +1031,7 @@ before packages are loaded."
                  ("s-i" . cljr-rename-symbol)
                  ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
                  ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)
+                 ("s-h"   . helm-cider-history)
 
                  ("<C-s-delete>" . cider-repl-clear-buffer)
                  ("s-j" . cider-format-defun)
@@ -1056,13 +1077,6 @@ before packages are loaded."
              ("s-u"   . my/cider-save-and-load-current-buffer)
              ("M-s-n" . cider-repl-set-ns)
              ("s-t"   . cider-test-run-tests)
-
-             ;; TODO see global-set-key settings
-             ;; ("s-."   . cider-find-var)
-             ;; ("s-,"   . cider-pop-back)
-             ;; TODO s-M does not work in REPL buffer
-             ("s-o"   . cider-clear-compilation-highlights)
-             ("s-H"   . helm-cider-history)
 
              ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
 

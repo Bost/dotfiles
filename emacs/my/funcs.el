@@ -221,7 +221,7 @@ displayed."
   (if (not (evil-insert-state-p))
       (evil-insert 0)))
 
-(defun my/sp-copy-sexp-msg ()
+(defun my/sp-copy-next-sexp-msg ()
   (interactive)
   (sp-copy-sexp)
   (let* ((sexp (car kill-ring))
@@ -241,9 +241,10 @@ displayed."
          "..."
        ""))))
 
-(defun my/sp-copy-back-sexp-msg ()
+(defun my/sp-copy-prev-sexp-msg ()
   (interactive)
   (let* ((point-pos (point)))
+    ;; try (forward-sexp -1)
     (sp-backward-sexp)
     (my/sp-copy-sexp-msg)
     (goto-char point-pos)))
@@ -372,7 +373,7 @@ displayed."
   (insert str-sexp)
   (left-char n-chars-back))
 
-(defun my/delete-sexp (&optional arg)
+(defun my/delete-next-sexp (&optional arg)
   "Delete the sexp (balanced expression) following point w/o
 yanking it. See `kill-sexp'."
   (interactive "p")
@@ -380,6 +381,15 @@ yanking it. See `kill-sexp'."
     (forward-sexp 1)
     (let ((end (point)))
       (delete-region beg end))))
+
+(defun my/delete-prev-sexp (&optional arg)
+  "Delete the sexp (balanced expression) following point w/o
+yanking it. See `kill-sexp'."
+  (interactive "p")
+  (let ((beg (point)))
+    (forward-sexp -1)
+    (let ((end (point)))
+      (delete-region end beg)))) ;; beg & end are swapped
 
 (defun my/hs-clojure-hide-namespace-and-folds ()
   "Hide the first (ns ...) expression in the file, and also all
@@ -659,3 +669,6 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
   (if (boundp 'helm-map)
       (define-key helm-map (kbd "s-a") 'helm-next-line)))
 
+(defun my/cider-clear-compilation-highlights ()
+  (interactive)
+  (cider-clear-compilation-highlights t))
