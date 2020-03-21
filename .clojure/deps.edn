@@ -38,12 +38,12 @@
                      {:mvn/version "0.5.5"}}
         :main-opts ["-m" "clj-new.create"]}
 
-  ;; :nREPL
-  ;; {:extra-deps
-  ;;  {nrepl/nrepl {:mvn/version "0.7.0-alpha3"}
-  ;;   ;; cider/cider-nrepl {:mvn/version "0.25.0-SNAPSHOT"}
-  ;;   }
-  ;;  }
+  :nREPL
+  {:extra-deps
+   {nrepl/nrepl {:mvn/version "0.7.0-alpha3"}
+    ;; cider/cider-nrepl {:mvn/version "0.25.0-SNAPSHOT"}
+    }
+   }
 
 
   :nREPL
