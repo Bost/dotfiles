@@ -37,6 +37,9 @@
 
    ;; autorecompile changed java files
    [lein-virgil "0.1.9"]
+
+   ;; National Vulnerability Database dependency-checker
+   [lein-nvd "1.3.1"]
    ]
 
   :dependencies

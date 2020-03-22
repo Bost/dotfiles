@@ -246,7 +246,7 @@ displayed."
   (let* ((point-pos (point)))
     ;; try (forward-sexp -1)
     (sp-backward-sexp)
-    (my/sp-copy-sexp-msg)
+    (my/sp-copy-next-sexp-msg)
     (goto-char point-pos)))
 
 (defun my/select-inner (vi-str)
@@ -306,10 +306,17 @@ displayed."
     ))
 
 (defun my/google-this-or-region (&optional arg)
+  "TODO when point at URL use browse-url"
   (interactive "p")
   (if (or (evil-visual-state-p) (region-active-p))
-      (google-this-region arg)
-    (google-this arg)))
+      (progn
+        ;; (message "google-this-region")
+        (google-this-region arg)
+        )
+    (progn
+      ;; (message "google-this")
+      (google-this arg)
+      )))
 
 (defun my/evil-avy-goto-char-timer ()
   (interactive)
