@@ -791,11 +791,6 @@ before packages are loaded."
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
   (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
 
-  (use-package helm
-    :config
-    (bind-keys :map prog-mode-map
-               ("s-h" . helm-imenu)))
-
   (use-package org
     :config
     ;; TODO check if the customization holds (org-support-shift-select 'always)
@@ -807,11 +802,7 @@ before packages are loaded."
                 '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5))
          (set-face-attribute face nil
                              :weight 'bold ;; 'semi-bold
-                             :height 1.0))))
-
-    (bind-keys :map org-mode-map
-               ;; my/interactive-lambda doesn't work
-               ("<menu>" . org-latex-export-to-pdf)))
+                             :height 1.0)))))
 
   ;; fd - evil-escape from insert state and everything else
   ;; occurences - function scope
@@ -868,19 +859,7 @@ before packages are loaded."
     :config (add-hook
              'emacs-lisp-mode-hook
              (lambda () ;; "Λ"
-               (push '("my/interactive-lambda" . 923) prettify-symbols-alist)))
-    ;; lambdas are not supported
-    (bind-keys :map emacs-lisp-mode-map
-               ("C-s-m" . my/elisp-insert-message)
-               ("s-d"   . my/eval-current-defun)
-               ("s-e"   . eval-last-sexp)))
-
-  (use-package racket-mode
-    :config
-    (bind-keys :map racket-mode-map
-               ;; my/interactive-lambda doesn't work
-               ("C-s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)
-               ("s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)))
+               (push '("my/interactive-lambda" . 923) prettify-symbols-alist))))
 
   (use-package clojure-mode
     :config
@@ -896,27 +875,7 @@ before packages are loaded."
     ;; (define-clojure-indent ;; doesn't work?
     ;;   (->  1)
     ;;   (->> 1))
-
-    (bind-keys :map clojure-mode-map
-               ;; TODO see global-set-key settings
-               ;; ("s-."   . cider-find-var)
-               ;; ("s-,"   . cider-pop-back)
-               ;; TODO s-M does not work in REPL buffer
-
-               ;; Reload modified and unloaded namespaces on the classpath.
-               ("s-o" . cider-ns-refresh)
-
-               ;; Send a (require ’ns :reload) to the REPL.
-               ;; ("s-o" . cider-ns-reload)
-
-               ("C-s-o" . my/cider-clear-compilation-highlights)
-
-               ;; following 3 bindings are same as in cider
-               ;; on the german keyboard the '#' is next to Enter
-               ("s-i" . cljr-rename-symbol)
-               ;; my/interactive-lambda doesn't work
-               ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
-               ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)))
+    )
 
   (use-package super-save ;; better auto-save-mode
     :config (super-save-mode +1))
@@ -1026,29 +985,6 @@ before packages are loaded."
       ;; (setq gui-elements 1) ; because of CIDER menu
       ;; (define-key cider-repl-mode-map "<s-delete>" nil)
       ;; (unbind-key "<s-delete>" cider-repl-mode-map)
-      (bind-keys :map cider-repl-mode-map
-                 ;; followind 3 bindings are same as in clojure-mode
-                 ;; on the german keyboard the '#' is next to Enter
-                 ("s-i" . cljr-rename-symbol)
-                 ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
-                 ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)
-                 ("s-h"   . helm-cider-history)
-
-                 ("<C-s-delete>" . cider-repl-clear-buffer)
-                 ("s-j" . cider-format-defun)
-                 ("s-e" . cider-eval-last-sexp)
-                 ("s-x" . cider-switch-to-last-clojure-buffer)
-                 ;; invoke from *.clj buffer
-                 ("s-M" . main-a)
-                 ("s-S" . main-s))
-      (bind-keys :map cider-mode-map
-                 ("<C-M-right>" . end-of-defun)       ; forward-paragraph
-                 ("<C-M-left>"  . beginning-of-defun) ; backward-paragraph
-                 ("s-d"         . cider-eval-defun-at-point)
-                 ("s-j"         . cider-format-defun)
-                 ("s-x"         . cider-switch-to-repl-buffer)
-                 ("s-X"         . my/s-X)
-                 ("s-e"         . cider-eval-last-sexp))
 
       ;; TODO prefix name is not added
       (add-to-list 'spacemacs/key-binding-prefixes '("og"  "google-this"))
@@ -1063,7 +999,78 @@ before packages are loaded."
       (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "c" 'my/s-X)
       (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode    "c" 'my/s-X)
 
-      :bind (;; lambdas are not supported
+      )
+
+  (use-package racket-mode
+    :config
+    ;; TODO (bind-keys ..) must be inside the (use-package racket-mode ..) ???
+    (bind-keys :map racket-mode-map
+               ;; my/interactive-lambda doesn't work
+               ("C-s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)
+               ("s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)))
+
+  ;; lambdas are not supported
+  ;; :bind ()
+
+  ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
+  ;; ("<s-kp-insert>" .)
+  ;; ("<s-kp-0>"      .)
+  ;; ("s-'"           .)
+  ;; (unbind-key "<C-insert>")
+  ;; ("<C-insert>"    .)
+  (bind-keys :map cider-repl-mode-map
+             ;; following 3 bindings are same as in clojure-mode
+             ;; on the german keyboard the '#' is next to Enter
+             ("<f5>"        . my/telegram-restart)
+             ("<f6>"        . my/web-restart)
+             ("s-i" . cljr-rename-symbol)
+             ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
+             ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)
+             ("s-h"   . helm-cider-history)
+             ("<C-s-delete>" . cider-repl-clear-buffer)
+             ("s-j" . cider-format-defun)
+             ("s-e" . cider-eval-last-sexp)
+             ("s-x" . cider-switch-to-last-clojure-buffer)
+             ;; invoke from clojure buffer
+             ("s-M" . main-a)
+             ("s-S" . main-s))
+  ;; (unbind-key "<f5>" cider-mode-map)
+  ;; (unbind-key "<f6>" cider-mode-map)
+  (bind-keys :map cider-mode-map
+             ("<f5>"        . my/telegram-restart)
+             ("<f6>"        . my/web-restart)
+             ("<C-M-right>" . end-of-defun)       ; forward-paragraph
+             ("<C-M-left>"  . beginning-of-defun) ; backward-paragraph
+             ("s-d"         . cider-eval-defun-at-point)
+             ("s-j"         . cider-format-defun)
+             ("s-x"         . cider-switch-to-repl-buffer)
+             ("s-X"         . my/s-X)
+             ("s-e"         . cider-eval-last-sexp))
+  ;; lambdas are not supported
+  (bind-keys :map emacs-lisp-mode-map
+             ("C-s-m"       . my/elisp-insert-message)
+             ("s-d"         . my/eval-current-defun)
+             ("s-e"         . eval-last-sexp))
+  (bind-keys :map org-mode-map
+             ;; my/interactive-lambda doesn't work
+             ("<menu>"      . org-latex-export-to-pdf))
+  (bind-keys :map prog-mode-map
+             ("s-h"         . helm-imenu))
+  (bind-keys :map clojure-mode-map
+             ("C-s-c" . cider-connect-clj)
+             ("C-s-j" . cider-jack-in)
+             ;; ("s-r"   . cider-eval-last-expression-in-repl)
+             ("M-s-l" . my/cider-save-and-load-current-buffer)
+             ("s-u"   . my/cider-save-and-load-current-buffer)
+             ("M-s-n" . cider-repl-set-ns)
+             ("s-t"   . cider-test-run-tests)
+
+             ;; invoke from clojure buffer
+             ("s-M" . main-a)
+             ("s-A" . main-a)
+             ("s-S" . main-s)
+             ("s-U" . main-u)
+
              ("<s-insert>" . my/clojure-insert-log)
              ;; (bind-key "C-s-p" 'my/clojure-insert-log)
              ("C-s-p" . my/clojure-insert-log)
@@ -1072,26 +1079,27 @@ before packages are loaded."
              ("C-s-n" . my/clojure-insert-defn)
              ("C-s-s" . my/clojure-insert-doseq)
              ("C-s-d" . my/clojure-insert-do)
-             ("C-s-j" . cider-jack-in)
-             ;; ("s-r"   . cider-eval-last-expression-in-repl)
-             ("M-s-l" . my/cider-save-and-load-current-buffer)
-             ("s-u"   . my/cider-save-and-load-current-buffer)
-             ("M-s-n" . cider-repl-set-ns)
-             ("s-t"   . cider-test-run-tests)
+             ;; TODO see global-set-key settings
+             ;; ("s-." . cider-find-var)
+             ;; ("s-," . cider-pop-back)
+             ;; TODO s-M does not work in REPL buffer
 
-             ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
+             ;; Reload modified and unloaded namespaces on the classpath
+             ("s-o"    . cider-ns-refresh)
 
-             ("<s-kp-insert>" . zark-symbols)
-             ("<s-kp-0>"      . zark-symbols)
-             ("s-'"           . zark-symbols)
-             ;; (unbind-key "<C-insert>")
-             ;; ("<C-insert>"    . typed-unicode-symbols)
+             ;; Send a (require ’ns :reload) to the REPL
+             ;; ("s-o" . cider-ns-reload)
 
-             ;; invoke from *.clj buffer
-             ("s-M" . main-a)
-             ("s-A" . main-a)
-             ("s-S" . main-s)
-             ("s-U" . main-u)))
+             ("C-s-o"  . my/cider-clear-compilation-highlights)
+
+             ;; following 3 bindings are same as in cider
+             ;; on the german keyboard the '#' is next to Enter
+             ("s-i"    . cljr-rename-symbol)
+             ;; my/interactive-lambda doesn't work
+             ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
+             ("s-\\"  . my/clojure-toggle-reader-comment-fst-sexp-on-line))
+  (bind-keys :map dired-mode-map
+             ("<S-delete>" . dired-do-delete))
 
   ;; TODO consider using spacemacs/set-leader-keys
   ;; (spacemacs/set-leader-keys "oy" 'my/copy-to-clipboard)
