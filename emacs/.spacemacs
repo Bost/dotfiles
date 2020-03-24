@@ -692,7 +692,8 @@ before packages are loaded."
   ;; (global-set-key (kbd "s-2") 'my/split-other-window-below)
   ;; (global-set-key (kbd "s-3") 'my/split-other-window-right)
   (global-set-key (kbd "s-2") 'split-window-below) ;; SPC w -
-  (global-set-key (kbd "s-3") 'spacemacs/window-split-double-columns) ; SPC w 2
+  ;; (global-set-key (kbd "s-3") 'spacemacs/window-split-double-columns) ; SPC w 2
+  (global-set-key (kbd "s-3") 'split-window-right-and-focus) ; SPC w 3
 
   (global-set-key (kbd "s-a") 'helm-mini)
   (advice-add 'helm-mini :before 'my/helm-mini)
