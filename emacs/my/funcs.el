@@ -191,8 +191,8 @@ displayed."
   (run-at-time "100 millisec" nil
                (lambda (remap-cookie)
                  (face-remap-remove-relative remap-cookie))
-               (face-remap-add-relative 'default 'flash-active-buffer-face)))
-
+               ;; doesn't work on the "@@-lines" in magit buffers
+               (face-remap-add-relative 'hl-line 'flash-active-buffer-face)))
 
 (defun my/toggle-narrow-to-defun ()
   ;; TODO send to my/toggle-narrow-to-defun spacemacs upstream
