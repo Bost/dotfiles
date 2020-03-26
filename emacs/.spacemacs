@@ -614,7 +614,10 @@ before packages are loaded."
    ;; clojure-enable-fancify-symbols t
    ;; cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
    ;; TODO use a list of prefered python interpreters
-   python-shell-interpreter "python3.7" ; "python3.6"
+   python-shell-interpreter "python3.8"; "python3.7" ; "python3.6"
+   ;; -i     : inspect interactively after running script; forces a prompt even
+   ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
+   python-shell-interpreter-args "-i"
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
    bookmark-default-file "~/dev/dotfiles/emacs/bookmarks"
