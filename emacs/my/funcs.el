@@ -217,13 +217,14 @@ displayed."
   (my/split-other-window-and 'split-window-right))
 
 (defun my/buffer-selection-show ()
-  ;; Make a menu of buffers so you can manipulate buffers or the buffer list.
+  "Make a menu of buffers so you can manipulate buffers or the buffer list."
   (interactive)
   (bs-show nil)
   (if (not (evil-insert-state-p))
       (evil-insert 0)))
 
 (defun my/sp-copy-next-sexp-msg ()
+  "TODO flash the copied s-exp"
   (interactive)
   (sp-copy-sexp)
   (let* ((sexp (car kill-ring))
