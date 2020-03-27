@@ -1021,24 +1021,35 @@ before packages are loaded."
   ;; ("s-'"           .)
   ;; (unbind-key "<C-insert>")
   ;; ("<C-insert>"    .)
-  (bind-keys :map cider-repl-mode-map
-             ;; following 3 bindings are same as in clojure-mode
-             ;; on the german keyboard the '#' is next to Enter
-             ("<f5>"        . my/telegram-restart)
-             ("<f6>"        . my/web-restart)
-             ("s-i" . cljr-rename-symbol)
-             ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
-             ("s-\\" . my/clojure-toggle-reader-comment-fst-sexp-on-line)
-             ("s-h"   . helm-cider-history)
-             ("<C-s-delete>" . cider-repl-clear-buffer)
-             ("s-j" . cider-format-defun)
-             ("s-e" . cider-eval-last-sexp)
-             ("s-x" . cider-switch-to-last-clojure-buffer)
-             ;; invoke from clojure buffer
-             ("s-M" . main-a)
-             ("s-S" . main-s))
-  ;; (unbind-key "<f5>" cider-mode-map)
-  ;; (unbind-key "<f6>" cider-mode-map)
+
+  ;; lambdas are not supported
+
+  (bind-keys
+   :map cider-repl-mode-map
+   ;; following 3 bindings are same as in clojure-mode
+   ;; on the german keyboard the '#' is next to Enter
+   ("<f5>"          . my/telegram-restart)
+   ("<f6>"          . my/web-restart)
+   ("s-i"           . cljr-rename-symbol)
+   ("C-s-\\"        . my/clj-toggle-reader-comment-current-sexp)
+   ("s-\\"          . my/clj-toggle-reader-comment-fst-sexp-on-line)
+   ("s-h"           . helm-cider-history)
+
+   ("C-s-p"         . my/clj-insert-log)
+   ("C-s-l"         . my/clj-insert-let)
+   ("C-s-f"         . my/clj-insert-for)
+   ("C-s-n"         . my/clj-insert-defn)
+   ("C-s-m"         . my/clj-insert-map-fn)
+   ("C-s-s"         . my/clj-insert-doseq)
+   ("C-s-d"         . my/clj-insert-do)
+
+   ("<C-s-delete>"  . cider-repl-clear-buffer)
+   ("s-j"           . cider-format-defun)
+   ("s-e"           . cider-eval-last-sexp)
+   ("s-x"           . cider-switch-to-last-clojure-buffer)
+   ;; invoke from clojure buffer
+   ("s-M"           . main-a))
+
   (bind-keys :map cider-mode-map
              ("<f5>"        . my/telegram-restart)
              ("<f6>"        . my/web-restart)
@@ -1049,60 +1060,65 @@ before packages are loaded."
              ("s-x"         . cider-switch-to-repl-buffer)
              ("s-X"         . my/s-X)
              ("s-e"         . cider-eval-last-sexp))
-  ;; lambdas are not supported
+
   (bind-keys :map emacs-lisp-mode-map
              ("C-s-m"       . my/elisp-insert-message)
              ("s-d"         . my/eval-current-defun)
              ("s-e"         . eval-last-sexp))
+
   (bind-keys :map org-mode-map
              ;; my/interactive-lambda doesn't work
              ("<menu>"      . org-latex-export-to-pdf))
+
   (bind-keys :map prog-mode-map
              ("s-h"         . helm-imenu))
-  (bind-keys :map clojure-mode-map
-             ("C-s-c" . cider-connect-clj)
-             ("C-s-j" . cider-jack-in)
-             ;; ("s-r"   . cider-eval-last-expression-in-repl)
-             ("M-s-l" . my/cider-save-and-load-current-buffer)
-             ("s-u"   . my/cider-save-and-load-current-buffer)
-             ("M-s-n" . cider-repl-set-ns)
-             ("s-t"   . cider-test-run-tests)
 
-             ;; invoke from clojure buffer
-             ("s-M" . main-a)
-             ("s-A" . main-a)
-             ("s-S" . main-s)
-             ("s-U" . main-u)
+  (bind-keys
+   :map clojure-mode-map
+   ("C-s-c"   . cider-connect-clj)
+   ("C-s-j"   . cider-jack-in)
+   ;; ("s-r"  . cider-eval-last-expression-in-repl)
+   ("M-s-l"   . my/cider-save-and-load-current-buffer)
+   ("s-u"     . my/cider-save-and-load-current-buffer)
+   ("M-s-n"   . cider-repl-set-ns)
+   ("s-t"     . cider-test-run-tests)
 
-             ("<s-insert>" . my/clojure-insert-log)
-             ;; (bind-key "C-s-p" 'my/clojure-insert-log)
-             ("C-s-p" . my/clojure-insert-log)
-             ("C-s-l" . my/clojure-insert-let)
-             ("C-s-f" . my/clojure-insert-for)
-             ("C-s-n" . my/clojure-insert-defn)
-             ("C-s-s" . my/clojure-insert-doseq)
-             ("C-s-d" . my/clojure-insert-do)
-             ;; TODO see global-set-key settings
-             ;; ("s-." . cider-find-var)
-             ;; ("s-," . cider-pop-back)
-             ;; TODO s-M does not work in REPL buffer
+   ;; invoke from clojure buffer
+   ("s-M"     . main-a)
+   ("s-A"     . main-a)
+   ("s-S"     . main-s)
+   ("s-U"     . main-u)
 
-             ;; Reload modified and unloaded namespaces on the classpath
-             ("s-o"    . cider-ns-refresh)
+   ("C-s-p"   . my/clj-insert-log)
+   ("C-s-l"   . my/clj-insert-let)
+   ("C-s-f"   . my/clj-insert-for)
+   ("C-s-n"   . my/clj-insert-defn)
+   ("C-s-m"   . my/clj-insert-map-fn)
+   ("C-s-s"   . my/clj-insert-doseq)
+   ("C-s-d"   . my/clj-insert-do)
+   ;; TODO see global-set-key settings
+   ;; ("s-."  . cider-find-var)
+   ;; ("s-,"  . cider-pop-back)
+   ;; TODO s-M does not work in REPL buffer
 
-             ;; Send a (require ’ns :reload) to the REPL
-             ;; ("s-o" . cider-ns-reload)
+   ;; Reload modified and unloaded namespaces on the classpath
+   ("s-o"     . cider-ns-refresh)
 
-             ("C-s-o"  . my/cider-clear-compilation-highlights)
+   ;; Send a (require ’ns :reload) to the REPL
+   ;; ("s-o"  . cider-ns-reload)
 
-             ;; following 3 bindings are same as in cider
-             ;; on the german keyboard the '#' is next to Enter
-             ("s-i"    . cljr-rename-symbol)
-             ;; my/interactive-lambda doesn't work
-             ("C-s-\\" . my/clojure-toggle-reader-comment-current-sexp)
-             ("s-\\"  . my/clojure-toggle-reader-comment-fst-sexp-on-line))
+   ("C-s-o"   . my/cider-clear-compilation-highlights)
+
+   ;; following 3 bindings are same as in cider
+   ;; on the german keyboard the '#' is next to Enter
+   ("s-i"     . cljr-rename-symbol)
+   ;; my/interactive-lambda doesn't work
+   ("C-s-\\"  . my/clj-toggle-reader-comment-current-sexp)
+   ("s-\\"    . my/clj-toggle-reader-comment-fst-sexp-on-line))
   (bind-keys :map dired-mode-map
              ("<S-delete>" . dired-do-delete))
+
+  ;; (bind-keys :map helm-mode-map)
 
   ;; TODO consider using spacemacs/set-leader-keys
   ;; (spacemacs/set-leader-keys "oy" 'my/copy-to-clipboard)

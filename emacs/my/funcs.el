@@ -610,31 +610,35 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
   ;; (cider-switch-to-relevant-repl-buffer nil)
   )
 
-(defun my/clojure-insert-log ()
+(defun my/clj-insert-log ()
   (interactive)
   (let* ((msg (if (equal major-mode 'clojurescript-mode)
                   "(.log js/console \"\")"
                 "(println \"\")")))
     (my/insert-sexp msg 2)))
 
-(defun my/clojure-insert-let ()
+(defun my/clj-insert-map-fn ()
+  (interactive)
+  (my/insert-sexp "(map (fn []))" 3))
+
+(defun my/clj-insert-let ()
   (interactive)
   ;; (cljr-introduce-let) ; TODO see docu for cljr-introduce-let
   (my/insert-sexp "(let [])" 2))
 
-(defun my/clojure-insert-for ()
+(defun my/clj-insert-for ()
   (interactive)
   (my/insert-sexp "(for [])" 2))
 
-(defun my/clojure-insert-defn ()
+(defun my/clj-insert-defn ()
   (interactive)
   (my/insert-sexp "(defn [])" 3))
 
-(defun my/clojure-insert-doseq ()
+(defun my/clj-insert-doseq ()
   (interactive)
   (my/insert-sexp "(doseq [])" 2))
 
-(defun my/clojure-insert-do ()
+(defun my/clj-insert-do ()
   (interactive)
   (my/insert-sexp "(do)" 1))
 
@@ -659,7 +663,7 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
   (interactive)
   (my/toggle-reader-comment-fst-sexp-on-line "#;"))
 
-(defun my/clojure-toggle-reader-comment-fst-sexp-on-line ()
+(defun my/clj-toggle-reader-comment-fst-sexp-on-line ()
   (interactive)
   (my/toggle-reader-comment-fst-sexp-on-line "#_"))
 
@@ -668,10 +672,10 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
   (newline-and-indent)
   (my/racket-toggle-reader-comment-fst-sexp-on-line))
 
-(defun my/clojure-toggle-reader-comment-current-sexp ()
+(defun my/clj-toggle-reader-comment-current-sexp ()
   (interactive)
   (newline-and-indent)
-  (my/clojure-toggle-reader-comment-fst-sexp-on-line))
+  (my/clj-toggle-reader-comment-fst-sexp-on-line))
 
 (defun my/helm-mini ()
   ;; (define-key helm-map (kbd "s-a") nil)
