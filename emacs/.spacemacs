@@ -1152,7 +1152,7 @@ before packages are loaded."
   (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
 
   ;; see also binding for <f2>
-  (define-key evil-normal-state-map "f" 'my/evil-avy-goto-char-timer)
+  ;; (define-key evil-normal-state-map "f" 'my/evil-avy-goto-char-timer)
   ;; (global-set-key (kbd "f") 'my/evil-avy-goto-char)
 
   (add-hook
