@@ -1,12 +1,13 @@
 function c
     # TODO see `od` - dump files in octal and other formats
     set escArgv (string escape -- $argv)
-    if test -z "$escArgv"
+    if test -z $escArgv
         # echo "Udefined or empty escArgv:" $escArgv
         l
     else if test -d $escArgv # is it a directory?
         l $escArgv
-    else if test -f $escArgv # is it a regular file?
+    # $escArgv doesn't work for 'file\(1\).ext'
+    else if test -f $argv # is it a regular file?
         if test -f /usr/bin/bat
             set binary bat
         else
