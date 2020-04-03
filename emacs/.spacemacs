@@ -483,7 +483,7 @@ It should only modify the values of Spacemacs settings."
    ;; <description> {{{
    ;;     <some content>
    ;; }}}
-   dotspacemacs-folding-method 'origami
+   dotspacemacs-folding-method 'evil ; 'origami
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)

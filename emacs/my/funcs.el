@@ -607,6 +607,7 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
   (when (buffer-modified-p)
     (save-buffer))
   (cider-load-file (buffer-file-name))
+  (cider-repl-set-ns (cider-current-ns))
   ;; (cider-switch-to-relevant-repl-buffer nil)
   )
 
