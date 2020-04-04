@@ -618,6 +618,14 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
                 "(println \"\")")))
     (my/insert-sexp msg 2)))
 
+(defun my/clj-insert-remove-fn ()
+  (interactive)
+  (my/insert-sexp "(remove (fn []))" 3))
+
+(defun my/clj-insert-filter-fn ()
+  (interactive)
+  (my/insert-sexp "(filter (fn []))" 3))
+
 (defun my/clj-insert-map-fn ()
   (interactive)
   (my/insert-sexp "(map (fn []))" 3))
@@ -687,3 +695,19 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
 (defun my/cider-clear-compilation-highlights ()
   (interactive)
   (cider-clear-compilation-highlights t))
+
+(defun my/repl-insert-cmd (s)
+  (cider-switch-to-repl-buffer)
+  (insert s))
+
+(defun my/telegram-restart ()
+  (interactive)
+  (my/repl-insert-cmd "(corona.telegram/restart)"))
+
+(defun my/web-restart ()
+  (interactive)
+  (my/repl-insert-cmd "(corona.web/restart)"))
+
+(defun my/show-pic ()
+  (interactive)
+  (my/repl-insert-cmd "(corona.pic/show-pic 20000)"))

@@ -1030,18 +1030,20 @@ before packages are loaded."
    ;; on the german keyboard the '#' is next to Enter
    ("<f5>"          . my/telegram-restart)
    ("<f6>"          . my/web-restart)
+   ("<f7>"          . my/show-pic)
    ("s-i"           . cljr-rename-symbol)
    ("C-s-\\"        . my/clj-toggle-reader-comment-current-sexp)
    ("s-\\"          . my/clj-toggle-reader-comment-fst-sexp-on-line)
    ("s-h"           . helm-cider-history)
 
-   ("C-s-p"         . my/clj-insert-log)
-   ("C-s-l"         . my/clj-insert-let)
-   ("C-s-f"         . my/clj-insert-for)
-   ("C-s-n"         . my/clj-insert-defn)
-   ("C-s-m"         . my/clj-insert-map-fn)
-   ("C-s-s"         . my/clj-insert-doseq)
    ("C-s-d"         . my/clj-insert-do)
+   ("C-s-f"         . my/clj-insert-filter-fn)
+   ("C-s-r"         . my/clj-insert-remove-fn)
+   ("C-s-l"         . my/clj-insert-let)
+   ("C-s-m"         . my/clj-insert-map-fn)
+   ("C-s-n"         . my/clj-insert-defn)
+   ("C-s-p"         . my/clj-insert-log)
+   ("C-s-s"         . my/clj-insert-doseq)
 
    ("<C-s-delete>"  . cider-repl-clear-buffer)
    ("s-j"           . cider-format-defun)
@@ -1053,6 +1055,7 @@ before packages are loaded."
   (bind-keys :map cider-mode-map
              ("<f5>"        . my/telegram-restart)
              ("<f6>"        . my/web-restart)
+             ("<f7>"        . my/show-pic)
              ("<C-M-right>" . end-of-defun)       ; forward-paragraph
              ("<C-M-left>"  . beginning-of-defun) ; backward-paragraph
              ("s-d"         . cider-eval-defun-at-point)
@@ -1089,13 +1092,14 @@ before packages are loaded."
    ("s-S"     . main-s)
    ("s-U"     . main-u)
 
-   ("C-s-p"   . my/clj-insert-log)
-   ("C-s-l"   . my/clj-insert-let)
-   ("C-s-f"   . my/clj-insert-for)
-   ("C-s-n"   . my/clj-insert-defn)
-   ("C-s-m"   . my/clj-insert-map-fn)
-   ("C-s-s"   . my/clj-insert-doseq)
    ("C-s-d"   . my/clj-insert-do)
+   ("C-s-f"   . my/clj-insert-filter-fn)
+   ("C-s-r"   . my/clj-insert-remove-fn)
+   ("C-s-l"   . my/clj-insert-let)
+   ("C-s-m"   . my/clj-insert-map-fn)
+   ("C-s-n"   . my/clj-insert-defn)
+   ("C-s-p"   . my/clj-insert-log)
+   ("C-s-s"   . my/clj-insert-doseq)
    ;; TODO see global-set-key settings
    ;; ("s-."  . cider-find-var)
    ;; ("s-,"  . cider-pop-back)
