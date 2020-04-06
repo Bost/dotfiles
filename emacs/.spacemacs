@@ -96,6 +96,7 @@ This function should only modify configuration layer settings."
      racket
      latex
      my
+     themes-megapack
      )
 
    ;; List of additional packages that will be installed without being
@@ -322,7 +323,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font or prioritized list of fonts.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 11.0
+                               :size 10.0
                                :weight normal
                                :width normal)
 
@@ -631,10 +632,10 @@ before packages are loaded."
    create-lockfiles nil ;; do not create .# lockfiles
    vc-follow-symlinks t ;; auto follow symbolic links
    browse-url-browser-function 'browse-url-default-browser
-                               ;; '(("wikipedia\\.org" . browse-url-firefox)
-                               ;;   ("github" . browse-url-chromium)
-                               ;;   ("thefreedictionary\\.com" . eww-browse-url)
-                               ;;   ("." . browse-url-default-browser))
+   ;; '(("wikipedia\\.org" . browse-url-firefox)
+   ;;   ("github" . browse-url-chromium)
+   ;;   ("thefreedictionary\\.com" . eww-browse-url)
+   ;;   ("." . browse-url-default-browser))
    my/narrowed-to-defun nil
    my/iedit-mode nil
    org-latex-listings 'minted
@@ -718,11 +719,11 @@ before packages are loaded."
   (global-set-key (kbd "<s-print>") 'my/ediff-buffers-left-right)
   ;; Move the parenthesis - see SPC k b/B/f/F
   (global-set-key (kbd "M-s-<left>")  'sp-forward-barf-sexp)
-  (global-set-key (kbd "M-s-<right>") 'sp-forward-slurp-sexp)
-  (global-set-key (kbd "C-s-<left>")  'sp-backward-slurp-sexp)
-  (global-set-key (kbd "C-s-<right>") 'sp-backward-barf-sexp)
+  (global-set-key (kbd "<M-s-right>") 'sp-forward-slurp-sexp)
+  (global-set-key (kbd "<C-s-left>")  'sp-backward-slurp-sexp)
+  (global-set-key (kbd "<C-s-right>") 'sp-backward-barf-sexp)
   (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
-  (global-set-key (kbd "s-<f1>") 'eshell)
+  (global-set-key (kbd "<s-f1>") 'eshell)
   ;; (global-set-key (kbd "s-p") 'helm-projectile)
   (global-set-key (kbd "s-p") 'helm-projectile-find-file)
   (global-set-key (kbd "M-s-p") 'helm-projectile-switch-project)
@@ -746,10 +747,8 @@ before packages are loaded."
   (global-set-key (kbd "<C-M-prior>") 'hs-hide-all) ; pg-up
   (global-set-key (kbd "<C-M-next>") 'hs-show-all)  ; pg-down
   ;; (global-set-key (kbd "<C-M-right>") 'sp-forward-sexp)
-  ;; C-M-e end-of-defun
-  (global-set-key (kbd "<C-M-right>") 'forward-paragraph)
-  ;; C-M-b beginning-of-defun
-  (global-set-key (kbd "<C-M-left>") 'backward-paragraph)
+  ;; (global-set-key (kbd "<C-M-right>") 'forward-paragraph)
+  ;; (global-set-key (kbd "<C-M-left>") 'backward-paragraph)
   (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
   (global-set-key (kbd "<C-M-s-delete>") 'my/delete-next-sexp)
   (global-set-key (kbd "<C-M-s-backspace>") 'my/delete-prev-sexp)
@@ -927,32 +926,32 @@ before packages are loaded."
   ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
   ;; Max time delay between two presses of the same key to be considered a key chord.
   ;; Should normally be a little longer than `key-chord-two-keys-delay'.
-  ; (setq key-chord-one-key-delay 0.2) ; default 0.2
+  ;; (setq key-chord-one-key-delay 0.2) ; default 0.2
   (key-chord-define-global "KK" 'my/switch-to-previous-buffer)
 
   (use-package cider
-      ;; :init
-      ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
-      :config
-      (setq
-       cider-font-lock-dynamically ;; dynamic syntax highlighting
-       ;; '(macro core deprecated) ;; default value
-       '(macro core function var)
+    ;; :init
+    ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
+    :config
+    (setq
+     cider-font-lock-dynamically ;; dynamic syntax highlighting
+     ;; '(macro core deprecated) ;; default value
+     '(macro core function var)
 
-       cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
-                             ;; sudo apt install openjdk-8-source
-                             ;; mkdir -p ~/dev/openjdk-8-source
-                             ;; cd ~/dev/openjdk-8-source
-                             ;; unzip /usr/lib/jvm/openjdk-8/src.zip .
-                             ;; (concat (getenv "HOME") "/dev/openjdk-8-source")
-                             ;; (concat (getenv "HOME") "/dev/openjdk-11-source")
-                             "/usr/lib/jvm/openjdk-11/lib/src.zip"
-                             )
-       cider-repl-use-pretty-printing t
-       ;; set how CIDER starts cljs-lein-repl
-       ;; see https://lambdaisland.com/episodes/figwheel-emacs-cider
-       cider-cljs-lein-repl
-       "(cond
+     cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
+                           ;; sudo apt install openjdk-8-source
+                           ;; mkdir -p ~/dev/openjdk-8-source
+                           ;; cd ~/dev/openjdk-8-source
+                           ;; unzip /usr/lib/jvm/openjdk-8/src.zip .
+                           ;; (concat (getenv "HOME") "/dev/openjdk-8-source")
+                           ;; (concat (getenv "HOME") "/dev/openjdk-11-source")
+                           "/usr/lib/jvm/openjdk-11/lib/src.zip"
+                           )
+     cider-repl-use-pretty-printing t
+     ;; set how CIDER starts cljs-lein-repl
+     ;; see https://lambdaisland.com/episodes/figwheel-emacs-cider
+     cider-cljs-lein-repl
+     "(cond
         ;; Chestnut projects
         (and (resolve 'user/run) (resolve 'user/browser-repl))
         (eval '(do (user/run)
@@ -978,31 +977,30 @@ before packages are loaded."
             (str \"Failed to initialize CLJS repl. \"
                  \"Add com.cemerick/piggieback and optionally \"
                  \"figwheel-sidecar to your project.\") {})))"
-       )
+     )
 
-      ;; (setq org-babel-clojure-backend 'cider)
-      (add-hook 'cider-mode-hook #'eldoc-mode)
-      (add-hook 'cider-repl-mode-hook #'eldoc-mode)
-      (add-hook 'cider-repl-mode-hook #'paredit-mode)
-      (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
-      ;; (setq gui-elements 1) ; because of CIDER menu
-      ;; (define-key cider-repl-mode-map "<s-delete>" nil)
-      ;; (unbind-key "<s-delete>" cider-repl-mode-map)
+    ;; (setq org-babel-clojure-backend 'cider)
+    (add-hook 'cider-mode-hook #'eldoc-mode)
+    (add-hook 'cider-repl-mode-hook #'eldoc-mode)
+    (add-hook 'cider-repl-mode-hook #'paredit-mode)
+    (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
+    ;; (setq gui-elements 1) ; because of CIDER menu
+    ;; (define-key cider-repl-mode-map "<s-delete>" nil)
+    ;; (unbind-key "<s-delete>" cider-repl-mode-map)
 
-      ;; TODO prefix name is not added
-      (add-to-list 'spacemacs/key-binding-prefixes '("og"  "google-this"))
-      (spacemacs/set-leader-keys
-        "ogg" 'google-this
-        "ogr" 'google-this-region
-        "oc"  'my/s-X
-        "or"  'rotate-frame)
+    ;; TODO prefix name is not added
+    (add-to-list 'spacemacs/key-binding-prefixes '("og"  "google-this"))
+    (spacemacs/set-leader-keys
+      "ogg" 'google-this
+      "ogr" 'google-this-region
+      "oc"  'my/s-X
+      "or"  'rotate-frame)
 
-      (spacemacs/set-leader-keys-for-major-mode 'clojure-mode       "c" 'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'clojure-modec      "c" 'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "c" 'my/s-X)
-      (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode    "c" 'my/s-X)
-
-      )
+    (spacemacs/set-leader-keys-for-major-mode 'clojure-mode       "c" 'my/s-X)
+    (spacemacs/set-leader-keys-for-major-mode 'clojure-modec      "c" 'my/s-X)
+    (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "c" 'my/s-X)
+    (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode    "c" 'my/s-X)
+    )
 
   (use-package racket-mode
     :config
@@ -1024,82 +1022,74 @@ before packages are loaded."
 
   ;; lambdas are not supported
 
-  (bind-keys
+  ;; (progn
+  ;;   (unbind-key "<f5>" cider-repl-mode-map)
+  ;;   (unbind-key "<f6>" cider-repl-mode-map)
+  ;;   (unbind-key "<f7>" cider-repl-mode-map)
+  ;;   (unbind-key "<f5>" clojure-mode-map)
+  ;;   (unbind-key "<f6>" clojure-mode-map)
+  ;;   (unbind-key "<f7>" clojure-mode-map))
+
+  (unbind-key "<C-M-right>" global-map)
+  (unbind-key "<C-M-left>" global-map)
+
+  (defun my/add-binings (args keymap)
+    ;; on the german keyboard the '#' is next to Enter
+    (bind-keys-form
+     (cons (car args)
+           (cons (car (cdr args))
+                 (list
+                  ;; on the german keyboard the '#' is next to Enter
+                  '("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
+                  '("s-\\"   . my/clj-toggle-reader-comment-fst-sexp-on-line)
+
+                  '("<f5>"  . my/telegram-restart)
+                  '("<f6>"  . my/web-restart)
+                  '("<f7>"  . my/show-pic)
+
+                  '("s-X"   . my/s-X)
+                  '("s-e"   . cider-eval-last-sexp)
+                  '("s-j"   . cider-format-defun)
+                  '("s-i"   . cljr-rename-symbol)
+
+                  '("C-s-d" . my/clj-insert-do)
+                  '("C-s-f" . my/clj-insert-filter-fn)
+                  '("C-s-r" . my/clj-insert-remove-fn)
+                  '("C-s-l" . my/clj-insert-let)
+                  '("C-s-m" . my/clj-insert-map-fn)
+                  '("C-s-n" . my/clj-insert-defn)
+                  '("C-s-p" . my/clj-insert-log)
+                  '("C-s-s" . my/clj-insert-doseq))
+                 )) nil))
+
+  (defmacro my/bind-keys (&rest args)
+    ;; XXX the order of macroexpansions plays a role here;
+    ;; the if swapped the binings <C-M-right>, <C-M-left> don't work
+    (macroexp-progn (my/add-binings args nil))
+    (macroexp-progn (bind-keys-form args nil)))
+
+  (my/bind-keys
    :map cider-repl-mode-map
-   ;; following 3 bindings are same as in clojure-mode
-   ;; on the german keyboard the '#' is next to Enter
-   ("<f5>"          . my/telegram-restart)
-   ("<f6>"          . my/web-restart)
-   ("<f7>"          . my/show-pic)
-   ("s-i"           . cljr-rename-symbol)
-   ("C-s-\\"        . my/clj-toggle-reader-comment-current-sexp)
-   ("s-\\"          . my/clj-toggle-reader-comment-fst-sexp-on-line)
-   ("s-h"           . helm-cider-history)
-
-   ("C-s-d"         . my/clj-insert-do)
-   ("C-s-f"         . my/clj-insert-filter-fn)
-   ("C-s-r"         . my/clj-insert-remove-fn)
-   ("C-s-l"         . my/clj-insert-let)
-   ("C-s-m"         . my/clj-insert-map-fn)
-   ("C-s-n"         . my/clj-insert-defn)
-   ("C-s-p"         . my/clj-insert-log)
-   ("C-s-s"         . my/clj-insert-doseq)
-
-   ("<C-s-delete>"  . cider-repl-clear-buffer)
-   ("s-j"           . cider-format-defun)
-   ("s-e"           . cider-eval-last-sexp)
-   ("s-x"           . cider-switch-to-last-clojure-buffer)
+   ("s-e"          . cider-eval-last-sexp)
+   ("s-h"          . helm-cider-history)
+   ("s-j"          . cider-format-defun)
+   ("s-x"          . cider-switch-to-last-clojure-buffer)
    ;; invoke from clojure buffer
-   ("s-M"           . main-a))
+   ("<C-s-delete>" . cider-repl-clear-buffer)
+   )
 
-  (bind-keys :map cider-mode-map
-             ("<f5>"        . my/telegram-restart)
-             ("<f6>"        . my/web-restart)
-             ("<f7>"        . my/show-pic)
-             ("<C-M-right>" . end-of-defun)       ; forward-paragraph
-             ("<C-M-left>"  . beginning-of-defun) ; backward-paragraph
-             ("s-d"         . cider-eval-defun-at-point)
-             ("s-j"         . cider-format-defun)
-             ("s-x"         . cider-switch-to-repl-buffer)
-             ("s-X"         . my/s-X)
-             ("s-e"         . cider-eval-last-sexp))
-
-  (bind-keys :map emacs-lisp-mode-map
-             ("C-s-m"       . my/elisp-insert-message)
-             ("s-d"         . my/eval-current-defun)
-             ("s-e"         . eval-last-sexp))
-
-  (bind-keys :map org-mode-map
-             ;; my/interactive-lambda doesn't work
-             ("<menu>"      . org-latex-export-to-pdf))
-
-  (bind-keys :map prog-mode-map
-             ("s-h"         . helm-imenu))
-
-  (bind-keys
+  (my/bind-keys
    :map clojure-mode-map
-   ("C-s-c"   . cider-connect-clj)
-   ("C-s-j"   . cider-jack-in)
-   ;; ("s-r"  . cider-eval-last-expression-in-repl)
-   ("M-s-l"   . my/cider-save-and-load-current-buffer)
-   ("s-u"     . my/cider-save-and-load-current-buffer)
-   ("M-s-n"   . cider-repl-set-ns)
-   ("s-t"     . cider-test-run-tests)
+   ("s-d"    . cider-eval-defun-at-point)
+   ("s-x"    . cider-switch-to-repl-buffer)
+   ("C-s-c"  . cider-connect-clj)
+   ("C-s-j"  . cider-jack-in)
+   ;; ("s-r" . cider-eval-last-expression-in-repl)
+   ("M-s-l"  . my/cider-save-and-load-current-buffer)
+   ("s-u"    . my/cider-save-and-load-current-buffer)
+   ("M-s-n"  . cider-repl-set-ns)
+   ("s-t"    . cider-test-run-tests)
 
-   ;; invoke from clojure buffer
-   ("s-M"     . main-a)
-   ("s-A"     . main-a)
-   ("s-S"     . main-s)
-   ("s-U"     . main-u)
-
-   ("C-s-d"   . my/clj-insert-do)
-   ("C-s-f"   . my/clj-insert-filter-fn)
-   ("C-s-r"   . my/clj-insert-remove-fn)
-   ("C-s-l"   . my/clj-insert-let)
-   ("C-s-m"   . my/clj-insert-map-fn)
-   ("C-s-n"   . my/clj-insert-defn)
-   ("C-s-p"   . my/clj-insert-log)
-   ("C-s-s"   . my/clj-insert-doseq)
    ;; TODO see global-set-key settings
    ;; ("s-."  . cider-find-var)
    ;; ("s-,"  . cider-pop-back)
@@ -1113,14 +1103,36 @@ before packages are loaded."
 
    ("C-s-o"   . my/cider-clear-compilation-highlights)
 
-   ;; following 3 bindings are same as in cider
-   ;; on the german keyboard the '#' is next to Enter
-   ("s-i"     . cljr-rename-symbol)
-   ;; my/interactive-lambda doesn't work
-   ("C-s-\\"  . my/clj-toggle-reader-comment-current-sexp)
-   ("s-\\"    . my/clj-toggle-reader-comment-fst-sexp-on-line))
+   ("<C-M-right>" . end-of-defun)
+   ("<C-M-left>"  . beginning-of-defun))
+
+  (bind-keys :map emacs-lisp-mode-map
+             ("C-s-m"       . my/elisp-insert-message)
+             ("s-d"         . my/eval-current-defun)
+             ("s-e"         . eval-last-sexp))
+
+  (bind-keys :map
+             lisp-mode-shared-map ;; lisp-mode-map doesn't work
+             ("<C-M-right>" . end-of-defun)
+             ("<C-M-left>"  . beginning-of-defun))
+
+  (bind-keys :map org-mode-map
+             ;; my/interactive-lambda doesn't work
+             ("<menu>"      . org-latex-export-to-pdf))
+
+  (bind-keys :map prog-mode-map
+             ("s-h"         . helm-imenu))
+
+  (bind-keys :map python-mode-map
+             ("s-x"         . spacemacs/python-start-or-switch-repl))
+
   (bind-keys :map dired-mode-map
-             ("<S-delete>" . dired-do-delete))
+             ("<S-delete>"  . dired-do-delete))
+
+  (add-hook
+   'debugger-mode-hook
+   (lambda ()
+     (bind-keys :map debugger-mode-map ("C-g" . debugger-quit))))
 
   ;; (bind-keys :map helm-mode-map)
 
@@ -1158,15 +1170,6 @@ before packages are loaded."
   ;; see also binding for <f2>
   ;; (define-key evil-normal-state-map "f" 'my/evil-avy-goto-char-timer)
   ;; (global-set-key (kbd "f") 'my/evil-avy-goto-char)
-
-  (add-hook
-   'clojure-mode-hook
-   (lambda ()
-     (define-key clojure-mode-map (kbd "s-x") 'cider-switch-to-repl-buffer)))
-  (add-hook
-   'python-mode-hook
-   (lambda ()
-     (define-key python-mode-map (kbd "s-x") 'python-start-or-switch-repl)))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

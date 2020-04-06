@@ -455,6 +455,7 @@ Repeated invocations toggle between the two most recently open buffers."
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 (defun my/cider-figwheel-repl ()
+  "Start figwheel"
   (interactive)
   (save-some-buffers)
   (with-current-buffer (cider-current-repl-buffer)
@@ -469,6 +470,7 @@ Repeated invocations toggle between the two most recently open buffers."
         (evil-insert 0))))
 
 (defun my/s-X ()
+  "Switch to cider repl & start figwheel"
   (interactive)
   (cider-switch-to-repl-buffer)
   (my/cider-figwheel-repl))
@@ -710,4 +712,4 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
 
 (defun my/show-pic ()
   (interactive)
-  (my/repl-insert-cmd "(corona.pic/show-pic 20000)"))
+  (my/repl-insert-cmd "(cljplot.core/show (corona.pic/show-pic com/threshold))"))
