@@ -1033,40 +1033,35 @@ before packages are loaded."
   (unbind-key "<C-M-right>" global-map)
   (unbind-key "<C-M-left>" global-map)
 
-  (defun my/add-binings (args keymap)
-    ;; on the german keyboard the '#' is next to Enter
-    (bind-keys-form
-     (cons (car args)
-           (cons (car (cdr args))
-                 (list
-                  ;; on the german keyboard the '#' is next to Enter
-                  '("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
-                  '("s-\\"   . my/clj-toggle-reader-comment-fst-sexp-on-line)
-
-                  '("<f5>"  . my/telegram-restart)
-                  '("<f6>"  . my/web-restart)
-                  '("<f7>"  . my/show-pic)
-
-                  '("s-X"   . my/s-X)
-                  '("s-e"   . cider-eval-last-sexp)
-                  '("s-j"   . cider-format-defun)
-                  '("s-i"   . cljr-rename-symbol)
-
-                  '("C-s-d" . my/clj-insert-do)
-                  '("C-s-f" . my/clj-insert-filter-fn)
-                  '("C-s-r" . my/clj-insert-remove-fn)
-                  '("C-s-l" . my/clj-insert-let)
-                  '("C-s-m" . my/clj-insert-map-fn)
-                  '("C-s-n" . my/clj-insert-defn)
-                  '("C-s-p" . my/clj-insert-log)
-                  '("C-s-s" . my/clj-insert-doseq))
-                 )) nil))
+  (defun my/bind-keys-form (args keymap)
+    (bind-keys-form (append args common-bindings) keymap))
 
   (defmacro my/bind-keys (&rest args)
-    ;; XXX the order of macroexpansions plays a role here;
-    ;; the if swapped the binings <C-M-right>, <C-M-left> don't work
-    (macroexp-progn (my/add-binings args nil))
-    (macroexp-progn (bind-keys-form args nil)))
+    (macroexp-progn
+     (my/bind-keys-form
+      (list
+       ;; on the german keyboard the '#' is next to Enter
+       '("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
+       '("s-\\"   . my/clj-toggle-reader-comment-fst-sexp-on-line)
+
+       '("<f5>"  . my/telegram-restart)
+       '("<f6>"  . my/web-restart)
+       '("<f7>"  . my/show-pic)
+
+       '("s-X"   . my/s-X)
+       '("s-e"   . cider-eval-last-sexp)
+       '("s-j"   . cider-format-defun)
+       '("s-i"   . cljr-rename-symbol)
+
+       '("C-s-d" . my/clj-insert-do)
+       '("C-s-f" . my/clj-insert-filter-fn)
+       '("C-s-r" . my/clj-insert-remove-fn)
+       '("C-s-l" . my/clj-insert-let)
+       '("C-s-m" . my/clj-insert-map-fn)
+       '("C-s-n" . my/clj-insert-defn)
+       '("C-s-p" . my/clj-insert-log)
+       '("C-s-s" . my/clj-insert-doseq))
+      nil)))
 
   (my/bind-keys
    :map cider-repl-mode-map
