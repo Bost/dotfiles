@@ -1036,28 +1036,30 @@ before packages are loaded."
   (defmacro my/bind-keys (&rest args)
     (macroexp-progn
      (bind-keys-form
-      (list
-       ;; on the german keyboard the '#' is next to Enter
-       '("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
-       '("s-\\"   . my/clj-toggle-reader-comment-fst-sexp-on-line)
+      (append
+       args
+       (list
+        ;; on the german keyboard the '#' is next to Enter
+        '("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
+        '("s-\\"   . my/clj-toggle-reader-comment-fst-sexp-on-line)
 
-       '("<f5>"  . my/telegram-restart)
-       '("<f6>"  . my/web-restart)
-       '("<f7>"  . my/show-pic)
+        '("<f5>"  . my/telegram-restart)
+        '("<f6>"  . my/web-restart)
+        '("<f7>"  . my/show-pic)
 
-       '("s-X"   . my/s-X)
-       '("s-e"   . cider-eval-last-sexp)
-       '("s-j"   . cider-format-defun)
-       '("s-i"   . cljr-rename-symbol)
+        '("s-X"   . my/s-X)
+        '("s-e"   . cider-eval-last-sexp)
+        '("s-j"   . cider-format-defun)
+        '("s-i"   . cljr-rename-symbol)
 
-       '("C-s-d" . my/clj-insert-do)
-       '("C-s-f" . my/clj-insert-filter-fn)
-       '("C-s-r" . my/clj-insert-remove-fn)
-       '("C-s-l" . my/clj-insert-let)
-       '("C-s-m" . my/clj-insert-map-fn)
-       '("C-s-n" . my/clj-insert-defn)
-       '("C-s-p" . my/clj-insert-log)
-       '("C-s-s" . my/clj-insert-doseq))
+        '("C-s-d" . my/clj-insert-do)
+        '("C-s-f" . my/clj-insert-filter-fn)
+        '("C-s-r" . my/clj-insert-remove-fn)
+        '("C-s-l" . my/clj-insert-let)
+        '("C-s-m" . my/clj-insert-map-fn)
+        '("C-s-n" . my/clj-insert-defn)
+        '("C-s-p" . my/clj-insert-log)
+        '("C-s-s" . my/clj-insert-doseq)))
       nil)))
 
   (my/bind-keys
@@ -1067,8 +1069,7 @@ before packages are loaded."
    ("s-j"          . cider-format-defun)
    ("s-x"          . cider-switch-to-last-clojure-buffer)
    ;; invoke from clojure buffer
-   ("<C-s-delete>" . cider-repl-clear-buffer)
-   )
+   ("<C-s-delete>" . cider-repl-clear-buffer))
 
   (my/bind-keys
    :map clojure-mode-map
