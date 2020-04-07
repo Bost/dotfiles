@@ -46,8 +46,8 @@
   fs = "!git log --color --patch -S "
 
 [user]
-	name = Bost
-	email = thebost@gmail.com
+	name = Rostislav Svoboda
+	email = Rostislav.Svoboda@gmail.com
 [color]
 	ui = auto
 [push]
