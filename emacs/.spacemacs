@@ -1033,12 +1033,9 @@ before packages are loaded."
   (unbind-key "<C-M-right>" global-map)
   (unbind-key "<C-M-left>" global-map)
 
-  (defun my/bind-keys-form (args keymap)
-    (bind-keys-form (append args common-bindings) keymap))
-
   (defmacro my/bind-keys (&rest args)
     (macroexp-progn
-     (my/bind-keys-form
+     (bind-keys-form
       (list
        ;; on the german keyboard the '#' is next to Enter
        '("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
@@ -1118,12 +1115,14 @@ before packages are loaded."
   (bind-keys :map prog-mode-map
              ("s-h"         . helm-imenu))
 
-  (bind-keys :map python-mode-map
-             ("s-x"         . spacemacs/python-start-or-switch-repl))
-
   (bind-keys :map dired-mode-map
              ("<S-delete>"  . dired-do-delete))
 
+  (add-hook
+   'python-mode-hook
+   (lambda ()
+     (bind-keys :map python-mode-map
+                ("s-x"         . spacemacs/python-start-or-switch-repl))))
   (add-hook
    'debugger-mode-hook
    (lambda ()
