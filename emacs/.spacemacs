@@ -682,116 +682,182 @@ before packages are loaded."
                       :background "black"
                       :foreground nil)
 
+  ;; rebinding <C-M-down> to crux-duplicate-current-line-or-region
+  (unbind-key "<C-M-down>"  global-map)
+  (unbind-key "<C-M-right>" global-map)
+  (unbind-key "<C-M-left>"  global-map)
+  ;; (progn
+  ;;   (unbind-key "<f5>" cider-repl-mode-map)
+  ;;   (unbind-key "<f6>" cider-repl-mode-map)
+  ;;   (unbind-key "<f7>" cider-repl-mode-map)
+  ;;   (unbind-key "<f5>" clojure-mode-map)
+  ;;   (unbind-key "<f6>" clojure-mode-map)
+  ;;   (unbind-key "<f7>" clojure-mode-map))
+
   ;; straight jump to a window: SPC 0, SPC 1, SPC 2, ...
-  (global-set-key (kbd "s-q") 'my/other-window)
-  (global-set-key (kbd "s-k") 'my/close-buffer)
-  (global-set-key (kbd "s-s") 'save-buffer)
-  (global-set-key (kbd "s-0") 'delete-window)
-  (global-set-key (kbd "s-1") 'delete-other-windows)
-  (global-set-key (kbd "<f8>") 'next-buffer)
-  (global-set-key (kbd "<s-f8>") 'transpose-frame)
-  ;; (global-set-key (kbd "<s-f9>") 'spacemacs/rotate-windows-forward) ; SPC w r
-  (global-set-key (kbd "s-n") 'my/toggle-narrow-to-defun)
-  (global-set-key (kbd "s-N") 'widen)
-  ;; (global-set-key (kbd "s-2") 'my/split-other-window-below)
-  ;; (global-set-key (kbd "s-3") 'my/split-other-window-right)
-  (global-set-key (kbd "s-2") 'split-window-below) ;; SPC w -
-  ;; (global-set-key (kbd "s-3") 'spacemacs/window-split-double-columns) ; SPC w 2
-  (global-set-key (kbd "s-3") 'split-window-right-and-focus) ; SPC w 3
+  (bind-keys
+   :map global-map
+   ("s-q"       . my/other-window)
+   ("s-k"       . my/close-buffer)
+   ("s-s"       . save-buffer)
+   ("s-0"       . delete-window)
+   ("s-1"       . delete-other-windows)
+   ("<f8>"      . next-buffer)
+   ("<s-f8>"    . transpose-frame)
+   ;; ("<s-f9>" . spacemacs/rotate-windows-forward) ; SPC w r
+   ("s-n"       . my/toggle-narrow-to-defun)
+   ("s-N"       . widen)
+   ;; ("s-2"    . my/split-other-window-below)
+   ;; ("s-3"    . my/split-other-window-right)
+   ("s-2"       . split-window-below) ;; SPC w -
+   ;; ("s-3"    . spacemacs/window-split-double-columns) ; SPC w 2
+   ("s-3"       . split-window-right-and-focus) ; SPC w 3
+   ("s-z"       . my/buffer-selection-show)
+   ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
+   ("s-D"       . dired-jump)
+   ("s-c"       . my/sp-copy-next-sexp-msg)
+   ("s-b"       . my/sp-copy-prev-sexp-msg)
+   ("s-B"       . helm-filtered-bookmarks)
+   ("<f9>"      . helm-filtered-bookmarks)
+   ("<f11>"     . bookmark-set)
+   ;; Move the parenthesis - see SPC k b/B/f/F
+   ("<M-s-left>"  . sp-forward-barf-sexp)
+   ("<M-s-right>" . sp-forward-slurp-sexp)
+   ("<C-s-left>"  . sp-backward-slurp-sexp)
+   ("<C-s-right>" . sp-backward-barf-sexp)
+   ("s-;"         . spacemacs/comment-or-uncomment-lines)
+   ("<s-f1>"      . eshell)
+   ;; ("s-p"      . helm-projectile)
+   ("s-p"         . helm-projectile-find-file)
+   ("M-s-p"       . helm-projectile-switch-project)
+   ("s-W"         . my/whitespace-cleanup)
+   ("s-w"         . my/whitespace-mode-toggle)
+   ("s-m"         . magit-status)
+   ("<f3>"        . my/search-region-or-symbol)
+   ("<M-f3>"      . spacemacs/helm-project-smart-do-search)
+   ("s-f"         . helm-find-files)
+   ("s-F"         . helm-recentf) ;; 'recentf-open-files
+   ("s-r"         . helm-recentf)
 
-  (global-set-key (kbd "s-a") 'helm-mini)
-  (advice-add 'helm-mini :before 'my/helm-mini)
+   ("<C-M-down>"      . crux-duplicate-current-line-or-region)
+   ("<C-s-down>"      . crux-duplicate-current-line-or-region)
+   ("C-c d"           . crux-duplicate-current-line-or-region)
+   ("C-c t"           . crux-transpose-windows)
+   ("<C-s-backspace>" . crux-kill-line-backwards) ; kill-line-backward
+   ("s-j"             . crux-top-join-line)
 
-  (global-set-key (kbd "s-z") 'my/buffer-selection-show)
-  ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
-  (global-set-key (kbd "s-D") 'dired-jump)
-  (global-set-key (kbd "s-c") 'my/sp-copy-next-sexp-msg)
-  (global-set-key (kbd "s-b") 'my/sp-copy-prev-sexp-msg)
-  (global-set-key (kbd "s-B") 'helm-filtered-bookmarks)
-  (global-set-key (kbd "<f9>") 'helm-filtered-bookmarks)
-  (global-set-key (kbd "<f11>") 'bookmark-set)
-  (global-set-key (kbd "s-<")  (my/interactive-lambda () (my/select-inner "vi<")))
-  (global-set-key (kbd "s-[")  (my/interactive-lambda () (my/select-inner "vi[")))
-  (global-set-key (kbd "s-(")  (my/interactive-lambda () (my/select-inner "vi(")))
-  (global-set-key (kbd "s-{")  (my/interactive-lambda () (my/select-inner "vi{")))
-  (global-set-key (kbd "s-\"") (my/interactive-lambda () (my/select-inner "vi\"")))
+   ("<C-up>"            . xah-backward-block)
+   ("<C-down>"          . xah-forward-block)
+   ("<C-prior>"         . hs-hide-block) ; pg-up
+   ("<C-next>"          . hs-show-block)  ; pg-down
+   ;; ("<C-M-prior>"    . hs-toggle-hiding)
+   ("<C-M-prior>"       . hs-hide-all) ; pg-up
+   ("<C-M-next>"        . hs-show-all)  ; pg-down
+   ;; ("<C-M-right>"    . sp-forward-sexp)
+   ;; ("<C-M-right>"    . forward-paragraph)
+   ;; ("<C-M-left>"     . backward-paragraph)
+   ("<C-M-delete>"      . kill-sexp)
+   ("<C-M-s-delete>"    . my/delete-next-sexp)
+   ("<C-M-s-backspace>" . my/delete-prev-sexp)
+   ("<C-M-backspace>"   . backward-kill-sexp)
+
+   ("<s-backspace>"     . paredit-backward-kill-word)
+   ("<s-delete>"        . paredit-forward-kill-word)
+   ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
+   ("M-y"     . helm-show-kill-ring) ; replaces evil-paste-pop
+   ;; ("s-g"  . helm-google-suggest)
+   ("s-g"     . my/browse-or-google)
+   ;; ("s-G"  . google-this)
+   ("s-G"     . helm-google-suggest)
+   ("s-8"     . er/expand-region) ;; increase selected region by semantic units
+   ("<f2>"    . my/evil-avy-goto-char-timer)
+   ("s-/"     . helm-swoop)
+   ("<s-tab>" . my/alternate-buffer)
+   ;; TODO make it run under "t"
+   ;; ("s-t"  . evil-avy-goto-char
+   ;;                      ;; This doesn't work
+   ;;                      ;; (my/interactive-lambda ()
+   ;;                      ;;   (if (evil-normal-state-p)
+   ;;                      ;;       (evil-avy-goto-char))))
+   ("<C-f2>"  . my/avy-goto-line)
+   ("C-s-/"   . my/avy-goto-line)
+
+   ;; fd - evil-escape from insert state and everything else
+   ;; occurences - function scope
+   ("s-I"                . my/iedit-mode-toggle)
+   ("s-i"                . iedit-mode) ;; all occurences in the buffer
+   ;; ("s-i"             . spacemacs/enter-ahs-forward)
+   ("<f12>"              . undo-tree-visualize)
+   ;; ("<S-delete>"      . kill-region)
+   ("<C-s-delete>"       . kill-line) ; C-super-key
+   ("<C-S-delete>"       . kill-line) ; C-shift-key
+   ("s-l"                . spacemacs/resume-last-search-buffer)
+   ;; `s-SPC v' but it overrides the `expand region' menu point
+   ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
+
+   ("s-L"                . spacemacs/toggle-line-numbers)
+   ;; TODO my/toggle-large-file-setting - is it needed?
+   ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
+   ;; ("C-s-L"   . my/toggle-large-file-setting)
+
+   ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
+   ;; zop-up-to-char works as zop-to-char but stop just before target
+   ("M-z"        . zop-up-to-char)
+   ("M-Z"        . zop-to-char)
+
+   ;; spacemacs orig fns don't drag
+   ("M-<up>"     . drag-stuff-up) ;; 'spacemacs/move-text-transient-state/move-text-up
+   ("M-<down>"   . drag-stuff-down) ;; 'spacemacs/move-text-transient-state/move-text-down
+
+   ("s-u"        . eval-buffer)
+
+   ("s-."        . spacemacs/jump-to-definition)
+   ("C-s-."      . spacemacs/jump-to-definition-other-window)
+   ("s-,"        . evil-jump-backward) ;; C-o: evil-jump-backward
+
+   ;; just for the convenience - when the Super-key is pressed already
+   ("s-<"        . evil-jump-backward) ;; C-o: evil-jump-backward
+   ("s->"        . evil-jump-forward)
+
+   ;; ("s-,"     . dumb-jump-back)
+   ;; ("s-,"     . cider-pop-back)
+   ("<print>"    . describe-text-properties) ;; 'my/what-face
+
+   ;; ("<pause>" . goto-last-change)
+   ("<s-return>" . goto-last-change)
+   ("<s-pause>"  . goto-last-change-reverse)
+   ("s-J"        . evil-join)
+
+   ("<s-print>"  . my/ediff-buffers-left-right) ;; see advice-add
+   ("s-a"        . helm-mini)  ;; see advice-add
+   ("s-:"        . my/fabricate-subst-cmd)
+
+   ("s-<"  . (my/interactive-lambda () (my/select-inner "vi<")))
+   ("s-["  . (my/interactive-lambda () (my/select-inner "vi[")))
+   ("s-("  . (my/interactive-lambda () (my/select-inner "vi(")))
+   ("s-{"  . (my/interactive-lambda () (my/select-inner "vi{")))
+   ("s-\"" . (my/interactive-lambda () (my/select-inner "vi\"")))
+
+
+   ("<C-mouse-5>" . (my/interactive-lambda () (message "zoom-out")))
+   ("<C-mouse-4>" . (my/interactive-lambda () (message "zoom-out")))
+   ;; <menu> is not a prefix key. See:
+   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
+   ("<menu>"      . (my/interactive-lambda () (message "context-menu")))
+   )
+
   (advice-add 'ediff-quit :around #'my/disable-y-or-n-p)
-  (global-set-key (kbd "<s-print>") 'my/ediff-buffers-left-right)
-  ;; Move the parenthesis - see SPC k b/B/f/F
-  (global-set-key (kbd "M-s-<left>")  'sp-forward-barf-sexp)
-  (global-set-key (kbd "<M-s-right>") 'sp-forward-slurp-sexp)
-  (global-set-key (kbd "<C-s-left>")  'sp-backward-slurp-sexp)
-  (global-set-key (kbd "<C-s-right>") 'sp-backward-barf-sexp)
-  (global-set-key (kbd "s-;") 'spacemacs/comment-or-uncomment-lines)
-  (global-set-key (kbd "<s-f1>") 'eshell)
-  ;; (global-set-key (kbd "s-p") 'helm-projectile)
-  (global-set-key (kbd "s-p") 'helm-projectile-find-file)
-  (global-set-key (kbd "M-s-p") 'helm-projectile-switch-project)
-  (global-set-key (kbd "s-W") 'my/whitespace-cleanup)
-  (global-set-key (kbd "s-w") 'my/whitespace-mode-toggle)
-  (global-set-key (kbd "s-m") 'magit-status)
-  (global-set-key (kbd "<f3>") 'my/search-region-or-symbol)
-  (global-set-key (kbd "<M-f3>") 'spacemacs/helm-project-smart-do-search)
-  (global-set-key (kbd "s-f") 'helm-find-files)
-  (global-set-key (kbd "s-F") 'helm-recentf) ;; 'recentf-open-files
-  (global-set-key (kbd "s-r") 'helm-recentf)
-  ;; C-M-down does not work
-  ;; (global-set-key (kbd "<C-M-down>") 'crux-duplicate-current-line-or-region)
-  ;; (global-set-key (kbd "C-M-<down>") 'crux-duplicate-current-line-or-region)
-  ;; (global-set-key [C-M-down] 'crux-duplicate-current-line-or-region)
-  (global-set-key (kbd "<C-up>") 'xah-backward-block)
-  (global-set-key (kbd "<C-down>") 'xah-forward-block)
-  (global-set-key (kbd "<C-prior>") 'hs-hide-block) ; pg-up
-  (global-set-key (kbd "<C-next>") 'hs-show-block)  ; pg-down
-  ;; (global-set-key (kbd "<C-M-prior>") 'hs-toggle-hiding)
-  (global-set-key (kbd "<C-M-prior>") 'hs-hide-all) ; pg-up
-  (global-set-key (kbd "<C-M-next>") 'hs-show-all)  ; pg-down
-  ;; (global-set-key (kbd "<C-M-right>") 'sp-forward-sexp)
-  ;; (global-set-key (kbd "<C-M-right>") 'forward-paragraph)
-  ;; (global-set-key (kbd "<C-M-left>") 'backward-paragraph)
-  (global-set-key (kbd "<C-M-delete>") 'kill-sexp)
-  (global-set-key (kbd "<C-M-s-delete>") 'my/delete-next-sexp)
-  (global-set-key (kbd "<C-M-s-backspace>") 'my/delete-prev-sexp)
-  (global-set-key (kbd "<C-M-backspace>") 'backward-kill-sexp)
+  (advice-add 'helm-mini :before 'my/helm-mini)
 
   ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
   ;; layers/+misc/multiple-cursors/packages.el
   (dolist (state-map `(,evil-normal-state-map ,evil-insert-state-map))
     (define-key state-map (kbd "C-M-k") 'kill-sexp))
 
-  (global-set-key (kbd "<s-backspace>") 'paredit-backward-kill-word)
-  (global-set-key (kbd "<s-delete>") 'paredit-forward-kill-word)
-  (global-set-key (kbd "s-M-SPC") 'spacemacs/evil-search-clear-highlight)
-  (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
-  ;; (global-set-key (kbd "s-g") 'helm-google-suggest)
-  (global-set-key (kbd "s-g") 'my/browse-or-google)
-  ;; (global-set-key (kbd "s-G") 'google-this)
-  (global-set-key (kbd "s-G") 'helm-google-suggest)
-  ;; expand-region.el: increase selected region by semantic units
-  (global-set-key (kbd "s-8") 'er/expand-region)
   ;; TODO see https://github.com/joshwnj `er/contract-region`
   ;; (global-set-key (kbd "s-*") 'er/contract-region)
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
-  (global-set-key (kbd "<f2>")    'my/evil-avy-goto-char-timer)
-  (global-set-key (kbd "s-/")     'helm-swoop)
-  (global-set-key (kbd "<s-tab>") 'my/alternate-buffer)
-  (define-key evil-visual-state-map "p" 'my/evil-paste-after-from-0)
-
-  ;; TODO make it run under "t"
-  ;; (global-set-key (kbd "s-t")    'evil-avy-goto-char
-  ;;                                 ;; This doesn't work
-  ;;                                 ;; (my/interactive-lambda ()
-  ;;                                 ;;   (if (evil-normal-state-p)
-  ;;                                 ;;       (evil-avy-goto-char)))
-  ;;                 )
-  (global-set-key (kbd "<C-f2>") 'my/avy-goto-line)
-  (global-set-key (kbd "C-s-/")  'my/avy-goto-line)
-  (global-set-key (kbd "<C-mouse-5>") (my/interactive-lambda () (message "zoom-out")))
-  (global-set-key (kbd "<C-mouse-4>") (my/interactive-lambda () (message "zoom-out")))
-  ;; <menu> is not a prefix key. See:
-  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-  (global-set-key (kbd "<menu>")      (my/interactive-lambda () (message "context-menu")))
 
   (use-package org
     :config
@@ -806,56 +872,9 @@ before packages are loaded."
                              :weight 'bold ;; 'semi-bold
                              :height 1.0)))))
 
-  ;; fd - evil-escape from insert state and everything else
-  ;; occurences - function scope
-  (global-set-key (kbd "s-I") 'my/iedit-mode-toggle)
-  (global-set-key (kbd "s-i") 'iedit-mode) ;; all occurences in the buffer
-  ;; (global-set-key (kbd"s-i")  'spacemacs/enter-ahs-forward)
-  (global-set-key (kbd "<f12>") 'undo-tree-visualize)
-  ;; ("<S-delete>"      . kill-region)
-  ;; ("<C-s-backspace>" . kill-line-backward)
-  (global-set-key (kbd "<C-s-delete>") 'kill-line) ; super-key
-  (global-set-key (kbd "<C-S-delete>") 'kill-line) ; shift-key
-  (global-set-key (kbd "s-l") 'spacemacs/resume-last-search-buffer)
-  ;; `s-SPC v' but it overrides the `expand region' menu point
-  ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
-
-  (global-set-key (kbd "s-L") 'spacemacs/toggle-line-numbers)
-  ;; TODO my/toggle-large-file-setting - is it needed?
-  ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
-  ;; (global-set-key (kbd "C-s-L") 'my/toggle-large-file-setting)
-
   (use-package fish-mode
     :config
     (add-hook 'fish-mode-hook #'paredit-mode))
-
-  ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
-  ;; zop-up-to-char works as zop-to-char but stop just before target
-  (global-set-key (kbd "M-z") 'zop-up-to-char)
-  (global-set-key (kbd "M-Z") 'zop-to-char)
-
-  ;; spacemacs orig fns don't drag
-  (global-set-key (kbd "M-<up>")
-                  ;; 'spacemacs/move-text-transient-state/move-text-up
-                  'drag-stuff-up)
-  (global-set-key (kbd "M-<down>")
-                  ;; 'spacemacs/move-text-transient-state/move-text-down
-                  'drag-stuff-down)
-
-  (use-package crux ;; Coll of Ridiculously Useful eXtensions bbatsov/crux
-    :bind
-    (("C-c d"           . crux-duplicate-current-line-or-region)
-     ("<C-s-down>"      . crux-duplicate-current-line-or-region)
-
-     ;; C-M-down does not work
-     ;; ("<C-M-down>"      . crux-duplicate-current-line-or-region)
-     ;; ("C-M<down>"      . crux-duplicate-current-line-or-region)
-     ;; ([C-M-down]      . crux-duplicate-current-line-or-region)
-
-     ("C-c t"           . crux-transpose-windows)
-     ("<C-s-backspace>" . crux-kill-line-backwards)
-     ;; (global-set-key (kbd "s-j") 'crux-top-join-line)
-     ("s-j"             . crux-top-join-line)))
 
   (use-package emacs
     :config (add-hook
@@ -891,33 +910,6 @@ before packages are loaded."
   ;;       res)))
   ;; (advice-add 'eval-buffer :around #'my/progress-report)
   ;; (advice-remove 'eval-buffer #'my/progress-report)
-  (global-set-key (kbd "s-u") 'eval-buffer)
-
-  (global-set-key (kbd "s-.") 'spacemacs/jump-to-definition)
-  (global-set-key (kbd "C-s-.") 'spacemacs/jump-to-definition-other-window)
-  (global-set-key (kbd "s-,") 'evil-jump-backward) ;; C-o: evil-jump-backward
-
-  ;; just for the convenience - when the Super-key is pressed already
-  (global-set-key (kbd "s-<") 'evil-jump-backward) ;; C-o: evil-jump-backward
-  (global-set-key (kbd "s->") 'evil-jump-forward)
-
-  ;; (global-set-key (kbd "s-,") 'dumb-jump-back)
-  ;; (global-set-key (kbd "s-,") 'cider-pop-back)
-  (global-set-key (kbd "<print>") 'describe-text-properties) ;; 'my/what-face
-
-  (global-set-key (kbd "<s-f10>") ;; "<Scroll_Lock>"
-                  (my/interactive-lambda
-                   () (load-clojure-mode
-                       "~/dev/clojure-mode.5.6.1/clojure-mode.el")))
-  (global-set-key (kbd "<s-f11>") ;; "<pause>"
-                  (my/interactive-lambda
-                   () (load-clojure-mode
-                       "~/dev/clojure-mode/clojure-mode.el")))
-
-  ;; (global-set-key (kbd "<pause>") 'goto-last-change)
-  (global-set-key (kbd "<s-return>") 'goto-last-change)
-  (global-set-key (kbd "<s-pause>") 'goto-last-change-reverse)
-  (global-set-key (kbd "s-J") 'evil-join)
 
   ;; remap C-a/<home> to `my/smarter-move-beginning-of-line'
   (global-set-key [remap move-beginning-of-line]
@@ -1011,9 +1003,6 @@ before packages are loaded."
                ("C-s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)
                ("s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)))
 
-  ;; lambdas are not supported
-  ;; :bind ()
-
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
   ;; ("<s-kp-0>"      .)
@@ -1022,17 +1011,6 @@ before packages are loaded."
   ;; ("<C-insert>"    .)
 
   ;; lambdas are not supported
-
-  ;; (progn
-  ;;   (unbind-key "<f5>" cider-repl-mode-map)
-  ;;   (unbind-key "<f6>" cider-repl-mode-map)
-  ;;   (unbind-key "<f7>" cider-repl-mode-map)
-  ;;   (unbind-key "<f5>" clojure-mode-map)
-  ;;   (unbind-key "<f6>" clojure-mode-map)
-  ;;   (unbind-key "<f7>" clojure-mode-map))
-
-  (unbind-key "<C-M-right>" global-map)
-  (unbind-key "<C-M-left>" global-map)
 
   (defmacro my/bind-keys (&rest args)
     (macroexp-progn
@@ -1137,7 +1115,6 @@ before packages are loaded."
   ;; (spacemacs/set-leader-keys "oy" 'my/copy-to-clipboard)
   (evil-leader/set-key "o y" 'my/copy-to-clipboard)    ;; SPC o y
   (evil-leader/set-key "o p" 'my/paste-from-clipboard) ;; SPC o p
-  (global-set-key (kbd "s-:") 'my/fabricate-subst-cmd)
 
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
@@ -1150,7 +1127,7 @@ before packages are loaded."
 
   ;; See
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
-  (advice-add 'evil-ex-search-next :after 'evil-scroll-line-to-center)
+  (advice-add 'evil-ex-search-next     :after 'evil-scroll-line-to-center)
   (advice-add 'evil-ex-search-previous :after 'evil-scroll-line-to-center)
 
   ;; (advice-remove 'magit-stash :after)
@@ -1158,11 +1135,17 @@ before packages are loaded."
   ;; (advice-add 'magit-stash :after #'my/magit-stash-no-msg)
 
   ;; Move by screen lines instead of logical (long) lines
-  (define-key evil-motion-state-map "j" 'evil-next-visual-line)
-  (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
-  ;; Also in visual mode
-  (define-key evil-visual-state-map "j" 'evil-next-visual-line)
-  (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
+  (bind-keys
+   :map evil-motion-state-map
+   ("j" . evil-next-visual-line)
+   ("k" . evil-previous-visual-line))
+
+  ;; Move by screen lines instead of logical (long) lines the in visual mode
+  (bind-keys
+   :map evil-visual-state-map
+   ("j" . evil-next-visual-line)
+   ("k" . evil-previous-visual-line)
+   ("p" . my/evil-paste-after-from-0))
 
   ;; see also binding for <f2>
   ;; (define-key evil-normal-state-map "f" 'my/evil-avy-goto-char-timer)
