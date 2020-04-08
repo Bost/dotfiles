@@ -475,6 +475,13 @@ Repeated invocations toggle between the two most recently open buffers."
   (cider-switch-to-repl-buffer)
   (my/cider-figwheel-repl))
 
+(defun my/cider-switch-to-repl-buffer ()
+  "Connect (if not connected yet) and switch to cider repl buffer"
+  (interactive)
+  (unless (cider-connected-p)
+    (cider-connect-clj))
+  (cider-switch-to-repl-buffer))
+
 (defun my/copy-to-clipboard ()
   "Copies selection to x-clipboard."
   (interactive)
@@ -713,3 +720,11 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
 (defun my/show-pic ()
   (interactive)
   (my/repl-insert-cmd "(cljplot.core/show (corona.pic/show-pic com/threshold))"))
+
+(defun my/show-pic-for-pred ()
+  (interactive)
+  (my/repl-insert-cmd
+   (format "(cljplot.core/show (corona.pic/show-pic-for-pred %s))"
+           ;; "{:cc "DE"}"
+           "{}"
+           )))

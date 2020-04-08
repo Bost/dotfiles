@@ -1046,6 +1046,7 @@ before packages are loaded."
         '("<f5>"  . my/telegram-restart)
         '("<f6>"  . my/web-restart)
         '("<f7>"  . my/show-pic)
+        '("<f8>"  . my/show-pic-for-pred)
 
         '("s-X"   . my/s-X)
         '("s-e"   . cider-eval-last-sexp)
@@ -1074,7 +1075,7 @@ before packages are loaded."
   (my/bind-keys
    :map clojure-mode-map
    ("s-d"    . cider-eval-defun-at-point)
-   ("s-x"    . cider-switch-to-repl-buffer)
+   ("s-x"    . my/cider-switch-to-repl-buffer)
    ("C-s-c"  . cider-connect-clj)
    ("C-s-j"  . cider-jack-in)
    ;; ("s-r" . cider-eval-last-expression-in-repl)
