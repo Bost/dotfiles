@@ -312,11 +312,8 @@ displayed."
   (interactive "p")
   (let* ((symbol-at-point (thing-at-point 'symbol)))
     (if (string-prefix-p "http" symbol-at-point)
-        (progn
-          ;; https://www.google.com
-          ;; (browse-url symbol-at-point)
-          ;; (browse-url-at-point)
-          (browse-url-interactive-arg "URL: "))
+        ;; https://www.google.com
+        (browse-url (car (browse-url-interactive-arg "URL: ")))
       (if (or (evil-visual-state-p) (region-active-p))
           (google-this-region arg)
         (google-this arg)))))
