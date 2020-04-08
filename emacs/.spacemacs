@@ -764,7 +764,7 @@ before packages are loaded."
   (global-set-key (kbd "s-M-SPC") 'spacemacs/evil-search-clear-highlight)
   (global-set-key (kbd "M-y") 'helm-show-kill-ring) ; replaces evil-paste-pop
   ;; (global-set-key (kbd "s-g") 'helm-google-suggest)
-  (global-set-key (kbd "s-g") 'my/google-this-or-region)
+  (global-set-key (kbd "s-g") 'my/browse-or-google)
   ;; (global-set-key (kbd "s-G") 'google-this)
   (global-set-key (kbd "s-G") 'helm-google-suggest)
   ;; expand-region.el: increase selected region by semantic units
@@ -894,6 +894,7 @@ before packages are loaded."
   (global-set-key (kbd "s-u") 'eval-buffer)
 
   (global-set-key (kbd "s-.") 'spacemacs/jump-to-definition)
+  (global-set-key (kbd "C-s-.") 'spacemacs/jump-to-definition-other-window)
   (global-set-key (kbd "s-,") 'evil-jump-backward) ;; C-o: evil-jump-backward
 
   ;; just for the convenience - when the Super-key is pressed already

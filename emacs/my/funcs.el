@@ -308,18 +308,18 @@ displayed."
     ;; (message "was-visual-state-p: %s" was-visual-state-p)
     ))
 
-(defun my/google-this-or-region (&optional arg)
-  "TODO when point at URL use browse-url"
+(defun my/browse-or-google (&optional arg)
   (interactive "p")
-  (if (or (evil-visual-state-p) (region-active-p))
-      (progn
-        ;; (message "google-this-region")
-        (google-this-region arg)
-        )
-    (progn
-      ;; (message "google-this")
-      (google-this arg)
-      )))
+  (let* ((symbol-at-point (thing-at-point 'symbol)))
+    (if (string-prefix-p "http" symbol-at-point)
+        (progn
+          ;; https://www.google.com
+          ;; (browse-url symbol-at-point)
+          ;; (browse-url-at-point)
+          (browse-url-interactive-arg "URL: "))
+      (if (or (evil-visual-state-p) (region-active-p))
+          (google-this-region arg)
+        (google-this arg)))))
 
 (defun my/evil-avy-goto-char-timer ()
   (interactive)
