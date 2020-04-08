@@ -682,10 +682,6 @@ before packages are loaded."
                       :background "black"
                       :foreground nil)
 
-  ;; rebinding <C-M-down> to crux-duplicate-current-line-or-region
-  (unbind-key "<C-M-down>"  global-map)
-  (unbind-key "<C-M-right>" global-map)
-  (unbind-key "<C-M-left>"  global-map)
   ;; (progn
   ;;   (unbind-key "<f5>" cider-repl-mode-map)
   ;;   (unbind-key "<f6>" cider-repl-mode-map)
@@ -694,24 +690,23 @@ before packages are loaded."
   ;;   (unbind-key "<f6>" clojure-mode-map)
   ;;   (unbind-key "<f7>" clojure-mode-map))
 
-  ;; straight jump to a window: SPC 0, SPC 1, SPC 2, ...
   (bind-keys
    :map global-map
-   ("s-q"       . my/other-window)
+   ("s-q"       . my/other-window) ; straight jump to window: SPC 0, SPC 1 ...
    ("s-k"       . my/close-buffer)
    ("s-s"       . save-buffer)
    ("s-0"       . delete-window)
    ("s-1"       . delete-other-windows)
    ("<f8>"      . next-buffer)
    ("<s-f8>"    . transpose-frame)
-   ;; ("<s-f9>" . spacemacs/rotate-windows-forward) ; SPC w r
+   ;; ("<s-f9>" . spacemacs/rotate-windows-forward)     ; SPC w r
    ("s-n"       . my/toggle-narrow-to-defun)
    ("s-N"       . widen)
    ;; ("s-2"    . my/split-other-window-below)
    ;; ("s-3"    . my/split-other-window-right)
-   ("s-2"       . split-window-below) ;; SPC w -
+   ("s-2"       . split-window-below)                    ; SPC w -
    ;; ("s-3"    . spacemacs/window-split-double-columns) ; SPC w 2
-   ("s-3"       . split-window-right-and-focus) ; SPC w 3
+   ("s-3"       . split-window-right-and-focus)          ; SPC w 3
    ("s-z"       . my/buffer-selection-show)
    ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
    ("s-D"       . dired-jump)
@@ -736,26 +731,23 @@ before packages are loaded."
    ("<f3>"        . my/search-region-or-symbol)
    ("<M-f3>"      . spacemacs/helm-project-smart-do-search)
    ("s-f"         . helm-find-files)
-   ("s-F"         . helm-recentf) ;; 'recentf-open-files
+   ("s-F"         . helm-recentf) ; recentf-open-files
    ("s-r"         . helm-recentf)
 
-   ("<C-M-down>"      . crux-duplicate-current-line-or-region)
-   ("<C-s-down>"      . crux-duplicate-current-line-or-region)
-   ("C-c d"           . crux-duplicate-current-line-or-region)
-   ("C-c t"           . crux-transpose-windows)
+   ("<C-M-down>" . crux-duplicate-current-line-or-region) ; default is down-list
+   ("<C-s-down>" . crux-duplicate-current-line-or-region)
+   ("C-c d"      . crux-duplicate-current-line-or-region)
+   ("C-c t"      . crux-transpose-windows)
    ("<C-s-backspace>" . crux-kill-line-backwards) ; kill-line-backward
    ("s-j"             . crux-top-join-line)
 
    ("<C-up>"            . xah-backward-block)
    ("<C-down>"          . xah-forward-block)
    ("<C-prior>"         . hs-hide-block) ; pg-up
-   ("<C-next>"          . hs-show-block)  ; pg-down
+   ("<C-next>"          . hs-show-block) ; pg-down
    ;; ("<C-M-prior>"    . hs-toggle-hiding)
-   ("<C-M-prior>"       . hs-hide-all) ; pg-up
-   ("<C-M-next>"        . hs-show-all)  ; pg-down
-   ;; ("<C-M-right>"    . sp-forward-sexp)
-   ;; ("<C-M-right>"    . forward-paragraph)
-   ;; ("<C-M-left>"     . backward-paragraph)
+   ("<C-M-prior>"       . hs-hide-all)   ; pg-up
+   ("<C-M-next>"        . hs-show-all)   ; pg-down
    ("<C-M-delete>"      . kill-sexp)
    ("<C-M-s-delete>"    . my/delete-next-sexp)
    ("<C-M-s-backspace>" . my/delete-prev-sexp)
@@ -769,7 +761,7 @@ before packages are loaded."
    ("s-g"     . my/browse-or-google)
    ;; ("s-G"  . google-this)
    ("s-G"     . helm-google-suggest)
-   ("s-8"     . er/expand-region) ;; increase selected region by semantic units
+   ("s-8"     . er/expand-region) ; increase selected region by semantic units
    ("<f2>"    . my/evil-avy-goto-char-timer)
    ("s-/"     . helm-swoop)
    ("<s-tab>" . my/alternate-buffer)
@@ -785,7 +777,7 @@ before packages are loaded."
    ;; fd - evil-escape from insert state and everything else
    ;; occurences - function scope
    ("s-I"                . my/iedit-mode-toggle)
-   ("s-i"                . iedit-mode) ;; all occurences in the buffer
+   ("s-i"                . iedit-mode) ; all occurences in the buffer
    ;; ("s-i"             . spacemacs/enter-ahs-forward)
    ("<f12>"              . undo-tree-visualize)
    ;; ("<S-delete>"      . kill-region)
@@ -805,31 +797,32 @@ before packages are loaded."
    ("M-z"        . zop-up-to-char)
    ("M-Z"        . zop-to-char)
 
-   ;; spacemacs orig fns don't drag
-   ("M-<up>"     . drag-stuff-up) ;; 'spacemacs/move-text-transient-state/move-text-up
-   ("M-<down>"   . drag-stuff-down) ;; 'spacemacs/move-text-transient-state/move-text-down
+   ;; [1] spacemacs/move-text-transient-state/move-text-down
+   ;; [2] spacemacs/move-text-transient-state/move-text-up
+   ;; [1] and [2] don't drag:
+   ("<M-down>"   . drag-stuff-down)
+   ("<M-up>"     . drag-stuff-up)
 
    ("s-u"        . eval-buffer)
-
    ("s-."        . spacemacs/jump-to-definition)
    ("C-s-."      . spacemacs/jump-to-definition-other-window)
-   ("s-,"        . evil-jump-backward) ;; C-o: evil-jump-backward
+   ("s-,"        . evil-jump-backward) ; C-o: evil-jump-backward
 
    ;; just for the convenience - when the Super-key is pressed already
-   ("s-<"        . evil-jump-backward) ;; C-o: evil-jump-backward
+   ("s-<"        . evil-jump-backward) ; C-o: evil-jump-backward
    ("s->"        . evil-jump-forward)
 
    ;; ("s-,"     . dumb-jump-back)
    ;; ("s-,"     . cider-pop-back)
-   ("<print>"    . describe-text-properties) ;; 'my/what-face
+   ("<print>"    . describe-text-properties) ; my/what-face
 
    ;; ("<pause>" . goto-last-change)
    ("<s-return>" . goto-last-change)
    ("<s-pause>"  . goto-last-change-reverse)
    ("s-J"        . evil-join)
 
-   ("<s-print>"  . my/ediff-buffers-left-right) ;; see advice-add
-   ("s-a"        . helm-mini)  ;; see advice-add
+   ("<s-print>"  . my/ediff-buffers-left-right) ; see advice-add
+   ("s-a"        . helm-mini)                   ; see advice-add
    ("s-:"        . my/fabricate-subst-cmd)
 
    ("s-<"  . (my/interactive-lambda () (my/select-inner "vi<")))
@@ -869,7 +862,7 @@ before packages are loaded."
        (dolist (face
                 '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5))
          (set-face-attribute face nil
-                             :weight 'bold ;; 'semi-bold
+                             :weight 'bold ; 'semi-bold
                              :height 1.0)))))
 
   (use-package fish-mode
@@ -879,7 +872,7 @@ before packages are loaded."
   (use-package emacs
     :config (add-hook
              'emacs-lisp-mode-hook
-             (lambda () ;; "Λ"
+             (lambda () ; "Λ"
                (push '("my/interactive-lambda" . 923) prettify-symbols-alist))))
 
   (use-package clojure-mode
@@ -898,7 +891,7 @@ before packages are loaded."
     ;;   (->> 1))
     )
 
-  (use-package super-save ;; better auto-save-mode
+  (use-package super-save ; better auto-save-mode
     :config (super-save-mode +1))
 
   ;; (defun my/progress-report (orig-fun &rest args)
@@ -1076,18 +1069,21 @@ before packages are loaded."
 
    ("C-s-o"   . my/cider-clear-compilation-highlights)
 
-   ("<C-M-right>" . end-of-defun)
-   ("<C-M-left>"  . beginning-of-defun))
+   ("<C-M-right>" . end-of-defun)       ;; default is forward-sexp
+   ("<C-M-left>"  . beginning-of-defun) ;; default is backward-sexp
+   )
 
-  (bind-keys :map emacs-lisp-mode-map
-             ("C-s-m"       . my/elisp-insert-message)
-             ("s-d"         . my/eval-current-defun)
-             ("s-e"         . eval-last-sexp))
+  (bind-keys
+   :map emacs-lisp-mode-map
+   ("C-s-m"       . my/elisp-insert-message)
+   ("s-d"         . my/eval-current-defun)
+   ("s-e"         . eval-last-sexp))
 
-  (bind-keys :map
-             lisp-mode-shared-map ;; lisp-mode-map doesn't work
-             ("<C-M-right>" . end-of-defun)
-             ("<C-M-left>"  . beginning-of-defun))
+  (bind-keys
+   :map lisp-mode-shared-map ;; lisp-mode-map doesn't work
+   ("<C-M-right>" . end-of-defun)       ;; default is forward-sexp
+   ("<C-M-left>"  . beginning-of-defun) ;; default is backward-sexp
+   )
 
   (bind-keys :map org-mode-map
              ;; my/interactive-lambda doesn't work
