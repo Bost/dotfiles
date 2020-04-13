@@ -1025,15 +1025,22 @@ before packages are loaded."
         '("s-j"   . cider-format-defun)
         '("s-i"   . cljr-rename-symbol)
 
-        '("C-s-d" . my/clj-insert-do)
+        '("C-s-o" . my/clj-insert-do)
         '("C-s-f" . my/clj-insert-filter-fn)
         '("C-s-r" . my/clj-insert-remove-fn)
         '("C-s-l" . my/clj-insert-let)
         '("C-s-m" . my/clj-insert-map-fn)
-        '("C-s-n" . my/clj-insert-defn)
+        '("C-s-d" . my/clj-insert-defn)
         '("C-s-p" . my/clj-insert-log)
-        '("C-s-s" . my/clj-insert-doseq)))
+        '("C-s-s" . my/clj-insert-doseq)
+        '("C-s-t" . my/clj-insert-type)))
       nil)))
+
+  (bind-keys
+   :map paredit-mode-map
+   ;; putting these keybindings in the cider-repl-mode-map doesn't work
+   ("<C-right>"    . right-word)
+   ("<C-left>"     . left-word))
 
   (my/bind-keys
    :map cider-repl-mode-map

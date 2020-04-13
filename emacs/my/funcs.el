@@ -632,6 +632,10 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
   (interactive)
   (my/insert-sexp "(filter (fn []))" 3))
 
+(defun my/clj-insert-type ()
+  (interactive)
+  (my/insert-sexp "(type )" 1))
+
 (defun my/clj-insert-map-fn ()
   (interactive)
   (my/insert-sexp "(map (fn []))" 3))
@@ -716,12 +720,12 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
 
 (defun my/show-pic ()
   (interactive)
-  (my/repl-insert-cmd "(cljplot.core/show (corona.pic/show-pic com/threshold))"))
+  (my/repl-insert-cmd
+   "(cljplot.core/show (corona.plot/plot-all-countries-ill com/threshold (corona.api.v1/pic-data)))"))
 
 (defun my/show-pic-for-pred ()
   (interactive)
   (my/repl-insert-cmd
-   (format "(cljplot.core/show (corona.pic/show-pic-for-pred %s))"
-           ;; "{:cc "DE"}"
-           "{}"
+   (format "(cljplot.core/show (corona.plot/plot-country %s (corona.api.v1/pic-data)))"
+           "zz"
            )))
