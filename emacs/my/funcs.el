@@ -224,7 +224,6 @@ displayed."
       (evil-insert 0)))
 
 (defun my/sp-copy-next-sexp-msg ()
-  "TODO flash the copied s-exp"
   (interactive)
   (sp-copy-sexp)
   (let* ((sexp (car kill-ring))
@@ -244,6 +243,17 @@ displayed."
          "..."
        ""))))
 
+(defun my/bounds-next-sexp ()
+  "For the flashing"
+  (cons
+   (save-excursion
+     (sp-forward-sexp)
+     (sp-backward-sexp)
+     (point))
+   (save-excursion
+     (sp-forward-sexp)
+     (point))))
+
 (defun my/sp-copy-prev-sexp-msg ()
   (interactive)
   (let* ((point-pos (point)))
@@ -251,6 +261,17 @@ displayed."
     (sp-backward-sexp)
     (my/sp-copy-next-sexp-msg)
     (goto-char point-pos)))
+
+(defun my/bounds-prev-sexp ()
+  "For the flashing"
+  (cons
+   (save-excursion
+     (sp-backward-sexp)
+     (point))
+   (save-excursion
+     (sp-backward-sexp)
+     (sp-forward-sexp)
+     (point))))
 
 (defun my/select-inner (vi-str)
   "Select inner part of a string surrounded by bracket / quotation chars."

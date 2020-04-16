@@ -30,7 +30,7 @@
 ;;; Code:
 
 (defconst my-packages
-  '()
+  '(eval-sexp-fu)
   "The list of Lisp packages required by the my layer.
 
 Each entry is either:
@@ -59,5 +59,12 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format"
   )
 
+(defun my/post-init-eval-sexp-fu ()
+  (with-eval-after-load 'eval-sexp-fu
+    (progn
+      (define-eval-sexp-fu-flash-command my/sp-copy-next-sexp-msg
+        (eval-sexp-fu-flash (my/bounds-next-sexp)))
+      (define-eval-sexp-fu-flash-command my/sp-copy-prev-sexp-msg
+        (eval-sexp-fu-flash (my/bounds-prev-sexp))))))
 
 ;;; packages.el ends here
