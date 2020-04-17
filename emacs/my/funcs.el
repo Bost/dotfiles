@@ -682,22 +682,37 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
   (interactive)
   (my/insert-sexp "(do)" 1))
 
+(defun my/point-max-p () (= (point) (point-max)))
+(defalias 'my/end-of-file-p 'my/point-max-p)
+
 (defun my/toggle-reader-comment-fst-sexp-on-line (cmtstr)
-  (let* ((point-pos1 (point)))
-    (evil-insert-line 0)
-    (let* ((point-pos2 (point))
-           (cmtstr-len (length cmtstr))
-           (line-start (buffer-substring-no-properties
-                        point-pos2 (+ point-pos2 cmtstr-len))))
-      (if (string= cmtstr line-start)
-          (progn
-            (delete-char cmtstr-len)
-            (goto-char point-pos1)
-            (left-char cmtstr-len))
-        (progn
-          (insert cmtstr)
-          (goto-char point-pos1)
-          (right-char cmtstr-len))))))
+  "If line starts with a line comment, toggle the comment.
+Otherwise toggle the reader comment"
+  (if (my/end-of-file-p)
+      (message "Point at the end-of-file. Doing nothing.")
+    (let* ((point-pos1 (point)))
+      (evil-insert-line 0)
+      (let* ((point-pos2 (point))
+             (is-comment-only (comment-only-p point-pos2
+                                              (save-excursion
+                                                (move-end-of-line 1)
+                                                (point)))))
+        (if is-comment-only
+            ;; (evilnc-comment-or-uncomment-lines 1)
+            (spacemacs/comment-or-uncomment-lines 1)
+          (let* ((cmtstr-len (length cmtstr))
+                 (line-start (buffer-substring-no-properties
+                              point-pos2 (+ point-pos2 cmtstr-len))))
+            ;; (message "line-start %s" line-start)
+            (if (string= cmtstr line-start)
+                (progn
+                  (delete-char cmtstr-len)
+                  (goto-char point-pos1)
+                  (left-char cmtstr-len))
+              (progn
+                (insert cmtstr)
+                (goto-char point-pos1)
+                (right-char cmtstr-len)))))))))
 
 (defun my/racket-toggle-reader-comment-fst-sexp-on-line ()
   (interactive)
