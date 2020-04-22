@@ -759,11 +759,17 @@ Otherwise toggle the reader comment"
 (defun my/show-pic ()
   (interactive)
   (my/repl-insert-cmd
-   "(cljplot.core/show (corona.plot/plot-all-countries-ill com/threshold (corona.api.v1/pic-data)))"))
+   (format "(cljplot.core/show (corona.plot/plot-all-countries-ill %s %s %s))"
+           "(count (corona.api.v1/raw-dates-unsorted))"
+           "com/min-threshold"
+           "(corona.api.v1/pic-data)"
+           )))
 
 (defun my/show-pic-for-pred ()
   (interactive)
   (my/repl-insert-cmd
-   (format "(cljplot.core/show (corona.plot/plot-country %s (corona.api.v1/pic-data)))"
+   (format "(cljplot.core/show (corona.plot/plot-country %s %s %s))"
+           "(count (corona.api.v1/raw-dates-unsorted))"
            "zz"
+           "(corona.api.v1/pic-data)"
            )))
