@@ -330,14 +330,16 @@ displayed."
     ))
 
 (defun my/browse-or-google (&optional arg)
+  "'&optional arg' must be declared otherwise the key binding it doesn't work"
   (interactive "p")
   (let* ((symbol-at-point (thing-at-point 'symbol)))
     (if (string-prefix-p "http" symbol-at-point)
         ;; https://www.google.com
         (browse-url (car (browse-url-interactive-arg "URL: ")))
+      ;; nil means: no quoted search
       (if (or (evil-visual-state-p) (region-active-p))
-          (google-this-region arg)
-        (google-this arg)))))
+          (google-this-region nil)
+        (google-this nil)))))
 
 (defun my/evil-avy-goto-char-timer ()
   (interactive)

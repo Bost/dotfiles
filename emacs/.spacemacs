@@ -757,9 +757,7 @@ before packages are loaded."
    ("<s-delete>"        . paredit-forward-kill-word)
    ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
    ("M-y"     . helm-show-kill-ring) ; replaces evil-paste-pop
-   ;; ("s-g"  . helm-google-suggest)
    ("s-g"     . my/browse-or-google)
-   ;; ("s-G"  . google-this)
    ("s-G"     . helm-google-suggest)
    ("s-8"     . er/expand-region) ; increase selected region by semantic units
    ("<f2>"    . my/evil-avy-goto-char-timer)
