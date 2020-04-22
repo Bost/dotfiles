@@ -788,7 +788,9 @@ before packages are loaded."
    ;; `s-SPC v' but it overrides the `expand region' menu point
    ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
 
-   ("s-L"                . spacemacs/toggle-line-numbers)
+   ;; TODO s-L: cycle over spacemacs/toggle-*.line-numbers functions
+   ;; ("s-L"                . spacemacs/toggle-line-numbers)
+   ("s-L"                . spacemacs/toggle-relative-line-numbers)
    ;; TODO my/toggle-large-file-setting - is it needed?
    ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
    ;; ("C-s-L"   . my/toggle-large-file-setting)
