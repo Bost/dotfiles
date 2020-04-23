@@ -758,18 +758,22 @@ Otherwise toggle the reader comment"
 
 (defun my/show-pic ()
   (interactive)
-  (my/repl-insert-cmd
-   (format "(cljplot.core/show (corona.plot/plot-all-countries-ill %s %s %s))"
-           "(count (corona.api.v1/raw-dates-unsorted))"
-           "com/min-threshold"
-           "(corona.api.v1/pic-data)"
-           )))
+  (let* ((case ":c")
+         (prm (format "{:day %s :threshold %s :case %s :stats %s}"
+                      "(count (corona.api.v1/raw-dates-unsorted))"
+                      (format "(com/min-threshold %s)" case)
+                      case
+                      "(corona.api.v1/pic-data)")))
+    (my/repl-insert-cmd
+     (format "(cljplot.core/show (corona.plot/plot-all-by-case %s))"
+             prm))))
 
 (defun my/show-pic-for-pred ()
   (interactive)
-  (my/repl-insert-cmd
-   (format "(cljplot.core/show (corona.plot/plot-country %s %s %s))"
-           "(count (corona.api.v1/raw-dates-unsorted))"
-           "zz"
-           "(corona.api.v1/pic-data)"
-           )))
+  (let* ((prm (format "{:day %s :cc %s :stats %s}"
+                      "(count (corona.api.v1/raw-dates-unsorted))"
+                      "\"ZZ\""
+                      "(corona.api.v1/pic-data)")))
+    (my/repl-insert-cmd
+     (format "(cljplot.core/show (corona.plot/plot-country %s))"
+             prm))))
