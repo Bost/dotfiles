@@ -687,12 +687,20 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
 (defun my/point-max-p () (= (point) (point-max)))
 (defalias 'my/end-of-file-p 'my/point-max-p)
 
+(defun current-line-empty-p ()
+  (save-excursion
+    (beginning-of-line)
+    (looking-at-p "[[:space:]]*$")))
+
 (defun my/toggle-reader-comment-fst-sexp-on-line (cmtstr)
   "If line starts with a line comment, toggle the comment.
 Otherwise toggle the reader comment"
-  (if (my/end-of-file-p)
-      (message "Point at the end-of-file. Doing nothing.")
+  (if (and (current-line-empty-p) (my/end-of-file-p))
+      (progn
+        (message "Point at the end-of-file. Doing nothing."))
     (let* ((point-pos1 (point)))
+      ;; Switch to insert state at beginning of current line.
+      ;; 0 means: don't insert any line
       (evil-insert-line 0)
       (let* ((point-pos2 (point))
              (is-comment-only (comment-only-p point-pos2
@@ -709,12 +717,10 @@ Otherwise toggle the reader comment"
             (if (string= cmtstr line-start)
                 (progn
                   (delete-char cmtstr-len)
-                  (goto-char point-pos1)
-                  (left-char cmtstr-len))
+                  (goto-char (- point-pos1 cmtstr-len)))
               (progn
                 (insert cmtstr)
-                (goto-char point-pos1)
-                (right-char cmtstr-len)))))))))
+                (goto-char (+ point-pos1 cmtstr-len))))))))))
 
 (defun my/racket-toggle-reader-comment-fst-sexp-on-line ()
   (interactive)
