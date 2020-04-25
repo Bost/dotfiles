@@ -907,9 +907,8 @@ before packages are loaded."
   ;; (advice-add 'eval-buffer :around #'my/progress-report)
   ;; (advice-remove 'eval-buffer #'my/progress-report)
 
-  ;; remap C-a/<home> to `my/smarter-move-beginning-of-line'
-  (global-set-key [remap move-beginning-of-line]
-                  'my/smarter-move-beginning-of-line)
+  ;; remap C-a / <home>
+  (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
 
   ;; Max time delay between two key presses to be considered a key chord
   ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
