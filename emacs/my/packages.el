@@ -62,9 +62,9 @@ Each entry is either:
 (defun my/post-init-eval-sexp-fu ()
   (with-eval-after-load 'eval-sexp-fu
     (progn
-      (define-eval-sexp-fu-flash-command my/sp-copy-next-sexp-msg
-        (eval-sexp-fu-flash (my/bounds-next-sexp)))
-      (define-eval-sexp-fu-flash-command my/sp-copy-prev-sexp-msg
-        (eval-sexp-fu-flash (my/bounds-prev-sexp))))))
+      (define-eval-sexp-fu-flash-command sp-copy-sexp
+        (eval-sexp-fu-flash (my/bounds-nearest-sexp)))
+      (define-eval-sexp-fu-flash-command sp-backward-copy-sexp
+        (eval-sexp-fu-flash (my/bounds-nearest-sexp t))))))
 
 ;;; packages.el ends here

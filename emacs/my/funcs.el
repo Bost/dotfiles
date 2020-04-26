@@ -223,55 +223,17 @@ displayed."
   (if (not (evil-insert-state-p))
       (evil-insert 0)))
 
-(defun my/sp-copy-next-sexp-msg ()
-  (interactive)
-  (sp-copy-sexp)
-  (let* ((sexp (car kill-ring))
-         (sexp-lines (split-string sexp "\n"))
-         (sexp-len (length sexp))
-         (cnt-sexp-lines (length sexp-lines))
-         (fst-line (car sexp-lines))
-         (fst-line-len (length fst-line))
-         (maxchars 40))
-    (message
-     "sexp (%d chars, %d lines) copied to kill-ring: %s%s"
-     sexp-len
-     cnt-sexp-lines
-     fst-line
-     ;; (or (>= fst-line-len maxchars) (> (length sexp-lines) 1))
-     (if (or (>= fst-line-len maxchars) (> cnt-sexp-lines 1))
-         "..."
-       ""))))
-
-(defun my/bounds-next-sexp ()
-  "For the flashing"
-  (cons
-   (save-excursion
-     (sp-forward-sexp)
-     (sp-backward-sexp)
-     (point))
-   (save-excursion
-     (sp-forward-sexp)
-     (point))))
-
-(defun my/sp-copy-prev-sexp-msg ()
-  (interactive)
-  (let* ((point-pos (point)))
-    ;; try (forward-sexp -1)
-    (sp-backward-sexp)
-    (my/sp-copy-next-sexp-msg)
-    (goto-char point-pos)))
-
-(defun my/bounds-prev-sexp ()
-  "For the flashing"
-  (cons
-   (save-excursion
-     (sp-backward-sexp)
-     (point))
-   (save-excursion
-     (sp-backward-sexp)
-     (sp-forward-sexp)
-     (point))))
+(defun my/bounds-nearest-sexp (&optional back)
+  "Returns (BEGIN . END) of the nearest balanced sexp after (before) the point."
+  ;; TODO remove this it the sexp after this comment works
+  ;; (if back
+  ;;     (cons (save-excursion (sp-backward-sexp) (point))
+  ;;           (save-excursion (sp-backward-sexp) (sp-forward-sexp) (point)))
+  ;;   (cons
+  ;;    (save-excursion (sp-forward-sexp) (sp-backward-sexp) (point))
+  ;;    (save-excursion (sp-forward-sexp) (point))))
+  (let ((sexp (sp-get-thing back)))
+    (cons (sp-get sexp :beg) (sp-get sexp :end))))
 
 (defun my/select-inner (vi-str)
   "Select inner part of a string surrounded by bracket / quotation chars."

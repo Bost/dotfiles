@@ -712,8 +712,8 @@ before packages are loaded."
    ("s-z"       . my/buffer-selection-show)
    ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
    ("s-D"       . dired-jump)
-   ("s-c"       . my/sp-copy-next-sexp-msg)
-   ("s-b"       . my/sp-copy-prev-sexp-msg)
+   ("s-c"       . sp-copy-sexp)
+   ("s-b"       . sp-backward-copy-sexp)
    ("s-B"       . helm-filtered-bookmarks)
    ("<f9>"      . helm-filtered-bookmarks)
    ("<f11>"     . bookmark-set)
