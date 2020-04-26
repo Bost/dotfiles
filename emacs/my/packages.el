@@ -60,6 +60,22 @@ Each entry is either:
   )
 
 (defun my/post-init-eval-sexp-fu ()
+  (with-eval-after-load 'simple
+    (setq
+     my/line-numbers '(spacemacs/toggle-relative-line-numbers-on
+                       spacemacs/toggle-relative-line-numbers-off
+                       spacemacs/toggle-line-numbers-on
+                       spacemacs/toggle-line-numbers-off)
+     my/curr-line-number-mode nil
+
+     my/defun-narrow-modes '(narrow-to-defun
+                             widen)
+
+     my/curr-defun-narrow-mode nil
+     my/narrowed-to-defun nil
+     my/iedit-mode nil
+     ))
+
   (with-eval-after-load 'eval-sexp-fu
     (progn
       (define-eval-sexp-fu-flash-command sp-copy-sexp

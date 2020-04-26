@@ -196,13 +196,15 @@ displayed."
                 'default
                 'flash-active-buffer-face)))
 
-(defun my/toggle-narrow-to-defun ()
-  ;; TODO send to my/toggle-narrow-to-defun spacemacs upstream
+(defun my/cycle-defun-narrow-modes ()
+  ;; TODO send this function to spacemacs upstream
   (interactive)
-  (if my/narrowed-to-defun ;; global variable
-      (widen)
-    (narrow-to-defun))
-  (setq my/narrowed-to-defun (not my/narrowed-to-defun)))
+  (setq my/curr-defun-narrow-mode
+        (car (or (cdr (memq my/curr-defun-narrow-mode my/defun-narrow-modes))
+                 ;; if my/curr-defun-narrow-mode isn't in cycleable, start over
+                 my/defun-narrow-modes)))
+  (funcall my/curr-defun-narrow-mode)
+  (recenter))
 
 (defun my/split-other-window-and (f)
   (funcall f)
@@ -566,8 +568,11 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
 
 (defun my/elisp-insert-message ()
   (interactive)
-  ;; (my/insert-sexp "(message (format \"\"))" 3)
-  (my/insert-sexp "(message \"\")" 2))
+  (my/insert-sexp "(message \"%s\" )" 1))
+
+(defun my/elisp-insert-defun ()
+  (interactive)
+  (yas-expand-snippet (yas-lookup-snippet "defun")))
 
 (defun my/cider-save-and-load-current-buffer ()
   (interactive)
@@ -721,3 +726,11 @@ Otherwise toggle the reader comment"
     (my/repl-insert-cmd
      (format "(cljplot.core/show (corona.plot/plot-country %s))"
              prm))))
+
+(defun my/cycle-line-number-modes ()
+  (interactive)
+  (setq my/curr-line-number-mode
+        (car (or (cdr (memq my/curr-line-number-mode my/line-numbers))
+                 ;; if my/curr-line-number-mode isn't in cycleable, start over
+                 my/line-numbers)))
+  (funcall my/curr-line-number-mode))

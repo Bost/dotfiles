@@ -639,8 +639,6 @@ before packages are loaded."
    ;;   ("github" . browse-url-chromium)
    ;;   ("thefreedictionary\\.com" . eww-browse-url)
    ;;   ("." . browse-url-default-browser))
-   my/narrowed-to-defun nil
-   my/iedit-mode nil
    org-latex-listings 'minted
    org-latex-pdf-process
    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -703,7 +701,7 @@ before packages are loaded."
    ("<f8>"      . next-buffer)
    ("<s-f8>"    . transpose-frame)
    ;; ("<s-f9>" . spacemacs/rotate-windows-forward)     ; SPC w r
-   ("s-n"       . my/toggle-narrow-to-defun)
+   ("s-n"       . my/cycle-defun-narrow-modes)
    ;; ("s-2"    . my/split-other-window-below)
    ;; ("s-3"    . my/split-other-window-right)
    ("s-2"       . split-window-below)                    ; SPC w -
@@ -789,7 +787,7 @@ before packages are loaded."
 
    ;; TODO s-L: cycle over spacemacs/toggle-*.line-numbers functions
    ;; ("s-L"                . spacemacs/toggle-line-numbers)
-   ("s-L"                . spacemacs/toggle-relative-line-numbers)
+   ("s-L"                . my/cycle-line-number-modes)
    ;; TODO my/toggle-large-file-setting - is it needed?
    ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
    ;; ("C-s-L"   . my/toggle-large-file-setting)
@@ -1084,6 +1082,7 @@ before packages are loaded."
   (bind-keys
    :map emacs-lisp-mode-map
    ("C-s-m"       . my/elisp-insert-message)
+   ("C-s-d"       . my/elisp-insert-defun)
    ("s-d"         . my/eval-current-defun)
    ("s-e"         . eval-last-sexp))
 
