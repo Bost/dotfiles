@@ -294,8 +294,7 @@ displayed."
 (defun my/whitespace-cleanup ()
   (interactive)
   (whitespace-cleanup)
-  (message (concat "s-n / s-N : narrow-to-defun / widen;"
-                   " s-W : whitespace-cleanup")))
+  (message "s-n : my/toggle-narrow-to-defun; s-W : whitespace-cleanup"))
 
 (defun my/whitespace-mode-toggle ()
   (interactive)

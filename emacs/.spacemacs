@@ -704,7 +704,6 @@ before packages are loaded."
    ("<s-f8>"    . transpose-frame)
    ;; ("<s-f9>" . spacemacs/rotate-windows-forward)     ; SPC w r
    ("s-n"       . my/toggle-narrow-to-defun)
-   ("s-N"       . widen)
    ;; ("s-2"    . my/split-other-window-below)
    ;; ("s-3"    . my/split-other-window-right)
    ("s-2"       . split-window-below)                    ; SPC w -
