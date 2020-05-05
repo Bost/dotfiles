@@ -891,18 +891,7 @@ before packages are loaded."
     ;;   (->> 1))
     )
 
-  (use-package super-save ; better auto-save-mode
-    :config (super-save-mode +1))
-
-  ;; (defun my/progress-report (orig-fun &rest args)
-  ;;   (let ((progress-reporter
-  ;;          (make-progress-reporter
-  ;;           (format "Evaluating (%s %s)..." orig-fun args))))
-  ;;     (let ((res (apply orig-fun args)))
-  ;;       (progress-reporter-done progress-reporter)
-  ;;       res)))
-  ;; (advice-add 'eval-buffer :around #'my/progress-report)
-  ;; (advice-remove 'eval-buffer #'my/progress-report)
+  (super-save-mode +1) ; better auto-save-mode
 
   ;; remap C-a / <home>
   (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
