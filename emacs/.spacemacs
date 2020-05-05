@@ -763,12 +763,6 @@ before packages are loaded."
    ("<f2>"    . my/evil-avy-goto-char-timer)
    ("s-/"     . helm-swoop)
    ("<s-tab>" . my/alternate-buffer)
-   ;; TODO make it run under "t"
-   ;; ("s-t"  . evil-avy-goto-char
-   ;;                      ;; This doesn't work
-   ;;                      ;; (my/interactive-lambda ()
-   ;;                      ;;   (if (evil-normal-state-p)
-   ;;                      ;;       (evil-avy-goto-char))))
    ("<C-f2>"  . my/avy-goto-line)
    ("C-s-/"   . my/avy-goto-line)
 
@@ -838,14 +832,6 @@ before packages are loaded."
    ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
    ("<menu>"      . (my/interactive-lambda () (message "context-menu")))
    )
-
-  (advice-add 'ediff-quit :around #'my/disable-y-or-n-p)
-  (advice-add 'helm-mini :before 'my/helm-mini)
-
-  ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
-  ;; layers/+misc/multiple-cursors/packages.el
-  (dolist (state-map `(,evil-normal-state-map ,evil-insert-state-map))
-    (define-key state-map (kbd "C-M-k") 'kill-sexp))
 
   ;; TODO see https://github.com/joshwnj `er/contract-region`
   ;; (global-set-key (kbd "s-*") 'er/contract-region)
@@ -976,14 +962,6 @@ before packages are loaded."
     (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode    "c" 'my/s-X)
     )
 
-  (use-package racket-mode
-    :config
-    ;; TODO (bind-keys ..) must be inside the (use-package racket-mode ..) ???
-    (bind-keys :map racket-mode-map
-               ;; my/interactive-lambda doesn't work
-               ("C-s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)
-               ("s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)))
-
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
   ;; ("<s-kp-0>"      .)
@@ -1101,6 +1079,13 @@ before packages are loaded."
    (lambda ()
      (bind-keys :map debugger-mode-map ("C-g" . debugger-quit))))
 
+  (add-hook
+   'racket-mode-hook
+   (lambda ()
+     (bind-keys :map racket-mode-map
+                ("C-s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)
+                ("s-\\"   . my/racket-toggle-reader-comment-fst-sexp-on-line))))
+
   ;; (bind-keys :map helm-mode-map)
 
   ;; TODO consider using spacemacs/set-leader-keys
@@ -1113,7 +1098,7 @@ before packages are loaded."
   ;; Emacs 24.4 replaces this mechanism with advice-add
 
   ;; Difference between `evil-search-forward` and `evil-ex-search-forward`:
-  ;; evil-search-forward - wrap emacs isearch-forward
+  ;; evil-search-forward    - wrap emacs isearch-forward
   ;; evil-ex-search-forward - invoke the evil internal search
   ;; https://emacs.stackexchange.com/a/24913
 
@@ -1121,27 +1106,32 @@ before packages are loaded."
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
   (advice-add 'evil-ex-search-next     :after 'evil-scroll-line-to-center)
   (advice-add 'evil-ex-search-previous :after 'evil-scroll-line-to-center)
+  (advice-add 'ediff-quit              :around 'my/disable-y-or-n-p)
+  (advice-add 'helm-mini               :before 'my/helm-mini)
 
   ;; (advice-remove 'magit-stash :after)
   ;; (defun my/magit-stash-no-msg () (magit-stash ""))
   ;; (advice-add 'magit-stash :after #'my/magit-stash-no-msg)
 
-  ;; Move by screen lines instead of logical (long) lines
-  (bind-keys
-   :map evil-motion-state-map
-   ("j" . evil-next-visual-line)
-   ("k" . evil-previous-visual-line))
+  ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+  ;; layers/+misc/multiple-cursors/packages.el
+  (dolist (state-map `(,evil-normal-state-map ,evil-insert-state-map))
+    (bind-keys :map state-map
+               ("C-M-k" . kill-sexp)))
 
-  ;; Move by screen lines instead of logical (long) lines the in visual mode
-  (bind-keys
-   :map evil-visual-state-map
-   ("j" . evil-next-visual-line)
-   ("k" . evil-previous-visual-line)
-   ("p" . my/evil-paste-after-from-0))
+  (dolist (state-map `(,evil-motion-state-map ,evil-visual-state-map))
+    ;; Move by screen lines instead of logical (long) lines
+    (bind-keys :map state-map
+               ("j" . evil-next-visual-line)
+               ("k" . evil-previous-visual-line)))
+
+  (bind-keys :map evil-visual-state-map
+             ("p" . my/evil-paste-after-from-0))
 
   ;; see also binding for <f2>
-  ;; (define-key evil-normal-state-map "f" 'my/evil-avy-goto-char-timer)
-  ;; (global-set-key (kbd "f") 'my/evil-avy-goto-char)
+  ;; (bind-keys :map evil-normal-state-map
+  ;;            ("f" . my/evil-avy-goto-char-timer)
+  ;;            ("t" . my/evil-avy-goto-char-timer))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
