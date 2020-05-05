@@ -969,95 +969,81 @@ before packages are loaded."
   ;; (unbind-key "<C-insert>")
   ;; ("<C-insert>"    .)
 
-  ;; lambdas are not supported
+  (bind-keys :map paredit-mode-map
+             ;; these keybindings don't work in the cider-repl-mode-map
+             ("<C-right>"    . right-word)
+             ("<C-left>"     . left-word))
 
-  (defmacro my/bind-keys (&rest args)
-    (macroexp-progn
-     (bind-keys-form
-      (append
-       args
-       (list
-        ;; on the german keyboard the '#' is next to Enter
-        '("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
-        '("s-\\"   . my/clj-toggle-reader-comment-fst-sexp-on-line)
+  (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
+    (bind-keys :map state-map
+               ;; on the german keyboard the '#' is next to Enter
+               ("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
+               ("s-\\"   . my/clj-toggle-reader-comment-fst-sexp-on-line)
 
-        '("<f5>"  . my/telegram-restart)
-        '("<f6>"  . my/web-restart)
-        '("<f7>"  . my/show-pic)
-        '("<f8>"  . my/show-pic-for-pred)
+               ("<f5>"  . my/telegram-restart)
+               ("<f6>"  . my/web-restart)
+               ("<f7>"  . my/show-pic)
+               ("<f8>"  . my/show-pic-for-pred)
 
-        '("s-X"   . my/s-X)
-        '("s-e"   . cider-eval-last-sexp)
-        '("s-j"   . cider-format-defun)
-        '("s-i"   . cljr-rename-symbol)
+               ("s-X"   . my/s-X)
+               ("s-e"   . cider-eval-last-sexp)
+               ("s-j"   . cider-format-defun)
+               ("s-i"   . cljr-rename-symbol)
 
-        '("C-s-o" . my/clj-insert-do)
-        '("C-s-f" . my/clj-insert-filter-fn)
-        '("C-s-r" . my/clj-insert-remove-fn)
-        '("C-s-l" . my/clj-insert-let)
-        '("C-s-m" . my/clj-insert-map-fn)
-        '("C-s-d" . my/clj-insert-defn)
-        '("C-s-p" . my/clj-insert-log)
-        '("C-s-s" . my/clj-insert-doseq)
-        '("C-s-t" . my/clj-insert-type)))
-      nil)))
+               ("C-s-o" . my/clj-insert-do)
+               ("C-s-f" . my/clj-insert-filter-fn)
+               ("C-s-r" . my/clj-insert-remove-fn)
+               ("C-s-l" . my/clj-insert-let)
+               ("C-s-m" . my/clj-insert-map-fn)
+               ("C-s-d" . my/clj-insert-defn)
+               ("C-s-p" . my/clj-insert-log)
+               ("C-s-s" . my/clj-insert-doseq)
+               ("C-s-t" . my/clj-insert-type)))
 
-  (bind-keys
-   :map paredit-mode-map
-   ;; putting these keybindings in the cider-repl-mode-map doesn't work
-   ("<C-right>"    . right-word)
-   ("<C-left>"     . left-word))
+  (bind-keys :map cider-repl-mode-map
+             ("s-e"          . cider-eval-last-sexp)
+             ("s-h"          . helm-cider-history)
+             ("s-j"          . cider-format-defun)
+             ("s-x"          . cider-switch-to-last-clojure-buffer)
+             ;; invoke from clojure buffer
+             ("<C-s-delete>" . cider-repl-clear-buffer))
 
-  (my/bind-keys
-   :map cider-repl-mode-map
-   ("s-e"          . cider-eval-last-sexp)
-   ("s-h"          . helm-cider-history)
-   ("s-j"          . cider-format-defun)
-   ("s-x"          . cider-switch-to-last-clojure-buffer)
-   ;; invoke from clojure buffer
-   ("<C-s-delete>" . cider-repl-clear-buffer))
+  (bind-keys :map clojure-mode-map
+             ("s-d"    . cider-eval-defun-at-point)
+             ("s-x"    . my/cider-switch-to-repl-buffer)
+             ("C-s-c"  . cider-connect-clj)
+             ("C-s-j"  . cider-jack-in)
+             ;; ("s-r" . cider-eval-last-expression-in-repl)
+             ("M-s-l"  . my/cider-save-and-load-current-buffer)
+             ("s-u"    . my/cider-save-and-load-current-buffer)
+             ("M-s-n"  . cider-repl-set-ns)
+             ("s-t"    . cider-test-run-tests)
 
-  (my/bind-keys
-   :map clojure-mode-map
-   ("s-d"    . cider-eval-defun-at-point)
-   ("s-x"    . my/cider-switch-to-repl-buffer)
-   ("C-s-c"  . cider-connect-clj)
-   ("C-s-j"  . cider-jack-in)
-   ;; ("s-r" . cider-eval-last-expression-in-repl)
-   ("M-s-l"  . my/cider-save-and-load-current-buffer)
-   ("s-u"    . my/cider-save-and-load-current-buffer)
-   ("M-s-n"  . cider-repl-set-ns)
-   ("s-t"    . cider-test-run-tests)
+             ;; TODO see global-set-key settings
+             ;; ("s-."  . cider-find-var)
+             ;; ("s-,"  . cider-pop-back)
+             ;; TODO s-M does not work in REPL buffer
 
-   ;; TODO see global-set-key settings
-   ;; ("s-."  . cider-find-var)
-   ;; ("s-,"  . cider-pop-back)
-   ;; TODO s-M does not work in REPL buffer
+             ;; Reload modified and unloaded namespaces on the classpath
+             ("s-o"     . cider-ns-refresh)
 
-   ;; Reload modified and unloaded namespaces on the classpath
-   ("s-o"     . cider-ns-refresh)
+             ;; Send a (require ’ns :reload) to the REPL
+             ;; ("s-o"  . cider-ns-reload)
 
-   ;; Send a (require ’ns :reload) to the REPL
-   ;; ("s-o"  . cider-ns-reload)
+             ("C-s-o"   . my/cider-clear-compilation-highlights))
 
-   ("C-s-o"   . my/cider-clear-compilation-highlights)
+  (bind-keys :map emacs-lisp-mode-map
+             ("C-s-m" . my/elisp-insert-message)
+             ("C-s-d" . my/elisp-insert-defun)
+             ("s-d"   . my/eval-current-defun)
+             ("s-e"   . eval-last-sexp))
 
-   ("<C-M-right>" . end-of-defun)       ;; default is forward-sexp
-   ("<C-M-left>"  . beginning-of-defun) ;; default is backward-sexp
-   )
-
-  (bind-keys
-   :map emacs-lisp-mode-map
-   ("C-s-m"       . my/elisp-insert-message)
-   ("C-s-d"       . my/elisp-insert-defun)
-   ("s-d"         . my/eval-current-defun)
-   ("s-e"         . eval-last-sexp))
-
-  (bind-keys
-   :map lisp-mode-shared-map ;; lisp-mode-map doesn't work
-   ("<C-M-right>" . end-of-defun)       ;; default is forward-sexp
-   ("<C-M-left>"  . beginning-of-defun) ;; default is backward-sexp
-   )
+  (dolist (state-map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
+                       ,clojure-mode-map))
+    (bind-keys :map state-map
+               ("<C-M-right>" . end-of-defun)       ; default is forward-sexp
+               ("<C-M-left>"  . beginning-of-defun) ; default is backward-sexp
+               ))
 
   (bind-keys :map org-mode-map
              ;; my/interactive-lambda doesn't work
@@ -1073,7 +1059,7 @@ before packages are loaded."
    'python-mode-hook
    (lambda ()
      (bind-keys :map python-mode-map
-                ("s-x"         . spacemacs/python-start-or-switch-repl))))
+                ("s-x" . spacemacs/python-start-or-switch-repl))))
   (add-hook
    'debugger-mode-hook
    (lambda ()
