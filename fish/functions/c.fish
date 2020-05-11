@@ -11,7 +11,7 @@ function c
         if test -f /usr/bin/bat
             set binary bat
         else
-            echo "# TODO install `bat`"
+            echo "# TODO install `bat` https://github.com/sharkdp/bat#installation"
             echo "#####################"
             set binary cat
         end

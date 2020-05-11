@@ -29,7 +29,7 @@ function codeFiles --description "Returns a list of strings (files) with code-fi
     echo $lstFiles
 end
 
-function make-emacs
+function make-emacs --description "Compile, install & git-tag emacs src code"
     # ./configure --with-x-toolkit=gtk
     # see also
     # https://github.com/adobe-fonts/source-code-pro/issues/17#issuecomment-487894024
@@ -65,8 +65,9 @@ function make-emacs
                     set remoteTag (eval $cmdLastTag | grep --only-matching "\([0-9]*\?\.[0-9]*\?\.[0-9]*\?\)")
                     echo "remoteTag:" $remoteTag
                     if test $status = 1
-                        set remoteTag "27.0.60"  # TODO parse `emacs --version`
-                        # set remoteTag "26.2.50"  # TODO parse `emacs --version`
+                        # TODO parse `emacs --version` to avoid setting remoteTag manually
+                        set remoteTag "27.0.60"
+                        # set remoteTag "26.2.50"
                         echo "remoteTag not defined. Using:" $remoteTag
                     end
                     set tagPostfixInc (math $tagPostfix + 1)
