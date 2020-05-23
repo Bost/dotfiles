@@ -89,7 +89,7 @@
       ))
 
 ;; '     adds quote
-;; `     adds quasiquote
+;; `     adds quasiquote - see notes
 ;; ,     adds unquote
 ;; ,@    adds unquote-splicing
 ;; #'    adds syntax
