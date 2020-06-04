@@ -1,0 +1,392 @@
+%% rounded rectangle
+
+\newif\ifpgfshaperectangleroundnortheast
+\newif\ifpgfshaperectangleroundnorthwest
+\newif\ifpgfshaperectangleroundsoutheast
+\newif\ifpgfshaperectangleroundsouthwest
+\pgfkeys{/pgf/.cd,
+  rectangle round north east/.is if=pgfshaperectangleroundnortheast,
+  rectangle round north west/.is if=pgfshaperectangleroundnorthwest,
+  rectangle round south east/.is if=pgfshaperectangleroundsoutheast,
+  rectangle round south west/.is if=pgfshaperectangleroundsouthwest,
+  rectangle round north east, rectangle round north west,
+  rectangle round south east, rectangle round south west,
+}
+\makeatletter
+\def\pgf@sh@bg@rectangle{%
+  \pgfkeysgetvalue{/pgf/outer xsep}{\outerxsep}%
+  \pgfkeysgetvalue{/pgf/outer ysep}{\outerysep}%
+  \pgfpathmoveto{\pgfpointadd{\southwest}{\pgfpoint{\outerxsep}{\outerysep}}}%
+  {\ifpgfshaperectangleroundnorthwest\else\pgfsetcornersarced{\pgfpointorigin}\fi%
+    \pgfpathlineto{\pgfpointadd{\southwest\pgf@xa=\pgf@x\northeast\pgf@x=\pgf@xa}{\pgfpoint{\outerxsep}{-\outerysep}}}}%  
+  {\ifpgfshaperectangleroundnortheast\else\pgfsetcornersarced{\pgfpointorigin}\fi%  
+    \pgfpathlineto{\pgfpointadd{\northeast}{\pgfpoint{-\outerxsep}{-\outerysep}}}}%
+  {\ifpgfshaperectangleroundsoutheast\else\pgfsetcornersarced{\pgfpointorigin}\fi%  
+    \pgfpathlineto{\pgfpointadd{\southwest\pgf@ya=\pgf@y\northeast\pgf@y=\pgf@ya}{\pgfpoint{-\outerxsep}{\outerysep}}}}%
+  {\ifpgfshaperectangleroundsouthwest\else\pgfsetcornersarced{\pgfpointorigin}\fi%  
+    \pgfpathclose}}
+
+
+%% WD classes
+
+\tikzset{
+  	WD/.style={%everything after equals replaces "oriented WD" in key.
+  	  label/.style={
+      	font=\everymath\expandafter{\the\everymath\scriptstyle},
+        inner sep=0pt,
+        node distance=2pt and -2pt},
+      semithick,
+      node distance=\bbx and \bby,
+      decoration={markings, mark=at position \stringdecpos with \stringdec},
+    	bb port length=0,
+  	  bb port sep=.5,
+	 	  bbx = .4cm,
+		  bb min width=.4cm,
+	    bby = 2ex,
+	    bb penetrate=0,
+	    bb rounded corners=2pt,
+	    dot size=3pt,
+      pack size = 16pt,
+    	penetration = 0pt,
+      link size = 2pt,
+      pack color = blue,
+      surround sep=2pt,
+      ar/.style={postaction={decorate}},
+  		execute at begin picture={\tikzset{
+  			x=\bbx, y=\bby, 
+				circuit logic US, tiny circuit symbols
+				}
+			}
+    },
+    bbx/.store in=\bbx,
+    bby/.store in=\bby,
+    bb port sep/.store in=\bbportsep,
+    bb port length/.store in=\bbportlen,
+    bb penetrate/.store in=\bbpenetrate,
+    bb min width/.store in=\bbminwidth,
+    bb rounded corners/.store in=\bbcorners,
+    bb/.code 2 args={%When you see this key, run the code below:
+    	\pgfmathsetlengthmacro{\bbheight}{\bbportsep * (max(#1,#2)+1) * \bby}
+      \pgfkeysalso{draw,minimum height=\bbheight,minimum
+       width=\bbminwidth,outer sep=0pt,
+         rounded corners=\bbcorners,thick,
+         prefix after command={\pgfextra{\let\fixname\tikzlastnode}},
+         append after command={\pgfextra{\draw
+            \ifnum #1=0{} \else foreach \i in {1,...,#1} {
+            	($(\fixname.north west)!{(2*\i-1)/(2*#1)}!(\fixname.south west)$) +(-\bbportlen,0) coordinate (\fixname_in\i) -- +(\bbpenetrate,0) coordinate (\fixname_in\i')}\fi 
+  					%Define the endpoints of tickmarks
+            \ifnum #2=0{} \else foreach \i in {1,...,#2} {
+            	($(\fixname.north east)!{(2*\i-1)/(2*#2)}!(\fixname.south east)$) +(-
+\bbpenetrate,0) coordinate (\fixname_out\i') -- +(\bbportlen,0) coordinate (\fixname_out\i)}\fi;
+           }}}
+		},
+	dot size/.store in=\dotsize,
+	dot/.style={
+		circle, draw, thick, inner sep=0, fill=black, minimum width=\dotsize
+	},
+	pack size/.store in=\psize,
+	penetration/.store in=\penetration,
+  spacing/.store in=\spacing,
+  link size/.store in=\lsize,
+  pack color/.store in=\pcolor,
+ 	pack inside color/.store in=\picolor,
+  pack inside color=blue!20,
+ 	pack outside color/.store in=\pocolor,
+  pack outside color=blue!50!black,
+ 	surround sep/.store in=\ssep,
+ 	link/.style={
+  	circle, 
+  	draw=black, 
+  	fill=black,
+  	inner sep=0pt, 
+ 		minimum size=\lsize
+ 	},
+  pack/.style={
+ 		circle, 
+ 		draw = \pocolor, 
+  	fill = \picolor,
+  	minimum size = \psize
+  },
+  func/.style={
+  	pack,
+		rectangle,
+		rounded corners=.5*\psize,
+		inner ysep=.125*\psize,
+		minimum width=1.125*\psize,
+		inner xsep=.25*\psize,
+  },
+  funcr/.style={
+    func,
+    rectangle round north west=false, 
+		rectangle round south west=false,
+  },
+  funcl/.style={
+    func,
+		rectangle round north east=false, 
+		rectangle round south east=false,
+  },
+  funcu/.style={
+    func,
+		rectangle round south east=false, 
+		rectangle round south west=false,
+  },
+  funcd/.style={
+    func,
+		rectangle round north east=false, 
+		rectangle round north west=false,
+  },
+  outer pack/.style={
+ 		ellipse, 
+ 		draw,
+  	inner sep=\ssep,
+  	color=gray,
+ 	},
+  intermediate pack/.style={
+ 		ellipse,
+ 		dashed, 
+  	draw,
+  	inner sep=\ssep,
+ 		color=\pocolor,
+ 	},
+ }
+ 
+\tikzset{light gray nodes/.style={every node/.style={fill=gray!40}}}
+
+
+\tikzset{
+	oriented WD/.style={%everything after equals replaces "oriented WD" in key.
+		every to/.style={out=0,in=180,draw},
+    label/.style={
+    	font=\everymath\expandafter{\the\everymath\scriptstyle},
+      inner sep=0pt,
+      node distance=2pt and -2pt},
+    semithick,
+    node distance=1 and 1,
+    decoration={markings, mark=at position \stringdecpos with \stringdec},
+    ar/.style={postaction={decorate}},
+    execute at begin picture={\tikzset{
+    	x=\bbx, y=\bby,
+      every fit/.style={inner xsep=\bbx, inner ysep=\bby}}}
+    },
+    string decoration/.store in=\stringdec,
+    string decoration={\arrow{stealth};},
+    string decoration pos/.store in=\stringdecpos,
+    string decoration pos=.7,
+    bbx/.store in=\bbx,
+    bbx = 1.5cm,
+    bby/.store in=\bby,
+    bby = 1.5ex,
+    bb port sep/.store in=\bbportsep,
+    bb port sep=1.5,
+    % bb wire sep/.store in=\bbwiresep,
+    % bb wire sep=1.75ex,
+    bb port length/.store in=\bbportlen,
+    bb port length=4pt,
+    bb penetrate/.store in=\bbpenetrate,
+    bb penetrate=0,
+    bb min width/.store in=\bbminwidth,
+    bb min width=1cm,
+    bb rounded corners/.store in=\bbcorners,
+    bb rounded corners=2pt,
+    bb spider/.style={
+    	bb port sep=1, bb port length=10pt, bbx=.4cm, bb min width=.4cm, bby=.8ex},
+    bb small/.style={
+    	bb port sep=1, bb port length=2.5pt, bbx=.4cm, bb min width=.4cm, bby=.7ex},
+		bb medium/.style={
+			bb port sep=1, bb port length=2.5pt, bbx=.4cm, bb min width=.4cm, bby=.9ex},
+    bb/.code 2 args={%When you see this key, run the code below:
+    	\pgfmathsetlengthmacro{\bbheight}{\bbportsep * (max(#1,#2)+1) * \bby}
+      \pgfkeysalso{draw,minimum height=\bbheight,minimum
+       width=\bbminwidth,outer sep=0pt,
+         rounded corners=\bbcorners,thick,
+         prefix after command={\pgfextra{\let\fixname\tikzlastnode}},
+         append after command={\pgfextra{\draw
+            \ifnum #1=0{} \else foreach \i in {1,...,#1} {
+            	($(\fixname.north west)!{(2*\i-1)/(2*#1)}!(\fixname.south west)$) +(-\bbportlen,0) coordinate (\fixname_in\i) -- +(\bbpenetrate,0) coordinate (\fixname_in\i')}\fi 
+  					%Define the endpoints of tickmarks
+            \ifnum #2=0{} \else foreach \i in {1,...,#2} {
+            	($(\fixname.north east)!{(2*\i-1)/(2*#2)}!(\fixname.south east)$) +(-
+\bbpenetrate,0) coordinate (\fixname_out\i') -- +(\bbportlen,0) coordinate (\fixname_out\i)}\fi;
+           }}}
+		},
+		bb name/.style={
+    	append after command={
+				\pgfextra{\node[anchor=north] at (\fixname.north) {#1};}
+			}
+		},
+  }
+
+
+\tikzset{
+	unoriented WD/.style={
+  	every to/.style={draw},
+  	shorten <=-\penetration, shorten >=-\penetration,
+  	label distance=-2pt,
+  	thick,
+  	node distance=\spacing,
+  	execute at begin picture={\tikzset{
+  		x=\spacing, y=\spacing, circuit logic US, tiny circuit symbols}
+		}
+  },
+  pack size/.store in=\psize,
+  pack size = 12pt,
+	penetration/.store in=\penetration,
+	penetration = 0pt,
+  spacing/.store in=\spacing,
+  spacing = 8pt,
+  link size/.store in=\lsize,
+  link size = 2pt,
+  pack color/.store in=\pcolor,
+  pack color = blue,
+ 	pack inside color/.store in=\picolor,
+  pack inside color=blue!20,
+ 	pack outside color/.store in=\pocolor,
+  pack outside color=blue!50!black,
+ 	surround sep/.store in=\ssep,
+  surround sep=8pt,
+ 	link/.style={
+  	circle, 
+  	draw=black, 
+  	fill=black,
+  	inner sep=0pt, 
+ 		minimum size=\lsize
+ 	},
+  pack/.style={
+ 		circle, 
+ 		draw = \pocolor, 
+  	fill = \picolor,
+  	minimum size = \psize
+  },
+  func/.style={
+  	pack,
+		rectangle,
+		rounded corners=.5*\psize,
+		inner ysep=.125*\psize,
+		minimum width=1.125*\psize,
+		inner xsep=.25*\psize,
+  },
+  funcr/.style={
+    func,
+    rectangle round north west=false, 
+		rectangle round south west=false,
+  },
+  funcl/.style={
+    func,
+		rectangle round north east=false, 
+		rectangle round south east=false,
+  },
+  funcu/.style={
+    func,
+		rectangle round south east=false, 
+		rectangle round south west=false,
+  },
+  funcd/.style={
+    func,
+		rectangle round north east=false, 
+		rectangle round north west=false,
+  },
+  outer pack/.style={
+ 		ellipse, 
+ 		draw,
+  	inner sep=\ssep,
+  	color=gray,
+ 	},
+  intermediate pack/.style={
+ 		ellipse,
+ 		dashed, 
+  	draw,
+  	inner sep=\ssep,
+ 		color=\pocolor,
+ 	},
+}
+  
+\tikzset{
+	spider diagram/.style={
+		every to/.style={out=0, in=180, draw, thick},
+		thick,
+		dot size = 5pt,
+		execute at begin picture={\tikzset{
+    	x=\leglen, y=\leglen/3}}
+	},
+	dot size/.store in=\dotsize,
+	dot fill/.store in=\dotfill,
+	dot fill = black,
+	leg length/.store in=\leglen,
+	leg length = 15pt,
+	baby/.style={dot size = 2pt, leg length = 6pt},
+	young/.style={dot size = 3pt, leg length = 10pt},
+	adolescent/.style={dot size = 4pt, leg length = 12pt},
+	special spider/.code n args={4}{
+		\pgfkeysalso{circle, draw, thick, inner sep=0, fill=\dotfill, minimum width=\dotsize,
+  		prefix after command={\pgfextra{\let\fixname\tikzlastnode}},
+  		append after command={\pgfextra{
+  			\ifnum #1=0{} \else {\foreach \i in {1,...,#1} {
+					\tikzmath{\anglei={-90*(#1+1-2*\i)/#1};}
+  				\draw [thick]
+						(\fixname) .. controls 
+						($(\fixname.center)-(\anglei:#3/3)$) and ($(\fixname.center)-(\anglei:#3*2/3)$) .. 
+						({$(\fixname.center)-(\anglei:#3*2/3)$}-|{$(\fixname.center)-(#3,0)$}) coordinate (\fixname_in\i);
+  			}}\fi
+  			\ifnum #2=0{} \else {\foreach \i in {1,...,#2} {
+					\tikzmath{\anglei={90*(#2+1-2*\i)/#2};}
+  				\draw [thick]
+						(\fixname.center) .. controls 
+						($(\fixname.center)+(\anglei:#4/3)$) and ($(\fixname.center)+(\anglei:#4*2/3)$) .. 
+						({$(\fixname.center)+(\anglei:#4*2/3)$}-|{$(\fixname.center)+(#4,0)$}) coordinate (\fixname_out\i);
+  			}}\fi
+  		}}
+		}
+	},
+	spider/.code 2 args={
+		\pgfkeysalso{special spider={#1}{#2}{\leglen}{\leglen}}
+	}
+}
+
+\tikzset{
+	inner WD/.style={
+		every to/.style={out=0, in=180, draw, thick},
+		unoriented WD, 
+		surround sep=2pt, 
+		font=\tiny, 
+		anchor=center
+	}
+}
+
+\tikzset{
+  function/.style={->, thin, shorten <=4pt, shorten >=4pt}
+}
+
+\tikzset{
+  tick/.style={
+  	postaction={
+    	decorate,
+      decoration={
+      	markings, mark=at position 0.5 with {
+					\draw[-] (0,.4ex) -- (0,-.4ex);
+				}
+			}
+		}
+	}
+} 
+
+\newcommand{\tickar}{\begin{tikzcd}[baseline=-0.5ex,cramped,sep=small,ampersand 
+replacement=\&]{}\ar[r,tick]\&{}\end{tikzcd}}
+
+\tikzcdset{
+	twocell/.style={Rightarrow, shorten <=5pt, shorten >=5pt}
+}
+ 
+\newcommand{\simpletheta}{
+\begin{tikzpicture}[unoriented WD, surround sep=2pt, pack size=6pt, font=\tiny, baseline=(theta.base)]
+	\node[pack] (theta) {$\theta$};
+	\draw (theta.west) -- +(-2pt, 0);
+	\draw (theta.east) -- +(2pt, 0);
+\end{tikzpicture}
+}
+
+\newcommand{\dectheta}{\begin{tikzpicture}[unoriented WD, surround sep=2pt, font=\tiny, pack size=6pt, baseline=(theta.base)]
+	\node[pack] (theta) {$\theta$};
+	\draw (theta.west) to[pos=1] node[left=-3pt] {$\Gamma_1$} +(-2pt, 0);
+	\draw (theta.east) to[pos=1] node[right=-3pt] {$\Gamma_2$} +(2pt, 0);
+\end{tikzpicture}}
+

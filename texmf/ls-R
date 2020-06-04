@@ -1,0 +1,20 @@
+% ls-R -- filename database for kpathsea; do not change this line.
+./:
+.:
+ls-R
+tex
+
+
+./tex:
+latex
+
+./tex/latex:
+cat-7-sketches
+
+./tex/latex/cat-7-sketches:
+auto
+cat-7-sketches.sty
+tikz-stuff.tex
+
+./tex/latex/cat-7-sketches/auto:
+cat-7-sketches.el

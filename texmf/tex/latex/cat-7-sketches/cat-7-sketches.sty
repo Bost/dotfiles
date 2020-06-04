@@ -1,0 +1,524 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{cat-7-sketches}
+
+\RequirePackage{mathtools}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{accents}
+\RequirePackage{newpxtext}
+\RequirePackage[varg,bigdelims]{newpxmath}
+\RequirePackage{eucal}
+\RequirePackage[usenames,dvipsnames]{xcolor}
+\RequirePackage{tikz}
+\RequirePackage[siunitx]{circuitikz}
+
+% graphicx {
+% insert jpeg, png, gif, pdf files: \includegraphics[]{}
+\RequirePackage{graphicx}
+% }
+
+\RequirePackage{outline}
+\RequirePackage{varwidth}
+
+% enumitem {
+% \RequirePackage[inline]{enumitem}
+\RequirePackage{enumitem}
+% Thanks to https://tex.stackexchange.com/a/300418
+% \itemsep = vertical space added after each item in the list.
+% \parsep = vertical space added after each paragraph in the list.
+% \topsep = vertical space added above and below the list.
+% \partopsep = vertical space added above and below the list, but only if the list starts a new paragraph.
+
+% leftmargin=* - no indentation of the bullet and number lists
+% \setlist[itemize]{leftmargin=*, itemsep=0pt, topsep=0pt, parsep=0pt, partopsep=0mm, parskip=0pt}
+% \setlist[enumerate]{leftmargin=*, itemsep=0pt, topsep=0pt, parsep=0pt, partopsep=0mm, parskip=0pt}
+\setlist[itemize]{leftmargin=*}
+\setlist[enumerate]{leftmargin=*}
+\setlist{nosep}
+% \setlength{\itemsep}{0pt}
+% \setlength{\parskip}{0pt}
+% \setlength{\parsep}{0pt}
+% \setlength{\topsep}{0pt}
+% \setlength{\partopsep}{0pt}
+
+% for debugging
+\newcommand{\printvalues}{topsep=\the\topsep; itemsep=\the\itemsep; parsep=\the\parsep; partopsep=\the\partopsep}
+% }
+
+
+\RequirePackage{ifthen}
+\RequirePackage{footnote}
+
+
+% inputenc {
+% allows among others non-ascii in bib file
+\RequirePackage[utf8]{inputenc}
+% }
+
+
+% hyperref {
+\RequirePackage{hyperref}
+\hypersetup{
+  % bookmarks=true,
+  colorlinks=true, linkcolor=blue!50!black,
+  citecolor=orange!50!black, urlcolor=orange!50!black, pdfencoding=unicode}
+% \hypersetup{final}
+% }
+
+
+%   \RequirePackage{subfiles}
+
+
+% cleveref {
+\RequirePackage[capitalize]{cleveref}
+\newcommand{\creflastconjunction}{, and\nobreakspace} % serial comma
+% }
+
+
+% biblatex {
+% \RequirePackage[backend=biber, backref=true, maxbibnames = 10, style = alphabetic]{biblatex}
+% \addbibresource{Library20200504.bib}
+% }
+
+
+% makeidx {
+\RequirePackage{makeidx}
+% \makeindex
+% \printindex % print index in the document
+% }
+
+\RequirePackage[all]{xy}
+\RequirePackage[framemethod=tikz]{mdframed}
+\RequirePackage{todonotes}
+\RequirePackage{tablefootnote}
+
+% indented paragraphs in solutions
+% \RequirePackage{changepage}
+
+
+% for drafting; prints labels in margin
+% \RequirePackage{showkeys}
+
+
+\RequirePackage[margin=2cm]{geometry}
+
+
+% tikz %
+\tikzstyle{none}=[inner sep=0pt]                               % Signal flow graphs
+\tikzstyle{circ}=[circle,fill=black,draw,inner sep=3pt]        % Signal flow graphs
+\tikzstyle{circw}=[circle,fill=white,draw,inner sep=3pt,thick] % Signal flow graphs
+
+\usetikzlibrary{
+  cd,
+  math,
+  decorations.markings,
+  decorations.pathreplacing,
+  positioning,
+  arrows.meta,
+  shapes,
+  shadows,
+  shadings,
+  calc,
+  fit,
+  quotes,
+  intersections,
+  circuits,
+  circuits.ee.IEC
+}
+
+\tikzcdset{arrow style=tikz, diagrams={>=To}}
+
+% mdframed/tablefootnote%
+% This makes \tablefootnote allow construction of footnotes that appear at bottom of page instead of inside frame
+
+\makeatletter
+\AfterEndEnvironment{mdframed}{%
+  \tfn@tablefootnoteprintout%
+  \gdef\tfn@fnt{0}%
+}
+\makeatother
+
+% TikZ Stuff
+
+\input{tikz-stuff}
+
+\colorlet{theoremcolor}{white!92!blue}
+\colorlet{definitioncolor}{white!92!purple}
+\colorlet{examplecolor}{white!93!green}
+
+\mdfdefinestyle{theoremframe}{
+  linewidth=0pt,
+  % linecolor=blue,
+  backgroundcolor=theoremcolor,
+  roundcorner=6pt,
+  nobreak=true,
+  leftmargin=0,
+  innerleftmargin=0,
+  rightmargin=0,
+  innerrightmargin=0,
+}
+
+\mdfdefinestyle{definitionframe}{
+  linewidth=0pt,
+  % linecolor=blue,
+  backgroundcolor=definitioncolor,
+  roundcorner=6pt,
+  leftmargin=0,
+  innerleftmargin=0,
+  rightmargin=0,
+  innerrightmargin=0,
+}
+
+\mdfdefinestyle{exampleframe}{
+  linewidth=0pt,
+  backgroundcolor=examplecolor,
+  leftmargin=0,
+  innerleftmargin=0,
+  rightmargin=0,
+  innerrightmargin=0,
+}
+
+% \mdfdefinestyle{exerciseframe}{
+% linecolor=white!93!yellow,
+% backgroundcolor=white!93!yellow,
+% }
+
+\newtheoremstyle{plain}
+{-\topsep}    % space above
+{}            % space below
+{\normalfont} % body font
+{}            % indent amount
+{\bfseries}   % theorem head font
+{.}           % punctuation after theorem head
+{.5em}        % space after theorem head
+{}            % theorem head spec
+
+% amsthm %
+\theoremstyle{plain}
+\newmdtheoremenv[style=theoremframe]{theorem}[equation]{Theorem}
+\newmdtheoremenv[style=theoremframe]{proposition}[equation]{Proposition}
+\newmdtheoremenv[style=theoremframe]{corollary}[equation]{Corollary}
+\newmdtheoremenv[style=theoremframe]{lemma}[equation]{Lemma}
+
+\theoremstyle{plain}
+\newmdtheoremenv[style=definitionframe]{definition}[equation]{Definition}
+\newmdtheoremenv[style=definitionframe]{roughDef}[equation]{Rough Definition}
+\crefname{roughDef}{Definition}{Definitions}
+\newtheorem{construction}[equation]{Construction}
+\newtheorem{notation}[equation]{Notation}
+\newtheorem{axiom}{Axiom}
+\newtheorem*{axiom*}{Axiom}
+
+\theoremstyle{remark}
+\newtheorem{remark}[equation]{Remark}
+\newtheorem{warning}[equation]{Warning}
+% \newtheorem{exercise}[equation]{Exercise}
+
+\newcommand{\finishSolutionChapter}{
+  % \vfill\hrulefill\\\noindent
+  % \arabic{solcounterlocal} exercises in Chapter \arabic{section}, and \arabic{solcounterglobal} total exercises up to this point.
+  % 
+  \clearpage
+}
+
+\makeatletter
+\newcommand{\nolisttopbreak}{\nobreak\@afterheading}
+\makeatother
+
+\newcounter{solcounterlocal}[section]
+\newcounter{solcounterglobal}
+
+\newcommand{\sol}[4][noprint]{
+
+  \stepcounter{solcounterlocal}\stepcounter{solcounterglobal}
+
+  \noindent\ignorespacesafterend\emph{Solution to} \cref{#2}.%
+  \nopagebreak%
+  \ifthenelse{\equal{#1}{print}}{
+    \nopagebreak%
+    \begin{mdframed}[backgroundcolor=examplecolor,linewidth=0pt]%
+      #3%
+    \end{mdframed}%
+    \nopagebreak
+  }{}%
+  \nolisttopbreak
+  \begin{description}[leftmargin=2.5ex,itemindent=0pt,topsep=0ex,nosep]
+  \item\nopagebreak
+    #4
+  \end{description}
+  \bigskip
+}
+
+% Aligned tikz environment
+\newenvironment{altikz}{
+  \begin{aligned}
+    \begin{tikzpicture}
+    }
+    {
+    \end{tikzpicture}
+  \end{aligned}
+}
+
+% Getting ending symbols in example and exercise environments:
+
+\newmdtheoremenv[style=exampleframe]{example}[equation]{Example}
+
+\newtheorem{exc-inner}[equation]{Exercise}
+\newenvironment{exercise}[1][]{
+  \def\qedsymbol{$\lozenge$}% Set the QED symbol.
+  \pushQED{\qed}
+  \begin{exc-inner}[#1]~
+  }{
+    \popQED
+  \end{exc-inner}
+}
+\crefname{exercise}{Exercise}{Exercises}
+
+
+% Adjunctions
+\newcommand{\adj}[5][30pt]{%[size] Cat L, Left, Right, Cat R.
+  \begin{tikzcd}[ampersand replacement=\&, column sep=#1]
+    #2\ar[r, bend left=15, shift left=2pt, "#3"]
+    \ar[r, Rightarrow, shorten <=8pt, shorten >=8pt]\&
+    #5\ar[l, bend left=15, shift left=2pt, "#4"]
+    % #2\ar[r, shift left=5pt, "{#3}"]\adjphantom{r}{\Rightarrow}\&
+    % #5\ar[l, shift left=5pt, "{#4}"]
+  \end{tikzcd}
+}
+
+\newcommand{\adjr}[5][30pt]{%[size] Cat R, Right, Left, Cat L.
+  \begin{tikzcd}[ampersand replacement=\&, column sep=#1]
+    #2\ar[r, bend left=15, shift left=2pt, "#3"]\&
+    #5\ar[l, bend left=15, shift left=2pt, "#4"]
+    \ar[l, Rightarrow, shorten <=8pt, shorten >=8pt]
+    % #2\ar[r, shift left=5pt, "{#3}"]\adjphantom{r}{\Leftarrow}\&
+    % #5\ar[l, shift left=5pt, "{#4}"]
+  \end{tikzcd}
+}
+
+\DeclareSymbolFont{stmry}{U}{stmry}{m}{n}
+\DeclareMathSymbol\fatsemi\mathop{stmry}{"23}
+
+\DeclareFontFamily{U}{mathx}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathx}{m}{n}{
+  <5> <6> <7> <8> <9> <10>
+  <10.95> <12> <14.4> <17.28> <20.74> <24.88>
+  mathx10
+}{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareFontSubstitution{U}{mathx}{m}{n}
+\DeclareMathAccent{\widecheck}{0}{mathx}{"71}
+
+\renewcommand{\ss}{\subseteq}
+\renewcommand{\aa}{\mathbb{A}} %Not sure what old \aa did
+\renewcommand{\ll}{\mathbb{L}} %Old \ll is <<
+\renewcommand{\ss}{\subseteq}
+\renewcommand{\iff}{\Leftrightarrow}
+\renewcommand{\implies}{\Rightarrow}
+\renewcommand{\th}{\ensuremath{^\tn{th}}\ }
+
+\DeclareMathOperator*{\colim}{colim}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\Ob}{Ob}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Typ}{Typ}
+\DeclareMathOperator{\cod}{cod}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\dju}{\sqcup}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\inc}{inc}
+\DeclareMathOperator{\ob}{\Set{Ob}}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\church}{\xxbracket}{\rrbracket}
+\DeclarePairedDelimiter{\classify}{{\raisebox{1pt}{$\ulcorner$}}}{{\raisebox{1pt}{$\urcorner$}}}
+\DeclarePairedDelimiter{\copair}{[}{]}
+\DeclarePairedDelimiter{\corners}{\ulcorner}{\urcorner}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\pair}{\langle}{\rangle}
+\DeclarePairedDelimiter{\unary}{{\langle\,}}{{\,\rangle}}
+
+\setlength\tabcolsep{3pt}
+% no indentation of the first paragraph line
+\setlength{\parindent}{0em}
+% space between paragraphs
+% \setlength{\parskip}{4mm}
+
+\linespread{1.10}
+
+
+% \newcommand\addopgen{\lower8pt\hbox{$\includegraphics[height=0.7cm]{pics/addop.pdf}$}}       % Signal flow graphs
+% \newcommand\copygen{\lower8pt\hbox{$\includegraphics[height=0.7cm]{pics/copy.pdf}$}}         % Signal flow graphs
+% \newcommand\delaygenk{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/delayk.pdf}$}}     % Signal flow graphs
+% \newcommand\delaygenl{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/delayl.pdf}$}}     % Signal flow graphs
+% \newcommand\delayopgenk{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/delayopk.pdf}$}} % Signal flow graphs
+% \newcommand\delayopgenl{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/delayopl.pdf}$}} % Signal flow graphs
+% \newcommand\delayopgen{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/delayop.pdf}$}}   % Signal flow graphs
+% \newcommand\discardgen{\lower5pt\hbox{$\includegraphics[height=0.5cm]{pics/discard.pdf}$}}   % Signal flow graphs
+% \newcommand\id{\lower3pt\hbox{$\includegraphics[height=0.3cm]{pics/id.pdf}$}}                % Signal flow graphs
+% \newcommand\minonegen{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/minone.pdf}$}}     % Signal flow graphs
+% \newcommand\scalaropgen{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/scalarop.pdf}$}} % Signal flow graphs
+% \newcommand\zeroopgen{\lower5pt\hbox{$\includegraphics[height=0.5cm]{pics/zeroop.pdf}$}}     % Signal flow graphs
+% \newcommand{\Cat}[1]{{\mathsf{#1}}}                                        % a named category
+% \newcommand{\Cospan}{\Cat{Cospan}}                                       % Cospan stuff
+% \newcommand{\PP}{\mathbb{P}}
+% \newcommand{\Prob}{\Cat{Prob}}
+% \newcommand{\tickar}{\begin{tikzcd}[baseline=-0.5ex,cramped,sep=small,ampersand,replacement=\&]{}\ar[r,tick]\&{}\end{tikzcd}}
+\newcommand\addgen{\lower8pt\hbox{$\includegraphics[height=0.7cm]{pics/add.pdf}$}}             % Signal flow graphs
+\newcommand\copyopgen{\lower8pt\hbox{$\includegraphics[height=0.7cm]{pics/copyop.pdf}$}}       % Signal flow graphs
+\newcommand\delaygen{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/delay.pdf}$}}         % Signal flow graphs
+\newcommand\discardopgen{\lower5pt\hbox{$\includegraphics[height=0.5cm]{pics/discardop.pdf}$}} % Signal flow graphs
+\newcommand\scalargen{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/scalar.pdf}$}}       % Signal flow graphs
+\newcommand\twist{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/twist.pdf}$}}            % Signal flow graphs
+\newcommand\zerogen{\lower5pt\hbox{$\includegraphics[height=0.5cm]{pics/zero.pdf}$}}           % Signal flow graphs
+\newcommand{\?}{{\color{gray}{?}}}
+\newcommand{\BB}{\mathbb{B}}
+\newcommand{\Bool}{\Cat{Bool}}
+\newcommand{\Bx}{\Set{Box}}
+\newcommand{\CCat}[1]{\mathbb{\StrLeft{#1}{1}}\Cat{\StrGobbleLeft{#1}{1}}} % a named category; does not seem to work in section headers...
+\newcommand{\Cat}[1]{\mathbf{#1}}                                          % a named category
+\newcommand{\Cdots}[1]{\overset{#1}{\cdots}}
+\newcommand{\Cob}{\Cat{Cob}}
+\newcommand{\Cospan}[1]{\Cat{Cospan}_{#1}}                                 % Cospan stuff
+\newcommand{\Cost}{\Cat{Cost}}
+\newcommand{\DNE}{{\color{gray}{\boxtimes}}}
+\newcommand{\Feas}{\Cat{Feas}}                                             % Collaborative design
+\newcommand{\FinSet}{\Cat{FinSet}}
+\newcommand{\Fromm}[1]{\xleftarrow{\;\;#1\;\;}}
+\newcommand{\From}[1]{\xleftarrow{#1}}
+\newcommand{\Funr}[1]{\mathsf{#1}}                                         % a named functor
+\newcommand{\Fun}[1]{\mathsf{#1}}                                          % functor
+\newcommand{\Grph}{\Cat{Grph}}
+\newcommand{\IR}{\mathbb{I}\hspace{.6pt}\mathbb{R}}
+\newcommand{\inj}[1]{\overset{#1}{\rightarrowtail}}
+\newcommand{\mono}[1]{\inj{#1}}
+\newcommand{\LMO}[2][over]{\ifthenelse{\equal{#1}{over}}{\overset{#2}{\bullet}}{\underset{#2}{\bullet}}}
+\newcommand{\LTO}[2][\bullet]{\overset{\tn{#2}}{#1}}
+\newcommand{\Ldots}[1]{\overset{#1}{\ldots}}
+\newcommand{\List}{\Fun{List}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\OO}{\cat{O}}
+\newcommand{\Op}{\Cat{Op}}
+\newcommand{\Prof}{\Cat{Prof}}                                             % Collaborative design
+\newcommand{\Prop}{\const{Prop}}                                           % Topos temporal logic
+\newcommand{\Psh}{\Fun{Psh}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\Rel}{\Cat{Rel}}
+\newcommand{\SMC}{\Cat{SMC}}
+\newcommand{\Set}[1]{\mathrm{#1}}                                          % a named set
+\newcommand{\Shv}{\Cat{Shv}}
+\newcommand{\SmCat}{\Cat{Cat}}
+\newcommand{\SmSet}{\Cat{Set}}
+\newcommand{\Surj}[1]{\overset{#1}{\twoheadrightarrow}}
+\newcommand{\TFS}{\Cat{TFS}}
+\newcommand{\Time}{\const{Time}}                                           % Topos temporal logic
+% \newcommand{\Too}[1]{\To{\;\;#1\;\;}}
+\newcommand{\Too}[1]{\xrightarrow{\;\;#1\;\;}}
+\newcommand{\To}[1]{\xrightarrow{#1}}
+\newcommand{\Tto}[3][13pt]{\begin{tikzcd}[sep=#1, cramped, ampersand replacement=\&, text height=1ex, text depth=.3ex]\ar[r, shift left=2pt, "#2"]\ar[r, shift right=2pt, "#3"']\&{}\end{tikzcd}}
+\newcommand{\Unit}[1]{\mathrm{U}_{#1}}                                     % Collaborative design
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\adjphantom}[3][-.6pt]{\ar[#2, phantom, "#3" yshift=#1]}
+\newcommand{\after}{\circ}
+\newcommand{\apex}[1]{\widecheck{#1}}                                      % Cospan stuff
+\newcommand{\battery}{\texttt{battery}}                                    % Circuits
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\beh}{\Fun{B}}
+\newcommand{\boxCD}[2][black]{\fcolorbox{#1}{white}{\begin{varwidth}{\textwidth}\centering #2\end{varwidth}}}
+\newcommand{\cat}[1]{\mathcal{#1}}                                         % a generic category
+\newcommand{\ccat}[1]{\mathbb{#1}}                                         % a generic category
+\newcommand{\cmap}{c}                                                      % Cospan stuff
+\newcommand{\cocolon}{:\!}
+\newcommand{\col}[1]{\mathrm{col(#1)}}                                     % Collaborative design
+\newcommand{\comp}[1]{\widehat{#1}}                                        % Collaborative design
+\newcommand{\conj}[1]{\widecheck{#1}}                                      % Collaborative design
+\newcommand{\const}[1]{\mathtt{#1}}                                        % a constant, named element of a set, sort of thing
+\newcommand{\corel}[1]{\Cat{Corel}_{#1}}
+\newcommand{\cp}{\mathbin{\fatsemi}}
+\newcommand{\dd}{\mathbb{D}}
+\newcommand{\down}{\mathbin{\downarrow}}
+\newcommand{\elec}{\Fun{Circ}}                                             % Circuits
+\newcommand{\erase}[2][]{{\color{red}#1}}
+\newcommand{\expr}{\mathrm{Expr}}                                          % Signal flow graphs
+\newcommand{\false}{\const{false}}
+\newcommand{\ffunr}[1]{\mathbf{#1}}                                        % a generic 2-functor
+\newcommand{\foo}{\const{foo}}
+\newcommand{\free}{\Cat{Free}}                                             % Signal flow graphs
+\newcommand{\frinj}{\leftarrowtail}
+\newcommand{\from}{\leftarrow}
+\newcommand{\frsurj}{\twoheadleftarrow}
+\newcommand{\funn}[1]{\mathrm{#1}}                                         % a function
+\newcommand{\funr}[1]{\mathcal{#1}}                                        % a generic functor
+\newcommand{\fun}[1]{\mathit{#1}}
+% \newcommand{\fun}[1]{\textit{#1}}                                          % function
+\newcommand{\grph}[1]{{#1}_{\mathrm{Gr}}}
+\newcommand{\hide}[2][]{#1}
+% \newcommand{\id}{\mathrm{id}}
+\newcommand{\imp}{\Rightarrow}
+\newcommand{\inp}[1]{#1^\tn{in}}
+\newcommand{\inst}{\tn{-}\Cat{Inst}}
+\newcommand{\inv}{^{-1}}
+\newcommand{\iso}{\cong}
+\newcommand{\light}{\texttt{light}}                                        % Circuits
+\newcommand{\lleg}[1]{#1^\backprime}                                                % Cospan stuff
+\newcommand{\lollipop}{\multimap}
+\newcommand{\mat}{\Cat{Mat}}
+\newcommand{\mob}[1]{#1_0}
+\newcommand{\nn}{\NN}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\oo}{\mathcal{O}}
+\newcommand{\oprdcospan}{\mathbf{Cospan}}                                  % Circuits
+\newcommand{\oprdset}{\mathbf{Set}}                                        % Circuits
+% \newcommand{\op}{^\tn{op}}
+\newcommand{\op}{^{\tn{op}}}
+% \newcommand{\ord}[1]{\underline{#1}}                                       % a natural number, considered as a finite set
+\newcommand{\ord}[1]{\underline{{#1}}}                                     % Signal flow graphs
+\newcommand{\outp}[1]{#1^\tn{out}}
+\newcommand{\overtime}[1]{{\color{gray}#1}}
+\newcommand{\pb}[1][very near start]{\ar[dr, phantom, #1, "\lrcorner"]}
+\newcommand{\pgin}{\fun{in}}                                               % Signal flow graphs
+\newcommand{\pgout}{\fun{out}}                                             % Signal flow graphs
+\newcommand{\poset}{\Cat{Poset}}
+\newcommand{\powset}{\Fun{P}}
+\newcommand{\po}[1][very near start]{\ar[ul, phantom, #1, "\ulcorner"]}
+\newcommand{\pp}{\mathbb{P}}
+\newcommand{\prt}[1]{\Fun{Prt}(#1)}
+\newcommand{\pr}{\mathrm{pr}}
+\newcommand{\qand}{\quad\text{and}\quad}
+\newcommand{\qqand}{\qquad\text{and}\qquad}
+\newcommand{\qq}{\mathbb{Q}}
+\newcommand{\restrict}[2]{#1\big|_{#2}}                                    % Topos temporal logic
+\newcommand{\rleg}[1]{#1^\prime}                                                % Cospan stuff
+\newcommand{\rr}{\mathbb{R}}
+\newcommand{\sfg}{\mathbf{SFG}}                                            % Signal flow graphs
+\newcommand{\showhide}[2]{#1}
+\newcommand{\singleton}{\{1\}}
+\newcommand{\smf}{\Cat{SMF}}
+\newcommand{\ssmc}{\CCat{SMC}}
+\newcommand{\strict}[1]{\overline{#1}}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\epi}{\surj}
+\newcommand{\switch}{\texttt{switch}}                                      % Circuits
+\newcommand{\then}{\mathbin{\scalebox{.8}{/\!\!/}}}
+\newcommand{\tn}[1]{\textnormal{#1}}
+\newcommand{\tofrom}{\leftrightarrows}
+\newcommand{\too}{\longrightarrow}
+\newcommand{\tpow}[1]{^{\otimes #1}}
+\newcommand{\true}{\const{true}}
+\newcommand{\tto}{\rightrightarrows}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\underscore}{\rule{2.5mm}{0.15mm}}                            % \rule[<raise height>]{<width>}{<height>}
+\newcommand{\union}{\cup}
+\newcommand{\upclose}{\mathop{\uparrow}}
+\newcommand{\upset}{\Fun{U}}
+\newcommand{\wavyto}{\rightsquigarrow}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\zero}{\cat{I}}
+\newcommand{\zz}{\mathbb{Z}}
+\newcommand{\minus}{\scalebox{0.75}[1.0]{$-$}}
