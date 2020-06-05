@@ -4,7 +4,8 @@ function extract
   # This alias does not loop over args
   # set argv_rest $argv[2..(count $argv)] # argv starts indexing with 1
 
-  set file $argv[1]
+  # set file $argv[1]
+  set file (string escape -- $argv[1])
   switch $file
     case "*.tar.bz2"
       set cmd tar xjf $file
@@ -40,10 +41,16 @@ function extract
       set cmd tar xvfJ $file
     case "*.pax"
       set cmd pax -r < $file
+    case "*.dmg"                # Apple Mac image
+        # set cmd dmg2img $file "$file.img"
+        set cmd dmg2img $file
+        # set cmd 7z x $file
+    case "\"*\""
+       echo "ERROR: double quotes \"...\" shouldn't match the file extension"
     case "'*'"
-      echo "ERROR: single quotes should not match the file type"
+      echo "ERROR: single quotes '...' shouldn't match the file extension"
     case "*"
-      echo "ERROR: Unknown file type:" $file "can't be extracted."
+      echo "ERROR: Unknown file extension:" $file
   end
   # check if it's set/empty - https://stackoverflow.com/a/47743269
   if test -n "$cmd"
