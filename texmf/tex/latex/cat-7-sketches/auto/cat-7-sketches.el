@@ -128,6 +128,8 @@
     "BB"
     "Bool"
     "Bx"
+    "CC"
+    "cc"
     "Cob"
     "Cost"
     "DNE"
@@ -218,10 +220,6 @@
    (LaTeX-add-counters
     "solcounterlocal"
     "solcounterglobal")
-   (LaTeX-add-xcolor-definecolors
-    "theoremcolor"
-    "definitioncolor"
-    "examplecolor")
    (LaTeX-add-mathtools-DeclarePairedDelimiters
     '("ceil" "")
     '("church" "")
@@ -239,6 +237,10 @@
     "warning")
    (LaTeX-add-amsthm-newtheoremstyles
     "plain")
+   (LaTeX-add-xcolor-definecolors
+    "theoremcolor"
+    "definitioncolor"
+    "examplecolor")
    (LaTeX-add-mdframed-mdfdefinestyles
     "theoremframe"
     "definitionframe"

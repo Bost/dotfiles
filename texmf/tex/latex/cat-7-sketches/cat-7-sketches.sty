@@ -1,3 +1,6 @@
+% install / create ls-R databases:
+% texhash ~/texmf
+
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{cat-7-sketches}
 
@@ -378,6 +381,8 @@
 \newcommand{\BB}{\mathbb{B}}
 \newcommand{\Bool}{\Cat{Bool}}
 \newcommand{\Bx}{\Set{Box}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\cc}{\CC}
 \newcommand{\CCat}[1]{\mathbb{\StrLeft{#1}{1}}\Cat{\StrGobbleLeft{#1}{1}}} % a named category; does not seem to work in section headers...
 \newcommand{\Cat}[1]{\mathbf{#1}}                                          % a named category
 \newcommand{\Cdots}[1]{\overset{#1}{\cdots}}
@@ -426,7 +431,7 @@
 \newcommand{\after}{\circ}
 \newcommand{\apex}[1]{\widecheck{#1}}                                      % Cospan stuff
 \newcommand{\battery}{\texttt{battery}}                                    % Circuits
-\newcommand{\bb}{\mathbb{B}}
+\newcommand{\bb}{\BB}
 \newcommand{\beh}{\Fun{B}}
 \newcommand{\boxCD}[2][black]{\fcolorbox{#1}{white}{\begin{varwidth}{\textwidth}\centering #2\end{varwidth}}}
 \newcommand{\cat}[1]{\mathcal{#1}}                                         % a generic category
@@ -490,10 +495,10 @@
 \newcommand{\pr}{\mathrm{pr}}
 \newcommand{\qand}{\quad\text{and}\quad}
 \newcommand{\qqand}{\qquad\text{and}\qquad}
-\newcommand{\qq}{\mathbb{Q}}
+\newcommand{\qq}{\QQ}
 \newcommand{\restrict}[2]{#1\big|_{#2}}                                    % Topos temporal logic
 \newcommand{\rleg}[1]{#1^\prime}                                                % Cospan stuff
-\newcommand{\rr}{\mathbb{R}}
+\newcommand{\rr}{\RR}
 \newcommand{\sfg}{\mathbf{SFG}}                                            % Signal flow graphs
 \newcommand{\showhide}[2]{#1}
 \newcommand{\singleton}{\{1\}}
