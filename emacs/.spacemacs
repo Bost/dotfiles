@@ -54,7 +54,13 @@ This function should only modify configuration layer settings."
      shell-scripts
      haskell
      csv
-     python
+     (python :variables
+             ;; TODO use a list of prefered python interpreters
+             python-shell-interpreter "python3.8"; "python3.7" ; "python3.6"
+             ;; -i     : inspect interactively after running script; forces a prompt even
+             ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
+             python-shell-interpreter-args "-i")
+
      ;; (java :variables
      ;;       eclim-eclipse-dirs "~/eclipse-java-neon"
      ;;       eclim-executable "~/eclipse-java-neon/eclim")
@@ -935,17 +941,18 @@ before packages are loaded."
     ;; (unbind-key "<s-delete>" cider-repl-mode-map)
 
     ;; TODO prefix name is not added
-    (add-to-list 'spacemacs/key-binding-prefixes '("og"  "google-this"))
+    (add-to-list 'spacemacs/key-binding-prefixes '("og" "google-this"))
     (spacemacs/set-leader-keys
       "ogg" 'google-this
       "ogr" 'google-this-region
       "oc"  'my/s-X
       "or"  'rotate-frame)
 
-    (spacemacs/set-leader-keys-for-major-mode 'clojure-mode       "c" 'my/s-X)
-    (spacemacs/set-leader-keys-for-major-mode 'clojure-modec      "c" 'my/s-X)
-    (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "c" 'my/s-X)
-    (spacemacs/set-leader-keys-for-major-mode 'cider-repl-mode    "c" 'my/s-X)
+    (dolist (mode `(clojure-mode
+                    clojure-modec
+                    clojurescript-mode
+                    cider-repl-mode))
+      (spacemacs/set-leader-keys-for-major-mode mode "c" 'my/s-X))
     )
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
