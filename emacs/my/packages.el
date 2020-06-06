@@ -30,7 +30,10 @@
 ;;; Code:
 
 (defconst my-packages
-  '(eval-sexp-fu)
+  '(
+    simple
+    (copy-sexp :location local)
+    )
   "The list of Lisp packages required by the my layer.
 
 Each entry is either:
@@ -59,7 +62,7 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format"
   )
 
-(defun my/post-init-eval-sexp-fu ()
+(defun my/post-init-simple ()
   (with-eval-after-load 'simple
     (setq
      my/line-numbers '(spacemacs/toggle-relative-line-numbers-on
@@ -73,14 +76,11 @@ Each entry is either:
 
      my/curr-defun-narrow-mode nil
      my/narrowed-to-defun nil
-     my/iedit-mode nil
-     ))
+     my/iedit-mode nil)))
 
-  (with-eval-after-load 'eval-sexp-fu
-    (progn
-      (define-eval-sexp-fu-flash-command sp-copy-sexp
-        (eval-sexp-fu-flash (my/bounds-nearest-sexp)))
-      (define-eval-sexp-fu-flash-command sp-backward-copy-sexp
-        (eval-sexp-fu-flash (my/bounds-nearest-sexp t))))))
+(defun my/init-copy-sexp ()
+  (use-package copy-sexp
+    :config
+    (cs/initialize-smartparens)))
 
 ;;; packages.el ends here

@@ -617,11 +617,6 @@ before packages are loaded."
 
    ;; clojure-enable-fancify-symbols t
    ;; cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
-   ;; TODO use a list of prefered python interpreters
-   python-shell-interpreter "python3.8"; "python3.7" ; "python3.6"
-   ;; -i     : inspect interactively after running script; forces a prompt even
-   ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
-   python-shell-interpreter-args "-i"
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
    bookmark-default-file "~/dev/dotfiles/emacs/bookmarks"
@@ -653,10 +648,6 @@ before packages are loaded."
      (latex . t)))
 
   (defalias 'save-selected-text 'write-region)
-
-  (global-set-key (kbd "s-K") 'my/kill-buffers--unwanted)
-  (global-set-key (kbd "s-C-K") 'my/kill-buffers--dired)
-  (global-set-key (kbd "s-R") 'spacemacs/rename-current-buffer-file)
 
   ;; Alternativelly in the package auto-dim-other-buffers
   ;; define and use some of the faces:
@@ -693,6 +684,12 @@ before packages are loaded."
 
   (bind-keys
    :map global-map
+   ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
+   ;; (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
+   ("<home>"    . mwim-beginning-of-code-or-line)      ; see C-a
+   ("s-K"       . my/kill-buffers--unwanted)
+   ("s-C-K"     . my/kill-buffers--dired)
+   ("s-R"       . spacemacs/rename-current-buffer-file)
    ("s-q"       . my/other-window) ; straight jump to window: SPC 0, SPC 1 ...
    ("s-k"       . my/close-buffer)
    ("s-s"       . save-buffer)
@@ -819,30 +816,27 @@ before packages are loaded."
    ("s-a"        . helm-mini)                   ; see advice-add
    ("s-:"        . my/fabricate-subst-cmd)
 
-   ("s-<"  . (my/interactive-lambda () (my/select-inner "vi<")))
-   ("s-["  . (my/interactive-lambda () (my/select-inner "vi[")))
-   ("s-("  . (my/interactive-lambda () (my/select-inner "vi(")))
-   ("s-{"  . (my/interactive-lambda () (my/select-inner "vi{")))
-   ("s-\"" . (my/interactive-lambda () (my/select-inner "vi\"")))
+   ("s-<"         . (lambda () (interactive) (my/select-inner "vi<")))
+   ("s-["         . (lambda () (interactive) (my/select-inner "vi[")))
+   ("s-("         . (lambda () (interactive) (my/select-inner "vi(")))
+   ("s-{"         . (lambda () (interactive) (my/select-inner "vi{")))
+   ("s-\""        . (lambda () (interactive) (my/select-inner "vi\"")))
 
-
-   ("<C-mouse-5>" . (my/interactive-lambda () (message "zoom-out")))
-   ("<C-mouse-4>" . (my/interactive-lambda () (message "zoom-out")))
+   ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
+   ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
    ;; <menu> is not a prefix key. See:
    ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-   ("<menu>"      . (my/interactive-lambda () (message "context-menu")))
+   ("<menu>"      . (lambda () (interactive) (message "context-menu")))
    )
 
-  ;; TODO see https://github.com/joshwnj `er/contract-region`
-  ;; (global-set-key (kbd "s-*") 'er/contract-region)
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
 
   (use-package org
-    :config
+    :hook
     ;; TODO check if the customization holds (org-support-shift-select 'always)
-    (add-hook
-     'org-mode-hook
+    (org-mode
+     .
      (lambda ()
        "Don't increase the height relative to the other text."
        (dolist (face
@@ -851,36 +845,32 @@ before packages are loaded."
                              :weight 'bold ; 'semi-bold
                              :height 1.0)))))
 
-  (use-package fish-mode
-    :config
-    (add-hook 'fish-mode-hook #'paredit-mode))
+  (use-package fish-mode :hook (fish-mode . paredit-mode))
 
   (use-package emacs
-    :config (add-hook
-             'emacs-lisp-mode-hook
-             (lambda () ; "Λ"
-               (push '("my/interactive-lambda" . 923) prettify-symbols-alist))))
+    :hook (emacs-lisp-mode
+           .
+           (lambda () ; "Λ"
+             (push '("my/interactive-lambda" . 923) prettify-symbols-alist))))
 
   (use-package clojure-mode
-    :config
-    ;; (add-hook 'clojure-mode-hook 'typed-clojure-mode)
-    (add-hook 'clojure-mode-hook 'cider-mode) ;; not sure about dependecies
-    ;; 1st invocation (clojure mode cold start) doesn't work
-    (add-hook 'clojure-mode-hook (lambda ()
-                                   ;; see (global-prettify-symbols-mode +1)
-                                   ;; (prettify-symbols-mode)
-                                   (hs-minor-mode 1)
-                                   ;; (my/hs-clojure-hide-namespace-and-folds)
-                                   ))
+    :hook
+    (
+     ;; (clojure-mode . typed-clojure-mode)
+     ;; (clojure-mode . cider-mode) ;; not sure about dependecies - this is probably wrong
+     ;; 1st invocation (clojure mode cold start) doesn't work
+     (clojure-mode . (lambda ()
+                       ;; see (global-prettify-symbols-mode +1)
+                       ;; (prettify-symbols-mode)
+                       (hs-minor-mode 1)
+                       ;; (my/hs-clojure-hide-namespace-and-folds)
+                       )))
     ;; (define-clojure-indent ;; doesn't work?
     ;;   (->  1)
     ;;   (->> 1))
     )
 
   (super-save-mode +1) ; better auto-save-mode
-
-  ;; remap C-a / <home>
-  (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
 
   ;; Max time delay between two key presses to be considered a key chord
   ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
@@ -940,10 +930,6 @@ before packages are loaded."
      )
 
     ;; (setq org-babel-clojure-backend 'cider)
-    (add-hook 'cider-mode-hook #'eldoc-mode)
-    (add-hook 'cider-repl-mode-hook #'eldoc-mode)
-    (add-hook 'cider-repl-mode-hook #'paredit-mode)
-    (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
     ;; (setq gui-elements 1) ; because of CIDER menu
     ;; (define-key cider-repl-mode-map "<s-delete>" nil)
     ;; (unbind-key "<s-delete>" cider-repl-mode-map)
@@ -1019,7 +1005,7 @@ before packages are loaded."
              ("M-s-n"  . cider-repl-set-ns)
              ("s-t"    . cider-test-run-tests)
 
-             ;; TODO see global-set-key settings
+             ;; TODO see global-map keybindings
              ;; ("s-."  . cider-find-var)
              ;; ("s-,"  . cider-pop-back)
              ;; TODO s-M does not work in REPL buffer
