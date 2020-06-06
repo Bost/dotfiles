@@ -1049,15 +1049,16 @@ before packages are loaded."
              ;; my/interactive-lambda doesn't work
              ("<menu>"      . org-latex-export-to-pdf))
 
-  (bind-keys :map LaTeX-mode-map ;; TeX-mode-map
-             ;; my/interactive-lambda doesn't work
-             ("<menu>"      . latex/build))
-
   (bind-keys :map prog-mode-map
              ("s-h"         . helm-imenu))
 
   (bind-keys :map dired-mode-map
              ("<S-delete>"  . dired-do-delete))
+
+  (add-hook
+   'LaTeX-mode-hook
+   (lambda ()
+     (bind-keys :map LaTeX-mode-map ("<menu>" . latex/build))))
 
   (add-hook
    'python-mode-hook
