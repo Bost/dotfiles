@@ -150,7 +150,6 @@ This function should only modify configuration layer settings."
      ;;          ;; :min-version "1"
      ;;          )
      ;;  )
-     ;; ox-latex ; not available - installing manually in the dotspacemacs/init
 
      ;; crosshairs-mode messes up with the background color of the current-line
      (crosshairs    :location local)
@@ -183,25 +182,6 @@ It should only modify the values of Spacemacs settings."
   ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
   ;; (load-file "~/dev/clojure-mode/clojure-mode.el")
   ;; (load-file "~/dev/clojure-mode.5.8.0/clojure-mode.el")
-
-  (add-to-list 'load-path "~/dev/dotfiles/emacs/org/lisp")
-  ;; ox-latex requires a python syntax highlighting: pip install Pygments
-  ;; Attention: it might be installed only in
-  ;;     ~/anaconda3/lib/python3.7/site-packages
-  ;; and not in a general, non-anaconda directory
-  ;; prefer `use-package' over `require' ??? `use-package' doesn't work
-  ;; TODO Test `use-package' in the dotspacemacs/user-config
-  ;; (use-package ox-latex :after org)
-  (load-file "~/dev/dotfiles/emacs/org/lisp/ox-latex.el")
-
-  ;; `with-eval-after-load' doesn't work here
-  ;; TODO Test `with-eval-after-load' in the dotspacemacs/user-config
-  ;; (with-eval-after-load 'org
-  ;;   (load-file "~/dev/dotfiles/emacs/org/lisp/ox-latex.el")
-  ;;   ;; ... or even better try:
-  ;;   ;; (ox-latex :location (recipe :fetcher github :repo "emacsmirror/org")
-  ;;   ;;           :files ("lisp/ox-latex.el"))
-  ;;   )
 
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
@@ -608,8 +588,6 @@ before packages are loaded."
   ;; (global-prettify-symbols-mode +1)
   (global-prettify-symbols-mode nil)  ;; seems like this gets overriden
 
-  (add-to-list 'org-latex-packages-alist '("" "listingsutf8"))
-
   (setq
    ;; none of these works; not even in the `dotspacemacs/user-init'
    ;; has to be set as `custom-set-variables'
@@ -640,11 +618,6 @@ before packages are loaded."
    ;;   ("github" . browse-url-chromium)
    ;;   ("thefreedictionary\\.com" . eww-browse-url)
    ;;   ("." . browse-url-default-browser))
-   org-latex-listings 'minted
-   org-latex-pdf-process
-   '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-     "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-     "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
    org-src-fontify-natively t
    )
 
