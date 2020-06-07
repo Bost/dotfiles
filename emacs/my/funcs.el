@@ -555,6 +555,8 @@ TODO still buggy - when not in a defun it evaluates preceding def un"
     (goto-char point-pos)))
 
 (defun my/elisp-insert-message ()
+  "See `lv-message' for semi-permanent hints, not interfering
+with the Echo Area."
   (interactive)
   (my/insert-sexp "(message \"%s\" )" 1))
 
