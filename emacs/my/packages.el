@@ -79,8 +79,8 @@ Each entry is either:
      my/iedit-mode nil)))
 
 (defun my/init-copy-sexp ()
-  (use-package copy-sexp
-    :config
-    (cs/initialize-smartparens)))
+  ;; :config (cs/initialize-smartparens) is not needed, since there's
+  ;; `eval-after-load' in the package
+  (use-package copy-sexp))
 
 ;;; packages.el ends here

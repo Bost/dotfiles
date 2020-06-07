@@ -112,6 +112,10 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
+   ;;
+   ;; Note:
+   ;; '(your-package :location local) requires '(require 'your-package) or
+   ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
      ;; (yasnippet :location ;; local
