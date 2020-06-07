@@ -900,8 +900,7 @@ before packages are loaded."
     ;; (define-key cider-repl-mode-map "<s-delete>" nil)
     ;; (unbind-key "<s-delete>" cider-repl-mode-map)
 
-    ;; TODO prefix name is not added
-    (add-to-list 'spacemacs/key-binding-prefixes '("og" "google-this"))
+    (spacemacs/declare-prefix "og" "google-this")
     (spacemacs/set-leader-keys
       "ogg" 'google-this
       "ogr" 'google-this-region
@@ -1032,10 +1031,9 @@ before packages are loaded."
 
   ;; (bind-keys :map helm-mode-map)
 
-  ;; TODO consider using spacemacs/set-leader-keys
-  ;; (spacemacs/set-leader-keys "oy" 'my/copy-to-clipboard)
-  (evil-leader/set-key "o y" 'my/copy-to-clipboard)    ;; SPC o y
-  (evil-leader/set-key "o p" 'my/paste-from-clipboard) ;; SPC o p
+  (spacemacs/set-leader-keys
+    "oy" 'my/copy-to-clipboard
+    "op" 'my/paste-from-clipboard)
 
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
