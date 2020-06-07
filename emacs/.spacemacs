@@ -151,6 +151,12 @@ This function should only modify configuration layer settings."
      ;;          )
      ;;  )
      ;; ox-latex ; not available - installing manually in the dotspacemacs/init
+
+     ;; crosshairs-mode messes up with the background color of the current-line
+     (crosshairs    :location local)
+     (hl-line+      :location local)
+     (vline         :location local)
+     (col-highlight :location local)
      )
 
    ;; A list of packages that cannot be updated.
@@ -177,16 +183,6 @@ It should only modify the values of Spacemacs settings."
   ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
   ;; (load-file "~/dev/clojure-mode/clojure-mode.el")
   ;; (load-file "~/dev/clojure-mode.5.8.0/clojure-mode.el")
-
-  ;; TODO install crosshairs and deps via dotspacemacs-additional-packages
-  (add-to-list 'load-path "~/dev/dotfiles/emacs/crosshairs")
-
-  ;; prefer `use-package' over `require'? `use-package' doesn't work
-  ;; see https://github.com/syl20bnr/spacemacs/issues/8884#issuecomment-347284030
-  (require 'hl-line+)
-  (require 'vline)
-  (require 'col-highlight)
-  (require 'crosshairs)
 
   (add-to-list 'load-path "~/dev/dotfiles/emacs/org/lisp")
   ;; ox-latex requires a python syntax highlighting: pip install Pygments
@@ -888,6 +884,8 @@ before packages are loaded."
   ;; Should normally be a little longer than `key-chord-two-keys-delay'.
   ;; (setq key-chord-one-key-delay 0.2) ; default 0.2
   (key-chord-define-global "KK" 'my/switch-to-previous-buffer)
+
+  (use-package crosshairs)
 
   (use-package cider
     ;; :init
