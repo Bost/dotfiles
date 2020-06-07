@@ -136,20 +136,10 @@ This function should only modify configuration layer settings."
      google-this
      helm-cider
      helm-cider-history
-     ;; typed-clojure-mode ;; doesn't exist anymore
      cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
      lean-mode
      helm-lean
      evil-vimish-fold
-     ;; (load-file "~/dev/clj-refactor.el/clj-refactor.el")
-     ;; (clj-refactor
-     ;;  :location
-     ;;  ;; local ;; i.e. ~/.emacs.d/private/local/clj-refactor
-     ;;  (recipe :fetcher github :repo "clojure-emacs/clj-refactor.el"
-     ;;          :commit "632be9e9bab1045fd5c1dcacd4f5781c2a49db81"
-     ;;          ;; :min-version "1"
-     ;;          )
-     ;;  )
 
      ;; crosshairs-mode messes up with the background color of the current-line
      (crosshairs    :location local)
@@ -178,10 +168,6 @@ This function should only modify configuration layer settings."
 This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
 It should only modify the values of Spacemacs settings."
-
-  ;; deving on clojure-mode; WARNING: (getenv "dev") is undefined
-  ;; (load-file "~/dev/clojure-mode/clojure-mode.el")
-  ;; (load-file "~/dev/clojure-mode.5.8.0/clojure-mode.el")
 
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
