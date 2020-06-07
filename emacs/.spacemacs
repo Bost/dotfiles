@@ -618,7 +618,6 @@ before packages are loaded."
    ;;   ("github" . browse-url-chromium)
    ;;   ("thefreedictionary\\.com" . eww-browse-url)
    ;;   ("." . browse-url-default-browser))
-   org-src-fontify-natively t
    )
 
   (org-babel-do-load-languages
