@@ -778,19 +778,20 @@ before packages are loaded."
 
    ("<s-print>"  . my/ediff-buffers-left-right) ; see advice-add
    ("s-a"        . helm-mini)                   ; see advice-add
+   ("s-A"        . align-regexp)
    ("s-:"        . my/fabricate-subst-cmd)
 
-   ("s-<"         . (lambda () (interactive) (my/select-inner "vi<")))
-   ("s-["         . (lambda () (interactive) (my/select-inner "vi[")))
-   ("s-("         . (lambda () (interactive) (my/select-inner "vi(")))
-   ("s-{"         . (lambda () (interactive) (my/select-inner "vi{")))
-   ("s-\""        . (lambda () (interactive) (my/select-inner "vi\"")))
+   ("s-<"         . my/select-in-ang-bracket)
+   ("s-["         . my/select-in-sqr-bracket)
+   ("s-("         . my/select-in-rnd-bracket)
+   ("s-{"         . my/select-in-crl-bracket)
+   ("s-\""        . my/select-in-string)
 
-   ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
-   ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
+   ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
+   ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
    ;; <menu> is not a prefix key. See:
    ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-   ("<menu>"      . (lambda () (interactive) (message "context-menu")))
+   ;; ("<menu>"      . (lambda () (interactive) (message "context-menu")))
    )
 
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse

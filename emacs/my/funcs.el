@@ -230,6 +230,14 @@ displayed."
   (evil-normal-state)
   (execute-kbd-macro vi-str))
 
+;; use named functions for meaningful shortcuts in the listing
+;; M-x which-key-show-top-level / SPC h k
+(defun my/select-in-ang-bracket () (interactive) (my/select-inner "vi<"))
+(defun my/select-in-sqr-bracket () (interactive) (my/select-inner "vi["))
+(defun my/select-in-rnd-bracket () (interactive) (my/select-inner "vi("))
+(defun my/select-in-crl-bracket () (interactive) (my/select-inner "vi{"))
+(defun my/select-in-string () (interactive) (my/select-inner "vi\""))
+
 (defun my/disable-y-or-n-p (orig-fun &rest args)
   (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
     (apply orig-fun args)))
