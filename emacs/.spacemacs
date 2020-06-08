@@ -330,7 +330,7 @@ It should only modify the values of Spacemacs settings."
    ;; and TAB or `C-m' and `RET'.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
 
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Default"
@@ -758,17 +758,15 @@ before packages are loaded."
    ("<M-down>"   . drag-stuff-down)
    ("<M-up>"     . drag-stuff-up)
 
-   ("s-u"        . eval-buffer)
-   ("s-."        . spacemacs/jump-to-definition)
    ("C-s-."      . spacemacs/jump-to-definition-other-window)
-   ("s-,"        . evil-jump-backward) ; C-o: evil-jump-backward
-
-   ;; just for the convenience - when the Super-key is pressed already
-   ("s-<"        . evil-jump-backward) ; C-o: evil-jump-backward
-   ("s->"        . evil-jump-forward)
-
+   ("s-."        . spacemacs/jump-to-definition)
+   ("s-,"        . evil-jump-backward)
    ;; ("s-,"     . dumb-jump-back)
    ;; ("s-,"     . cider-pop-back)
+
+   ;; C-o; evil-jump-backward
+   ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
+
    ("<print>"    . describe-text-properties) ; my/what-face
 
    ;; ("<pause>" . goto-last-change)
@@ -954,7 +952,6 @@ before packages are loaded."
                ("C-s-t" . my/clj-insert-type)))
 
   (bind-keys :map cider-repl-mode-map
-             ("s-e"          . cider-eval-last-sexp)
              ("s-h"          . helm-cider-history)
              ("s-j"          . cider-format-defun)
              ("s-x"          . cider-switch-to-last-clojure-buffer)
@@ -989,7 +986,7 @@ before packages are loaded."
              ("C-s-m" . my/elisp-insert-message)
              ("C-s-d" . my/elisp-insert-defun)
              ("s-d"   . my/eval-current-defun)
-             ("s-e"   . eval-last-sexp))
+             )
 
   (dolist (state-map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
                        ,clojure-mode-map))
@@ -1003,7 +1000,13 @@ before packages are loaded."
              ("<menu>"      . org-latex-export-to-pdf))
 
   (bind-keys :map prog-mode-map
-             ("s-h"         . helm-imenu))
+             ;; M-/  M-x hippie-expand
+             ("s-Q" . dumb-jump-quick-look)
+             ("s-h" . spacemacs/helm-jump-in-buffer)
+             ("s-H" . helm-imenu-in-all-buffers)
+             ("s-u"   . eval-buffer)
+             ("s-e"   . eval-last-sexp)
+             )
 
   (bind-keys :map dired-mode-map
              ("<S-delete>"  . dired-do-delete))
