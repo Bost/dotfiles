@@ -48,7 +48,7 @@ This function should only modify configuration layer settings."
      markdown
      swift
      windows-scripts
-     org
+     org    ;; customized via `use-package'
      rust
      scheme ;; requires guile-2.2; M-x run-guile
      shell-scripts
@@ -572,7 +572,7 @@ before packages are loaded."
   (blink-cursor-mode t)
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
-  (global-prettify-symbols-mode nil)  ;; seems like this gets overriden
+  (global-prettify-symbols-mode nil) ;; seems like this gets overriden
 
   (setq
    ;; none of these works; not even in the `dotspacemacs/user-init'
@@ -796,8 +796,9 @@ before packages are loaded."
   (xterm-mouse-mode -1)
 
   (use-package org
+    :config
+    (setq org-support-shift-select 'always)
     :hook
-    ;; TODO check if the customization holds (org-support-shift-select 'always)
     (org-mode
      .
      (lambda ()
@@ -813,7 +814,7 @@ before packages are loaded."
   (use-package emacs
     :hook (emacs-lisp-mode
            .
-           (lambda () ; "Λ"
+           (lambda () ;; capital lambda char Λ
              (push '("my/interactive-lambda" . 923) prettify-symbols-alist))))
 
   (use-package clojure-mode
@@ -833,7 +834,7 @@ before packages are loaded."
     ;;   (->> 1))
     )
 
-  (super-save-mode +1) ; better auto-save-mode
+  (super-save-mode +1) ;; better auto-save-mode
 
   ;; Max time delay between two key presses to be considered a key chord
   ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
