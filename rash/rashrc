@@ -307,7 +307,7 @@
   (lambda (stx)
     (syntax-parse stx
       [(_ arg) #'(cheat-grep `arg '(
-                                    dev/cheat/cmds/emacs.el
+                                    dev/cheat/cmds/emacs.org
                                     dev/cheat/cmds/vim.vim
                                     dev/cheat/cmds/shells.sh
                                     dev/cheat/cmds/linux.sh
@@ -323,7 +323,7 @@
   (lambda (stx)
     (syntax-parse stx
       [(_ arg) #'(cheat-grep `arg '(
-                                    dev/cheat/cmds/emacs.el
+                                    dev/cheat/cmds/emacs.org
                                     ))])))
 
 (define-line-macro crf
