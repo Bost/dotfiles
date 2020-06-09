@@ -1,5 +1,5 @@
 function cre
-    set pth $cheat/cmds
-    set files $files $pth/emacs.org
-    cheat-grep --grep-args="$argv" --files="$files"
+    rg --type org $argv ~/.emacs.d
+    echo
+    rg --with-filename $argv $cheat/cmds/emacs.org
 end
