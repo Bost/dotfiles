@@ -646,152 +646,23 @@ before packages are loaded."
   ;;   (unbind-key "<f6>" clojure-mode-map)
   ;;   (unbind-key "<f7>" clojure-mode-map))
 
-  (bind-keys
-   :map global-map
-   ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
-   ;; (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
-   ("<home>"    . mwim-beginning-of-code-or-line)      ; see C-a
-   ("s-K"       . my/kill-buffers--unwanted)
-   ("s-C-K"     . my/kill-buffers--dired)
-   ("s-R"       . spacemacs/rename-current-buffer-file)
-   ("s-q"       . my/other-window) ; straight jump to window: SPC 0, SPC 1 ...
-   ("s-k"       . my/close-buffer)
-   ("s-s"       . save-buffer)
-   ("s-0"       . delete-window)
-   ("s-1"       . delete-other-windows)
-   ("<f8>"      . next-buffer)
-   ("<s-f8>"    . transpose-frame)
-   ;; ("<s-f9>" . spacemacs/rotate-windows-forward)     ; SPC w r
-   ("s-n"       . my/cycle-defun-narrow-modes)
-   ;; ("s-2"    . my/split-other-window-below)
-   ;; ("s-3"    . my/split-other-window-right)
-   ("s-2"       . split-window-below)                    ; SPC w -
-   ;; ("s-3"    . spacemacs/window-split-double-columns) ; SPC w 2
-   ("s-3"       . split-window-right-and-focus)          ; SPC w 3
-   ("s-z"       . my/buffer-selection-show)
-   ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
-   ("s-D"       . dired-jump)
-   ("s-c"       . sp-copy-sexp)
-   ("s-b"       . sp-backward-copy-sexp)
-   ("s-B"       . helm-filtered-bookmarks)
-   ("<f9>"      . helm-filtered-bookmarks)
-   ("<f11>"     . bookmark-set)
-   ;; Move the parenthesis - see SPC k b/B/f/F
-   ("<M-s-left>"  . sp-forward-barf-sexp)
-   ("<M-s-right>" . sp-forward-slurp-sexp)
-   ("<C-s-left>"  . sp-backward-slurp-sexp)
-   ("<C-s-right>" . sp-backward-barf-sexp)
-   ("s-;"         . spacemacs/comment-or-uncomment-lines)
-   ("<s-f1>"      . eshell)
-   ;; ("s-p"      . helm-projectile)
-   ("s-p"         . helm-projectile-find-file)
-   ("M-s-p"       . helm-projectile-switch-project)
-   ("s-W"         . my/whitespace-cleanup)
-   ("s-w"         . my/whitespace-mode-toggle)
-   ("s-m"         . magit-status)
-   ("<f3>"        . my/search-region-or-symbol)
-   ("<M-f3>"      . spacemacs/helm-project-smart-do-search)
-   ("s-f"         . helm-find-files)
-   ("s-F"         . helm-recentf) ; recentf-open-files
-   ("s-r"         . helm-recentf)
+  (defun my/load-layout ()
+    "docstring"
+    (interactive)
+    (persp-load-state-from-file "~/.emacs.d/.cache/layouts/persp-auto-save")
+    )
 
-   ("<C-M-down>" . crux-duplicate-current-line-or-region) ; default is down-list
-   ("<C-s-down>" . crux-duplicate-current-line-or-region)
-   ("C-c d"      . crux-duplicate-current-line-or-region)
-   ("C-c t"      . crux-transpose-windows)
-   ("<C-s-backspace>" . crux-kill-line-backwards) ; kill-line-backward
-   ("s-j"             . crux-top-join-line)
-
-   ("<C-up>"            . xah-backward-block)
-   ("<C-down>"          . xah-forward-block)
-   ("<C-prior>"         . hs-hide-block) ; pg-up
-   ("<C-next>"          . hs-show-block) ; pg-down
-   ;; ("<C-M-prior>"    . hs-toggle-hiding)
-   ("<C-M-prior>"       . hs-hide-all)   ; pg-up
-   ("<C-M-next>"        . hs-show-all)   ; pg-down
-   ("<C-M-delete>"      . kill-sexp)
-   ("<C-M-s-delete>"    . my/delete-next-sexp)
-   ("<C-M-s-backspace>" . my/delete-prev-sexp)
-   ("<C-M-backspace>"   . backward-kill-sexp)
-
-   ("<s-backspace>"     . paredit-backward-kill-word)
-   ("<s-delete>"        . paredit-forward-kill-word)
-   ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
-   ("M-y"     . helm-show-kill-ring) ; replaces evil-paste-pop
-   ("s-g"     . my/browse-or-google)
-   ("s-G"     . helm-google-suggest)
-   ("s-8"     . er/expand-region) ; increase selected region by semantic units
-   ("<f2>"    . my/evil-avy-goto-char-timer)
-   ("s-/"     . helm-swoop)
-   ("<s-tab>" . my/alternate-buffer)
-   ("<C-f2>"  . my/avy-goto-line)
-   ("C-s-/"   . my/avy-goto-line)
-
-   ;; fd - evil-escape from insert state and everything else
-   ;; occurences - function scope
-   ("s-I"                . my/iedit-mode-toggle)
-   ("s-i"                . iedit-mode) ; all occurences in the buffer
-   ;; ("s-i"             . spacemacs/enter-ahs-forward)
-   ("<f12>"              . undo-tree-visualize)
-   ;; ("<S-delete>"      . kill-region)
-   ("<C-s-delete>"       . kill-line) ; C-super-key
-   ("<C-S-delete>"       . kill-line) ; C-shift-key
-   ("s-l"                . spacemacs/resume-last-search-buffer)
-   ;; `s-SPC v' but it overrides the `expand region' menu point
-   ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
-
-   ;; TODO s-L: cycle over spacemacs/toggle-*.line-numbers functions
-   ;; ("s-L"                . spacemacs/toggle-line-numbers)
-   ("s-L"                . my/cycle-line-number-modes)
-   ;; TODO my/toggle-large-file-setting - is it needed?
-   ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
-   ;; ("C-s-L"   . my/toggle-large-file-setting)
-
-   ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
-   ;; zop-up-to-char works as zop-to-char but stop just before target
-   ("M-z"        . zop-up-to-char)
-   ("M-Z"        . zop-to-char)
-
-   ;; [1] spacemacs/move-text-transient-state/move-text-down
-   ;; [2] spacemacs/move-text-transient-state/move-text-up
-   ;; [1] and [2] don't drag:
-   ("<M-down>"   . drag-stuff-down)
-   ("<M-up>"     . drag-stuff-up)
-
-   ("C-s-."      . spacemacs/jump-to-definition-other-window)
-   ("s-."        . spacemacs/jump-to-definition)
-   ("s-,"        . evil-jump-backward)
-   ;; ("s-,"     . dumb-jump-back)
-   ;; ("s-,"     . cider-pop-back)
-
-   ;; C-o; evil-jump-backward
-   ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
-
-   ("<print>"    . describe-text-properties) ; my/what-face
-
-   ;; ("<pause>" . goto-last-change)
-   ("<s-return>" . goto-last-change)
-   ("<s-pause>"  . goto-last-change-reverse)
-   ("s-J"        . evil-join)
-
-   ("<s-print>"  . my/ediff-buffers-left-right) ; see advice-add
-   ("s-a"        . helm-mini)                   ; see advice-add
-   ("s-A"        . align-regexp)
-   ("s-:"        . my/fabricate-subst-cmd)
-
-   ("s-<"         . my/select-in-ang-bracket)
-   ("s-["         . my/select-in-sqr-bracket)
-   ("s-("         . my/select-in-rnd-bracket)
-   ("s-{"         . my/select-in-crl-bracket)
-   ("s-\""        . my/select-in-string)
-
-   ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
-   ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
-   ;; <menu> is not a prefix key. See:
-   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-   ;; ("<menu>"      . (lambda () (interactive) (message "context-menu")))
-   )
-
+  (defun my/delete-other-windows ()
+    "docstring"
+    (interactive)
+    ;; See definitions of `treemacs'
+    (pcase (treemacs-current-visibility)
+      ('visible (delete-window (treemacs-get-local-window)))
+      ;; ('exists  (treemacs-select-window))
+      ;; ('none    (treemacs--init))
+      )
+    (delete-other-windows)
+    )
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   (xterm-mouse-mode -1)
 
@@ -899,20 +770,179 @@ before packages are loaded."
     ;; (setq gui-elements 1) ; because of CIDER menu
     ;; (define-key cider-repl-mode-map "<s-delete>" nil)
     ;; (unbind-key "<s-delete>" cider-repl-mode-map)
-
-    (spacemacs/declare-prefix "og" "google-this")
-    (spacemacs/set-leader-keys
-      "ogg" 'google-this
-      "ogr" 'google-this-region
-      "oc"  'my/s-X
-      "or"  'rotate-frame)
-
-    (dolist (mode `(clojure-mode
-                    clojure-modec
-                    clojurescript-mode
-                    cider-repl-mode))
-      (spacemacs/set-leader-keys-for-major-mode mode "c" 'my/s-X))
     )
+
+  ;; TODO my/eval-bind-keys
+  ;; ~SPC m e c~ or M-x spacemacs/eval-current-form-sp
+
+  ;; TODO autoload
+  (spacemacs/declare-prefix "og" "google-this")
+  (spacemacs/set-leader-keys
+    "ogg" 'google-this
+    "ogr" 'google-this-region
+    "oc"  'my/s-X
+    "or"  'rotate-frame)
+
+  (dolist (mode `(clojure-mode
+                  clojure-modec
+                  clojurescript-mode
+                  cider-repl-mode))
+    (spacemacs/set-leader-keys-for-major-mode mode "c" 'my/s-X))
+
+  (defun my/eval-bind-keys ()
+    "docstring"
+    (interactive)
+    (bind-keys
+     :map global-map
+     ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
+     ;; (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
+     ("<home>"    . mwim-beginning-of-code-or-line) ; see C-a
+     ("s-K"       . my/kill-buffers--unwanted)
+     ("s-C-K"     . my/kill-buffers--dired)
+     ("s-R"       . spacemacs/rename-current-buffer-file)
+     ("s-q"       . my/other-window)   ; straight jump to window: SPC 0, SPC 1 ...
+     ("s-k"       . my/close-buffer)
+     ("s-s"       . save-buffer)
+     ("s-0"       . delete-window)
+     ("s-1"       . my/delete-other-windows)
+     ("<f8>"      . next-buffer)
+     ("<s-f8>"    . transpose-frame)
+     ;; ("<s-f9>" . spacemacs/rotate-windows-forward)     ; SPC w r
+     ("s-n"       . my/cycle-defun-narrow-modes)
+     ;; ("s-2"    . my/split-other-window-below)
+     ;; ("s-3"    . my/split-other-window-right)
+     ("s-2"       . split-window-below)   ; SPC w -
+     ;; ("s-3"    . spacemacs/window-split-double-columns) ; SPC w 2
+     ("s-3"       . split-window-right-and-focus) ; SPC w 3
+     ("s-9"       . my/load-layout)
+     ("s-="       . my/eval-bind-keys)
+     ("s-z"       . my/buffer-selection-show)
+     ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
+     ("s-D"       . dired-jump)
+     ("s-c"       . sp-copy-sexp)
+     ("s-b"       . sp-backward-copy-sexp)
+     ("s-B"       . helm-filtered-bookmarks)
+     ("<f9>"      . helm-filtered-bookmarks)
+     ("<f11>"     . bookmark-set)
+     ;; Move the parenthesis - see SPC k b/B/f/F
+     ("<M-s-left>"  . sp-forward-barf-sexp)
+     ("<M-s-right>" . sp-forward-slurp-sexp)
+     ("<C-s-left>"  . sp-backward-slurp-sexp)
+     ("<C-s-right>" . sp-backward-barf-sexp)
+     ("s-;"         . spacemacs/comment-or-uncomment-lines)
+     ("<s-f1>"      . eshell)
+     ;; ("s-p"      . helm-projectile)
+     ("s-p"         . helm-projectile-find-file)
+     ("M-s-p"       . helm-projectile-switch-project)
+     ("s-W"         . my/whitespace-cleanup)
+     ("s-w"         . my/whitespace-mode-toggle)
+     ("s-m"         . magit-status)
+     ("<f3>"        . my/search-region-or-symbol)
+     ("<M-f3>"      . spacemacs/helm-project-smart-do-search)
+     ("s-f"         . helm-find-files)
+     ("s-F"         . helm-recentf)       ; recentf-open-files
+     ("s-r"         . helm-recentf)
+
+     ("<C-M-down>" . crux-duplicate-current-line-or-region) ; default is down-list
+     ("<C-s-down>" . crux-duplicate-current-line-or-region)
+     ("C-c d"      . crux-duplicate-current-line-or-region)
+     ("C-c t"      . crux-transpose-windows)
+     ("<C-s-backspace>" . crux-kill-line-backwards) ; kill-line-backward
+     ("s-j"             . crux-top-join-line)
+
+     ("<C-up>"            . xah-backward-block)
+     ("<C-down>"          . xah-forward-block)
+     ("<C-prior>"         . hs-hide-block) ; pg-up
+     ("<C-next>"          . hs-show-block) ; pg-down
+     ;; ("<C-M-prior>"    . hs-toggle-hiding)
+     ("<C-M-prior>"       . hs-hide-all)  ; pg-up
+     ("<C-M-next>"        . hs-show-all)  ; pg-down
+     ("<C-M-delete>"      . kill-sexp)
+     ("<C-M-s-delete>"    . my/delete-next-sexp)
+     ("<C-M-s-backspace>" . my/delete-prev-sexp)
+     ("<C-M-backspace>"   . backward-kill-sexp)
+
+     ("<s-backspace>"     . paredit-backward-kill-word)
+     ("<s-delete>"        . paredit-forward-kill-word)
+     ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
+     ("M-y"     . helm-show-kill-ring)    ; replaces evil-paste-pop
+     ("s-g"     . my/browse-or-google)
+     ("s-G"     . helm-google-suggest)
+     ("s-8"     . er/expand-region)   ; increase selected region by semantic units
+     ("<f2>"    . my/evil-avy-goto-char-timer)
+     ("s-/"     . helm-swoop)
+     ("<s-tab>" . my/alternate-buffer)
+     ("<C-f2>"  . my/avy-goto-line)
+     ("C-s-/"   . my/avy-goto-line)
+
+     ;; fd - evil-escape from insert state and everything else
+     ;; occurences - function scope
+     ("s-I"                . my/iedit-mode-toggle)
+     ("s-i"                . iedit-mode)  ; all occurences in the buffer
+     ;; ("s-i"             . spacemacs/enter-ahs-forward)
+     ("<f12>"              . undo-tree-visualize)
+     ;; ("<S-delete>"      . kill-region)
+     ("<C-s-delete>"       . kill-line)   ; C-super-key
+     ("<C-S-delete>"       . kill-line)   ; C-shift-key
+     ("s-l"                . spacemacs/resume-last-search-buffer)
+     ;; `s-SPC v' but it overrides the `expand region' menu point
+     ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
+
+     ;; TODO s-L: cycle over spacemacs/toggle-*.line-numbers functions
+     ;; ("s-L"                . spacemacs/toggle-line-numbers)
+     ("s-L"                . my/cycle-line-number-modes)
+     ;; TODO my/toggle-large-file-setting - is it needed?
+     ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
+     ;; ("C-s-L"   . my/toggle-large-file-setting)
+
+     ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
+     ;; zop-up-to-char works as zop-to-char but stop just before target
+     ("M-z"        . zop-up-to-char)
+     ("M-Z"        . zop-to-char)
+
+     ;; [1] spacemacs/move-text-transient-state/move-text-down
+     ;; [2] spacemacs/move-text-transient-state/move-text-up
+     ;; [1] and [2] don't drag:
+     ("<M-down>"   . drag-stuff-down)
+     ("<M-up>"     . drag-stuff-up)
+
+     ("C-s-."      . spacemacs/jump-to-definition-other-window)
+     ("s-."        . spacemacs/jump-to-definition)
+     ("s-,"        . evil-jump-backward)
+     ;; ("s-,"     . dumb-jump-back)
+     ;; ("s-,"     . cider-pop-back)
+
+     ;; C-o; evil-jump-backward
+     ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
+
+     ("<print>"    . describe-text-properties) ; my/what-face
+
+     ;; ("<pause>" . goto-last-change)
+     ("<s-return>" . goto-last-change)
+     ("<s-pause>"  . goto-last-change-reverse)
+     ("s-J"        . evil-join)
+
+     ("<s-print>"  . my/ediff-buffers-left-right) ; see advice-add
+     ("s-a"        . helm-mini)                   ; see advice-add
+     ("s-A"        . align-regexp)
+     ("s-:"        . my/fabricate-subst-cmd)
+
+     ("s-<"         . my/select-in-ang-bracket)
+     ("s-["         . my/select-in-sqr-bracket)
+     ("s-("         . my/select-in-rnd-bracket)
+     ("s-{"         . my/select-in-crl-bracket)
+     ("s-\""        . my/select-in-string)
+
+     ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
+     ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
+     ;; <menu> is not a prefix key. See:
+     ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
+     ;; ("<menu>"      . (lambda () (interactive) (message "context-menu")))
+     )
+    (message "%s" "my/eval-bind-keys evaluated")
+    )
+
+  (my/eval-bind-keys)
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
