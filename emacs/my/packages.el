@@ -62,21 +62,22 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format"
   )
 
+(setq
+ my/line-numbers '(spacemacs/toggle-relative-line-numbers-on
+                   spacemacs/toggle-relative-line-numbers-off
+                   spacemacs/toggle-line-numbers-on
+                   spacemacs/toggle-line-numbers-off)
+ my/curr-line-number-mode nil
+
+ my/defun-narrow-modes '(narrow-to-defun
+                         widen)
+
+ my/curr-defun-narrow-mode nil
+ my/narrowed-to-defun nil
+ my/iedit-mode nil)
+
 (defun my/post-init-simple ()
-  (with-eval-after-load 'simple
-    (setq
-     my/line-numbers '(spacemacs/toggle-relative-line-numbers-on
-                       spacemacs/toggle-relative-line-numbers-off
-                       spacemacs/toggle-line-numbers-on
-                       spacemacs/toggle-line-numbers-off)
-     my/curr-line-number-mode nil
-
-     my/defun-narrow-modes '(narrow-to-defun
-                             widen)
-
-     my/curr-defun-narrow-mode nil
-     my/narrowed-to-defun nil
-     my/iedit-mode nil)))
+  )
 
 (defun my/init-copy-sexp ()
   ;; :config (cs/initialize-smartparens) is not needed, since there's
