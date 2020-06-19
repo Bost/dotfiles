@@ -214,6 +214,8 @@
     "zero"
     "zz"
     "minus"
+    "initObj"
+    "termObj"
     "qedsymbol")
    (LaTeX-add-environments
     '("exercise" LaTeX-env-args ["argument"] 0)
