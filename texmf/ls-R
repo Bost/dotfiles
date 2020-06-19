@@ -13,6 +13,10 @@ cat-7-sketches
 
 ./tex/latex/cat-7-sketches:
 auto
+cat-7-sketches.aux
+cat-7-sketches.fdb_latexmk
+cat-7-sketches.fls
+cat-7-sketches.log
 cat-7-sketches.sty
 tikz-stuff.tex
 

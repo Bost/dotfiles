@@ -51,6 +51,7 @@
     '("adjr" ["argument"] 4)
     '("adj" ["argument"] 4)
     '("sol" ["argument"] 3)
+    '("abs" 1)
     '("wt" 1)
     '("wh" 1)
     '("ul" 1)
@@ -220,6 +221,10 @@
    (LaTeX-add-counters
     "solcounterlocal"
     "solcounterglobal")
+   (LaTeX-add-xcolor-definecolors
+    "theoremcolor"
+    "definitioncolor"
+    "examplecolor")
    (LaTeX-add-mathtools-DeclarePairedDelimiters
     '("ceil" "")
     '("church" "")
@@ -237,10 +242,6 @@
     "warning")
    (LaTeX-add-amsthm-newtheoremstyles
     "plain")
-   (LaTeX-add-xcolor-definecolors
-    "theoremcolor"
-    "definitioncolor"
-    "examplecolor")
    (LaTeX-add-mdframed-mdfdefinestyles
     "theoremframe"
     "definitionframe"
