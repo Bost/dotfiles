@@ -731,12 +731,14 @@ Otherwise toggle the reader comment"
 
 (defun my/show-pic ()
   (interactive)
-  (let* ((case ":c")
-         (prm (format "{:day %s :threshold %s :case %s :stats %s}"
-                      "(count (corona.api.v1/raw-dates-unsorted))"
-                      (format "(com/min-threshold %s)" case)
-                      case
-                      "(corona.api.v1/pic-data)")))
+  (let* ((case ":i")
+         (prm (format
+               "{:day %s :threshold %s :threshold-increase %s :case %s :stats %s}"
+               "(count (corona.api.expdev07/raw-dates-unsorted))"
+               (format "(corona.common/min-threshold %s)" case)
+               (format "(corona.common/threshold-increase %s)" case)
+               case
+               "(corona.api.v1/pic-data)")))
     (my/repl-insert-cmd
      (format "(cljplot.core/show (corona.plot/plot-all-by-case %s))"
              prm))))
@@ -744,7 +746,7 @@ Otherwise toggle the reader comment"
 (defun my/show-pic-for-pred ()
   (interactive)
   (let* ((prm (format "{:day %s :cc %s :stats %s}"
-                      "(count (corona.api.v1/raw-dates-unsorted))"
+                      "(count (corona.api.expdev07/raw-dates-unsorted))"
                       "\"ZZ\""
                       "(corona.api.v1/pic-data)")))
     (my/repl-insert-cmd
@@ -758,3 +760,14 @@ Otherwise toggle the reader comment"
                  ;; if my/curr-line-number-mode isn't in cycleable, start over
                  my/line-numbers)))
   (funcall my/curr-line-number-mode))
+
+(defun my/stop-synths-metronoms ()
+  (interactive)
+  (my/repl-insert-cmd "(stop)")
+  (cider-repl-return))
+
+(defun my/cider-unamp-current-namespace ()
+  (interactive)
+  (my/repl-insert-cmd "(map #(ns-unmap *ns* %) (keys (ns-interns *ns*)))")
+  ;; (cider-repl-return)
+  )

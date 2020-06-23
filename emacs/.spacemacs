@@ -404,7 +404,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
    ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
    ;; borderless fullscreen. (default nil)
-   dotspacemacs-undecorated-at-startup nil
+   dotspacemacs-undecorated-at-startup t
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
@@ -815,7 +815,7 @@ before packages are loaded."
      ;; ("s-3"    . spacemacs/window-split-double-columns) ; SPC w 2
      ("s-3"       . split-window-right-and-focus) ; SPC w 3
      ("s-9"       . my/load-layout)
-     ("s-="       . my/eval-bind-keys)
+     ("s-+"       . my/eval-bind-keys)
      ("s-z"       . my/buffer-selection-show)
      ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
      ("s-D"       . dired-jump)
@@ -983,6 +983,7 @@ before packages are loaded."
                ("C-s-t" . my/clj-insert-type)))
 
   (bind-keys :map cider-repl-mode-map
+             ("<menu>"       . my/stop-synths-metronoms)
              ("s-h"          . helm-cider-history)
              ("s-j"          . cider-format-defun)
              ("s-x"          . cider-switch-to-last-clojure-buffer)
