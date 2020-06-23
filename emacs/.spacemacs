@@ -89,7 +89,7 @@ This function should only modify configuration layer settings."
      javascript
      ;; shell
      ;; command-log - log keystrokes
-     ;; search-engine
+     search-engine
      ;; TODO eyebrowse - window management
      ;; TODO spacemacs-layout - window management
      ;; smex ; smart M-x enhacements - recent & most used commands
@@ -133,7 +133,7 @@ This function should only modify configuration layer settings."
      fish-mode
      drag-stuff
      transpose-frame
-     google-this
+     ;; google-this
      helm-cider
      helm-cider-history
      cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
@@ -866,7 +866,7 @@ before packages are loaded."
      ("<s-delete>"        . paredit-forward-kill-word)
      ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
      ("M-y"     . helm-show-kill-ring)    ; replaces evil-paste-pop
-     ("s-g"     . my/browse-or-google)
+     ("s-g"     . my/browse-or-search)
      ("s-G"     . helm-google-suggest)
      ("s-8"     . er/expand-region)   ; increase selected region by semantic units
      ("<f2>"    . my/evil-avy-goto-char-timer)

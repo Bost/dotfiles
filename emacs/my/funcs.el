@@ -288,17 +288,43 @@ displayed."
     ;; (message "was-visual-state-p: %s" was-visual-state-p)
     ))
 
-(defun my/browse-or-google (&optional arg)
+(defun my/browse-or-search (&optional arg)
   "'&optional arg' must be declared otherwise the key binding it doesn't work"
   (interactive "p")
-  (let* ((symbol-at-point (thing-at-point 'symbol)))
-    (if (string-prefix-p "http" symbol-at-point)
-        ;; https://www.google.com
-        (browse-url (car (browse-url-interactive-arg "URL: ")))
-      ;; nil means: no quoted search
-      (if (or (evil-visual-state-p) (region-active-p))
-          (google-this-region nil)
-        (google-this nil)))))
+  (let* ((engine "DuckDuckGo")
+         (symbol-at-point (thing-at-point 'symbol)))
+    ;; nil means: no quoted search
+    ;; (if (or (evil-visual-state-p) (region-active-p))
+    ;;     (google-this-region nil)
+    ;;   (google-this nil))
+    (cond
+     ((string-prefix-p "http" symbol-at-point)
+      ;; https://www.google.com
+      (browse-url (car (browse-url-interactive-arg "Browse URL: "))))
+
+     ((evil-visual-state-p)
+      ;; select text as if done from the insert state
+      (let* ((sel-text (buffer-substring-no-properties (region-beginning)
+                                                       (region-end)))
+             (txt (read-string
+                   (format "[evil-visual-state-p] Search %s: " engine)
+                   sel-text)))
+        (engine/search-duck-duck-go txt)))
+
+     ((region-active-p)
+      ;; select text as if done from the insert state
+      (let* ((sel-text (buffer-substring-no-properties (region-beginning)
+                                                       (region-end)))
+             (txt (read-string
+                   (format "[region-active] Search %s: " engine)
+                   sel-text)))
+        (engine/search-duck-duck-go txt)))
+
+     ;; default
+     (t
+      (let* ((txt (read-string (format "[default] Search %s: " engine)
+                               (thing-at-point 'symbol))))
+        (engine/search-duck-duck-go txt))))))
 
 (defun my/evil-avy-goto-char-timer ()
   (interactive)
