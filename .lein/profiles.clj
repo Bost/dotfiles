@@ -1,21 +1,22 @@
 ;; $ ln -s ~/dev/dotfiles/.lein/profiles.clj ~/.lein/profiles.clj
 
 {
+ :jvm-opts ^:replace []
  :user
  {
   :plugins
   [
-   [lein-figwheel "0.5.19"]
+   [lein-figwheel "0.5.20"]
    ;; see use-package clj-refactor :pin melpa-stable for newer versions
    ;; doesn't work with cider/cider-nrepl "0.17.0"; it yields the
    ;;     Unable to resolve var: refactor-nrepl.middleware/wrap-refactor
    ;; nREPL middleware to support editor refactorings
    [refactor-nrepl "2.5.0"]
    ;; collection of nREPL middleware designed to enhance CIDER
-   [cider/cider-nrepl "0.25.0-SNAPSHOT"]
-
-   ;; network REPL providing Srv, Cli, some common APIs etc.
-   [nrepl "0.6.0"]
+   [cider/cider-nrepl
+    #_"0.24.0" ;; recommended by refactor-nrepl
+    "0.25.2" ;; latest version
+    ]
 
    ;; check for outdated dependencies and plugins
    [lein-ancient "0.6.15"]
@@ -26,6 +27,7 @@
    ;; type checking for Clojure with Clojure core.typed
    [lein-typed "0.4.6"]
    [lein-cljsbuild "1.1.7"]
+   ;; auto-compile Garden stylesheets
    [lein-garden "0.3.0"]
    ;; genere API docu from clj or cljs source
    [lein-codox "0.10.5"]
@@ -44,8 +46,11 @@
 
   :dependencies
   [
-   [spyscope "0.1.7-SNAPSHOT"] ;; the SNAPSHOT must be build from the source
-   [clj-kondo "2020.03.20"]    ;; A linter for Clojure code that sparks joy
+   ;; network REPL providing Srv, Cli, some common APIs etc.
+   [nrepl "0.7.0"]
+
+   #_[spyscope "0.1.7-SNAPSHOT"] ;; the SNAPSHOT must be build from the source
+   #_[clj-kondo "2020.03.20"]    ;; A linter for Clojure code that sparks joy
    ]
   ;; :injections [(require 'spyscope.core)]
 
