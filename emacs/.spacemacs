@@ -81,7 +81,8 @@ This function should only modify configuration layer settings."
               ;; http://clojure-emacs.github.io/sayid/
               clojure-enable-sayid t
               clojure-enable-clj-refactor t
-              cljr-warn-on-eval nil)
+              cljr-warn-on-eval nil
+              )
      java
      scala
      sql
@@ -103,6 +104,10 @@ This function should only modify configuration layer settings."
      latex
      my
      themes-megapack
+     (vinegar :variables                     ;; simplify dired
+              vinegar-reuse-dired-buffer t
+              vinegar-dired-hide-details nil
+              )
      )
 
    ;; List of additional packages that will be installed without being
