@@ -1,7 +1,7 @@
 function crep
     # echo "crep:" $argv
     set pth $cheat/cmds
-    set files $files $pth/andoid.org
+    set files $files $pth/android.org
     set files $files $pth/emacs.org
     set files $files $pth/vim.vim
     set files $files $pth/shells.sh
