@@ -721,9 +721,11 @@ Otherwise toggle the reader comment"
   (cider-switch-to-repl-buffer)
   (insert s))
 
+(setf my/bot-ns "corona.bot")
+
 (defun my/telegram-restart ()
   (interactive)
-  (my/repl-insert-cmd "(corona.telegram/restart)"))
+  (my/repl-insert-cmd (format "(%s.telegram/restart)" my/bot-ns)))
 
 (defun my/web-restart ()
   (interactive)
@@ -734,23 +736,26 @@ Otherwise toggle the reader comment"
   (let* ((case ":i")
          (prm (format
                "{:day %s :threshold %s :threshold-increase %s :case %s :stats %s}"
-               "(count (corona.api.expdev07/raw-dates-unsorted))"
-               (format "(corona.common/min-threshold %s)" case)
-               (format "(corona.common/threshold-increase %s)" case)
+               "(count (%s.api.expdev07/raw-dates-unsorted))"
+               my/bot-ns
+               (format "(%s.common/min-threshold %s)" my/bot-ns case)
+               (format "(%s.common/threshold-increase %s)" my/bot-ns case)
                case
-               "(corona.api.v1/pic-data)")))
+               (format "(%s.api.v1/pic-data)" my/bot-ns))))
     (my/repl-insert-cmd
-     (format "(cljplot.core/show (corona.plot/plot-all-by-case %s))"
+     (format "(cljplot.core/show (%s.plot/plot-all-by-case %s))"
+             my/bot-ns
              prm))))
 
 (defun my/show-pic-for-pred ()
   (interactive)
   (let* ((prm (format "{:day %s :cc %s :stats %s}"
-                      "(count (corona.api.expdev07/raw-dates-unsorted))"
+                      (format "(count (%s.api.expdev07/raw-dates-unsorted))" my/bot-ns)
                       "\"ZZ\""
-                      "(corona.api.v1/pic-data)")))
+                      (format "(%s.api.v1/pic-data)" my/bot-ns))))
     (my/repl-insert-cmd
-     (format "(cljplot.core/show (corona.plot/plot-country %s))"
+     (format "(cljplot.core/show (%s.plot/plot-country %s))"
+             my/bot-ns
              prm))))
 
 (defun my/cycle-line-number-modes ()
