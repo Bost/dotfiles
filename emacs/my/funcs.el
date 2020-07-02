@@ -771,7 +771,7 @@ Otherwise toggle the reader comment"
   (my/repl-insert-cmd "(stop)")
   (cider-repl-return))
 
-(defun my/cider-unamp-current-namespace ()
+(defun my/cider-unmap-current-namespace ()
   (interactive)
   (my/repl-insert-cmd "(map #(ns-unmap *ns* %) (keys (ns-interns *ns*)))")
   ;; (cider-repl-return)

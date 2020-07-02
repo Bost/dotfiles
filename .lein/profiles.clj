@@ -26,7 +26,7 @@
    [lein-kibit "0.1.6"]
    ;; type checking for Clojure with Clojure core.typed
    [lein-typed "0.4.6"]
-   [lein-cljsbuild "1.1.7"]
+   [lein-cljsbuild "1.1.8"]
    ;; auto-compile Garden stylesheets
    [lein-garden "0.3.0"]
    ;; genere API docu from clj or cljs source
