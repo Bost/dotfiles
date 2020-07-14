@@ -3,13 +3,13 @@
  (lambda ()
    (TeX-add-to-alist 'LaTeX-provided-package-options
                      '(("newpxmath" "varg" "bigdelims") ("xcolor" "usenames" "dvipsnames") ("circuitikz" "siunitx") ("inputenc" "utf8") ("cleveref" "capitalize") ("xy" "all") ("mdframed" "framemethod=tikz") ("geometry" "margin=2cm")))
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "href")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperref")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperimage")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperbaseurl")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "nolinkurl")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "url")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "path")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "url")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "nolinkurl")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperbaseurl")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperimage")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperref")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "href")
    (add-to-list 'LaTeX-verbatim-macros-with-delims-local "path")
    (TeX-run-style-hooks
     "tikz-stuff"
@@ -216,6 +216,8 @@
     "minus"
     "initObj"
     "termObj"
+    "ladj"
+    "radj"
     "qedsymbol")
    (LaTeX-add-environments
     '("exercise" LaTeX-env-args ["argument"] 0)
@@ -223,10 +225,6 @@
    (LaTeX-add-counters
     "solcounterlocal"
     "solcounterglobal")
-   (LaTeX-add-xcolor-definecolors
-    "theoremcolor"
-    "definitioncolor"
-    "examplecolor")
    (LaTeX-add-mathtools-DeclarePairedDelimiters
     '("ceil" "")
     '("church" "")
@@ -244,6 +242,10 @@
     "warning")
    (LaTeX-add-amsthm-newtheoremstyles
     "plain")
+   (LaTeX-add-xcolor-definecolors
+    "theoremcolor"
+    "definitioncolor"
+    "examplecolor")
    (LaTeX-add-mdframed-mdfdefinestyles
     "theoremframe"
     "definitionframe"

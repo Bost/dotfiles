@@ -721,7 +721,7 @@ Otherwise toggle the reader comment"
   (cider-switch-to-repl-buffer)
   (insert s))
 
-(setf my/bot-ns "corona.bot")
+(setf my/bot-ns "corona") ;; "corona.bot"
 
 (defun my/telegram-restart ()
   (interactive)
