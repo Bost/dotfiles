@@ -291,14 +291,13 @@ displayed."
 (defun my/browse-or-search (&optional arg)
   "'&optional arg' must be declared otherwise the key binding it doesn't work"
   (interactive "p")
-  (let* ((engine "DuckDuckGo")
-         (symbol-at-point (thing-at-point 'symbol)))
+  (let* ((engine "DuckDuckGo"))
     ;; nil means: no quoted search
     ;; (if (or (evil-visual-state-p) (region-active-p))
     ;;     (google-this-region nil)
     ;;   (google-this nil))
     (cond
-     ((string-prefix-p "http" symbol-at-point)
+     ((string-prefix-p "http" (thing-at-point 'url))
       ;; https://www.google.com
       (browse-url (car (browse-url-interactive-arg "Browse URL: "))))
 
