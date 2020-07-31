@@ -375,7 +375,6 @@
 % \newcommand\minonegen{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/minone.pdf}$}}     % Signal flow graphs
 % \newcommand\scalaropgen{\lower6pt\hbox{$\includegraphics[height=0.6cm]{pics/scalarop.pdf}$}} % Signal flow graphs
 % \newcommand\zeroopgen{\lower5pt\hbox{$\includegraphics[height=0.5cm]{pics/zeroop.pdf}$}}     % Signal flow graphs
-% \newcommand{\Cat}[1]{{\mathsf{#1}}}                                        % a named category
 % \newcommand{\Cospan}{\Cat{Cospan}}                                       % Cospan stuff
 % \newcommand{\PP}{\mathbb{P}}
 % \newcommand{\Prob}{\Cat{Prob}}
@@ -393,8 +392,11 @@
 \newcommand{\Bx}{\Set{Box}}
 \newcommand{\CC}{\mathbb{C}}
 \newcommand{\cc}{\CC}
-\newcommand{\CCat}[1]{\mathbb{\StrLeft{#1}{1}}\Cat{\StrGobbleLeft{#1}{1}}} % a named category; does not seem to work in section headers...
-\newcommand{\Cat}[1]{\mathbf{#1}}                                          % a named category
+\newcommand{\CCat}[1]{\mathbb{\StrLeft{#1}{1}}\Cat{\StrGobbleLeft{#1}{1}}} % named category; does not seem to work in section headers...
+\newcommand{\ccat}[1]{\mathbb{#1}}                                         % generic category
+\newcommand{\Cat}[1]{\mathbf{#1}}                                          % named category
+% \newcommand{\Cat}[1]{{\mathsf{#1}}}                                      % named category
+\newcommand{\cat}[1]{\mathcal{#1}}                                         % generic category
 \newcommand{\Cdots}[1]{\overset{#1}{\cdots}}
 \newcommand{\Cob}{\Cat{Cob}}
 \newcommand{\Cospan}[1]{\Cat{Cospan}_{#1}}                                 % Cospan stuff
@@ -404,12 +406,13 @@
 \newcommand{\FinSet}{\Cat{FinSet}}
 \newcommand{\Fromm}[1]{\xleftarrow{\;\;#1\;\;}}
 \newcommand{\From}[1]{\xleftarrow{#1}}
-\newcommand{\Funr}[1]{\mathsf{#1}}                                         % a named functor
+\newcommand{\Funr}[1]{\mathsf{#1}}                                         % named functor
 \newcommand{\Fun}[1]{\mathsf{#1}}                                          % functor
 \newcommand{\Grph}{\Cat{Grph}}
 \newcommand{\IR}{\mathbb{I}\hspace{.6pt}\mathbb{R}}
-\newcommand{\inj}[1]{\overset{#1}{\rightarrowtail}}
-\newcommand{\mono}[1]{\inj{#1}}
+\newcommand{\Inj}[1]{\overset{#1}{\rightarrowtail}}
+\newcommand{\inj}{\rightarrowtail}
+\newcommand{\mono}{\inj}
 \newcommand{\LMO}[2][over]{\ifthenelse{\equal{#1}{over}}{\overset{#2}{\bullet}}{\underset{#2}{\bullet}}}
 \newcommand{\LTO}[2][\bullet]{\overset{\tn{#2}}{#1}}
 \newcommand{\Ldots}[1]{\overset{#1}{\ldots}}
@@ -424,12 +427,14 @@
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\Rel}{\Cat{Rel}}
 \newcommand{\SMC}{\Cat{SMC}}
-\newcommand{\Set}[1]{\mathrm{#1}}                                          % a named set
+\newcommand{\Set}[1]{\mathrm{#1}}                                          % named set
 \newcommand{\Shv}{\Cat{Shv}}
 \newcommand{\SmCat}{\Cat{Cat}}
 \newcommand{\SmSet}{\Cat{Set}}
+\newcommand{\smset}{\Cat{Set}}
 \newcommand{\Surj}[1]{\overset{#1}{\twoheadrightarrow}}
 \newcommand{\TFS}{\Cat{TFS}}
+\newcommand{\SMF}{\Cat{SMF}}
 \newcommand{\Time}{\const{Time}}                                           % Topos temporal logic
 % \newcommand{\Too}[1]{\To{\;\;#1\;\;}}
 \newcommand{\Too}[1]{\xrightarrow{\;\;#1\;\;}}
@@ -438,19 +443,25 @@
 \newcommand{\Unit}[1]{\mathrm{U}_{#1}}                                     % Collaborative design
 \newcommand{\ZZ}{\mathbb{Z}}
 \newcommand{\adjphantom}[3][-.6pt]{\ar[#2, phantom, "#3" yshift=#1]}
-\newcommand{\after}{\circ}
 \newcommand{\apex}[1]{\widecheck{#1}}                                      % Cospan stuff
 \newcommand{\battery}{\texttt{battery}}                                    % Circuits
-\newcommand{\bb}{\BB}
+% \newcommand{\bb}{\BB}
+
+\newcommand{\bij}{\leftrightarrow}
+\newcommand{\ssmc}{\CCat{SMC}}
+
 \newcommand{\beh}{\Fun{B}}
 \newcommand{\boxCD}[2][black]{\fcolorbox{#1}{white}{\begin{varwidth}{\textwidth}\centering #2\end{varwidth}}}
-\newcommand{\cat}[1]{\mathcal{#1}}                                         % a generic category
-\newcommand{\ccat}[1]{\mathbb{#1}}                                         % a generic category
 \newcommand{\cmap}{c}                                                      % Cospan stuff
 \newcommand{\cocolon}{:\!}
+
+% \newcommand{\maps}{\colon}
+% \newcommand{\tensor}{\otimes}
+\newcommand {\tuple}[1]{\langle #1 \rangle}
+
 \newcommand{\col}[1]{\mathrm{col(#1)}}                                     % Collaborative design
-\newcommand{\comp}[1]{\widehat{#1}}                                        % Collaborative design
-\newcommand{\conj}[1]{\widecheck{#1}}                                      % Collaborative design
+% \newcommand{\comp}[1]{\widehat{#1}}                                        % Collaborative design
+% \newcommand{\conj}[1]{\widecheck{#1}}                                      % Collaborative design
 \newcommand{\const}[1]{\mathtt{#1}}                                        % a constant, named element of a set, sort of thing
 \newcommand{\corel}[1]{\Cat{Corel}_{#1}}
 \newcommand{\cp}{\mathbin{\fatsemi}}
@@ -472,7 +483,7 @@
 % \newcommand{\fun}[1]{\textit{#1}}                                          % function
 \newcommand{\grph}[1]{{#1}_{\mathrm{Gr}}}
 \newcommand{\hide}[2][]{#1}
-% \newcommand{\id}{\mathrm{id}}
+\newcommand{\id}{\mathrm{id}}
 \newcommand{\imp}{\Rightarrow}
 \newcommand{\inp}[1]{#1^\tn{in}}
 \newcommand{\inst}{\tn{-}\Cat{Inst}}
@@ -497,6 +508,7 @@
 \newcommand{\pb}[1][very near start]{\ar[dr, phantom, #1, "\lrcorner"]}
 \newcommand{\pgin}{\fun{in}}                                               % Signal flow graphs
 \newcommand{\pgout}{\fun{out}}                                             % Signal flow graphs
+\newcommand{\Poset}{\Cat{Poset}}
 \newcommand{\poset}{\Cat{Poset}}
 \newcommand{\powset}{\Fun{P}}
 \newcommand{\po}[1][very near start]{\ar[ul, phantom, #1, "\ulcorner"]}
@@ -540,6 +552,15 @@
 \newcommand{\abs}[1]{\lvert #1 \rvert}
 \newcommand{\initObj}{\emptyset} % {0}
 \newcommand{\termObj}{\bullet} % {1}
-\newcommand{\iso}{\cong}                % Isomorphism
+\newcommand{\iso}{\cong}                 % Isomorphism / Congruence
 \newcommand{\ladj}{\dashv}               % Left adjoint
 \newcommand{\radj}{\vdash}               % Right adjoint
+\newcommand{\incl}{\hookrightarrow}     % Inclusion
+\newcommand{\emptybk}{\hspace*{.5em}}   % Empty space used as blank
+\newcommand{\blank}{(\emptybk)}         % Generic blank
+\newcommand{\dashbk}{-}                 % Dash used as blank
+\newcommand{\comp}{\circ}
+% \newcommand{\after}{\circ}
+\newcommand{\tensor}{\otimes}
+\newcommand{\cprod}{\times}                  % categorical product
+\newcommand{\csum}{+}                  % categorical coproduct, sum

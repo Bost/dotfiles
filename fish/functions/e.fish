@@ -9,13 +9,17 @@ function e
 
     set prms $prms \& disown
     # Don't use the --daemon switch. It producess a mess in the shell
+
     set emacsCmd emacs
+    # set emacsCmd /usr/local/bin/emacs
+
     set pids (pgrep --exact emacs)
     # echo "pids:" $pids
     for pid in $pids
         set procUser (ps -o user= -p $pid)
-        # echo "pid:" $pid "procUser:" $procUser
-        if test $USER = $procUser
+        # printf "pid: %s; procUser: %s; USER: %s\n" $pid $procUser $USER
+        # $procUser may not be defined emacs previously crashed or was killed
+        if test -n "$procUser"; and test $USER = $procUser
             set procCmd (ps -o command= -p $pid)
             # echo "procCmd:" $procCmd
             # does $procCmd contain the "*defunct*" substring?
@@ -24,6 +28,7 @@ function e
                 # echo "pid:" $pid "is defunct"
             else
                 set emacsCmd emacsclient
+                # set emacsCmd /usr/local/bin/emacsclient
                 break
             end
         end

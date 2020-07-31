@@ -101,13 +101,19 @@ This function should only modify configuration layer settings."
      yaml
      docker
      racket
-     latex
+     (latex
+      ;; :variables
+      ;; latex-build-command "LaTeX" ;; defaults to "LatexMk"
+      ;; latex-enable-folding t      ;; defaults to nil
+      ;; latex-enable-auto-fill nil  ;; defaults to t
+      ;; latex-enable-magic t        ;; defaults to nil
+      )
      my
      themes-megapack
-     (vinegar :variables                     ;; simplify dired
-              vinegar-reuse-dired-buffer t
-              vinegar-dired-hide-details nil
-              )
+     ;; (vinegar :variables                     ;; simplify dired
+     ;;          vinegar-reuse-dired-buffer t
+     ;;          vinegar-dired-hide-details nil
+     ;;          )
      )
 
    ;; List of additional packages that will be installed without being
@@ -609,6 +615,13 @@ before packages are loaded."
    ;;   ("github" . browse-url-chromium)
    ;;   ("thefreedictionary\\.com" . eww-browse-url)
    ;;   ("." . browse-url-default-browser))
+
+   font-latex-fontify-script nil
+   org-latex-listings 'minted
+   org-latex-packages-alist '(("" "minted"))
+   org-latex-pdf-process
+   '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+     "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
    )
 
   (org-babel-do-load-languages

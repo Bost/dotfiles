@@ -3,13 +3,13 @@
  (lambda ()
    (TeX-add-to-alist 'LaTeX-provided-package-options
                      '(("newpxmath" "varg" "bigdelims") ("xcolor" "usenames" "dvipsnames") ("circuitikz" "siunitx") ("inputenc" "utf8") ("cleveref" "capitalize") ("xy" "all") ("mdframed" "framemethod=tikz") ("geometry" "margin=2cm")))
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "path")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "url")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "nolinkurl")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperbaseurl")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperimage")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperref")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "href")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperref")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperimage")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperbaseurl")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "nolinkurl")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "url")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "path")
    (add-to-list 'LaTeX-verbatim-macros-with-delims-local "path")
    (TeX-run-style-hooks
     "tikz-stuff"
@@ -77,11 +77,7 @@
     '("ffunr" 1)
     '("corel" 1)
     '("const" 1)
-    '("conj" 1)
-    '("comp" 1)
     '("col" 1)
-    '("ccat" 1)
-    '("cat" 1)
     '("apex" 1)
     '("Unit" 1)
     '("To" 1)
@@ -89,15 +85,16 @@
     '("Surj" 1)
     '("Set" 1)
     '("Ldots" 1)
-    '("mono" 1)
-    '("inj" 1)
+    '("Inj" 1)
     '("Fun" 1)
     '("Funr" 1)
     '("From" 1)
     '("Fromm" 1)
     '("Cospan" 1)
     '("Cdots" 1)
+    '("cat" 1)
     '("Cat" 1)
+    '("ccat" 1)
     '("CCat" 1)
     "printvalues"
     "creflastconjunction"
@@ -138,6 +135,8 @@
     "FinSet"
     "Grph"
     "IR"
+    "inj"
+    "mono"
     "List"
     "NN"
     "OO"
@@ -152,12 +151,14 @@
     "Shv"
     "SmCat"
     "SmSet"
+    "smset"
     "TFS"
+    "SMF"
     "Time"
     "ZZ"
-    "after"
     "battery"
-    "bb"
+    "bij"
+    "ssmc"
     "beh"
     "cmap"
     "cocolon"
@@ -186,6 +187,7 @@
     "op"
     "pgin"
     "pgout"
+    "Poset"
     "poset"
     "powset"
     "pp"
@@ -197,7 +199,6 @@
     "sfg"
     "singleton"
     "smf"
-    "ssmc"
     "surj"
     "epi"
     "switch"
@@ -218,6 +219,14 @@
     "termObj"
     "ladj"
     "radj"
+    "incl"
+    "emptybk"
+    "blank"
+    "dashbk"
+    "comp"
+    "tensor"
+    "cprod"
+    "csum"
     "qedsymbol")
    (LaTeX-add-environments
     '("exercise" LaTeX-env-args ["argument"] 0)
@@ -225,6 +234,10 @@
    (LaTeX-add-counters
     "solcounterlocal"
     "solcounterglobal")
+   (LaTeX-add-xcolor-definecolors
+    "theoremcolor"
+    "definitioncolor"
+    "examplecolor")
    (LaTeX-add-mathtools-DeclarePairedDelimiters
     '("ceil" "")
     '("church" "")
@@ -242,10 +255,6 @@
     "warning")
    (LaTeX-add-amsthm-newtheoremstyles
     "plain")
-   (LaTeX-add-xcolor-definecolors
-    "theoremcolor"
-    "definitioncolor"
-    "examplecolor")
    (LaTeX-add-mdframed-mdfdefinestyles
     "theoremframe"
     "definitionframe"
