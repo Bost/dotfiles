@@ -15,7 +15,8 @@
    ;; collection of nREPL middleware designed to enhance CIDER
    [cider/cider-nrepl
     #_"0.24.0" ;; recommended by refactor-nrepl
-    "0.25.2" ;; latest version
+    "0.25.3" ;; latest version
+    :exclusions [nrepl]
     ]
 
    ;; check for outdated dependencies and plugins
@@ -24,9 +25,6 @@
    [lein-localrepo "0.5.4"]
    ;; lein kibit - check style: There's a function for that!
    [lein-kibit "0.1.6"]
-   ;; type checking for Clojure with Clojure core.typed
-   [lein-typed "0.4.6"]
-   [lein-cljsbuild "1.1.8"]
    ;; auto-compile Garden stylesheets
    [lein-garden "0.3.0"]
    ;; genere API docu from clj or cljs source
