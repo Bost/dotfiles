@@ -8,7 +8,7 @@ function make-git --description "Compile, install git code"
         echo $cmd
         eval $cmd
         if test $status = 0
-            notify-send "git installed"
+            notify-send (printf "Installed: %s" (git --version))
         end
     end
 end

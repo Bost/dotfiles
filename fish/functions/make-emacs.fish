@@ -76,7 +76,9 @@ function make-emacs --description "Compile, install & git-tag emacs src code"
                     set cmd git tag $remoteTag.$tagPostfixInc
                     echo $cmd
                     eval $cmd
-                    notify-send "Emacs $remoteTag.$tagPostfixInc installed"
+                    # version should be the same as: $remoteTag.$tagPostfixInc
+                    notify-send "Installed: Emacs"
+                    notify-send (printf "%s" (emacs --version))
                 end
             end
         end
