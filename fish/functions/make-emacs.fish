@@ -52,11 +52,12 @@ function make-emacs --description "Compile, install & git-tag emacs src code"
         set cntCodeFiles (count $lstCodeFiles)
         # echo "cntCodeFiles:" $cntCodeFiles
         if test $cntCodeFiles > 0
-            set cmd make -j4
+            set cntJobs (math (eval nproc) / 2)
+            set cmd make --jobs $cntJobs
             echo $cmd
             eval $cmd
             if test $status = 0
-                set cmd sudo make -j4 install
+                set cmd sudo make --jobs $cntJobs install
                 echo $cmd
                 eval $cmd
                 if test $status = 0
