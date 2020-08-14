@@ -84,7 +84,12 @@ This function should only modify configuration layer settings."
               cljr-warn-on-eval nil
               )
      java
-     scala
+
+     ;; see https://github.com/syl20bnr/spacemacs/issues/12462
+     ;; try also:
+     ;; dotspacemacs-excluded-packages '(ensime)
+     (scala :variables scala-backend 'scala-metals)
+
      sql
      vimscript
      javascript
