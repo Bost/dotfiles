@@ -732,8 +732,6 @@ before packages are loaded."
   ;; (setq key-chord-one-key-delay 0.2) ; default 0.2
   (key-chord-define-global "KK" 'my/switch-to-previous-buffer)
 
-  (use-package crosshairs)
-
   (use-package cider
     ;; :init
     ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
