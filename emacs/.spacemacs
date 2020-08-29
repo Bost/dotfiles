@@ -77,9 +77,7 @@ This function should only modify configuration layer settings."
      treemacs
      ;; version-control
      (clojure :variables
-              ;; Sayid (siy EED) - debugging & profiling clojure
-              ;; http://clojure-emacs.github.io/sayid/
-              clojure-enable-sayid t
+              clojure-enable-sayid t ; debugger & profiler
               clojure-enable-clj-refactor t
               cljr-warn-on-eval nil
               )
@@ -203,7 +201,7 @@ It should only modify the values of Spacemacs settings."
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
    ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
-   ;; (default spacemacs-27.1.pdmp)
+   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
    dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
 
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
@@ -233,7 +231,9 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
-   ;; latest version of packages from MELPA. (default nil)
+   ;; latest version of packages from MELPA. Spacelpa is currently in
+   ;; experimental state please use only for testing purposes.
+   ;; (default nil)
    dotspacemacs-use-spacelpa nil
 
    ;; If non-nil then verify the signature for downloaded Spacelpa archives.
@@ -556,14 +556,12 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-use-clean-aindent-mode t
 
-   ;; If non-nil activate `snoopy-mode' which shifts your number row
-   ;; to match the set of signs given in `dotspacemacs-snoopy-keyrow'
-   ;; in programming modes (insert-mode only). (default nil)
-   dotspacemacs-use-snoopy-mode nil
-
-   ;; Text of shifted values from your
-   ;; keyboard's number row. (default '!@#$%^&*()')
-   dotspacemacs-snoopy-keyrow "!@#$%^&*()"
+   ;; If non-nil shift your number row to match the entered keyboard layout
+   ;; (only in insert state). Currently supported keyboard layouts are:
+   ;; `qwerty-us', `qwertz-de' and `querty-ca-fr'.
+   ;; New layouts can be added in `spacemacs-editing' layer.
+   ;; (default nil)
+   dotspacemacs-swap-number-row nil
 
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
@@ -839,7 +837,7 @@ before packages are loaded."
     (spacemacs/set-leader-keys-for-major-mode mode "c" 'my/s-X))
 
   (defun my/eval-bind-keys ()
-    "docstring"
+    "Replacement for e.g. (global-set-key (kbd \"<s-f2>\") 'eshell)"
     (interactive)
     (bind-keys
      :map global-map
@@ -854,9 +852,10 @@ before packages are loaded."
      ("s-s"       . save-buffer)
      ("s-0"       . delete-window)
      ("s-1"       . my/delete-other-windows)
-     ("<f8>"      . next-buffer)
-     ("<s-f8>"    . transpose-frame)
-     ;; ("<s-f9>" . spacemacs/rotate-windows-forward)     ; SPC w r
+     ("<S-iso-lefttab>"   . next-buffer)
+     ("<S-s-iso-lefttab>" . previous-buffer)
+     ("<s-f8>"    . ace-swap-window)
+     ;; ("<s-f8>"    . transpose-frame)
      ("s-n"       . my/cycle-defun-narrow-modes)
      ;; ("s-2"    . my/split-other-window-below)
      ;; ("s-3"    . my/split-other-window-right)
@@ -997,8 +996,19 @@ before packages are loaded."
   ;; ("<s-kp-insert>" .)
   ;; ("<s-kp-0>"      .)
   ;; ("s-'"           .)
-  ;; (unbind-key "<C-insert>")
+  ;; (unbind-key "<C-insert>" &optional keymap)
   ;; ("<C-insert>"    .)
+
+  (bind-keys :map magit-mode-map
+             ("1"   . magit-section-show-level-1-all)
+             ("2"   . magit-section-show-level-2-all)
+             ("3"   . magit-section-show-level-3-all)
+             ("4"   . magit-section-show-level-4-all)
+             ;; overshadows `(digit-argument <n>)'; use C-M-<n> instead
+             ("C-1" . magit-section-show-level-1)
+             ("C-2" . magit-section-show-level-2)
+             ("C-3" . magit-section-show-level-3)
+             ("C-4" . magit-section-show-level-4))
 
   (bind-keys :map paredit-mode-map
              ;; these keybindings don't work in the cider-repl-mode-map
