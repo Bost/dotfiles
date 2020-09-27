@@ -24,7 +24,7 @@
    ;;  work with local Maven repository
    [lein-localrepo "0.5.4"]
    ;; lein kibit - check style: There's a function for that!
-   [lein-kibit "0.1.6"]
+   [lein-kibit "0.1.8"]
    ;; auto-compile Garden stylesheets
    [lein-garden "0.3.0"]
    ;; genere API docu from clj or cljs source
@@ -39,13 +39,13 @@
    [lein-virgil "0.1.9"]
 
    ;; National Vulnerability Database dependency-checker
-   [lein-nvd "1.3.1"]
+   [lein-nvd "1.4.1"]
    ]
 
   :dependencies
   [
    ;; network REPL providing Srv, Cli, some common APIs etc.
-   [nrepl "0.7.0"]
+   [nrepl "0.8.2"]
 
    #_[spyscope "0.1.7-SNAPSHOT"] ;; the SNAPSHOT must be build from the source
    #_[clj-kondo "2020.03.20"]    ;; A linter for Clojure code that sparks joy
