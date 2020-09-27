@@ -14,7 +14,13 @@ set --universal dotf $dev/dotfiles
 #    export PATH="$HOME/.guix-profile/bin${PATH:+:}$PATH"
 
 # appending to PATH in reverse order
-set --export PATH /usr/racket/bin     $PATH # racket 7.6 installed manually
+set --export PATH /usr/lib/postgresql/11/bin $PATH
+set --export PATH /usr/racket/bin     $PATH # racket is installed manually
+
+# rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
+# See https://github.com/phiresky/ripgrep-all
+set --export PATH ~/bin/ripgrep_all   $PATH
+
 set --export PATH ~/.cabal/bin        $PATH
 set --export PATH ~/.guix-profile/bin $PATH
 set --export PATH ~/.yarn/bin         $PATH
@@ -27,10 +33,15 @@ set --export PATH ~/.local/bin        $PATH
 if test ! (string match $bin $PATH)
     set --export PATH $PATH $bin
 end
-if test -d ~/.racket/7.6/bin
+
+set --local RACKET_BIN ~/.racket/7.6/bin
+if test -d $RACKET_BIN
     # put the rash-repl script on the PATH
-    set --export PATH ~/.racket/7.6/bin $PATH
+    set --export PATH $RACKET_BIN $PATH
 end
+
+set --export PATH ~/usr/local/bin $PATH
+
 # printenv PATH
 
 set --export GUIX_LOCPATH "$HOME/.guix-profile/lib/locale"
