@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "# Current kernel:" $(uname -a)
+
 # create a list of old kernels
 old=$(dpkg -l 'linux-image-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d')
 
@@ -8,5 +10,3 @@ if [[ -z "$old" ]]; then
 else
     echo sudo apt remove --purge $old
 fi
-
-
