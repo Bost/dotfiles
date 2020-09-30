@@ -63,7 +63,7 @@ Each entry is either:
   )
 
 (setq
- my/iedit-mode nil)
+ my=iedit-mode nil)
 
 (defun my/post-init-simple ()
   )

@@ -695,13 +695,13 @@ before packages are loaded."
   ;;   (unbind-key "<f6>" clojure-mode-map)
   ;;   (unbind-key "<f7>" clojure-mode-map))
 
-  (defun my/load-layout ()
+  (defun my=load-layout ()
     "docstring"
     (interactive)
     (persp-load-state-from-file "~/.emacs.d/.cache/layouts/persp-auto-save")
     )
 
-  (defun my/delete-other-windows ()
+  (defun my=delete-other-windows ()
     "docstring"
     (interactive)
     ;; See definitions of `treemacs'
@@ -735,7 +735,7 @@ before packages are loaded."
     :hook (emacs-lisp-mode
            .
            (lambda () ;; capital lambda char Λ
-             (push '("my/interactive-lambda" . 923) prettify-symbols-alist))))
+             (push '("my=interactive-lambda" . 923) prettify-symbols-alist))))
 
   (use-package clojure-mode
     :hook
@@ -747,7 +747,7 @@ before packages are loaded."
                        ;; see (global-prettify-symbols-mode +1)
                        ;; (prettify-symbols-mode)
                        (hs-minor-mode 1)
-                       ;; (my/hs-clojure-hide-namespace-and-folds)
+                       ;; (my=hs-clojure-hide-namespace-and-folds)
                        )))
     ;; (define-clojure-indent ;; doesn't work?
     ;;   (->  1)
@@ -761,7 +761,7 @@ before packages are loaded."
   ;; Max time delay between two presses of the same key to be considered a key chord.
   ;; Should normally be a little longer than `key-chord-two-keys-delay'.
   ;; (setq key-chord-one-key-delay 0.2) ; default 0.2
-  (key-chord-define-global "KK" 'my/switch-to-previous-buffer)
+  (key-chord-define-global "KK" 'my=switch-to-previous-buffer)
 
   (use-package cider
     ;; :init
@@ -819,7 +819,7 @@ before packages are loaded."
     ;; (unbind-key "<s-delete>" cider-repl-mode-map)
     )
 
-  ;; TODO my/eval-bind-keys
+  ;; TODO my=eval-bind-keys
   ;; ~SPC m e c~ or M-x spacemacs/eval-current-form-sp
 
   ;; TODO autoload
@@ -827,16 +827,16 @@ before packages are loaded."
   (spacemacs/set-leader-keys
     "ogg" 'google-this
     "ogr" 'google-this-region
-    "oc"  'my/s-X
+    "oc"  'my=s-X
     "or"  'rotate-frame)
 
   (dolist (mode `(clojure-mode
                   clojure-modec
                   clojurescript-mode
                   cider-repl-mode))
-    (spacemacs/set-leader-keys-for-major-mode mode "c" 'my/s-X))
+    (spacemacs/set-leader-keys-for-major-mode mode "c" 'my=s-X))
 
-  (defun my/eval-bind-keys ()
+  (defun my=eval-bind-keys ()
     "Replacement for e.g. (global-set-key (kbd \"<s-f2>\") 'eshell)"
     (interactive)
     (bind-keys
@@ -844,27 +844,27 @@ before packages are loaded."
      ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
      ;; (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
      ("<home>"    . mwim-beginning-of-code-or-line) ; see C-a
-     ("s-K"       . my/kill-buffers--unwanted)
-     ("s-C-K"     . my/kill-buffers--dired)
+     ("s-K"       . my=kill-buffers--unwanted)
+     ("s-C-K"     . my=kill-buffers--dired)
      ("s-R"       . spacemacs/rename-current-buffer-file)
-     ("s-q"       . my/other-window)   ; straight jump to window: SPC 0, SPC 1 ...
-     ("s-k"       . my/close-buffer)
+     ("s-q"       . my=dbg-other-window) ; straight jump to window: SPC 0, SPC 1 ...
+     ("s-k"       . my=close-buffer)
      ("s-s"       . save-buffer)
      ("s-0"       . delete-window)
-     ("s-1"       . my/delete-other-windows)
+     ("s-1"       . my=delete-other-windows)
      ("<S-iso-lefttab>"   . next-buffer)
      ("<S-s-iso-lefttab>" . previous-buffer)
      ("<s-f8>"    . ace-swap-window)
      ;; ("<s-f8>"    . transpose-frame)
-     ("s-n"       . my/cycle-defun-narrow-modes)
-     ;; ("s-2"    . my/split-other-window-below)
-     ;; ("s-3"    . my/split-other-window-right)
+     ("s-n"       . my=cycle-defun-narrow-modes)
+     ;; ("s-2"    . my=split-other-window-below)
+     ;; ("s-3"    . my=split-other-window-right)
      ("s-2"       . split-window-below)   ; SPC w -
      ;; ("s-3"    . spacemacs/window-split-double-columns) ; SPC w 2
      ("s-3"       . split-window-right-and-focus) ; SPC w 3
-     ("s-9"       . my/load-layout)
-     ("s-+"       . my/eval-bind-keys)
-     ("s-z"       . my/buffer-selection-show)
+     ("s-9"       . my=load-layout)
+     ("s-+"       . my=eval-bind-keys)
+     ("s-z"       . my=buffer-selection-show)
      ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
      ("s-D"       . dired-jump)
      ("s-c"       . sp-copy-sexp)
@@ -882,10 +882,10 @@ before packages are loaded."
      ;; ("s-p"      . helm-projectile)
      ("s-p"         . helm-projectile-find-file)
      ("M-s-p"       . helm-projectile-switch-project)
-     ("s-W"         . my/whitespace-cleanup)
-     ("s-w"         . my/whitespace-mode-toggle)
+     ("s-W"         . my=whitespace-cleanup)
+     ("s-w"         . my=whitespace-mode-toggle)
      ("s-m"         . magit-status)
-     ("<f3>"        . my/search-region-or-symbol)
+     ("<f3>"        . my=search-region-or-symbol)
      ("<M-f3>"      . spacemacs/helm-project-smart-do-search)
      ("s-f"         . helm-find-files)
      ("s-F"         . helm-recentf)       ; recentf-open-files
@@ -906,26 +906,26 @@ before packages are loaded."
      ("<C-M-prior>"       . hs-hide-all)  ; pg-up
      ("<C-M-next>"        . hs-show-all)  ; pg-down
      ("<C-M-delete>"      . kill-sexp)
-     ("<C-M-s-delete>"    . my/delete-next-sexp)
-     ("<C-M-s-backspace>" . my/delete-prev-sexp)
+     ("<C-M-s-delete>"    . my=delete-next-sexp)
+     ("<C-M-s-backspace>" . my=delete-prev-sexp)
      ("<C-M-backspace>"   . backward-kill-sexp)
 
      ("<s-backspace>"     . paredit-backward-kill-word)
      ("<s-delete>"        . paredit-forward-kill-word)
      ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
      ("M-y"     . helm-show-kill-ring)    ; replaces evil-paste-pop
-     ("s-g"     . my/browse-or-search)
+     ("s-g"     . my=browse-or-search)
      ("s-G"     . helm-google-suggest)
      ("s-8"     . er/expand-region)   ; increase selected region by semantic units
-     ("<f2>"    . my/evil-avy-goto-char-timer)
+     ("<f2>"    . my=evil-avy-goto-char-timer)
      ("s-/"     . helm-swoop)
-     ("<s-tab>" . my/alternate-buffer)
-     ("<C-f2>"  . my/avy-goto-line)
-     ("C-s-/"   . my/avy-goto-line)
+     ("<s-tab>" . my=alternate-buffer)
+     ("<C-f2>"  . my=avy-goto-line)
+     ("C-s-/"   . my=avy-goto-line)
 
      ;; fd - evil-escape from insert state and everything else
      ;; occurences - function scope
-     ("s-I"                . my/iedit-mode-toggle)
+     ("s-I"                . my=iedit-mode-toggle)
      ("s-i"                . iedit-mode)  ; all occurences in the buffer
      ;; ("s-i"             . spacemacs/enter-ahs-forward)
      ("<f12>"              . undo-tree-visualize)
@@ -934,14 +934,14 @@ before packages are loaded."
      ("<C-S-delete>"       . kill-line)   ; C-shift-key
      ("s-l"                . spacemacs/resume-last-search-buffer)
      ;; `s-SPC v' but it overrides the `expand region' menu point
-     ;; (evil-leader/set-key "v" 'my/evil-select-pasted)
+     ;; (evil-leader/set-key "v" 'my=evil-select-pasted)
 
      ;; TODO s-L: cycle over spacemacs/toggle-*.line-numbers functions
      ;; ("s-L"                . spacemacs/toggle-line-numbers)
-     ("s-L"                . my/cycle-line-number-modes)
-     ;; TODO my/toggle-large-file-setting - is it needed?
-     ;; (add-hook 'find-file-hook 'my/toggle-large-file-setting)
-     ;; ("C-s-L"   . my/toggle-large-file-setting)
+     ("s-L"                . my=cycle-line-number-modes)
+     ;; TODO my=toggle-large-file-setting - is it needed?
+     ;; (add-hook 'find-file-hook 'my=toggle-large-file-setting)
+     ;; ("C-s-L"   . my=toggle-large-file-setting)
 
      ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
      ;; zop-up-to-char works as zop-to-char but stop just before target
@@ -963,23 +963,23 @@ before packages are loaded."
      ;; C-o; evil-jump-backward
      ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
 
-     ("<print>"    . describe-text-properties) ; my/what-face
+     ("<print>"    . describe-text-properties) ; my=what-face
 
      ;; ("<pause>" . goto-last-change)
      ("<s-return>" . goto-last-change)
      ("<s-pause>"  . goto-last-change-reverse)
      ("s-J"        . evil-join)
 
-     ("<s-print>"  . my/ediff-buffers-left-right) ; see advice-add
+     ("<s-print>"  . my=ediff-buffers-left-right) ; see advice-add
      ("s-a"        . helm-mini)                   ; see advice-add
      ("s-A"        . align-regexp)
-     ("s-:"        . my/fabricate-subst-cmd)
+     ("s-:"        . my=fabricate-subst-cmd)
 
-     ("s-<"         . my/select-in-ang-bracket)
-     ("s-["         . my/select-in-sqr-bracket)
-     ("s-("         . my/select-in-rnd-bracket)
-     ("s-{"         . my/select-in-crl-bracket)
-     ("s-\""        . my/select-in-string)
+     ("s-<"         . my=select-in-ang-bracket)
+     ("s-["         . my=select-in-sqr-bracket)
+     ("s-("         . my=select-in-rnd-bracket)
+     ("s-{"         . my=select-in-crl-bracket)
+     ("s-\""        . my=select-in-string)
 
      ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
      ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
@@ -987,10 +987,10 @@ before packages are loaded."
      ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
      ;; ("<menu>"      . (lambda () (interactive) (message "context-menu")))
      )
-    (message "%s" "my/eval-bind-keys evaluated")
+    (message "%s" "my=eval-bind-keys evaluated")
     )
 
-  (my/eval-bind-keys)
+  (my=eval-bind-keys)
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
@@ -1018,31 +1018,31 @@ before packages are loaded."
   (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
     (bind-keys :map state-map
                ;; on the german keyboard the '#' is next to Enter
-               ("C-s-\\" . my/clj-toggle-reader-comment-current-sexp)
-               ("s-\\"   . my/clj-toggle-reader-comment-fst-sexp-on-line)
+               ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
+               ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
 
-               ("<f5>"  . my/telegram-restart)
-               ("<f6>"  . my/web-restart)
-               ("<f7>"  . my/show-pic)
-               ("<f8>"  . my/show-pic-for-pred)
+               ("<f5>"  . my=telegram-restart)
+               ("<f6>"  . my=web-restart)
+               ("<f7>"  . my=show-pic)
+               ("<f8>"  . my=show-pic-for-pred)
 
-               ("s-X"   . my/s-X)
+               ("s-X"   . my=s-X)
                ("s-e"   . cider-eval-last-sexp)
                ("s-j"   . cider-format-defun)
                ("s-i"   . cljr-rename-symbol)
 
-               ("C-s-o" . my/clj-insert-do)
-               ("C-s-f" . my/clj-insert-filter-fn)
-               ("C-s-r" . my/clj-insert-remove-fn)
-               ("C-s-l" . my/clj-insert-let)
-               ("C-s-m" . my/clj-insert-map-fn)
-               ("C-s-d" . my/clj-insert-defn)
-               ("C-s-p" . my/clj-insert-log)
-               ("C-s-s" . my/clj-insert-doseq)
-               ("C-s-t" . my/clj-insert-type)))
+               ("C-s-o" . my=clj-insert-do)
+               ("C-s-f" . my=clj-insert-filter-fn)
+               ("C-s-r" . my=clj-insert-remove-fn)
+               ("C-s-l" . my=clj-insert-let)
+               ("C-s-m" . my=clj-insert-map-fn)
+               ("C-s-d" . my=clj-insert-defn)
+               ("C-s-p" . my=clj-insert-log)
+               ("C-s-s" . my=clj-insert-doseq)
+               ("C-s-t" . my=clj-insert-type)))
 
   (bind-keys :map cider-repl-mode-map
-             ("<menu>"       . my/stop-synths-metronoms)
+             ("<menu>"       . my=stop-synths-metronoms)
              ("s-h"          . helm-cider-history)
              ("s-j"          . cider-format-defun)
              ("s-x"          . cider-switch-to-last-clojure-buffer)
@@ -1051,12 +1051,12 @@ before packages are loaded."
 
   (bind-keys :map clojure-mode-map
              ("s-d"    . cider-eval-defun-at-point)
-             ("s-x"    . my/cider-switch-to-repl-buffer)
+             ("s-x"    . my=cider-switch-to-repl-buffer)
              ("C-s-c"  . cider-connect-clj)
              ("C-s-j"  . cider-jack-in)
              ;; ("s-r" . cider-eval-last-expression-in-repl)
-             ("M-s-l"  . my/cider-save-and-load-current-buffer)
-             ("s-u"    . my/cider-save-and-load-current-buffer)
+             ("M-s-l"  . my=cider-save-and-load-current-buffer)
+             ("s-u"    . my=cider-save-and-load-current-buffer)
              ("M-s-n"  . cider-repl-set-ns)
              ("s-t"    . cider-test-run-tests)
 
@@ -1071,12 +1071,12 @@ before packages are loaded."
              ;; Send a (require ’ns :reload) to the REPL
              ;; ("s-o"  . cider-ns-reload)
 
-             ("C-s-o"   . my/cider-clear-compilation-highlights))
+             ("C-s-o"   . my=cider-clear-compilation-highlights))
 
   (bind-keys :map emacs-lisp-mode-map
-             ("C-s-m" . my/elisp-insert-message)
-             ("C-s-d" . my/elisp-insert-defun)
-             ("s-d"   . my/eval-current-defun)
+             ("C-s-m" . my=elisp-insert-message)
+             ("C-s-d" . my=elisp-insert-defun)
+             ("s-d"   . my=eval-current-defun)
              )
 
   (dolist (state-map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
@@ -1087,7 +1087,7 @@ before packages are loaded."
                ))
 
   (bind-keys :map org-mode-map
-             ;; my/interactive-lambda doesn't work
+             ;; my=interactive-lambda doesn't work
              ("<menu>"      . org-latex-export-to-pdf))
 
   (bind-keys :map prog-mode-map
@@ -1121,14 +1121,14 @@ before packages are loaded."
    'racket-mode-hook
    (lambda ()
      (bind-keys :map racket-mode-map
-                ("C-s-\\" . my/racket-toggle-reader-comment-fst-sexp-on-line)
-                ("s-\\"   . my/racket-toggle-reader-comment-fst-sexp-on-line))))
+                ("C-s-\\" . my=racket-toggle-reader-comment-fst-sexp-on-line)
+                ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line))))
 
   ;; (bind-keys :map helm-mode-map)
 
   (spacemacs/set-leader-keys
-    "oy" 'my/copy-to-clipboard
-    "op" 'my/paste-from-clipboard)
+    "oy" 'my=copy-to-clipboard
+    "op" 'my=paste-from-clipboard)
 
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
@@ -1143,12 +1143,12 @@ before packages are loaded."
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
   (advice-add 'evil-ex-search-next     :after 'evil-scroll-line-to-center)
   (advice-add 'evil-ex-search-previous :after 'evil-scroll-line-to-center)
-  (advice-add 'ediff-quit              :around 'my/disable-y-or-n-p)
-  (advice-add 'helm-mini               :before 'my/helm-mini)
+  (advice-add 'ediff-quit              :around 'my=disable-y-or-n-p)
+  (advice-add 'helm-mini               :before 'my=helm-mini)
 
   ;; (advice-remove 'magit-stash :after)
-  ;; (defun my/magit-stash-no-msg () (magit-stash ""))
-  ;; (advice-add 'magit-stash :after #'my/magit-stash-no-msg)
+  ;; (defun my=magit-stash-no-msg () (magit-stash ""))
+  ;; (advice-add 'magit-stash :after #'my=magit-stash-no-msg)
 
   ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
   ;; layers/+misc/multiple-cursors/packages.el
@@ -1163,12 +1163,12 @@ before packages are loaded."
                ("k" . evil-previous-visual-line)))
 
   (bind-keys :map evil-visual-state-map
-             ("p" . my/evil-paste-after-from-0))
+             ("p" . my=evil-paste-after-from-0))
 
   ;; see also binding for <f2>
   ;; (bind-keys :map evil-normal-state-map
-  ;;            ("f" . my/evil-avy-goto-char-timer)
-  ;;            ("t" . my/evil-avy-goto-char-timer))
+  ;;            ("f" . my=evil-avy-goto-char-timer)
+  ;;            ("t" . my=evil-avy-goto-char-timer))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
