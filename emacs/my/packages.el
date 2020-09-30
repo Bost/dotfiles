@@ -63,17 +63,6 @@ Each entry is either:
   )
 
 (setq
- my/line-numbers '(spacemacs/toggle-relative-line-numbers-on
-                   spacemacs/toggle-relative-line-numbers-off
-                   spacemacs/toggle-line-numbers-on
-                   spacemacs/toggle-line-numbers-off)
- my/curr-line-number-mode nil
-
- my/defun-narrow-modes '(narrow-to-defun
-                         widen)
-
- my/curr-defun-narrow-mode nil
- my/narrowed-to-defun nil
  my/iedit-mode nil)
 
 (defun my/post-init-simple ()

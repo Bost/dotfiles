@@ -196,15 +196,55 @@ displayed."
                 'default
                 'flash-active-buffer-face)))
 
-(defun my/cycle-defun-narrow-modes ()
-  ;; TODO send this function to spacemacs upstream
-  (interactive)
-  (setq my/curr-defun-narrow-mode
-        (car (or (cdr (memq my/curr-defun-narrow-mode my/defun-narrow-modes))
-                 ;; if my/curr-defun-narrow-mode isn't in cycleable, start over
-                 my/defun-narrow-modes)))
-  (funcall my/curr-defun-narrow-mode)
-  (recenter))
+(defmacro create-cycle-fun (cycl-fun-name last-fun loop-list)
+  "`cycl-fun-name' is an interactive function to be created call
+`last-fun' is a variable to be created containing the last executed function from the `loop-list'
+`loop-list' is a list of functions to loop-list over
+
+Usage:
+ (create-cycle-fun my/toggle my/last-fun
+                   '((lambda () (message \"foo\") \"foo\")
+                     (lambda () (message \"bar\") \"bar\")))
+
+Try: M-x my/toggle or:
+ (message \"1. %s, 2. %s 3. %s; last: %s\" (my/toggle) (my/toggle) (my/toggle) my/last-fun)
+
+Note how function advising works - e.g.:
+ (advice-add 'my/toggle :after (lambda () (recenter)))
+ (advice-remove :after 'my/toggle)"
+  `(progn
+     (setq ,last-fun nil)
+     (defun ,cycl-fun-name ()
+       (interactive)
+       (setq ,last-fun
+             (car (or (cdr (memq ,last-fun ,loop-list))
+                      ;; if ,last-fun isn't in cycleable, start over
+                      ,loop-list)))
+       (funcall ,last-fun))))
+
+;; {{{ toggling "narrow-to-defun"
+(create-cycle-fun my/cycle-defun-narrow-modes
+                  my/last-defun-narrow-mode
+                  '(narrow-to-defun widen))
+
+(advice-add 'my/cycle-defun-narrow-modes :after (lambda () (recenter)))
+;; (advice-remove :after 'my/cycle-defun-narrow-modes)
+
+;; 's' is the Win-key between Ctrl and Alt
+;; (bind-keys :map global-map ("s-n" . my/cycle-defun-narrow-modes))
+;; }}}
+
+;; {{{ cycling line-number modes
+(create-cycle-fun my/cycle-line-number-modes
+                  my/last-line-number-mode
+                  '(spacemacs/toggle-relative-line-numbers-on
+                    spacemacs/toggle-relative-line-numbers-off
+                    spacemacs/toggle-line-numbers-on
+                    spacemacs/toggle-line-numbers-off))
+
+;; 's' is the Win-key between Ctrl and Alt
+;; (bind-keys :map global-map ("s-L" . my/cycle-line-number-modes))
+;; }}}
 
 (defun my/split-other-window-and (f)
   (funcall f)
@@ -756,14 +796,6 @@ Otherwise toggle the reader comment"
      (format "(cljplot.core/show (%s.plot/plot-country %s))"
              my/bot-ns
              prm))))
-
-(defun my/cycle-line-number-modes ()
-  (interactive)
-  (setq my/curr-line-number-mode
-        (car (or (cdr (memq my/curr-line-number-mode my/line-numbers))
-                 ;; if my/curr-line-number-mode isn't in cycleable, start over
-                 my/line-numbers)))
-  (funcall my/curr-line-number-mode))
 
 (defun my/stop-synths-metronoms ()
   (interactive)
