@@ -289,7 +289,7 @@ displayed."
     ))
 
 (defun my/browse-or-search (&optional arg)
-  "'&optional arg' must be declared otherwise the key binding it doesn't work"
+  "'&optional arg' must be declared otherwise the key binding doesn't work"
   (interactive "p")
   (let* ((engine "DuckDuckGo"))
     ;; nil means: no quoted search
@@ -576,7 +576,7 @@ E.g. in the (def un a () (def un b () (def un c ()))) this function allows
 selective evaluation 'c' or 'b' or 'a' according to the point possition in
 contrast to `eval-defun' which always evaluates just 'a' no matter where the
 point is.
-TODO still buggy - when not in a defun it evaluates preceding def un"
+TODO still buggy - when not in a defun it evaluates preceding defun"
   (interactive "P")
   (let* ((point-pos (point)))
     (evil-insert-state nil)
