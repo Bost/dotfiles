@@ -1046,6 +1046,8 @@ before packages are loaded."
              ("s-h"          . helm-cider-history)
              ("s-j"          . cider-format-defun)
              ("s-x"          . cider-switch-to-last-clojure-buffer)
+             ("M-s-l"  . my=cider-reload-ns-from-file)
+             ("s-u"    . my=cider-reload-ns-from-file)
              ;; invoke from clojure buffer
              ("<C-s-delete>" . cider-repl-clear-buffer))
 

@@ -638,12 +638,23 @@ with the Echo Area."
   (yas-expand-snippet (yas-lookup-snippet "defun")))
 
 (defun my=cider-save-and-load-current-buffer ()
+  "TODO call `cider-repl-set-ns' only if `cider-load-file' succeeded"
   (interactive)
   (when (buffer-modified-p)
     (save-buffer))
   (cider-load-file (buffer-file-name))
   (cider-repl-set-ns (cider-current-ns))
   ;; (cider-switch-to-relevant-repl-buffer nil)
+  )
+
+(defun my=cider-reload-ns-from-file ()
+  "TODO get the filename from (cider-current-ns) and reload it"
+  (interactive)
+  (message "[%s] cider-current-ns %s"
+           'my=cider-reload-ns-from-file
+           (cider-current-ns))
+  ;; (my=cider-switch-to-repl-buffer)
+  ;; (my=cider-save-and-load-current-buffer)
   )
 
 (defun my=clj-insert-log ()
