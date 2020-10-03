@@ -403,29 +403,25 @@ Note how function advising works - e.g.:
   (evil-goto-mark ?\])
   )
 
-(defun my=toggle-large-file-setting ()
+(defun my=large-file-settings-on ()
   (interactive)
-  (let* ((msg "large-file-settings"))
-    (cond
-     ((not linum-mode)
-      (progn
-        ;; fontification is only deferred while there is input pending
-        (setq jit-lock-defer-time 0)
-        (spacemacs/toggle-line-numbers-on)
-        (buffer-enable-undo)
-        (font-lock-mode 1)
-        (if (> (buffer-size) (* 1024 1024))
-            (message "WARN %s disabled on a large file!" msg)
-          (message "%s disabled" msg))))
+  ;; fontification is only deferred while there is input pending
+  (setq jit-lock-defer-time 0)
+  (spacemacs/toggle-line-numbers-on)
+  (buffer-enable-undo)
+  (font-lock-mode 1)
+  (if (> (buffer-size) (* 1024 1024))
+      (message "WARN %s disabled on a large file!" msg)
+    (message "%s disabled" msg)))
 
-     (t ;; default
-      (progn
-        (spacemacs/toggle-line-numbers-off)
-        (buffer-disable-undo)
-        (font-lock-mode -1)
-        ;; fontification is not deferred.
-        (setq jit-lock-defer-time nil)
-        (message "%s enabled" msg))))))
+(defun my=large-file-settings-off ()
+  (interactive)
+  (spacemacs/toggle-line-numbers-off)
+  (buffer-disable-undo)
+  (font-lock-mode -1)
+  ;; fontification is not deferred.
+  (setq jit-lock-defer-time nil)
+  (message "%s enabled" msg))
 
 (defun my=insert-sexp (str-sexp n-chars-back)
   (insert str-sexp)

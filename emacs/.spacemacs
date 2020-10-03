@@ -941,7 +941,7 @@ before packages are loaded."
      ("s-L"                . my=cycle-line-number-modes)
      ;; TODO my=toggle-large-file-setting - is it needed?
      ;; (add-hook 'find-file-hook 'my=toggle-large-file-setting)
-     ;; ("C-s-L"   . my=toggle-large-file-setting)
+     ("C-s-l"   . my=cycle-large-file-settings)
 
      ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
      ;; zop-up-to-char works as zop-to-char but stop just before target
