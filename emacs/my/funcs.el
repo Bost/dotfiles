@@ -196,13 +196,13 @@ displayed."
                 'default
                 'flash-active-buffer-face)))
 
-(defmacro create-cycle-fun (cycl-fun-name last-fun loop-list)
+(defmacro my=create-cycle-fun (cycl-fun-name last-fun loop-list)
   "`cycl-fun-name' is an interactive function to be created call
 `last-fun' is a variable to be created containing the last executed function from the `loop-list'
 `loop-list' is a list of functions to loop-list over
 
 Usage:
- (create-cycle-fun my=toggle my=last-fun
+ (my=create-cycle-fun my=toggle my=last-fun
                    '((lambda () (message \"foo\") \"foo\")
                      (lambda () (message \"bar\") \"bar\")))
 
@@ -223,9 +223,9 @@ Note how function advising works - e.g.:
        (funcall ,last-fun))))
 
 ;; {{{ toggling "narrow-to-defun"
-(create-cycle-fun my=cycle-defun-narrow-modes
-                  my=last-defun-narrow-mode
-                  '(narrow-to-defun widen))
+(my=create-cycle-fun my=cycle-defun-narrow-modes
+                     my=last-defun-narrow-mode
+                     '(narrow-to-defun widen))
 
 (advice-add 'my=cycle-defun-narrow-modes :after (lambda () (recenter)))
 ;; (advice-remove :after 'my=cycle-defun-narrow-modes)
@@ -235,16 +235,20 @@ Note how function advising works - e.g.:
 ;; }}}
 
 ;; {{{ cycling line-number modes
-(create-cycle-fun my=cycle-line-number-modes
-                  my=last-line-number-mode
-                  '(spacemacs/toggle-relative-line-numbers-on
-                    spacemacs/toggle-relative-line-numbers-off
-                    spacemacs/toggle-line-numbers-on
-                    spacemacs/toggle-line-numbers-off))
+(my=create-cycle-fun my=cycle-line-number-modes
+                     my=last-line-number-mode
+                     '(spacemacs/toggle-relative-line-numbers-on
+                       spacemacs/toggle-relative-line-numbers-off
+                       spacemacs/toggle-line-numbers-on
+                       spacemacs/toggle-line-numbers-off))
 
 ;; 's' is the Win-key between Ctrl and Alt
 ;; (bind-keys :map global-map ("s-L" . my=cycle-line-number-modes))
 ;; }}}
+
+(my=create-cycle-fun my=cycle-large-file-settings
+                     my=last-large-file-settings
+                     '(my=large-file-settings-on my=large-file-settings-off))
 
 (defun my=split-other-window-and (f)
   (funcall f)
