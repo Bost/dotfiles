@@ -46,7 +46,7 @@ This function should only modify configuration layer settings."
      multiple-cursors
      ;; lsp - language server protocol
      markdown
-     swift
+     ;; swift
      windows-scripts
      org    ;; customized via `use-package'
      rust
@@ -112,7 +112,7 @@ This function should only modify configuration layer settings."
       ;; latex-enable-magic t        ;; defaults to nil
       )
      my
-     themes-megapack
+     ;; themes-megapack
      ;; (vinegar :variables                     ;; simplify dired
      ;;          vinegar-reuse-dired-buffer t
      ;;          vinegar-dired-hide-details nil
@@ -151,15 +151,18 @@ This function should only modify configuration layer settings."
      helm-cider
      helm-cider-history
      cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
-     lean-mode
-     helm-lean
+
+     ;; Emacs mode for the Lean theorem prover.
+     ;; lean-mode
+     ;; helm-lean
+
      evil-vimish-fold
 
      ;; crosshairs-mode messes up with the background color of the current-line
-     (crosshairs    :location local)
-     (hl-line+      :location local)
-     (vline         :location local)
-     (col-highlight :location local)
+     ;; (crosshairs    :location local)
+     ;; (hl-line+      :location local)
+     ;; (vline         :location local)
+     ;; (col-highlight :location local)
      )
 
    ;; A list of packages that cannot be updated.
