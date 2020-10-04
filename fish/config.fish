@@ -99,3 +99,6 @@ set --local incFile ~/google-cloud-sdk/path.fish.inc
 if test -e $incFile
     . $incFile
 end
+
+set --export CORONA_ENV_TYPE "DEVEL"
+set --export BABASHKA_CLASSPATH (clojure -Sdeps '{:deps {babashka/babashka.process {:sha "6c348b5213c0c77ebbdfcf2f5da71da04afee377" :git/url "https://github.com/babashka/babashka.process"}}}' -Spath)
