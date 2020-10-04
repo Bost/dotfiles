@@ -248,7 +248,7 @@ Note how function advising works - e.g.:
 
 (my=create-cycle-fun my=cycle-large-file-settings
                      my=last-large-file-settings
-                     '(my=large-file-settings-on my=large-file-settings-off))
+                     '(my=shenanigans-on my=shenanigans-off))
 
 (defun my=split-other-window-and (f)
   (funcall f)
@@ -403,25 +403,27 @@ Note how function advising works - e.g.:
   (evil-goto-mark ?\])
   )
 
-(defun my=large-file-settings-on ()
+(defun my=shenanigans-on ()
+  "Switch on most of the graphical goodies. Inverse of
+`my=shenanigans-off'."
   (interactive)
   ;; fontification is only deferred while there is input pending
   (setq jit-lock-defer-time 0)
   (spacemacs/toggle-line-numbers-on)
   (buffer-enable-undo)
   (font-lock-mode 1)
-  (if (> (buffer-size) (* 1024 1024))
-      (message "WARN %s disabled on a large file!" msg)
-    (message "%s disabled" msg)))
+  (message "Shenanigans enabled"))
 
-(defun my=large-file-settings-off ()
+(defun my=shenanigans-off ()
+  "Switch on most of the graphical goodies. Useful when editing
+large files. Inverse of `my=shenanigans-on'."
   (interactive)
   (spacemacs/toggle-line-numbers-off)
   (buffer-disable-undo)
   (font-lock-mode -1)
   ;; fontification is not deferred.
   (setq jit-lock-defer-time nil)
-  (message "%s enabled" msg))
+  (message "Shenanigans disabled"))
 
 (defun my=insert-sexp (str-sexp n-chars-back)
   (insert str-sexp)
