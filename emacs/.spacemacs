@@ -139,7 +139,7 @@ This function should only modify configuration layer settings."
      ;; send files marked in dired via MTP to Android
      ;; dired-mtp     ; not found
      ;; android-mode  ; doesn't work
-     key-chord
+     use-package-chords
      suggest ;; discover elisp fns
      crux
      super-save ;; save buffers when they lose focux
@@ -822,7 +822,7 @@ before packages are loaded."
     ;; (unbind-key "<s-delete>" cider-repl-mode-map)
     )
 
-  ;; TODO my=eval-bind-keys
+  ;; TODO my=eval-bind-keys-and-chords
   ;; ~SPC m e c~ or M-x spacemacs/eval-current-form-sp
 
   ;; TODO autoload
@@ -839,9 +839,48 @@ before packages are loaded."
                   cider-repl-mode))
     (spacemacs/set-leader-keys-for-major-mode mode "c" 'my=s-X))
 
-  (defun my=eval-bind-keys ()
-    "Replacement for e.g. (global-set-key (kbd \"<s-f2>\") 'eshell)"
+  (defun my=eval-bind-keys-and-chords ()
+    "Replacement for e.g.:
+  (global-set-key (kbd \"<s-f2>\") \\='eshell)
+  (key-chord-define-global \"fj\" (lambda () (interactive) (my=insert-str \"()\" 1)))"
     (interactive)
+
+    ;; (defun my=chord (chord text &optional n-chars-back)
+    ;;   "(key-chord-unset-global \"fj\")"
+    ;;   (key-chord-define-global chord
+    ;;                            (lambda ()
+    ;;                              (interactive)
+    ;;                              (if text
+    ;;                                  (progn
+    ;;                                    (insert text)
+    ;;                                    (if n-chars-back
+    ;;                                        (left-char n-chars-back)))
+    ;;                                (message "text is undefined" text)))))
+    ;; (my=chord "fj" "fox" 1)
+
+    ;; (key-chord-define-global "fj" (lambda () (interactive) (my=insert-str "()" 1)))
+    ;; unbind-key doesn't exits
+    ;; (key-chord-define clojure-mode-map "fj" nil)
+    ;; (key-chord-define global-map "fj" nil)
+
+    ;; see also `key-chord-unset-global' / `key-chord-unset-local'
+    (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
+      (bind-chords :map state-map
+                   ("pr" . (lambda () (interactive) (my=insert-str "(println \"\" )" 3)))
+                   ("rm" . my=clj-insert-remove-fn)
+                   ("fi" . my=clj-insert-filter-fn)
+                   ("de" . my=clj-insert-defn)
+                   ("do" . my=clj-insert-do)
+                   ("le" . my=clj-insert-let)
+                   ("fo" . my=clj-insert-for)
+                   ("ty" . my=clj-insert-type)
+                   ("ma" . my=clj-insert-map-fn)))
+
+    (dolist (state-map `(,global-map))
+      (bind-chords :map state-map
+                   ;; don't need to switch keyboards just because of parenthesis
+                   ("fj" . (lambda () (interactive) (my=insert-str "()" 1)))))
+
     (bind-keys
      :map global-map
      ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
@@ -992,10 +1031,10 @@ before packages are loaded."
      ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
      ;; ("<menu>"      . (lambda () (interactive) (message "context-menu")))
      )
-    (message "%s" "my=eval-bind-keys evaluated")
+    (message "%s" "my=eval-bind-keys-and-chords evaluated")
     )
 
-  (my=eval-bind-keys)
+  (my=eval-bind-keys-and-chords)
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
@@ -1080,6 +1119,10 @@ before packages are loaded."
 
              ("C-s-o"   . my=cider-clear-compilation-highlights))
 
+  (bind-chords :map emacs-lisp-mode-map
+               ("ms" . my=elisp-insert-message)
+               ("df" . my=elisp-insert-defun))
+
   (bind-keys :map emacs-lisp-mode-map
              ("C-s-m" . my=elisp-insert-message)
              ("C-s-d" . my=elisp-insert-defun)
@@ -1102,8 +1145,8 @@ before packages are loaded."
              ("s-Q" . dumb-jump-quick-look)
              ("s-h" . spacemacs/helm-jump-in-buffer)
              ("s-H" . helm-imenu-in-all-buffers)
-             ("s-u"   . eval-buffer)
-             ("s-e"   . eval-last-sexp)
+             ("s-u" . eval-buffer)
+             ("s-e" . eval-last-sexp)
              )
 
   (bind-keys :map dired-mode-map
