@@ -317,7 +317,8 @@ Note how function advising works - e.g.:
 ;; (global-set-key (kbd "<f3>") 'helm-ag)
 
 (defun my=search-region-or-symbol (&optional arg)
-  "Search for selected text in the project. Even in visual state."
+  "Search for selected text in the project. Even in visual state.
+See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
   (interactive "p")
   (let (;; TODO optionaly reselect last selected text
         ;; (was-normal-state-p (evil-normal-state-p))
@@ -535,12 +536,12 @@ Repeated invocations toggle between the two most recently open buffers."
         (message "graphics active"))
     (insert (shell-command-to-string "xsel -o -b"))))
 
-(defun my=fabricate-subst-cmd (&optional arg)
-  "Place prepared subst command to the echo area.
-Example 1.:
-        :%s#\<\>##gc     - moves the point between '\<' and '\>'
-Example 2.:
-        :%s#fox#fox#gc   - moves the point after first 'x'"
+(defun my=fabricate-subst-cmd (&optional args)
+  "Place prepared subst command to the echo area. Must be declared with
+`&optional args'. Otherwise it wont work.
+E.g.:
+     :%s#\\=\\<\\=\\>##gc     - places the point between `\<' and `\>'
+     :%s#fox#fox#gc   - places the point after the first `x'"
   (interactive "p")
   (sp-copy-sexp)
   (evil-normal-state)
