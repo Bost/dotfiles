@@ -262,12 +262,17 @@ Note how function advising works - e.g.:
   (interactive)
   (my=split-other-window-and 'split-window-right))
 
+(defun my=evil-insert ()
+  "Switch to evil insert mode."
+  ;; (interactive)
+  (if (not (evil-insert-state-p))
+      (evil-insert 0)))
+
 (defun my=buffer-selection-show ()
   "Make a menu of buffers so you can manipulate buffers or the buffer list."
   (interactive)
   (bs-show nil)
-  (if (not (evil-insert-state-p))
-      (evil-insert 0)))
+  (my=evil-insert))
 
 (defun my=select-inner (vi-str)
   "Select inner part of a string surrounded by bracket / quotation chars."
@@ -425,9 +430,11 @@ large files. Inverse of `my=shenanigans-on'."
   (setq jit-lock-defer-time nil)
   (message "Shenanigans disabled"))
 
-(defun my=insert-sexp (str-sexp n-chars-back)
-  (insert str-sexp)
-  (left-char n-chars-back))
+(defun my=insert-str (s n-chars-back)
+  (interactive "p")
+  (insert s)
+  (left-char n-chars-back)
+  (my=evil-insert))
 
 (defun my=delete-next-sexp (&optional arg)
   "Delete the sexp (balanced expression) following point w/o
@@ -489,8 +496,7 @@ Repeated invocations toggle between the two most recently open buffers."
 (figwheel-sidecar.repl-api/cljs-repl)")
     (cider-repl-return)
     ;; TODO (rename-buffer "*figwheel-cider*")
-    (if (not (evil-insert-state-p))
-        (evil-insert 0))))
+    (my=evil-insert)))
 
 (defun my=s-X ()
   "Switch to cider repl & start figwheel"
@@ -633,7 +639,7 @@ TODO still buggy - when not in a defun it evaluates preceding defun"
   "See `lv-message' for semi-permanent hints, not interfering
 with the Echo Area."
   (interactive)
-  (my=insert-sexp "(message \"%s\" )" 1))
+  (my=insert-str "(message \"%s\" )" 1))
 
 (defun my=elisp-insert-defun ()
   (interactive)
@@ -664,44 +670,44 @@ with the Echo Area."
   (let* ((msg (if (equal major-mode 'clojurescript-mode)
                   "(.log js/console \"\")"
                 "(println \"\")")))
-    (my=insert-sexp msg 2)))
+    (my=insert-str msg 2)))
 
 (defun my=clj-insert-remove-fn ()
   (interactive)
-  (my=insert-sexp "(remove (fn []))" 3))
+  (my=insert-str "(remove (fn []))" 3))
 
 (defun my=clj-insert-filter-fn ()
   (interactive)
-  (my=insert-sexp "(filter (fn []))" 3))
+  (my=insert-str "(filter (fn []))" 3))
 
 (defun my=clj-insert-type ()
   (interactive)
-  (my=insert-sexp "(type )" 1))
+  (my=insert-str "(type )" 1))
 
 (defun my=clj-insert-map-fn ()
   (interactive)
-  (my=insert-sexp "(map (fn []))" 3))
+  (my=insert-str "(map (fn []))" 3))
 
 (defun my=clj-insert-let ()
   (interactive)
   ;; (cljr-introduce-let) ; TODO see docu for cljr-introduce-let
-  (my=insert-sexp "(let [])" 2))
+  (my=insert-str "(let [])" 2))
 
 (defun my=clj-insert-for ()
   (interactive)
-  (my=insert-sexp "(for [])" 2))
+  (my=insert-str "(for [])" 2))
 
 (defun my=clj-insert-defn ()
   (interactive)
-  (my=insert-sexp "(defn [])" 3))
+  (my=insert-str "(defn [])" 3))
 
 (defun my=clj-insert-doseq ()
   (interactive)
-  (my=insert-sexp "(doseq [])" 2))
+  (my=insert-str "(doseq [])" 2))
 
 (defun my=clj-insert-do ()
   (interactive)
-  (my=insert-sexp "(do)" 1))
+  (my=insert-str "(do)" 1))
 
 (defun my=point-max-p () (= (point) (point-max)))
 (defalias 'my=end-of-file-p 'my=point-max-p)
