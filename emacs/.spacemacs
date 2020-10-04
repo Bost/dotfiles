@@ -958,7 +958,9 @@ before packages are loaded."
      ("<M-up>"     . drag-stuff-up)
 
      ("C-s-."      . spacemacs/jump-to-definition-other-window)
+     ("s->"        . spacemacs/jump-to-definition-other-window)
      ("s-."        . spacemacs/jump-to-definition)
+
      ("s-,"        . evil-jump-backward)
      ;; ("s-,"     . dumb-jump-back)
      ;; ("s-,"     . cider-pop-back)
