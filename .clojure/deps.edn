@@ -10,32 +10,29 @@
 ;; Only the last :paths is kept and others are dropped.
 
 {
-  ;; Paths
-  ;;   Directories in the current project to include in the classpath
+ ;; Paths
+ ;;   Directories in the current project to include in the classpath
+ ;; :paths ["src"]
 
-  ;; :paths ["src"]
+ #_#_
+ :deps ;; External dependencies
+ {}
 
-  ;; External dependencies
-
-  ;; :deps {
-  ;;   org.clojure/clojure {:mvn/version "1.9.0"}
-  ;; }
-
-  ;; Aliases
-	;;   resolve-deps aliases (-R) affect dependency resolution, options:
-	;;     :extra-deps - specifies extra deps to add to :deps
-	;;     :override-deps - specifies a coordinate to use instead of that in :deps
-	;;     :default-deps - specifies a coordinate to use for a lib if one isn't found
-	;;   make-classpath aliases (-C) affect the classpath generation, options:
-	;;     :extra-paths - vector of additional paths to add to the classpath
-	;;     :classpath-overrides - map of lib to path that overrides the result of resolving deps
+ ;; Aliases
+ ;;   resolve-deps aliases (-R) affect dependency resolution, options:
+ ;;     :extra-deps - specifies extra deps to add to :deps
+ ;;     :override-deps - specifies a coordinate to use instead of that in :deps
+ ;;     :default-deps - specifies a coordinate to use for a lib if one isn't found
+ ;;   make-classpath aliases (-C) affect the classpath generation, options:
+ ;;     :extra-paths - vector of additional paths to add to the classpath
+ ;;     :classpath-overrides - map of lib to path that overrides the result of resolving deps
 
  :aliases
  {
-  ;; :deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.2.196"}}}
-  ;; :test {:extra-paths ["test"]}
+  #_#_:deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.2.196"}}}
+  #_#_:test {:extra-paths ["test"]}
 
-  ;; Generate new projects based on clj, Boot, or Leiningen Templates!
+  ;; Generate new projects based on clj, Boot, or Leiningen Templates
   :new
   {:extra-deps {seancorfield/clj-new {:mvn/version "1.1.216"}}
    :main-opts ["-m" "clj-new.create"]}
@@ -44,15 +41,13 @@
   {:extra-deps {nrepl/nrepl {:mvn/version "0.8.2" #_"0.7.0"}
                 #_#_cider/cider-nrepl {:mvn/version "0.25.0-SNAPSHOT"}}}
 
-  ;; https://github.com/bhauman/rebel-readline
+  ;; REPL with colors: https://github.com/bhauman/rebel-readline
   :rebel
   {:extra-deps {com.bhauman/rebel-readline {:mvn/version "0.1.4"}}
    :main-opts  ["-m" "rebel-readline.main"]}}
 
-  ;; Provider attributes
-
-  ;; :mvn/repos {
-  ;;   "central" {:url "https://repo1.maven.org/maven2/"}
-  ;;   "clojars" {:url "https://clojars.org/repo"}
-  ;; }
-}
+ ;; Provider attributes
+ #_#_
+ :mvn/repos
+ {"central" {:url "https://repo1.maven.org/maven2/"}
+  "clojars" {:url "https://clojars.org/repo"}}}
