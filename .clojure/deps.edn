@@ -34,15 +34,20 @@
  {
   ;; :deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.2.196"}}}
   ;; :test {:extra-paths ["test"]}
-  :new {:extra-deps {seancorfield/clj-new
-                     {:mvn/version "0.5.5"}}
-        :main-opts ["-m" "clj-new.create"]}
+
+  ;; Generate new projects based on clj, Boot, or Leiningen Templates!
+  :new
+  {:extra-deps {seancorfield/clj-new {:mvn/version "1.1.216"}}
+   :main-opts ["-m" "clj-new.create"]}
 
   :nREPL
-  {:extra-deps
-   {nrepl/nrepl {:mvn/version "0.7.0-alpha3" #_"0.7.0"}
-    ;; cider/cider-nrepl {:mvn/version "0.25.0-SNAPSHOT"}
-    }}}
+  {:extra-deps {nrepl/nrepl {:mvn/version "0.8.2" #_"0.7.0"}
+                #_#_cider/cider-nrepl {:mvn/version "0.25.0-SNAPSHOT"}}}
+
+  ;; https://github.com/bhauman/rebel-readline
+  :rebel
+  {:extra-deps {com.bhauman/rebel-readline {:mvn/version "0.1.4"}}
+   :main-opts  ["-m" "rebel-readline.main"]}}
 
   ;; Provider attributes
 
