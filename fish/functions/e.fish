@@ -27,6 +27,7 @@ function e
             if string match --quiet -- "*defunct*" $procCmd
                 # echo "pid:" $pid "is defunct"
             else
+                # TODO test the --no-wait parameter in `emacsclient --no-wait`
                 set emacsCmd emacsclient
                 # set emacsCmd /usr/local/bin/emacsclient
                 break

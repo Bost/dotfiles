@@ -1,4 +1,4 @@
-function c
+function c -d "Better cat"
     # TODO see `od` - dump files in octal and other formats
     set escArgv (string escape -- $argv)
     if test -z $escArgv
@@ -8,14 +8,14 @@ function c
         l $escArgv
     # $escArgv doesn't work for 'file\(1\).ext'
     else if test -f $argv # is it a regular file?
-        if test -f /usr/bin/bat
-            set binary bat
+        if test -x /usr/bin/bat
+            set cmd bat
         else
             echo "# TODO install `bat` https://github.com/sharkdp/bat#installation"
             echo "#####################"
-            set binary cat
+            set cmd cat
         end
-        set cmd $binary $escArgv
+        set cmd $cmd $escArgv
         # echo $cmd # otherwise c <file> | jq '.' doesn't work
         eval $cmd
         # is a directory?
