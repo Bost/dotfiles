@@ -690,6 +690,8 @@ before packages are loaded."
                       :background "black"
                       :foreground nil)
 
+  (key-chord-mode 1)
+
   ;; (progn
   ;;   (unbind-key "<f5>" cider-repl-mode-map)
   ;;   (unbind-key "<f6>" cider-repl-mode-map)
