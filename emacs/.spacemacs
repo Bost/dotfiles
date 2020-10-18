@@ -481,12 +481,16 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-line-numbers nil
 
    ;; Code folding method. Possible values are `evil' and `origami'.
+   ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
+   ;; (setq dotspacemacs-folding-method 'vimish)
+   ;; (setq dotspacemacs-folding-method 'evil)
+   ;; (setq dotspacemacs-folding-method 'origami)
    ;; use `origami' for folding of:
    ;; <description> {{{
    ;;     <some content>
    ;; }}}
-   dotspacemacs-folding-method 'evil ; 'origami
+   dotspacemacs-folding-method 'evil
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
@@ -656,6 +660,8 @@ before packages are loaded."
    org-latex-pdf-process
    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+
+   key-chord-two-keys-delay 0.02 ;; default is 0.1
    )
 
   (org-babel-do-load-languages
@@ -761,13 +767,6 @@ before packages are loaded."
 
   (super-save-mode +1) ;; better auto-save-mode
 
-  ;; Max time delay between two key presses to be considered a key chord
-  ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
-  ;; Max time delay between two presses of the same key to be considered a key chord.
-  ;; Should normally be a little longer than `key-chord-two-keys-delay'.
-  ;; (setq key-chord-one-key-delay 0.2) ; default 0.2
-  (key-chord-define-global "KK" 'my=switch-to-previous-buffer)
-
   (use-package cider
     ;; :init
     ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
@@ -842,7 +841,7 @@ before packages are loaded."
     (spacemacs/set-leader-keys-for-major-mode mode "c" 'my=s-X))
 
   (defun my=eval-bind-keys-and-chords ()
-    "Replacement for e.g.:
+    "Revaluated by <s-+> replacement for e.g.:
   (global-set-key (kbd \"<s-f2>\") \\='eshell)
   (key-chord-define-global \"fj\" (lambda () (interactive) (my=insert-str \"()\" 1)))"
     (interactive)
@@ -877,9 +876,14 @@ before packages are loaded."
                    ("fo" . my=clj-insert-for)
                    ("ty" . my=clj-insert-type)
                    ("ma" . my=clj-insert-map-fn)))
-
+    ;; Max time delay between two key presses to be considered a key chord
+    ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
+    ;; Max time delay between two presses of the same key to be considered a key chord.
+    ;; Should normally be a little longer than `key-chord-two-keys-delay'.
+    ;; (setq key-chord-one-key-delay 0.2) ; default 0.2
     (dolist (state-map `(,global-map))
       (bind-chords :map state-map
+                   ("KK" . my=switch-to-previous-buffer)
                    ;; don't need to switch keyboards just because of parenthesis
                    ("fj" . (lambda () (interactive) (my=insert-str "()" 1)))))
 
@@ -907,7 +911,8 @@ before packages are loaded."
      ;; ("s-3"    . spacemacs/window-split-double-columns) ; SPC w 2
      ("s-3"       . split-window-right-and-focus) ; SPC w 3
      ("s-9"       . my=load-layout)
-     ("s-+"       . my=eval-bind-keys)
+     ("s-+"       . my=eval-bind-keys-and-chords)
+     ("<s-kp-add>". my=eval-bind-keys-and-chords)
      ("s-z"       . my=buffer-selection-show)
      ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
      ("s-D"       . dired-jump)
