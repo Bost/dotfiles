@@ -33,13 +33,18 @@
         (forward-line 1)))))
 
 (defun my=close-buffer ()
+  "Clojure repl buffer needs to invoke its own kill function"
   (interactive)
   (if (and (fboundp 'cider-repls) ;; is cider loaded?
            (member (current-buffer) (cider-repls)))
-      (cider-quit)
-    (if server-buffer-clients
-        (server-edit)
-      (kill-this-buffer))))
+      (progn
+        (message "Calling (cider-quit)")
+        (cider-quit))
+    ;; (kill-buffer-and-window) works even for the emacs-server
+    ;; (if server-buffer-clients
+    ;;     (server-edit)
+    ;;   (kill-this-buffer))
+    (kill-buffer-and-window)))
 
 (defun my=grep (command-args)
   "Run Grep with user-specified COMMAND-ARGS, collect output in a buffer.
