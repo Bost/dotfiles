@@ -651,8 +651,11 @@ with the Echo Area."
   (interactive)
   (when (buffer-modified-p)
     (save-buffer))
-  (cider-load-file (buffer-file-name))
+  ;; Set the ns in the first step...
   (cider-repl-set-ns (cider-current-ns))
+  ;; ... so if there's an error in the buffer being loaded then the repl is
+  ;; ready to be used for the problem analysis.
+  (cider-load-file (buffer-file-name))
   ;; (cider-switch-to-relevant-repl-buffer nil)
   )
 
