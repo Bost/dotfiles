@@ -829,8 +829,8 @@ Otherwise toggle the reader comment"
   (my=repl-insert-cmd "(stop)")
   (cider-repl-return))
 
-(defun my=cider-unmap-current-namespace ()
+(defun my=magit-status ()
   (interactive)
-  (my=repl-insert-cmd "(map #(ns-unmap *ns* %) (keys (ns-interns *ns*)))")
-  ;; (cider-repl-return)
-  )
+  (my=save-all-buffers)
+  (magit-status))
+
