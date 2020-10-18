@@ -35,7 +35,7 @@
   ;; Generate new projects based on clj, Boot, or Leiningen Templates
   :new
   {:extra-deps {seancorfield/clj-new {:mvn/version "1.1.216"}}
-   :main-opts ["-m" "clj-new.create"]}
+   :main-opts ["--main" "clj-new.create"]}
 
   :nREPL
   {:extra-deps {nrepl/nrepl {:mvn/version "0.8.2" #_"0.7.0"}
@@ -44,7 +44,21 @@
   ;; REPL with colors: https://github.com/bhauman/rebel-readline
   :rebel
   {:extra-deps {com.bhauman/rebel-readline {:mvn/version "0.1.4"}}
-   :main-opts  ["-m" "rebel-readline.main"]}}
+   :main-opts  [
+                "--main" "rebel-readline.main"
+                ;; "--eval" "(require,'spyscope.core)"
+                ;; "--repl"
+                ]
+   }
+  ;; TODO integrate spyscope tools.deps. See
+  ;; https://www.underwhelm.net/blog/2019/12/19/tools-deps-injections/
+  #_#_
+  :spyscope
+  ;; the SNAPSHOT must be build from the source
+  {:extra-deps {spyscope {:mvn/version "0.1.7-SNAPSHOT"}}
+   :main-opts [
+               ;; "--repl"
+               "--eval" "(require,'spyscope.core)"]}}
 
  ;; Provider attributes
  #_#_
