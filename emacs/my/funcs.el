@@ -755,9 +755,13 @@ Otherwise toggle the reader comment"
   (interactive)
   (my=toggle-reader-comment-fst-sexp-on-line "#;"))
 
-(defun my=clj-toggle-reader-comment-fst-sexp-on-line ()
-  (interactive)
-  (my=toggle-reader-comment-fst-sexp-on-line "#_"))
+(defun my=clj-toggle-reader-comment-fst-sexp-on-line (&optional arg)
+  "When invoked with prefix <C u 2> it toggles two forms - for key-value pair"
+  (interactive "p")
+  (my=toggle-reader-comment-fst-sexp-on-line
+   (if (eq 2 arg)
+       "#_#_"
+     "#_")))
 
 (defun my=racket-toggle-reader-comment-current-sexp ()
   (interactive)
