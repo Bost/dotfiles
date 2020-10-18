@@ -47,10 +47,10 @@
    ;; network REPL providing Srv, Cli, some common APIs etc.
    [nrepl "0.8.2"]
 
-   #_[spyscope "0.1.7-SNAPSHOT"] ;; the SNAPSHOT must be build from the source
+   [spyscope "0.1.7-SNAPSHOT"] ;; the SNAPSHOT must be build from the source
    #_[clj-kondo "2020.03.20"]    ;; A linter for Clojure code that sparks joy
    ]
-  ;; :injections [(require 'spyscope.core)]
+  :injections [(require 'spyscope.core)]
 
   ;; run by: lein clj-kondo --lint src
   :aliases {"clj-kondo" ["run" "-m" "clj-kondo.main"]}
