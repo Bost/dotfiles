@@ -788,7 +788,7 @@ Otherwise toggle the reader comment"
 
 (defun my=web-restart ()
   (interactive)
-  (my=repl-insert-cmd "(corona.web/restart)"))
+  (my=repl-insert-cmd "(corona.web/webapp-restart)"))
 
 (defun my=show-pic ()
   (interactive)
