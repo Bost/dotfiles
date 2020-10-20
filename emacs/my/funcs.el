@@ -172,6 +172,7 @@ displayed."
                       Info-mode             ; for *info*
                       spacemacs-buffer-mode ; for *spacemacs*
                       compilation-mode      ; for *Compile-Log*
+                      minibuffer-inactive-mode ; for *Minibuf-1*
                       ))
           (setq count (1+ count))
           (kill-buffer buffer)))
