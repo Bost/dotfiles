@@ -919,3 +919,17 @@ Evil substitute / replace command:
   (interactive)
   (my=cider-unmap-all-ns "corona"))
 
+(defun my=save-all-buffers ()
+  "Thanks to https://stackoverflow.com/a/30468232"
+  (interactive)
+  (save-some-buffers
+   'no-confirm
+   (lambda ()
+     (cond
+      ((and buffer-file-name (equal buffer-file-name abbrev-file-name)))
+      ((and buffer-file-name (eq major-mode 'clojure-mode)))
+      ((and buffer-file-name (eq major-mode 'latex-mode)))
+      ((and buffer-file-name (eq major-mode 'markdown-mode)))
+      ((and buffer-file-name (eq major-mode 'emacs-lisp-mode)))
+      ((and buffer-file-name (derived-mode-p 'org-mode)))))))
+
