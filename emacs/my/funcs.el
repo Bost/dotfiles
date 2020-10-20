@@ -840,3 +840,82 @@ Otherwise toggle the reader comment"
   (my=save-all-buffers)
   (magit-status))
 
+(defun my=cider-insert-and-format (form)
+  (interactive)
+  (my=repl-insert-cmd (concat (mapconcat 'identity form "\n")))
+  (evil-normal-state)
+  (evil-jump-item)
+  (dolist (line (cdr form))
+    (evil-next-visual-line)
+    (cider-repl-tab))
+  (evil-append-line 0))
+
+(defun my=cider-unmap-this-ns ()
+  (interactive)
+  (my=cider-insert-and-format
+   `(
+     ;; "(map #(ns-unmap *ns* %) (keys (ns-interns *ns*)))"
+     "(->> [*ns*]"
+     "     (map (fn [nspace]"
+     "              (->> (keys (ns-interns nspace))"
+     "                   (map (fn [symb] (ns-unmap nspace symb)))))))"
+     )))
+
+(defun my=cider-browse-this-ns ()
+  (interactive)
+  (my=cider-insert-and-format
+   `(
+     "(->> [*ns*]"
+     "     (map (fn [nspace]"
+     "              (->> (keys (ns-interns nspace))"
+     "                   ))))"
+     )))
+
+(defun my=cider-browse-all-ns (namespace)
+  "E.g.:
+(my=cider-browse-all-ns \"corona\")
+
+Evil substitute / replace command:
+  \\='<,\\='>s/\(.*\)/\"\\1\"/
+  "
+  (interactive)
+  (let* ((nspace (list (concat "\"" namespace "\""))))
+    (my=cider-insert-and-format
+     `(
+       "(let [ns-prefix " ,@nspace "]"
+       "  (->> (all-ns)"
+       "       (filter (fn [nspace] (.startsWith (str nspace) ns-prefix)))"
+       "       #_(take 1)"
+       "       (map (fn [nspace]"
+       "                (assoc {} nspace"
+       "                (->> (ns-interns nspace)"
+       "                     (keys)"
+       "                     #_(map (fn [symb] (ns-unmap nspace symb)))))))))"
+       ))))
+
+(defun my=cider-browse-all-ns-corona ()
+  (interactive)
+  (my=cider-browse-all-ns "corona"))
+
+(defun my=cider-unmap-all-ns (namespace)
+  "Substitute / replace:
+\\='<,\\='>s/\(.*\)/\"\\1\"/
+"
+  (interactive)
+  (let* ((nspace (list (concat "\"" namespace "\""))))
+    (my=cider-insert-and-format
+     `(
+       "(let [ns-prefix " ,@nspace "]"
+       "  (->> (all-ns)"
+       "       (filter (fn [nspace] (.startsWith (str nspace) ns-prefix)))"
+       "       #_(take 1)"
+       "       (map (fn [nspace]"
+       "                (->> (ns-interns nspace)"
+       "                     (keys)"
+       "                     (map (fn [symb] (ns-unmap nspace symb))))))))"
+       ))))
+
+(defun my=cider-unmap-all-ns-corona ()
+  (interactive)
+  (my=cider-unmap-all-ns "corona"))
+
