@@ -145,7 +145,6 @@ This function should only modify configuration layer settings."
      super-save ;; save buffers when they lose focux
      zop-to-char
      fish-mode
-     drag-stuff
      transpose-frame
      ;; google-this
      helm-cider

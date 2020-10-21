@@ -33,6 +33,7 @@
   '(
     simple
     (copy-sexp :location local)
+    drag-stuff
     )
   "The list of Lisp packages required by the my layer.
 
@@ -66,6 +67,20 @@ Each entry is either:
  my=iedit-mode nil)
 
 (defun my/post-init-simple ()
+  )
+
+(defun my/init-drag-stuff ()
+  (use-package drag-stuff)
+
+  (defun my=drag-stuff-up (arg)
+    "Drag stuff ARG lines up."
+    (interactive "p")
+    (drag-stuff--execute (drag-stuff-line-up (- arg))))
+
+  (defun my=drag-stuff-down (arg)
+    "Drag stuff ARG lines down."
+    (interactive "p")
+    (drag-stuff--execute (drag-stuff-line-down arg)))
   )
 
 (defun my/init-copy-sexp ()
