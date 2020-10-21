@@ -932,7 +932,7 @@ before packages are loaded."
      ("M-s-p"       . helm-projectile-switch-project)
      ("s-W"         . my=whitespace-cleanup)
      ("s-w"         . my=whitespace-mode-toggle)
-     ("s-m"         . magit-status)
+     ("s-m"         . my=magit-status)
      ("<f3>"        . my=search-region-or-symbol)
      ("<M-f3>"      . spacemacs/helm-project-smart-do-search)
      ("s-f"         . helm-find-files)
@@ -999,8 +999,8 @@ before packages are loaded."
      ;; [1] spacemacs/move-text-transient-state/move-text-down
      ;; [2] spacemacs/move-text-transient-state/move-text-up
      ;; [1] and [2] don't drag:
-     ("<M-down>"   . drag-stuff-down)
-     ("<M-up>"     . drag-stuff-up)
+     ("<M-down>"   . my=drag-stuff-down)
+     ("<M-up>"     . my=drag-stuff-up)
 
      ("C-s-."      . spacemacs/jump-to-definition-other-window)
      ("s->"        . spacemacs/jump-to-definition-other-window)
