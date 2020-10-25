@@ -845,6 +845,7 @@ before packages are loaded."
   (spacemacs/set-leader-keys
     "ogg" 'google-this
     "ogr" 'google-this-region
+    "oc"  'my=cider-clear-compilation-highlights
     "of"  'my=switch-to-repl-start-figwheel
     "or"  'rotate-frame)
 
@@ -853,7 +854,8 @@ before packages are loaded."
                   clojurescript-mode
                   cider-repl-mode))
     (spacemacs/set-leader-keys-for-major-mode mode
-      "f" 'my=switch-to-repl-start-figwheel))
+      "f" 'my=switch-to-repl-start-figwheel
+      "c" 'my=cider-clear-compilation-highlights))
 
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by <s-+> replacement for e.g.:
