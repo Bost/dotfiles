@@ -34,6 +34,7 @@
     simple
     (copy-sexp :location local)
     drag-stuff
+    engine-mode
     )
   "The list of Lisp packages required by the my layer.
 
@@ -88,4 +89,39 @@ Each entry is either:
   ;; `eval-after-load' in the package
   (use-package copy-sexp))
 
+(defun my/post-init-engine-mode ()
+  (defvar my=search-engine 'engine/search-duck-duck-go)
+  ;; (setq my=search-engine 'engine/search-wikipedia)
+
+  (defun my=browse-url ()
+    ;; https://www.google.com
+    (browse-url (car (browse-url-interactive-arg "[my=browse-or-search] Browse URL: "))))
+
+  (defun my=search-region ()
+    "Select text as if done from the insert state."
+    (funcall my=search-engine
+             (read-string
+              "[my=browse-or-search] Search region: "
+              (buffer-substring-no-properties (region-beginning)
+                                              (region-end)))))
+
+  (defun my=search-default ()
+    (funcall my=search-engine
+             ;; engine/search-duck-duck-go
+             (read-string "[my=browse-or-search] Search thing-at-point: "
+                          (thing-at-point 'symbol))))
+
+  (defun my=browse-or-search (&optional arg)
+    "'&optional arg' must be declared otherwise the key binding doesn't work"
+    (interactive "p")
+    (cond
+     ((string-prefix-p "http" (thing-at-point 'url))
+      (my=browse-url))
+
+     ((or (region-active-p) (evil-visual-state-p))
+      (my=search-region))
+
+     (t
+      (my=search-default))))
+  )
 ;;; packages.el ends here
