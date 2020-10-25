@@ -47,7 +47,7 @@ This function should only modify configuration layer settings."
      ;; lsp - language server protocol
      markdown
      ;; swift
-     windows-scripts
+     ;; windows-scripts
      org    ;; customized via `use-package'
      rust
      scheme ;; requires guile-2.2; M-x run-guile
@@ -112,11 +112,22 @@ This function should only modify configuration layer settings."
       ;; latex-enable-magic t        ;; defaults to nil
       )
      my
-     ;; themes-megapack
+
      ;; (vinegar :variables                     ;; simplify dired
      ;;          vinegar-reuse-dired-buffer t
      ;;          vinegar-dired-hide-details nil
      ;;          )
+
+     ;; themes-megapack
+
+     ;; dired alternative
+     (ranger :variables
+             ranger-show-dotfiles t
+             ranger-show-preview t
+             ranger-show-hidden t
+             ranger-cleanup-eagerly t
+             ranger-cleanup-on-disable t
+             ranger-ignored-extensions '("mkv" "flv" "iso" "mp4"))
      )
 
    ;; List of additional packages that will be installed without being
@@ -367,7 +378,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
 
    ;; If non-nil, auto-generate layout name when creating new layouts. Only has
    ;; effect when using the "jump to layout by number" commands. (default nil)
@@ -477,9 +488,12 @@ It should only modify the values of Spacemacs settings."
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
    ;; can't zoom-in if it's `t'; use `display-line-numbers-mode'
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers '(:visual t
+                               :disabled-for-modes dired-mode
+                                                   doc-view-mode
+                                                   pdf-view-mode
+                               :size-limit-kb 1000)
 
-   ;; Code folding method. Possible values are `evil' and `origami'.
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
    ;; (setq dotspacemacs-folding-method 'vimish)
@@ -489,6 +503,7 @@ It should only modify the values of Spacemacs settings."
    ;; <description> {{{
    ;;     <some content>
    ;; }}}
+   ;; TODO use spacemacs|toggle
    dotspacemacs-folding-method 'evil
 
    ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
@@ -498,7 +513,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis nil
+   dotspacemacs-smart-closing-parenthesis t
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and

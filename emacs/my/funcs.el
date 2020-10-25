@@ -727,9 +727,10 @@ with the Echo Area."
     (beginning-of-line)
     (looking-at-p "[[:space:]]*$")))
 
+;; TODO Implement using the `spacemacs/toggle'
 (defun my=toggle-reader-comment-fst-sexp-on-line (cmtstr)
   "If line starts with a line comment, toggle the comment.
-Otherwise toggle the reader comment"
+Otherwise toggle the reader comment."
   (if (and (current-line-empty-p) (my=end-of-file-p))
       (progn
         (message "Point at the end-of-file. Doing nothing."))
