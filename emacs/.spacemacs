@@ -38,10 +38,17 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     auto-completion ;; (auto-completion :variables auto-completion-enable-help-tooltip t)
+     ;; auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-enable-sort-by-usage t)
      better-defaults
      emacs-lisp
-     git
+     (git :variables
+          ;; git-magit-status-fullscreen t
+          ;; magit-diff-refine-hunk 'all
+          )
      helm
      multiple-cursors
      ;; lsp - language server protocol
@@ -73,13 +80,19 @@ This function should only modify configuration layer settings."
      ;; sudo apt install --yes aspell-en aspell-fr aspell-de aspell-sk
      spell-checking  ;; SPC S / M-x flyspell-mode
 
-     ;; syntax-checking
+     syntax-checking
      treemacs
-     ;; version-control
+     (version-control :variables
+                      version-control-diff-tool 'diff-hl
+                      version-control-global-margin t)
      (clojure :variables
-              clojure-enable-sayid t ; debugger & profiler
-              clojure-enable-clj-refactor t
+              ;; clojure-enable-sayid t ; debugger & profiler
               cljr-warn-on-eval nil
+              clojure-toplevel-inside-comment-form t
+              cider-overlays-use-font-lock t
+              cider-preferred-build-tool 'clojure-cli
+              clojure-enable-linters 'clj-kondo
+              clojure-enable-clj-refactor t
               )
      java
 
