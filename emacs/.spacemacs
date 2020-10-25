@@ -845,14 +845,15 @@ before packages are loaded."
   (spacemacs/set-leader-keys
     "ogg" 'google-this
     "ogr" 'google-this-region
-    "oc"  'my=s-X
+    "of"  'my=switch-to-repl-start-figwheel
     "or"  'rotate-frame)
 
   (dolist (mode `(clojure-mode
                   clojure-modec
                   clojurescript-mode
                   cider-repl-mode))
-    (spacemacs/set-leader-keys-for-major-mode mode "c" 'my=s-X))
+    (spacemacs/set-leader-keys-for-major-mode mode
+      "f" 'my=switch-to-repl-start-figwheel))
 
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by <s-+> replacement for e.g.:
@@ -1091,7 +1092,7 @@ before packages are loaded."
                ("<f7>"  . my=show-pic)
                ("<f8>"  . my=show-pic-for-pred)
 
-               ("s-X"   . my=s-X)
+               ("s-X"   . my=switch-to-repl-start-figwheel)
                ("s-e"   . cider-eval-last-sexp)
                ("s-j"   . cider-format-defun)
                ("s-i"   . cljr-rename-symbol)

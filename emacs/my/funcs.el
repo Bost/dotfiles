@@ -505,7 +505,7 @@ Repeated invocations toggle between the two most recently open buffers."
     ;; TODO (rename-buffer "*figwheel-cider*")
     (my=evil-insert)))
 
-(defun my=s-X ()
+(defun my=switch-to-repl-start-figwheel ()
   "Switch to cider repl & start figwheel"
   (interactive)
   (cider-switch-to-repl-buffer)
