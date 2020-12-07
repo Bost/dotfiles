@@ -68,6 +68,12 @@ This function should only modify configuration layer settings."
              ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
              python-shell-interpreter-args "-i")
 
+     ;; Show commands as you type in a separate buffer
+     ;; command-log  ;; deprecated
+
+     (colors :variables
+             colors-enable-nyan-cat-progress-bar t)
+
      ;; (java :variables
      ;;       eclim-eclipse-dirs "~/eclipse-java-neon"
      ;;       eclim-executable "~/eclipse-java-neon/eclim")
@@ -723,7 +729,7 @@ before packages are loaded."
                       :background "black"
                       :foreground nil)
 
-  (key-chord-mode 1)
+  ;; (key-chord-mode 1)
 
   ;; (progn
   ;;   (unbind-key "<f5>" cider-repl-mode-map)
@@ -790,6 +796,7 @@ before packages are loaded."
     ;; (define-clojure-indent ;; doesn't work?
     ;;   (->  1)
     ;;   (->> 1))
+    :config (color-identifiers-mode t)
     )
 
   (super-save-mode +1) ;; better auto-save-mode
@@ -870,6 +877,18 @@ before packages are loaded."
       "f" 'my=switch-to-repl-start-figwheel
       "c" 'my=cider-clear-compilation-highlights))
 
+  (spacemacs|add-cycle
+      defun-narrow-modes
+    '(narrow-to-defun narrow-to-page narrow-to-region widen)
+    ;; :evil-leader "tnn"
+    :documentation "Cycle through the narrow ? modes ?")
+
+  (spacemacs|add-cycle
+      narrow-widen
+    '(narrow-to-defun widen)
+    ;; :evil-leader "tnn"
+    :documentation "Toggle between `narrow-to-defun' and `widen'")
+
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by <s-+> replacement for e.g.:
   (global-set-key (kbd \"<s-f2>\") \\='eshell)
@@ -925,7 +944,7 @@ before packages are loaded."
      ("s-K"       . my=kill-buffers--unwanted)
      ("s-C-K"     . my=kill-buffers--dired)
      ("s-R"       . spacemacs/rename-current-buffer-file)
-     ("s-q"       . my=dbg-other-window) ; straight jump to window: SPC 0, SPC 1 ...
+     ("s-q"       . other-window) ; straight jump to window: SPC 0, SPC 1 ...
      ("s-k"       . my=close-buffer)
      ("s-s"       . save-buffer)
      ("s-0"       . delete-window)
@@ -934,7 +953,9 @@ before packages are loaded."
      ("<S-s-iso-lefttab>" . previous-buffer)
      ("<s-f8>"    . ace-swap-window)
      ;; ("<s-f8>"    . transpose-frame)
-     ("s-n"       . my=cycle-defun-narrow-modes)
+     ;; ("s-n"       . my=cycle-defun-narrow-modes)
+     ("s-N"       . spacemacs/cycle-defun-narrow-modes)
+     ("s-n"       . spacemacs/cycle-narrow-widen)
      ;; ("s-2"    . my=split-other-window-below)
      ;; ("s-3"    . my=split-other-window-right)
      ("s-2"       . split-window-below)   ; SPC w -
@@ -1015,9 +1036,8 @@ before packages are loaded."
      ;; `s-SPC v' but it overrides the `expand region' menu point
      ;; (evil-leader/set-key "v" 'my=evil-select-pasted)
 
-     ;; TODO s-L: cycle over spacemacs/toggle-*.line-numbers functions
-     ;; ("s-L"                . spacemacs/toggle-line-numbers)
-     ("s-L"                . my=cycle-line-number-modes)
+     ("s-L"                . spacemacs/cycle-line-number-types)
+
      ;; TODO my=toggle-large-file-setting - is it needed?
      ;; (add-hook 'find-file-hook 'my=toggle-large-file-setting)
      ("C-s-l"   . my=cycle-large-file-settings)
@@ -1047,8 +1067,8 @@ before packages are loaded."
      ("<print>"    . describe-text-properties) ; my=what-face
 
      ;; ("<pause>" . goto-last-change)
-     ("<s-return>" . goto-last-change)
-     ("<s-pause>"  . goto-last-change-reverse)
+     ("<s-return>"    . my=jump-last-edited-place)
+     ("<C-s-return>"  . goto-last-change)
      ("s-J"        . evil-join)
 
      ("<s-print>"  . my=ediff-buffers-left-right) ; see advice-add
@@ -1071,7 +1091,7 @@ before packages are loaded."
     (message "%s" "my=eval-bind-keys-and-chords evaluated")
     )
 
-  (my=eval-bind-keys-and-chords)
+  (my=eval-bind-keys-and-chords) ; <s-kp-add>
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
