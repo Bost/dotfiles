@@ -15,8 +15,8 @@
    ;; collection of nREPL middleware designed to enhance CIDER
    [cider/cider-nrepl
     #_"0.24.0" ;; recommended by refactor-nrepl
-    "0.25.3" ;; latest version
-    :exclusions [nrepl]
+    "0.25.5" ;; latest version
+    ;; :exclusions [nrepl]
     ]
 
    ;; check for outdated dependencies and plugins
@@ -45,7 +45,7 @@
   :dependencies
   [
    ;; network REPL providing Srv, Cli, some common APIs etc.
-   [nrepl "0.8.2"]
+   [nrepl "0.8.3"]
 
    ;; [spyscope "0.1.7-SNAPSHOT"] ;; the SNAPSHOT must be build from the source
    #_[clj-kondo "2020.03.20"]    ;; A linter for Clojure code that sparks joy
