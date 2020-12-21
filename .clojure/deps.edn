@@ -29,6 +29,10 @@
 
  :aliases
  {
+  ;; like lein ancient; clojure -M:outdated
+  :outdated {:extra-deps {antq/antq {:mvn/version "0.10.0"}}
+             :main-opts ["-m" "antq.core"]}
+
   #_#_:deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.2.196"}}}
   #_#_:test {:extra-paths ["test"]}
 
