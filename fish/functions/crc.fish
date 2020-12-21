@@ -3,10 +3,11 @@ function crc
     set f1 $cheat/clj/src/clj/cljdocs.clj
     set f2 $cheat/clj/src/clj/cheat.clj
     set f3 ~/.lein/profiles.clj
+    set f4 ~/.clojure/deps.edn
     set files $f1
     cheat-grep --grep-args="$argv" --files="$files"
-    set files $f2 $f3
-    set separator "=============================================="
+    set separator "==============="
+    set files $f2 $f3 $f4
     echo $separator $files $separator
     cheat-grep --grep-args="$argv" --files="$files"
     echo $cmd
