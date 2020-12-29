@@ -52,7 +52,10 @@ This function should only modify configuration layer settings."
           )
      helm
      multiple-cursors
-     ;; lsp - language server protocol
+
+     ;; language server protocol
+     lsp ;; https://emacs-lsp.github.io/lsp-mode/
+
      markdown
      ;; swift
      ;; windows-scripts
@@ -93,14 +96,26 @@ This function should only modify configuration layer settings."
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
      (clojure :variables
-              ;; clojure-enable-sayid t ; debugger & profiler
-              cljr-warn-on-eval nil
-              clojure-toplevel-inside-comment-form t
-              cider-overlays-use-font-lock t
-              cider-preferred-build-tool 'clojure-cli
+              ;; cider-font-lock-dynamically '(macro core function var) ;; default '(macro core deprecated)
+              cider-overlays-use-font-lock t                            ;; default undef
+              cider-preferred-build-tool 'clojure-cli                   ;; default nil
+              cider-repl-buffer-size-limit 100                          ;; default nil; what's the unit?
+              cider-repl-use-pretty-printing t                          ;; default undef
+              ;; clojure-backend 'cider                                 ;; default nil
+
+              clojure-enable-clj-refactor t                             ;; default nil
+              ;; cljr-warn-on-eval nil                                  ;; default t
+
               clojure-enable-linters 'clj-kondo
-              clojure-enable-clj-refactor t
+              clojure-enable-sayid t ;; debugger & profiler             ;; default nil
+              clojure-toplevel-inside-comment-form t
               )
+
+     ;; (setq org-babel-clojure-backend 'cider)
+     ;; (setq gui-elements 1) ; because of CIDER menu
+     ;; (define-key cider-repl-mode-map "<s-delete>" nil)
+     ;; (unbind-key "<s-delete>" cider-repl-mode-map)
+
      java
 
      ;; see https://github.com/syl20bnr/spacemacs/issues/12462
@@ -138,7 +153,7 @@ This function should only modify configuration layer settings."
      ;;          vinegar-dired-hide-details nil
      ;;          )
 
-     ;; themes-megapack
+     themes-megapack
 
      ;; dired alternative
      (ranger :variables
@@ -173,12 +188,11 @@ This function should only modify configuration layer settings."
      use-package-chords
      suggest ;; discover elisp fns
      crux
-     super-save ;; save buffers when they lose focux
+     ;; super-save ;; save buffers when they lose focux
      zop-to-char
      fish-mode
      transpose-frame
      ;; google-this
-     helm-cider
      helm-cider-history
      cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
 
@@ -512,6 +526,7 @@ It should only modify the values of Spacemacs settings."
                                :disabled-for-modes dired-mode
                                                    doc-view-mode
                                                    pdf-view-mode
+                                                   clojure-mode
                                :size-limit-kb 1000)
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
@@ -668,8 +683,6 @@ before packages are loaded."
    ;; prevent: Error saving to X clipboard manager
    x-select-enable-clipboard-manager nil
 
-   ;; clojure-enable-fancify-symbols t
-   ;; cider-known-endpoints '(("host-a" "10.10.10.1" "7888") ("host-b" "7888"))
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
    bookmark-default-file "~/dev/dotfiles/emacs/bookmarks"
@@ -696,6 +709,9 @@ before packages are loaded."
      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
 
    key-chord-two-keys-delay 0.02 ;; default is 0.1
+   ;; lsp-enable-file-watchers
+   ;; lsp-file-watch-threshold
+   ;; color-identifiers-mode t
    )
 
   (org-babel-do-load-languages
@@ -758,7 +774,8 @@ before packages are loaded."
     (delete-other-windows)
     )
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
-  (xterm-mouse-mode -1)
+  ;; (xterm-mouse-mode -1)
+  ;; (super-save-mode +1) ;; better auto-save-mode
 
   (use-package org
     :config
@@ -772,7 +789,8 @@ before packages are loaded."
                 '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5))
          (set-face-attribute face nil
                              :weight 'bold ; 'semi-bold
-                             :height 1.0)))))
+                             :height 1.0))))
+    )
 
   (use-package fish-mode :hook (fish-mode . paredit-mode))
 
@@ -782,81 +800,8 @@ before packages are loaded."
            (lambda () ;; capital lambda char Λ
              (push '("my=interactive-lambda" . 923) prettify-symbols-alist))))
 
-  (use-package clojure-mode
-    :hook
-    (
-     ;; (clojure-mode . typed-clojure-mode)
-     ;; (clojure-mode . cider-mode) ;; not sure about dependecies - this is probably wrong
-     ;; 1st invocation (clojure mode cold start) doesn't work
-     (clojure-mode . (lambda ()
-                       ;; see (global-prettify-symbols-mode +1)
-                       ;; (prettify-symbols-mode)
-                       (hs-minor-mode 1)
-                       ;; (my=hs-clojure-hide-namespace-and-folds)
-                       )))
-    ;; (define-clojure-indent ;; doesn't work?
-    ;;   (->  1)
-    ;;   (->> 1))
-    :config (color-identifiers-mode t)
-    )
-
-  (super-save-mode +1) ;; better auto-save-mode
-
-  (use-package cider
-    ;; :init
-    ;; (use-package helm-cider :ensure t :config (helm-cider-mode 1))
-    :config
-    (setq
-     cider-font-lock-dynamically ;; dynamic syntax highlighting
-     ;; '(macro core deprecated) ;; default value
-     '(macro core function var)
-
-     cider-jdk-src-paths '((concat (getenv "HOME") "/dev/clojure")
-                           ;; sudo apt install openjdk-8-source
-                           ;; mkdir -p ~/dev/openjdk-8-source
-                           ;; cd ~/dev/openjdk-8-source
-                           ;; unzip /usr/lib/jvm/openjdk-8/src.zip .
-                           ;; (concat (getenv "HOME") "/dev/openjdk-8-source")
-                           ;; (concat (getenv "HOME") "/dev/openjdk-11-source")
-                           "/usr/lib/jvm/openjdk-11/lib/src.zip"
-                           )
-     cider-repl-use-pretty-printing t
-     ;; set how CIDER starts cljs-lein-repl
-     ;; see https://lambdaisland.com/episodes/figwheel-emacs-cider
-     cider-cljs-lein-repl
-     "(cond
-        ;; Chestnut projects
-        (and (resolve 'user/run) (resolve 'user/browser-repl))
-        (eval '(do (user/run)
-                   (user/browser-repl)))
-
-        (try
-         (require 'figwheel-sidecar.repl-api)
-         (resolve 'figwheel-sidecar.repl-api/start-figwheel!)
-         (catch Throwable _))
-
-        (eval '(do (figwheel-sidecar.repl-api/start-figwheel!)
-                   (figwheel-sidecar.repl-api/cljs-repl)))
-
-        (try
-         (require 'cemerick.piggieback)
-         (resolve 'cemerick.piggieback/cljs-repl)
-         (catch Throwable _))
-        (eval '(cemerick.piggieback/cljs-repl (cljs.repl.rhino/repl-env)))
-
-        :else
-        (throw
-          (ex-info
-            (str \"Failed to initialize CLJS repl. \"
-                 \"Add com.cemerick/piggieback and optionally \"
-                 \"figwheel-sidecar to your project.\") {})))"
-     )
-
-    ;; (setq org-babel-clojure-backend 'cider)
-    ;; (setq gui-elements 1) ; because of CIDER menu
-    ;; (define-key cider-repl-mode-map "<s-delete>" nil)
-    ;; (unbind-key "<s-delete>" cider-repl-mode-map)
-    )
+  (use-package clojure-mode) ;; must be here for the bind-keys
+  (use-package cider)        ;; must be here for the bind-keys
 
   ;; TODO my=eval-bind-keys-and-chords
   ;; ~SPC m e c~ or M-x spacemacs/eval-current-form-sp
@@ -1277,6 +1222,9 @@ before packages are loaded."
   ;; (bind-keys :map evil-normal-state-map
   ;;            ("f" . my=evil-avy-goto-char-timer)
   ;;            ("t" . my=evil-avy-goto-char-timer))
+
+  ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojure-mode)
+  ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojurescript-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
