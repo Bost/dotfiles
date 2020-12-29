@@ -765,7 +765,7 @@ Otherwise toggle the reader comment."
 
 (defun my=web-restart ()
   (interactive)
-  (my=repl-insert-cmd "(corona.web/webapp-restart)"))
+  (my=repl-insert-cmd "(corona.web.core/webapp-restart)"))
 
 (defun my=show-pic ()
   (interactive)
