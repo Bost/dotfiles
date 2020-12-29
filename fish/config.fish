@@ -101,7 +101,9 @@ if test -e $incFile
 end
 
 # see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
-set --export CORONA_ENV_TYPE "DEVEL"
+set --export CORONA_ENV_TYPE "devel"
 set --export BABASHKA_CLASSPATH (clojure -Sdeps '{:deps {babashka/babashka.process {:sha "6c348b5213c0c77ebbdfcf2f5da71da04afee377" :git/url "https://github.com/babashka/babashka.process"}}}' -Spath)
+
+set --export REPL_USER $USER
 
 source ~/local-stuff.fish
