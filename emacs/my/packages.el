@@ -35,10 +35,10 @@
     (copy-sexp :location local)
     drag-stuff
     engine-mode
-    ;; (jump-last :location
-    ;;            "~/dev/jump-last/"
-    ;;            ;; (recipe :fetcher github :repo "Bost/jump-last")
-    ;;            )
+   (jump-last :location
+              "~/dev/jump-last/"
+              ;; (recipe :fetcher github :repo "Bost/jump-last")
+              )
     )
   "The list of Lisp packages required by the my layer.
 
@@ -74,8 +74,8 @@ Each entry is either:
 (defun my/post-init-simple ()
   )
 
-;; (defun my/init-jump-last ()
-;;   (use-package jump-last))
+(defun my/init-jump-last ()
+ (use-package jump-last))
 
 (defun my/init-drag-stuff ()
   (use-package drag-stuff)

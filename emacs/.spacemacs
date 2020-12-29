@@ -1012,7 +1012,6 @@ before packages are loaded."
 
      ("<print>"    . describe-text-properties) ; my=what-face
 
-     ;; ("<pause>" . goto-last-change)
      ("<s-return>"    . my=jump-last-edited-place)
      ("<C-s-return>"  . goto-last-change)
      ("s-J"        . evil-join)
