@@ -99,7 +99,7 @@ This function should only modify configuration layer settings."
               ;; cider-font-lock-dynamically '(macro core function var) ;; default '(macro core deprecated)
               cider-overlays-use-font-lock t                            ;; default undef
               cider-preferred-build-tool 'clojure-cli                   ;; default nil
-              cider-repl-buffer-size-limit 100                          ;; default nil; what's the unit?
+              ;; cider-repl-buffer-size-limit 500                          ;; default nil; what's the unit?
               cider-repl-use-pretty-printing t                          ;; default undef
               ;; clojure-backend 'cider                                 ;; default nil
 
@@ -185,10 +185,11 @@ This function should only modify configuration layer settings."
      ;; send files marked in dired via MTP to Android
      ;; dired-mtp     ; not found
      ;; android-mode  ; doesn't work
+     beacon ;; Never lose your cursor again
      use-package-chords
      suggest ;; discover elisp fns
      crux
-     ;; super-save ;; save buffers when they lose focux
+     super-save ;; save buffers when they lose focus
      zop-to-char
      fish-mode
      transpose-frame
@@ -666,7 +667,7 @@ before packages are loaded."
   ;;         :name "Clojure Docs"
   ;;         :url "http://clojuredocs.org/clojure.core/%s")
   ;;       search-engine-alist)
-
+  (beacon-mode 1)
   (blink-cursor-mode t)
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
@@ -709,7 +710,7 @@ before packages are loaded."
      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
 
    key-chord-two-keys-delay 0.02 ;; default is 0.1
-   ;; lsp-enable-file-watchers
+   lsp-enable-file-watchers nil
    ;; lsp-file-watch-threshold
    ;; color-identifiers-mode t
    )
@@ -775,7 +776,7 @@ before packages are loaded."
     )
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   ;; (xterm-mouse-mode -1)
-  ;; (super-save-mode +1) ;; better auto-save-mode
+  (super-save-mode +1) ;; better auto-save-mode
 
   (use-package org
     :config
@@ -978,7 +979,8 @@ before packages are loaded."
      ;; ("<S-delete>"      . kill-region)
      ("<C-s-delete>"       . kill-line)   ; C-super-key
      ("<C-S-delete>"       . kill-line)   ; C-shift-key
-     ("s-l"                . spacemacs/resume-last-search-buffer)
+     ;; ("s-l"                . spacemacs/resume-last-search-buffer)
+     ("s-l"                . lazy-helm/spacemacs/resume-last-search-buffer)
      ;; `s-SPC v' but it overrides the `expand region' menu point
      ;; (evil-leader/set-key "v" 'my=evil-select-pasted)
 
