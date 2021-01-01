@@ -528,6 +528,7 @@ It should only modify the values of Spacemacs settings."
                                                    doc-view-mode
                                                    pdf-view-mode
                                                    clojure-mode
+                                                   emacs-lisp-mode
                                :size-limit-kb 1000)
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
