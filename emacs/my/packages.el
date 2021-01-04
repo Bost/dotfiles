@@ -35,11 +35,15 @@
     (copy-sexp :location local)
     drag-stuff
     engine-mode
-   (jump-last :location
-              "~/dev/jump-last/"
-              ;; (recipe :fetcher github :repo "Bost/jump-last")
-              )
-    )
+    (jump-last :location
+               "~/dev/jump-last/"
+               ;; (recipe :fetcher github :repo "Bost/jump-last")
+               )
+    (kill-buffers :location
+                  "~/dev/kill-buffers/"
+                  ;; (recipe :fetcher github :repo "Bost/kill-buffers")
+                  )
+   )
   "The list of Lisp packages required by the my layer.
 
 Each entry is either:
@@ -75,7 +79,10 @@ Each entry is either:
   )
 
 (defun my/init-jump-last ()
- (use-package jump-last))
+  (use-package jump-last))
+
+(defun my/init-kill-buffers ()
+  (use-package kill-buffers))
 
 (defun my/init-drag-stuff ()
   (use-package drag-stuff)
