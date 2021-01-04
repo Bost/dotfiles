@@ -126,7 +126,7 @@ This function should only modify configuration layer settings."
      sql
      vimscript
      javascript
-     ;; shell
+     shell
      ;; command-log - log keystrokes
      search-engine
      ;; TODO eyebrowse - window management

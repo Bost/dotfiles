@@ -690,14 +690,12 @@ Otherwise toggle the reader comment."
 
 (defun my=show-pic-for-pred ()
   (interactive)
-  (let* ((prm (format "{:day %s :cc %s :stats %s}"
-                      (format "(count (%s.api.expdev07/raw-dates-unsorted))" my=bot-ns)
-                      "\"ZZ\""
-                      (format "(%s.api.v1/pic-data)" my=bot-ns))))
-    (my=repl-insert-cmd
-     (format "(cljplot.core/show (%s.plot/plot-country %s))"
-             my=bot-ns
-             prm))))
+  (my=repl-insert-cmd
+   (format "(cljplot.core/show (%s.plot/calc-plot-country-img \"ZZ\" %s.plot/stats %s.plot/report))"
+           my=bot-ns
+           my=bot-ns
+           my=bot-ns
+           my=bot-ns)))
 
 (defun my=stop-synths-metronoms ()
   (interactive)
