@@ -32,7 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(php
      asciidoc
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -54,7 +54,17 @@ This function should only modify configuration layer settings."
      multiple-cursors
 
      ;; language server protocol
-     lsp ;; https://emacs-lsp.github.io/lsp-mode/
+     ;; https://emacs-lsp.github.io/lsp-mode/
+     (lsp :variables
+          ;; lsp-enable-file-watchers nil
+          ;; lsp-file-watch-threshold 1500
+          ;; (setq
+          ;; lsp-keymap-prefix "C-M-s-l"
+          ;; lsp-enable-which-key-integration t
+          ;; )
+
+          ;; lsp-file-watch-ignored-director
+          )
 
      markdown
      ;; swift
@@ -711,8 +721,6 @@ before packages are loaded."
      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
 
    key-chord-two-keys-delay 0.02 ;; default is 0.1
-   lsp-enable-file-watchers nil
-   ;; lsp-file-watch-threshold
    ;; color-identifiers-mode t
    )
 
@@ -837,6 +845,13 @@ before packages are loaded."
     ;; :evil-leader "tnn"
     :documentation "Toggle between `narrow-to-defun' and `widen'")
 
+  (spacemacs|add-cycle
+      large-file-settings
+    '(my=shenanigans-on my=shenanigans-off)
+    my=last-large-file-settings
+    :start-func 'my=last-large-file-settings
+    :documentation "Cycle between `my=shenanigans-on' and `my=shenanigans-off'")
+
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by <s-+> replacement for e.g.:
   (global-set-key (kbd \"<s-f2>\") \\='eshell)
@@ -901,7 +916,6 @@ before packages are loaded."
      ("<S-s-iso-lefttab>" . previous-buffer)
      ("<s-f8>"    . ace-swap-window)
      ;; ("<s-f8>"    . transpose-frame)
-     ;; ("s-n"       . my=cycle-defun-narrow-modes)
      ("s-N"       . spacemacs/cycle-defun-narrow-modes)
      ("s-n"       . spacemacs/cycle-narrow-widen)
      ;; ("s-2"    . my=split-other-window-below)
@@ -986,10 +1000,7 @@ before packages are loaded."
      ;; (evil-leader/set-key "v" 'my=evil-select-pasted)
 
      ("s-L"                . spacemacs/cycle-line-number-types)
-
-     ;; TODO my=toggle-large-file-setting - is it needed?
-     ;; (add-hook 'find-file-hook 'my=toggle-large-file-setting)
-     ("C-s-l"   . my=cycle-large-file-settings)
+     ("C-s-l"      . spacemacs/cycle-large-file-settings)
 
      ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
      ;; zop-up-to-char works as zop-to-char but stop just before target

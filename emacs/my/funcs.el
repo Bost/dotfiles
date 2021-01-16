@@ -119,30 +119,6 @@ Note how function advising works - e.g.:
                       ,loop-list)))
        (funcall ,last-fun))))
 
-;; {{{ toggling "narrow-to-defun"
-(my=create-cycle-fun my=cycle-defun-narrow-modes
-                     my=last-defun-narrow-mode
-                     '(narrow-to-defun widen))
-
-(advice-add 'my=cycle-defun-narrow-modes :after (lambda () (recenter)))
-;; (advice-remove :after 'my=cycle-defun-narrow-modes)
-
-;; 's' is the Win-key between Ctrl and Alt
-;; (bind-keys :map global-map ("s-n" . my=cycle-defun-narrow-modes))
-;; }}}
-
-;; {{{ cycling line-number modes
-(my=create-cycle-fun my=cycle-line-number-modes
-                     my=last-line-number-mode
-                     '(spacemacs/toggle-relative-line-numbers-on
-                       spacemacs/toggle-relative-line-numbers-off
-                       spacemacs/toggle-line-numbers-on
-                       spacemacs/toggle-line-numbers-off))
-
-;; 's' is the Win-key between Ctrl and Alt
-;; (bind-keys :map global-map ("s-L" . my=cycle-line-number-modes))
-;; }}}
-
 (my=create-cycle-fun my=cycle-large-file-settings
                      my=last-large-file-settings
                      '(my=shenanigans-on my=shenanigans-off))
