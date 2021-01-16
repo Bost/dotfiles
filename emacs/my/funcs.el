@@ -82,47 +82,6 @@ Example: (my=buffer-mode (current-buffer))"
   (with-current-buffer buffer-or-string
     major-mode))
 
-(defun my=flash-active-buffer ()
-  "Blip background color of the active buffer."
-  (interactive)
-  (run-at-time "100 millisec" nil
-               (lambda (remap-cookie)
-                 (face-remap-remove-relative remap-cookie))
-               (face-remap-add-relative
-                ;; 'hl-line ;; doesn't work on the "@@-lines" in magit buffers
-                'default
-                'flash-active-buffer-face)))
-
-(defmacro my=create-cycle-fun (cycl-fun-name last-fun loop-list)
-  "`cycl-fun-name' is an interactive function to be created call
-`last-fun' is a variable to be created containing the last executed function from the `loop-list'
-`loop-list' is a list of functions to loop-list over
-
-Usage:
- (my=create-cycle-fun my=toggle my=last-fun
-                   '((lambda () (message \"foo\") \"foo\")
-                     (lambda () (message \"bar\") \"bar\")))
-
-Try: M-x my=toggle or:
- (message \"1. %s, 2. %s 3. %s; last: %s\" (my=toggle) (my=toggle) (my=toggle) my=last-fun)
-
-Note how function advising works - e.g.:
- (advice-add 'my=toggle :after (lambda () (recenter)))
- (advice-remove :after 'my=toggle)"
-  `(progn
-     (setq ,last-fun nil)
-     (defun ,cycl-fun-name ()
-       (interactive)
-       (setq ,last-fun
-             (car (or (cdr (memq ,last-fun ,loop-list))
-                      ;; if ,last-fun isn't in cycleable, start over
-                      ,loop-list)))
-       (funcall ,last-fun))))
-
-(my=create-cycle-fun my=cycle-large-file-settings
-                     my=last-large-file-settings
-                     '(my=shenanigans-on my=shenanigans-off))
-
 (defun my=split-other-window-and (f)
   (funcall f)
   (other-window 1))
@@ -394,6 +353,22 @@ E.g.:
     ;; (cons .. offset) moves the point
     (evil-ex (cons sexp-str offset))))
 
+(defun my=search-namespace (&optional args)
+  (interactive "p")
+  (sp-copy-sexp)
+  ;; (message "%s" kill-ring)
+  (evil-normal-state)
+  (let* ((sexp-str (format "%s\\/" (car kill-ring))))
+    ;; (evil-ex-search-forward)
+    ;; (insert sexp-str)
+    ;; (evil-ex-search-full-pattern sexp-str 1 'forward)
+    (evil-ex-start-word-search t 'forward 0 sexp-str)
+    ;; (evil-ex-search-start-session)
+    ;; (exit-minibuffer)
+    ))
+
+(global-set-key (kbd "<s-f9>") 'my=search-namespace)
+
 (defmacro my=interactive-lambda (&rest body)
   ;; (defmacro my=interactive-lambda ...) prettyfied to "Λ"
   `(lambda ()
@@ -628,6 +603,9 @@ Otherwise toggle the reader comment."
 
 (defun my=telegram-restart ()
   (interactive)
+  ;; (cider-switch-to-repl-buffer)
+  ;; (cider-switch-to-last-clojure-buffer)
+  (cider-ns-refresh)
   (my=repl-insert-cmd (format "(%s.telegram/restart)" my=bot-ns)))
 
 (defun my=web-restart ()
@@ -767,3 +745,40 @@ Evil substitute / replace command:
 Thanks to https://stackoverflow.com/a/2238589"
   (with-current-buffer buffer-or-string
     major-mode))
+
+(defun all-major-mode-variants (symb-name)
+  (let (
+        ;; The `symbol-name' returns a string. Convert it to symbol
+        (s-sym (intern symb-name))
+        )
+    (if (get s-sym 'derived-mode-parent) s-sym)))
+
+;; TODO have a look at the `fundamental-mode'
+;; (setq last-edit-tracked-modes-list
+;;       (append '(text-mode prog-mode)
+;;               (remove nil
+;;                       (mapcar (lambda (mode)
+;;                                 (if (provided-mode-derived-p
+;;                                      mode 'prog-mode 'text-mode)
+;;                                     mode))
+;;                               (remove nil
+;;                                       (mapcar 'all-major-mode-variants
+;;                                               (loop for x being the symbols
+;;                                                     if (fboundp x)
+;;                                                     collect (symbol-name x))))))))
+
+;; for all derivatives of 'prog-mode 'text-mode :
+;; https://emacs.stackexchange.com/questions/21406/find-all-modes-derived-from-a-mode
+
+;; 1. list all symbols
+;; 2. check that a given symbol a mode-symbol
+
+;; add the 'my=save-last-edited-buffer to the hooks of the given mode
+
+;; (dolist (mode (buffer-list))
+;;   (message "%s; relevant %s"
+;;            mode
+;;            (if (provided-mode-derived-p (my=buffer-major-mode mode) 'prog-mode 'text-mode)
+;;                ;; (add-hook 'after-change-functions 'feng-buffer-change-hook)
+;;                (add-hook (get-hook (my=buffer-major-mode mode))
+;;                          'my=save-last-edited-buffer))))
