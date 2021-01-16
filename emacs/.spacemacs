@@ -694,6 +694,11 @@ before packages are loaded."
   (global-prettify-symbols-mode nil) ;; seems like this gets overriden
 
   (setq
+   ;; See https://emacs.stackexchange.com/q/22283 and
+   ;; `ls-lisp-use-insert-directory-program', `ls-lisp-dirs-first'
+   dired-listing-switches "--group-directories-first --dereference -al"
+   ;; dired-listing-switches "--group-directories-first -al"
+
    ;; none of these works; not even in the `dotspacemacs/user-init'
    ;; has to be set as `custom-set-variables'
    ;; display-line-numbers t
