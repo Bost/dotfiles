@@ -14,7 +14,7 @@ set --universal dotf $dev/dotfiles
 #    export PATH="$HOME/.guix-profile/bin${PATH:+:}$PATH"
 
 # appending to PATH in reverse order
-set --export PATH /usr/lib/postgresql/11/bin $PATH
+set --export PATH /usr/lib/postgresql/*/bin $PATH
 set --export PATH /usr/racket/bin     $PATH # racket is installed manually
 
 # rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
