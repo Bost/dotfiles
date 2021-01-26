@@ -3,8 +3,9 @@ function crep
     set pth $cheat/cmds
     set files $files $pth/android.org
     set files $files $pth/emacs.org
-    set files $files $pth/vim.vim
-    set files $files $pth/shells.sh
+    set files $files $pth/dbases.org
+    set files $files $pth/vim.org
+    set files $files $pth/shells.org
     set files $files $pth/linux.sh
     set files $files $pth/rest.sh
     set files $files $pth/findgrep.sh
