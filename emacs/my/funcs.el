@@ -616,17 +616,17 @@ Otherwise toggle the reader comment."
 
 (defun my=show-pic ()
   (interactive)
-  (let* ((case ":i")
+  (let* ((case ":a")
          (prm (format
                "{:day %s :threshold %s :threshold-increase %s :case %s :stats %s}"
-               "(count (%s.api.expdev07/raw-dates-unsorted))"
+               (format "(count (corona.api.expdev07/raw-dates))" my=bot-ns)
                my=bot-ns
                (format "(%s.common/min-threshold %s)" my=bot-ns case)
                (format "(%s.common/threshold-increase %s)" my=bot-ns case)
                case
                (format "(%s.api.v1/pic-data)" my=bot-ns))))
     (my=repl-insert-cmd
-     (format "(cljplot.core/show (%s.plot/plot-all-by-case %s))"
+     (format "(cljplot.core/show (%s.plot/calc-aggregation-img %s))"
              my=bot-ns
              prm))))
 
