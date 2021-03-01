@@ -484,7 +484,9 @@ with the Echo Area."
   (interactive)
   (let* ((msg (if (equal major-mode 'clojurescript-mode)
                   "(.log js/console \"\")"
-                "(println \"\")")))
+                "(debugf \"\")"
+                ;; "(println \"\")"
+                )))
     (my=insert-str msg 2)))
 
 (defun my=clj-insert-remove-fn ()
