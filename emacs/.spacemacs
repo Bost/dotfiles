@@ -56,16 +56,33 @@ This function should only modify configuration layer settings."
 
      ;; language server protocol
      ;; https://emacs-lsp.github.io/lsp-mode/
-     (lsp :variables
-          ;; lsp-enable-file-watchers nil
-          ;; lsp-file-watch-threshold 1500
-          ;; (setq
-          ;; lsp-keymap-prefix "C-M-s-l"
-          ;; lsp-enable-which-key-integration t
-          ;; )
+     (lsp
+      :variables
+      ;; (setq
+      ;; lsp-enable-file-watchers nil
+      ;; lsp-file-watch-threshold 1500
+      ;; lsp-keymap-prefix "C-M-s-l"
+      ;; lsp-enable-which-key-integration t
 
-          ;; lsp-file-watch-ignored-director
-          )
+      ;; Indent regions using the file formatting functionality provided by the
+      ;; language server. Set to nil to use CIDER features instead of LSP UI
+      lsp-enable-indentation nil
+
+      ;; Enable textDocument/onTypeFormatting integration
+      lsp-enable-on-type-formatting nil
+
+      ;; lsp-file-watch-ignored-director
+
+      ;; docstring popup - delay in seconds for mouse and cursor
+      lsp-ui-doc-delay 2
+
+      ;; show code actions and diagnostics text as right-hand side of buffer
+      lsp-ui-sideline-enable nil
+
+      ;; show reference count for functions (assume more lenses added in future)
+      lsp-lens-enable t
+      ;; )
+      )
 
      markdown
      ;; swift
@@ -76,12 +93,13 @@ This function should only modify configuration layer settings."
      shell-scripts
      haskell
      csv
-     (python :variables
-             ;; TODO use a list of prefered python interpreters
-             python-shell-interpreter "python3.8"; "python3.7" ; "python3.6"
-             ;; -i     : inspect interactively after running script; forces a prompt even
-             ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
-             python-shell-interpreter-args "-i")
+     (python
+      :variables
+      ;; TODO use a list of prefered python interpreters
+      python-shell-interpreter "python3.8"; "python3.7" ; "python3.6"
+      ;; -i     : inspect interactively after running script; forces a prompt even
+      ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
+      python-shell-interpreter-args "-i")
 
      ;; Show commands as you type in a separate buffer
      ;; command-log  ;; deprecated
@@ -106,21 +124,41 @@ This function should only modify configuration layer settings."
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
-     (clojure :variables
-              ;; cider-font-lock-dynamically '(macro core function var) ;; default '(macro core deprecated)
-              cider-overlays-use-font-lock t                            ;; default undef
-              cider-preferred-build-tool 'clojure-cli                   ;; default nil
-              ;; cider-repl-buffer-size-limit 500                          ;; default nil; what's the unit?
-              cider-repl-use-pretty-printing t                          ;; default undef
-              ;; clojure-backend 'cider                                 ;; default nil
+     (clojure
+      :variables
+      ;; cider-font-lock-dynamically '(macro core function var) ;; default '(macro core deprecated)
 
-              clojure-enable-clj-refactor t                             ;; default nil
-              ;; cljr-warn-on-eval nil                                  ;; default t
+      cider-overlays-use-font-lock t                            ;; default undef
 
-              clojure-enable-linters 'clj-kondo
-              clojure-enable-sayid t ;; debugger & profiler             ;; default nil
-              clojure-toplevel-inside-comment-form t
-              )
+      cider-preferred-build-tool 'clojure-cli                   ;; default nil
+      ;; cider-repl-buffer-size-limit 500                          ;; default nil; what's the unit?
+      cider-repl-use-pretty-printing t                          ;; default undef
+
+      ;; run Cider without any LSP features
+      clojure-backend 'cider                                    ;; default nil
+
+      clojure-enable-clj-refactor t                             ;; default nil
+      cljr-warn-on-eval nil                                     ;; default t
+
+      clojure-enable-linters 'clj-kondo
+
+      ;; debugger & profiler. Default nil
+      clojure-enable-sayid t
+
+      clojure-toplevel-inside-comment-form t
+
+      ;; Indentation of function forms
+      ;; https://github.com/clojure-emacs/clojure-mode#indentation-of-function-forms
+      ;; (setq clojure-indent-style 'align-arguments)
+
+      ;; Vertically align s-expressions
+      ;; https://github.com/clojure-emacs/clojure-mode#vertical-alignment
+      ;; (setq clojure-align-forms-automatically t)
+
+      ;; Auto-indent code automatically
+      ;; https://emacsredux.com/blog/2016/02/07/auto-indent-your-code-with-aggressive-indent-mode/
+      ;; (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+      )
 
      ;; (setq org-babel-clojure-backend 'cider)
      ;; (setq gui-elements 1) ; because of CIDER menu
