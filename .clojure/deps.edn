@@ -257,6 +257,16 @@
    {antq/antq {:local/root "/home/practicalli/projects/clojure/community-tools/antq"}}
    :main-opts ["-m" "antq.core"]}
 
+  ;; Invoke using: clojure -M:ancient
+  :ancient
+  {:main-opts  ["-m" "deps-ancient.deps-ancient"]
+   :extra-deps {deps-ancient/deps-ancient {:mvn/version "RELEASE"}}}
+
+  :fig
+  {:main-opts ["-m" "figwheel.main"]}
+
+  :build-dev
+  {:main-opts ["-m" "figwheel.main" "-b" "dev" "-r"]}
 
   ;; The classic project for checking maven based dependencies
   ;; clojure -M:project/outdated-mvn
