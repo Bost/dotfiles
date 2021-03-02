@@ -21,6 +21,7 @@
  rackjure        ;; raco pkg install rackjure
  #;typed/racket    ;; TODO  racket/undefined
  ;; rash/demo/setup ;; in-dir macro, my-grep etc.
+ "crep.rkt"
  )
 
 ;; TODO pasteboard%
@@ -303,67 +304,6 @@
     #;(run-pipeline =unix-pipe= grep -Pzoh $split-re $files
                     =unix-pipe= grep --color=auto -Pzie $patter)))
 
-(define-line-macro crl
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(
-                                    dev/cheat/cmds/emacs.org
-                                    dev/cheat/cmds/vim.vim
-                                    dev/cheat/cmds/shells.sh
-                                    dev/cheat/cmds/linux.sh
-                                    dev/cheat/cmds/rest.sh
-                                    dev/cheat/cmds/findgrep.sh
-                                    dev/cheat/cmds/systemd.sh
-                                    dev/cheat/cmds/git.sh
-                                    dev/cheat/cmds/packaging.sh
-                                    ))])))
-
-(define-line-macro cre
-  ;; TODO combile cre with grep of .spacemacs
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(
-                                    dev/cheat/cmds/emacs.org
-                                    ))])))
-
-(define-line-macro crf
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(
-                                    dev/cheat/cmds/findgrep.sh
-                                    ))])))
-
-(define-line-macro crg
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(
-                                    dev/cheat/cmds/git.sh
-                                    ))])))
-
-(define-line-macro crn
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(
-                                    dev/notes/category-theory.md
-                                    dev/notes/computer-sciences.md
-                                    dev/notes/logics.org
-                                    dev/notes/math.org
-                                    dev/notes/notes.org
-                                    dev/notes/math-structures.md
-                                    ))])))
-(define-line-macro cru
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg) #'(simple-grep `arg '(
-                                     dev/cheat/cmds/utf8.txt
-                                     ))])))
-
-(define-line-macro crv
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg) #'(cheat-grep `arg '(
-                                    dev/cheat/cmds/vim.vim
-                                    ))])))
 (define-line-macro grepc
   (lambda (stx)
     (syntax-parse stx
@@ -468,3 +408,18 @@
    sudo apt full-upgrade --yes
    sudo needrestart
    })
+
+(define (spag-code)
+  (spa)
+  (with-rash-config
+    {
+     git checkout develop
+     git fetch --tags origin
+     git rebase
+     git rebase develop cycle
+     }))
+
+(define-line-macro spag
+  (lambda (stx)
+    (syntax-parse stx
+      [(_) #'(spag-code)])))
