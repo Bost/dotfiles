@@ -34,7 +34,7 @@ if test ! (string match $bin $PATH)
     set --export PATH $PATH $bin
 end
 
-set --local RACKET_BIN ~/.racket/7.6/bin
+set --local RACKET_BIN ~/.racket/8.0/bin
 if test -d $RACKET_BIN
     # put the rash-repl script on the PATH
     set --export PATH $RACKET_BIN $PATH
