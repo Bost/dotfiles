@@ -6,14 +6,14 @@ function crep --description="Search through the whole cheatsheet"
     set files $files $pth/dbases.org
     set files $files $pth/vim.org
     set files $files $pth/shells.org
-    set files $files $pth/linux.sh
-    set files $files $pth/rest.sh
+    set files $files $pth/linux.org
+    set files $files $pth/rest.org
     set files $files $pth/findgrep.org
-    set files $files $pth/systemd.sh
+    set files $files $pth/systemd.org
     set files $files $pth/git.org
-    set files $files $pth/packaging.sh
+    set files $files $pth/packaging.org
     # set files $cheat-github/cheat/cheatsheets/*
     # set files $files $pth/win.bat
-    # set files $files $pth/host.sh
+    # set files $files $pth/host.org
     cheat-grep --grep-args="$argv" --files="$files"
 end
