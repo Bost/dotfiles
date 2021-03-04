@@ -18,6 +18,7 @@
  racket/contract/region
  racket/string
  racket/list
+ racket/undefined
  rackjure        ;; raco pkg install rackjure
  #;typed/racket    ;; TODO  racket/undefined
  ;; rash/demo/setup ;; in-dir macro, my-grep etc.
@@ -135,29 +136,28 @@
 
 ;; TODO see typed/racket
 ;; https://docs.racket-lang.org/ts-guide/quick.html?q=racket%20typed
-#|
-(define type
-  (lambda (x)
-    (cond ((number? x) "Number")
-          ((pair? x) "Pair")
-          ((string? x) "String")
-          ((list? x) "List")
-          ;; TODO 'symbol #:keyword ?vector?
-          ;; (else undefined)
-          )))
 
-(define empty?
-  (lambda (x)
-    (cond ((string? x) (string=? "" x))
-          ((list? x) (empty? x))
-          ;; (else undefined)
-          )))
+(define (type x)
+  (cond ((number? x) "number")
+        ((pair? x) "pair")
+        ((string? x) "string")
+        ((list? x) "list")
+        ;; Usage: (type '#:a); (type #:a) doesn't work
+        ((keyword? x) "keyword")
+        ((vector? x) "vector")
+        ((symbol? x) "symbol")
+        ((set? x) "set")
+        (else undefined)))
 
-(define eq-test
-  (lambda (x)
-    (cond ((eq? x #t) "yes")
-          ((eq? x #f) "no")
-          (else "else"))))
+(define (empty? x)
+  (cond ((string? x) (string=? "" x))
+        ((list? x) (empty? x))
+        (else undefined)))
+
+(define (eq-test x)
+  (cond ((eq? x #t) "yes")
+        ((eq? x #f) "no")
+        (else undefined)))
 
 #;(require xrepl) ; interactive exploration and development
 
@@ -166,7 +166,7 @@
 ;; https://docs.racket-lang.org/guide/lambda.html
 (define my-echo (lambda args (displayln (string-join (map ~a args) " "))))
 #;(define (my-echo args) (displayln (string-join (map ~a args) " ")))
-|#
+
 
 ;;; contains? : return true if list contains a given element
 (define (contains? elem lst) (number? (index-of lst elem)))
