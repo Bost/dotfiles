@@ -7,6 +7,7 @@
 (require
  shell/pipeline-macro
  "crep.rkt"
+ "git.rkt"
  )
 
 (provide (all-defined-out))

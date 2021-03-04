@@ -209,37 +209,11 @@
                          'emacs)])
       #{$emacs-cmd $args &bg})))
 
-(define-line-macro gk
-  (lambda (stx)
-    (syntax-parse stx
-      [(_)          #'{gitk --all &bg}])))
-
-
 (define-line-macro e
   (lambda (stx)
     (syntax-parse stx
       [(_)          #'(launch-emacs "./")]
       [(_ arg ...)  #'(launch-emacs `arg ...)])))
-
-(define-line-macro ghog
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg ...) #'(map (lambda (remote)
-                            {
-                             git push --verbose $remote `arg ...
-                             })
-                          '(origin gitlab))])))
-
-(define-line-macro glo
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg ...) #'(map (lambda (remote)
-                            {
-                             git fetch --tags $remote `arg ...
-                             git rebase `arg ...
-                             })
-                          '(origin))])))
-
 
 ;; (define-simple-pipeline-alias reinst sudo apt --reinstall install --yes)
 #;(define launch-inst
