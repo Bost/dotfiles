@@ -21,7 +21,6 @@
  rackjure        ;; raco pkg install rackjure
  #;typed/racket    ;; TODO  racket/undefined
  ;; rash/demo/setup ;; in-dir macro, my-grep etc.
- "crep.rkt"
  )
 
 ;; TODO pasteboard%
