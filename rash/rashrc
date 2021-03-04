@@ -396,3 +396,15 @@
   (lambda (stx)
     (syntax-parse stx
       [(_) #'(spag-code)])))
+
+(define (mkcd-code args)
+  (with-rash-config
+    {
+     mkdir $args
+     cd $args
+     }))
+
+(define-line-macro mkcd
+  (lambda (stx)
+    (syntax-parse stx
+      [(_ arg) #'(mkcd-code `arg)])))
