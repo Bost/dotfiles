@@ -1,4 +1,4 @@
-function l
+function l --description="ls -lA ..."
     set escArgv (string escape -- $argv)
     # exa initial run is slow and in general it takes a moment on a weaker HW
     # ~/bin/exa is a link to ~/bin/exa-linux-x86_64
