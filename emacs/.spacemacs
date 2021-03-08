@@ -1246,6 +1246,7 @@ before packages are loaded."
    'racket-mode-hook
    (lambda ()
      (bind-keys :map racket-mode-map
+                ("C-s-p"  . my=racket-insert-log)
                 ("C-s-\\" . my=racket-toggle-reader-comment-fst-sexp-on-line)
                 ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line))))
 

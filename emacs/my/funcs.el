@@ -489,6 +489,11 @@ with the Echo Area."
                 )))
     (my=insert-str msg 2)))
 
+(defun my=racket-insert-log ()
+  (interactive)
+  (let* ((msg "(printf \"\\n\")"))
+    (my=insert-str msg 4)))
+
 (defun my=clj-insert-remove-fn ()
   (interactive)
   (my=insert-str "(remove (fn []))" 3))
