@@ -1,13 +1,21 @@
 #lang racket
 
+(displayln "=== Loading git.rkt")
+
 (require
  linea/line-macro
+ shell/pipeline-macro
  (for-syntax syntax/parse))
 
-(define-line-macro gk
+(provide
+ (all-defined-out))
+
+#;(define-line-macro gk
   (lambda (stx)
     (syntax-parse stx
-      [(_)          #'{gitk --all &bg}])))
+      [(_)          #'{
+                       gitk --all &bg
+                       }])))
 
 (define-line-macro ghog
   (lambda (stx)
@@ -39,3 +47,5 @@
                              git rebase `arg ...
                              })
                           '(origin))])))
+
+(define git-mod "git-module")

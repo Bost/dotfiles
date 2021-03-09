@@ -1,8 +1,9 @@
-#lang racket/base
+#lang racket
+
 ;; 1. rashrc.rkt files are modules, can be in any #lang
 ;; 2. files that start with #lang are modules
 
-#;(displayln "rashrc.rkt")
+(displayln "=== Loading rashrc.rkt")
 
 (require
  shell/pipeline-macro
@@ -10,7 +11,10 @@
  "git.rkt"
  )
 
-(provide (all-defined-out))
+(provide
+ (all-defined-out)
+ (all-from-out "crep.rkt")
+ (all-from-out "git.rkt"))
 
 ;; (lambda (_) 1)
 ;; (require linea/line-macro)

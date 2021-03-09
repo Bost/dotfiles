@@ -1,6 +1,8 @@
 #! /usr/bin/env racket
 ;; emacs - set major mode: SPC h M racket-mode
 
+(displayln "=== Loading rashrc")
+
 ;; rashrc is NOT a module, and gets none of them. rashrc is mainly there to let
 ;; you muck up the namespace that you use interactively. Prefer rashrc.rkt
 ;; @secref["Interactive_Use" #:doc '(lib "rash/scribblings/rash.scrbl")]
@@ -9,7 +11,6 @@
 ;; TODO switch off `git status` when changing dirs
 ;; TODO read-in all *.rkt files in ~/.config/rash; not just rashrc, rashrc.rkt
 
-;; (displayln "rashrc")
 
 (require
  linea/line-macro
@@ -384,27 +385,24 @@
 
 (define (spag-code)
   (spa)
-  (with-rash-config
-    {
-     git checkout develop
-     git fetch --tags origin
-     git rebase
-     git rebase develop cycle
-     }))
+  (with-rash-config {
+                     git checkout develop
+                     git fetch --tags origin
+                     git rebase
+                     git rebase develop cycle
+                     }))
 
 (define-line-macro spag
-  (lambda (stx)
-    (syntax-parse stx
-      [(_) #'(spag-code)])))
+  (lambda (stx) (syntax-parse stx [(_) #'(spag-code)])))
 
 (define (mkcd-code args)
-  (with-rash-config
-    {
-     mkdir $args
-     cd $args
-     }))
+  (with-rash-config {
+                     mkdir $args
+                     cd $args
+                     }))
 
 (define-line-macro mkcd
-  (lambda (stx)
-    (syntax-parse stx
-      [(_ arg) #'(mkcd-code `arg)])))
+  (lambda (stx) (syntax-parse stx [(_ arg) #'(mkcd-code `arg)])))
+
+(define-line-macro gk
+  (lambda (stx) (syntax-parse stx [(_) #'{ gitk --all &bg }])))

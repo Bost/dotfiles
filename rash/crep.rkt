@@ -1,6 +1,7 @@
 #lang racket
-
 ;; #lang racket/base
+
+(displayln "=== Loading crep.rkt")
 
 (require
  linea/line-macro
