@@ -3,6 +3,7 @@ set fish_greeting ""
 # TODO https://www.wezm.net/technical/2019/10/useful-command-line-tools/
 set --universal dev ~/dev
 set --universal dec ~/dec
+set --universal der ~/der
 set --universal bin ~/bin
 set --universal cheat $dev/cheat
 set --universal dotf $dev/dotfiles
