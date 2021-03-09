@@ -1242,13 +1242,13 @@ before packages are loaded."
    (lambda ()
      (bind-keys :map debugger-mode-map ("C-g" . debugger-quit))))
 
-  (add-hook
-   'racket-mode-hook
-   (lambda ()
-     (bind-keys :map racket-mode-map
-                ("C-s-p"  . my=racket-insert-log)
-                ("C-s-\\" . my=racket-toggle-reader-comment-fst-sexp-on-line)
-                ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line))))
+  (dolist (state-map `(,racket-mode-map
+                       ,racket-repl-mode-map))
+    (bind-keys :map state-map
+               ("C-s-p"  . my=racket-insert-log)
+               ("C-s-\\" . my=racket-toggle-reader-comment-fst-sexp-on-line)
+               ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
+               ))
 
   ;; (bind-keys :map helm-mode-map)
 
