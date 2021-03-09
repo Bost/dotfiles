@@ -1,21 +1,16 @@
-#lang racket
+#lang rash
 
 (displayln "=== Loading git.rkt")
 
 (require
  linea/line-macro
- shell/pipeline-macro
- (for-syntax syntax/parse))
+ (for-syntax racket/base syntax/parse))
 
-(provide
- (all-defined-out))
+(provide (all-defined-out))
 
-#;(define-line-macro gk
+(define-line-macro gk
   (lambda (stx)
-    (syntax-parse stx
-      [(_)          #'{
-                       gitk --all &bg
-                       }])))
+    (syntax-parse stx [(_) #'{ gitk --all &bg }])))
 
 (define-line-macro ghog
   (lambda (stx)
@@ -26,17 +21,15 @@
                              })
                           '(origin gitlab))])))
 
-(define-line-macro gcl
+#;(define-line-macro gcl
   (lambda (stx)
     (syntax-parse stx
-      [(_ arg ...) #'(lambda ()
-                       (with-rash-config
-                         {
-                          git clone `arg ...
-                          ;; (count `arg) |> (nth `arg) |> basename |> filename
-                          ;; echo "(count `arg)" (count `arg)
-                          ;; echo "(count `arg)"
-                          }))])))
+      [(_ arg ...) #'{
+                      git clone `arg ...
+                      ;; (count `arg) |> (nth `arg) |> basename |> filename
+                      ;; echo "(count `arg)" (count `arg)
+                      ;; echo "(count `arg)"
+                      }])))
 
 (define-line-macro glo
   (lambda (stx)
@@ -47,5 +40,3 @@
                              git rebase `arg ...
                              })
                           '(origin))])))
-
-(define git-mod "git-module")

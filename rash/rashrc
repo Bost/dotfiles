@@ -403,6 +403,3 @@
 
 (define-line-macro mkcd
   (lambda (stx) (syntax-parse stx [(_ arg) #'(mkcd-code `arg)])))
-
-(define-line-macro gk
-  (lambda (stx) (syntax-parse stx [(_) #'{ gitk --all &bg }])))

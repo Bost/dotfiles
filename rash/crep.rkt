@@ -1,11 +1,10 @@
-#lang racket
-;; #lang racket/base
+#lang rash
 
 (displayln "=== Loading crep.rkt")
 
 (require
  linea/line-macro
- (for-syntax syntax/parse))
+ (for-syntax racket/base syntax/parse))
 
 (provide (all-defined-out))
 
