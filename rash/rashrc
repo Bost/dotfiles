@@ -63,6 +63,8 @@
 (define-line-macro dotf   (lambda (_) #'(cd "~/dev/dotfiles")))
 (define-line-macro cheat  (lambda (_) #'(cd "~/dev/cheat")))
 (define-line-macro dec    (lambda (_) #'(cd "~/dec")))
+(define-line-macro der    (lambda (_) #'(cd "~/der")))
+(define-line-macro dev    (lambda (_) #'(cd "~/dev")))
 (define-line-macro utils  (lambda (_) #'(cd "~/dec/utils")))
 (define-line-macro ufo    (lambda (_) #'(cd "~/dec/ufo")))
 (define-line-macro zark   (lambda (_) #'(cd "~/dec/zark")))
@@ -98,6 +100,8 @@
 ;; #`    adds quasisyntax
 ;; #,    adds unsyntax
 ;; #,@   adds unsyntax-splicing
+;; (: v t)     `v` has a type `t`
+;; (: v : t)   `v` has a type `t`
 
 #| racket block comment begin to end |#
 
