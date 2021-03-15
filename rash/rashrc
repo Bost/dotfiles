@@ -56,7 +56,6 @@
           (displayln (str "PATH prepended by '" dir "'")))))))
 
 (define-line-macro notes  (lambda (_) #'(cd-notes)))
-(define-line-macro ema    (lambda (_) #'(cd "~/dev/emacs")))
 (define-line-macro corona (lambda (_) #'(cd "~/dec/corona_cases")))
 (define-line-macro ff     (lambda (_) #'(cd "~/dev/dotfiles/fish/functions")))
 (define-line-macro rr     (lambda (_) #'(cd "~/.config/rash")))
@@ -70,7 +69,6 @@
 (define-line-macro zark   (lambda (_) #'(cd "~/dec/zark")))
 (define-line-macro tmp    (lambda (_) #'(cd "/tmp")))
 (define-line-macro bin    (lambda (_) #'(cd "~/bin")))
-(define-line-macro spa    (lambda (_) #'(cd "~/.emacs.d")))
 (define-line-macro down   (lambda (_) #'(cd "~/Downloads")))
 
 ;; TODO test the extract function
@@ -387,17 +385,25 @@
    sudo needrestart
    })
 
-(define (spag-code)
-  (spa)
-  (with-rash-config {
-                     git checkout develop
-                     git fetch --tags origin
-                     git rebase
-                     git rebase develop cycle
-                     }))
-
+(define-line-macro spa (lambda (_) #'(cd "~/.emacs.d")))
 (define-line-macro spag
-  (lambda (stx) (syntax-parse stx [(_) #'(spag-code)])))
+  (lambda (_)
+    #'(with-rash-config {
+                         spa
+                         git checkout develop
+                         git fetch --tags origin
+                         git rebase
+                         git rebase develop cycle
+                         })))
+
+(define-line-macro ema (lambda (_) #'(cd "~/dev/emacs")))
+(define-line-macro emag
+  (lambda (_)
+    #'(with-rash-config {
+                         ema
+                         glo
+                         })))
+
 
 (define (mkcd-code args)
   (with-rash-config {
