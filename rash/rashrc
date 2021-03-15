@@ -59,7 +59,7 @@
 (define-line-macro ema    (lambda (_) #'(cd "~/dev/emacs")))
 (define-line-macro corona (lambda (_) #'(cd "~/dec/corona_cases")))
 (define-line-macro ff     (lambda (_) #'(cd "~/dev/dotfiles/fish/functions")))
-(define-line-macro rr     (lambda (_) #'(cd "~/dev/dotfiles/rash")))
+(define-line-macro rr     (lambda (_) #'(cd "~/.config/rash")))
 (define-line-macro dotf   (lambda (_) #'(cd "~/dev/dotfiles")))
 (define-line-macro cheat  (lambda (_) #'(cd "~/dev/cheat")))
 (define-line-macro dec    (lambda (_) #'(cd "~/dec")))
