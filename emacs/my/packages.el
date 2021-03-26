@@ -84,7 +84,7 @@ Each entry is either:
 (defun my/init-kill-buffers ()
   (use-package kill-buffers))
 
-(defun my/init-drag-stuff ()
+(defun my/post-init-drag-stuff ()
   (use-package drag-stuff)
 
   (defun my=drag-stuff-up (arg)
