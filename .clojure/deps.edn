@@ -36,6 +36,10 @@
 
  :aliases
  {
+  :new {:extra-deps {com.github.seancorfield/clj-new
+                     {:mvn/version "1.1.264"}}
+          :exec-fn clj-new/create
+          :exec-args {:template "app"}}
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; REPL experience
