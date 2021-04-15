@@ -33,7 +33,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(typescript
-     php
+     ;; php
      asciidoc
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -205,13 +205,13 @@ This function should only modify configuration layer settings."
      themes-megapack
 
      ;; dired alternative
-     (ranger :variables
-             ranger-show-dotfiles t
-             ranger-show-preview t
-             ranger-show-hidden t
-             ranger-cleanup-eagerly t
-             ranger-cleanup-on-disable t
-             ranger-ignored-extensions '("mkv" "flv" "iso" "mp4"))
+     ;; (ranger :variables
+     ;;         ranger-show-dotfiles t
+     ;;         ranger-show-preview t
+     ;;         ranger-show-hidden t
+     ;;         ranger-cleanup-eagerly t
+     ;;         ranger-cleanup-on-disable t
+     ;;         ranger-ignored-extensions '("mkv" "flv"      treemacs
      )
 
    ;; List of additional packages that will be installed without being wrapped
@@ -409,8 +409,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light
+   dotspacemacs-themes '(spacemacs-light
+                         spacemacs-dark
                          twilight-anti-bright
                          underwater
                          solarized-dark-high-contrast)
@@ -613,7 +613,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis t
+   dotspacemacs-smart-closing-parenthesis nil
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
@@ -681,7 +681,7 @@ It should only modify the values of Spacemacs settings."
    ;; indent handling like has been reported for `go-mode'.
    ;; If it does deactivate it here.
    ;; (default t)
-   dotspacemacs-use-clean-aindent-mode t
+   dotspacemacs-use-clean-aindent-mode nil
 
    ;; If non-nil shift your number row to match the entered keyboard layout
    ;; (only in insert state). Currently supported keyboard layouts are:
