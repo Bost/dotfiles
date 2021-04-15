@@ -613,18 +613,21 @@ Otherwise toggle the reader comment."
   ;; (cider-switch-to-repl-buffer)
   ;; (cider-switch-to-last-clojure-buffer)
   (cider-ns-refresh)
-  (my=repl-insert-cmd (format "(%s.telegram/restart)" my=bot-ns)))
+  (my=repl-insert-cmd
+   (format
+    "(System/gc) (swap! %s.api.cache/cache (fn [_])) (%s.telegram/restart)"
+    my=bot-ns my=bot-ns)))
 
 (defun my=web-restart ()
   (interactive)
-  (my=repl-insert-cmd "(corona.web.core/webapp-restart)"))
+  (my=repl-insert-cmd (format "(%s.web.core/webapp-restart)" my=bot-ns)))
 
 (defun my=show-pic ()
   (interactive)
   (let* ((case ":a")
          (prm (format
                "{:day %s :threshold %s :threshold-increase %s :case %s :stats %s}"
-               (format "(count (corona.api.expdev07/raw-dates))" my=bot-ns)
+               (format "(count (%s.api.expdev07/raw-dates))" my=bot-ns)
                my=bot-ns
                (format "(%s.common/min-threshold %s)" my=bot-ns case)
                (format "(%s.common/threshold-increase %s)" my=bot-ns case)
@@ -632,17 +635,14 @@ Otherwise toggle the reader comment."
                (format "(%s.api.v1/pic-data)" my=bot-ns))))
     (my=repl-insert-cmd
      (format "(cljplot.core/show (%s.plot/calc-aggregation-img %s))"
-             my=bot-ns
-             prm))))
+             my=bot-ns prm))))
 
 (defun my=show-pic-for-pred ()
   (interactive)
   (my=repl-insert-cmd
-   (format "(cljplot.core/show (%s.plot/calc-plot-country-img \"ZZ\" %s.plot/stats %s.plot/report))"
-           my=bot-ns
-           my=bot-ns
-           my=bot-ns
-           my=bot-ns)))
+   (format
+    "(cljplot.core/show (%s.plot/calc-plot-country-img \"ZZ\" %s.plot/stats %s.plot/report))"
+    my=bot-ns my=bot-ns my=bot-ns my=bot-ns)))
 
 (defun my=stop-synths-metronoms ()
   (interactive)
