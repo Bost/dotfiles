@@ -1048,7 +1048,7 @@ before packages are loaded."
      ("s-8"     . er/expand-region)   ; increase selected region by semantic units
      ("<f2>"    . my=evil-avy-goto-char-timer)
      ("s-/"     . helm-swoop)
-     ("<s-tab>" . my=alternate-buffer)
+     ("<s-tab>" . my=alternate-buffer)  ;; Shift-Tab <backtab>
      ("<C-f2>"  . my=avy-goto-line)
      ("C-s-/"   . my=avy-goto-line)
 
