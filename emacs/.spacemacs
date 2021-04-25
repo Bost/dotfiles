@@ -206,12 +206,16 @@ This function should only modify configuration layer settings."
 
      ;; dired alternative
      ;; (ranger :variables
-     ;;         ranger-show-dotfiles t
-     ;;         ranger-show-preview t
-     ;;         ranger-show-hidden t
-     ;;         ranger-cleanup-eagerly t
-     ;;         ranger-cleanup-on-disable t
-     ;;         ranger-ignored-extensions '("mkv" "flv"      treemacs
+     ;;         ;; (setq
+     ;;          ranger-override-dired 'ranger
+     ;;          ranger-show-dotfiles t
+     ;;          ;; ranger-show-preview t
+     ;;          ranger-show-hidden t
+     ;;          ranger-cleanup-eagerly t
+     ;;          ranger-cleanup-on-disable t
+     ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
+     ;;          ;; )
+     ;;         )
      )
 
    ;; List of additional packages that will be installed without being wrapped
