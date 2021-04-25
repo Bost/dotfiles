@@ -519,6 +519,22 @@ with the Echo Area."
   (interactive)
   (my=insert-str "(for [])" 2))
 
+(defun my=clj-insert-comp ()
+  (interactive)
+  (my=insert-str "((comp ))" 2))
+
+(defun my=clj-insert-partial ()
+  (interactive)
+  (my=insert-str "partial " 1))
+
+;; (defun my=clj-insert-partial ()
+;;   (interactive)
+;;   (my=insert-str "(partial )" 1))
+
+(defun my=clj-insert-fn ()
+  (interactive)
+  (my=insert-str "(fn [])" 2))
+
 (defun my=clj-insert-defn ()
   (interactive)
   (my=insert-str "(defn [])" 3))

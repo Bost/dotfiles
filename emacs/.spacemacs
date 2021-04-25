@@ -827,7 +827,7 @@ before packages are loaded."
                       :background "black"
                       :foreground nil)
 
-  ;; (key-chord-mode 1)
+  (key-chord-mode 1)
 
   ;; (progn
   ;;   (unbind-key "<f5>" cider-repl-mode-map)
@@ -948,13 +948,18 @@ before packages are loaded."
     ;; (key-chord-define global-map "fj" nil)
 
     ;; see also `key-chord-unset-global' / `key-chord-unset-local'
+    ;; TODO this dolist block must be manually evaluated
     (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
+      ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
       (bind-chords :map state-map
                    ("pr" . (lambda () (interactive) (my=insert-str "(println \"\" )" 3)))
                    ("rm" . my=clj-insert-remove-fn)
                    ("fi" . my=clj-insert-filter-fn)
                    ("de" . my=clj-insert-defn)
+                   ("df" . my=clj-insert-fn)
                    ("do" . my=clj-insert-do)
+                   ("co" . my=clj-insert-comp)
+                   ("pa" . my=clj-insert-partial)
                    ("le" . my=clj-insert-let)
                    ("fo" . my=clj-insert-for)
                    ("ty" . my=clj-insert-type)
@@ -1168,6 +1173,9 @@ before packages are loaded."
                ("C-s-l" . my=clj-insert-let)
                ("C-s-m" . my=clj-insert-map-fn)
                ("C-s-d" . my=clj-insert-defn)
+               ("M-s-d" . my=clj-insert-fn)
+               ("M-s-c" . my=clj-insert-comp)
+               ("C-s-c" . my=clj-insert-comp)
                ("C-s-p" . my=clj-insert-log)
                ("C-s-s" . my=clj-insert-doseq)
                ("C-s-t" . my=clj-insert-type)))
@@ -1212,6 +1220,7 @@ before packages are loaded."
 
   (bind-keys :map emacs-lisp-mode-map
              ("C-s-m" . my=elisp-insert-message)
+             ("C-s-p" . my=elisp-insert-message)
              ("C-s-d" . my=elisp-insert-defun)
              ("s-d"   . my=eval-current-defun)
              )
@@ -1237,6 +1246,7 @@ before packages are loaded."
              )
 
   (bind-keys :map dired-mode-map
+             ("<backspace>" . dired-up-directory)
              ("<S-delete>"  . dired-do-delete))
 
   (add-hook
