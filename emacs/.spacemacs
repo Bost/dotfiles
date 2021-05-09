@@ -957,8 +957,10 @@ before packages are loaded."
                    ("fi" . my=clj-insert-filter-fn)
                    ("de" . my=clj-insert-defn)
                    ("df" . my=clj-insert-fn)
+                   ("fn" . my=clj-insert-fn)
                    ("do" . my=clj-insert-do)
                    ("co" . my=clj-insert-comp)
+                   ("cd" . my=insert-clojuredocs)
                    ("pa" . my=clj-insert-partial)
                    ("le" . my=clj-insert-let)
                    ("fo" . my=clj-insert-for)
@@ -1172,11 +1174,20 @@ before packages are loaded."
                ("C-s-r" . my=clj-insert-remove-fn)
                ("C-s-l" . my=clj-insert-let)
                ("C-s-m" . my=clj-insert-map-fn)
+
                ("C-s-d" . my=clj-insert-defn)
+
+               ("M-s-e" . my=clj-insert-def)
+               ("C-s-e" . my=clj-insert-def)
+
                ("M-s-d" . my=clj-insert-fn)
+
                ("M-s-c" . my=clj-insert-comp)
                ("C-s-c" . my=clj-insert-comp)
+
+               ("M-s-p" . my=clj-insert-partial)
                ("C-s-p" . my=clj-insert-log)
+
                ("C-s-s" . my=clj-insert-doseq)
                ("C-s-t" . my=clj-insert-type)))
 

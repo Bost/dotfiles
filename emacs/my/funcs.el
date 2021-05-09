@@ -226,7 +226,7 @@ large files. Inverse of `my=shenanigans-on'."
   (setq jit-lock-defer-time nil)
   (message "Shenanigans disabled"))
 
-(defun my=insert-str (s n-chars-back)
+(defun my=insert-str (s &optional n-chars-back)
   (interactive "p")
   (insert s)
   (left-char n-chars-back)
@@ -519,6 +519,10 @@ with the Echo Area."
   (interactive)
   (my=insert-str "(for [])" 2))
 
+(defun my=insert-clojuredocs ()
+  (interactive)
+  (my=insert-str "clojuredocs"))
+
 (defun my=clj-insert-comp ()
   (interactive)
   (my=insert-str "((comp ))" 2))
@@ -534,6 +538,10 @@ with the Echo Area."
 (defun my=clj-insert-fn ()
   (interactive)
   (my=insert-str "(fn [])" 2))
+
+(defun my=clj-insert-def ()
+  (interactive)
+  (my=insert-str "(def )" 1))
 
 (defun my=clj-insert-defn ()
   (interactive)
