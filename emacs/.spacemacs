@@ -1148,6 +1148,9 @@ before packages are loaded."
              ("C-3" . magit-section-show-level-3)
              ("C-4" . magit-section-show-level-4))
 
+  (bind-keys :map dired-mode-map
+             ("<f5>" . revert-buffer))
+
   (bind-keys :map paredit-mode-map
              ;; these keybindings don't work in the cider-repl-mode-map
              ("<C-right>"    . right-word)
