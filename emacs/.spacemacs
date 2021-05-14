@@ -572,6 +572,10 @@ It should only modify the values of Spacemacs settings."
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
 
+   ;; Show the scroll bar while scrolling. The auto hide time can be configured
+   ;; by setting this variable to a number. (default t)
+   dotspacemacs-scroll-bar-while-scrolling t
+
    ;; Control line numbers activation.
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
    ;; `prog-mode' and `text-mode' derivatives. If set to `relative', line
@@ -685,7 +689,7 @@ It should only modify the values of Spacemacs settings."
    ;; indent handling like has been reported for `go-mode'.
    ;; If it does deactivate it here.
    ;; (default t)
-   dotspacemacs-use-clean-aindent-mode nil
+   dotspacemacs-use-clean-aindent-mode t
 
    ;; If non-nil shift your number row to match the entered keyboard layout
    ;; (only in insert state). Currently supported keyboard layouts are:
