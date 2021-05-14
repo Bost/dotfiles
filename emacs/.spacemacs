@@ -752,7 +752,6 @@ before packages are loaded."
   (blink-cursor-mode t)
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
-  (global-prettify-symbols-mode nil) ;; seems like this gets overriden
 
   (setq
    ;; See https://emacs.stackexchange.com/q/22283 and
