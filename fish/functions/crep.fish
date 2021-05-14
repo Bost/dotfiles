@@ -12,6 +12,7 @@ function crep --description="Search through the whole cheatsheet"
     set files $files $pth/systemd.org
     set files $files $pth/git.org
     set files $files $pth/packaging.org
+    set files $files $pth/racket.org
     # set files $cheat-github/cheat/cheatsheets/*
     # set files $files $pth/win.bat
     # set files $files $pth/host.org
