@@ -946,7 +946,6 @@ before packages are loaded."
     ;; (my=chord "fj" "fox" 1)
 
     ;; (key-chord-define-global "fj" (lambda () (interactive) (my=insert-str "()" 1)))
-    ;; unbind-key doesn't exits
     ;; (key-chord-define clojure-mode-map "fj" nil)
     ;; (key-chord-define global-map "fj" nil)
 
@@ -980,11 +979,13 @@ before packages are loaded."
                    ;; don't need to switch keyboards just because of parenthesis
                    ("fj" . (lambda () (interactive) (my=insert-str "()" 1)))))
 
+    ;; (setq evil-respect-visual-line-mode t) doesn't work easily
+    (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
+    (global-set-key [remap evil-beginning-of-line] 'crux-move-beginning-of-line)
+
     (bind-keys
      :map global-map
      ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
-     ;; (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
-     ("<home>"    . mwim-beginning-of-code-or-line) ; see C-a
      ("s-K"       . my=kill-buffers--unwanted)
      ("s-C-K"     . my=kill-buffers--dired)
      ("s-R"       . spacemacs/rename-current-buffer-file)
