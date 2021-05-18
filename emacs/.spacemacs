@@ -926,6 +926,21 @@ before packages are loaded."
     :start-func 'my=last-large-file-settings
     :documentation "Cycle between `my=shenanigans-on' and `my=shenanigans-off'")
 
+  ;; TODO `my=racket-repl-clear' should restore the REPL prompt
+  ;; (defun my=racket-repl-clear ()
+  ;;   (interactive)
+  ;;   (comint-kill-region (point-min) (point-max)))
+
+  ;; (defun my=racket-repl-clear ()
+  ;;   (interactive)
+  ;;   (let ((inhibit-read-only t))
+  ;;     (delete-region (point-min) (point-max))))
+
+  ;; (defun my=racket-repl-clear ()
+  ;;   (interactive)
+  ;;   (let ((inhibit-read-only t))
+  ;;     (erase-buffer)))
+
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by <s-+> replacement for e.g.:
   (global-set-key (kbd \"<s-f2>\") \\='eshell)
@@ -963,7 +978,7 @@ before packages are loaded."
                    ("do" . my=clj-insert-do)
                    ("co" . my=clj-insert-comp)
                    ("cd" . my=insert-clojuredocs)
-                   ("pa" . my=clj-insert-partial)
+                   ("pa" . my=insert-partial)
                    ("le" . my=clj-insert-let)
                    ("fo" . my=clj-insert-for)
                    ("ty" . my=clj-insert-type)
@@ -1192,7 +1207,7 @@ before packages are loaded."
                ("M-s-c" . my=clj-insert-comp)
                ("C-s-c" . my=clj-insert-comp)
 
-               ("M-s-p" . my=clj-insert-partial)
+               ("M-s-p" . my=insert-partial)
                ("C-s-p" . my=clj-insert-log)
 
                ("C-s-s" . my=clj-insert-doseq)
@@ -1237,6 +1252,7 @@ before packages are loaded."
                ("df" . my=elisp-insert-defun))
 
   (bind-keys :map emacs-lisp-mode-map
+             ("C-s-l" . my=elisp-insert-let)
              ("C-s-m" . my=elisp-insert-message)
              ("C-s-p" . my=elisp-insert-message)
              ("C-s-d" . my=elisp-insert-defun)
@@ -1287,6 +1303,8 @@ before packages are loaded."
      hook
      (lambda ()
        (bind-keys :map state-map
+                  ("M-s-d"  . my=racket-insert-fn)
+                  ("M-s-p"  . my=insert-partial)
                   ("C-s-p"  . my=racket-insert-log)
                   ("C-s-\\" . my=racket-toggle-reader-comment-fst-sexp-on-line)
                   ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)))))

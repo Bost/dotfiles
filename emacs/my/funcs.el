@@ -127,8 +127,11 @@ Example: (my=buffer-mode (current-buffer))"
   "ediff buffers in the left and right panel"
   (interactive "p")
   ;; make the current buffer to be the lef buffer thus prevent ediff swapping
-  ;; left and right buffers
-  (windmove-left)
+  ;; left and right buffers; `windmove-left' signals an error if no window is at
+  ;; the desired location(, unless <not my case>)
+  (condition-case nil
+      (windmove-left)
+    (error nil))
   (ediff-buffers (buffer-name) ;; current buffer is the buffer-a
                  (buffer-name (other-window 1))))
 
@@ -515,6 +518,10 @@ with the Echo Area."
   ;; (cljr-introduce-let) ; TODO see docu for cljr-introduce-let
   (my=insert-str "(let [])" 2))
 
+(defun my=elisp-insert-let ()
+  (interactive)
+  (my=insert-str "(let (()))" 3))
+
 (defun my=clj-insert-for ()
   (interactive)
   (my=insert-str "(for [])" 2))
@@ -527,13 +534,13 @@ with the Echo Area."
   (interactive)
   (my=insert-str "((comp ))" 2))
 
-(defun my=clj-insert-partial ()
+(defun my=insert-partial ()
   (interactive)
   (my=insert-str "partial " 1))
 
-;; (defun my=clj-insert-partial ()
-;;   (interactive)
-;;   (my=insert-str "(partial )" 1))
+(defun my=racket-insert-fn ()
+  (interactive)
+  (my=insert-str "(lambda ())" 2))
 
 (defun my=clj-insert-fn ()
   (interactive)
