@@ -58,3 +58,5 @@
 	indentHeuristic = true
 [rebase]
 	autostash = true
+[core]
+	editor = vim
