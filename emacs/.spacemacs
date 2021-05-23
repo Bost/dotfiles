@@ -187,7 +187,11 @@ This function should only modify configuration layer settings."
      go
      yaml
      docker
+
+     ;; Racket settings for emacs
+     ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
      racket
+
      (latex
       ;; :variables
       ;; latex-build-command "LaTeX" ;; defaults to "LatexMk"
@@ -754,6 +758,12 @@ before packages are loaded."
   ;; (global-prettify-symbols-mode +1)
 
   (setq
+
+   ;; Kill process buffer without confirmation
+   ;; See https://emacs.stackexchange.com/a/14511
+   kill-buffer-query-functions (delq 'process-kill-buffer-query-function
+                                     kill-buffer-query-functions)
+
    ;; See https://emacs.stackexchange.com/q/22283 and
    ;; `ls-lisp-use-insert-directory-program', `ls-lisp-dirs-first'
    dired-listing-switches "--group-directories-first --dereference -al"
@@ -926,15 +936,10 @@ before packages are loaded."
     :start-func 'my=last-large-file-settings
     :documentation "Cycle between `my=shenanigans-on' and `my=shenanigans-off'")
 
-  ;; TODO `my=racket-repl-clear' should restore the REPL prompt
-  ;; (defun my=racket-repl-clear ()
-  ;;   (interactive)
-  ;;   (comint-kill-region (point-min) (point-max)))
-
-  ;; (defun my=racket-repl-clear ()
-  ;;   (interactive)
-  ;;   (let ((inhibit-read-only t))
-  ;;     (delete-region (point-min) (point-max))))
+  (defun my=racket-repl-clear ()
+    (interactive)
+    (let ((inhibit-read-only t))
+      (delete-region (point-min) (- (point-max) 2))))
 
   ;; (defun my=racket-repl-clear ()
   ;;   (interactive)
@@ -1037,7 +1042,8 @@ before packages are loaded."
      ("<C-s-left>"  . sp-backward-slurp-sexp)
      ("<C-s-right>" . sp-backward-barf-sexp)
      ("s-;"         . spacemacs/comment-or-uncomment-lines)
-     ("<s-f1>"      . eshell)
+     ("<S-s-f1>"    . eshell) ;; Shitf-Super-F1
+     ("<s-f1>"      . projectile-multi-term-in-root)
      ;; ("s-p"      . helm-projectile)
      ("s-p"         . helm-projectile-find-file)
      ("M-s-p"       . helm-projectile-switch-project)
@@ -1128,7 +1134,8 @@ before packages are loaded."
      ("s-J"        . evil-join)
 
      ("<s-print>"  . my=ediff-buffers-left-right) ; see advice-add
-     ("s-a"        . helm-mini)                   ; see advice-add
+     ("s-a"        . helm-mini)                   ; see advice-add my=helm-mini
+     ("s-]"        . helm-mini)                   ; see advice-add my=helm-mini
      ("s-A"        . align-regexp)
      ("s-:"        . my=fabricate-subst-cmd)
 
@@ -1274,7 +1281,8 @@ before packages are loaded."
              ;; M-/  M-x hippie-expand
              ("s-Q" . dumb-jump-quick-look)
              ("s-h" . spacemacs/helm-jump-in-buffer)
-             ("s-H" . helm-imenu-in-all-buffers)
+             ;; previously: helm-imenu-in-all-buffers
+             ("s-H" . lazy-helm/helm-imenu-in-all-buffers)
              ("s-u" . eval-buffer)
              ("s-e" . eval-last-sexp)
              )
@@ -1303,6 +1311,7 @@ before packages are loaded."
      hook
      (lambda ()
        (bind-keys :map state-map
+                  ("<C-s-delete>" . my=racket-repl-clear)
                   ("M-s-d"  . my=racket-insert-fn)
                   ("M-s-p"  . my=insert-partial)
                   ("C-s-p"  . my=racket-insert-log)

@@ -307,7 +307,8 @@ Repeated invocations toggle between the two most recently open buffers."
   "Connect (if not connected yet) and switch to cider repl buffer"
   (interactive)
   (unless (cider-connected-p)
-    (cider-connect-clj))
+    ;; previously (cider-connect-clj)
+    (cider-jack-in-clj nil))
   (cider-switch-to-repl-buffer))
 
 (defun my=copy-to-clipboard ()
@@ -626,8 +627,9 @@ Otherwise toggle the reader comment."
 (defun my=helm-mini ()
   ;; (define-key helm-map (kbd "s-a") nil)
   ;; (unbind-key (kbd "s-a") helm-map)
-  (if (boundp 'helm-map)
-      (define-key helm-map (kbd "s-a") 'helm-next-line)))
+  (when (boundp 'helm-map)
+    (define-key helm-map (kbd "s-a") 'helm-next-line)
+    (define-key helm-map (kbd "s-]") 'helm-next-line)))
 
 (defun my=cider-clear-compilation-highlights ()
   (interactive)
@@ -820,3 +822,19 @@ Thanks to https://stackoverflow.com/a/2238589"
 ;;                ;; (add-hook 'after-change-functions 'feng-buffer-change-hook)
 ;;                (add-hook (get-hook (my=buffer-major-mode mode))
 ;;                          'my=save-last-edited-buffer))))
+
+;; https://github.com/bbatsov/projectile/issues/442#issuecomment-59659969
+;; (require 'dash)
+(defun set-local-keymap (&rest bindings)
+  "For project-specific keybindings"
+  (dolist (binding (-partition-in-steps 2 2 bindings))
+    (lexical-let* ((key (car binding))
+                   (cmd (cadr binding))
+                   (is-interactive (interactive-form cmd))
+                   (local-map (or (current-local-map) (make-keymap))))
+      (define-key local-map key
+        (lambda ()
+          (interactive)
+          (if is-interactive
+              (call-interactively cmd)
+            (eval cmd)))))))
