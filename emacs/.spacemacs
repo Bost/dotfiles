@@ -274,6 +274,22 @@ This function should only modify configuration layer settings."
      ;; (hl-line+      :location local)
      ;; (vline         :location local)
      ;; (col-highlight :location local)
+
+     cobol-mode
+
+     ;; org-mode-babel-...
+     (ob-racket :location (recipe :fetcher github :repo "DEADB17/ob-racket"))
+
+     ;; support for racket scribble
+     (scribble-mode :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
+
+     ;; emacs-ob-racket
+
+     helm-system-packages
+     ;; helm-descbinds
+     ;; helm-slime
+     helm-dictionary
+     telega
      )
 
    ;; A list of packages that cannot be updated.
@@ -465,6 +481,10 @@ It should only modify the values of Spacemacs settings."
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
    dotspacemacs-emacs-leader-key "s-SPC"
+   ;; (default "M-m")
+   ;; dotspacemacs-emacs-leader-key "s-SPC"
+   dotspacemacs-emacs-leader-key "M-m"
+   ;; (setq dotspacemacs-emacs-leader-key "M-m")
 
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
@@ -619,7 +639,8 @@ It should only modify the values of Spacemacs settings."
    ;;     <some content>
    ;; }}}
    ;; TODO use spacemacs|toggle
-   dotspacemacs-folding-method 'evil
+   ;; dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
 
    ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
    ;; `smartparens-strict-mode' will be enabled in programming modes.
@@ -756,6 +777,8 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  (add-to-list 'auto-mode-alist '("\\.cob" . cobol-mode))
+
   ;; (push '(clojuredocs
   ;;         :name "Clojure Docs"
   ;;         :url "http://clojuredocs.org/clojure.core/%s")
@@ -816,10 +839,32 @@ before packages are loaded."
    ;; color-identifiers-mode t
    )
 
+  (use-package ob-racket
+    :after org
+    :pin manual
+    :config
+    (append '((racket . t) (scribble . t)) org-babel-load-languages))
+
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((R . t)
-     (latex . t)))
+   '(
+     (R . t)
+     (latex . t)
+     (emacs-lisp . t)
+     (C . t)
+     (scheme . t)
+     (racket . t)
+     (python . t)
+     ;; (ditaa . t)
+     (clojure . t)
+     (java . t)
+     (shell . t)
+     ;; (plantuml . t)
+     (js . t)
+     ;; (kotlin . t)
+     (lisp . t)
+     ;; (ruby . t)
+     ))
 
   (defalias 'save-selected-text 'write-region)
 
@@ -881,7 +926,10 @@ before packages are loaded."
 
   (use-package org
     :config
-    (setq org-support-shift-select 'always)
+    (setq
+     org-support-shift-select 'always
+     org-src-tab-acts-natively nil ;; default is t
+     )
     :hook
     (org-mode
      .
