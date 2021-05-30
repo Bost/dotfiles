@@ -126,6 +126,14 @@ This function should only modify configuration layer settings."
                       version-control-global-margin t)
      (clojure
       :variables
+      cider-jdk-src-paths
+      '(
+        ;; (concat (getenv "HOME") "/dev/clojure")
+        ;; sudo apt install openjdk-15-source
+        ;; mkdir -p ~/dec/openjdk-15-source
+        ;; unzip /usr/lib/jvm/openjdk-15/src.zip -d ~/dec/openjdk-15-source
+        "~/dec/openjdk-15-source")
+
       ;; cider-font-lock-dynamically '(macro core function var) ;; default '(macro core deprecated)
 
       cider-overlays-use-font-lock t                            ;; default undef
