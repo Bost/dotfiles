@@ -31,7 +31,7 @@ set --export PATH ~/.local/bin        $PATH
 # set --export PATH ~/anaconda3/bin     $PATH
 
 # ~/.profile is not read if the shell is of a non-login shell type
-if test ! (string match $bin $PATH)
+if ! contains $bin $PATH
     set --export PATH $PATH $bin
 end
 
