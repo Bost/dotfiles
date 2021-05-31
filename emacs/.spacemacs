@@ -292,6 +292,14 @@ This function should only modify configuration layer settings."
 
      ;; telegram client for emacs
      telega
+
+     ;; dired-x is dired extended by:
+     ;;     Omitting uninteresting files
+     ;;     Guessing shell commands
+     ;;     Running Dired command in non-Dired
+     ;;     Finding a file mentioned in a buffer
+     ;;     Commands using file marking
+     dired-x
      )
 
    ;; A list of packages that cannot be updated.
@@ -1233,7 +1241,10 @@ before packages are loaded."
              ("C-4" . magit-section-show-level-4))
 
   (bind-keys :map dired-mode-map
-             ("<f5>" . revert-buffer))
+             ("<f5>" . revert-buffer)
+             ("C-h" . my=dired-dotfiles-toggle)
+             ("<backspace>" . dired-up-directory)
+             ("<S-delete>"  . dired-do-delete))
 
   (bind-keys :map paredit-mode-map
              ;; these keybindings don't work in the cider-repl-mode-map
@@ -1344,10 +1355,6 @@ before packages are loaded."
              ("s-u" . eval-buffer)
              ("s-e" . eval-last-sexp)
              )
-
-  (bind-keys :map dired-mode-map
-             ("<backspace>" . dired-up-directory)
-             ("<S-delete>"  . dired-do-delete))
 
   (add-hook
    'LaTeX-mode-hook
