@@ -289,6 +289,8 @@ This function should only modify configuration layer settings."
      ;; helm-descbinds
      ;; helm-slime
      helm-dictionary
+
+     ;; telegram client for emacs
      telega
      )
 
