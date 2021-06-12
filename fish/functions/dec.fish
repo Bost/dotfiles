@@ -1,4 +1,4 @@
-function dec --description="cd $dec"
+function dec --description "cd $dec"
   set cmd cd $dec
   echo $cmd
   eval $cmd

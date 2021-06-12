@@ -1,4 +1,4 @@
-function crc --description="Clojure, Java, JVM, Maven etc."
+function crc --description "Clojure, Java, JVM, Maven etc."
     set escArgv (string escape -- $argv)
     set f1 $cheat/clj/src/clj/cljdocs.clj
     set f2 $cheat/clj/src/clj/cheat.clj

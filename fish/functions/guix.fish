@@ -1,4 +1,4 @@
-function guix --description="GNU Guix via qemu-system-x86_64"
+function guix --description "GNU Guix via qemu-system-x86_64"
 
 qemu-system-x86_64 \
     -nic user,model=virtio-net-pci \

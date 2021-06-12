@@ -1,4 +1,4 @@
-function spag --description="Update spacemacs"
+function spag --description "Update spacemacs"
   set cmd cd ~/.emacs.d/
   echo $cmd
   eval $cmd

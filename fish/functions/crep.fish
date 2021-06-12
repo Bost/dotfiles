@@ -1,4 +1,4 @@
-function crep --description="Search through the whole cheatsheet"
+function crep --description "Search through the whole cheatsheet"
     # echo "crep:" $argv
     set pth $cheat/cmds
     set files $files $pth/android.org
