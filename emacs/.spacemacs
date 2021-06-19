@@ -42,14 +42,22 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      ;; auto-completion
      (auto-completion :variables
+                      ;; (setq
                       auto-completion-enable-help-tooltip t
+                      ;; auto-completion-enable-help-tooltip 'manual
                       auto-completion-enable-snippets-in-popup t
-                      auto-completion-enable-sort-by-usage t)
+                      auto-completion-enable-sort-by-usage t
+                      ;; )
+                      )
      better-defaults
      emacs-lisp
      (git :variables
+          ;; (setq
           ;; git-magit-status-fullscreen t
           ;; magit-diff-refine-hunk 'all
+          ;; magit-diff-refine-hunk nil
+          magit-diff-refine-hunk t
+          ;; )
           )
      helm
      multiple-cursors
@@ -198,7 +206,7 @@ This function should only modify configuration layer settings."
 
      ;; Racket settings for emacs
      ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
-     racket
+     racket ;; see https://racket-mode.com
 
      (latex
       ;; :variables
@@ -1376,6 +1384,7 @@ before packages are loaded."
      hook
      (lambda ()
        (bind-keys :map state-map
+                  ("s-o" . racket-run-and-switch-to-repl)
                   ("<C-s-delete>" . my=racket-repl-clear)
                   ("M-s-d"  . my=racket-insert-fn)
                   ("M-s-p"  . my=insert-partial)
