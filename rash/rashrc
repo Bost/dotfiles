@@ -141,16 +141,16 @@
 ;; https://docs.racket-lang.org/ts-guide/quick.html?q=racket%20typed
 
 (define (type x)
-  (cond ((number? x) "number")
-        ((pair? x) "pair")
-        ((string? x) "string")
-        ((list? x) "list")
+  (cond [(number? x) "number"]
+        [(pair? x) "pair"]
+        [(string? x) "string"]
+        [(list? x) "list"]
         ;; Usage: (type '#:a); (type #:a) doesn't work
-        ((keyword? x) "keyword")
-        ((vector? x) "vector")
-        ((symbol? x) "symbol")
-        ((set? x) "set")
-        (else undefined)))
+        [(keyword? x) "keyword"]
+        [(vector? x) "vector"]
+        [(symbol? x) "symbol"]
+        [(set? x) "set"]
+        [else undefined]))
 
 (define (empty? x)
   (cond ((string? x) (string=? "" x))
