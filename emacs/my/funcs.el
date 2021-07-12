@@ -852,3 +852,15 @@ Thanks to https://stackoverflow.com/a/2238589"
 	        (dired-do-kill-lines))
 	    (progn (revert-buffer) ; otherwise just revert to re-show
 	           (set (make-local-variable 'dired-dotfiles-show-p) t)))))
+
+(defun my=spacemacs-light--highlight-current-line ()
+  "Highlight current line of the `spacemacs-light' theme.
+Thanks to:
+https://stackoverflow.com/a/19555234
+https://github.com/emacsorphanage/helm-themes/issues/5#issue-210637069"
+  (if (eq spacemacs--cur-theme 'spacemacs-light)
+      (progn
+        (global-hl-line-mode 1)
+        (set-face-background 'hl-line "#dacecb")
+        ;; keep syntax highlighting in the current line:
+        (set-face-foreground 'highlight nil))))

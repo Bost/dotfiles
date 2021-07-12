@@ -656,9 +656,11 @@ It should only modify the values of Spacemacs settings."
    ;; <description> {{{
    ;;     <some content>
    ;; }}}
-   ;; TODO use spacemacs|toggle
-   ;; dotspacemacs-folding-method 'evil
-   dotspacemacs-folding-method 'origami
+   ;; TODO use spacemacs|toggle for dotspacemacs-folding-method
+   ;; (setq
+   dotspacemacs-folding-method 'evil
+   ;; dotspacemacs-folding-method 'origami
+   ;; )
 
    ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
    ;; `smartparens-strict-mode' will be enabled in programming modes.
@@ -805,6 +807,8 @@ before packages are loaded."
   (blink-cursor-mode t)
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
+
+  (my=spacemacs-light--highlight-current-line)
 
   (setq
 
