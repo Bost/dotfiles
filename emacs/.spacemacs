@@ -252,6 +252,14 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     yasnippet-snippets
+
+     ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
+     rjsx-mode
+
+     ;; Minor mode to format JS code on file save
+     prettier-js
+
      ;; (yasnippet :location ;; local
      ;;            (recipe :fetcher github :repo "Bost/yasnippet"
      ;;                    ;; :min-version "1"
