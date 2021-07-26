@@ -32,8 +32,26 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(typescript
-     ;; php
+   '(
+     (erc :variables
+          ;; erc-enable-notifications nil
+          erc-server-list
+          '(("irc.libera.chat" :port "6667" :ssl t :nick "bost" :password "")))
+
+     php
+     ;; typescript
+     (typescript :variables
+                 javascript-backend 'tide
+                 ;; javascript-backend 'lsp
+                 typescript-fmt-tool 'prettier
+                 typescript-linter 'eslint
+                 ;; typescript-fmt-on-save t
+                 )
+     (javascript :variables
+                 javascript-backend 'tide
+                 javascript-fmt-tool 'prettier
+                 node-add-modules-path t)
+
      asciidoc
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -52,11 +70,12 @@ This function should only modify configuration layer settings."
      better-defaults
      emacs-lisp
      (git :variables
+          ;; TODO implement it as spacemacs|toggle
           ;; (setq
           ;; git-magit-status-fullscreen t
           ;; magit-diff-refine-hunk 'all
-          ;; magit-diff-refine-hunk nil
-          magit-diff-refine-hunk t
+          magit-diff-refine-hunk nil ; default value
+          ;; magit-diff-refine-hunk t
           ;; )
           )
      helm
@@ -267,7 +286,7 @@ This function should only modify configuration layer settings."
      ;; send files marked in dired via MTP to Android
      ;; dired-mtp     ; not found
      ;; android-mode  ; doesn't work
-     beacon ;; Never lose your cursor again
+     beacon ;; Never lose your cursor again - see also 'Highlight current line'
      use-package-chords
      suggest ;; discover elisp fns
      crux
@@ -805,6 +824,58 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  ;; typescript-indent-level is overridden by project-specific .editorconfig
+  ;; (setq-default typescript-indent-level 4)
+
+  ;; (sp-use-paredit-bindings)
+
+  ;; tide - typescript IDE def func:
+  (defun tide-setup-hook ()
+    (tide-setup)
+    (eldoc-mode)
+    (tide-hl-identifier-mode +1)
+    (setq web-mode-enable-auto-quoting nil)
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-attr-indent-offset 2)
+    (setq web-mode-attr-value-indent-offset 2)
+    (setq lsp-eslint-server-command
+          `("node"
+            ,(concat
+              (getenv "HOME")
+              "/.emacs.d/.cache/lsp/eslint/unzipped/extension/server/out/eslintServer.js")
+            "--stdio"))
+    (set (make-local-variable 'company-backends)
+         '((company-tide company-files :with company-yasnippet)
+           (company-dabbrev-code company-dabbrev))))
+
+  (add-hook 'before-save-hook 'tide-format-before-save)
+
+  ;; use rjsx-mode for .js* files except json and use tide with rjsx
+  (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+  (add-hook 'rjsx-mode-hook 'tide-setup-hook)
+
+  ;; web-mode extra config
+  (add-hook 'web-mode-hook 'tide-setup-hook
+            (lambda () (pcase (file-name-extension buffer-file-name)
+                         ("tsx" ('tide-setup-hook))
+                         (_ (my-web-mode-hook)))))
+  (flycheck-add-mode 'typescript-tslint 'web-mode)
+  (add-hook 'web-mode-hook 'company-mode)
+  (add-hook 'web-mode-hook 'prettier-js-mode)
+  (add-hook 'web-mode-hook #'turn-on-smartparens-mode t)
+
+  (add-to-list 'yas-snippet-dirs
+               (concat
+                (getenv "HOME")
+                "/.emacs.d/layers/+completion/auto-completion/local/snippets/"))
+  ;; the (add-to-list 'yas-snippet-dirs ...) must be called before
+  (yas-global-mode 1)
+  (global-flycheck-mode)
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  (global-company-mode)
+
   (add-to-list 'auto-mode-alist '("\\.cob" . cobol-mode))
 
   ;; (push '(clojuredocs
@@ -819,6 +890,8 @@ before packages are loaded."
   (my=spacemacs-light--highlight-current-line)
 
   (setq
+
+   evil-ex-substitute-interactive-replace nil
 
    ;; Kill process buffer without confirmation
    ;; See https://emacs.stackexchange.com/a/14511
