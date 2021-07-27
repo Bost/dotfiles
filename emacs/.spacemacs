@@ -33,6 +33,9 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     ;; TODO try out ibuffer
+     ;; (ibuffer :variables ibuffer-group-buffers-by 'projects)
+
      (erc :variables
           ;; erc-enable-notifications nil
           erc-server-list
@@ -891,7 +894,8 @@ before packages are loaded."
 
   (setq
 
-   evil-ex-substitute-interactive-replace nil
+   ;; TODO create toggle for evil-ex-substitute-interactive-replace
+   evil-ex-substitute-interactive-replace t ;; nil/t. default is t
 
    ;; Kill process buffer without confirmation
    ;; See https://emacs.stackexchange.com/a/14511
