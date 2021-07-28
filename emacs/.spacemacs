@@ -466,6 +466,12 @@ It should only modify the values of Spacemacs settings."
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
 
+   ;; Show numbers before the startup list lines. (default t)
+   dotspacemacs-show-startup-list-numbers t
+
+   ;; The minimum delay in seconds between number key presses. (default 0.4)
+   dotspacemacs-startup-buffer-multi-digit-delay 0.4
+
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
    ;; (default `text-mode')
@@ -528,11 +534,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
-   dotspacemacs-emacs-leader-key "s-SPC"
-   ;; (default "M-m")
-   ;; dotspacemacs-emacs-leader-key "s-SPC"
    dotspacemacs-emacs-leader-key "M-m"
-   ;; (setq dotspacemacs-emacs-leader-key "M-m")
 
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
@@ -679,9 +681,6 @@ It should only modify the values of Spacemacs settings."
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
-   ;; (setq dotspacemacs-folding-method 'vimish)
-   ;; (setq dotspacemacs-folding-method 'evil)
-   ;; (setq dotspacemacs-folding-method 'origami)
    ;; use `origami' for folding of:
    ;; <description> {{{
    ;;     <some content>
@@ -690,6 +689,7 @@ It should only modify the values of Spacemacs settings."
    ;; (setq
    dotspacemacs-folding-method 'evil
    ;; dotspacemacs-folding-method 'origami
+   ;; dotspacemacs-folding-method 'vimish
    ;; )
 
    ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
@@ -773,6 +773,9 @@ It should only modify the values of Spacemacs settings."
    ;; If it does deactivate it here.
    ;; (default t)
    dotspacemacs-use-clean-aindent-mode t
+
+   ;; Accept SPC as y for prompts if non nil. (default nil)
+   dotspacemacs-use-SPC-as-y nil
 
    ;; If non-nil shift your number row to match the entered keyboard layout
    ;; (only in insert state). Currently supported keyboard layouts are:
