@@ -28,6 +28,7 @@ end
 set --export NODE_PATH ~/.config/yarn/global/node_modules
 set PATH $PATH $NPM_PACKAGES/bin
 set MANPATH $NPM_PACKAGES/share/man $MANPATH
+npm config set prefix $NPM_PACKAGES
 
 # rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
 # See https://github.com/phiresky/ripgrep-all
