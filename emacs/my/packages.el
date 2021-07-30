@@ -36,12 +36,12 @@
     drag-stuff
     engine-mode
     (jump-last :location
-               "~/dev/jump-last/"
-               ;; (recipe :fetcher github :repo "Bost/jump-last")
+               ;; "~/dev/jump-last/"
+               (recipe :fetcher github :repo "Bost/jump-last")
                )
     (kill-buffers :location
-                  "~/dev/kill-buffers/"
-                  ;; (recipe :fetcher github :repo "Bost/kill-buffers")
+                  ;; "~/dev/kill-buffers/"
+                  (recipe :fetcher github :repo "Bost/kill-buffers")
                   )
    )
   "The list of Lisp packages required by the my layer.
