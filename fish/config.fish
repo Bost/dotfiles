@@ -107,4 +107,9 @@ set --export CORONA_ENV_TYPE "devel"
 
 set --export REPL_USER $USER
 
-source ~/local-stuff.fish
+set --local localStuff ~/local-stuff.fish
+if test -e $localStuff
+    source $localStuff
+# else
+#     printf "No %s found\n" $localStuff
+end
