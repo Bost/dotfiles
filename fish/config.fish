@@ -107,6 +107,17 @@ set --export CORONA_ENV_TYPE "devel"
 
 set --export REPL_USER $USER
 
+# Install npm packages globally without sudo on macOS and Linux
+# See https://github.com/glenpike/npm-g_nosudo
+set NPM_PACKAGES "$HOME/.npm-packages"
+if ! test -d $NPM_PACKAGES
+    mkdir $NPM_PACKAGES
+end
+
+set PATH $PATH $NPM_PACKAGES/bin
+set MANPATH $NPM_PACKAGES/share/man $MANPATH
+set --export PATH $PATH
+
 set --local localStuff ~/local-stuff.fish
 if test -e $localStuff
     source $localStuff
