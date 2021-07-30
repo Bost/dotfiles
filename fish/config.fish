@@ -15,33 +15,33 @@ set --universal dotf $dev/dotfiles
 #    export PATH="$HOME/.guix-profile/bin${PATH:+:}$PATH"
 
 # appending to PATH in reverse order
-set --export PATH /usr/lib/postgresql/*/bin $PATH
-set --export PATH /usr/racket/bin     $PATH # racket is installed manually
+set PATH /usr/lib/postgresql/*/bin $PATH
+set PATH /usr/racket/bin     $PATH # racket is installed manually
 
 # rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
 # See https://github.com/phiresky/ripgrep-all
-set --export PATH ~/bin/ripgrep_all   $PATH
+set PATH ~/bin/ripgrep_all   $PATH
 
-set --export PATH ~/.cabal/bin        $PATH
-set --export PATH ~/.guix-profile/bin $PATH
-set --export PATH ~/.yarn/bin         $PATH
-set --export PATH ~/.local/bin        $PATH
+set PATH ~/.cabal/bin        $PATH
+set PATH ~/.guix-profile/bin $PATH
+set PATH ~/.yarn/bin         $PATH
+set PATH ~/.local/bin        $PATH
 # anaconda installation may or may not break emacs builds
 # see also the notes.fish function
-# set --export PATH ~/anaconda3/bin     $PATH
+# set PATH ~/anaconda3/bin     $PATH
 
 # ~/.profile is not read if the shell is of a non-login shell type
 if ! contains $bin $PATH
-    set --export PATH $PATH $bin
+    set PATH $PATH $bin
 end
 
 set --local RACKET_BIN ~/.local/share/racket/8.1/bin
 if test -d $RACKET_BIN
     # put the rash-repl script on the PATH
-    set --export PATH $RACKET_BIN $PATH
+    set PATH $RACKET_BIN $PATH
 end
 
-set --export PATH ~/usr/local/bin $PATH
+set PATH ~/usr/local/bin $PATH
 
 # printenv PATH
 
@@ -63,7 +63,7 @@ set --export ANDROID_HOME /usr/lib/android-sdk
 set --export GRAAL_HOME ~/graalvm-ce-1.0.0-rc13
 # set --export GRAAL_HOME ~/graalvm-ce-1.0.0-rc12
 if test -e $GRAAL_HOME
-    # set --export PATH $GRAAL_HOME/bin $PATH
+    # set PATH $GRAAL_HOME/bin $PATH
 end
 
 # Remedy against:
