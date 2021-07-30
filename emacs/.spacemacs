@@ -28,7 +28,8 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
+   dotspacemacs-configuration-layer-path
+   '("~/dev/dotfiles/emacs/")
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -237,7 +238,7 @@ This function should only modify configuration layer settings."
       ;; latex-enable-auto-fill nil  ;; defaults to t
       ;; latex-enable-magic t        ;; defaults to nil
       )
-     my
+     my ;; see dotspacemacs-configuration-layer-path
 
      ;; (vinegar :variables                     ;; simplify dired
      ;;          vinegar-reuse-dired-buffer t
