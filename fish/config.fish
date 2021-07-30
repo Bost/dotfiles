@@ -18,6 +18,17 @@ set --universal dotf $dev/dotfiles
 set PATH /usr/lib/postgresql/*/bin $PATH
 set PATH /usr/racket/bin     $PATH # racket is installed manually
 
+# Install npm packages globally without sudo on macOS and Linux
+# See https://github.com/glenpike/npm-g_nosudo
+set NPM_PACKAGES "$HOME/.npm-packages"
+if ! test -d $NPM_PACKAGES
+    mkdir $NPM_PACKAGES
+end
+# NODE_PATH definition might not be needed
+set --export NODE_PATH ~/.config/yarn/global/node_modules
+set PATH $PATH $NPM_PACKAGES/bin
+set MANPATH $NPM_PACKAGES/share/man $MANPATH
+
 # rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
 # See https://github.com/phiresky/ripgrep-all
 set PATH ~/bin/ripgrep_all   $PATH
@@ -25,6 +36,7 @@ set PATH ~/bin/ripgrep_all   $PATH
 set PATH ~/.cabal/bin        $PATH
 set PATH ~/.guix-profile/bin $PATH
 set PATH ~/.yarn/bin         $PATH
+set PATH $NODE_PATH/.bin $PATH
 set PATH ~/.local/bin        $PATH
 # anaconda installation may or may not break emacs builds
 # see also the notes.fish function
@@ -55,8 +67,6 @@ set --export GUIX_LOCPATH "$HOME/.guix-profile/lib/locale"
 # set --export JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 # set --export JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
-# NODE_PATH definition might not be needed
-set --export NODE_PATH ~/.config/yarn/global/node_modules
 set --export ANDROID_HOME /usr/lib/android-sdk
 
 # GraalVM comes with: openjdk version "1.8.0_202"
@@ -107,15 +117,6 @@ set --export CORONA_ENV_TYPE "devel"
 
 set --export REPL_USER $USER
 
-# Install npm packages globally without sudo on macOS and Linux
-# See https://github.com/glenpike/npm-g_nosudo
-set NPM_PACKAGES "$HOME/.npm-packages"
-if ! test -d $NPM_PACKAGES
-    mkdir $NPM_PACKAGES
-end
-
-set PATH $PATH $NPM_PACKAGES/bin
-set MANPATH $NPM_PACKAGES/share/man $MANPATH
 set --export PATH $PATH
 
 set --local localStuff ~/local-stuff.fish
