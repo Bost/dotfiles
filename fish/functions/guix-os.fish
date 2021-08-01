@@ -1,8 +1,6 @@
 function guix-os --description "GNU Guix via qemu-system-x86_64"
 
-cd ~/Downloads
-
-set guixFile guix-system-vm-image-1.3.0.x86_64-linux.qcow2
+set guixFile ~/guix/guix-system-vm-image-1.3.0.x86_64-linux.qcow2
 # 6GB RAM
 qemu-system-x86_64 \
     -nic user,model=virtio-net-pci \
