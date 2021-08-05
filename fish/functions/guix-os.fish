@@ -20,7 +20,6 @@ function guix-os --description "GNU Guix via qemu-system-x86_64"
     #     -drive if=none,file=$guixFile,id=myhd \
     #     & disown
 
-
     # with shared clipboard:
     qemu-system-x86_64 \
         -nic user,model=virtio-net-pci \
@@ -31,6 +30,7 @@ function guix-os --description "GNU Guix via qemu-system-x86_64"
         -chardev spicevmc,name=vdagent,id=vdagent \
         -device virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent,name=com.redhat.spice.0 \
         -spice port=5930,disable-ticketing \
+        -vga qxl \
         & disown
     # now open up a new terminal on the (Ubuntu) host and connect with:
     #     remote-viewer spice://localhost:5930 & disown
