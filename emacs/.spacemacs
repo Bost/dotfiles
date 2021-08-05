@@ -118,7 +118,24 @@ This function should only modify configuration layer settings."
      markdown
      ;; swift
      ;; windows-scripts
-     org    ;; customized via `use-package'
+     (org :variables
+          org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
+
+          ;; :bind (
+          ;;   ;; Show list of references to a given node from other nodes
+          ;;   ("C-c n l" . org-roam-buffer-toggle)
+          ;;   ("C-c n f" . org-roam-node-find)
+          ;;   ("C-c n i" . org-roam-node-insert))
+
+          ;; org-roam-directory "~/org-roam" default
+
+          org-enable-roam-support t
+          ;; A Web Application to Visualize the Org-Roam Database
+          ;; org-enable-roam-server t
+
+          ;; capture content from external applications such as the browser
+          ;; org-enable-roam-protocol t
+          )
      rust
      scheme ;; requires guile-2.2; M-x run-guile
      shell-scripts
@@ -1068,8 +1085,13 @@ before packages are loaded."
     "ogg" 'google-this
     "ogr" 'google-this-region
     "oc"  'my=cider-clear-compilation-highlights
-    "of"  'my=switch-to-repl-start-figwheel
-    "or"  'rotate-frame)
+    ;; "of"  'my=switch-to-repl-start-figwheel
+    "or"  'rotate-frame
+    ;; Show list of references to a given node from other nodes
+    "ob"  'org-roam-buffer-toggle
+    "of"  'org-roam-node-find
+    "oi"  'org-roam-node-insert
+    )
 
   (dolist (mode `(clojure-mode
                   clojure-modec
