@@ -316,13 +316,11 @@ This function should only modify configuration layer settings."
 
      cobol-mode
 
-     ;; org-mode-babel-...
-     (ob-racket :location (recipe :fetcher github :repo "DEADB17/ob-racket"))
-
-     ;; support for racket scribble
-     (scribble-mode :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
-
-     ;; emacs-ob-racket
+     ;; org-mode-babel packages {{{
+     ;; see also org-babel-load-languages
+     (ob-racket     :location (recipe :fetcher github :repo "hasu/emacs-ob-racket"))
+     ;; (scribble-mode :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
+     ;; }}}
 
      helm-system-packages
      ;; helm-descbinds
@@ -950,12 +948,6 @@ before packages are loaded."
    ;; color-identifiers-mode t
    )
 
-  (use-package ob-racket
-    :after org
-    :pin manual
-    :config
-    (append '((racket . t) (scribble . t)) org-babel-load-languages))
-
   (org-babel-do-load-languages
    'org-babel-load-languages
    '(
@@ -965,6 +957,9 @@ before packages are loaded."
      (C . t)
      (scheme . t)
      (racket . t)
+     ;; Although adviced by https://github.com/hasu/emacs-ob-racket this leads
+     ;; to 'ob-scribble not found' when activated:
+     ;; (scribble . t)
      (python . t)
      ;; (ditaa . t)
      (clojure . t)
