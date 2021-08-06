@@ -137,7 +137,8 @@ This function should only modify configuration layer settings."
           ;; org-enable-roam-protocol t
           )
      rust
-     scheme ;; requires guile-2.2; M-x run-guile
+     (scheme :variables ; M-x run-guile
+             scheme-implementations '(guile racket))
      shell-scripts
      haskell
      csv
