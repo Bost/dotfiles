@@ -11,6 +11,7 @@ function guix-os --description "GNU Guix via qemu-system-x86_64"
 
     set guixFile ~/guix/guix-system-vm-image-1.3.0.x86_64-linux.qcow2
     set guixRAM 1G
+    set guixPort 5930
 
     # this works, however without shared clipboard:
     # qemu-system-x86_64 \
@@ -29,9 +30,9 @@ function guix-os --description "GNU Guix via qemu-system-x86_64"
         -device virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5 \
         -chardev spicevmc,name=vdagent,id=vdagent \
         -device virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent,name=com.redhat.spice.0 \
-        -spice port=5930,disable-ticketing \
+        -spice port=$guixPort,disable-ticketing \
         -vga qxl \
         & disown
-    # now open up a new terminal on the (Ubuntu) host and connect with:
-    #     remote-viewer spice://localhost:5930 & disown
+    printf "# Open a new terminal on the (Ubuntu) host and connect with:\n"
+    printf "    remote-viewer spice://localhost:%s & disown\n" $guixPort
 end
