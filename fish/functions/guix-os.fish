@@ -38,4 +38,7 @@ function guix-os --description "GNU Guix via qemu-system-x86_64"
     printf "    remote-viewer spice://localhost:%s & disown\n" $guixRemoteViewPort
     printf "# or with SSH:\n"
     printf "    ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p %s guest@localhost\n" $guixSSHPort
+    printf "\n"
+    printf "# Copy file example:\n"
+    printf "    scp -P %s <srcfile> guest@localhost:</path/to/dstfile>\n" $guixSSHPort
 end
