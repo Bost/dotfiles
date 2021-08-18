@@ -82,7 +82,19 @@ This function should only modify configuration layer settings."
           ;; magit-diff-refine-hunk t
           ;; )
           )
-     helm
+     (helm :variables
+           ;; (setq
+           ;; helm-display-function 'helm-display-buffer-in-own-frame
+
+           ;; default 20
+           ;; nil - use the longest ‘buffer-name’ length found
+           helm-buffer-max-length nil
+
+           ;; TODO helm-display-buffer-width
+           ;; default
+           ;; helm-display-function 'helm-default-display-buffer
+           ;; )
+           )
      multiple-cursors
 
      ;; language server protocol
