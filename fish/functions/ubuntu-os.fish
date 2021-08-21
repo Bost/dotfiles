@@ -3,8 +3,8 @@ function ubuntu-os --description "Ubuntu via qemu-system-x86_64"
     # Create qcow2 file
     # qemu-img create -f qcow2 hda.qcow2 16G
 
-    set isoFile ~/guix/ubuntu-21.04-desktop-amd64.iso
-    set qcow2File ~/guix/hda.qcow2
+    set isoFile $virtMachines/ubuntu-21.04-desktop-amd64.iso
+    set qcow2File $virtMachines/hda.qcow2
 
     qemu-system-x86_64 \
         -M pc -enable-kvm -cpu host -m 4G \

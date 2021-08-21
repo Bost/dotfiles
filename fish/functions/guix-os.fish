@@ -9,7 +9,7 @@ function guix-os --description "GNU Guix via qemu-system-x86_64"
     # I guess the virt-viewer is needed only on the (Ubuntu) host, but let's put
     # it everywhere just in case.
 
-    set guixFile ~/guix/guix-system-vm-image-1.3.0.x86_64-linux.qcow2
+    set guixFile $virtMachines/guix-system-vm-image-1.3.0.x86_64-linux.qcow2
     set guixRAM 2G
     set guixRemoteViewPort 5930
     set guixSSHPort 10022
