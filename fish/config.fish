@@ -1,13 +1,12 @@
 set fish_greeting ""
 # set --erase fish_greeting   # this doesn't remove the greeting?!?
 # TODO https://www.wezm.net/technical/2019/10/useful-command-line-tools/
-set --universal dev ~/dev
-set --universal dec ~/dec
-set --universal der ~/der
-set --universal bin ~/bin
-set --universal cheat $dev/cheat
-set --universal dotf $dev/dotfiles
-set --universal virtMachines ~/virt-machines
+set --export dev ~/dev
+set --export dec ~/dec
+set --export der ~/der
+set --export bin ~/bin
+set --export cheat $dev/cheat
+set --export dotf $dev/dotfiles
 
 # Some spacemacs layers require certain tools to be available on $PATH
 # see http://spacemacs.org/doc/FAQ.html#setup-path
