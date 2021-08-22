@@ -1,0 +1,19 @@
+#!/usr/bin/guile -s
+!#
+
+;; see also https://the.exa.website/ - A modern replacement for ls.
+
+;; # exa initial run is slow and in general it takes a moment on a weaker HW
+;; # ~/bin/exa is a link to ~/bin/exa-linux-x86_64
+;; set cmd exa --long --git --all --time-style=long-iso $escArgv
+;; # set cmd exa --long --git --all --extended --time=modified $escArgv
+
+(apply
+ system*
+ ((compose
+   (lambda (cmd)
+     "(cdr (command-line)) can be an empty list which breaks system*. `append' takes care of it"
+     (append cmd (cdr (command-line)))))
+  (list (string-append (getenv "systemBinDir") "/ls")
+        ;; TODO consider custom coloring after `ls --color=never`
+        "-lA" "--color" "--time-style=+%d-%m-%Y %H:%M:%S")))
