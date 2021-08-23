@@ -29,7 +29,7 @@ This function should only modify configuration layer settings."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path
-   '("~/dev/dotfiles/emacs/")
+   `(,(concat (getenv "dotf") "/emacs/" ))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -951,7 +951,7 @@ before packages are loaded."
 
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
-   bookmark-default-file "~/dev/dotfiles/emacs/bookmarks"
+   bookmark-default-file (concat (getenv "dotf") "/emacs/bookmarks")
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
    ediff-window-setup-function 'ediff-setup-windows-default
 
