@@ -13,7 +13,8 @@ function e
     set emacsCmd emacs
     # set emacsCmd /usr/local/bin/emacs
 
-    set pids (pgrep --exact emacs)
+    # set pids (pgrep --exact emacs) # --exact doesn't work on Guix
+    set pids (pgrep emacs)
     # echo "pids:" $pids
     for pid in $pids
         set procUser (ps -o user= -p $pid)
