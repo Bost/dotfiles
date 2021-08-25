@@ -63,7 +63,10 @@ set PATH ~/usr/local/bin $PATH
 
 # printenv PATH
 
-set --export GUIX_LOCPATH "$HOME/.guix-profile/lib/locale"
+# Setting the locale correctly
+# https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
+# When 'setlocale: LC_ALL: cannot change locale'
+# set --export GUIX_LOCPATH ~/.guix-profile/lib/locale
 
 # JAVA_HOME definitions - see (changes require logout & login):
 #     /etc/profile.d/jdk.csh
