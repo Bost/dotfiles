@@ -5,9 +5,16 @@ ln -s $DOTF/.gitconfig
 # ln -s $DOTF/.proton         # see https://github.com/dvcrn/proton
 ln -s $DOTF/emacs/.spacemacs
 ln -s $DOTF/.SpaceVim.d
+ln -s $DOTF/bin
 
+cd ~/.config
+mv fish fish.backup
+ln -s $DOTF/fish
+
+cd ~
 mv ~/.emacs.d ~/.emacs.d.backup
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+
 cd ~/.emacs.d
 git remote add github https://github.com/Bost/spacemacs.git
 git fetch github cycle
