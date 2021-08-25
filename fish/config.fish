@@ -20,17 +20,21 @@ set --export systemBinDir (dirname (which guile))
 set PATH /usr/lib/postgresql/*/bin $PATH
 set PATH /usr/racket/bin     $PATH # racket is installed manually
 
-# Install npm packages globally without sudo on macOS and Linux
-# See https://github.com/glenpike/npm-g_nosudo
-set NPM_PACKAGES "$HOME/.npm-packages"
-if ! test -d $NPM_PACKAGES
-    mkdir $NPM_PACKAGES
+set --local fullPath (which npm 1>/dev/null 2>/dev/null)
+if test -n "$fullPath"
+    # Install npm packages globally without sudo on macOS and Linux
+    # See https://github.com/glenpike/npm-g_nosudo
+    set NPM_PACKAGES "$HOME/.npm-packages"
+    if ! test -d $NPM_PACKAGES
+        mkdir $NPM_PACKAGES
+    end
+    # NODE_PATH definition might not be needed
+    set --export NODE_PATH ~/.config/yarn/global/node_modules
+    set PATH $PATH $NPM_PACKAGES/bin
+    set PATH $NODE_PATH/.bin $PATH
+    set MANPATH $NPM_PACKAGES/share/man $MANPATH
+    npm config set prefix $NPM_PACKAGES
 end
-# NODE_PATH definition might not be needed
-set --export NODE_PATH ~/.config/yarn/global/node_modules
-set PATH $PATH $NPM_PACKAGES/bin
-set MANPATH $NPM_PACKAGES/share/man $MANPATH
-npm config set prefix $NPM_PACKAGES
 
 # rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
 # See https://github.com/phiresky/ripgrep-all
@@ -39,7 +43,6 @@ set PATH ~/bin/ripgrep_all   $PATH
 set PATH ~/.cabal/bin        $PATH
 set PATH ~/.guix-profile/bin $PATH
 set PATH ~/.yarn/bin         $PATH
-set PATH $NODE_PATH/.bin $PATH
 set PATH ~/.local/bin        $PATH
 # anaconda installation may or may not break emacs builds
 # see also the notes.fish function
