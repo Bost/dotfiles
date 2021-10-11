@@ -144,6 +144,7 @@
   (cond [(number? x) "number"]
         [(pair? x) "pair"]
         [(string? x) "string"]
+        [(bytes? x) "byte string"]
         [(list? x) "list"]
         ;; Usage: (type '#:a); (type #:a) doesn't work
         [(keyword? x) "keyword"]
