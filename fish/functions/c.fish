@@ -8,13 +8,20 @@ function c -d "Better cat"
         l $escArgv
     # $escArgv doesn't work for 'file\(1\).ext'
     else if test -f $argv # is it a regular file?
+        # ubuntu path
         set cmd /usr/bin/batcat
         if test -x $cmd
             # set cmd batcat
         else
-            echo "# TODO install `bat` https://github.com/sharkdp/bat#installation"
-            echo "#####################"
-            set cmd cat
+            # guix path
+            set cmd ~/.guix-profile/bin/bat
+            if test -x $cmd
+                # set cmd batcat
+            else
+                echo "# TODO install `bat` https://github.com/sharkdp/bat#installation"
+                echo "#####################"
+                set cmd cat
+            end
         end
         set cmd $cmd $escArgv
         # echo $cmd # otherwise c <file> | jq '.' doesn't work
