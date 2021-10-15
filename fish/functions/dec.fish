@@ -1,5 +1,3 @@
-function dec --description "cd $dec"
-  set cmd cd $dec
-  echo $cmd
-  eval $cmd
+function dec --description "mkcd $dec"
+    mkcd $dec
 end

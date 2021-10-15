@@ -1,5 +1,3 @@
-function fdk
-  set cmd cd $dec/fdk
-  echo $cmd
-  eval $cmd
+function fdk --description "mkcd $dec/fdk"
+    mkcd $dec/fdk
 end

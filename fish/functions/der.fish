@@ -1,5 +1,3 @@
-function der --description "cd $der"
-  set cmd cd $der
-  echo $cmd
-  eval $cmd
+function der --description "mkcd $der"
+    mkcd $der
 end

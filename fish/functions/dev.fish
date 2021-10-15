@@ -1,5 +1,3 @@
-function dev --description "cd $dev"
-  set cmd cd $dev
-  echo $cmd
-  eval $cmd
+function dev --description "mkcd $dev"
+    mkcd $dev
 end
