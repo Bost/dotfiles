@@ -961,6 +961,8 @@ before packages are loaded."
 
    create-lockfiles nil ;; do not create .# lockfiles
    vc-follow-symlinks t ;; auto follow symbolic links
+   ;; on GuixOS browse-url-firefox-program evaluates to "icecat" by default
+   browse-url-firefox-program "firefox"
    browse-url-browser-function 'browse-url-default-browser
    ;; '(("wikipedia\\.org" . browse-url-firefox)
    ;;   ("github" . browse-url-chromium)
