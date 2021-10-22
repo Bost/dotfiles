@@ -1,5 +1,13 @@
-#!/run/current-system/profile/bin/guile -s
-!#
+
+;; run by `guile l.scm'
+
+;; On non-Guix OS
+;; #!/usr/bin/guile -s
+;; !#
+
+;; On GuixOS:
+;; #!/run/current-system/profile/bin/guile -s
+;; !#
 
 ;; see also https://the.exa.website/ - A modern replacement for ls.
 
