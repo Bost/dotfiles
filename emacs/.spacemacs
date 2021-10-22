@@ -54,8 +54,17 @@ This function should only modify configuration layer settings."
 
      (erc :variables
           ;; erc-enable-notifications nil
-          erc-server-list
-          '(("irc.libera.chat" :port "6667" :ssl t :nick "bost" :password "")))
+          erc-server "irc.libera.chat"
+          erc-nick "bost"
+          erc-autojoin-channels-alist '(("irc.libera.chat" "#guix" "#systemcrafters"))
+          ;; (setq
+          erc-fill-column 120
+          erc-fill-function 'erc-fill-static
+          erc-fill-static-center 20
+          ;; )
+          ;; erc-server-list
+          ;; '(("irc.libera.chat" :port "6667" :ssl t :nick "bost" :password ""))
+          )
 
      php
      ;; typescript
@@ -915,11 +924,8 @@ before packages are loaded."
 
   (add-to-list 'auto-mode-alist '("\\.cob" . cobol-mode))
 
-  ;; (push '(clojuredocs
-  ;;         :name "Clojure Docs"
-  ;;         :url "http://clojuredocs.org/clojure.core/%s")
-  ;;       search-engine-alist)
-  (beacon-mode 1)
+  (add-to-list 'exec-path "/usr/local/bin") ;; for cider on guix
+
   (blink-cursor-mode t)
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
@@ -974,9 +980,13 @@ before packages are loaded."
    font-latex-fontify-script nil
    org-latex-listings 'minted
    org-latex-packages-alist '(("" "minted"))
+   ;; (set
    org-latex-pdf-process
-   '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-     "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+   '("pdf-slatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+     "pdf-slatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+   ;; '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+   ;;   "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+   ;; )
 
    key-chord-two-keys-delay 0.02 ;; default is 0.1
    ;; color-identifiers-mode t
