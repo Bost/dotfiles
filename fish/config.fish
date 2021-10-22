@@ -44,6 +44,8 @@ set PATH ~/.cabal/bin        $PATH
 set PATH ~/.guix-profile/bin $PATH
 set PATH ~/.yarn/bin         $PATH
 set PATH ~/.local/bin        $PATH
+# for script-based installations of babashka, heroku, clojure
+set PATH  /usr/local/bin     $PATH
 # anaconda installation may or may not break emacs builds
 # see also the notes.fish function
 # set PATH ~/anaconda3/bin     $PATH

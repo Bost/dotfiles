@@ -1,4 +1,4 @@
-#!/usr/bin/guile -s
+#!/run/current-system/profile/bin/guile -s
 !#
 
 ;; see also https://the.exa.website/ - A modern replacement for ls.
@@ -12,7 +12,8 @@
  system*
  ((compose
    (lambda (cmd)
-     "(cdr (command-line)) can be an empty list which breaks system*. `append' takes care of it"
+     "(cdr (command-line)) can be an empty list which breaks system*. `append'
+takes care of it"
      (append cmd (cdr (command-line)))))
   (list (string-append (getenv "systemBinDir") "/ls")
         ;; TODO consider custom coloring after `ls --color=never`
