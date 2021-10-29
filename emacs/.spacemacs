@@ -137,19 +137,7 @@ This function should only modify configuration layer settings."
      ;; windows-scripts
      (org :variables
           org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
-
-          ;; :bind (
-          ;;   ;; Show list of references to a given node from other nodes
-          ;;   ("C-c n l" . org-roam-buffer-toggle)
-          ;;   ("C-c n f" . org-roam-node-find)
-          ;;   ("C-c n i" . org-roam-node-insert))
-
-          ;; org-roam-directory "~/org-roam" default
-
           org-enable-roam-support t
-          ;; A Web Application to Visualize the Org-Roam Database
-          ;; org-enable-roam-server t
-
           ;; capture content from external applications such as the browser
           ;; org-enable-roam-protocol t
           )
