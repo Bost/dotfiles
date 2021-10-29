@@ -1,5 +1,5 @@
 function dotf
-  set cmd cd $dev/dotfiles
+  set cmd cd $dotf
   echo $cmd
   eval $cmd
 end
