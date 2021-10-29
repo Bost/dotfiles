@@ -34,6 +34,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     pdf
      (auto-completion :variables
                       ;; (setq
                       auto-completion-enable-help-tooltip t
@@ -354,7 +355,7 @@ This function should only modify configuration layer settings."
      ;; org-mode-babel packages {{{
      ;; see also org-babel-load-languages
      (ob-racket     :location (recipe :fetcher github :repo "hasu/emacs-ob-racket"))
-     ;; (scribble-mode :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
+     (scribble-mode :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
      ;; }}}
 
      helm-system-packages
@@ -975,10 +976,11 @@ before packages are loaded."
    font-latex-fontify-script nil
    org-latex-listings 'minted
    org-latex-packages-alist '(("" "minted"))
-   ;; (set
-   org-latex-pdf-process
-   '("pdf-slatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-     "pdf-slatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+   ;; (setq
+   org-latex-pdf-process ;; is it customizable? customize-set-variable
+   '("%latex -interaction nonstopmode -output-directory %o %f"
+     "%latex -interaction nonstopmode -output-directory %o %f"
+     "%latex -interaction nonstopmode -output-directory %o %f")
    ;; '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
    ;;   "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
    ;; )
