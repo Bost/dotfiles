@@ -1524,7 +1524,7 @@ before packages are loaded."
                   ("M-s-d"  . my=racket-insert-fn)
                   ("M-s-p"  . my=insert-partial)
                   ("C-s-p"  . my=racket-insert-log)
-                  ("C-s-\\" . my=racket-toggle-reader-comment-fst-sexp-on-line)
+                  ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
                   ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)))))
 
   (my=bind-keys-racket 'racket-mode-hook      'racket-mode-map)
