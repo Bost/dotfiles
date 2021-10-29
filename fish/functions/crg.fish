@@ -1,5 +1,4 @@
-function crg --description "Search through the git cheatsheet"
-    set pth $cheat/cmds
-    set files $files $pth/git.org
-    cheat-grep --grep-args="$argv" --files="$files"
+function crg --description "Search in the git notes"
+    set fs (ls $dev/notes/org-roam/*git.org)
+    crep-notes $fs $argv
 end

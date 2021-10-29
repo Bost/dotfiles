@@ -1,9 +1,4 @@
-function cre --description "Search through the emacs and elisp cheatsheet"
-    # rg --type org $argv ~/.emacs.d
-    # echo
-    # rg --with-filename $argv $cheat/cmds/emacs.org
-
-    set pth $cheat/cmds
-    set files $files $pth/emacs.org
-    cheat-grep --grep-args="$argv" --files="$files"
+function cre --description "Search in the Emacs & Emacs-Lisp notes"
+    set fs (ls $dev/notes/org-roam/*emacs.org)
+    crep-notes $fs $argv
 end

@@ -1,1 +1,0 @@
-/home/bost/dev/notes/bin/crn.fish

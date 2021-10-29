@@ -1,5 +1,4 @@
-function crf --description "Search through the find & grep cheatsheet"
-    set pth $cheat/cmds
-    set files $files $pth/findgrep.org
-    cheat-grep --grep-args="$argv" --files="$files"
+function crf --description "Search in the find & grep notes"
+    set fs (ls $dev/notes/org-roam/*find_and_grep.org)
+    crep-notes $fs $argv
 end
