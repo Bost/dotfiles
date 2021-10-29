@@ -32,17 +32,17 @@
 (defconst my-packages
   '(
     simple
-    (copy-sexp :location local)
+    (copy-sexp
+     ;; "~/dev/copy-sexp/"
+     :location (recipe :fetcher github :repo "Bost/copy-sexp"))
     drag-stuff
     engine-mode
-    (jump-last :location
-               ;; "~/dev/jump-last/"
-               (recipe :fetcher github :repo "Bost/jump-last")
-               )
-    (kill-buffers :location
-                  ;; "~/dev/kill-buffers/"
-                  (recipe :fetcher github :repo "Bost/kill-buffers")
-                  )
+    (jump-last
+     ;; "~/dev/jump-last/"
+     :location (recipe :fetcher github :repo "Bost/jump-last"))
+    (kill-buffers
+     ;; "~/dev/kill-buffers/"
+     :location (recipe :fetcher github :repo "Bost/kill-buffers"))
    )
   "The list of Lisp packages required by the my layer.
 
