@@ -3,6 +3,8 @@
 \#*\#
 .\#*
 
+.clojure/
+
 # compiled python files (byte code)
 /fish/functions/__pycache__/
 
