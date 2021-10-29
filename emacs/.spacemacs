@@ -1109,6 +1109,7 @@ before packages are loaded."
     "ogg" 'google-this
     "ogr" 'google-this-region
     "oc"  'my=cider-clear-compilation-highlights
+    ;; "oc"  'org-roam-capture
     ;; "of"  'my=switch-to-repl-start-figwheel
     "or"  'rotate-frame
     ;; Show list of references to a given node from other nodes
