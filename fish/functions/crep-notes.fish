@@ -15,7 +15,7 @@ function crep-notes --description "General search in notes"
     # string escape doesn't work:
     # search-notes -f $files -p (string escape -- $argv)
 
-    if test (which search-notes)
+    if test (which search-notes 2> /dev/null)
         search-notes -f $files -p $pattern
     else
         printf "`search-notes` not found on the PATH. (Is it compiled?)\n"

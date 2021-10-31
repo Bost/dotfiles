@@ -20,8 +20,7 @@ set --export systemBinDir (dirname (which guile))
 set PATH /usr/lib/postgresql/*/bin $PATH
 set PATH /usr/racket/bin     $PATH # racket is installed manually
 
-set --local fullPath (which npm 1>/dev/null 2>/dev/null)
-if test -n "$fullPath"
+if test (which npm 2> /dev/null)
     # Install npm packages globally without sudo on macOS and Linux
     # See https://github.com/glenpike/npm-g_nosudo
     set NPM_PACKAGES "$HOME/.npm-packages"
