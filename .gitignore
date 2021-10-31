@@ -21,3 +21,4 @@ texmf/tex/latex/cat-7-sketches/cat-7-sketches.fdb_latexmk
 texmf/tex/latex/cat-7-sketches/cat-7-sketches.fls
 texmf/tex/latex/cat-7-sketches/cat-7-sketches.log
 /bin/lein*
+/bin/search-notes
