@@ -858,9 +858,13 @@ Thanks to https://stackoverflow.com/a/2238589"
 Thanks to:
 https://stackoverflow.com/a/19555234
 https://github.com/emacsorphanage/helm-themes/issues/5#issue-210637069"
-  (if (eq spacemacs--cur-theme 'spacemacs-light)
-      (progn
-        (global-hl-line-mode 1)
-        (set-face-background 'hl-line "#dacecb")
-        ;; keep syntax highlighting in the current line:
-        (set-face-foreground 'highlight nil))))
+  (when (find spacemacs--cur-theme
+              '(spacemacs-light
+                heroku))
+    (global-hl-line-mode 1)
+    (set-face-background 'hl-line
+                         (case spacemacs--cur-theme
+                           ('spacemacs-light "#dacecb")
+                           ('heroku "black")))
+    ;; keep syntax highlighting in the current line:
+    (set-face-foreground 'highlight nil)))
