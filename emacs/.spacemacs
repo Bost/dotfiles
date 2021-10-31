@@ -839,7 +839,10 @@ See the header of this file for more information."
 This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
-If you are unsure, try setting them in `dotspacemacs/user-config' first.")
+If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  ;; avoid creation of dotspacemacs/emacs-custom-settings
+  ;; https://github.com/syl20bnr/spacemacs/issues/7891
+  (setq custom-file "~/.emacs.d/.cache/.custom-settings"))
 
 
 (defun dotspacemacs/user-load ()
