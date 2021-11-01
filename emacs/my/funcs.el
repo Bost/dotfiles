@@ -135,10 +135,8 @@ Example: (my=buffer-mode (current-buffer))"
   (ediff-buffers (buffer-name) ;; current buffer is the buffer-a
                  (buffer-name (other-window 1))))
 
-(defun my=whitespace-cleanup ()
-  (interactive)
-  (whitespace-cleanup)
-  (message "s-n : my=toggle-narrow-to-defun; s-W : whitespace-cleanup"))
+(defun my=whitespace-cleanup-msg ()
+  (message "whitespace-cleanup"))
 
 (defun my=whitespace-mode-toggle ()
   (interactive)
@@ -173,9 +171,7 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
     ;; (message "was-visual-state-p: %s" was-visual-state-p)
     ))
 
-(defun my=evil-avy-goto-char-timer ()
-  (interactive)
-  (evil-avy-goto-char-timer)
+(defun my=evil-avy-goto-char-timer-msg ()
   (message "evil-avy-goto-char-timer: SPC j j, f, <f2>"))
 
 (defun my=alternate-buffer ()
@@ -190,9 +186,7 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
   (let ((evil-this-register ?0))
     (call-interactively 'evil-paste-after)))
 
-(defun my=avy-goto-line ()
-  (interactive)
-  (avy-goto-line)
+(defun my=avy-goto-line-msg ()
   (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/"))
 
 (defun my=evil-select-pasted ()

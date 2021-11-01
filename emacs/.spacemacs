@@ -1251,7 +1251,7 @@ before packages are loaded."
      ;; ("s-p"      . helm-projectile)
      ("s-p"         . helm-projectile-find-file)
      ("M-s-p"       . helm-projectile-switch-project)
-     ("s-W"         . my=whitespace-cleanup)
+     ("s-W"         . whitespace-cleanup)
      ("s-w"         . my=whitespace-mode-toggle)
      ("s-m"         . my=magit-status)
      ("<f3>"        . my=search-region-or-symbol)
@@ -1286,11 +1286,11 @@ before packages are loaded."
      ("s-g"     . my=engine/search-or-browse)
      ("s-G"     . helm-google-suggest)
      ("s-8"     . er/expand-region)   ; increase selected region by semantic units
-     ("<f2>"    . my=evil-avy-goto-char-timer)
+     ("<f2>"    . evil-avy-goto-char-timer)
      ("s-/"     . helm-swoop)
      ("<s-tab>" . my=alternate-buffer)  ;; Shift-Tab <backtab>
-     ("<C-f2>"  . my=avy-goto-line)
-     ("C-s-/"   . my=avy-goto-line)
+     ("<C-f2>"  . avy-goto-line)
+     ("C-s-/"   . avy-goto-line)
 
      ;; fd - evil-escape from insert state and everything else
      ;; occurences - function scope
@@ -1542,6 +1542,12 @@ before packages are loaded."
 
   ;; See
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
+  (advice-add 'whitespace-cleanup
+              :after 'my=whitespace-cleanup-msg)
+  (advice-add 'evil-avy-goto-char-timer
+              :after 'my=evil-avy-goto-char-timer-msg)
+  (advice-add 'avy-goto-line
+              :after 'my=avy-goto-line-msg)
   (advice-add 'evil-ex-search-next     :after 'evil-scroll-line-to-center)
   (advice-add 'evil-ex-search-previous :after 'evil-scroll-line-to-center)
   (advice-add 'ediff-quit              :around 'my=disable-y-or-n-p)
@@ -1568,8 +1574,8 @@ before packages are loaded."
 
   ;; see also binding for <f2>
   ;; (bind-keys :map evil-normal-state-map
-  ;;            ("f" . my=evil-avy-goto-char-timer)
-  ;;            ("t" . my=evil-avy-goto-char-timer))
+  ;;            ("f" . evil-avy-goto-char-timer)
+  ;;            ("t" . evil-avy-goto-char-timer))
 
   ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojure-mode)
   ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojurescript-mode)
