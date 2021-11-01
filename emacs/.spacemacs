@@ -1292,7 +1292,9 @@ before packages are loaded."
      ("s-8"     . er/expand-region)   ; increase selected region by semantic units
      ("<f2>"    . evil-avy-goto-char-timer)
      ("s-/"     . helm-swoop)
-     ("<s-tab>" . my=alternate-buffer)  ;; Shift-Tab <backtab>
+     ;; <S-tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
+     ("<s-tab>" . spacemacs/alternate-buffer)
+     ;; ("<s-tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
      ("<C-f2>"  . avy-goto-line)
      ("C-s-/"   . avy-goto-line)
 

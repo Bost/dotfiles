@@ -174,12 +174,6 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
 (defun my=evil-avy-goto-char-timer-msg ()
   (message "evil-avy-goto-char-timer: SPC j j, f, <f2>"))
 
-(defun my=alternate-buffer ()
-  (interactive)
-  ;; (popwin:switch-to-buffer)
-  (spacemacs/alternate-buffer)
-  (message "spacemacs/alternate-buffer: SPC TAB, <s-tab>"))
-
 (defun my=evil-paste-after-from-0 ()
   ;; TODO evaluate: paste copied text multiple times
   (interactive)
