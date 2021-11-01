@@ -1306,7 +1306,7 @@ before packages are loaded."
      ;; `s-SPC v' but it overrides the `expand region' menu point
      ;; (evil-leader/set-key "v" 'my=evil-select-pasted)
 
-     ("s-L"                . spacemacs/cycle-line-number-types)
+     ("s-L"        . spacemacs/cycle-line-number-types)
      ("C-s-l"      . spacemacs/cycle-large-file-settings)
 
      ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
