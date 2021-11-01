@@ -192,14 +192,19 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
 (defun my=evil-select-pasted ()
   "See also https://emacs.stackexchange.com/a/21093"
   (interactive)
-  ;; TODO this doesn't work properly
-  ;; (let ((start-marker (evil-get-marker ?\[))
-  ;;                     (end-marker (evil-get-marker ?\])))
-  ;;   (evil-visual-select start-marker end-marker))
   (evil-goto-mark ?\[)
   (evil-visual-char)
   (evil-goto-mark ?\])
+  (message "my=evil-select-pasted - does the same as the macro under: SPC g p")
   )
+
+(defun my=yank-and-select ()
+  (interactive)
+  (let ((point-begin (point)))
+    ;; (clipboard-yank)
+    (yank)
+    ;; (evil-visual-make-selection)
+    (evil-visual-select point-begin (- (point) 1))))
 
 (defun my=shenanigans-on ()
   "Switch on most of the graphical goodies. Inverse of
@@ -306,27 +311,34 @@ Repeated invocations toggle between the two most recently open buffers."
   (cider-switch-to-repl-buffer))
 
 (defun my=copy-to-clipboard ()
-  "Copies selection to x-clipboard."
+  "Copy selection to x-clipboard or clipboard."
   (interactive)
   (if (display-graphic-p)
       (progn
-        (message "Yanked region to x-clipboard!")
-        (call-interactively 'clipboard-kill-ring-save))
+        (call-interactively 'clipboard-kill-ring-save)
+        (message "%s %s"
+                 "The DISPLAY is graphic."
+                 "Region yanked to the x-clipboard!"))
     (if (region-active-p)
         (progn
           (shell-command-on-region (region-beginning)
                                    (region-end) "xsel -i -b")
-          (message "Yanked region to clipboard!")
-          (deactivate-mark))
-      (message "No region active; can't yank to clipboard!"))))
+          (deactivate-mark)
+          (message "%s %s"
+                   "The DISPLAY not is graphic."
+                   "Region yanked to the clipboard!"))
+      (message "%s %s"
+               "The DISPLAY not is graphic and no region active."
+               "Can't yank to the clipboard!"))))
 
 (defun my=paste-from-clipboard ()
-  "Pastes from x-clipboard."
+  "Paste from the x-clipboard."
   (interactive)
   (if (display-graphic-p)
       (progn
-        (clipboard-yank)
-        (message "graphics active"))
+        ;; (clipboard-yank)
+        (yank)
+        (message "The DISPLAY is graphic."))
     (insert (shell-command-to-string "xsel -o -b"))))
 
 (defun my=fabricate-subst-cmd (&optional args)

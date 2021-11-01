@@ -1110,6 +1110,10 @@ before packages are loaded."
     "ob"  'org-roam-buffer-toggle
     "of"  'org-roam-node-find
     "oi"  'org-roam-node-insert
+    "op"  'my=yank-and-select
+    ;; These two functions seem not to be useful:
+    ;; "op" 'my=paste-from-clipboard ; TODO is this function useful?
+    ;; "oy" 'my=copy-to-clipboard    ; TODO is this function useful?
     )
 
   (dolist (mode `(clojure-mode
@@ -1303,8 +1307,10 @@ before packages are loaded."
      ("<C-S-delete>"       . kill-line)   ; C-shift-key
      ;; ("s-l"                . spacemacs/resume-last-search-buffer)
      ("s-l"                . lazy-helm/spacemacs/resume-last-search-buffer)
-     ;; `s-SPC v' but it overrides the `expand region' menu point
-     ;; (evil-leader/set-key "v" 'my=evil-select-pasted)
+     ("s-v" . my=evil-select-pasted)
+
+     ;; TODO difference between insert and insertchar
+     ("<S-s-insert>" . my=yank-and-select)
 
      ("s-L"        . spacemacs/cycle-line-number-types)
      ("C-s-l"      . spacemacs/cycle-large-file-settings)
@@ -1526,10 +1532,6 @@ before packages are loaded."
   (my=bind-keys-racket 'racket-repl-mode-hook 'racket-repl-mode-map)
 
   ;; (bind-keys :map helm-mode-map)
-
-  (spacemacs/set-leader-keys
-    "oy" 'my=copy-to-clipboard
-    "op" 'my=paste-from-clipboard)
 
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
