@@ -282,7 +282,7 @@ This function should only modify configuration layer settings."
      ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
      ;;          ;; )
      ;;         )
-     equake
+     (equake :variables equake-default-shell 'term)
      )
 
    ;; List of additional packages that will be installed without being wrapped
