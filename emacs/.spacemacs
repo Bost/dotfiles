@@ -34,6 +34,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     nginx
      pdf
      (auto-completion :variables
                       ;; (setq
@@ -342,8 +343,10 @@ This function should only modify configuration layer settings."
 
      ;; org-mode-babel packages {{{
      ;; see also org-babel-load-languages
-     (ob-racket     :location (recipe :fetcher github :repo "hasu/emacs-ob-racket"))
-     (scribble-mode :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
+     (ob-racket
+      :location (recipe :fetcher github :repo "hasu/emacs-ob-racket"))
+     (scribble-mode
+      :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
      ;; }}}
 
      helm-system-packages
@@ -916,11 +919,8 @@ before packages are loaded."
 
   (add-to-list 'exec-path "/usr/local/bin") ;; for cider on guix
 
-  (blink-cursor-mode t)
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
-
-  (my=spacemacs-light--highlight-current-line)
 
   (setq
 
@@ -1034,15 +1034,15 @@ before packages are loaded."
                       :background "black"
                       :foreground nil)
 
+  (blink-cursor-mode t)
+  (my=spacemacs-light--highlight-current-line)
+  (beacon-mode 1)
+
   (key-chord-mode 1)
 
-  ;; (progn
-  ;;   (unbind-key "<f5>" cider-repl-mode-map)
-  ;;   (unbind-key "<f6>" cider-repl-mode-map)
-  ;;   (unbind-key "<f7>" cider-repl-mode-map)
-  ;;   (unbind-key "<f5>" clojure-mode-map)
-  ;;   (unbind-key "<f6>" clojure-mode-map)
-  ;;   (unbind-key "<f7>" clojure-mode-map))
+  ;; (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
+  ;;   (dolist (key '("<f5>" "<f6>" "<f7>"))
+  ;;     (unbind-key key state-map)))
 
   (defun my=load-layout ()
     "docstring"
@@ -1213,10 +1213,14 @@ before packages are loaded."
     (bind-keys
      :map global-map
      ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
+
+     ;; TODO The <escape> keybinding seems not to work.
+     ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+     ("<escape>"  . keyboard-escape-quit)
      ("s-K"       . my=kill-buffers--unwanted)
      ("s-C-K"     . my=kill-buffers--dired)
      ("s-R"       . spacemacs/rename-current-buffer-file)
-     ("s-q"       . other-window) ; straight jump to window: SPC 0, SPC 1 ...
+     ("s-q"       . my=other-window)
      ("s-k"       . my=close-buffer)
      ("s-s"       . save-buffer)
      ("s-0"       . delete-window)
@@ -1228,10 +1232,11 @@ before packages are loaded."
      ("s-N"       . spacemacs/cycle-defun-narrow-modes)
      ("s-n"       . spacemacs/cycle-narrow-widen)
      ;; ("s-2"    . my=split-other-window-below)
-     ;; ("s-3"    . my=split-other-window-right)
-     ("s-2"       . split-window-below)   ; SPC w -
-     ;; ("s-3"    . spacemacs/window-split-double-columns) ; SPC w 2
-     ("s-3"       . split-window-right-and-focus) ; SPC w 3
+     ("s-2"       . split-window-below)   ; ~SPC w -~
+     ;; see ~SPC w /~ and ~SPC w 2~
+     ;; ("s-3"    . spacemacs/window-split-double-columns)
+     ;; see ~SPC w /~ and ~SPC w 2~
+     ("s-3"       . split-window-right-and-focus)
      ("s-9"       . my=load-layout)
      ("s-+"       . my=eval-bind-keys-and-chords)
      ("<s-kp-add>". my=eval-bind-keys-and-chords)
@@ -1295,7 +1300,7 @@ before packages are loaded."
      ;; <S-tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
      ("<s-tab>" . spacemacs/alternate-buffer)
      ;; ("<s-tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
-     ("<C-f2>"  . avy-goto-line)
+     ("<C-f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
      ("C-s-/"   . avy-goto-line)
 
      ;; fd - evil-escape from insert state and everything else
@@ -1311,7 +1316,7 @@ before packages are loaded."
      ("s-l"                . lazy-helm/spacemacs/resume-last-search-buffer)
      ("s-v" . my=evil-select-pasted)
 
-     ;; TODO difference between insert and insertchar
+     ;; TODO what's the difference between insert and insertchar?
      ("<S-s-insert>" . my=yank-and-select)
 
      ("s-L"        . spacemacs/cycle-line-number-types)
@@ -1473,12 +1478,25 @@ before packages are loaded."
                ("ms" . my=elisp-insert-message)
                ("df" . my=elisp-insert-defun))
 
+  ;; The read syntax #'. See
+  ;; https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html
+  (defun endless/sharp ()
+    "Insert #' unless in a string or comment."
+    (interactive)
+    (call-interactively #'self-insert-command)
+    (let ((ppss (syntax-ppss)))
+      (unless (or (elt ppss 3)
+                  (elt ppss 4)
+                  (eq (char-after) ?'))
+        (insert "'"))))
+
   (bind-keys :map emacs-lisp-mode-map
              ("C-s-l" . my=elisp-insert-let)
              ("C-s-m" . my=elisp-insert-message)
              ("C-s-p" . my=elisp-insert-message)
              ("C-s-d" . my=elisp-insert-defun)
              ("s-d"   . my=eval-current-defun)
+             ("#"     . endless/sharp)
              )
 
   (dolist (state-map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
@@ -1546,20 +1564,29 @@ before packages are loaded."
 
   ;; See
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
-  (advice-add 'whitespace-cleanup
-              :after 'my=whitespace-cleanup-msg)
-  (advice-add 'evil-avy-goto-char-timer
-              :after 'my=evil-avy-goto-char-timer-msg)
-  (advice-add 'avy-goto-line
-              :after 'my=avy-goto-line-msg)
-  (advice-add 'evil-ex-search-next     :after 'evil-scroll-line-to-center)
-  (advice-add 'evil-ex-search-previous :after 'evil-scroll-line-to-center)
-  (advice-add 'ediff-quit              :around 'my=disable-y-or-n-p)
-  (advice-add 'helm-mini               :before 'my=helm-mini)
 
-  ;; (advice-remove 'magit-stash :after)
-  ;; (defun my=magit-stash-no-msg () (magit-stash ""))
-  ;; (advice-add 'magit-stash :after #'my=magit-stash-no-msg)
+  (advice-add
+   #'split-window-right-and-focus
+     :after (defun my=recenter-top-bottom ()
+              ;; needed cause the (recenter-top-bottom) has (interactive "P")
+              (recenter-top-bottom)))
+  (advice-add
+   #'whitespace-cleanup
+     :after (defun my=whitespace-cleanup ()
+              (message "whitespace-cleanup")))
+  (advice-add
+   #'evil-avy-goto-char-timer
+     :after (defun my=evil-avy-goto-char-timer ()
+              (message "evil-avy-goto-char-timer: SPC j j, <f2>")))
+  (advice-add
+   #'avy-goto-line
+     :after (defun my=avy-goto-line ()
+              (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
+  (advice-add #'evil-ex-search-next      :after #'evil-scroll-line-to-center)
+  (advice-add #'evil-ex-search-previous  :after #'evil-scroll-line-to-center)
+
+  (advice-add #'ediff-quit :around #'my=disable-y-or-n-p)
+  (advice-add #'helm-mini  :before #'my=helm-mini)
 
   ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
   ;; layers/+misc/multiple-cursors/packages.el

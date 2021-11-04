@@ -82,17 +82,27 @@ Example: (my=buffer-mode (current-buffer))"
   (with-current-buffer buffer-or-string
     major-mode))
 
+(defun my=other-window ()
+  "straight jump to the next window: SPC 0, SPC 1 ..."
+  (interactive)
+  (other-window 1)
+  ;; (my=flash-active-buffer)
+  (beacon-blink))
+
 (defun my=split-other-window-and (f)
   (funcall f)
-  (other-window 1))
+  (recenter-top-bottom))
 
 (defun my=split-other-window-below ()
   (interactive)
   (my=split-other-window-and 'split-window-below))
 
-(defun my=split-other-window-right ()
+(defun my=split-window-right-and-focus (&optional size)
   (interactive)
-  (my=split-other-window-and 'split-window-right))
+  ;; (split-window-right-and-focus)
+  (my=split-other-window-and 'split-window-right-and-focus)
+  ;; (my=split-other-window-and 'split-window-right)
+  )
 
 (defun my=evil-insert ()
   "Switch to evil insert mode."
@@ -135,9 +145,6 @@ Example: (my=buffer-mode (current-buffer))"
   (ediff-buffers (buffer-name) ;; current buffer is the buffer-a
                  (buffer-name (other-window 1))))
 
-(defun my=whitespace-cleanup-msg ()
-  (message "whitespace-cleanup"))
-
 (defun my=whitespace-mode-toggle ()
   (interactive)
   (whitespace-mode 'toggle)
@@ -171,17 +178,11 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
     ;; (message "was-visual-state-p: %s" was-visual-state-p)
     ))
 
-(defun my=evil-avy-goto-char-timer-msg ()
-  (message "evil-avy-goto-char-timer: SPC j j, f, <f2>"))
-
 (defun my=evil-paste-after-from-0 ()
   ;; TODO evaluate: paste copied text multiple times
   (interactive)
   (let ((evil-this-register ?0))
     (call-interactively 'evil-paste-after)))
-
-(defun my=avy-goto-line-msg ()
-  (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/"))
 
 (defun my=evil-select-pasted ()
   "See also https://emacs.stackexchange.com/a/21093"
@@ -379,10 +380,17 @@ E.g.:
      (interactive)
      ,@body))
 
-(defun my/other-window ()
+
+(defun my=flash-active-buffer ()
+  "Blip background color of the active buffer."
   (interactive)
-  (other-window 1)
-  (my/flash-active-buffer))
+  (run-at-time "200 millisec" nil
+               (lambda (remap-cookie)
+                 (face-remap-remove-relative remap-cookie))
+               (face-remap-add-relative
+                ;; 'hl-line ;; doesn't work on the "@@-lines" in magit buffers
+                'default
+                'flash-active-buffer-face)))
 
 (defun my=iedit-mode-toggle ()
   "Match only occurrences in current function and the comment right above it."
@@ -858,6 +866,7 @@ Thanks to https://stackoverflow.com/a/2238589"
 Thanks to:
 https://stackoverflow.com/a/19555234
 https://github.com/emacsorphanage/helm-themes/issues/5#issue-210637069"
+  (interactive)
   (when (find spacemacs--cur-theme
               '(spacemacs-light
                 heroku))
