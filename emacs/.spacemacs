@@ -283,7 +283,6 @@ This function should only modify configuration layer settings."
      ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
      ;;          ;; )
      ;;         )
-     (equake :variables equake-default-shell 'term)
      )
 
    ;; List of additional packages that will be installed without being wrapped
@@ -861,7 +860,6 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (equake-mode)
 
   ;; typescript-indent-level is overridden by project-specific .editorconfig
   ;; (setq-default typescript-indent-level 4)

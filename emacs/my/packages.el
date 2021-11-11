@@ -31,6 +31,7 @@
 
 (defconst my-packages
   '(
+    ;; (equake :variables equake-default-shell 'term)
     simple
     (copy-sexp
      ;; "~/dev/copy-sexp/"
@@ -74,6 +75,11 @@ Each entry is either:
 
 (setq
  my=iedit-mode nil)
+
+(defun my/post-init-equake ()
+  ;; Under xfce4-keyboard-settings -> Application shortcuts
+  ;; set: emacsclient -n -e '(equake-invoke)'
+  (equake-mode))
 
 (defun my/post-init-simple ()
   )
