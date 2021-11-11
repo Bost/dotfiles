@@ -301,8 +301,9 @@ Repeated invocations toggle between the two most recently open buffers."
   "Connect (if not connected yet) and switch to cider repl buffer"
   (interactive)
   (unless (cider-connected-p)
-    ;; previously (cider-connect-clj)
-    (cider-jack-in-clj nil))
+    (cider-jack-in-clj nil) ; previously (cider-connect-clj)
+    ;; TODO wait until the repl gets started
+    )
   (cider-switch-to-repl-buffer))
 
 (defun my=copy-to-clipboard ()
