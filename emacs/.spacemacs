@@ -1400,7 +1400,7 @@ before packages are loaded."
              ("<f5>" . revert-buffer)
              ("C-h" . my=dired-dotfiles-toggle)
              ("<backspace>" . dired-up-directory)
-             ("<S-delete>"  . dired-do-delete))
+             ("<S-delete>"  . my=dired-do-delete))
 
   (bind-keys :map paredit-mode-map
              ;; these keybindings don't work in the cider-repl-mode-map

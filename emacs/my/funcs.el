@@ -862,6 +862,14 @@ Thanks to https://stackoverflow.com/a/2238589"
       (progn (revert-buffer) ; otherwise just revert to re-show
              (set (make-local-variable 'dired-dotfiles-show-p) t)))))
 
+(defun my=dired-do-delete ()
+  (interactive)
+  (let ((old-val dired-deletion-confirmer))
+    ;; (message "[%s] old-val: %s" 'my=dired-do-delete old-val)
+    (setq dired-deletion-confirmer '(lambda (_) t))
+    (dired-do-delete)
+    (setq dired-deletion-confirmer old-val)))
+
 (defun my=spacemacs-light--highlight-current-line ()
   "Highlight current line of the `spacemacs-light' theme.
 Thanks to:
