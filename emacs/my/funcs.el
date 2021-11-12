@@ -32,50 +32,6 @@
                 (forward-line 1)))))
         (forward-line 1)))))
 
-(defun my=grep (command-args)
-  "Run Grep with user-specified COMMAND-ARGS, collect output in a buffer.
-While Grep runs asynchronously, you can use \\[next-error] (M-x next-error),
-or \\<grep-mode-map>\\[compile-goto-error] in the *grep* \
-buffer, to go to the lines where Grep found
-matches.  To kill the Grep job before it finishes, type \\[kill-compilation].
-
-Noninteractively, COMMAND-ARGS should specify the Grep command-line
-arguments.
-
-For doing a recursive `grep', see the `rgrep' command.  For running
-Grep in a specific directory, see `lgrep'.
-
-This command uses a special history list for its COMMAND-ARGS, so you
-can easily repeat a grep command.
-
-A prefix argument says to default the COMMAND-ARGS based on the current
-tag the cursor is over, substituting it into the last Grep command
-in the Grep command history (or into `grep-command' if that history
-list is empty)."
-  (interactive
-   (progn
-     (grep-compute-defaults)
-     (let ((default (grep-default-command)))
-       (list (read-shell-command "Run grep (like this): "
-                                 (if current-prefix-arg default
-                                   ;; grep-command
-                                   (format "%s %s %s %s %s %s"
-                                           "grep"
-                                           "-nir"
-                                           "\"latte \\\"1.0b1-SNAPSHOT\\\"\""
-                                           "--exclude-dir={.git,target,LaTTe-upstream,latte-euroclojure-2016}"
-                                           "--include=\*.{clj,cljs,cljc}"
-                                           (format "%s/dec/latte-central/" (getenv "HOME"))))
-                                 'grep-history
-                                 (if current-prefix-arg nil default))))))
-  (grep--save-buffers)
-  ;; Setting process-setup-function makes exit-message-function work
-  ;; even when async processes aren't supported.
-  (compilation-start (if (and grep-use-null-device null-device)
-                         (concat command-args " " null-device)
-                       command-args)
-                     'grep-mode))
-
 (defun my=buffer-mode (buffer-or-string)
   "Returns the major mode associated with a buffer.
 Example: (my=buffer-mode (current-buffer))"
@@ -170,7 +126,8 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
               (mark-pos (mark))
               (point-pos (point)))
           (evil-exit-visual-state) ;; (evil-exit-visual-and-repeat)
-          (if (< mark-pos point-pos) ;; can't be executed in the let-block. WTF???
+          ;; can't be executed in the let-block. WTF???
+          (if (< mark-pos point-pos)
               (exchange-point-and-mark)) ;; moving back
           (set-mark (point))
           (right-char (length sel-text))))
@@ -668,7 +625,9 @@ Otherwise toggle the reader comment."
   (interactive)
   (let* ((case ":a")
          (prm (format
-               "{:day %s :threshold %s :threshold-increase %s :case %s :stats %s}"
+               (concat
+                "{:day %s :threshold %s"
+                " :threshold-increase %s :case %s :stats %s}")
                (format "(count (%s.api.expdev07/raw-dates))" my=bot-ns)
                my=bot-ns
                (format "(%s.common/min-threshold %s)" my=bot-ns case)
@@ -676,14 +635,16 @@ Otherwise toggle the reader comment."
                case
                (format "(%s.api.v1/pic-data)" my=bot-ns))))
     (my=repl-insert-cmd
-     (format "(cljplot.core/show (%s.plot/calc-aggregation-img %s))"
+     (format "(cljplot.core/show (%s.msg.graph.plot/aggregation-img %s))"
              my=bot-ns prm))))
 
 (defun my=show-pic-for-pred ()
   (interactive)
   (my=repl-insert-cmd
    (format
-    "(cljplot.core/show (%s.plot/calc-plot-country-img \"ZZ\" %s.plot/stats %s.plot/report))"
+    (concat
+     "(cljplot.core/show (%s.msg.graph.plot/message-img \"ZZ\""
+     " %s.msg.graph.plot/stats %s.msg.graph.plot/report))")
     my=bot-ns my=bot-ns my=bot-ns my=bot-ns)))
 
 (defun my=stop-synths-metronoms ()
@@ -814,7 +775,8 @@ Thanks to https://stackoverflow.com/a/2238589"
 ;;                                       (mapcar 'all-major-mode-variants
 ;;                                               (loop for x being the symbols
 ;;                                                     if (fboundp x)
-;;                                                     collect (symbol-name x))))))))
+;;                                                     collect
+;;                                                     (symbol-name x))))))))
 
 ;; for all derivatives of 'prog-mode 'text-mode :
 ;; https://emacs.stackexchange.com/questions/21406/find-all-modes-derived-from-a-mode
@@ -827,7 +789,8 @@ Thanks to https://stackoverflow.com/a/2238589"
 ;; (dolist (mode (buffer-list))
 ;;   (message "%s; relevant %s"
 ;;            mode
-;;            (if (provided-mode-derived-p (my=buffer-major-mode mode) 'prog-mode 'text-mode)
+;;            (if (provided-mode-derived-p (my=buffer-major-mode mode)
+;;                                         'prog-mode 'text-mode)
 ;;                ;; (add-hook 'after-change-functions 'feng-buffer-change-hook)
 ;;                (add-hook (get-hook (my=buffer-major-mode mode))
 ;;                          'my=save-last-edited-buffer))))
@@ -853,7 +816,8 @@ Thanks to https://stackoverflow.com/a/2238589"
   "Show/hide dot-files"
   (interactive)
   (when (equal major-mode 'dired-mode)
-    (if (or (not (boundp 'dired-dotfiles-show-p)) dired-dotfiles-show-p) ; if currently showing
+    ;; if currently showing
+    (if (or (not (boundp 'dired-dotfiles-show-p)) dired-dotfiles-show-p)
         (progn
           (set (make-local-variable 'dired-dotfiles-show-p) nil)
           (message "h")
@@ -869,4 +833,3 @@ Thanks to https://stackoverflow.com/a/2238589"
     (setq dired-deletion-confirmer '(lambda (_) t))
     (dired-do-delete)
     (setq dired-deletion-confirmer old-val)))
-
