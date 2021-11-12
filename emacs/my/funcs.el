@@ -870,19 +870,3 @@ Thanks to https://stackoverflow.com/a/2238589"
     (dired-do-delete)
     (setq dired-deletion-confirmer old-val)))
 
-(defun my=spacemacs-light--highlight-current-line ()
-  "Highlight current line of the `spacemacs-light' theme.
-Thanks to:
-https://stackoverflow.com/a/19555234
-https://github.com/emacsorphanage/helm-themes/issues/5#issue-210637069"
-  (interactive)
-  (when (find spacemacs--cur-theme
-              '(spacemacs-light
-                heroku))
-    (global-hl-line-mode 1)
-    (set-face-background 'hl-line
-                         (case spacemacs--cur-theme
-                           ('spacemacs-light "#dacecb")
-                           ('heroku "black")))
-    ;; keep syntax highlighting in the current line:
-    (set-face-foreground 'highlight nil)))

@@ -164,8 +164,7 @@ This function should only modify configuration layer settings."
      ;; Show commands as you type in a separate buffer
      ;; command-log  ;; deprecated
 
-     (colors :variables
-             colors-enable-nyan-cat-progress-bar t)
+     colors
 
      ;; (java :variables
      ;;       eclim-eclipse-dirs "~/eclipse-java-neon"
@@ -928,6 +927,7 @@ before packages are loaded."
   ;; (global-prettify-symbols-mode +1)
 
   (setq
+   global-hl-line-sticky-flag t
 
    ;; TODO create toggle for evil-ex-substitute-interactive-replace
    evil-ex-substitute-interactive-replace t ;; nil/t. default is t
@@ -1040,7 +1040,7 @@ before packages are loaded."
                       :foreground nil)
 
   (blink-cursor-mode t)
-  (my=spacemacs-light--highlight-current-line)
+  (global-hl-line-mode +1)
   (beacon-mode 1)
 
   (key-chord-mode 1)
