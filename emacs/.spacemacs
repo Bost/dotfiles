@@ -1399,11 +1399,13 @@ before packages are loaded."
              ("C-3" . magit-section-show-level-3)
              ("C-4" . magit-section-show-level-4))
 
-  (bind-keys :map dired-mode-map
-             ("<f5>" . revert-buffer)
-             ("C-h" . my=dired-dotfiles-toggle)
-             ("<backspace>" . dired-up-directory)
-             ("<S-delete>"  . my=dired-do-delete))
+  (bind-keys
+   :map dired-mode-map
+   ("<f5>"        . revert-buffer)
+   ("C-s-h"       . my=dired-dotfiles-toggle) ;; "C-H" doesn't work WTF???
+   ("<backspace>" . (lambda () (interactive) (find-alternate-file "..")))
+   ("<return>"    . dired-find-alternate-file)
+   ("<S-delete>"  . my=dired-do-delete))
 
   (bind-keys :map paredit-mode-map
              ;; these keybindings don't work in the cider-repl-mode-map
