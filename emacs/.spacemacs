@@ -1386,6 +1386,9 @@ before packages are loaded."
   ;; ("<C-insert>"    .)
 
   (bind-keys :map magit-mode-map
+             ;; Workaround for the
+             ;; https://github.com/emacs-evil/evil-collection/issues/554
+             ("C-v" . evil-visual-line)
              ("1"   . magit-section-show-level-1-all)
              ("2"   . magit-section-show-level-2-all)
              ("3"   . magit-section-show-level-3-all)
