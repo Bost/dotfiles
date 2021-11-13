@@ -1179,21 +1179,16 @@ function symbol (unquoted)."
         #'nconc
         (mapcar
          (lambda (form)
-           (if maps
-               (if (functionp (cdr form))
-                   (mapcar
-                    #'(lambda (m)
-                        `(bind-chord ,(car form) ',(cdr form) ,m)) maps)
+           (let ((command `(if (functionp ',(cdr form))
+                               ',(cdr form)
+                             #'(lambda () (interactive) ,(cdr form)))))
+             (if maps
                  (mapcar
                   #'(lambda (m)
-                      `(bind-chord ,(car form)
-                                   #'(lambda () (interactive) ,(cdr form))
-                                   ,m)) maps))
-             (if (functionp (cdr form))
-                 `((bind-chord ,(car form) ',(cdr form)))
-               `((bind-chord ,(car form)
-                             #'(lambda () (interactive) ,(cdr form)))))))
+                      `(bind-chord ,(car form) ,command ,m)) maps)
+               `((bind-chord ,(car form) ,command)))))
          key-bindings)))))
+
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by <s-+> replacement for e.g.:
   (global-set-key (kbd \"<s-f2>\") \\='eshell)
@@ -1212,7 +1207,7 @@ function symbol (unquoted)."
     (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
       ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
       (bind-chords :map state-map
-                   ("pr" . (my=insert-str "(println \"\" )" 3))
+                   ("pr" . (my=insert-str "(println \"\")" 2))
                    ("rm" . (my=insert-str "(remove (fn []))" 3))
                    ("fi" . my=clj-insert-filter-fn)
                    ("de" . my=clj-insert-defn)
