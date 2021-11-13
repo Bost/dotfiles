@@ -917,6 +917,8 @@ before packages are loaded."
   (yas-global-mode 1)
   (global-flycheck-mode)
   (add-hook 'after-init-hook #'global-flycheck-mode)
+
+  ;; Company is a modular completion framework.
   (global-company-mode)
 
   (add-to-list 'auto-mode-alist '("\\.cob" . cobol-mode))
@@ -927,8 +929,6 @@ before packages are loaded."
   ;; (global-prettify-symbols-mode +1)
 
   (setq
-   global-hl-line-sticky-flag t
-
    ;; TODO create toggle for evil-ex-substitute-interactive-replace
    evil-ex-substitute-interactive-replace t ;; nil/t. default is t
 
@@ -967,10 +967,6 @@ before packages are loaded."
    ;; on GuixOS browse-url-firefox-program evaluates to "icecat" by default
    browse-url-firefox-program "firefox"
    browse-url-browser-function 'browse-url-default-browser
-   ;; '(("wikipedia\\.org" . browse-url-firefox)
-   ;;   ("github" . browse-url-chromium)
-   ;;   ("thefreedictionary\\.com" . eww-browse-url)
-   ;;   ("." . browse-url-default-browser))
 
    font-latex-fontify-script nil
    org-latex-listings 'minted
@@ -984,9 +980,32 @@ before packages are loaded."
    ;;   "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
    ;; )
 
-   key-chord-two-keys-delay 0.02 ;; default is 0.1
+
    ;; color-identifiers-mode t
    )
+
+  (setq-default
+   ;; Truncate lines in every buffer. Overridden by
+   ;; `truncate-partial-width-windows'
+   ;; See also: ;; (setq-default global-visual-line-mode t)
+   ;; Using `setq-default' makes it default for all buffers.
+   truncate-lines t)
+
+  (blink-cursor-mode t)
+
+  (progn
+    (setq
+     global-hl-line-sticky-flag t)
+    (global-hl-line-mode +1))
+
+  (beacon-mode 1)
+
+  (progn
+    (setq
+     ;; Max time delay between two key presses to be considered a key chord.
+     ;; default 0.1
+     key-chord-two-keys-delay 0.02)
+    (key-chord-mode 1))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -1013,41 +1032,6 @@ before packages are loaded."
      ))
 
   (defalias 'save-selected-text 'write-region)
-
-  ;; Alternativelly in the package auto-dim-other-buffers
-  ;; define and use some of the faces:
-  ;;     font-lock-builtin-face
-  ;;     font-lock-comment-delimiter-face
-  ;;     font-lock-comment-face
-  ;;     font-lock-constant-face
-  ;;     font-lock-function-name-face
-  ;;     font-lock-negation-char-face
-  ;;     font-lock-preprocessor-face
-  ;;     font-lock-regexp-grouping-construct
-  ;;     font-lock-regexp-grouping-backslash
-  ;;     font-lock-string-face
-  ;;     font-lock-type-face
-  ;;     font-lock-variable-name-face
-  ;;     font-lock-warning-face
-  ;;     font-lock-doc-face
-  ;;     font-lock-keyword-face
-  ;;     font-lock-comment-face
-  ;; analog to auto-dim-other-buffers-face
-  (make-face 'flash-active-buffer-face)
-
-  (set-face-attribute 'flash-active-buffer-face nil
-                      :background "black"
-                      :foreground nil)
-
-  (blink-cursor-mode t)
-  (global-hl-line-mode +1)
-  (beacon-mode 1)
-
-  (key-chord-mode 1)
-
-  ;; (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
-  ;;   (dolist (key '("<f5>" "<f6>" "<f7>"))
-  ;;     (unbind-key key state-map)))
 
   (defun my=load-layout ()
     "docstring"
@@ -1206,29 +1190,26 @@ function symbol (unquoted)."
 
     (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
       ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
-      (bind-chords :map state-map
-                   ("pr" . (my=insert-str "(println \"\")" 2))
-                   ("rm" . (my=insert-str "(remove (fn []))" 3))
-                   ("fi" . my=clj-insert-filter-fn)
-                   ("de" . my=clj-insert-defn)
-                   ("db" . my=clj-insert-debugf)
-                   ("dg" . my=clj-insert-debugf)
-                   ("df" . my=clj-insert-fn)
-                   ("ds" . my=clj-insert-doseq)
-                   ("fn" . my=clj-insert-fn)
-                   ("do" . my=clj-insert-do)
-                   ("co" . my=clj-insert-comp)
-                   ("cd" . my=insert-clojuredocs)
-                   ("pa" . my=insert-partial)
-                   ("le" . my=clj-insert-let)
-                   ("fo" . my=clj-insert-for)
-                   ("ty" . my=clj-insert-type)
-                   ("ma" . my=clj-insert-map-fn)))
- ;; Max time delay between two key presses to be considered a key chord
-;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
-;; Max time delay between two presses of the same key to be considered a key
-;; chord. Should normally be a little longer than `key-chord-two-keys-delay'.
-;; (setq key-chord-one-key-delay 0.2) ; default 0.2
+      (bind-chords
+       :map state-map
+       ("pr" . (my=insert-str "(println \"\")" 2))
+       ("rm" . (my=insert-str "(remove (fn []))" 3))
+       ("fi" . my=clj-insert-filter-fn)
+       ("de" . my=clj-insert-defn)
+       ("db" . my=clj-insert-debugf)
+       ("dg" . my=clj-insert-debugf)
+       ("df" . my=clj-insert-fn)
+       ("ds" . my=clj-insert-doseq)
+       ("fn" . my=clj-insert-fn)
+       ("do" . my=clj-insert-do)
+       ("co" . my=clj-insert-comp)
+       ("cd" . my=insert-clojuredocs)
+       ("pa" . my=insert-partial)
+       ("le" . my=clj-insert-let)
+       ("fo" . my=clj-insert-for)
+       ("ty" . my=clj-insert-type)
+       ("ma" . my=clj-insert-map-fn)))
+
     (dolist (state-map `(,global-map))
       (bind-chords :map state-map
                    ("KK" . my=switch-to-previous-buffer)
@@ -1409,19 +1390,20 @@ function symbol (unquoted)."
   ;; (unbind-key "<C-insert>" &optional keymap)
   ;; ("<C-insert>"    .)
 
-  (bind-keys :map magit-mode-map
-             ;; Workaround for the
-             ;; https://github.com/emacs-evil/evil-collection/issues/554
-             ("C-v" . evil-visual-line)
-             ("1"   . magit-section-show-level-1-all)
-             ("2"   . magit-section-show-level-2-all)
-             ("3"   . magit-section-show-level-3-all)
-             ("4"   . magit-section-show-level-4-all)
-             ;; overshadows `(digit-argument <n>)'; use C-M-<n> instead
-             ("C-1" . magit-section-show-level-1)
-             ("C-2" . magit-section-show-level-2)
-             ("C-3" . magit-section-show-level-3)
-             ("C-4" . magit-section-show-level-4))
+  (bind-keys
+   :map magit-mode-map
+   ;; Workaround for the
+   ;; https://github.com/emacs-evil/evil-collection/issues/554
+   ("C-v" . evil-visual-line)
+   ("1"   . magit-section-show-level-1-all)
+   ("2"   . magit-section-show-level-2-all)
+   ("3"   . magit-section-show-level-3-all)
+   ("4"   . magit-section-show-level-4-all)
+   ;; overshadows `(digit-argument <n>)'; use C-M-<n> instead
+   ("C-1" . magit-section-show-level-1)
+   ("C-2" . magit-section-show-level-2)
+   ("C-3" . magit-section-show-level-3)
+   ("C-4" . magit-section-show-level-4))
 
   (bind-keys
    :map dired-mode-map
@@ -1437,59 +1419,63 @@ function symbol (unquoted)."
              ("<C-left>"     . left-word))
 
   (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
-    (bind-keys :map state-map
-               ;; on the german keyboard the '#' is next to Enter
-               ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
-               ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
+    (bind-keys
+     :map state-map
+     ;; on the german keyboard the '#' is next to Enter
+     ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
+     ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
 
-               ("<f5>"  . my=telegram-restart)
-               ("<f6>"  . my=web-restart)
-               ("<f7>"  . my=show-pic)
-               ("<f8>"  . my=show-pic-for-pred)
+     ("<f5>"  . my=telegram-restart)
+     ("<f6>"  . my=web-restart)
+     ("<f7>"  . my=show-pic)
+     ("<f8>"  . my=show-pic-for-pred)
 
-               ("s-X"   . my=switch-to-repl-start-figwheel)
-               ("s-e"   . cider-eval-last-sexp)
-               ("s-j"   . cider-format-defun)
-               ("s-i"   . cljr-rename-symbol)
-               ))
+     ("s-X"   . my=switch-to-repl-start-figwheel)
+     ("s-e"   . cider-eval-last-sexp)
+     ("s-j"   . cider-format-defun)
+     ("s-i"   . cljr-rename-symbol)
+     ))
 
-  (bind-keys :map cider-repl-mode-map
-             ("<menu>"       . my=stop-synths-metronoms)
-             ("s-h"          . helm-cider-history)
-             ("s-j"          . cider-format-defun)
-             ("s-x"          . cider-switch-to-last-clojure-buffer)
-             ("M-s-l"  . my=cider-reload-ns-from-file)
-             ("s-u"    . my=cider-reload-ns-from-file)
-             ;; invoke from clojure buffer
-             ("<C-s-delete>" . cider-repl-clear-buffer))
+  (bind-keys
+   :map cider-repl-mode-map
+   ("<menu>" . my=stop-synths-metronoms)
+   ("s-h"    . helm-cider-history)
+   ("s-j"    . cider-format-defun)
+   ("s-x"    . cider-switch-to-last-clojure-buffer)
+   ("M-s-l"  . my=cider-reload-ns-from-file)
+   ("s-u"    . my=cider-reload-ns-from-file)
+   ;; invoke from clojure buffer
+   ("<C-s-delete>" . cider-repl-clear-buffer))
 
-  (bind-keys :map clojure-mode-map
-             ("s-d"    . cider-eval-defun-at-point)
-             ("s-x"    . my=cider-switch-to-repl-buffer)
-             ("C-s-c"  . cider-connect-clj)
-             ("C-s-j"  . cider-jack-in)
-             ;; ("s-r" . cider-eval-last-expression-in-repl)
-             ("M-s-l"  . my=cider-save-and-load-current-buffer)
-             ("s-u"    . my=cider-save-and-load-current-buffer)
-             ("M-s-n"  . cider-repl-set-ns)
-             ("s-t"    . cider-test-run-tests)
+  (bind-keys
+   :map clojure-mode-map
+   ("s-d"    . cider-eval-defun-at-point)
+   ("s-x"    . my=cider-switch-to-repl-buffer)
+   ("C-s-c"  . cider-connect-clj)
+   ("C-s-j"  . cider-jack-in)
+   ;; ("s-r" . cider-eval-last-expression-in-repl)
+   ("M-s-l"  . my=cider-save-and-load-current-buffer)
+   ("s-u"    . my=cider-save-and-load-current-buffer)
+   ("M-s-n"  . cider-repl-set-ns)
+   ("s-t"    . cider-test-run-tests)
 
-             ;; TODO see global-map keybindings
-             ;; ("s-."  . cider-find-var)
-             ;; ("s-,"  . cider-pop-back)
-             ;; TODO s-M does not work in REPL buffer
+   ;; TODO see global-map keybindings
+   ;; ("s-."  . cider-find-var)
+   ;; ("s-,"  . cider-pop-back)
+   ;; TODO s-M does not work in REPL buffer
 
-             ;; Reload modified and unloaded namespaces on the classpath
-             ("s-o"     . cider-ns-refresh)
+   ;; Reload modified and unloaded namespaces on the classpath
+   ("s-o"     . cider-ns-refresh)
 
-             ;; Send a (require ’ns :reload) to the REPL
-             ;; ("s-o"  . cider-ns-reload)
+   ;; Send a (require ’ns :reload) to the REPL
+   ;; ("s-o"  . cider-ns-reload)
 
-             ("C-s-o"   . my=cider-clear-compilation-highlights))
+   ("C-s-o"   . my=cider-clear-compilation-highlights))
 
-  (bind-chords :map emacs-lisp-mode-map
-               ("ms" . my=elisp-insert-message)
-               ("df" . my=elisp-insert-defun))
+  (bind-chords
+   :map emacs-lisp-mode-map
+   ("ms" . my=elisp-insert-message)
+   ("df" . my=elisp-insert-defun))
 
   ;; The read syntax #'. See
   ;; https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html
@@ -1503,34 +1489,37 @@ function symbol (unquoted)."
                   (eq (char-after) ?'))
         (insert "'"))))
 
-  (bind-keys :map emacs-lisp-mode-map
-             ("C-s-l" . my=elisp-insert-let)
-             ("C-s-m" . my=elisp-insert-message)
-             ("C-s-p" . my=elisp-insert-message)
-             ("C-s-d" . my=elisp-insert-defun)
-             ("s-d"   . my=eval-current-defun)
-             ("#"     . endless/sharp)
-             )
+  (bind-keys
+   :map emacs-lisp-mode-map
+   ("C-s-l" . my=elisp-insert-let)
+   ("C-s-m" . my=elisp-insert-message)
+   ("C-s-p" . my=elisp-insert-message)
+   ("C-s-d" . my=elisp-insert-defun)
+   ("s-d"   . my=eval-current-defun)
+   ("#"     . endless/sharp)
+   )
 
   (dolist (state-map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
                        ,clojure-mode-map))
-    (bind-keys :map state-map
-               ("<C-M-right>" . end-of-defun)       ; default is forward-sexp
-               ("<C-M-left>"  . beginning-of-defun) ; default is backward-sexp
-               ))
+    (bind-keys
+     :map state-map
+     ("<C-M-right>" . end-of-defun)       ; default is forward-sexp
+     ("<C-M-left>"  . beginning-of-defun) ; default is backward-sexp
+     ))
 
-  (bind-keys :map org-mode-map
-             ("<menu>"      . org-latex-export-to-pdf))
+  (bind-keys
+   :map org-mode-map
+   ("<menu>"      . org-latex-export-to-pdf))
 
-  (bind-keys :map prog-mode-map
-             ;; M-/  M-x hippie-expand
-             ("s-Q" . dumb-jump-quick-look)
-             ("s-h" . spacemacs/helm-jump-in-buffer)
-             ;; previously: helm-imenu-in-all-buffers
-             ("s-H" . lazy-helm/helm-imenu-in-all-buffers)
-             ("s-u" . eval-buffer)
-             ("s-e" . eval-last-sexp)
-             )
+  (bind-keys
+   :map prog-mode-map
+   ;; M-/  M-x hippie-expand
+   ("s-Q" . dumb-jump-quick-look)
+   ("s-h" . spacemacs/helm-jump-in-buffer)
+   ;; previously: helm-imenu-in-all-buffers
+   ("s-H" . lazy-helm/helm-imenu-in-all-buffers)
+   ("s-u" . eval-buffer)
+   ("s-e" . eval-last-sexp))
 
   (add-hook
    'LaTeX-mode-hook
@@ -1551,14 +1540,15 @@ function symbol (unquoted)."
     (add-hook
      hook
      (lambda ()
-       (bind-keys :map state-map
-                  ("s-o" . racket-run-and-switch-to-repl)
-                  ("<C-s-delete>" . my=racket-repl-clear)
-                  ("M-s-d"  . my=racket-insert-fn)
-                  ("M-s-p"  . my=insert-partial)
-                  ("C-s-p"  . my=racket-insert-log)
-                  ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
-                  ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)))))
+       (bind-keys
+        :map state-map
+        ("s-o" . racket-run-and-switch-to-repl)
+        ("<C-s-delete>" . my=racket-repl-clear)
+        ("M-s-d"  . my=racket-insert-fn)
+        ("M-s-p"  . my=insert-partial)
+        ("C-s-p"  . my=racket-insert-log)
+        ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
+        ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)))))
 
   (my=bind-keys-racket 'racket-mode-hook      'racket-mode-map)
   (my=bind-keys-racket 'racket-repl-mode-hook 'racket-repl-mode-map)
@@ -1579,21 +1569,21 @@ function symbol (unquoted)."
 
   (advice-add
    #'split-window-right-and-focus
-     :after (defun my=recenter-top-bottom ()
-              ;; needed cause the (recenter-top-bottom) has (interactive "P")
-              (recenter-top-bottom)))
+   :after (defun my=recenter-top-bottom ()
+            ;; needed cause the (recenter-top-bottom) has (interactive "P")
+            (recenter-top-bottom)))
   (advice-add
    #'whitespace-cleanup
-     :after (defun my=whitespace-cleanup ()
-              (message "whitespace-cleanup")))
+   :after (defun my=whitespace-cleanup ()
+            (message "whitespace-cleanup")))
   (advice-add
    #'evil-avy-goto-char-timer
-     :after (defun my=evil-avy-goto-char-timer ()
-              (message "evil-avy-goto-char-timer: SPC j j, <f2>")))
+   :after (defun my=evil-avy-goto-char-timer ()
+            (message "evil-avy-goto-char-timer: SPC j j, <f2>")))
   (advice-add
    #'avy-goto-line
-     :after (defun my=avy-goto-line ()
-              (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
+   :after (defun my=avy-goto-line ()
+            (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
   (advice-add #'evil-ex-search-next      :after #'evil-scroll-line-to-center)
   (advice-add #'evil-ex-search-previous  :after #'evil-scroll-line-to-center)
 
@@ -1608,12 +1598,14 @@ function symbol (unquoted)."
 
   (dolist (state-map `(,evil-motion-state-map ,evil-visual-state-map))
     ;; Move by screen lines instead of logical (long) lines
-    (bind-keys :map state-map
-               ("j" . evil-next-visual-line)
-               ("k" . evil-previous-visual-line)))
+    (bind-keys
+     :map state-map
+     ("j" . evil-next-visual-line)
+     ("k" . evil-previous-visual-line)))
 
-  (bind-keys :map evil-visual-state-map
-             ("p" . my=evil-paste-after-from-0))
+  (bind-keys
+   :map evil-visual-state-map
+   ("p" . my=evil-paste-after-from-0))
 
   ;; see also binding for <f2>
   ;; (bind-keys :map evil-normal-state-map
