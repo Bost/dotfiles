@@ -1158,39 +1158,68 @@ before packages are loaded."
   ;;   (let ((inhibit-read-only t))
   ;;     (erase-buffer)))
 
+  ;; See https://emacs.stackexchange.com/a/69010/36619
+  (defmacro bind-chords (&rest args)
+    "Bind multiple chords at once.
+
+Accepts keyword argument:
+:map - a keymap into which the keybindings should be added
+
+The rest of the arguments are conses of keybinding string and a
+function symbol (unquoted)."
+    (let* ((map (plist-get args :map))
+           (maps (if (listp map) map (list map)))
+           (key-bindings (progn
+                           (while (keywordp (car args))
+                             (pop args)
+                             (pop args))
+                           args)))
+      (macroexp-progn
+       (apply
+        #'nconc
+        (mapcar
+         (lambda (form)
+           (if maps
+               (if (functionp (cdr form))
+                   (mapcar
+                    #'(lambda (m)
+                        `(bind-chord ,(car form) ',(cdr form) ,m)) maps)
+                 (mapcar
+                  #'(lambda (m)
+                      `(bind-chord ,(car form)
+                                   #'(lambda () (interactive) ,(cdr form))
+                                   ,m)) maps))
+             (if (functionp (cdr form))
+                 `((bind-chord ,(car form) ',(cdr form)))
+               `((bind-chord ,(car form)
+                             #'(lambda () (interactive) ,(cdr form)))))))
+         key-bindings)))))
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by <s-+> replacement for e.g.:
   (global-set-key (kbd \"<s-f2>\") \\='eshell)
-  (key-chord-define-global \"fj\" (lambda () (interactive) (my=insert-str \"()\" 1)))"
+  (key-chord-define-global \"fj\" (lambda () (interactive)
+                                             (my=insert-str \"()\" 1)))"
     (interactive)
 
-    ;; (defun my=chord (chord text &optional n-chars-back)
-    ;;   "(key-chord-unset-global \"fj\")"
-    ;;   (key-chord-define-global chord
-    ;;                            (lambda ()
-    ;;                              (interactive)
-    ;;                              (if text
-    ;;                                  (progn
-    ;;                                    (insert text)
-    ;;                                    (if n-chars-back
-    ;;                                        (left-char n-chars-back)))
-    ;;                                (message "text is undefined" text)))))
-    ;; (my=chord "fj" "fox" 1)
-
-    ;; (key-chord-define-global "fj" (lambda () (interactive) (my=insert-str "()" 1)))
+    ;; (key-chord-define-global "fj" (lambda () (interactive)
+    ;;                                 (my=insert-str "()" 1)))
     ;; (key-chord-define clojure-mode-map "fj" nil)
     ;; (key-chord-define global-map "fj" nil)
 
     ;; see also `key-chord-unset-global' / `key-chord-unset-local'
     ;; TODO this dolist block must be manually evaluated
+
     (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
       ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
       (bind-chords :map state-map
-                   ("pr" . (lambda () (interactive) (my=insert-str "(println \"\" )" 3)))
-                   ("rm" . my=clj-insert-remove-fn)
+                   ("pr" . (my=insert-str "(println \"\" )" 3))
+                   ("rm" . (my=insert-str "(remove (fn []))" 3))
                    ("fi" . my=clj-insert-filter-fn)
                    ("de" . my=clj-insert-defn)
+                   ("db" . my=clj-insert-debugf)
+                   ("dg" . my=clj-insert-debugf)
                    ("df" . my=clj-insert-fn)
+                   ("ds" . my=clj-insert-doseq)
                    ("fn" . my=clj-insert-fn)
                    ("do" . my=clj-insert-do)
                    ("co" . my=clj-insert-comp)
@@ -1200,16 +1229,16 @@ before packages are loaded."
                    ("fo" . my=clj-insert-for)
                    ("ty" . my=clj-insert-type)
                    ("ma" . my=clj-insert-map-fn)))
-    ;; Max time delay between two key presses to be considered a key chord
-    ;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
-    ;; Max time delay between two presses of the same key to be considered a key chord.
-    ;; Should normally be a little longer than `key-chord-two-keys-delay'.
-    ;; (setq key-chord-one-key-delay 0.2) ; default 0.2
+ ;; Max time delay between two key presses to be considered a key chord
+;; (setq key-chord-two-keys-delay 0.1) ; default 0.1
+;; Max time delay between two presses of the same key to be considered a key
+;; chord. Should normally be a little longer than `key-chord-two-keys-delay'.
+;; (setq key-chord-one-key-delay 0.2) ; default 0.2
     (dolist (state-map `(,global-map))
       (bind-chords :map state-map
                    ("KK" . my=switch-to-previous-buffer)
                    ;; don't need to switch keyboards just because of parenthesis
-                   ("fj" . (lambda () (interactive) (my=insert-str "()" 1)))))
+                   ("fj" . (my=insert-str "()" 1))))
 
     ;; (setq evil-respect-visual-line-mode t) doesn't work easily
     (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
@@ -1427,28 +1456,7 @@ before packages are loaded."
                ("s-e"   . cider-eval-last-sexp)
                ("s-j"   . cider-format-defun)
                ("s-i"   . cljr-rename-symbol)
-
-               ("C-s-o" . my=clj-insert-do)
-               ("C-s-f" . my=clj-insert-filter-fn)
-               ("C-s-r" . my=clj-insert-remove-fn)
-               ("C-s-l" . my=clj-insert-let)
-               ("C-s-m" . my=clj-insert-map-fn)
-
-               ("C-s-d" . my=clj-insert-defn)
-
-               ("M-s-e" . my=clj-insert-def)
-               ("C-s-e" . my=clj-insert-def)
-
-               ("M-s-d" . my=clj-insert-fn)
-
-               ("M-s-c" . my=clj-insert-comp)
-               ("C-s-c" . my=clj-insert-comp)
-
-               ("M-s-p" . my=insert-partial)
-               ("C-s-p" . my=clj-insert-log)
-
-               ("C-s-s" . my=clj-insert-doseq)
-               ("C-s-t" . my=clj-insert-type)))
+               ))
 
   (bind-keys :map cider-repl-mode-map
              ("<menu>"       . my=stop-synths-metronoms)
@@ -1517,7 +1525,6 @@ before packages are loaded."
                ))
 
   (bind-keys :map org-mode-map
-             ;; my=interactive-lambda doesn't work
              ("<menu>"      . org-latex-export-to-pdf))
 
   (bind-keys :map prog-mode-map

@@ -333,11 +333,12 @@ E.g.:
 (global-set-key (kbd "<s-f9>") 'my=search-namespace)
 
 (defmacro my=interactive-lambda (&rest body)
-  ;; (defmacro my=interactive-lambda ...) prettyfied to "Λ"
-  `(lambda ()
-     (interactive)
-     ,@body))
+  "Thanks to https://emacs.stackexchange.com/a/10198/36619"
+  (let ((x (macroexp-parse-body body)))
+    `(lambda () ,@(car x) (interactive)
+       ,@(cdr x))))
 
+(defalias 'my=il 'my=interactive-lambda)
 
 (defun my=flash-active-buffer ()
   "Blip background color of the active buffer."
@@ -450,7 +451,7 @@ with the Echo Area."
   ;; (my=cider-save-and-load-current-buffer)
   )
 
-(defun my=clj-insert-log ()
+(defun my=clj-insert-debugd ()
   (interactive)
   (let* ((msg (if (equal major-mode 'clojurescript-mode)
                   "(.log js/console \"\")"
