@@ -1424,17 +1424,10 @@ function symbol (unquoted)."
      ;; on the german keyboard the '#' is next to Enter
      ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
      ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
-
-     ("<f5>"  . my=telegram-restart)
-     ("<f6>"  . my=web-restart)
-     ("<f7>"  . my=show-pic)
-     ("<f8>"  . my=show-pic-for-pred)
-
      ("s-X"   . my=switch-to-repl-start-figwheel)
      ("s-e"   . cider-eval-last-sexp)
      ("s-j"   . cider-format-defun)
-     ("s-i"   . cljr-rename-symbol)
-     ))
+     ("s-i"   . cljr-rename-symbol)))
 
   (bind-keys
    :map cider-repl-mode-map

@@ -606,48 +606,6 @@ Otherwise toggle the reader comment."
   (cider-switch-to-repl-buffer)
   (insert s))
 
-(setf my=bot-ns "corona") ;; "corona.bot"
-
-(defun my=telegram-restart ()
-  (interactive)
-  ;; (cider-switch-to-repl-buffer)
-  ;; (cider-switch-to-last-clojure-buffer)
-  (cider-ns-refresh)
-  (my=repl-insert-cmd
-   (format
-    "(System/gc) (swap! %s.api.cache/cache (fn [_])) (%s.telegram/restart)"
-    my=bot-ns my=bot-ns)))
-
-(defun my=web-restart ()
-  (interactive)
-  (my=repl-insert-cmd (format "(%s.web.core/webapp-restart)" my=bot-ns)))
-
-(defun my=show-pic ()
-  (interactive)
-  (let* ((case ":a")
-         (prm (format
-               (concat
-                "{:day %s :threshold %s"
-                " :threshold-increase %s :case %s :stats %s}")
-               (format "(count (%s.api.expdev07/raw-dates))" my=bot-ns)
-               my=bot-ns
-               (format "(%s.common/min-threshold %s)" my=bot-ns case)
-               (format "(%s.common/threshold-increase %s)" my=bot-ns case)
-               case
-               (format "(%s.api.v1/pic-data)" my=bot-ns))))
-    (my=repl-insert-cmd
-     (format "(cljplot.core/show (%s.msg.graph.plot/aggregation-img %s))"
-             my=bot-ns prm))))
-
-(defun my=show-pic-for-pred ()
-  (interactive)
-  (my=repl-insert-cmd
-   (format
-    (concat
-     "(cljplot.core/show (%s.msg.graph.plot/message-img \"ZZ\""
-     " %s.msg.graph.plot/stats %s.msg.graph.plot/report))")
-    my=bot-ns my=bot-ns my=bot-ns my=bot-ns)))
-
 (defun my=stop-synths-metronoms ()
   (interactive)
   (my=repl-insert-cmd "(stop)")
@@ -691,7 +649,7 @@ Otherwise toggle the reader comment."
 
 (defun my=cider-browse-all-ns (namespace)
   "E.g.:
-(my=cider-browse-all-ns \"corona\")
+(my=cider-browse-all-ns \"jim.jones\")
 
 Evil substitute / replace command:
   \\='<,\\='>s/\(.*\)/\"\\1\"/
@@ -711,10 +669,6 @@ Evil substitute / replace command:
        "                     #_(map (fn [symb] (ns-unmap nspace symb)))))))))"
        ))))
 
-(defun my=cider-browse-all-ns-corona ()
-  (interactive)
-  (my=cider-browse-all-ns "corona"))
-
 (defun my=cider-unmap-all-ns (namespace)
   "Substitute / replace:
 \\='<,\\='>s/\(.*\)/\"\\1\"/
@@ -732,10 +686,6 @@ Evil substitute / replace command:
        "                     (keys)"
        "                     (map (fn [symb] (ns-unmap nspace symb))))))))"
        ))))
-
-(defun my=cider-unmap-all-ns-corona ()
-  (interactive)
-  (my=cider-unmap-all-ns "corona"))
 
 (defun my=save-all-buffers ()
   "Thanks to https://stackoverflow.com/a/30468232"
