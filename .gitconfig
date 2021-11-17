@@ -60,3 +60,8 @@
 	autostash = true
 [core]
 	editor = vim
+[sendemail]
+	smtpserver = smtp.googlemail.com
+	smtpencryption = tls
+	smtpserverport = 587
+	smtpuser = Rostislav.Svoboda@gmail.com
