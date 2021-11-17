@@ -14,6 +14,10 @@ function fish_prompt --description 'Write out the prompt'
         set __fish_color_status (set_color -o red)
     end
 
+    if not set -q __git_cb
+        set __git_cb ":"(set_color brown)(git branch ^/dev/null | grep \* | sed 's/* //')(set_color normal)""
+    end
+
     switch "$USER"
         case root toor
             if not set -q __fish_prompt_cwd
@@ -28,6 +32,6 @@ function fish_prompt --description 'Write out the prompt'
             if not set -q __fish_prompt_cwd
                 set -g __fish_prompt_cwd (set_color $fish_color_cwd)
             end
-            printf '[%s] %s%s@%s %s%s %s(%s)%s \f\r> ' (date "+%H:%M:%S") "$__fish_color_blue" $USER (prompt_hostname) "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_prompt_normal"
+            printf '[%s] %s%s@%s %s%s %s(%s)%s %s\f\r> ' (date "+%H:%M:%S") "$__fish_color_blue" $USER (prompt_hostname) "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_prompt_normal" "$__git_cb"
     end
 end

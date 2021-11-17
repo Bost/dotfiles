@@ -61,8 +61,9 @@ This function should only modify configuration layer settings."
           erc-autojoin-channels-alist '(("irc.libera.chat" "#guix" "#systemcrafters"))
           ;; (setq
           erc-fill-column 120
+          ;; erc-fill-function 'erc-fill-variable
           erc-fill-function 'erc-fill-static
-          erc-fill-static-center 20
+          erc-fill-static-center 15
           ;; )
           ;; erc-server-list
           ;; '(("irc.libera.chat" :port "6667" :ssl t :nick "bost" :password ""))
@@ -358,7 +359,12 @@ This function should only modify configuration layer settings."
      helm-dictionary
 
      ;; telegram client for emacs
+     ;; TODO document the ln -s `which gcc` ~/bin/cc
      telega
+     ;; Error: Package fonts-symbola is unavailable
+     ;; fonts-symbola ;; for the telega
+     ;; Fonts installed using:
+     ;;   guix package -i font-gnu-{freefont,unifont}
 
      ;; dired-x is dired extended by:
      ;;     Omitting uninteresting files
@@ -524,7 +530,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(material
+   dotspacemacs-themes '(farmhouse-light-mod
+                         material
                          misterioso
                          spacemacs-light
                          spacemacs-dark
@@ -847,18 +854,24 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
-  ;; avoid creation of dotspacemacs/emacs-custom-settings
-  ;; https://github.com/syl20bnr/spacemacs/issues/7891
-  (setq custom-file "~/.emacs.d/.cache/.custom-settings")
-  (load custom-file)
+  (progn
+    (setq
+     ;; Avoid creation of dotspacemacs/emacs-custom-settings
+     ;; https://github.com/syl20bnr/spacemacs/issues/7891
+     custom-file "~/.emacs.d/.cache/.custom-settings")
+    (let ((ret-val (load custom-file)))
+      (message "custom-file loaded. ret-val %s" ret-val)))
 
+  (add-to-list 'package-archives
+               '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
+  )
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump.")
-
 
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
@@ -871,6 +884,8 @@ before packages are loaded."
   ;; (setq-default typescript-indent-level 4)
 
   ;; (sp-use-paredit-bindings)
+
+  ;; (evil-collection-info-setup)
 
   ;; tide - typescript IDE def func:
   (defun tide-setup-hook ()
@@ -1170,8 +1185,34 @@ function symbol (unquoted)."
                  (mapcar
                   #'(lambda (m)
                       `(bind-chord ,(car form) ,command ,m)) maps)
-               `((bind-chord ,(car form) ,command)))))
+               `((bind-chord ,(car form) ,command)))
+             ;; (if maps
+             ;;     (mapcar
+             ;;      #'(lambda (m)
+             ;;          `(bind-chord ,(car form) ',(cdr form) ,m)) maps)
+             ;;   `((bind-chord ,(car form) ',(cdr form))))
+             ))
          key-bindings)))))
+
+  ;;   (defmacro bind-chord (chord command &optional keymap)
+  ;;     "Bind CHORD to COMMAND in KEYMAP (`global-map' if not passed)."
+  ;;
+  ;;     (let* ((ommand `(if (functionp ,command)
+  ;;                              ,command
+  ;;                            #'(lambda () (interactive) ,command))))
+  ;;       (let ((key1 (logand 255 (aref chord 0)))
+  ;;             (key2 (logand 255 (aref chord 1))))
+  ;;         (if (eq key1 key2)
+  ;;             `(bind-key (vector 'key-chord ,key1 ,key2) ,ommand ,keymap)
+  ;;           `(progn
+  ;;              (bind-key (vector 'key-chord ,key1 ,key2) ,ommand ,keymap)
+  ;;              (bind-key (vector 'key-chord ,key2 ,key1) ,ommand ,keymap))))))
+  ;;
+  ;;   (bind-chords ("pq" . (my=insert-str "Yuuuuuuuuhuuu")))
+  ;;   (bind-chords ("pq"   . (my=insert-str "Yuuuuuuuuhuuu")))
+  ;;   (bind-keys ("C-c C-f"   . (my=insert-str "Yuuuuuuuuhuuu")))
+  ;;   (bind-keys :map global-map ("C-c C-f"   . (my=insert-str "Yuuuuuuuuhuuu")))
+
 
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by <s-+> replacement for e.g.:
