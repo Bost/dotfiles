@@ -1194,24 +1194,24 @@ function symbol (unquoted)."
              ))
          key-bindings)))))
 
-  ;;   (defmacro bind-chord (chord command &optional keymap)
-  ;;     "Bind CHORD to COMMAND in KEYMAP (`global-map' if not passed)."
-  ;;
-  ;;     (let* ((ommand `(if (functionp ,command)
-  ;;                              ,command
-  ;;                            #'(lambda () (interactive) ,command))))
-  ;;       (let ((key1 (logand 255 (aref chord 0)))
-  ;;             (key2 (logand 255 (aref chord 1))))
-  ;;         (if (eq key1 key2)
-  ;;             `(bind-key (vector 'key-chord ,key1 ,key2) ,ommand ,keymap)
-  ;;           `(progn
-  ;;              (bind-key (vector 'key-chord ,key1 ,key2) ,ommand ,keymap)
-  ;;              (bind-key (vector 'key-chord ,key2 ,key1) ,ommand ,keymap))))))
-  ;;
-  ;;   (bind-chords ("pq" . (my=insert-str "Yuuuuuuuuhuuu")))
-  ;;   (bind-chords ("pq"   . (my=insert-str "Yuuuuuuuuhuuu")))
-  ;;   (bind-keys ("C-c C-f"   . (my=insert-str "Yuuuuuuuuhuuu")))
-  ;;   (bind-keys :map global-map ("C-c C-f"   . (my=insert-str "Yuuuuuuuuhuuu")))
+;;;   (defmacro bind-chord (chord command &optional keymap)
+;;;     "Bind CHORD to COMMAND in KEYMAP (`global-map' if not passed)."
+;;;
+;;;     (let* ((ommand `(if (functionp ,command)
+;;;                              ,command
+;;;                            #'(lambda () (interactive) ,command))))
+;;;       (let ((key1 (logand 255 (aref chord 0)))
+;;;             (key2 (logand 255 (aref chord 1))))
+;;;         (if (eq key1 key2)
+;;;             `(bind-key (vector 'key-chord ,key1 ,key2) ,ommand ,keymap)
+;;;           `(progn
+;;;              (bind-key (vector 'key-chord ,key1 ,key2) ,ommand ,keymap)
+;;;              (bind-key (vector 'key-chord ,key2 ,key1) ,ommand ,keymap))))))
+;;;
+;;;   (bind-chords ("pq" . (my=insert-str "Yuuuuuuuuhuuu")))
+;;;   (bind-chords ("pq"   . (my=insert-str "Yuuuuuuuuhuuu")))
+;;;   (bind-keys ("C-c C-f"   . (my=insert-str "Yuuuuuuuuhuuu")))
+;;;   (bind-keys :map global-map ("C-c C-f"   . (my=insert-str "Yuuuuhuuu")))
 
 
   (defun my=eval-bind-keys-and-chords ()
@@ -1320,7 +1320,8 @@ function symbol (unquoted)."
      ("s-F"         . helm-recentf)       ; recentf-open-files
      ("s-r"         . helm-recentf)
 
-     ("<C-M-down>" . crux-duplicate-current-line-or-region) ; default is down-list
+     ;; C-M-down default value is `down-list'
+     ("<C-M-down>" . crux-duplicate-current-line-or-region)
      ("<C-s-down>" . crux-duplicate-current-line-or-region)
      ("C-c d"      . crux-duplicate-current-line-or-region)
      ("C-c t"      . crux-transpose-windows)
