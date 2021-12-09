@@ -24,5 +24,8 @@
 takes care of it"
      (append cmd (cdr (command-line)))))
   (list (string-append (getenv "systemBinDir") "/ls")
+        "-lA"
+        "--file-type" ; append indicator (one of /=>@|) to entries
         ;; TODO consider custom coloring after `ls --color=never`
-        "-lA" "--color" "--time-style=+%d-%m-%Y %H:%M:%S")))
+        "--color" ; must be used
+        "--time-style=+%d-%m-%Y %H:%M:%S")))
