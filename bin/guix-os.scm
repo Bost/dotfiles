@@ -46,7 +46,10 @@
   close-pipe
   open-input-pipe
   (lambda (s)
-    (format #t "\n~a\n\n" s) ;; "... ~s ..." prints to string
+    ;; TODO implement pretty-print for bash commands
+    ;; ~a - outputs an argument like display
+    ;; ~s - outputs an argument like write (i.e. print to string)
+    (format #t "\n~a\n\n" s)
     s)
   (lambda (cmd) (string-join cmd " ")))
  (list
