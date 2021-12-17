@@ -129,6 +129,9 @@ set --export REPL_USER $USER
 
 set --export PATH $PATH
 
+set --export GUILE_LOAD_PATH          ~/.guix-profile/share/guile/site/3.0      $GUILE_LOAD_PATH
+set --export GUILE_LOAD_COMPILED_PATH ~/.guix-profile/lib/guile/3.0/site-ccache $GUILE_LOAD_COMPILED_PATH
+
 set --local localStuff ~/local-stuff.fish
 if test -e $localStuff
     source $localStuff
