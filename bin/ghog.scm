@@ -1,4 +1,5 @@
 (use-modules (ice-9 rdelim)
+             (ice-9 regex)
              (ice-9 popen))
 
 (define (partial fun . args)
@@ -31,6 +32,7 @@
                  (append
                   (list "git" "push" "--follow-tags" "--verbose" remote)
                   (cdr args))))
+  (partial filter (lambda (remote) (not (string-match "heroku" remote))))
   (lambda (cmd)
     (let* ((port (open-input-pipe cmd))
            (res (read-all port)))
