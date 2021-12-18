@@ -19,26 +19,26 @@
 
 (define (main args)
   ((compose
-  (partial map
-           (compose
-            (lambda (cmd)
-              (let* ((port (open-input-pipe cmd))
-                     (res (read-all port)))
-                (close-pipe port)
-                res))
-            (lambda (s) (format #t "\n~a\n" s) s)
-            (lambda (cmd) (string-join cmd " "))))
-  (partial map (lambda (remote)
-                 (append
-                  (list "git" "push" "--follow-tags" "--verbose" remote)
-                  (cdr args))))
-  (partial filter (lambda (remote) (not (string-match "heroku" remote))))
-  (lambda (cmd)
-    (let* ((port (open-input-pipe cmd))
-           (res (read-all port)))
-      (close-pipe port)
-      res))
-  (lambda (s) (format #t "\n~a\n" s) s)
-  (lambda (cmd) (string-join cmd " ")))
- (list
-  "git" "remote")))
+    (partial map
+             (compose
+              (lambda (cmd)
+                (let* ((port (open-input-pipe cmd))
+                       (res (read-all port)))
+                  (close-pipe port)
+                  res))
+              (lambda (s) (format #t "\n~a\n" s) s)
+              (lambda (cmd) (string-join cmd " "))))
+    (partial map (lambda (remote)
+                   (append
+                    (list "git" "push" "--follow-tags" "--verbose" remote)
+                    (cdr args))))
+    (partial filter (lambda (remote) (not (string-match "heroku" remote))))
+    (lambda (cmd)
+      (let* ((port (open-input-pipe cmd))
+             (res (read-all port)))
+        (close-pipe port)
+        res))
+    (lambda (s) (format #t "\n~a\n" s) s)
+    (lambda (cmd) (string-join cmd " ")))
+   (list
+    "git" "remote")))
