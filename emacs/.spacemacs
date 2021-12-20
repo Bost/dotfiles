@@ -1590,6 +1590,22 @@ function symbol (unquoted)."
   (my=bind-keys-racket 'racket-mode-hook      'racket-mode-map)
   (my=bind-keys-racket 'racket-repl-mode-hook 'racket-repl-mode-map)
 
+  (defun my=bind-keys-scheme (hook state-map)
+    (add-hook
+     hook
+     (lambda ()
+       (bind-keys
+        :map state-map
+        ;; ("s-;"    . my=racket-toggle-reader-comment-current-sexp)
+        ("s-x"    . geiser-mode-switch-to-repl)
+        ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
+        ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)))))
+
+  (my=bind-keys-racket 'scheme-mode-hook      'scheme-mode-map)
+  (my=bind-keys-racket 'scheme-repl-mode-hook 'scheme-repl-mode-map)
+
+  (my=bind-keys-racket 'geiser-mode-hook      'geiser-mode-map)
+  (my=bind-keys-racket 'geiser-repl-mode-hook 'geiser-repl-mode-map)
   ;; (bind-keys :map helm-mode-map)
 
   ;; advice, defadvice and letf shouldn't be used:
