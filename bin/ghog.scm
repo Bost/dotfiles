@@ -17,6 +17,8 @@
 ;; TODO see 'push all branches to all remotes'
 ;; https://stackoverflow.com/a/18674313/5151982
 
+;; TODO fix 'guile: warning: failed to install locale'
+
 (define (main args)
   ((compose
     (partial map
