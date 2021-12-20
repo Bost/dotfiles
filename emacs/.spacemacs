@@ -1098,6 +1098,8 @@ before packages are loaded."
   (use-package clojure-mode) ;; must be here for the bind-keys
   (use-package cider)        ;; must be here for the bind-keys
 
+  ;; TODO the ~M-`~ (M-x tmm-menubar) can be used for other purposes
+
   ;; TODO my=eval-bind-keys-and-chords
   ;; ~SPC m e c~ or M-x spacemacs/eval-current-form-sp
 
