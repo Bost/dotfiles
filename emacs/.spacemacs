@@ -1301,7 +1301,7 @@ function symbol (unquoted)."
      ("s-B"       . helm-filtered-bookmarks)
      ("<f9>"      . helm-filtered-bookmarks)
      ;; ("<f11>"     . bookmark-set)
-     ("<f11>"     . equake-toggle-fullscreen)
+     ;; ("<f11>"     . equake-toggle-fullscreen)
      ;; Move the parenthesis - see SPC k b/B/f/F
      ("<M-s-left>"  . sp-forward-barf-sexp)
      ("<M-s-right>" . sp-forward-slurp-sexp)
