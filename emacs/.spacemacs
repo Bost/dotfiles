@@ -185,6 +185,8 @@ This function should only modify configuration layer settings."
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
      (clojure
+      ;; cider package location configured by
+      ;; ~/.emacs.d/layers/+lang/clojure/packages.el in its 'use-package'
       :variables
       cider-jdk-src-paths
       '(
@@ -1096,7 +1098,8 @@ before packages are loaded."
              (push '("my=interactive-lambda" . 923) prettify-symbols-alist))))
 
   (use-package clojure-mode) ;; must be here for the bind-keys
-  (use-package cider)        ;; must be here for the bind-keys
+  ;; '(use-package cider ...)' must be here for the bind-keys
+  (use-package cider)
 
   ;; TODO the ~M-`~ (M-x tmm-menubar) can be used for other purposes
 
