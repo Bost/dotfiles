@@ -17,30 +17,39 @@
 ;; TODO see 'push all branches to all remotes'
 ;; https://stackoverflow.com/a/18674313/5151982
 
-;; TODO fix 'guile: warning: failed to install locale'
+(define exec
+  (compose
+   (lambda (cmd)
+     (let* ((port (open-input-pipe cmd))
+            (res (read-all port)))
+       (close-pipe port)
+       res))
+   (lambda (s) (format #t "\n~a\n" s) s)
+   (lambda (cmd) (string-join cmd " "))))
+
+(define (dbg prm)
+  (format #t "\n~a\n" prm)
+  prm)
 
 (define (main args)
   ((compose
-    (partial map
-             (compose
-              (lambda (cmd)
-                (let* ((port (open-input-pipe cmd))
-                       (res (read-all port)))
-                  (close-pipe port)
-                  res))
-              (lambda (s) (format #t "\n~a\n" s) s)
-              (lambda (cmd) (string-join cmd " "))))
+    (partial map exec)
     (partial map (lambda (remote)
                    (append
                     (list "git" "push" "--follow-tags" "--verbose" remote)
                     (cdr args))))
+    (partial map car)
+    (partial filter (lambda (remote-url)
+                      (not (null? (cdr remote-url)))))
+    (partial map
+             (lambda (remote)
+               (cons remote
+                     ((compose
+                       (partial filter (lambda (url) (string-match "git@" url)))
+                       exec
+                       (partial list "git" "remote" "get-url"))
+                      remote))))
     (partial filter (lambda (remote) (not (string-match "heroku" remote))))
-    (lambda (cmd)
-      (let* ((port (open-input-pipe cmd))
-             (res (read-all port)))
-        (close-pipe port)
-        res))
-    (lambda (s) (format #t "\n~a\n" s) s)
-    (lambda (cmd) (string-join cmd " ")))
+    exec)
    (list
     "git" "remote")))
