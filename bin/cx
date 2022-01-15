@@ -1,0 +1,2 @@
+#!/bin/sh
+guile ~/dev/dotfiles/bin/cx.scm $@
