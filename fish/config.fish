@@ -54,10 +54,12 @@ if ! contains $bin $PATH
     set PATH $PATH $bin
 end
 
-set --local RACKET_BIN ~/.local/share/racket/8.1/bin
-if test -d $RACKET_BIN
-    # put the rash-repl script on the PATH
-    set PATH $RACKET_BIN $PATH
+set --local racketShare ~/.local/share/racket
+# use latest racket version
+set --local racketBin $racketShare/(ls -t $racketShare | head -1)/bin
+if test -d $racketBin
+    # put scripts installed by raco on the PATH
+    set PATH $racketBin $PATH
 end
 
 set PATH ~/usr/local/bin $PATH
