@@ -887,7 +887,10 @@ before packages are loaded."
 
   ;; (sp-use-paredit-bindings)
 
-  ;; (evil-collection-info-setup)
+  ;; set up `evil' bindings for `info-mode'
+  (evil-collection-info-setup)
+  ;; ... or try to remove evil support in the Info buffers (doesn't work)
+  ;; (remove-hook 'Info-mode-hook 'evil-mode)
 
   ;; tide - typescript IDE def func:
   (defun tide-setup-hook ()
