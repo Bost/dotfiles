@@ -50,7 +50,7 @@ This function should only modify configuration layer settings."
                       ;; )
                       )
      better-defaults
-     graphviz ;; for erc-social-graph-draw
+     ;; graphviz ;; for erc-social-graph-draw
      ;; TODO try out ibuffer
      ;; (ibuffer :variables ibuffer-group-buffers-by 'projects)
 
@@ -83,7 +83,7 @@ This function should only modify configuration layer settings."
                  javascript-fmt-tool 'prettier
                  node-add-modules-path t)
 
-     asciidoc
+     ;; asciidoc
      emacs-lisp
      (git :variables
           ;; TODO implement it as spacemacs|toggle
@@ -107,7 +107,7 @@ This function should only modify configuration layer settings."
            ;; helm-display-function 'helm-default-display-buffer
            ;; )
            )
-     multiple-cursors
+     ;; multiple-cursors
 
      ;; language server protocol
      ;; https://emacs-lsp.github.io/lsp-mode/
@@ -148,11 +148,11 @@ This function should only modify configuration layer settings."
           ;; capture content from external applications such as the browser
           ;; org-enable-roam-protocol t
           )
-     rust
+     ;; rust
      (scheme :variables ; M-x run-guile
              scheme-implementations '(guile racket))
      shell-scripts
-     haskell
+     ;; haskell
      csv
      (python
       :variables
@@ -252,11 +252,11 @@ This function should only modify configuration layer settings."
      ;; TODO spacemacs-layout - window management
      ;; smex ; smart M-x enhacements - recent & most used commands
      ;; gnus
-     systemd
-     hy ;; hylang - lisp embedded in python
-     go
-     yaml
-     docker
+     ;; systemd
+     ;; hy ;; hylang - lisp embedded in python
+     ;; go
+     ;; yaml
+     ;; docker
 
      ;; Racket settings for emacs
      ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
@@ -308,11 +308,11 @@ This function should only modify configuration layer settings."
    '(
      yasnippet-snippets
 
-     ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
-     rjsx-mode
+     ;; ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
+     ;; rjsx-mode
 
-     ;; Minor mode to format JS code on file save
-     prettier-js
+     ;; ;; Minor mode to format JS code on file save
+     ;; prettier-js
 
      ;; (yasnippet :location ;; local
      ;;            (recipe :fetcher github :repo "Bost/yasnippet"
@@ -345,7 +345,7 @@ This function should only modify configuration layer settings."
      ;; (vline         :location local)
      ;; (col-highlight :location local)
 
-     cobol-mode
+     ;; cobol-mode
 
      ;; org-mode-babel packages {{{
      ;; see also org-babel-load-languages
@@ -358,11 +358,11 @@ This function should only modify configuration layer settings."
      helm-system-packages
      ;; helm-descbinds
      ;; helm-slime
-     helm-dictionary
+     helm-dictionary ;; look up words in dictionaries
 
      ;; telegram client for emacs
      ;; TODO document the ln -s `which gcc` ~/bin/cc
-     telega
+     ;; telega
      ;; Error: Package fonts-symbola is unavailable
      ;; fonts-symbola ;; for the telega
      ;; Fonts installed using:
