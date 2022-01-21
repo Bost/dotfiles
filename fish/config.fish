@@ -18,7 +18,6 @@ set --export systemBinDir (dirname (which guile))
 
 # appending to PATH in reverse order
 set PATH /usr/lib/postgresql/*/bin $PATH
-set PATH /usr/racket/bin     $PATH # racket is installed manually
 
 if test (which npm 2> /dev/null)
     # Install npm packages globally without sudo on macOS and Linux
@@ -55,11 +54,13 @@ if ! contains $bin $PATH
 end
 
 set --local racketShare ~/.local/share/racket
-# use latest racket version
-set --local racketBin $racketShare/(ls -t $racketShare | head -1)/bin
-if test -d $racketBin
-    # put scripts installed by raco on the PATH
-    set PATH $racketBin $PATH
+if test -d $racketShare # may not exist under `guix shell`
+    # use latest racket version
+    set --local racketBin $racketShare/(ls -t $racketShare | head -1)/bin
+    if test -d $racketBin
+        # put scripts installed by raco on the PATH
+        set PATH $racketBin $PATH
+    end
 end
 
 set PATH ~/usr/local/bin $PATH
