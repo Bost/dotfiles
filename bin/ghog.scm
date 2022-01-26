@@ -22,8 +22,9 @@
    (lambda (cmd)
      (let* ((port (open-input-pipe cmd))
             (res (read-all port)))
-       (close-pipe port)
-       res))
+       (cons
+        (status:exit-val (close-pipe port))
+        res)))
    (lambda (s) (format #t "\n~a\n" s) s)
    (lambda (cmd) (string-join cmd " "))))
 
@@ -33,12 +34,15 @@
 
 (define (main args)
   ((compose
-    (partial map exec)
-    (partial map (lambda (remote)
-                   (append
-                    (list "git" "push" "--follow-tags" "--verbose" remote)
-                    (cdr args))))
-    (partial map car)
+    (partial
+     map
+     (compose
+      cdr
+      exec
+      (lambda (remote) (append
+                        (list "git" "push" "--follow-tags" "--verbose" remote)
+                        (cdr args)))
+      car))
     (partial filter (lambda (remote-url)
                       (not (null? (cdr remote-url)))))
     (partial map
@@ -46,10 +50,12 @@
                (cons remote
                      ((compose
                        (partial filter (lambda (url) (string-match "git@" url)))
+                       cdr
                        exec
                        (partial list "git" "remote" "get-url"))
                       remote))))
     (partial filter (lambda (remote) (not (string-match "heroku" remote))))
+    cdr
     exec)
    (list
     "git" "remote")))
