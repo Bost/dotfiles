@@ -1,2 +1,2 @@
 #!/bin/sh
-guile -e main ~/dev/dotfiles/bin/crep.scm $@
+search-notes -f ".*" -p $@

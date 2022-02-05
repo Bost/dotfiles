@@ -1,0 +1,2 @@
+#!/bin/sh
+search-notes -f "shells" -p $@
