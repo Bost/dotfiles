@@ -21,7 +21,7 @@
   (format #t "\n~a\n" prm)
   prm)
 
-;; a cell (retcode . result)
+;; Return a cell (retcode . result)
 (define exec
   (compose
    (lambda (cmd)
