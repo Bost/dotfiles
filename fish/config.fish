@@ -56,11 +56,16 @@ end
 set --local racketShare ~/.local/share/racket
 if test -d $racketShare # may not exist under `guix shell`
     # use latest racket version
-    set --local racketBin $racketShare/(ls -t $racketShare | head -1)/bin
+    set --local latest (ls -t $racketShare | grep "[[:digit:]].*" | head -1)
+    set --local racketBin $racketShare/$latest/bin
     if test -d $racketBin
         # put scripts installed by raco on the PATH
         set PATH $racketBin $PATH
+    else
+        printf "WRN 'set PATH \$racketBin \$PATH' failed: test -d %s\n" $racketBin
     end
+else
+    printf "WRN 'set PATH \$racketBin \$PATH' failed: test -d %s\n" $racketShare
 end
 
 set PATH ~/usr/local/bin $PATH
