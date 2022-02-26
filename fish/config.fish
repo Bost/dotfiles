@@ -65,7 +65,7 @@ if test -d $racketShare # may not exist under `guix shell`
         printf "WRN 'set PATH \$racketBin \$PATH' failed: test -d %s\n" $racketBin
     end
 else
-    printf "WRN 'set PATH \$racketBin \$PATH' failed: test -d %s\n" $racketShare
+    printf "WRN 'set PATH \$racketShare \$PATH' failed: test -d %s\n" $racketShare
 end
 
 set PATH ~/usr/local/bin $PATH
