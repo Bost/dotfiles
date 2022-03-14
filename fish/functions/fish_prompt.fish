@@ -1,37 +1,38 @@
-function fish_prompt --description 'Write out the prompt'
-    set stat $status
-    if not set -q __fish_prompt_normal
-        set -g __fish_prompt_normal (set_color normal)
+function fish_prompt
+end
+
+status is-interactive || exit
+
+_tide_remove_unusable_items
+
+# The first element in $$_tide_prompt_var is right prompt
+# All remaining ones are 'left' prompt (also upper right in 2-line prompts)
+set -g _tide_prompt_var _tide_prompt_$fish_pid
+
+function _tide_refresh_prompt --on-variable $_tide_prompt_var
+    set -g _tide_self_repainting # prevents us from creating a second background job
+    commandline --function repaint
+end
+
+function fish_prompt
+    _tide_last_status=$status _tide_last_pipestatus=$pipestatus if not set -e _tide_self_repainting
+        jobs --query
+        fish --command "_tide_jobs_status=$status CMD_DURATION=$CMD_DURATION COLUMNS=$COLUMNS \
+            fish_bind_mode=$fish_bind_mode set -U $_tide_prompt_var (_tide_prompt)" &
+        builtin disown
+
+        command kill $_tide_last_pid 2>/dev/null
+        set -g _tide_last_pid $last_pid
     end
 
-    if not set -q __fish_color_blue
-        set -g __fish_color_blue (set_color -o blue)
-    end
+    test "$tide_prompt_add_newline_before" = true && echo
+    string unescape $$_tide_prompt_var[1][2..]
+end
 
-    #Set the color for the status depending on the value
-    set __fish_color_status (set_color -o green)
-    if test $stat -gt 0
-        set __fish_color_status (set_color -o red)
-    end
+function fish_right_prompt
+    string unescape $$_tide_prompt_var[1][1]
+end
 
-    if not set -q __git_cb
-        set __git_cb ":"(set_color brown)(git branch ^/dev/null | grep \* | sed 's/* //')(set_color normal)""
-    end
-
-    switch "$USER"
-        case root toor
-            if not set -q __fish_prompt_cwd
-                if set -q fish_color_cwd_root
-                    set -g __fish_prompt_cwd (set_color $fish_color_cwd_root)
-                else
-                    set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-                end
-            end
-            printf '%s@%s %s%s%s# ' $USER (prompt_hostname) "$__fish_prompt_cwd" (prompt_pwd) "$__fish_prompt_normal"
-        case '*'
-            if not set -q __fish_prompt_cwd
-                set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-            end
-            printf '[%s] %s%s@%s %s%s %s(%s)%s %s\f\r> ' (date "+%H:%M:%S") "$__fish_color_blue" $USER (prompt_hostname) "$__fish_prompt_cwd" "$PWD" "$__fish_color_status" "$stat" "$__fish_prompt_normal" "$__git_cb"
-    end
+function _tide_on_fish_exit --on-event fish_exit
+    set -e $_tide_prompt_var
 end
