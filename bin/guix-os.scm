@@ -19,18 +19,24 @@
     (close-pipe port)
     str))
 
-(define guixFile
+(define vmQcow2File
   (string-append (getenv "virtMachines")
                  "/guix-system-vm-image-1.3.0.x86_64-linux.qcow2"))
-(define guixRAM "2G")
-(define guixRemoteViewPort "5930")
-(define guixSSHPort "10022")
+(define vmRAM "2G")
+(define vmRemoteViewPort "5930")
+(define vmSSHPort "10022")
 
-(define cpuCores (number->string (/ (string->number (exec "nproc")) 2)))
+(define vmCPUCores (number->string (/ (string->number (exec "nproc")) 2)))
 
 (format
  #t
  (string-append
+  "##### When:\n"
+  "#    Could not access KVM kernel module: Permission denied\n"
+  "##### do:\n"
+  "#    sudo usermod --append --groups kvm $USER\n"
+  "# #######################################################\n"
+  "\n"
   "# Open a new terminal on the (Ubuntu) host and connect with:\n"
   "#   remote-viewer spice://localhost:~a & disown\n"
   "# or with SSH:\n"
@@ -38,8 +44,8 @@
   " -o StrictHostKeyChecking=no -p ~a guest@localhost\n"
   "\n"
   "# Copy file example:\n"
-  "#   scp -P ~a <srcfile> guest@localhost:</path/to/dstfile>\n")
- guixRemoteViewPort guixSSHPort guixSSHPort)
+  "#   rsync -avz <srcfile> guest@localhost:</path/to/dstfile>\n")
+ vmRemoteViewPort vmSSHPort vmSSHPort)
 
 ;; (format #t "\n~a\n\n" (string-join cmd " "))
 ((compose
@@ -56,19 +62,19 @@
   ;; This works, however without shared clipboard:
   ;; qemu-system-x86_64 \
   ;;     -nic user,model=virtio-net-pci \
-  ;;     -enable-kvm -m $guixRAM \
+  ;;     -enable-kvm -m $vmRAM \
   ;;     -device virtio-blk,drive=myhd \
-  ;;     -drive if=none,file=$guixFile,id=myhd \
+  ;;     -drive if=none,file=$vmQcow2File,id=myhd \
   ;;     & disown
   ;;
   ;; With shared clipboard and SSH access:
   "qemu-system-x86_64"
   "-nic" (string-append
           "user,model=virtio-net-pci,hostfwd=tcp::"
-          guixSSHPort "-:22")
-  "-enable-kvm" "-m" guixRAM
+          vmSSHPort "-:22")
+  "-enable-kvm" "-m" vmRAM
   "-device" "virtio-blk,drive=myhd"
-  "-drive" (string-append "if=none,file=" guixFile ",id=myhd")
+  "-drive" (string-append "if=none,file=" vmQcow2File ",id=myhd")
   "-device"
   "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
   "-chardev" "spicevmc,name=vdagent,id=vdagent"
@@ -76,9 +82,9 @@
   (string-append
    "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
    ",name=com.redhat.spice.0")
-  "-spice" (string-append "port=" guixRemoteViewPort ",disable-ticketing")
+  "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
   "-vga" "qxl"
-  "-smp" cpuCores
+  "-smp" vmCPUCores
   "&"
   ;; "disown" ;; TODO where is disown located???
   ))
