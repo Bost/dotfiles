@@ -1,11 +1,14 @@
 function ubuntu-os --description "Ubuntu via qemu-system-x86_64"
     # see https://nikosmouzakitis.medium.com/running-ubuntu-in-a-virtual-machine-on-qemu-quick-emulator-1607c10f4ba5
-    # Create qcow2 file
-    # qemu-img create -f qcow2 hda.qcow2 16G
 
     set isoFile $virtMachines/ubuntu-21.04-desktop-amd64.iso
-    set qcow2File $virtMachines/hda.qcow2
+    # set isoFile $virtMachines/ubuntu-21.10-live-server-amd64.iso
+    set qcow2File $isoFile.qcow2
 
+    if not test -f $qcow2File
+        qemu-img create -f qcow2 $qcow2File 16G
+    end
+    sudo \
     qemu-system-x86_64 \
         -M pc -enable-kvm -cpu host -m 4G \
         -device virtio-net-pci,netdev=net0,romfile="" \
