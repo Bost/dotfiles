@@ -1,5 +1,5 @@
 function hrep
-  set cmd history --search --contains (string escape -- $argv)
+  set cmd history --show-time="[%Y-%m-%d %H:%M:%S]\ " --search --contains (string escape -- $argv)
   echo $cmd
   eval $cmd
 end
