@@ -27,7 +27,7 @@ if test (which npm 2> /dev/null)
         mkdir $NPM_PACKAGES
     end
     # NODE_PATH definition might not be needed
-    set --export NODE_PATH ~/.config/yarn/global/node_modules
+    # set --export NODE_PATH ~/.config/yarn/global/node_modules
     set PATH $PATH $NPM_PACKAGES/bin
     set PATH $NODE_PATH/.bin $PATH
     set MANPATH $NPM_PACKAGES/share/man $MANPATH
@@ -36,12 +36,12 @@ end
 
 # rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
 # See https://github.com/phiresky/ripgrep-all
-set PATH ~/bin/ripgrep_all   $PATH
+# set PATH ~/bin/ripgrep_all   $PATH
 
-set PATH ~/.cabal/bin        $PATH
+# set PATH ~/.cabal/bin        $PATH
 set PATH ~/.guix-profile/bin $PATH
-set PATH ~/.yarn/bin         $PATH
-set PATH ~/.local/bin        $PATH
+# set PATH ~/.yarn/bin         $PATH
+# set PATH ~/.local/bin        $PATH
 # for script-based installations of babashka, heroku, clojure
 set PATH  /usr/local/bin     $PATH
 # anaconda installation may or may not break emacs builds
@@ -53,20 +53,20 @@ if ! contains $bin $PATH
     set PATH $PATH $bin
 end
 
-set --local racketShare ~/.local/share/racket
-if test -d $racketShare # may not exist under `guix shell`
-    # use latest racket version
-    set --local latest (ls -t $racketShare | grep "[[:digit:]].*" | head -1)
-    set --local racketBin $racketShare/$latest/bin
-    if test -d $racketBin
-        # put scripts installed by raco on the PATH
-        set PATH $racketBin $PATH
-    else
-        printf "WRN 'set PATH \$racketBin \$PATH' failed: test -d %s\n" $racketBin
-    end
-else
-    printf "WRN 'set PATH \$racketShare \$PATH' failed: test -d %s\n" $racketShare
-end
+# set --local racketShare ~/.local/share/racket
+# if test -d $racketShare # may not exist under `guix shell`
+#     # use latest racket version
+#     set --local latest (ls -t $racketShare | grep "[[:digit:]].*" | head -1)
+#     set --local racketBin $racketShare/$latest/bin
+#     if test -d $racketBin
+#         # put scripts installed by raco on the PATH
+#         set PATH $racketBin $PATH
+#     else
+#         printf "WRN 'set PATH \$racketBin \$PATH' failed: test -d %s\n" $racketBin
+#     end
+# else
+#     printf "WRN 'set PATH \$racketShare \$PATH' failed: test -d %s\n" $racketShare
+# end
 
 set PATH ~/usr/local/bin $PATH
 
