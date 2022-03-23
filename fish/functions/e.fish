@@ -11,7 +11,6 @@ function e
     # Don't use the --daemon switch. It producess a mess in the shell
 
     set emacsCmd emacs
-    # set emacsCmd /usr/local/bin/emacs
 
     # set pids (pgrep --exact emacs) # --exact doesn't work on Guix
     set pids (pgrep emacs)
@@ -28,9 +27,9 @@ function e
             if string match --quiet -- "*defunct*" $procCmd
                 # echo "pid:" $pid "is defunct"
             else
-                # TODO test the --no-wait parameter in `emacsclient --no-wait`
-                set emacsCmd emacsclient
-                # set emacsCmd /usr/local/bin/emacsclient
+                # --no-wait suppresses the question:
+                #   This Emacs session has clients; exit anyway?
+                set emacsCmd emacsclient --no-wait
                 break
             end
         end
