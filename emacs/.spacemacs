@@ -962,6 +962,9 @@ before packages are loaded."
   ;; (global-prettify-symbols-mode +1)
 
   (setq
+   ;; See also undo-tree-auto-save-history
+   undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
+
    ;; TODO create toggle for evil-ex-substitute-interactive-replace
    evil-ex-substitute-interactive-replace t ;; nil/t. default is t
 
