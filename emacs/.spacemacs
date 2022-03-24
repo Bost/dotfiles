@@ -1514,20 +1514,21 @@ function symbol (unquoted)."
   ;; (unbind-key "<C-insert>" &optional keymap)
   ;; ("<C-insert>"    .)
 
-  (bind-keys
-   :map magit-mode-map
-   ;; Workaround for the
-   ;; https://github.com/emacs-evil/evil-collection/issues/554
-   ("C-v" . evil-visual-line)
-   ("1"   . magit-section-show-level-1-all)
-   ("2"   . magit-section-show-level-2-all)
-   ("3"   . magit-section-show-level-3-all)
-   ("4"   . magit-section-show-level-4-all)
-   ;; overshadows `(digit-argument <n>)'; use C-M-<n> instead
-   ("C-1" . magit-section-show-level-1)
-   ("C-2" . magit-section-show-level-2)
-   ("C-3" . magit-section-show-level-3)
-   ("C-4" . magit-section-show-level-4))
+  (with-eval-after-load 'magit-mode
+    (bind-keys
+     :map magit-mode-map
+     ;; Workaround for the
+     ;; https://github.com/emacs-evil/evil-collection/issues/554
+     ("C-v" . evil-visual-line)
+     ("1"   . magit-section-show-level-1-all)
+     ("2"   . magit-section-show-level-2-all)
+     ("3"   . magit-section-show-level-3-all)
+     ("4"   . magit-section-show-level-4-all)
+     ;; overshadows `(digit-argument <n>)'; use C-M-<n> instead
+     ("C-1" . magit-section-show-level-1)
+     ("C-2" . magit-section-show-level-2)
+     ("C-3" . magit-section-show-level-3)
+     ("C-4" . magit-section-show-level-4)))
 
   (bind-keys
    :map dired-mode-map
