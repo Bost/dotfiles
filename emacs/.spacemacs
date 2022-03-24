@@ -368,13 +368,15 @@ This function should only modify configuration layer settings."
      ;; Fonts installed using:
      ;;   guix package -i font-gnu-{freefont,unifont}
 
-     ;; dired-x is dired extended by:
+     ;; https://gitter.im/syl20bnr/spacemacs?at=5dba1a66e886fb5aa225bcf8
+     ;; dired-x is part of the spacemacs-defaults layer, so it's used by default.
+     ;; It extends dired by:
      ;;     Omitting uninteresting files
      ;;     Guessing shell commands
      ;;     Running Dired command in non-Dired
      ;;     Finding a file mentioned in a buffer
      ;;     Commands using file marking
-     dired-x
+     ;; dired+ is unavailable
      )
 
    ;; A list of packages that cannot be updated.
@@ -894,6 +896,62 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  ;; https://gist.github.com/synic/5c1a494eaad1406c5519
+  ;; (defvar ao/v-dired-omit t
+  ;;   "If dired-omit-mode enabled by default. Don't setq me.")
+
+  ;; (defun ao/dired-omit-switch ()
+  ;;   "This function is a small enhancement for `dired-omit-mode', which will
+  ;;  \"remember\" omit state across Dired buffers."
+  ;;   (interactive)
+  ;;   (if (eq ao/v-dired-omit t)
+  ;;       (setq ao/v-dired-omit nil)
+  ;;     (setq ao/v-dired-omit t))
+  ;;   (ao/dired-omit-caller)
+  ;;   (when (equal major-mode 'dired-mode)
+  ;;     (revert-buffer)))
+
+  ;; (defun ao/dired-omit-caller ()
+  ;;   (if ao/v-dired-omit
+  ;;       (setq dired-omit-mode t)
+  ;;     (setq dired-omit-mode nil)))
+
+  ;; (defun ao/dired-back-to-top()
+  ;;   "Move to the first file."
+  ;;   (interactive)
+  ;;   (beginning-of-buffer)
+  ;;   (dired-next-line 2))
+
+  ;; (defun ao/dired-jump-to-bottom()
+  ;;   "Move to last file."
+  ;;   (interactive)
+  ;;   (end-of-buffer)
+  ;;   (dired-next-line -1))
+
+  ;; Dired
+  ;; ;; dired-x is part of the spacemacs-defaults layer, so it's used by default.
+  ;; (require 'dired-x) ; Enable dired-x
+  ;; ;; dired+ is unavailable
+  ;; ;; (require 'dired+)  ; Enable dired+
+  ;; (setq-default dired-omit-files-p t)  ; Don't show hidden files by default
+  ;; (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$\\|\\.pyc$"))
+  ;; (add-hook 'dired-mode-hook 'ao/dired-omit-caller)
+  ;; (define-key evil-normal-state-map (kbd "_") 'projectile-dired)
+  ;; (define-key evil-normal-state-map (kbd "-") 'dired-jump)
+  ;; (setq diredp-hide-details-initially-flag nil)
+  ;; (advice-add 'spacemacs/find-dotfile :around 'ao/find-dotfile)
+  ;; ;; Make `gg' and `G' do the correct thing
+  ;; (eval-after-load "dired-mode"
+  ;;   (evilified-state-evilify
+  ;;    ;; evilify
+  ;;    dired-mode dired-mode-map
+  ;;            "f" 'helm-find-files
+  ;;            "h" 'diredp-up-directory-reuse-dir-buffer
+  ;;            "l" 'diredp-find-file-reuse-dir-buffer
+  ;;            "I" 'ao/dired-omit-switch
+  ;;            "gg" 'ao/dired-back-to-top
+  ;;            "G" 'ao/dired-jump-to-bottom))
 
   ;; typescript-indent-level is overridden by project-specific .editorconfig
   ;; (setq-default typescript-indent-level 4)
@@ -1476,8 +1534,44 @@ function symbol (unquoted)."
    ("<f5>"        . revert-buffer)
    ("C-s-h"       . my=dired-dotfiles-toggle) ;; "C-H" doesn't work WTF???
    ("<backspace>" . (lambda () (interactive) (find-alternate-file "..")))
-   ("<return>"    . dired-find-alternate-file)
+   ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
+   ;; ("<return>"    . dired-find-alternate-file)
+   ;; ("<return>"    . dired-x-find-file) ;; asks for file instead of opening it
+   ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
+   ("<return>"    . dired-find-file) ;; default
    ("<S-delete>"  . my=dired-do-delete))
+
+  ;; (eval-after-load "dired"
+  ;;   '(progn
+  ;;      (defadvice dired-advertised-find-file (around dired-subst-directory
+  ;;                                                    activate)
+  ;;        "Replace current buffer if file is a directory."
+  ;;        (interactive)
+  ;;        (message "%s" 'dired-advertised-find-file)
+  ;;        (let* ((orig (current-buffer))
+  ;;               ;; (filename (dired-get-filename))
+  ;;               (filename (dired-get-filename t t))
+  ;;               (bye-p (file-directory-p filename)))
+  ;;          ad-do-it
+  ;;          (when (and bye-p (not (string-match "[/\\\\]\\.$" filename)))
+  ;;            (kill-buffer orig))))))
+
+  ;; (eval-after-load "dired"
+  ;;   ;; don't remove `other-window', the caller expects it to be there
+  ;;   '(defun dired-up-directory (&optional other-window)
+  ;;      "Run Dired on parent directory of current directory."
+  ;;      (interactive "P")
+  ;;      (let* ((dir (dired-current-directory))
+  ;;             (orig (current-buffer))
+  ;;             (up (file-name-directory (directory-file-name dir))))
+  ;;        (or (dired-goto-file (directory-file-name dir))
+  ;;            ;; Only try dired-goto-subdir if buffer has more than one dir.
+  ;;            (and (cdr dired-subdir-alist)
+  ;;                 (dired-goto-subdir up))
+  ;;            (progn
+  ;;              (kill-buffer orig)
+  ;;              (dired up)
+  ;;              (dired-goto-file dir))))))
 
   (bind-keys :map paredit-mode-map
              ;; these keybindings don't work in the cider-repl-mode-map
