@@ -94,19 +94,23 @@ This function should only modify configuration layer settings."
           ;; magit-diff-refine-hunk t
           ;; )
           )
-     (helm :variables
-           ;; (setq
-           ;; helm-display-function 'helm-display-buffer-in-own-frame
 
-           ;; default 20
-           ;; nil - use the longest ‘buffer-name’ length found
-           helm-buffer-max-length nil
+     ivy ;; helm replacement
 
-           ;; TODO helm-display-buffer-width
-           ;; default
-           ;; helm-display-function 'helm-default-display-buffer
-           ;; )
-           )
+     ;;;; (helm :variables
+     ;;;;       ;; (setq
+     ;;;;       ;; helm-display-function 'helm-display-buffer-in-own-frame
+
+     ;;;;       ;; default 20
+     ;;;;       ;; nil - use the longest ‘buffer-name’ length found
+     ;;;;       helm-buffer-max-length nil
+
+     ;;;;       ;; TODO helm-display-buffer-width
+     ;;;;       ;; default
+     ;;;;       ;; helm-display-function 'helm-default-display-buffer
+     ;;;;       ;; )
+     ;;;;       )
+
      ;; multiple-cursors
 
      ;; language server protocol
@@ -330,12 +334,10 @@ This function should only modify configuration layer settings."
      fish-mode
      transpose-frame
      ;; google-this
-     helm-cider-history
      cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
 
      ;; Emacs mode for the Lean theorem prover.
      ;; lean-mode
-     ;; helm-lean
 
      evil-vimish-fold
 
@@ -355,10 +357,12 @@ This function should only modify configuration layer settings."
       :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
      ;; }}}
 
-     helm-system-packages
-     ;; helm-descbinds
-     ;; helm-slime
-     helm-dictionary ;; look up words in dictionaries
+     ;;;; ;; helm-lean ; Emacs mode for the Lean theorem prover.
+     ;;;; helm-cider-history
+     ;;;; helm-system-packages
+     ;;;; ;; helm-descbinds
+     ;;;; ;; helm-slime
+     ;;;; helm-dictionary ;; look up words in dictionaries
 
      ;; telegram client for emacs
      ;; TODO document the ln -s `which gcc` ~/bin/cc
@@ -543,7 +547,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(farmhouse-light-mod
+   dotspacemacs-themes '((farmhouse-light-mod :location local)
                          material
                          misterioso
                          spacemacs-light
@@ -1382,8 +1386,6 @@ function symbol (unquoted)."
      ("s-D"       . dired-jump)
      ("s-c"       . sp-copy-sexp)
      ("s-b"       . sp-backward-copy-sexp)
-     ("s-B"       . helm-filtered-bookmarks)
-     ("<f9>"      . helm-filtered-bookmarks)
      ;; ("<f11>"     . bookmark-set)
      ;; ("<f11>"     . equake-toggle-fullscreen)
      ;; Move the parenthesis - see SPC k b/B/f/F
@@ -1394,17 +1396,26 @@ function symbol (unquoted)."
      ("s-;"         . spacemacs/comment-or-uncomment-lines)
      ("<S-s-f1>"    . eshell) ;; Shitf-Super-F1
      ("<s-f1>"      . projectile-multi-term-in-root)
-     ;; ("s-p"      . helm-projectile)
-     ("s-p"         . helm-projectile-find-file)
-     ("M-s-p"       . helm-projectile-switch-project)
      ("s-W"         . whitespace-cleanup)
      ("s-w"         . my=whitespace-mode-toggle)
      ("s-m"         . my=magit-status)
      ("<f3>"        . my=search-region-or-symbol)
-     ("<M-f3>"      . spacemacs/helm-project-smart-do-search)
-     ("s-f"         . helm-find-files)
-     ("s-F"         . helm-recentf)       ; recentf-open-files
-     ("s-r"         . helm-recentf)
+
+     ;;;; ("s-a"    . helm-mini)                   ; see advice-add my=helm-mini
+     ;;;; ("s-]"    . helm-mini)                   ; see advice-add my=helm-mini
+     ;;;; ("s-B"    . helm-filtered-bookmarks)
+     ;;;; ("<f9>"   . helm-filtered-bookmarks)
+     ;;;; ;; ("s-p" . helm-projectile)
+     ;;;; ("s-p"    . helm-projectile-find-file)
+     ;;;; ("M-s-p"  . helm-projectile-switch-project)
+     ;;;; ("<M-f3>" . spacemacs/helm-project-smart-do-search)
+     ;;;; ("s-f"    . helm-find-files)
+     ;;;; ("s-F"    . helm-recentf)       ; recentf-open-files
+     ;;;; ("s-r"    . helm-recentf)
+     ;;;; ("M-y"    . helm-show-kill-ring)    ; replaces evil-paste-pop
+     ;;;; ("s-G"    . helm-google-suggest)
+     ;;;; ("s-/"    . helm-swoop)
+     ;;;; ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
 
      ;; C-M-down default value is `down-list'
      ("<C-M-down>" . crux-duplicate-current-line-or-region)
@@ -1429,12 +1440,9 @@ function symbol (unquoted)."
      ("<s-backspace>"     . paredit-backward-kill-word)
      ("<s-delete>"        . paredit-forward-kill-word)
      ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
-     ("M-y"     . helm-show-kill-ring)    ; replaces evil-paste-pop
      ("s-g"     . my=engine/search-or-browse)
-     ("s-G"     . helm-google-suggest)
      ("s-8"     . er/expand-region)   ; increase selected region by semantic units
      ("<f2>"    . evil-avy-goto-char-timer)
-     ("s-/"     . helm-swoop)
      ;; <S-tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
      ("<s-tab>" . spacemacs/alternate-buffer)
      ;; ("<s-tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
@@ -1451,7 +1459,6 @@ function symbol (unquoted)."
      ("<C-s-delete>"       . kill-line)   ; C-super-key
      ("<C-S-delete>"       . kill-line)   ; C-shift-key
      ;; ("s-l"                . spacemacs/resume-last-search-buffer)
-     ("s-l"                . lazy-helm/spacemacs/resume-last-search-buffer)
      ("s-v" . my=evil-select-pasted)
 
      ;; TODO what's the difference between insert and insertchar?
@@ -1489,8 +1496,6 @@ function symbol (unquoted)."
      ("s-J"        . evil-join)
 
      ("<s-print>"  . my=ediff-buffers-left-right) ; see advice-add
-     ("s-a"        . helm-mini)                   ; see advice-add my=helm-mini
-     ("s-]"        . helm-mini)                   ; see advice-add my=helm-mini
      ("s-A"        . align-regexp)
      ("s-:"        . my=fabricate-subst-cmd)
 
@@ -1665,7 +1670,7 @@ function symbol (unquoted)."
   (bind-keys
    :map cider-repl-mode-map
    ("<menu>" . my=stop-synths-metronoms)
-   ("s-h"    . helm-cider-history)
+   ;;;; ("s-h"    . helm-cider-history)
    ("s-j"    . cider-format-defun)
    ("s-x"    . cider-switch-to-last-clojure-buffer)
    ("M-s-l"  . my=cider-reload-ns-from-file)
@@ -1741,9 +1746,9 @@ function symbol (unquoted)."
    :map prog-mode-map
    ;; M-/  M-x hippie-expand
    ("s-Q" . dumb-jump-quick-look)
-   ("s-h" . spacemacs/helm-jump-in-buffer)
-   ;; previously: helm-imenu-in-all-buffers
-   ("s-H" . lazy-helm/helm-imenu-in-all-buffers)
+   ;;;; ("s-h" . spacemacs/helm-jump-in-buffer)
+   ;;;; ;; previously: helm-imenu-in-all-buffers
+   ;;;; ("s-H" . lazy-helm/helm-imenu-in-all-buffers)
    ("s-u" . eval-buffer)
    ("s-e" . eval-last-sexp))
 
@@ -1795,7 +1800,7 @@ function symbol (unquoted)."
 
   (my=bind-keys-racket 'geiser-mode-hook      'geiser-mode-map)
   (my=bind-keys-racket 'geiser-repl-mode-hook 'geiser-repl-mode-map)
-  ;; (bind-keys :map helm-mode-map)
+  ;;;; ;; (bind-keys :map helm-mode-map)
 
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
@@ -1830,7 +1835,7 @@ function symbol (unquoted)."
   (advice-add #'evil-ex-search-previous  :after #'evil-scroll-line-to-center)
 
   (advice-add #'ediff-quit :around #'my=disable-y-or-n-p)
-  (advice-add #'helm-mini  :before #'my=helm-mini)
+  ;;;; (advice-add #'helm-mini  :before #'my=helm-mini)
 
   ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
   ;; layers/+misc/multiple-cursors/packages.el
