@@ -74,8 +74,8 @@
                   "
 # File transfer example:
   set remoteShell \"~a\"
-  set noWarn \"Permanently added '[localhost]:~a'\"
-  rsync -avz --rsh=\"$remoteShell\" /tmp/foo ~a:/tmp/ 2> psub | grep -v \"$noWarn\" 1>&2
+  set noWarn \"Permanently added '\\[localhost\\]:~a'\"
+  rsync -avz --rsh=\"$remoteShell\" /tmp/foo ~a:/tmp/ 2>&1 | grep -v \"$noWarn\"
 " ssh vmSSHPort (user-localhost vmUser))))
 
 (define (start-vm user isoFile qcow2File)
