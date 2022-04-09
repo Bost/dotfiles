@@ -54,21 +54,18 @@ This function should only modify configuration layer settings."
      ;; TODO try out ibuffer
      ;; (ibuffer :variables ibuffer-group-buffers-by 'projects)
 
+     ;; M-x erc/default-servers `SPC a c i D`
      (erc :variables
-          ;; erc-enable-notifications nil
-          erc-server "irc.libera.chat"
-          erc-nick "bost"
-          erc-autojoin-channels-alist '(("irc.libera.chat" "#guix" "#systemcrafters"))
-          ;; (setq
           erc-fill-column 120
           ;; erc-fill-function 'erc-fill-variable
           erc-fill-function 'erc-fill-static
           erc-fill-static-center 15
-          ;; )
-          ;; erc-server-list
-          ;; '(("irc.libera.chat" :port "6667" :ssl t :nick "bost" :password ""))
-          )
-
+          ;; erc-enable-notifications nil
+          erc-autojoin-channels-alist
+          '(("libera.chat" "#guix" "#systemcrafters"))
+          erc-prompt-for-nickserv-password nil
+          erc-server-list
+          '(("irc.libera.chat" :port "6667" :nick "bost" :password "")))
      php
      ;; typescript
      (typescript :variables
