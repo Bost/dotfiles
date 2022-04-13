@@ -1,4 +1,3 @@
-
 ;; run by `guile l.scm'
 
 ;; On non-Guix OS
@@ -23,9 +22,17 @@
      "(cdr (command-line)) can be an empty list which breaks system*. `append'
 takes care of it"
      (append cmd (cdr (command-line)))))
-  (list (string-append (getenv "systemBinDir") "/ls")
-        "-lA"
-        "--file-type" ; append indicator (one of /=>@|) to entries
-        ;; TODO consider custom coloring after `ls --color=never`
-        "--color" ; must be used
-        "--time-style=+%d-%m-%Y %H:%M:%S")))
+  ;; (list "exa" "-abghHliS")
+  ;; exa doesn't support the '+%d-%m-%Y %H:%M:%S' --time-style formatters.
+  ;; (list "exa" "-abghHliS" "--time-style=default")
+  ;; (list "exa" "-abghHliS" "--time-style=iso")
+  (list "exa" "-abghHliS" "--time-style=long-iso")
+  ;; (list "exa" "-abghHliS" "--time-style=full-iso")
+  #;(list
+   ;; (string-append (getenv "systemBinDir") "/ls")
+   "ls"
+   "-lA"
+   "--file-type" ; append indicator (one of /=>@|) to entries
+   ;; TODO consider custom coloring after `ls --color=never`
+   "--color" ; must be used
+   "--time-style=+%d-%m-%Y %H:%M:%S")))
