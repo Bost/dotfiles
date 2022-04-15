@@ -39,7 +39,7 @@ end
 # set PATH ~/bin/ripgrep_all   $PATH
 
 # set PATH ~/.cabal/bin        $PATH
-set PATH ~/.guix-profile/bin $PATH
+# set PATH ~/.guix-profile/bin $PATH
 # set PATH ~/.yarn/bin         $PATH
 # set PATH ~/.local/bin        $PATH
 # for script-based installations of babashka, heroku, clojure
@@ -49,9 +49,7 @@ set PATH  /usr/local/bin     $PATH
 # set PATH ~/anaconda3/bin     $PATH
 
 # ~/.profile is not read if the shell is of a non-login shell type
-if ! contains $bin $PATH
-    set PATH $PATH $bin
-end
+test ! (contains $bin $PATH) && set PATH $PATH $bin
 
 # set --local racketShare ~/.local/share/racket
 # if test -d $racketShare # may not exist under `guix shell`
@@ -85,14 +83,12 @@ set PATH ~/usr/local/bin $PATH
 # set --export JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 # set --export JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
-set --export ANDROID_HOME /usr/lib/android-sdk
+set --local ANDROID_HOME /usr/lib/android-sdk
+test -e $ANDROID_HOME && export ANDROID_HOME
 
 # GraalVM comes with: openjdk version "1.8.0_202"
-set --export GRAAL_HOME ~/graalvm-ce-1.0.0-rc13
-# set --export GRAAL_HOME ~/graalvm-ce-1.0.0-rc12
-if test -e $GRAAL_HOME
-    # set PATH $GRAAL_HOME/bin $PATH
-end
+set --local GRAAL_HOME ~/graalvm-ce-1.0.0-rc13 # ~/graalvm-ce-1.0.0-rc12
+test -e $GRAAL_HOME && export GRAAL_HOME && set PATH $GRAAL_HOME/bin $PATH
 
 # Remedy against:
 # $ lein uberjar
@@ -125,9 +121,7 @@ set usbDevice /dev/sdc1
 
 # update PATH for the Google Cloud SDK
 set --local incFile ~/google-cloud-sdk/path.fish.inc
-if test -e $incFile
-    . $incFile
-end
+test -e $incFile && source $incFile
 
 # see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
 set --export CORONA_ENV_TYPE "devel"
@@ -135,17 +129,19 @@ set --export CORONA_ENV_TYPE "devel"
 
 set --export REPL_USER $USER
 
+set PATH ~/.config/guix/current/bin $PATH
+
 set --export PATH $PATH
 
 # needed by `help`; e.g. `help expand`
 set --export BROWSER firefox
+set --local LD_PRELOAD /usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
+test -e $LD_PRELOAD && export LD_PRELOAD
 
-set --export GUILE_LOAD_PATH          ~/.guix-profile/share/guile/site/3.0      $GUILE_LOAD_PATH
-set --export GUILE_LOAD_COMPILED_PATH ~/.guix-profile/lib/guile/3.0/site-ccache $GUILE_LOAD_COMPILED_PATH
+set --local GLP ~/.guix-profile/share/guile/site/3.0
+test -e $GLP && set --export GUILE_LOAD_PATH $GLP $GUILE_LOAD_PATH
+set --local GCP ~/.guix-profile/lib/guile/3.0/site-ccache
+test -e $GCP && set --export GUILE_LOAD_COMPILED_PATH $GCP $GUILE_LOAD_COMPILED_PATH
 
 set --local localStuff ~/local-stuff.fish
-if test -e $localStuff
-    source $localStuff
-# else
-#     printf "No %s found\n" $localStuff
-end
+test -e $localStuff && source $localStuff || printf "No %s found\n" $localStuff
