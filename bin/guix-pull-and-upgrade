@@ -1,0 +1,2 @@
+#!/bin/sh
+guix pull && guix upgrade && date >> ~/pull-upgrade.txt

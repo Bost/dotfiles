@@ -1,2 +1,2 @@
 #!/bin/sh
-guile -e main ~/dev/dotfiles/bin/spag.scm $@
+guile -L ~/dev/dotfiles/bin -e main ~/dev/dotfiles/bin/spag.scm $@

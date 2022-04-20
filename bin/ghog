@@ -1,2 +1,3 @@
 #!/bin/sh
-guile -e main ~/dev/dotfiles/bin/ghog.scm $@
+gd=/home/bost/dev/dotfiles/bin
+guile -L $gd -e main $gd/ghog.scm $@

@@ -1,0 +1,2 @@
+#!/bin/sh
+guile -L ~/dev/dotfiles/bin -e main ~/dev/dotfiles/bin/g1.scm $@
