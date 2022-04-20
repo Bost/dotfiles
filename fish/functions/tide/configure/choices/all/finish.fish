@@ -12,7 +12,7 @@ function finish
             set -e _tide_selected_option # Skip through all the _next_choices
             _tide_finish
             set $_tide_prompt_var
-            # clear
+            clear
     end
 end
 

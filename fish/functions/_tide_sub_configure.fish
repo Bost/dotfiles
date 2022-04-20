@@ -35,7 +35,7 @@ function _next_choice -a nextChoice
 end
 
 function _tide_title -a text
-    # clear
+    clear
     set_color -o
     string pad --width (math --scale=0 "$fake_columns/2" + (string length $text)/2) $text
     set_color normal
