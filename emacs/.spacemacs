@@ -149,8 +149,12 @@ This function should only modify configuration layer settings."
           ;; org-enable-roam-protocol t
           )
      ;; rust
+
+     ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
+     racket ;; see https://racket-mode.com
+
      (scheme :variables ; M-x run-guile
-             scheme-implementations '(guile racket))
+             scheme-implementations '(guile))
      shell-scripts
      ;; haskell
      csv
@@ -257,10 +261,6 @@ This function should only modify configuration layer settings."
      ;; go
      ;; yaml
      ;; docker
-
-     ;; Racket settings for emacs
-     ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
-     racket ;; see https://racket-mode.com
 
      (latex
       ;; :variables
