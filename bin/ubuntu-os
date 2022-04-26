@@ -1,5 +1,5 @@
 #!/bin/sh
-scmFile=~/dev/dotfiles/bin/ubuntu-os.scm
+scmFile=/home/bost/dev/dotfiles/bin/ubuntu-os.scm
 guild compile -W0 $scmFile 1>/dev/null
-isoFile=$HOME/virt-machines/ubuntu-21.10-live-server-amd64.iso
+isoFile=/home/bost/virt-machines/ubuntu-21.10-live-server-amd64.iso
 sudo guile -e main $scmFile --user=$USER --iso-file=$isoFile $@

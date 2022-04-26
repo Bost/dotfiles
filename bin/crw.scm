@@ -1,18 +1,12 @@
-
-;; run by `guile cx.scm'
-
-;; On non-Guix OS
-;; #!/usr/bin/guile -s
-;; !#
-
-;; On GuixOS:
-;; #!/run/current-system/profile/bin/guile -s
-;; !#
-
+(use-modules (utils)
+             )
 ;; Example:
 ;;     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 
-(apply
+(define (main args)
+  (exec (cons* "chmod +rw" (cdr args))))
+
+#;(apply
  system*
  ((compose
    (lambda (cmd)

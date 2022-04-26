@@ -1,2 +1,2 @@
 #!/bin/sh
-guile ~/dev/dotfiles/bin/l.scm $@
+guile /home/bost/dev/dotfiles/bin/l.scm $@

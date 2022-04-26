@@ -1,2 +1,0 @@
-#!/bin/sh
-guile ~/dev/dotfiles/bin/cw.scm $@

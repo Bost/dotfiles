@@ -1,2 +1,2 @@
 #!/bin/sh
-guile ~/dev/dotfiles/bin/guix-os.scm $@
+guile /home/bost/dev/dotfiles/bin/guix-os.scm $@

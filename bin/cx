@@ -1,2 +1,4 @@
 #!/bin/sh
-guile ~/dev/dotfiles/bin/cx.scm $@
+guile /home/bost/dev/dotfiles/bin/cx.scm $@
+# guile -L /home/bost/dev/dotfiles/bin -e main /home/bost/dev/dotfiles/bin/cx.scm $@
+

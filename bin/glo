@@ -1,2 +1,2 @@
 #!/bin/sh
-guile -L ~/dev/dotfiles/bin -e main ~/dev/dotfiles/bin/glo.scm $@
+guile -L /home/bost/dev/dotfiles/bin -e main /home/bost/dev/dotfiles/bin/glo.scm $@
