@@ -1,2 +1,2 @@
 #!/bin/sh
-search-notes -f "vim|emacs" -p $@
+search-notes -f "vim|emacs|org_mode" -p $@
