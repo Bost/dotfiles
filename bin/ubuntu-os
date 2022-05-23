@@ -2,4 +2,5 @@
 scmFile=/home/bost/dev/dotfiles/bin/ubuntu-os.scm
 guild compile -W0 $scmFile 1>/dev/null
 isoFile=/home/bost/virt-machines/ubuntu-21.10-live-server-amd64.iso
-sudo guile -e main $scmFile --user=$USER --iso-file=$isoFile $@
+echo sudo guile -e main $scmFile --user=$USER --iso-file=$isoFile $@
+     sudo guile -e main $scmFile --user=$USER --iso-file=$isoFile $@

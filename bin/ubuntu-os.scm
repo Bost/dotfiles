@@ -1,4 +1,4 @@
-;; Ubuntu 21.04 in a Virtual Machine via qemu-system-x86_64
+;; Ubuntu Server in a Virtual Machine via qemu-system-x86_64
 ;; https://guix.gnu.org/manual/en/html_node/Running-Guix-in-a-VM.html
 
 ;; Clipboard support:
@@ -103,19 +103,20 @@
        "-device" "virtio-blk,drive=myhd"
        "-drive" (string-append "if=none,file=" qcow2File ",id=myhd")
        ;; spice remote-viewer
-       #;(string-join
-       (list
-       "-device"
-       "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
-       "-chardev" "spicevmc,name=vdagent,id=vdagent"
-       "-device"
-       (string-append
-       "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
-       ",name=com.redhat.spice.0")
-       "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
-       "-vga" "qxl"
-       "-smp" (vmCPUCores user)
-       ) " ")
+       #;
+       (string-join
+        (list
+         "-device"
+         "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
+         "-chardev" "spicevmc,name=vdagent,id=vdagent"
+         "-device"
+         (string-append
+          "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
+          ",name=com.redhat.spice.0")
+         "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
+         "-vga" "qxl"
+         "-smp" (vmCPUCores user)
+         ) " ")
        ;; "&" "disown" ;; TODO where is disown located???
        ))
     exec

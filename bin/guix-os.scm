@@ -10,24 +10,39 @@
 ;; it everywhere just in case.
 
 (use-modules (ice-9 rdelim)
-             (ice-9 popen))
+             (ice-9 popen)
+             (ice-9 getopt-long))
 
 (define (exec command)
   "The command must have only one line output. TODO improve it"
-  (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
-         (str  (read-line port))) ; from (ice-9 popen)
-    (close-pipe port)
-    str))
+  ((compose
+    (lambda (command)
+      (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
+             (str  (read-line port))) ; from (ice-9 popen)
+        (close-pipe port)
+        str))
+    (lambda (s)
+      ;; TODO implement pretty-print for bash commands
+      ;; ~a - outputs an argument like display
+      ;; ~s - outputs an argument like write (i.e. print to string)
+      (format #t "~a~%" s)
+      s)
+    (lambda (cmd) (if (list? cmd)
+                      (string-join cmd " ")
+                      cmd)))
+   command))
 
 (define vmQcow2File
-  (string-append (getenv "virtMachines")
-                 "/guix-system-vm-image-1.3.0.x86_64-linux.qcow2"))
+  "/home/bost/virt-machines/guix-system-vm-image-1.3.0.x86_64-linux.qcow2")
 (define vmRAM "2G")
 (define vmRemoteViewPort "5930")
 (define vmSSHPort "10022")
+(define (vmCPUCores user)
+  (number->string (/ (string->number
+                      (exec (list "sudo" (string-append "--user=" user)
+                                  "nproc"))) 2)))
 
-(define vmCPUCores (number->string (/ (string->number (exec "nproc")) 2)))
-
+#;
 (format
  #t
  (string-append
@@ -75,16 +90,20 @@
   "-enable-kvm" "-m" vmRAM
   "-device" "virtio-blk,drive=myhd"
   "-drive" (string-append "if=none,file=" vmQcow2File ",id=myhd")
-  "-device"
-  "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
-  "-chardev" "spicevmc,name=vdagent,id=vdagent"
-  "-device"
-  (string-append
-   "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
-   ",name=com.redhat.spice.0")
-  "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
-  "-vga" "qxl"
-  "-smp" vmCPUCores
-  "&"
-  ;; "disown" ;; TODO where is disown located???
+  ;; spice remote-viewer
+  #;
+  (string-join
+   (list
+    "-device"
+    "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
+    "-chardev" "spicevmc,name=vdagent,id=vdagent"
+    "-device"
+    (string-append
+     "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
+     ",name=com.redhat.spice.0")
+    "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
+    "-vga" "qxl"
+    "-smp" (vmCPUCores "bost")
+    ) " ")
+  ;; "&" "disown" ;; TODO where is disown located???
   ))
