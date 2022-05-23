@@ -62,21 +62,20 @@ This function should only modify configuration layer settings."
           erc-fill-static-center 15
           ;; erc-enable-notifications nil
           erc-autojoin-channels-alist
-          '(("libera.chat" "#guix" "#systemcrafters"))
+          '(("libera.chat" "#guix"
+             ;; "#systemcrafters"
+             ))
           erc-prompt-for-nickserv-password nil
           erc-server-list
           '(("irc.libera.chat" :port "6667" :nick "bost" :password "")))
      php
      ;; typescript
      (typescript :variables
-                 javascript-backend 'tide
-                 ;; javascript-backend 'lsp
                  typescript-fmt-tool 'prettier
                  typescript-linter 'eslint
                  ;; typescript-fmt-on-save t
                  )
      (javascript :variables
-                 javascript-backend 'tide
                  javascript-fmt-tool 'prettier
                  node-add-modules-path t)
 
@@ -156,7 +155,7 @@ This function should only modify configuration layer settings."
      (scheme :variables ; M-x run-guile
              scheme-implementations '(guile))
      shell-scripts
-     ;; haskell
+     haskell
      csv
      (python
       :variables
@@ -1424,11 +1423,12 @@ function symbol (unquoted)."
 
      ("<C-up>"            . xah-backward-block)
      ("<C-down>"          . xah-forward-block)
-     ("<C-prior>"         . hs-hide-block) ; pg-up
-     ("<C-next>"          . hs-show-block) ; pg-down
-     ;; ("<C-M-prior>"    . hs-toggle-hiding)
-     ("<C-M-prior>"       . hs-hide-all)  ; pg-up
-     ("<C-M-next>"        . hs-show-all)  ; pg-down
+     ;; TODO make pg-up / pg-down major-mode specific
+     ;; ("<C-prior>"      . hs-hide-block)    ; pg-up
+     ;; ("<C-next>"       . hs-show-block)    ; pg-down
+     ;; ("<C-M-prior>"    . hs-toggle-hiding) ; pg-up
+     ;; ("<C-M-prior>"    . hs-hide-all)      ; Ctrl + pg-up
+     ;; ("<C-M-next>"     . hs-show-all)      ; Ctrl + pg-down
      ("<C-M-delete>"      . kill-sexp)
      ("<C-M-s-delete>"    . my=delete-next-sexp)
      ("<C-M-s-backspace>" . my=delete-prev-sexp)
