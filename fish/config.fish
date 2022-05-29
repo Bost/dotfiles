@@ -128,10 +128,18 @@ set --export CORONA_ENV_TYPE "devel"
 # set --export BABASHKA_CLASSPATH (clojure -Sdeps '{:deps {babashka/babashka.process {:sha "6c348b5213c0c77ebbdfcf2f5da71da04afee377" :git/url "https://github.com/babashka/babashka.process"}}}' -Spath)
 
 set --export REPL_USER $USER
+# set --export CMAKE_C_COMPILER /home/bost/.guix-profile/bin/gcc
+set --export CC /home/bost/.guix-profile/bin/gcc
 
 set PATH ~/.config/guix/current/bin $PATH
 
 set --export PATH $PATH
+
+# for `flatpak run ...`
+set --export XDG_DATA_DIRS \
+             /home/bost/.local/share/flatpak/exports/share \
+             /var/lib/flatpak/exports/share \
+    $XDG_DATA_DIRS
 
 # needed by `help`; e.g. `help expand`
 set --export BROWSER firefox
