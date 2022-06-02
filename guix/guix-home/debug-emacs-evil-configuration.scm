@@ -10,12 +10,12 @@
  (packages
   (map (compose list specification->package+output)
        (list
-        "bash"
-        "git"
-        "emacs"
-        "emacs-evil"
-        "emacs-magit"
-        "emacs-evil-collection"
+        "bash@5.1.8"
+        "git@2.36.1"
+        "emacs@28.1"
+        "emacs-evil@1.15.0-0.008a6cd"
+        "emacs-magit@3.3.0"
+        "emacs-evil-collection@0.0.7"
         )))
  (services
   (list (service
