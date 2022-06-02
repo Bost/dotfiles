@@ -15,7 +15,7 @@
         "emacs@28.1"
         "emacs-evil@1.15.0-0.008a6cd"
         "emacs-magit@3.3.0"
-        "emacs-evil-collection@0.0.7"
+        "emacs-evil-collection@0.0.8"
         )))
  (services
   (list (service
