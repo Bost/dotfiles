@@ -28,6 +28,18 @@ then
 else
     PS1='\u@\h \w\$ '
 fi
+
+create_test_repo () {
+    mkdir foo && cd foo
+    git init
+    git config user.email "x@y.com"
+    git config user.name "Jim Beam"
+    echo "some content" > foo.txt
+    git add .
+    git commit -m "1st commit"
+    emacs -nw foo.txt
+}
+
 alias ls='ls -p --color=auto'
 alias ll='ls -l'
 alias grep='grep --color=auto'

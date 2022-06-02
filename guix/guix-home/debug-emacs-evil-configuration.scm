@@ -31,6 +31,7 @@ Note:
         "emacs"
         "emacs-evil"
         "emacs-magit"
+        "emacs-evil-collection"
 
         ;; manage guix profiles
         "emacs-guix"
@@ -49,6 +50,7 @@ Note:
           (aliases
            '(("grep" . "grep --color=auto")
              ("l" . "ls -lA --color=auto")
+             ("g" . "create_test_repo")
              ("ll" . "ls -l")
              ("ls" . "ls -p --color=auto")))
           (bashrc
