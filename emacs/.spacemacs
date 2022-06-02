@@ -1123,6 +1123,7 @@ before packages are loaded."
      ;; (kotlin . t)
      (lisp . t)
      ;; (ruby . t)
+     (haskell . t)
      ))
 
   (defalias 'save-selected-text 'write-region)
