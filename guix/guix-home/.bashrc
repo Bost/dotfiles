@@ -39,8 +39,3 @@ create_test_repo () {
     git commit -m "1st commit"
     emacs -nw foo.txt
 }
-
-alias ls='ls -p --color=auto'
-alias ll='ls -l'
-alias grep='grep --color=auto'
-eval "$(direnv hook bash)"
