@@ -120,6 +120,7 @@ Note:
         "xev"
         "lshw"
         "bc"
+        ;; fish is sinstalled by (service home-fish-service-type)
         "fish"
         "tdlib"
         "rust"
@@ -148,6 +149,7 @@ Note:
         "xkeyboard-config"
         "mtr"
         "portaudio"
+        ;; bash is installed by home-bash-service-type
         "bash"
         "iniparser"
         "libconfini"
@@ -158,6 +160,28 @@ Note:
         "unzip"
         "zip"
         )))
+
+ ;; https://github.com/clojure-quant/infra-guix/blob/cf67ccfce02f4d1e2441ed9f34b5ec6583ffc1cc/home/config-nuc.scm
+ #;
+ (define my-config-service
+   (simple-service 'test-config
+                   home-files-service-type
+                   (list `("config/test.conf" ,(plain-file "tmp-file.txt" "the content of ~/.config/test.conf"))
+                         `("ssh/config" ,(local-file "./ssh/config"))
+                         `("config/alacritty/alacritty.yml" ,(local-file "./alacritty/alacritty.yml"))
+                                        ; emacs
+                         `("config/emacs/init.el" ,(local-file "./emacs/init.el")) ; does not get loaded
+                         `("emacs.d/init.el" ,(local-file "./emacs/init.el"))
+                                        ; sway / waybar
+                         `(".config/sway/config" ,(local-file "./sway/config"))
+                         `(".config/waybar/config" ,(local-file "./waybar/config"))
+                         `(".config/waybar/style.css" ,(local-file "./waybar/style.css"))
+                                        ; clojure
+                         `(".config/clojure/deps.edn" ,(local-file "./clojure/deps.edn"))
+                         `(".config/clojure/cljfmt.edn" ,(local-file "./clojure/cljfmt.edn"))
+                                        ;`("xsettingsd" ,(local-file "./xsettingsd/xsettingsd.conf"))
+                         )))
+
  (services
   (list (service
          home-bash-service-type
@@ -168,10 +192,60 @@ Note:
              ("ll" . "ls -l")
              ("ls" . "ls -p --color=auto")))
           (bashrc
-           (list (local-file
-                  (ghc "/.bashrc" )
-                  "bashrc")))
+           (list
+            ;; (local-file ".bashrc" "bashrc") should work too
+            (local-file (ghc "/.bashrc") "bashrc")))
           (bash-profile
-           (list (local-file
-                  (ghc "/.bash_profile")
-                  "bash_profile"))))))))
+           (list (local-file (ghc "/.bash_profile") "bash_profile")))
+
+          #;
+          (environment-variables
+           `(("XDG_CURRENT_DESKTOP" . "sway")
+             ("XDG_SESSION_TYPE" . "wayland")
+             ("MOZ_ENABLE_WAYLAND" . "1")
+             ;; ...
+             ))
+          ))
+
+        ;; emacs-with-native-comp
+        ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
+
+        ;; https://github.com/search?q=home-fish-service-type&type=code
+        ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
+        (service
+         home-fish-service-type
+         ;; fish configuration - see gnu/home/services/shells.scm
+         #;
+         (home-fish-configuration
+          (abbreviations '(("gco" . "git checkout")
+                           ("gc" . "guix gc")
+                           ("gs" . "git status")
+                           ("gsr" . "sudo -E guix system reconfigure")
+                           ("ghr" . "guix home reconfigure")
+                           ("cat" . "bat -pp")))
+          (aliases
+           '(("l" . "ls -a")))
+          (config (list (local-file "config/fish/config.fish")))
+          (environment-variables
+           `(("TEST" . "test")))
+          ))
+
+        ;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
+        #;
+        (service home-git-service-type
+                 (home-git-configuration
+                  (config
+                   `((user
+                      ((name . "Bastien Riviere")
+                       (email . "me@babariviere.com")
+                       (signingKey . "39035CC0B75D1142")))
+                     (github
+                      ((user . "babariviere")))
+                     (remote
+                      ((pushDefault . "origin")))
+                     (commit
+                      ((gpgSign . #t)))
+                     (tag
+                      ((gpgSign . #t)))))))
+
+        )))
