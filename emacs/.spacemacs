@@ -349,8 +349,11 @@ This function should only modify configuration layer settings."
      ;; see also org-babel-load-languages
      (ob-racket
       :location (recipe :fetcher github :repo "hasu/emacs-ob-racket"))
-     (scribble-mode
-      :location (recipe :fetcher github :repo "emacs-pe/scribble-mode"))
+     ;; TODO add scribble-mode pollen-mode to the racket layer; with :defer t
+     ;; (defun racket/init-pollen-mode () (use-package pollen-mode :defer t))
+     ;; (defun racket/init-scribble-mode () (use-package scribble-mode :defer t))
+     scribble-mode
+     pollen-mode
      ;; }}}
 
      ;; helm-lean ; Emacs mode for the Lean theorem prover.
