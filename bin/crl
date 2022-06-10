@@ -1,2 +1,2 @@
 #!/bin/sh
-search-notes -f "shells|linux" -p $@
+search-notes -f "guix|shells|linux|android" -p $@
