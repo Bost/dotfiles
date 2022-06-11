@@ -1,5 +1,7 @@
 function gcl
-    set escArgv (string escape -- $argv)
+    # 'string escape' doesn't work for https://git.sr.ht/~krevedkokun/dotfiles
+    # set escArgv (string escape -- $argv)
+    set escArgv $argv
     set cmd git clone $escArgv
     echo $cmd
     eval $cmd
