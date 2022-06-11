@@ -157,13 +157,16 @@ This function should only modify configuration layer settings."
      shell-scripts
      haskell
      csv
-     (python
-      :variables
-      ;; TODO use a list of prefered python interpreters
-      python-shell-interpreter "python3.9.9"; python3.8 python3.7 python3.6
-      ;; -i   : inspect interactively after running script; forces a prompt even
-      ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
-      python-shell-interpreter-args "-i")
+     ;; Breaks the `C-h k command'
+     ;; Error message is "mapcar: Symbol’s value as variable is void: code-cells-mode""
+     ;; See https://github.com/syl20bnr/spacemacs/issues/15548
+     ;; (python
+     ;;  :variables
+     ;;  ;; TODO use a list of prefered python interpreters
+     ;;  python-shell-interpreter "python3.9.9"; python3.8 python3.7 python3.6
+     ;;  ;; -i   : inspect interactively after running script; forces a prompt even
+     ;;  ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
+     ;;  python-shell-interpreter-args "-i")
 
      ;; Show commands as you type in a separate buffer
      ;; command-log  ;; deprecated
