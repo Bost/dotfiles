@@ -1351,181 +1351,189 @@ function symbol (unquoted)."
        ("ty" . my=clj-insert-type)
        ("ma" . my=clj-insert-map-fn)))
 
-    (dolist (state-map `(,global-map))
+    (dolist (state-map `(,evil-ex-completion-map)) ;; not he evil-ex-map!!!
+      (bind-keys :map state-map
+                 ("s-0" . my=insert-group-parens)
+                 ("s-)" . my=insert-group-parens))
       (bind-chords :map state-map
-                   ("KK" . my=switch-to-previous-buffer)
-                   ;; don't need to switch keyboards just because of parenthesis
-                   ("fj" . (my=insert-str "()" 1))))
+                   ("()" . my=insert-group-parens)))
 
     ;; (setq evil-respect-visual-line-mode t) doesn't work easily
     (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
     (global-set-key [remap evil-beginning-of-line] 'crux-move-beginning-of-line)
 
-    (bind-keys
-     :map global-map
-     ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
+    (dolist (state-map `(,global-map))
+      (bind-chords
+       :map state-map
+       ("KK" . my=switch-to-previous-buffer)
+       ;; don't need to switch keyboards just because of parenthesis
+       ("fj" . (my=insert-str "()" 1)))
 
-     ;; TODO The <escape> keybinding seems not to work.
-     ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-     ("<escape>"  . keyboard-escape-quit)
-     ("s-K"       . my=kill-buffers--unwanted)
-     ("s-C-K"     . my=kill-buffers--dired)
-     ("s-R"       . spacemacs/rename-current-buffer-file)
-     ("s-q"       . my=other-window)
-     ("s-k"       . my=close-buffer)
-     ("s-s"       . save-buffer)
-     ("s-0"       . delete-window)
-     ("s-1"       . my=delete-other-windows)
-     ("<S-iso-lefttab>"   . next-buffer)
-     ("<S-s-iso-lefttab>" . previous-buffer)
-     ("<S-s-f8>"    . ace-swap-window)
-     ;; ("<S-s-f8>"    . transpose-frame)
-     ("s-N"       . spacemacs/cycle-defun-narrow-modes)
-     ("s-n"       . spacemacs/cycle-narrow-widen)
-     ;; ("s-2"    . my=split-other-window-below)
-     ("s-2"       . split-window-below)   ; ~SPC w -~
-     ;; see ~SPC w /~ and ~SPC w 2~
-     ;; ("s-3"    . spacemacs/window-split-double-columns)
-     ;; see ~SPC w /~ and ~SPC w 2~
-     ("s-3"       . split-window-right-and-focus)
-     ("s-9"       . my=load-layout)
-     ("s-+"       . my=eval-bind-keys-and-chords)
-     ("<s-kp-add>". my=eval-bind-keys-and-chords)
-     ("s-z"       . my=buffer-selection-show)
-     ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
-     ("s-D"       . dired-jump)
-     ("s-c"       . sp-copy-sexp)
-     ("s-b"       . sp-backward-copy-sexp)
-     ;; ("<f11>"     . bookmark-set)
-     ;; ("<f11>"     . equake-toggle-fullscreen)
-     ;; Move the parenthesis - see SPC k b/B/f/F
-     ("<M-s-left>"  . sp-forward-barf-sexp)
-     ("<M-s-right>" . sp-forward-slurp-sexp)
-     ("<C-s-left>"  . sp-backward-slurp-sexp)
-     ("<C-s-right>" . sp-backward-barf-sexp)
-     ("s-;"         . spacemacs/comment-or-uncomment-lines)
-     ("<S-s-f1>"    . eshell) ;; Shitf-Super-F1
-     ("<s-f1>"      . projectile-multi-term-in-root)
-     ("s-W"         . whitespace-cleanup)
-     ("s-w"         . my=whitespace-mode-toggle)
-     ("s-m"         . my=magit-status)
-     ("<f3>"        . my=search-region-or-symbol)
+      (bind-keys
+       :map global-map
+       ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
 
-     ("s-a"    . helm-mini)                   ; see advice-add my=helm-mini
-     ("s-]"    . helm-mini)                   ; see advice-add my=helm-mini
-     ("s-B"    . helm-filtered-bookmarks)
-     ("<f9>"   . helm-filtered-bookmarks)
-     ;; ("s-p" . helm-projectile)
-     ("s-p"    . helm-projectile-find-file)
-     ("M-s-p"  . helm-projectile-switch-project)
-     ("<M-f3>" . spacemacs/helm-project-smart-do-search)
-     ("s-f"    . helm-find-files)
-     ("s-F"    . helm-recentf)       ; recentf-open-files
-     ("s-r"    . helm-recentf)
-     ("M-y"    . helm-show-kill-ring)    ; replaces evil-paste-pop
-     ("s-G"    . helm-google-suggest)
-     ("s-/"    . helm-swoop)
-     ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
+       ;; TODO The <escape> keybinding seems not to work.
+       ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+       ("<escape>"  . keyboard-escape-quit)
+       ("s-K"       . my=kill-buffers--unwanted)
+       ("s-C-K"     . my=kill-buffers--dired)
+       ("s-R"       . spacemacs/rename-current-buffer-file)
+       ("s-q"       . my=other-window)
+       ("s-k"       . my=close-buffer)
+       ("s-s"       . save-buffer)
+       ("s-0"       . delete-window)
+       ("s-1"       . my=delete-other-windows)
+       ("<S-iso-lefttab>"   . next-buffer)
+       ("<S-s-iso-lefttab>" . previous-buffer)
+       ("<S-s-f8>"    . ace-swap-window)
+       ;; ("<S-s-f8>"    . transpose-frame)
+       ("s-N"       . spacemacs/cycle-defun-narrow-modes)
+       ("s-n"       . spacemacs/cycle-narrow-widen)
+       ;; ("s-2"    . my=split-other-window-below)
+       ("s-2"       . split-window-below)   ; ~SPC w -~
+       ;; see ~SPC w /~ and ~SPC w 2~
+       ;; ("s-3"    . spacemacs/window-split-double-columns)
+       ;; see ~SPC w /~ and ~SPC w 2~
+       ("s-3"       . split-window-right-and-focus)
+       ("s-9"       . my=load-layout)
+       ("s-+"       . my=eval-bind-keys-and-chords)
+       ("<s-kp-add>". my=eval-bind-keys-and-chords)
+       ("s-z"       . my=buffer-selection-show)
+       ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
+       ("s-D"       . dired-jump)
+       ("s-c"       . sp-copy-sexp)
+       ("s-b"       . sp-backward-copy-sexp)
+       ;; ("<f11>"     . bookmark-set)
+       ;; ("<f11>"     . equake-toggle-fullscreen)
+       ;; Move the parenthesis - see SPC k b/B/f/F
+       ("<M-s-left>"  . sp-forward-barf-sexp)
+       ("<M-s-right>" . sp-forward-slurp-sexp)
+       ("<C-s-left>"  . sp-backward-slurp-sexp)
+       ("<C-s-right>" . sp-backward-barf-sexp)
+       ("s-;"         . spacemacs/comment-or-uncomment-lines)
+       ("<S-s-f1>"    . eshell) ;; Shitf-Super-F1
+       ("<s-f1>"      . projectile-multi-term-in-root)
+       ("s-W"         . whitespace-cleanup)
+       ("s-w"         . my=whitespace-mode-toggle)
+       ("s-m"         . my=magit-status)
+       ("<f3>"        . my=search-region-or-symbol)
 
-     ;; C-M-down default value is `down-list'
-     ("<C-M-down>" . crux-duplicate-current-line-or-region)
-     ("<C-s-down>" . crux-duplicate-current-line-or-region)
-     ("C-c d"      . crux-duplicate-current-line-or-region)
-     ("C-c t"      . crux-transpose-windows)
-     ("<C-s-backspace>" . crux-kill-line-backwards) ; kill-line-backward
-     ("s-j"             . crux-top-join-line)
+       ("s-a"    . helm-mini)                   ; see advice-add my=helm-mini
+       ("s-]"    . helm-mini)                   ; see advice-add my=helm-mini
+       ("s-B"    . helm-filtered-bookmarks)
+       ("<f9>"   . helm-filtered-bookmarks)
+       ;; ("s-p" . helm-projectile)
+       ("s-p"    . helm-projectile-find-file)
+       ("M-s-p"  . helm-projectile-switch-project)
+       ("<M-f3>" . spacemacs/helm-project-smart-do-search)
+       ("s-f"    . helm-find-files)
+       ("s-F"    . helm-recentf)       ; recentf-open-files
+       ("s-r"    . helm-recentf)
+       ("M-y"    . helm-show-kill-ring)    ; replaces evil-paste-pop
+       ("s-G"    . helm-google-suggest)
+       ("s-/"    . helm-swoop)
+       ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
 
-     ("<C-up>"            . xah-backward-block)
-     ("<C-down>"          . xah-forward-block)
-     ;; TODO make pg-up / pg-down major-mode specific
-     ;; ("<C-prior>"      . hs-hide-block)    ; pg-up
-     ;; ("<C-next>"       . hs-show-block)    ; pg-down
-     ;; ("<C-M-prior>"    . hs-toggle-hiding) ; pg-up
-     ;; ("<C-M-prior>"    . hs-hide-all)      ; Ctrl + pg-up
-     ;; ("<C-M-next>"     . hs-show-all)      ; Ctrl + pg-down
-     ("<C-M-delete>"      . kill-sexp)
-     ("<C-M-s-delete>"    . my=delete-next-sexp)
-     ("<C-M-s-backspace>" . my=delete-prev-sexp)
-     ("<C-M-backspace>"   . backward-kill-sexp)
+       ;; C-M-down default value is `down-list'
+       ("<C-M-down>" . crux-duplicate-current-line-or-region)
+       ("<C-s-down>" . crux-duplicate-current-line-or-region)
+       ("C-c d"      . crux-duplicate-current-line-or-region)
+       ("C-c t"      . crux-transpose-windows)
+       ("<C-s-backspace>" . crux-kill-line-backwards) ; kill-line-backward
+       ("s-j"             . crux-top-join-line)
 
-     ("<s-backspace>"     . paredit-backward-kill-word)
-     ("<s-delete>"        . paredit-forward-kill-word)
-     ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
-     ("s-g"     . my=engine/search-or-browse)
-     ("s-8"     . er/expand-region)   ; increase selected region by semantic units
-     ("<f2>"    . evil-avy-goto-char-timer)
-     ;; <S-tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
-     ("<s-tab>" . spacemacs/alternate-buffer)
-     ;; ("<s-tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
-     ("<C-f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
-     ("C-s-/"   . avy-goto-line)
+       ("<C-up>"            . xah-backward-block)
+       ("<C-down>"          . xah-forward-block)
+       ;; TODO make pg-up / pg-down major-mode specific
+       ;; ("<C-prior>"      . hs-hide-block)    ; pg-up
+       ;; ("<C-next>"       . hs-show-block)    ; pg-down
+       ;; ("<C-M-prior>"    . hs-toggle-hiding) ; pg-up
+       ;; ("<C-M-prior>"    . hs-hide-all)      ; Ctrl + pg-up
+       ;; ("<C-M-next>"     . hs-show-all)      ; Ctrl + pg-down
+       ("<C-M-delete>"      . kill-sexp)
+       ("<C-M-s-delete>"    . my=delete-next-sexp)
+       ("<C-M-s-backspace>" . my=delete-prev-sexp)
+       ("<C-M-backspace>"   . backward-kill-sexp)
 
-     ;; fd - evil-escape from insert state and everything else
-     ;; occurences - function scope
-     ("s-I"                . my=iedit-mode-toggle)
-     ("s-i"                . iedit-mode)  ; all occurences in the buffer
-     ;; ("s-i"             . spacemacs/enter-ahs-forward)
-     ("<f12>"              . undo-tree-visualize)
-     ;; ("<S-delete>"      . kill-region)
-     ("<C-s-delete>"       . kill-line)   ; C-super-key
-     ("<C-S-delete>"       . kill-line)   ; C-shift-key
-     ;; ("s-l"                . spacemacs/resume-last-search-buffer)
-     ("s-v" . my=evil-select-pasted)
+       ("<s-backspace>"     . paredit-backward-kill-word)
+       ("<s-delete>"        . paredit-forward-kill-word)
+       ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
+       ("s-g"     . my=engine/search-or-browse)
+       ("s-8"     . er/expand-region)   ; increase selected region by semantic units
+       ("<f2>"    . evil-avy-goto-char-timer)
+       ;; <S-tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
+       ("<s-tab>" . spacemacs/alternate-buffer)
+       ;; ("<s-tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
+       ("<C-f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
+       ("C-s-/"   . avy-goto-line)
 
-     ;; TODO what's the difference between insert and insertchar?
-     ("<S-s-insert>" . my=yank-and-select)
+       ;; fd - evil-escape from insert state and everything else
+       ;; occurences - function scope
+       ("s-I"                . my=iedit-mode-toggle)
+       ("s-i"                . iedit-mode)  ; all occurences in the buffer
+       ;; ("s-i"             . spacemacs/enter-ahs-forward)
+       ("<f12>"              . undo-tree-visualize)
+       ;; ("<S-delete>"      . kill-region)
+       ("<C-s-delete>"       . kill-line)   ; C-super-key
+       ("<C-S-delete>"       . kill-line)   ; C-shift-key
+       ;; ("s-l"                . spacemacs/resume-last-search-buffer)
+       ("s-v" . my=evil-select-pasted)
 
-     ("s-L"        . spacemacs/cycle-line-number-types)
-     ("C-s-l"      . spacemacs/cycle-large-file-settings)
+       ;; TODO what's the difference between insert and insertchar?
+       ("<S-s-insert>" . my=yank-and-select)
 
-     ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
-     ;; zop-up-to-char works as zop-to-char but stop just before target
-     ("M-z"        . zop-up-to-char)
-     ("M-Z"        . zop-to-char)
+       ("s-L"        . spacemacs/cycle-line-number-types)
+       ("C-s-l"      . spacemacs/cycle-large-file-settings)
 
-     ;; [1] spacemacs/move-text-transient-state/move-text-down
-     ;; [2] spacemacs/move-text-transient-state/move-text-up
-     ;; [1] and [2] don't drag:
-     ("<M-down>"   . my=drag-stuff-down)
-     ("<M-up>"     . my=drag-stuff-up)
+       ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
+       ;; zop-up-to-char works as zop-to-char but stop just before target
+       ("M-z"        . zop-up-to-char)
+       ("M-Z"        . zop-to-char)
 
-     ("C-s-."      . spacemacs/jump-to-definition-other-window)
-     ("s->"        . spacemacs/jump-to-definition-other-window)
-     ("s-."        . spacemacs/jump-to-definition)
+       ;; [1] spacemacs/move-text-transient-state/move-text-down
+       ;; [2] spacemacs/move-text-transient-state/move-text-up
+       ;; [1] and [2] don't drag:
+       ("<M-down>"   . my=drag-stuff-down)
+       ("<M-up>"     . my=drag-stuff-up)
 
-     ("s-,"        . evil-jump-backward)
-     ;; ("s-,"     . dumb-jump-back)
-     ;; ("s-,"     . cider-pop-back)
+       ("C-s-."      . spacemacs/jump-to-definition-other-window)
+       ("s->"        . spacemacs/jump-to-definition-other-window)
+       ("s-."        . spacemacs/jump-to-definition)
 
-     ;; C-o; evil-jump-backward
-     ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
+       ("s-,"        . evil-jump-backward)
+       ;; ("s-,"     . dumb-jump-back)
+       ;; ("s-,"     . cider-pop-back)
 
-     ("<print>"    . describe-text-properties) ; my=what-face
+       ;; C-o; evil-jump-backward
+       ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
 
-     ("<s-return>"    . my=jump-last-edited-place)
-     ("<C-s-return>"  . goto-last-change)
-     ("s-J"        . evil-join)
+       ("<print>"    . describe-text-properties) ; my=what-face
 
-     ("<s-print>"  . my=ediff-buffers-left-right) ; see advice-add
-     ("s-A"        . align-regexp)
-     ("s-:"        . my=fabricate-subst-cmd)
+       ("<s-return>"    . my=jump-last-edited-place)
+       ("<C-s-return>"  . goto-last-change)
+       ("s-J"        . evil-join)
 
-     ("s-<"         . my=select-in-ang-bracket)
-     ("s-["         . my=select-in-sqr-bracket)
-     ("s-("         . my=select-in-rnd-bracket)
-     ("s-{"         . my=select-in-crl-bracket)
-     ("s-\""        . my=select-in-string)
+       ("<s-print>"  . my=ediff-buffers-left-right) ; see advice-add
+       ("s-A"        . align-regexp)
+       ("s-:"        . my=fabricate-subst-cmd)
 
-     ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
-     ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
+       ("s-<"         . my=select-in-ang-bracket)
+       ("s-["         . my=select-in-sqr-bracket)
+       ("s-("         . my=select-in-rnd-bracket)
+       ("s-{"         . my=select-in-crl-bracket)
+       ("s-\""        . my=select-in-string)
 
-     ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
-     ;; <menu> is not a prefix key. See:
-     ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-     ("H-1"      . my=H-1) ;; this doesn't work ("C-c h 1" . my=H-1)
-     ("H-2"      . my=H-2)
-     ("H-4"      . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
-     )
+       ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
+       ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
+
+       ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
+       ;; <menu> is not a prefix key. See:
+       ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
+       ("H-1"      . my=H-1) ;; this doesn't work ("C-c h 1" . my=H-1)
+       ("H-2"      . my=H-2)
+       ("H-4"      . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
+       ))
     (message "%s" "my=eval-bind-keys-and-chords evaluated")
     )
 
@@ -1617,6 +1625,13 @@ function symbol (unquoted)."
      ("C-2" . magit-section-show-level-2)
      ("C-3" . magit-section-show-level-3)
      ("C-4" . magit-section-show-level-4)))
+
+  (bind-keys
+   :map term-raw-map
+   ("C-<right>" . right-word)
+   ("C-<left>" . left-word)
+   ("<prior>" . evil-scroll-page-up)
+   ("<next>"  . evil-scroll-page-down))
 
   (bind-keys
    :map dired-mode-map
@@ -1739,6 +1754,8 @@ function symbol (unquoted)."
    ("C-s-d" . my=elisp-insert-defun)
    ("s-d"   . my=eval-current-defun)
    ("#"     . endless/sharp)
+   ;; emacs-lisp doesn't have a syntax for sexp-comment
+   ("s-\\"   . spacemacs/comment-or-uncomment-lines)
    )
 
   (dolist (state-map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work

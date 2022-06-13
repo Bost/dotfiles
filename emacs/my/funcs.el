@@ -186,6 +186,11 @@ large files. Inverse of `my=shenanigans-on'."
   (left-char n-chars-back)
   (my=evil-insert))
 
+(defun my=insert-group-parens ()
+  (interactive)
+  (let* ((msg "\\(.*\\)"))
+    (my=insert-str msg 2)))
+
 (defun my=delete-next-sexp (&optional arg)
   "Delete the sexp (balanced expression) following point w/o
 yanking it. See `kill-sexp'."
@@ -310,7 +315,7 @@ E.g.:
          ;; Example 2.:
          (search-regex (format "%s" (car kill-ring)))
          (replace-regex (format "%s" (car kill-ring)))
-         (sexp-str (format "%%s#\\<%s\\>#%s#gc" search-regex replace-regex))
+         (sexp-str (format "%%s#\\<\\(%s\\)\\>#%s#gc" search-regex replace-regex))
          ;; 4 means: jump to the 2nd slash
          (offset (+ (length search-regex) 9)))
     ;; (cons .. offset) moves the point
