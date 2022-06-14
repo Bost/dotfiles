@@ -1,4 +1,17 @@
 set fish_greeting ""
+
+# Reset the fish-shell back to it's initial state:
+# rm -rf ~/.config/fish/completions/
+# rm -rf ~/.config/fish/conf.d/
+# rm -rf ~/.config/fish/fish_plugins
+# rm -rf ~/.config/fish/fish_variables
+# rm -rf ~/.config/fish/functions/fisher.fish
+# rm -rf ~/.config/fish/functions/tide.fish
+# rm -rf ~/.config/fish/functions/tide/
+# rm -rf ~/.config/fish/functions/fish_mode_prompt.fish
+# rm -rf ~/.config/fish/functions/fish_prompt.fish
+# rm -rf ~/.config/fish/functions/_tide_*
+
 # set --erase fish_greeting   # this doesn't remove the greeting?!?
 # TODO https://www.wezm.net/technical/2019/10/useful-command-line-tools/
 set --export dev ~/dev
