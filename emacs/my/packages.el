@@ -110,7 +110,8 @@ Each entry is either:
   (use-package copy-sexp))
 
 (defun my/post-init-engine-mode ()
-  (defvar my=engine/search-engine 'engine/search-duck-duck-go)
+  ;; (defvar my=engine/search-engine 'engine/search-duck-duck-go)
+  (defvar my=engine/search-engine 'engine/search-google)
   ;; (setq my=engine/search-engine 'engine/search-wikipedia)
 
   (defun my=engine/browse-url ()
