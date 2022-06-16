@@ -1029,6 +1029,11 @@ before packages are loaded."
   ;; (global-prettify-symbols-mode +1)
 
   (setq
+
+   ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
+   ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
+   multi-term-program "~/.guix-profile/bin/fish"
+
    ;; See also undo-tree-auto-save-history
    undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
 
@@ -1629,6 +1634,7 @@ function symbol (unquoted)."
    :map term-raw-map
    ("C-<right>" . right-word)
    ("C-<left>" . left-word)
+   ("<delete>" . term-send-del)
    ("<prior>" . evil-scroll-page-up)
    ("<next>"  . evil-scroll-page-down))
 
