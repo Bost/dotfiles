@@ -196,7 +196,7 @@ This function should only modify configuration layer settings."
       :variables
       cider-jdk-src-paths
       '(
-        ;; (concat (getenv "HOME") "/dev/clojure")
+        ;; "~/dev/clojure"
         ;; sudo apt install openjdk-15-source
         ;; mkdir -p ~/dec/openjdk-15-source
         ;; unzip /usr/lib/jvm/openjdk-15/src.zip -d ~/dec/openjdk-15-source
@@ -988,9 +988,7 @@ before packages are loaded."
     (setq web-mode-attr-value-indent-offset 2)
     (setq lsp-eslint-server-command
           `("node"
-            ,(concat
-              (getenv "HOME")
-              "/.emacs.d/.cache/lsp/eslint/unzipped/extension/server/out/eslintServer.js")
+            "~/.emacs.d/.cache/lsp/eslint/unzipped/extension/server/out/eslintServer.js"
             "--stdio"))
     (set (make-local-variable 'company-backends)
          '((company-tide company-files :with company-yasnippet)
@@ -1014,9 +1012,7 @@ before packages are loaded."
   (add-hook 'web-mode-hook #'turn-on-smartparens-mode t)
 
   (add-to-list 'yas-snippet-dirs
-               (concat
-                (getenv "HOME")
-                "/.emacs.d/layers/+completion/auto-completion/local/snippets/"))
+               "~/.emacs.d/layers/+completion/auto-completion/local/snippets/")
   ;; the (add-to-list 'yas-snippet-dirs ...) must be called before
   (yas-global-mode 1)
   (global-flycheck-mode)
