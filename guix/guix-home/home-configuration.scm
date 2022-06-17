@@ -60,7 +60,6 @@
    "dconf-editor"
    "direnv"
    "emacs"
-   "emacs-emacsql-sqlite3"
    "emacs-with-editor"
    "evince"
    "exa"

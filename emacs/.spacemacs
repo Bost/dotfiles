@@ -143,8 +143,8 @@ This function should only modify configuration layer settings."
      ;; swift
      ;; windows-scripts
      (org :variables
-          org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
-          org-enable-roam-support t
+          ;; org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
+          ;; org-enable-roam-support t
           ;; capture content from external applications such as the browser
           ;; org-enable-roam-protocol t
           )
