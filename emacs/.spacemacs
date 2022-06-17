@@ -143,6 +143,8 @@ This function should only modify configuration layer settings."
      ;; swift
      ;; windows-scripts
      (org :variables
+          org-support-shift-select 'always
+          org-src-tab-acts-natively nil ;; default is t
           ;; org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
           ;; org-enable-roam-support t
           ;; capture content from external applications such as the browser
@@ -1174,11 +1176,6 @@ before packages are loaded."
   (super-save-mode +1) ;; better auto-save-mode
 
   (use-package org
-    :config
-    (setq
-     org-support-shift-select 'always
-     org-src-tab-acts-natively nil ;; default is t
-     )
     :hook
     (org-mode
      .
