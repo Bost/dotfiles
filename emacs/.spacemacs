@@ -1257,62 +1257,6 @@ before packages are loaded."
   ;;   (let ((inhibit-read-only t))
   ;;     (erase-buffer)))
 
-  ;; See https://emacs.stackexchange.com/a/69010/36619
-  (defmacro bind-chords (&rest args)
-    "Bind multiple chords at once.
-
-Accepts keyword argument:
-:map - a keymap into which the keybindings should be added
-
-The rest of the arguments are conses of keybinding string and a
-function symbol (unquoted)."
-    (let* ((map (plist-get args :map))
-           (maps (if (listp map) map (list map)))
-           (key-bindings (progn
-                           (while (keywordp (car args))
-                             (pop args)
-                             (pop args))
-                           args)))
-      (macroexp-progn
-       (apply
-        #'nconc
-        (mapcar
-         (lambda (form)
-           (let ((command `(if (functionp ',(cdr form))
-                               ',(cdr form)
-                             #'(lambda () (interactive) ,(cdr form)))))
-             (if maps
-                 (mapcar
-                  #'(lambda (m)
-                      `(bind-chord ,(car form) ,command ,m)) maps)
-               `((bind-chord ,(car form) ,command)))
-             ;; (if maps
-             ;;     (mapcar
-             ;;      #'(lambda (m)
-             ;;          `(bind-chord ,(car form) ',(cdr form) ,m)) maps)
-             ;;   `((bind-chord ,(car form) ',(cdr form))))
-             ))
-         key-bindings)))))
-
-;;;   (defmacro bind-chord (chord command &optional keymap)
-;;;     "Bind CHORD to COMMAND in KEYMAP (`global-map' if not passed)."
-;;;
-;;;     (let* ((ommand `(if (functionp ,command)
-;;;                              ,command
-;;;                            #'(lambda () (interactive) ,command))))
-;;;       (let ((key1 (logand 255 (aref chord 0)))
-;;;             (key2 (logand 255 (aref chord 1))))
-;;;         (if (eq key1 key2)
-;;;             `(bind-key (vector 'key-chord ,key1 ,key2) ,ommand ,keymap)
-;;;           `(progn
-;;;              (bind-key (vector 'key-chord ,key1 ,key2) ,ommand ,keymap)
-;;;              (bind-key (vector 'key-chord ,key2 ,key1) ,ommand ,keymap))))))
-;;;
-;;;   (bind-chords ("pq" . (my=insert-str "Yuuuuuuuuhuuu")))
-;;;   (bind-chords ("pq"   . (my=insert-str "Yuuuuuuuuhuuu")))
-;;;   (bind-keys ("C-c C-f"   . (my=insert-str "Yuuuuuuuuhuuu")))
-;;;   (bind-keys :map global-map ("C-c C-f"   . (my=insert-str "Yuuuuhuuu")))
-
   (defun my=H-1 () (interactive) (message "H-1"))
   (defun my=H-2 () (interactive) (message "H-2"))
   (defun my=H-3 () (interactive) (message "H-3"))
