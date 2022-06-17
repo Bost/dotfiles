@@ -888,14 +888,11 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (progn
-    (setq
-     ;; Avoid creation of dotspacemacs/emacs-custom-settings
-     ;; https://github.com/syl20bnr/spacemacs/issues/7891
-     custom-file "~/.emacs.d/.cache/.custom-settings")
-    (let ((ret-val (load custom-file)))
-      (message "custom-file loaded. ret-val %s" ret-val)))
   ;; (message "2222222222222222222222222 {{{ %s" 'dotspacemacs/user-init)
+  ;; Avoid creation of dotspacemacs/emacs-custom-settings
+  ;; https://github.com/syl20bnr/spacemacs/issues/7891
+  (setq custom-file "~/.emacs.d/.cache/.custom-settings")
+  (load custom-file) ;; `custom-file' is not auto-loaded
 
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
