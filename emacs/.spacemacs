@@ -2,10 +2,25 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(defun my=dbg=tstp () (if (functionp 'dbg=tstp) (dbg=tstp) (car (time-convert nil t))))
+;; (list 'my=dbg=tstp (my=dbg=tstp) 'dbg=tstp (dbg=tstp))
+
+(setq my=dbg=init-time (if (boundp 'dbg=init-time) dbg=init-time (my=tstp)))
+(setq my=dbg=fmt (if (boundp 'dbg=fmt) dbg=fmt "%012d"))
+
+(defun log (point)
+  (format "%s %s [%%s] (length load-path) %s"
+          (format my=dbg=fmt (- (my=dbg=tstp) my=dbg=init-time))
+          (if (eq point 'beg) "{{{{{{{{" "}}}}}}}}")
+          (length load-path)))
+
+(setq beg (lambda () (log 'beg)))
+(setq end (lambda () (log 'end)))
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
-  ;; (message "4444444444444444444444444 {{{ %s" 'dotspacemacs/layers)
+  (message (beg) 'dotspacemacs/layers)
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -402,7 +417,7 @@ This function should only modify configuration layer settings."
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
    dotspacemacs-install-packages 'used-only)
-  ;; (message "4444444444444444444444444 }}} %s" 'dotspacemacs/layers)
+  (message (end) 'dotspacemacs/layers)
   )
 
 (defun dotspacemacs/init ()
@@ -410,7 +425,7 @@ This function should only modify configuration layer settings."
 This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
 It should only modify the values of Spacemacs settings."
-  ;; (message "1111111111111111111111111 {{{ %s" 'dotspacemacs/init)
+  (message (beg) 'dotspacemacs/init)
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -870,7 +885,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then byte-compile some of Spacemacs files.
    dotspacemacs-byte-compile nil)
-  ;; (message "1111111111111111111111111 }}} %s" 'dotspacemacs/init)
+  (message (end) 'dotspacemacs/init)
   )
 
 (defun dotspacemacs/user-env ()
@@ -879,9 +894,9 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  ;; (message "3333333333333333333333333 {{{ %s" 'dotspacemacs/user-env)
+  (message (beg) 'dotspacemacs/user-env)
   (spacemacs/load-spacemacs-env)
-  ;; (message "3333333333333333333333333 }}} %s" 'dotspacemacs/user-env)
+  (message (end) 'dotspacemacs/user-env)
   )
 
 (defun dotspacemacs/user-init ()
@@ -890,7 +905,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  ;; (message "2222222222222222222222222 {{{ %s" 'dotspacemacs/user-init)
+  (message (beg) 'dotspacemacs/user-init)
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
   (setq custom-file "~/.emacs.d/.cache/.custom-settings")
@@ -899,7 +914,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
-  ;; (message "2222222222222222222222222 }}} %s" 'dotspacemacs/user-init)
+  (message (end) 'dotspacemacs/user-init)
   )
 
 
@@ -908,7 +923,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-  ;; (message "5555555555555555555555555 {{{}}} %s" 'dotspacemacs/user-load)
+  (message (beg) 'dotspacemacs/user-load)
+  (message (end) 'dotspacemacs/user-load)
   )
 
 
@@ -918,7 +934,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  ;; (message "6666666666666666666666666 {{{ %s" 'dotspacemacs/user-config)
+  (message (beg) 'dotspacemacs/user-config)
   ;; https://gist.github.com/synic/5c1a494eaad1406c5519
   ;; (defvar ao/v-dired-omit t
   ;;   "If dired-omit-mode enabled by default. Don't setq me.")
@@ -1842,8 +1858,7 @@ before packages are loaded."
 
   ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojure-mode)
   ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojurescript-mode)
-
-  ;; (message "6666666666666666666666666 }}} %s" 'dotspacemacs/user-config)
+  (message (end) 'dotspacemacs/user-config)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
