@@ -53,7 +53,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     nginx
+     ;; nginx
      pdf
      (auto-completion :variables
                       ;; (setq
@@ -265,7 +265,7 @@ This function should only modify configuration layer settings."
      (scala :variables scala-backend 'scala-metals)
 
      sql
-     vimscript
+     ;; vimscript
      javascript
      shell
      ;; command-log - log keystrokes
@@ -308,7 +308,7 @@ This function should only modify configuration layer settings."
      ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
      ;;          ;; )
      ;;         )
-     yaml
+     ;; yaml
      )
 
    ;; List of additional packages that will be installed without being wrapped
