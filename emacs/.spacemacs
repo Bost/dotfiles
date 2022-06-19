@@ -966,7 +966,7 @@ before packages are loaded."
   ;;   (dired-next-line -1))
 
   ;; Dired
-  ;; ;; dired-x is part of the spacemacs-defaults layer, so it's used by default.
+  ;; ;; dired-x is part of the spacemacs-defaults layer. It is used by default.
   ;; (require 'dired-x) ; Enable dired-x
   ;; ;; dired+ is unavailable
   ;; ;; (require 'dired+)  ; Enable dired+
@@ -1380,6 +1380,14 @@ before packages are loaded."
        ("s-;"         . spacemacs/comment-or-uncomment-lines)
        ("<S-s-f1>"    . eshell) ;; Shitf-Super-F1
        ("<s-f1>"      . projectile-multi-term-in-root)
+       ;; terminal in the current working directory
+       ;; ("<s-f1>"      . terminal-here-launch)
+       ;; ("<s-f1>"      . spacemacs/default-pop-shell)
+       ;; ("<s-f1>"      . spacemacs/projectile-shell)
+       ;; jumps to the shell opened by `spacemacs/projectile-shell'
+       ;; ("<s-f1>"      . spacemacs/projectile-shell-pop)
+       ;; ("<s-f1>"      . terminal-here-project-launch)
+       ;; ("<s-f1>"      . spacemacs/default-pop-shell)
        ("s-W"         . whitespace-cleanup)
        ("s-w"         . my=whitespace-mode-toggle)
        ("s-m"         . my=magit-status)
@@ -1592,13 +1600,31 @@ before packages are loaded."
      ("C-3" . magit-section-show-level-3)
      ("C-4" . magit-section-show-level-4)))
 
-  (bind-keys
-   :map term-raw-map
-   ("C-<right>" . right-word)
-   ("C-<left>" . left-word)
-   ("<delete>" . term-send-del)
-   ("<prior>" . evil-scroll-page-up)
-   ("<next>"  . evil-scroll-page-down))
+  ;;## ;; neither `-partial' not `-compose' do work, with-eval-after-load is a macro
+  ;;## (funcall
+  ;;##  (-compose
+  ;;##   ;; (-partial #'with-eval-after-load 'term-mode)
+  ;;##   (lambda (body) (with-eval-after-load 'multi-term body)))
+  ;;##  (dolist (state-map `(,term-raw-map))
+  ;;##    ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
+  ;;##    (bind-keys
+  ;;##     :map term-raw-map
+  ;;##     ("C-<right>" . right-word)
+  ;;##     ("C-<left>" . left-word)
+  ;;##     ("<delete>" . term-send-del)
+  ;;##     ("<prior>" . evil-scroll-page-up)
+  ;;##     ("<next>"  . evil-scroll-page-down))))
+
+  (with-eval-after-load 'multi-term
+    (dolist (state-map `(,term-raw-map))
+      ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
+      (bind-keys
+       :map term-raw-map
+       ("C-<right>" . right-word)
+       ("C-<left>" . left-word)
+       ("<delete>" . term-send-del)
+       ("<prior>" . evil-scroll-page-up)
+       ("<next>"  . evil-scroll-page-down))))
 
   (bind-keys
    :map dired-mode-map
