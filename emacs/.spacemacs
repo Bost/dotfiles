@@ -325,6 +325,9 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     ;; Customize / extend keyboard functionality https://github.com/kmonad
+     (kbd-mode :location (recipe :fetcher github :repo "kmonad/kbd-mode"))
+
      yasnippet-snippets
 
      ;; ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
@@ -1196,6 +1199,12 @@ before packages are loaded."
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   ;; (xterm-mouse-mode -1)
   (super-save-mode +1) ;; better auto-save-mode
+
+  (use-package kbd-mode
+    ;; :load-path "~/.config/emacs/elisp/"
+    :custom
+    (kbd-mode-kill-kmonad "pkill -9 kmonad")
+    (kbd-mode-start-kmonad "kmonad ~/dev/dotfiles/kmonad/KMonad.kbd"))
 
   (use-package org
     :hook

@@ -1,0 +1,59 @@
+;; from:
+;; https://raw.githubusercontent.com/kmonad/kmonad-contrib/master/keymaps/salahdin-ahmed/KMonad.kbd
+(defcfg
+  input (device-file "/dev/input/by-id/usb-Logitech_USB_Keyboard-event-kbd")
+  output (uinput-sink "KMonad kbd")
+  fallthrough true
+  ;; cmp-seq lctl ; compose key
+)
+
+;; see https://github.com/kmonad/kmonad/blob/master/keymap/template/iso_100.kbd
+;; (defsrc
+;;   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq slck pause
+;;   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup  nlck kp/  kp*  kp-
+;;   tab  q    w    e    r    t    y    u    i    o    p    [    ]    ret   del  end  pgdn  kp7  kp8  kp9  kp+
+;;   caps a    s    d    f    g    h    j    k    l    ;    '    \                          kp4  kp5  kp6
+;;   lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft            up         kp1  kp2  kp3  kprt
+;;   lctl lmet lalt           spc                 ralt rmet cmp  rctl       left down rght  kp0  kp.
+;;   )
+
+(defsrc
+  esc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc ins home pgup nlck
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet cmp  rctl
+  )
+
+;; Default layout aliases
+(defalias
+  tgl (layer-toggle parens) ;; must hold it!
+  ;; tgl (around (layer-toggle numbers) nlck) ;; must hold it!
+  ;; num (layer-switch numbers)
+  cab (layer-switch caps-as-bspc)
+  prs (layer-switch parens)
+  ;; as (tap-hold 0 lsft lalt)
+  las (around lsft lalt)
+  asf  (layer-toggle altsft)
+  )
+
+(deflayer caps-as-bspc
+  esc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc _   _    _    _
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  bspc a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet cmp  rctl
+;;lsft z    x    c    v    b    n    m    ,    .    /    rsft
+;;lctl lmet lalt           spc            ralt rmet cmp  rctl
+  )
+
+(deflayer parens
+  _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _    _   _    _    _
+  _    _    _    _    _    _    _    _    _    _    _   \(   \)    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _              _              _    _    _    _
+  )
