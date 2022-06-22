@@ -1,3 +1,4 @@
 #!/bin/sh
-echo sudo guile /home/bost/dev/dotfiles/bin/guix-os.scm $@
-     sudo guile /home/bost/dev/dotfiles/bin/guix-os.scm $@
+gd=~/bin
+echo sudo guile $gd/guix-os.scm $@
+     sudo guile $gd/guix-os.scm $@

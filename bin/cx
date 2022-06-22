@@ -1,4 +1,3 @@
 #!/bin/sh
-guile /home/bost/dev/dotfiles/bin/cx.scm $@
-# guile -L /home/bost/dev/dotfiles/bin -e main /home/bost/dev/dotfiles/bin/cx.scm $@
-
+gd=~/bin
+guile -L $gd -e main $gd/cx.scm $@

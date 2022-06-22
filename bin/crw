@@ -1,5 +1,4 @@
 #!/bin/sh
 # noAutoCompile="--no-auto-compile"   # needed when running under sudo
-guile $noAutoCompile \
-      -L /home/bost/dev/dotfiles/bin \
-      -e main /home/bost/dev/dotfiles/bin/crw.scm $@
+dg=~/bin
+guile $noAutoCompile -L $dg -e main $dg/crw.scm $@

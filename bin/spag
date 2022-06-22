@@ -1,2 +1,3 @@
 #!/bin/sh
-guile -L /home/bost/dev/dotfiles/bin -e main /home/bost/dev/dotfiles/bin/spag.scm $@
+gd=~/bin
+guile -L $gd -e main $gd/spag.scm $@
