@@ -29,13 +29,15 @@ set --export systemBinDir (dirname (which guile))
 # Warning! the path to guix might be wrong. In bash it should be configured as:
 #    export PATH="$HOME/.guix-profile/bin${PATH:+:}$PATH"
 
+set --export GUIX_PROFILE ~/.guix-home/profile
+
 # appending to PATH in reverse order
 set PATH /usr/lib/postgresql/*/bin $PATH
 
 if test (which npm 2> /dev/null)
     # Install npm packages globally without sudo on macOS and Linux
     # See https://github.com/glenpike/npm-g_nosudo
-    set NPM_PACKAGES "$HOME/.npm-packages"
+    set NPM_PACKAGES ~/.npm-packages
     if ! test -d $NPM_PACKAGES
         mkdir $NPM_PACKAGES
     end
@@ -141,8 +143,8 @@ set --export CORONA_ENV_TYPE "devel"
 # set --export BABASHKA_CLASSPATH (clojure -Sdeps '{:deps {babashka/babashka.process {:sha "6c348b5213c0c77ebbdfcf2f5da71da04afee377" :git/url "https://github.com/babashka/babashka.process"}}}' -Spath)
 
 set --export REPL_USER $USER
-# set --export CMAKE_C_COMPILER /home/bost/.guix-profile/bin/gcc
-set --export CC /home/bost/.guix-profile/bin/gcc
+# set --export CMAKE_C_COMPILER ~/.guix-profile/bin/gcc
+set --export CC ~/.guix-profile/bin/gcc
 
 set PATH ~/.config/guix/current/bin $PATH
 
@@ -150,7 +152,7 @@ set --export PATH $PATH
 
 # for `flatpak run ...`
 set --export XDG_DATA_DIRS \
-             /home/bost/.local/share/flatpak/exports/share \
+             ~/.local/share/flatpak/exports/share \
              /var/lib/flatpak/exports/share \
     $XDG_DATA_DIRS
 

@@ -11,21 +11,15 @@
   (guix gexp)
   (gnu home services shells)
 
-  ;; for my-config-service
-  (gnu home services)
-
-  ;; for scandir
-  (ice-9 ftw)
-
-  ;; for string-match
-  (ice-9 regex)
-
-  ;; for take
-  ;; (srfi srfi-1)
+  (gnu home services mcron) #| home-mcron-service-type |#
+  (gnu home services)       #| my-config-service |#
+  (ice-9 ftw)               #| scandir |#
+  (ice-9 regex)             #| string-match |#
+  (guix build utils)        #| invoke |#
+  #;(srfi srfi-1)           #| take |#
 
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
-  ;; for home-git-service-type
-  ;; (gnu home services version-control)
+  #;(gnu home services version-control) #| home-git-service-type |#
   )
 
 (define (dotfiles-guix-home-dir s)
@@ -33,160 +27,166 @@
 (format #t \"~a\" \"foo\") doesn't work"
   (string-append (getenv "HOME") "/dev/dotfiles/guix/guix-home" s))
 
-(define packages
+(define own-packages
   (list
-   "adb"
-   "alsa-utils"
-   "android-ext4-utils"
-   "android-udev-rules"
-   "asciinema"
-   "aspell"
-   "aspell-dict-de"
-   "aspell-dict-en"
-   "aspell-dict-fr"
-   "audacity"
-   "autoconf"
-   "babashka"
-   "bash"
-   "bat"
-   "bc"
-   "bind:utils"
-   "clang"
-   "clojure-tools"
-   "clusterssh"
-   "cmake"
-   "curl"
-   "dconf"
-   "dconf-editor"
-   "direnv"
-   "emacs"
-   "emacs-with-editor"
-   "evince"
-   "exa"
-   "factorio"
-   "fd"
-   "ffmpeg"
-   "firefox"
-   "fish"
-   "flatpak"
-   "font-adobe-source-code-pro"
-   "font-gnu-freefont"
-   "font-gnu-unifont"
-   "fuse"
-   "gcc"
-   "gcc-toolchain"
-   "gdm"
-   "ghc"
-   "git"
-   "git:gui"
-   "git:send-email"
-   "glib:bin"
-   "glibc-locales"
-   "gnupg"
-   "gnutls"
-   "gparted"
-   "graphviz"
-   "grub"
-   "gsettings-desktop-schemas"
-   "gtk"
-   "guile"
-   "guile-hall"
-   "guile-studio"
-   "gv"
-   "gvfs"
-   "gwl"
-   "htop"
-   "hwinfo"
-   "iniparser"
-   "inkscape"
-   "inxi"
-   "ispell"
-   "jmtpfs"
-   "konsole"
-   "krusader"
    "leiningen"
-   "libavc1394"
-   "libavif"
-   "libconfini"
-   "libjpeg"
-   "libmtp"
-   "libreoffice"
-   "libtiff"
-   "libtool"
-   "libungif"
-   "libxaw3d"
-   "libxpm"
-   "lolcat"
-   "lshw"
-   "lsof"
-   "make"
-   "maven"
-   "mcron"
-   "mercurial"
-   "mesa-utils"
-   "mlt"
-   "mtr"
-   "ncurses"
-   "network-manager"
-   "nmap"
-   "node"
-   "openjdk"
-   "openjdk:jdk"
-   "openssl"
-   "parted"
-   "pavucontrol"
-   "perl"
-   "php"
-   "pinentry"
-   "pkg-config"
-   "plocate"
-   "portaudio"
-   "pulseaudio"
-   "pv"
-   "pybind11"
-   "python"
-   "python2"
-   "qemu"
-   "racket"
-   "readline"
-   "recutils"
-   "ripgrep"
-   "rlwrap"
-   "rsync"
-   "rust"
-   "screen"
-   "scsh"
-   "seahorse"
-   "spice-vdagent"
-   "taglib"
-   "tectonic"
-   "texinfo"
-   "texlive"
-   "texlive-latex-pdfpages"
-   "thunar-volman"
-   "tig"
-   "tree"
-   "tzdata"
-   "udiskie"
-   "ungoogled-chromium"
-   "uniutils"
-   "unzip"
-   "usbutils"
-   "vim"
-   "virt-viewer"
-   "xdg-utils"
-   "xev"
-   "xfce4-clipman-plugin"
-   "xfce4-notifyd"
-   "xfce4-screenshooter"
-   "xkeyboard-config"
-   "xmodmap"
-   "xmonad"
-   "xrandr"
-   "xsel"
-   "youtube-dl"
-   "zip"
+   "babashka"
+   "factorio"
+   "firefox"
    ))
+
+(define packages
+  (append
+   #;own-packages
+   (list
+    "adb"
+    "alsa-utils"
+    "android-ext4-utils"
+    "android-udev-rules"
+    "asciinema"
+    "aspell"
+    "aspell-dict-de"
+    "aspell-dict-en"
+    "aspell-dict-fr"
+    "audacity"
+    "autoconf"
+    "bash"
+    "bat"
+    "bc"
+    "bind:utils"
+    "clang"
+    "clojure-tools"
+    "clusterssh"
+    "cmake"
+    "curl"
+    "dconf"
+    "dconf-editor"
+    "direnv"
+    "emacs"
+    "emacs-with-editor"
+    "evince"
+    "exa"
+    "fd"
+    "ffmpeg"
+    "fish"
+    "flatpak"
+    "font-adobe-source-code-pro"
+    "font-gnu-freefont"
+    "font-gnu-unifont"
+    "fuse"
+    "gcc"
+    "gcc-toolchain"
+    "gdm"
+    "ghc"
+    "git"
+    "git:gui"
+    "git:send-email"
+    "glib:bin"
+    "glibc-locales"
+    "gnupg"
+    "gnutls"
+    "gparted"
+    "graphviz"
+    "grub"
+    "gsettings-desktop-schemas"
+    "gtk"
+    "guile"
+    "guile-hall"
+    "guile-studio"
+    "gv"
+    "gvfs"
+    "gwl"
+    "htop"
+    "hwinfo"
+    "iniparser"
+    "inkscape"
+    "inxi"
+    "ispell"
+    "jmtpfs"
+    "konsole"
+    "krusader"
+    "libavc1394"
+    "libavif"
+    "libconfini"
+    "libjpeg"
+    "libmtp"
+    "libreoffice"
+    "libtiff"
+    "libtool"
+    "libungif"
+    "libxaw3d"
+    "libxpm"
+    "lolcat"
+    "lshw"
+    "lsof"
+    "make"
+    "maven"
+    "mcron"
+    "mercurial"
+    "mesa-utils"
+    "mlt"
+    "mtr"
+    "ncurses"
+    "network-manager"
+    "nmap"
+    "node"
+    "openjdk"
+    "openjdk:jdk"
+    "openssl"
+    "parted"
+    "pavucontrol"
+    "perl"
+    "php"
+    "pinentry"
+    "pkg-config"
+    "plocate"
+    "portaudio"
+    "pulseaudio"
+    "pv"
+    "pybind11"
+    "python"
+    "python2"
+    "qemu"
+    "racket"
+    "readline"
+    "recutils"
+    "ripgrep"
+    "rlwrap"
+    "rsync"
+    "rust"
+    "screen"
+    "scsh"
+    "seahorse"
+    "spice-vdagent"
+    "taglib"
+    "tectonic"
+    "texinfo"
+    "texlive"
+    "texlive-latex-pdfpages"
+    "thunar-volman"
+    "tig"
+    "tree"
+    "tzdata"
+    "udiskie"
+    "ungoogled-chromium"
+    "uniutils"
+    "unzip"
+    "usbutils"
+    "vim"
+    "virt-viewer"
+    "xdg-utils"
+    "xev"
+    "xfce4-clipman-plugin"
+    "xfce4-notifyd"
+    "xfce4-screenshooter"
+    "xkeyboard-config"
+    "xmodmap"
+    "xmonad"
+    "xrandr"
+    "xsel"
+    "youtube-dl"
+    "zip"
+    )))
 
 (define fish-funs-my
   ;; (scandir (string-append (getenv "HOME") "/dev/dotfiles/fish/functions/")
@@ -708,13 +708,62 @@
     ;; ys
     ;; zark
     ("xc"  . "guix gc")
-    ("xhr" . "guix home reconfigure")
+    ("xu"  . "guix upgrade")
+    ("xi"  . "guix install")
     ("xp"  . "guix pull")
+    ("xhb" . "guix home build")
+    ("xhc" . "guix home container")
+    ("xhd" . "guix home describe")
+    ("xhr" . "guix home reconfigure")
+    ;; ("xpu" . "guix pull && guix upgrade --do-not-upgrade='(maven|clojure-tools).*'")
     ("xse" . "guix search")
     ("xsh" . "guix show")
     ("xsr" . "sudo --preserve-env guix system reconfigure")
-    ("xu"  . "guix upgrade")
     ))
+
+;; (define do-job
+;;   ;; as user "bost" at 17:05 This runs from the user's home directory.
+;;   ;; #~(job
+;;   ;;    '(next-minute-from (next-hour '(17)) '(5))
+;;   ;;    (invoke "touch"
+;;   ;;            (string-append "/tmp/srvc-second-"
+;;   ;;                           (number->string (current-time))))
+;;   ;;    #:user "bost")
+
+;;   #~(job '(next-second)
+;;          ;; (lambda () ...) doesn't work
+;;          (list
+;;           (invoke "touch"
+;;                   (string-append "/tmp/srvc-second-"
+;;                                  (number->string (current-time))))))
+;;   )
+
+(define srvc-singleton-<time>
+  '(lambda ()
+     ;; (lambda () ...) doesn't work (when NOT IN a gexp?)
+     ;; (list ...) doesn't work when IN a gexp?
+     (invoke "touch"
+             (string-append "/tmp/srvc-singleton-"
+                            (number->string (current-time))))
+     ;; get the pid of the parent process and kill that process;
+     ;; i.e. effectively kill this job-process
+     (kill (getppid) SIGINT)))
+
+(define srvc-multi-<time>
+  '(lambda ()
+     ;; (lambda () ...) doesn't work (when NOT IN a gexp?)
+     ;; (list ...) doesn't work when IN a gexp?
+     (invoke "touch"
+             (string-append "/tmp/srvc-multi-"
+                            (number->string (current-time))))))
+
+(define srvc-touch-once
+  '(lambda ()
+     (system "touch /tmp/srvc-touch-once")
+     ;; get the pid of the parent process and kill that process;
+     ;; i.e. effectively kill this job-process
+     (kill (getppid) SIGINT)))
+
 
 (home-environment
  (packages
@@ -800,6 +849,55 @@
           ))
 
         my-config-service
+
+        ;; TODO test if the command-string can be created by string-append
+        #;
+        (service
+         home-mcron-service-type
+         (home-mcron-configuration
+          (jobs
+           (let* (;; every second
+                  ;; (job-period '(next-second))
+                  ;; every 5 seconds
+                  (job-period '(next-second (range 0 60 5))))
+             (list
+              ;; see '(gexp->derivation "the-thing" build-exp)' in the manual
+              ;; Also: #+ vs. #$
+              ;; In a cross-compilation context, it is useful to distinguish
+              ;; between references to the native build of a package—that can
+              ;; run on the host—versus references to cross builds of a package.
+              ;; To that end, the #+ plays the same role as #$, but is a
+              ;; reference to a native package build
+
+              ;; #~(job '#$job-period '#$srvc-singleton-<time>)
+              ;; #~(job '#$job-period '#$srvc-multi-<time>)
+              ;; #~(job '#$job-period '#$srvc-touch-once)
+              #~(job '#$job-period (lambda ()
+                                     ;; (lambda () ...) doesn't work (when NOT IN a gexp?)
+                                     ;; (list ...) doesn't work when IN a gexp?
+                                     ;; TODO this doesn't get invoked at ALL!!!
+                                     (invoke "touch"
+                                             (string-append "/tmp/srvc-job-singleton-"
+                                                            (number->string (current-time))))
+                                     ;; get the pid of the parent process and kill that process;
+                                     ;; i.e. effectively kill this job-process
+                                     (kill (getppid) SIGINT)))
+              #~(job '#$job-period (lambda ()
+                                     ;; (lambda () ...) doesn't work (when NOT IN a gexp?)
+                                     ;; (list ...) doesn't work when IN a gexp?
+                                     ;; TODO this doesn't get invoked at ALL!!!
+                                     (invoke "touch"
+                                             (string-append "/tmp/srvc-job-multi-"
+                                                            (number->string (current-time))))))
+              #~(job '#$job-period (lambda ()
+                                     ;; TODO this doesn't get killed
+                                     (system "touch /tmp/srvc-job-lambda-touch-once")
+                                     ;; get the pid of the parent process and kill that process;
+                                     ;; i.e. effectively kill this job-process
+                                     (kill (getppid) SIGINT)))
+              #~(job '#$job-period "touch /tmp/srvc-job-string-touch-periodically-0")
+              )))))
+
         ;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
         ;; (service home-git-service-type
         ;;          (home-git-configuration
