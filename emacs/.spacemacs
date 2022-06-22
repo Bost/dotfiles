@@ -913,6 +913,15 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
+
+  (setq
+   ;; (default 'browse-url-default-browser)
+   browse-url-browser-function 'browse-url-chromium
+
+   ;; `my=browse-url-browser-function' must be initialized before the packages
+   ;; of the `my' layers are loaded.
+   my=browse-url-browser-function browse-url-browser-function)
+
   (my=end 'dotspacemacs/user-init)
   )
 
@@ -1097,11 +1106,9 @@ before packages are loaded."
    create-lockfiles nil ;; do not create .# lockfiles
    vc-follow-symlinks t ;; auto follow symbolic links
 
-   ;; on GuixOS browse-url-firefox-program evaluates to "icecat" by default
+   ;; On GuixOS `browse-url-firefox-program' evaluates to "icecat" by default.
+   ;; This variable can be set at the end of Spacemacs startup
    browse-url-firefox-program "firefox"
-
-   ;; (default 'browse-url-default-browser)
-   browse-url-browser-function 'browse-url-chromium
 
    font-latex-fontify-script nil
    org-latex-listings 'minted

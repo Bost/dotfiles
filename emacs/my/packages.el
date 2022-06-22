@@ -73,8 +73,8 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format"
   )
 
-(setq
- my=iedit-mode nil)
+(setq my=iedit-mode nil)
+;; (defvar my=iedit-mode nil) ;; TRY defvar
 
 (defun my/post-init-equake ()
   ;; Under xfce4-keyboard-settings -> Application shortcuts
@@ -109,39 +109,66 @@ Each entry is either:
   ;; `eval-after-load' in the package
   (use-package copy-sexp))
 
+;;; engine-mode extension:
 (defun my/post-init-engine-mode ()
   ;; (defvar my=engine/search-engine 'engine/search-duck-duck-go)
-  (defvar my=engine/search-engine 'engine/search-google)
   ;; (setq my=engine/search-engine 'engine/search-wikipedia)
+  (defvar my=engine/search-engine 'engine/search-google))
 
-  (defun my=engine/browse-url ()
-    ;; https://www.google.com
-    (browse-url (car (browse-url-interactive-arg "Browse URL: "))))
+(defun my=engine/browse-url (browser-fun)
+  "Function evaluation doesn't continue to the end if `browse-url'
+is aborted by ~C-g~."
+  (message "equal: %s, bubf %s, bf %s; my=bubf %s"
+           (equal browse-url-browser-function browser-fun)
+           browse-url-browser-function
+           browser-fun
+           my=browse-url-browser-function)
+  (if (equal browse-url-browser-function browser-fun)
+      (browse-url (car (browse-url-interactive-arg
+                        (format "[%s] Browse URL: "
+                                browse-url-browser-function))))
+    ;; TODO try to use (defadvice before and after ...)
+    (progn
+      (setq browse-url-browser-function browser-fun)
+      (browse-url (car (browse-url-interactive-arg
+                        (format "[%s] Browse URL: "
+                                browse-url-browser-function))))
+      (setq browse-url-browser-function my=browse-url-browser-function))))
 
-  (defun my=engine/search-region ()
-    "Select text as if done from the insert state."
-    (funcall my=engine/search-engine
-             (read-string
-              "Search region: "
-              (buffer-substring-no-properties (region-beginning)
-                                              (region-end)))))
+(defun my=engine/search-region ()
+  "Select text as if done from the insert state."
+  (funcall my=engine/search-engine
+           (read-string
+            "Search region: "
+            (buffer-substring-no-properties (region-beginning)
+                                            (region-end)))))
 
-  (defun my=engine/search-default ()
-    (funcall my=engine/search-engine
-             (read-string "Search thing-at-point: "
-                          (thing-at-point 'symbol))))
+(defun my=engine/search-default ()
+  (funcall my=engine/search-engine
+           (read-string "Search thing-at-point: "
+                        (thing-at-point 'symbol))))
 
-  (defun my=engine/search-or-browse (&optional arg)
-    "'&optional arg' must be declared otherwise the key binding doesn't work"
-    (interactive "p")
-    (cond
-     ((string-prefix-p "http" (thing-at-point 'url))
-      (my=engine/browse-url))
 
-     ((or (region-active-p) (evil-visual-state-p))
-      (my=engine/search-region))
+(defun my=engine/search-or-browse (&optional arg)
+  "'&optional arg' must be declared otherwise the key binding doesn't work.
+Selected text has higher prio than url. YouTube urls are opened
+with the `browse-url-firefox-program', otherwise use
+`browse-url-browser-function'."
+  (interactive "p")
+  (cond
+   ((or (region-active-p) (evil-visual-state-p))
+    (my=engine/search-region))
 
-     (t
-      (my=engine/search-default))))
-  )
+   ((let ((prefix (thing-at-point 'url)))
+      (or
+       (string-prefix-p "https://youtu.be" prefix)
+       (string-prefix-p "https://www.youtube" prefix)))
+    (my=engine/browse-url 'browse-url-firefox))
+
+   ((string-prefix-p "http" (thing-at-point 'url))
+    (my=engine/browse-url my=browse-url-browser-function))
+
+   (t
+    (my=engine/search-default))))
+
 ;;; packages.el ends here
