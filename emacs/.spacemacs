@@ -254,8 +254,8 @@ This function should only modify configuration layer settings."
 
      ;; (setq org-babel-clojure-backend 'cider)
      ;; (setq gui-elements 1) ; because of CIDER menu
-     ;; (define-key cider-repl-mode-map "<s-delete>" nil)
-     ;; (unbind-key "<s-delete>" cider-repl-mode-map)
+     ;; (define-key cider-repl-mode-map "s-<delete>" nil)
+     ;; (unbind-key "s-<delete>" cider-repl-mode-map)
 
      java
 
@@ -1289,8 +1289,8 @@ before packages are loaded."
   (defun my=H-4 () (interactive) (message "H-4"))
 
   (defun my=eval-bind-keys-and-chords ()
-    "Revaluated by <s-+> replacement for e.g.:
-  (global-set-key (kbd \"<s-f2>\") \\='eshell)
+    "Revaluated by ~s-+~ replacement for e.g.:
+  (global-set-key (kbd \"s-<f2>\") \\='eshell)
   (key-chord-define-global \"fj\" (lambda () (interactive)
                                              (my=insert-str \"()\" 1)))"
     (interactive)
@@ -1358,10 +1358,8 @@ before packages are loaded."
        ("s-s"       . save-buffer)
        ("s-0"       . delete-window)
        ("s-1"       . my=delete-other-windows)
-       ("<S-iso-lefttab>"   . next-buffer)
-       ("<S-s-iso-lefttab>" . previous-buffer)
-       ("<S-s-f8>"    . ace-swap-window)
-       ;; ("<S-s-f8>"    . transpose-frame)
+       ("S-s-<f8>"    . ace-swap-window)
+       ;; ("S-s-<f8>"    . transpose-frame)
        ("s-N"       . spacemacs/cycle-defun-narrow-modes)
        ("s-n"       . spacemacs/cycle-narrow-widen)
        ;; ("s-2"    . my=split-other-window-below)
@@ -1372,7 +1370,7 @@ before packages are loaded."
        ("s-3"       . split-window-right-and-focus)
        ("s-9"       . my=load-layout)
        ("s-+"       . my=eval-bind-keys-and-chords)
-       ("<s-kp-add>". my=eval-bind-keys-and-chords)
+       ("s-<kp-add>". my=eval-bind-keys-and-chords)
        ("s-z"       . my=buffer-selection-show)
        ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
        ("s-D"       . dired-jump)
@@ -1381,21 +1379,21 @@ before packages are loaded."
        ;; ("<f11>"     . bookmark-set)
        ;; ("<f11>"     . equake-toggle-fullscreen)
        ;; Move the parenthesis - see SPC k b/B/f/F
-       ("<M-s-left>"  . sp-forward-barf-sexp)
-       ("<M-s-right>" . sp-forward-slurp-sexp)
-       ("<C-s-left>"  . sp-backward-slurp-sexp)
-       ("<C-s-right>" . sp-backward-barf-sexp)
+       ("M-s-<left>"  . sp-forward-barf-sexp)
+       ("M-s-<right>" . sp-forward-slurp-sexp)
+       ("C-s-<left>"  . sp-backward-slurp-sexp)
+       ("C-s-<right>" . sp-backward-barf-sexp)
        ("s-;"         . spacemacs/comment-or-uncomment-lines)
-       ("<S-s-f1>"    . eshell) ;; Shitf-Super-F1
-       ("<s-f1>"      . projectile-multi-term-in-root)
+       ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
+       ("s-<f1>"      . projectile-multi-term-in-root)
        ;; terminal in the current working directory
-       ;; ("<s-f1>"      . terminal-here-launch)
-       ;; ("<s-f1>"      . spacemacs/default-pop-shell)
-       ;; ("<s-f1>"      . spacemacs/projectile-shell)
+       ;; ("s-<f1>"      . terminal-here-launch)
+       ;; ("s-<f1>"      . spacemacs/default-pop-shell)
+       ;; ("s-<f1>"      . spacemacs/projectile-shell)
        ;; jumps to the shell opened by `spacemacs/projectile-shell'
-       ;; ("<s-f1>"      . spacemacs/projectile-shell-pop)
-       ;; ("<s-f1>"      . terminal-here-project-launch)
-       ;; ("<s-f1>"      . spacemacs/default-pop-shell)
+       ;; ("s-<f1>"      . spacemacs/projectile-shell-pop)
+       ;; ("s-<f1>"      . terminal-here-project-launch)
+       ;; ("s-<f1>"      . spacemacs/default-pop-shell)
        ("s-W"         . whitespace-cleanup)
        ("s-w"         . my=whitespace-mode-toggle)
        ("s-m"         . my=magit-status)
@@ -1408,7 +1406,7 @@ before packages are loaded."
        ;; ("s-p" . helm-projectile)
        ("s-p"    . helm-projectile-find-file)
        ("M-s-p"  . helm-projectile-switch-project)
-       ("<M-f3>" . spacemacs/helm-project-smart-do-search)
+       ("M-<f3>" . spacemacs/helm-project-smart-do-search)
        ("s-f"    . helm-find-files)
        ("s-F"    . helm-recentf)       ; recentf-open-files
        ("s-r"    . helm-recentf)
@@ -1418,36 +1416,40 @@ before packages are loaded."
        ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
 
        ;; C-M-down default value is `down-list'
-       ("<C-M-down>" . crux-duplicate-current-line-or-region)
-       ("<C-s-down>" . crux-duplicate-current-line-or-region)
+       ("C-M-<down>" . crux-duplicate-current-line-or-region)
+       ("C-s-<down>" . crux-duplicate-current-line-or-region)
        ("C-c d"      . crux-duplicate-current-line-or-region)
        ("C-c t"      . crux-transpose-windows)
-       ("<C-s-backspace>" . crux-kill-line-backwards) ; kill-line-backward
+       ("C-s-<backspace>" . crux-kill-line-backwards) ; kill-line-backward
        ("s-j"             . crux-top-join-line)
 
        ("<C-up>"            . xah-backward-block)
        ("<C-down>"          . xah-forward-block)
        ;; TODO make pg-up / pg-down major-mode specific
-       ;; ("<C-prior>"      . hs-hide-block)    ; pg-up
-       ;; ("<C-next>"       . hs-show-block)    ; pg-down
-       ;; ("<C-M-prior>"    . hs-toggle-hiding) ; pg-up
-       ;; ("<C-M-prior>"    . hs-hide-all)      ; Ctrl + pg-up
-       ;; ("<C-M-next>"     . hs-show-all)      ; Ctrl + pg-down
-       ("<C-M-delete>"      . kill-sexp)
-       ("<C-M-s-delete>"    . my=delete-next-sexp)
-       ("<C-M-s-backspace>" . my=delete-prev-sexp)
-       ("<C-M-backspace>"   . backward-kill-sexp)
+       ;; ("C-<prior>"      . hs-hide-block)    ; pg-up
+       ;; ("C-<next>"       . hs-show-block)    ; pg-down
+       ;; ("C-M-<prior>"    . hs-toggle-hiding) ; pg-up
+       ;; ("C-M-<prior>"    . hs-hide-all)      ; Ctrl + pg-up
+       ;; ("C-M-<next>"     . hs-show-all)      ; Ctrl + pg-down
+       ("C-M-<delete>"      . kill-sexp)
+       ("C-M-s-<delete>"    . my=delete-next-sexp)
+       ("C-M-s-<backspace>" . my=delete-prev-sexp)
+       ("C-M-<backspace>"   . backward-kill-sexp)
 
-       ("<s-backspace>"     . paredit-backward-kill-word)
-       ("<s-delete>"        . paredit-forward-kill-word)
-       ("s-M-SPC" . spacemacs/evil-search-clear-highlight)
-       ("s-g"     . my=engine/search-or-browse)
+       ("s-<backspace>"     . paredit-backward-kill-word)
+       ("s-<delete>"        . paredit-forward-kill-word)
+       ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
+       ("s-g"     . my=engine/search-or-browse) ;; in the my/packages.el
        ("s-8"     . er/expand-region)   ; increase selected region by semantic units
        ("<f2>"    . evil-avy-goto-char-timer)
-       ;; <S-tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
-       ("<s-tab>" . spacemacs/alternate-buffer)
-       ;; ("<s-tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
-       ("<C-f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
+       ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
+       ("s-<tab>" . spacemacs/alternate-buffer)
+       ("S-<iso-lefttab>"   . next-buffer)     ;; shift
+       ("s-<right>"         . next-buffer)
+       ("S-s-<iso-lefttab>" . previous-buffer) ;; shift-s
+       ("s-<left>"          . previous-buffer)
+       ;; ("s-<tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
+       ("C-<f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
        ("C-s-/"   . avy-goto-line)
 
        ;; fd - evil-escape from insert state and everything else
@@ -1456,14 +1458,14 @@ before packages are loaded."
        ("s-i"                . iedit-mode)  ; all occurences in the buffer
        ;; ("s-i"             . spacemacs/enter-ahs-forward)
        ("<f12>"              . undo-tree-visualize)
-       ;; ("<S-delete>"      . kill-region)
-       ("<C-s-delete>"       . kill-line)   ; C-super-key
-       ("<C-S-delete>"       . kill-line)   ; C-shift-key
+       ;; ("S-<delete>"      . kill-region)
+       ("C-s-<delete>"       . kill-line)   ; C-super-key
+       ("C-S-<delete>"       . kill-line)   ; C-shift-key
        ;; ("s-l"                . spacemacs/resume-last-search-buffer)
        ("s-v" . my=evil-select-pasted)
 
        ;; TODO what's the difference between insert and insertchar?
-       ("<S-s-insert>" . my=yank-and-select)
+       ("S-s-<insert>" . my=yank-and-select)
 
        ("s-L"        . spacemacs/cycle-line-number-types)
        ("C-s-l"      . spacemacs/cycle-large-file-settings)
@@ -1476,8 +1478,8 @@ before packages are loaded."
        ;; [1] spacemacs/move-text-transient-state/move-text-down
        ;; [2] spacemacs/move-text-transient-state/move-text-up
        ;; [1] and [2] don't drag:
-       ("<M-down>"   . my=drag-stuff-down)
-       ("<M-up>"     . my=drag-stuff-up)
+       ("M-<down>"   . my=drag-stuff-down)
+       ("M-<up>"     . my=drag-stuff-up)
 
        ("C-s-."      . spacemacs/jump-to-definition-other-window)
        ("s->"        . spacemacs/jump-to-definition-other-window)
@@ -1490,11 +1492,11 @@ before packages are loaded."
        ;; C-o; evil-jump-backward
        ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
 
-       ("<print>"    . describe-text-properties) ; my=what-face
+       ("<print>" . describe-text-properties) ; my=what-face
 
-       ("<s-return>"    . my=jump-last-edited-place)
-       ("<C-s-return>"  . goto-last-change)
-       ("s-J"        . evil-join)
+       ("s-<return>"   . my=jump-last-edited-place)
+       ("C-s-<return>" . goto-last-change)
+       ("s-J"          . evil-join)
 
        ("<s-print>"  . my=ediff-buffers-left-right) ; see advice-add
        ("s-A"        . align-regexp)
@@ -1516,7 +1518,7 @@ before packages are loaded."
        ("H-2"      . my=H-2)
        ("H-4"      . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
        ))
-    (message "%s" "my=eval-bind-keys-and-chords evaluated")
+    (message "%s" "my=eval-bind-keys-and-chords evaluated.")
     )
 
   ;; Thanx to https://github.com/fanhongtao/_emacs.d/blob/master/conf/my-key-modifiers.el
@@ -1583,7 +1585,7 @@ before packages are loaded."
   ;; this doesn't work:
   (define-key key-translation-map (kbd "H-3") (kbd "•")) ; bullet
 
-  (my=eval-bind-keys-and-chords) ; <s-kp-add>
+  (my=eval-bind-keys-and-chords) ; call using ~s-<kp-add>~ or ~s-+~
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
