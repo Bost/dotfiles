@@ -21,7 +21,6 @@ set --export bin ~/bin
 set --export cheat $dev/cheat
 set --export dotf $dev/dotfiles
 set --export virtMachines ~/virt-machines
-set --export systemBinDir (dirname (which guile))
 
 # Some spacemacs layers require certain tools to be available on $PATH
 # see http://spacemacs.org/doc/FAQ.html#setup-path

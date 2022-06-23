@@ -29,7 +29,6 @@ takes care of it"
   (list "exa" "-abghHliS" "--time-style=long-iso")
   ;; (list "exa" "-abghHliS" "--time-style=full-iso")
   #;(list
-   ;; (string-append (getenv "systemBinDir") "/ls")
    "ls"
    "-lA"
    "--file-type" ; append indicator (one of /=>@|) to entries
