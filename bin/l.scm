@@ -22,12 +22,12 @@
      "(cdr (command-line)) can be an empty list which breaks system*. `append'
 takes care of it"
      (append cmd (cdr (command-line)))))
-  ;; (list "exa" "-abghHliS")
+  ;; (list "exa" "-abghHliS" "--color=always")
   ;; exa doesn't support the '+%d-%m-%Y %H:%M:%S' --time-style formatters.
-  ;; (list "exa" "-abghHliS" "--time-style=default")
-  ;; (list "exa" "-abghHliS" "--time-style=iso")
-  (list "exa" "-abghHliS" "--time-style=long-iso")
-  ;; (list "exa" "-abghHliS" "--time-style=full-iso")
+  ;; (list "exa" "-abghHliS" "--color=always" "--time-style=default")
+  ;; (list "exa" "-abghHliS" "--color=always" "--time-style=iso")
+  ;; (list "exa" "-abghHliS" "--color=always" "--time-style=full-iso")
+  (list "exa" "-abghHliS" "--color=always" "--time-style=long-iso")
   #;(list
    "ls"
    "-lA"
