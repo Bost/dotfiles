@@ -30,9 +30,6 @@ set --export virtMachines ~/virt-machines
 
 set --export GUIX_PROFILE ~/.guix-home/profile
 
-# appending to PATH in reverse order
-set PATH /usr/lib/postgresql/*/bin $PATH
-
 if test (which npm 2> /dev/null)
     # Install npm packages globally without sudo on macOS and Linux
     # See https://github.com/glenpike/npm-g_nosudo
@@ -40,10 +37,7 @@ if test (which npm 2> /dev/null)
     if ! test -d $NPM_PACKAGES
         mkdir $NPM_PACKAGES
     end
-    # NODE_PATH definition might not be needed
-    # set --export NODE_PATH ~/.config/yarn/global/node_modules
     set PATH $PATH $NPM_PACKAGES/bin
-    set PATH $NODE_PATH/.bin $PATH
     set MANPATH $NPM_PACKAGES/share/man $MANPATH
     npm config set prefix $NPM_PACKAGES
 end
@@ -56,14 +50,9 @@ end
 # set PATH ~/.guix-profile/bin $PATH
 # set PATH ~/.yarn/bin         $PATH
 # set PATH ~/.local/bin        $PATH
-# for script-based installations of babashka, heroku, clojure
-set PATH  /usr/local/bin     $PATH
 # anaconda installation may or may not break emacs builds
 # see also the notes.fish function
 # set PATH ~/anaconda3/bin     $PATH
-
-# ~/.profile is not read if the shell is of a non-login shell type
-test ! (contains $bin $PATH) && set PATH $PATH $bin
 
 # set --local racketShare ~/.local/share/racket
 # if test -d $racketShare # may not exist under `guix shell`
@@ -79,8 +68,6 @@ test ! (contains $bin $PATH) && set PATH $PATH $bin
 # else
 #     printf "WRN 'set PATH \$racketShare \$PATH' failed: test -d %s\n" $racketShare
 # end
-
-set PATH ~/usr/local/bin $PATH
 
 # printenv PATH
 
@@ -144,8 +131,6 @@ set --export CORONA_ENV_TYPE "devel"
 set --export REPL_USER $USER
 # set --export CMAKE_C_COMPILER ~/.guix-profile/bin/gcc
 set --export CC ~/.guix-profile/bin/gcc
-
-set PATH ~/.config/guix/current/bin $PATH
 
 set --export PATH $PATH
 

@@ -763,6 +763,31 @@
      ;; i.e. effectively kill this job-process
      (kill (getppid) SIGINT)))
 
+(define l-scm
+  '(apply
+    system*
+    ((compose
+      (lambda (cmd)
+        "(cdr (command-line)) can be an empty list which breaks system*. `append'
+takes care of it"
+        (append cmd (cdr (command-line)))))
+     ;; (list "exa" "-abghHliS" "--color=always")
+     ;; exa doesn't support the '+%d-%m-%Y %H:%M:%S' --time-style formatters.
+     ;; (list "exa" "-abghHliS" "--color=always" "--time-style=default")
+     ;; (list "exa" "-abghHliS" "--color=always" "--time-style=iso")
+     ;; (list "exa" "-abghHliS" "--color=always" "--time-style=full-iso")
+     (list "exa" "-abghHliS" "--color=always" "--time-style=long-iso")
+     #;(list
+     "ls"
+     "-lA"
+     "--file-type" ; append indicator (one of /=>@|) to entries
+     ;; TODO consider custom coloring after `ls --color=never`
+     "--color" ; must be used
+     "--time-style=+%d-%m-%Y %H:%M:%S"))))
+
+;; fish and bash separate elements of a list with a different separator
+(define bash-list-separator ":")
+(define fish-list-separator " ")
 
 (home-environment
  (packages
@@ -788,8 +813,10 @@
      ;; .bashrc at the bottom.
      ;; When using '(guix-defaults? #t)' then the aliases are on the top of the
      ;; .bashrc.
-     (aliases #| aliases for "l" "ll" "ls" will be overridden |#
-      '(("l" . "ls -lA --color=auto")))
+     (aliases
+       ;; aliases for "l" "ll" "ls" come from the .bashrc template and will be
+       ;; overridden because see above
+      '())
 
      ;; List of file-like objects, which will be ADDED(!) to .bashrc.
      (bashrc
@@ -807,122 +834,148 @@
                     "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))
        #;
        (local-file
-        ;; (local-file ".bashrc" "bash_profile") should work too
-        (dotfiles-guix-home-dir "/.bash_profile_additions")
-        ;; prevent 'guix home: error: invalid name: `.bash_profile''
-        "bash_profile_additions")))
+       ;; (local-file ".bashrc" "bash_profile") should work too
+       (dotfiles-guix-home-dir "/.bash_profile_additions")
+       ;; prevent 'guix home: error: invalid name: `.bash_profile''
+       "bash_profile_additions")))
      (environment-variables
-      `(("XDG_CURRENT_DESKTOP" . "sway")
-        ("XDG_SESSION_TYPE" . "wayland")
-        ("MOZ_ENABLE_WAYLAND" . "1")
-        ;; ...
-        ))
-     ))
+      `(("PATH" . ,(string-join
+                    (list
+                     ;; my own scripts take precedence...
+                     "$HOME/bin"
+                     ;; ... over default default PATH, putting...
+                     "$PATH"
+                     ;; ... bin-directory for for script-based installations of:
+                     ;;     babashka heroku clojure
+                     ;; at the end of the PATH
+                     "/usr/local/bin")
+                    bash-list-separator))))))
 
-        ;; emacs-with-native-comp
-        ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
+   ;; emacs-with-native-comp
+   ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
 
-        ;; https://github.com/search?q=home-fish-service-type&type=code
-        ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
-        (service
-         home-fish-service-type
-         ;; fish configuration - see gnu/home/services/shells.scm
+   ;; https://github.com/search?q=home-fish-service-type&type=code
+   ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
+   (service
+    home-fish-service-type
+    ;; fish configuration - see gnu/home/services/shells.scm
 
-         ;; see /home/bost/dev/guix/gnu/home/services/shells.scm
-         (home-fish-configuration
-          (abbreviations abbrevs)
-          #;
-          (aliases
-           '(
-             #;("l" . "ls -a")
-             ("dev"   . "cd $HOME/dev")
-             ("dec"   . "cd $HOME/dec")
-             ("der"   . "cd $HOME/der")
-             ("bin"   . "cd $HOME/bin")
-             ("cheat" . "cd $HOME/dev/cheat")
-             ("dotf"  . "cd $HOME/dev/dotfiles")
-             ))
-          (config (list (local-file
-                         (string-append (getenv "HOME")
-                                        "/dev/dotfiles/fish/config.fish"))))
-          ;; see also home-environment-variables-service-type
-          ;; https://guix.gnu.org/manual/devel/en/html_node/Essential-Home-Services.html
-          ;; (simple-service 'some-useful-env-vars-service
-          ;;                 home-environment-variables-service-type
-          ;;                 `(("LESSHISTFILE" . "$XDG_CACHE_HOME/.lesshst")
-          ;;                   ("SHELL" . ,(file-append zsh "/bin/zsh"))
-          ;;                   ("USELESS_VAR" . #f)
-          ;;                   ("_JAVA_AWT_WM_NONREPARENTING" . #t)))
-          #;
-          (environment-variables
-           `(
-             ("TEST" . "test")
-             ("PATH" . "$PATH:$HOME/bin")
-             ))
-          ))
+    ;; see /home/bost/dev/guix/gnu/home/services/shells.scm
+    (home-fish-configuration
+     (abbreviations abbrevs)
+     #;
+     (aliases
+     '(
+     #;("l" . "ls -a")
+     ("dev"   . "cd $HOME/dev")
+     ("dec"   . "cd $HOME/dec")
+     ("der"   . "cd $HOME/der")
+     ("bin"   . "cd $HOME/bin")
+     ("cheat" . "cd $HOME/dev/cheat")
+     ("dotf"  . "cd $HOME/dev/dotfiles")))
+     (config (list (local-file
+                    (string-append (getenv "HOME")
+                                   "/dev/dotfiles/fish/config.fish"))))
+     ;; see also home-environment-variables-service-type
+     ;; https://guix.gnu.org/manual/devel/en/html_node/Essential-Home-Services.html
+     ;; (simple-service 'some-useful-env-vars-service
+     ;;                 home-environment-variables-service-type
+     ;;                 `(("LESSHISTFILE" . "$XDG_CACHE_HOME/.lesshst")
+     ;;                   ("SHELL" . ,(file-append zsh "/bin/zsh"))
+     ;;                   ("USELESS_VAR" . #f)
+     ;;                   ("_JAVA_AWT_WM_NONREPARENTING" . #t)))
 
-        my-config-service
+     #| `environment-variables' inherited from bash |#))
 
-        ;; TODO test if the command-string can be created by string-append
-        #;
-        (service
-         home-mcron-service-type
-         (home-mcron-configuration
-          (jobs
-           (let* (;; every second
-                  ;; (job-period '(next-second))
-                  ;; every 5 seconds
-                  (job-period '(next-second (range 0 60 5))))
-             (list
-              ;; see '(gexp->derivation "the-thing" build-exp)' in the manual
-              ;; Also: #+ vs. #$
-              ;; In a cross-compilation context, it is useful to distinguish
-              ;; between references to the native build of a package—that can
-              ;; run on the host—versus references to cross builds of a package.
-              ;; To that end, the #+ plays the same role as #$, but is a
-              ;; reference to a native package build
+   my-config-service
 
-              ;; #~(job '#$job-period '#$srvc-singleton-<time>)
-              ;; #~(job '#$job-period '#$srvc-multi-<time>)
-              ;; #~(job '#$job-period '#$srvc-touch-once)
-              #~(job '#$job-period (lambda ()
-                                     ;; (lambda () ...) doesn't work (when NOT IN a gexp?)
-                                     ;; (list ...) doesn't work when IN a gexp?
-                                     ;; TODO this doesn't get invoked at ALL!!!
-                                     (invoke "touch"
-                                             (string-append "/tmp/srvc-job-singleton-"
-                                                            (number->string (current-time))))
-                                     ;; get the pid of the parent process and kill that process;
-                                     ;; i.e. effectively kill this job-process
-                                     (kill (getppid) SIGINT)))
-              #~(job '#$job-period (lambda ()
-                                     ;; (lambda () ...) doesn't work (when NOT IN a gexp?)
-                                     ;; (list ...) doesn't work when IN a gexp?
-                                     ;; TODO this doesn't get invoked at ALL!!!
-                                     (invoke "touch"
-                                             (string-append "/tmp/srvc-job-multi-"
-                                                            (number->string (current-time))))))
-              #~(job '#$job-period (lambda ()
-                                     ;; TODO this doesn't get killed
-                                     (system "touch /tmp/srvc-job-lambda-touch-once")
-                                     ;; get the pid of the parent process and kill that process;
-                                     ;; i.e. effectively kill this job-process
-                                     (kill (getppid) SIGINT)))
-              #~(job '#$job-period "touch /tmp/srvc-job-string-touch-periodically-0")
-              )))))
+   ;; TODO activate following only after when the rest of the scm scripts is
+   ;; implemented
+   #;
+   (simple-service
+    'scheme-files home-files-service-type
+    (list
+     `("bin/l" ,(program-file "l.scm" (sexp->gexp l-scm)))))
 
-        ;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
-        ;; (service home-git-service-type
-        ;;          (home-git-configuration
-        ;;           (config
-        ;;            `((user
-        ;;               ((name . "Rostislav Svoboda")
-        ;;                (email . "Rostislav.Svoboda@gmail.com")
-        ;;                #;(signingKey . "...")))
-        ;;              (github
-        ;;               ((user . "Bost")))
-        ;;              (remote
-        ;;               ((pushDefault . "origin")))
-        ;;              #;(commit ((gpgSign . #t)))
-        ;;              #;(tag ((gpgSign . #t)))))))
-        )))
+   #;
+   (simple-service
+    'bin-files home-files-service-type
+    (map (lambda (f)
+           `(,(string-append "bin/" f)
+             ,(local-file (string-append (getenv "HOME") "/dev/dotfiles/bin/" f)
+                          (string-append "bin-" f))))
+         (list "crw" "crw.scm"
+               "cx" "cx.scm"
+               "g1" "g1.scm"
+               "ghog" "ghog.scm"
+               "glo" "glo.scm"
+               "guix-os" "guix-os.scm"
+               "l" "l.scm"
+               "spag" "spag.scm"
+               "ubuntu-os" "ubuntu-os.scm"
+               ;;
+               "utils.scm")))
+
+   ;; TODO test if the command-string can be created by string-append
+   #;
+   (service
+    home-mcron-service-type
+    (home-mcron-configuration
+     (jobs
+      (let* (;; every second
+             ;; (job-period '(next-second))
+             ;; every 5 seconds
+             (job-period '(next-second (range 0 60 5))))
+        (list
+         ;; see '(gexp->derivation "the-thing" build-exp)' in the manual
+         ;; Also: #+ vs. #$
+         ;; In a cross-compilation context, it is useful to distinguish
+         ;; between references to the native build of a package—that can
+         ;; run on the host—versus references to cross builds of a package.
+         ;; To that end, the #+ plays the same role as #$, but is a
+         ;; reference to a native package build
+
+         ;; #~(job '#$job-period '#$srvc-singleton-<time>)
+         ;; #~(job '#$job-period '#$srvc-multi-<time>)
+         ;; #~(job '#$job-period '#$srvc-touch-once)
+         #~(job '#$job-period (lambda ()
+                                ;; (lambda () ...) doesn't work (when NOT IN a gexp?)
+                                ;; (list ...) doesn't work when IN a gexp?
+                                ;; TODO this doesn't get invoked at ALL!!!
+                                (invoke "touch"
+                                        (string-append "/tmp/srvc-job-singleton-"
+                                                       (number->string (current-time))))
+                                ;; get the pid of the parent process and kill that process;
+                                ;; i.e. effectively kill this job-process
+                                (kill (getppid) SIGINT)))
+         #~(job '#$job-period (lambda ()
+                                ;; (lambda () ...) doesn't work (when NOT IN a gexp?)
+                                ;; (list ...) doesn't work when IN a gexp?
+                                ;; TODO this doesn't get invoked at ALL!!!
+                                (invoke "touch"
+                                        (string-append "/tmp/srvc-job-multi-"
+                                                       (number->string (current-time))))))
+         #~(job '#$job-period (lambda ()
+                                ;; TODO this doesn't get killed
+                                (system "touch /tmp/srvc-job-lambda-touch-once")
+                                ;; get the pid of the parent process and kill that process;
+                                ;; i.e. effectively kill this job-process
+                                (kill (getppid) SIGINT)))
+         #~(job '#$job-period "touch /tmp/srvc-job-string-touch-periodically-0")
+         )))))
+
+   ;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
+   ;; (service home-git-service-type
+   ;;          (home-git-configuration
+   ;;           (config
+   ;;            `((user
+   ;;               ((name . "Rostislav Svoboda")
+   ;;                (email . "Rostislav.Svoboda@gmail.com")
+   ;;                #;(signingKey . "...")))
+   ;;              (github
+   ;;               ((user . "Bost")))
+   ;;              (remote
+   ;;               ((pushDefault . "origin")))
+   ;;              #;(commit ((gpgSign . #t)))
+   ;;              #;(tag ((gpgSign . #t)))))))
+   )))
