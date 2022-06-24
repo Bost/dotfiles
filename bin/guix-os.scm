@@ -11,29 +11,13 @@
 
 (use-modules (ice-9 rdelim)
              (ice-9 popen)
-             (ice-9 getopt-long))
-
-(define (exec command)
-  "The command must have only one line output. TODO improve it"
-  ((compose
-    (lambda (command)
-      (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
-             (str  (read-line port))) ; from (ice-9 popen)
-        (close-pipe port)
-        str))
-    (lambda (s)
-      ;; TODO implement pretty-print for bash commands
-      ;; ~a - outputs an argument like display
-      ;; ~s - outputs an argument like write (i.e. print to string)
-      (format #t "~a~%" s)
-      s)
-    (lambda (cmd) (if (list? cmd)
-                      (string-join cmd " ")
-                      cmd)))
-   command))
+             (ice-9 getopt-long)
+             (utils) #| exec |#)
 
 (define vmQcow2File
-  "/home/bost/virt-machines/guix-system-vm-image-1.3.0.x86_64-linux.qcow2")
+  (string-append
+   "/home/bost" ;; must be my own home dir; '(getenv "HOME")' produces '/root'
+   "/virt-machines/guix-system-vm-image-1.3.0.x86_64-linux.qcow2"))
 (define vmRAM "2G")
 (define vmRemoteViewPort "5930")
 (define vmSSHPort "10022")
@@ -42,8 +26,7 @@
                       (exec (list "sudo" (string-append "--user=" user)
                                   "nproc"))) 2)))
 
-#;
-(format
+#;(format
  #t
  (string-append
   "##### When:\n"
@@ -63,47 +46,48 @@
  vmRemoteViewPort vmSSHPort vmSSHPort)
 
 ;; (format #t "\n~a\n\n" (string-join cmd " "))
-((compose
-  close-pipe
-  open-input-pipe
-  (lambda (s)
-    ;; TODO implement pretty-print for bash commands
-    ;; ~a - outputs an argument like display
-    ;; ~s - outputs an argument like write (i.e. print to string)
-    (format #t "\n~a\n\n" s)
-    s)
-  (lambda (cmd) (string-join cmd " ")))
- (list
-  ;; This works, however without shared clipboard:
-  ;; qemu-system-x86_64 \
-  ;;     -nic user,model=virtio-net-pci \
-  ;;     -enable-kvm -m $vmRAM \
-  ;;     -device virtio-blk,drive=myhd \
-  ;;     -drive if=none,file=$vmQcow2File,id=myhd \
-  ;;     & disown
-  ;;
-  ;; With shared clipboard and SSH access:
-  "qemu-system-x86_64"
-  "-nic" (string-append
-          "user,model=virtio-net-pci,hostfwd=tcp::"
-          vmSSHPort "-:22")
-  "-enable-kvm" "-m" vmRAM
-  "-device" "virtio-blk,drive=myhd"
-  "-drive" (string-append "if=none,file=" vmQcow2File ",id=myhd")
-  ;; spice remote-viewer
-  #;
-  (string-join
+(define (main args)
+ ((compose
+   close-pipe
+   open-input-pipe
+   (lambda (s)
+     ;; TODO implement pretty-print for bash commands
+     ;; ~a - outputs an argument like display
+     ;; ~s - outputs an argument like write (i.e. print to string)
+     (format #t "\n~a\n\n" s)
+     s)
+   (lambda (cmd) (string-join cmd " ")))
+  (list
+   ;; This works, however without shared clipboard:
+   ;; qemu-system-x86_64 \
+   ;;     -nic user,model=virtio-net-pci \
+   ;;     -enable-kvm -m $vmRAM \
+   ;;     -device virtio-blk,drive=myhd \
+   ;;     -drive if=none,file=$vmQcow2File,id=myhd \
+   ;;     & disown
+   ;;
+   ;; With shared clipboard and SSH access:
+   "qemu-system-x86_64"
+   "-nic" (string-append
+           "user,model=virtio-net-pci,hostfwd=tcp::"
+           vmSSHPort "-:22")
+   "-enable-kvm" "-m" vmRAM
+   "-device" "virtio-blk,drive=myhd"
+   "-drive" (string-append "if=none,file=" vmQcow2File ",id=myhd")
+   ;; spice remote-viewer
+   #;
+   (string-join
    (list
-    "-device"
-    "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
-    "-chardev" "spicevmc,name=vdagent,id=vdagent"
-    "-device"
-    (string-append
-     "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
-     ",name=com.redhat.spice.0")
-    "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
-    "-vga" "qxl"
-    "-smp" (vmCPUCores "bost")
-    ) " ")
-  ;; "&" "disown" ;; TODO where is disown located???
-  ))
+   "-device"
+   "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
+   "-chardev" "spicevmc,name=vdagent,id=vdagent"
+   "-device"
+   (string-append
+   "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
+   ",name=com.redhat.spice.0")
+   "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
+   "-vga" "qxl"
+   "-smp" (vmCPUCores "bost")
+   ) " ")
+   ;; "&" "disown" ;; TODO where is disown located???
+   )))

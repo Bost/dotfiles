@@ -1,4 +1,4 @@
-;; Ubuntu Server in a Virtual Machine via qemu-system-x86_64
+;; A server in a Virtual Machine via qemu-system-x86_64
 ;; https://guix.gnu.org/manual/en/html_node/Running-Guix-in-a-VM.html
 
 ;; Clipboard support:
@@ -11,28 +11,10 @@
 
 (use-modules (ice-9 rdelim)
              (ice-9 popen)
-             (ice-9 getopt-long))
+             (ice-9 getopt-long)
+             (utils) #| exec |#)
 
-(format #t "~%")
-
-(define (exec command)
-  "The command must have only one line output. TODO improve it"
-  ((compose
-    (lambda (command)
-      (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
-             (str  (read-line port))) ; from (ice-9 popen)
-        (close-pipe port)
-        str))
-    (lambda (s)
-      ;; TODO implement pretty-print for bash commands
-      ;; ~a - outputs an argument like display
-      ;; ~s - outputs an argument like write (i.e. print to string)
-      (format #t "~a~%" s)
-      s)
-    (lambda (cmd) (if (list? cmd)
-                      (string-join cmd " ")
-                      cmd)))
-   command))
+#;(format #t "~%")
 
 (define vmRAM "4G")
 (define vmHDDSize "16G")
@@ -146,7 +128,7 @@
               (display "getopt-long-example version 0.3~%"))
           (if help-wanted
               (format #t "
-ubuntu-os [options]
+quemu-vm [options]
   -v, --version    Display version
   -h, --help       Display this help
 ~a

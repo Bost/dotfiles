@@ -1,7 +1,9 @@
 #!/bin/sh
-gd=~/bin
-scmFile=$gd/ubuntu-os.scm
-guild compile -W0 $scmFile 1>/dev/null
 isoFile=~/virt-machines/ubuntu-21.10-live-server-amd64.iso
-echo sudo guile -e main $scmFile --user=$USER --iso-file=$isoFile $@
-     sudo guile -e main $scmFile --user=$USER --iso-file=$isoFile $@
+
+gd=~/bin
+scmFile=$gd/qemu-vm.scm
+guild compile --load-path=$gd -W0 $scmFile 1>/dev/null
+# guile doesn't have the long version of '-L' for '--load-path'
+echo sudo guile -L $gd -e main $scmFile --user=$USER --iso-file=$isoFile $@
+     sudo guile -L $gd -e main $scmFile --user=$USER --iso-file=$isoFile $@
