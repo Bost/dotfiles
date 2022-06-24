@@ -147,7 +147,6 @@
     "python"
     "python2"
     "qemu"
-    "racket"
     "readline"
     "recutils"
     "ripgrep"
