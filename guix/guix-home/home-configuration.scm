@@ -777,26 +777,40 @@
    (service
     home-bash-service-type
     (home-bash-configuration
-     (aliases
-      '(("grep" . "grep --color=auto")
-        ("l" . "ls -lA --color=auto")
-        ("ll" . "ls -l")
-        ("ls" . "ls -p --color=auto")))
+     ;; (guix-defaults? #t) ;; Add sane defaults to the top of the .bashrc
+     #|
+     ;; Aliases will be defined after the contents of the bashrc field has been
+     ;; put in the .bashrc
+     ;; TODO fix the documentation:
+     ;; The aliases are on the top of the .bashrc (b/c of '(guix-defaults? #t)' ???)
+     |#
+     ;; When using 'bashrc - local-file' then the aliases are added to the
+     ;; .bashrc at the bottom.
+     ;; When using '(guix-defaults? #t)' then the aliases are on the top of the
+     ;; .bashrc.
+     (aliases #| aliases for "l" "ll" "ls" will be overridden |#
+      '(("l" . "ls -lA --color=auto")))
+
+     ;; List of file-like objects, which will be ADDED(!) to .bashrc.
      (bashrc
       (list
        (local-file
         ;; (local-file ".bashrc" "bashrc") should work too
-        (dotfiles-guix-home-dir "/.bashrc")
+        (dotfiles-guix-home-dir "/.bashrc_additions")
         ;; prevent 'guix home: error: invalid name: `.bashrc''
-        "bashrc")))
+        "bashrc_additions")))
+     ;; List of file-like objects, which will be ADDED(!) to .bash_profile
      (bash-profile
       (list
+       (plain-file "bash-profile"
+                   (string-append
+                    "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))
+       #;
        (local-file
         ;; (local-file ".bashrc" "bash_profile") should work too
-        (dotfiles-guix-home-dir "/.bash_profile")
+        (dotfiles-guix-home-dir "/.bash_profile_additions")
         ;; prevent 'guix home: error: invalid name: `.bash_profile''
-        "bash_profile")))
-     #;
+        "bash_profile_additions")))
      (environment-variables
       `(("XDG_CURRENT_DESKTOP" . "sway")
         ("XDG_SESSION_TYPE" . "wayland")
