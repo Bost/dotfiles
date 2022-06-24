@@ -48,6 +48,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     yaml
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -946,6 +947,9 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (my=beg 'dotspacemacs/user-config)
+
+  ;; (debug) ;; stops the execution. What I need is the stack frame as a string
+
   ;; https://gist.github.com/synic/5c1a494eaad1406c5519
   ;; (defvar ao/v-dired-omit t
   ;;   "If dired-omit-mode enabled by default. Don't setq me.")
@@ -1178,6 +1182,7 @@ before packages are loaded."
      ))
 
   (defalias 'save-selected-text 'write-region)
+  ;; TODO (define-obsolete-function-alias)
 
   (defun my=load-layout ()
     "docstring"
@@ -1297,6 +1302,9 @@ before packages are loaded."
   (defun my=H-3 () (interactive) (message "H-3"))
   (defun my=H-4 () (interactive) (message "H-4"))
 
+  (defun my=ins-left-paren () "Simulate key press" (interactive) (execute-kbd-macro (kbd "(")))
+  (defun my=ins-right-paren () "Simulate key press" (interactive) (execute-kbd-macro (kbd ")")))
+
   (defun my=eval-bind-keys-and-chords ()
     "Revaluated by ~s-+~ replacement for e.g.:
   (global-set-key (kbd \"s-<f2>\") \\='eshell)
@@ -1358,7 +1366,15 @@ before packages are loaded."
 
        ;; TODO The <escape> keybinding seems not to work.
        ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+       ;; TODO bind stuff with mouse-buttons and also the mouse-wheel
+       ;; C-<down-mouse-4> C-<mouse-4> - like zoom in/out
+       ;; TODO notmuch
+
+       ;; TODO my=emacs-comment-sexp: mark-sexp C-M-@ comment-dwim M-;
+
+       ("C-s-<268632070>" . my=H-3) ;; this is probably for an Apple computers
        ("<escape>"  . keyboard-escape-quit)
+       ("M-Q"       . unfill-paragraph)
        ("s-K"       . my=kill-buffers--unwanted)
        ("s-C-K"     . my=kill-buffers--dired)
        ("s-R"       . spacemacs/rename-current-buffer-file)
@@ -1515,6 +1531,11 @@ before packages are loaded."
        ("s-["         . my=select-in-sqr-bracket)
        ("s-("         . my=select-in-rnd-bracket)
        ("s-{"         . my=select-in-crl-bracket)
+
+       ;; may more comfortable than moving the hand away
+       ("C-{"         . my=ins-left-paren)
+       ("C-}"         . my=ins-right-paren)
+
        ("s-\""        . my=select-in-string)
 
        ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
