@@ -22,3 +22,5 @@ texmf/tex/latex/cat-7-sketches/cat-7-sketches.fls
 texmf/tex/latex/cat-7-sketches/cat-7-sketches.log
 /bin/lein*
 /bin/search-notes
+bin/l
+bin/l.scm

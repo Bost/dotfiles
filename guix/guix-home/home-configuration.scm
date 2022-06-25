@@ -788,6 +788,7 @@ takes care of it"
 ;; fish and bash separate elements of a list with a different separator
 (define bash-list-separator ":")
 (define fish-list-separator " ")
+(define scm-bin-dir "scm-bin")
 
 (home-environment
  (packages
@@ -842,6 +843,10 @@ takes care of it"
       `(("PATH" . ,(string-join
                     (list
                      ;; my own scripts take precedence...
+                     (string-append "$HOME/" scm-bin-dir)
+                     ;; TODO create the link
+                     ;;     ln -s ~/dev/dotfiles/bin ~/bin
+                     ;; using guix home
                      "$HOME/bin"
                      ;; ... over default default PATH, putting...
                      "$PATH"
@@ -889,13 +894,10 @@ takes care of it"
 
    my-config-service
 
-   ;; TODO activate following only after when the rest of the scm scripts is
-   ;; implemented
-   #;
    (simple-service
     'scheme-files home-files-service-type
     (list
-     `("bin/l" ,(program-file "l.scm" (sexp->gexp l-scm)))))
+     `(,(string-append scm-bin-dir "/l") ,(program-file "l.scm" (sexp->gexp l-scm)))))
 
    #;
    (simple-service
