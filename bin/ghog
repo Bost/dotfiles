@@ -1,3 +1,0 @@
-#!/bin/sh
-gd=~/bin
-guile -L $gd -e main $gd/ghog.scm $@
