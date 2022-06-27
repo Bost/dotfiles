@@ -1,4 +1,0 @@
-#!/bin/sh
-# noAutoCompile="--no-auto-compile"   # needed when running under sudo
-dg=~/bin
-guile $noAutoCompile -L $dg -e main $dg/crw.scm $@

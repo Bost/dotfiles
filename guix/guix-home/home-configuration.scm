@@ -763,28 +763,6 @@
      ;; i.e. effectively kill this job-process
      (kill (getppid) SIGINT)))
 
-(define l-scm
-  '(apply
-    system*
-    ((compose
-      (lambda (cmd)
-        "(cdr (command-line)) can be an empty list which breaks system*. `append'
-takes care of it"
-        (append cmd (cdr (command-line)))))
-     ;; (list "exa" "-abghHliS" "--color=always")
-     ;; exa doesn't support the '+%d-%m-%Y %H:%M:%S' --time-style formatters.
-     ;; (list "exa" "-abghHliS" "--color=always" "--time-style=default")
-     ;; (list "exa" "-abghHliS" "--color=always" "--time-style=iso")
-     ;; (list "exa" "-abghHliS" "--color=always" "--time-style=full-iso")
-     (list "exa" "-abghHliS" "--color=always" "--time-style=long-iso")
-     #;(list
-     "ls"
-     "-lA"
-     "--file-type" ; append indicator (one of /=>@|) to entries
-     ;; TODO consider custom coloring after `ls --color=never`
-     "--color" ; must be used
-     "--time-style=+%d-%m-%Y %H:%M:%S"))))
-
 ;; fish and bash separate elements of a list with a different separator
 (define bash-list-separator ":")
 (define fish-list-separator " ")
@@ -841,11 +819,28 @@ takes care of it"
             ;; ~% is newline \n
             (format #t "~a~%" s)
             s)
-          (lambda (cmd) (if (list? cmd)
-                            (string-join cmd " ")
-                            cmd)))
+          (lambda (cmd)
+            (if (list? cmd)
+                (string-join cmd " ")
+                cmd)))
          command)))
    #:splice? #t))
+
+(define (chmod-plus modifier)
+  "Example:
+        chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
+  `(,(string-append scm-bin-dirname "/p" modifier)
+    ,(program-file
+      (string-append "chmod-plus-" modifier)
+      (with-imported-modules `(((utils) => ,utils))
+        #~(begin
+            (use-modules (utils))
+            ((compose
+              exec
+              #;(partial apply system*)
+              (partial cons* (string-append "chmod +" #$modifier))
+              cdr)
+             (command-line)))))))
 
 (home-environment
  (packages
@@ -954,16 +949,33 @@ takes care of it"
    (simple-service
     'scheme-files home-files-service-type
     (list
-     `(,(string-append scm-bin-dirname "/l") ,(program-file "l.scm" (sexp->gexp l-scm)))
-     `(,(string-append scm-bin-dirname "/crw")
+     `(,(string-append scm-bin-dirname "/l")
        ,(program-file
-         "crw.scm"
+         "list-directory-contents"
          (with-imported-modules `(((utils) => ,utils))
            #~(begin
                (use-modules (utils))
-               ;; Example:
-               ;;     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
-               (exec (cons* "chmod +rw" (cdr (command-line))))))))))
+               ((compose
+                 ;; TODO `exec' doesn't work with exa. WTF?
+                 (partial apply system*)
+                 #;(lambda (p) (format #t "#t before system*/exec: ~a\n" p) p)
+                 (partial
+                  cons*
+                  "exa" "-abghHliS" "--color=always" "--time-style=full-iso"
+                  #|
+                  "exa" "-abghHliS" "--color=always"
+                  ;; exa has no support for '+%d-%m-%Y %H:%M:%S' time formatters
+                  "exa" "-abghHliS" "--color=always" "--time-style=default"
+                  "exa" "-abghHliS" "--color=always" "--time-style=iso"
+                  "exa" "-abghHliS" "--color=always" "--time-style=long-iso"
+                  ;; '--file-type' append indicator (one of /=>@|) to entries
+                  ;; TODO consider custom coloring after `ls --color=never`
+                  "ls" "-lA" "--file-type" "--color" "--time-style=+%d-%m-%Y %H:%M:%S"
+                  |#)
+                 cdr)
+                (command-line))))))
+    (chmod-plus "rw")
+    (chmod-plus "x")))
 
    #;
    (simple-service
@@ -972,17 +984,13 @@ takes care of it"
            `(,(string-append "bin/" f)
              ,(local-file (string-append (getenv "HOME") "/dev/dotfiles/bin/" f)
                           (string-append "bin-" f))))
-         (list "crw" "crw.scm"
-               "cx" "cx.scm"
-               "g1" "g1.scm"
+         (list "g1" "g1.scm"
                "ghog" "ghog.scm"
                "glo" "glo.scm"
                "guix-os" "guix-os.scm"
-               "l" "l.scm"
                "spag" "spag.scm"
                "ubuntu-os" "ubuntu-os.scm"
-               ;;
-               "utils.scm")))
+              )))
 
    ;; TODO test if the command-string can be created by string-append
    #;
