@@ -840,6 +840,9 @@
               cdr)
              (command-line)))))))
 
+(define (scm-bin name)
+  (string-append scm-bin-dirname name))
+
 (home-environment
  (packages
   (map (compose list specification->package+output)
@@ -947,7 +950,7 @@
    (simple-service
     'scheme-files home-files-service-type
     (list
-     `(,(string-append scm-bin-dirname "/l")
+     `(,(scm-bin "/l")
        ,(program-file
          "list-directory-contents"
          (with-imported-modules `(((utils) => ,utils))
@@ -976,7 +979,7 @@
     (chmod-plus "rw")
     (chmod-plus "x")
 
-    `(,(string-append scm-bin-dirname "/ghog")
+    `(,(scm-bin "/ghog")
       ,(program-file
         "git-push-to-remotes"
         (with-imported-modules
@@ -1020,7 +1023,7 @@
                  (list
                   "git" "remote")))))))
 
-    `(,(string-append scm-bin-dirname "/glo")
+    `(,(scm-bin "/glo")
       ,(program-file
         "git-fech-and-rebase-from-origin"
         (with-imported-modules
