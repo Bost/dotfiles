@@ -89,17 +89,21 @@
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (string-append "/" scm-bin-dirname))
 
-(define contents
-  (call-with-input-file (user-home "/dev/dotfiles/guix/home/utils.scm")
-    read-all-sexprs
-    #;(lambda (p)
-      (let f ((x (read p)))
-        (if (eof-object? x)
-            '()
-            (cons x (f (read p))))))))
+(define module-utils
+  (scheme-file "utils.scm"
+               (sexp->gexp
+                (call-with-input-file
+                    (user-home "/dev/dotfiles/guix/home/utils.scm")
+                  read-all-sexprs))
+               #:splice? #t))
 
-(define utils
-  (scheme-file "utils.scm" (sexp->gexp contents) #:splice? #t))
+(define module-spag
+  (scheme-file "spag.scm"
+               (sexp->gexp
+                (call-with-input-file
+                    (user-home "/dev/dotfiles/guix/home/spag.scm")
+                  read-all-sexprs))
+               #:splice? #t))
 
 (define (chmod-plus modifier)
   "Example:
@@ -109,7 +113,7 @@
       (string-append "chmod-plus-" modifier)
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
-      (with-imported-modules `(((utils) => ,utils))
+      (with-imported-modules `(((utils) => ,module-utils))
         #~(begin
             (use-modules (utils))
             ((compose
@@ -241,7 +245,7 @@
          "list-directory-contents"
          ;; TODO clarify is source-module-closure needed only for imports of
          ;; guix modules?
-         (with-imported-modules `(((utils) => ,utils))
+         (with-imported-modules `(((utils) => ,module-utils))
            #~(begin
                (use-modules (utils))
                ((compose
@@ -269,26 +273,11 @@
          "spacemacs-git-fetch-rebase"
          ;; TODO clarify is source-module-closure needed only for imports of
          ;; guix modules?
-         (with-imported-modules `(((utils) => ,utils))
+         (with-imported-modules `(((utils) => ,module-utils)
+                                  ((spag)  => ,module-spag))
            #~(begin
-               (use-modules (ice-9 rdelim)
-                            (ice-9 regex)
-                            (ice-9 popen)
-                            (utils))
-
-               (define* (git #:rest args)
-                 (let ((h (getenv "HOME")))
-                   (cons* "git"
-                          (string-append "--git-dir=" h "/.emacs.d/.git")
-                          (string-append "--work-tree=" h "/.emacs.d")
-                          args)))
-
-               (let ((args (command-line)))
-                 (map exec
-                      (list
-                       (git "fetch" "--tags" "origin" "develop")
-                       (git "rebase" "origin/develop" "develop")
-                       (git "rebase" "develop" "cycle"))))))))
+               (use-modules (spag))
+               (main (command-line))))))
 
      (chmod-plus "rw")
      (chmod-plus "x")
@@ -298,7 +287,7 @@
         "git-push-to-remotes"
         ;; TODO clarify is source-module-closure needed only for imports of
         ;; guix modules?
-        (with-imported-modules `(((utils) => ,utils))
+        (with-imported-modules `(((utils) => ,module-utils))
           #~(begin
               (use-modules (ice-9 rdelim)
                            (ice-9 regex)
@@ -341,7 +330,7 @@
         "git-fech-and-rebase-from-origin"
         ;; TODO clarify is source-module-closure needed only for imports of
         ;; guix modules?
-        (with-imported-modules `(((utils) => ,utils))
+        (with-imported-modules `(((utils) => ,module-utils))
           #~(begin
               (use-modules (ice-9 rdelim)
                            (ice-9 regex)
@@ -401,7 +390,7 @@ Requires:
         "qemu-virt-machine"
         ;; TODO clarify is source-module-closure needed only for imports of
         ;; guix modules?
-        (with-imported-modules `(((utils) => ,utils))
+        (with-imported-modules `(((utils) => ,module-utils))
           #~(begin
               (use-modules (ice-9 rdelim)
                            (ice-9 popen)
