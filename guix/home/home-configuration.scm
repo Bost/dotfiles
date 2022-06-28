@@ -89,21 +89,17 @@
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (string-append "/" scm-bin-dirname))
 
-(define module-utils
-  (scheme-file "utils.scm"
-               (sexp->gexp
-                (call-with-input-file
-                    (user-home "/dev/dotfiles/guix/home/utils.scm")
-                  read-all-sexprs))
-               #:splice? #t))
+(define (read-module name)
+  (let ((name-scm (string-append name ".scm")))
+    (scheme-file name-scm
+                 (sexp->gexp
+                  (call-with-input-file
+                      (user-home
+                       "/dev/dotfiles/guix/home/" name-scm)
+                    read-all-sexprs))
+                 #:splice? #t)))
 
-(define module-spag
-  (scheme-file "spag.scm"
-               (sexp->gexp
-                (call-with-input-file
-                    (user-home "/dev/dotfiles/guix/home/spag.scm")
-                  read-all-sexprs))
-               #:splice? #t))
+(define module-utils (read-module "utils"))
 
 (define (chmod-plus modifier)
   "Example:
@@ -274,7 +270,7 @@
          ;; TODO clarify is source-module-closure needed only for imports of
          ;; guix modules?
          (with-imported-modules `(((utils) => ,module-utils)
-                                  ((spag)  => ,module-spag))
+                                  ((spag)  => ,(read-module "spag")))
            #~(begin
                (use-modules (spag))
                (main (command-line))))))
@@ -287,103 +283,22 @@
         "git-push-to-remotes"
         ;; TODO clarify is source-module-closure needed only for imports of
         ;; guix modules?
-        (with-imported-modules `(((utils) => ,module-utils))
+        (with-imported-modules `(((utils) => ,module-utils)
+                                 ((ghog)  => ,(read-module "ghog")))
           #~(begin
-              (use-modules (ice-9 rdelim)
-                           (ice-9 regex)
-                           (ice-9 popen)
-                           (utils))
-              (let ((args (command-line)))
-                ((compose
-                  (partial
-                   map
-                   (compose
-                    cdr
-                    exec
-                    (lambda (remote)
-                      (append
-                       (list "git" "push" "--follow-tags" "--verbose" remote)
-                       (cdr args)))
-                    car))
-                  (partial filter (lambda (remote-url)
-                                    (not (null? (cdr remote-url)))))
-                  (partial map
-                           (lambda (remote)
-                             (cons remote
-                                   ((compose
-                                     (partial filter
-                                              (lambda (url)
-                                                (string-match "git@" url)))
-                                     cdr
-                                     exec
-                                     (partial list "git" "remote" "get-url"))
-                                    remote))))
-                  (partial filter (lambda (remote)
-                                    (not (string-match "heroku" remote))))
-                  cdr
-                  exec)
-                 (list
-                  "git" "remote")))))))
+              (use-modules (ghog))
+              (main (command-line))))))
 
     `(,(scm-bin "/glo")
       ,(program-file
         "git-fech-and-rebase-from-origin"
         ;; TODO clarify is source-module-closure needed only for imports of
         ;; guix modules?
-        (with-imported-modules `(((utils) => ,module-utils))
+        (with-imported-modules `(((utils) => ,module-utils)
+                                 ((glo)   => ,(read-module "glo")))
           #~(begin
-              (use-modules (ice-9 rdelim)
-                           (ice-9 regex)
-                           (ice-9 popen)
-                           (srfi srfi-1) ;; find
-                           #;(loops for-loops)
-                           ;; (srfi srfi-42)
-                           (utils)
-                           )
-
-              (define origin-remotes '("origin" "github"))
-
-              (define (string-in? lst string-elem)
-                "Return the first element of @var{lst} that equals (string=)
-@var{string-elem}, or @code{#f} if no such element is found.
-Requires:
-  (use-modules (srfi srfi-1))"
-                (find (lambda (e) (string= string-elem e)) lst))
-
-              ;; TODO quick and dirty - use global variable
-              (define found #f)
-
-              (let ((args (command-line)))
-                ((compose
-                  (partial
-                   map
-                   (lambda (remote)
-                     (if (not found)
-                         ;; TODO if-let
-                         (let ((r (string-in? origin-remotes remote)))
-                           (if r
-                               (let* ((cmd (list "git" "fetch" "--tags" r))
-                                      (ret (exec cmd)))
-                                 (if (= 0 (car ret))
-                                     (let* ((cmd (append (list "git" "rebase")
-                                                         (cdr args)))
-                                            (ret (exec cmd)))
-                                       (if (= 0 (car ret))
-                                           (set! found #t)
-                                           (begin
-                                             #;(format #t "Command failed:\n~a\n"
-                                             (string-join cmd " "))
-                                             (cdr ret))))
-                                     (begin
-                                       #;(format #t "Command failed:\n~a\n"
-                                       (string-join cmd " "))
-                                       (cdr ret)))))))))
-                  #;dbg
-                  (partial filter (lambda (remote) (not (string-match "heroku" remote))))
-                  cdr
-                  exec)
-                 (list
-                  "git" "remote")))))))
+              (use-modules (glo))
+              (main (command-line))))))
 
     `(,(scm-bin "/qemu-vm")
       ,(program-file
