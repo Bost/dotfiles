@@ -1,0 +1,15 @@
+$ git show b65a1e4a2144f1e7a1b58444f4bf2695783c0166
+
+commit b65a1e4a2144f1e7a1b58444f4bf2695783c0166
+Author: Liliana Marie Prikler <liliana.prikler@gmail.com>
+Date:   Sun Apr 10 13:23:43 2022 +0200
+
+    gnu: emacs: Update to 28.1.
+
+    * gnu/packages/emacs.scm (emacs): Update to 28.1
+    * gnu/packages/patches/emacs-exec-path.patch: Adjust accordingly.
+    * gnu/packages/patches/emacs-ignore-empty-xim-styles.patch: Delete file.
+    * gnu/local.mk: Remove it here.
+
+
+M-x restart-emacs-resume-layouts
