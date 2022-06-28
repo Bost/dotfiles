@@ -26,10 +26,10 @@
   ;; #:use-module (gnu home services version-control)
   )
 
-(define (xdg-config-home . args)
+(define* (xdg-config-home #:rest args)
   (apply string-append (basename (getenv "XDG_CONFIG_HOME")) args))
 
-(define (user-home . args)
+(define* (user-home #:rest args)
   (apply string-append (getenv "HOME") args))
 
 (define (dotfiles-guix-home s)
