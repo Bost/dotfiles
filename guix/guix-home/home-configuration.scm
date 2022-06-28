@@ -764,8 +764,8 @@
      (kill (getppid) SIGINT)))
 
 ;; fish and bash separate elements of a list with a different separator
-(define bash-list-separator ":")
-(define fish-list-separator " ")
+(define list-separator-bash ":")
+(define list-separator-fish " ")
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (string-append "/" scm-bin-dirname))
 
@@ -843,6 +843,27 @@
 (define (scm-bin name)
   (string-append scm-bin-dirname name))
 
+(define (environment-vars list-separator)
+  `(
+    ;; used by ghog glog
+    ("remotes" . ,(string-join (list "origin" "gitlab")
+                               list-separator-bash))
+    ("PATH" . ,(string-join
+                (list
+                 ;; my own scripts take precedence...
+                 (string-append "$HOME" scm-bin-dirpath)
+                 ;; TODO create the link
+                 ;;     ln -s ~/dev/dotfiles/bin ~/bin
+                 ;; using guix home
+                 "$HOME/bin"
+                 ;; ... over default default PATH, putting...
+                 "$PATH"
+                 ;; ... bin-directory for for script-based installations of:
+                 ;;     babashka heroku clojure
+                 ;; at the end of the PATH
+                 "/usr/local/bin")
+                list-separator))))
+
 (home-environment
  (packages
   (map (compose list specification->package+output)
@@ -893,21 +914,7 @@
        ;; prevent 'guix home: error: invalid name: `.bash_profile''
        "bash_profile_additions")))
      (environment-variables
-      `(("PATH" . ,(string-join
-                    (list
-                     ;; my own scripts take precedence...
-                     (string-append "$HOME" scm-bin-dirpath)
-                     ;; TODO create the link
-                     ;;     ln -s ~/dev/dotfiles/bin ~/bin
-                     ;; using guix home
-                     "$HOME/bin"
-                     ;; ... over default default PATH, putting...
-                     "$PATH"
-                     ;; ... bin-directory for for script-based installations of:
-                     ;;     babashka heroku clojure
-                     ;; at the end of the PATH
-                     "/usr/local/bin")
-                    bash-list-separator))))))
+      (environment-vars list-separator-bash))))
 
    ;; emacs-with-native-comp
    ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
@@ -943,7 +950,8 @@
      ;;                   ("USELESS_VAR" . #f)
      ;;                   ("_JAVA_AWT_WM_NONREPARENTING" . #t)))
 
-     #| `environment-variables' inherited from bash |#))
+     (environment-variables
+      (environment-vars list-separator-fish))))
 
    my-config-service
 
@@ -976,8 +984,32 @@
                   |#)
                  cdr)
                 (command-line))))))
-    (chmod-plus "rw")
-    (chmod-plus "x")
+     `(,(scm-bin "/spag")
+       ,(program-file
+         "list-directory-contents"
+         (with-imported-modules `(((utils) => ,utils))
+           #~(begin
+               (use-modules (ice-9 rdelim)
+                            (ice-9 regex)
+                            (ice-9 popen)
+                            (utils))
+
+               (define* (git #:rest args)
+                 (let ((h (getenv "HOME")))
+                   (cons* "git"
+                          (string-append "--git-dir=" h "/.emacs.d/.git")
+                          (string-append "--work-tree=" h "/.emacs.d")
+                          args)))
+
+               (let ((args (command-line)))
+                 (map exec
+                      (list
+                       (git "fetch" "--tags" "origin" "develop")
+                       (git "rebase" "origin/develop" "develop")
+                       (git "rebase" "develop" "cycle"))))))))
+
+     (chmod-plus "rw")
+     (chmod-plus "x")
 
     `(,(scm-bin "/ghog")
       ,(program-file
@@ -1229,7 +1261,6 @@ quemu-vm [options]
                           (string-append "bin-" f))))
          (list "g1" "g1.scm"
                "guix-os" "guix-os.scm"
-               "spag" "spag.scm"
                "ubuntu-os" "ubuntu-os.scm"
               )))
 
