@@ -9,6 +9,7 @@
   #:use-module (cfg fish)
   #:use-module (cfg abbreviations)
   #:use-module (cfg mcron)
+  #:use-module (utils)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -88,60 +89,17 @@
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (string-append "/" scm-bin-dirname))
 
+(define contents
+  (call-with-input-file (user-home "/dev/dotfiles/guix/home/utils.scm")
+    read-all-sexprs
+    #;(lambda (p)
+      (let f ((x (read p)))
+        (if (eof-object? x)
+            '()
+            (cons x (f (read p))))))))
+
 (define utils
-  (scheme-file
-   "utils.scm"
-   #~(
-      (define-module (utils)
-        #:use-module (ice-9 rdelim)
-        #:use-module (ice-9 regex)
-        #:use-module (ice-9 popen)
-        #| #:use-module (guix build utils) ;; invoke - not needed |#
-        #:export (partial dbg exec))
-
-      (define (partial fun . args)
-        (lambda x (apply fun (append args x))))
-
-      (define (dbg prm)
-        (format #t "\n~a\n" prm)
-        prm)
-
-      (define (read-all port)
-        "Return a list of all lines from the PORT."
-        (let loop ((res '())
-                   (str (read-line port))) ; from (ice-9 popen)
-          (if (and str (not (eof-object? str)))
-              (loop (append res (list str))
-                    (read-line port))
-              res)))
-
-      (define (exec command)
-        "Usage:
-(let* ((ret (exec command)))
-    (if (= 0 (car ret))
-        (let* ((output (cdr ret)))
-          #| process output |#)
-        (format #t \"Command failed\")))"
-        ((compose
-          (lambda (command)
-            (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
-                   (str  (read-all port)))
-              (cons
-               (status:exit-val (close-pipe port))
-               str)))
-          (lambda (s)
-            ;; TODO implement pretty-print for bash commands
-            ;; ~a - outputs an argument like display
-            ;; ~s - outputs an argument like write (i.e. print to string)
-            ;; ~% is newline \n
-            (format #t "~a~%" s)
-            s)
-          (lambda (cmd)
-            (if (list? cmd)
-                (string-join cmd " ")
-                cmd)))
-         command)))
-   #:splice? #t))
+  (scheme-file "utils.scm" (sexp->gexp contents) #:splice? #t))
 
 (define (chmod-plus modifier)
   "Example:
@@ -149,6 +107,8 @@
   `(,(string-append scm-bin-dirname "/p" modifier)
     ,(program-file
       (string-append "chmod-plus-" modifier)
+      ;; TODO clarify is source-module-closure needed only for imports of
+      ;; guix modules?
       (with-imported-modules `(((utils) => ,utils))
         #~(begin
             (use-modules (utils))
@@ -279,6 +239,8 @@
      `(,(scm-bin "/l")
        ,(program-file
          "list-directory-contents"
+         ;; TODO clarify is source-module-closure needed only for imports of
+         ;; guix modules?
          (with-imported-modules `(((utils) => ,utils))
            #~(begin
                (use-modules (utils))
@@ -305,6 +267,8 @@
      `(,(scm-bin "/spag")
        ,(program-file
          "spacemacs-git-fetch-rebase"
+         ;; TODO clarify is source-module-closure needed only for imports of
+         ;; guix modules?
          (with-imported-modules `(((utils) => ,utils))
            #~(begin
                (use-modules (ice-9 rdelim)
@@ -332,10 +296,9 @@
     `(,(scm-bin "/ghog")
       ,(program-file
         "git-push-to-remotes"
-        (with-imported-modules
-            ;; TODO clarify is source-module-closure needed only for imports of
-            ;; guix modules?
-            `(((utils) => ,utils))
+        ;; TODO clarify is source-module-closure needed only for imports of
+        ;; guix modules?
+        (with-imported-modules `(((utils) => ,utils))
           #~(begin
               (use-modules (ice-9 rdelim)
                            (ice-9 regex)
@@ -376,10 +339,9 @@
     `(,(scm-bin "/glo")
       ,(program-file
         "git-fech-and-rebase-from-origin"
-        (with-imported-modules
-            ;; TODO clarify is source-module-closure needed only for imports of
-            ;; guix modules?
-            `(((utils) => ,utils))
+        ;; TODO clarify is source-module-closure needed only for imports of
+        ;; guix modules?
+        (with-imported-modules `(((utils) => ,utils))
           #~(begin
               (use-modules (ice-9 rdelim)
                            (ice-9 regex)
@@ -437,10 +399,9 @@ Requires:
     `(,(scm-bin "/qemu-vm")
       ,(program-file
         "qemu-virt-machine"
-        (with-imported-modules
-            ;; TODO clarify is source-module-closure needed only for imports of
-            ;; guix modules?
-            `(((utils) => ,utils))
+        ;; TODO clarify is source-module-closure needed only for imports of
+        ;; guix modules?
+        (with-imported-modules `(((utils) => ,utils))
           #~(begin
               (use-modules (ice-9 rdelim)
                            (ice-9 popen)
