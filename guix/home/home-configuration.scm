@@ -75,52 +75,13 @@
 
 ;; https://github.com/clojure-quant/infra-guix/blob/cf67ccfce02f4d1e2441ed9f34b5ec6583ffc1cc/home/config-nuc.scm
 (define my-config-service
-  (simple-service 'test-config
-                  home-files-service-type
-                  (cons
-                   (list "local-stuff.fish" (local-file (user-home "/local-stuff.fish")))
-                   funs
-                   #;(append plugins (append funs (append completions confds)))
-                   )))
-
-;; fish and bash separate elements of a list with a different separator
-(define list-separator-bash ":")
-(define list-separator-fish " ")
-(define scm-bin-dirname "scm-bin")
-(define scm-bin-dirpath (string-append "/" scm-bin-dirname))
-
-(define (read-module name)
-  (let ((name-scm (string-append name ".scm")))
-    (scheme-file name-scm
-                 (sexp->gexp
-                  (call-with-input-file
-                      (user-home
-                       "/dev/dotfiles/guix/home/" name-scm)
-                    read-all-sexprs))
-                 #:splice? #t)))
-
-(define module-utils (read-module "utils"))
-
-(define (chmod-plus modifier)
-  "Example:
-        chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
-  `(,(string-append scm-bin-dirname "/p" modifier)
-    ,(program-file
-      (string-append "chmod-plus-" modifier)
-      ;; TODO clarify is source-module-closure needed only for imports of
-      ;; guix modules?
-      (with-imported-modules `(((utils) => ,module-utils))
-        #~(begin
-            (use-modules (utils))
-            ((compose
-              exec
-              #;(partial apply system*)
-              (partial cons* (string-append "chmod +" #$modifier))
-              cdr)
-             (command-line)))))))
-
-(define (scm-bin name)
-  (string-append scm-bin-dirname name))
+  (simple-service
+   'test-config
+   home-files-service-type
+   (cons
+    (list "local-stuff.fish" (local-file (user-home "/local-stuff.fish")))
+    funs
+    #;(append plugins (append funs (append completions confds))))))
 
 (define (environment-vars list-separator)
   `(
@@ -142,6 +103,60 @@
                  ;; at the end of the PATH
                  "/usr/local/bin")
                 list-separator))))
+
+;; fish and bash separate elements of a list with a different separator
+(define list-separator-bash ":")
+(define list-separator-fish " ")
+(define scm-bin-dirname "scm-bin")
+(define scm-bin-dirpath (string-append "/" scm-bin-dirname))
+
+(define (read-module name)
+  (let ((name-scm (string-append name ".scm")))
+    (scheme-file name-scm
+                 (sexp->gexp
+                  (call-with-input-file
+                      (user-home
+                       "/dev/dotfiles/guix/home/" name-scm)
+                    read-all-sexprs))
+                 #:splice? #t)))
+
+(define module-utils (read-module "utils"))
+
+(define* (service-file program-file-name program-description
+                       #:key
+                       scheme-file-name
+                       module-name)
+  "The priority is 1. module-name, 2. scheme-file-name, 3. program-file-name"
+  `(,(string-append scm-bin-dirname "/" program-file-name)
+    ,(program-file
+      program-description
+      ;; TODO clarify is source-module-closure needed only for imports of
+      ;; guix modules?
+      (let ((symb (or module-name
+                      (and scheme-file-name
+                           (string->symbol scheme-file-name))
+                      (string->symbol program-file-name))))
+        (with-imported-modules `(((utils) => ,module-utils)
+                                 ((,symb) => ,(read-module
+                                               (or scheme-file-name
+                                                   program-file-name))))
+          #~(begin
+              (use-modules (#$symb))
+              (main (command-line))))))))
+
+(define (chmod-plus modifier)
+  "Example:
+        chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
+  `(,(string-append scm-bin-dirname "/p" modifier)
+    ,(program-file
+      (string-append "chmod-plus-" modifier)
+      ;; TODO clarify is source-module-closure needed only for imports of
+      ;; guix modules?
+      (with-imported-modules `(((utils) => ,module-utils)
+                               ((chmod) => ,(read-module "chmod")))
+        #~(begin
+            (use-modules (chmod))
+            (main #$modifier (command-line)))))))
 
 (home-environment
  (packages
@@ -236,63 +251,13 @@
    (simple-service
     'scheme-files home-files-service-type
     (list
-     `(,(scm-bin "/l")
-       ,(program-file
-         "list-directory-contents"
-         ;; TODO clarify is source-module-closure needed only for imports of
-         ;; guix modules?
-         (with-imported-modules `(((utils) => ,module-utils)
-                                  ((ls)    => ,(read-module "ls")))
-           #~(begin
-               (use-modules (ls))
-               (main (command-line))))))
-
-     `(,(scm-bin "/spag")
-       ,(program-file
-         "spacemacs-git-fetch-rebase"
-         ;; TODO clarify is source-module-closure needed only for imports of
-         ;; guix modules?
-         (with-imported-modules `(((utils) => ,module-utils)
-                                  ((spag)  => ,(read-module "spag")))
-           #~(begin
-               (use-modules (spag))
-               (main (command-line))))))
-
+     (service-file "l" "list-directory-contents" #:scheme-file-name "ls" )
+     (service-file "spag" "spacemacs-git-fetch-rebase")
      (chmod-plus "rw")
      (chmod-plus "x")
-
-    `(,(scm-bin "/ghog")
-      ,(program-file
-        "git-push-to-remotes"
-        ;; TODO clarify is source-module-closure needed only for imports of
-        ;; guix modules?
-        (with-imported-modules `(((utils) => ,module-utils)
-                                 ((ghog)  => ,(read-module "ghog")))
-          #~(begin
-              (use-modules (ghog))
-              (main (command-line))))))
-
-    `(,(scm-bin "/glo")
-      ,(program-file
-        "git-fech-and-rebase-from-origin"
-        ;; TODO clarify is source-module-closure needed only for imports of
-        ;; guix modules?
-        (with-imported-modules `(((utils) => ,module-utils)
-                                 ((glo)   => ,(read-module "glo")))
-          #~(begin
-              (use-modules (glo))
-              (main (command-line))))))
-
-    `(,(scm-bin "/qemu-vm")
-      ,(program-file
-        "qemu-virt-machine"
-        ;; TODO clarify is source-module-closure needed only for imports of
-        ;; guix modules?
-        (with-imported-modules `(((utils)   => ,module-utils)
-                                 ((qemu-vm) => ,(read-module "qemu-vm")))
-          #~(begin
-              (use-modules (qemu-vm))
-              (main (command-line))))))
+     (service-file "ghog" "git-push-to-remotes")
+     (service-file "glo" "git-fech-and-rebase-from-origin")
+     (service-file "qemu-vm" "qemu-virt-machine")
     ))
 
    #;
