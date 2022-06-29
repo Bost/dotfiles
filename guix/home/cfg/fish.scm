@@ -11,7 +11,6 @@
    "armv.fish"
    "b.fish"
    "bin.fish"
-   "c.fish"
    "cd-.fish"
    "cdd.fish"
    "cheat.fish"

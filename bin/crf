@@ -1,2 +1,0 @@
-#!/bin/sh
-search-notes -f "find_and_grep" -p $@

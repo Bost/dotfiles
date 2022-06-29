@@ -134,6 +134,19 @@
               (use-modules (#$symb))
               (main (command-line))))))))
 
+(define (search-notes program-name files)
+  `(,(string-append scm-bin-dirname "/" program-name)
+    ,(program-file
+      (string-append "search-notes-" program-name)
+      ;; TODO clarify is source-module-closure needed only for imports of
+      ;; guix modules?
+      (with-imported-modules `(((utils) => ,module-utils)
+                               ((search-notes) => ,(read-module
+                                                    "search-notes")))
+                             #~(begin
+                                 (use-modules (search-notes))
+                                 (main #$files (command-line)))))))
+
 (define (chmod-plus modifier)
   "Example:
         chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
@@ -249,12 +262,23 @@
    (simple-service
     'scheme-files home-files-service-type
     (list
+     (search-notes "crc"  "clojure")
+     (search-notes "cre"  "vim|emacs|org_mode")
+     (search-notes "crep" ".*")
+     (search-notes "crf"  "find_and_grep")
+     (search-notes "crg"  "(guix|guile)")
+     (search-notes "crgi" "git")
+     (search-notes "crl"  "guix|shells|linux|android")
+     (search-notes "crr"  "racket")
+     (search-notes "crs"  "shells")
+     (search-notes "cru"  "utf8")
      (chmod-plus "rw")
      (chmod-plus "x")
-     (service-file "l" "list-directory-contents" #:scheme-file-name "ls" )
-     (service-file "spag" "spacemacs-git-fetch-rebase")
-     (service-file "ghog" "git-push-to-remotes")
-     (service-file "glo" "git-fech-and-rebase-from-origin")
+     (service-file "c"       "batcat" #:scheme-file-name "batcat")
+     (service-file "l"       "list-directory-contents" #:scheme-file-name "ls")
+     (service-file "spag"    "spacemacs-git-fetch-rebase")
+     (service-file "ghog"    "git-push-to-remotes")
+     (service-file "glo"     "git-fech-and-rebase-from-origin")
      (service-file "qemu-vm" "qemu-virt-machine")
     ))
 
