@@ -1,6 +1,8 @@
 (define-module (cfg mcron)
   #:export ())
 
+;; https://github.com/clojure-quant/infra-guix/blob/main/home/config-nuc.scm
+
 ;; (define do-job
 ;;   ;; as user "bost" at 17:05 This runs from the user's home directory.
 ;;   ;; #~(job

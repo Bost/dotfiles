@@ -16,7 +16,7 @@
   #:use-module (guix gexp)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services mcron) #| home-mcron-service-type |#
-  #:use-module (gnu home services)       #| my-config-service |#
+  #:use-module (gnu home services)       #| simple-service |#
   #:use-module (ice-9 ftw)               #| scandir |#
   #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (guix build utils)        #| invoke |#
@@ -72,16 +72,6 @@
         "fish_plugins"
         ;; "fish_variables" this is changed
         )))
-
-;; https://github.com/clojure-quant/infra-guix/blob/cf67ccfce02f4d1e2441ed9f34b5ec6583ffc1cc/home/config-nuc.scm
-(define my-config-service
-  (simple-service
-   'test-config
-   home-files-service-type
-   (cons
-    (list "local-stuff.fish" (local-file (user-home "/local-stuff.fish")))
-    funs
-    #;(append plugins (append funs (append completions confds))))))
 
 (define (environment-vars list-separator)
   `(
@@ -246,15 +236,23 @@
      (environment-variables
       (environment-vars list-separator-fish))))
 
-   my-config-service
+   (simple-service 'local-stuff-config
+                   home-files-service-type
+                   (cons
+                    (list "local-stuff.fish" (local-file (user-home
+                                                          "/local-stuff.fish")))
+                    funs
+                    #;
+                    (append plugins (append funs (append completions
+                                                         confds)))))
 
    (simple-service
     'scheme-files home-files-service-type
     (list
-     (service-file "l" "list-directory-contents" #:scheme-file-name "ls" )
-     (service-file "spag" "spacemacs-git-fetch-rebase")
      (chmod-plus "rw")
      (chmod-plus "x")
+     (service-file "l" "list-directory-contents" #:scheme-file-name "ls" )
+     (service-file "spag" "spacemacs-git-fetch-rebase")
      (service-file "ghog" "git-push-to-remotes")
      (service-file "glo" "git-fech-and-rebase-from-origin")
      (service-file "qemu-vm" "qemu-virt-machine")
