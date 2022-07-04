@@ -1080,9 +1080,20 @@ before packages are loaded."
 
   (setq
 
+   ;; The program of term.
+   ;; If this is nil, setup to environment variable of `SHELL'.
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
    ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
    multi-term-program `,(getenv "SHELL") ; "~/.guix-profile/bin/fish"
+
+   ;; Shell used in `term' and `ansi-term'.
+   shell-pop-term-shell "~/.guix-profile/bin/fish"
+
+   ;; Position of the popped buffer.
+   shell-pop-window-position "right"
+
+   ;; Percentage for shell-buffer window size.
+   shell-pop-window-size 50
 
    ;; See also undo-tree-auto-save-history
    undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
@@ -1315,6 +1326,43 @@ before packages are loaded."
   (defun my=ins-left-paren () "Simulate key press" (interactive) (execute-kbd-macro (kbd "(")))
   (defun my=ins-right-paren () "Simulate key press" (interactive) (execute-kbd-macro (kbd ")")))
 
+  (defun my=delete-window ()
+    (interactive)
+    (let ((win-list (window-list)))
+      (if (funcall (-compose (-partial #'equal 1)
+                             #'length
+                             #'delete-dups
+                             (-partial #'mapcar (-compose #'buffer-name
+                                                          #'window-buffer)))
+                   (window-list))
+          (spacemacs/alternate-buffer)
+        (delete-window (selected-window)))))
+
+  ;; (defun matches-a-buffer-name? (name)
+  ;;   "Return non-nil if NAME matches the name of an existing buffer."
+  ;;   (try-completion name (mapcar #'buffer-name (buffer-list))))
+
+  (defun buffer-exists-p (bufname)
+    ;; See also: (lambda (window) (buffer-name (window-buffer window)))
+    (and (member bufname (mapcar #'buffer-name (buffer-list)))
+         t))
+
+  (defun my=shell-pop-term ()
+    (interactive)
+    (if (equal 'term-mode major-mode)
+        (my=delete-window)
+      (let ((bufname "*Default-term-0*"))
+        ;; switch to buffer
+        (if (buffer-exists-p bufname)
+            (progn
+              (switch-to-buffer bufname)
+              ;; `select-window' doesn't work if the window is buried
+              ;; (select-window (get-buffer-window bufname))
+              )
+          ;; `spacemacs/shell-pop-term' is defined in the
+          ;; layers/+tools/shell/packages.el
+          (spacemacs/shell-pop-term 0)))))
+
   (defun my=eval-bind-keys-and-chords ()
     "To activate changes, do:
     ~s-d~ my=eval-current-defun
@@ -1395,7 +1443,7 @@ Some binding snippets / examples:
        ("s-q"       . my=other-window)
        ("s-k"       . my=close-buffer)
        ("s-s"       . save-buffer)
-       ("s-0"       . delete-window)
+       ("s-0"       . my=delete-window)
        ("s-1"       . my=delete-other-windows)
        ("S-s-<f8>"    . ace-swap-window)
        ;; ("S-s-<f8>" . transpose-frame)
@@ -1424,7 +1472,8 @@ Some binding snippets / examples:
        ("C-s-<right>" . sp-backward-barf-sexp)
        ("s-;"         . spacemacs/comment-or-uncomment-lines)
        ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
-       ("s-<f1>"      . projectile-multi-term-in-root)
+       ("s-<f1>"      . my=shell-pop-term)
+       ("s-<f2>"      . projectile-multi-term-in-root)
        ;; terminal in the current working directory
        ;; ("s-<f1>"      . terminal-here-launch)
        ;; ("s-<f1>"      . spacemacs/default-pop-shell)
