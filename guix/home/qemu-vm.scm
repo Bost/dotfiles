@@ -5,6 +5,12 @@
   #:use-module (utils)
   #:export (main))
 
+#|
+#!/home/bost/.guix-home/profile/bin/guile \
+-l utils.scm -e (qemu-vm) -s
+!#
+|#
+
 (define vmRAM "4G")
 (define vmHDDSize "16G")
 (define vmRemoteViewPort "5930")

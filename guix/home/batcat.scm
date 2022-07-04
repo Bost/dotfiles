@@ -4,13 +4,14 @@
 
 #|
 #!/home/bost/.guix-home/profile/bin/guile \
--L /home/bost/dev/dotfiles/guix/home -s
+-l utils.scm -e (batcat) -s
 !#
 |#
 
 (define (main args)
   (let* ((ret
           ((compose
+            ;; TODO implement exec-no-read-line
             #;exec ;; causes color loss
             (partial apply system*)
             (partial cons* "bat")
@@ -22,5 +23,3 @@
           #| process output |#
           (map (partial format #t "~a\n") output))
         (format #t "Command failed"))))
-
-;; (main (command-line))

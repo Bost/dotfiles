@@ -2,6 +2,12 @@
   #:use-module (utils)
   #:export (main))
 
+#|
+#!/home/bost/.guix-home/profile/bin/guile \
+-l utils.scm -e (ls) -s
+!#
+|#
+
 (define (main args)
   ((compose
     ;; TODO `exec' doesn't work with exa. WTF?

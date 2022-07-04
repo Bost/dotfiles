@@ -8,6 +8,12 @@
   #:use-module (utils)
   #:export (main))
 
+#|
+#!/home/bost/.guix-home/profile/bin/guile \
+-l utils.scm -e (glo) -s
+!#
+|#
+
 (define origin-remotes '("origin" "github"))
 
 (define (string-in? lst string-elem)
@@ -17,7 +23,7 @@ Requires:
   (use-modules (srfi srfi-1))"
   (find (lambda (e) (string= string-elem e)) lst))
 
-;; TODO quick and dirty - use global variable
+;; TODO use continuation breakout instead of a global variable
 (define found #f)
 
 (define (main args)

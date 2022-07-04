@@ -5,7 +5,7 @@
 
 #|
 #!/home/bost/.guix-home/profile/bin/guile \
--L /home/bost/dev/dotfiles/guix/home -s
+-l utils.scm -e (search-notes) -s
 !#
 |#
 

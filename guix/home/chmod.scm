@@ -2,6 +2,12 @@
   #:use-module (utils)
   #:export (main))
 
+#|
+#!/home/bost/.guix-home/profile/bin/guile \
+-l utils.scm -e (chmod) -s
+!#
+|#
+
 (define (main modifier args)
   ((compose
     exec

@@ -5,6 +5,12 @@
   #:use-module (utils)
   #:export (main))
 
+#|
+#!/home/bost/.guix-home/profile/bin/guile \
+-l utils.scm -e (ghog) -s
+!#
+|#
+
 (define (main args)
   ((compose
     (partial

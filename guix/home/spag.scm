@@ -5,6 +5,12 @@
   #:use-module (utils)
   #:export (main))
 
+#|
+#!/home/bost/.guix-home/profile/bin/guile \
+-l utils.scm -e (spag) -s
+!#
+|#
+
 (define* (git #:rest args)
   (let ((h (getenv "HOME")))
     (cons* "git"
