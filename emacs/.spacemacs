@@ -1071,6 +1071,15 @@ before packages are loaded."
    ;; Percentage for shell-buffer window size.
    shell-pop-window-size 50
 
+   ;; Shell used in `term' and `ansi-term'.
+   shell-pop-term-shell "~/.guix-profile/bin/fish"
+
+   ;; Position of the popped buffer.
+   shell-pop-window-position "right"
+
+   ;; Percentage for shell-buffer window size.
+   shell-pop-window-size 50
+
    ;; See also undo-tree-auto-save-history
    undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
 
