@@ -1316,7 +1316,11 @@ before packages are loaded."
   (defun my=ins-right-paren () "Simulate key press" (interactive) (execute-kbd-macro (kbd ")")))
 
   (defun my=eval-bind-keys-and-chords ()
-    "Revaluated by ~s-+~ replacement for e.g.:
+    "To activate changes, do:
+    ~s-d~ my=eval-current-defun
+    ~s-+~ my=eval-bind-keys-and-chords
+
+Some binding snippets / examples:
   (global-set-key (kbd \"s-<f2>\") \\='eshell)
   (key-chord-define-global \"fj\" (lambda () (interactive)
                                              (my=insert-str \"()\" 1)))"

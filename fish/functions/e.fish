@@ -18,7 +18,7 @@ function e
     for pid in $pids
         set procUser (ps -o user= -p $pid)
         # printf "pid: %s; procUser: %s; USER: %s\n" $pid $procUser $USER
-        # $procUser may not be defined emacs previously crashed or was killed
+        # $procUser may not be defined if emacs previously crashed or was killed
         if test -n "$procUser"; and test $USER = $procUser
             set procCmd (ps -o command= -p $pid)
             # echo "procCmd:" $procCmd
