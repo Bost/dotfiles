@@ -1809,8 +1809,7 @@ Some binding snippets / examples:
    ("C-s-d" . my=elisp-insert-defun)
    ("s-d"   . my=eval-current-defun)
    ("#"     . endless/sharp)
-   ;; emacs-lisp doesn't have a syntax for sexp-comment
-   ("s-\\"   . spacemacs/comment-or-uncomment-lines)
+   ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp)
    )
 
   (dolist (state-map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work

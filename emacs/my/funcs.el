@@ -599,6 +599,13 @@ Otherwise toggle the reader comment."
        "#_#_"
      "#_")))
 
+(defun my=elisp-toggle-reader-comment-current-sexp (&optional arg)
+  "emacs-lisp doesn't have a syntax for sexp-comment.
+TODO finish the implementation"
+  (interactive "p")
+  ;; (mark-sexp)
+  (spacemacs/comment-or-uncomment-lines arg))
+
 (defun my=racket-toggle-reader-comment-current-sexp ()
   (interactive)
   (newline-and-indent)
