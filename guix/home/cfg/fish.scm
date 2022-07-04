@@ -31,7 +31,6 @@
    "dos2unix.fish"
    "dotf.fish"
    "down.fish"
-   "e.fish"
    "eac.fish"
    "ec.fish"
    "edit-grub.fish"

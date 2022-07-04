@@ -280,6 +280,7 @@
      (service-file "ghog"    "git-push-to-remotes")
      (service-file "glo"     "git-fech-and-rebase-from-origin")
      (service-file "qemu-vm" "qemu-virt-machine")
+     (service-file "e"       "emacs-launcher" #:scheme-file-name "emacs-launcher")
     ))
 
    #;
