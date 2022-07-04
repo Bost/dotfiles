@@ -147,10 +147,10 @@
                                  (use-modules (search-notes))
                                  (main #$files (command-line)))))))
 
-(define (chmod-plus modifier)
+(define (chmod-plus program-name modifier)
   "Example:
         chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
-  `(,(string-append scm-bin-dirname "/p" modifier)
+  `(,(string-append scm-bin-dirname "/" program-name)
     ,(program-file
       (string-append "chmod-plus-" modifier)
       ;; TODO clarify is source-module-closure needed only for imports of
@@ -164,7 +164,7 @@
 (home-environment
  (packages
   (map (compose list specification->package+output)
-       packages))
+       user-profile-packages))
 
  ;; TODO
  ;; see [PATCH] services: Add udev-rules-service helper. https://issues.guix.gnu.org/40454
@@ -272,8 +272,8 @@
      (search-notes "crr"  "racket")
      (search-notes "crs"  "shells")
      (search-notes "cru"  "utf8")
-     (chmod-plus "rw")
-     (chmod-plus "x")
+     (chmod-plus   "prw"  "rw")
+     (chmod-plus   "px"   "x")
      (service-file "c"       "batcat" #:scheme-file-name "batcat")
      (service-file "l"       "list-directory-contents" #:scheme-file-name "ls")
      (service-file "spag"    "spacemacs-git-fetch-rebase")

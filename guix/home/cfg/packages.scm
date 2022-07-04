@@ -1,7 +1,7 @@
 (define-module (cfg packages)
-  #:export (own-packages packages))
+  #:export (my-packages user-profile-packages))
 
-(define own-packages
+(define my-packages
   (list
    "leiningen"
    "babashka"
@@ -9,9 +9,9 @@
    "firefox"
    ))
 
-(define packages
+(define user-profile-packages
   (append
-   #;own-packages
+   #;my-packages
    (list
     "adb"
     "alsa-utils"
