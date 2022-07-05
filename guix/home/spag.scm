@@ -12,10 +12,11 @@
 |#
 
 (define* (git #:rest args)
-  (let ((h (getenv "HOME")))
+  ;; see also ~/.emacs-profiles.el
+  (let ((dist-dir (string-append (getenv "HOME") "/.spacemacs.d")))
     (cons* "git"
-           (string-append "--git-dir=" h "/.emacs.d/.git")
-           (string-append "--work-tree=" h "/.emacs.d")
+           (string-append "--git-dir=" dist-dir "/.git")
+           (string-append "--work-tree=" dist-dir)
            args)))
 
 (define (main args)

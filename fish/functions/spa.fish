@@ -1,5 +1,6 @@
 function spa
-  set cmd cd ~/.emacs.d/
-  echo $cmd
-  eval $cmd
+    # see also ~/.emacs-profiles.el
+    set cmd cd ~/.emacs.d/
+    echo $cmd
+    eval $cmd
 end

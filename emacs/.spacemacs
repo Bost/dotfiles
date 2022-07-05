@@ -6,6 +6,10 @@
 (setq my=dbg=init-time (if (boundp #'dbg=init-time) dbg=init-time (my=dbg=tstp)))
 (setq my=dbg=fmt (if (boundp #'dbg=fmt) dbg=fmt "%012d"))
 
+;; Spacemacs installation directory. See also `user-emacs-directory'
+;; in ~/.emacs-profiles.el
+(setq my=sd "~/.spacemacs.d")
+
 (defun my=log (my=fun-point)
   (format "%s %s [%%s] (length load-path) %s"
           (format my=dbg=fmt (- (my=dbg=tstp) my=dbg=init-time))
@@ -212,7 +216,7 @@ This function should only modify configuration layer settings."
                       version-control-global-margin t)
      (clojure
       ;; cider package location configured by
-      ;; ~/.emacs.d/layers/+lang/clojure/packages.el in its 'use-package'
+      ;; (concat my=sd "/layers/+lang/clojure/packages.el") in its 'use-package'
       :variables
       cider-jdk-src-paths
       '(
@@ -915,7 +919,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (my=beg 'dotspacemacs/user-init)
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
-  (setq custom-file "~/.emacs.d/.cache/.custom-settings")
+  ;; (setq custom-file "~/.emacs.d/.cache/.custom-settings")
+  (setq custom-file (concat my=sd "/.cache/.custom-settings"))
   (load custom-file) ;; `custom-file' is not auto-loaded
 
   (add-to-list 'package-archives
@@ -1023,7 +1028,7 @@ before packages are loaded."
   ;; (remove-hook 'Info-mode-hook 'evil-mode)
 
   (add-to-list 'yas-snippet-dirs
-               "~/.emacs.d/layers/+completion/auto-completion/local/snippets/")
+               (concat my=sd "/layers/+completion/auto-completion/local/snippets/"))
   ;; the (add-to-list 'yas-snippet-dirs ...) must be called before
   (yas-global-mode 1)
   (global-flycheck-mode)
@@ -1081,7 +1086,7 @@ before packages are loaded."
    shell-pop-window-size 50
 
    ;; See also undo-tree-auto-save-history
-   undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
+   undo-tree-history-directory-alist `(("." . ,(concat my=sd "/undo")))
 
    ;; TODO create toggle for evil-ex-substitute-interactive-replace
    evil-ex-substitute-interactive-replace t ;; nil/t. default is t
@@ -1193,8 +1198,8 @@ before packages are loaded."
   (defun my=load-layout ()
     "docstring"
     (interactive)
-    (persp-load-state-from-file "~/.emacs.d/.cache/layouts/persp-auto-save")
-    )
+    (persp-load-state-from-file
+     (concat my=sd "/.cache/layouts/persp-auto-save")))
 
   (defun my=delete-other-windows ()
     "docstring"

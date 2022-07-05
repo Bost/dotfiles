@@ -14,12 +14,14 @@
 (define emacs-binary emacs-binary-init)
 
 (define (compute-binary)
+  "--with-profile and --socket-name are for the chemacs2"
   (let ((user (getenv "USER")))
     ((compose
       (lambda (p)
         (if (null? p)
-            emacs-binary-init ;; no emacs has been started yes
-            (car p)))
+            ;; no emacs has been started yes
+            (format #f "~a --with-profile spacemacs" emacs-binary-init)
+            (format #f "~a --socket-name=spacemacs" (car p))))
       (partial
        map
        (lambda (pid)
