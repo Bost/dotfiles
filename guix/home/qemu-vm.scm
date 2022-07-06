@@ -17,9 +17,20 @@
 (define vmSSHPort "10022")
 (define vmApache2Port "10080")
 (define (vmCPUCores user)
-  (number->string (/ (string->number
-                      (exec (list "sudo" (string-append "--user=" user)
-                                  "nproc"))) 2)))
+  "The VM gets 90% of the available CPUs."
+  ((compose
+    (partial format #f "cpus=~s")
+    inexact->exact
+    round
+    (partial * 0.9)
+    string->number
+    (lambda (ret)
+      (if (= 0 (car ret))
+          (let* ((output (cdr ret)))
+            (car output))
+          (format #t "Command failed")))
+    exec)
+   (list "sudo" (string-append "--user=" user) "nproc")))
 
 (define ssh
   (format
@@ -70,6 +81,7 @@
        ;;
        ;; With shared clipboard and SSH access:
        "qemu-system-x86_64"
+       "-smp" (vmCPUCores user)
        "-cdrom" isoFile
        "-nic"
        (format
@@ -92,7 +104,6 @@
        ",name=com.redhat.spice.0")
        "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
        "-vga" "qxl"
-       "-smp" (vmCPUCores user)
        ) " ")
        ;; "&" "disown" ;; TODO where is disown located???
        ))
