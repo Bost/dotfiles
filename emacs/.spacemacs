@@ -1079,16 +1079,30 @@ before packages are loaded."
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
 
+  (defun shell-which (command)
+    "Execute the 'which' command in the current shell"
+    (funcall
+     (-compose
+      #'string-trim-right
+      #'shell-command-to-string
+      (lambda (strings) (string-join strings " "))
+      (-partial #'list "which"))
+     command))
+
+  (defun fish-shell-path ()
+    ;; (getenv "SHELL")
+    (shell-which "fish"))
+
   (setq
 
    ;; The program of term.
    ;; If this is nil, setup to environment variable of `SHELL'.
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
    ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
-   multi-term-program `,(getenv "SHELL") ; "~/.guix-profile/bin/fish"
+   multi-term-program (fish-shell-path)
 
    ;; Shell used in `term' and `ansi-term'.
-   shell-pop-term-shell "~/.guix-profile/bin/fish"
+   shell-pop-term-shell (fish-shell-path)
 
    ;; Position of the popped buffer.
    shell-pop-window-position "right"
