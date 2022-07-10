@@ -1072,7 +1072,7 @@ before packages are loaded."
    shell-pop-window-size 50
 
    ;; Shell used in `term' and `ansi-term'.
-   shell-pop-term-shell "~/.guix-profile/bin/fish"
+   shell-pop-term-shell (shell-which "fish")
 
    ;; Position of the popped buffer.
    shell-pop-window-position "right"
