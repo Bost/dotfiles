@@ -73,11 +73,21 @@
         ;; "fish_variables" this is changed
         )))
 
+;; fish and bash separate elements of a list with a different separator
+(define list-separator-bash ":")
+(define list-separator-fish " ")
+(define scm-bin-dirname "scm-bin")
+(define scm-bin-dirpath (string-append "/" scm-bin-dirname))
+
 (define (environment-vars list-separator)
   `(
     ;; used by ghog glog
     ("remotes" . ,(string-join (list "origin" "gitlab")
                                list-separator-bash))
+
+    ;; `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
+    ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e
+
     ("PATH" . ,(string-join
                 (list
                  ;; my own scripts take precedence...
@@ -93,12 +103,6 @@
                  ;; at the end of the PATH
                  "/usr/local/bin")
                 list-separator))))
-
-;; fish and bash separate elements of a list with a different separator
-(define list-separator-bash ":")
-(define list-separator-fish " ")
-(define scm-bin-dirname "scm-bin")
-(define scm-bin-dirpath (string-append "/" scm-bin-dirname))
 
 (define (read-module name)
   (let ((name-scm (string-append name ".scm")))
