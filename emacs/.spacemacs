@@ -334,6 +334,7 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     strace-mode
      ;; Customize / extend keyboard functionality https://github.com/kmonad
      (kbd-mode :location (recipe :fetcher github :repo "kmonad/kbd-mode"))
 
@@ -1694,6 +1695,22 @@ Some binding snippets / examples:
   ;; ("s-'"           .)
   ;; (unbind-key "<C-insert>" &optional keymap)
   ;; ("<C-insert>"    .)
+
+  ;; ~C-x C-f~ /sshq:bost@localhost#10022:/home/bost
+  (with-eval-after-load 'tramp
+    (add-to-list 'tramp-methods
+                 '("sshq"
+                   (tramp-login-program "ssh")
+                   (tramp-login-args (("-l" "%u") ("-p" "%p") ("%c") ("-e" "none")
+                                      ("-o" "UserKnownHostsFile=/dev/null")
+                                      ("-o" "StrictHostKeyChecking=no")
+                                      ("%h")))
+                   (tramp-async-args (("-q")))
+                   (tramp-direct-async t)
+                   (tramp-remote-shell "/bin/sh")
+                   (tramp-remote-shell-login ("-l"))
+                   (tramp-remote-shell-args ("-c"))))
+    (tramp-set-completion-function "sshq" tramp-completion-function-alist-ssh))
 
   (with-eval-after-load 'magit-mode
     (bind-keys
