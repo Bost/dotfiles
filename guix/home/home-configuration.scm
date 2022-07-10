@@ -252,8 +252,10 @@
    (simple-service 'local-stuff-config
                    home-files-service-type
                    (cons
-                    (list "local-stuff.fish" (local-file (user-home
-                                                          "/local-stuff.fish")))
+                    (let ((fname "local-stuff.fish"))
+                      (list fname
+                       (local-file (user-home
+                                    "/dev/dotfiles/guix/home/" fname))))
                     funs
                     #;
                     (append plugins (append funs (append completions
