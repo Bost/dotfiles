@@ -268,7 +268,7 @@
      (search-notes "cre"  "vim|emacs|org_mode")
      (search-notes "crep" ".*")
      (search-notes "crf"  "find_and_grep")
-     (search-notes "crg"  "(guix|guile)")
+     (search-notes "crg"  "guix|guile")
      (search-notes "crgi" "git")
      (search-notes "crl"  "guix|shells|linux|android")
      (search-notes "crr"  "racket")
