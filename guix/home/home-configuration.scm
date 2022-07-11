@@ -282,6 +282,7 @@
      (chmod-plus   "px"   "x")
      (service-file "c"       "batcat" #:scheme-file-name "batcat")
      (service-file "e"       "emacs-launcher" #:scheme-file-name "emacs-launcher")
+     (service-file "f"       "find-alternative")
      (service-file "gg"      "git-gui")
      (service-file "ghog"    "git-push-to-remotes")
      (service-file "gk"      "git-repository-browser")

@@ -40,7 +40,6 @@
    "envp.fish"
    "ext.fish"
    "extract.fish"
-   "f.fish"
    "fc.fish"
    "fclj.fish"
    "fdk.fish"
