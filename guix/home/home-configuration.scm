@@ -81,6 +81,13 @@
 
 (define (environment-vars list-separator)
   `(
+    ("dev" . "$HOME/dev")
+    ("dec" . "$HOME/dec")
+    ("der" . "$HOME/der")
+    ("bin" . "$HOME/bin")
+    ("cheat" . "$dev/cheat")
+    ("dotf" . "$dev/dotfiles")
+
     ;; used by ghog glog
     ("remotes" . ,(string-join (list "origin" "gitlab")
                                list-separator-bash))
