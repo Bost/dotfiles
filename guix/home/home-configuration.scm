@@ -133,17 +133,14 @@
       program-description
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
-      (let ((symb (or module-name
-                      (and scheme-file-name
-                           (string->symbol scheme-file-name))
-                      (string->symbol program-file-name))))
+      (let* ((symb-string (or scheme-file-name program-file-name))
+             (symb (or module-name
+                       (string->symbol symb-string))))
         (with-imported-modules `(((utils) => ,module-utils)
-                                 ((,symb) => ,(read-module
-                                               (or scheme-file-name
-                                                   program-file-name))))
-          #~(begin
-              (use-modules (#$symb))
-              (main (command-line))))))))
+                                 ((,symb) => ,(read-module symb-string)))
+                               #~(begin
+                                   (use-modules (#$symb))
+                                   (main (command-line))))))))
 
 (define (search-notes program-name files)
   `(,(string-append scm-bin-dirname "/" program-name)
@@ -151,12 +148,13 @@
       (string-append "search-notes-" program-name)
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
-      (with-imported-modules `(((utils) => ,module-utils)
-                               ((search-notes) => ,(read-module
-                                                    "search-notes")))
-                             #~(begin
-                                 (use-modules (search-notes))
-                                 (main #$files (command-line)))))))
+      (let* ((symb-string "search-notes")
+             (symb (string->symbol symb-string)))
+       (with-imported-modules `(((utils) => ,module-utils)
+                                ((,symb) => ,(read-module symb-string)))
+                              #~(begin
+                                  (use-modules (#$symb))
+                                  (main #$files (command-line))))))))
 
 (define (chmod-plus program-name modifier)
   "Example:
@@ -166,11 +164,13 @@
       (string-append "chmod-plus-" modifier)
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
-      (with-imported-modules `(((utils) => ,module-utils)
-                               ((chmod) => ,(read-module "chmod")))
-        #~(begin
-            (use-modules (chmod))
-            (main #$modifier (command-line)))))))
+      (let* ((symb-string "chmod")
+             (symb (string->symbol symb-string)))
+        (with-imported-modules `(((utils) => ,module-utils)
+                                 ((,symb) => ,(read-module symb-string)))
+                               #~(begin
+                                   (use-modules (#$symb))
+                                   (main #$modifier (command-line))))))))
 
 (home-environment
  (packages
