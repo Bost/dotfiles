@@ -110,9 +110,6 @@
     ;; grbs
     ;; grc
     ;; grep
-    ;; grepc
-    ;; grepo
-    ;; grepp
     ;; grh
     ;; gri
     ;; grm

@@ -59,13 +59,6 @@ end
 # environment variable to override.
 set --export LEIN_SNAPSHOTS_IN_RELEASE allowed
 
-# -n, --line-number
-# -i, --ignore-case
-# -r, --recursive
-# -w, --word-regexp
-# set optsGrepC --color=always -nir
-set optsGrepC --color=always --ignore-case --line-number --recursive
-
 # see: lsblk, mount, sudo fdisk -l
 # TODO usbDevice varies among machines
 # set usbDevice /dev/sdg1
