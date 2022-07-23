@@ -204,6 +204,10 @@
      ;; List of file-like objects, which will be ADDED(!) to .bashrc.
      (bashrc
       (list
+       (plain-file "bashrc"
+                   (string-append
+                    "\n" "GUIX_PROFILE=$HOME/.guix-profile"
+                    "\n" ". \"$GUIX_PROFILE/etc/profile\""))
        (local-file
         ;; (local-file ".bashrc" "bashrc") should work too
         (dotfiles-guix-home "/.bashrc_additions")
