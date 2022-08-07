@@ -920,7 +920,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (setq
    ;; (default 'browse-url-default-browser)
-   browse-url-browser-function 'browse-url-chromium
+   ;; on guix 'browse-url-chromium
+   ;; on ubuntu 'browse-url-chrome-program
+   browse-url-browser-function 'browse-url-chrome-program
 
    ;; `my=browse-url-browser-function' must be initialized before the packages
    ;; of the `my' layers are loaded.
@@ -1072,7 +1074,7 @@ before packages are loaded."
 
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
    ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
-   multi-term-program "~/.guix-profile/bin/fish"
+   multi-term-program `,(getenv "SHELL") ; "~/.guix-profile/bin/fish"
 
    ;; See also undo-tree-auto-save-history
    undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
