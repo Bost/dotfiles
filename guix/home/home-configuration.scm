@@ -39,7 +39,7 @@
 (define* (dotfiles-home #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
-  (apply string-append (getenv "HOME") "/dev/dotfiles.dev" args))
+  (apply string-append (getenv "HOME") "/dev/dotfiles" args))
 
 (define funs
   (map (lambda (f)
