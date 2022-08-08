@@ -157,11 +157,13 @@ set --export XDG_DATA_DIRS \
 
 # needed by `help`; e.g. `help expand`
 set --export BROWSER firefox
-set --local LD_PRELOAD /usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
-test -e $LD_PRELOAD && export LD_PRELOAD
+
+set --local LDP /usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
+test -e $LDP && set --export LD_PRELOAD $LDP
 
 set --local GLP ~/.guix-profile/share/guile/site/3.0
 test -e $GLP && set --export GUILE_LOAD_PATH $GLP $GUILE_LOAD_PATH
+
 set --local GCP ~/.guix-profile/lib/guile/3.0/site-ccache
 test -e $GCP && set --export GUILE_LOAD_COMPILED_PATH $GCP $GUILE_LOAD_COMPILED_PATH
 
