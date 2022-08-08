@@ -97,6 +97,9 @@
 
     ;; `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
     ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e
+    ;; TODO test if the library exists:
+    ;;   test -e $LDP && set --export LD_PRELOAD $LDP
+    ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
 
     ("PATH" . ,(string-join
                 (list
