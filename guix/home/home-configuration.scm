@@ -28,20 +28,23 @@
   )
 
 (define* (xdg-config-home #:rest args)
-  (apply string-append (basename (getenv "XDG_CONFIG_HOME")) args))
+  (apply string-append (basename
+                        ;; see gnu/home/services/symlink-manager.scm
+                        (or (getenv "XDG_CONFIG_HOME")
+                            (string-append (getenv "HOME") "/.config"))) args))
 
 (define* (user-home #:rest args)
   (apply string-append (getenv "HOME") args))
 
-(define (dotfiles-guix-home s)
+(define* (dotfiles-home #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
-  (user-home "/dev/dotfiles/guix/home" s))
+  (apply string-append (getenv "HOME") "/dev/dotfiles.dev" args))
 
 (define funs
   (map (lambda (f)
          `(,(xdg-config-home "/fish/functions/" f)
-           ,(local-file (user-home "/dev/dotfiles/fish/functions/" f)
+           ,(local-file (dotfiles-home "/fish/functions/" f)
                         ;; fix the 'guix home: error: invalid name: `...fish''
                         (string-append "fish-function-" f))))
        fish-functions))
@@ -49,7 +52,7 @@
 (define confds
   (map (lambda (f)
          `(,(xdg-config-home "/fish/conf.d/" f)
-           ,(local-file (user-home "/dev/dotfiles/fish/conf.d/" f)
+           ,(local-file (dotfiles-home "/fish/conf.d/" f)
                         (string-append "fish-confd-" f))))
        (list
         "_tide_init.fish")))
@@ -57,7 +60,7 @@
 (define completions
   (map (lambda (f)
          `(,(xdg-config-home "/fish/completions/" f)
-           ,(local-file (user-home "/dev/dotfiles/fish/completions/" f)
+           ,(local-file (dotfiles-home "/fish/completions/" f)
                         (string-append "fish-completion-" f))))
        (list
         "fisher.fish"
@@ -66,7 +69,7 @@
 (define plugins
   (map (lambda (f)
          `(,(xdg-config-home "/fish/" f)
-           ,(local-file (user-home "/dev/dotfiles/fish/" f)
+           ,(local-file (dotfiles-home "/fish/" f)
                         (string-append "fish-plugins-" f))))
        (list
         "fish_plugins"
@@ -111,17 +114,23 @@
                  "/usr/local/bin")
                 list-separator))))
 
+(format #t "~a\n" "environment-vars")
+
 (define (read-module name)
   (let ((name-scm (string-append name ".scm")))
+    (format #t "read-module: ~a\n" (dotfiles-home "/guix/home/" name-scm))
     (scheme-file name-scm
                  (sexp->gexp
                   (call-with-input-file
-                      (user-home
-                       "/dev/dotfiles/guix/home/" name-scm)
+                      (dotfiles-home "/guix/home/" name-scm)
                     read-all-sexprs))
                  #:splice? #t)))
 
+(format #t "~a\n" "read-module")
+
 (define module-utils (read-module "utils"))
+
+(format #t "~a\n" "module-utils")
 
 (define* (service-file program-file-name program-description
                        #:key
@@ -142,6 +151,8 @@
                                    (use-modules (#$symb))
                                    (main (command-line))))))))
 
+(format #t "~a\n" "service-file")
+
 (define (search-notes program-name files)
   `(,(string-append scm-bin-dirname "/" program-name)
     ,(program-file
@@ -155,6 +166,7 @@
                               #~(begin
                                   (use-modules (#$symb))
                                   (main #$files (command-line))))))))
+(format #t "~a\n" "search-notes")
 
 (define (chmod-plus program-name modifier)
   "Example:
@@ -171,6 +183,8 @@
                                #~(begin
                                    (use-modules (#$symb))
                                    (main #$modifier (command-line))))))))
+
+(format #t "~a\n" "chmod-plus")
 
 (home-environment
  (packages
@@ -210,7 +224,7 @@
                     "\n" ". \"$GUIX_PROFILE/etc/profile\""))
        (local-file
         ;; (local-file ".bashrc" "bashrc") should work too
-        (dotfiles-guix-home "/.bashrc_additions")
+        (dotfiles-home "/guix/home/.bashrc_additions")
         ;; prevent 'guix home: error: invalid name: `.bashrc''
         "bashrc_additions")))
      ;; List of file-like objects, which will be ADDED(!) to .bash_profile
@@ -222,7 +236,7 @@
        #;
        (local-file
        ;; (local-file ".bashrc" "bash_profile") should work too
-       (dotfiles-guix-home "/.bash_profile_additions")
+       (dotfiles-home "/.bash_profile_additions")
        ;; prevent 'guix home: error: invalid name: `.bash_profile''
        "bash_profile_additions")))
      (environment-variables
@@ -251,7 +265,7 @@
      ("cheat" . "cd $HOME/dev/cheat")
      ("dotf"  . "cd $HOME/dev/dotfiles")))
      (config (list (local-file
-                    (user-home "/dev/dotfiles/fish/config.fish"))))
+                    (dotfiles-home "/fish/config.fish"))))
      ;; see also home-environment-variables-service-type
      ;; https://guix.gnu.org/manual/devel/en/html_node/Essential-Home-Services.html
      ;; (simple-service 'some-useful-env-vars-service
@@ -269,8 +283,7 @@
                    (cons
                     (let ((fname "local-stuff.fish"))
                       (list fname
-                       (local-file (user-home
-                                    "/dev/dotfiles/guix/home/" fname))))
+                       (local-file (dotfiles-home "/guix/home/" fname))))
                     funs
                     #;
                     (append plugins (append funs (append completions
@@ -312,7 +325,7 @@
     'bin-files home-files-service-type
     (map (lambda (f)
            `(,(string-append "bin/" f)
-             ,(local-file (user-home "/dev/dotfiles/bin/" f)
+             ,(local-file (dotfiles-home "/bin/" f)
                           (string-append "bin-" f))))
          (list "g1" "g1.scm"
                "guix-os" "guix-os.scm"
