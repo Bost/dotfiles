@@ -3,7 +3,19 @@
   #:use-module (ice-9 regex)
   #:use-module (ice-9 popen) #| read-line open-input-pipe |#
   #| #:use-module (guix build utils) ;; invoke - not needed |#
-  #:export (partial dbg read-all-sexprs exec exec-background))
+  #:export (flatten
+            partial dbg read-all-sexprs exec exec-background cmd->string))
+
+(define (flatten x)
+  "(flatten (list (cons 1 (cons 2 3))))
+   ;; => (1 2 3)
+   (equal? (list 1 2 3)
+           (flatten (list (cons 1 (cons 2 3)))))
+   ;; => #t
+"
+  (cond ((null? x) '())
+        ((pair? x) (append (flatten (car x)) (flatten (cdr x))))
+        (else (list x))))
 
 (define (partial fun . args)
   (lambda x (apply fun (append args x))))
@@ -33,9 +45,10 @@ Returns a list of strings"
         res)))
 
 (define (cmd->string cmd)
-  (if (list? cmd)
-      (string-join cmd) ;; join with ' ' by default
-      cmd))
+  (dbg
+   (if (list? cmd)
+       (string-join cmd) ;; join with ' ' by default
+       cmd)))
 
 ;; 8sync https://www.gnu.org/software/8sync/
 ;; asynchronous programming library for GNU Guile. Based on the actor
@@ -48,7 +61,6 @@ Returns a list of strings"
 "
   ((compose close-port
             open-input-pipe
-            dbg
             cmd->string)
    command))
 
@@ -103,6 +115,5 @@ Usage:
         (cons
          (status:exit-val (close-pipe port))
          str)))
-    dbg
     cmd->string)
    command))
