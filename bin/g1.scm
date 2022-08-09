@@ -1,5 +1,5 @@
 (use-modules (ice-9 rdelim)
-             (ice-9 regex)
+             (ice-9 regex)             #| string-match |#
              (ice-9 popen)
              (utils)
              #;(guix build utils) #| invoke |#

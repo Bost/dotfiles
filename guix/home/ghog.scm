@@ -1,6 +1,6 @@
 (define-module (ghog)
   #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 regex)
+  #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (ice-9 popen)
   #:use-module (utils)
   #:export (main))

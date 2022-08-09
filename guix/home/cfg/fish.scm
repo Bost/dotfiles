@@ -1,4 +1,5 @@
 (define-module (cfg fish)
+  #:use-module (ice-9 regex)             #| string-match |#
   #:export (fish-functions fish-plugins-functions))
 
 (define fish-functions

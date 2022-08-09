@@ -18,7 +18,6 @@
   #:use-module (gnu home services mcron) #| home-mcron-service-type |#
   #:use-module (gnu home services)       #| simple-service |#
   #:use-module (ice-9 ftw)               #| scandir |#
-  #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (guix build utils)        #| invoke |#
   ;; #:use-module (srfi srfi-1)          #| take |#
 
