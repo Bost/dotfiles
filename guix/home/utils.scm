@@ -4,6 +4,7 @@
   #:use-module (ice-9 popen) #| read-line open-input-pipe |#
   #| #:use-module (guix build utils) ;; invoke - not needed |#
   #:export (flatten
+            string-split-whitespace
             partial dbg read-all-sexprs exec exec-background cmd->string))
 
 (define (flatten x)
@@ -16,6 +17,28 @@
   (cond ((null? x) '())
         ((pair? x) (append (flatten (car x)) (flatten (cdr x))))
         (else (list x))))
+
+(define (string-sff ch s-list)
+  ((compose
+    (partial filter (compose not string-null?))
+    flatten
+    (partial map (lambda (s) (string-split s ch))))
+   s-list))
+
+(define (string-split-whitespace s)
+  ((compose
+    (partial string-sff #\space)
+    (partial string-sff #\newline)
+    (partial string-sff #\tab)
+    list)
+   s))
+
+#;
+(string-split-whitespace
+ "gcl  /some/other/path/
+  xxx
+		yyy
+/some/path")
 
 (define (partial fun . args)
   (lambda x (apply fun (append args x))))
