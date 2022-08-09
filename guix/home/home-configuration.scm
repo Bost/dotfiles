@@ -310,6 +310,7 @@
      (service-file "c"       "batcat" #:scheme-file-name "batcat")
      (service-file "e"       "emacs-launcher" #:scheme-file-name "emacs-launcher")
      (service-file "f"       "find-alternative")
+     (service-file "gcl"     "git-clone")
      (service-file "gco"     "git-checkout")
      (service-file "gcod"    "git-checkout-previous-branch")
      (service-file "gcom"    "git-checkout-master")
