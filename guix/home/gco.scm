@@ -24,10 +24,9 @@
     (partial apply system*)
     dbg
     (partial append (list "git" "checkout"))
-    cdr
     flatten)
    args))
 
 (define* (main #:rest args)
   "Usage: (main \"<ignored>\" \"-f\" \"arg0\")"
-  (gco args))
+  ((compose gco cdr) args))
