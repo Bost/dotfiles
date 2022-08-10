@@ -12,13 +12,13 @@
    ;; doesn't work with cider/cider-nrepl "0.17.0"; it yields the
    ;;     Unable to resolve var: refactor-nrepl.middleware/wrap-refactor
    ;; nREPL middleware to support editor refactorings
-   [refactor-nrepl "3.5.2"]
+   [refactor-nrepl "3.5.4"]
 
    ;; collection of nREPL middleware designed to enhance CIDER
-   [cider/cider-nrepl "0.28.3"]
+   [cider/cider-nrepl "0.28.5"]
 
    ;; check for outdated dependencies and plugins
-   [lein-ancient "0.7.0"]
+   [lein-ancient "1.0.0-RC3"]
 
    ;; work with local Maven repository
    [lein-localrepo "0.5.4"]
@@ -30,18 +30,18 @@
    [lein-garden "0.3.0"]
 
    ;; generate API docu from clj or cljs source
-   [lein-codox "0.10.5"]
+   [lein-codox "0.10.8"]
 
    ;; Drive leiningen project version from git instead of the other way around
    ;; it looks like it must be always specified in the project.clj otherwise
    ;; `class clojure.lang.Keyword cannot be cast to class java.lang.String`
-   ;; [com.roomkey/lein-v "7.1.0"]
+   ;; [com.roomkey/lein-v "7.2.0"]
 
    ;; autorecompile changed java files
    ;; [lein-virgil "0.1.9"]
 
    ;; National Vulnerability Database dependency-checker
-   [nvd-clojure/nvd-clojure "2.5.0"]
+   [nvd-clojure/nvd-clojure "2.7.0"]
    ]
 
   :dependencies
