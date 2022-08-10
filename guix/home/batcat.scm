@@ -1,25 +1,37 @@
 (define-module (batcat)
   #:use-module (utils)
-  #:export (main))
+  #:export (main batcat))
 
 #|
+
+#!/usr/bin/guile \
+-l utils.scm -e (batcat) -s
+!#
+
 #!/home/bost/.guix-home/profile/bin/guile \
 -l utils.scm -e (batcat) -s
 !#
+
+#!$HOME/.guix-home/profile/bin/guile \
+-l utils.scm -e (batcat) -s
+!#
+
 |#
 
-(define (main args)
-  (let* ((ret
-          ((compose
-            ;; TODO implement exec-no-read-line
-            #;exec ;; causes color loss
-            (partial apply system*)
-            (partial cons* "bat")
-            cdr)
-           args)))
-    ret
-    #;(if (= 0 (car ret))
-        (let* ((output (cdr ret)))
-          #| process output |#
-          (map (partial format #t "~a\n") output))
-        (format #t "Command failed"))))
+(define* (bat #:rest args)
+  "Usage:
+(bat  \"-f\" \"arg0\")
+(bat \"-f arg0\")
+(equal? (bat \"-f\" \"arg0\")
+        (bat \"-f arg0\"))
+;; > #t
+"
+  (apply exec-system*
+         "bat"
+         args))
+
+(define* (main #:rest args)
+  "Usage:
+(main \"<ignored>\" \"-f\" \"arg0\")"
+  (apply bat (cdr args)))
+

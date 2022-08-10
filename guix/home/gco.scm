@@ -19,14 +19,18 @@
 |#
 
 (define* (gco #:rest args)
-  "Usage: (gco \"<ignored>\" \"-f\" \"arg0\")"
-  ((compose
-    (partial apply system*)
-    dbg
-    (partial append (list "git" "checkout"))
-    flatten)
-   args))
+  "Usage:
+(gco  \"-f\" \"arg0\")
+(gco \"-f arg0\")
+(equal? (gco \"-f\" \"arg0\")
+        (gco \"-f arg0\"))
+;; > #t
+"
+  (apply exec-system*
+         "git" "checkout"
+         args))
 
 (define* (main #:rest args)
-  "Usage: (main \"<ignored>\" \"-f\" \"arg0\")"
-  ((compose gco cdr) args))
+  "Usage:
+(main \"<ignored>\" \"-f\" \"arg0\")"
+  (apply gco (cdr args)))

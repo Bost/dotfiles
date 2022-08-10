@@ -1,7 +1,6 @@
 (define-module (gcl)
   #:use-module (utils)
-  #:export (main gcl)
-  )
+  #:export (main gcl))
 
 #|
 
@@ -20,14 +19,18 @@
 |#
 
 (define* (gcl #:rest args)
-  "Usage: (gcl \"-f\" \"arg0\")"
-  ((compose
-    (partial apply system*)
-    dbg
-    (partial append (list "git" "clone"))
-    flatten)
-   args))
+  "Usage:
+(gcl \"-f\" \"arg0\")
+(gcl \"-f arg0\")
+(equal? (gcl \"-f\" \"arg0\")
+        (gcl \"-f arg0\"))
+;; > #t
+"
+  (apply exec-system*
+         "git" "clone"
+         args))
 
 (define* (main #:rest args)
-  "Usage: (main \"<ignored>\" \"-f\" \"arg0\")"
-  ((compose gcl cdr) args))
+  "Usage:
+(main \"<ignored>\" \"-f\" \"arg0\")"
+  (apply gcl (cdr args)))

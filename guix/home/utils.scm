@@ -3,9 +3,14 @@
   #:use-module (ice-9 regex)
   #:use-module (ice-9 popen) #| read-line open-input-pipe |#
   #| #:use-module (guix build utils) ;; invoke - not needed |#
-  #:export (flatten
+  #:export (flatten partial dbg
             string-split-whitespace
-            partial dbg read-all-sexprs exec exec-background cmd->string))
+            cmd->string
+            read-all-sexprs
+            exec
+            exec-system*
+            exec-background
+            ))
 
 (define (flatten x)
   "(flatten (list (cons 1 (cons 2 3))))
@@ -18,28 +23,6 @@
         ((pair? x) (append (flatten (car x)) (flatten (cdr x))))
         (else (list x))))
 
-(define (string-sff ch s-list)
-  ((compose
-    (partial filter (compose not string-null?))
-    flatten
-    (partial map (lambda (s) (string-split s ch))))
-   s-list))
-
-(define (string-split-whitespace s)
-  ((compose
-    (partial string-sff #\space)
-    (partial string-sff #\newline)
-    (partial string-sff #\tab)
-    list)
-   s))
-
-#;
-(string-split-whitespace
- "gcl  /some/other/path/
-  xxx
-		yyy
-/some/path")
-
 (define (partial fun . args)
   (lambda x (apply fun (append args x))))
 
@@ -50,6 +33,38 @@
   ;; ~% is newline \n
   (format #t "~%~a~%" prm)
   prm)
+
+(define (string-sff ch s-list)
+  ((compose
+    (partial filter (compose not string-null?))
+    flatten
+    (partial map (lambda (s) (string-split s ch))))
+   s-list))
+
+(define (string-split-whitespace arg)
+  ((compose
+    (partial string-sff #\space)
+    (partial string-sff #\newline)
+    (partial string-sff #\tab)
+    (lambda (arg)
+      (if (list? arg) arg (list arg))))
+   arg))
+
+#;
+(string-split-whitespace
+ "gcl  /some/other/path/
+  xxx
+		yyy
+/some/path")
+
+(define* (exec-system* #:rest args)
+  "Usage:
+(exec-system* \"echo\" \"bar\" \"baz\")"
+  ((compose
+    (partial apply system*)
+    dbg
+    string-split-whitespace)
+   args))
 
 (define (read-all-sexprs p)
   (let f ((x (read p)))
