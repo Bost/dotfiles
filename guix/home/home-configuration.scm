@@ -10,6 +10,7 @@
   #:use-module (cfg abbreviations)
   #:use-module (cfg mcron)
   #:use-module (utils)
+  #:use-module (gcl)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -187,6 +188,17 @@
                                    (main #$modifier (command-line))))))))
 
 (format #t "~a\n" "chmod-plus")
+
+;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+;; ln -s ~/dev/dotfiles/.lein
+(define (obtain-and-setup repo)
+  (let* ((gitlab "git@gitlab.com:rostislav.svoboda")
+         (github "git@github.com:Bost"))
+    (gcl "--origin=gitlab" (string-append gitlab repo) "~/dev/dotfiles")
+    (exec-system* "git --git-dir=~/dev/dotfiles/.git remote add github"
+                  (string-append github repo))))
+#;
+(map obtain-and-setup (list "/dotfiles.git"))
 
 (home-environment
  (packages
