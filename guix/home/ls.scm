@@ -8,11 +8,9 @@
 -l utils.scm -e (ls) -s
 !#
 
-#!/home/bost/.guix-home/profile/bin/guile \
--l utils.scm -e (ls) -s
-!#
+;; $HOME variable can't be used
 
-#!$HOME/.guix-home/profile/bin/guile \
+#!/home/bost/.guix-home/profile/bin/guile \
 -l utils.scm -e (ls) -s
 !#
 

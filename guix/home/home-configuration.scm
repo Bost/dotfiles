@@ -318,7 +318,7 @@
      (search-notes "cru"  "utf8")
      (chmod-plus   "prw"  "rw")
      (chmod-plus   "px"   "x")
-     (service-file "c"       "batcat" #:scheme-file-name "batcat")
+     (service-file "c"       "batcat" #:scheme-file-name "bat")
      (service-file "e"       "emacs-launcher" #:scheme-file-name "emacs-launcher")
      (service-file "f"       "find-alternative")
      (service-file "gcl"     "git-clone")

@@ -1,19 +1,18 @@
-(define-module (batcat)
+(define-module (bat)
   #:use-module (utils)
-  #:export (main batcat))
+  #:export (main bat)
+  )
 
 #|
 
 #!/usr/bin/guile \
--l utils.scm -e (batcat) -s
+-l utils.scm -e (bat) -s
 !#
+
+;; $HOME variable can't be used
 
 #!/home/bost/.guix-home/profile/bin/guile \
--l utils.scm -e (batcat) -s
-!#
-
-#!$HOME/.guix-home/profile/bin/guile \
--l utils.scm -e (batcat) -s
+-l utils.scm -e (bat) -s
 !#
 
 |#
@@ -27,11 +26,14 @@
 ;; > #t
 "
   (apply exec-system*
-         "bat"
+         "bat" ;; "batcat" on ubuntu
          args))
 
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
-  (apply bat (cdr args)))
+  ((compose
+    (partial apply bat)
+    (partial apply cdr))
+   args))
 
