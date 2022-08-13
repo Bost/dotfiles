@@ -2,7 +2,25 @@
   #:use-module (utils)
   #:export (main gcl))
 
+;; Examples:
 #|
+(source
+ (origin
+   (method url-fetch)
+   (uri "http://www.example.com/3.2.1.tar.gz")
+   (sha256 %null-sha256)))
+
+(origin
+  (method git-fetch)
+  (uri (git-reference
+        (url "http://www.example.com/x.git")
+        (commit "0")))
+  (sha256 %null-sha256))
+|#
+
+#|
+TODO cloning git repos could be solved with origins:
+(origin (method git-fetch) (uri (git-reference ...)) ...)
 
 #!/usr/bin/guile \
 -l utils.scm -e (gcl) -s

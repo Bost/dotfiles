@@ -41,6 +41,7 @@
 (format #t \"~a\" \"foo\") doesn't work"
   (apply string-append (getenv "HOME") "/dev/dotfiles" args))
 
+;; TODO look at (local-file ... #:recursive? #t)
 (define funs
   (map (lambda (f)
          `(,(xdg-config-home "/fish/functions/" f)
@@ -189,16 +190,58 @@
 
 (format #t "~a\n" "chmod-plus")
 
+;; "copying files"
+;; there should be a service type to place particular files (or file-like
+;; objects) to a target destination
+
+;; extend home-activation-service-type or home-run-on-first-login-service-type
+;; to run some scripts, required to be idempotent though.
+
+;; use home-files-service-type for copying configurations
+;; home-files-service-type example:
+#;
+(services
+ ...
+ (list
+  (simple-service 'dotfiles-installation
+                  home-files-service-type
+                  `((".config/zsh" ;; destination
+                     ,(local-file
+                       "/home/foobar/etc/zsh/.config/zsh" ;; source file/directory
+                       "zsh-config"
+                       ;; #t to copy directory
+                       #:recursive? #t))))))
+
+(define projects
+  (list
+   (cons "/dec" (list "/corona_cases" "/fdk"))
+   (cons "/der" (list "/search-notes" "/vesmir"))
+   (cons "/dev" (list
+                 #;(cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
+                 "/notes" "/dotfiles"))))
+
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
-(define (obtain-and-setup repo)
+(define (obtain-and-setup dest-dir repo)
   (let* ((gitlab "git@gitlab.com:rostislav.svoboda")
-         (github "git@github.com:Bost"))
-    (gcl "--origin=gitlab" (string-append gitlab repo) "~/dev/dotfiles")
-    (exec-system* "git --git-dir=~/dev/dotfiles/.git remote add github"
-                  (string-append github repo))))
+         (github "git@github.com:Bost")
+         (dest-dir-repo (string-append (getenv "HOME") dest-dir repo))
+         (repo-url
+          (if #f ; (url? repo)
+              repo
+              (string-append gitlab repo)))
+         )
+    (gcl "--origin=gitlab" repo-url dest-dir-repo)
+    (exec-system*
+     "git" (string-append "--git-dir=" dest-dir-repo "/.git") "remote add github"
+     (string-append github repo))))
+
+;; Existing projects won't be overridden
 #;
-(map obtain-and-setup (list "/dotfiles.git"))
+(map (lambda (project)
+       (let ((dest-dir (car project)))
+         (map (partial obtain-and-setup dest-dir) (cdr project))))
+     projects)
 
 (home-environment
  (packages

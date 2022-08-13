@@ -1083,6 +1083,7 @@ before packages are loaded."
     "Execute the 'which' command in the current shell"
     (funcall
      (-compose
+      ;; TODO implement fallback to bash if fish not found
       #'string-trim-right
       #'shell-command-to-string
       (lambda (strings) (string-join strings " "))
