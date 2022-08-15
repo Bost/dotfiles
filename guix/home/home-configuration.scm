@@ -164,12 +164,15 @@
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
       (let* ((symb-string "search-notes")
-             (symb (string->symbol symb-string)))
-       (with-imported-modules `(((utils) => ,module-utils)
-                                ((,symb) => ,(read-module symb-string)))
-                              #~(begin
-                                  (use-modules (#$symb))
-                                  (main #$files (command-line))))))))
+             (main-1st-arg files))
+        (let ((symb (string->symbol symb-string)))
+          (with-imported-modules
+              `(((utils) => ,module-utils)
+                ((,symb) => ,(read-module symb-string)))
+            #~(begin
+                (use-modules (#$symb))
+                (main #$main-1st-arg (command-line)))))))))
+
 (format #t "~a\n" "search-notes")
 
 (define (chmod-plus program-name modifier)
@@ -180,13 +183,15 @@
       (string-append "chmod-plus-" modifier)
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
-      (let* ((symb-string "chmod")
-             (symb (string->symbol symb-string)))
-        (with-imported-modules `(((utils) => ,module-utils)
-                                 ((,symb) => ,(read-module symb-string)))
-                               #~(begin
-                                   (use-modules (#$symb))
-                                   (main #$modifier (command-line))))))))
+      (let ((symb-string "chmod")
+            (main-1st-arg modifier))
+        (let ((symb (string->symbol symb-string)))
+          (with-imported-modules
+              `(((utils) => ,module-utils)
+                ((,symb) => ,(read-module symb-string)))
+            #~(begin
+                (use-modules (#$symb))
+                (main #$main-1st-arg (command-line)))))))))
 
 (format #t "~a\n" "chmod-plus")
 
