@@ -1,0 +1,6 @@
+;; (use-modules (ice-9 readline))
+;; (activate-readline)
+;; (use-modules (ice-9 pretty-print))
+;; (use-modules (texinfo reflection))
+;; (chdir "some/path")
+;; (add-to-load-path ".")

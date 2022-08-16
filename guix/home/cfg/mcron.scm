@@ -1,4 +1,15 @@
+#|
+
+guix shell --development guix help2man git strace --pure
+./pre-inst-env guix repl
+
+(add-to-load-path
+ (string-append (getenv "HOME") "/dev/guix"))
+
+|#
+
 (define-module (cfg mcron)
+  ;; #:use-module (guix gexp)              ;; #| #~ #$ etc. |#
   #:export ())
 
 ;; https://github.com/clojure-quant/infra-guix/blob/main/home/config-nuc.scm

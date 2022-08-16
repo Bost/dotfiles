@@ -27,6 +27,7 @@
   (lambda x (apply fun (append args x))))
 
 (define (dbg prm)
+  "`pk' can be used instead of `dbg'"
   ;; TODO implement pretty-print for bash commands
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)

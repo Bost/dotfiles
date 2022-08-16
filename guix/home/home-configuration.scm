@@ -4,6 +4,56 @@
 ;; need to capture the channels being used, as returned by "guix describe".
 ;; See the "Replicating Guix" section in the manual.
 
+
+#|
+
+guix shell --development guix help2man git strace --pure
+./pre-inst-env guix repl
+
+(getcwd)
+(add-to-load-path
+ (string-append (getenv "HOME") "/dev/guix"))
+(add-to-load-path
+ (string-append (getenv "HOME") "/dev/dotfiles.dev/guix/home"))
+
+,load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm"
+(load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm")
+
+(use-modules
+ (cfg packages)
+ (cfg fish)
+ (cfg abbreviations)
+ (cfg mcron)
+ (utils)
+ (gcl)
+ #;(gnu home)
+ #;(gnu packages)
+ #;(gnu services)
+ #;(guix gexp)
+ #;(gnu home services shells)
+ #;(gnu home services mcron) #| home-mcron-service-type |#
+ #;(gnu home services)       #| simple-service |#
+ #;(ice-9 ftw)               #| scandir |#
+ #;(guix build utils))       #| invoke |#
+
+(list "guix/home/cfg/packages.scm"
+"guix/home/cfg/fish.scm"
+"guix/home/cfg/abbreviations.scm"
+#;"guix/home/cfg/mcron.scm"
+"guix/home/utils.scm"
+"guix/home/gcl.scm"
+"guix/home/home-configuration.scm"
+)
+(map load
+     (list "guix/home/cfg/packages.scm"
+           "guix/home/cfg/fish.scm"
+           "guix/home/cfg/abbreviations.scm"
+           #;"guix/home/cfg/mcron.scm"
+           "guix/home/utils.scm"
+           "guix/home/gcl.scm"
+           #;"guix/home/home-configuration.scm"))
+|#
+
 (define-module (home-configuration)
   #:use-module (cfg packages)
   #:use-module (cfg fish)
@@ -14,7 +64,7 @@
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
-  #:use-module (guix gexp)
+  #:use-module (guix gexp)               #| program-file |#
   #:use-module (gnu home services shells)
   #:use-module (gnu home services mcron) #| home-mcron-service-type |#
   #:use-module (gnu home services)       #| simple-service |#
@@ -144,7 +194,7 @@
   `(,(string-append scm-bin-dirname "/" program-file-name)
     ,(program-file
       program-description
-      ;; TODO clarify is source-module-closure needed only for imports of
+      ;; TODO clarify if source-module-closure is needed only for imports of
       ;; guix modules?
       (let* ((symb-string (or scheme-file-name program-file-name))
              (symb (or module-name
@@ -194,6 +244,8 @@
                 (main #$main-1st-arg (command-line)))))))))
 
 (format #t "~a\n" "chmod-plus")
+
+;; xfce4-keyboard: repeat-delay 160 repeat-speed 60
 
 ;; "copying files"
 ;; there should be a service type to place particular files (or file-like
