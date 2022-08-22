@@ -69,6 +69,7 @@ guix shell --development guix help2man git strace --pure
   #:use-module (gnu home services mcron) #| home-mcron-service-type |#
   #:use-module (gnu home services)       #| simple-service |#
   #:use-module (ice-9 ftw)               #| scandir |#
+  ;; #:use-module (ice-9 string-fun)        #| string-replace-substring |#
   #:use-module (guix build utils)        #| invoke |#
   ;; #:use-module (srfi srfi-1)          #| take |#
 
@@ -76,6 +77,18 @@ guix shell --development guix help2man git strace --pure
   #| home-git-service-type |#
   ;; #:use-module (gnu home services version-control)
   )
+
+(define* (any-local-file file #:optional (name (basename file)))
+  ;; 'local-file' is a macro and cannot be used by 'apply'
+  (if (equal? "." (substring name 0 1))
+      ;; name of the local-file can't start with '.'
+      (local-file file (string-replace name "dot-" 0 1))
+      (local-file file)))
+
+(define (local-dotfile path fname)
+  (list
+   fname
+   (any-local-file (dotfiles-home path fname) fname)))
 
 (define* (xdg-config-home #:rest args)
   (apply str (basename
@@ -299,6 +312,8 @@ guix shell --development guix help2man git strace --pure
          (map (partial obtain-and-setup dest-dir) (cdr project))))
      projects)
 
+(format #t "~a\n" "obtain-and-setup")
+
 (home-environment
  (packages
   (map (compose list specification->package+output)
@@ -391,12 +406,14 @@ guix shell --development guix help2man git strace --pure
      (environment-variables
       (environment-vars list-separator-fish))))
 
-   (simple-service 'local-stuff-config
+   (simple-service 'home-dir-config
                    home-files-service-type
-                   (cons
-                    (let ((fname "local-stuff.fish"))
-                      (list fname
-                       (local-file (dotfiles-home "/guix/home/" fname))))
+                   (append
+                    (list
+                     ;; TODO notes
+                     (local-dotfile "/" ".gitconfig")
+                     (local-dotfile "/emacs/" ".spacemacs")
+                     (local-dotfile "/guix/home/" "local-stuff.fish"))
                     funs
                     #;
                     (append plugins (append funs (append completions

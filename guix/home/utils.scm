@@ -11,11 +11,22 @@
             exec-system*
             exec-background
             home str
+            drop-right drop-left
             ))
 
 (define home (getenv "HOME"))
 
 (define str string-append)
+
+(define (drop-right xs n)
+  "(drop-right (list 1 2 3 4 5) 2) ;; => (1 2 3)
+TODO what's the clojure variant?"
+  (reverse (list-tail (reverse xs) n)))
+
+(define (drop-left xs n)
+  "(drop-left (list 1 2 3 4 5) 2) ;; => (4 5)
+TODO what's the clojure variant?"
+  (reverse (list-head (reverse xs) n)))
 
 (define (flatten x)
   "(flatten (list (cons 1 (cons 2 3))))
