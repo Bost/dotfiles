@@ -186,17 +186,16 @@ guix shell --development guix help2man git strace --pure
 
 (format #t "~a\n" "module-utils")
 
-(define* (service-file program-file-name program-description
-                       #:key
-                       scheme-file-name
-                       module-name)
-  "The priority is 1. module-name, 2. scheme-file-name, 3. program-file-name"
-  `(,(string-append scm-bin-dirname "/" program-file-name)
+(define* (service-file #:key
+                       program-name desc
+                       scheme-file-name module-name)
+  "The priority is 1. module-name, 2. scheme-file-name, 3. program-name"
+  `(,(string-append scm-bin-dirname "/" program-name)
     ,(program-file
-      program-description
+      desc
       ;; TODO clarify if source-module-closure is needed only for imports of
       ;; guix modules?
-      (let* ((symb-string (or scheme-file-name program-file-name))
+      (let* ((symb-string (or scheme-file-name program-name))
              (symb (or module-name
                        (string->symbol symb-string))))
         (with-imported-modules `(((utils) => ,module-utils)
@@ -207,7 +206,7 @@ guix shell --development guix help2man git strace --pure
 
 (format #t "~a\n" "service-file")
 
-(define (search-notes program-name files)
+(define* (search-notes #:key program-name files)
   `(,(string-append scm-bin-dirname "/" program-name)
     ,(program-file
       (string-append "search-notes-" program-name)
@@ -225,16 +224,16 @@ guix shell --development guix help2man git strace --pure
 
 (format #t "~a\n" "search-notes")
 
-(define (chmod-plus program-name modifier)
+(define* (chmod-plus #:key program-name chmod-params)
   "Example:
         chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
   `(,(string-append scm-bin-dirname "/" program-name)
     ,(program-file
-      (string-append "chmod-plus-" modifier)
+      (string-append "chmod-plus-" chmod-params)
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
       (let ((symb-string "chmod")
-            (main-1st-arg modifier))
+            (main-1st-arg chmod-params))
         (let ((symb (string->symbol symb-string)))
           (with-imported-modules
               `(((utils) => ,module-utils)
@@ -406,33 +405,38 @@ guix shell --development guix help2man git strace --pure
    (simple-service
     'scheme-files home-files-service-type
     (list
-     (search-notes "crc"  "clojure")
-     (search-notes "cre"  "vim|emacs|org_mode")
-     (search-notes "crep" ".*")
-     (search-notes "crf"  "find_and_grep")
-     (search-notes "crg"  "guix|guile")
-     (search-notes "crgi" "git")
-     (search-notes "crl"  "guix|shells|linux|android")
-     (search-notes "crr"  "racket")
-     (search-notes "crs"  "shells")
-     (search-notes "cru"  "utf8")
-     (chmod-plus   "prw"  "rw")
-     (chmod-plus   "px"   "x")
-     (service-file "c"       "batcat" #:scheme-file-name "bat")
-     (service-file "e"       "emacs-launcher" #:scheme-file-name "emacs-launcher")
-     (service-file "f"       "find-alternative")
-     (service-file "gcl"     "git-clone")
-     (service-file "gco"     "git-checkout")
-     (service-file "gcod"    "git-checkout-previous-branch")
-     (service-file "gcom"    "git-checkout-master")
-     (service-file "gg"      "git-gui")
-     (service-file "ghog"    "git-push-to-remotes")
-     (service-file "gk"      "git-repository-browser")
-     (service-file "glo"     "git-fech-and-rebase-from-origin")
-     (service-file "gtg"     "git-tag")
-     (service-file "l"       "list-directory-contents" #:scheme-file-name "ls")
-     (service-file "qemu-vm" "qemu-virt-machine")
-     (service-file "spag"    "spacemacs-git-fetch-rebase")
+     (search-notes #:program-name "crc"  #:files "clojure")
+     (search-notes #:program-name "cre"  #:files "vim|emacs|org_mode")
+     (search-notes #:program-name "crep" #:files ".*")
+     (search-notes #:program-name "crf"  #:files "find_and_grep")
+     (search-notes #:program-name "crg"  #:files "guix|guile")
+     (search-notes #:program-name "crgi" #:files "git")
+     (search-notes #:program-name "crl"  #:files "guix|shells|linux|android")
+     (search-notes #:program-name "crr"  #:files "racket")
+     (search-notes #:program-name "crs"  #:files "shells")
+     (search-notes #:program-name "cru"  #:files "utf8")
+     (chmod-plus   #:program-name "prw"  #:chmod-params "rw")
+     (chmod-plus   #:program-name "px"   #:chmod-params "x")
+     (service-file #:program-name "c"       #:desc "batcat"
+                   #:scheme-file-name "bat")
+     (service-file #:program-name "e"       #:desc "emacs-launcher"
+                   #:scheme-file-name "emacs-launcher")
+     (service-file #:program-name "f"       #:desc "find-alternative")
+     (service-file #:program-name "gcl"     #:desc "git-clone")
+     (service-file #:program-name "gco"     #:desc "git-checkout")
+     (service-file #:program-name "gcod"
+                   #:desc "git-checkout-previous-branch")
+     (service-file #:program-name "gcom"    #:desc "git-checkout-master")
+     (service-file #:program-name "gg"      #:desc "git-gui")
+     (service-file #:program-name "ghog"    #:desc "git-push-to-remotes")
+     (service-file #:program-name "gk"      #:desc "git-repository-browser")
+     (service-file #:program-name "glo"
+                   #:desc "git-fech-and-rebase-from-origin")
+     (service-file #:program-name "gtg"     #:desc "git-tag")
+     (service-file #:program-name "l"       #:desc "list-directory-contents"
+                   #:scheme-file-name "ls")
+     (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
+     (service-file #:program-name "spag"    #:desc "spacemacs-git-fetch-rebase")
     ))
 
    #;
