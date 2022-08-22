@@ -12,9 +12,9 @@ guix shell --development guix help2man git strace --pure
 
 (getcwd)
 (add-to-load-path
- (string-append (getenv "HOME") "/dev/guix"))
+ (str home "/dev/guix"))
 (add-to-load-path
- (string-append (getenv "HOME") "/dev/dotfiles.dev/guix/home"))
+ (str home "/dev/dotfiles.dev/guix/home"))
 
 ,load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm"
 (load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm")
@@ -78,18 +78,18 @@ guix shell --development guix help2man git strace --pure
   )
 
 (define* (xdg-config-home #:rest args)
-  (apply string-append (basename
-                        ;; see gnu/home/services/symlink-manager.scm
-                        (or (getenv "XDG_CONFIG_HOME")
-                            (string-append (getenv "HOME") "/.config"))) args))
+  (apply str (basename
+              ;; see gnu/home/services/symlink-manager.scm
+              (or (getenv "XDG_CONFIG_HOME")
+                  (str home "/.config"))) args))
 
 (define* (user-home #:rest args)
-  (apply string-append (getenv "HOME") args))
+  (apply str home args))
 
 (define* (dotfiles-home #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
-  (apply string-append (getenv "HOME") "/dev/dotfiles" args))
+  (apply str home "/dev/dotfiles" args))
 
 ;; TODO look at (local-file ... #:recursive? #t)
 (define funs
@@ -97,14 +97,14 @@ guix shell --development guix help2man git strace --pure
          `(,(xdg-config-home "/fish/functions/" f)
            ,(local-file (dotfiles-home "/fish/functions/" f)
                         ;; fix the 'guix home: error: invalid name: `...fish''
-                        (string-append "fish-function-" f))))
+                        (str "fish-function-" f))))
        fish-functions))
 
 (define confds
   (map (lambda (f)
          `(,(xdg-config-home "/fish/conf.d/" f)
            ,(local-file (dotfiles-home "/fish/conf.d/" f)
-                        (string-append "fish-confd-" f))))
+                        (str "fish-confd-" f))))
        (list
         "_tide_init.fish")))
 
@@ -112,7 +112,7 @@ guix shell --development guix help2man git strace --pure
   (map (lambda (f)
          `(,(xdg-config-home "/fish/completions/" f)
            ,(local-file (dotfiles-home "/fish/completions/" f)
-                        (string-append "fish-completion-" f))))
+                        (str "fish-completion-" f))))
        (list
         "fisher.fish"
         "tide.fish")))
@@ -121,7 +121,7 @@ guix shell --development guix help2man git strace --pure
   (map (lambda (f)
          `(,(xdg-config-home "/fish/" f)
            ,(local-file (dotfiles-home "/fish/" f)
-                        (string-append "fish-plugins-" f))))
+                        (str "fish-plugins-" f))))
        (list
         "fish_plugins"
         ;; "fish_variables" this is changed
@@ -131,7 +131,7 @@ guix shell --development guix help2man git strace --pure
 (define list-separator-bash ":")
 (define list-separator-fish " ")
 (define scm-bin-dirname "scm-bin")
-(define scm-bin-dirpath (string-append "/" scm-bin-dirname))
+(define scm-bin-dirpath (str "/" scm-bin-dirname))
 
 (define (environment-vars list-separator)
   `(
@@ -155,7 +155,7 @@ guix shell --development guix help2man git strace --pure
     ("PATH" . ,(string-join
                 (list
                  ;; my own scripts take precedence...
-                 (string-append "$HOME" scm-bin-dirpath)
+                 (str "$HOME" scm-bin-dirpath)
                  ;; TODO create the link
                  ;;     ln -s ~/dev/dotfiles/bin ~/bin
                  ;; using guix home
@@ -171,7 +171,7 @@ guix shell --development guix help2man git strace --pure
 (format #t "~a\n" "environment-vars")
 
 (define (read-module name)
-  (let ((name-scm (string-append name ".scm")))
+  (let ((name-scm (str name ".scm")))
     (format #t "read-module: ~a\n" (dotfiles-home "/guix/home/" name-scm))
     (scheme-file name-scm
                  (sexp->gexp
@@ -190,7 +190,7 @@ guix shell --development guix help2man git strace --pure
                        program-name desc
                        scheme-file-name module-name)
   "The priority is 1. module-name, 2. scheme-file-name, 3. program-name"
-  `(,(string-append scm-bin-dirname "/" program-name)
+  `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
       desc
       ;; TODO clarify if source-module-closure is needed only for imports of
@@ -207,9 +207,9 @@ guix shell --development guix help2man git strace --pure
 (format #t "~a\n" "service-file")
 
 (define* (search-notes #:key program-name files)
-  `(,(string-append scm-bin-dirname "/" program-name)
+  `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
-      (string-append "search-notes-" program-name)
+      (str "search-notes-" program-name)
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
       (let* ((symb-string "search-notes")
@@ -227,9 +227,9 @@ guix shell --development guix help2man git strace --pure
 (define* (chmod-plus #:key program-name chmod-params)
   "Example:
         chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
-  `(,(string-append scm-bin-dirname "/" program-name)
+  `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
-      (string-append "chmod-plus-" chmod-params)
+      (str "chmod-plus-" chmod-params)
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
       (let ((symb-string "chmod")
@@ -281,16 +281,16 @@ guix shell --development guix help2man git strace --pure
 (define (obtain-and-setup dest-dir repo)
   (let* ((gitlab "git@gitlab.com:rostislav.svoboda")
          (github "git@github.com:Bost")
-         (dest-dir-repo (string-append (getenv "HOME") dest-dir repo))
+         (dest-dir-repo (str home dest-dir repo))
          (repo-url
           (if #f ; (url? repo)
               repo
-              (string-append gitlab repo)))
+              (str gitlab repo)))
          )
     (gcl "--origin=gitlab" repo-url dest-dir-repo)
     (exec-system*
-     "git" (string-append "--git-dir=" dest-dir-repo "/.git") "remote add github"
-     (string-append github repo))))
+     "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
+     (str github repo))))
 
 ;; Existing projects won't be overridden
 #;
@@ -332,7 +332,7 @@ guix shell --development guix help2man git strace --pure
      (bashrc
       (list
        (plain-file "bashrc"
-                   (string-append
+                   (str
                     "\n" "GUIX_PROFILE=$HOME/.guix-profile"
                     "\n" ". \"$GUIX_PROFILE/etc/profile\""))
        (local-file
@@ -344,7 +344,7 @@ guix shell --development guix help2man git strace --pure
      (bash-profile
       (list
        (plain-file "bash-profile"
-                   (string-append
+                   (str
                     "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))
        #;
        (local-file

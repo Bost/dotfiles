@@ -10,7 +10,12 @@
             exec
             exec-system*
             exec-background
+            home str
             ))
+
+(define home (getenv "HOME"))
+
+(define str string-append)
 
 (define (flatten x)
   "(flatten (list (cons 1 (cons 2 3))))
