@@ -34,16 +34,20 @@
     ;; (equake :variables equake-default-shell 'term)
     simple
     (copy-sexp
+     :location
      ;; "~/dev/copy-sexp/"
-     :location (recipe :fetcher github :repo "Bost/copy-sexp"))
+     (recipe :fetcher github :repo "Bost/copy-sexp"))
     drag-stuff
     engine-mode
     (jump-last
+     :location
      ;; "~/dev/jump-last/"
-     :location (recipe :fetcher github :repo "Bost/jump-last"))
+     (recipe :fetcher github :repo "Bost/jump-last"))
     (kill-buffers
+     :location
      ;; "~/dev/kill-buffers/"
-     :location (recipe :fetcher github :repo "Bost/kill-buffers"))
+     (recipe :fetcher github :repo "Bost/kill-buffers")
+     )
    )
   "The list of Lisp packages required by the my layer.
 
