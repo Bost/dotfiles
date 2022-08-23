@@ -439,18 +439,6 @@ guix shell --development guix help2man git strace --pure
      (service-file #:program-name "spag"    #:desc "spacemacs-git-fetch-rebase")
     ))
 
-   #;
-   (simple-service
-    'bin-files home-files-service-type
-    (map (lambda (f)
-           `(,(string-append "bin/" f)
-             ,(local-file (dotfiles-home "/bin/" f)
-                          (string-append "bin-" f))))
-         (list "g1" "g1.scm"
-               "guix-os" "guix-os.scm"
-               "ubuntu-os" "ubuntu-os.scm"
-              )))
-
    #;mcron-service
 
    ;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
