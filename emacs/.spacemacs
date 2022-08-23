@@ -1471,6 +1471,8 @@ before packages are loaded."
        ("<f2>"    . evil-avy-goto-char-timer)
        ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
        ("s-<tab>" . spacemacs/alternate-buffer)
+       ("C-<next>"  . next-buffer)     ;; SPC b n; Ctrl-PageDown
+       ("C-<prior>" . previous-buffer) ;; SPC b p; Ctrl-PageUp
        ("S-<iso-lefttab>"   . next-buffer)     ;; shift
        ("s-<right>"         . next-buffer)
        ("S-s-<iso-lefttab>" . previous-buffer) ;; shift-s
