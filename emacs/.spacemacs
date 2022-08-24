@@ -1399,7 +1399,7 @@ before packages are loaded."
        ("s-+"       . my=eval-bind-keys-and-chords)
        ("s-<kp-add>". my=eval-bind-keys-and-chords)
        ("s-z"       . my=buffer-selection-show)
-       ;; dired: https://danlamanna .com/forget-scp-use-dired-dwim.html
+       ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
        ("s-D"       . dired-jump)
        ("s-c"       . sp-copy-sexp)
        ("s-b"       . sp-backward-copy-sexp)
@@ -1471,12 +1471,18 @@ before packages are loaded."
        ("<f2>"    . evil-avy-goto-char-timer)
        ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
        ("s-<tab>" . spacemacs/alternate-buffer)
+
        ("C-<next>"  . next-buffer)     ;; SPC b n; Ctrl-PageDown
+       ("s-<right>" . next-buffer)
        ("C-<prior>" . previous-buffer) ;; SPC b p; Ctrl-PageUp
-       ("S-<iso-lefttab>"   . next-buffer)     ;; shift
-       ("s-<right>"         . next-buffer)
-       ("S-s-<iso-lefttab>" . previous-buffer) ;; shift-s
-       ("s-<left>"          . previous-buffer)
+       ("s-<left>"  . previous-buffer)
+
+       ;; same bindings as in the guake terminal
+       ("S-s-<up>"    . evil-window-up)
+       ("S-s-<down>"  . evil-window-down)
+       ("S-s-<left>"  . evil-window-left)
+       ("S-s-<right>" . evil-window-right)
+
        ;; ("s-<tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
        ("C-<f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
        ("C-s-/"   . avy-goto-line)
