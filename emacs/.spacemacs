@@ -1386,7 +1386,7 @@ before packages are loaded."
        ("s-0"       . delete-window)
        ("s-1"       . my=delete-other-windows)
        ("S-s-<f8>"    . ace-swap-window)
-       ;; ("S-s-<f8>"    . transpose-frame)
+       ;; ("S-s-<f8>" . transpose-frame)
        ("s-N"       . spacemacs/cycle-defun-narrow-modes)
        ("s-n"       . spacemacs/cycle-narrow-widen)
        ;; ("s-2"    . my=split-other-window-below)
@@ -1489,40 +1489,40 @@ before packages are loaded."
 
        ;; fd - evil-escape from insert state and everything else
        ;; occurences - function scope
-       ("s-I"                . my=iedit-mode-toggle)
-       ("s-i"                . iedit-mode)  ; all occurences in the buffer
-       ;; ("s-i"             . spacemacs/enter-ahs-forward)
-       ("<f12>"              . undo-tree-visualize)
-       ;; ("S-<delete>"      . kill-region)
-       ("C-s-<delete>"       . kill-line)   ; C-super-key
-       ("C-S-<delete>"       . kill-line)   ; C-shift-key
-       ;; ("s-l"                . spacemacs/resume-last-search-buffer)
-       ("s-v" . my=evil-select-pasted)
+       ("s-I"           . my=iedit-mode-toggle)
+       ("s-i"           . iedit-mode)  ; all occurences in the buffer
+       ;; ("s-i"        . spacemacs/enter-ahs-forward)
+       ("<f12>"         . undo-tree-visualize)
+       ;; ("S-<delete>" . kill-region)
+       ("C-s-<delete>"  . kill-line)   ; C-super-key
+       ("C-S-<delete>"  . kill-line)   ; C-shift-key
+       ;; ("s-l"        . spacemacs/resume-last-search-buffer)
+       ("s-v"           . my=evil-select-pasted)
 
        ;; TODO what's the difference between insert and insertchar?
        ("S-s-<insert>" . my=yank-and-select)
 
-       ("s-L"        . spacemacs/cycle-line-number-types)
-       ("C-s-l"      . spacemacs/cycle-large-file-settings)
+       ("s-L"   . spacemacs/cycle-line-number-types)
+       ("C-s-l" . spacemacs/cycle-large-file-settings)
 
        ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
        ;; zop-up-to-char works as zop-to-char but stop just before target
-       ("M-z"        . zop-up-to-char)
-       ("M-Z"        . zop-to-char)
+       ("M-z" . zop-up-to-char)
+       ("M-Z" . zop-to-char)
 
        ;; [1] spacemacs/move-text-transient-state/move-text-down
        ;; [2] spacemacs/move-text-transient-state/move-text-up
        ;; [1] and [2] don't drag:
-       ("M-<down>"   . my=drag-stuff-down)
-       ("M-<up>"     . my=drag-stuff-up)
+       ("M-<down>" . my=drag-stuff-down)
+       ("M-<up>"   . my=drag-stuff-up)
 
-       ("C-s-."      . spacemacs/jump-to-definition-other-window)
-       ("s->"        . spacemacs/jump-to-definition-other-window)
-       ("s-."        . spacemacs/jump-to-definition)
+       ("C-s-."    . spacemacs/jump-to-definition-other-window)
+       ("s->"      . spacemacs/jump-to-definition-other-window)
+       ("s-."      . spacemacs/jump-to-definition)
 
-       ("s-,"        . evil-jump-backward)
-       ;; ("s-,"     . dumb-jump-back)
-       ;; ("s-,"     . cider-pop-back)
+       ("s-,"      . evil-jump-backward)
+       ;; ("s-,"   . dumb-jump-back)
+       ;; ("s-,"   . cider-pop-back)
 
        ;; C-o; evil-jump-backward
        ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
@@ -1533,20 +1533,20 @@ before packages are loaded."
        ("C-s-<return>" . goto-last-change)
        ("s-J"          . evil-join)
 
-       ("<s-print>"  . my=ediff-buffers-left-right) ; see advice-add
-       ("s-A"        . align-regexp)
-       ("s-:"        . my=fabricate-subst-cmd)
+       ("<s-print>" . my=ediff-buffers-left-right) ; see advice-add
+       ("s-A"       . align-regexp)
+       ("s-:"       . my=fabricate-subst-cmd)
 
-       ("s-<"         . my=select-in-ang-bracket)
-       ("s-["         . my=select-in-sqr-bracket)
-       ("s-("         . my=select-in-rnd-bracket)
-       ("s-{"         . my=select-in-crl-bracket)
+       ("s-<" . my=select-in-ang-bracket)
+       ("s-[" . my=select-in-sqr-bracket)
+       ("s-(" . my=select-in-rnd-bracket)
+       ("s-{" . my=select-in-crl-bracket)
 
        ;; may more comfortable than moving the hand away
-       ("C-{"         . my=ins-left-paren)
-       ("C-}"         . my=ins-right-paren)
+       ("C-{" . my=ins-left-paren)
+       ("C-}" . my=ins-right-paren)
 
-       ("s-\""        . my=select-in-string)
+       ("s-\"" . my=select-in-string)
 
        ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
        ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
@@ -1554,9 +1554,9 @@ before packages are loaded."
        ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
        ;; <menu> is not a prefix key. See:
        ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-       ("H-1"      . my=H-1) ;; this doesn't work ("C-c h 1" . my=H-1)
-       ("H-2"      . my=H-2)
-       ("H-4"      . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
+       ("H-1" . my=H-1) ;; this doesn't work ("C-c h 1" . my=H-1)
+       ("H-2" . my=H-2)
+       ("H-4" . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
        ))
     (message "%s" "my=eval-bind-keys-and-chords evaluated.")
     )
