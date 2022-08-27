@@ -1,3 +1,10 @@
+#|
+(use-modules
+ (ice-9 rdelim)
+ (ice-9 regex)
+ (ice-9 popen))
+|#
+
 (define-module (utils)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)

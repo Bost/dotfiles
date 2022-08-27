@@ -284,7 +284,7 @@ guix shell --development guix help2man git strace --pure
 (define projects
   (list
    (cons "/dec" (list "/corona_cases" "/fdk"))
-   (cons "/der" (list "/search-notes" "/vesmir"))
+   (cons "/der" (list "/search-notes"))
    (cons "/dev" (list
                  #;(cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
                  "/notes" "/dotfiles"))))
@@ -298,21 +298,48 @@ guix shell --development guix help2man git strace --pure
          (repo-url
           (if #f ; (url? repo)
               repo
-              (str gitlab repo)))
-         )
+              (str gitlab repo))))
     (gcl "--origin=gitlab" repo-url dest-dir-repo)
     (exec-system*
      "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
      (str github repo))))
-
-;; Existing projects won't be overridden
+(format #t "~a\n" "obtain-and-setup")
+;; Existing projects won't be overrid
 #;
 (map (lambda (project)
        (let ((dest-dir (car project)))
          (map (partial obtain-and-setup dest-dir) (cdr project))))
      projects)
 
-(format #t "~a\n" "obtain-and-setup")
+(define projects-heroku
+  (list
+   (cons "/der" (list
+                 ;; pictures
+                 "/vesmir"
+                 ;; tetris
+                 "/vojto"))))
+
+(define (obtain-and-setup-heroku dest-dir repo)
+  (let* ((heroku "https://git.heroku.com/")
+         (dest-dir-repo (str home dest-dir repo))
+         (repo-url
+          (if #f ; (url? repo)
+              repo
+              (str heroku repo ".git"))))
+    (gcl "--origin=vojto" repo-url dest-dir-repo)))
+(format #t "~a\n" "obtain-and-setup-heroku")
+;; Existing projects won't be overrid
+#;
+(map (lambda (project)
+       (let ((dest-dir (car project)))
+         (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
+     projects-heroku)
+
+
+(map (lambda (project)
+       (let ((dest-dir (car project)))
+         (map (partial obtain-and-setup dest-dir) (cdr project))))
+     projects)
 
 (home-environment
  (packages
