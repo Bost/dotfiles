@@ -43,7 +43,15 @@ This function should only modify configuration layer settings."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path
-   `(,(concat (getenv "dotf") "/emacs/" ))
+   `(,(concat
+       (let ((envvar "dotf"))
+         (if-let ((dotf (getenv envvar)))
+             dotf
+           (let ((dotf (concat (getenv "HOME") "/dev/dotfiles")))
+             (warn "Environment variable '%s' is not defined. Using '%s'."
+                   envvar (concat (getenv "HOME") "/dev/dotfiles"))
+             dotf)))
+       "/emacs/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
