@@ -71,7 +71,7 @@ guix shell --development guix help2man git strace --pure
   #:use-module (ice-9 ftw)               #| scandir |#
   ;; #:use-module (ice-9 string-fun)        #| string-replace-substring |#
   #:use-module (guix build utils)        #| invoke |#
-  ;; #:use-module (srfi srfi-1)          #| take |#
+  #:use-module (srfi srfi-1)             #| take remove etc. |#
 
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
   #| home-git-service-type |#
@@ -86,9 +86,11 @@ guix shell --development guix help2man git strace --pure
       (local-file file)))
 
 (define (local-dotfile path fname)
-  (list
-   fname
-   (any-local-file (dotfiles-home path fname) fname)))
+  (let ((fpath (dotfiles-home path fname)))
+    (when (access? fpath R_OK)
+      (list
+       fname
+       (any-local-file fpath fname)))))
 
 (define* (xdg-config-home #:rest args)
   (apply str (basename
@@ -436,11 +438,12 @@ guix shell --development guix help2man git strace --pure
    (simple-service 'home-dir-config
                    home-files-service-type
                    (append
-                    (list
-                     ;; TODO notes
-                     (local-dotfile "/" ".gitconfig")
-                     (local-dotfile "/emacs/" ".spacemacs")
-                     (local-dotfile "/guix/home/" "local-stuff.fish"))
+                    (remove unspecified?
+                            (list
+                             ;; TODO notes
+                             (local-dotfile "/" ".gitconfig")
+                             (local-dotfile "/emacs/" ".spacemacs")
+                             (local-dotfile "/guix/home/" "local-stuff.fish")))
                     funs
                     #;
                     (append plugins (append funs (append completions
