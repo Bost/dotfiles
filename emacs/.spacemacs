@@ -92,16 +92,7 @@ This function should only modify configuration layer settings."
           erc-server-list
           '(("irc.libera.chat" :port "6667" :nick "bost" :password "")))
      php
-     ;; typescript
-     (typescript :variables
-                 typescript-fmt-tool 'prettier
-                 typescript-linter 'eslint
-                 ;; typescript-fmt-on-save t
-                 )
-     (javascript :variables
-                 javascript-fmt-tool 'prettier
-                 node-add-modules-path t)
-
+     typescript
      ;; asciidoc
      emacs-lisp
      (git :variables
@@ -1026,41 +1017,6 @@ before packages are loaded."
   (evil-collection-info-setup)
   ;; ... or try to remove evil support in the Info buffers (doesn't work)
   ;; (remove-hook 'Info-mode-hook 'evil-mode)
-
-  ;; tide - typescript IDE def func:
-  (defun tide-setup-hook ()
-    (tide-setup)
-    (eldoc-mode)
-    (tide-hl-identifier-mode +1)
-    (setq web-mode-enable-auto-quoting nil)
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
-    (setq web-mode-attr-indent-offset 2)
-    (setq web-mode-attr-value-indent-offset 2)
-    (setq lsp-eslint-server-command
-          `("node"
-            "~/.emacs.d/.cache/lsp/eslint/unzipped/extension/server/out/eslintServer.js"
-            "--stdio"))
-    (set (make-local-variable 'company-backends)
-         '((company-tide company-files :with company-yasnippet)
-           (company-dabbrev-code company-dabbrev))))
-
-  (add-hook 'before-save-hook 'tide-format-before-save)
-
-  ;; use rjsx-mode for .js* files except json and use tide with rjsx
-  (add-to-list 'auto-mode-alist '("\\.js.*$" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
-  (add-hook 'rjsx-mode-hook 'tide-setup-hook)
-
-  ;; web-mode extra config
-  (add-hook 'web-mode-hook 'tide-setup-hook
-            (lambda () (pcase (file-name-extension buffer-file-name)
-                         ("tsx" ('tide-setup-hook))
-                         (_ (my-web-mode-hook)))))
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
-  (add-hook 'web-mode-hook 'company-mode)
-  (add-hook 'web-mode-hook 'prettier-js-mode)
-  (add-hook 'web-mode-hook #'turn-on-smartparens-mode t)
 
   (add-to-list 'yas-snippet-dirs
                "~/.emacs.d/layers/+completion/auto-completion/local/snippets/")
