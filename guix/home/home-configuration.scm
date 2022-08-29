@@ -148,8 +148,61 @@ guix shell --development guix help2man git strace --pure
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
 
+;; (define (if-def-prepend var-path-name path)
+;;   (define (path-exists? path) #f)
+;;   (when (path-exists? path)
+;;     `(var-path-name . ,(string-join path var-path-name))))
+
+;; (if-def-prepend "GUILE_LOAD_PATH"
+;;                 "$HOME/.guix-profile/share/guile/site/3.0")
+;; (if-def-prepend "GUILE_LOAD_COMPILED_PATH"
+;;                 "$HOME/.guix-profile/lib/guile/3.0/site-ccache")
+
 (define (environment-vars list-separator)
   `(
+    #;("CMAKE_C_COMPILER" . "$HOME/.guix-profile/bin/gcc")
+    ("CC" . "$HOME/.guix-profile/bin/gcc")
+
+    ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
+    ;; See https://github.com/phiresky/ripgrep-all
+    #;("PATH" . ,(string-join "$HOME/bin/ripgrep_all" "$PATH"))
+
+    ;; Remedy against:
+    ;; $ lein uberjar
+    ;; Release versions may not depend upon snapshots.
+    ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
+    ;; environment variable to override.
+    ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
+
+    ;; JAVA_HOME definitions - see (changes require logout & login):
+    ;;     /etc/profile.d/jdk.csh
+    ;;     /etc/profile.d/jdk.sh
+    ;;     /etc/environment
+    #;
+    ("JAVA_HOME" . (string-append "/usr/lib/jvm/"
+    #;"java-8-openjdk-amd64"
+    "java-11-openjdk-amd64"))
+
+    ;; Setting the locale correctly:
+    ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
+    ;; When 'setlocale: LC_ALL: cannot change locale'
+    ;; ("GUIX_LOCPATH" . "$HOME/.guix-profile/lib/locale")
+
+    ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
+    ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
+    ("CORONA_ENV_TYPE" . "devel")
+    ("REPL_USER" . "$USER")
+
+    ;; needed by `help`; e.g. `help expand`
+    ("BROWSER" . "firefox")
+
+    ;; for `flatpak run ...`
+    ("XDG_DATA_DIRS" . ,(string-join
+                         (list
+                          "$HOME/.local/share/flatpak/exports/share"
+                          "/var/lib/flatpak/exports/share"
+                          "$XDG_DATA_DIRS")))
+
     ("dev" . "$HOME/dev")
     ("dec" . "$HOME/dec")
     ("der" . "$HOME/der")
@@ -367,10 +420,11 @@ guix shell --development guix help2man git strace --pure
      ;; .bashrc at the bottom.
      ;; When using '(guix-defaults? #t)' then the aliases are on the top of the
      ;; .bashrc.
-     (aliases
-       ;; aliases for "l" "ll" "ls" come from the .bashrc template and will be
-       ;; overridden because see above
-      '())
+
+
+     ;; aliases for "l" "ll" "ls" come from the .bashrc template and will be
+     ;; overridden because see above
+     #;(aliases '())
 
      ;; List of file-like objects, which will be ADDED(!) to .bashrc.
      (bashrc
@@ -411,16 +465,10 @@ guix shell --development guix help2man git strace --pure
     ;; see /home/bost/dev/guix/gnu/home/services/shells.scm
     (home-fish-configuration
      (abbreviations abbrevs)
-     #;
-     (aliases
-     '(
-     #;("l" . "ls -a")
-     ("dev"   . "cd $HOME/dev")
-     ("dec"   . "cd $HOME/dec")
-     ("der"   . "cd $HOME/der")
-     ("bin"   . "cd $HOME/bin")
-     ("cheat" . "cd $HOME/dev/cheat")
-     ("dotf"  . "cd $HOME/dev/dotfiles")))
+
+     ;; aliases for "l" "ll" "ls" may be be overridden - see bashrc aliases
+     #;(aliases '(("l" . "ls -a")))
+
      (config (list (local-file
                     (dotfiles-home "/fish/config.fish"))))
      ;; see also home-environment-variables-service-type
