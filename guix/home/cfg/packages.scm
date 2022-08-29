@@ -50,7 +50,8 @@
     "fuse"
     "gcc"
     "gcc-toolchain"
-    "gdm"
+    ;; temporarily disabled, until "Did not find CMake 'cmake'" gets fixed
+    ;; "gdm"
     "ghc"
     "git"
     "git:gui"
