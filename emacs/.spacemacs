@@ -2,18 +2,22 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-(defun my=dbg=tstp () (if (functionp 'dbg=tstp) (dbg=tstp) (car (time-convert nil t))))
-(setq my=dbg=init-time (if (boundp 'dbg=init-time) dbg=init-time (my=dbg=tstp)))
-(setq my=dbg=fmt (if (boundp 'dbg=fmt) dbg=fmt "%012d"))
+(defun my=dbg=tstp () (if (functionp #'dbg=tstp) (dbg=tstp) (car (time-convert nil t))))
+(setq my=dbg=init-time (if (boundp #'dbg=init-time) dbg=init-time (my=dbg=tstp)))
+(setq my=dbg=fmt (if (boundp #'dbg=fmt) dbg=fmt "%012d"))
 
 (defun my=log (my=fun-point)
   (format "%s %s [%%s] (length load-path) %s"
           (format my=dbg=fmt (- (my=dbg=tstp) my=dbg=init-time))
-          (if (eq my=fun-point 'beg) "{{{{{{{{" "}}}}}}}}")
+          (if (eq my=fun-point #'beg) "{{{{{{{{" "}}}}}}}}")
           (length load-path)))
 
-(defun my=beg (f) (message (my=log 'beg) f))
-(defun my=end (f) (message (my=log 'end) f))
+(defun my=beg (f)
+  ;; (message (my=log #'beg) f)
+  )
+(defun my=end (f)
+  ;; (message (my=log #'end) f)
+  )
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
