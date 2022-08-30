@@ -72,6 +72,7 @@ guix shell --development guix help2man git strace --pure
   ;; #:use-module (ice-9 string-fun)        #| string-replace-substring |#
   #:use-module (guix build utils)        #| invoke |#
   #:use-module (srfi srfi-1)             #| take remove etc. |#
+  #:use-module (gnu packages shellutils)
 
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
   #| home-git-service-type |#
@@ -446,8 +447,13 @@ guix shell --development guix help2man git strace --pure
       (list
        (plain-file "bashrc"
                    (str
+                    "\n" "#### home-bash-configuration -> bashrc: begin"
                     "\n" "GUIX_PROFILE=$HOME/.guix-profile"
-                    "\n" ". \"$GUIX_PROFILE/etc/profile\""))
+                    "\n" ". \"$GUIX_PROFILE/etc/profile\""
+                    "\n"
+                    "\n" "eval \"$(direnv hook bash)\""
+                    "\n" "#### home-bash-configuration -> bashrc: end"
+                    ))
        (local-file
         ;; (local-file ".bashrc" "bashrc") should work too
         (dotfiles-home "/guix/home/.bashrc_additions")
@@ -467,6 +473,14 @@ guix shell --development guix help2man git strace --pure
        "bash_profile_additions")))
      (environment-variables
       (environment-vars list-separator-bash))))
+
+   ;;; fails with:
+   ;;; In procedure open-file: No such file or directory: "eval \"$(direnv hook bash)\""
+   ;; (simple-service
+   ;;  'direnv-bash-hook
+   ;;  home-bash-service-type
+   ;;  (home-bash-extension
+   ;;   (bashrc (list "eval \"$(direnv hook bash)\""))))
 
    ;; emacs-with-native-comp
    ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
@@ -556,6 +570,9 @@ guix shell --development guix help2man git strace --pure
    #;mcron-service
 
    ;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
+   ;; https://github.com/babariviere/dotfiles/blob/guix/baba/home/gaia.scm
+   ;;; [WIP] home: Add home-git-service-type https://issues.guix.gnu.org/54293
+   ;;; is not pulled yed
    ;; (service home-git-service-type
    ;;          (home-git-configuration
    ;;           (config
