@@ -158,6 +158,16 @@ guix shell --development guix help2man git strace --pure
 ;; (if-def-prepend "GUILE_LOAD_COMPILED_PATH"
 ;;                 "$HOME/.guix-profile/lib/guile/3.0/site-ccache")
 
+;; (define (if-def-prepend var-path-name path)
+;;   (define (path-exists? path) #f)
+;;   (when (path-exists? path)
+;;     `(var-path-name . ,(string-join path var-path-name))))
+
+;; (if-def-prepend "GUILE_LOAD_PATH"
+;;                 "$HOME/.guix-profile/share/guile/site/3.0")
+;; (if-def-prepend "GUILE_LOAD_COMPILED_PATH"
+;;                 "$HOME/.guix-profile/lib/guile/3.0/site-ccache")
+
 (define (environment-vars list-separator)
   `(
     #;("CMAKE_C_COMPILER" . "$HOME/.guix-profile/bin/gcc")
