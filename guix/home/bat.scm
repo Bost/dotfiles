@@ -34,6 +34,7 @@
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((compose
     (partial apply bat)
-    (partial apply cdr))
+    (partial apply cdr)
+    #;dbg)
    args))
 

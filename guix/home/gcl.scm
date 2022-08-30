@@ -49,4 +49,8 @@ TODO cloning git repos could be solved with origins:
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
-  (apply gcl (cdr args)))
+  ((compose
+    (partial apply gcl)
+    (partial apply cdr)
+    #;dbg)
+   args))

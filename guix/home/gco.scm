@@ -31,4 +31,8 @@
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
-  (apply gco (cdr args)))
+  ((compose
+    (partial apply gco)
+    (partial apply cdr)
+    #;dbg)
+   args))

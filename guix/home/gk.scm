@@ -11,7 +11,7 @@
 (define (main args)
   ((compose
     exec-background
-    (lambda (p) (format #t "0: ~a\n" p) p)
+    dbg
     (lambda (p) (append '("gitk") (if (null? p) '("--all") p) '("&")))
     cdr)
    args))
