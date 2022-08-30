@@ -236,23 +236,26 @@ guix shell --development guix help2man git strace --pure
                  "/usr/local/bin")
                 list-separator))))
 
-(format #t "~a\n" "environment-vars")
+(format #t "~a\n" "environment-vars defined")
 
 (define (read-module name)
+  "TODO use monad"
   (let ((name-scm (str name ".scm")))
-    (format #t "read-module: ~a\n" (dotfiles-home "/guix/home/" name-scm))
-    (scheme-file name-scm
-                 (sexp->gexp
-                  (call-with-input-file
-                      (dotfiles-home "/guix/home/" name-scm)
-                    read-all-sexprs))
-                 #:splice? #t)))
+    (format #t "read-module: ~a ... " (dotfiles-home "/guix/home/" name-scm))
+    (let ((sf (scheme-file name-scm
+                           (sexp->gexp
+                            (call-with-input-file
+                                (dotfiles-home "/guix/home/" name-scm)
+                              read-all-sexprs))
+                           #:splice? #t)))
+      (format #t "done\n")
+      sf)))
 
-(format #t "~a\n" "read-module")
+(format #t "~a\n" "read-module defined")
 
 (define module-utils (read-module "utils"))
 
-(format #t "~a\n" "module-utils")
+(format #t "~a\n" "module-utils defined")
 
 (define* (service-file #:key
                        program-name desc
@@ -272,7 +275,7 @@ guix shell --development guix help2man git strace --pure
                                    (use-modules (#$symb))
                                    (main (command-line))))))))
 
-(format #t "~a\n" "service-file")
+(format #t "~a\n" "service-file defined")
 
 (define* (search-notes #:key program-name files)
   `(,(str scm-bin-dirname "/" program-name)
@@ -290,7 +293,7 @@ guix shell --development guix help2man git strace --pure
                 (use-modules (#$symb))
                 (main #$main-1st-arg (command-line)))))))))
 
-(format #t "~a\n" "search-notes")
+(format #t "~a\n" "search-notes defined")
 
 (define* (chmod-plus #:key program-name chmod-params)
   "Example:
@@ -310,7 +313,7 @@ guix shell --development guix help2man git strace --pure
                 (use-modules (#$symb))
                 (main #$main-1st-arg (command-line)))))))))
 
-(format #t "~a\n" "chmod-plus")
+(format #t "~a\n" "chmod-plus defined")
 
 ;; xfce4-keyboard: repeat-delay 160 repeat-speed 60
 
@@ -358,8 +361,9 @@ guix shell --development guix help2man git strace --pure
     (exec-system*
      "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
      (str github repo))))
-(format #t "~a\n" "obtain-and-setup")
-;; Existing projects won't be overrid
+(format #t "~a\n" "obtain-and-setup defined")
+
+;; Existing projects won't be overridden
 #;
 (map (lambda (project)
        (let ((dest-dir (car project)))
@@ -382,8 +386,9 @@ guix shell --development guix help2man git strace --pure
               repo
               (str heroku repo ".git"))))
     (gcl "--origin=vojto" repo-url dest-dir-repo)))
-(format #t "~a\n" "obtain-and-setup-heroku")
-;; Existing projects won't be overrid
+(format #t "~a\n" "obtain-and-setup-heroku defined")
+
+;; Existing projects won't be overridden
 #;
 (map (lambda (project)
        (let ((dest-dir (car project)))
@@ -497,42 +502,46 @@ guix shell --development guix help2man git strace --pure
                     (append plugins (append funs (append completions
                                                          confds)))))
 
-   (simple-service
-    'scheme-files home-files-service-type
-    (list
-     (search-notes #:program-name "crc"  #:files "clojure")
-     (search-notes #:program-name "cre"  #:files "vim|emacs|org_mode")
-     (search-notes #:program-name "crep" #:files ".*")
-     (search-notes #:program-name "crf"  #:files "find_and_grep")
-     (search-notes #:program-name "crg"  #:files "guix|guile")
-     (search-notes #:program-name "crgi" #:files "git")
-     (search-notes #:program-name "crl"  #:files "guix|shells|linux|android")
-     (search-notes #:program-name "crr"  #:files "racket")
-     (search-notes #:program-name "crs"  #:files "shells")
-     (search-notes #:program-name "cru"  #:files "utf8")
-     (chmod-plus   #:program-name "prw"  #:chmod-params "rw")
-     (chmod-plus   #:program-name "px"   #:chmod-params "x")
-     (service-file #:program-name "c"       #:desc "batcat"
-                   #:scheme-file-name "bat")
-     (service-file #:program-name "e"       #:desc "emacs-launcher"
-                   #:scheme-file-name "emacs-launcher")
-     (service-file #:program-name "f"       #:desc "find-alternative")
-     (service-file #:program-name "gcl"     #:desc "git-clone")
-     (service-file #:program-name "gco"     #:desc "git-checkout")
-     (service-file #:program-name "gcod"
-                   #:desc "git-checkout-previous-branch")
-     (service-file #:program-name "gcom"    #:desc "git-checkout-master")
-     (service-file #:program-name "gg"      #:desc "git-gui")
-     (service-file #:program-name "ghog"    #:desc "git-push-to-remotes")
-     (service-file #:program-name "gk"      #:desc "git-repository-browser")
-     (service-file #:program-name "glo"
-                   #:desc "git-fech-and-rebase-from-origin")
-     (service-file #:program-name "gtg"     #:desc "git-tag")
-     (service-file #:program-name "l"       #:desc "list-directory-contents"
-                   #:scheme-file-name "ls")
-     (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
-     (service-file #:program-name "spag"    #:desc "spacemacs-git-fetch-rebase")
-    ))
+   (begin
+     (format #t "Running (simple-service 'scheme-files ...) ...\n")
+     (let ((ss
+            (simple-service
+             'scheme-files home-files-service-type
+             (list
+              (search-notes #:program-name "crc"  #:files "clojure")
+              (search-notes #:program-name "cre"  #:files "vim|emacs|org_mode")
+              (search-notes #:program-name "crep" #:files ".*")
+              (search-notes #:program-name "crf"  #:files "find_and_grep")
+              (search-notes #:program-name "crg"  #:files "guix|guile")
+              (search-notes #:program-name "crgi" #:files "git")
+              (search-notes #:program-name "crl"  #:files "guix|shells|linux|android")
+              (search-notes #:program-name "crr"  #:files "racket")
+              (search-notes #:program-name "crs"  #:files "shells")
+              (search-notes #:program-name "cru"  #:files "utf8")
+              (chmod-plus   #:program-name "prw"  #:chmod-params "rw")
+              (chmod-plus   #:program-name "px"   #:chmod-params "x")
+              (service-file #:program-name "c"       #:desc "batcat"
+                            #:scheme-file-name "bat")
+              (service-file #:program-name "e"       #:desc "emacs-launcher"
+                            #:scheme-file-name "emacs-launcher")
+              (service-file #:program-name "f"       #:desc "find-alternative")
+              (service-file #:program-name "gcl"     #:desc "git-clone")
+              (service-file #:program-name "gco"     #:desc "git-checkout")
+              (service-file #:program-name "gcod"
+                            #:desc "git-checkout-previous-branch")
+              (service-file #:program-name "gcom"    #:desc "git-checkout-master")
+              (service-file #:program-name "gg"      #:desc "git-gui")
+              (service-file #:program-name "ghog"    #:desc "git-push-to-remotes")
+              (service-file #:program-name "gk"      #:desc "git-repository-browser")
+              (service-file #:program-name "glo"
+                            #:desc "git-fech-and-rebase-from-origin")
+              (service-file #:program-name "gtg"     #:desc "git-tag")
+              (service-file #:program-name "l"       #:desc "list-directory-contents"
+                            #:scheme-file-name "ls")
+              (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
+              (service-file #:program-name "spag"    #:desc "spacemacs-git-fetch-rebase")))))
+       (format #t "Running (simple-service 'scheme-files ...) ... done\n")
+       ss))
 
    #;mcron-service
 
