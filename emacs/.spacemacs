@@ -1699,31 +1699,29 @@ Some binding snippets / examples:
      ("C-3" . magit-section-show-level-3)
      ("C-4" . magit-section-show-level-4)))
 
-  ;;## ;; neither `-partial' not `-compose' do work, with-eval-after-load is a macro
-  ;;## (funcall
-  ;;##  (-compose
-  ;;##   ;; (-partial #'with-eval-after-load 'term-mode)
-  ;;##   (lambda (body) (with-eval-after-load 'multi-term body)))
-  ;;##  (dolist (state-map `(,term-raw-map))
-  ;;##    ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
-  ;;##    (bind-keys
-  ;;##     :map term-raw-map
-  ;;##     ("C-<right>" . right-word)
-  ;;##     ("C-<left>" . left-word)
-  ;;##     ("<delete>" . term-send-del)
-  ;;##     ("<prior>" . evil-scroll-page-up)
-  ;;##     ("<next>"  . evil-scroll-page-down))))
+;;; (funcall
+;;;  (-compose
+;;;; 1. `-partial', `apply-partially' and `-compose' accept only functions, not
+;;;; macros and `with-eval-after-load' is a macro. Following doesn't work:
+;;;;  (-partial #'with-eval-after-load 'term-mode)
+;;;; 2. This leads to: Symbol’s value as variable is void: term-raw-map
+;;;; `with-eval-after-load' can't be inside a lambda or function. The delayed
+;;;; evaluation won't work. `term-raw-map' is defined only after loading
+;;;; `multi-term'
+;;;   (lambda (body) (with-eval-after-load 'multi-term body)))
+;;;  (dolist (state-map `(,term-raw-map)) ;; '(term-raw-map)
+;;;    (bind-keys :map term-raw-map ... )))
 
   (with-eval-after-load 'multi-term
-    (dolist (state-map `(,term-raw-map))
-      ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
+    (dolist (state-map '(term-raw-map))
+      (message "bind-chords %s" state-map)
       (bind-keys
        :map term-raw-map
        ("C-<right>" . right-word)
-       ("C-<left>" . left-word)
-       ("<delete>" . term-send-del)
-       ("<prior>" . evil-scroll-page-up)
-       ("<next>"  . evil-scroll-page-down))))
+       ("C-<left>"  . left-word)
+       ("<delete>"  . term-send-del)
+       ("<prior>"   . evil-scroll-page-up)
+       ("<next>"    . evil-scroll-page-down))))
 
   (bind-keys
    :map dired-mode-map
