@@ -559,6 +559,7 @@ guix shell --development guix help2man git strace --pure
               (service-file #:program-name "gk"      #:desc "git-repository-browser")
               (service-file #:program-name "glo"
                             #:desc "git-fech-and-rebase-from-origin")
+              (service-file #:program-name "gs"      #:desc "git-status")
               (service-file #:program-name "gtg"     #:desc "git-tag")
               (service-file #:program-name "l"       #:desc "list-directory-contents"
                             #:scheme-file-name "ls")
