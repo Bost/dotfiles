@@ -28,7 +28,7 @@
       (if (= 0 (car ret))
           (let* ((output (cdr ret)))
             (car output))
-          (format #t "Command failed")))
+          (error-command-failed)))
     exec)
    (list "sudo" (string-append "--user=" user) "nproc")))
 

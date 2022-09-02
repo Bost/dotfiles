@@ -18,12 +18,18 @@
             exec-system*
             exec-background
             home str
+            error-command-failed
             drop-right drop-left
             ))
 
 (define home (getenv "HOME"))
 
 (define str string-append)
+
+(define* (error-command-failed #:rest args)
+  (format #t
+   #;error
+   "[ERR] Command failed"))
 
 (define (drop-right xs n)
   "(drop-right (list 1 2 3 4 5) 2) ;; => (1 2 3)

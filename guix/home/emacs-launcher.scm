@@ -47,7 +47,7 @@
            (let* ((output (cdr ret)))
              (car output)
              #| process output |#)
-           (format #t "Command failed"))))))
+           (error-command-failed))))))
 
 (define (main args)
   ((compose

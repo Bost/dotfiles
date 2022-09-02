@@ -29,6 +29,6 @@
         (let* ((output (cdr ret)))
           #| process output |#
           (map (partial format #t "~a\n") output))
-        (format #t "Command failed"))))
+        (error-command-failed))))
 
 ;; (main "shells" (list "_" "title"))
