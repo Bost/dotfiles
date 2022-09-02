@@ -924,9 +924,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (setq
    ;; (default 'browse-url-default-browser)
-   ;; on guix 'browse-url-chromium
+   ;; on guix 'browse-url-chromium-program
    ;; on ubuntu 'browse-url-chrome-program
-   browse-url-browser-function 'browse-url-chrome-program
+   browse-url-browser-function 'browse-url-chromium-program
 
    ;; `my=browse-url-browser-function' must be initialized before the packages
    ;; of the `my' layers are loaded.
