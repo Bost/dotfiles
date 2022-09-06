@@ -4,6 +4,8 @@
 
 ;; Examples:
 #|
+(use-module (guix download))
+
 (source
  (origin
    (method url-fetch)

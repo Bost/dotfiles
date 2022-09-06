@@ -414,6 +414,16 @@ guix shell --development guix help2man git strace --pure
      projects)
 
 (home-environment
+ ;; `guix package --list-profiles` doesn't know about / ignores the
+ ;; package-profile of the home-environment (~/.guix-home/profile/manifest)
+
+ ;; $ guix package --search-paths -p ~/.guix-home/profile -I | sort > /tmp/packages-guix-home.txt
+ ;; $ guix package --search-paths -p ~/.guix-home/profile -I fish
+ ;; fish	3.5.1	out	/gnu/store/vj3kqlk3w7x6gqqb3qzl4jxq34xvy3q2-fish-3.5.1
+
+ ;; $ guix package --search-paths -p ~/.guix-profile -I | sort > /tmp/packages-guix-profile.txt
+ ;; $ guix package --search-paths -p ~/.guix-profile -I fish
+
  (packages
   (map (compose list specification->package+output)
        user-profile-packages))
@@ -450,23 +460,28 @@ guix shell --development guix help2man git strace --pure
      ;; List of file-like objects, which will be ADDED(!) to .bashrc.
      (bashrc
       (list
-       (plain-file "bashrc"
-                   (str
-                    "\n" "#### home-bash-configuration -> bashrc: begin"
-                    "\n"
-                    ;;; Also https://github.com/oh-my-fish/plugin-foreign-env
-                    ;; 1. ~/.guix-home/setup-environment does:
-                    ;;     source ~/.guix-home/profile/etc/profile"
-                    ;;
-                    ;; 2. `guix install` may require:
-                    ;;      GUIX_PROFILE=$HOME/.guix-profile
-                    ;;       . "$GUIX_PROFILE/etc/profile"
-                    ;;    i.e. `. ~/.guix-profile/etc/profile`
+       (plain-file
+        "bashrc"
+        (str
+         "\n" "#### home-bash-configuration -> bashrc: begin"
+         "\n"
+         ;; Also https://github.com/oh-my-fish/plugin-foreign-env
+         ;; 1. ~/.guix-home/setup-environment does:
+         ;;     source ~/.guix-home/profile/etc/profile"
+         ;; $ guix package --search-paths -p ~/.guix-home/profile -I | wc -l
+         ;; 147
+         ;;
+         ;; $ guix package --search-paths -p ~/.guix-profile -I | wc -l
+         ;; 160
+         ;; 2. `guix install` may require:
+         ;;      GUIX_PROFILE=$HOME/.guix-profile
+         ;;       . "$GUIX_PROFILE/etc/profile"
+         ;;    i.e. `. ~/.guix-profile/etc/profile`
 
-                    "\n" "eval \"$(direnv hook bash)\""
-                    "\n"
-                    "\n" "#### home-bash-configuration -> bashrc: end"
-                    ))
+         "\n" "eval \"$(direnv hook bash)\""
+         "\n"
+         "\n" "#### home-bash-configuration -> bashrc: end"
+         ))
        (local-file
         ;; (local-file ".bashrc" "bashrc") should work too
         (dotfiles-home "/guix/home/.bashrc_additions")

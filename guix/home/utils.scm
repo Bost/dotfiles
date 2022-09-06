@@ -5,6 +5,7 @@
  (ice-9 popen))
 |#
 
+;; TODO create a package installable by `guix install my=utils`
 ;; Syntax:
 ;; (MODULE-NAME [#:select SELECTION]
 ;;              [#:prefix PREFIX]
