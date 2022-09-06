@@ -1,3 +1,5 @@
+#### home-bash-configuration -> .bashrc_additions: begin
+
 create_test_repo () {
     mkdir foo && cd foo
     git init
@@ -8,3 +10,5 @@ create_test_repo () {
     git commit -m "1st commit"
     emacs -nw foo.txt
 }
+
+#### home-bash-configuration -> .bashrc_additions: end

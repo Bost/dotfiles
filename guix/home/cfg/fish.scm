@@ -64,6 +64,7 @@
    "gbr.fish"
    "gbra.fish"
    "gbrd.fish"
+   "gbrD.fish"
    "gbrm.fish"
    "gc.fish"
    "gci.fish"

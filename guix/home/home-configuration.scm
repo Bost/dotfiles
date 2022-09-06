@@ -215,12 +215,12 @@ guix shell --development guix help2man git strace --pure
                           "/var/lib/flatpak/exports/share"
                           "$XDG_DATA_DIRS")))
 
-    ("dev" . "$HOME/dev")
-    ("dec" . "$HOME/dec")
-    ("der" . "$HOME/der")
-    ("bin" . "$HOME/bin")
+    ("dev"   . "$HOME/dev")
+    ("dec"   . "$HOME/dec")
+    ("der"   . "$HOME/der")
+    ("bin"   . "$HOME/bin")
     ("cheat" . "$dev/cheat")
-    ("dotf" . "$dev/dotfiles")
+    ("dotf"  . "$dev/dotfiles")
 
     ;; used by ghog glog
     ("remotes" . ,(string-join (list "origin" "gitlab")
@@ -419,7 +419,8 @@ guix shell --development guix help2man git strace --pure
        user-profile-packages))
 
  ;; TODO
- ;; see [PATCH] services: Add udev-rules-service helper. https://issues.guix.gnu.org/40454
+ ;; see [PATCH] services: Add udev-rules-service helper.
+ ;; https://issues.guix.gnu.org/40454
 
  (services
   (list
@@ -431,7 +432,10 @@ guix shell --development guix help2man git strace --pure
      ;; Aliases will be defined after the contents of the bashrc field has been
      ;; put in the .bashrc
      ;; TODO fix the documentation:
-     ;; The aliases are on the top of the .bashrc (b/c of '(guix-defaults? #t)' ???)
+
+     ;; The aliases are on the top of the .bashrc
+     ;; (because of '(guix-defaults? #t)'???)
+
      |#
      ;; When using 'bashrc - local-file' then the aliases are added to the
      ;; .bashrc at the bottom.
@@ -476,14 +480,15 @@ guix shell --development guix help2man git strace --pure
       (environment-vars list-separator-bash))))
 
    ;;; fails with:
-   ;;; In procedure open-file: No such file or directory: "eval \"$(direnv hook bash)\""
+   ;;;   In procedure open-file: No such file or directory:
+   ;;;   "eval \"$(direnv hook bash)\""
    ;; (simple-service
    ;;  'direnv-bash-hook
    ;;  home-bash-service-type
    ;;  (home-bash-extension
    ;;   (bashrc (list "eval \"$(direnv hook bash)\""))))
 
-   ;; emacs-with-native-comp
+   ;; emacs-with-native-comp - ? native compilation ?
    ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
 
    ;; https://github.com/search?q=home-fish-service-type&type=code
