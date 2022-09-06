@@ -57,6 +57,7 @@ guix shell --development guix help2man git strace --pure
      ;; i.e. effectively kill this job-process
      (kill (getppid) SIGINT)))
 
+;; See also https://github.com/leahneukirchen/snooze
 (define mcron-service
   ;; TODO test if the command-string can be created by string-append
   (service

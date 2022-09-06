@@ -21,13 +21,17 @@
 #|
 TODO cloning git repos could be solved with origins:
 (origin (method git-fetch) (uri (git-reference ...)) ...)
-
+;;; Variant 1.
 #!/usr/bin/guile \
 -l utils.scm -e (gcl) -s
 !#
 
-;; $HOME variable can't be used
+;;; Variant 2.
+#!/run/current-system/profile/bin/guile \
+-l utils.scm -e (gcl) -s
+!#
 
+;;; Variant 3. $HOME variable can't be used
 #!/home/bost/.guix-home/profile/bin/guile \
 -l utils.scm -e (gcl) -s
 !#

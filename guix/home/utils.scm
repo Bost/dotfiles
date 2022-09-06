@@ -5,6 +5,11 @@
  (ice-9 popen))
 |#
 
+;; Syntax:
+;; (MODULE-NAME [#:select SELECTION]
+;;              [#:prefix PREFIX]
+;;              [#:renamer RENAMER]
+;;              [#:version VERSION-SPEC]) ;; R6RS-compatible version reference
 (define-module (utils)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
@@ -21,6 +26,13 @@
             error-command-failed
             drop-right drop-left
             ))
+
+;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
+;; Also (examples)
+;; (use-service-modules nix)
+;; (use-service-modules desktop xorg)
+;; (use-package-modules certs)
+;; (use-package-modules shells)
 
 (define home (getenv "HOME"))
 

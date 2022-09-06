@@ -1567,7 +1567,7 @@ Some binding snippets / examples:
        ("<print>" . describe-text-properties) ; my=what-face
 
        ("s-<return>"   . my=jump-last-edited-place)
-       ("C-s-<return>" . goto-last-change)
+       ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
        ("s-J"          . evil-join)
 
        ("<s-print>" . my=ediff-buffers-left-right) ; see advice-add

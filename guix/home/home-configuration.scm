@@ -16,6 +16,7 @@ guix shell --development guix help2man git strace --pure
 (add-to-load-path
  (str home "/dev/dotfiles.dev/guix/home"))
 
+;; see 'include', which unlike 'load', also works within nested lexical contexts
 ,load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm"
 (load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm")
 
