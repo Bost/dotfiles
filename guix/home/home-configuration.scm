@@ -453,10 +453,18 @@ guix shell --development guix help2man git strace --pure
        (plain-file "bashrc"
                    (str
                     "\n" "#### home-bash-configuration -> bashrc: begin"
-                    "\n" "GUIX_PROFILE=$HOME/.guix-profile"
-                    "\n" ". \"$GUIX_PROFILE/etc/profile\""
                     "\n"
+                    ;;; Also https://github.com/oh-my-fish/plugin-foreign-env
+                    ;; 1. ~/.guix-home/setup-environment does:
+                    ;;     source ~/.guix-home/profile/etc/profile"
+                    ;;
+                    ;; 2. `guix install` may require:
+                    ;;      GUIX_PROFILE=$HOME/.guix-profile
+                    ;;       . "$GUIX_PROFILE/etc/profile"
+                    ;;    i.e. `. ~/.guix-profile/etc/profile`
+
                     "\n" "eval \"$(direnv hook bash)\""
+                    "\n"
                     "\n" "#### home-bash-configuration -> bashrc: end"
                     ))
        (local-file
