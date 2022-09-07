@@ -353,9 +353,12 @@ guix shell --development guix help2man git strace --pure
 
 (define projects
   (list
-   (cons "/dec" (list "/corona_cases" "/fdk"))
-   (cons "/der" (list "/search-notes"))
+   (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"))
+   (cons "/der" (list "/search-notes" "/racket-koans"
+                      ;; "/vesmir" is in the projects-heroku list
+                      "/heroku-buildpack-racket"))
    (cons "/dev" (list
+                 "/copy-sexp" "/kill-buffers" "/jump-last"
                  #;(cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
                  "/notes" "/dotfiles"))))
 
