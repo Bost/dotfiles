@@ -417,15 +417,21 @@ guix shell --development guix help2man git strace --pure
      projects)
 
 (home-environment
+ ;; TODO why are the channels listed here???
+ ;; $ guix package --profile=/home/bost/.config/guix/current -I
+ ;; guix    	0321cee	out	/gnu/store/ada4wp2h2xqmrmz448xyp6nzli6drwsv-guix-0321ceef0
+ ;; nonguix 	9563de3	out	/gnu/store/1qz2whvn763yhxs5gdrsf9zqip3zspc2-nonguix
+ ;; babashka	31edde3	out	/gnu/store/k64hd1q6gv3aa9r8arrdlaspzxy68444-babashka
+
  ;; `guix package --list-profiles` doesn't know about / ignores the
  ;; package-profile of the home-environment (~/.guix-home/profile/manifest)
 
- ;; $ guix package --search-paths -p ~/.guix-home/profile -I | sort > /tmp/packages-guix-home.txt
- ;; $ guix package --search-paths -p ~/.guix-home/profile -I fish
+ ;; $ guix package --search-paths --profile=~/.guix-home/profile -I | sort > /tmp/packages-guix-home.txt
+ ;; $ guix package --search-paths --profile=~/.guix-home/profile -I fish
  ;; fish	3.5.1	out	/gnu/store/vj3kqlk3w7x6gqqb3qzl4jxq34xvy3q2-fish-3.5.1
 
- ;; $ guix package --search-paths -p ~/.guix-profile -I | sort > /tmp/packages-guix-profile.txt
- ;; $ guix package --search-paths -p ~/.guix-profile -I fish
+ ;; $ guix package --search-paths --profile=~/.guix-profile -I | sort > /tmp/packages-guix-profile.txt
+ ;; $ guix package --search-paths --profile=~/.guix-profile -I fish
 
  (packages
   (map (compose list specification->package+output)
@@ -471,10 +477,10 @@ guix shell --development guix help2man git strace --pure
          ;; Also https://github.com/oh-my-fish/plugin-foreign-env
          ;; 1. ~/.guix-home/setup-environment does:
          ;;     source ~/.guix-home/profile/etc/profile"
-         ;; $ guix package --search-paths -p ~/.guix-home/profile -I | wc -l
+         ;; $ guix package --search-paths --profile=~/.guix-home/profile -I | wc -l
          ;; 147
          ;;
-         ;; $ guix package --search-paths -p ~/.guix-profile -I | wc -l
+         ;; $ guix package --search-paths --profile=~/.guix-profile -I | wc -l
          ;; 160
          ;; 2. `guix install` may require:
          ;;      GUIX_PROFILE=$HOME/.guix-profile
