@@ -1,6 +1,9 @@
 ;; This is an operating system configuration generated
 ;; by the graphical installer.
 
+;; TODO compare /run/current-system/configuration.scm with
+;; guix system describe | rg "configuration file" | rg -o "/gnu/.*"
+
 (use-modules (gnu)
              (gnu packages libusb)   ; for libmtp
              (gnu packages android)  ; for android-udev-rules
@@ -63,13 +66,10 @@
          %base-user-accounts))
  (packages
   (append
-   (list
-    (specification->package "emacs")
-    (specification->package "nss-certs")
-    ;; needed for the login-shell
-    (specification->package "fish")
-    (specification->package "vim")
-    )
+   (map specification->package
+        (list "emacs" "nss-certs"
+              ;; "fish" ;; needed if it is the login-shell
+              "vim"))
    %base-packages))
  #;
  (skeletons
@@ -116,17 +116,18 @@
     '("/boot/efi1"))
    (menu-entries
     (list
-     (menu-entry
-      (label "Ubuntu")
-      (linux "/boot/vmlinuz-5.15.0-37-generic")
-      ;; ro - mount the root disk read only.
-      ;; quiet - don’t display console messages
-      ;; splash - show a graphical “splash” screen while booting.
-      (linux-arguments '("root=UUID=a8fb1680-eef5-49a0-98a3-8169c9b8eeda"
-                         "ro" "quiet" "splash"
-                         ;; value $vt_handoff is "vt.handoff=7" or unspecified
-                         #;"$vt_handoff"))
-      (initrd "/boot/initrd.img-5.15.0-37-generic"))))
+     (let ((linux-version "5.15.0-37"))
+       (menu-entry
+        (label "Ubuntu")
+        (linux (format #t "/boot/vmlinuz-~a-generic" linux-version))
+        ;; ro - mount the root disk read only.
+        ;; quiet - don’t display console messages
+        ;; splash - show a graphical "splash" screen while booting.
+        (linux-arguments '("root=UUID=a8fb1680-eef5-49a0-98a3-8169c9b8eeda"
+                           "ro" "quiet" "splash"
+                           ;; value $vt_handoff is "vt.handoff=7" or unspecified
+                           #;"$vt_handoff"))
+        (initrd (format #t "/boot/initrd.img-~a-generic" linux-version))))))
 
    (keyboard-layout keyboard-layout)))
  (file-systems
