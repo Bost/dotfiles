@@ -141,7 +141,7 @@
     "tree"
     "tzdata"
     "udiskie"
-    "ungoogled-chromium"
+    ;; "ungoogled-chromium" ;; cant be build at the moment
     "uniutils"
     "unzip"
     "usbutils"
