@@ -134,8 +134,8 @@
     "taglib"
     "tectonic"
     "texinfo"
-    "texlive"
-    "texlive-latex-pdfpages"
+    ;; "texlive"                 ; disabled - takes too long to graft
+    ;; "texlive-latex-pdfpages"  ; disabled - takes too long to graft
     "thunar-volman"
     "tig"
     "tree"
