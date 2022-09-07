@@ -1065,11 +1065,8 @@ before packages are loaded."
    ;; Shell used in `term' and `ansi-term'.
    shell-pop-term-shell (fish-shell-path)
 
-   ;; Position of the popped buffer.
+   ;; Position of the popped buffer. (default "bottom")
    shell-pop-window-position "right"
-
-   ;; Percentage for shell-buffer window size.
-   shell-pop-window-size 50
 
    ;; See also undo-tree-auto-save-history
    undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
@@ -1323,21 +1320,20 @@ before packages are loaded."
     (and (member bufname (mapcar #'buffer-name (buffer-list)))
          t))
 
-  (defun my=shell-pop-term ()
+  (defun my=toggle-shell-pop-term ()
     (interactive)
-    (if (equal 'term-mode major-mode)
-        (my=delete-window)
-      (let ((bufname "*Default-term-0*"))
-        ;; switch to buffer
-        (if (buffer-exists-p bufname)
-            (progn
-              (switch-to-buffer bufname)
-              ;; `select-window' doesn't work if the window is buried
-              ;; (select-window (get-buffer-window bufname))
-              )
-          ;; `spacemacs/shell-pop-term' is defined in the
-          ;; layers/+tools/shell/packages.el
-          (spacemacs/shell-pop-term 0)))))
+    (cond
+     ((equal 'term-mode major-mode)
+      (my=delete-window))
+
+     ;; can't use (let ...)
+     ((buffer-exists-p "*Default-term-0*")
+      (pop-to-buffer "*Default-term-0*"))
+
+     (t
+      ;; `spacemacs/shell-pop-term' defined in layers/+tools/shell/packages.el
+      (spacemacs/shell-pop-term 0)))
+    (balance-windows-area))
 
   (defun my=eval-bind-keys-and-chords ()
     "To activate changes, do:
@@ -1448,7 +1444,7 @@ Some binding snippets / examples:
        ("C-s-<right>" . sp-backward-barf-sexp)
        ("s-;"         . spacemacs/comment-or-uncomment-lines)
        ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
-       ("s-<f1>"      . my=shell-pop-term)
+       ("s-<f1>"      . my=toggle-shell-pop-term)
        ("s-<f2>"      . projectile-multi-term-in-root)
        ;; terminal in the current working directory
        ;; ("s-<f1>"      . terminal-here-launch)
