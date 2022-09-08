@@ -144,10 +144,14 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
 (defun my=evil-select-pasted ()
   "See also https://emacs.stackexchange.com/a/21093"
   (interactive)
-  (evil-goto-mark ?\[)
-  (evil-visual-char)
-  (evil-goto-mark ?\])
-  (message "my=evil-select-pasted - does the same as the macro under: SPC g p")
+  (let ((start-marker (evil-get-marker ?\[))
+        (end-marker (evil-get-marker ?\])))
+    (evil-visual-select start-marker end-marker))
+  ;; moves mark - not great
+  ;; (evil-goto-mark ?\[)
+  ;; (evil-visual-char)
+  ;; (evil-goto-mark ?\])
+  ;; (message "my=evil-select-pasted - does the same as the macro under: SPC g p")
   )
 
 (defun my=yank-and-select ()
@@ -156,7 +160,8 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
     ;; (clipboard-yank)
     (yank)
     ;; (evil-visual-make-selection)
-    (evil-visual-select point-begin (- (point) 1))))
+    ;; (evil-visual-select point-begin (- (point) 1))
+    (my=evil-select-pasted)))
 
 (defun my=shenanigans-on ()
   "Switch on most of the graphical goodies. Inverse of
