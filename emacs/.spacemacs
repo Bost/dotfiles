@@ -291,7 +291,7 @@ This function should only modify configuration layer settings."
       ;; latex-enable-auto-fill nil  ;; defaults to t
       ;; latex-enable-magic t        ;; defaults to nil
       )
-     my ;; see dotspacemacs-configuration-layer-path
+     my=tweaks ;; see dotspacemacs-configuration-layer-path
 
      ;; (vinegar :variables                     ;; simplify dired
      ;;          vinegar-reuse-dired-buffer t

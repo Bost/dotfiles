@@ -1,13 +1,24 @@
-;;; packages.el --- my layer packages file for Spacemacs.
+;;; packages.el --- my=tweaks layer packages file for Spacemacs.
 ;;
-;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
+;; Copyright (c) 2012-2022 Sylvain Benner & Contributors
 ;;
 ;; Author:  Rostislav Svoboda <Rostislav.Svoboda@gmail.com>
 ;; URL: https://github.com/syl20bnr/spacemacs
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
-;;; License: GPLv3
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
@@ -18,18 +29,18 @@
 ;;
 ;;
 ;; Briefly, each package to be installed or configured by this layer should be
-;; added to `my-packages'. Then, for each package PACKAGE:
+;; added to `my=tweaks-packages'. Then, for each package PACKAGE:
 ;;
 ;; - If PACKAGE is not referenced by any other Spacemacs layer, define a
-;;   function `my/init-PACKAGE' to load and initialize the package.
+;;   function `my=tweaks/init-PACKAGE' to load and initialize the package.
 
 ;; - Otherwise, PACKAGE is already referenced by another Spacemacs layer, so
-;;   define the functions `my/pre-init-PACKAGE' and/or
-;;   `my/post-init-PACKAGE' to customize the package as it is loaded.
+;;   define the functions `my=tweaks/pre-init-PACKAGE' and/or
+;;   `my=tweaks/post-init-PACKAGE' to customize the package as it is loaded.
 
 ;;; Code:
 
-(defconst my-packages
+(defconst my=tweaks-packages
   '(
     ;; (equake :variables equake-default-shell 'term)
     simple
@@ -48,8 +59,8 @@
      ;; "~/dev/kill-buffers/"
      (recipe :fetcher github :repo "Bost/kill-buffers")
      )
-   )
-  "The list of Lisp packages required by the my layer.
+    )
+  "The list of Lisp packages required by the my=tweaks layer.
 
 Each entry is either:
 
@@ -74,27 +85,27 @@ Each entry is either:
         `./local/PACKAGE/PACKAGE.el'
 
       - A list beginning with the symbol `recipe' is a melpa
-        recipe.  See: https://github.com/milkypostman/melpa#recipe-format"
-  )
+        recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
+
 
 (setq my=iedit-mode nil)
 ;; (defvar my=iedit-mode nil) ;; TRY defvar
 
-(defun my/post-init-equake ()
+(defun my=tweaks/post-init-equake ()
   ;; Under xfce4-keyboard-settings -> Application shortcuts
   ;; set: emacsclient -n -e '(equake-invoke)'
   (equake-mode))
 
-(defun my/post-init-simple ()
+(defun my=tweaks/post-init-simple ()
   )
 
-(defun my/init-jump-last ()
+(defun my=tweaks/init-jump-last ()
   (use-package jump-last))
 
-(defun my/init-kill-buffers ()
+(defun my=tweaks/init-kill-buffers ()
   (use-package kill-buffers))
 
-(defun my/post-init-drag-stuff ()
+(defun my=tweaks/post-init-drag-stuff ()
   (use-package drag-stuff)
 
   (defun my=drag-stuff-up (arg)
@@ -108,13 +119,13 @@ Each entry is either:
     (drag-stuff--execute (drag-stuff-line-down arg)))
   )
 
-(defun my/init-copy-sexp ()
+(defun my=tweaks/init-copy-sexp ()
   ;; :config (cs/initialize-smartparens) is not needed, since there's
   ;; `eval-after-load' in the package
   (use-package copy-sexp))
 
 ;;; engine-mode extension:
-(defun my/post-init-engine-mode ()
+(defun my=tweaks/post-init-engine-mode ()
   ;; (defvar my=engine/search-engine 'engine/search-duck-duck-go)
   ;; (setq my=engine/search-engine 'engine/search-wikipedia)
   (defvar my=engine/search-engine 'engine/search-google))
@@ -174,5 +185,3 @@ with the `browse-url-firefox-program', otherwise use
 
    (t
     (my=engine/search-default))))
-
-;;; packages.el ends here
