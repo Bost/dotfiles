@@ -1167,7 +1167,7 @@ before packages are loaded."
      (haskell . t)
      ))
 
-  (defalias 'save-selected-text 'write-region)
+  (defalias #'save-selected-text #'write-region)
   ;; TODO (define-obsolete-function-alias)
 
   (defun my=load-layout ()
