@@ -1540,12 +1540,6 @@ Some binding snippets / examples:
        ("M-z" . zop-up-to-char)
        ("M-Z" . zop-to-char)
 
-       ;; [1] spacemacs/move-text-transient-state/move-text-down
-       ;; [2] spacemacs/move-text-transient-state/move-text-up
-       ;; [1] and [2] don't drag:
-       ("M-<down>" . my=drag-stuff-down)
-       ("M-<up>"   . my=drag-stuff-up)
-
        ("C-s-."    . spacemacs/jump-to-definition-other-window)
        ("s->"      . spacemacs/jump-to-definition-other-window)
        ("s-."      . spacemacs/jump-to-definition)

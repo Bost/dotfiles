@@ -95,9 +95,6 @@ Each entry is either:
   ;; set: emacsclient -n -e '(equake-invoke)'
   (equake-mode))
 
-(defun my=tweaks/post-init-simple ()
-  )
-
 (defun my=tweaks/init-jump-last ()
   (use-package jump-last))
 
@@ -105,18 +102,14 @@ Each entry is either:
   (use-package kill-buffers))
 
 (defun my=tweaks/post-init-drag-stuff ()
-  (use-package drag-stuff)
-
-  (defun my=drag-stuff-up (arg)
-    "Drag stuff ARG lines up."
-    (interactive "p")
-    (drag-stuff--execute (drag-stuff-line-up (- arg))))
-
-  (defun my=drag-stuff-down (arg)
-    "Drag stuff ARG lines down."
-    (interactive "p")
-    (drag-stuff--execute (drag-stuff-line-down arg)))
-  )
+  (use-package drag-stuff
+    ;; :diminish drag-stuff-mode
+    ;; hack to stop drag-stuff setting key mappings over ones our existing
+    ;; :init (setq drag-stuff-modifier 'ctrl)
+    :config
+    (drag-stuff-global-mode 1)
+    ;; activate key-bindings <M-up> <M-down> <M-right> <M-left>
+    (drag-stuff-define-keys)))
 
 (defun my=tweaks/init-copy-sexp ()
   ;; :config (cs/initialize-smartparens) is not needed, since there's
