@@ -4,12 +4,18 @@
 ;; TODO compare /run/current-system/configuration.scm with
 ;; guix system describe | rg "configuration file" | rg -o "/gnu/.*"
 
+#|
+run this file by (the `~' doesn't work):
+sudo guix system --load-path=/home/bost/dev/dotfiles/guix/cfg reconfigure /home/bost/dev/dotfiles/guix/configuration.scm
+|#
+
 (use-modules (gnu)
              (gnu packages libusb)   ; for libmtp
              (gnu packages android)  ; for android-udev-rules
              (gnu packages shells)   ; for login shell
              (gnu system shadow)     ; for user-group; user-account-shell
              (gnu packages bash)
+             (common)
              )
 (use-service-modules
   cups
@@ -54,7 +60,7 @@
 
          (user-account
           (name "bost")
-          (comment "Rostislav Svoboda")
+          (comment user-full-name)
           (group "users")
           (home-directory "/home/bost")
           ;; login shell; see also `packages`
