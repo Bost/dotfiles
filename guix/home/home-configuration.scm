@@ -419,9 +419,9 @@ guix shell --development guix help2man git strace --pure
 (home-environment
  ;; TODO why are the channels listed here???
  ;; $ guix package --profile=/home/bost/.config/guix/current -I
- ;; guix    	0321cee	out	/gnu/store/ada4wp2h2xqmrmz448xyp6nzli6drwsv-guix-0321ceef0
- ;; nonguix 	9563de3	out	/gnu/store/1qz2whvn763yhxs5gdrsf9zqip3zspc2-nonguix
- ;; babashka	31edde3	out	/gnu/store/k64hd1q6gv3aa9r8arrdlaspzxy68444-babashka
+ ;; guix     0321cee out /gnu/store/ada4wp2h2xqmrmz448xyp6nzli6drwsv-guix-0321ceef0
+ ;; nonguix  9563de3 out /gnu/store/1qz2whvn763yhxs5gdrsf9zqip3zspc2-nonguix
+ ;; babashka 31edde3 out /gnu/store/k64hd1q6gv3aa9r8arrdlaspzxy68444-babashka
 
  ;; `guix package --list-profiles` doesn't know about / ignores the
  ;; package-profile of the home-environment (~/.guix-home/profile/manifest)
@@ -432,6 +432,9 @@ guix shell --development guix help2man git strace --pure
 
  ;; $ guix package --search-paths --profile=~/.guix-profile -I | sort > /tmp/packages-guix-profile.txt
  ;; $ guix package --search-paths --profile=~/.guix-profile -I fish
+
+ ;; TODO see also the xfce4 chromium launcher -> command
+ ;; /home/bost/.guix-profile/bin/chromium %U
 
  (packages
   (map (compose list specification->package+output)
@@ -550,12 +553,12 @@ guix shell --development guix help2man git strace --pure
      (environment-variables
       (environment-vars list-separator-fish))))
 
+   ;; TODO add to home-dir-config: notes, rest of the $dotf/emacs directory
    (simple-service 'home-dir-config
                    home-files-service-type
                    (append
                     (remove unspecified?
                             (list
-                             ;; TODO notes
                              (local-dotfile "/" ".gitconfig")
                              (local-dotfile "/emacs/" ".spacemacs")
                              (local-dotfile "/guix/home/" "local-stuff.fish")))

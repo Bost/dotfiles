@@ -203,7 +203,7 @@ This function should only modify configuration layer settings."
 
      ;; requires:
      ;; sudo apt install --yes aspell-en aspell-fr aspell-de aspell-sk
-     spell-checking  ;; SPC S / M-x flyspell-mode
+     spell-checking  ;; ~SPC S~ / M-x flyspell-mode
 
      syntax-checking
      treemacs
@@ -1435,9 +1435,12 @@ Some binding snippets / examples:
        ("s-<kp-add>". my=eval-bind-keys-and-chords)
        ("s-z"       . my=buffer-selection-show)
        ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
-       ("s-D"       . dired-jump)
+       ("s-D"       . dired-jump) ;; just open a dired buffer
+
+       ;; The highlighting of copied sexps is done by the copy-sexp.el
        ("s-c"       . sp-copy-sexp)
        ("s-b"       . sp-backward-copy-sexp)
+
        ;; ("<f11>"     . bookmark-set)
        ;; ("<f11>"     . equake-toggle-fullscreen)
        ;; Move the parenthesis - see SPC k b/B/f/F
@@ -1479,6 +1482,8 @@ Some binding snippets / examples:
        ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
 
        ;; C-M-down default value is `down-list'
+       ;; TODO crux-duplicate-current-line-or-region gets confused with registry
+       ;; content
        ("C-M-<down>" . crux-duplicate-current-line-or-region)
        ("C-s-<down>" . crux-duplicate-current-line-or-region)
        ("C-c d"      . crux-duplicate-current-line-or-region)
