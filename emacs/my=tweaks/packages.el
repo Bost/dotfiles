@@ -43,7 +43,6 @@
 (defconst my=tweaks-packages
   '(
     ;; (equake :variables equake-default-shell 'term)
-    simple
     (copy-sexp
      :location
      ;; "~/dev/copy-sexp/"
