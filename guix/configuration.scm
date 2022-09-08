@@ -114,6 +114,20 @@ sudo guix system --load-path=/home/bost/dev/dotfiles/guix/cfg reconfigure /home/
  ;; see
  ;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
  ;; https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dinstall.html#Invoking-grub_002dinstall
+
+ #|
+ bash:
+ udisksctl mount --block-device=$(blkid --uuid a8fb1680-eef5-49a0-98a3-8169c9b8eeda)
+ sudo chmod +rw /tmp/grub.cfg
+ sudo chown bost /tmp/grub.cfg
+ sudo cp /media/bost/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg /tmp/grub.cfg
+
+ # guix show linux-libre | head | grep version | grep -oP "([0-9]{1,}\.)+[0-9]{1,}"
+ guix system describe
+ edit /tmp/grub.cfg
+ sudo cp -i /tmp/grub.cfg /media/bost/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg
+ reboot with <f12> - edit boot order
+ |#
  (bootloader
   (bootloader-configuration
    (bootloader grub-efi-bootloader)
@@ -122,7 +136,7 @@ sudo guix system --load-path=/home/bost/dev/dotfiles/guix/cfg reconfigure /home/
     '("/boot/efi1"))
    (menu-entries
     (list
-     (let ((linux-version "5.15.0-37"))
+     (let ((linux-version "5.15.0-47"))
        (menu-entry
         (label "Ubuntu")
         (linux (format #t "/boot/vmlinuz-~a-generic" linux-version))
