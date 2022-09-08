@@ -49,7 +49,6 @@
      ;; "~/dev/copy-sexp/"
      (recipe :fetcher github :repo "Bost/copy-sexp"))
     drag-stuff
-    engine-mode
     (jump-last
      :location
      ;; "~/dev/jump-last/"
@@ -124,64 +123,39 @@ Each entry is either:
   ;; `eval-after-load' in the package
   (use-package copy-sexp))
 
-;;; engine-mode extension:
-(defun my=tweaks/post-init-engine-mode ()
-  ;; (defvar my=engine/search-engine 'engine/search-duck-duck-go)
-  ;; (setq my=engine/search-engine 'engine/search-wikipedia)
-  (defvar my=engine/search-engine 'engine/search-google))
+;; The url is from
+;;   ~/.spacemacs.d/layers/+web-services/search-engine/packages.el
+(setq my=search-url "https://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
 
-(defun my=engine/browse-url (browser-fun)
-  "Function evaluation doesn't continue to the end if `browse-url'
-is aborted by ~C-g~."
-  (message "equal: %s, bubf %s, bf %s; my=bubf %s"
-           (equal browse-url-browser-function browser-fun)
-           browse-url-browser-function
-           browser-fun
-           my=browse-url-browser-function)
-  (if (equal browse-url-browser-function browser-fun)
-      (browse-url (car (browse-url-interactive-arg
-                        (format "[%s] Browse URL: "
-                                browse-url-browser-function))))
-    ;; TODO try to use (defadvice before and after ...)
-    (progn
-      (setq browse-url-browser-function browser-fun)
-      (browse-url (car (browse-url-interactive-arg
-                        (format "[%s] Browse URL: "
-                                browse-url-browser-function))))
-      (setq browse-url-browser-function my=browse-url-browser-function))))
-
-(defun my=engine/search-region ()
-  "Select text as if done from the insert state."
-  (funcall my=engine/search-engine
-           (read-string
-            "Search region: "
-            (buffer-substring-no-properties (region-beginning)
-                                            (region-end)))))
-
-(defun my=engine/search-default ()
-  (funcall my=engine/search-engine
-           (read-string "Search thing-at-point: "
-                        (thing-at-point 'symbol))))
-
-
-(defun my=engine/search-or-browse (&optional arg)
-  "'&optional arg' must be declared otherwise the key binding doesn't work.
-Selected text has higher prio than url. YouTube urls are opened
-with the `browse-url-firefox-program', otherwise use
-`browse-url-browser-function'."
+(defun my=search-or-browse (&optional args)
+  "'&optional args' must be declared otherwise the key binding doesn't work.
+Selected text has higher priority than URL. A YouTube URL is
+immediately opened by `browse-url-firefox', anything else is put
+on prompt with the `my=search-url' prefix and handled by
+`browse-url-chromium'."
   (interactive "p")
   (cond
    ((or (region-active-p) (evil-visual-state-p))
-    (my=engine/search-region))
+    ;; Select text as if done from the insert state.
+    (browse-url-chromium
+     (format my=search-url
+             (read-string "[chromium] search region: "
+                          (buffer-substring-no-properties (region-beginning)
+                                                          (region-end))))))
 
-   ((let ((prefix (thing-at-point 'url)))
+   ((let ((url-string (thing-at-point 'url)))
       (or
-       (string-prefix-p "https://youtu.be" prefix)
-       (string-prefix-p "https://www.youtube" prefix)))
-    (my=engine/browse-url 'browse-url-firefox))
+       (string-prefix-p "https://youtu.be" url-string)
+       (string-prefix-p "https://www.youtube" url-string)))
+    (browse-url-firefox (thing-at-point 'url)))
 
+   ;; test http://bla.com
    ((string-prefix-p "http" (thing-at-point 'url))
-    (my=engine/browse-url my=browse-url-browser-function))
+    (browse-url-chromium (thing-at-point 'url)))
 
    (t
-    (my=engine/search-default))))
+    (browse-url-chromium
+     (format my=search-url
+             (read-string "[chromium] search thing: "
+                          (thing-at-point 'symbol)))))))
+

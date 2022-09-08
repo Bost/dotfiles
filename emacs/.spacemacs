@@ -273,7 +273,6 @@ This function should only modify configuration layer settings."
      javascript
      shell
      ;; command-log - log keystrokes
-     search-engine
      ;; TODO eyebrowse - window management
      ;; TODO spacemacs-layout - window management
      ;; smex ; smart M-x enhacements - recent & most used commands
@@ -925,16 +924,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
 
-  (setq
-   ;; (default 'browse-url-default-browser)
-   ;; on guix 'browse-url-chromium-program
-   ;; on ubuntu 'browse-url-chrome-program
-   browse-url-browser-function 'browse-url-chromium-program
-
-   ;; `my=browse-url-browser-function' must be initialized before the packages
-   ;; of the `my' layers are loaded.
-   my=browse-url-browser-function browse-url-browser-function)
-
   (my=end 'dotspacemacs/user-init)
   )
 
@@ -1507,7 +1496,7 @@ Some binding snippets / examples:
        ("s-<backspace>"     . paredit-backward-kill-word)
        ("s-<delete>"        . paredit-forward-kill-word)
        ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
-       ("s-g"     . my=engine/search-or-browse) ;; in the my/packages.el
+       ("s-g"     . my=search-or-browse)
        ("s-8"     . er/expand-region)   ; increase selected region by semantic units
        ("<f2>"    . evil-avy-goto-char-timer)
        ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
