@@ -5,8 +5,8 @@
 ;; guix system describe | rg "configuration file" | rg -o "/gnu/.*"
 
 #|
-run this file by (the `~' doesn't work):
-sudo guix system --load-path=/home/bost/dev/dotfiles/guix/cfg reconfigure /home/bost/dev/dotfiles/guix/configuration.scm
+run this file by (the `~' doesn't work as a value of --load-path):
+sudo guix system --load-path=$dotf/guix/home/common reconfigure $dotf/guix/configuration.scm
 |#
 
 (use-modules (gnu)
@@ -15,7 +15,7 @@ sudo guix system --load-path=/home/bost/dev/dotfiles/guix/cfg reconfigure /home/
              (gnu packages shells)   ; for login shell
              (gnu system shadow)     ; for user-group; user-account-shell
              (gnu packages bash)
-             (common)
+             (common settings)
              )
 (use-service-modules
   cups

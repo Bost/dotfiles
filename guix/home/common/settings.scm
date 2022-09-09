@@ -1,4 +1,4 @@
-(define-module (common)
+(define-module (common settings)
   #:export (user-full-name
             user-mail-address
             ))

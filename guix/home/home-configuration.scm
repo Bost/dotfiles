@@ -6,6 +6,8 @@
 
 
 #|
+run this file by (the `~' doesn't work as a value of --load-path):
+guix home --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
 
 guix shell --development guix help2man git strace --pure
 ./pre-inst-env guix repl
@@ -17,6 +19,7 @@ guix shell --development guix help2man git strace --pure
  (str home "/dev/dotfiles.dev/guix/home"))
 
 ;; see 'include', which unlike 'load', also works within nested lexical contexts
+;; can't use the `~'
 ,load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm"
 (load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm")
 
@@ -26,6 +29,7 @@ guix shell --development guix help2man git strace --pure
  (cfg abbreviations)
  (cfg mcron)
  (utils)
+ (common settings)
  (gcl)
  #;(gnu home)
  #;(gnu packages)
@@ -61,6 +65,7 @@ guix shell --development guix help2man git strace --pure
   #:use-module (cfg abbreviations)
   #:use-module (cfg mcron)
   #:use-module (utils)
+  #:use-module (common settings)
   #:use-module (gcl)
   #:use-module (gnu home)
   #:use-module (gnu packages)
@@ -221,6 +226,9 @@ guix shell --development guix help2man git strace --pure
     ("bin"   . "$HOME/bin")
     ("cheat" . "$dev/cheat")
     ("dotf"  . "$dev/dotfiles")
+
+    ("user_full_name"    . ,user-full-name)
+    ("user_mail_address" . ,user-mail-address)
 
     ;; used by ghog glog
     ("remotes" . ,(string-join (list "origin" "gitlab")
@@ -621,8 +629,8 @@ guix shell --development guix help2man git strace --pure
    ;;          (home-git-configuration
    ;;           (config
    ;;            `((user
-   ;;               ((name . "Rostislav Svoboda")
-   ;;                (email . "Rostislav.Svoboda@gmail.com")
+   ;;               ((name . ,user-full-name)
+   ;;                (email . ,user-mail-address)
    ;;                #;(signingKey . "...")))
    ;;              (github
    ;;               ((user . "Bost")))
