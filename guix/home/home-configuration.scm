@@ -591,6 +591,8 @@ guix shell --development guix help2man git strace --pure
                             #:scheme-file-name "emacs-launcher")
               (service-file #:program-name "f"       #:desc "find-alternative")
               (service-file #:program-name "gcl"     #:desc "git-clone")
+              (service-file #:program-name "gre"     #:desc "git-remote")
+              (service-file #:program-name "gfe"     #:desc "git-fetch")
               (service-file #:program-name "gco"     #:desc "git-checkout")
               (service-file #:program-name "gcod"
                             #:desc "git-checkout-previous-branch")
