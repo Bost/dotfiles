@@ -7,6 +7,7 @@
 
 #|
 run this file by (the `~' doesn't work as a value of --load-path):
+set dotf /home/bost/dev/dotfiles
 guix home --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
 
 guix shell --development guix help2man git strace --pure
@@ -360,14 +361,26 @@ guix shell --development guix help2man git strace --pure
                        #:recursive? #t))))))
 
 (define projects
-  (list
+  (list)
+  #;(list
    (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"))
    (cons "/der" (list "/search-notes" "/racket-koans"
                       ;; "/vesmir" is in the projects-heroku list
                       "/heroku-buildpack-racket"))
    (cons "/dev" (list
                  "/copy-sexp" "/kill-buffers" "/jump-last"
-                 #;(cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
+  #|
+;;; use the local guix repo-checkout instead of git.savannah.gnu.org:
+;;; set latest (ls --sort=time --almost-all ~/.cache/guix/checkouts/ | head -1)
+;;; cd ~/.cache/guix/checkouts/$latest
+                 #;(cons "/guix"
+  #;"https://git.savannah.gnu.org/git/guix.git")
+;;; ... then
+git remote rename origin checkout
+git remote add origin https://git.savannah.gnu.org/git/guix.git
+git fetch --tags origin
+  |#
+                 #;(cons "/guile" "https://git.savannah.gnu.org/git/guix.git")
                  "/notes" "/dotfiles"))))
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
@@ -394,7 +407,8 @@ guix shell --development guix help2man git strace --pure
      projects)
 
 (define projects-heroku
-  (list
+  (list)
+  #;(list
    (cons "/der" (list
                  ;; pictures
                  "/vesmir"
@@ -446,7 +460,15 @@ guix shell --development guix help2man git strace --pure
 
  (packages
   (map (compose list specification->package+output)
-       user-profile-packages))
+       (append
+        ;; activate the following sexp one by one when on a slow computer or
+        ;; connectivity
+        (basic-profile-packages)
+        (user-profile-packages)
+        (kde-dependent-packages)
+        #;(slow-packages)
+        #;(packages-from-additional-channels)
+        )))
 
  ;; TODO
  ;; see [PATCH] services: Add udev-rules-service helper.
