@@ -458,6 +458,9 @@ git fetch --tags origin
  ;; TODO see also the xfce4 chromium launcher -> command
  ;; /home/bost/.guix-profile/bin/chromium %U
 
+
+ ;; TODO make it support inferior packages
+ ;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
  (packages
   (map (compose list specification->package+output)
        (append

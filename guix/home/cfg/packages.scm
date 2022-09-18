@@ -28,8 +28,8 @@
   (list
    "inkscape" ;; ~93MiB
    "tectonic" ;; embeddable TeX/LaTeX engine
-   "texlive"
-   "texlive-latex-pdfpages"
+   "texlive"                 ; may take too long to graft
+   "texlive-latex-pdfpages"  ; may take too long to graft
    "ungoogled-chromium"
 
    ;; openjdk-17.0.3  199.5MiB                                                                                                                                                                          1.8MiB/s 01:53 [##################] 100.0%
@@ -38,7 +38,7 @@
    ;; in total ~485 MiB
    "openjdk"
    "openjdk:jdk"
-   "icedtea"  ;; ~240MiB; ??? it gets downloaded anyway ???
+   "icedtea"  ;; ~240MiB; provides OpenJDK built with the IcedTea build harness
    "audacity" ;; 35.8MiB
    ))
 
@@ -105,7 +105,7 @@
    "grub"
    "gsettings-desktop-schemas"
    "gtk"
-   "guile-hall"
+   "guile-hall" ;; to build guile projects
    "guile-studio"
    "gv"
    "gvfs"
