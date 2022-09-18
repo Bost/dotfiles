@@ -469,8 +469,8 @@ git fetch --tags origin
         (basic-profile-packages)
         (user-profile-packages)
         (kde-dependent-packages)
-        #;(slow-packages)
-        #;(packages-from-additional-channels)
+        (slow-packages)
+        (packages-from-additional-channels)
         )))
 
  ;; TODO

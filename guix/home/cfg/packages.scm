@@ -13,8 +13,9 @@
   (list
    "leiningen"
    "babashka"
-   "factorio"
    "firefox"
+   ;; "factorio" ;; temporarily disabled, install it using:
+   ;; cd ~/dev/games && guix package --load-path=./ --install=factorio
    ))
 
 (define (kde-dependent-packages)
@@ -26,20 +27,20 @@
 (define (slow-packages)
   "Packages slow to build, graft, download, etc."
   (list
+   "audacity" ;; 35.8MiB
    "inkscape" ;; ~93MiB
    "tectonic" ;; embeddable TeX/LaTeX engine
    "texlive"                 ; may take too long to graft
    "texlive-latex-pdfpages"  ; may take too long to graft
    "ungoogled-chromium"
 
-   ;; openjdk-17.0.3  199.5MiB                                                                                                                                                                          1.8MiB/s 01:53 [##################] 100.0%
-   ;; openjdk-17.0.3-doc  9.6MiB                                                                                                                                                                        1.2MiB/s 00:08 [##################] 100.0%
+   ;; openjdk-17.0.3  199.5MiB
+   ;; openjdk-17.0.3-doc  9.6MiB
    ;; openjdk-17.0.3-jdk  275.9MiB
    ;; in total ~485 MiB
    "openjdk"
    "openjdk:jdk"
-   "icedtea"  ;; ~240MiB; provides OpenJDK built with the IcedTea build harness
-   "audacity" ;; 35.8MiB
+   ;; "icedtea" ; ~240MiB; provides OpenJDK built with the IcedTea build harness
    ))
 
 (define (basic-profile-packages)
@@ -131,6 +132,11 @@
    "lshw"
    "lsof"
    "make"
+   ;; maven is required by emacs, however the 3.8.6 from %default-channels is buggy so:
+   ;; (A) either the 3.8.5 installed using the inferior mechanism
+   ;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
+   ;; (B) or the fix proposed by https://issues.guix.gnu.org/57749 is used from
+   ;; a local guix repo activated in the ~/.config/guix/channels.scm
    "maven"
    "mcron"
    "mercurial"
