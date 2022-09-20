@@ -120,7 +120,7 @@
    "libavc1394"
    "libavif"
    "libconfini"
-   "libjpeg"
+   "libjpeg-turbo"
    "libmtp"
    "libreoffice"
    "libtiff"
@@ -138,6 +138,10 @@
    ;; (B) or the fix proposed by https://issues.guix.gnu.org/57749 is used from
    ;; a local guix repo activated in the ~/.config/guix/channels.scm
    "maven"
+   ;; "bost/packages/maven"
+   ;; "(@ (bost packages maven) maven)"
+   ;; '(@ (bost packages maven) maven)
+
    "mcron"
    "mercurial"
    "mesa-utils"

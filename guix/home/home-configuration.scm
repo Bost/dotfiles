@@ -61,7 +61,9 @@ guix shell --development guix help2man git strace --pure
 |#
 
 (define-module (home-configuration)
-  #:use-module (cfg packages)
+  #:use-module (cfg
+                #;packages-new
+                packages)
   #:use-module (cfg fish)
   #:use-module (cfg abbreviations)
   #:use-module (cfg mcron)
@@ -363,7 +365,8 @@ guix shell --development guix help2man git strace --pure
 (define projects
   (list)
   #;(list
-   (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"))
+   (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"
+                      "/morse" "/utils" "/clj-time" "/cljplot"))
    (cons "/der" (list "/search-notes" "/racket-koans"
                       ;; "/vesmir" is in the projects-heroku list
                       "/heroku-buildpack-racket"))
@@ -461,8 +464,11 @@ git fetch --tags origin
 
  ;; TODO make it support inferior packages
  ;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
+ ;; TODO packages should accept expressions like the -e, e.g.
+ ;;   guix package                        -e '(@ (bost packages maven) maven)'
+ ;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
  (packages
-  (map (compose list specification->package+output)
+  (map (compose identity list specification->package+output)
        (append
         ;; activate the following sexp one by one when on a slow computer or
         ;; connectivity
