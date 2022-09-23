@@ -180,6 +180,15 @@ guix shell --development guix help2man git strace --pure
 
 (define (environment-vars list-separator)
   `(
+    ;; hunting down the native-compiler-error:
+    ;;     ld: cannot find crtbeginS.o: No such file or directory
+    ;;     ld: cannot find -lgcc
+    ;;     ld: cannot find -lgcc_s
+    ;;     ld: cannot find -lgcc_s
+    ;;     libgccjit.so: error: error invoking gcc driver
+    ;; https://lists.gnu.org/archive/html/guix-devel/2020-03/msg00256.html
+    ;; https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
+    ;; TODO try the v3 patches from https://issues.guix.gnu.org/57086#9
     #;("CMAKE_C_COMPILER" . "$HOME/.guix-profile/bin/gcc")
     ("CC" . "$HOME/.guix-profile/bin/gcc")
 
