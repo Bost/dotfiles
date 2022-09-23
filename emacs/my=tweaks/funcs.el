@@ -480,40 +480,9 @@ with the Echo Area."
   (let* ((msg "(printf \"\\n\")"))
     (my=insert-str msg 4)))
 
-(defun my=bind-keys-scheme (hook state-map)
-  (add-hook
-   hook
-   (lambda ()
-     (bind-chords
-      :map state-map
-      ("pr" . my=scheme-insert-log))
-
-     (bind-keys
-      :map state-map
-      ;; ("s-;"    . my=racket-toggle-reader-comment-current-sexp)
-      ("C-s-m"  . my=scheme-insert-log)
-      ("C-s-p"  . my=scheme-insert-log)
-      ("s-x"    . geiser-mode-switch-to-repl)
-      ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
-      ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)))))
-
-(defun my=bind-keys-racket (hook state-map)
-  (add-hook
-   hook
-   (lambda ()
-     (bind-chords
-      :map state-map
-      ("pr" . my=racket-insert-log))
-
-     (bind-keys
-      :map state-map
-      ("s-o" . racket-run-and-switch-to-repl)
-      ("<C-s-delete>" . my=racket-repl-clear)
-      ("M-s-d"  . my=racket-insert-fn)
-      ("M-s-p"  . my=insert-partial)
-      ("C-s-p"  . my=racket-insert-log)
-      ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
-      ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)))))
+(defun my=scheme-insert-let* ()
+  (interactive)
+  (my=insert-str "(let* [])" 2))
 
 (defun my=clj-insert-remove-fn ()
   (interactive)

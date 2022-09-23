@@ -584,6 +584,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
+   ;; ':location local' points to
+   ;;     ~/.emacs.d/private/local/farmhouse-light-mod-theme/
    dotspacemacs-themes '((farmhouse-light-mod :location local)
                          material
                          misterioso
@@ -1016,8 +1018,12 @@ before packages are loaded."
 
   (add-to-list 'yas-snippet-dirs
                "~/.emacs.d/layers/+completion/auto-completion/local/snippets/")
-  ;; the (add-to-list 'yas-snippet-dirs ...) must be called before
-  (yas-global-mode 1)
+  ;; (add-to-list 'yas-snippet-dirs ...) must be called before
+  (yas-global-mode 1) ; M-x helm-yas or ~SPC s i~ or ~M-m s i~
+  ;; If a major mode has yasnippets enabled then activate yasnippets. Useful for
+  ;; sharing snippets between modes. See https://youtu.be/xmBovJvQ3KU?t=123
+  (add-hook 'yas-minor-mode-hook (lambda ()
+                                   (yas-activate-extra-mode 'fundamental-mode)))
   (global-flycheck-mode)
   (add-hook 'after-init-hook #'global-flycheck-mode)
 
@@ -1346,249 +1352,252 @@ Some binding snippets / examples:
     ;; see also `key-chord-unset-global' / `key-chord-unset-local'
     ;; TODO this dolist block must be manually evaluated
 
-    (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
-      ;; (message "bind-chords %s" state-map) ;; TODO quote / unquote
-      (bind-chords
-       :map state-map
-       ("pr" . (my=insert-str "(println \"\")" 2))
-       ("rm" . (my=insert-str "(remove (fn []))" 3))
-       ("fi" . my=clj-insert-filter-fn)
-       ("de" . my=clj-insert-defn)
-       ("db" . my=clj-insert-debugf)
-       ("dg" . my=clj-insert-debugf)
-       ("df" . my=clj-insert-fn)
-       ("ds" . my=clj-insert-doseq)
-       ("fn" . my=clj-insert-fn)
-       ("do" . my=clj-insert-do)
-       ("co" . my=clj-insert-comp)
-       ("cd" . my=insert-clojuredocs)
-       ("pa" . my=insert-partial)
-       ("le" . my=clj-insert-let)
-       ("fo" . my=clj-insert-for)
-       ("ty" . my=clj-insert-type)
-       ("ma" . my=clj-insert-map-fn)))
+    (dolist (map `(,clojure-mode-map ,cider-repl-mode-map))
+      ;; (message "bind-chords %s" map) ;; TODO quote / unquote
+      (bind-chords :map map
+                   ("pr" . (my=insert-str "(println \"\")" 2))
+                   ("rm" . (my=insert-str "(remove (fn []))" 3))
+                   ("fi" . my=clj-insert-filter-fn)
+                   ("de" . my=clj-insert-defn)
+                   ("db" . my=clj-insert-debugf)
+                   ("dg" . my=clj-insert-debugf)
+                   ("df" . my=clj-insert-fn)
+                   ("ds" . my=clj-insert-doseq)
+                   ("fn" . my=clj-insert-fn)
+                   ("do" . my=clj-insert-do)
+                   ("co" . my=clj-insert-comp)
+                   ("cd" . my=insert-clojuredocs)
+                   ("pa" . my=insert-partial)
+                   ("le" . my=clj-insert-let)
+                   ("fo" . my=clj-insert-for)
+                   ("ty" . my=clj-insert-type)
+                   ("ma" . my=clj-insert-map-fn)))
 
     ;; for the substitution: ~s-:~ / M-x my=fabricate-subst-cmd
-    (dolist (state-map `(,evil-ex-completion-map)) ;; not he evil-ex-map!!!
-      (bind-chords
-       :map state-map
-       ("()" . my=insert-group-parens))
-      (bind-keys
-       :map state-map
-       ("s-0" . my=insert-group-parens)
-       ("s-)" . my=insert-group-parens)))
+    (bind-chords :map evil-ex-completion-map ; not he evil-ex-map!!!
+                 ("()" . my=insert-group-parens))
+    (bind-keys :map evil-ex-completion-map ; not he evil-ex-map!!!
+               ("s-0" . my=insert-group-parens)
+               ("s-)" . my=insert-group-parens))
 
     ;; (setq evil-respect-visual-line-mode t) doesn't work easily
     (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
     (global-set-key [remap evil-beginning-of-line] 'crux-move-beginning-of-line)
 
-    (dolist (state-map `(,global-map))
-      (bind-chords
-       :map state-map
-       ("KK" . my=switch-to-previous-buffer)
-       ;; don't need to switch keyboards just because of parenthesis
-       ("fj" . (my=insert-str "()" 1)))
+    (bind-chords :map global-map
+                 ("KK" . my=switch-to-previous-buffer)
+                 ;; don't need to switch keyboards just because of parenthesis
+                 ("fj" . (my=insert-str "()" 1)))
 
-      (bind-keys
-       :map global-map
-       ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
+    (bind-keys
+     :map global-map
+     ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
 
-       ;; TODO The <escape> keybinding seems not to work.
-       ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-       ;; TODO bind stuff with mouse-buttons and also the mouse-wheel
-       ;; C-<down-mouse-4> C-<mouse-4> - like zoom in/out
-       ;; TODO notmuch
+     ;; TODO The <escape> keybinding seems not to work.
+     ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+     ;; TODO bind stuff with mouse-buttons and also the mouse-wheel
+     ;; C-<down-mouse-4> C-<mouse-4> - like zoom in/out
+     ;; TODO notmuch
 
-       ;; TODO my=emacs-comment-sexp: mark-sexp C-M-@ comment-dwim M-;
+     ;; TODO my=emacs-comment-sexp: mark-sexp C-M-@ comment-dwim M-;
 
-       ("C-s-<268632070>" . my=H-3) ;; this is probably for an Apple computers
-       ("<escape>"  . keyboard-escape-quit)
-       ("M-Q"       . unfill-paragraph)
-       ("s-K"       . my=kill-buffers--unwanted)
-       ("s-C-K"     . my=kill-buffers--dired)
-       ("s-R"       . spacemacs/rename-current-buffer-file)
-       ("s-q"       . my=other-window)
-       ("s-k"       . my=close-buffer)
-       ("s-s"       . save-buffer)
-       ("s-0"       . my=delete-window)
-       ("s-1"       . my=delete-other-windows)
-       ("S-s-<f8>"    . ace-swap-window)
-       ;; ("S-s-<f8>" . transpose-frame)
-       ("s-N"       . spacemacs/cycle-defun-narrow-modes)
-       ("s-n"       . spacemacs/cycle-narrow-widen)
-       ;; ("s-2"    . my=split-other-window-below)
-       ("s-2"       . split-window-below)   ; ~SPC w -~
-       ;; see ~SPC w /~ and ~SPC w 2~
-       ;; ("s-3"    . spacemacs/window-split-double-columns)
-       ;; see ~SPC w /~ and ~SPC w 2~
-       ("s-3"       . split-window-right-and-focus)
-       ("s-9"       . my=load-layout)
-       ("s-+"       . my=eval-bind-keys-and-chords)
-       ("s-<kp-add>". my=eval-bind-keys-and-chords)
-       ("s-z"       . my=buffer-selection-show)
-       ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
-       ("s-D"       . dired-jump) ;; just open a dired buffer
+     ("C-s-<268632070>" . my=H-3) ;; this is probably for an Apple computers
+     ("<escape>"  . keyboard-escape-quit)
+     ("M-Q"       . unfill-paragraph)
+     ("s-K"       . my=kill-buffers--unwanted)
+     ("s-C-K"     . my=kill-buffers--dired)
+     ("s-R"       . spacemacs/rename-current-buffer-file)
+     ("s-q"       . my=other-window)
+     ("s-k"       . my=close-buffer)
+     ("s-s"       . save-buffer)
+     ("s-0"       . my=delete-window)
+     ("s-1"       . my=delete-other-windows)
+     ("S-s-<f8>"    . ace-swap-window)
+     ;; ("S-s-<f8>" . transpose-frame)
+     ("s-N"       . spacemacs/cycle-defun-narrow-modes)
+     ("s-n"       . spacemacs/cycle-narrow-widen)
+     ;; ("s-2"    . my=split-other-window-below)
+     ("s-2"       . split-window-below)   ; ~SPC w -~
+     ;; see ~SPC w /~ and ~SPC w 2~
+     ;; ("s-3"    . spacemacs/window-split-double-columns)
+     ;; see ~SPC w /~ and ~SPC w 2~
+     ("s-3"       . split-window-right-and-focus)
+     ("s-9"       . my=load-layout)
+     ("s-+"       . my=eval-bind-keys-and-chords)
+     ("s-<kp-add>". my=eval-bind-keys-and-chords)
+     ("s-z"       . my=buffer-selection-show)
+     ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
+     ("s-D"       . dired-jump) ;; just open a dired buffer
 
-       ;; The highlighting of copied sexps is done by the copy-sexp.el
-       ("s-c"       . sp-copy-sexp)
-       ("s-b"       . sp-backward-copy-sexp)
+     ;; The highlighting of copied sexps is done by the copy-sexp.el
+     ("s-c"       . sp-copy-sexp)
+     ("s-b"       . sp-backward-copy-sexp)
 
-       ;; ("<f11>"     . bookmark-set)
-       ;; ("<f11>"     . equake-toggle-fullscreen)
-       ;; Move the parenthesis - see SPC k b/B/f/F
-       ("M-s-<left>"  . sp-forward-barf-sexp)
-       ("M-s-<right>" . sp-forward-slurp-sexp)
-       ("C-s-<left>"  . sp-backward-slurp-sexp)
-       ("C-s-<right>" . sp-backward-barf-sexp)
-       ("s-;"         . spacemacs/comment-or-uncomment-lines)
-       ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
-       ("s-<f1>"      . my=toggle-shell-pop-term)
-       ("s-<f2>"      . projectile-multi-term-in-root)
-       ;; terminal in the current working directory
-       ;; ("s-<f1>"      . terminal-here-launch)
-       ;; ("s-<f1>"      . spacemacs/default-pop-shell)
-       ;; ("s-<f1>"      . spacemacs/projectile-shell)
-       ;; jumps to the shell opened by `spacemacs/projectile-shell'
-       ;; ("s-<f1>"      . spacemacs/projectile-shell-pop)
-       ;; ("s-<f1>"      . terminal-here-project-launch)
-       ;; ("s-<f1>"      . spacemacs/default-pop-shell)
-       ("s-W"         . whitespace-cleanup)
-       ("s-w"         . my=whitespace-mode-toggle)
-       ("s-m"         . my=magit-status)
-       ("<f3>"        . my=search-region-or-symbol)
+     ;; ("<f11>"     . bookmark-set)
+     ;; ("<f11>"     . equake-toggle-fullscreen)
+     ;; Move the parenthesis - see SPC k b/B/f/F
+     ("M-s-<left>"  . sp-forward-barf-sexp)
+     ("M-s-<right>" . sp-forward-slurp-sexp)
+     ("C-s-<left>"  . sp-backward-slurp-sexp)
+     ("C-s-<right>" . sp-backward-barf-sexp)
+     ("s-;"         . spacemacs/comment-or-uncomment-lines)
+     ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
+     ("s-<f1>"      . my=toggle-shell-pop-term)
+     ("s-<f2>"      . projectile-multi-term-in-root)
+     ;; terminal in the current working directory
+     ;; ("s-<f1>"      . terminal-here-launch)
+     ;; ("s-<f1>"      . spacemacs/default-pop-shell)
+     ;; ("s-<f1>"      . spacemacs/projectile-shell)
+     ;; jumps to the shell opened by `spacemacs/projectile-shell'
+     ;; ("s-<f1>"      . spacemacs/projectile-shell-pop)
+     ;; ("s-<f1>"      . terminal-here-project-launch)
+     ;; ("s-<f1>"      . spacemacs/default-pop-shell)
+     ("s-W"         . whitespace-cleanup)
+     ("s-w"         . my=whitespace-mode-toggle)
+     ("s-m"         . my=magit-status)
 
-       ("s-a"    . helm-mini)                   ; see advice-add my=helm-mini
-       ("s-]"    . helm-mini)                   ; see advice-add my=helm-mini
-       ("s-B"    . helm-filtered-bookmarks)
-       ("<f9>"   . helm-filtered-bookmarks)
-       ;; ("s-p" . helm-projectile)
-       ("s-p"    . helm-projectile-find-file)
-       ("M-s-p"  . helm-projectile-switch-project)
-       ("M-<f3>" . spacemacs/helm-project-smart-do-search)
-       ("s-f"    . helm-find-files)
-       ("s-F"    . helm-recentf)       ; recentf-open-files
-       ("s-r"    . helm-recentf)
-       ("M-y"    . helm-show-kill-ring)    ; replaces evil-paste-pop
-       ("s-G"    . helm-google-suggest)
-       ("s-/"    . helm-swoop)
-       ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
+     ;; Try ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode) mark something and
+     ;; press ~SPC s e~
+     ("<f3>" . (lambda ()
+                 (interactive) (my=search-region-or-symbol)
+                 (message "Also ~M-<f3>~ for M-x spacemacs/hsearch-project")))
+     ;; See also ~SPC *~ M-x spacemacs/hsearch-project-region-or-symbol
+     ("M-<f3>" . spacemacs/hsearch-project)
 
-       ;; C-M-down default value is `down-list'
-       ;; TODO crux-duplicate-current-line-or-region gets confused with registry
-       ;; content
-       ("C-M-<down>" . crux-duplicate-current-line-or-region)
-       ("C-s-<down>" . crux-duplicate-current-line-or-region)
-       ("C-c d"      . crux-duplicate-current-line-or-region)
-       ("C-c t"      . crux-transpose-windows)
-       ("C-s-<backspace>" . crux-kill-line-backwards) ; kill-line-backward
-       ("s-j"             . crux-top-join-line)
+     ("s-a"    . helm-mini)                   ; see advice-add my=helm-mini
+     ("s-]"    . helm-mini)                   ; see advice-add my=helm-mini
+     ("s-B"    . helm-filtered-bookmarks)
+     ("<f9>"   . helm-filtered-bookmarks)
+     ;; ("s-p" . helm-projectile)
+     ("s-p"    . helm-projectile-find-file)
+     ("M-s-p"  . helm-projectile-switch-project)
+     ("s-f"    . helm-find-files)
+     ("s-F"    . helm-recentf)
+     ("s-r" . (lambda ()
+                (interactive) (helm-recentf)
+                (message "Use ~s-F~ instead of ~s-r~ for M-x helm-recentf")))
+     ("M-y"    . helm-show-kill-ring)    ; replaces evil-paste-pop
+     ("s-G"    . helm-google-suggest)
+     ("s-/"    . helm-swoop)
+     ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
 
-       ("<C-up>"            . xah-backward-block)
-       ("<C-down>"          . xah-forward-block)
-       ;; TODO make pg-up / pg-down major-mode specific
-       ;; ("C-<prior>"      . hs-hide-block)    ; pg-up
-       ;; ("C-<next>"       . hs-show-block)    ; pg-down
-       ;; ("C-M-<prior>"    . hs-toggle-hiding) ; pg-up
-       ;; ("C-M-<prior>"    . hs-hide-all)      ; Ctrl + pg-up
-       ;; ("C-M-<next>"     . hs-show-all)      ; Ctrl + pg-down
-       ("C-M-<delete>"      . kill-sexp)
-       ("C-M-s-<delete>"    . my=delete-next-sexp)
-       ("C-M-s-<backspace>" . my=delete-prev-sexp)
-       ("C-M-<backspace>"   . backward-kill-sexp)
+     ;; C-M-down default value is `down-list'
+     ;; TODO crux-duplicate-current-line-or-region gets confused with registry
+     ;; content
+     ("C-M-<down>" . crux-duplicate-current-line-or-region)
+     ("C-s-<down>" . crux-duplicate-current-line-or-region)
+     ("C-c d"      . crux-duplicate-current-line-or-region)
+     ("C-c t"      . crux-transpose-windows)
+     ("C-s-<backspace>" . crux-kill-line-backwards) ; kill-line-backward
+     ("s-j"             . crux-top-join-line)
 
-       ("s-<backspace>"     . paredit-backward-kill-word)
-       ("s-<delete>"        . paredit-forward-kill-word)
-       ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
-       ("s-g"     . my=search-or-browse)
-       ("s-8"     . er/expand-region)   ; increase selected region by semantic units
-       ("<f2>"    . evil-avy-goto-char-timer)
-       ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
-       ("s-<tab>" . spacemacs/alternate-buffer)
+     ("<C-up>"            . xah-backward-block)
+     ("<C-down>"          . xah-forward-block)
+     ;; TODO make pg-up / pg-down major-mode specific
+     ;; ("C-<prior>"      . hs-hide-block)    ; pg-up
+     ;; ("C-<next>"       . hs-show-block)    ; pg-down
+     ;; ("C-M-<prior>"    . hs-toggle-hiding) ; pg-up
+     ;; ("C-M-<prior>"    . hs-hide-all)      ; Ctrl + pg-up
+     ;; ("C-M-<next>"     . hs-show-all)      ; Ctrl + pg-down
+     ("C-M-<delete>"      . kill-sexp)
+     ("C-M-s-<delete>"    . my=delete-next-sexp)
+     ("C-M-s-<backspace>" . my=delete-prev-sexp)
+     ("C-M-<backspace>"   . backward-kill-sexp)
 
-       ("C-<next>"  . next-buffer)     ;; SPC b n; Ctrl-PageDown
-       ("s-<right>" . next-buffer)
-       ("C-<prior>" . previous-buffer) ;; SPC b p; Ctrl-PageUp
-       ("s-<left>"  . previous-buffer)
+     ("s-<backspace>"     . paredit-backward-kill-word)
+     ("s-<delete>"        . paredit-forward-kill-word)
+     ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
+     ("s-g"     . my=search-or-browse)
+     ("s-8" . er/expand-region) ; increase selected region by semantic units
+     ("<f2>"    . evil-avy-goto-char-timer)
+     ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
+     ("s-<tab>" . spacemacs/alternate-buffer)
 
-       ;; same bindings as in the guake terminal
-       ("S-s-<up>"    . evil-window-up)
-       ("S-s-<down>"  . evil-window-down)
-       ("S-s-<left>"  . evil-window-left)
-       ("S-s-<right>" . evil-window-right)
+     ("C-<next>"  . next-buffer)     ;; SPC b n; Ctrl-PageDown
+     ("s-<right>" . next-buffer)
+     ("C-<prior>" . previous-buffer) ;; SPC b p; Ctrl-PageUp
+     ("s-<left>"  . previous-buffer)
 
-       ;; ("s-<tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
-       ("C-<f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
-       ("C-s-/"   . avy-goto-line)
+     ;; same bindings as in the guake terminal
+     ("S-s-<up>"    . evil-window-up)
+     ("S-s-<down>"  . evil-window-down)
+     ("S-s-<left>"  . evil-window-left)
+     ("S-s-<right>" . evil-window-right)
 
-       ;; fd - evil-escape from insert state and everything else
-       ;; occurences - function scope
-       ("s-I"           . my=iedit-mode-toggle)
-       ("s-i"           . iedit-mode)  ; all occurences in the buffer
-       ;; ("s-i"        . spacemacs/enter-ahs-forward)
-       ("<f12>"         . undo-tree-visualize)
-       ;; ("S-<delete>" . kill-region)
-       ("C-s-<delete>"  . kill-line)   ; C-super-key
-       ("C-S-<delete>"  . kill-line)   ; C-shift-key
-       ;; ("s-l"        . spacemacs/resume-last-search-buffer)
-       ("s-v"           . my=evil-select-pasted)
+     ;; ("s-<tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
+     ("C-<f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
+     ("C-s-/"   . avy-goto-line)
 
-       ;; TODO what's the difference between insert and insertchar?
-       ("S-s-<insert>" . my=yank-and-select)
+     ;; fd - evil-escape from insert state and everything else
+     ;; occurences - function scope
+     ("s-I"           . my=iedit-mode-toggle)
+     ("s-i"           . iedit-mode)  ; all occurences in the buffer
+     ;; ("s-i"        . spacemacs/enter-ahs-forward)
+     ("<f12>"         . undo-tree-visualize)
+     ;; ("S-<delete>" . kill-region)
+     ("C-s-<delete>"  . kill-line)   ; C-super-key
+     ("C-S-<delete>"  . kill-line)   ; C-shift-key
+     ;; ("s-l"        . spacemacs/resume-last-search-buffer)
+     ("s-v"           . my=evil-select-pasted)
 
-       ("s-L"   . spacemacs/cycle-line-number-types)
-       ("C-s-l" . spacemacs/cycle-large-file-settings)
+     ;; TODO what's the difference between insert and insertchar?
+     ("S-s-<insert>" . my=yank-and-select)
 
-       ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
-       ;; zop-up-to-char works as zop-to-char but stop just before target
-       ("M-z" . zop-up-to-char)
-       ("M-Z" . zop-to-char)
+     ("s-L"   . spacemacs/cycle-line-number-types)
+     ("C-s-l" . spacemacs/cycle-large-file-settings)
 
-       ("C-s-."    . spacemacs/jump-to-definition-other-window)
-       ("s->"      . spacemacs/jump-to-definition-other-window)
-       ("s-."      . spacemacs/jump-to-definition)
+     ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
+     ;; zop-up-to-char works as zop-to-char but stop just before target
+     ("M-z" . zop-up-to-char)
+     ("M-Z" . zop-to-char)
 
-       ("s-,"      . evil-jump-backward)
-       ;; ("s-,"   . dumb-jump-back)
-       ;; ("s-,"   . cider-pop-back)
+     ("C-s-."    . spacemacs/jump-to-definition-other-window)
+     ("s->"      . spacemacs/jump-to-definition-other-window)
+     ("s-."      . spacemacs/jump-to-definition)
 
-       ;; C-o; evil-jump-backward
-       ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
+     ("s-,"      . evil-jump-backward)
+     ;; ("s-,"   . dumb-jump-back)
+     ;; ("s-,"   . cider-pop-back)
 
-       ("<print>" . describe-text-properties) ; my=what-face
+     ;; C-o; evil-jump-backward
+     ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
 
-       ("s-<return>"   . my=jump-last-edited-place)
-       ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
-       ("s-J"          . evil-join)
+     ("<print>" . describe-text-properties) ; my=what-face
 
-       ("<s-print>" . my=ediff-buffers-left-right) ; see advice-add
-       ("s-A"       . align-regexp)
-       ("s-:" . my=fabricate-subst-cmd) ;; see evil-ex-completion-map bindings
+     ("s-<return>"   . my=jump-last-edited-place)
+     ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
+     ("s-J"          . evil-join)
 
-       ("s-<" . my=select-in-ang-bracket)
-       ("s-[" . my=select-in-sqr-bracket)
-       ("s-(" . my=select-in-rnd-bracket)
-       ("s-{" . my=select-in-crl-bracket)
+     ("<s-print>" . my=ediff-buffers-left-right) ; see advice-add
+     ("s-A"       . align-regexp)
+     ("s-:" . my=fabricate-subst-cmd) ;; see evil-ex-completion-map bindings
 
-       ;; may more comfortable than moving the hand away
-       ("C-{" . my=ins-left-paren)
-       ("C-}" . my=ins-right-paren)
+     ("s-<" . my=select-in-ang-bracket)
+     ("s-[" . my=select-in-sqr-bracket)
+     ("s-(" . my=select-in-rnd-bracket)
+     ("s-{" . my=select-in-crl-bracket)
 
-       ("s-\"" . my=select-in-string)
+     ;; may more comfortable than moving the hand away
+     ("C-{" . my=ins-left-paren)
+     ("C-}" . my=ins-right-paren)
 
-       ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
-       ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
+     ("s-\"" . my=select-in-string)
 
-       ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
-       ;; <menu> is not a prefix key. See:
-       ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-       ("H-1" . my=H-1) ;; this doesn't work ("C-c h 1" . my=H-1)
-       ("H-2" . my=H-2)
-       ("H-4" . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
-       ))
+     ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
+     ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
+
+     ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
+     ;; <menu> is not a prefix key. See:
+     ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
+     ("H-1" . my=H-1) ;; this doesn't work ("C-c h 1" . my=H-1)
+     ("H-2" . my=H-2)
+     ("H-4" . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
+     )
     (message "%s" "my=eval-bind-keys-and-chords evaluated.")
     )
 
-  ;; Thanx to https://github.com/fanhongtao/_emacs.d/blob/master/conf/my-key-modifiers.el
+  ;; Thanx to
+  ;; https://github.com/fanhongtao/_emacs.d/blob/master/conf/my-key-modifiers.el
   ;; See also 'Have you Hyper for Great Good'
   ;; https://gist.github.com/toroidal-code/ec075dd05a23a8fb8af0
   ;; Also '<Multi_key> s s' should produce 'ß'
@@ -1599,8 +1608,7 @@ Some binding snippets / examples:
        (setq w32-pass-lwindow-to-system nil)
        ;;(setq w32-phantom-key-code 42)  ;; what for?
        (setq w32-lwindow-modifier 'super)
-       (setq w32-rwindow-modifier 'alt)
-       )
+       (setq w32-rwindow-modifier 'alt))
 
   (defun enable-hyper-super-modifiers-linux-x ()
     (interactive)
@@ -1629,25 +1637,24 @@ Some binding snippets / examples:
     )
 
   (defun enable-hyper-super-modifiers ()
-    (let ( (frame (framep (selected-frame))) )
+    (let ( (frame (framep (selected-frame))))
       (cond
        ((memq frame '(w32 win32))
-        (enable-hyper-super-modifiers-win32) )
+        (enable-hyper-super-modifiers-win32))
        ((eq frame 'x)
-        (enable-hyper-super-modifiers-linux-x ) )
+        (enable-hyper-super-modifiers-linux-x))
        ((eq frame 'ns)
-        (enable-hyper-super-modifiers-macos) )
+        (enable-hyper-super-modifiers-macos))
        (frame
-        (enable-hyper-super-modifiers-linux-console ))
+        (enable-hyper-super-modifiers-linux-console))
        (t
-        (message "fixmed: enable-hyper-super-modifiers") )
-       ))
+        (message "fixmed: enable-hyper-super-modifiers"))))
 
     ;; you can always use "C-c h" as 'hyper modifier, even in Linux console or DOS
     (define-key key-translation-map (kbd "C-c h") 'event-apply-hyper-modifier)
     (define-key key-translation-map (kbd "C-c s") 'event-apply-super-modifier)
-    (define-key key-translation-map (kbd "C-c a") 'event-apply-alt-modifier)
-    )
+    (define-key key-translation-map (kbd "C-c a") 'event-apply-alt-modifier))
+
   (enable-hyper-super-modifiers)
   ;; this doesn't work:
   (define-key key-translation-map (kbd "H-3") (kbd "•")) ; bullet
@@ -1678,20 +1685,19 @@ Some binding snippets / examples:
     (tramp-set-completion-function "sshq" tramp-completion-function-alist-ssh))
 
   (with-eval-after-load 'magit-mode
-    (bind-keys
-     :map magit-mode-map
-     ;; Workaround for the
-     ;; https://github.com/emacs-evil/evil-collection/issues/554
-     ("C-v" . evil-visual-line)
-     ("1"   . magit-section-show-level-1-all)
-     ("2"   . magit-section-show-level-2-all)
-     ("3"   . magit-section-show-level-3-all)
-     ("4"   . magit-section-show-level-4-all)
-     ;; overshadows `(digit-argument <n>)'; use C-M-<n> instead
-     ("C-1" . magit-section-show-level-1)
-     ("C-2" . magit-section-show-level-2)
-     ("C-3" . magit-section-show-level-3)
-     ("C-4" . magit-section-show-level-4)))
+    (bind-keys :map magit-mode-map
+               ;; Workaround for the
+               ;; https://github.com/emacs-evil/evil-collection/issues/554
+               ("C-v" . evil-visual-line)
+               ("1"   . magit-section-show-level-1-all)
+               ("2"   . magit-section-show-level-2-all)
+               ("3"   . magit-section-show-level-3-all)
+               ("4"   . magit-section-show-level-4-all)
+               ;; overshadows `(digit-argument <n>)'; use C-M-<n> instead
+               ("C-1" . magit-section-show-level-1)
+               ("C-2" . magit-section-show-level-2)
+               ("C-3" . magit-section-show-level-3)
+               ("C-4" . magit-section-show-level-4)))
 
 ;;; (funcall
 ;;;  (-compose
@@ -1703,31 +1709,29 @@ Some binding snippets / examples:
 ;;;; evaluation won't work. `term-raw-map' is defined only after loading
 ;;;; `multi-term'
 ;;;   (lambda (body) (with-eval-after-load 'multi-term body)))
-;;;  (dolist (state-map `(,term-raw-map)) ;; '(term-raw-map)
+;;;  (dolist (map `(,term-raw-map)) ;; '(term-raw-map)
 ;;;    (bind-keys :map term-raw-map ... )))
 
   (with-eval-after-load 'multi-term
-    (dolist (state-map '(term-raw-map))
-      (message "bind-chords %s" state-map)
-      (bind-keys
-       :map term-raw-map
-       ("C-<right>" . right-word)
-       ("C-<left>"  . left-word)
-       ("<delete>"  . term-send-del)
-       ("<prior>"   . evil-scroll-page-up)
-       ("<next>"    . evil-scroll-page-down))))
+    (dolist (map '(term-raw-map))
+      (message "bind-chords %s" map)
+      (bind-keys :map map
+                 ("C-<right>" . right-word)
+                 ("C-<left>"  . left-word)
+                 ("<delete>"  . term-send-del)
+                 ("<prior>"   . evil-scroll-page-up)
+                 ("<next>"    . evil-scroll-page-down))))
 
-  (bind-keys
-   :map dired-mode-map
-   ("<f5>"        . revert-buffer)
-   ("C-s-h"       . my=dired-dotfiles-toggle) ;; "C-H" doesn't work WTF???
-   ("<backspace>" . (lambda () (interactive) (find-alternate-file "..")))
-   ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
-   ;; ("<return>"    . dired-find-alternate-file)
-   ;; ("<return>"    . dired-x-find-file) ;; asks for file instead of opening it
-   ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
-   ("<return>"    . dired-find-file) ;; default
-   ("<S-delete>"  . my=dired-do-delete))
+  (bind-keys :map dired-mode-map
+             ("<f5>"        . revert-buffer)
+             ("C-s-h"       . my=dired-dotfiles-toggle) ;; "C-H" doesn't work WTF???
+             ("<backspace>" . (lambda () (interactive) (find-alternate-file "..")))
+             ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
+             ;; ("<return>"    . dired-find-alternate-file)
+             ;; ("<return>"    . dired-x-find-file) ;; asks for file instead of opening it
+             ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
+             ("<return>"    . dired-find-file) ;; default
+             ("<S-delete>"  . my=dired-do-delete))
 
   ;; (eval-after-load "dired"
   ;;   '(progn
@@ -1766,39 +1770,36 @@ Some binding snippets / examples:
              ("<C-right>"    . right-word)
              ("<C-left>"     . left-word))
 
-  (dolist (state-map `(,clojure-mode-map ,cider-repl-mode-map))
-    (bind-keys
-     :map state-map
-     ;; on the german keyboard the '#' is next to Enter
-     ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
-     ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
-     ("s-X"   . my=switch-to-repl-start-figwheel)
-     ("s-e"   . cider-eval-last-sexp)
-     ("s-j"   . cider-format-defun)
-     ("s-i"   . cljr-rename-symbol)))
+  (dolist (map `(,clojure-mode-map ,cider-repl-mode-map))
+    (bind-keys :map map
+               ;; on the german keyboard the '#' is next to Enter
+               ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
+               ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
+               ("s-X"   . my=switch-to-repl-start-figwheel)
+               ("s-e"   . cider-eval-last-sexp)
+               ("s-j"   . cider-format-defun)
+               ("s-i"   . cljr-rename-symbol)))
 
-  (bind-keys
-   :map cider-repl-mode-map
-   ("<menu>" . my=stop-synths-metronoms)
-   ("s-h"    . helm-cider-history)
-   ("s-j"    . cider-format-defun)
-   ("s-x"    . cider-switch-to-last-clojure-buffer)
-   ("M-s-l"  . my=cider-reload-ns-from-file)
-   ("s-u"    . my=cider-reload-ns-from-file)
-   ;; invoke from clojure buffer
-   ("<C-s-delete>" . cider-repl-clear-buffer))
+  (bind-keys :map cider-repl-mode-map
+             ("<menu>" . my=stop-synths-metronoms)
+             ("s-h"    . helm-cider-history)
+             ("s-j"    . cider-format-defun)
+             ("s-x"    . cider-switch-to-last-clojure-buffer)
+             ("M-s-l"  . my=cider-reload-ns-from-file)
+             ("s-u"    . my=cider-reload-ns-from-file)
+             ;; invoke from clojure buffer
+             ("<C-s-delete>" . cider-repl-clear-buffer))
 
-  (bind-keys
-   :map clojure-mode-map
-   ("s-d"    . cider-eval-defun-at-point)
-   ("s-x"    . my=cider-switch-to-repl-buffer)
-   ("C-s-c"  . cider-connect-clj)
-   ("C-s-j"  . cider-jack-in)
-   ;; ("s-r" . cider-eval-last-expression-in-repl)
-   ("M-s-l"  . my=cider-save-and-load-current-buffer)
-   ("s-u"    . my=cider-save-and-load-current-buffer)
-   ("M-s-n"  . cider-repl-set-ns)
-   ("s-t"    . cider-test-run-tests)
+  (bind-keys :map clojure-mode-map
+             ("s-d"    . cider-eval-defun-at-point)
+             ("s-x"    . my=cider-switch-to-repl-buffer)
+             ("C-s-c"  . cider-connect-clj)
+             ("C-s-j"  . cider-jack-in)
+             ;; ("s-r" . cider-eval-last-expression-in-repl)
+             ("M-s-l"  . my=cider-save-and-load-current-buffer)
+             ("s-u"    . my=cider-save-and-load-current-buffer)
+             ("M-s-n"  . cider-repl-set-ns)
+             ("s-t"    . cider-test-run-tests)
 
    ;; TODO see global-map keybindings
    ;; ("s-."  . cider-find-var)
@@ -1813,11 +1814,6 @@ Some binding snippets / examples:
 
    ("C-s-o"   . my=cider-clear-compilation-highlights))
 
-  (bind-chords
-   :map emacs-lisp-mode-map
-   ("ms" . my=elisp-insert-message)
-   ("df" . my=elisp-insert-defun))
-
   ;; The read syntax #'. See
   ;; https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html
   (defun endless/sharp ()
@@ -1830,63 +1826,92 @@ Some binding snippets / examples:
                   (eq (char-after) ?'))
         (insert "'"))))
 
-  (bind-keys
-   :map emacs-lisp-mode-map
-   ("C-s-l" . my=elisp-insert-let)
-   ("C-s-m" . my=elisp-insert-message)
-   ("C-s-p" . my=elisp-insert-message)
-   ("C-s-d" . my=elisp-insert-defun)
-   ("s-d"   . my=eval-current-defun)
-   ("#"     . endless/sharp)
-   ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp)
-   )
+  (bind-chords :map emacs-lisp-mode-map
+               ("df" . my=elisp-insert-defun)
+               ("le" . my=elisp-insert-let)
+               ("ms" . my=elisp-insert-message))
 
-  (dolist (state-map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
+  (bind-keys :map emacs-lisp-mode-map
+             ("C-s-l" . my=elisp-insert-let)
+             ("C-s-m" . my=elisp-insert-message)
+             ("C-s-p" . my=elisp-insert-message)
+             ("C-s-d" . my=elisp-insert-defun)
+             ("s-d"   . my=eval-current-defun)
+             ("#"     . endless/sharp)
+             ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp))
+
+  (dolist (map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
                        ,clojure-mode-map))
-    (bind-keys
-     :map state-map
-     ("<C-M-right>" . end-of-defun)       ; default is forward-sexp
-     ("<C-M-left>"  . beginning-of-defun) ; default is backward-sexp
-     ))
+    (bind-keys :map map
+               ;; default is forward-sexp
+               ("<C-M-right>" . end-of-defun)
+               ;; default is backward-sexp
+               ("<C-M-left>"  . beginning-of-defun)))
 
-  (bind-keys
-   :map org-mode-map
-   ("<menu>"      . org-latex-export-to-pdf))
+  (bind-keys :map org-mode-map
+             ("<menu>" . org-latex-export-to-pdf))
 
-  (bind-keys
-   :map prog-mode-map
-   ;; M-/  M-x hippie-expand
-   ("s-Q" . dumb-jump-quick-look)
-   ("s-h" . spacemacs/helm-jump-in-buffer)
-   ;; previously: helm-imenu-in-all-buffers
-   ("s-H" . lazy-helm/helm-imenu-in-all-buffers)
-   ("s-u" . eval-buffer)
-   ("s-e" . eval-last-sexp))
+  (bind-keys :map prog-mode-map
+             ;; M-/  M-x hippie-expand
+             ("s-Q" . dumb-jump-quick-look)
+             ("s-h" . spacemacs/helm-jump-in-buffer)
+             ;; previously: helm-imenu-in-all-buffers
+             ("s-H" . lazy-helm/helm-imenu-in-all-buffers)
+             ("s-u" . eval-buffer)
+             ("s-e" . eval-last-sexp))
 
-  (add-hook
-   'LaTeX-mode-hook
-   (lambda ()
-     (bind-keys :map LaTeX-mode-map ("<menu>" . latex/build))))
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+              (bind-keys :map LaTeX-mode-map
+                         ("<menu>" . latex/build))))
 
-  (add-hook
-   'python-mode-hook
-   (lambda ()
-     (bind-keys :map python-mode-map
-                ("s-x" . spacemacs/python-start-or-switch-repl))))
-  (add-hook
-   'debugger-mode-hook
-   (lambda ()
-     (bind-keys :map debugger-mode-map ("C-g" . debugger-quit))))
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (bind-keys :map python-mode-map
+                         ("s-x" . spacemacs/python-start-or-switch-repl))))
+  (add-hook 'debugger-mode-hook
+            (lambda ()
+              (bind-keys :map debugger-mode-map
+                         ("C-g" . debugger-quit))))
 
-  (my=bind-keys-racket 'racket-mode-hook      'racket-mode-map)
-  (my=bind-keys-racket 'racket-repl-mode-hook 'racket-repl-mode-map)
+(defun my=kbindings-scheme (map)
+  (bind-keys :map map
+             ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
+             ("C-s-m"  . my=scheme-insert-log)
+             ("C-s-p"  . my=scheme-insert-log)
+             ;; ("s-;"    . my=racket-toggle-reader-comment-current-sexp)
+             ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
+             ("s-x"    . geiser-mode-switch-to-repl))
+  (bind-chords :map map
+               ("le" . my=scheme-insert-let*)
+               ("pr" . my=scheme-insert-log)))
 
-  (my=bind-keys-scheme 'scheme-mode-hook      'scheme-mode-map)
-  (my=bind-keys-scheme 'scheme-repl-mode-hook 'scheme-repl-mode-map)
+(defun my=kbindings-racket (map)
+  (bind-keys :map map
+             ("<C-s-delete>" . my=racket-repl-clear)
+             ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
+             ("C-s-p"  . my=racket-insert-log)
+             ("M-s-d"  . my=racket-insert-fn)
+             ("M-s-p"  . my=insert-partial)
+             ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
+             ("s-o" . racket-run-and-switch-to-repl))
+  (bind-chords :map map
+               ("pr" . my=racket-insert-log)))
 
-  (my=bind-keys-scheme 'geiser-mode-hook      'geiser-mode-map)
-  (my=bind-keys-scheme 'geiser-repl-mode-hook 'geiser-repl-mode-map)
-  ;; (bind-keys :map helm-mode-map)
+  (add-hook 'racket-mode-hook
+            (lambda () (my=kbindings-racket racket-mode-map)))
+  (add-hook 'racket-repl-mode-hook
+            (lambda () (my=kbindings-racket racket-repl-mode-map)))
+  (add-hook 'scheme-mode-hook
+            (lambda () (my=kbindings-scheme scheme-mode-map)))
+  (add-hook 'scheme-repl-mode-hook
+            (lambda () (my=kbindings-scheme scheme-repl-mode-map)))
+
+  ;; extra bindings for geiser are probably not needed
+  ;; (add-hook 'geiser-mode-hook
+  ;;           (lambda () (my=kbindings-scheme geiser-mode-map)))
+  ;; (add-hook 'geiser-repl-mode-hook
+  ;;           (lambda () (my=kbindings-scheme geiser-repl-mode-map)))
 
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
@@ -1925,20 +1950,18 @@ Some binding snippets / examples:
 
   ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
   ;; layers/+misc/multiple-cursors/packages.el
-  (dolist (state-map `(,evil-normal-state-map ,evil-insert-state-map))
-    (bind-keys :map state-map
+  (dolist (map `(,evil-normal-state-map ,evil-insert-state-map))
+    (bind-keys :map map
                ("C-M-k" . kill-sexp)))
 
-  (dolist (state-map `(,evil-motion-state-map ,evil-visual-state-map))
+  (dolist (map `(,evil-motion-state-map ,evil-visual-state-map))
     ;; Move by screen lines instead of logical (long) lines
-    (bind-keys
-     :map state-map
-     ("j" . evil-next-visual-line)
-     ("k" . evil-previous-visual-line)))
+    (bind-keys :map map
+               ("j" . evil-next-visual-line)
+               ("k" . evil-previous-visual-line)))
 
-  (bind-keys
-   :map evil-visual-state-map
-   ("p" . my=evil-paste-after-from-0))
+  (bind-keys :map evil-visual-state-map
+             ("p" . my=evil-paste-after-from-0))
 
   ;; see also binding for <f2>
   ;; (bind-keys :map evil-normal-state-map
