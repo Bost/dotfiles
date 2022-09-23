@@ -371,6 +371,7 @@ guix shell --development guix help2man git strace --pure
                       ;; "/vesmir" is in the projects-heroku list
                       "/heroku-buildpack-racket"))
    (cons "/dev" (list
+                 "/guix-packages" #;"/guix"
                  "/copy-sexp" "/kill-buffers" "/jump-last"
   #|
 ;;; use the local guix repo-checkout instead of git.savannah.gnu.org:

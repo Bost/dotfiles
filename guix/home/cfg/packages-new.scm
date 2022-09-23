@@ -148,6 +148,7 @@
    curl
    dconf
    dconf-editor
+   dos2unix
    evince
    exa
    fd
@@ -222,6 +223,7 @@
    pinentry
    pkg-config
    plocate
+   postgresql@13.6
    portaudio
    pulseaudio
    pv
