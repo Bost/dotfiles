@@ -5,10 +5,21 @@
 ;; guix system describe | rg "configuration file" | rg -o "/gnu/.*"
 
 #|
-run this file by (the `~' doesn't work as a value of --load-path):
+# run this file by (the `~' doesn't work as a value of --load-path):
 sudo guix system --load-path=$dotf/guix/system reconfigure $dotf/guix/system/configuration.scm
-|#
 
+udisksctl mount --block-device=(blkid --uuid a8fb1680-eef5-49a0-98a3-8169c9b8eeda)
+sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
+sudo cp /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg /tmp/grub.cfg
+<edit /tmp/grub.cfg>
+# grep -oP "([0-9]{1,}\.)+[0-9]{1,}" # match the version number
+rg --no-line-number -A 4 --max-count=1 "GNU with Linux-Libre" /boot/grub/grub.cfg
+<copy the block>
+guix system describe | rg current
+<extract the time and generation number>
+sudo cp /tmp/grub.cfg /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg
+sudo reboot # press <f12> during the reboot and fix the boot order
+|#
 
 (format #t "[configuration] evaluating ...\n")
 
@@ -122,19 +133,6 @@ sudo guix system --load-path=$dotf/guix/system reconfigure $dotf/guix/system/con
    ;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
    ;; https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dinstall.html#Invoking-grub_002dinstall
 
-   #|
-   bash:
-   udisksctl mount --block-device=$(blkid --uuid a8fb1680-eef5-49a0-98a3-8169c9b8eeda)
-   sudo chmod +rw /tmp/grub.cfg
-   sudo chown bost /tmp/grub.cfg
-   sudo cp /media/bost/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg /tmp/grub.cfg
-
-   # guix show linux-libre | head | grep version | grep -oP "([0-9]{1,}\.)+[0-9]{1,}"
-   guix system describe
-   edit /tmp/grub.cfg
-   sudo cp -i /tmp/grub.cfg /media/bost/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg
-   reboot with <f12> - edit boot order
-   |#
    (bootloader
     (bootloader-configuration
      (bootloader grub-efi-bootloader)
