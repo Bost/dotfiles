@@ -13,9 +13,11 @@
           (length load-path)))
 
 (defun my=beg (f)
+  "TODO my=beg could / should be done using (advice-add :before ...)"
   ;; (message (my=log #'beg) f)
   )
 (defun my=end (f)
+  "TODO my=end could / should be done using (advice-add :after ...)"
   ;; (message (my=log #'end) f)
   )
 
@@ -1401,6 +1403,8 @@ Some binding snippets / examples:
 
      ;; TODO my=emacs-comment-sexp: mark-sexp C-M-@ comment-dwim M-;
 
+     ;; the funny keys can be seen
+     ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
      ("C-s-<268632070>" . my=H-3) ;; this is probably for an Apple computers
      ("<escape>"  . keyboard-escape-quit)
      ("M-Q"       . unfill-paragraph)
@@ -1455,27 +1459,25 @@ Some binding snippets / examples:
      ("s-W"         . whitespace-cleanup)
      ("s-w"         . my=whitespace-mode-toggle)
      ("s-m"         . my=magit-status)
+     ("<f3>"   . my=search-region-or-symbol)          ;; advice-d
+     ("M-<f3>" . spacemacs/hsearch-project)           ;; advice-d
 
-     ;; Try ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode) mark something and
-     ;; press ~SPC s e~
-     ("<f3>" . (lambda ()
-                 (interactive) (my=search-region-or-symbol)
-                 (message "Also ~M-<f3>~ for M-x spacemacs/hsearch-project")))
-     ;; See also ~SPC *~ M-x spacemacs/hsearch-project-region-or-symbol
-     ("M-<f3>" . spacemacs/hsearch-project)
+     ("s-a"    . helm-mini)                           ;; advice-d
+     ("s-]"    . helm-mini)
+     ;; helm-mini doesn't show all buffers when using layouts (~SPC l~)
+     ("C-s-a"  . spacemacs-layouts/non-restricted-buffer-list-helm) ; advice-d
 
-     ("s-a"    . helm-mini)                   ; see advice-add my=helm-mini
-     ("s-]"    . helm-mini)                   ; see advice-add my=helm-mini
      ("s-B"    . helm-filtered-bookmarks)
      ("<f9>"   . helm-filtered-bookmarks)
      ;; ("s-p" . helm-projectile)
      ("s-p"    . helm-projectile-find-file)
-     ("M-s-p"  . helm-projectile-switch-project)
+     ("s-P"    . spacemacs/helm-persp-switch-project) ;; advice-d
      ("s-f"    . helm-find-files)
      ("s-F"    . helm-recentf)
-     ("s-r" . (lambda ()
-                (interactive) (helm-recentf)
-                (message "Use ~s-F~ instead of ~s-r~ for M-x helm-recentf")))
+     ;; Can't use `advice'. This is an advice for the binding, not the function
+     ("s-r"    . (lambda ()
+                   (interactive) (helm-recentf)
+                   (message "Use ~s-F~ instead of ~s-r~ for M-x helm-recentf")))
      ("M-y"    . helm-show-kill-ring)    ; replaces evil-paste-pop
      ("s-G"    . helm-google-suggest)
      ("s-/"    . helm-swoop)
@@ -1712,9 +1714,9 @@ Some binding snippets / examples:
 ;;;  (dolist (map `(,term-raw-map)) ;; '(term-raw-map)
 ;;;    (bind-keys :map term-raw-map ... )))
 
+  ;; TODO try to use mapcar instead of dolist and with-eval-after-load
   (with-eval-after-load 'multi-term
     (dolist (map '(term-raw-map))
-      (message "bind-chords %s" map)
       (bind-keys :map map
                  ("C-<right>" . right-word)
                  ("C-<left>"  . left-word)
@@ -1829,7 +1831,8 @@ Some binding snippets / examples:
   (bind-chords :map emacs-lisp-mode-map
                ("df" . my=elisp-insert-defun)
                ("le" . my=elisp-insert-let)
-               ("ms" . my=elisp-insert-message))
+               ("me" . my=elisp-insert-message)
+               ("pr" . my=elisp-insert-message))
 
   (bind-keys :map emacs-lisp-mode-map
              ("C-s-l" . my=elisp-insert-let)
@@ -1841,7 +1844,7 @@ Some binding snippets / examples:
              ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp))
 
   (dolist (map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
-                       ,clojure-mode-map))
+                 ,clojure-mode-map))
     (bind-keys :map map
                ;; default is forward-sexp
                ("<C-M-right>" . end-of-defun)
@@ -1874,44 +1877,45 @@ Some binding snippets / examples:
               (bind-keys :map debugger-mode-map
                          ("C-g" . debugger-quit))))
 
-(defun my=kbindings-scheme (map)
-  (bind-keys :map map
-             ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
-             ("C-s-m"  . my=scheme-insert-log)
-             ("C-s-p"  . my=scheme-insert-log)
-             ;; ("s-;"    . my=racket-toggle-reader-comment-current-sexp)
-             ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
-             ("s-x"    . geiser-mode-switch-to-repl))
-  (bind-chords :map map
-               ("le" . my=scheme-insert-let*)
-               ("pr" . my=scheme-insert-log)))
+  (defun my=fn-kbind-scheme (map)
+    (lambda ()
+      (bind-keys :map map
+                 ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
+                 ("C-s-m"  . my=scheme-insert-log)
+                 ("C-s-p"  . my=scheme-insert-log)
+                 ;; ("s-;"    . my=racket-toggle-reader-comment-current-sexp)
+                 ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
+                 ("s-x"    . geiser-mode-switch-to-repl))
+      (bind-chords :map map
+                   ("le" . my=scheme-insert-let*)
+                   ("pr" . my=scheme-insert-log))))
 
-(defun my=kbindings-racket (map)
-  (bind-keys :map map
-             ("<C-s-delete>" . my=racket-repl-clear)
-             ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
-             ("C-s-p"  . my=racket-insert-log)
-             ("M-s-d"  . my=racket-insert-fn)
-             ("M-s-p"  . my=insert-partial)
-             ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
-             ("s-o" . racket-run-and-switch-to-repl))
-  (bind-chords :map map
-               ("pr" . my=racket-insert-log)))
+  (defun my=fn-kbind-racket (map)
+    (lambda ()
+      (bind-keys :map map
+                 ("<C-s-delete>" . my=racket-repl-clear)
+                 ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
+                 ("C-s-p"  . my=racket-insert-log)
+                 ("M-s-d"  . my=racket-insert-fn)
+                 ("M-s-p"  . my=insert-partial)
+                 ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
+                 ("s-o"    . racket-run-and-switch-to-repl))
+      (bind-chords :map map
+                   ("pr" . my=racket-insert-log))))
 
-  (add-hook 'racket-mode-hook
-            (lambda () (my=kbindings-racket racket-mode-map)))
-  (add-hook 'racket-repl-mode-hook
-            (lambda () (my=kbindings-racket racket-repl-mode-map)))
-  (add-hook 'scheme-mode-hook
-            (lambda () (my=kbindings-scheme scheme-mode-map)))
-  (add-hook 'scheme-repl-mode-hook
-            (lambda () (my=kbindings-scheme scheme-repl-mode-map)))
+  ;; For rkt-files the bindings are available via major mode bindings.
+  ;; See M-x helm-descbinds
+  (with-eval-after-load 'racket-mode
+    (mapcar (-partial #'apply #'add-hook)
+            `((racket-mode-hook      ,(my=fn-kbind-racket racket-mode-map))
+              (racket-repl-mode-hook ,(my=fn-kbind-racket racket-repl-mode-map)))))
 
-  ;; extra bindings for geiser are probably not needed
-  ;; (add-hook 'geiser-mode-hook
-  ;;           (lambda () (my=kbindings-scheme geiser-mode-map)))
-  ;; (add-hook 'geiser-repl-mode-hook
-  ;;           (lambda () (my=kbindings-scheme geiser-repl-mode-map)))
+  ;; For scm-files the bindings are available via minor mode bindings for
+  ;; geiser-mode, not for scheme-mode. See M-x helm-descbinds
+  (with-eval-after-load 'geiser-mode
+    (mapcar (-partial #'apply #'add-hook)
+            `((geiser-mode-hook      ,(my=fn-kbind-scheme geiser-mode-map))
+              (geiser-repl-mode-hook ,(my=fn-kbind-scheme geiser-repl-mode-map)))))
 
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
@@ -1925,28 +1929,51 @@ Some binding snippets / examples:
   ;; See
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
 
-  (advice-add
-   #'split-window-right-and-focus
-   :after (defun my=recenter-top-bottom ()
-            ;; needed cause the (recenter-top-bottom) has (interactive "P")
-            (recenter-top-bottom)))
-  (advice-add
-   #'whitespace-cleanup
-   :after (defun my=whitespace-cleanup ()
-            (message "whitespace-cleanup")))
-  (advice-add
-   #'evil-avy-goto-char-timer
-   :after (defun my=evil-avy-goto-char-timer ()
-            (message "evil-avy-goto-char-timer: SPC j j, <f2>")))
-  (advice-add
-   #'avy-goto-line
-   :after (defun my=avy-goto-line ()
-            (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
-  (advice-add #'evil-ex-search-next      :after #'evil-scroll-line-to-center)
-  (advice-add #'evil-ex-search-previous  :after #'evil-scroll-line-to-center)
+  (advice-add #'spacemacs/hsearch-project
+              :after (defun my=note--spacemacs/hsearch-project ()
+                       (message
+                        (concat
+                         "Try also: ~SPC *~ for"
+                         " M-x spacemacs/hsearch-project-region-or-symbol"))))
 
-  (advice-add #'ediff-quit :around #'my=disable-y-or-n-p)
-  (advice-add #'helm-mini  :before #'my=helm-mini)
+  (advice-add #'my=search-region-or-symbol
+              :after (defun my=note--my=search-region-or-symbol ()
+                       (message
+                        (concat
+                         "Try also:\n"
+                         "  1. ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode)"
+                         " mark something and press ~SPC s e~\n"
+                         "  2. ~M-<f3>~ for M-x spacemacs/hsearch-project"))))
+  (advice-add #'split-window-right-and-focus
+              :after (defun my=recenter-top-bottom ()
+                       ;; needed cause the (recenter-top-bottom) has
+                       ;; (interactive "P")
+                       (recenter-top-bottom)))
+  (advice-add #'whitespace-cleanup
+              :after (defun my=whitespace-cleanup ()
+                       (message "whitespace-cleanup")))
+  (advice-add #'evil-avy-goto-char-timer
+              :after (defun my=note--evil-avy-goto-char-timer ()
+                       (message "evil-avy-goto-char-timer: SPC j j, <f2>")))
+  (advice-add #'avy-goto-line
+              :after (defun my=note--avy-goto-line ()
+                       (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
+  (advice-add #'evil-ex-search-next
+              :after #'evil-scroll-line-to-center)
+  (advice-add #'evil-ex-search-previous
+              :after #'evil-scroll-line-to-center)
+  (advice-add #'ediff-quit
+              :around #'my=disable-y-or-n-p)
+  (advice-add #'helm-mini
+              :before #'my=helm-mini)
+  (advice-add #'helm-mini
+              :after (defun my=note--evil-avy-goto-char-timer ()
+                       (message "helm-mini: mark all buffers (i.e. for deletion): ~M-m~")))
+
+  (advice-add #'spacemacs/helm-persp-switch-project
+              :after (defun my=note--spacemacs/helm-persp-switch-project ()
+                       (message
+                        "Try also: ~SPC p p~ for M-x helm-projectile-switch-project")))
 
   ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
   ;; layers/+misc/multiple-cursors/packages.el

@@ -265,10 +265,15 @@ Repeated invocations toggle between the two most recently open buffers."
   (my=cider-figwheel-repl))
 
 (defun my=cider-switch-to-repl-buffer ()
-  "Connect (if not connected yet) and switch to cider repl buffer"
+  "Connect (if not connected yet) and switch to cider repl buffer.
+TODO redefine / parameterize for the corona_cases in the
+.dir-locals.el so that the `(cider-connect-clj)'
+or `(cider-jack-in-clj nil)' or any other command is specified as
+a parameter."
   (interactive)
   (unless (cider-connected-p)
-    (cider-jack-in-clj nil) ; previously (cider-connect-clj)
+    ;; (cider-jack-in-clj nil)
+    (cider-connect-clj)
     ;; TODO wait until the repl gets started
     )
   (cider-switch-to-repl-buffer))
