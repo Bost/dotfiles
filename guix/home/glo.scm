@@ -26,6 +26,8 @@ Requires:
 ;; TODO use continuation breakout instead of a global variable
 (define found #f)
 
+;; TODO if remote/origin is not present then try to use remote/upstream, then
+;; remote/gitlab, then remote/github
 (define (main args)
   ((compose
     (partial
