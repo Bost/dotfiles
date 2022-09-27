@@ -1081,6 +1081,7 @@ before packages are loaded."
 
    ;; See https://emacs.stackexchange.com/q/22283 and
    ;; `ls-lisp-use-insert-directory-program', `ls-lisp-dirs-first'
+   ;; ls -la: -a - show hidden files
    dired-listing-switches "--group-directories-first --dereference -al"
    ;; dired-listing-switches "--group-directories-first -al"
 
