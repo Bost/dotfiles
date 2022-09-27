@@ -6,11 +6,12 @@
 
 #|
 # run this file by (the `~' doesn't work as a value of --load-path):
-sudo guix system --load-path=$dotf/guix/system reconfigure $dotf/guix/system/configuration.scm
+# --fallback         fall back to building when the substituter fails
+sudo guix system --fallback --load-path=$dotf/guix/system reconfigure $dotf/guix/system/configuration.scm
 
 udisksctl mount --block-device=(blkid --uuid a8fb1680-eef5-49a0-98a3-8169c9b8eeda)
-sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
 sudo cp /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg /tmp/grub.cfg
+sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
 <edit /tmp/grub.cfg>
 # grep -oP "([0-9]{1,}\.)+[0-9]{1,}" # match the version number
 rg --no-line-number -A 4 --max-count=1 "GNU with Linux-Libre" /boot/grub/grub.cfg
@@ -127,7 +128,20 @@ sudo reboot # press <f12> during the reboot and fix the boot order
            (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
            (udev-rules-service 'android android-udev-rules
                                #:groups '("adbusers")))
-     %desktop-services))
+     (modify-services
+         %desktop-services
+       (guix-service-type
+        config =>
+        (guix-configuration
+         (inherit config)
+         (substitute-urls
+          (append (list "https://substitutes.nonguix.org")
+                  %default-substitute-urls))
+         (authorized-keys
+          ;; The signing-key.pub should be obtained by
+          ;; wget https://substitutes.nonguix.org/signing-key.pub
+          (append (list (local-file "./signing-key.pub"))
+                  %default-authorized-guix-keys)))))))
 
    ;; see
    ;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
