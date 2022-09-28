@@ -118,6 +118,7 @@
    unzip
    vim
    xfce4-clipman-plugin
+   xfce4-netload-plugin ;; traffic indicator
    xkeyboard-config
    zip
    ))
