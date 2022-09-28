@@ -1869,6 +1869,30 @@ Some binding snippets / examples:
               (bind-keys :map LaTeX-mode-map
                          ("<menu>" . latex/build))))
 
+  ;; Setup for Hacking on Guix
+  ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
+  (let* ((guix-checkout-dir "~/dev/guix"))
+    (with-eval-after-load 'geiser-guile
+      (add-to-list 'geiser-guile-load-path guix-checkout-dir))
+    (with-eval-after-load 'yasnippet
+      (add-to-list 'yas-snippet-dirs (concat guix-checkout-dir "/etc/snippets")))
+
+    ;; TODO extend the GuixOS with a service providing user full-name and email
+    ;; or parse (one of):
+    ;;   /run/current-system/configuration.scm
+    ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
+
+    (setq user-full-name (getenv "user_full_name"))
+    (setq user-mail-address (getenv "user_mail_address"))
+    ;; Assuming the Guix checkout is in ~/src/guix.
+    (load-file (concat guix-checkout-dir "/etc/copyright.el"))
+    (setq copyright-names-regexp
+          (format "%s <%s>" user-full-name user-mail-address))
+    ;; check if the copyright is up to date M-x copyright-update.
+    ;; automatically add copyright after each buffer save
+    ;; (add-hook 'after-save-hook 'copyright-update)
+    )
+
   (add-hook 'python-mode-hook
             (lambda ()
               (bind-keys :map python-mode-map
