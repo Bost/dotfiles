@@ -26,11 +26,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
 
 (define-module (configuration)
   #:use-module (gnu)
-  #:use-module (gnu packages libusb)   ; for libmtp
-  #:use-module (gnu packages android)  ; for android-udev-rules
-  #:use-module (gnu packages shells)   ; for login shell
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
-  #:use-module (gnu packages bash)
   #:use-module (common settings))
 
 (use-service-modules
@@ -39,6 +35,17 @@ sudo reboot # press <f12> during the reboot and fix the boot order
   networking
   ssh
   xorg)
+
+;; 'use-package-modules' is unlike the general 'use-modules' specifically for
+;; packages. Every package module from 'use-package-modules' can be included under
+;; the 'use-modules'.
+(use-package-modules
+ android  ; for android-udev-rules - access smartphone via mtp://
+ bash
+ libusb   ; for libmtp
+ shells   ; for login shell
+ )
+
 
 (format #t "user-full-name: ~a\n" user-full-name)
 
