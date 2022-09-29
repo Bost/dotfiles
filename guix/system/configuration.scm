@@ -87,7 +87,8 @@ sudo reboot # press <f12> during the reboot and fix the boot order
             ;; explicitly define bash!
             (shell (file-append bash "/bin/bash"))
             (supplementary-groups
-             '("wheel" "netdev" "audio" "video" "adbusers")))
+             '("wheel" ;; gives access to 'sudo'
+               "netdev" "audio" "video" "adbusers")))
            %base-user-accounts))
    (packages
     (append
@@ -129,19 +130,19 @@ sudo reboot # press <f12> during the reboot and fix the boot order
            (udev-rules-service 'android android-udev-rules
                                #:groups '("adbusers")))
      (modify-services
-         %desktop-services
-       (guix-service-type
-        config =>
-        (guix-configuration
-         (inherit config)
-         (substitute-urls
-          (append (list "https://substitutes.nonguix.org")
-                  %default-substitute-urls))
-         (authorized-keys
-          ;; The signing-key.pub should be obtained by
-          ;; wget https://substitutes.nonguix.org/signing-key.pub
-          (append (list (local-file "./signing-key.pub"))
-                  %default-authorized-guix-keys)))))))
+      %desktop-services
+      (guix-service-type
+       config =>
+       (guix-configuration
+        (inherit config)
+        (substitute-urls
+         (append (list "https://substitutes.nonguix.org")
+                 %default-substitute-urls))
+        (authorized-keys
+         ;; The signing-key.pub should be obtained by
+         ;; wget https://substitutes.nonguix.org/signing-key.pub
+         (append (list (local-file "./signing-key.pub"))
+                 %default-authorized-guix-keys)))))))
 
    ;; see
    ;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
@@ -150,9 +151,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    (bootloader
     (bootloader-configuration
      (bootloader grub-efi-bootloader)
-     ;; (target "/boot/efi")
-     (targets
-      '("/boot/efi1"))
+     (targets '("/boot/efi1")) ;; (target "/boot/efi")
      (menu-entries
       (list
        (let ((linux-version "5.15.0-47"))
@@ -164,7 +163,8 @@ sudo reboot # press <f12> during the reboot and fix the boot order
           ;; splash - show a graphical "splash" screen while booting.
           (linux-arguments '("root=UUID=a8fb1680-eef5-49a0-98a3-8169c9b8eeda"
                              "ro" "quiet" "splash"
-                             ;; value $vt_handoff is "vt.handoff=7" or unspecified
+                             ;; value $vt_handoff is "vt.handoff=7" or
+                             ;; unspecified
                              #;"$vt_handoff"))
           (initrd (format #t "/boot/initrd.img-~a-generic" linux-version))))))
 
@@ -172,9 +172,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    (file-systems
     (cons* (file-system
             (mount-point "/")
-            (device
-             (uuid "67ce5d9c-7af1-4435-a2a9-68651ab9a281"
-                   'ext4))
+            (device (uuid "67ce5d9c-7af1-4435-a2a9-68651ab9a281" 'ext4))
             (type "ext4"))
            (file-system
             (mount-point "/boot/efi1")
@@ -188,10 +186,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    ;; warning: List elements of the field 'swap-devices' should now use the
    ;; <swap-space> record, as the old method is deprecated.
    ;; See "(guix) operating-system Reference" for more details.
-   (swap-devices
-    (list
-     (swap-space (target "/swapfile"))))
-   ))
+   (swap-devices (list (swap-space (target "/swapfile"))))))
 
 (format #t "\n[configuration] evaluated\n")
 ;; operating-system (or image) must be returned
