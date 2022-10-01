@@ -1255,13 +1255,21 @@ before packages are loaded."
     ;; "oy" 'my=copy-to-clipboard    ; TODO is this function useful?
     )
 
-  (dolist (mode `(clojure-mode
-                  clojure-modec
-                  clojurescript-mode
-                  cider-repl-mode))
-    (spacemacs/set-leader-keys-for-major-mode mode
-      "f" 'my=switch-to-repl-start-figwheel
-      "c" 'my=cider-clear-compilation-highlights))
+  ;; accessible from:
+  ;; 1. from evil-nomal-mode by ~SPC m~ or ~M-m m~ or
+  ;; 2. from evil-insert-mode by ~,~
+  (mapcar (lambda (mode)
+            (spacemacs/set-leader-keys-for-major-mode mode
+              "c" 'my=cider-clear-compilation-highlights
+              "f" 'my=switch-to-repl-start-figwheel
+              "l" 'helm-cider-repl-history))
+          `(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
+
+  ;; (dolist (mode
+  ;;          `(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
+  ;;   (spacemacs/set-leader-keys-for-major-mode mode
+  ;;     "f" 'my=switch-to-repl-start-figwheel
+  ;;     "c" 'my=cider-clear-compilation-highlights))
 
   (spacemacs|add-cycle
       defun-narrow-modes
@@ -1358,8 +1366,10 @@ Some binding snippets / examples:
     (dolist (map `(,clojure-mode-map ,cider-repl-mode-map))
       ;; (message "bind-chords %s" map) ;; TODO quote / unquote
       (bind-chords :map map
-                   ("pr" . (my=insert-str "(println \"\")" 2))
-                   ("rm" . (my=insert-str "(remove (fn []))" 3))
+                   ("pr" . (lambda () (interactive)
+                             (my=insert-str "(println \"\")" 2)))
+                   ("rm" . (lambda () (interactive)
+                             (my=insert-str "(remove (fn []))" 3)))
                    ("fi" . my=clj-insert-filter-fn)
                    ("de" . my=clj-insert-defn)
                    ("db" . my=clj-insert-debugf)
@@ -1386,6 +1396,12 @@ Some binding snippets / examples:
     ;; (setq evil-respect-visual-line-mode t) doesn't work easily
     (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
     (global-set-key [remap evil-beginning-of-line] 'crux-move-beginning-of-line)
+
+    ;; BUG: The ~C-z~ / M-x suspend-frame surfaces when calling
+    ;; ~SPC k e~ / M-x evil-lisp-state-sp-splice-sexp-killing-forward.
+    ;; since this function changes 'evil-state' to 'lisp'.
+    ;; ~ESC~ / M-x evil-lisp-state/quit
+    (global-unset-key (kbd "C-z"))
 
     (bind-chords :map global-map
                  ("KK" . my=switch-to-previous-buffer)
@@ -1484,11 +1500,15 @@ Some binding snippets / examples:
      ("s-/"    . helm-swoop)
      ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
 
-     ;; C-M-down default value is `down-list'
      ;; TODO crux-duplicate-current-line-or-region gets confused with registry
      ;; content
-     ("C-M-<down>" . crux-duplicate-current-line-or-region)
      ("C-s-<down>" . crux-duplicate-current-line-or-region)
+     ("C-s-<up>"   . (lambda (arg) (interactive "p")
+                       (crux-duplicate-current-line-or-region arg)
+                       (if (evil-normal-state-p)
+                           (evil-previous-line)
+                         (previous-line))))
+
      ("C-c d"      . crux-duplicate-current-line-or-region)
      ("C-c t"      . crux-transpose-windows)
      ("C-s-<backspace>" . crux-kill-line-backwards) ; kill-line-backward
@@ -1723,16 +1743,24 @@ Some binding snippets / examples:
                  ("C-<left>"  . left-word)
                  ("<delete>"  . term-send-del)
                  ("<prior>"   . evil-scroll-page-up)
-                 ("<next>"    . evil-scroll-page-down))))
+                 ("<next>"    . evil-scroll-page-down)
+;;; simple ~<prior>~, ~<next>~ (i.e. pgup / pgdown) don't even get registered by
+;;; Emacs. See: xfconf-query -c xfce4-keyboard-shortcuts -lv | grep Page
+                 ("s-<prior>"   . evil-scroll-page-up)
+                 ("s-<next>"    . evil-scroll-page-down)
+                 )))
 
   (bind-keys :map dired-mode-map
              ("<f5>"        . revert-buffer)
-             ("C-s-h"       . my=dired-dotfiles-toggle) ;; "C-H" doesn't work WTF???
-             ("<backspace>" . (lambda () (interactive) (find-alternate-file "..")))
+;;; Use ~C-s-h~ because ~C-H~ (shift-h) doesn't work
+             ("C-s-h"       . my=dired-dotfiles-toggle)
+             ("<backspace>" . (lambda () (interactive)
+                                (find-alternate-file "..")))
              ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
              ;; ("<return>"    . dired-find-alternate-file)
-             ;; ("<return>"    . dired-x-find-file) ;; asks for file instead of opening it
              ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
+             ;; asks for file instead of opening it
+             ;; ("<return>"    . dired-x-find-file)
              ("<return>"    . dired-find-file) ;; default
              ("<S-delete>"  . my=dired-do-delete))
 
@@ -1843,14 +1871,6 @@ Some binding snippets / examples:
              ("s-d"   . my=eval-current-defun)
              ("#"     . endless/sharp)
              ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp))
-
-  (dolist (map `(,lisp-mode-shared-map ; lisp-mode-map doesn't work
-                 ,clojure-mode-map))
-    (bind-keys :map map
-               ;; default is forward-sexp
-               ("<C-M-right>" . end-of-defun)
-               ;; default is backward-sexp
-               ("<C-M-left>"  . beginning-of-defun)))
 
   (bind-keys :map org-mode-map
              ("<menu>" . org-latex-export-to-pdf))
