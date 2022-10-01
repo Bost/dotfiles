@@ -1212,12 +1212,11 @@ before packages are loaded."
      .
      (lambda ()
        "Don't increase the height relative to the other text."
-       (dolist (face
-                '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5))
-         (set-face-attribute face nil
-                             :weight 'bold ; 'semi-bold
-                             :height 1.0))))
-    )
+       (mapcar
+        (lambda (face)
+          ;; (set-face-attribute face nil :weight 'semi-bold :height 1.0)
+          (set-face-attribute face nil :weight 'bold :height 1.0))
+        '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5)))))
 
   (use-package fish-mode :hook (fish-mode . paredit-mode))
 
@@ -1263,13 +1262,7 @@ before packages are loaded."
               "c" 'my=cider-clear-compilation-highlights
               "f" 'my=switch-to-repl-start-figwheel
               "l" 'helm-cider-repl-history))
-          `(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
-
-  ;; (dolist (mode
-  ;;          `(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
-  ;;   (spacemacs/set-leader-keys-for-major-mode mode
-  ;;     "f" 'my=switch-to-repl-start-figwheel
-  ;;     "c" 'my=cider-clear-compilation-highlights))
+          '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
 
   (spacemacs|add-cycle
       defun-narrow-modes
@@ -1293,56 +1286,13 @@ before packages are loaded."
   (defun my=racket-repl-clear ()
     (interactive)
     (let ((inhibit-read-only t))
+      ;; (erase-buffer)
       (delete-region (point-min) (- (point-max) 2))))
-
-  ;; (defun my=racket-repl-clear ()
-  ;;   (interactive)
-  ;;   (let ((inhibit-read-only t))
-  ;;     (erase-buffer)))
 
   (defun my=H-1 () (interactive) (message "H-1"))
   (defun my=H-2 () (interactive) (message "H-2"))
   (defun my=H-3 () (interactive) (message "H-3"))
   (defun my=H-4 () (interactive) (message "H-4"))
-
-  (defun my=ins-left-paren () "Simulate key press" (interactive) (execute-kbd-macro (kbd "(")))
-  (defun my=ins-right-paren () "Simulate key press" (interactive) (execute-kbd-macro (kbd ")")))
-
-  (defun my=delete-window ()
-    (interactive)
-    (let ((win-list (window-list)))
-      (if (funcall (-compose (-partial #'equal 1)
-                             #'length
-                             #'delete-dups
-                             (-partial #'mapcar (-compose #'buffer-name
-                                                          #'window-buffer)))
-                   (window-list))
-          (spacemacs/alternate-buffer)
-        (delete-window (selected-window)))))
-
-  ;; (defun matches-a-buffer-name? (name)
-  ;;   "Return non-nil if NAME matches the name of an existing buffer."
-  ;;   (try-completion name (mapcar #'buffer-name (buffer-list))))
-
-  (defun buffer-exists-p (bufname)
-    ;; See also: (lambda (window) (buffer-name (window-buffer window)))
-    (and (member bufname (mapcar #'buffer-name (buffer-list)))
-         t))
-
-  (defun my=toggle-shell-pop-term ()
-    (interactive)
-    (cond
-     ((equal 'term-mode major-mode)
-      (my=delete-window))
-
-     ;; can't use (let ...)
-     ((buffer-exists-p "*Default-term-0*")
-      (pop-to-buffer "*Default-term-0*"))
-
-     (t
-      ;; `spacemacs/shell-pop-term' defined in layers/+tools/shell/packages.el
-      (spacemacs/shell-pop-term 0)))
-    (balance-windows-area))
 
   (defun my=eval-bind-keys-and-chords ()
     "To activate changes, do:
@@ -1361,30 +1311,6 @@ Some binding snippets / examples:
     ;; (key-chord-define global-map "fj" nil)
 
     ;; see also `key-chord-unset-global' / `key-chord-unset-local'
-    ;; TODO this dolist block must be manually evaluated
-
-    (dolist (map `(,clojure-mode-map ,cider-repl-mode-map))
-      ;; (message "bind-chords %s" map) ;; TODO quote / unquote
-      (bind-chords :map map
-                   ("pr" . (lambda () (interactive)
-                             (my=insert-str "(println \"\")" 2)))
-                   ("rm" . (lambda () (interactive)
-                             (my=insert-str "(remove (fn []))" 3)))
-                   ("fi" . my=clj-insert-filter-fn)
-                   ("de" . my=clj-insert-defn)
-                   ("db" . my=clj-insert-debugf)
-                   ("dg" . my=clj-insert-debugf)
-                   ("df" . my=clj-insert-fn)
-                   ("ds" . my=clj-insert-doseq)
-                   ("fn" . my=clj-insert-fn)
-                   ("do" . my=clj-insert-do)
-                   ("co" . my=clj-insert-comp)
-                   ("cd" . my=insert-clojuredocs)
-                   ("pa" . my=insert-partial)
-                   ("le" . my=clj-insert-let)
-                   ("fo" . my=clj-insert-for)
-                   ("ty" . my=clj-insert-type)
-                   ("ma" . my=clj-insert-map-fn)))
 
     ;; for the substitution: ~s-:~ / M-x my=fabricate-subst-cmd
     (bind-chords :map evil-ex-completion-map ; not he evil-ex-map!!!
@@ -1732,27 +1658,25 @@ Some binding snippets / examples:
 ;;;; evaluation won't work. `term-raw-map' is defined only after loading
 ;;;; `multi-term'
 ;;;   (lambda (body) (with-eval-after-load 'multi-term body)))
-;;;  (dolist (map `(,term-raw-map)) ;; '(term-raw-map)
-;;;    (bind-keys :map term-raw-map ... )))
-
-  ;; TODO try to use mapcar instead of dolist and with-eval-after-load
   (with-eval-after-load 'multi-term
-    (dolist (map '(term-raw-map))
-      (bind-keys :map map
-                 ("C-<right>" . right-word)
-                 ("C-<left>"  . left-word)
-                 ("<delete>"  . term-send-del)
-                 ("<prior>"   . evil-scroll-page-up)
-                 ("<next>"    . evil-scroll-page-down)
+    (mapcar
+     (lambda (map)
+       (bind-keys :map map
+                  ("C-<right>" . right-word)
+                  ("C-<left>"  . left-word)
+                  ("<delete>"  . term-send-del)
+                  ("<prior>"   . evil-scroll-page-up)
+                  ("<next>"    . evil-scroll-page-down)
 ;;; simple ~<prior>~, ~<next>~ (i.e. pgup / pgdown) don't even get registered by
 ;;; Emacs. See: xfconf-query -c xfce4-keyboard-shortcuts -lv | grep Page
-                 ("s-<prior>"   . evil-scroll-page-up)
-                 ("s-<next>"    . evil-scroll-page-down)
-                 )))
+                  ("s-<prior>"   . evil-scroll-page-up)
+                  ("s-<next>"    . evil-scroll-page-down)
+                  ))
+     '(term-raw-map)))
 
   (bind-keys :map dired-mode-map
              ("<f5>"        . revert-buffer)
-;;; Use ~C-s-h~ because ~C-H~ (shift-h) doesn't work
+             ;; Use ~C-s-h~ b/c ~C-H~ (shift-h) doesn't work
              ("C-s-h"       . my=dired-dotfiles-toggle)
              ("<backspace>" . (lambda () (interactive)
                                 (find-alternate-file "..")))
@@ -1801,15 +1725,37 @@ Some binding snippets / examples:
              ("<C-right>"    . right-word)
              ("<C-left>"     . left-word))
 
-  (dolist (map `(,clojure-mode-map ,cider-repl-mode-map))
-    (bind-keys :map map
-               ;; on the german keyboard the '#' is next to Enter
-               ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
-               ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
-               ("s-X"   . my=switch-to-repl-start-figwheel)
-               ("s-e"   . cider-eval-last-sexp)
-               ("s-j"   . cider-format-defun)
-               ("s-i"   . cljr-rename-symbol)))
+  (mapcar
+   (lambda (map)
+     (bind-keys :map map
+                ;; on the german keyboard the '#' is next to Enter
+                ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
+                ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
+                ("s-X"   . my=switch-to-repl-start-figwheel)
+                ("s-e"   . cider-eval-last-sexp)
+                ("s-j"   . cider-format-defun)
+                ("s-i"   . cljr-rename-symbol))
+     (bind-chords :map map
+                  ("pr" . (lambda () (interactive)
+                            (my=insert-str "(println \"\")" 2)))
+                  ("rm" . (lambda () (interactive)
+                            (my=insert-str "(remove (fn []))" 3)))
+                  ("fi" . my=clj-insert-filter-fn)
+                  ("de" . my=clj-insert-defn)
+                  ("db" . my=clj-insert-debugf)
+                  ("dg" . my=clj-insert-debugf)
+                  ("df" . my=clj-insert-fn)
+                  ("ds" . my=clj-insert-doseq)
+                  ("fn" . my=clj-insert-fn)
+                  ("do" . my=clj-insert-do)
+                  ("co" . my=clj-insert-comp)
+                  ("cd" . my=insert-clojuredocs)
+                  ("pa" . my=insert-partial)
+                  ("le" . my=clj-insert-let)
+                  ("fo" . my=clj-insert-for)
+                  ("ty" . my=clj-insert-type)
+                  ("ma" . my=clj-insert-map-fn)))
+   '(clojure-mode-map cider-repl-mode-map))
 
   (bind-keys :map cider-repl-mode-map
              ("<menu>" . my=stop-synths-metronoms)
@@ -1857,8 +1803,9 @@ Some binding snippets / examples:
                   (eq (char-after) ?'))
         (insert "'"))))
 
-  (bind-chords :map emacs-lisp-mode-map
+    (bind-chords :map emacs-lisp-mode-map
                ("df" . my=elisp-insert-defun)
+               ("la" . my=elisp-insert-lambda)
                ("le" . my=elisp-insert-let)
                ("me" . my=elisp-insert-message)
                ("pr" . my=elisp-insert-message))
@@ -2020,17 +1967,21 @@ Some binding snippets / examples:
                        (message
                         "Try also: ~SPC p p~ for M-x helm-projectile-switch-project")))
 
-  ;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
-  ;; layers/+misc/multiple-cursors/packages.el
-  (dolist (map `(,evil-normal-state-map ,evil-insert-state-map))
-    (bind-keys :map map
-               ("C-M-k" . kill-sexp)))
+  (mapcar
+   (lambda (map)
+     (bind-keys :map map
+;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+;;; layers/+misc/multiple-cursors/packages.el
+                ("C-M-k" . kill-sexp)))
+   '(evil-normal-state-map evil-insert-state-map))
 
-  (dolist (map `(,evil-motion-state-map ,evil-visual-state-map))
-    ;; Move by screen lines instead of logical (long) lines
-    (bind-keys :map map
-               ("j" . evil-next-visual-line)
-               ("k" . evil-previous-visual-line)))
+  (mapcar
+   (lambda (map)
+     ;; Move by screen lines instead of logical (long) lines
+     (bind-keys :map map
+                ("j" . evil-next-visual-line)
+                ("k" . evil-previous-visual-line)))
+   '(evil-motion-state-map evil-visual-state-map))
 
   (bind-keys :map evil-visual-state-map
              ("p" . my=evil-paste-after-from-0))

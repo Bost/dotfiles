@@ -443,6 +443,11 @@ with the Echo Area."
   (interactive)
   (yas-expand-snippet (yas-lookup-snippet "defun")))
 
+(defun my=elisp-insert-lambda ()
+  (interactive)
+  ;; (yas-expand-snippet (yas-lookup-snippet "lambda"))
+  (my=insert-str "lambda " 0))
+
 (defun my=cider-save-and-load-current-buffer ()
   "TODO call `cider-repl-set-ns' only if `cider-load-file' succeeded"
   (interactive)
@@ -482,8 +487,7 @@ with the Echo Area."
 
 (defun my=racket-insert-log ()
   (interactive)
-  (let* ((msg "(printf \"\\n\")"))
-    (my=insert-str msg 4)))
+  (my=insert-str "(printf \"\\n\")" 4))
 
 (defun my=scheme-insert-let* ()
   (interactive)
@@ -828,3 +832,45 @@ Thanks to https://stackoverflow.com/a/2238589"
     (setq dired-deletion-confirmer '(lambda (_) t))
     (dired-do-delete)
     (setq dired-deletion-confirmer old-val)))
+
+(defun my=delete-window ()
+  (interactive)
+  (let ((win-list (window-list)))
+    (if (funcall (-compose (-partial #'equal 1)
+                           #'length
+                           #'delete-dups
+                           (-partial #'mapcar (-compose #'buffer-name
+                                                        #'window-buffer)))
+                 (window-list))
+        (spacemacs/alternate-buffer)
+      (delete-window (selected-window)))))
+
+(defun my=ins-left-paren ()
+  "Simulate key press" (interactive) (execute-kbd-macro (kbd "(")))
+(defun my=ins-right-paren ()
+  "Simulate key press" (interactive) (execute-kbd-macro (kbd ")")))
+
+;; (defun matches-a-buffer-name? (name)
+;;   "Return non-nil if NAME matches the name of an existing buffer."
+;;   (try-completion name (mapcar #'buffer-name (buffer-list))))
+
+(defun buffer-exists-p (bufname)
+  ;; See also: (lambda (window) (buffer-name (window-buffer window)))
+  ;; (and ... t) turns the returned value to 't' or 'nil'
+  (and (member bufname (mapcar #'buffer-name (buffer-list)))
+       t))
+
+(defun my=toggle-shell-pop-term ()
+  (interactive)
+  (cond
+   ((equal 'term-mode major-mode)
+    (my=delete-window))
+
+   ;; can't use (let ...)
+   ((buffer-exists-p "*Default-term-0*")
+    (pop-to-buffer "*Default-term-0*"))
+
+   (t
+    ;; `spacemacs/shell-pop-term' defined in layers/+tools/shell/packages.el
+    (spacemacs/shell-pop-term 0)))
+  (balance-windows-area))
