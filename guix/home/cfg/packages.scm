@@ -38,8 +38,11 @@
    ;; openjdk-17.0.3-doc  9.6MiB
    ;; openjdk-17.0.3-jdk  275.9MiB
    ;; in total ~485 MiB
-   "openjdk"
+
+   ;; causes java.lang.ClassNotFoundException: jdk.javadoc.doclet.Doclet
+   ;; "openjdk"
    "openjdk:jdk"
+
    ;; "icedtea" ; ~240MiB; provides OpenJDK built with the IcedTea build harness
    ))
 
