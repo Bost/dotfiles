@@ -567,12 +567,12 @@ with the Echo Area."
     (looking-at-p "[[:space:]]*$")))
 
 ;; TODO Implement using the `spacemacs/toggle'
-(defun my=toggle-reader-comment-fst-sexp-on-line (cmtstr)
+(defun my=toggle-reader-comment-fst-sexp-on-line (sexp-comment)
   "If line starts with a line comment, toggle the comment.
 Otherwise toggle the reader comment."
   (if (and (current-line-empty-p) (my=end-of-file-p))
       (progn
-        (message "Point at the end-of-file. Doing nothing."))
+        (message "Point at the end-of-file. No toggle-comment done."))
     (let* ((point-pos1 (point)))
       ;; Switch to insert state at beginning of current line.
       ;; 0 means: don't insert any line
@@ -582,33 +582,30 @@ Otherwise toggle the reader comment."
                                               (save-excursion
                                                 (move-end-of-line 1)
                                                 (point)))))
-
         (if (eq major-mode 'scheme-mode)
-            (let* ((cmtstr-len (length cmtstr))
+            (let* ((sexp-comment-len (length sexp-comment))
                    (line-start (buffer-substring-no-properties
-                                point-pos2 (+ point-pos2 cmtstr-len))))
-              ;; (message "'scheme-mode")
-              (if (string= cmtstr line-start)
+                                point-pos2 (+ point-pos2 sexp-comment-len))))
+              (if (string= sexp-comment line-start)
                   (progn
-                    (delete-char cmtstr-len)
-                    (goto-char (- point-pos1 cmtstr-len)))
+                    (delete-char sexp-comment-len)
+                    (goto-char (- point-pos1 sexp-comment-len)))
                 (progn
-                  (insert cmtstr)
-                  (goto-char (+ point-pos1 cmtstr-len)))))
+                  (insert sexp-comment)
+                  (goto-char (+ point-pos1 sexp-comment-len)))))
           (if is-comment-only
               ;; (evilnc-comment-or-uncomment-lines 1)
               (spacemacs/comment-or-uncomment-lines 1)
-            (let* ((cmtstr-len (length cmtstr))
+            (let* ((sexp-comment-len (length sexp-comment))
                    (line-start (buffer-substring-no-properties
-                                point-pos2 (+ point-pos2 cmtstr-len))))
-              ;; (message "line-start %s" line-start)
-              (if (string= cmtstr line-start)
+                                point-pos2 (+ point-pos2 sexp-comment-len))))
+              (if (string= sexp-comment line-start)
                   (progn
-                    (delete-char cmtstr-len)
-                    (goto-char (- point-pos1 cmtstr-len)))
+                    (delete-char sexp-comment-len)
+                    (goto-char (- point-pos1 sexp-comment-len)))
                 (progn
-                  (insert cmtstr)
-                  (goto-char (+ point-pos1 cmtstr-len)))))))))))
+                  (insert sexp-comment)
+                  (goto-char (+ point-pos1 sexp-comment-len)))))))))))
 
 (defun my=racket-toggle-reader-comment-fst-sexp-on-line ()
   (interactive)
