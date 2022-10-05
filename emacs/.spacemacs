@@ -331,6 +331,12 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     ;; Emacs interface (not only) for GNU Guix package manager `guix package'.
+     ;; It also provides highlighting and tools for Guix code.
+     ;;
+     ;; On Guix installable by `guix package -i emacs-guix'
+     guix
+
      ;; Highlight output from `strace'
      ;; strace-mode
 
@@ -1910,6 +1916,12 @@ Some binding snippets / examples:
     (mapcar (-partial #'apply #'add-hook)
             `((racket-mode-hook      ,(my=fn-kbind-racket racket-mode-map))
               (racket-repl-mode-hook ,(my=fn-kbind-racket racket-repl-mode-map)))))
+
+  ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
+  ;; (add-hook 'scheme-mode-hook 'guix-devel-mode)
+  (with-eval-after-load 'scheme-mode
+    (mapcar (-partial #'apply #'add-hook)
+            `((scheme-mode-hook      #'guix-devel-mode))))
 
   ;; For scm-files the bindings are available via minor mode bindings for
   ;; geiser-mode, not for scheme-mode. See M-x helm-descbinds
