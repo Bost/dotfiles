@@ -6,9 +6,11 @@
 
 
 #|
-run this file by (the `~' doesn't work as a value of --load-path):
+# Run this file by:
 set dotf /home/bost/dev/dotfiles
 guix home --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
+# The tilda `~' is only expanded by shells when it's the first character of a
+# command-line argument. Use $HOME instead
 
 guix shell --development guix help2man git strace --pure
 ./pre-inst-env guix repl

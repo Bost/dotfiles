@@ -28,7 +28,11 @@ Requires:
 
 ;; TODO if remote/origin is not present then try to use remote/upstream, then
 ;; remote/gitlab, then remote/github
-(define (main args)
+;; TODO add --dry-run parameter
+(define
+  "'args' is applied only to `git rebase'"
+  (main args)
+  (format #t "Note: 'args' is applied only to `git rebase'\n")
   ((compose
     (partial
      map
