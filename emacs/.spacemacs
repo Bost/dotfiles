@@ -1471,8 +1471,22 @@ Some binding snippets / examples:
      ("C-M-s-<backspace>" . my=delete-prev-sexp)
      ("C-M-<backspace>"   . backward-kill-sexp)
 
-     ("s-<backspace>"     . paredit-backward-kill-word)
-     ("s-<delete>"        . paredit-forward-kill-word)
+     ("s-<backspace>"     .
+      ;; Can't use `advice'. This is an advice for the binding, not the function
+      (lambda ()
+        (interactive) (paredit-backward-kill-word)
+        (message "See ~%s~ / M-x "
+                 "SPC k E"
+                 "evil-lisp-state-sp-splice-sexp-killing-backward")))
+
+     ("s-<delete>"        .
+      ;; Can't use `advice'. This is an advice for the binding, not the function
+      (lambda ()
+        (interactive) (paredit-forward-kill-word)
+        (message "See ~%s~ / M-x "
+                 "SPC k e"
+                 "evil-lisp-state-sp-splice-sexp-killing-forward")))
+
      ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
      ("s-g"     . my=search-or-browse)
      ("s-8" . er/expand-region) ; increase selected region by semantic units
