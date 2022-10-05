@@ -582,7 +582,9 @@ Otherwise toggle the reader comment."
                                               (save-excursion
                                                 (move-end-of-line 1)
                                                 (point)))))
-        (if (eq major-mode 'scheme-mode)
+;;; `t' causes to always execute the then-branch, i.e. comment empty lines with
+;;; sexp comment
+        (if (or t (eq major-mode 'scheme-mode))
             (let* ((sexp-comment-len (length sexp-comment))
                    (line-start (buffer-substring-no-properties
                                 point-pos2 (+ point-pos2 sexp-comment-len))))
