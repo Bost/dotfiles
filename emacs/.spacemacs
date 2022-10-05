@@ -331,7 +331,9 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
-     strace-mode
+     ;; Highlight output from `strace'
+     ;; strace-mode
+
      ;; Customize / extend keyboard functionality https://github.com/kmonad
      (kbd-mode :location (recipe :fetcher github :repo "kmonad/kbd-mode"))
 
@@ -350,19 +352,30 @@ This function should only modify configuration layer settings."
      ;; send files marked in dired via MTP to Android
      ;; dired-mtp     ; not found
      ;; android-mode  ; doesn't work
-     beacon ;; Never lose your cursor again - see also 'Highlight current line'
+
+     ;; Never lose your cursor again - see also 'Highlight current line'
+     beacon
      use-package-chords
-     suggest ;; discover elisp fns
+
+     ;; Discover elisp functions
+     suggest
+
      crux
-     super-save ;; save buffers when they lose focus
+
+     ;; Save buffers when they lose focus
+     super-save
+
      zop-to-char
      fish-mode
      transpose-frame
      ;; google-this
-     cider-hydra ;; pop-up menus of commands with common prefixes for CIDER
 
-     ;; Emacs mode for the Lean theorem prover.
+     ;; Pop-up menus of commands with common prefixes for CIDER
+     cider-hydra
+
+     ;; Emacs mode for the Lean theorem prover
      ;; lean-mode
+     ;; helm-lean
 
      evil-vimish-fold
 
@@ -385,7 +398,6 @@ This function should only modify configuration layer settings."
      pollen-mode
      ;; }}}
 
-     ;; helm-lean ; Emacs mode for the Lean theorem prover.
      helm-cider-history
      helm-system-packages
      ;; helm-descbinds
@@ -1542,7 +1554,7 @@ Some binding snippets / examples:
      ("H-2" . my=H-2)
      ("H-4" . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
      )
-    (message "%s" "my=eval-bind-keys-and-chords evaluated.")
+    (message "my=eval-bind-keys-and-chords evaluated")
     )
 
   ;; Thanx to
@@ -1572,10 +1584,7 @@ Some binding snippets / examples:
     ;; (global-set-key (kbd "<H-menu>") 'execute-extended-command)
     ;; (global-unset-key (kbd "<menu>"))
     ;; (global-unset-key (kbd "<H-menu>"))
-    )
-
-  (defun enable-hyper-super-modifiers-linux-console ()
-    (message "fixme: enable-hyper-super-modifiers-linux-console"))
+    (message "enable-hyper-super-modifiers-linux-x enabled"))
 
   (defun enable-hyper-super-modifiers-macos ()
     ;; http://xahlee.org/emacs/emacs_hyper_super_keys.html
@@ -1594,10 +1603,10 @@ Some binding snippets / examples:
         (enable-hyper-super-modifiers-linux-x))
        ((eq frame 'ns)
         (enable-hyper-super-modifiers-macos))
-       (frame
-        (enable-hyper-super-modifiers-linux-console))
        (t
-        (message "fixmed: enable-hyper-super-modifiers"))))
+        (message "%s %s %s"
+                 "[enable-hyper-super-modifiers]"
+                 "No enabler implemented for the frame:" frame))))
 
     ;; you can always use "C-c h" as 'hyper modifier, even in Linux console or DOS
     (define-key key-translation-map (kbd "C-c h") 'event-apply-hyper-modifier)
