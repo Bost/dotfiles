@@ -4,9 +4,11 @@
   #:export (main))
 
 #|
-#!/home/bost/.guix-home/profile/bin/guile \
+
+#!/usr/bin/env -S guile \\
 -l utils.scm -e (emacs-launcher) -s
 !#
+
 |#
 
 ;; TODO use continuation breakout instead of a global variable

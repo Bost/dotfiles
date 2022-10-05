@@ -9,9 +9,11 @@
   #:export (main))
 
 #|
-#!/home/bost/.guix-home/profile/bin/guile \
+
+#!/usr/bin/env -S guile \\
 -l utils.scm -e (glo) -s
 !#
+
 |#
 
 (define origin-remotes '("origin" "github"))

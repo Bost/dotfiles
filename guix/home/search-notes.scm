@@ -4,9 +4,11 @@
   #:export (main))
 
 #|
-#!/home/bost/.guix-home/profile/bin/guile \
+
+#!/usr/bin/env -S guile \\
 -l utils.scm -e (search-notes) -s
 !#
+
 |#
 
 (define (main files args)

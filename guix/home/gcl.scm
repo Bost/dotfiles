@@ -2,8 +2,13 @@
   #:use-module (utils)
   #:export (main gcl))
 
-;; Examples:
 #|
+
+#!/usr/bin/env -S guile \\
+-l utils.scm -e (gcl) -s
+!#
+
+;; Examples:
 (use-module (guix download))
 
 (source
@@ -18,26 +23,6 @@
         (url "http://www.example.com/x.git")
         (commit "0")))
   (sha256 %null-sha256))
-|#
-
-#|
-TODO cloning git repos could be solved with origins:
-(origin (method git-fetch) (uri (git-reference ...)) ...)
-;;; Variant 1.
-#!/usr/bin/guile \
--l utils.scm -e (gcl) -s
-!#
-
-;;; Variant 2.
-#!/run/current-system/profile/bin/guile \
--l utils.scm -e (gcl) -s
-!#
-
-;;; Variant 3. $HOME variable can't be used
-#!/home/bost/.guix-home/profile/bin/guile \
--l utils.scm -e (gcl) -s
-!#
-
 |#
 
 (define* (gcl #:rest args)

@@ -3,13 +3,8 @@
   #:export (main gs))
 
 #|
-#!/usr/bin/guile \
--l utils.scm -e (gs) -s
-!#
 
-;; $HOME variable can't be used
-
-#!/home/bost/.guix-home/profile/bin/guile \
+#!/usr/bin/env -S guile \\
 -l utils.scm -e (gs) -s
 !#
 

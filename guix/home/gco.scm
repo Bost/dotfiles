@@ -4,13 +4,7 @@
 
 #|
 
-#!/usr/bin/guile \
--l utils.scm -e (gco) -s
-!#
-
-;; $HOME variable can't be used
-
-#!/home/bost/.guix-home/profile/bin/guile \
+#!/usr/bin/env -S guile \\
 -l utils.scm -e (gco) -s
 !#
 

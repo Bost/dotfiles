@@ -3,9 +3,11 @@
   #:export (main))
 
 #|
-#!/home/bost/.guix-home/profile/bin/guile \
+
+#!/usr/bin/env -S guile \\
 -l utils.scm -e (gk) -s
 !#
+
 |#
 
 (define (main args)

@@ -4,7 +4,7 @@
 
 #|
 
-#!/run/current-system/profile/bin/guile \
+#!/usr/bin/env -S guile \\
 -l utils.scm -e (gfe) -s
 !#
 

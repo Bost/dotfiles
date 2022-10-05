@@ -6,9 +6,11 @@
   #:export (main))
 
 #|
-#!/home/bost/.guix-home/profile/bin/guile \
+
+#!/usr/bin/env -S guile \\
 -l utils.scm -e (spag) -s
 !#
+
 |#
 
 (define* (git #:rest args)
