@@ -53,16 +53,16 @@ This function should only modify configuration layer settings."
        (let ((envvar "dotf"))
          (if-let ((dotf (getenv envvar)))
              dotf
-           (let ((dotf (concat (getenv "HOME") "/dev/dotfiles")))
+           (let* ((home (getenv "HOME"))
+                  (dotf (concat home "/dev/dotfiles")))
              (warn "Environment variable '%s' is not defined. Using '%s'."
-                   envvar (concat (getenv "HOME") "/dev/dotfiles"))
+                   envvar (concat home "/dev/dotfiles"))
              dotf)))
        "/emacs/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     yaml
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -282,7 +282,7 @@ This function should only modify configuration layer settings."
      ;; systemd
      ;; hy ;; hylang - lisp embedded in python
      ;; go
-     ;; yaml
+     yaml
      ;; docker
 
      (latex
@@ -292,7 +292,7 @@ This function should only modify configuration layer settings."
       ;; latex-enable-auto-fill nil  ;; defaults to t
       ;; latex-enable-magic t        ;; defaults to nil
       )
-     my=tweaks ;; see dotspacemacs-configuration-layer-path
+     my=tweaks ;; see `dotspacemacs-configuration-layer-path'
 
      ;; (vinegar :variables                     ;; simplify dired
      ;;          vinegar-reuse-dired-buffer t
@@ -313,7 +313,6 @@ This function should only modify configuration layer settings."
      ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
      ;;          ;; )
      ;;         )
-     ;; yaml
      )
 
 
@@ -1983,8 +1982,9 @@ Some binding snippets / examples:
               :after (defun my=note--evil-avy-goto-char-timer ()
                        (message "evil-avy-goto-char-timer: SPC j j, <f2>")))
   (advice-add #'avy-goto-line
-              :after (defun my=note--avy-goto-line ()
-                       (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
+              :after
+              (defun my=note--avy-goto-line ()
+                (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
   (advice-add #'evil-ex-search-next
               :after #'evil-scroll-line-to-center)
   (advice-add #'evil-ex-search-previous
@@ -1994,13 +1994,14 @@ Some binding snippets / examples:
   (advice-add #'helm-mini
               :before #'my=helm-mini)
   (advice-add #'helm-mini
-              :after (defun my=note--evil-avy-goto-char-timer ()
-                       (message "helm-mini: mark all buffers (i.e. for deletion): ~M-m~")))
-
+              :after
+              (defun my=note--evil-avy-goto-char-timer ()
+                (message "helm-mini: toggle mark / unmark all buffers: ~M-m~")))
   (advice-add #'spacemacs/helm-persp-switch-project
-              :after (defun my=note--spacemacs/helm-persp-switch-project ()
-                       (message
-                        "Try also: ~SPC p p~ for M-x helm-projectile-switch-project")))
+              :after
+              (defun my=note--spacemacs/helm-persp-switch-project ()
+                (message
+                 "Try: ~SPC p p~ for M-x helm-projectile-switch-project")))
 
   (mapcar
    (lambda (map)
