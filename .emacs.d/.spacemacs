@@ -2032,5 +2032,27 @@ Some binding snippets / examples:
   (my=end 'dotspacemacs/user-config)
   )
 
+;; TODO `package-directory-list' should be deduplicated. See package.el.gz
+;; ;#autoload
+;; (defcustom package-directory-list
+;;   ;; Defaults are subdirs named "elpa" in the site-lisp dirs.
+;;   (let (result)
+;;     (dolist (f load-path)
+;;       (and (stringp f)
+;;            (equal (file-name-nondirectory f) "site-lisp")
+;;            (push (expand-file-name "elpa" f) result)))
+;;     ;; (nreverse result)
+;;     result
+;;     )
+;;   "List of additional directories containing Emacs Lisp packages.
+;; Each directory name should be absolute.
+
+;; These directories contain packages intended for system-wide; in
+;; contrast, `package-user-dir' contains packages for personal use."
+;;   :type '(repeat directory)
+;;   :initialize #'custom-initialize-delay
+;;   :risky t
+;;   :version "24.1")
+
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

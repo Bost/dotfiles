@@ -431,6 +431,23 @@ git fetch --tags origin
          (map (partial obtain-and-setup dest-dir) (cdr project))))
      projects)
 
+#|
+See https://10years.guix.gnu.org/static/slides/05-wilson.org
+(define (home-xsettingsd-files-service config)
+(list `(".config/xsettingsd/xsettingsd.conf"
+,(local-file "xsettingsd.conf"))))
+
+(define home-xsettingsd-service-type
+(service-type (name 'home-xsettingsd)
+(extensions
+(list (service-extension
+home-files-service-type
+home-xsettingsd-files-service)))
+(default-value #f)
+(description "Configures UI appearance settings for Xorg
+sessions using the xsettingsd daemon.")))
+|#
+
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
 (home-environment
@@ -460,7 +477,10 @@ git fetch --tags origin
 ;;;   guix package                        -e '(@ (bost packages maven) maven)'
 ;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
  (packages
-  (map (compose identity list specification->package+output)
+  (map (compose identity list
+;;; TODO what's the difference between specification->package+output and
+;;; specification->package ?
+                specification->package+output)
        (append
 ;;; activate the following sexp one by one when on a slow computer or
 ;;; connectivity
@@ -476,6 +496,7 @@ git fetch --tags origin
 
  (services
   (list
+   #;(service home-xsettingsd-service-type)
    (service
     home-bash-service-type
     (home-bash-configuration
