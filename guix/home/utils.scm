@@ -6,15 +6,16 @@
 |#
 
 ;; TODO create a package installable by `guix install my=utils`
+;; See `guile-build-system'
 ;; Syntax:
 ;; (MODULE-NAME [#:select SELECTION]
 ;;              [#:prefix PREFIX]
 ;;              [#:renamer RENAMER]
 ;;              [#:version VERSION-SPEC]) ;; R6RS-compatible version reference
 (define-module (utils)
+  #:use-module (ice-9 popen)  #| read-line open-input-pipe |#
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
-  #:use-module (ice-9 popen) #| read-line open-input-pipe |#
   #| #:use-module (guix build utils) ;; invoke - not needed |#
   #:export (flatten partial dbg
             string-split-whitespace
@@ -23,7 +24,7 @@
             exec
             exec-system*
             exec-background
-            home str
+            home str xdg-config-home user-home
             error-command-failed
             drop-right drop-left
             ))
@@ -38,6 +39,15 @@
 (define home (getenv "HOME"))
 
 (define str string-append)
+
+(define* (xdg-config-home #:rest args)
+  (apply str (basename
+              ;; see gnu/home/services/symlink-manager.scm
+              (or (getenv "XDG_CONFIG_HOME")
+                  (str home "/.config"))) args))
+
+(define* (user-home #:rest args)
+  (apply str home args))
 
 (define* (error-command-failed #:rest args)
   (format #t

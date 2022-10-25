@@ -32,6 +32,7 @@ guix shell --development guix help2man git strace --pure
  (cfg abbreviations)
  (cfg mcron)
  (utils)
+ (spag)
  (common settings)
  (gcl)
  #;(gnu home)
@@ -58,6 +59,7 @@ guix shell --development guix help2man git strace --pure
            "guix/home/cfg/abbreviations.scm"
            #;"guix/home/cfg/mcron.scm"
            "guix/home/utils.scm"
+           "guix/home/spag.scm"
            "guix/home/gcl.scm"
            #;"guix/home/home-configuration.scm"))
 |#
@@ -69,13 +71,14 @@ guix shell --development guix help2man git strace --pure
   #:use-module (cfg fish)
   #:use-module (cfg abbreviations)
   #:use-module (cfg mcron)
+  ;; See service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (common settings)
   #:use-module (gcl)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
-  #:use-module (guix gexp)               #| program-file |#
+  #:use-module (guix gexp)               #| program-file local-file |#
   #:use-module (gnu home services shells)
   #:use-module (gnu home services mcron) #| home-mcron-service-type |#
   #:use-module (gnu home services)       #| simple-service |#
@@ -90,12 +93,26 @@ guix shell --development guix help2man git strace --pure
   ;; #:use-module (gnu home services version-control)
   )
 
+(define* (xdg-config-fish-home #:rest args)
+  (apply str (xdg-config-home) "/fish" args))
+
+(format #t "~a\n" "xdg-config-fish-home defined")
+
+(define* (dotfiles-home #:rest args)
+  "Note:
+(format #t \"~a\" \"foo\") doesn't work"
+  (apply str home "/dev/dotfiles" args))
+
+(format #t "~a\n" "dotfiles-home defined")
+
 (define* (any-local-file file #:optional (name (basename file)))
   ;; 'local-file' is a macro and cannot be used by 'apply'
   (if (equal? "." (substring name 0 1))
       ;; name of the local-file can't start with '.'
       (local-file file (string-replace name "dot-" 0 1))
       (local-file file)))
+
+(format #t "~a\n" "any-local-file defined")
 
 (define (local-dotfile path fname)
   (let ((fpath (dotfiles-home path fname)))
@@ -104,50 +121,47 @@ guix shell --development guix help2man git strace --pure
        fname
        (any-local-file fpath fname)))))
 
-(define* (xdg-config-home #:rest args)
-  (apply str (basename
-              ;; see gnu/home/services/symlink-manager.scm
-              (or (getenv "XDG_CONFIG_HOME")
-                  (str home "/.config"))) args))
+(format #t "~a\n" "local-dotfile defined")
 
-(define* (user-home #:rest args)
-  (apply str home args))
-
-(define* (dotfiles-home #:rest args)
+(define* (dotfiles-config-fish-home #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
-  (apply str home "/dev/dotfiles" args))
+  (apply str (dotfiles-home) "/.config/fish" args))
+
+(format #t "~a\n" "dotfiles-config-fish-home defined")
 
 ;; TODO look at (local-file ... #:recursive? #t)
-(define funs
+(define fish-functions
   (map (lambda (f)
-         `(,(xdg-config-home "/fish/functions/" f)
-           ,(local-file (dotfiles-home "/fish/functions/" f)
+         `(,(xdg-config-fish-home "/functions/" f)
+           ,(local-file (dotfiles-config-fish-home "/functions/" f)
                         ;; fix the 'guix home: error: invalid name: `...fish''
                         (str "fish-function-" f))))
        fish-functions))
 
-(define confds
+(define fish-config-files
   (map (lambda (f)
-         `(,(xdg-config-home "/fish/conf.d/" f)
-           ,(local-file (dotfiles-home "/fish/conf.d/" f)
+         `(,(xdg-config-fish-home "/conf.d/" f)
+           ,(local-file (dotfiles-config-fish-home "/conf.d/" f)
                         (str "fish-confd-" f))))
        (list
         "_tide_init.fish")))
 
-(define completions
+(format #t "~a\n" "fish-functions defined")
+
+(define fish-completion-files
   (map (lambda (f)
-         `(,(xdg-config-home "/fish/completions/" f)
-           ,(local-file (dotfiles-home "/fish/completions/" f)
+         `(,(xdg-config-fish-home "/completions/" f)
+           ,(local-file (dotfiles-config-fish-home "/completions/" f)
                         (str "fish-completion-" f))))
        (list
         "fisher.fish"
         "tide.fish")))
 
-(define plugins
+(define fish-plugins
   (map (lambda (f)
-         `(,(xdg-config-home "/fish/" f)
-           ,(local-file (dotfiles-home "/fish/" f)
+         `(,(xdg-config-fish-home "/" f)
+           ,(local-file (dotfiles-config-fish-home "/" f)
                         (str "fish-plugins-" f))))
        (list
         "fish_plugins"
@@ -284,12 +298,13 @@ guix shell --development guix help2man git strace --pure
                            #:splice? #t)))
       (format #t "done\n")
       sf)))
-
 (format #t "~a\n" "read-module defined")
 
 (define module-utils (read-module "utils"))
-
 (format #t "~a\n" "module-utils defined")
+
+(define module-spag (read-module "spag"))
+(format #t "~a\n" "module-spag defined")
 
 (define* (service-file #:key
                        program-name desc
@@ -453,6 +468,8 @@ git fetch --tags origin
          (map (partial obtain-and-setup dest-dir) (cdr project))))
      projects)
 
+;; Note: `home-environment' is (lazily?) evaluated as a last command
+;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
 (home-environment
 ;;; TODO why are the channels listed here???
 ;;; $ guix package --profile=/home/bost/.config/guix/current -I
@@ -589,7 +606,7 @@ git fetch --tags origin
      #;(aliases '(("l" . "ls -a")))
 
      (config (list (local-file
-                    (dotfiles-home "/fish/config.fish"))))
+                    (dotfiles-config-fish-home "/config.fish"))))
      ;; see also home-environment-variables-service-type
      ;; https://guix.gnu.org/manual/devel/en/html_node/Essential-Home-Services.html
      ;; (simple-service 'some-useful-env-vars-service
@@ -602,19 +619,48 @@ git fetch --tags origin
      (environment-variables
       (environment-vars list-separator-fish))))
 
-   ;; TODO add to home-dir-config: notes, rest of the $dotf/emacs directory
-   (simple-service 'home-dir-config
-                   home-files-service-type
-                   (append
-                    (remove unspecified?
-                            (list
-                             (local-dotfile "/" ".gitconfig")
-                             (local-dotfile "/emacs/" ".spacemacs")
-                             (local-dotfile "/guix/home/" "local-stuff.fish")))
-                    funs
-                    #;
-                    (append plugins (append funs (append completions
-                                                         confds)))))
+   ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d directory
+   (begin
+     (format #t "Running (simple-service 'home-dir-config ...) ...\n")
+     (let ((simple-srvc
+            (simple-service
+             'home-dir-config
+             home-files-service-type
+             (append (remove
+                      unspecified?
+                      (list
+                       (local-dotfile "/" ".gitconfig")
+                       (local-dotfile "/" ".spacemacs")
+                       (local-dotfile "/guix/home/" "local-stuff.fish")))
+;;; This can't be used:
+;;;
+;;;   (append `((".emacs.d/private" ;; destination
+;;;              ,(local-file (dotfiles-home "/.emacs.d/private")
+;;;                           "spacemacs-private"
+;;;                           #:recursive? #t)))
+;;;           fish-functions)
+;;;
+;;; because:
+;;; 1. Can't store the whole ".emacs.d/private" since there are some README.md
+;;; files and `git ... rebase develop cycle' b/c they will be symlinked (from
+;;; the /gnu/store/).
+;;;
+;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
+;;; them after `guix home ...', since `git restore ...' overwrites the symlink
+;;; (to the /gnu/store/).
+                     (let ((dir
+                            ".emacs.d/private/local/farmhouse-light-mod-theme"))
+                       (append `((,dir ;; destination
+                                  ,(local-file (dotfiles-home "/" dir)
+                                               #:recursive? #t)))
+                               fish-functions))
+                     #;
+                     (append fish-plugins
+                     (append fish-functions
+                     (append fish-completion-files
+                     fish-config-files)))))))
+       (format #t "Running (simple-service 'home-dir-config ...) ... done\n")
+       simple-srvc))
 
    (begin
      (format #t "Running (simple-service 'scheme-files ...) ...\n")
@@ -637,7 +683,7 @@ git fetch --tags origin
               ;; TODO crgi should also search in the git config --get,
               ;; ~/.gitconfig, etc.
               (search-notes #:program-name "crgi" #:files "git")
-              ;; TODO crl should search in the $dotf/fish .bashrc, .bash_profile
+              ;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile
               ;; (and other profile files), etc.
               (search-notes #:program-name "crl"
                             #:files "guix|shells|linux|android")

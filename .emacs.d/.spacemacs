@@ -58,7 +58,7 @@ This function should only modify configuration layer settings."
              (warn "Environment variable '%s' is not defined. Using '%s'."
                    envvar (concat home "/dev/dotfiles"))
              dotf)))
-       "/emacs/"))
+       "/.emacs.d/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -299,7 +299,7 @@ This function should only modify configuration layer settings."
      ;;          vinegar-dired-hide-details nil
      ;;          )
 
-     themes-megapack
+     ;; themes-megapack
 
      ;; dired alternative
      ;; (ranger :variables
