@@ -15,7 +15,7 @@
 (define-module (utils)
   #:use-module (ice-9 popen)  #| read-line open-input-pipe |#
   #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 regex)
+  #:use-module (ice-9 regex) #| string-match |#
   #| #:use-module (guix build utils) ;; invoke - not needed |#
   #:export (flatten partial dbg
             string-split-whitespace
@@ -25,6 +25,8 @@
             exec-system*
             exec-background
             home str xdg-config-home user-home
+            has-suffix?
+            has-substring?
             error-command-failed
             drop-right drop-left
             ))
@@ -40,19 +42,26 @@
 
 (define str string-append)
 
-(define* (xdg-config-home #:rest args)
-  (apply str (basename
-              ;; see gnu/home/services/symlink-manager.scm
-              (or (getenv "XDG_CONFIG_HOME")
-                  (str home "/.config"))) args))
+;; see gnu/home/services/symlink-manager.scm
+(define xdg-config-home (or (getenv "XDG_CONFIG_HOME")
+                            (str home "/.config")))
 
 (define* (user-home #:rest args)
   (apply str home args))
 
-(define* (error-command-failed #:rest args)
-  (format #t
-   #;error
-   "[ERR] Command failed"))
+;; TODO see
+;; (define s (string-match "[0-9][0-9][0-9][0-9]" "blah2002foo"))
+;; (match:end s) ⇒ 8
+(define (has-suffix? str suf)
+  "Returns #t if the given string ends with the given suffix, otherwise or #f."
+  (define len-str (string-length str))
+  (define len-suf (string-length suf))
+  (if (>= len-str len-suf)
+      (string=? (substring str (- len-str len-suf) len-str) suf)
+      #f))
+
+(define (has-substring? str subs)
+  (not (not (string-match subs str))))
 
 (define (drop-right xs n)
   "(drop-right (list 1 2 3 4 5) 2) ;; => (1 2 3)
@@ -86,6 +95,11 @@ TODO what's the clojure variant?"
   ;; ~% is newline \n
   (format #t "~%~a~%" prm)
   prm)
+
+(define* (error-command-failed #:rest args)
+  (format #t
+          #;error
+          "[ERR] Command failed"))
 
 (define (string-sff ch s-list)
   ((compose

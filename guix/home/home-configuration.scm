@@ -8,7 +8,7 @@
 #|
 # Run this file by:
 set dotf /home/bost/dev/dotfiles
-guix home --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
+guix home --allow-downgrades --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
 # The tilda `~' is only expanded by shells when it's the first character of a
 # command-line argument. Use $HOME instead
 
@@ -28,7 +28,6 @@ guix shell --development guix help2man git strace --pure
 
 (use-modules
  (cfg packages)
- (cfg fish)
  (cfg abbreviations)
  (cfg mcron)
  (utils)
@@ -46,7 +45,6 @@ guix shell --development guix help2man git strace --pure
  #;(guix build utils))       #| invoke |#
 
 (list "guix/home/cfg/packages.scm"
-"guix/home/cfg/fish.scm"
 "guix/home/cfg/abbreviations.scm"
 #;"guix/home/cfg/mcron.scm"
 "guix/home/utils.scm"
@@ -55,7 +53,6 @@ guix shell --development guix help2man git strace --pure
 )
 (map load
      (list "guix/home/cfg/packages.scm"
-           "guix/home/cfg/fish.scm"
            "guix/home/cfg/abbreviations.scm"
            #;"guix/home/cfg/mcron.scm"
            "guix/home/utils.scm"
@@ -68,7 +65,6 @@ guix shell --development guix help2man git strace --pure
   #:use-module (cfg
                 #;packages-new
                 packages)
-  #:use-module (cfg fish)
   #:use-module (cfg abbreviations)
   #:use-module (cfg mcron)
   ;; See service-file -> with-imported-modules
@@ -92,11 +88,6 @@ guix shell --development guix help2man git strace --pure
   #| home-git-service-type |#
   ;; #:use-module (gnu home services version-control)
   )
-
-(define* (xdg-config-fish-home #:rest args)
-  (apply str (xdg-config-home) "/fish" args))
-
-(format #t "~a\n" "xdg-config-fish-home defined")
 
 (define* (dotfiles-home #:rest args)
   "Note:
@@ -123,50 +114,15 @@ guix shell --development guix help2man git strace --pure
 
 (format #t "~a\n" "local-dotfile defined")
 
-(define* (dotfiles-config-fish-home #:rest args)
+(define* (fish-config-base #:rest args)
+  (apply str (basename xdg-config-home) "/fish" args))
+
+(define* (fish-config-dotfiles #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
-  (apply str (dotfiles-home) "/.config/fish" args))
+  (apply str (dotfiles-home) "/" (fish-config-base) args))
 
-(format #t "~a\n" "dotfiles-config-fish-home defined")
-
-;; TODO look at (local-file ... #:recursive? #t)
-(define fish-functions
-  (map (lambda (f)
-         `(,(xdg-config-fish-home "/functions/" f)
-           ,(local-file (dotfiles-config-fish-home "/functions/" f)
-                        ;; fix the 'guix home: error: invalid name: `...fish''
-                        (str "fish-function-" f))))
-       fish-functions))
-
-(define fish-config-files
-  (map (lambda (f)
-         `(,(xdg-config-fish-home "/conf.d/" f)
-           ,(local-file (dotfiles-config-fish-home "/conf.d/" f)
-                        (str "fish-confd-" f))))
-       (list
-        "_tide_init.fish")))
-
-(format #t "~a\n" "fish-functions defined")
-
-(define fish-completion-files
-  (map (lambda (f)
-         `(,(xdg-config-fish-home "/completions/" f)
-           ,(local-file (dotfiles-config-fish-home "/completions/" f)
-                        (str "fish-completion-" f))))
-       (list
-        "fisher.fish"
-        "tide.fish")))
-
-(define fish-plugins
-  (map (lambda (f)
-         `(,(xdg-config-fish-home "/" f)
-           ,(local-file (dotfiles-config-fish-home "/" f)
-                        (str "fish-plugins-" f))))
-       (list
-        "fish_plugins"
-        ;; "fish_variables" this is changed
-        )))
+(format #t "~a\n" "fish-config-dotfiles defined")
 
 ;; fish and bash separate elements of a list with a different separator
 (define list-separator-bash ":")
@@ -343,6 +299,13 @@ guix shell --development guix help2man git strace --pure
                 (main #$main-1st-arg (command-line)))))))))
 
 (format #t "~a\n" "search-notes defined")
+
+(define (append-dir dir lst)
+  (append
+   `((,(fish-config-base dir)
+      ,(local-file (fish-config-dotfiles dir)
+                   #:recursive? #t)))
+   lst))
 
 (define* (chmod-plus #:key program-name chmod-params)
   "Example:
@@ -596,9 +559,7 @@ git fetch --tags origin
    ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
    (service
     home-fish-service-type
-    ;; fish configuration - see gnu/home/services/shells.scm
-
-    ;; see /home/bost/dev/guix/gnu/home/services/shells.scm
+    ;; fish configuration - see ~/dev/guix/gnu/home/services/shells.scm
     (home-fish-configuration
      (abbreviations abbrevs)
 
@@ -606,7 +567,7 @@ git fetch --tags origin
      #;(aliases '(("l" . "ls -a")))
 
      (config (list (local-file
-                    (dotfiles-config-fish-home "/config.fish"))))
+                    (fish-config-dotfiles "/config.fish"))))
      ;; see also home-environment-variables-service-type
      ;; https://guix.gnu.org/manual/devel/en/html_node/Essential-Home-Services.html
      ;; (simple-service 'some-useful-env-vars-service
@@ -626,20 +587,19 @@ git fetch --tags origin
             (simple-service
              'home-dir-config
              home-files-service-type
-             (append (remove
-                      unspecified?
-                      (list
-                       (local-dotfile "/" ".gitconfig")
-                       (local-dotfile "/" ".spacemacs")
-                       (local-dotfile "/guix/home/" "local-stuff.fish")))
+             ((compose
+               (partial append
+                        (remove
+                         unspecified?
+                         (list
+                          (local-dotfile "/" ".gitconfig")
+                          (local-dotfile "/" ".spacemacs")
+                          (local-dotfile "/guix/home/" "local-stuff.fish"))))
+               (partial append
 ;;; This can't be used:
-;;;
-;;;   (append `((".emacs.d/private" ;; destination
-;;;              ,(local-file (dotfiles-home "/.emacs.d/private")
-;;;                           "spacemacs-private"
-;;;                           #:recursive? #t)))
-;;;           fish-functions)
-;;;
+;;;                    `((".emacs.d/private" ;; destination
+;;;                       ,(local-file (dotfiles-home "/.emacs.d/private")
+;;;                                    #:recursive? #t)))
 ;;; because:
 ;;; 1. Can't store the whole ".emacs.d/private" since there are some README.md
 ;;; files and `git ... rebase develop cycle' b/c they will be symlinked (from
@@ -648,17 +608,74 @@ git fetch --tags origin
 ;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
-                     (let ((dir
-                            ".emacs.d/private/local/farmhouse-light-mod-theme"))
-                       (append `((,dir ;; destination
-                                  ,(local-file (dotfiles-home "/" dir)
-                                               #:recursive? #t)))
-                               fish-functions))
-                     #;
-                     (append fish-plugins
-                     (append fish-functions
-                     (append fish-completion-files
-                     fish-config-files)))))))
+                        (let ((dir
+                               ".emacs.d/private/local/farmhouse-light-mod-theme"))
+                          `((,dir ;; destination
+                             ,(local-file (dotfiles-home "/" dir)
+                                          #:recursive? #t)))))
+               #|
+               (partial append
+                        `((,(fish-config-base)
+;;; TODO modify `local-file' so that can copy files from /gnu/store with
+;; different stats, not only as '.r--r--r-- root root'
+                           ,(local-file (fish-config-dotfiles)
+                                        #:recursive? #t
+                                        #:select?
+                                        (lambda (file stats)
+                                          (let* [(ret (or
+;;; `fish_prompt.fish' (among others) changes the content of `fish_variables' so
+;;; this file must be present and editable otherwise all sorts of
+;;; 'Permission denied' problems are to be expected.
+
+                                                        (has-suffix? file "/fish_variables")
+;;; `config.fish' is copied by `home-fish-configuration'
+                                                        (has-suffix? file "/config.fish")))]
+                                            (when ret
+                                              (format #t "excluding: ~a ~a\n" file stats))
+                                            (not ret)))))))
+               |#
+               (partial append-dir "/completions")
+               (partial append-dir "/conf.d")
+               (partial append-dir "/functions")
+               (partial remove unspecified?)
+               (partial append
+                        (map
+                         (lambda (filepath)
+                           (if (equal? filepath "/fish_variables")
+                               (let* [(src (fish-config-dotfiles filepath))
+                                      (dst (str home "/" (fish-config-base filepath)))]
+;;; TODO is this sexp is not executed because of lazy-evaluation?
+                                 (begin
+                                   (format #t "(copy-file ~a ~a) ... " src dst)
+                                   (let ((retval (copy-file src dst)))
+                                     (format #t "retval: ~a\n" retval)
+                                     ;; retval is #<unspecified>
+                                     retval)))
+                               `(,(fish-config-base filepath)
+                                 ,(local-file (fish-config-dotfiles filepath)))))
+                         (list
+                          #;"/fish_variables"
+                          "/fish_plugins"))))))))
+       (let* [(filepath "/fish_variables")
+              (src (fish-config-dotfiles filepath))
+              (dst (str home "/" (fish-config-base filepath)))]
+         (begin
+           (format #t "(copy-file ~a ~a) ... " src dst)
+           (let ((retval (copy-file src dst)))
+             (format #t "retval: ~a\n" retval)
+             retval))
+
+         #|
+;;; Just changing ownership and permissions of `fish_variables' doesn't work:
+         (begin
+           ;; .rw-r--r-- bost users fish_variables
+           (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
+           (chown dst (getuid) (getgid))
+           ;; .rw-r--r-- fish_variables
+           (format #t "(chmod ~a ~a)\n" dst #o644)
+           (chmod dst #o644))
+         |#
+         )
        (format #t "Running (simple-service 'home-dir-config ...) ... done\n")
        simple-srvc))
 

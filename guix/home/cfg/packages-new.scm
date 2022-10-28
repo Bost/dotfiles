@@ -71,7 +71,7 @@
    "babashka"
    "firefox"
    ;; "factorio" ;; temporarily disabled, install it using:
-   ;; cd ~/dev/games && guix package --load-path=./ --install=factorio
+   ;; cd ~/dev/games && guix package --keep-failed --load-path=./ --install=factorio
    ))
 
 (define (kde-dependent-packages)

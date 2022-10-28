@@ -2,7 +2,7 @@
 
 set fish_greeting ""
 
-# Reset the fish-shell back to it's initial state:
+# To reset the fish-shell back to it's initial state execute from bash:
 # rm -rf ~/.config/fish/completions/
 # rm -rf ~/.config/fish/conf.d/
 # rm -rf ~/.config/fish/fish_plugins
