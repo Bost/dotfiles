@@ -300,7 +300,7 @@ guix shell --development guix help2man git strace --pure
 
 (format #t "~a\n" "search-notes defined")
 
-(define (append-dir dir lst)
+(define (append-fish-config-dir dir lst)
   (append
    `((,(fish-config-base dir)
       ,(local-file (fish-config-dotfiles dir)
@@ -655,9 +655,9 @@ sessions using the xsettingsd daemon.")))
                                               (format #t "excluding: ~a ~a\n" file stats))
                                             (not ret)))))))
                |#
-               (partial append-dir "/completions")
-               (partial append-dir "/conf.d")
-               (partial append-dir "/functions")
+               (partial append-fish-config-dir "/completions")
+               (partial append-fish-config-dir "/conf.d")
+               (partial append-fish-config-dir "/functions")
                (partial remove unspecified?)
                (partial append
                         (map
