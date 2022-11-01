@@ -244,13 +244,12 @@ guix shell --development guix help2man git strace --pure
 
 (define (read-module name)
   "TODO use monad"
-  (let ((name-scm (str name ".scm")))
-    (format #t "read-module: ~a ... " (dotfiles-home "/guix/home/" name-scm))
+  (let* [(name-scm (str name ".scm"))
+         (filepath (dotfiles-home "/guix/home/" name-scm))]
+    (format #t "read-module: ~a ... " filepath)
     (let ((sf (scheme-file name-scm
                            (sexp->gexp
-                            (call-with-input-file
-                                (dotfiles-home "/guix/home/" name-scm)
-                              read-all-sexprs))
+                            (call-with-input-file filepath read-all-sexprs))
                            #:splice? #t)))
       (format #t "done\n")
       sf)))
