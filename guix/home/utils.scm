@@ -24,6 +24,7 @@
             exec
             exec-system*
             exec-background
+            unspecified-or-empty-or-false?
             home str xdg-config-home user-home
             has-suffix?
             has-substring?
@@ -37,6 +38,12 @@
 ;; (use-service-modules desktop xorg)
 ;; (use-package-modules certs)
 ;; (use-package-modules shells)
+
+(define (unspecified-or-empty-or-false? obj)
+  (or (unspecified? obj)
+      (null? obj)
+      (and (string? obj) (string-null? obj))
+      (eq? #f obj)))
 
 (define home (getenv "HOME"))
 

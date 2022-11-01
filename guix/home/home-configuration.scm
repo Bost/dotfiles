@@ -96,21 +96,46 @@ guix shell --development guix help2man git strace --pure
 
 (format #t "~a\n" "dotfiles-home defined")
 
-(define* (any-local-file file #:optional (name (basename file)))
+;;;      ...                      #:optional (<parameter-name> <default-value>)
+(define* (any-local-file filepath #:optional (filename (basename filepath)))
   ;; 'local-file' is a macro and cannot be used by 'apply'
-  (if (equal? "." (substring name 0 1))
-      ;; name of the local-file can't start with '.'
-      (local-file file (string-replace name "dot-" 0 1))
-      (local-file file)))
+  (if (equal? "." (substring filename 0 1))
+      ;; filename of the local-file can't start with '.'
+      (local-file filepath (string-replace filename "dot-" 0 1))
+      (local-file filepath)))
 
 (format #t "~a\n" "any-local-file defined")
 
-(define (local-dotfile path fname)
-  (let ((fpath (dotfiles-home path fname)))
-    (when (access? fpath R_OK)
-      (list
-       fname
-       (any-local-file fpath fname)))))
+(define (local-dotfile path filename)
+  "
+(local-dotfile \"/path/to/\" \"file.ext\")
+=>
+(list \"file.ext\"
+      (local-file \"/home/bost/dev/dotfiles/path/to/file.ext\"))
+
+(local-dotfile \"/path/to/\" \".file.ext\")
+=>
+(list \".file.ext\"
+      (local-file
+       \"/home/bost/dev/dotfiles/path/to/.file.ext\" \"dot-file.ext\"))
+
+(local-dotfile \"/path/to/\" \".file\")
+=>
+(list \".file\"
+      (local-file \"/home/bost/dev/dotfiles/path/to/.file\" \"dot-file\"))
+
+(local-dotfile \"/\" \"path/to/file.ext\")
+=>
+(\"path/to/file.ext\" (local-file \"/home/bost/dev/dotfiles/path/to/file.ext\"))
+
+"
+  (let [(filepath (dotfiles-home path filename))]
+    (if (access? filepath R_OK)
+      (list filename
+            (any-local-file filepath (basename filename)))
+      (begin
+        (format #t "ERROR: can't read ~a\n" filepath)
+        #f))))
 
 (format #t "~a\n" "local-dotfile defined")
 
@@ -610,11 +635,13 @@ sessions using the xsettingsd daemon.")))
              ((compose
                (partial append
                         (remove
-                         unspecified?
+                         unspecified-or-empty-or-false?
                          (list
                           (local-dotfile "/" ".gitconfig")
                           (local-dotfile "/" ".spacemacs")
-                          (local-dotfile "/guix/home/" "local-stuff.fish"))))
+                          (local-dotfile "/guix/home/" "local-stuff.fish")
+                          (local-dotfile "/" (str (basename xdg-config-home)
+                                                  "/guix/channels.scm")))))
                (partial append
 ;;; This can't be used:
 ;;;                    `((".emacs.d/private" ;; destination
@@ -628,9 +655,10 @@ sessions using the xsettingsd daemon.")))
 ;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
-                        (let ((dir
-                               ".emacs.d/private/local/farmhouse-light-mod-theme"))
-                          `((,dir ;; destination
+                        (list
+                         (let ((dir (str ".emacs.d/private/local"
+                                         "/farmhouse-light-mod-theme")))
+                           `(,dir ;; destination
                              ,(local-file (dotfiles-home "/" dir)
                                           #:recursive? #t)))))
                #|
