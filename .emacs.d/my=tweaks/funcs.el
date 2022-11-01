@@ -272,8 +272,15 @@ or `(cider-jack-in-clj nil)' or any other command is specified as
 a parameter."
   (interactive)
   (unless (cider-connected-p)
-    ;; (cider-jack-in-clj nil)
-    (cider-connect-clj)
+    ;; See https://github.com/dakra/dmacs/blob/master/init.org#cider
+    (let* ((host "localhost")
+           (ssh-hosts `((,host))))
+      ;; pattern matching
+      (pcase (cider--infer-ports host ssh-hosts)
+        (`((,directory ,port) . ,_)
+         (if (string= "corona_cases" directory)
+             (cider-connect-clj `(:host ,host :port ,port))
+           (cider-connect-clj)))))
     ;; TODO wait until the repl gets started
     )
   (cider-switch-to-repl-buffer))
