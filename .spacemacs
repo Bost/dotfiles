@@ -1955,6 +1955,11 @@ Some binding snippets / examples:
   ;; See
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
 
+  ;; (bind-keys :map scheme-mode-map ("<f11>" . (lambda () (interactive) (forward-sexp 1))))
+  ;; (bind-keys :map scheme-mode-map ("<f12>" . (lambda () (interactive) (sp-forward-sexp 1))))
+  ;; (unbind-key "<f11>" scheme-mode-map)
+  ;; (unbind-key "<f12>" scheme-mode-map)
+
   (advice-add #'spacemacs/hsearch-project
               :after (defun my=note--spacemacs/hsearch-project ()
                        (message
