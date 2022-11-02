@@ -3,9 +3,14 @@
  reverse
  (cons*
 
+  ;; the flat channel doesn't compile at the moment
+  #;
   (channel
    (name 'flat)
-   (url "https://github.com/flatwhatson/guix-channel.git")
+   (url
+    ;; my local copy
+    (string-append "file://" (getenv "HOME") "/dev/flatwatson")
+    #;"https://github.com/flatwhatson/guix-channel.git")
    (introduction
     (make-channel-introduction
      "33f86a4b48205c0dc19d7c036c85393f0766f806"
