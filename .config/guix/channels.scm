@@ -30,14 +30,8 @@
    (name 'my-guix)
    (url
     (string-append "file://" (getenv "HOME") "/dev/guix"))
-   (branch "spacemacs"))
-
-  #;
-  (channel
-   (name 'my-racket)
-   (url
-    (string-append "file://" (getenv "HOME") "/dev/guix"))
-   (branch "racket"))
+   ;; pick one branch if not on master
+   #;(branch "spacemacs" #;"racket"))
 
   ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
   (channel
@@ -45,13 +39,6 @@
    (url
     #;"https://github.com/Bost/guix-packages"
     (string-append "file://" (getenv "HOME") "/dev/guix-packages")))
-
-  #;
-  (channel
-   (name 'babashka)
-   (url
-    #;"https://github.com/Bost/guix-packages"
-    (string-append "file://" (getenv "HOME") "/dev/babashka")))
 
   ;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 
