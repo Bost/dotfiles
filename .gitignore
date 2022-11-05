@@ -27,3 +27,6 @@ bin/l.scm
 
 # ignore local-stuff.fish anywhere in the repository tree structure
 local-stuff.fish
+
+# ignore Guix Gaming Channels configuration
+.config/guix-gaming-channels/games.scm
