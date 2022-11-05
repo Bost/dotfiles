@@ -633,12 +633,11 @@ sessions using the xsettingsd daemon.")))
       (environment-vars list-separator-fish))))
 
    ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d directory
-   (begin
-     (format #t "Running (simple-service 'home-dir-config ...) ...\n")
+   (let [(srvc-name 'home-dir-config)]
+     (format #t "Running (simple-service ~a ...) ...\n" srvc-name)
      (let ((simple-srvc
             (simple-service
-             'home-dir-config
-             home-files-service-type
+             srvc-name home-files-service-type
              ((compose
                (partial append
                         (remove
@@ -698,7 +697,8 @@ sessions using the xsettingsd daemon.")))
                          (lambda (filepath)
                            (if (equal? filepath "/fish_variables")
                                (let* [(src (fish-config-dotfiles filepath))
-                                      (dst (str home "/" (fish-config-base filepath)))]
+                                      (dst (str home "/"
+                                                (fish-config-base filepath)))]
 ;;; TODO is this sexp is not executed because of lazy-evaluation?
                                  (begin
                                    (format #t "(copy-file ~a ~a) ... " src dst)
@@ -707,7 +707,8 @@ sessions using the xsettingsd daemon.")))
                                      ;; retval is #<unspecified>
                                      retval)))
                                `(,(fish-config-base filepath)
-                                 ,(local-file (fish-config-dotfiles filepath)))))
+                                 ,(local-file
+                                   (fish-config-dotfiles filepath)))))
                          (list
                           #;"/fish_variables"
                           "/fish_plugins"))))))))
@@ -729,16 +730,15 @@ sessions using the xsettingsd daemon.")))
            ;; .rw-r--r-- fish_variables
            (format #t "(chmod ~a ~a)\n" dst #o644)
            (chmod dst #o644))
-         |#
-         )
-       (format #t "Running (simple-service 'home-dir-config ...) ... done\n")
+         |#)
+       (format #t "Running (simple-service ~a ...) ... done\n" srvc-name)
        simple-srvc))
 
-   (begin
-     (format #t "Running (simple-service 'scheme-files ...) ...\n")
-     (let ((simple-srvc
+   (let [(srvc-name 'scheme-files)]
+     (format #t "Running (simple-service ~a ...) ...\n" 'scheme-files)
+     (let [(simple-srvc
             (simple-service
-             'scheme-files home-files-service-type
+             srvc-name home-files-service-type
              (list
               ;; TODO gui / guixd should do cd ~/dev/guix; guixg should git pull
               ;; --rebase (preferably from a local guix checkout)
@@ -793,8 +793,8 @@ sessions using the xsettingsd daemon.")))
                             #:scheme-file-name "ls")
               (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
               (service-file #:program-name "spag"
-                            #:desc "spacemacs-git-fetch-rebase")))))
-       (format #t "Running (simple-service 'scheme-files ...) ... done\n")
+                            #:desc "spacemacs-git-fetch-rebase"))))]
+       (format #t "Running (simple-service ~a ...) ... done\n" srvc-name)
        simple-srvc))
 
    #;mcron-service
