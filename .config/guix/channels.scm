@@ -50,6 +50,7 @@
   ;; guix package --load-path=./ --install=factorio
   ;; # --keep-failed doesn't keep the binary in the /gnu/store when the sha256
   ;; # is wrong
+  #;
   (channel
    (name 'guix-gaming-games)
    (url
