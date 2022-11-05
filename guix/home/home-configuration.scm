@@ -96,12 +96,15 @@ guix shell --development guix help2man git strace --pure
 
 (format #t "~a\n" "dotfiles-home defined")
 
+(define (fix-leading-dot filename)
+  (string-replace filename "dot-" 0 1))
+
 ;;;      ...                      #:optional (<parameter-name> <default-value>)
 (define* (any-local-file filepath #:optional (filename (basename filepath)))
   ;; 'local-file' is a macro and cannot be used by 'apply'
   (if (equal? "." (substring filename 0 1))
       ;; filename of the local-file can't start with '.'
-      (local-file filepath (string-replace filename "dot-" 0 1))
+      (local-file filepath (fix-leading-dot filename))
       (local-file filepath)))
 
 (format #t "~a\n" "any-local-file defined")
@@ -483,6 +486,7 @@ sessions using the xsettingsd daemon.")))
 
 ;;; `guix package --list-profiles` doesn't know about / ignores the
 ;;; package-profile of the home-environment (~/.guix-home/profile/manifest)
+;;; see also /run/current-system/profile
 
 ;;; $ guix package --search-paths --profile=~/.guix-home/profile -I | sort > /tmp/packages-guix-home.txt
 ;;; $ guix package --search-paths --profile=~/.guix-home/profile -I fish
@@ -549,7 +553,7 @@ sessions using the xsettingsd daemon.")))
        (plain-file
         "bashrc"
         (str
-         "\n" "#### home-bash-configuration -> bashrc: begin"
+         "\n" "#### home-bash-configuration -> .bashrc: begin"
          "\n"
 ;;; Also https://github.com/oh-my-fish/plugin-foreign-env
 ;;; 1. ~/.guix-home/setup-environment does:
@@ -566,13 +570,16 @@ sessions using the xsettingsd daemon.")))
 
          "\n" "eval \"$(direnv hook bash)\""
          "\n"
-         "\n" "#### home-bash-configuration -> bashrc: end"
+         "\n" "#### home-bash-configuration -> .bashrc: end"
          ))
-       (local-file
-        ;; (local-file ".bashrc" "bashrc") should work too
-        (dotfiles-home "/guix/home/.bashrc_additions")
-        ;; prevent 'guix home: error: invalid name: `.bashrc''
-        "bashrc_additions")))
+
+       (let* [(filename ".bashrc_additions")]
+         ;; this should work too
+         ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
+         (local-file
+          (dotfiles-home "/guix/home/" filename)
+          (fix-leading-dot filename)))))
+
      ;; List of file-like objects, which will be ADDED(!) to .bash_profile
      (bash-profile
       (list
