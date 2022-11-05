@@ -20,7 +20,9 @@
   #:export (flatten partial dbg
             string-split-whitespace
             cmd->string
+            read-all
             read-all-sexprs
+            read-all-syntax
             exec
             exec-system*
             exec-background
@@ -140,11 +142,31 @@ TODO what's the clojure variant?"
     string-split-whitespace)
    args))
 
+(define (read-all reader-function)
+  "Returns a function which reads all lines of text from the PORT and applies
+READER-FUNCTION on them. "
+  (lambda (port)
+    (let loop ((res '())
+               (str (reader-function port))) ; from (ice-9 popen)
+      (if (and str (not (eof-object? str)))
+          (loop (append res (list str))
+                (reader-function port))
+          res))))
+
 (define (read-all-sexprs p)
   (let f ((x (read p)))
     (if (eof-object? x)
         '()
         (cons x (f (read p))))))
+
+(define (read-all-syntax port)
+  "Return a list of all lines from the PORT."
+  (let loop ((res '())
+             (str (read-syntax port))) ; from (ice-9 popen)
+    (if (and str (not (eof-object? str)))
+        (loop (append res (list str))
+              (read-syntax port))
+        res)))
 
 (define (read-all-strings port)
   "Return a list of all lines of text from the PORT.

@@ -45,24 +45,8 @@
     #;"https://github.com/Bost/guix-packages"
     (string-append "file://" (getenv "HOME") "/dev/guix-packages")))
 
-  ;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
-
-  ;; guix package --load-path=./ --install=factorio
-  ;; # --keep-failed doesn't keep the binary in the /gnu/store when the sha256
-  ;; # is wrong
-  #;
-  (channel
-   (name 'guix-gaming-games)
-   (url
-    #;"https://gitlab.com/rostislav.svoboda/games"
-    #;(string-append "file://" (getenv "HOME") "/dev/games")
-    "https://gitlab.com/guix-gaming-channels/games.git")
-   ;; Enable signature verification:
-   (introduction
-    (make-channel-introduction
-     "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
-     (openpgp-fingerprint
-      "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))
+  ;; The guix-gaming-games channel is added programmatically from
+  ;; home-configuration.scm
 
   %default-channels
   ))

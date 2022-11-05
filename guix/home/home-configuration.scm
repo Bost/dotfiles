@@ -84,10 +84,15 @@ guix shell --development guix help2man git strace --pure
   #:use-module (srfi srfi-1)             #| take remove etc. |#
   #:use-module (gnu packages shellutils)
 
+  #:use-module (ice-9 pretty-print)      #| pretty-print |#
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
   #| home-git-service-type |#
   ;; #:use-module (gnu home services version-control)
   )
+
+(define home-games-config #f)
+
+(define channels-scm-filepath (str (basename xdg-config-home) "/guix/channels.scm"))
 
 (define* (dotfiles-home #:rest args)
   "Note:
@@ -475,6 +480,56 @@ home-xsettingsd-files-service)))
 sessions using the xsettingsd daemon.")))
 |#
 
+(define guix-channels-configuration
+  (if home-games-config
+      (list
+       (local-dotfile "/" (str (basename xdg-config-home)
+                               "/guix-gaming-channels/games.scm"))
+       (let* [(lst (car (syntax->datum
+                         (call-with-input-file channels-scm-filepath
+                           (read-all read-syntax)))))]
+         (call-with-values
+             (lambda () (split-at lst (1- (length lst))))
+           (lambda (fst snd)
+             ((compose
+               #;(lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
+               (lambda (sexp)
+                 (format #t "########## Creating plain-file ... \n")
+                 (list
+                  channels-scm-filepath
+                  #;(scheme-file "channels.scm" (sexp->gexp sexp))
+                  (local-file
+                   (let* [(tmpfile (tmpnam))
+                          (port
+                           ;; create temporary file
+                           #;(mkstemp! (string-copy "/tmp/myfile-XXXXXX"))
+                           (open-output-file tmpfile))]
+                     ;; save the channel configuration to a temporary file
+                     (pretty-print sexp port)
+                     (close-port port)
+                     tmpfile)
+                   "channels.scm")))
+               (lambda (sexp) (append fst (list sexp) (list (car snd)))))
+;;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
+;;; Use:
+;;;     guix package --load-path=./ --install=factorio
+;;; '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
+;;; wrong
+              '(channel
+                (name 'guix-gaming-games)
+                (url
+                 #;"https://gitlab.com/rostislav.svoboda/games"
+                 #;(string-append "file://" (getenv "HOME") "/dev/games")
+                 "https://gitlab.com/guix-gaming-channels/games.git")
+                ;; Enable signature verification:
+                (introduction
+                 (make-channel-introduction
+                  "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
+                  (openpgp-fingerprint
+                   "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))))))
+      (list
+       (local-dotfile "/" channels-scm-filepath))))
+
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
 (home-environment
@@ -639,15 +694,15 @@ sessions using the xsettingsd daemon.")))
             (simple-service
              srvc-name home-files-service-type
              ((compose
+               (partial append guix-channels-configuration)
                (partial append
                         (remove
                          unspecified-or-empty-or-false?
                          (list
+                          ;; TODO add /home/bost/.guile used by `guix repl'
                           (local-dotfile "/" ".gitconfig")
                           (local-dotfile "/" ".spacemacs")
-                          (local-dotfile "/guix/home/" "local-stuff.fish")
-                          (local-dotfile "/" (str (basename xdg-config-home)
-                                                  "/guix/channels.scm")))))
+                          (local-dotfile "/guix/home/" "local-stuff.fish"))))
                (partial append
 ;;; This can't be used:
 ;;;                    `((".emacs.d/private" ;; destination
