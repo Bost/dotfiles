@@ -9,8 +9,9 @@
              )
 #|
 
-I have a syntax-object and I want to write it to a different file, formatted as described by the line and column information. Is it possible?
-e.g. '(syntax-source (call-with-input-string "   (+ 1 2)" read-syntax))'
+I have a syntax-object and I want to write it to a different file, formatted as
+described by the line and column information. Is it possible? e.g.
+  (syntax-source (call-with-input-string "  (+ 1 2)" read-syntax))
 
 (define (read-all-syntax port)
   "Return a list of all lines from the PORT."
@@ -22,7 +23,6 @@ e.g. '(syntax-source (call-with-input-string "   (+ 1 2)" read-syntax))'
         res)))
 (define gp "/home/bost/dev/guix-playground")
 (define fs (format #f "~a/gnu/packages/e.scm" gp))
-(syntax-sourcev )
 
 (define stx (call-with-input-file fs read-all-syntax))
 (define stx (call-with-input-string "   (+ 1 2)" read-syntax))
