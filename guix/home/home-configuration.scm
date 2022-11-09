@@ -315,6 +315,8 @@ guix shell --development guix help2man git strace --pure
 (format #t "~a\n" "service-file defined")
 
 (define* (search-notes #:key program-name files)
+  "TODO a search-notes program should read a `search-space-file' containing a list
+of files to search through."
   `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
       (str "search-notes-" program-name)
