@@ -71,14 +71,18 @@ This function should only modify configuration layer settings."
      ;;
      ;; Layers added in alphabetic order
 
+     ;; Enable asciidoc layer for editing asciidoc content e.g. docs.cider.mx editing
      ;; asciidoc
 
+     ;; Add tool tips to show doc string of functions
+     ;; Show snippets in the auto-completion popup
+     ;; Show suggestions by most commonly used
      (auto-completion :variables
                       ;; (setq
                       auto-completion-enable-help-tooltip t
-                      ;; auto-completion-enable-help-tooltip 'manual
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-sort-by-usage t
+                      ;; auto-completion-enable-help-tooltip 'manual
                       ;; )
                       )
 
