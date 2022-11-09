@@ -300,7 +300,7 @@ This function should only modify configuration layer settings."
      pdf
      php
 
-     ;; Breaks the `C-h k command'
+     ;; Breaks the ~C-h k command~
      ;; Error message is "mapcar: Symbol’s value as variable is void: code-cells-mode""
      ;; See https://github.com/syl20bnr/spacemacs/issues/15548
      ;; (python
@@ -348,8 +348,13 @@ This function should only modify configuration layer settings."
 
      shell-scripts
 
-     ;; TODO eyebrowse - window management
-     ;; TODO spacemacs-layout - window management
+     ;; spacemacs-layouts layer added to set variables
+     ;; ~SPC TAB~ restricted to current layout buffers
+     ;; Kill buffers when killing layer - ~SPC l x~
+     (spacemacs-layouts :variables
+                        spacemacs-layouts-restrict-spc-tab t
+                        persp-autokill-buffer-on-remove 'kill-weak)
+
      ;; smex ; smart M-x enhacements - recent & most used commands
 
      ;; requires:
@@ -361,9 +366,34 @@ This function should only modify configuration layer settings."
      syntax-checking
      ;; systemd
      themes-megapack
-     treemacs
+
+     ;; Customise the Spacemacs themes
+     ;; https://develop.spacemacs.org/layers/+themes/theming/README.html
+     ;; Code in dotspacemacs/user-init to reduce size of modeline
+     theming
+
+     ;; Visual file manager - ~SPC p t~
+     (treemacs
+      :variables
+      ;; Removes file and directory icons
+      ;; treemacs-no-png-images t
+
+      ;; treemacs-indentation 1
+      ;; treemacs-use-filewatch-mode t
+      ;; treemacs-use-follow-mode t
+      )
+
      typescript
 
+     ;; Support font ligatures (fancy symbols) in all modes
+     ;; 'prog-mode for only programming languages
+     ;; including text-mode may cause issues with org-mode and magit
+     (unicode-fonts :variables
+                    unicode-fonts-enable-ligatures t
+                    unicode-fonts-ligature-modes '(prog-mode))
+
+     ;; Highlight changes in buffers
+     ;; ~SPC g .~ transient state for navigating changes
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
@@ -378,6 +408,7 @@ This function should only modify configuration layer settings."
      ;; windows-scripts
 
      yaml
+
      ) ;; End of dotspacemacs-configuration-layers
 
 
