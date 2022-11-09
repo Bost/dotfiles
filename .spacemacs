@@ -6,10 +6,10 @@
 (setq my=dbg=init-time (if (boundp #'dbg=init-time) dbg=init-time (my=dbg=tstp)))
 (setq my=dbg=fmt (if (boundp #'dbg=fmt) dbg=fmt "%012d"))
 
-(defun my=log (my=fun-point)
+(defun my=log (fun-point)
   (format "%s %s [%%s] (length load-path) %s"
           (format my=dbg=fmt (- (my=dbg=tstp) my=dbg=init-time))
-          (if (eq my=fun-point #'beg) "{{{{{{{{" "}}}}}}}}")
+          (if (eq fun-point #'beg) "{{{{{{{{" "}}}}}}}}")
           (length load-path)))
 
 (defun my=beg (f)
@@ -1811,18 +1811,18 @@ Some binding snippets / examples:
              ("M-s-n"  . cider-repl-set-ns)
              ("s-t"    . cider-test-run-tests)
 
-   ;; TODO see global-map keybindings
-   ;; ("s-."  . cider-find-var)
-   ;; ("s-,"  . cider-pop-back)
-   ;; TODO s-M does not work in REPL buffer
+             ;; TODO see global-map keybindings
+             ;; ("s-."  . cider-find-var)
+             ;; ("s-,"  . cider-pop-back)
+             ;; TODO s-M does not work in REPL buffer
 
-   ;; Reload modified and unloaded namespaces on the classpath
-   ("s-o"     . cider-ns-refresh)
+             ;; Reload modified and unloaded namespaces on the classpath
+             ("s-o"     . cider-ns-refresh)
 
-   ;; Send a (require ’ns :reload) to the REPL
-   ;; ("s-o"  . cider-ns-reload)
+             ;; Send a (require ’ns :reload) to the REPL
+             ;; ("s-o"  . cider-ns-reload)
 
-   ("C-s-o"   . my=cider-clear-compilation-highlights))
+             ("C-s-o"   . my=cider-clear-compilation-highlights))
 
   ;; The read syntax #'. See
   ;; https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html
