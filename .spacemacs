@@ -146,15 +146,25 @@ This function should only modify configuration layer settings."
       ;; (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
       )
 
+     ;; Nyan cat indicating relative position in current buffer
+     ;; :variables colors-enable-nyan-cat-progress-bar (display-graphic-p)
      colors
 
+     ;; SPC a L displays key and command history in a separate buffer
      ;; Show commands as you type in a separate buffer
      ;; command-log  ;; deprecated - log keystrokes
 
+     ;; Tools to work with comma separate values e.g. data science data
+     ;; https://develop.spacemacs.org/layers/+lang/csv/README.html
      csv
 
      ;; docker
+
+     ;; For Spacemacs configuration files and packages
      emacs-lisp
+
+     ;; Include emojis into everything
+     ;; emoji
 
      ;; M-x erc/default-servers `SPC a c i D`
      (erc :variables
@@ -174,9 +184,14 @@ This function should only modify configuration layer settings."
      (git :variables
           ;; TODO implement it as spacemacs|toggle
           ;; (setq
+          ;; (Default nil)
           ;; git-magit-status-fullscreen t
+
+          git-enable-magit-todos-plugin t
+
+          ;; (Default nil)
+          magit-diff-refine-hunk nil
           ;; magit-diff-refine-hunk 'all
-          magit-diff-refine-hunk nil ; default value
           ;; magit-diff-refine-hunk t
           ;; )
           )
@@ -184,16 +199,24 @@ This function should only modify configuration layer settings."
      ;; gnus
      ;; go
 
-     ;; graphviz ;; for erc-social-graph-draw
+     ;; graphviz - open-source graph declaration system
+     ;; Used to generated graphs of Clojure project dependencies,
+     ;; erc-social-graph-draw, etc.
+     ;; https://develop.spacemacs.org/layers/+lang/graphviz/README.html
+     graphviz
+
      haskell
      ;; hy ;; hylang - lisp embedded in python
 
      (helm :variables
            ;; (setq
+
+           ;; (Default nil)
+           ;; TODO try helm-follow-mode-persistent t
+
            ;; helm-display-function 'helm-display-buffer-in-own-frame
 
-           ;; default 20
-           ;; nil - use the longest ‘buffer-name’ length found
+           ;; nil - use the longest ‘buffer-name’ length found. (Default 20)
            helm-buffer-max-length nil
 
            ;; TODO helm-display-buffer-width
@@ -216,6 +239,7 @@ This function should only modify configuration layer settings."
      )
 
      javascript
+     json
      markdown
      ;; multiple-cursors
      ;; nginx
@@ -257,6 +281,10 @@ This function should only modify configuration layer settings."
       lsp-lens-enable t
       ;; )
       )
+
+     ;; Editing multiple lines of text concurrently
+     ;; `g r' menu in Emacs normal state
+     multiple-cursors
 
      my=tweaks ;; see `dotspacemacs-configuration-layer-path'
 
@@ -311,6 +339,9 @@ This function should only modify configuration layer settings."
 
      (shell
       ;; :variables
+      ;; (Default 'ansi-term)
+      ;; shell-default-shell 'eshell
+
       ;; shell-default-height 30
       ;; shell-default-position 'bottom
       )
