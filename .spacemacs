@@ -68,8 +68,11 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ;; nginx
-     pdf
+     ;;
+     ;; Layers added in alphabetic order
+
+     ;; asciidoc
+
      (auto-completion :variables
                       ;; (setq
                       auto-completion-enable-help-tooltip t
@@ -78,140 +81,13 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t
                       ;; )
                       )
+
      better-defaults
-     ;; graphviz ;; for erc-social-graph-draw
-     ;; TODO try out ibuffer
-     ;; (ibuffer :variables ibuffer-group-buffers-by 'projects)
 
-     ;; M-x erc/default-servers `SPC a c i D`
-     (erc :variables
-          erc-fill-column 120
-          ;; erc-fill-function 'erc-fill-variable
-          erc-fill-function 'erc-fill-static
-          erc-fill-static-center 15
-          ;; erc-enable-notifications nil
-          erc-autojoin-channels-alist
-          '(("libera.chat" "#guix"
-             ;; "#systemcrafters"
-             ))
-          erc-prompt-for-nickserv-password nil
-          erc-server-list
-          '(("irc.libera.chat" :port "6667" :nick "bost" :password "")))
-     php
-     typescript
-     ;; asciidoc
-     emacs-lisp
-     (git :variables
-          ;; TODO implement it as spacemacs|toggle
-          ;; (setq
-          ;; git-magit-status-fullscreen t
-          ;; magit-diff-refine-hunk 'all
-          magit-diff-refine-hunk nil ; default value
-          ;; magit-diff-refine-hunk t
-          ;; )
-          )
-
-     ;;;; ivy ;; helm replacement
-     (helm :variables
-           ;; (setq
-           ;; helm-display-function 'helm-display-buffer-in-own-frame
-
-           ;; default 20
-           ;; nil - use the longest ‘buffer-name’ length found
-           helm-buffer-max-length nil
-
-           ;; TODO helm-display-buffer-width
-           ;; default
-           ;; helm-display-function 'helm-default-display-buffer
-           ;; )
-           )
-
-     ;; multiple-cursors
-
-     ;; language server protocol
-     ;; https://emacs-lsp.github.io/lsp-mode/
-     (lsp
-      :variables
-      ;; (setq
-      ;; lsp-enable-file-watchers nil
-      ;; lsp-file-watch-threshold 1500
-      ;; lsp-keymap-prefix "C-M-s-l"
-      ;; lsp-enable-which-key-integration t
-
-      ;; Indent regions using the file formatting functionality provided by the
-      ;; language server. Set to nil to use CIDER features instead of LSP UI
-      lsp-enable-indentation nil
-
-      ;; Enable textDocument/onTypeFormatting integration
-      lsp-enable-on-type-formatting nil
-
-      ;; lsp-file-watch-ignored-director
-
-      ;; docstring popup - delay in seconds for mouse and cursor
-      lsp-ui-doc-delay 2
-
-      ;; show code actions and diagnostics text as right-hand side of buffer
-      lsp-ui-sideline-enable nil
-
-      ;; show reference count for functions (assume more lenses added in future)
-      lsp-lens-enable t
-      ;; )
-      )
-
-     markdown
-     ;; swift
-     ;; windows-scripts
-     (org :variables
-          org-support-shift-select 'always
-          org-src-tab-acts-natively nil ;; default is t
-          ;; org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
-          ;; org-enable-roam-support t
-          ;; capture content from external applications such as the browser
-          ;; org-enable-roam-protocol t
-          )
-     ;; rust
-
-     ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
-     racket ;; see https://racket-mode.com
-
-     (scheme :variables ; M-x run-guile
-             scheme-implementations '(guile))
-     shell-scripts
-     haskell
-     csv
-     ;; Breaks the `C-h k command'
-     ;; Error message is "mapcar: Symbol’s value as variable is void: code-cells-mode""
-     ;; See https://github.com/syl20bnr/spacemacs/issues/15548
-     ;; (python
-     ;;  :variables
-     ;;  ;; TODO use a list of prefered python interpreters
-     ;;  python-shell-interpreter "python3.9.9"; python3.8 python3.7 python3.6
-     ;;  ;; -i   : inspect interactively after running script; forces a prompt even
-     ;;  ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
-     ;;  python-shell-interpreter-args "-i")
-
-     ;; Show commands as you type in a separate buffer
-     ;; command-log  ;; deprecated
-
-     colors
-
-     ;; (java :variables
-     ;;       eclim-eclipse-dirs "~/eclipse-java-neon"
-     ;;       eclim-executable "~/eclipse-java-neon/eclim")
-     html
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-
-     ;; requires:
-     ;; sudo apt install --yes aspell-en aspell-fr aspell-de aspell-sk
-     spell-checking  ;; ~SPC S~ / M-x flyspell-mode
-
-     syntax-checking
-     treemacs
-     (version-control :variables
-                      version-control-diff-tool 'diff-hl
-                      version-control-global-margin t)
+     ;; (setq org-babel-clojure-backend 'cider)
+     ;; (setq gui-elements 1) ; because of CIDER menu
+     ;; (define-key cider-repl-mode-map "s-<delete>" nil)
+     ;; (unbind-key "s-<delete>" cider-repl-mode-map)
      (clojure
       ;; cider package location configured by
       ;; ~/.emacs.d/layers/+lang/clojure/packages.el in its 'use-package'
@@ -258,32 +134,79 @@ This function should only modify configuration layer settings."
       ;; (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
       )
 
-     ;; (setq org-babel-clojure-backend 'cider)
-     ;; (setq gui-elements 1) ; because of CIDER menu
-     ;; (define-key cider-repl-mode-map "s-<delete>" nil)
-     ;; (unbind-key "s-<delete>" cider-repl-mode-map)
+     colors
 
-     java
+     ;; Show commands as you type in a separate buffer
+     ;; command-log  ;; deprecated - log keystrokes
 
-     ;; see https://github.com/syl20bnr/spacemacs/issues/12462
-     ;; try also:
-     ;; dotspacemacs-excluded-packages '(ensime)
-     (scala :variables scala-backend 'scala-metals)
+     csv
 
-     sql
-     ;; vimscript
-     javascript
-     shell
-     ;; command-log - log keystrokes
-     ;; TODO eyebrowse - window management
-     ;; TODO spacemacs-layout - window management
-     ;; smex ; smart M-x enhacements - recent & most used commands
-     ;; gnus
-     ;; systemd
-     ;; hy ;; hylang - lisp embedded in python
-     ;; go
-     yaml
      ;; docker
+     emacs-lisp
+
+     ;; M-x erc/default-servers `SPC a c i D`
+     (erc :variables
+          erc-fill-column 120
+          ;; erc-fill-function 'erc-fill-variable
+          erc-fill-function 'erc-fill-static
+          erc-fill-static-center 15
+          ;; erc-enable-notifications nil
+          erc-autojoin-channels-alist
+          '(("libera.chat" "#guix"
+             ;; "#systemcrafters"
+             ))
+          erc-prompt-for-nickserv-password nil
+          erc-server-list
+          '(("irc.libera.chat" :port "6667" :nick "bost" :password "")))
+
+     (git :variables
+          ;; TODO implement it as spacemacs|toggle
+          ;; (setq
+          ;; git-magit-status-fullscreen t
+          ;; magit-diff-refine-hunk 'all
+          magit-diff-refine-hunk nil ; default value
+          ;; magit-diff-refine-hunk t
+          ;; )
+          )
+
+     ;; gnus
+     ;; go
+
+     ;; graphviz ;; for erc-social-graph-draw
+     haskell
+     ;; hy ;; hylang - lisp embedded in python
+
+     (helm :variables
+           ;; (setq
+           ;; helm-display-function 'helm-display-buffer-in-own-frame
+
+           ;; default 20
+           ;; nil - use the longest ‘buffer-name’ length found
+           helm-buffer-max-length nil
+
+           ;; TODO helm-display-buffer-width
+           ;; default
+           ;; helm-display-function 'helm-default-display-buffer
+           ;; )
+           )
+
+     html
+
+     ;;;; ivy ;; helm replacement
+
+     ;; TODO try out ibuffer
+     ;; (ibuffer :variables ibuffer-group-buffers-by 'projects)
+
+     (java
+     ;; :variables
+     ;; eclim-eclipse-dirs "~/eclipse-java-neon"
+     ;; eclim-executable "~/eclipse-java-neon/eclim"
+     )
+
+     javascript
+     markdown
+     ;; multiple-cursors
+     ;; nginx
 
      (latex
       ;; :variables
@@ -292,14 +215,64 @@ This function should only modify configuration layer settings."
       ;; latex-enable-auto-fill nil  ;; defaults to t
       ;; latex-enable-magic t        ;; defaults to nil
       )
+
+     ;; language server protocol
+     ;; https://emacs-lsp.github.io/lsp-mode/
+     (lsp
+      :variables
+      ;; (setq
+      ;; lsp-enable-file-watchers nil
+      ;; lsp-file-watch-threshold 1500
+      ;; lsp-keymap-prefix "C-M-s-l"
+      ;; lsp-enable-which-key-integration t
+
+      ;; Indent regions using the file formatting functionality provided by the
+      ;; language server. Set to nil to use CIDER features instead of LSP UI
+      lsp-enable-indentation nil
+
+      ;; Enable textDocument/onTypeFormatting integration
+      lsp-enable-on-type-formatting nil
+
+      ;; lsp-file-watch-ignored-director
+
+      ;; docstring popup - delay in seconds for mouse and cursor
+      lsp-ui-doc-delay 2
+
+      ;; show code actions and diagnostics text as right-hand side of buffer
+      lsp-ui-sideline-enable nil
+
+      ;; show reference count for functions (assume more lenses added in future)
+      lsp-lens-enable t
+      ;; )
+      )
+
      my=tweaks ;; see `dotspacemacs-configuration-layer-path'
 
-     ;; (vinegar :variables                     ;; simplify dired
-     ;;          vinegar-reuse-dired-buffer t
-     ;;          vinegar-dired-hide-details nil
-     ;;          )
+     (org :variables
+          org-support-shift-select 'always
+          org-src-tab-acts-natively nil ;; default is t
+          ;; org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
+          ;; org-enable-roam-support t
+          ;; capture content from external applications such as the browser
+          ;; org-enable-roam-protocol t
+          )
 
-     themes-megapack
+     pdf
+     php
+
+     ;; Breaks the `C-h k command'
+     ;; Error message is "mapcar: Symbol’s value as variable is void: code-cells-mode""
+     ;; See https://github.com/syl20bnr/spacemacs/issues/15548
+     ;; (python
+     ;;  :variables
+     ;;  ;; TODO use a list of prefered python interpreters
+     ;;  python-shell-interpreter "python3.9.9"; python3.8 python3.7 python3.6
+     ;;  ;; -i   : inspect interactively after running script; forces a prompt even
+     ;;  ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
+     ;;  python-shell-interpreter-args "-i")
+
+     ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
+     racket ;; see https://racket-mode.com
 
      ;; dired alternative
      ;; (ranger :variables
@@ -313,7 +286,56 @@ This function should only modify configuration layer settings."
      ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
      ;;          ;; )
      ;;         )
-     )
+
+     ;; rust
+
+     ;; see https://github.com/syl20bnr/spacemacs/issues/12462
+     ;; try also:
+     ;; dotspacemacs-excluded-packages '(ensime)
+     (scala :variables scala-backend 'scala-metals)
+
+     (scheme :variables ; M-x run-guile
+             scheme-implementations '(guile))
+
+     (shell
+      ;; :variables
+      ;; shell-default-height 30
+      ;; shell-default-position 'bottom
+      )
+
+     shell-scripts
+
+     ;; TODO eyebrowse - window management
+     ;; TODO spacemacs-layout - window management
+     ;; smex ; smart M-x enhacements - recent & most used commands
+
+     ;; requires:
+     ;; sudo apt install --yes aspell-en aspell-fr aspell-de aspell-sk
+     spell-checking  ;; ~SPC S~ / M-x flyspell-mode
+
+     sql
+     ;; swift
+     syntax-checking
+     ;; systemd
+     themes-megapack
+     treemacs
+     typescript
+
+     (version-control :variables
+                      version-control-diff-tool 'diff-hl
+                      version-control-global-margin t)
+
+     ;; vimscript
+
+     ;; (vinegar :variables                     ;; simplify dired
+     ;;          vinegar-reuse-dired-buffer t
+     ;;          vinegar-dired-hide-details nil
+     ;;          )
+
+     ;; windows-scripts
+
+     yaml
+     ) ;; End of dotspacemacs-configuration-layers
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -426,7 +448,7 @@ This function should only modify configuration layer settings."
      ;;     Finding a file mentioned in a buffer
      ;;     Commands using file marking
      ;; dired+ is unavailable
-     )
+     ) ;; End of dotspacemacs-additional-packages
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
