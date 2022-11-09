@@ -24,7 +24,7 @@
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
-  (my=beg 'dotspacemacs/layers)
+  (my=beg #'dotspacemacs/layers)
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -443,7 +443,7 @@ This function should only modify configuration layer settings."
    ;; (default is `used-only')
    ;; `used-but-keep-unused' is handy for debugging, when often restarting emacs
    dotspacemacs-install-packages 'used-but-keep-unused)
-  (my=end 'dotspacemacs/layers)
+  (my=end #'dotspacemacs/layers)
   )
 
 (defun dotspacemacs/init ()
@@ -451,7 +451,7 @@ This function should only modify configuration layer settings."
 This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
 It should only modify the values of Spacemacs settings."
-  (my=beg 'dotspacemacs/init)
+  (my=beg #'dotspacemacs/init)
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -915,7 +915,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then byte-compile some of Spacemacs files.
    dotspacemacs-byte-compile nil)
-  (my=end 'dotspacemacs/init)
+  (my=end #'dotspacemacs/init)
   )
 
 (defun dotspacemacs/user-env ()
@@ -924,9 +924,9 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (my=beg 'dotspacemacs/user-env)
+  (my=beg #'dotspacemacs/user-env)
   (spacemacs/load-spacemacs-env)
-  (my=end 'dotspacemacs/user-env)
+  (my=end #'dotspacemacs/user-env)
   )
 
 (defun dotspacemacs/user-init ()
@@ -935,7 +935,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (my=beg 'dotspacemacs/user-init)
+  (my=beg #'dotspacemacs/user-init)
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
   (setq custom-file "~/.emacs.d/.cache/.custom-settings")
@@ -945,7 +945,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
 
-  (my=end 'dotspacemacs/user-init)
+  (my=end #'dotspacemacs/user-init)
   )
 
 
@@ -954,8 +954,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-  (my=beg 'dotspacemacs/user-load)
-  (my=end 'dotspacemacs/user-load)
+  (my=beg #'dotspacemacs/user-load)
+  (my=end #'dotspacemacs/user-load)
   )
 
 
@@ -965,7 +965,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (my=beg 'dotspacemacs/user-config)
+  (my=beg #'dotspacemacs/user-config)
 
   ;; (debug) ;; stops the execution. What I need is the stack frame as a string
 
@@ -1141,9 +1141,16 @@ before packages are loaded."
    ;;   "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
    ;; )
 
-
    ;; color-identifiers-mode t
    )
+
+  ;; Safe structural editing for all major modes:
+  (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
+  ;; Safe structural editing for clojure layer only (comment out line above):
+  ;; (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
+
+  ;; diff-hl - diff hightlights in right gutter as you type
+  (diff-hl-flydiff-mode)
 
   (setq-default
    ;; Truncate lines in every buffer. Overridden by
@@ -1255,52 +1262,53 @@ before packages are loaded."
   ;; TODO autoload
   (spacemacs/declare-prefix "og" "google-this")
   (spacemacs/set-leader-keys
-    "ogg" 'google-this
-    "ogr" 'google-this-region
-    "oc"  'my=cider-clear-compilation-highlights
-    ;; "oc"  'org-roam-capture
-    ;; "of"  'my=switch-to-repl-start-figwheel
-    "or"  'rotate-frame
+    "ogg" #'google-this
+    "ogr" #'google-this-region
+    "oc"  #'my=cider-clear-compilation-highlights
+    ;; "oc"  #'org-roam-capture
+    ;; "of"  #'my=switch-to-repl-start-figwheel
+    "or"  #'rotate-frame
     ;; Revert buffer - loads in .dir-locals.el changes
-    "oR"  'my=revert-buffer-no-confirm
+    "oR"  #'my=revert-buffer-no-confirm
     ;; Show list of references to a given node from other nodes
-    "ob"  'org-roam-buffer-toggle
-    "of"  'org-roam-node-find
-    "oi"  'org-roam-node-insert
-    "op"  'my=yank-and-select
+    "ob"  #'org-roam-buffer-toggle
+    "of"  #'org-roam-node-find
+    "oi"  #'org-roam-node-insert
+    "op"  #'my=yank-and-select
     ;; These two functions seem not to be useful:
-    ;; "op" 'my=paste-from-clipboard ; TODO is this function useful?
-    ;; "oy" 'my=copy-to-clipboard    ; TODO is this function useful?
+    ;; "op" #'my=paste-from-clipboard ; TODO is this function useful?
+    ;; "oy" #'my=copy-to-clipboard    ; TODO is this function useful?
     ;; Toggle workspaces forward/backwards
-    "ow"  'eyebrowse-next-window-config
-    "oW"  'eyebrowse-last-window-config
+    "ow"  #'eyebrowse-next-window-config
+    "oW"  #'eyebrowse-last-window-config
     )
 
   ;; accessible from:
   ;; 1. from evil-nomal-mode by ~SPC m~ or ~M-m m~ or
   ;; 2. from evil-insert-mode by ~,~
+  ;; TODO test this
   (mapcar (lambda (mode)
             (spacemacs/set-leader-keys-for-major-mode mode
-              "c" 'my=cider-clear-compilation-highlights
-              "f" 'my=switch-to-repl-start-figwheel
-              "l" 'helm-cider-repl-history))
+              "c" #'my=cider-clear-compilation-highlights
+              "f" #'my=switch-to-repl-start-figwheel
+              "l" #'helm-cider-repl-history))
           '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
 
   (spacemacs|add-cycle
       defun-narrow-modes
-    '(narrow-to-defun narrow-to-page narrow-to-region widen)
+    '(#'narrow-to-defun narrow-to-page #'narrow-to-region #'widen)
     ;; :evil-leader "tnn"
     :documentation "Cycle through the narrow ? modes ?")
 
   (spacemacs|add-cycle
       narrow-widen
-    '(narrow-to-defun widen)
+    '(#'narrow-to-defun #'widen)
     ;; :evil-leader "tnn"
     :documentation "Toggle between `narrow-to-defun' and `widen'")
 
   (spacemacs|add-cycle
       large-file-settings
-    '(my=shenanigans-on my=shenanigans-off)
+    '(#'my=shenanigans-on #'my=shenanigans-off)
     my=last-large-file-settings
     :start-func 'my=last-large-file-settings
     :documentation "Cycle between `my=shenanigans-on' and `my=shenanigans-off'")
@@ -1335,6 +1343,7 @@ Some binding snippets / examples:
     ;; see also `key-chord-unset-global' / `key-chord-unset-local'
 
     ;; for the substitution: ~s-:~ / M-x my=fabricate-subst-cmd
+    ;; TODO this keychord doesn't work
     (bind-chords :map evil-ex-completion-map ; not he evil-ex-map!!!
                  ("()" . my=insert-group-parens))
     (bind-keys :map evil-ex-completion-map ; not he evil-ex-map!!!
@@ -1342,8 +1351,9 @@ Some binding snippets / examples:
                ("s-)" . my=insert-group-parens))
 
     ;; (setq evil-respect-visual-line-mode t) doesn't work easily
-    (global-set-key [remap move-beginning-of-line] 'crux-move-beginning-of-line)
-    (global-set-key [remap evil-beginning-of-line] 'crux-move-beginning-of-line)
+    ;; `remap' can't use the #' reader syntax for function form
+    (global-set-key [remap move-beginning-of-line] #'crux-move-beginning-of-line)
+    (global-set-key [remap evil-beginning-of-line] #'crux-move-beginning-of-line)
 
     ;; BUG: The ~C-z~ / M-x suspend-frame surfaces when calling
     ;; ~SPC k e~ / M-x evil-lisp-state-sp-splice-sexp-killing-forward.
@@ -1578,7 +1588,7 @@ Some binding snippets / examples:
      ("H-2" . my=H-2)
      ("H-4" . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
      )
-    (message "my=eval-bind-keys-and-chords evaluated")
+    (message "[my=eval-bind-keys-and-chords] evaluated")
     )
 
   ;; Thanx to
@@ -1600,15 +1610,15 @@ Some binding snippets / examples:
     ;; on nowadays linux, <windows> key is usually configured to Super
 
     ;; menu key as hyper (for H-s release <menu> key before pressing 's')
-    (define-key key-translation-map [menu] 'event-apply-hyper-modifier) ;H-
-    ;; (define-key key-translation-map [apps] 'event-apply-hyper-modifier)
+    (define-key key-translation-map [menu] #'event-apply-hyper-modifier) ;H-
+    ;; (define-key key-translation-map [apps] #'event-apply-hyper-modifier)
 
     ;; by default, Emacs bind <menu> to execute-extended-command (same as M-x)
     ;; now <menu> defined as 'hyper, we need to press <menu> twice to get <H-menu>
-    ;; (global-set-key (kbd "<H-menu>") 'execute-extended-command)
+    ;; (global-set-key (kbd "<H-menu>") #'execute-extended-command)
     ;; (global-unset-key (kbd "<menu>"))
     ;; (global-unset-key (kbd "<H-menu>"))
-    (message "enable-hyper-super-modifiers-linux-x enabled"))
+    (message "[enable-hyper-super-modifiers-linux-x] evaluated"))
 
   (defun enable-hyper-super-modifiers-macos ()
     ;; http://xahlee.org/emacs/emacs_hyper_super_keys.html
@@ -1633,9 +1643,9 @@ Some binding snippets / examples:
                  "No enabler implemented for the frame:" frame))))
 
     ;; you can always use "C-c h" as 'hyper modifier, even in Linux console or DOS
-    (define-key key-translation-map (kbd "C-c h") 'event-apply-hyper-modifier)
-    (define-key key-translation-map (kbd "C-c s") 'event-apply-super-modifier)
-    (define-key key-translation-map (kbd "C-c a") 'event-apply-alt-modifier))
+    (define-key key-translation-map (kbd "C-c h") #'event-apply-hyper-modifier)
+    (define-key key-translation-map (kbd "C-c s") #'event-apply-super-modifier)
+    (define-key key-translation-map (kbd "C-c a") #'event-apply-alt-modifier))
 
   (enable-hyper-super-modifiers)
   ;; this doesn't work:
@@ -1727,7 +1737,7 @@ Some binding snippets / examples:
   ;;                                                    activate)
   ;;        "Replace current buffer if file is a directory."
   ;;        (interactive)
-  ;;        (message "%s" 'dired-advertised-find-file)
+  ;;        (message "%s" #'dired-advertised-find-file)
   ;;        (let* ((orig (current-buffer))
   ;;               ;; (filename (dired-get-filename))
   ;;               (filename (dired-get-filename t t))
@@ -1761,7 +1771,7 @@ Some binding snippets / examples:
   (mapcar
    (lambda (map)
      (bind-keys :map map
-                ;; on the german keyboard the '#' is next to Enter
+                ;; on German keyboard the #-key is next to the Enter-key
                 ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
                 ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
                 ("s-X"   . my=switch-to-repl-start-figwheel)
@@ -1824,10 +1834,18 @@ Some binding snippets / examples:
 
              ("C-s-o"   . my=cider-clear-compilation-highlights))
 
-  ;; The read syntax #'. See
-  ;; https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html
   (defun endless/sharp ()
-    "Insert #' unless in a string or comment."
+    "Insert the function form abbreviation #' unless in a string
+or comment.
+
+The reader synstax #' is a function form abbreviation, it enables
+byte-compilation, however:
+1. Lambdas should never be quoted. I.e. don't do any of this:
+      '(lambda (...) ...)
+      #'(lambda (...) ...)
+2. It doesn't work for `bind-keys' and `bind-chords'
+See
+https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
     (interactive)
     (call-interactively #'self-insert-command)
     (let ((ppss (syntax-ppss)))
@@ -1872,10 +1890,10 @@ Some binding snippets / examples:
   ;; Setup for Hacking on Guix
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
   (let* ((guix-checkout-dir "~/dev/guix"))
-    (with-eval-after-load 'geiser-guile
+    (with-eval-after-load #'geiser-guile
       (add-to-list 'geiser-guile-load-path guix-checkout-dir))
     (with-eval-after-load 'yasnippet
-      (add-to-list 'yas-snippet-dirs (concat guix-checkout-dir "/etc/snippets")))
+      (add-to-list #'yas-snippet-dirs (concat guix-checkout-dir "/etc/snippets")))
 
     ;; TODO extend the GuixOS with a service providing user full-name and email
     ;; or parse (one of):
@@ -2037,9 +2055,9 @@ Some binding snippets / examples:
   ;;            ("f" . evil-avy-goto-char-timer)
   ;;            ("t" . evil-avy-goto-char-timer))
 
-  ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojure-mode)
+  ;; (add-to-list 'spacemacs-indent-sensitive-modes #'clojure-mode)
   ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojurescript-mode)
-  (my=end 'dotspacemacs/user-config)
+  (my=end #'dotspacemacs/user-config)
   )
 
 ;; TODO `package-directory-list' should be deduplicated. See package.el.gz
