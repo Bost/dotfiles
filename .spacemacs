@@ -1261,6 +1261,8 @@ before packages are loaded."
     ;; "oc"  'org-roam-capture
     ;; "of"  'my=switch-to-repl-start-figwheel
     "or"  'rotate-frame
+    ;; Revert buffer - loads in .dir-locals.el changes
+    "oR"  'my=revert-buffer-no-confirm
     ;; Show list of references to a given node from other nodes
     "ob"  'org-roam-buffer-toggle
     "of"  'org-roam-node-find
@@ -1269,6 +1271,9 @@ before packages are loaded."
     ;; These two functions seem not to be useful:
     ;; "op" 'my=paste-from-clipboard ; TODO is this function useful?
     ;; "oy" 'my=copy-to-clipboard    ; TODO is this function useful?
+    ;; Toggle workspaces forward/backwards
+    "ow"  'eyebrowse-next-window-config
+    "oW"  'eyebrowse-last-window-config
     )
 
   ;; accessible from:

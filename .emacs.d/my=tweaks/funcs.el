@@ -896,3 +896,10 @@ Version: 2018-12-23 2022-04-07"
      ((equal xsortBy "dir") (setq xarg "-Al --group-directories-first"))
      (t (error "logic error 09535" )))
     (dired-sort-other xarg )))
+
+;; It's better not to redefine or advise `revert-buffer'. There are plenty of
+;; Lisp calls to revert-buffer, and you don't want to affect their behavior. You
+;; probably want to change the behavior only for interactive calls.
+(defun my=revert-buffer-no-confirm ()
+  "Revert buffer without confirmation."
+  (interactive) (revert-buffer t t))
