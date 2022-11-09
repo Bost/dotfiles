@@ -92,37 +92,45 @@ This function should only modify configuration layer settings."
      ;; (setq gui-elements 1) ; because of CIDER menu
      ;; (define-key cider-repl-mode-map "s-<delete>" nil)
      ;; (unbind-key "s-<delete>" cider-repl-mode-map)
+     ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
+     ;; cider package location configured by
+     ;; ~/.emacs.d/layers/+lang/clojure/packages.el in its 'use-package'
      (clojure
-      ;; cider package location configured by
-      ;; ~/.emacs.d/layers/+lang/clojure/packages.el in its 'use-package'
       :variables
-      cider-jdk-src-paths
-      '(
-        ;; "~/dev/clojure"
-        ;; sudo apt install openjdk-15-source
-        ;; mkdir -p ~/dec/openjdk-15-source
-        ;; unzip /usr/lib/jvm/openjdk-15/src.zip -d ~/dec/openjdk-15-source
-        "~/dec/openjdk-15-source")
+      ;; (Default '(macro core deprecated))
+      ;; cider-font-lock-dynamically '(macro core function var)
 
-      ;; cider-font-lock-dynamically '(macro core function var) ;; default '(macro core deprecated)
+      ;; (Default undef)
+      cider-overlays-use-font-lock t
 
-      cider-overlays-use-font-lock t                            ;; default undef
+      ;; (Default nil)
+      cider-preferred-build-tool 'clojure-cli
 
-      cider-preferred-build-tool 'clojure-cli                   ;; default nil
-      ;; cider-repl-buffer-size-limit 500                          ;; default nil; what's the unit?
-      cider-repl-use-pretty-printing t                          ;; default undef
+      ;; Limit lines shown in REPL buffer. (Default nil)
+      ;; cider-repl-buffer-size-limit 500
 
-      ;; run Cider without any LSP features
-      clojure-backend 'cider                                    ;; default nil
+      ;; (Default undef) - really undef?
+      cider-repl-use-pretty-printing t
 
-      clojure-enable-clj-refactor t                             ;; default nil
-      cljr-warn-on-eval nil                                     ;; default t
+      ;; Pretty printing with sorted keys / set values
+      cider-print-fn 'puget
 
+      ;; Run Cider without any LSP features. (Default nil)
+      ;; clojure-backend 'cider
+
+      ;; (Default nil) - really nil?
+      clojure-enable-clj-refactor t
+
+      ;; (Default t) - really t?
+      cljr-warn-on-eval nil
+
+      ;; (Default ?)
       clojure-enable-linters 'clj-kondo
 
-      ;; debugger & profiler. Default nil
+      ;; Debugger & Profiler. (Default nil) - really nil?
       clojure-enable-sayid t
 
+      ;; Evaluate expressions in comment as top level. (Default ?)
       clojure-toplevel-inside-comment-form t
 
       ;; Indentation of function forms
