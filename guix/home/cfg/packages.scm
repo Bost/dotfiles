@@ -30,8 +30,11 @@
    "audacity" ;; 35.8MiB
    "inkscape" ;; ~93MiB
    "tectonic" ;; embeddable TeX/LaTeX engine
-   "texlive"                 ; may take too long to graft
-   "texlive-latex-pdfpages"  ; may take too long to graft
+
+   ;; texlive-texmf-20210325  3.24GiB
+   ;; "texlive"                 ; may take too long to graft
+   ;; "texlive-latex-pdfpages"  ; may take too long to graft
+
    "ungoogled-chromium"
 
    ;; openjdk-17.0.3  199.5MiB
