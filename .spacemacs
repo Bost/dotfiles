@@ -914,7 +914,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis nil
+   dotspacemacs-smart-closing-parenthesis t
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
@@ -1139,6 +1139,13 @@ before packages are loaded."
   ;; sharing snippets between modes. See https://youtu.be/xmBovJvQ3KU?t=123
   (add-hook 'yas-minor-mode-hook (lambda ()
                                    (yas-activate-extra-mode 'fundamental-mode)))
+  ;; Fix:
+  ;;   Search failed. This means there is unmatched expression somewhere or we
+  ;;   are at the beginning/end of file
+  ;; https://github.com/Fuco1/smartparens/issues/431#issuecomment-72834657
+  (add-hook 'yas-before-expand-snippet-hook (lambda () (smartparens-mode -1)))
+  (add-hook 'yas-after-exit-snippet-hook (lambda () (smartparens-mode 1)))
+
   (global-flycheck-mode)
   (add-hook 'after-init-hook #'global-flycheck-mode)
 
@@ -1183,6 +1190,10 @@ before packages are loaded."
 
    ;; See also undo-tree-auto-save-history
    undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
+
+   ;; Try this if the "Search failed. ... unmatched expression ... " persists:
+   ;; ;; Original value 160000 ;; Global value 800000
+   ;; undo-limit 160000
 
    ;; TODO create toggle for evil-ex-substitute-interactive-replace
    evil-ex-substitute-interactive-replace t ;; nil/t. default is t
