@@ -22,45 +22,11 @@ guix shell --development guix help2man git strace --pure
  (str home "/dev/guix"))
 (add-to-load-path
  (str home "/dev/dotfiles.dev/guix/home"))
-
 ;; see 'include', which unlike 'load', also works within nested lexical contexts
 ;; can't use the `~'
 ,load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm"
 (load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm")
 
-(use-modules
- (cfg packages)
- (cfg abbreviations)
- (cfg mcron)
- (utils)
- (spag)
- (common settings)
- (gcl)
- #;(gnu home)
- #;(gnu packages)
- #;(gnu services)
- #;(guix gexp)
- #;(gnu home services shells)
- #;(gnu home services mcron) #| home-mcron-service-type |#
- #;(gnu home services)       #| simple-service |#
- #;(ice-9 ftw)               #| scandir |#
- #;(guix build utils))       #| invoke |#
-
-(list "guix/home/cfg/packages.scm"
-"guix/home/cfg/abbreviations.scm"
-#;"guix/home/cfg/mcron.scm"
-"guix/home/utils.scm"
-"guix/home/gcl.scm"
-"guix/home/home-configuration.scm"
-)
-(map load
-     (list "guix/home/cfg/packages.scm"
-           "guix/home/cfg/abbreviations.scm"
-           #;"guix/home/cfg/mcron.scm"
-           "guix/home/utils.scm"
-           "guix/home/spag.scm"
-           "guix/home/gcl.scm"
-           #;"guix/home/home-configuration.scm"))
 |#
 
 (define-module (home-configuration)
@@ -205,16 +171,6 @@ guix shell --development guix help2man git strace --pure
 ;; (if-def-prepend "GUILE_LOAD_COMPILED_PATH"
 ;;                 "$HOME/.guix-profile/lib/guile/3.0/site-ccache")
 
-;; (define (if-def-prepend var-path-name path)
-;;   (define (path-exists? path) #f)
-;;   (when (path-exists? path)
-;;     `(var-path-name . ,(string-join path var-path-name))))
-
-;; (if-def-prepend "GUILE_LOAD_PATH"
-;;                 "$HOME/.guix-profile/share/guile/site/3.0")
-;; (if-def-prepend "GUILE_LOAD_COMPILED_PATH"
-;;                 "$HOME/.guix-profile/lib/guile/3.0/site-ccache")
-
 (define dev (user-home "/dev"))
 
 (format #t "~a... " "define (environment-vars list-separator)")
@@ -248,7 +204,7 @@ guix shell --development guix help2man git strace --pure
     ;;     /etc/profile.d/jdk.sh
     ;;     /etc/environment
     ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
-    ;;                                #;"java-8-openjdk-amd64"
+    ;;                             ;; "java-8-openjdk-amd64"
     ;;                                "java-11-openjdk-amd64"))
 
     ;; Setting the locale correctly:
@@ -396,116 +352,100 @@ of files to search through."
 
 ;; use home-files-service-type for copying configurations
 ;; home-files-service-type example:
-#;
-(services
- ...
- (list
-  (simple-service 'dotfiles-installation
-                  home-files-service-type
-                  `((".config/zsh" ;; destination
-                     ,(local-file
-                       "/home/foobar/etc/zsh/.config/zsh" ;; source file/directory
-                       "zsh-config"
-                       ;; #t to copy directory
-                       #:recursive? #t))))))
+;; (services
+;;  ...
+;;  (list
+;;   (simple-service 'dotfiles-installation
+;;                   home-files-service-type
+;;                   `((".config/zsh" ;; destination
+;;                      ,(local-file
+;;                        "/home/foobar/etc/zsh/.config/zsh" ;; source file/directory
+;;                        "zsh-config"
+;;                        ;; #t to copy directory
+;;                        #:recursive? #t))))))
 
-(define projects
-  (list)
-  #;(list
-   (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"
-                      "/morse" "/utils" "/clj-time" "/cljplot"))
-   (cons "/der" (list "/search-notes" "/racket-koans"
-                      ;; "/vesmir" is in the projects-heroku list
-                      "/heroku-buildpack-racket"))
-   (cons "/dev" (list
-                 "/guix-packages" #;"/guix"
-                 "/copy-sexp" "/kill-buffers" "/jump-last"
-  #|
-;;; use the local guix repo-checkout instead of git.savannah.gnu.org:
-;;; set latest (ls --sort=time --almost-all ~/.cache/guix/checkouts/ | head -1)
-;;; cd ~/.cache/guix/checkouts/$latest
-                 #;(cons "/guix"
-  #;"https://git.savannah.gnu.org/git/guix.git")
-;;; ... then
-git remote rename origin checkout
-git remote add origin https://git.savannah.gnu.org/git/guix.git
-git fetch --tags origin
-  |#
-                 #;(cons "/guile" "https://git.savannah.gnu.org/git/guix.git")
-                 "/notes" "/dotfiles"))))
+(format #t "~a... " "Obtaining projects")
+(define projects (list))
+;; (define projects
+;;   (list
+;;    (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"
+;;                       "/morse" "/utils" "/clj-time" "/cljplot"))
+;;    (cons "/der" (list "/search-notes" "/racket-koans"
+;;                       ;; "/vesmir" is in the projects-heroku list
+;;                       "/heroku-buildpack-racket"))
+;;    (cons "/dev" (list
+;;                  "/guix-packages" ;; "/guix"
+;;                  "/copy-sexp" "/kill-buffers" "/jump-last"
+;; ;;; use the local guix repo-checkout instead of git.savannah.gnu.org:
+;; ;;; set latest (ls --sort=time --almost-all ~/.cache/guix/checkouts/ | head -1)
+;; ;;; cd ~/.cache/guix/checkouts/$latest
+;;             ;;;; (cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
+;; ;;; ... then
+;; ;;;   git remote rename origin checkout
+;; ;;;   git remote add origin https://git.savannah.gnu.org/git/guix.git
+;; ;;;   git fetch --tags origin
+;;             ;;;; (cons "/guile" "https://git.savannah.gnu.org/git/guix.git")
+;;                  "/notes" "/dotfiles"))))
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
-(format #t "~a... " "define (obtain-and-setup ...)")
 (define (obtain-and-setup dest-dir repo)
-  (let* ((gitlab "git@gitlab.com:rostislav.svoboda")
+  (let* [(gitlab "git@gitlab.com:rostislav.svoboda")
          (github "git@github.com:Bost")
          (dest-dir-repo (str home dest-dir repo))
-         (repo-url
-          (if #f ; (url? repo)
-              repo
-              (str gitlab repo))))
+         (repo-url (if #f ; (url? repo)
+                       repo
+                       (str gitlab repo)))]
     (gcl "--origin=gitlab" repo-url dest-dir-repo)
     (exec-system*
      "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
      (str github repo))))
-(format #t "done\n")
 
 ;; Existing projects won't be overridden
-#;
-(map (lambda (project)
-       (let ((dest-dir (car project)))
-         (map (partial obtain-and-setup dest-dir) (cdr project))))
-     projects)
+;; (map (lambda (project)
+;;        (let ((dest-dir (car project)))
+;;          (map (partial obtain-and-setup dest-dir) (cdr project))))
+;;      projects)
+(format #t "done\n")
 
 (format #t "~a... " "Obtaining projects-heroku")
 (define projects-heroku
   (list
-   #;
    (cons "/der" (list
                  ;; pictures
                  "/vesmir"
                  ;; tetris
                  "/vojto"))))
-;; Existing projects won't be overridden
-(map (lambda (project)
-       (let ((dest-dir (car project)))
-         (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
-     projects-heroku)
-(format #t "done\n")
 
-(format #t "~a... " "obtain-and-setup projects")
 (define (obtain-and-setup-heroku dest-dir repo)
   (let* ((heroku "https://git.heroku.com/")
          (dest-dir-repo (str home dest-dir repo))
-         (repo-url
-          (if #f ; (url? repo)
-              repo
-              (str heroku repo ".git"))))
+         (repo-url (if #f ; (url? repo)
+                       repo
+                       (str heroku repo ".git"))))
     (gcl "--origin=vojto" repo-url dest-dir-repo)))
 
-(map (lambda (project)
-       (let ((dest-dir (car project)))
-         (map (partial obtain-and-setup dest-dir) (cdr project))))
-     projects)
+;; Existing projects won't be overridden
+;; (map (lambda (project)
+;;        (let ((dest-dir (car project)))
+;;          (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
+;;      projects-heroku)
 (format #t "done\n")
 
-#|
-See https://10years.guix.gnu.org/static/slides/05-wilson.org
-(define (home-xsettingsd-files-service config)
-(list `(".config/xsettingsd/xsettingsd.conf"
-,(local-file "xsettingsd.conf"))))
+;; ;; See https://10years.guix.gnu.org/static/slides/05-wilson.org
+;; (define (home-xsettingsd-files-service config)
+;;   (list `(".config/xsettingsd/xsettingsd.conf"
+;;           ,(local-file "xsettingsd.conf"))))
 
-(define home-xsettingsd-service-type
-(service-type (name 'home-xsettingsd)
-(extensions
-(list (service-extension
-home-files-service-type
-home-xsettingsd-files-service)))
-(default-value #f)
-(description "Configures UI appearance settings for Xorg
-sessions using the xsettingsd daemon.")))
-|#
+;; (define home-xsettingsd-service-type
+;;   (service-type (name 'home-xsettingsd)
+;;                 (extensions
+;;                  (list (service-extension
+;;                         home-files-service-type
+;;                         home-xsettingsd-files-service)))
+;;                 (default-value #f)
+;;                 (description "Configures UI appearance settings for Xorg
+;; sessions using the xsettingsd daemon.")))
 
 (format #t "~a... " "define guix-channels-configuration")
 (define guix-channels-configuration
@@ -559,11 +499,27 @@ sessions using the xsettingsd daemon.")))
        (local-dotfile "/" channels-scm-filepath))))
 (format #t "done\n")
 
+(define (shell-config-file shell name content)
+  (plain-file
+   name
+   (str
+    "\n" "#### home-" shell "-configuration -> " name ": begin"
+    "\n"
+    content
+    "\n"
+    "\n" "#### home-" shell "-configuration -> " name ": end")))
+
+(define (bash-config-file name content)
+  (shell-config-file "bash" name content))
+
+(define (fish-config-file name content)
+  (shell-config-file "fish" name content))
+
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
 (home-environment
 ;;; TODO why are the channels listed here???
-;;; $ guix package --profile=/home/bost/.config/guix/current -I
+;;; $ guix package --profile=/home/bost/.config/guix/current --list-installed
 ;;; guix     0321cee out /gnu/store/ada4wp2h2xqmrmz448xyp6nzli6drwsv-guix-0321ceef0
 ;;; nonguix  9563de3 out /gnu/store/1qz2whvn763yhxs5gdrsf9zqip3zspc2-nonguix
 ;;; babashka 31edde3 out /gnu/store/k64hd1q6gv3aa9r8arrdlaspzxy68444-babashka
@@ -608,7 +564,7 @@ sessions using the xsettingsd daemon.")))
 
  (services
   (list
-   #;(service home-xsettingsd-service-type)
+   ;; (service home-xsettingsd-service-type)
    (service
     home-bash-service-type
     (home-bash-configuration
@@ -619,7 +575,7 @@ sessions using the xsettingsd daemon.")))
 ;;; TODO fix the documentation:
 
 ;;; The aliases are on the top of the .bashrc
-;;; (because of '(guix-defaults? #t)'???)
+;;; (because of "(guix-defaults? #t)"???)
 
 
 ;;; When using 'bashrc - local-file' then the aliases are added to the .bashrc
@@ -629,16 +585,14 @@ sessions using the xsettingsd daemon.")))
 
 ;;; aliases for "l" "ll" "ls" come from the .bashrc template and will be
 ;;; overridden because see above
-     #;(aliases '())
+     ;; (aliases '())
 
      ;; List of file-like objects, which will be ADDED(!) to .bashrc.
      (bashrc
       (list
-       (plain-file
+       (bash-config-file
         "bashrc"
         (str
-         "\n" "#### home-bash-configuration -> .bashrc: begin"
-         "\n"
 ;;; Also https://github.com/oh-my-fish/plugin-foreign-env
 ;;; 1. ~/.guix-home/setup-environment does:
 ;;;     source ~/.guix-home/profile/etc/profile"
@@ -651,14 +605,10 @@ sessions using the xsettingsd daemon.")))
 ;;;      GUIX_PROFILE=$HOME/.guix-profile
 ;;;       . "$GUIX_PROFILE/etc/profile"
 ;;;    i.e. `. ~/.guix-profile/etc/profile`
-
-         "\n" "eval \"$(direnv hook bash)\""
-         "\n"
-         "\n" "#### home-bash-configuration -> .bashrc: end"
-         ))
+         "\n" "eval \"$(direnv hook bash)\""))
 
        (let* [(filename ".bashrc_additions")]
-         ;; this should work too
+         ;; this should work too:
          ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
          (local-file
           (dotfiles-home "/guix/home/" filename)
@@ -667,16 +617,17 @@ sessions using the xsettingsd daemon.")))
      ;; List of file-like objects, which will be ADDED(!) to .bash_profile
      (bash-profile
       (list
-       (plain-file "bash-profile"
-                   (str
-                    "\n" "export HISTFILE=" (getenv "XDG_CACHE_HOME")
-                    "/.bash_history"))
-       #;
-       (local-file
+       (bash-config-file
+        "bash-profile"
+        (str
+         "\n" "export HISTFILE=" (getenv "XDG_CACHE_HOME")
+         "/.bash_history"))
        ;; (local-file ".bashrc" "bash_profile") should work too
-       (dotfiles-home "/.bash_profile_additions")
-       ;; prevent 'guix home: error: invalid name: `.bash_profile''
-       "bash_profile_additions")))
+       ;; (local-file
+       ;;  (dotfiles-home "/.bash_profile_additions")
+       ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
+       ;;  "bash_profile_additions")
+       ))
      (environment-variables
       (environment-vars list-separator-bash))))
 
