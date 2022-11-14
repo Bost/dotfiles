@@ -51,6 +51,7 @@ guix shell --development guix help2man git strace --pure
   #:use-module (guix build utils)        #| invoke |#
   #:use-module (srfi srfi-1)             #| take remove etc. |#
   #:use-module (gnu packages shellutils)
+  #:use-module (gnu packages shells)     #| #$fish-foreign-env |#
 
   #:use-module (ice-9 pretty-print)      #| pretty-print |#
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
@@ -654,8 +655,30 @@ of files to search through."
      ;; aliases for "l" "ll" "ls" may be be overridden - see bashrc aliases
      #;(aliases '(("l" . "ls -a")))
 
-     (config (list (local-file
-                    (fish-config-dotfiles "/config.fish"))))
+     (config
+      (append
+       (list
+        (mixed-text-file
+         "fish__source_home_setup_environment"
+         ;; Using `str' instead of `string-append' leads to:
+         ;;   ERROR: In procedure %resolve-variable:
+         ;;   Unbound variable: str
+         ;; I guess something similar as in the `chmod-plus' would be needed to
+         ;; have the `str' available.
+         #~(string-append "\
+# if we haven't sourced the $HOME/.guix-home/setup-environment, do it
+status --is-interactive; and not set -q __fish_home_setup_environment_sourced
+and begin
+  set --prepend fish_function_path "
+                          #$fish-foreign-env
+                          "/share/fish/functions
+  fenv source $HOME/.guix-home/setup-environment
+  set -e fish_function_path[1]
+  set -g __fish_home_setup_environment_sourced 1
+end\n")))
+       (list
+        (local-file
+         (fish-config-dotfiles "/config.fish")))))
      ;; see also home-environment-variables-service-type
      ;; https://guix.gnu.org/manual/devel/en/html_node/Essential-Home-Services.html
      ;; (simple-service 'some-useful-env-vars-service
