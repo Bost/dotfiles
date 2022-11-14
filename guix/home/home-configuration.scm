@@ -261,9 +261,6 @@ guix shell --development guix help2man git strace --pure
                 (list
                  ;; my own scripts take precedence...
                  (str "$HOME" scm-bin-dirpath)
-                 ;; TODO create the link
-                 ;;     ln -s ~/dev/dotfiles/bin ~/bin
-                 ;; using guix home
                  "$HOME/bin"
                  ;; ... over default default PATH, putting...
                  "$PATH"
@@ -701,7 +698,7 @@ sessions using the xsettingsd daemon.")))
                         (remove
                          unspecified-or-empty-or-false?
                          (list
-                          ;; TODO add /home/bost/.guile used by `guix repl'
+                          (local-dotfile "/" ".guile") ;; used by `guix repl'
                           (local-dotfile "/" ".gitconfig")
                           (local-dotfile "/" ".spacemacs")
                           (local-dotfile "/guix/home/" "local-stuff.fish"))))
@@ -719,6 +716,10 @@ sessions using the xsettingsd daemon.")))
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
                         (list
+                         (let ((dir "bin"))
+                            `(,dir ;; destination
+                              ,(local-file (dotfiles-home "/" dir)
+                                           #:recursive? #t)))
                          (let ((dir (str ".emacs.d/private/local"
                                          "/farmhouse-light-mod-theme")))
                            `(,dir ;; destination
