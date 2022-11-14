@@ -15,7 +15,8 @@
 (define-module (utils)
   #:use-module (ice-9 popen)  #| read-line open-input-pipe |#
   #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 regex) #| string-match |#
+  #:use-module (ice-9 regex)  #| string-match |#
+  #:use-module (srfi srfi-1)  #| delete-duplicates |#
   #| #:use-module (guix build utils) ;; invoke - not needed |#
   #:export (flatten partial dbg
             string-split-whitespace
@@ -27,7 +28,7 @@
             exec-system*
             exec-background
             unspecified-or-empty-or-false?
-            home str xdg-config-home user-home
+            home user path str user-home xdg-config-home
             has-suffix?
             has-substring?
             error-command-failed
@@ -48,15 +49,21 @@
       (eq? #f obj)))
 
 (define home (getenv "HOME"))
+(define user (getenv "USER"))
+
+;; Turn the colon-separated PATH-string, into a list and
+;; return the resulting list with tail appended
+(define path (delete-duplicates
+              (parse-path (getenv "PATH"))))
 
 (define str string-append)
 
-;; see gnu/home/services/symlink-manager.scm
-(define xdg-config-home (or (getenv "XDG_CONFIG_HOME")
-                            (str home "/.config")))
-
 (define* (user-home #:rest args)
   (apply str home args))
+
+;; see gnu/home/services/symlink-manager.scm
+(define xdg-config-home (or (getenv "XDG_CONFIG_HOME")
+                            (user-home "/.config")))
 
 ;; TODO see
 ;; (define s (string-match "[0-9][0-9][0-9][0-9]" "blah2002foo"))

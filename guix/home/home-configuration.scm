@@ -6,9 +6,11 @@
 
 
 #|
+# Reset environment variables to their default values by running from bash(!):
+$ source /etc/profile
 # Run this file by:
-set dotf /home/bost/dev/dotfiles
-guix home --allow-downgrades --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
+$ guix home --allow-downgrades --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
+
 # The tilda `~' is only expanded by shells when it's the first character of a
 # command-line argument. Use $HOME instead
 
@@ -90,30 +92,35 @@ guix shell --development guix help2man git strace --pure
   ;; #:use-module (gnu home services version-control)
   )
 
+;; (format #t "~a... " "")
+;; (format #t "done\n")
+
 (define home-games-config #f)
 
 (define channels-scm-filepath (str (basename xdg-config-home) "/guix/channels.scm"))
 
+(format #t "~a... " "define* (dotfiles-home #:rest args)")
 (define* (dotfiles-home #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str home "/dev/dotfiles" args))
-
-(format #t "~a\n" "dotfiles-home defined")
+(format #t "~a\n" "... done")
 
 (define (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
 
+(format #t "~a... " "define* (any-local-file ...)")
 ;;;      ...                      #:optional (<parameter-name> <default-value>)
 (define* (any-local-file filepath #:optional (filename (basename filepath)))
   ;; 'local-file' is a macro and cannot be used by 'apply'
+
   (if (equal? "." (substring filename 0 1))
       ;; filename of the local-file can't start with '.'
       (local-file filepath (fix-leading-dot filename))
       (local-file filepath)))
+(format #t "done\n")
 
-(format #t "~a\n" "any-local-file defined")
-
+(format #t "~a... " "define (local-dotfile path filename)")
 (define (local-dotfile path filename)
   "
 (local-dotfile \"/path/to/\" \"file.ext\")
@@ -144,9 +151,9 @@ guix shell --development guix help2man git strace --pure
       (begin
         (format #t "ERROR: can't read ~a\n" filepath)
         #f))))
+(format #t "done\n")
 
-(format #t "~a\n" "local-dotfile defined")
-
+(format #t "~a... " "fish-config-<stuff>")
 (define* (fish-config-base #:rest args)
   (apply str (basename xdg-config-home) "/fish" args))
 
@@ -154,15 +161,40 @@ guix shell --development guix help2man git strace --pure
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str (dotfiles-home) "/" (fish-config-base) args))
-
-(format #t "~a\n" "fish-config-dotfiles defined")
+(format #t "done\n")
 
 ;; fish and bash separate elements of a list with a different separator
 (define list-separator-bash ":")
 (define list-separator-fish " ")
+(define bin-dirpath "/bin")
+(define sbin-dirpath "/sbin")
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
 
+(format #t "~a... " "define (environment-path list-separator)")
+(define (environment-path list-separator)
+  (string-join
+   (delete-duplicates
+    (append
+     ;;; My own scripts and guix-home profile take precedence...
+     (let* [(guix-home-profile (user-home "/.guix-home/profile"))]
+       (list (str home scm-bin-dirpath)
+             (str home bin-dirpath)
+             (str guix-home-profile bin-dirpath)
+             (str guix-home-profile sbin-dirpath)))
+     ;;; ... over (A) existing PATH-value...
+     path
+     ;;; ... or (B) default PATH-value obtained when running from bash:
+     ;;; $ source /etc/profile
+     ;;; $ guix home ... reconfigure
+     ;;;
+     ;;; ... putting bin-directory for for script-based installations of:
+     ;;;     babashka heroku clojure
+     ;;; at the end of the PATH
+     (list "/usr/local/bin")))
+   list-separator))
+(format #t "done\n")
+
 ;; (define (if-def-prepend var-path-name path)
 ;;   (define (path-exists? path) #f)
 ;;   (when (path-exists? path)
@@ -183,6 +215,9 @@ guix shell --development guix help2man git strace --pure
 ;; (if-def-prepend "GUILE_LOAD_COMPILED_PATH"
 ;;                 "$HOME/.guix-profile/lib/guile/3.0/site-ccache")
 
+(define dev (user-home "/dev"))
+
+(format #t "~a... " "define (environment-vars list-separator)")
 (define (environment-vars list-separator)
   `(
     ;; hunting down the native-compiler-error:
@@ -194,12 +229,12 @@ guix shell --development guix help2man git strace --pure
     ;; https://lists.gnu.org/archive/html/guix-devel/2020-03/msg00256.html
     ;; https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
     ;; TODO try the v3 patches from https://issues.guix.gnu.org/57086#9
-    #;("CMAKE_C_COMPILER" . "$HOME/.guix-profile/bin/gcc")
-    ("CC" . "$HOME/.guix-profile/bin/gcc")
+    ;; ("CMAKE_C_COMPILER" . ,(user-home "/.guix-profile/bin/gcc"))
+    ("CC" . ,(user-home "/.guix-profile/bin/gcc"))
 
     ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
     ;; See https://github.com/phiresky/ripgrep-all
-    #;("PATH" . ,(string-join "$HOME/bin/ripgrep_all" "$PATH"))
+    ;; ("PATH" . ,(string-join (usr-home "/bin/ripgrep_all") path))
 
     ;; Remedy against:
     ;; $ lein uberjar
@@ -212,20 +247,19 @@ guix shell --development guix help2man git strace --pure
     ;;     /etc/profile.d/jdk.csh
     ;;     /etc/profile.d/jdk.sh
     ;;     /etc/environment
-    #;
-    ("JAVA_HOME" . (string-append "/usr/lib/jvm/"
-    #;"java-8-openjdk-amd64"
-    "java-11-openjdk-amd64"))
+    ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
+    ;;                                #;"java-8-openjdk-amd64"
+    ;;                                "java-11-openjdk-amd64"))
 
     ;; Setting the locale correctly:
     ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
     ;; When 'setlocale: LC_ALL: cannot change locale'
-    ;; ("GUIX_LOCPATH" . "$HOME/.guix-profile/lib/locale")
+    ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
 
     ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
     ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
     ("CORONA_ENV_TYPE" . "devel")
-    ("REPL_USER" . "$USER")
+    ("REPL_USER" . ,user)
 
     ;; needed by `help`; e.g. `help expand`
     ("BROWSER" . "firefox")
@@ -233,16 +267,16 @@ guix shell --development guix help2man git strace --pure
     ;; for `flatpak run ...`
     ("XDG_DATA_DIRS" . ,(string-join
                          (list
-                          "$HOME/.local/share/flatpak/exports/share"
+                          (user-home "/.local/share/flatpak/exports/share")
                           "/var/lib/flatpak/exports/share"
-                          "$XDG_DATA_DIRS")))
+                          (getenv "XDG_DATA_DIRS"))))
 
-    ("dev"   . "$HOME/dev")
-    ("dec"   . "$HOME/dec")
-    ("der"   . "$HOME/der")
-    ("bin"   . "$HOME/bin")
-    ("cheat" . "$dev/cheat")
-    ("dotf"  . "$dev/dotfiles")
+    ("dev"   . ,dev)
+    ("dec"   . ,(user-home "/dec"))
+    ("der"   . ,(user-home "/der"))
+    ("bin"   . ,(user-home bin-dirpath))
+    ("cheat" . ,(str dev "/cheat"))
+    ("dotf"  . ,(str dev "/dotfiles"))
 
     ("user_full_name"    . ,user-full-name)
     ("user_mail_address" . ,user-mail-address)
@@ -257,21 +291,10 @@ guix shell --development guix help2man git strace --pure
     ;;   test -e $LDP && set --export LD_PRELOAD $LDP
     ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
 
-    ("PATH" . ,(string-join
-                (list
-                 ;; my own scripts take precedence...
-                 (str "$HOME" scm-bin-dirpath)
-                 "$HOME/bin"
-                 ;; ... over default default PATH, putting...
-                 "$PATH"
-                 ;; ... bin-directory for for script-based installations of:
-                 ;;     babashka heroku clojure
-                 ;; at the end of the PATH
-                 "/usr/local/bin")
-                list-separator))))
+    ("PATH" . ,(environment-path list-separator))))
+(format #t "done\n")
 
-(format #t "~a\n" "environment-vars defined")
-
+(format #t "~a... " "define (read-module name)")
 (define (read-module name)
   "TODO use monad"
   (let* [(name-scm (str name ".scm"))
@@ -283,14 +306,17 @@ guix shell --development guix help2man git strace --pure
                            #:splice? #t)))
       (format #t "done\n")
       sf)))
-(format #t "~a\n" "read-module defined")
+(format #t "done\n")
 
+(format #t "~a... " "define module-utils")
 (define module-utils (read-module "utils"))
-(format #t "~a\n" "module-utils defined")
+(format #t "done\n")
 
+(format #t "~a... " "define module-spag")
 (define module-spag (read-module "spag"))
-(format #t "~a\n" "module-spag defined")
+(format #t "done\n")
 
+(format #t "~a... " "define* (service-file ...)")
 (define* (service-file #:key
                        program-name desc
                        scheme-file-name module-name)
@@ -308,9 +334,9 @@ guix shell --development guix help2man git strace --pure
                                #~(begin
                                    (use-modules (#$symb))
                                    (main (command-line))))))))
+(format #t "done\n")
 
-(format #t "~a\n" "service-file defined")
-
+(format #t "~a... " "define* (search-notes ...)")
 (define* (search-notes #:key program-name files)
   "TODO a search-notes program should read a `search-space-file' containing a list
 of files to search through."
@@ -328,16 +354,18 @@ of files to search through."
             #~(begin
                 (use-modules (#$symb))
                 (main #$main-1st-arg (command-line)))))))))
+(format #t "done\n")
 
-(format #t "~a\n" "search-notes defined")
-
+(format #t "~a... " "define (append-fish-config-dir dir lst)")
 (define (append-fish-config-dir dir lst)
   (append
    `((,(fish-config-base dir)
       ,(local-file (fish-config-dotfiles dir)
                    #:recursive? #t)))
    lst))
+(format #t "done\n")
 
+(format #t "~a... " "define* (chmod-plus ...)")
 (define* (chmod-plus #:key program-name chmod-params)
   "Example:
         chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
@@ -355,8 +383,7 @@ of files to search through."
             #~(begin
                 (use-modules (#$symb))
                 (main #$main-1st-arg (command-line)))))))))
-
-(format #t "~a\n" "chmod-plus defined")
+(format #t "done\n")
 
 ;; xfce4-keyboard: repeat-delay 160 repeat-speed 60
 
@@ -409,6 +436,7 @@ git fetch --tags origin
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
+(format #t "~a... " "define (obtain-and-setup ...)")
 (define (obtain-and-setup dest-dir repo)
   (let* ((gitlab "git@gitlab.com:rostislav.svoboda")
          (github "git@github.com:Bost")
@@ -421,7 +449,7 @@ git fetch --tags origin
     (exec-system*
      "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
      (str github repo))))
-(format #t "~a\n" "obtain-and-setup defined")
+(format #t "done\n")
 
 ;; Existing projects won't be overridden
 #;
@@ -430,15 +458,23 @@ git fetch --tags origin
          (map (partial obtain-and-setup dest-dir) (cdr project))))
      projects)
 
+(format #t "~a... " "Obtaining projects-heroku")
 (define projects-heroku
-  (list)
-  #;(list
+  (list
+   #;
    (cons "/der" (list
                  ;; pictures
                  "/vesmir"
                  ;; tetris
                  "/vojto"))))
+;; Existing projects won't be overridden
+(map (lambda (project)
+       (let ((dest-dir (car project)))
+         (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
+     projects-heroku)
+(format #t "done\n")
 
+(format #t "~a... " "obtain-and-setup projects")
 (define (obtain-and-setup-heroku dest-dir repo)
   (let* ((heroku "https://git.heroku.com/")
          (dest-dir-repo (str home dest-dir repo))
@@ -447,20 +483,12 @@ git fetch --tags origin
               repo
               (str heroku repo ".git"))))
     (gcl "--origin=vojto" repo-url dest-dir-repo)))
-(format #t "~a\n" "obtain-and-setup-heroku defined")
-
-;; Existing projects won't be overridden
-#;
-(map (lambda (project)
-       (let ((dest-dir (car project)))
-         (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
-     projects-heroku)
-
 
 (map (lambda (project)
        (let ((dest-dir (car project)))
          (map (partial obtain-and-setup dest-dir) (cdr project))))
      projects)
+(format #t "done\n")
 
 #|
 See https://10years.guix.gnu.org/static/slides/05-wilson.org
@@ -479,6 +507,7 @@ home-xsettingsd-files-service)))
 sessions using the xsettingsd daemon.")))
 |#
 
+(format #t "~a... " "define guix-channels-configuration")
 (define guix-channels-configuration
   (if home-games-config
       (list
@@ -518,7 +547,7 @@ sessions using the xsettingsd daemon.")))
                 (name 'guix-gaming-games)
                 (url
                  #;"https://gitlab.com/rostislav.svoboda/games"
-                 #;(string-append "file://" (getenv "HOME") "/dev/games")
+                 #;(string-append "file://" home "/dev/games")
                  "https://gitlab.com/guix-gaming-channels/games.git")
                 ;; Enable signature verification:
                 (introduction
@@ -528,6 +557,7 @@ sessions using the xsettingsd daemon.")))
                    "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))))))
       (list
        (local-dotfile "/" channels-scm-filepath))))
+(format #t "done\n")
 
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
@@ -639,7 +669,8 @@ sessions using the xsettingsd daemon.")))
       (list
        (plain-file "bash-profile"
                    (str
-                    "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))
+                    "\n" "export HISTFILE=" (getenv "XDG_CACHE_HOME")
+                    "/.bash_history"))
        #;
        (local-file
        ;; (local-file ".bashrc" "bash_profile") should work too
@@ -678,7 +709,7 @@ sessions using the xsettingsd daemon.")))
      ;; https://guix.gnu.org/manual/devel/en/html_node/Essential-Home-Services.html
      ;; (simple-service 'some-useful-env-vars-service
      ;;                 home-environment-variables-service-type
-     ;;                 `(("LESSHISTFILE" . "$XDG_CACHE_HOME/.lesshst")
+     ;;                 `(("LESSHISTFILE" . ,(str (getenv "XDG_CACHE_HOME") "/.lesshst"))
      ;;                   ("SHELL" . ,(file-append zsh "/bin/zsh"))
      ;;                   ("USELESS_VAR" . #f)
      ;;                   ("_JAVA_AWT_WM_NONREPARENTING" . #t)))
@@ -789,11 +820,11 @@ sessions using the xsettingsd daemon.")))
            (format #t "(chmod ~a ~a)\n" dst #o644)
            (chmod dst #o644))
          |#)
-       (format #t "Running (simple-service ~a ...) ... done\n" srvc-name)
+       (format #t "Running (simple-service ~a ...)... done\n" srvc-name)
        simple-srvc))
 
    (let [(srvc-name 'scheme-files)]
-     (format #t "Running (simple-service ~a ...) ...\n" 'scheme-files)
+     (format #t "Running (simple-service ~a ...)... \n" srvc-name)
      (let [(simple-srvc
             (simple-service
              srvc-name home-files-service-type
@@ -852,7 +883,7 @@ sessions using the xsettingsd daemon.")))
               (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
               (service-file #:program-name "spag"
                             #:desc "spacemacs-git-fetch-rebase"))))]
-       (format #t "Running (simple-service ~a ...) ... done\n" srvc-name)
+       (format #t "Running (simple-service ~a ...)... done\n" srvc-name)
        simple-srvc))
 
    #;mcron-service
