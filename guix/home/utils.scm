@@ -6,6 +6,8 @@
 |#
 
 ;; TODO create a package installable by `guix install my=utils`
+;; See: jaro the resource opener - an alternative to xdg-open
+;; https://github.com/isamert/jaro/blob/master/jaro
 ;; See `guile-build-system'
 ;; Syntax:
 ;; (MODULE-NAME [#:select SELECTION]

@@ -154,6 +154,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    ;; see
    ;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
    ;; https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dinstall.html#Invoking-grub_002dinstall
+   ;; https://github.com/babariviere/dotfiles/blob/guix/baba/bootloader/grub.scm
 
    (bootloader
     (bootloader-configuration
