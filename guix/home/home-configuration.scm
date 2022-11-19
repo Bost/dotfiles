@@ -49,7 +49,7 @@ guix shell --development guix help2man git strace --pure
   #:use-module (ice-9 ftw)               #| scandir |#
   ;; #:use-module (ice-9 string-fun)        #| string-replace-substring |#
   #:use-module (guix build utils)        #| invoke |#
-  #:use-module (srfi srfi-1)             #| take remove etc. |#
+  #:use-module (srfi srfi-1)             #| take remove delete-duplicates etc. |#
   #:use-module (gnu packages shellutils)
   #:use-module (gnu packages shells)     #| #$fish-foreign-env |#
 
@@ -240,7 +240,7 @@ guix shell --development guix help2man git strace --pure
 
     ;; used by ghog glog
     ("remotes" . ,(string-join (list "origin" "gitlab")
-                               list-separator-bash))
+                               list-separator))
 
     ;; `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
     ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e

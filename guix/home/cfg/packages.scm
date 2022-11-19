@@ -29,6 +29,12 @@
   (list
    "audacity" ;; 35.8MiB
    "inkscape" ;; ~93MiB
+
+   ;; rust-1.59.0  121.1MiB
+   ;; rust-1.59.0-cargo  3.2MiB
+   ;; rustc-1.60.0-src.tar.xz  63.6MiB
+   "rust" ;; the 1.60 has to be build
+
    "tectonic" ;; embeddable TeX/LaTeX engine
 
    ;; texlive-texmf-20210325  3.24GiB
@@ -179,7 +185,6 @@
    "recutils"
    "ripgrep"
    "rlwrap"
-   "rust"
    "screen"
    "scsh"
    "seahorse"
