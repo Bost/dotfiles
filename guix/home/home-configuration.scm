@@ -66,17 +66,17 @@ guix shell --development guix help2man git strace --pure
 
 (define channels-scm-filepath (str (basename xdg-config-home) "/guix/channels.scm"))
 
-(format #t "~a... " "define* (dotfiles-home #:rest args)")
+(format #t "~a ... " "(define* (dotfiles-home ...) ...)")
 (define* (dotfiles-home #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str home "/dev/dotfiles" args))
-(format #t "~a\n" "... done")
+(format #t "done\n")
 
 (define (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
 
-(format #t "~a... " "define* (any-local-file ...)")
+(format #t "~a ... " "(define* (any-local-file ...) ...)")
 ;;;      ...                      #:optional (<parameter-name> <default-value>)
 (define* (any-local-file filepath #:optional (filename (basename filepath)))
   ;; 'local-file' is a macro and cannot be used by 'apply'
@@ -87,7 +87,7 @@ guix shell --development guix help2man git strace --pure
       (local-file filepath)))
 (format #t "done\n")
 
-(format #t "~a... " "define (local-dotfile path filename)")
+(format #t "~a ... " "(define (local-dotfile path filename) ...)")
 (define (local-dotfile path filename)
   "
 (local-dotfile \"/path/to/\" \"file.ext\")
@@ -120,7 +120,7 @@ guix shell --development guix help2man git strace --pure
         #f))))
 (format #t "done\n")
 
-(format #t "~a... " "fish-config-<stuff>")
+(format #t "~a ... " "fish-config-<stuff>")
 (define* (fish-config-base #:rest args)
   (apply str (basename xdg-config-home) "/fish" args))
 
@@ -150,7 +150,7 @@ guix shell --development guix help2man git strace --pure
 
 (define dev (user-home "/dev"))
 
-(format #t "~a... " "define (environment-vars list-separator)")
+(format #t "~a ... " "(define (environment-vars ...) ...)")
 (define (environment-vars list-separator)
   `(
     ;; hunting down the native-compiler-error:
@@ -237,7 +237,7 @@ guix shell --development guix help2man git strace --pure
 (define list-separator-bash ":")
 #;(define list-separator-fish " ") ;; not needed
 
-(format #t "~a... " "define environment-variables-service")
+(format #t "~a ... " "(define environment-variables-service ...)")
 (define environment-variables-service
   (simple-service
    'environment-variables-service
@@ -245,7 +245,7 @@ guix shell --development guix help2man git strace --pure
    (environment-vars list-separator-bash)))
 (format #t "done\n")
 
-(format #t "~a... " "define (read-module name)")
+(format #t "~a ... " "(define (read-module ...) ...)")
 (define (read-module name)
   "TODO use monad"
   (let* [(name-scm (str name ".scm"))
@@ -259,15 +259,15 @@ guix shell --development guix help2man git strace --pure
       sf)))
 (format #t "done\n")
 
-(format #t "~a... " "define module-utils")
+(format #t "~a ... " "(define module-utils ...))")
 (define module-utils (read-module "utils"))
 (format #t "done\n")
 
-(format #t "~a... " "define module-spag")
+(format #t "~a ... " "(define module-spag ...)")
 (define module-spag (read-module "spag"))
 (format #t "done\n")
 
-(format #t "~a... " "define* (service-file ...)")
+(format #t "~a ... " "(define* (service-file ...) ...)")
 (define* (service-file #:key
                        program-name desc
                        scheme-file-name module-name)
@@ -287,7 +287,7 @@ guix shell --development guix help2man git strace --pure
                                    (main (command-line))))))))
 (format #t "done\n")
 
-(format #t "~a... " "define* (search-notes ...)")
+(format #t "~a ... " "(define* (search-notes ...) ...)")
 (define* (search-notes #:key program-name files)
   "TODO a search-notes program should read a `search-space-file' containing a list
 of files to search through."
@@ -307,7 +307,7 @@ of files to search through."
                 (main #$main-1st-arg (command-line)))))))))
 (format #t "done\n")
 
-(format #t "~a... " "define (append-fish-config-dir dir lst)")
+(format #t "~a ... " "(define (append-fish-config-dir ...) ...)")
 (define (append-fish-config-dir dir lst)
   (append
    `((,(fish-config-base dir)
@@ -316,7 +316,7 @@ of files to search through."
    lst))
 (format #t "done\n")
 
-(format #t "~a... " "define* (chmod-plus ...)")
+(format #t "~a ... " "(define* (chmod-plus ...) ...)")
 (define* (chmod-plus #:key program-name chmod-params)
   "Example:
         chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
@@ -359,7 +359,7 @@ of files to search through."
 ;;                        ;; #t to copy directory
 ;;                        #:recursive? #t))))))
 
-(format #t "~a... " "Obtaining projects")
+(format #t "~a ... " "Obtaining projects")
 (define projects (list))
 ;; (define projects
 ;;   (list
@@ -403,7 +403,7 @@ of files to search through."
 ;;      projects)
 (format #t "done\n")
 
-(format #t "~a... " "Obtaining projects-heroku")
+(format #t "~a ... " "Obtaining projects-heroku")
 (define projects-heroku
   (list
    (cons "/der" (list
@@ -442,7 +442,7 @@ of files to search through."
 ;;                 (description "Configures UI appearance settings for Xorg
 ;; sessions using the xsettingsd daemon.")))
 
-(format #t "~a... " "define guix-channels-configuration")
+(format #t "~a ... " "(define guix-channels-configuration ...)")
 (define guix-channels-configuration
   (if home-games-config
       (list
@@ -619,7 +619,7 @@ of files to search through."
 
 (define scheme-files-service
   (let [(srvc-name 'scheme-files-service)]
-    (format #t "Running ~a... \n" srvc-name)
+    (format #t "Running ~a ... \n" srvc-name)
     (let [(simple-srvc
            (simple-service
             srvc-name home-files-service-type
@@ -678,7 +678,7 @@ of files to search through."
              (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
              (service-file #:program-name "spag"
                            #:desc "spacemacs-git-fetch-rebase"))))]
-      (format #t "Running ~a... done\n" srvc-name)
+      (format #t "Running ~a ... done\n" srvc-name)
       simple-srvc)))
 
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
