@@ -1,5 +1,7 @@
 ;; -*- mode: scheme -*-
 
+(format #t "~a ... " (string-append "Evaluating " (getenv "HOME") ".guile"))
+
 (cond ((false-if-exception (resolve-interface '(ice-9 readline)))
        =>
        (lambda (module)
@@ -18,6 +20,20 @@ convenient interactive line editing and input history.\n\n")))
         (else
          (display "Consider installing the 'guile-colorized' package
 for a colorful Guile experience.\n\n"))))
+
+;; See https://guix.gnu.org/manual/devel/en/guix.html#Using-Guix-Interactively
+(use-modules
+ (ice-9 readline)
+ (ice-9 colorized)
+
+ ;; Help at the REPL (guile console/interpreter)
+ ;; https://www.draketo.de/proj/guile-basics/#sec-2-5
+ ;; (texinfo reflection) ;; (help append) doesn't work; ,d append does, ugh.
+ )
+(activate-readline)
+(activate-colorized)
+
+(format #t "done\n")
 
 ;; (add-to-load-path "~/.guix-profile/share/guile/site/3.0/")
 
