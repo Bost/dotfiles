@@ -1489,7 +1489,14 @@ Some binding snippets / examples:
      ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
      ("C-s-<268632070>" . my=H-3) ;; this is probably for an Apple computers
      ("<escape>"  . keyboard-escape-quit)
+
      ("M-Q"       . unfill-paragraph)
+     ;; TODO in the fish-mode the ~M-q~ is bound to `paredit-reindent-defun',
+     ;; which doesn't work well for unfilling comments (filling works). The same
+     ;; goes for `unfill-toggle'. (Does `paredit-reindent-defun' call
+     ;; `unfill-toggle'?)
+     ;; ("M-q" . unfill-toggle)
+
      ("s-K"       . my=kill-buffers--unwanted)
      ("s-C-K"     . my=kill-buffers--dired)
      ("s-R"       . spacemacs/rename-current-buffer-file)
