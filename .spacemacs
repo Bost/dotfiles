@@ -314,7 +314,10 @@ This function should only modify configuration layer settings."
      ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
      racket ;; see https://racket-mode.com
 
-     ;; dired alternative
+     ;; dired alternatives & related stuff :
+     ;; https://github.com/alexluigit/dirvish
+     ;; https://github.com/Fuco1/dired-hacks
+     ;; https://github.com/jojojames/dired-sidebar
      ;; (ranger :variables
      ;;         ;; (setq
      ;;          ranger-override-dired 'ranger
@@ -400,10 +403,10 @@ This function should only modify configuration layer settings."
 
      ;; vimscript
 
-     ;; (vinegar :variables                     ;; simplify dired
-     ;;          vinegar-reuse-dired-buffer t
-     ;;          vinegar-dired-hide-details nil
-     ;;          )
+     ;; dired alternatives & related stuff :
+     (vinegar :variables
+              vinegar-reuse-dired-buffer t
+              vinegar-dired-hide-details nil)
 
      ;; windows-scripts
 
@@ -426,6 +429,9 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     ;; dired alternative
+     dirvish
+
      ;; Emacs interface (not only) for GNU Guix package manager `guix package'.
      ;; It also provides highlighting and tools for Guix code.
      ;;
@@ -1125,6 +1131,9 @@ before packages are loaded."
   ;; (setq-default typescript-indent-level 4)
 
   ;; (sp-use-paredit-bindings)
+
+  ;; activate the dirvish, the dired alternate
+  ;; (dirvish-override-dired-mode)
 
   ;; set up `evil' bindings for `info-mode'
   (evil-collection-info-setup)
