@@ -138,30 +138,6 @@ guix shell --development guix help2man git strace --pure
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
 
-(format #t "~a... " "define (environment-path list-separator)")
-(define (environment-path list-separator)
-  (string-join
-   (delete-duplicates
-    (append
-     ;;; My own scripts and guix-home profile take precedence...
-     (let* [(guix-home-profile (user-home "/.guix-home/profile"))]
-       (list (str home scm-bin-dirpath)
-             (str home bin-dirpath)
-             (str guix-home-profile bin-dirpath)
-             (str guix-home-profile sbin-dirpath)))
-     ;;; ... over (A) existing PATH-value...
-     path
-     ;;; ... or (B) default PATH-value obtained when running from bash:
-     ;;; $ source /etc/profile
-     ;;; $ guix home ... reconfigure
-     ;;;
-     ;;; ... putting bin-directory for for script-based installations of:
-     ;;;     babashka heroku clojure
-     ;;; at the end of the PATH
-     (list "/usr/local/bin")))
-   list-separator))
-(format #t "done\n")
-
 ;; (define (if-def-prepend var-path-name path)
 ;;   (define (path-exists? path) #f)
 ;;   (when (path-exists? path)
@@ -248,7 +224,25 @@ guix shell --development guix help2man git strace --pure
     ;;   test -e $LDP && set --export LD_PRELOAD $LDP
     ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
 
-    ("PATH" . ,(environment-path list-separator))))
+    ;; My own scripts and guix-home profile take precedence over $PATH.
+    ("PATH" . ,(string-join (list (str home scm-bin-dirpath)
+                                  (str home bin-dirpath)
+   ;; The paths to bin and sbin for guix-home profile are inserted here.
+                                  "$PATH"
+                                  "/usr/local/bin")
+                            list-separator))))
+(format #t "done\n")
+
+;; fish and bash separate elements of a list with a different separator
+(define list-separator-bash ":")
+#;(define list-separator-fish " ") ;; not needed
+
+(format #t "~a... " "define environment-variables-service")
+(define environment-variables-service
+  (simple-service
+   'environment-variables-service
+   home-environment-variables-service-type
+   (environment-vars list-separator-bash)))
 (format #t "done\n")
 
 (format #t "~a... " "define (read-module name)")
@@ -799,9 +793,7 @@ of files to search through."
        ;;  (dotfiles-home "/.bash_profile_additions")
        ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
        ;;  "bash_profile_additions")
-       ))
-     (environment-variables
-      (environment-vars list-separator-bash))))
+       ))))
 
    ;;; fails with:
    ;;;   In procedure open-file: No such file or directory:
@@ -827,41 +819,11 @@ of files to search through."
      #;(aliases '(("l" . "ls -a")))
 
      (config
-      (append
-       (list
-        (mixed-text-file
-         "fish__source_home_setup_environment"
-         ;; Using `str' instead of `string-append' leads to:
-         ;;   ERROR: In procedure %resolve-variable:
-         ;;   Unbound variable: str
-         ;; I guess something similar as in the `chmod-plus' would be needed to
-         ;; have the `str' available.
-         #~(string-append "\
-# if we haven't sourced the $HOME/.guix-home/setup-environment, do it
-status --is-interactive; and not set -q __fish_home_setup_environment_sourced
-and begin
-  set --prepend fish_function_path "
-                          #$fish-foreign-env
-                          "/share/fish/functions
-  fenv source $HOME/.guix-home/setup-environment
-  set -e fish_function_path[1]
-  set -g __fish_home_setup_environment_sourced 1
-end\n")))
-       (list
-        (local-file
-         (fish-config-dotfiles "/config.fish")))))
-     ;; see also home-environment-variables-service-type
-     ;; https://guix.gnu.org/manual/devel/en/html_node/Essential-Home-Services.html
-     ;; (simple-service 'some-useful-env-vars-service
-     ;;                 home-environment-variables-service-type
-     ;;                 `(("LESSHISTFILE" . ,(str (getenv "XDG_CACHE_HOME") "/.lesshst"))
-     ;;                   ("SHELL" . ,(file-append zsh "/bin/zsh"))
-     ;;                   ("USELESS_VAR" . #f)
-     ;;                   ("_JAVA_AWT_WM_NONREPARENTING" . #t)))
+      (list
+       (local-file
+        (fish-config-dotfiles "/config.fish"))))))
 
-     (environment-variables
-      (environment-vars list-separator-fish))))
-
+   environment-variables-service
    home-dir-config-service
    scheme-files-service
 
