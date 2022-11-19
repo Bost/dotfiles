@@ -516,6 +516,177 @@ of files to search through."
 (define (fish-config-file name content)
   (shell-config-file "fish" name content))
 
+(define home-dir-config-service
+  ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d directory
+  (let [(srvc-name 'home-dir-config-service)]
+    (format #t "Running ~a ...\n" srvc-name)
+    (let ((simple-srvc
+           (simple-service
+            srvc-name home-files-service-type
+            ((compose
+              (partial append guix-channels-configuration)
+              (partial append
+                       (remove
+                        unspecified-or-empty-or-false?
+                        (list
+                         (local-dotfile "/" ".guile") ;; used by `guix repl'
+                         (local-dotfile "/" ".gitconfig")
+                         (local-dotfile "/" ".spacemacs")
+                         (local-dotfile "/guix/home/" "local-stuff.fish"))))
+              (partial append
+;;; This can't be used:
+;;;                    `((".emacs.d/private" ;; destination
+;;;                       ,(local-file (dotfiles-home "/.emacs.d/private")
+;;;                                    #:recursive? #t)))
+;;; because:
+;;; 1. Can't store the whole ".emacs.d/private" since there are some README.md
+;;; files and `git ... rebase develop cycle' b/c they will be symlinked (from
+;;; the /gnu/store/).
+;;;
+;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
+;;; them after `guix home ...', since `git restore ...' overwrites the symlink
+;;; (to the /gnu/store/).
+                       (list
+                        (let ((dir "bin"))
+                          `(,dir ;; destination
+                            ,(local-file (dotfiles-home "/" dir)
+                                         #:recursive? #t)))
+                        (let ((dir (str ".emacs.d/private/local"
+                                        "/farmhouse-light-mod-theme")))
+                          `(,dir ;; destination
+                            ,(local-file (dotfiles-home "/" dir)
+                                         #:recursive? #t)))))
+              #|
+              (partial append
+              `((,(fish-config-base)
+;;; TODO modify `local-file' so that can copy files from /gnu/store with
+              ;; different stats, not only as '.r--r--r-- root root'
+              ,(local-file (fish-config-dotfiles)
+              #:recursive? #t
+              #:select?
+              (lambda (file stats)
+              (let* [(ret (or
+;;; `fish_prompt.fish' (among others) changes the content of `fish_variables' so
+;;; this file must be present and editable otherwise all sorts of
+;;; 'Permission denied' problems are to be expected.
+
+              (has-suffix? file "/fish_variables")
+;;; `config.fish' is copied by `home-fish-configuration'
+              (has-suffix? file "/config.fish")))]
+              (when ret
+              (format #t "excluding: ~a ~a\n" file stats))
+              (not ret)))))))
+              |#
+              (partial append-fish-config-dir "/completions")
+              (partial append-fish-config-dir "/conf.d")
+              (partial append-fish-config-dir "/functions")
+              (partial remove unspecified?)
+              (partial append
+                       (map
+                        (lambda (filepath)
+                          (if (equal? filepath "/fish_variables")
+                              (let* [(src (fish-config-dotfiles filepath))
+                                     (dst (str home "/"
+                                               (fish-config-base filepath)))]
+;;; TODO is this sexp is not executed because of lazy-evaluation?
+                                (begin
+                                  (format #t "(copy-file ~a ~a) ... " src dst)
+                                  (let ((retval (copy-file src dst)))
+                                    (format #t "retval: ~a\n" retval)
+                                    ;; retval is #<unspecified>
+                                    retval)))
+                              `(,(fish-config-base filepath)
+                                ,(local-file
+                                  (fish-config-dotfiles filepath)))))
+                        (list
+                         #;"/fish_variables"
+                         "/fish_plugins"))))))))
+      (let* [(filepath "/fish_variables")
+             (src (fish-config-dotfiles filepath))
+             (dst (str home "/" (fish-config-base filepath)))]
+        (begin
+          (format #t "(copy-file ~a ~a) ... " src dst)
+          (let ((retval (copy-file src dst)))
+            (format #t "retval: ~a\n" retval)
+            retval))
+
+        #|
+;;; Just changing ownership and permissions of `fish_variables' doesn't work:
+        (begin
+        ;; .rw-r--r-- bost users fish_variables
+        (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
+        (chown dst (getuid) (getgid))
+        ;; .rw-r--r-- fish_variables
+        (format #t "(chmod ~a ~a)\n" dst #o644)
+        (chmod dst #o644))
+        |#)
+      (format #t "Running ~a ... done\n" srvc-name)
+      simple-srvc)))
+
+(define scheme-files-service
+  (let [(srvc-name 'scheme-files-service)]
+    (format #t "Running ~a... \n" srvc-name)
+    (let [(simple-srvc
+           (simple-service
+            srvc-name home-files-service-type
+            (list
+             ;; TODO gui / guixd should do cd ~/dev/guix; guixg should git pull
+             ;; --rebase (preferably from a local guix checkout)
+
+             ;; TODO crc should search in the $dec
+             (search-notes #:program-name "crc"  #:files "clojure")
+             ;; TODO cre should search in the ~/.emacs.d/, ~/.spacemacs,
+             ;; kill-buffes and my=tweaks, farmhouse-light-mod
+             (search-notes #:program-name "cre"  #:files "vim|emacs|org_mode")
+             (search-notes #:program-name "crep" #:files ".*")
+             (search-notes #:program-name "crf"  #:files "find_and_grep")
+             ;; TODO crg should search in the $dotf/guix/
+             (search-notes #:program-name "crg"  #:files "guix|guile")
+             ;; TODO crgi should also search in the git config --get,
+             ;; ~/.gitconfig, etc.
+             (search-notes #:program-name "crgi" #:files "git")
+             ;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile
+             ;; (and other profile files), etc.
+             (search-notes #:program-name "crl"
+                           #:files "guix|shells|linux|android")
+             ;; TODO crr should search in the $der
+             (search-notes #:program-name "crr"  #:files "racket")
+             ;; TODO crs should be like crl
+             (search-notes #:program-name "crs"  #:files "shells")
+             (search-notes #:program-name "cru"  #:files "utf8")
+             (chmod-plus   #:program-name "prw"  #:chmod-params "rw")
+             (chmod-plus   #:program-name "px"   #:chmod-params "x")
+             (service-file #:program-name "c"       #:desc "batcat"
+                           #:scheme-file-name "bat")
+             (service-file #:program-name "e"       #:desc "emacs-launcher"
+                           #:scheme-file-name "emacs-launcher")
+             (service-file #:program-name "f"       #:desc "find-alternative")
+             (service-file #:program-name "gcl"     #:desc "git-clone")
+             (service-file #:program-name "gre"     #:desc "git-remote")
+             (service-file #:program-name "gfe"     #:desc "git-fetch")
+             (service-file #:program-name "gco"     #:desc "git-checkout")
+             (service-file #:program-name "gcod"
+                           #:desc "git-checkout-previous-branch")
+             (service-file #:program-name "gcom"
+                           #:desc "git-checkout-master")
+             (service-file #:program-name "gg"      #:desc "git-gui")
+             (service-file #:program-name "ghog"
+                           #:desc "git-push-to-remotes")
+             (service-file #:program-name "gk"
+                           #:desc "git-repository-browser")
+             (service-file #:program-name "glo"
+                           #:desc "git-fech-and-rebase-from-origin")
+             (service-file #:program-name "gs"      #:desc "git-status")
+             (service-file #:program-name "gtg"     #:desc "git-tag")
+             (service-file #:program-name "l"
+                           #:desc "list-directory-contents"
+                           #:scheme-file-name "ls")
+             (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
+             (service-file #:program-name "spag"
+                           #:desc "spacemacs-git-fetch-rebase"))))]
+      (format #t "Running ~a... done\n" srvc-name)
+      simple-srvc)))
+
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
 (home-environment
@@ -691,174 +862,8 @@ end\n")))
      (environment-variables
       (environment-vars list-separator-fish))))
 
-   ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d directory
-   (let [(srvc-name 'home-dir-config)]
-     (format #t "Running (simple-service ~a ...) ...\n" srvc-name)
-     (let ((simple-srvc
-            (simple-service
-             srvc-name home-files-service-type
-             ((compose
-               (partial append guix-channels-configuration)
-               (partial append
-                        (remove
-                         unspecified-or-empty-or-false?
-                         (list
-                          (local-dotfile "/" ".guile") ;; used by `guix repl'
-                          (local-dotfile "/" ".gitconfig")
-                          (local-dotfile "/" ".spacemacs")
-                          (local-dotfile "/guix/home/" "local-stuff.fish"))))
-               (partial append
-;;; This can't be used:
-;;;                    `((".emacs.d/private" ;; destination
-;;;                       ,(local-file (dotfiles-home "/.emacs.d/private")
-;;;                                    #:recursive? #t)))
-;;; because:
-;;; 1. Can't store the whole ".emacs.d/private" since there are some README.md
-;;; files and `git ... rebase develop cycle' b/c they will be symlinked (from
-;;; the /gnu/store/).
-;;;
-;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
-;;; them after `guix home ...', since `git restore ...' overwrites the symlink
-;;; (to the /gnu/store/).
-                        (list
-                         (let ((dir "bin"))
-                            `(,dir ;; destination
-                              ,(local-file (dotfiles-home "/" dir)
-                                           #:recursive? #t)))
-                         (let ((dir (str ".emacs.d/private/local"
-                                         "/farmhouse-light-mod-theme")))
-                           `(,dir ;; destination
-                             ,(local-file (dotfiles-home "/" dir)
-                                          #:recursive? #t)))))
-               #|
-               (partial append
-                        `((,(fish-config-base)
-;;; TODO modify `local-file' so that can copy files from /gnu/store with
-;; different stats, not only as '.r--r--r-- root root'
-                           ,(local-file (fish-config-dotfiles)
-                                        #:recursive? #t
-                                        #:select?
-                                        (lambda (file stats)
-                                          (let* [(ret (or
-;;; `fish_prompt.fish' (among others) changes the content of `fish_variables' so
-;;; this file must be present and editable otherwise all sorts of
-;;; 'Permission denied' problems are to be expected.
-
-                                                        (has-suffix? file "/fish_variables")
-;;; `config.fish' is copied by `home-fish-configuration'
-                                                        (has-suffix? file "/config.fish")))]
-                                            (when ret
-                                              (format #t "excluding: ~a ~a\n" file stats))
-                                            (not ret)))))))
-               |#
-               (partial append-fish-config-dir "/completions")
-               (partial append-fish-config-dir "/conf.d")
-               (partial append-fish-config-dir "/functions")
-               (partial remove unspecified?)
-               (partial append
-                        (map
-                         (lambda (filepath)
-                           (if (equal? filepath "/fish_variables")
-                               (let* [(src (fish-config-dotfiles filepath))
-                                      (dst (str home "/"
-                                                (fish-config-base filepath)))]
-;;; TODO is this sexp is not executed because of lazy-evaluation?
-                                 (begin
-                                   (format #t "(copy-file ~a ~a) ... " src dst)
-                                   (let ((retval (copy-file src dst)))
-                                     (format #t "retval: ~a\n" retval)
-                                     ;; retval is #<unspecified>
-                                     retval)))
-                               `(,(fish-config-base filepath)
-                                 ,(local-file
-                                   (fish-config-dotfiles filepath)))))
-                         (list
-                          #;"/fish_variables"
-                          "/fish_plugins"))))))))
-       (let* [(filepath "/fish_variables")
-              (src (fish-config-dotfiles filepath))
-              (dst (str home "/" (fish-config-base filepath)))]
-         (begin
-           (format #t "(copy-file ~a ~a) ... " src dst)
-           (let ((retval (copy-file src dst)))
-             (format #t "retval: ~a\n" retval)
-             retval))
-
-         #|
-;;; Just changing ownership and permissions of `fish_variables' doesn't work:
-         (begin
-           ;; .rw-r--r-- bost users fish_variables
-           (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
-           (chown dst (getuid) (getgid))
-           ;; .rw-r--r-- fish_variables
-           (format #t "(chmod ~a ~a)\n" dst #o644)
-           (chmod dst #o644))
-         |#)
-       (format #t "Running (simple-service ~a ...)... done\n" srvc-name)
-       simple-srvc))
-
-   (let [(srvc-name 'scheme-files)]
-     (format #t "Running (simple-service ~a ...)... \n" srvc-name)
-     (let [(simple-srvc
-            (simple-service
-             srvc-name home-files-service-type
-             (list
-              ;; TODO gui / guixd should do cd ~/dev/guix; guixg should git pull
-              ;; --rebase (preferably from a local guix checkout)
-
-              ;; TODO crc should search in the $dec
-              (search-notes #:program-name "crc"  #:files "clojure")
-              ;; TODO cre should search in the ~/.emacs.d/, ~/.spacemacs,
-              ;; kill-buffes and my=tweaks, farmhouse-light-mod
-              (search-notes #:program-name "cre"  #:files "vim|emacs|org_mode")
-              (search-notes #:program-name "crep" #:files ".*")
-              (search-notes #:program-name "crf"  #:files "find_and_grep")
-              ;; TODO crg should search in the $dotf/guix/
-              (search-notes #:program-name "crg"  #:files "guix|guile")
-              ;; TODO crgi should also search in the git config --get,
-              ;; ~/.gitconfig, etc.
-              (search-notes #:program-name "crgi" #:files "git")
-              ;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile
-              ;; (and other profile files), etc.
-              (search-notes #:program-name "crl"
-                            #:files "guix|shells|linux|android")
-              ;; TODO crr should search in the $der
-              (search-notes #:program-name "crr"  #:files "racket")
-              ;; TODO crs should be like crl
-              (search-notes #:program-name "crs"  #:files "shells")
-              (search-notes #:program-name "cru"  #:files "utf8")
-              (chmod-plus   #:program-name "prw"  #:chmod-params "rw")
-              (chmod-plus   #:program-name "px"   #:chmod-params "x")
-              (service-file #:program-name "c"       #:desc "batcat"
-                            #:scheme-file-name "bat")
-              (service-file #:program-name "e"       #:desc "emacs-launcher"
-                            #:scheme-file-name "emacs-launcher")
-              (service-file #:program-name "f"       #:desc "find-alternative")
-              (service-file #:program-name "gcl"     #:desc "git-clone")
-              (service-file #:program-name "gre"     #:desc "git-remote")
-              (service-file #:program-name "gfe"     #:desc "git-fetch")
-              (service-file #:program-name "gco"     #:desc "git-checkout")
-              (service-file #:program-name "gcod"
-                            #:desc "git-checkout-previous-branch")
-              (service-file #:program-name "gcom"
-                            #:desc "git-checkout-master")
-              (service-file #:program-name "gg"      #:desc "git-gui")
-              (service-file #:program-name "ghog"
-                            #:desc "git-push-to-remotes")
-              (service-file #:program-name "gk"
-                            #:desc "git-repository-browser")
-              (service-file #:program-name "glo"
-                            #:desc "git-fech-and-rebase-from-origin")
-              (service-file #:program-name "gs"      #:desc "git-status")
-              (service-file #:program-name "gtg"     #:desc "git-tag")
-              (service-file #:program-name "l"
-                            #:desc "list-directory-contents"
-                            #:scheme-file-name "ls")
-              (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
-              (service-file #:program-name "spag"
-                            #:desc "spacemacs-git-fetch-rebase"))))]
-       (format #t "Running (simple-service ~a ...)... done\n" srvc-name)
-       simple-srvc))
+   home-dir-config-service
+   scheme-files-service
 
    #;mcron-service
 
