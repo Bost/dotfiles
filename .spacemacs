@@ -25,7 +25,7 @@
   "Layer configuration:
 This function should only modify configuration layer settings."
   (my=beg #'dotspacemacs/layers)
-  (setq-default
+  (setq-default ; of dotspacemacs/layers
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `spacemacs'. (default 'spacemacs)
@@ -184,13 +184,9 @@ This function should only modify configuration layer settings."
      (git :variables
           ;; TODO implement it as spacemacs|toggle
           ;; (setq
-          ;; (Default nil)
-          ;; git-magit-status-fullscreen t
-
+          ;; git-magit-status-fullscreen t ;; (Default nil)
           git-enable-magit-todos-plugin t
-
-          ;; (Default nil)
-          magit-diff-refine-hunk nil
+          magit-diff-refine-hunk nil       ;; (Default nil)
           ;; magit-diff-refine-hunk 'all
           ;; magit-diff-refine-hunk t
           ;; )
@@ -211,8 +207,7 @@ This function should only modify configuration layer settings."
      (helm :variables
            ;; (setq
 
-           ;; (Default nil)
-           ;; TODO try helm-follow-mode-persistent t
+           ;; TODO try helm-follow-mode-persistent t ;; (Default nil)
 
            ;; helm-display-function 'helm-display-buffer-in-own-frame
 
@@ -252,11 +247,9 @@ This function should only modify configuration layer settings."
       ;; latex-enable-magic t        ;; defaults to nil
       )
 
-     ;; language server protocol
-     ;; https://emacs-lsp.github.io/lsp-mode/
+     ;; Language Server Protocol https://emacs-lsp.github.io/lsp-mode/
      (lsp
-      :variables
-      ;; (setq
+      :variables ; (setq
       ;; lsp-enable-file-watchers nil
       ;; lsp-file-watch-threshold 1500
       ;; lsp-keymap-prefix "C-M-s-l"
@@ -278,8 +271,7 @@ This function should only modify configuration layer settings."
       lsp-ui-sideline-enable nil
 
       ;; show reference count for functions (assume more lenses added in future)
-      lsp-lens-enable t
-      ;; )
+      lsp-lens-enable t ; )
       )
 
      ;; Editing multiple lines of text concurrently
@@ -318,16 +310,14 @@ This function should only modify configuration layer settings."
      ;; https://github.com/alexluigit/dirvish
      ;; https://github.com/Fuco1/dired-hacks
      ;; https://github.com/jojojames/dired-sidebar
-     ;; (ranger :variables
-     ;;         ;; (setq
+     ;; (ranger :variables ; (setq
      ;;          ranger-override-dired 'ranger
      ;;          ranger-show-dotfiles t
      ;;          ;; ranger-show-preview t
      ;;          ranger-show-hidden t
      ;;          ranger-cleanup-eagerly t
      ;;          ranger-cleanup-on-disable t
-     ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
-     ;;          ;; )
+     ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4") ; )
      ;;         )
 
      ;; rust
@@ -1183,7 +1173,7 @@ before packages are loaded."
     ;; (getenv "SHELL")
     (shell-which "fish"))
 
-  (setq
+  (setq ; of dotspacemacs/user-config
 
    ;; The program of term.
    ;; If this is nil, setup to environment variable of `SHELL'.
@@ -1200,9 +1190,19 @@ before packages are loaded."
    ;; See also undo-tree-auto-save-history
    undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
 
-   ;; Try this if the "Search failed. ... unmatched expression ... " persists:
+   ;; TODO If the "Search failed. ... unmatched expression ... " persists, try:
    ;; ;; Original value 160000 ;; Global value 800000
    ;; undo-limit 160000
+   ;; See also:
+   ;;   Company backend ’geiser-company-backend’ could not be initialized:
+   ;;   Symbol’s function definition is void: geiser-company-backend
+   ;; See also:
+   ;;    helm-M-x-execute-command:
+   ;;    Symbol’s function definition is void: geiser-company--setup
+   ;;
+   ;; ~/.emacs.d/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
+   ;; 331:        (geiser-company--setup geiser-repl-company-p)
+
 
    ;; TODO create toggle for evil-ex-substitute-interactive-replace
    evil-ex-substitute-interactive-replace t ;; nil/t. default is t
@@ -1278,17 +1278,15 @@ before packages are loaded."
   (blink-cursor-mode t)
 
   (progn
-    (setq
-     global-hl-line-sticky-flag t)
+    (setq global-hl-line-sticky-flag t)
     (global-hl-line-mode +1))
 
   (beacon-mode 1)
 
   (progn
-    (setq
-     ;; Max time delay between two key presses to be considered a key chord.
-     ;; default 0.1
-     key-chord-two-keys-delay 0.02)
+    ;; Max time delay between two key presses to be considered a key chord.
+    ;; (Default 0.1)
+    (setq key-chord-two-keys-delay 0.02)
     (key-chord-mode 1))
 
   (org-babel-do-load-languages
@@ -1532,6 +1530,7 @@ Some binding snippets / examples:
      ("s-D"       . dired-jump) ;; just open a dired buffer
 
      ;; The highlighting of copied sexps is done by the copy-sexp.el
+     ;; TODO highlight text yanked with `y'
      ("s-c"       . sp-copy-sexp)
      ("s-b"       . sp-backward-copy-sexp)
 
@@ -1720,13 +1719,13 @@ Some binding snippets / examples:
   ;; https://gist.github.com/toroidal-code/ec075dd05a23a8fb8af0
   ;; Also '<Multi_key> s s' should produce 'ß'
   (defun enable-hyper-super-modifiers-win32 ()
-       ;;(setq w32-pass-apps-to-system nil)
-       (setq w32-apps-modifier 'hyper)
-
-       (setq w32-pass-lwindow-to-system nil)
-       ;;(setq w32-phantom-key-code 42)  ;; what for?
-       (setq w32-lwindow-modifier 'super)
-       (setq w32-rwindow-modifier 'alt))
+    (setq
+     ;; w32-pass-apps-to-system nil
+     w32-apps-modifier 'hyper
+     w32-pass-lwindow-to-system nil
+     ;; w32-phantom-key-code 42  ;; what for?
+     w32-lwindow-modifier 'super
+     w32-rwindow-modifier 'alt))
 
   (defun enable-hyper-super-modifiers-linux-x ()
     (interactive)
@@ -1745,11 +1744,12 @@ Some binding snippets / examples:
 
   (defun enable-hyper-super-modifiers-macos ()
     ;; http://xahlee.org/emacs/emacs_hyper_super_keys.html
-    (setq mac-option-modifier 'hyper) ; sets the Option key as Hyper
-    (setq mac-option-modifier 'super) ; sets the Option key as Super
-    (setq mac-command-modifier 'meta) ; sets the Command key as Meta
-    (setq mac-control-modifier 'meta) ; sets the Control key as Meta
-    )
+    (setq
+     mac-option-modifier 'hyper ; Option key is Hyper
+     mac-option-modifier 'super ; Option key is Super
+     mac-command-modifier 'meta ; Command key is Meta
+     mac-control-modifier 'meta ; Control key is Meta
+     ))
 
   (defun enable-hyper-super-modifiers ()
     (let ( (frame (framep (selected-frame))))
@@ -2023,12 +2023,13 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
     ;;   /run/current-system/configuration.scm
     ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
 
-    (setq user-full-name (getenv "user_full_name"))
-    (setq user-mail-address (getenv "user_mail_address"))
+    (setq
+     user-full-name         (getenv "user_full_name")
+     user-mail-address      (getenv "user_mail_address")
+     copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
+
     ;; Assuming the Guix checkout is in ~/src/guix.
     (load-file (concat guix-checkout-dir "/etc/copyright.el"))
-    (setq copyright-names-regexp
-          (format "%s <%s>" user-full-name user-mail-address))
     ;; check if the copyright is up to date M-x copyright-update.
     ;; automatically add copyright after each buffer save
     ;; (add-hook 'after-save-hook 'copyright-update)
