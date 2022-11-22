@@ -174,7 +174,7 @@
    "pkg-config"
    "plocate"
    "portaudio"
-   "postgresql@13.6"
+   "postgresql"
    "pulseaudio"
    "pv"
    "pybind11"
