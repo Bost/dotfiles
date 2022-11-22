@@ -1404,6 +1404,7 @@ before packages are loaded."
     ;; Show list of references to a given node from other nodes
     "ob"  #'org-roam-buffer-toggle
     "of"  #'org-roam-node-find
+    ;; "ofd" #'org-roam-node-find ;; TODO ~SPC o f d~ - open $dotf/spacemacs
     "oi"  #'org-roam-node-insert
     "op"  #'my=yank-and-select
     ;; These two functions seem not to be useful:
@@ -1499,6 +1500,7 @@ Some binding snippets / examples:
 
     (bind-keys
      :map global-map
+     ("<f5>" . my=revert-buffer-no-confirm)
      ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
 
      ;; TODO The <escape> keybinding seems not to work.
@@ -1858,7 +1860,9 @@ Some binding snippets / examples:
      '(term-raw-map)))
 
   (bind-keys :map dired-mode-map
-             ("<f5>"        . revert-buffer)
+             ("<f5>"        . my=revert-buffer-no-confirm)
+             ;; ("<f5>"        . revert-buffer)
+
              ;; Use ~C-s-h~ b/c ~C-H~ (shift-h) doesn't work
              ("C-s-h"       . my=dired-dotfiles-toggle)
              ("<backspace>" . (lambda () (interactive)
