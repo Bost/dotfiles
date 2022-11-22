@@ -425,8 +425,25 @@ This function should only modify configuration layer settings."
      ;; Emacs interface (not only) for GNU Guix package manager `guix package'.
      ;; It also provides highlighting and tools for Guix code.
      ;;
-     ;; On Guix installable by `guix package -i emacs-guix'
+     ;; Installation:
+     ;; 1. Via Spacemacs installation mechanism:
+     ;; Note: The version installed by spacemacs contains:
+     ;;   '(geiser-company--setup geiser-repl-company-p)'
+     ;; However geiser-company.el has been removed in upstream repo:
+     ;; https://gitlab.com/emacs-geiser/geiser/-/commit/18faa0ba32c9ce751c16960b2a39b3880b523272
+     ;; See, e.g. ~/.emacs.d/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
      guix
+     ;;
+     ;; 2. By Guix:
+     ;;   $ guix install emacs-guix
+     ;; then use
+     ;;   $ ls /gnu/store/*-emacs-guix-*
+     ;; to get the elisp-code location.
+     ;; (guix :location "/gnu/store/a0fr1hkq5kd0xywwakby1dbk4c6qqs13-emacs-guix-0.5.2-5.c9aef52/share/emacs/site-lisp/guix-0.5.2-5.c9aef52/")
+     ;;
+     ;; 3. From local clone of the
+     ;;    https://git.savannah.gnu.org/git/guix/emacs-guix.git
+     ;; (guix :location "~/dev/emacs-guix/")
 
      ;; Highlight output from `strace'
      ;; strace-mode
