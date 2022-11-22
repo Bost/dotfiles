@@ -6,10 +6,11 @@
 
 
 #|
-# Reset environment variables to their default values by running from bash(!):
-$ source /etc/profile
-# Run this file by:
-$ guix home --allow-downgrades --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
+# To prevent incorrect values in ~/.guix-home/setup-environment (e.g.
+# XDG_DATA_DIRS), reset environment variables to their default values by
+# sourcing the default bash profile and run `guix home ...` command from bash:
+source /etc/profile
+guix home --allow-downgrades --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
 
 # The tilda `~' is only expanded by shells when it's the first character of a
 # command-line argument. Use $HOME instead
@@ -49,7 +50,8 @@ guix shell --development guix help2man git strace --pure
   #:use-module (ice-9 ftw)               #| scandir |#
   ;; #:use-module (ice-9 string-fun)        #| string-replace-substring |#
   #:use-module (guix build utils)        #| invoke |#
-  #:use-module (srfi srfi-1)             #| take remove delete-duplicates etc. |#
+  #| take remove delete-duplicates etc. |#
+  #:use-module (srfi srfi-1)
   #:use-module (gnu packages shellutils)
   #:use-module (gnu packages shells)     #| #$fish-foreign-env |#
 
