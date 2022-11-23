@@ -71,7 +71,8 @@ This function should only modify configuration layer settings."
      ;;
      ;; Layers added in alphabetic order
 
-     ;; Enable asciidoc layer for editing asciidoc content e.g. docs.cider.mx editing
+     ;; Enable asciidoc layer for editing asciidoc content e.g. docs.cider.mx
+     ;; editing
      ;; asciidoc
 
      ;; Add tool tips to show doc string of functions
@@ -1390,21 +1391,45 @@ before packages are loaded."
   ;; TODO my=eval-bind-keys-and-chords
   ;; ~SPC m e c~ or M-x spacemacs/eval-current-form-sp
 
+  (defun spacemacs/find-spacemacs-guix.el ()
+    "Edit the `~/.spacemacs-guix.el', in the current window."
+    (interactive)
+    ;; (find-file "~/.spacemacs-guix.el")
+    ;; (find-file-existing (dotspacemacs/location))
+    (find-file-existing "~/.spacemacs-guix.el"))
+
+  (defun spacemacs/find-dotf-spacemacs ()
+    "Edit the `$dotf/.spacemacs', in the current window."
+    (interactive)
+    ;; (find-file "~/.spacemacs-guix.el")
+    ;; (find-file-existing (dotspacemacs/location))
+    (find-file-existing (concat (getenv "dotf") "/.spacemacs")))
+
+  (defun find-home-configuration.scm ()
+    "Edit the `$dotf/.spacemacs', in the current window."
+    (interactive)
+    ;; (find-file "~/.spacemacs-guix.el")
+    ;; (find-file-existing (dotspacemacs/location))
+    (find-file-existing (concat (getenv "dotf") "/guix/home/home-configuration.scm")))
+
   ;; TODO autoload
+  (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")
   (spacemacs/declare-prefix "og" "google-this")
   (spacemacs/set-leader-keys
-    "ogg" #'google-this
-    "ogr" #'google-this-region
     "oc"  #'my=cider-clear-compilation-highlights
     ;; "oc"  #'org-roam-capture
     ;; "of"  #'my=switch-to-repl-start-figwheel
+    "oed" #'spacemacs/find-dotf-spacemacs
+    "oeg" #'spacemacs/find-spacemacs-guix.el
+    "ogg" #'google-this
+    "ogr" #'google-this-region
+    "oh"  #'find-home-configuration.scm
     "or"  #'rotate-frame
     ;; Revert buffer - loads in .dir-locals.el changes
     "oR"  #'my=revert-buffer-no-confirm
     ;; Show list of references to a given node from other nodes
     "ob"  #'org-roam-buffer-toggle
     "of"  #'org-roam-node-find
-    ;; "ofd" #'org-roam-node-find ;; TODO ~SPC o f d~ - open $dotf/spacemacs
     "oi"  #'org-roam-node-insert
     "op"  #'my=yank-and-select
     ;; These two functions seem not to be useful:
