@@ -232,7 +232,8 @@ guix shell --development guix help2man git strace --pure
    ;; The paths to bin and sbin for guix-home profile are inserted here.
                                   "$PATH"
                                   "/usr/local/bin")
-                            list-separator))))
+                            list-separator))
+    ("SPACEMACS_GUIX_DIR" . ,(user-home "/.spacemacs-guix.d"))))
 (format #t "done\n")
 
 ;; fish and bash separate elements of a list with a different separator

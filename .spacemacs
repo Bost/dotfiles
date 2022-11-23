@@ -1139,9 +1139,8 @@ before packages are loaded."
   ;; ... or try to remove evil support in the Info buffers (doesn't work)
   ;; (remove-hook 'Info-mode-hook 'evil-mode)
 
-  (add-to-list 'yas-snippet-dirs
-               "~/.emacs.d/layers/+completion/auto-completion/local/snippets/")
-  ;; (add-to-list 'yas-snippet-dirs ...) must be called before
+  ;; The yas-snippet-dirs contains
+  ;; ".../layers/+completion/auto-completion/local/snippets" already
   (yas-global-mode 1) ; M-x helm-yas or ~SPC s i~ or ~M-m s i~
   ;; If a major mode has yasnippets enabled then activate yasnippets. Useful for
   ;; sharing snippets between modes. See https://youtu.be/xmBovJvQ3KU?t=123
