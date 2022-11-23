@@ -49,16 +49,7 @@ This function should only modify configuration layer settings."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path
-   `(,(concat
-       (let ((envvar "dotf"))
-         (if-let ((dotf (getenv envvar)))
-             dotf
-           (let* ((home (getenv "HOME"))
-                  (dotf (concat home "/dev/dotfiles")))
-             (warn "Environment variable '%s' is not defined. Using '%s'."
-                   envvar (concat home "/dev/dotfiles"))
-             dotf)))
-       "/.emacs.d/"))
+   `(,(concat (getenv "dotf") "/.emacs.d/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -1217,10 +1208,6 @@ before packages are loaded."
    ;; See also:
    ;;    helm-M-x-execute-command:
    ;;    Symbol’s function definition is void: geiser-company--setup
-   ;;
-   ;; ~/.emacs.d/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
-   ;; 331:        (geiser-company--setup geiser-repl-company-p)
-
 
    ;; TODO create toggle for evil-ex-substitute-interactive-replace
    evil-ex-substitute-interactive-replace t ;; nil/t. default is t
@@ -1338,8 +1325,7 @@ before packages are loaded."
   (defun my=load-layout ()
     "docstring"
     (interactive)
-    (persp-load-state-from-file "~/.emacs.d/.cache/layouts/persp-auto-save")
-    )
+    (persp-load-state-from-file "~/.emacs.d/.cache/layouts/persp-auto-save"))
 
   (defun my=delete-other-windows ()
     "docstring"
