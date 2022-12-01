@@ -1,10 +1,3 @@
-#|
-(use-modules
- (ice-9 rdelim)
- (ice-9 regex)
- (ice-9 popen))
-|#
-
 ;; TODO create a package installable by `guix install my=utils`
 ;; See: jaro the resource opener - an alternative to xdg-open
 ;; https://github.com/isamert/jaro/blob/master/jaro
@@ -20,21 +13,30 @@
   #:use-module (ice-9 regex)  #| string-match |#
   #:use-module (srfi srfi-1)  #| delete-duplicates |#
   #| #:use-module (guix build utils) ;; invoke - not needed |#
-  #:export (flatten partial dbg
-            string-split-whitespace
+  #:export (
+            dbg
             cmd->string
+            drop-left
+            drop-right
+            error-command-failed
+            exec
+            exec-background
+            exec-system*
+            flatten
+            has-substring?
+            has-suffix?
+            home
+            partial
+            path
             read-all
             read-all-sexprs
             read-all-syntax
-            exec
-            exec-system*
-            exec-background
+            str
+            string-split-whitespace
             unspecified-or-empty-or-false?
-            home user path str user-home xdg-config-home
-            has-suffix?
-            has-substring?
-            error-command-failed
-            drop-right drop-left
+            user
+            user-home
+            xdg-config-home
             ))
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix

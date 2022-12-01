@@ -4,7 +4,6 @@
 ;; need to capture the channels being used, as returned by "guix describe".
 ;; See the "Replicating Guix" section in the manual.
 
-
 #|
 # To prevent incorrect values in ~/.guix-home/setup-environment (e.g.
 # XDG_DATA_DIRS), reset environment variables to their default values by
@@ -27,6 +26,18 @@ guix shell --development guix help2man git strace --pure
 ;; can't use the `~'
 ,load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm"
 (load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm")
+
+TODO see https://github.com/daviwil/dotfiles/tree/guix-home
+
+TODO abbreviations - see daviwil / systemcrafters
+gx    - guix
+gxh   - guix home
+gxhre - guix home reconfigure
+gxhro - guix home rollback
+gxs   - guix system
+gxu   - guix upgrade / guix package -u
+gxi   - guix install / guix package --install
+gxr   - guix remove
 
 |#
 
@@ -139,32 +150,12 @@ guix shell --development guix help2man git strace --pure
 (define sbin-dirpath "/sbin")
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
-
-;; (define (if-def-prepend var-path-name path)
-;;   (define (path-exists? path) #f)
-;;   (when (path-exists? path)
-;;     `(var-path-name . ,(string-join path var-path-name))))
-
-;; (if-def-prepend "GUILE_LOAD_PATH"
-;;                 "$HOME/.guix-profile/share/guile/site/3.0")
-;; (if-def-prepend "GUILE_LOAD_COMPILED_PATH"
-;;                 "$HOME/.guix-profile/lib/guile/3.0/site-ccache")
-
 (define dev (user-home "/dev"))
 
 (format #t "~a ... " "(define (environment-vars ...) ...)")
 (define (environment-vars list-separator)
   `(
-    ;; hunting down the native-compiler-error:
-    ;;     ld: cannot find crtbeginS.o: No such file or directory
-    ;;     ld: cannot find -lgcc
-    ;;     ld: cannot find -lgcc_s
-    ;;     ld: cannot find -lgcc_s
-    ;;     libgccjit.so: error: error invoking gcc driver
-    ;; https://lists.gnu.org/archive/html/guix-devel/2020-03/msg00256.html
-    ;; https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
-    ;; TODO try the v3 patches from https://issues.guix.gnu.org/57086#9
-    ;; ("CMAKE_C_COMPILER" . ,(user-home "/.guix-profile/bin/gcc"))
+    ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
     ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
 
     ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
@@ -262,7 +253,7 @@ guix shell --development guix help2man git strace --pure
       sf)))
 (format #t "done\n")
 
-(format #t "~a ... " "(define module-utils ...))")
+(format #t "~a ... " "(define module-utils ...)")
 (define module-utils (read-module "utils"))
 (format #t "done\n")
 
@@ -410,9 +401,10 @@ of files to search through."
 (define projects-heroku
   (list
    (cons "/der" (list
-                 ;; pictures
+                 ;; "/pictures"
+                 ;; "/covid-survey"
                  "/vesmir"
-                 ;; tetris
+                 ;; "/tetris"
                  "/vojto"))))
 
 (define (obtain-and-setup-heroku dest-dir repo)

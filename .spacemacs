@@ -918,6 +918,11 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
+   ;;
+   ;; TODO smart-closing-parenthesis doesn't work in a terminal, i.e. can't
+   ;; insert closing bracket in the terminal. The error in the *Messages* is:
+   ;; Search failed: there is an unmatched expression somewhere or we are at the
+   ;; beginning/end of file.
    dotspacemacs-smart-closing-parenthesis t
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
