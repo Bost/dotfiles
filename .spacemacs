@@ -443,14 +443,13 @@ This function should only modify configuration layer settings."
      ;; Customize / extend keyboard functionality https://github.com/kmonad
      (kbd-mode :location (recipe :fetcher github :repo "kmonad/kbd-mode"))
 
-     yasnippet-snippets
-
      ;; ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
      ;; rjsx-mode
 
      ;; ;; Minor mode to format JS code on file save
      ;; prettier-js
 
+     ;; yasnippet-snippets
      ;; (yasnippet :location ;; local
      ;;            (recipe :fetcher github :repo "Bost/yasnippet"
      ;;                    ;; :min-version "1"
@@ -1139,19 +1138,19 @@ before packages are loaded."
   ;; ... or try to remove evil support in the Info buffers (doesn't work)
   ;; (remove-hook 'Info-mode-hook 'evil-mode)
 
-  ;; The yas-snippet-dirs contains
-  ;; ".../layers/+completion/auto-completion/local/snippets" already
-  (yas-global-mode 1) ; M-x helm-yas or ~SPC s i~ or ~M-m s i~
-  ;; If a major mode has yasnippets enabled then activate yasnippets. Useful for
-  ;; sharing snippets between modes. See https://youtu.be/xmBovJvQ3KU?t=123
-  (add-hook 'yas-minor-mode-hook (lambda ()
-                                   (yas-activate-extra-mode 'fundamental-mode)))
-  ;; Fix:
-  ;;   Search failed. This means there is unmatched expression somewhere or we
-  ;;   are at the beginning/end of file
-  ;; https://github.com/Fuco1/smartparens/issues/431#issuecomment-72834657
-  (add-hook 'yas-before-expand-snippet-hook (lambda () (smartparens-mode -1)))
-  (add-hook 'yas-after-exit-snippet-hook (lambda () (smartparens-mode 1)))
+  ;; ;; The yas-snippet-dirs contains
+  ;; ;; ".../layers/+completion/auto-completion/local/snippets" already
+  ;; (yas-global-mode 1) ; M-x helm-yas or ~SPC s i~ or ~M-m s i~
+  ;; ;; If a major mode has yasnippets enabled then activate yasnippets. Useful for
+  ;; ;; sharing snippets between modes. See https://youtu.be/xmBovJvQ3KU?t=123
+  ;; (add-hook 'yas-minor-mode-hook (lambda ()
+  ;;                                  (yas-activate-extra-mode 'fundamental-mode)))
+  ;; ;; Fix:
+  ;; ;;   Search failed. This means there is unmatched expression somewhere or we
+  ;; ;;   are at the beginning/end of file
+  ;; ;; https://github.com/Fuco1/smartparens/issues/431#issuecomment-72834657
+  ;; (add-hook 'yas-before-expand-snippet-hook (lambda () (smartparens-mode -1)))
+  ;; (add-hook 'yas-after-exit-snippet-hook (lambda () (smartparens-mode 1)))
 
   (global-flycheck-mode)
   (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -2046,8 +2045,8 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (let* ((guix-checkout-dir "~/dev/guix"))
     (with-eval-after-load #'geiser-guile
       (add-to-list 'geiser-guile-load-path guix-checkout-dir))
-    (with-eval-after-load 'yasnippet
-      (add-to-list #'yas-snippet-dirs (concat guix-checkout-dir "/etc/snippets")))
+    ;; (with-eval-after-load 'yasnippet
+    ;;   (add-to-list #'yas-snippet-dirs (concat guix-checkout-dir "/etc/snippets")))
 
     ;; TODO extend the GuixOS with a service providing user full-name and email
     ;; or parse (one of):
