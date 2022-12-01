@@ -107,6 +107,8 @@
    "font-gnu-freefont"
    "font-gnu-unifont"
    "fuse"
+   ;; Make sure the CC environment variable has the value `(which gcc)'
+   ;; See home-environment-variables-service-type
    "gcc"
    "gcc-toolchain"
    "gdm"
@@ -181,6 +183,7 @@
    "python"
    "python2"
    "qemu"
+   "racket"
    "readline"
    "recutils"
    "ripgrep"

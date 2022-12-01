@@ -165,7 +165,7 @@ guix shell --development guix help2man git strace --pure
     ;; https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
     ;; TODO try the v3 patches from https://issues.guix.gnu.org/57086#9
     ;; ("CMAKE_C_COMPILER" . ,(user-home "/.guix-profile/bin/gcc"))
-    ("CC" . ,(user-home "/.guix-profile/bin/gcc"))
+    ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
 
     ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
     ;; See https://github.com/phiresky/ripgrep-all

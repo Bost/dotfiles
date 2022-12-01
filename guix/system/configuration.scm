@@ -12,12 +12,12 @@ sudo guix system --fallback --load-path=$dotf/guix/system reconfigure $dotf/guix
 udisksctl mount --block-device=(blkid --uuid a8fb1680-eef5-49a0-98a3-8169c9b8eeda)
 sudo cp /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg /tmp/grub.cfg
 sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
-<edit /tmp/grub.cfg>
+# e /tmp/grub.cfg                    # edit the file
 # grep -oP "([0-9]{1,}\.)+[0-9]{1,}" # match the version number
 rg --no-line-number -A 4 --max-count=1 "GNU with Linux-Libre" /boot/grub/grub.cfg
-<copy the block>
+# <copy the block>
 guix system describe | rg current
-<extract the time and generation number>
+# <extract the time and generation number>
 sudo cp /tmp/grub.cfg /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg
 sudo reboot # press <f12> during the reboot and fix the boot order
 |#
