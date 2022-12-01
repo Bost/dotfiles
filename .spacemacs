@@ -2143,20 +2143,22 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; (unbind-key "<f12>" scheme-mode-map)
 
   (advice-add #'spacemacs/hsearch-project
-              :after (defun my=note--spacemacs/hsearch-project ()
+              :after (defun my=note--spacemacs/hsearch-project (_)
                        (message
+                        "[advice spacemacs/hsearch-project] %s"
                         (concat
                          "Try also: ~SPC *~ for"
                          " M-x spacemacs/hsearch-project-region-or-symbol"))))
 
   (advice-add #'my=search-region-or-symbol
-              :after (defun my=note--my=search-region-or-symbol ()
-                       (message
-                        (concat
-                         "Try also:\n"
-                         "  1. ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode)"
-                         " mark something and press ~SPC s e~\n"
-                         "  2. ~M-<f3>~ for M-x spacemacs/hsearch-project"))))
+              :after (defun my=note--my=search-region-or-symbol (&optional _)
+                       (let ((p "[advice my=search-region-or-symbol] "))
+                         (message
+                          (concat
+                           p "Try also:\n"
+                           p "  1. ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode)\n"
+                           p " mark something and press ~SPC s e~\n"
+                           p "  2. ~M-<f3>~ for M-x spacemacs/hsearch-project")))))
   (advice-add #'split-window-right-and-focus
               :after (defun my=recenter-top-bottom ()
                        ;; needed cause the (recenter-top-bottom) has
@@ -2164,14 +2166,18 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                        (recenter-top-bottom)))
   (advice-add #'whitespace-cleanup
               :after (defun my=whitespace-cleanup ()
-                       (message "whitespace-cleanup")))
+                       (message "[advice whitespace-cleanup] done")))
   (advice-add #'evil-avy-goto-char-timer
-              :after (defun my=note--evil-avy-goto-char-timer ()
-                       (message "evil-avy-goto-char-timer: SPC j j, <f2>")))
-  (advice-add #'avy-goto-line
+              :after (defun my=note--evil-avy-goto-char-timer (_)
+                       (message
+                        "[advice evil-avy-goto-char-timer] %s"
+                        "Also ~SPC j j~, ~<f2>~")))
+  (advice-add #'evil-avy-goto-line
               :after
-              (defun my=note--avy-goto-line ()
-                (message "avy-goto-line: SPC j l, M-m j l, <C-f2>, C-s-/")))
+              (defun my=note--evil-avy-goto-line (&optional _)
+                (message
+                 "[advice evil-avy-goto-line] %s"
+                 "Also ~SPC j l~, ~M-m j l~, ~<C-f2>~, ~C-s-/~")))
   (advice-add #'evil-ex-search-next
               :after #'evil-scroll-line-to-center)
   (advice-add #'evil-ex-search-previous
@@ -2183,11 +2189,14 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (advice-add #'helm-mini
               :after
               (defun my=note--evil-avy-goto-char-timer ()
-                (message "helm-mini: toggle mark / unmark all buffers: ~M-m~")))
+                (message
+                 "[advice helm-mini] %s"
+                 "Toggle mark / unmark all buffers: ~M-m~")))
   (advice-add #'spacemacs/helm-persp-switch-project
               :after
-              (defun my=note--spacemacs/helm-persp-switch-project ()
+              (defun my=note--spacemacs/helm-persp-switch-project (_)
                 (message
+                 "[advice spacemacs/helm-persp-switch-project] %s"
                  "Try: ~SPC p p~ for M-x helm-projectile-switch-project")))
 
   (mapcar
