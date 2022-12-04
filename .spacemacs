@@ -1380,24 +1380,24 @@ before packages are loaded."
   ;; TODO my=eval-bind-keys-and-chords
   ;; ~SPC m e c~ or M-x spacemacs/eval-current-form-sp
 
-  (defun spacemacs/find-spacemacs-guix.el ()
-    "Edit the `~/.spacemacs-guix.el', in the current window."
+  (defun spacemacs/find-spguimacs ()
+    "Edit the `~/.spguimacs', in the current window."
     (interactive)
-    ;; (find-file "~/.spacemacs-guix.el")
+    ;; (find-file "~/.spguimacs")
     ;; (find-file-existing (dotspacemacs/location))
-    (find-file-existing "~/.spacemacs-guix.el"))
+    (find-file-existing "~/.spguimacs"))
 
   (defun spacemacs/find-dotf-spacemacs ()
     "Edit the `$dotf/.spacemacs', in the current window."
     (interactive)
-    ;; (find-file "~/.spacemacs-guix.el")
+    ;; (find-file "~/.spguimacs")
     ;; (find-file-existing (dotspacemacs/location))
     (find-file-existing (concat (getenv "dotf") "/.spacemacs")))
 
   (defun find-home-configuration.scm ()
     "Edit the `$dotf/.spacemacs', in the current window."
     (interactive)
-    ;; (find-file "~/.spacemacs-guix.el")
+    ;; (find-file "~/.spguimacs")
     ;; (find-file-existing (dotspacemacs/location))
     (find-file-existing (concat (getenv "dotf") "/guix/home/home-configuration.scm")))
 
@@ -1409,7 +1409,7 @@ before packages are loaded."
     ;; "oc"  #'org-roam-capture
     ;; "of"  #'my=switch-to-repl-start-figwheel
     "oed" #'spacemacs/find-dotf-spacemacs
-    "oeg" #'spacemacs/find-spacemacs-guix.el
+    "oeg" #'spacemacs/find-spguimacs
     "ogg" #'google-this
     "ogr" #'google-this-region
     "oh"  #'find-home-configuration.scm
