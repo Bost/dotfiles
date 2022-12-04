@@ -223,8 +223,7 @@ gxr   - guix remove
    ;; The paths to bin and sbin for guix-home profile are inserted here.
                                   "$PATH"
                                   "/usr/local/bin")
-                            list-separator))
-    ("SPACEMACS_GUIX_DIR" . ,(user-home "/.spacemacs-guix.d"))))
+                            list-separator))))
 (format #t "done\n")
 
 ;; fish and bash separate elements of a list with a different separator
@@ -521,6 +520,7 @@ of files to search through."
                          (local-dotfile "/" ".guile") ;; used by `guix repl'
                          (local-dotfile "/" ".gitconfig")
                          (local-dotfile "/" ".spacemacs")
+                         (local-dotfile "/" ".spguimacs")
                          (local-dotfile "/guix/home/" "local-stuff.fish"))))
               (partial append
 ;;; This can't be used:
@@ -543,6 +543,16 @@ of files to search through."
                         (let ((dir (str ".emacs.d/private/local"
                                         "/farmhouse-light-mod-theme")))
                           `(,dir ;; destination
+                            ,(local-file (dotfiles-home "/" dir)
+                                         #:recursive? #t)))
+                        ;; See $dev/guix-packages/spacemacs:
+                        ;; `(setq spacemacs-data-directory ...)
+                        (let ((dst (str ".local/share/spacemacs"
+                                        "/private/themes"
+                                        "/farmhouse-light-mod-theme"))
+                              (dir (str ".emacs.d/private/local"
+                                        "/farmhouse-light-mod-theme")))
+                          `(,dst ;; destination
                             ,(local-file (dotfiles-home "/" dir)
                                          #:recursive? #t)))))
               #|
@@ -575,6 +585,7 @@ of files to search through."
                         (lambda (filepath)
                           (if (equal? filepath "/fish_variables")
                               (let* [(src (fish-config-dotfiles filepath))
+;;; TODO use 'user-home' instead of 'str home ...'
                                      (dst (str home "/"
                                                (fish-config-base filepath)))]
 ;;; TODO is this sexp is not executed because of lazy-evaluation?

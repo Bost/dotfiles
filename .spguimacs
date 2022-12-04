@@ -542,8 +542,8 @@ This function should only modify configuration layer settings."
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
    ;; `used-but-keep-unused' is handy for debugging, when often restarting emacs
-   dotspacemacs-install-packages 'used-but-keep-unused
-   ;; dotspacemacs-install-packages 'used-only
+   ;; dotspacemacs-install-packages 'used-but-keep-unused
+   dotspacemacs-install-packages 'used-only
    )
   (my=end #'dotspacemacs/layers)
   )
@@ -705,13 +705,21 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   ;; ':location local' points to
+   ;;
+   ;; '(<theme-name> :location local)' on a:
+   ;; - non-Guix machine:
    ;;     ~/.emacs.d/private/local/farmhouse-light-mod-theme/
-   dotspacemacs-themes '((farmhouse-light-mod :location local)
+   ;; - Guix machine:
+   ;;     /gnu/store/*-spacemacs-rolling-release-*/private/local
+   ;; I.e. the ':location local' won't work on Guix for private themes. Use
+   ;; `custom-theme-load-path' and/or `custom-theme-directory'.
+   ;; TODO custom-theme-directory defaults to "~/.emacs.d/" - doesn't work Guix
+   dotspacemacs-themes '(
+                         spacemacs-dark
+                         farmhouse-light-mod
                          material
                          misterioso
                          spacemacs-light
-                         spacemacs-dark
                          twilight-anti-bright
                          underwater
                          solarized-dark-high-contrast
@@ -1021,7 +1029,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil)
+   dotspacemacs-byte-compile nil) ;; dotspacemacs/init -> setq-default
   (my=end #'dotspacemacs/init)
   )
 
@@ -1029,7 +1037,7 @@ It should only modify the values of Spacemacs settings."
   "Environment variables setup.
 This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
-variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
+variables declared in `~/.spguimacs.env' or `~/.spguimacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (my=beg #'dotspacemacs/user-env)
   (spacemacs/load-spacemacs-env)
@@ -1045,12 +1053,16 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (my=beg #'dotspacemacs/user-init)
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
-  (setq custom-file "~/.emacs.d/.cache/.custom-settings")
+  (setq custom-file (concat spacemacs-data-directory
+                            ".cache/.custom-settings"))
   (load custom-file) ;; `custom-file' is not auto-loaded
 
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
+
+  (add-to-list 'custom-theme-load-path
+               (concat spacemacs-data-directory "private/themes/"))
 
   (my=end #'dotspacemacs/user-init)
   )
@@ -1202,7 +1214,8 @@ before packages are loaded."
    shell-pop-window-position "right"
 
    ;; See also undo-tree-auto-save-history
-   undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
+   undo-tree-history-directory-alist
+   `(("." . ,(concat spacemacs-data-directory "undo")))
 
    ;; TODO If the "Search failed. ... unmatched expression ... " persists, try:
    ;; ;; Original value 160000 ;; Global value 800000
@@ -1330,7 +1343,8 @@ before packages are loaded."
   (defun my=load-layout ()
     "docstring"
     (interactive)
-    (persp-load-state-from-file "~/.emacs.d/.cache/layouts/persp-auto-save"))
+    (persp-load-state-from-file (concat spacemacs-data-directory
+                                        ".cache/layouts/persp-auto-save")))
 
   (defun my=delete-other-windows ()
     "docstring"
@@ -1472,26 +1486,8 @@ before packages are loaded."
   (defun my=H-3 () (interactive) (message "H-3"))
   (defun my=H-4 () (interactive) (message "H-4"))
 
-  (setq my=space-cmd
-        (string-join
-         (list
-          "/gnu/store/d99ykvj3axzzidygsmdmzxah4lvxd6hw-bash-5.1.8/bin/sh"
-          "/gnu/store/gxjwd3q2iy3hgzwnc37mcnvfiv2s1pxz-emacs-28.2/bin/emacs"
-          "--no-init-file"
-          "--eval"
-          "'
-(progn
- (setq spacemacs-start-directory \"~/.spacemacs-guix.d/\" )
- (setq spacemacs-data-directory
-  (concat (or (getenv \"XDG_DATA_DIR\") \"~/.local/share\") \"/spacemacs/\"))
- (setq package-user-dir (concat spacemacs-data-directory \"elpa/\"))
- (load-file (concat spacemacs-start-directory \"init.el\")))
-'"
-          "&")
-         " "))
 
-  (setq text-quoting-style 'straight)
-  (message "%s" my=space-cmd)
+  ;; (setq text-quoting-style 'straight)
 
   (defun restart-emacs--daemon-using-sh (&optional args)
     (let ((cmd (format "%s --daemon=%s %s &"
