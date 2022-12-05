@@ -199,15 +199,19 @@ This function should only modify configuration layer settings."
      (helm :variables
            ;; (setq
 
-           ;; TODO try helm-follow-mode-persistent t ;; (Default nil)
+           ;; When non-nil, save last state of ‘helm-follow-mode’ for the next
+           ;; Emacs sessions. Each time you turn on or off ‘helm-follow-mode’,
+           ;; the current source name will be stored or removed from
+           ;; `helm-source-names-using-follow'. (Default nil)
+           ;; helm-follow-mode-persistent t
 
            ;; helm-display-function 'helm-display-buffer-in-own-frame
 
-           ;; nil - use the longest ‘buffer-name’ length found. (Default 20)
+           ;; nil - use the longest `buffer-name' length found. (Default 20)
            helm-buffer-max-length nil
 
-           ;; TODO helm-display-buffer-width
-           ;; default
+           ;; Value is `spacemacs//display-helm-window'. Original value was
+           ;; `helm-default-display-buffer'
            ;; helm-display-function 'helm-default-display-buffer
            ;; )
            )
@@ -216,7 +220,7 @@ This function should only modify configuration layer settings."
 
      ;;;; ivy ;; helm replacement
 
-     ;; TODO try out ibuffer
+     ;; Operate on buffers as in dired.
      ;; (ibuffer :variables ibuffer-group-buffers-by 'projects)
 
      (java
@@ -1387,7 +1391,7 @@ before packages are loaded."
     (interactive)
     ;; (find-file "~/.spguimacs")
     ;; (find-file-existing (dotspacemacs/location))
-    (find-file-existing "~/.spguimacs"))
+    (find-file-existing (concat (getenv "dotf") "/.spguimacs")))
 
   (defun spacemacs/find-dotf-spacemacs ()
     "Edit the `$dotf/.spacemacs', in the current window."
@@ -1401,7 +1405,8 @@ before packages are loaded."
     (interactive)
     ;; (find-file "~/.spguimacs")
     ;; (find-file-existing (dotspacemacs/location))
-    (find-file-existing (concat (getenv "dotf") "/guix/home/home-configuration.scm")))
+    (find-file-existing (concat (getenv "dotf")
+                                "/guix/home/home-configuration.scm")))
 
   ;; TODO autoload
   (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")
@@ -2214,8 +2219,10 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; See
   ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
 
-  ;; (bind-keys :map scheme-mode-map ("<f11>" . (lambda () (interactive) (forward-sexp 1))))
-  ;; (bind-keys :map scheme-mode-map ("<f12>" . (lambda () (interactive) (sp-forward-sexp 1))))
+  ;; (bind-keys :map scheme-mode-map
+  ;;            ("<f11>" . (lambda () (interactive) (forward-sexp 1))))
+  ;; (bind-keys :map scheme-mode-map
+  ;;            ("<f12>" . (lambda () (interactive) (sp-forward-sexp 1))))
   ;; (unbind-key "<f11>" scheme-mode-map)
   ;; (unbind-key "<f12>" scheme-mode-map)
 
@@ -2228,14 +2235,16 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                          " M-x spacemacs/hsearch-project-region-or-symbol"))))
 
   (advice-add #'my=search-region-or-symbol
-              :after (defun my=note--my=search-region-or-symbol (&optional _)
-                       (let ((p "[advice my=search-region-or-symbol] "))
-                         (message
-                          (concat
-                           p "Try also:\n"
-                           p "  1. ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode)\n"
-                           p " mark something and press ~SPC s e~\n"
-                           p "  2. ~M-<f3>~ for M-x spacemacs/hsearch-project")))))
+              :after
+              (defun my=note--my=search-region-or-symbol (&optional _)
+                (let ((p "[advice my=search-region-or-symbol] "))
+                  (message
+                   (concat
+                    p "Try also:\n"
+                    p "1. ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode)"
+                    " mark something and press ~SPC s e~\n"
+                    p "2. ~M-<f3>~ for M-x spacemacs/hsearch-project")))))
+
   (advice-add #'split-window-right-and-focus
               :after (defun my=recenter-top-bottom ()
                        ;; needed cause the (recenter-top-bottom) has
@@ -2275,6 +2284,13 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                 (message
                  "[advice spacemacs/helm-persp-switch-project] %s"
                  "Try: ~SPC p p~ for M-x helm-projectile-switch-project")))
+
+  (advice-add #'spacemacs/toggle-menu-bar
+              :after
+              (defun my=note--spacemacs/toggle-menu-bar ()
+                (message
+                 "[advice spacemacs/toggle-menu-bar] %s"
+                 "Try also: ~M-`~ for M-x tmm-menubar")))
 
   (mapcar
    (lambda (map)
