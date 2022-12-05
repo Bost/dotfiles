@@ -660,6 +660,8 @@ of files to search through."
                            #:scheme-file-name "bat")
              (service-file #:program-name "e"       #:desc "emacs-launcher"
                            #:scheme-file-name "emacs-launcher")
+             (service-file #:program-name "s"       #:desc "spguimacs-launcher"
+                           #:scheme-file-name "spguimacs-launcher")
              (service-file #:program-name "f"       #:desc "find-alternative")
              (service-file #:program-name "gcl"     #:desc "git-clone")
              (service-file #:program-name "gre"     #:desc "git-remote")

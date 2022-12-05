@@ -210,6 +210,8 @@ This function should only modify configuration layer settings."
            ;; nil - use the longest `buffer-name' length found. (Default 20)
            helm-buffer-max-length nil
 
+           ;; helm-display-buffer-width 100 ;; (Default 72)
+
            ;; Value is `spacemacs//display-helm-window'. Original value was
            ;; `helm-default-display-buffer'
            ;; helm-display-function 'helm-default-display-buffer
@@ -546,8 +548,9 @@ This function should only modify configuration layer settings."
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
    ;; `used-but-keep-unused' is handy for debugging, when often restarting emacs
-   dotspacemacs-install-packages 'used-but-keep-unused
-   ;; dotspacemacs-install-packages 'used-only
+   dotspacemacs-install-packages
+   'used-but-keep-unused
+   ;; 'used-only
    )
   (my=end #'dotspacemacs/layers)
   )
@@ -709,9 +712,17 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   ;; ':location local' points to
+   ;;
+   ;; '(<theme-name> :location local)' on a:
+   ;; - non-Guix machine:
    ;;     ~/.emacs.d/private/local/farmhouse-light-mod-theme/
-   dotspacemacs-themes '((farmhouse-light-mod :location local)
+   ;; - Guix machine:
+   ;;     /gnu/store/*-spacemacs-rolling-release-*/private/local
+   ;; I.e. the ':location local' won't work on Guix for private themes. Use
+   ;; `custom-theme-load-path' and/or `custom-theme-directory'.
+   ;; TODO custom-theme-directory defaults to "~/.emacs.d/" - doesn't work Guix
+   dotspacemacs-themes '(
+                         (farmhouse-light-mod :location local)
                          material
                          misterioso
                          spacemacs-light
@@ -925,10 +936,21 @@ It should only modify the values of Spacemacs settings."
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
    ;;
-   ;; TODO smart-closing-parenthesis doesn't work in a terminal, i.e. can't
-   ;; insert closing bracket in the terminal. The error in the *Messages* is:
-   ;; Search failed: there is an unmatched expression somewhere or we are at the
-   ;; beginning/end of file.
+   ;; smart-closing-parenthesis doesn't work when:
+   ;; - In a terminal, i.e. can't insert closing bracket in the terminal. The
+   ;;   error in the *Messages* is: Search failed: there is an unmatched
+   ;;   expression somewhere or we are at the beginning/end of file.
+   ;;
+   ;;   In scheme-mode to trigger this bug it is enough to put the cursor on
+   ;;   'B', press ~V~, mark both comment lines with ~j~, and try to delete them
+   ;;   with ~x~:
+   ;;            (list
+   ;;             ;; aBc
+   ;;             ;; efg
+   ;;             )
+   ;;
+   ;; - In a shell-script buffer: it reports 'while: End of buffer' even if
+   ;;   there's some comment following the cursor
    dotspacemacs-smart-closing-parenthesis t
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
@@ -945,7 +967,9 @@ It should only modify the values of Spacemacs settings."
    ;; like \"~/.emacs.d/server\". It has no effect if
    ;; `dotspacemacs-enable-server' is nil.
    ;; (default nil)
-   dotspacemacs-server-socket-dir nil
+   dotspacemacs-server-socket-dir (concat
+                                   "~/.emacs.d/"
+                                   "server")
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
@@ -1025,7 +1049,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil)
+   dotspacemacs-byte-compile nil) ;; dotspacemacs/init -> setq-default
   (my=end #'dotspacemacs/init)
   )
 
@@ -1049,12 +1073,18 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (my=beg #'dotspacemacs/user-init)
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
-  (setq custom-file "~/.emacs.d/.cache/.custom-settings")
+  (setq custom-file (concat
+                     "~/.emacs.d/"
+                     ".cache/.custom-settings"))
   (load custom-file) ;; `custom-file' is not auto-loaded
 
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
+
+  (add-to-list 'custom-theme-load-path (concat
+                                        "~/.emacs.d/"
+                                        "private/themes/"))
 
   (my=end #'dotspacemacs/user-init)
   )
@@ -1206,7 +1236,9 @@ before packages are loaded."
    shell-pop-window-position "right"
 
    ;; See also undo-tree-auto-save-history
-   undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))
+   undo-tree-history-directory-alist `(("." . ,(concat
+                                                "~/.emacs.d/"
+                                                "undo")))
 
    ;; TODO If the "Search failed. ... unmatched expression ... " persists, try:
    ;; ;; Original value 160000 ;; Global value 800000
@@ -1334,7 +1366,9 @@ before packages are loaded."
   (defun my=load-layout ()
     "docstring"
     (interactive)
-    (persp-load-state-from-file "~/.emacs.d/.cache/layouts/persp-auto-save"))
+    (persp-load-state-from-file (concat
+                                 "~/.emacs.d/"
+                                 ".cache/layouts/persp-auto-save")))
 
   (defun my=delete-other-windows ()
     "docstring"
@@ -1380,11 +1414,6 @@ before packages are loaded."
   (use-package clojure-mode) ;; must be here for the bind-keys
   ;; '(use-package cider ...)' must be here for the bind-keys
   (use-package cider)
-
-  ;; TODO the ~M-`~ (M-x tmm-menubar) can be used for other purposes
-
-  ;; TODO my=eval-bind-keys-and-chords
-  ;; ~SPC m e c~ or M-x spacemacs/eval-current-form-sp
 
   (defun spacemacs/find-spguimacs ()
     "Edit the `~/.spguimacs', in the current window."
@@ -1477,26 +1506,7 @@ before packages are loaded."
   (defun my=H-3 () (interactive) (message "H-3"))
   (defun my=H-4 () (interactive) (message "H-4"))
 
-  (setq my=space-cmd
-        (string-join
-         (list
-          "/gnu/store/d99ykvj3axzzidygsmdmzxah4lvxd6hw-bash-5.1.8/bin/sh"
-          "/gnu/store/gxjwd3q2iy3hgzwnc37mcnvfiv2s1pxz-emacs-28.2/bin/emacs"
-          "--no-init-file"
-          "--eval"
-          "'
-(progn
- (setq spacemacs-start-directory \"~/.spacemacs-guix.d/\" )
- (setq spacemacs-data-directory
-  (concat (or (getenv \"XDG_DATA_DIR\") \"~/.local/share\") \"/spacemacs/\"))
- (setq package-user-dir (concat spacemacs-data-directory \"elpa/\"))
- (load-file (concat spacemacs-start-directory \"init.el\")))
-'"
-          "&")
-         " "))
-
-  (setq text-quoting-style 'straight)
-  (message "%s" my=space-cmd)
+  ;; (setq text-quoting-style 'straight)
 
   (defun restart-emacs--daemon-using-sh (&optional args)
     (let ((cmd (format "%s --daemon=%s %s &"
@@ -1743,6 +1753,8 @@ Some binding snippets / examples:
      ("s-8" . er/expand-region) ; increase selected region by semantic units
      ("<f2>"    . evil-avy-goto-char-timer)
      ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
+
+     ;; TODO s-a when "Last buffer not found."
      ("s-<tab>" . spacemacs/alternate-buffer)
 
      ("C-<next>"  . next-buffer)     ;; SPC b n; Ctrl-PageDown

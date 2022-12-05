@@ -548,8 +548,9 @@ This function should only modify configuration layer settings."
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
    ;; `used-but-keep-unused' is handy for debugging, when often restarting emacs
-   ;; dotspacemacs-install-packages 'used-but-keep-unused
-   dotspacemacs-install-packages 'used-only
+   dotspacemacs-install-packages
+   ;; 'used-but-keep-unused
+   'used-only
    )
   (my=end #'dotspacemacs/layers)
   )
@@ -935,10 +936,21 @@ It should only modify the values of Spacemacs settings."
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
    ;;
-   ;; TODO smart-closing-parenthesis doesn't work in a terminal, i.e. can't
-   ;; insert closing bracket in the terminal. The error in the *Messages* is:
-   ;; Search failed: there is an unmatched expression somewhere or we are at the
-   ;; beginning/end of file.
+   ;; smart-closing-parenthesis doesn't work when:
+   ;; - In a terminal, i.e. can't insert closing bracket in the terminal. The
+   ;;   error in the *Messages* is: Search failed: there is an unmatched
+   ;;   expression somewhere or we are at the beginning/end of file.
+   ;;
+   ;;   In scheme-mode to trigger this bug it is enough to put the cursor on
+   ;;   'B', press ~V~, mark both comment lines with ~j~, and try to delete them
+   ;;   with ~x~:
+   ;;            (list
+   ;;             ;; aBc
+   ;;             ;; efg
+   ;;             )
+   ;;
+   ;; - In a shell-script buffer: it reports 'while: End of buffer' even if
+   ;;   there's some comment following the cursor
    dotspacemacs-smart-closing-parenthesis t
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
@@ -955,7 +967,9 @@ It should only modify the values of Spacemacs settings."
    ;; like \"~/.emacs.d/server\". It has no effect if
    ;; `dotspacemacs-enable-server' is nil.
    ;; (default nil)
-   dotspacemacs-server-socket-dir nil
+   dotspacemacs-server-socket-dir (concat
+                                   spacemacs-data-directory
+                                   "server")
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
@@ -1059,16 +1073,18 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (my=beg #'dotspacemacs/user-init)
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
-  (setq custom-file (concat spacemacs-data-directory
-                            ".cache/.custom-settings"))
+  (setq custom-file (concat
+                     spacemacs-data-directory
+                     ".cache/.custom-settings"))
   (load custom-file) ;; `custom-file' is not auto-loaded
 
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
 
-  (add-to-list 'custom-theme-load-path
-               (concat spacemacs-data-directory "private/themes/"))
+  (add-to-list 'custom-theme-load-path (concat
+                                        spacemacs-data-directory
+                                        "private/themes/"))
 
   (my=end #'dotspacemacs/user-init)
   )
@@ -1220,8 +1236,9 @@ before packages are loaded."
    shell-pop-window-position "right"
 
    ;; See also undo-tree-auto-save-history
-   undo-tree-history-directory-alist
-   `(("." . ,(concat spacemacs-data-directory "undo")))
+   undo-tree-history-directory-alist `(("." . ,(concat
+                                                spacemacs-data-directory
+                                                "undo")))
 
    ;; TODO If the "Search failed. ... unmatched expression ... " persists, try:
    ;; ;; Original value 160000 ;; Global value 800000
@@ -1349,8 +1366,9 @@ before packages are loaded."
   (defun my=load-layout ()
     "docstring"
     (interactive)
-    (persp-load-state-from-file (concat spacemacs-data-directory
-                                        ".cache/layouts/persp-auto-save")))
+    (persp-load-state-from-file (concat
+                                 spacemacs-data-directory
+                                 ".cache/layouts/persp-auto-save")))
 
   (defun my=delete-other-windows ()
     "docstring"
@@ -1487,7 +1505,6 @@ before packages are loaded."
   (defun my=H-2 () (interactive) (message "H-2"))
   (defun my=H-3 () (interactive) (message "H-3"))
   (defun my=H-4 () (interactive) (message "H-4"))
-
 
   ;; (setq text-quoting-style 'straight)
 
@@ -1736,6 +1753,8 @@ Some binding snippets / examples:
      ("s-8" . er/expand-region) ; increase selected region by semantic units
      ("<f2>"    . evil-avy-goto-char-timer)
      ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
+
+     ;; TODO s-a when "Last buffer not found."
      ("s-<tab>" . spacemacs/alternate-buffer)
 
      ("C-<next>"  . next-buffer)     ;; SPC b n; Ctrl-PageDown
@@ -2284,6 +2303,14 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                 (message
                  "[advice spacemacs/toggle-menu-bar] %s"
                  "Try also: ~M-`~ for M-x tmm-menubar")))
+
+  (mapcar
+   (lambda (map)
+     (bind-keys :map map
+;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+;;; layers/+misc/multiple-cursors/packages.el
+                ("C-M-k" . kill-sexp)))
+   '(evil-normal-state-map evil-insert-state-map))
 
   (mapcar
    (lambda (map)

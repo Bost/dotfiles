@@ -40,6 +40,7 @@
   (list
    "emacs"
    "emacs-spacemacs"
+   "spacemacs-rolling-release"
    ))
 
 (define needed-packages

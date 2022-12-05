@@ -1,4 +1,4 @@
-(define-module (emacs-launcher)
+(define-module (spguimacs-launcher)
   #:use-module (utils)
   #:use-module (srfi srfi-1) #| find |#
   #:export (main))
@@ -6,26 +6,26 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (emacs-launcher) -s
+-l utils.scm -e (spguimacs-launcher) -s
 !#
 
 |#
 
 ;; TODO use continuation breakout instead of a global variable
-(define emacs-binary-init "emacs")
-(define emacs-binary emacs-binary-init)
+(define spacemacs-binary-init "spacemacs")
+(define spacemacs-binary spacemacs-binary-init)
 
 (define (compute-binary)
   (let ((user (getenv "USER")))
     ((compose
       (lambda (p)
         (if (null? p)
-            emacs-binary-init ;; No emacs has been started yet.
+            spacemacs-binary-init ;; No spguimacs has been started yet.
             (car p)))
       (partial
        map
        (lambda (pid)
-         (when (string=? emacs-binary emacs-binary-init)
+         (when (string=? spacemacs-binary spacemacs-binary-init)
            (let ((proc-user ((compose
                               cadr
                               exec)
@@ -35,20 +35,26 @@
                       (string=? user proc-user))
                  (let ((proc-cmd (exec
                                   (format #f "ps -o command= -p ~a" pid))))
-                   (set! emacs-binary
+                   (set! spacemacs-binary
                          (if #f
                              #| string match --quiet -- "*defunct*" proc-cmd |#
-                             emacs-binary-init
+                             spacemacs-binary-init
                              (str "emacsclient --no-wait --socket-name="
                                   ;; see `dotspacemacs-server-socket-dir' in the
-                                  ;; .spacemacs; tilda '~' doesn't work
-                                  "$HOME/.emacs.d/server"
-                                  "/server")))))))
-         emacs-binary))
+                                  ;; .spguimacs; tilda '~' doesn't work
+                                  "$HOME/.local/share/spacemacs/server/server")
+
+;;; The --socket-name and --no-wait parameters can also be handled by the
+;;; `spacemacsclient' shell script:
+                             #;
+                             "spacemacsclient"))))))
+         spacemacs-binary))
       cdr
       exec
       (partial format #f "pgrep --full -u ~a ~a" user))
-     (let* ((ret (exec "which emacs")))
+     "spacemacs-start-directory"
+     #;
+     (let* ((ret (exec "which spacemacs")))
        (if (= 0 (car ret))
            (let* ((output (cdr ret)))
              (car output)
