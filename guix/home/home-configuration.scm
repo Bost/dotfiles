@@ -42,9 +42,9 @@ gxr   - guix remove
 |#
 
 (define-module (home-configuration)
-  #:use-module (cfg
-                #;packages-new
-                packages)
+  ;; #:use-module (cfg packages-new)
+  #:use-module (cfg packages)
+  #:use-module (cfg spguimacs-packages)
   #:use-module (cfg abbreviations)
   #:use-module (cfg mcron)
   ;; See service-file -> with-imported-modules
@@ -729,6 +729,7 @@ of files to search through."
         (kde-dependent-packages)
         (slow-packages)
         (packages-from-additional-channels)
+        (spguimacs-packages)
         )))
 
 ;;; TODO see [PATCH] services: Add udev-rules-service helper.
