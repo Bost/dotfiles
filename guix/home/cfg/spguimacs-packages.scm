@@ -508,9 +508,6 @@
 ;;; Error (use-package): Failed to parse package fill-column-indicator: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
    "emacs-spaceleader" ;; throws the errors above
 
-;;; guix install: error: spacemacs-rolling-release-add-data-dir.patch: patch not found
-   "emacs-spacemacs"
-
 ;;; TODO test use-package
    "emacs-use-package"
 
