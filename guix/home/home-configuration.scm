@@ -540,21 +540,23 @@ of files to search through."
                           `(,dir ;; destination
                             ,(local-file (dotfiles-home "/" dir)
                                          #:recursive? #t)))
-                        (let ((dir (str ".emacs.d/private/local"
-                                        "/farmhouse-light-mod-theme")))
-                          `(,dir ;; destination
-                            ,(local-file (dotfiles-home "/" dir)
-                                         #:recursive? #t)))
-                        ;; See $dev/guix-packages/spacemacs:
-                        ;; `(setq spacemacs-data-directory ...)
-                        (let ((dst (str ".local/share/spacemacs"
-                                        "/private/themes"
-                                        "/farmhouse-light-mod-theme"))
+                        (let ((destination
+                               (str ".emacs.d"
+                                    "/private/themes"
+                                    "/farmhouse-light-mod-theme"))
                               (dir (str ".emacs.d/private/local"
                                         "/farmhouse-light-mod-theme")))
-                          `(,dst ;; destination
-                            ,(local-file (dotfiles-home "/" dir)
-                                         #:recursive? #t)))))
+                          `(,destination ,(local-file (dotfiles-home "/" dir)
+                                                      #:recursive? #t)))
+;;; See value of `spacemacs-data-directory' in the $dev/guix-packages/spacemacs
+                        (let ((destination
+                               (str ".local/share/spacemacs"
+                                    "/private/themes"
+                                    "/farmhouse-light-mod-theme"))
+                              (dir (str ".emacs.d/private/local"
+                                        "/farmhouse-light-mod-theme")))
+                          `(,destination ,(local-file (dotfiles-home "/" dir)
+                                                      #:recursive? #t)))))
               #|
               (partial append
               `((,(fish-config-base)
