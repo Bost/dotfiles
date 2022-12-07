@@ -1511,28 +1511,27 @@ before packages are loaded."
 
   ;; (setq text-quoting-style 'straight)
 
-  (defun restart-emacs--daemon-using-sh (&optional args)
-    (let ((cmd (format "%s --daemon=%s %s &"
-                       (shell-quote-argument (restart-emacs--get-emacs-binary))
-                       server-name
-                       (restart-emacs--string-join
-                        (mapcar #'shell-quote-argument args) " "))))
-      (f-write-text cmd 'utf-8 "/tmp/my=daemon.el")))
+  ;; (defun my=restart-emacs--daemon-using-sh (&optional args)
+  ;;   (let ((cmd (format "%s --daemon=%s %s &"
+  ;;                      (shell-quote-argument (restart-emacs--get-emacs-binary))
+  ;;                      server-name
+  ;;                      (restart-emacs--string-join
+  ;;                       (mapcar #'shell-quote-argument args) " "))))
+  ;;     (f-write-text cmd 'utf-8 "/tmp/my=emacs-daemon.el")))
 
-  (defun my=restart-emacs--start-gui-using-sh (&optional args)
-    (let ((cmd (format "%s %s &"
-                       (shell-quote-argument (restart-emacs--get-emacs-binary))
-                       (restart-emacs--string-join
-                        (mapcar #'shell-quote-argument args)
-                        " "))))
-      (f-write-text cmd 'utf-8 "/tmp/my=gui.el")))
+  ;; (defun my=restart-emacs--start-gui-using-sh (&optional args)
+  ;;   (let ((cmd (format "%s %s &"
+  ;;                      (shell-quote-argument (restart-emacs--get-emacs-binary))
+  ;;                      (restart-emacs--string-join
+  ;;                       (mapcar #'shell-quote-argument args) " "))))
+  ;;     (f-write-text cmd 'utf-8 "/tmp/my=emacs-gui.el")))
 
-  (defun my=restart-emacs--start-emacs-in-terminal (&optional args)
-    (let ((cmd (format "fg ; %s %s -nw"
-                       (shell-quote-argument (restart-emacs--get-emacs-binary))
-                       (restart-emacs--string-join
-                        (mapcar #'shell-quote-argument args) " "))))
-      (f-write-text cmd 'utf-8 "/tmp/my=terminal.el")))
+  ;; (defun my=restart-emacs--start-emacs-in-terminal (&optional args)
+  ;;   (let ((cmd (format "fg ; %s %s -nw"
+  ;;                      (shell-quote-argument (restart-emacs--get-emacs-binary))
+  ;;                      (restart-emacs--string-join
+  ;;                       (mapcar #'shell-quote-argument args) " "))))
+  ;;     (f-write-text cmd 'utf-8 "/tmp/my=emacs-terminal.el")))
 
   ;; (advice-add #'restart-emacs--daemon-using-sh
   ;;             :before #'my=restart-emacs--daemon-using-sh)
@@ -1557,7 +1556,7 @@ ARGS is the list arguments with which Emacs should be started"
 ;;;; '--eval', assuming it is a valid sexp,i.e. surrounded by parens or alike.
            ;; (format "%s" (shell-command-to-string
            ;;               (format "ps -ho command -p %s" (emacs-pid))))
-           "$dev/guix-packages/spacemacs & disown"))
+           (format "%s/scm-bin/e & disown" (getenv "HOME"))))
       (call-process "sh" nil 0 nil "-c" command)))
 
   (advice-add #'restart-emacs--start-gui-using-sh
