@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -x  # Print commands and their arguments as they are executed.
+sudo guix system reconfigure $HOME/guix-conf/configuration.scm
+{ retval="$?"; set +x; } 2>/dev/null
+
+echo "udisksctl mount --block-device=(blkid --uuid a8fb1680-eef5-49a0-98a3-8169c9b8eeda)"
+echo "sudo cp /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg /tmp/grub.cfg"
+echo "sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg"
+echo "rg --no-line-number -A 4 --max-count=1 \"GNU with Linux-Libre\" /boot/grub/grub.cfg"
+echo "# <copy the block> and edit the /tmp/grub.cfg"
+echo "e /tmp/grub.cfg"
+echo "guix system describe | rg current"
+echo "# <extract the time and generation number>"
+echo "sudo cp /tmp/grub.cfg /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg"
+echo "sudo reboot # press <f12> during the reboot and fix the boot order"
+exit $retval

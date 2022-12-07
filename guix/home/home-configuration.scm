@@ -28,24 +28,12 @@ guix shell --development guix help2man git strace --pure
 (load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm")
 
 TODO see https://github.com/daviwil/dotfiles/tree/guix-home
-
-TODO abbreviations - see daviwil / systemcrafters
-gx    - guix
-gxh   - guix home
-gxhre - guix home reconfigure
-gxhro - guix home rollback
-gxs   - guix system
-gxu   - guix upgrade / guix package -u
-gxi   - guix install / guix package --install
-gxr   - guix remove
-
 |#
 
 (define-module (home-configuration)
   ;; #:use-module (cfg packages-new)
   #:use-module (cfg packages)
   #:use-module (cfg spguimacs-packages)
-  #:use-module (cfg abbreviations)
   #:use-module (cfg mcron)
   ;; See service-file -> with-imported-modules
   #:use-module (utils)
@@ -603,6 +591,8 @@ of files to search through."
                         (list
                          #;"/fish_variables"
                          "/fish_plugins"))))))))
+;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
+;;; when the 'guix home reconfigure ...' fails or is interrupted.
       (let* [(filepath "/fish_variables")
              (src (fish-config-dotfiles filepath))
              (dst (str home "/" (fish-config-base filepath)))]
@@ -632,28 +622,28 @@ of files to search through."
            (simple-service
             srvc-name home-files-service-type
             (list
-             ;; TODO gui / guixd should do cd ~/dev/guix; guixg should git pull
-             ;; --rebase (preferably from a local guix checkout)
-
-             ;; TODO crc should search in the $dec
+;;; TODO `gui' should do `cd ~/dev/guix'
+;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
+;;; checkout)
+;;; TODO crc should search in the $dec
              (search-notes #:program-name "crc"  #:files "clojure")
-             ;; TODO cre should search in the ~/.emacs.d/, ~/.spacemacs,
-             ;; kill-buffes and my=tweaks, farmhouse-light-mod
+;;; TODO cre should also search in the ~/.emacs.d/, ~/.spacemacs, kill-buffes
+;;; and my=tweaks, farmhouse-light-mod
              (search-notes #:program-name "cre"  #:files "vim|emacs|org_mode")
              (search-notes #:program-name "crep" #:files ".*")
              (search-notes #:program-name "crf"  #:files "find_and_grep")
-             ;; TODO crg should search in the $dotf/guix/
+;;; TODO crg should also search in the $dotf/guix/
              (search-notes #:program-name "crg"  #:files "guix|guile")
-             ;; TODO crgi should also search in the git config --get,
-             ;; ~/.gitconfig, etc.
+;;; TODO crgi should also search in the output of `git config --get',
+;;; ~/.gitconfig, etc.
              (search-notes #:program-name "crgi" #:files "git")
-             ;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile
-             ;; (and other profile files), etc.
+;;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile (and
+;;; other profile files), etc.
              (search-notes #:program-name "crl"
                            #:files "guix|shells|linux|android")
-             ;; TODO crr should search in the $der
+;;; TODO crr should also search in the $der
              (search-notes #:program-name "crr"  #:files "racket")
-             ;; TODO crs should be like crl
+;;; TODO crs should be like crl
              (search-notes #:program-name "crs"  #:files "shells")
              (search-notes #:program-name "cru"  #:files "utf8")
              (chmod-plus   #:program-name "prw"  #:chmod-params "rw")
@@ -824,7 +814,11 @@ of files to search through."
     home-fish-service-type
     ;; fish configuration - see ~/dev/guix/gnu/home/services/shells.scm
     (home-fish-configuration
-     (abbreviations abbrevs)
+     ;; Abbreviations are implemented as shell scripts. The TAB key is annoying.
+     ;; 1. Erase all abbreviations in the fish-shell:
+     ;;     abbr --erase (abbr --list)
+     ;; 2. Erase all `_fish_abbr_*' variables from the
+     ;;    '.config/fish/fish_variables'
 
      ;; aliases for "l" "ll" "ls" may be be overridden - see bashrc aliases
      #;(aliases '(("l" . "ls -a")))

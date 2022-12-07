@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -x  # Print commands and their arguments as they are executed.
+guix home "$@"
+{ retval="$?"; set +x; } 2>/dev/null
+exit $retval

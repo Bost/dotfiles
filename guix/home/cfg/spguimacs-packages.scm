@@ -43,6 +43,7 @@
    "spacemacs-rolling-release"
    ))
 
+;; See the *Messages* buffer ~SPC b m~
 (define needed-packages
   (list
    "emacs-ac-ispell"
@@ -463,7 +464,7 @@
    "emacs-zenburn-theme"
    "emacs-zonokai-emacs"
    "emacs-zop-to-char"
-   ))
+   )) ;; needed-packages
 
 (define excluded-packages
   ;; (ya)snippet-relates packages cause adding various paths to `yas-snippet-dirs',
@@ -520,6 +521,7 @@
    "emacs-yasnippet-snippets"
    ))
 
+;; guix package --list-installed='emacs-*' --list-available='emacs-*' | awk '{print "\""$1"\""}'
 (define installed-and-available-packages
   (list
    "emacs"
@@ -1804,7 +1806,7 @@
    "rust-emacs-macros"
    "rust-emacs-module"
    "spacemacs-rolling-release"
-   ))
+   )) ;; installed-and-available-packages
 
 (define not-needed-packages
   (list
