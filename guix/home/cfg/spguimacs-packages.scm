@@ -109,7 +109,6 @@
    "emacs-dakrone-theme"
    "emacs-dante"
    "emacs-dap-mode"
-   "emacs-darkburn-theme"
    "emacs-darkmine-theme"
    "emacs-darkokai-theme"
    "emacs-darktooth-theme"
@@ -174,9 +173,10 @@
    "emacs-exotica-theme"
    "emacs-expand-region"
    "emacs-eyebrowse"
-   "emacs-eziam-theme"
+   "emacs-eziam-themes"
    "emacs-fancy-battery"
-   "emacs-farmhouse-theme"
+   "emacs-farmhouse-light-mod-theme"
+   "emacs-farmhouse-themes"
    "emacs-fish-mode"
    "emacs-flatland-theme"
    "emacs-flatui-theme"
@@ -520,8 +520,9 @@
    "emacs-yasnippet-snippets"
    ))
 
-(define available-packages
+(define installed-and-available-packages
   (list
+   "emacs"
    "emacs-2048-game"
    "emacs-4clojure"
    "emacs-a"
@@ -587,7 +588,6 @@
    "emacs-bbdb"
    "emacs-bbdb-vcard"
    "emacs-beacon"
-   "emacs-beancount"
    "emacs-beancount"
    "emacs-beginend"
    "emacs-benchmark-init"
@@ -981,8 +981,10 @@
    "emacs-fringe-helper"
    "emacs-frog-jump-buffer"
    "emacs-frog-menu"
+   "emacs-frowny"
    "emacs-fsm"
    "emacs-fullframe"
+   "emacs-function-args"
    "emacs-gcmh"
    "emacs-gdscript-mode"
    "emacs-geiser"
@@ -1098,7 +1100,6 @@
    "emacs-highlight-symbol"
    "emacs-hl-todo"
    "emacs-hledger-mode"
-   "emacs-hledger-mode"
    "emacs-hlint-refactor-mode"
    "emacs-howm"
    "emacs-ht"
@@ -1182,7 +1183,6 @@
    "emacs-latex-preview-pane"
    "emacs-lcr"
    "emacs-leaf"
-   "emacs-ledger-mode"
    "emacs-ledger-mode"
    "emacs-leetcode"
    "emacs-lemon"
@@ -1375,6 +1375,7 @@
    "emacs-org-present"
    "emacs-org-pretty-table"
    "emacs-org-ql"
+   "emacs-org-rainbow-tags"
    "emacs-org-re-reveal"
    "emacs-org-recent-headings"
    "emacs-org-redmine"
@@ -1617,6 +1618,7 @@
    "emacs-sparql-mode"
    "emacs-spell-fu"
    "emacs-spinner"
+   "emacs-spongebob"
    "emacs-spray"
    "emacs-springboard"
    "emacs-sqlite"
@@ -1791,6 +1793,17 @@
    "emacs-zotxt"
    "emacs-zoutline"
    "emacs-ztree"
+   "emacspeak"
+   "emacsy"
+   "emacsy-minimal"
+   "guile-emacs"
+   "guile-for-guile-emacs"
+   "pinentry-emacs"
+   "qemacs"
+   "rust-emacs"
+   "rust-emacs-macros"
+   "rust-emacs-module"
+   "spacemacs-rolling-release"
    ))
 
 (define not-needed-packages
@@ -1811,7 +1824,7 @@
    general-packages
    (lset-difference
     eqv?
-    (lset-intersection eqv? needed-packages available-packages)
+    (lset-intersection eqv? needed-packages installed-and-available-packages)
     excluded-packages
     not-needed-packages
     )))
