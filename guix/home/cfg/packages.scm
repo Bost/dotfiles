@@ -117,6 +117,7 @@
    "glibc-locales"
    "gnupg"
    "gnutls"
+   ;; "gksudo" ;; not available in the Guix package repository
    "gparted"
    "graphviz"
    "grub"
@@ -183,6 +184,8 @@
    "python"
    "python2"
    "qemu"
+;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
+;;; This will happen automatically if `search-notes' is a proper Guix package.
    "racket"
    "readline"
    "recutils"

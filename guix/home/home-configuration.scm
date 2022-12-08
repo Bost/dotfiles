@@ -5,11 +5,12 @@
 ;; See the "Replicating Guix" section in the manual.
 
 #|
-# To prevent incorrect values in ~/.guix-home/setup-environment (e.g.
+# To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
-source /etc/profile
-guix home --allow-downgrades --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm
+$ source /etc/profile
+$ guix home --allow-downgrades --load-path=$dotf/guix/home \
+       reconfigure $dotf/guix/home/home-configuration.scm
 
 # The tilda `~' is only expanded by shells when it's the first character of a
 # command-line argument. Use $HOME instead
@@ -270,7 +271,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (format #t "~a ... " "(define* (search-notes ...) ...)")
 (define* (search-notes #:key program-name files)
-  "TODO a search-notes program should read a `search-space-file' containing a list
+  "TODO The `search-notes' program should read a `search-space-file' containing a list
 of files to search through."
   `(,(str scm-bin-dirname "/" program-name)
     ,(program-file

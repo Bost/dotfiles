@@ -102,6 +102,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
      (map specification->package
           (list "emacs" "nss-certs"
                 ;; "fish" ;; needed if it is the login-shell
+                "gparted"
                 "vim"))
      %base-packages))
    #;
