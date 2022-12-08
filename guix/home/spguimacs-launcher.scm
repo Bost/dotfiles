@@ -12,20 +12,20 @@
 |#
 
 ;; TODO use continuation breakout instead of a global variable
-(define spacemacs-binary-init "spacemacs")
-(define spacemacs-binary spacemacs-binary-init)
+(define binary-init "spacemacs")
+(define binary binary-init)
 
 (define (compute-binary)
   (let ((user (getenv "USER")))
     ((compose
       (lambda (p)
         (if (null? p)
-            spacemacs-binary-init ;; No spguimacs has been started yet.
+            binary-init ;; No such binary has been started yet.
             (car p)))
       (partial
        map
        (lambda (pid)
-         (when (string=? spacemacs-binary spacemacs-binary-init)
+         (when (string=? binary binary-init)
            (let ((proc-user ((compose
                               cadr
                               exec)
@@ -35,20 +35,21 @@
                       (string=? user proc-user))
                  (let ((proc-cmd (exec
                                   (format #f "ps -o command= -p ~a" pid))))
-                   (set! spacemacs-binary
+                   (set! binary
                          (if #f
                              #| string match --quiet -- "*defunct*" proc-cmd |#
-                             spacemacs-binary-init
+                             binary-init
                              (str "emacsclient --no-wait --socket-name="
-                                  ;; see `dotspacemacs-server-socket-dir' in the
-                                  ;; .spguimacs; tilda '~' doesn't work
-                                  "$HOME/.local/share/spacemacs/server/server")
+;;; See `dotspacemacs-server-socket-dir' in the .spguimacs
+;;; Tilda '~' doesn't work
+                                  "$HOME/.local/share/spacemacs"
+                                  "/server/server")
 
 ;;; The --socket-name and --no-wait parameters can also be handled by the
 ;;; `spacemacsclient' shell script:
                              #;
                              "spacemacsclient"))))))
-         spacemacs-binary))
+         binary))
       cdr
       exec
       (partial format #f "pgrep --full -u ~a ~a" user))
