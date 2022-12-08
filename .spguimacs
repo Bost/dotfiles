@@ -1418,27 +1418,27 @@ before packages are loaded."
   ;; '(use-package cider ...)' must be here for the bind-keys
   (use-package cider)
 
-  (defun spacemacs/find-spguimacs ()
-    "Edit the `~/.spguimacs', in the current window."
-    (interactive)
-    ;; (find-file "~/.spguimacs")
-    ;; (find-file-existing (dotspacemacs/location))
-    (find-file-existing (concat (getenv "dotf") "/.spguimacs")))
-
-  (defun spacemacs/find-dotf-spacemacs ()
+  (defun my=find-dotf-spacemacs ()
     "Edit the `$dotf/.spacemacs', in the current window."
     (interactive)
-    ;; (find-file "~/.spguimacs")
-    ;; (find-file-existing (dotspacemacs/location))
     (find-file-existing (concat (getenv "dotf") "/.spacemacs")))
 
-  (defun find-home-configuration.scm ()
-    "Edit the `$dotf/.spacemacs', in the current window."
+  (defun m=find-dotf-spguimacs ()
+    "Edit the `$dotf/.spguimacs', in the current window."
     (interactive)
-    ;; (find-file "~/.spguimacs")
-    ;; (find-file-existing (dotspacemacs/location))
+    (find-file-existing (concat (getenv "dotf") "/.spguimacs")))
+
+  (defun my=find-home-configuration.scm ()
+    "Edit the `$dotf/.../home-configuration.scm', in the current window."
+    (interactive)
     (find-file-existing (concat (getenv "dotf")
                                 "/guix/home/home-configuration.scm")))
+
+  (defun my=find-configuration.scm ()
+    "Edit the `$dotf/.../configuration.scm', in the current window."
+    (interactive)
+    (find-file-existing (concat (getenv "dotf")
+                                "/guix/system/configuration.scm")))
 
   ;; TODO autoload
   (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")
@@ -1447,12 +1447,13 @@ before packages are loaded."
     "oc"  #'my=cider-clear-compilation-highlights
     ;; "oc"  #'org-roam-capture
     ;; "of"  #'my=switch-to-repl-start-figwheel
-    "oed" #'spacemacs/find-dotf-spacemacs
-    "oeg" #'spacemacs/find-spguimacs
+    "oed" #'my=find-dotf-spacemacs
+    "oeg" #'my=find-dotf-spguimacs
     "ogg" #'google-this
     "ogr" #'google-this-region
-    "oh"  #'find-home-configuration.scm
+    "oh"  #'my=find-home-configuration.scm
     "or"  #'rotate-frame
+    "os"  #'my=find-configuration.scm
     ;; Revert buffer - loads in .dir-locals.el changes
     "oR"  #'my=revert-buffer-no-confirm
     ;; Show list of references to a given node from other nodes
