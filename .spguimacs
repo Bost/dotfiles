@@ -1209,6 +1209,8 @@ before packages are loaded."
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
 
+  (spaceline-all-the-icons-theme)
+
   (defun shell-which (command)
     "Execute the 'which' command in the current shell"
     (funcall
@@ -1423,7 +1425,7 @@ before packages are loaded."
     (interactive)
     (find-file-existing (concat (getenv "dotf") "/.spacemacs")))
 
-  (defun m=find-dotf-spguimacs ()
+  (defun my=find-dotf-spguimacs ()
     "Edit the `$dotf/.spguimacs', in the current window."
     (interactive)
     (find-file-existing (concat (getenv "dotf") "/.spguimacs")))
@@ -1440,6 +1442,12 @@ before packages are loaded."
     (find-file-existing (concat (getenv "dotf")
                                 "/guix/system/configuration.scm")))
 
+  (defun my=find-spguimacs-packages.scm ()
+    "Edit the `$dotf/.../spguimacs-packages.scm', in the current window."
+    (interactive)
+    (find-file-existing (concat (getenv "dotf")
+                                "/guix/home/cfg/spguimacs-packages.scm")))
+
   ;; TODO autoload
   (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")
   (spacemacs/declare-prefix "og" "google-this")
@@ -1452,6 +1460,7 @@ before packages are loaded."
     "ogg" #'google-this
     "ogr" #'google-this-region
     "oh"  #'my=find-home-configuration.scm
+    "oep" #'my=find-spguimacs-packages.scm
     "or"  #'rotate-frame
     "os"  #'my=find-configuration.scm
     ;; Revert buffer - loads in .dir-locals.el changes
