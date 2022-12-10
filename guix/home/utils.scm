@@ -37,6 +37,9 @@
             user
             user-home
             xdg-config-home
+            analyze-pids-flag-variable
+            analyze-pids-call/cc
+            compute-cmd
             ))
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
@@ -262,3 +265,74 @@ Usage:
          str)))
     cmd->string)
    command))
+
+(define (analyze-pids-call/cc init-cmd client-cmd pids)
+  (call/cc
+   (lambda (k)
+     (map
+      (lambda (pid)
+        (let ((proc-user ((compose
+                           cadr
+                           exec)
+                          ;; -o means: user specified format
+                          (format #f "ps -o user= -p ~a" pid))))
+          (when (and (not (string-null? proc-user))
+                     (string=? user proc-user))
+            (let ((proc-cmd (exec
+                             (format #f "ps -o command= -p ~a" pid))))
+              (if #f
+                  #| string match --quiet -- "*defunct*" proc-cmd |#
+                  init-cmd
+                  (begin
+                    (format
+                     #t
+                     (str "\n# OS command succeeded."
+                          " Avoiding further command calls by"
+                          " breaking out using call/cc..."))
+                    (k client-cmd)))))))
+      pids))))
+
+(define (analyze-pids-flag-variable init-cmd client-cmd pids)
+  "Breakout implementation using a flag variable"
+  (let [(ret-cmd init-cmd)]
+    ((compose
+      (lambda (p)
+        (if (null? p)
+            init-cmd ;; No such binary has been started yet.
+            (car p)))
+      (partial
+       map
+       (lambda (pid)
+         (when (string=? ret-cmd init-cmd)
+           (let ((proc-user ((compose
+                              cadr
+                              exec)
+                             ;; -o means: user specified format
+                             (format #f "ps -o user= -p ~a" pid))))
+             (if (and (not (string-null? proc-user))
+                      (string=? user proc-user))
+                 (let ((proc-cmd (exec
+                                  (format #f "ps -o command= -p ~a" pid))))
+                   (set! ret-cmd
+                         (if #f
+                             #| string match --quiet -- "*defunct*" proc-cmd |#
+                             init-cmd
+                             (begin
+                               (format
+                                #t
+                                (str "\n# OS command succeeded."
+                                     " Avoiding further command calls by"
+                                     " setting & checking a flag..."))
+                               client-cmd)))))))
+         ret-cmd)))
+     pids)))
+
+(define (compute-cmd init-cmd client-cmd pattern)
+  ((compose
+    (partial analyze-pids-call/cc
+             ;; analyze-pids-flag-variable
+             init-cmd client-cmd)
+    cdr
+    exec
+    (partial format #f "pgrep --full -u ~a ~a" user))
+   pattern))
