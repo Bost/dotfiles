@@ -10,12 +10,15 @@
 
 |#
 
+(format #t "~a ... " "Evaluating emacs-launcher.scm")
 (define init-cmd "emacs")
+
 (define client-cmd (str "emacsclient --no-wait --socket-name="
 ;;; See `dotspacemacs-server-socket-dir' in the .spacemacs
 ;;; Tilda '~' doesn't work
                  "$HOME/.emacs.d"
                  "/server/server"))
+
 (define pattern
   (let* ((ret (exec "which emacs")))
     (if (= 0 (car ret))
@@ -32,3 +35,4 @@
     (lambda (prms) (if (null? prms) '("./") prms))
     cdr)
    args))
+(format #t "done\n")

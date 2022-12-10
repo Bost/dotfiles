@@ -10,12 +10,15 @@
 
 |#
 
+(format #t "~a ... " "Evaluating spguimacs-launcher.scm")
 (define init-cmd "spacemacs")
+
 (define client-cmd (str "emacsclient --no-wait --socket-name="
 ;;; See `dotspacemacs-server-socket-dir' in the .spguimacs
 ;;; Tilda '~' doesn't work
                  "$HOME/.local/share/spacemacs"
                  "/server/server"))
+
 (define pattern
   "spacemacs-start-directory"
   #;
@@ -24,8 +27,7 @@
         (let* ((output (cdr ret)))
           (car output)
           #| process output |#)
-        (error-command-failed))
-    ))
+        (error-command-failed))))
 
 (define (main args)
   ((compose
@@ -35,3 +37,4 @@
     (lambda (prms) (if (null? prms) '("./") prms))
     cdr)
    args))
+(format #t "done\n")
