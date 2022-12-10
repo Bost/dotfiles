@@ -268,28 +268,22 @@ Usage:
 
 (define (analyze-pids-call/cc init-cmd client-cmd pids)
   (call/cc
-   (lambda (k)
+   (lambda (continuation)
      (map
       (lambda (pid)
         (let ((proc-user ((compose
                            cadr
                            exec)
                           ;; -o means: user specified format
-                          (format #f "ps -o user= -p ~a" pid))))
+                          (format #f "ps -o user= h -p ~a" pid))))
           (when (and (not (string-null? proc-user))
                      (string=? user proc-user))
-            (let ((proc-cmd (exec
-                             (format #f "ps -o command= -p ~a" pid))))
-              (if #f
-                  #| string match --quiet -- "*defunct*" proc-cmd |#
-                  init-cmd
-                  (begin
-                    (format
-                     #t
-                     (str "\n# OS command succeeded."
-                          " Avoiding further command calls by"
-                          " breaking out using call/cc..."))
-                    (k client-cmd)))))))
+            (let ((proc-cmd ((compose cadr exec)
+;;; '-o' user defined format, 'h' no header, '-p' pid
+                             (format #f "ps -o command= h -p ~a" pid))))
+              (unless (string-match ".*<defunct>$" proc-cmd)
+;;; Terminate the call/cc statement with the return value `client-cmd'
+                (continuation client-cmd))))))
       pids))))
 
 (define (analyze-pids-flag-variable init-cmd client-cmd pids)
@@ -303,27 +297,19 @@ Usage:
       (partial
        map
        (lambda (pid)
-         (when (string=? ret-cmd init-cmd)
+         (when (string=? ret-cmd init-cmd) ;; check the flag
            (let ((proc-user ((compose
                               cadr
                               exec)
-                             ;; -o means: user specified format
-                             (format #f "ps -o user= -p ~a" pid))))
-             (if (and (not (string-null? proc-user))
-                      (string=? user proc-user))
-                 (let ((proc-cmd (exec
-                                  (format #f "ps -o command= -p ~a" pid))))
-                   (set! ret-cmd
-                         (if #f
-                             #| string match --quiet -- "*defunct*" proc-cmd |#
-                             init-cmd
-                             (begin
-                               (format
-                                #t
-                                (str "\n# OS command succeeded."
-                                     " Avoiding further command calls by"
-                                     " setting & checking a flag..."))
-                               client-cmd)))))))
+;;; '-o' user defined format, 'h' no header, '-p' pid
+                             (format #f "ps -o user= h -p ~a" pid))))
+             (when (and (not (string-null? proc-user))
+                        (string=? user proc-user))
+               (let ((proc-cmd (exec
+                                (format #f "ps -o command= h -p ~a" pid))))
+                 (unless (string-match ".*<defunct>$" proc-cmd)
+;;; Set a flag so that the body of the outermost when-statement is not executed
+                   (set! ret-cmd client-cmd))))))
          ret-cmd)))
      pids)))
 
