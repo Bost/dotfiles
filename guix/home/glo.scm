@@ -56,7 +56,7 @@ Requires:
                               (begin
                                 (format
                                  #t
-                                 (str "# OS command succeeded."
+                                 (str "\n# OS command succeeded."
                                       " Avoiding further command calls by"
                                       " breaking out using call/cc..."))
                                 (k #t))
@@ -70,8 +70,8 @@ Requires:
                           (cdr ret)))))))
           branches))))
 
-(define (rebase-bottom-global-variable rebase-args branches)
-  "Breakout implementation using a global variable"
+(define (rebase-bottom-flag-variable rebase-args branches)
+  "Breakout implementation using a flag variable"
   (let ((found #f))
     ((compose
       (partial
@@ -95,9 +95,9 @@ Requires:
                                  (begin
                                    (format
                                     #t
-                                    (str "# OS command succeeded."
+                                    (str "\n# OS command succeeded."
                                          " Avoiding further command calls by"
-                                         " setting & checking a flag...\n"))
+                                         " setting & checking a flag..."))
                                    (set! found #t))
                                  (begin
                                    #;(format #t "Command failed:\n~a\n"
@@ -114,7 +114,7 @@ Requires:
   (format #t "# Note: 'args' is applied only to `git rebase'\n")
   ((compose
     (partial rebase-bottom-call/cc args)
-    ;; (partial rebase-bottom-global-variable args)
+    ;; (partial rebase-bottom-flag-variable args)
     ;; dbg
     (partial filter (lambda (remote) (not (string-match "heroku" remote))))
     cdr
