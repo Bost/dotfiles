@@ -5,7 +5,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (spguimacs-launcher) -s
+-L ./ -e (spguimacs-launcher) -s
 !#
 
 |#

@@ -5,7 +5,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (f) -s
+-L ./ -e (f) -s
 !#
 
 |#

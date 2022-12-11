@@ -11,7 +11,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (glo) -s
+-L ./ -e (glo) -s
 !#
 
 |#

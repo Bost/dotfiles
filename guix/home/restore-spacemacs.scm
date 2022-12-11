@@ -10,7 +10,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -l spag.scm -e (restore-spacemacs) -s
+-L ./ -l spag.scm -e (restore-spacemacs) -s
 !#
 
 |#

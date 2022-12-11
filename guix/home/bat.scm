@@ -6,7 +6,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (bat) -s
+-L ./ -e (bat) -s
 !#
 
 |#

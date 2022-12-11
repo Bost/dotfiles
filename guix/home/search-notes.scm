@@ -6,7 +6,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (search-notes) -s
+-L ./ -e (search-notes) -s
 !#
 
 |#

@@ -5,7 +5,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (gcod) -s
+-L ./ -e (gcod) -s
 !#
 
 |#

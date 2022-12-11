@@ -5,7 +5,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (gcl) -s
+-L ./ -e (gcl) -s
 !#
 
 ;; Examples:

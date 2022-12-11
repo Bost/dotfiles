@@ -5,7 +5,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (chmod) -s
+-L ./ -e (chmod) -s
 !#
 
 |#

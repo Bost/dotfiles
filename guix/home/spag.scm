@@ -8,7 +8,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (spag) -s
+-L ./ -e (spag) -s
 !#
 
 |#

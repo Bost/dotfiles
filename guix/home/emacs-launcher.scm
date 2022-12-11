@@ -5,7 +5,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (emacs-launcher) -s
+-L ./ -e (emacs-launcher) -s
 !#
 
 |#

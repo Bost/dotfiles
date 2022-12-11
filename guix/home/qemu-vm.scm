@@ -8,7 +8,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--l utils.scm -e (qemu-vm) -s
+-L ./ -e (qemu-vm) -s
 !#
 
 |#
