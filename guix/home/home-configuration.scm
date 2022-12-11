@@ -249,6 +249,10 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (define module-utils (read-module "utils"))
 (format #t "done\n")
 
+(format #t "~a ...\n" "(define module-ls ...)")
+(define module-ls (read-module "ls"))
+(format #t "done\n")
+
 (format #t "~a ...\n" "(define module-spag ...)")
 (define module-spag (read-module "spag"))
 (format #t "done\n")
@@ -267,6 +271,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
              (symb (or module-name
                        (string->symbol symb-string))))
         (with-imported-modules `(((utils) => ,module-utils)
+                                 ;; ls needed only for lf.scm
+                                 ((ls)    => ,module-ls)
                                  ((,symb) => ,(read-module symb-string)))
                                #~(begin
                                    (use-modules (#$symb))
@@ -680,6 +686,9 @@ of files to search through."
              (service-file #:program-name "l"
                            #:desc "list-directory-contents"
                            #:scheme-file-name "ls")
+             (service-file #:program-name "lf"
+                           #:desc "list-directory-contents-with-full-paths"
+                           #:scheme-file-name "lf")
              (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
              (service-file #:program-name "spag"
                            #:desc "spacemacs-git-fetch-rebase"))))]
