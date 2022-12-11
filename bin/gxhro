@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -x  # Print commands and their arguments as they are executed.
-source /etc/profile
+source /etc/profile 2>/dev/null
 guix home roll-back "$@"
 { retval="$?"; set +x; } 2>/dev/null
 exit $retval
