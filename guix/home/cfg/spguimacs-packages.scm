@@ -488,33 +488,58 @@
    "emacs-auto-yasnippet"
    "emacs-clojure-snippets"
 
+;;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
+;;; https://github.com/kidd/erc-image.el Not really needed.
+;;; Throws:
 ;;; Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/w29gvdsv26r5minwgdmb1pq4dzgbi959-emacs-erc-image-0-3.82fb387/share/emacs/site-lisp/erc-image-0-3.82fb387/erc-image-autoloads)
    "emacs-erc-image"
 
-;;; Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/wfy7v1jm0hjhv8cjxgi5asfcn5ma6795-emacs-evil-anzu-0.03/share/emacs/site-lisp/evil-anzu-0.03/evil-anzu-autoloads)
+;;; Show '<current match> / <total matches>' in the mode-line.
+;;; https://github.com/syohex/emacs-evil-anzu . Doesn't work with
+;;; (spaceline-all-the-icons-theme) enabled. Would be really nice to have, and
+;;; nice to have it working even under the spaceline-all-the-icons-theme.
+;;; Throws:
+;;; Error loading autoloads: (file-missing Cannot open load file No such
+;;; file or directory
+;;; /gnu/store/wfy7v1jm0hjhv8cjxgi5asfcn5ma6795-emacs-evil-anzu-0.03/share/emacs/site-lisp/evil-anzu-0.03/evil-anzu-autoloads)
    "emacs-evil-anzu"
 
+;;; Preview candidates when using Evil registers and marks.
+;;; https://github.com/mamapanda/evil-owl
+;;; Seems not to be used anyway
 ;;; "compilation" problem
    "emacs-evil-owl"
 
+;;; Edit Gherkin / Cucumber plain text user stories. See examples
+;;; https://cucumber.io/docs/gherkin/reference/
+;;; Not needed.
 ;;; broken! spacemacs doesn't start: invalid version 0.5.0-dev
    "emacs-feature-mode"
+
    "emacs-haskell-snippets"
    "emacs-helm-c-yasnippet"
+
+;;; Extras for the comint-mode shell. https://github.com/riscy/shx-for-emacs
+;;; Would be nice to have.
 ;;; "compilation" problem
    "emacs-shx"
 
+;;; Emacs leader key implementation from Spacemacs. Should be excluded anyway.
+;;; Throws:
 ;;; Error (use-package): Failed to parse package column-enforce-mode: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
 ;;; Error (use-package): Failed to parse package highlight-indentation: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
 ;;; Error (use-package): Failed to parse package indent-guide: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
 ;;; Error (use-package): Failed to parse package fill-column-indicator: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
-   "emacs-spaceleader" ;; throws the errors above
+   "emacs-spaceleader"
 
 ;;; TODO test use-package
    "emacs-use-package"
 
-;;; emacs-writeroom corresponds to writeroom-mode, however it's ignored by spacemacs
-;;; (I guess due to the missing '-mode')
+;;; Distraction-free writing for Emacs.
+;;; https://github.com/joostkremers/writeroom-mode emacs-writeroom corresponds
+;;; to writeroom-mode, however it's ignored by Spacemacs. Probably due to the
+;;; missing '-mode'.
+;;; Not really needed
    "emacs-writeroom"
 
    "emacs-yasnippet"
