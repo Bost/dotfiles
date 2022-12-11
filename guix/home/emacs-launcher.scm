@@ -30,7 +30,6 @@
 (define (main args)
   ((compose
     exec-background
-    ;; dbg
     (partial cons* (compute-cmd init-cmd client-cmd pattern))
     (lambda (prms) (if (null? prms) '("./") prms))
     cdr)

@@ -64,6 +64,9 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; (format #t "~a... " "")
 ;; (format #t "done\n")
 
+(define indent "")
+(define indent-inc "   ")
+
 (define home-games-config #f)
 
 (define channels-scm-filepath (str (basename xdg-config-home) "/guix/channels.scm"))
@@ -230,9 +233,10 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (format #t "~a ... " "(define (read-module ...) ...)")
 (define (read-module name)
   "TODO use monad"
-  (let* [(name-scm (str name ".scm"))
+  (let* [(iindent (str indent indent-inc))
+         (name-scm (str name ".scm"))
          (filepath (dotfiles-home "/guix/home/" name-scm))]
-    (format #t "read-module: ~a ... " filepath)
+    (format #t "~aread-module: ~a ... " iindent filepath)
     (let ((sf (scheme-file name-scm
                            (sexp->gexp
                             (call-with-input-file filepath read-all-sexprs))
@@ -241,11 +245,11 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
       sf)))
 (format #t "done\n")
 
-(format #t "~a ... " "(define module-utils ...)")
+(format #t "~a ...\n" "(define module-utils ...)")
 (define module-utils (read-module "utils"))
 (format #t "done\n")
 
-(format #t "~a ... " "(define module-spag ...)")
+(format #t "~a ...\n" "(define module-spag ...)")
 (define module-spag (read-module "spag"))
 (format #t "done\n")
 
@@ -597,8 +601,8 @@ of files to search through."
       (let* [(filepath "/fish_variables")
              (src (fish-config-dotfiles filepath))
              (dst (str home "/" (fish-config-base filepath)))]
-        (begin
-          (format #t "(copy-file ~a ~a) ... " src dst)
+        (let [(indent (str indent indent-inc))]
+          (format #t "~a(copy-file ~a ~a) ... " indent src dst)
           (let ((retval (copy-file src dst)))
             (format #t "retval: ~a\n" retval)
             retval))

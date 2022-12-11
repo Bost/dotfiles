@@ -15,6 +15,7 @@
   #| #:use-module (guix build utils) ;; invoke - not needed |#
   #:export (
             dbg
+            dbg-exec
             cmd->string
             drop-left
             drop-right
@@ -111,12 +112,21 @@ TODO what's the clojure variant?"
   (lambda x (apply fun (append args x))))
 
 (define (dbg prm)
-  "`pk' can be used instead of `dbg'"
+  "`pk' can be used instead of this function"
   ;; TODO implement pretty-print for bash commands
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
   ;; ~% is newline \n
   (format #t "~%~a~%" prm)
+  prm)
+
+(define (dbg-exec prm)
+  "`pk' can be used instead of this function"
+  ;; TODO implement pretty-print for bash commands
+  ;; ~a - outputs an argument like display
+  ;; ~s - outputs an argument like write (i.e. print to string)
+  ;; ~% is newline \n
+  (format #t "~%$ ~a~%" prm)
   prm)
 
 (define* (error-command-failed #:rest args)
@@ -152,7 +162,7 @@ TODO what's the clojure variant?"
 (exec-system* \"echo\" \"bar\" \"baz\")"
   ((compose
     (partial apply system*)
-    dbg
+    dbg-exec
     string-split-whitespace)
    args))
 
@@ -193,7 +203,7 @@ Returns a list of strings"
         res)))
 
 (define (cmd->string cmd)
-  (dbg
+  (dbg-exec
    (if (list? cmd)
        (string-join cmd) ;; join with ' ' by default
        cmd)))
@@ -312,15 +322,16 @@ Usage:
               (unless (string-match ".*<defunct>$" proc-cmd)
 ;;; Terminate the call/cc statement with the return value `client-cmd'
                 (continuation client-cmd))))))
-      pids)))
-  ;; The pids-list is empty
-  init-cmd)
+      pids)
+     ;; The pids-list is empty. No such binary has been started yet.
+     init-cmd)))
 
 (define (compute-cmd init-cmd client-cmd pattern)
   ((compose
-    (partial analyze-pids-call/cc
-             ;; analyze-pids-flag-variable
-             init-cmd client-cmd)
+    (partial
+     analyze-pids-call/cc
+     ;; analyze-pids-flag-variable
+     init-cmd client-cmd)
     cdr
     exec
     (partial format #f "pgrep --full -u ~a ~a" user))
