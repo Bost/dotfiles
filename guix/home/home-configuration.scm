@@ -664,6 +664,8 @@ of files to search through."
              (search-notes #:program-name "cru"  #:files "utf8")
              (chmod-plus   #:program-name "prw"  #:chmod-params "rw")
              (chmod-plus   #:program-name "px"   #:chmod-params "x")
+             (service-file #:program-name "ext"     #:desc "extract-uncompress"
+                           #:scheme-file-name "extract")
              (service-file #:program-name "c"       #:desc "batcat"
                            #:scheme-file-name "bat")
              (service-file #:program-name "e"       #:desc "emacs-launcher"
