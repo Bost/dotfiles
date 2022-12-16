@@ -214,7 +214,10 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                                   (str home bin-dirpath)
    ;; The paths to bin and sbin for guix-home profile are inserted here.
                                   "$PATH"
-                                  "/usr/local/bin")
+                                  "/usr/local/bin"
+;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
+;;; See also ~/.npm, ~/.npmrc, ~/node_modules
+                                  #;(str home "/.npm-packages"))
                             list-separator))))
 (format #t "done\n")
 
@@ -352,6 +355,8 @@ of files to search through."
 ;;                        #:recursive? #t))))))
 
 (format #t "~a ... " "Obtaining projects")
+;; See https://gitlab.com/guile-git/guile-git.git
+;; Guile bindings to libgit2, to manipulate repositories of the Git.
 (define projects (list))
 ;; (define projects
 ;;   (list
