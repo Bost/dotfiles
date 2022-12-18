@@ -2,11 +2,16 @@ function gcl
     # 'string escape' doesn't work for https://git.sr.ht/~krevedkokun/dotfiles
     # set escArgv (string escape -- $argv)
     set escArgv $argv
-    set cmd git clone $escArgv
+    set cmd gcl $escArgv # gcl is implemented in Guile Scheme
     echo $cmd
     eval $cmd
     if test $status = 0
-        set cmd cd (filename (basename $escArgv[(count $escArgv)]))
+        if test -d $escArgv
+            set dir $escArgv
+        else
+            set dir (filename (basename $escArgv[(count $escArgv)]))
+        end
+        set cmd cd $dir
         echo $cmd
         eval $cmd
     end
