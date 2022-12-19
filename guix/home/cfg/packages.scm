@@ -194,6 +194,7 @@
    "screen"
    "scsh"
    "seahorse"
+   "signal-desktop"
    "spice-vdagent"
    "taglib"
    "texinfo"
