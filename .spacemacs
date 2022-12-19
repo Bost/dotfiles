@@ -1209,7 +1209,7 @@ before packages are loaded."
   ;; (spacemacs/toggle-menu-bar-on)
   ;; (global-prettify-symbols-mode +1)
 
-  (spaceline-all-the-icons-theme)
+  ;; (spaceline-all-the-icons-theme)
 
   (defun shell-which (command)
     "Execute the 'which' command in the current shell"
