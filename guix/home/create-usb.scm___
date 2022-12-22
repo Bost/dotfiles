@@ -1,0 +1,55 @@
+#!/usr/bin/env -S guile \\
+-L ./ -e (create-usb) -s
+!#
+
+(define-module (create-usb)
+  #:use-module (ice-9 regex)
+  #:use-module (utils)
+  #:export (main))
+
+#|
+lsblk --paths
+set --local blockDevice /dev/sdc1
+set --local usbDevice /dev/sdc
+
+udisksctl unmount --block-device=$blockDevice
+sudo dd bs=4M if=$isoFile of=$usbDevice status=progress oflag=sync && sync
+
+#!/usr/bin/guile \
+-L ./ -e (create-usb) -s
+!#
+
+#!/usr/bin/env -S guile \\
+-L ./ -e (create-usb) -s
+!#
+
+|#
+
+(define (print-exec-ret exec-ret)
+  (let* ((ret exec-ret))
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          #;(format #t "(length output) ~a\n" (length output))
+          #;(map (partial format #t "~a\n") output)
+          output)
+        (error-command-failed))))
+
+(define (main args)
+  ((compose
+    #;(partial map car)
+    dbg
+    (lambda (output)
+      #;(format #t "(length output) ~a\n" (length output))
+      (if (= 0 (length output))
+          (begin
+            (format #t "No usb device found.\n")
+            (error ""))
+          output))
+    (partial filter (lambda (s) (string-match "usb" s)))
+    print-exec-ret
+    exec
+    (lambda (_) (format #f "lsblk --nodeps --output PATH,MODEL,TRAN,LABEL"))
+    cdr)
+   args))
+
+
