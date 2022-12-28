@@ -17,7 +17,9 @@
 (define vmQcow2File
   (string-append
    "/home/bost" ;; must be my own home dir; '(getenv "HOME")' produces '/root'
-   "/virt-machines/guix-system-vm-image-1.3.0.x86_64-linux.qcow2"))
+   "/virt-machines/"
+   #;"guix-system-vm-image-1.3.0.x86_64-linux.qcow2"
+   "guix-system-vm-image-1.4.0.x86_64-linux.qcow2"))
 (define vmRAM "2G")
 (define vmRemoteViewPort "5930")
 (define vmSSHPort "10022")
