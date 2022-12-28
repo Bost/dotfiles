@@ -1,5 +1,5 @@
 #!/bin/sh
-isoFile=~/virt-machines/guix-system-install-1.3.0.x86_64-linux.iso
+isoFile=~/virt-machines/guix-system-install-1.4.0.x86_64-linux.iso
 
 gd=~/bin
 scmFile=$gd/qemu-vm.scm
