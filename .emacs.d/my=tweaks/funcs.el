@@ -903,3 +903,45 @@ Version: 2018-12-23 2022-04-07"
 (defun my=revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
   (interactive) (revert-buffer t t))
+
+;; === BEG adjust-point-pos-after-search
+;; See:
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Basic-Windows.html#Window%20Group
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Coordinates-and-Windows.html
+
+(defun my=adjust-point-pos-before-search (&optional COUNT)
+  (interactive)
+  (evil-scroll-line-to-center COUNT)
+  ;; (setq my=line-before (line-number-at-pos))
+  )
+
+;; TODO very long files might overflow the number-var
+(defun my=adjust-point-pos-after-search (&optional COUNT)
+  (interactive)
+  (evil-scroll-line-to-center COUNT)
+  ;; (let* ((bef my=line-before)
+  ;;        (aft (line-number-at-pos))
+  ;;        (height (window-height))
+  ;;        (diff (abs (- aft bef)))
+  ;;        (scroll (> diff (- height 8)))) ; 8 is margin
+  ;;   ;; (format-message "bef: %d aft: %d height: %d diff: %d center: %s"
+  ;;   ;;                 bef aft height diff (> diff height))
+  ;;   (message "bef: %d aft: %d diff %d scroll: %s" bef aft diff scroll)
+  ;;   (if scroll
+  ;;       (evil-scroll-line-to-center nil))
+  ;;   )
+  )
+
+;; pos-curr
+;; pos-next - position of next search result
+;; (abs (- pos-next pos-curr))
+;; (window-size) ;; count of lines in current window
+;; (window-end)
+;; (window-top-line)
+;; (point)
+;; if too far then G and recenter
+;; (line-number-at-pos (match-beginning 0))
+;; (line-number-at-pos (match-end 0))
+
+;; === END adjust-point-pos-after-search
+

@@ -2297,10 +2297,47 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                 (message
                  "[advice evil-avy-goto-line] %s"
                  "Also ~SPC j l~, ~M-m j l~, ~<C-f2>~, ~C-s-/~")))
-  (advice-add #'evil-ex-search-next
-              :after #'evil-scroll-line-to-center)
-  (advice-add #'evil-ex-search-previous
-              :after #'evil-scroll-line-to-center)
+
+  ;; (advice-add #'evil-ex-search-next
+  ;;             :after #'evil-scroll-line-to-center)
+  ;; (advice-add #'evil-ex-search-previous
+  ;;             :after #'evil-scroll-line-to-center)
+
+  ;; === BEG adjust-point-pos-after-search
+  (advice-add
+   #'evil-ex-search-next
+   :before
+   #'my=adjust-point-pos-before-search
+   ;; (lambda (&optional COUNT)
+   ;;   (interactive)
+   ;;   (evil-scroll-line-to-center)
+   ;;   ;; (setq my=line-before (line-number-at-pos))
+   ;;   )
+   ;; ;; convenient name for identifying or removing this advice later
+   ;; '((name . "before-search"))
+   )
+  (advice-add #'evil-ex-search-next :after #'my=adjust-point-pos-after-search)
+  (advice-add #'evil-ex-search-previous :before #'my=adjust-point-pos-before-search)
+  (advice-add #'evil-ex-search-previous :after #'my=adjust-point-pos-after-search)
+  (advice-add #'evil-goto-line :before #'evil-scroll-line-to-center)
+  (advice-add #'evil-goto-line :after #'evil-scroll-line-to-center)
+
+  ;; Both ~*~ / ~<kp-multiply>~ and ~s-*~ / ~<s-kp-multiply>~ should behave the
+  ;; same and open that transient menu.
+  (global-set-key (kbd "s-*") #'spacemacs/enter-ahs-backward)
+  (global-set-key (kbd "<s-kp-multiply>") #'spacemacs/enter-ahs-backward)
+
+  ;; (advice-remove #'evil-ex-search-next "before-search")
+  ;; (advice-remove #'evil-ex-search-next #'my=adjust-point-pos-before-search)
+  ;; (advice-remove #'evil-ex-search-next #'my=adjust-point-pos-after-search)
+  ;; (advice-remove #'evil-ex-search-next #'evil-scroll-line-to-center)
+  ;; (advice-remove #'evil-ex-search-previous #'my=adjust-point-pos-before-search)
+  ;; (advice-remove #'evil-ex-search-previous #'my=adjust-point-pos-after-search)
+  ;; (advice-remove #'evil-goto-line #'evil-scroll-line-to-center)
+  ;; (advice-remove #'evil-goto-line #'evil-scroll-line-to-center)
+
+  ;; === END adjust-point-pos-after-search
+
   (advice-add #'ediff-quit
               :around #'my=disable-y-or-n-p)
   (advice-add #'helm-mini
