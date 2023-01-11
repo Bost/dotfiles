@@ -2153,7 +2153,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   ;; Setup for Hacking on Guix
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
-  (let* ((guix-checkout-dir "~/dev/guix"))
+  (let* ((guix-checkout-dir (format "%s/guix" (getenv "dev"))))
     (with-eval-after-load #'geiser-guile
       (add-to-list 'geiser-guile-load-path guix-checkout-dir))
     ;; (with-eval-after-load 'yasnippet
