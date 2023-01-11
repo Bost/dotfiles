@@ -356,6 +356,13 @@ This function should only modify configuration layer settings."
      ;; swift
      syntax-checking
      ;; systemd
+
+     (tabs :variables
+           ;; tabs-auto-hide t
+           ;; tabs-auto-hide-delay 3
+           ;; tabs-highlight-current-tab 'left
+           )
+
      themes-megapack
 
      ;; Customise the Spacemacs themes
