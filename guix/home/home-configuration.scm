@@ -61,9 +61,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; #:use-module (gnu home services version-control)
   )
 
-;; (format #t "~a... " "")
-;; (format #t "done\n")
-
 (define indent "")
 (define indent-inc "   ")
 
@@ -71,29 +68,24 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (define channels-scm-filepath (str (basename xdg-config-home) "/guix/channels.scm"))
 
-(format #t "~a ... " "(define* (dotfiles-home ...) ...)")
-(define* (dotfiles-home #:rest args)
+(def* (dotfiles-home #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str home "/dev/dotfiles" args))
-(format #t "done\n")
 
 (define (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
 
-(format #t "~a ... " "(define* (any-local-file ...) ...)")
 ;;;      ...                      #:optional (<parameter-name> <default-value>)
-(define* (any-local-file filepath #:optional (filename (basename filepath)))
+(def* (any-local-file filepath #:optional (filename (basename filepath)))
   ;; 'local-file' is a macro and cannot be used by 'apply'
 
   (if (equal? "." (substring filename 0 1))
       ;; filename of the local-file can't start with '.'
       (local-file filepath (fix-leading-dot filename))
       (local-file filepath)))
-(format #t "done\n")
 
-(format #t "~a ... " "(define (local-dotfile path filename) ...)")
-(define (local-dotfile path filename)
+(def* (local-dotfile path filename)
   "
 (local-dotfile \"/path/to/\" \"file.ext\")
 =>
@@ -123,17 +115,14 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
       (begin
         (format #t "ERROR: can't read ~a\n" filepath)
         #f))))
-(format #t "done\n")
 
-(format #t "~a ... " "fish-config-<stuff>")
-(define* (fish-config-base #:rest args)
+(def* (fish-config-base #:rest args)
   (apply str (basename xdg-config-home) "/fish" args))
 
-(define* (fish-config-dotfiles #:rest args)
+(def* (fish-config-dotfiles #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str (dotfiles-home) "/" (fish-config-base) args))
-(format #t "done\n")
 
 ;; fish and bash separate elements of a list with a different separator
 (define list-separator-bash ":")
@@ -144,8 +133,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
 (define dev (user-home "/dev"))
 
-(format #t "~a ... " "(define (environment-vars ...) ...)")
-(define (environment-vars list-separator)
+(def* (environment-vars list-separator)
   `(
     ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
     ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
@@ -219,22 +207,18 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;; See also ~/.npm, ~/.npmrc, ~/node_modules
                                   #;(str home "/.npm-packages"))
                             list-separator))))
-(format #t "done\n")
 
 ;; fish and bash separate elements of a list with a different separator
 (define list-separator-bash ":")
 #;(define list-separator-fish " ") ;; not needed
 
-(format #t "~a ... " "(define environment-variables-service ...)")
-(define environment-variables-service
+(def* environment-variables-service
   (simple-service
    'environment-variables-service
    home-environment-variables-service-type
    (environment-vars list-separator-bash)))
-(format #t "done\n")
 
-(format #t "~a ... " "(define (read-module ...) ...)")
-(define (read-module name)
+(def* (read-module name)
   "TODO use monad"
   (let* [(iindent (str indent indent-inc))
          (name-scm (str name ".scm"))
@@ -246,24 +230,16 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                            #:splice? #t)))
       (format #t "done\n")
       sf)))
-(format #t "done\n")
 
-(format #t "~a ...\n" "(define module-utils ...)")
-(define module-utils (read-module "utils"))
-(format #t "done\n")
+(def* module-utils (read-module "utils"))
 
-(format #t "~a ...\n" "(define module-ls ...)")
-(define module-ls (read-module "ls"))
-(format #t "done\n")
+(def* module-ls (read-module "ls"))
 
-(format #t "~a ...\n" "(define module-spag ...)")
-(define module-spag (read-module "spag"))
-(format #t "done\n")
+(def* module-spag (read-module "spag"))
 
-(format #t "~a ... " "(define* (service-file ...) ...)")
-(define* (service-file #:key
-                       program-name desc
-                       scheme-file-name module-name)
+(def* (service-file #:key
+                    program-name desc
+                    scheme-file-name module-name)
   "The priority is 1. module-name, 2. scheme-file-name, 3. program-name"
   `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
@@ -280,10 +256,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                                #~(begin
                                    (use-modules (#$symb))
                                    (main (command-line))))))))
-(format #t "done\n")
 
-(format #t "~a ... " "(define* (search-notes ...) ...)")
-(define* (search-notes #:key program-name files)
+(def* (search-notes #:key program-name files)
   "TODO The `search-notes' program should read a `search-space-file' containing a list
 of files to search through."
   `(,(str scm-bin-dirname "/" program-name)
@@ -300,19 +274,15 @@ of files to search through."
             #~(begin
                 (use-modules (#$symb))
                 (main #$main-1st-arg (command-line)))))))))
-(format #t "done\n")
 
-(format #t "~a ... " "(define (append-fish-config-dir ...) ...)")
-(define (append-fish-config-dir dir lst)
+(def* (append-fish-config-dir dir lst)
   (append
    `((,(fish-config-base dir)
       ,(local-file (fish-config-dotfiles dir)
                    #:recursive? #t)))
    lst))
-(format #t "done\n")
 
-(format #t "~a ... " "(define* (chmod-plus ...) ...)")
-(define* (chmod-plus #:key program-name chmod-params)
+(def* (chmod-plus #:key program-name chmod-params)
   "Example:
         chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir"
   `(,(str scm-bin-dirname "/" program-name)
@@ -329,7 +299,6 @@ of files to search through."
             #~(begin
                 (use-modules (#$symb))
                 (main #$main-1st-arg (command-line)))))))))
-(format #t "done\n")
 
 ;; xfce4-keyboard: repeat-delay 160 repeat-speed 60
 
@@ -440,8 +409,7 @@ of files to search through."
 ;;                 (description "Configures UI appearance settings for Xorg
 ;; sessions using the xsettingsd daemon.")))
 
-(format #t "~a ... " "(define guix-channels-configuration ...)")
-(define guix-channels-configuration
+(def* guix-channels-configuration
   (if home-games-config
       (list
        (local-dotfile "/" (str (basename xdg-config-home)
@@ -490,7 +458,6 @@ of files to search through."
                    "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))))))
       (list
        (local-dotfile "/" channels-scm-filepath))))
-(format #t "done\n")
 
 (define (shell-config-file shell name content)
   (plain-file

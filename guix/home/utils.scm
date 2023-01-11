@@ -41,6 +41,7 @@
             analyze-pids-flag-variable
             analyze-pids-call/cc
             compute-cmd
+            def*
             ))
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
@@ -336,3 +337,30 @@ Usage:
     exec
     (partial format #f "pgrep --full -u ~a ~a" user))
    pattern))
+
+(define-syntax def*
+  (lambda (x)
+    (syntax-case x ()
+      ((_ (id . args) b0 b1 ...)
+       #'(begin
+         (format #t "(def* (~a ...) ...) ... " `id)
+         (define id (lambda* args b0 b1 ...))
+         (format #t "done\n")
+         id))
+
+      ((_ id val) (identifier? #'id)
+       #'(begin
+         (format #t "(def* ~a ...) ... " `id)
+         (define id val)
+         (format #t "done\n")
+         id))
+      )))
+
+;; from /home/bost/dev/guile/module/ice-9/psyntax.scm
+;; (define-syntax define*
+;;   (lambda (x)
+;;     (syntax-case x ()
+;;       ((_ (id . args) b0 b1 ...)
+;;        #'(define id (lambda* args b0 b1 ...)))
+;;       ((_ id val) (identifier? #'id)
+;;        #'(define id val)))))
