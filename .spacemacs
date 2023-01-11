@@ -1226,7 +1226,7 @@ before packages are loaded."
     ;; (getenv "SHELL")
     (shell-which "fish"))
 
-  (setq ; of dotspacemacs/user-config
+  (setq                                 ; of dotspacemacs/user-config
 
    ;; The program of term.
    ;; If this is nil, setup to environment variable of `SHELL'.
@@ -1654,7 +1654,7 @@ Some binding snippets / examples:
      ("s-N"       . spacemacs/cycle-defun-narrow-modes)
      ("s-n"       . spacemacs/cycle-narrow-widen)
      ;; ("s-2"    . my=split-other-window-below)
-     ("s-2"       . split-window-below)   ; ~SPC w -~
+     ("s-2"       . split-window-below) ; ~SPC w -~
      ;; see ~SPC w /~ and ~SPC w 2~
      ;; ("s-3"    . spacemacs/window-split-double-columns)
      ;; see ~SPC w /~ and ~SPC w 2~
@@ -1693,10 +1693,10 @@ Some binding snippets / examples:
      ("s-W"         . whitespace-cleanup)
      ("s-w"         . my=whitespace-mode-toggle)
      ("s-m"         . my=magit-status)
-     ("<f3>"   . my=search-region-or-symbol)          ;; advice-d
-     ("M-<f3>" . spacemacs/hsearch-project)           ;; advice-d
+     ("<f3>"   . my=search-region-or-symbol) ; advice-d
+     ("M-<f3>" . spacemacs/hsearch-project)  ; advice-d
 
-     ("s-a"    . helm-mini)                           ;; advice-d
+     ("s-a"    . helm-mini) ;; advice-d
      ("s-]"    . helm-mini)
      ;; helm-mini doesn't show all buffers when using layouts (~SPC l~)
      ("C-s-a"  . spacemacs-layouts/non-restricted-buffer-list-helm) ; advice-d
@@ -1705,14 +1705,14 @@ Some binding snippets / examples:
      ("<f9>"   . helm-filtered-bookmarks)
      ;; ("s-p" . helm-projectile)
      ("s-p"    . helm-projectile-find-file)
-     ("s-P"    . spacemacs/helm-persp-switch-project) ;; advice-d
+     ("s-P"    . spacemacs/helm-persp-switch-project) ; advice-d
      ("s-f"    . helm-find-files)
      ("s-F"    . helm-recentf)
      ;; Can't use `advice'. This is an advice for the binding, not the function
      ("s-r"    . (lambda ()
                    (interactive) (helm-recentf)
                    (message "Use ~s-F~ instead of ~s-r~ for M-x helm-recentf")))
-     ("M-y"    . helm-show-kill-ring)    ; replaces evil-paste-pop
+     ("M-y"    . helm-show-kill-ring)   ; replaces evil-paste-pop
      ("s-G"    . helm-google-suggest)
      ("s-/"    . helm-swoop)
      ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
@@ -1762,16 +1762,16 @@ Some binding snippets / examples:
 
      ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
      ("s-g"     . my=search-or-browse)
-     ("s-8" . er/expand-region) ; increase selected region by semantic units
+     ("s-8" . er/expand-region)     ; increase selected region by semantic units
      ("<f2>"    . evil-avy-goto-char-timer)
      ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
 
      ;; TODO s-a when "Last buffer not found."
      ("s-<tab>" . spacemacs/alternate-buffer)
 
-     ("C-<next>"  . next-buffer)     ;; SPC b n; Ctrl-PageDown
+     ("C-<next>"  . next-buffer)        ; SPC b n; Ctrl-PageDown
      ("s-<right>" . next-buffer)
-     ("C-<prior>" . previous-buffer) ;; SPC b p; Ctrl-PageUp
+     ("C-<prior>" . previous-buffer)    ; SPC b p; Ctrl-PageUp
      ("s-<left>"  . previous-buffer)
 
      ;; same bindings as in the guake terminal
@@ -1787,12 +1787,12 @@ Some binding snippets / examples:
      ;; fd - evil-escape from insert state and everything else
      ;; occurences - function scope
      ("s-I"           . my=iedit-mode-toggle)
-     ("s-i"           . iedit-mode)  ; all occurences in the buffer
+     ("s-i"           . iedit-mode)     ; all occurences in the buffer
      ;; ("s-i"        . spacemacs/enter-ahs-forward)
      ("<f12>"         . undo-tree-visualize)
      ;; ("S-<delete>" . kill-region)
-     ("C-s-<delete>"  . kill-line)   ; C-super-key
-     ("C-S-<delete>"  . kill-line)   ; C-shift-key
+     ("C-s-<delete>"  . kill-line)      ; C-super-key
+     ("C-S-<delete>"  . kill-line)      ; C-shift-key
      ;; ("s-l"        . spacemacs/resume-last-search-buffer)
      ("s-v"           . my=evil-select-pasted)
 
@@ -1884,10 +1884,10 @@ Some binding snippets / examples:
   (defun enable-hyper-super-modifiers-macos ()
     ;; http://xahlee.org/emacs/emacs_hyper_super_keys.html
     (setq
-     mac-option-modifier 'hyper ; Option key is Hyper
-     mac-option-modifier 'super ; Option key is Super
-     mac-command-modifier 'meta ; Command key is Meta
-     mac-control-modifier 'meta ; Control key is Meta
+     mac-option-modifier 'hyper         ; Option key is Hyper
+     mac-option-modifier 'super         ; Option key is Super
+     mac-command-modifier 'meta         ; Command key is Meta
+     mac-control-modifier 'meta         ; Control key is Meta
      ))
 
   (defun enable-hyper-super-modifiers ()
@@ -1913,7 +1913,7 @@ Some binding snippets / examples:
   ;; this doesn't work:
   (define-key key-translation-map (kbd "H-3") (kbd "•")) ; bullet
 
-  (my=eval-bind-keys-and-chords) ; call using ~s-<kp-add>~ or ~s-+~
+  (my=eval-bind-keys-and-chords)        ; call using ~s-<kp-add>~ or ~s-+~
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
@@ -2118,7 +2118,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                   (eq (char-after) ?'))
         (insert "'"))))
 
-    (bind-chords :map emacs-lisp-mode-map
+  (bind-chords :map emacs-lisp-mode-map
                ("df" . my=elisp-insert-defun)
                ("la" . my=elisp-insert-lambda)
                ("le" . my=elisp-insert-let)
