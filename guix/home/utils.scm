@@ -364,3 +364,29 @@ Usage:
 ;;        #'(define id (lambda* args b0 b1 ...)))
 ;;       ((_ id val) (identifier? #'id)
 ;;        #'(define id val)))))
+
+(define-syntax def-public
+  (syntax-rules ()
+    ((_ (name . args) . body)
+     (begin
+       (format #t "(def-public (~a ...) ...) ... " `name)
+       (define (name . args) . body)
+       (format #t "done\n")
+       (export name)))
+    ((_ name val)
+     (begin
+       (define name val)
+       (format #t "done\n")
+       (export name)))))
+
+;; from /home/bost/dev/guile/module/ice-9/boot-9.scm
+;; (define-syntax define-public
+;;   (syntax-rules ()
+;;     ((_ (name . args) . body)
+;;      (begin
+;;        (define (name . args) . body)
+;;        (export name)))
+;;     ((_ name val)
+;;      (begin
+;;        (define name val)
+;;        (export name)))))
