@@ -117,10 +117,12 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
         #f))))
 
 (def* (fish-config-base #:rest args)
+  "(fish-config-base) ; => \".config/fish\""
   (apply str (basename xdg-config-home) "/fish" args))
 
 (def* (fish-config-dotfiles #:rest args)
-  "Note:
+  "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
+Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str (dotfiles-home) "/" (fish-config-base) args))
 
@@ -556,33 +558,32 @@ of files to search through."
               (partial append
                        (map
                         (lambda (filepath)
-                          (if (equal? filepath "/fish_variables")
-                              (let* [(src (fish-config-dotfiles filepath))
-;;; TODO use 'user-home' instead of 'str home ...'
-                                     (dst (str home "/"
-                                               (fish-config-base filepath)))]
-;;; TODO is this sexp is not executed because of lazy-evaluation?
-                                (begin
-                                  (format #t "(copy-file ~a ~a) ... " src dst)
-                                  (let ((retval (copy-file src dst)))
-                                    (format #t "retval: ~a\n" retval)
-                                    ;; retval is #<unspecified>
-                                    retval)))
-                              `(,(fish-config-base filepath)
-                                ,(local-file
-                                  (fish-config-dotfiles filepath)))))
-                        (list
-                         #;"/fish_variables"
-                         "/fish_plugins"))))))))
+                          `(,(fish-config-base filepath)
+                            ,(local-file
+                              (fish-config-dotfiles filepath))))
+                        (list "/fish_plugins"))
+
+                       #;
+                       (map
+                        (lambda (filepath)
+                          `(,(fish-config-base filepath)
+                            ,(local-file
+                              (fish-config-dotfiles filepath))))
+                        (list "/fish_plugins"))))))))
+
 ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
 ;;; when the 'guix home reconfigure ...' fails or is interrupted.
+;;; Can't use `local-file' or `mixed-text-file' or something similar since the
+;;; `fish_variables' must be editable
       (let* [(filepath "/fish_variables")
              (src (fish-config-dotfiles filepath))
-             (dst (str home "/" (fish-config-base filepath)))]
+             (dst (user-home "/" (fish-config-base filepath)))]
+;;; TODO is this sexp is not executed because of lazy-evaluation?
         (let [(indent (str indent indent-inc))]
           (format #t "~a(copy-file ~a ~a) ... " indent src dst)
           (let ((retval (copy-file src dst)))
             (format #t "retval: ~a\n" retval)
+            ;; The value of 'retval' is '#<unspecified>'
             retval))
 
         #|
