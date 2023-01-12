@@ -39,7 +39,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; See service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (common settings)
-  #:use-module (gcl)
+  #:use-module (scm-bin gcl)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -66,7 +66,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (define home-games-config #f)
 
-(define channels-scm-filepath (str (basename xdg-config-home) "/guix/channels.scm"))
+(define channels-scm-filepath
+  (str (basename xdg-config-home) "/guix/channels.scm"))
 
 (def* (dotfiles-home #:rest args)
   "Note:
@@ -220,11 +221,11 @@ Note:
    home-environment-variables-service-type
    (environment-vars list-separator-bash)))
 
-(def* (read-module name)
+(def* (read-module relative-path name)
   "TODO use monad"
   (let* [(iindent (str indent indent-inc))
          (name-scm (str name ".scm"))
-         (filepath (dotfiles-home "/guix/home/" name-scm))]
+         (filepath (dotfiles-home "/guix/home" relative-path "/" name-scm))]
     (format #t "~aread-module: ~a ... " iindent filepath)
     (let ((sf (scheme-file name-scm
                            (sexp->gexp
@@ -233,11 +234,9 @@ Note:
       (format #t "done\n")
       sf)))
 
-(def* module-utils (read-module "utils"))
+(def* module-utils (read-module "/" "utils"))
 
-(def* module-ls (read-module "ls"))
-
-(def* module-spag (read-module "spag"))
+(def* module-ls (read-module scm-bin-dirpath "ls"))
 
 (def* (service-file #:key
                     program-name desc
@@ -250,18 +249,22 @@ Note:
       ;; guix modules?
       (let* ((symb-string (or scheme-file-name program-name))
              (symb (or module-name
-                       (string->symbol symb-string))))
-        (with-imported-modules `(((utils) => ,module-utils)
-                                 ;; ls needed only for lf.scm
-                                 ((ls)    => ,module-ls)
-                                 ((,symb) => ,(read-module symb-string)))
-                               #~(begin
-                                   (use-modules (#$symb))
-                                   (main (command-line))))))))
+                       (string->symbol symb-string)))
+             #;(main-1st-arg chmod-params)
+             )
+        (with-imported-modules
+         `(((utils) => ,module-utils)
+           ;; 'ls' is needed only for 'lf.scm'
+           ,(when (string=? symb-string "lf")
+              `((scm-bin ls) => ,module-ls))
+           ((scm-bin ,symb) => ,(read-module scm-bin-dirpath symb-string)))
+         #~(begin
+             (use-modules (scm-bin #$symb))
+             (main (command-line))))))))
 
 (def* (search-notes #:key program-name files)
-  "TODO The `search-notes' program should read a `search-space-file' containing a list
-of files to search through."
+  "TODO The `search-notes' program should read a `search-space-file' containing
+ a list of files to search through."
   `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
       (str "search-notes-" program-name)
@@ -272,9 +275,9 @@ of files to search through."
         (let ((symb (string->symbol symb-string)))
           (with-imported-modules
               `(((utils) => ,module-utils)
-                ((,symb) => ,(read-module symb-string)))
+                ((,symb) => ,(read-module scm-bin-dirpath symb-string)))
             #~(begin
-                (use-modules (#$symb))
+                (use-modules (scm-bin #$symb))
                 (main #$main-1st-arg (command-line)))))))))
 
 (def* (append-fish-config-dir dir lst)
@@ -292,15 +295,18 @@ of files to search through."
       (str "chmod-plus-" chmod-params)
       ;; TODO clarify is source-module-closure needed only for imports of
       ;; guix modules?
-      (let ((symb-string "chmod")
-            (main-1st-arg chmod-params))
-        (let ((symb (string->symbol symb-string)))
-          (with-imported-modules
-              `(((utils) => ,module-utils)
-                ((,symb) => ,(read-module symb-string)))
-            #~(begin
-                (use-modules (#$symb))
-                (main #$main-1st-arg (command-line)))))))))
+      (let* ((symb-string "chmod")
+             (symb (string->symbol symb-string))
+             (main-1st-arg chmod-params))
+        (with-imported-modules
+         `(((utils) => ,module-utils)
+           ;; 'ls' is needed only for 'lf.scm'
+           ,(when (string=? symb-string "lf")
+              `((scm-bin ls) => ,module-ls))
+           ((scm-bin ,symb) => ,(read-module scm-bin-dirpath symb-string)))
+         #~(begin
+             (use-modules (scm-bin #$symb))
+             (main #$main-1st-arg (command-line))))))))
 
 ;; xfce4-keyboard: repeat-delay 160 repeat-speed 60
 
@@ -662,8 +668,7 @@ of files to search through."
                            #:desc "list-directory-contents"
                            #:scheme-file-name "ls")
              (service-file #:program-name "lf"
-                           #:desc "list-directory-contents-with-full-paths"
-                           #:scheme-file-name "lf")
+                           #:desc "list-directory-contents-with-full-paths")
              (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
              (service-file #:program-name "spag"
                            #:desc "spacemacs-git-fetch-rebase"))))]

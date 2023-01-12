@@ -1,34 +1,32 @@
-(define-module (bat)
+(define-module (scm-bin gs)
   #:use-module (utils)
-  #:export (main bat)
-  )
+  #:export (main gs))
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (bat) -s
+-L ./ -e (gs) -s
 !#
 
 |#
 
-(define* (bat #:rest args)
+(define* (gs #:rest args)
   "Usage:
-(bat  \"-f\" \"arg0\")
-(bat \"-f arg0\")
-(equal? (bat \"-f\" \"arg0\")
-        (bat \"-f arg0\"))
+(gs \"-f\" \"arg0\")
+(gs \"-f arg0\")
+(equal? (gs \"-f\" \"arg0\")
+        (gs \"-f arg0\"))
 ;; > #t
 "
   (apply exec-system*
-         "bat" ;; "batcat" on ubuntu
+         "git" "status" "--short" "--branch"
          args))
 
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((compose
-    (partial apply bat)
+    (partial apply gs)
     (partial apply cdr)
     #;dbg)
    args))
-

@@ -1,4 +1,4 @@
-(define-module (ls)
+(define-module (scm-bin ls)
   #:use-module (utils)
   #:export (main ls))
 

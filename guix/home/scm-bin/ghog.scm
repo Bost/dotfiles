@@ -1,4 +1,4 @@
-(define-module (ghog)
+(define-module (scm-bin ghog)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (ice-9 popen)

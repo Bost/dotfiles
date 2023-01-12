@@ -1,8 +1,8 @@
-(define-module (lf)
+(define-module (scm-bin lf)
 ;;; All used modules must be present in the:
 ;;;   home-configuration.scm -> service-file -> with-imported-modules
+  #:use-module (scm-bin ls)
   #:use-module (utils)
-  #:use-module (ls)
   #:export (main lf))
 
 #|

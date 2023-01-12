@@ -1,4 +1,4 @@
-(define-module (qemu-vm)
+(define-module (scm-bin qemu-vm)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 getopt-long) #| see also `info "guile-config"'|#

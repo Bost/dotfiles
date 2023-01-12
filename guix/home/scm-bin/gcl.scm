@@ -1,4 +1,4 @@
-(define-module (gcl)
+(define-module (scm-bin gcl)
   #:use-module (utils)
   #:export (main gcl))
 

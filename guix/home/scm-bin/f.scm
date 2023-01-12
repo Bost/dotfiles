@@ -1,4 +1,4 @@
-(define-module (f)
+(define-module (scm-bin f)
   #:use-module (utils)
   #:export (main f))
 

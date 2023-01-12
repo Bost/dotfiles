@@ -1,33 +1,32 @@
-(define-module (gcod)
+(define-module (scm-bin gre)
   #:use-module (utils)
-  #:export (main gcod))
+  #:export (main gre))
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gcod) -s
+-L ./ -e (gre) -s
 !#
 
 |#
 
-(define* (gcod #:rest args)
+(define* (gre #:rest args)
   "Usage:
-(gcod  \"-f\" \"arg0\")
-(gcod \"-f arg0\")
-(equal? (gcod \"-f\" \"arg0\")
-        (gcod \"-f arg0\"))
+(gre \"-f\" \"arg0\")
+(gre \"-f arg0\")
+(equal? (gre \"-f\" \"arg0\")
+        (gre \"-f arg0\"))
 ;; > #t
 "
   (apply exec-system*
-         "git" "checkout" "-"
+         "git" "remote"
          args))
 
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((compose
-    (partial apply gcod)
+    (partial apply gre)
     (partial apply cdr)
     #;dbg)
    args))
-

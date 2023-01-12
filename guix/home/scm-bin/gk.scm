@@ -1,11 +1,11 @@
-(define-module (gg)
+(define-module (scm-bin gk)
   #:use-module (utils)
   #:export (main))
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gg) -s
+-L ./ -e (gk) -s
 !#
 
 |#
@@ -14,6 +14,6 @@
   ((compose
     exec-background
     dbg
-    (lambda (p) (append '("git" "gui") p '("&")))
+    (lambda (p) (append '("gitk") (if (null? p) '("--all") p) '("&")))
     cdr)
    args))

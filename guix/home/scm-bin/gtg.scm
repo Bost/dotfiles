@@ -1,4 +1,4 @@
-(define-module (gtg)
+(define-module (scm-bin gtg)
   #:use-module (utils)
   #:export (main gtg))
 

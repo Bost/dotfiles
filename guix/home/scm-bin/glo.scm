@@ -1,4 +1,4 @@
-(define-module (glo)
+(define-module (scm-bin glo)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (ice-9 popen)

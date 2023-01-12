@@ -1,4 +1,4 @@
-(define-module (gfe)
+(define-module (scm-bin gfe)
   #:use-module (utils)
   #:export (main gfe))
 

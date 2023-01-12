@@ -1,26 +1,28 @@
-(define-module (emacs-launcher)
+(define-module (scm-bin spguimacs-launcher)
   #:use-module (utils)
   #:export (main))
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (emacs-launcher) -s
+-L ./ -e (spguimacs-launcher) -s
 !#
 
 |#
 
-(format #t "~a ... " "Evaluating emacs-launcher.scm")
-(define init-cmd "emacs")
+(format #t "~a ... " "Evaluating spguimacs-launcher.scm")
+(define init-cmd "spacemacs")
 
 (define client-cmd (str "emacsclient --no-wait --socket-name="
-;;; See `dotspacemacs-server-socket-dir' in the .spacemacs
+;;; See `dotspacemacs-server-socket-dir' in the .spguimacs
 ;;; Tilda '~' doesn't work
-                 "$HOME/.emacs.d"
+                 "$HOME/.local/share/spacemacs"
                  "/server/server"))
 
 (define pattern
-  (let* ((ret (exec "which emacs")))
+  "spacemacs-start-directory"
+  #;
+  (let* ((ret (exec "which spacemacs")))
     (if (= 0 (car ret))
         (let* ((output (cdr ret)))
           (car output)

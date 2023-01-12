@@ -1,4 +1,4 @@
-(define-module (gcom)
+(define-module (scm-bin gcom)
   #:use-module (utils)
   #:export (main gcom))
 

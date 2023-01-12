@@ -1,4 +1,4 @@
-(define-module (search-notes)
+(define-module (scm-bin search-notes)
   #:use-module (utils)
   ;; #:use-module (guix build utils) #| invoke |#
   #:export (main))

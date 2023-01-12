@@ -1,4 +1,4 @@
-(define-module (chmod)
+(define-module (scm-bin chmod)
   #:use-module (utils)
   #:export (main))
 

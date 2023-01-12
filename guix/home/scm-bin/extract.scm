@@ -1,4 +1,4 @@
-(define-module (extract)
+(define-module (scm-bin extract)
   #:use-module (utils)
   ;; the (ice-9 regex) might need to be added in the home-configuration.scm in the macro
   #:use-module (ice-9 regex)
