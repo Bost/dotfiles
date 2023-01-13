@@ -559,14 +559,6 @@ Example:
                  `(,(fish-config-base filepath)
                    ,(local-file
                      (fish-config-dotfiles filepath))))
-               (list "/fish_plugins"))
-
-              #;
-              (map
-               (lambda (filepath)
-                 `(,(fish-config-base filepath)
-                   ,(local-file
-                     (fish-config-dotfiles filepath))))
                (list "/fish_plugins")))))))
 
 ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
