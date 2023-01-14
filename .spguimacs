@@ -357,6 +357,7 @@ This function should only modify configuration layer settings."
      syntax-checking
      ;; systemd
 
+     ;; M-x centaur-tab-mode
      (tabs :variables
            ;; tabs-auto-hide t
            ;; tabs-auto-hide-delay 3
@@ -1324,7 +1325,7 @@ before packages are loaded."
   ;; (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
 
   ;; diff-hl - diff hightlights in right gutter as you type
-  (diff-hl-flydiff-mode)
+  ;; (diff-hl-flydiff-mode)
 
   (setq-default
    ;; Truncate lines in every buffer. Overridden by
@@ -1508,6 +1509,7 @@ before packages are loaded."
     ;; :evil-leader "tnn"
     :documentation "Toggle between `narrow-to-defun' and `widen'")
 
+  ;; TODO spacemacs/cycle-large-file-settings doesn't work
   (spacemacs|add-cycle
       large-file-settings
     '(#'my=shenanigans-on #'my=shenanigans-off)

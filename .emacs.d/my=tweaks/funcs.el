@@ -172,6 +172,7 @@ See `spacemacs/helm-project-smart-do-search-region-or-symbol'"
   (spacemacs/toggle-line-numbers-on)
   (buffer-enable-undo)
   (font-lock-mode 1)
+  (diff-hl-mode 1)
   (message "Shenanigans enabled"))
 
 (defun my=shenanigans-off ()
@@ -183,6 +184,7 @@ large files. Inverse of `my=shenanigans-on'."
   (font-lock-mode -1)
   ;; fontification is not deferred.
   (setq jit-lock-defer-time nil)
+  (diff-hl-mode -1)
   (message "Shenanigans disabled"))
 
 (defun my=insert-str (s &optional n-chars-back)
