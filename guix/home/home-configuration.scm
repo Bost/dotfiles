@@ -62,16 +62,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
   ;; for the my=home-fish-service-type
   #:use-module (gnu services configuration)
-  ;; ;; #:autoload   (gnu system shadow) (%default-bashrc)
-  ;; #:use-module (gnu home services utils)
-  ;; #:use-module (gnu home services)
-  ;; #:use-module (gnu packages shells)
-  ;; #:use-module (gnu packages bash)
-  ;; #:use-module (guix gexp)
   #:use-module (guix packages)
-  ;; #:use-module (guix records)
-  ;; #:use-module (srfi srfi-1)
-  ;; #:use-module (srfi srfi-26)
   #:use-module (ice-9 match)
 
   )
@@ -569,9 +560,6 @@ Example:
                                     (format #t "excluding: ~a ~a\n" file stats))
                                   (not ret)))))))
      |#
-     ;; (partial append-fish-config-dir "/completions")
-     (partial append-fish-config-dir "/conf.d")
-     (partial append-fish-config-dir "/functions")
      (partial remove unspecified?)
      (partial append
               (map
@@ -765,8 +753,15 @@ when typed in the shell, will automatically expand to the full text."
 
 (define (my=fish-config-files config)
   "Defines how is the `home-xdg-configuration' (i.e. the `home-xdg-configuration-files-service-type') extended"
-  (let ((ret `(("fish/completions"
+  (let ((ret `(
+               ("fish/completions"
                 ,(local-file (fish-config-dotfiles "/completions")
+                             #:recursive? #t))
+               ("fish/conf.d"
+                ,(local-file (fish-config-dotfiles "/conf.d")
+                             #:recursive? #t))
+               ("fish/functions"
+                ,(local-file (fish-config-dotfiles "/functions")
                              #:recursive? #t))
                ("fish/config.fish"
                 ,(mixed-text-file
