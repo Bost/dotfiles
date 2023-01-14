@@ -59,6 +59,21 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
   #| home-git-service-type |#
   ;; #:use-module (gnu home services version-control)
+
+  ;; for the my=home-fish-service-type
+  #:use-module (gnu services configuration)
+  ;; ;; #:autoload   (gnu system shadow) (%default-bashrc)
+  ;; #:use-module (gnu home services utils)
+  ;; #:use-module (gnu home services)
+  ;; #:use-module (gnu packages shells)
+  ;; #:use-module (gnu packages bash)
+  ;; #:use-module (guix gexp)
+  #:use-module (guix packages)
+  ;; #:use-module (guix records)
+  ;; #:use-module (srfi srfi-1)
+  ;; #:use-module (srfi srfi-26)
+  #:use-module (ice-9 match)
+
   )
 
 (define indent "")
@@ -527,7 +542,12 @@ Example:
                      (dir (str ".emacs.d/private/local"
                                "/farmhouse-light-mod-theme")))
                  `(,destination ,(local-file (dotfiles-home "/" dir)
-                                             #:recursive? #t)))))
+                                             #:recursive? #t)))))))))
+
+(def* home-dir-fish-config-service
+  (simple-service
+   'home-dir-fish-config-service home-files-service-type
+   ((compose
      #|
      (partial append
               `((,(fish-config-base)
@@ -549,7 +569,7 @@ Example:
                                     (format #t "excluding: ~a ~a\n" file stats))
                                   (not ret)))))))
      |#
-     (partial append-fish-config-dir "/completions")
+     ;; (partial append-fish-config-dir "/completions")
      (partial append-fish-config-dir "/conf.d")
      (partial append-fish-config-dir "/functions")
      (partial remove unspecified?)
@@ -665,55 +685,167 @@ Example:
                   #:desc "spacemacs-git-fetch-rebase"))))
 (format #t "done\n")
 
-;; Note: `home-environment' is (lazily?) evaluated as a last command
-;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
-(home-environment
-;;; TODO why are the channels listed here???
-;;; $ guix package --profile=/home/bost/.config/guix/current --list-installed
-;;; guix     0321cee out /gnu/store/ada4wp2h2xqmrmz448xyp6nzli6drwsv-guix-0321ceef0
-;;; nonguix  9563de3 out /gnu/store/1qz2whvn763yhxs5gdrsf9zqip3zspc2-nonguix
-;;; babashka 31edde3 out /gnu/store/k64hd1q6gv3aa9r8arrdlaspzxy68444-babashka
 
-;;; `guix package --list-profiles` doesn't know about / ignores the
-;;; package-profile of the home-environment (~/.guix-home/profile/manifest)
-;;; see also /run/current-system/profile
+(define (my=serialize-fish-aliases field-name val)
+  ;; (format #t "[serialize-fish-aliases] field-name: ~a; val: ~a\n" field-name val)
+  #~(string-append
+     #$@(map (match-lambda
+               ((key . value)
+                #~(string-append "alias " #$key " \"" #$value "\"\n"))
+               (_ ""))
+             val)))
 
-;;; $ guix package --search-paths --profile=~/.guix-home/profile -I | sort > /tmp/packages-guix-home.txt
-;;; $ guix package --search-paths --profile=~/.guix-home/profile -I fish
-;;; fish	3.5.1	out	/gnu/store/vj3kqlk3w7x6gqqb3qzl4jxq34xvy3q2-fish-3.5.1
+(define (my=serialize-fish-abbreviations field-name val)
+  ;; (format #t "[serialize-fish-abbreviations] field-name: ~a; val: ~a\n" field-name val)
+  #~(string-append
+     #$@(map (match-lambda
+               ((key . value)
+                #~(string-append "abbr --add " #$key " " #$value "\n"))
+               (_ ""))
+             val)))
 
-;;; $ guix package --search-paths --profile=~/.guix-profile -I | sort > /tmp/packages-guix-profile.txt
-;;; $ guix package --search-paths --profile=~/.guix-profile -I fish
+(define (my=serialize-fish-env-vars field-name val)
+  ;; (format #t "[serialize-fish-env-vars] field-name: ~a; val: ~a\n" field-name val)
+  #~(string-append
+     #$@(map (match-lambda
+               ((key . #f)
+                "")
+               ((key . #t)
+                #~(string-append "set -x " #$key "\n"))
+               ((key . value)
+                #~(string-append "set -x " #$key " "  #$value "\n")))
+             val)))
 
-;;; TODO see also the xfce4 chromium launcher -> command
-;;; /home/bost/.guix-profile/bin/chromium %U
+(define-configuration my=home-fish-configuration
+  (package
+    (package fish)
+    "The Fish package to use.")
+  (config
+   (text-config '())
+   "List of file-like objects, which will be added to
+@file{$XDG_CONFIG_HOME/fish/config.fish}.")
+  (environment-variables
+   (alist '())
+   "Association list of environment variables to set in Fish."
+   my=serialize-fish-env-vars)
+  (aliases
+   (alist '())
+   "Association list of aliases for Fish, both the key and the value
+should be a string.  An alias is just a simple function that wraps a
+command, If you want something more akin to @dfn{aliases} in POSIX
+shells, see the @code{abbreviations} field."
+   my=serialize-fish-aliases)
+  (abbreviations
+   (alist '())
+   "Association list of abbreviations for Fish.  These are words that,
+when typed in the shell, will automatically expand to the full text."
+   my=serialize-fish-abbreviations)
+  )
 
+(define (my=fish-packages config)
+  "Defines how is the `home-profile' (i.e. the `home-profile-service-type') extended."
+  (let ((ret (list (my=home-fish-configuration-package config))))
+    (format #t "### [my=fish-packages] ret: \n~a\n\n" ret)
+    ret))
 
-;;; TODO make it support inferior packages
-;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
-;;; TODO packages should accept expressions like the -e, e.g.
-;;;   guix package                        -e '(@ (bost packages maven) maven)'
-;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
- (packages
-  (map (compose identity list
-;;; TODO what's the difference between specification->package+output and
-;;; specification->package ?
-                specification->package+output)
-       (append
-;;; activate the following sexp one by one when on a slow computer or
-;;; connectivity
-        (basic-profile-packages)
-        (user-profile-packages)
-        (kde-dependent-packages)
-        (slow-packages)
-        (packages-from-additional-channels)
-        (spguimacs-packages)
-        )))
+(define-configuration/no-serialization my=home-fish-extension
+  (config
+   (text-config '())
+   "List of file-like objects for extending the Fish initialization file.")
+  (environment-variables
+   (alist '())
+   "Association list of environment variables to set.")
+  (aliases
+   (alist '())
+   "Association list of Fish aliases.")
+  (abbreviations
+   (alist '())
+   "Association list of Fish abbreviations.")
+  )
 
-;;; TODO see [PATCH] services: Add udev-rules-service helper.
-;;; https://issues.guix.gnu.org/40454
+(define (my=fish-config-files config)
+  "Defines how is the `home-xdg-configuration' (i.e. the `home-xdg-configuration-files-service-type') extended"
+  (let ((ret `(("fish/completions"
+                ,(local-file (fish-config-dotfiles "/completions")
+                             #:recursive? #t))
+               ("fish/config.fish"
+                ,(mixed-text-file
+                  "fish-config.fish"
+                  #~(string-append "\
+# if we haven't sourced the login config, do it
+status --is-login; and not set -q __fish_login_config_sourced
+and begin
 
- (services
+  set --prepend fish_function_path "
+                                   #$fish-foreign-env
+                                   "/share/fish/functions
+  fenv source $HOME/.profile
+  set -e fish_function_path[1]
+
+  set -g __fish_login_config_sourced 1
+
+end\n\n")
+                  (serialize-configuration
+                   config my=home-fish-configuration-fields))))))
+    (format #t "### [my=fish-config-files] ret: \n~a\n\n" ret)
+    ret))
+
+(define (my=home-fish-extensions original-config extension-configs)
+  "`home-fish-extensions' defines how the value of the service is extended with the composition of the extensions"
+  (format #t "### [my=home-fish-extensions] original-config: \n~a\n\n" original-config)
+  (format #t "### [my=home-fish-extensions] extension-configs: \n~a\n\n" extension-configs)
+  (let ((ret (my=home-fish-configuration
+              (inherit original-config)
+              (config
+               (append (my=home-fish-configuration-config original-config)
+                       (append-map
+                        my=home-fish-extension-config extension-configs)))
+              (environment-variables
+               (append (my=home-fish-configuration-environment-variables original-config)
+                       (append-map
+                        my=home-fish-extension-environment-variables extension-configs)))
+              (aliases
+               (append (my=home-fish-configuration-aliases original-config)
+                       (append-map
+                        my=home-fish-extension-aliases extension-configs)))
+              (abbreviations
+               (append (my=home-fish-configuration-abbreviations original-config)
+                       (append-map
+                        my=home-fish-extension-abbreviations extension-configs))))))
+    (format #t "### [my=home-fish-extensions] ret: \n~a\n\n" ret)
+    ret))
+
+(define my=home-fish-service-type
+  (service-type (name 'my=home-fish)
+                (extensions
+                 (list
+                  (service-extension
+                   home-xdg-configuration-files-service-type
+;;; this function returns all the configuration files of the fish-shell from the
+;;; home-xdg-configuration-files-service, i.e. config, environment-variables,
+;;; aliases and abbreviations
+
+;;; TODO what about the content of the completions directory? Should it return
+;;; too?
+                   my=fish-config-files)
+                  (service-extension
+                   home-profile-service-type
+;;; this function returns all the installed fish-shell packages from the
+;;; home-profile-service
+                   my=fish-packages)
+
+                  ))
+
+                (compose identity)
+
+                (extend
+;;; `my=home-fish-extensions' defines how the value of the service is extended
+;;; with the composition of the extensions
+                 my=home-fish-extensions)
+                (default-value (my=home-fish-configuration))
+                (description "my=home-fish-service-type with completions.")))
+
+(define my=services
   (list
    ;; (service home-xsettingsd-service-type)
    (service
@@ -794,10 +926,12 @@ Example:
 
    ;; https://github.com/search?q=home-fish-service-type&type=code
    ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
+
    (service
-    home-fish-service-type
+    my=home-fish-service-type
+    #;home-fish-service-type
     ;; fish configuration - see ~/dev/guix/gnu/home/services/shells.scm
-    (home-fish-configuration
+    (my=home-fish-configuration
      ;; Abbreviations are implemented as shell scripts. The TAB key is annoying.
      ;; 1. Erase all abbreviations in the fish-shell:
      ;;     abbr --erase (abbr --list)
@@ -806,11 +940,14 @@ Example:
 
      ;; aliases for "l" "ll" "ls" may be be overridden - see bashrc aliases
      #;(aliases '(("l" . "ls -a")))
+     ;; completions should be added automatically.
 
      (config
       (list
        (local-file
-        (fish-config-dotfiles "/config.fish"))))))
+        (fish-config-dotfiles "/config.fish"))))
+     ))
+   home-dir-fish-config-service
 
    environment-variables-service
    home-dir-config-service
@@ -818,10 +955,11 @@ Example:
 
    #;mcron-service
 
-   ;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
-   ;; https://github.com/babariviere/dotfiles/blob/guix/baba/home/gaia.scm
-   ;;; [WIP] home: Add home-git-service-type https://issues.guix.gnu.org/54293
-   ;;; is not pulled yed
+;;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
+;;; https://github.com/babariviere/dotfiles/blob/guix/baba/home/gaia.scm
+;;; [WIP] home: Add home-git-service-type https://issues.guix.gnu.org/54293 is
+;;; not pulled yed
+
    ;; (service home-git-service-type
    ;;          (home-git-configuration
    ;;           (config
@@ -835,4 +973,73 @@ Example:
    ;;               ((pushDefault . "origin")))
    ;;              #;(commit ((gpgSign . #t)))
    ;;              #;(tag ((gpgSign . #t)))))))
-   )))
+   ))
+
+;; Note: `home-environment' is (lazily?) evaluated as a last command
+;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
+(define home-env
+  (home-environment
+;;; TODO why are the channels listed here???
+;;; $ guix package --profile=/home/bost/.config/guix/current --list-installed
+;;; guix     0321cee out /gnu/store/ada4wp2h2xqmrmz448xyp6nzli6drwsv-guix-0321ceef0
+;;; nonguix  9563de3 out /gnu/store/1qz2whvn763yhxs5gdrsf9zqip3zspc2-nonguix
+;;; babashka 31edde3 out /gnu/store/k64hd1q6gv3aa9r8arrdlaspzxy68444-babashka
+
+;;; `guix package --list-profiles` doesn't know about / ignores the
+;;; package-profile of the home-environment (~/.guix-home/profile/manifest)
+;;; see also /run/current-system/profile
+
+;;; $ guix package --search-paths --profile=~/.guix-home/profile -I | sort > /tmp/packages-guix-home.txt
+;;; $ guix package --search-paths --profile=~/.guix-home/profile -I fish
+;;; fish	3.5.1	out	/gnu/store/vj3kqlk3w7x6gqqb3qzl4jxq34xvy3q2-fish-3.5.1
+
+;;; $ guix package --search-paths --profile=~/.guix-profile -I | sort > /tmp/packages-guix-profile.txt
+;;; $ guix package --search-paths --profile=~/.guix-profile -I fish
+
+;;; TODO see also the xfce4 chromium launcher -> command
+;;; /home/bost/.guix-profile/bin/chromium %U
+
+
+;;; TODO make it support inferior packages
+;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
+;;; TODO packages should accept expressions like the -e, e.g.
+;;;   guix package                        -e '(@ (bost packages maven) maven)'
+;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
+   (packages
+    (map (compose identity list
+;;; TODO what's the difference between specification->package+output and
+;;; specification->package ?
+                  specification->package+output)
+         (append
+;;; activate the following sexp one by one when on a slow computer or
+;;; connectivity
+          (basic-profile-packages)
+          (user-profile-packages)
+          (kde-dependent-packages)
+          (slow-packages)
+          (packages-from-additional-channels)
+          (spguimacs-packages)
+          )))
+
+;;; TODO see [PATCH] services: Add udev-rules-service helper.
+;;; https://issues.guix.gnu.org/40454
+
+   (services
+    my=services
+    #;
+    (modify-services my=services
+      (home-fish-service-type
+       conf =>
+       (home-fish-configuration
+        (inherit conf)
+        (config
+         (list
+          (local-file
+           (fish-config-dotfiles "/config.fish")))
+    #;
+    (append-fish-config-dir "/completions" '()))))))))
+
+;; TODO put home-configuration and system-configuration in one file
+;; (if (getenv "RUNNING_GUIX_HOME") home system)
+
+home-env
