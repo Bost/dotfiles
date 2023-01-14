@@ -535,40 +535,6 @@ Example:
                  `(,destination ,(local-file (dotfiles-home "/" dir)
                                              #:recursive? #t)))))))))
 
-(def* home-dir-fish-config-service
-  (simple-service
-   'home-dir-fish-config-service home-files-service-type
-   ((compose
-     #|
-     (partial append
-              `((,(fish-config-base)
-;;; TODO modify `local-file' so that can copy files from /gnu/store with
-                 ;; different stats, not only as '.r--r--r-- root root'
-                 ,(local-file (fish-config-dotfiles)
-                              #:recursive? #t
-                              #:select?
-                              (lambda (file stats)
-                                (let* [(ret (or
-;;; `fish_prompt.fish' (among others) changes the content of `fish_variables' so
-;;; this file must be present and editable otherwise all sorts of
-;;; 'Permission denied' problems are to be expected.
-
-                                             (has-suffix? file "/fish_variables")
-;;; `config.fish' is copied by `home-fish-configuration'
-                                             (has-suffix? file "/config.fish")))]
-                                  (when ret
-                                    (format #t "excluding: ~a ~a\n" file stats))
-                                  (not ret)))))))
-     |#
-     (partial remove unspecified?)
-     (partial append
-              (map
-               (lambda (filepath)
-                 `(,(fish-config-base filepath)
-                   ,(local-file
-                     (fish-config-dotfiles filepath))))
-               (list "/fish_plugins")))))))
-
 ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
 ;;; when the 'guix home reconfigure ...' fails or is interrupted.
 ;;; Can't use `local-file' or `mixed-text-file' or something similar since the
@@ -753,8 +719,28 @@ when typed in the shell, will automatically expand to the full text."
 
 (define (my=fish-config-files config)
   "Defines how is the `home-xdg-configuration' (i.e. the `home-xdg-configuration-files-service-type') extended"
-  (let ((ret `(
-               ("fish/completions"
+     #|
+     (partial append
+              `((,(fish-config-base)
+;;; TODO modify `local-file' so that can copy files from /gnu/store with
+                 ;; different stats, not only as '.r--r--r-- root root'
+                 ,(local-file (fish-config-dotfiles)
+                              #:recursive? #t
+                              #:select?
+                              (lambda (file stats)
+                                (let* [(ret (or
+;;; `fish_prompt.fish' (among others) changes the content of `fish_variables' so
+;;; this file must be present and editable otherwise all sorts of
+;;; 'Permission denied' problems are to be expected.
+
+                                             (has-suffix? file "/fish_variables")
+;;; `config.fish' is copied by `home-fish-configuration'
+                                             (has-suffix? file "/config.fish")))]
+                                  (when ret
+                                    (format #t "excluding: ~a ~a\n" file stats))
+                                  (not ret)))))))
+     |#
+  (let ((ret `(("fish/completions"
                 ,(local-file (fish-config-dotfiles "/completions")
                              #:recursive? #t))
                ("fish/conf.d"
@@ -763,6 +749,9 @@ when typed in the shell, will automatically expand to the full text."
                ("fish/functions"
                 ,(local-file (fish-config-dotfiles "/functions")
                              #:recursive? #t))
+               ("fish/fish_plugins"
+                ;; fish_plugins is just a file, not a directory
+                ,(local-file (fish-config-dotfiles "/fish_plugins")))
                ("fish/config.fish"
                 ,(mixed-text-file
                   "fish-config.fish"
@@ -935,14 +924,11 @@ end\n\n")
 
      ;; aliases for "l" "ll" "ls" may be be overridden - see bashrc aliases
      #;(aliases '(("l" . "ls -a")))
-     ;; completions should be added automatically.
 
      (config
       (list
        (local-file
-        (fish-config-dotfiles "/config.fish"))))
-     ))
-   home-dir-fish-config-service
+        (fish-config-dotfiles "/config.fish"))))))
 
    environment-variables-service
    home-dir-config-service
