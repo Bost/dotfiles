@@ -5,20 +5,26 @@
 ;; guix system describe | rg "configuration file" | rg -o "/gnu/.*"
 
 #|
-# run this file by (the `~' doesn't work as a value of --load-path):
+## Run this file by (the `~' doesn't work as a value of --load-path):
 # --fallback         fall back to building when the substituter fails
-sudo guix system --fallback --load-path=$dotf/guix/system reconfigure $dotf/guix/system/configuration.scm
-
-udisksctl mount --block-device=(blkid --uuid a8fb1680-eef5-49a0-98a3-8169c9b8eeda)
-sudo cp /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg /tmp/grub.cfg
+# -L --load-path
+sudo guix system --fallback -L $dotf/guix/system reconfigure $dotf/guix/system/configuration.scm
+set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda
+udisksctl mount --block-device=(blkid --uuid $UUID)
+sudo cp /media/$USER/$UUID/boot/grub/grub.cfg /tmp/grub.cfg
 sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
-# e /tmp/grub.cfg                    # edit the file
-# grep -oP "([0-9]{1,}\.)+[0-9]{1,}" # match the version number
-rg --no-line-number -A 4 --max-count=1 "GNU with Linux-Libre" /boot/grub/grub.cfg
-# <copy the block>
-guix system describe | rg current
-# <extract the time and generation number>
-sudo cp /tmp/grub.cfg /media/$USER/a8fb1680-eef5-49a0-98a3-8169c9b8eeda/boot/grub/grub.cfg
+## Match the version number and place it to clipboard:
+##  Also: grep -oP "(\d{1,}\.)+\d{1,}"
+## Parameter abbreviations:
+#   rg:   -N --no-line-number; -A --after-context; -m --max-count
+#   xsel: -b --clipboard; -i --input
+rg -N -A 4 -m 1 "GNU with Linux-Libre" /boot/grub/grub.cfg | xsel -bi
+e /tmp/grub.cfg                    # edit the file
+## <paste the block>
+## Extract the time and generation number:
+guix system describe | rg current | rg "(\d{2,}:\d{2,})" -o | xsel -bi
+## <paste the block>
+sudo cp /tmp/grub.cfg /media/$USER/$UUID/boot/grub/grub.cfg
 sudo reboot # press <f12> during the reboot and fix the boot order
 |#
 
@@ -37,8 +43,8 @@ sudo reboot # press <f12> during the reboot and fix the boot order
   xorg)
 
 ;; 'use-package-modules' is unlike the general 'use-modules' specifically for
-;; packages. Every package module from 'use-package-modules' can be included under
-;; the 'use-modules'.
+;; packages. Every package module from 'use-package-modules' can be included
+;; under the 'use-modules'.
 (use-package-modules
  android  ; for android-udev-rules - access smartphone via mtp://
  bash
