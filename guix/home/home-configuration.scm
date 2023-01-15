@@ -35,7 +35,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; #:use-module (cfg packages-new)
   #:use-module (cfg packages)
   #:use-module (cfg spguimacs-packages)
-  #:use-module (cfg mcron)
+  ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
   ;; See service-file -> with-imported-modules
   #:use-module (utils)
@@ -46,16 +46,9 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module (gnu services)
   #:use-module (guix gexp)               #| program-file local-file |#
   #:use-module (gnu home services shells)
-  #:use-module (gnu home services mcron) #| home-mcron-service-type |#
   #:use-module (gnu home services)       #| simple-service |#
-  #:use-module (ice-9 ftw)               #| scandir |#
-  ;; #:use-module (ice-9 string-fun)        #| string-replace-substring |#
-  #:use-module (guix build utils)        #| invoke |#
-  #| take remove delete-duplicates etc. |#
+  #| take remove delete-duplicates append-map etc. |#
   #:use-module (srfi srfi-1)
-  #:use-module (gnu packages shellutils)
-  #:use-module (gnu packages shells)     #| #$fish-foreign-env |#
-
   #:use-module (ice-9 pretty-print)      #| pretty-print |#
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
   #| home-git-service-type |#
@@ -707,8 +700,7 @@ Note:
    environment-variables-service
    home-dir-config-service
    scheme-files-service
-
-   #;mcron-service
+   ;; mcron-service
 
 ;;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
 ;;; https://github.com/babariviere/dotfiles/blob/guix/baba/home/gaia.scm

@@ -10,7 +10,8 @@ guix shell --development guix help2man git strace --pure
 
 (define-module (cfg mcron)
   ;; #:use-module (guix gexp)              ;; #| #~ #$ etc. |#
-  #:export ())
+  #:use-module (gnu home services mcron) #| home-mcron-service-type |#
+  #:export (mcron-service))
 
 ;; https://github.com/clojure-quant/infra-guix/blob/main/home/config-nuc.scm
 
@@ -105,4 +106,3 @@ guix shell --development guix help2man git strace --pure
                                (kill (getppid) SIGINT)))
         #~(job '#$job-period "touch /tmp/srvc-job-string-touch-periodically-0")
         ))))))
-
