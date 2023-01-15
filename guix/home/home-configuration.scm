@@ -829,6 +829,34 @@ end\n\n")
                 (default-value (my=home-fish-configuration))
                 (description "my=home-fish-service-type with completions.")))
 
+(define (m2=fish-config-files config)
+  (let* ((m2= `(("fish/completions"
+                 ,(local-file (fish-config-dotfiles "/completions")
+                              #:recursive? #t))
+                ("fish/conf.d"
+                 ,(local-file (fish-config-dotfiles "/conf.d")
+                              #:recursive? #t))
+                ("fish/functions"
+                 ,(local-file (fish-config-dotfiles "/functions")
+                              #:recursive? #t))
+                ("fish/fish_plugins"
+                 ;; fish_plugins is just a file, not a directory
+                 ,(local-file (fish-config-dotfiles "/fish_plugins")))))
+         (ret (append my=home-fish-configuration-fields m2=))
+         )
+    (format #t "### [m2=fish-config-files] ret: \n~a\n\n" ret)
+    ret))
+
+(define m2=home-fish-service-type
+  (service-type (name 'm2=home-fish)
+                (extensions
+                 (list
+                  (service-extension
+                   my=home-fish-service-type
+                   m2=fish-config-files)
+                  ))
+                (description "m2=home-fish-service-type with completions.")))
+
 (define my=services
   (list
    ;; (service home-xsettingsd-service-type)
