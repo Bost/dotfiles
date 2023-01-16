@@ -753,6 +753,12 @@ Note:
 ;;;   guix package                        -e '(@ (bost packages maven) maven)'
 ;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
    (packages
+;;; TODO following warning appears:
+;;;     hint: Did you forget `(use-modules (gnu services))'?
+;;; when using
+;;;    (list (specification->package+output "hello"))
+;;; instead of
+;;;    (list hello) ;; hint need to add: #:use-module (gnu packages base) #| hello |#
     (map (compose identity list
 ;;; TODO what's the difference between specification->package+output and
 ;;; specification->package ?
