@@ -38,6 +38,14 @@
    #;"https://github.com/Bost/guix-packages"
    (string-append "file://" (getenv "HOME") "/dev/guix-packages")))
 
+ (channel
+  (name 'haskell-and-clojure)
+  (url
+   ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
+   ;; "https://github.com/Bost/haskell-guix"
+   (format #f "file://~a/dev/haskell-guix" (getenv "HOME"))
+   ))
+
  ;; The guix-gaming-games channel is added programmatically from the
  ;; home-configuration.scm
 
