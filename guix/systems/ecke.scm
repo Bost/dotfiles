@@ -8,7 +8,7 @@
 ## Run this file by (the `~' doesn't work as a value of --load-path):
 # --fallback         fall back to building when the substituter fails
 # -L --load-path
-sudo guix system --fallback -L $dotf/guix/system reconfigure $dotf/guix/system/configuration.scm
+sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems/ecke.scm
 set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda
 udisksctl mount --block-device=(blkid --uuid $UUID)
 sudo cp /media/$USER/$UUID/boot/grub/grub.cfg /tmp/grub.cfg
@@ -28,9 +28,9 @@ sudo cp /tmp/grub.cfg /media/$USER/$UUID/boot/grub/grub.cfg
 sudo reboot # press <f12> during the reboot and fix the boot order
 |#
 
-(format #t "[configuration] evaluating ...\n")
+(format #t "[ecke] evaluating ...\n")
 
-(define-module (configuration)
+(define-module (systems ecke)
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (common settings))
@@ -203,6 +203,6 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    ;; See "(guix) operating-system Reference" for more details.
    (swap-devices (list (swap-space (target "/swapfile"))))))
 
-(format #t "\n[configuration] evaluated\n")
+(format #t "\n[ecke] evaluated\n")
 ;; operating-system (or image) must be returned
 operating-system-retval
