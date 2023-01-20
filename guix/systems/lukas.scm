@@ -36,7 +36,10 @@
                   (home-directory "/home/bost")
                   (supplementary-groups '("wheel" "netdev" "audio" "video")))
                 %base-user-accounts))
-  (packages (append (list (specification->package "nss-certs"))
+  (packages (append (list
+                     (specification->package "nss-certs")
+;;; Install git system-wide so that I can do `git clone '
+                     (specification->package "git"))
                     %base-packages))
 
   ;; Below is the list of system services.  To search for available
