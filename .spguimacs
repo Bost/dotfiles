@@ -358,11 +358,11 @@ This function should only modify configuration layer settings."
      ;; systemd
 
      ;; M-x centaur-tab-mode
-     (tabs :variables
-           ;; tabs-auto-hide t
-           ;; tabs-auto-hide-delay 3
-           ;; tabs-highlight-current-tab 'left
-           )
+     ;; (tabs :variables
+     ;;       ;; tabs-auto-hide t
+     ;;       ;; tabs-auto-hide-delay 3
+     ;;       ;; tabs-highlight-current-tab 'left
+     ;;       )
 
      themes-megapack
 
