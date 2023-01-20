@@ -30,7 +30,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
 
 (format #t "[ecke] evaluating ...\n")
 
-(define-module (systems ecke)
+(define-module (ecke)
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (common settings))

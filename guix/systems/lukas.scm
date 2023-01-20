@@ -9,8 +9,15 @@
 
 ;; Indicate which modules to import to access the variables
 ;; used in this configuration.
-(define-module (systems lukas)
+
+#|
+## Run this file by (the `~' doesn't work as a value of --load-path):
+dotf=$HOME/dev/dotfiles
+sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
+|#
+(define-module (lukas)
   #:use-module (gnu)
+  #:use-module (gnu services vnc)
   ;; #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   ;; #:use-module (common settings)
   )
@@ -51,11 +58,30 @@
                  ;; record as a second argument to 'service' below.
                  (service openssh-service-type)
                  (set-xorg-configuration
-                  (xorg-configuration (keyboard-layout keyboard-layout))))
+                  (xorg-configuration (keyboard-layout keyboard-layout)))
+                 (service xvnc-service-type (xvnc-configuration
+                                             (display-number 5)
+;;; Warning: Unless your machine is in a controlled environment, for security
+;;; reasons, the localhost? configuration of the xvnc-configuration record
+;;; should be left to its default #t value and exposed via a secure means such
+;;; as an SSH port forward. The XDMCP port, UDP 177 should also be blocked from
+;;; the outside by a firewall, as it is not a secure protocol and can expose
+;;; login credentials in clear.
+                                             ;; (localhost? #f)
+                                             ;; (xdmcp? #t)
+;;; Use an Inetd-style service, which runs the Xvnc server on demand.
+;;; (default: #f)
+                                             (inetd? #t)))
+                 )
 
-           ;; This is the default list of services we
-           ;; are appending to.
-           %desktop-services))
+           ;; This is the default list of services we are appending to.
+           (modify-services %desktop-services
+                            (gdm-service-type config => (gdm-configuration
+                                                         (inherit config)
+                                                         (auto-suspend? #f)
+;;; See the Warning above in the xvnc-configuration
+                                                         ;; (xdmcp? #t)
+                                                         )))))
   (bootloader (bootloader-configuration
                 (bootloader grub-bootloader)
                 (targets (list "/dev/sda"))
