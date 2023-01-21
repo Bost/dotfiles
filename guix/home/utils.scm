@@ -8,10 +8,15 @@
 ;;              [#:renamer RENAMER]
 ;;              [#:version VERSION-SPEC]) ;; R6RS-compatible version reference
 (define-module (utils)
-  #:use-module (ice-9 popen)  #| read-line open-input-pipe |#
+  #:use-module (ice-9 popen)    #| open-input-pipe |#
+#|
+(ice-9 readline) requires `guix install guile-readline'. However read-line might
+be already in the (ice-9 popen)
+|#
+  ;; #:use-module (ice-9 readline)
   #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 regex)  #| string-match |#
-  #:use-module (srfi srfi-1)  #| delete-duplicates |#
+  #:use-module (ice-9 regex)    #| string-match |#
+  #:use-module (srfi srfi-1)    #| delete-duplicates |#
   #| #:use-module (guix build utils) ;; invoke - not needed |#
   #:export (
             dbg
@@ -113,7 +118,7 @@ TODO what's the clojure variant?"
   (lambda x (apply fun (append args x))))
 
 (define (dbg prm)
-  "`pk' can be used instead of this function"
+  "`pk', i.e. `peek' can be used instead of this function"
   ;; TODO implement pretty-print for bash commands
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
@@ -122,7 +127,7 @@ TODO what's the clojure variant?"
   prm)
 
 (define (dbg-exec prm)
-  "`pk' can be used instead of this function"
+  "`pk', i.e. `peek' can be used instead of this function"
   ;; TODO implement pretty-print for bash commands
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
@@ -159,7 +164,7 @@ TODO what's the clojure variant?"
 /some/path")
 
 (define* (exec-system* #:rest args)
-  "Usage:
+  "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\")"
   ((compose
     (partial apply system*)
@@ -197,7 +202,7 @@ READER-FUNCTION on them. "
   "Return a list of all lines of text from the PORT.
 Returns a list of strings"
   (let loop ((res '())
-             (str (read-line port))) ; from (ice-9 popen)
+             (str (read-line port))) ; from (ice-9 readline)
     (if (and str (not (eof-object? str)))
         (loop (append res (list str))
               (read-line port))
@@ -258,7 +263,9 @@ Usage:
     (if (= 0 (car ret))
         (let* ((output (cdr ret)))
           #| process output |#)
-        (format #t \"Command failed\")))"
+      (begin
+        (format #t \"~a\\n\" (error-command-failed))
+        *unspecified*)))"
   ;; ,use (guix build utils) contains `invoke'
   ;; `invoke' does `(apply system* program args)'; `system*' waits for the program
   ;; to finish, The command is executed using fork and execlp.

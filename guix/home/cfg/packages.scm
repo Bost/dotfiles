@@ -1,11 +1,15 @@
 (define-module (cfg packages)
   #:use-module (srfi srfi-1)
+  #:use-module (utils)
+  #:use-module (cfg spguimacs-packages)
   #:export (
             basic-profile-packages
             kde-dependent-packages
             packages-from-additional-channels
             slow-packages
             user-profile-packages
+
+            used-packages
             ))
 
 (define (packages-from-additional-channels)
@@ -216,3 +220,21 @@
    "xsel"
    "youtube-dl"
    ))
+
+(define (used-packages development-config)
+  "Packages which are going to be installed"
+  ((compose
+    (lambda (lst)
+      (if development-config
+        (append
+         lst
+;;; activate the following sexp one by one when on a slow computer or
+;;; connectivity
+         (user-profile-packages)
+         (kde-dependent-packages)
+         (slow-packages)
+         (packages-from-additional-channels)
+         (spguimacs-packages))
+        lst)))
+   (basic-profile-packages)))
+

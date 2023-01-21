@@ -34,7 +34,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (define-module (home-configuration)
   ;; #:use-module (cfg packages-new)
   #:use-module (cfg packages)
-  #:use-module (cfg spguimacs-packages)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
   ;; See service-file -> with-imported-modules
@@ -59,6 +58,15 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (define indent-inc "   ")
 
 (define home-games-config #f)
+
+(define development-config
+  (let* ((ret (exec "hostname")))
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          (string=? "ecke" (car output)))
+        (begin
+          (format #t "~a\n" (error-command-failed))
+          *unspecified*))))
 
 (define channels-scm-filepath
   (str (basename xdg-config-home) "/guix/channels.scm"))
@@ -763,16 +771,7 @@ Note:
 ;;; TODO what's the difference between specification->package+output and
 ;;; specification->package ?
                   specification->package+output)
-         (append
-;;; activate the following sexp one by one when on a slow computer or
-;;; connectivity
-          (basic-profile-packages)
-          (user-profile-packages)
-          (kde-dependent-packages)
-          (slow-packages)
-          (packages-from-additional-channels)
-          (spguimacs-packages)
-          )))
+         (used-packages development-config)))
 
 ;;; TODO see [PATCH] services: Add udev-rules-service helper.
 ;;; https://issues.guix.gnu.org/40454
