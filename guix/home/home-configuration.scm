@@ -524,7 +524,16 @@ Note:
 ;;; `fish_variables' must be editable
   (let* [(filepath "/fish_variables")
          (src (fish-config-dotfiles filepath))
-         (dst (user-home "/" (fish-config-base filepath)))]
+         (dst (user-home "/" (fish-config-base filepath)))
+         (dstdir (dirname dst))]
+    (unless (file-exists? dstdir)
+      (let [(indent (str indent indent-inc))]
+        (format #t "~a(mkdir ~a) ... " indent src dstdir)
+        (let ((retval (mkdir dstdir)))
+          (format #t "retval: ~a\n" retval)
+          ;; The value of 'retval' is '#<unspecified>'
+          ;; TODO continuation: executing the block only if the dstdir was created.
+          retval)))
 ;;; TODO is this sexp is not executed because of lazy-evaluation?
     (let [(indent (str indent indent-inc))]
       (format #t "~a(copy-file ~a ~a) ... " indent src dst)
