@@ -29,6 +29,23 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
  ssh
  xorg)
 
+(define disable-suspend-srvc
+;;; GDM auto-suspend? is not system-wide and can be overriden by users. Create a
+;;; system-wide local dconf profile. See https://paste.centos.org/view/568513c6
+  (simple-service
+   'disable-auto-suspend dconf-service-type
+   (list (dconf-profile
+          (name "local")
+          (content '("system-db:local"))
+          (keyfile (dconf-keyfile
+                    (name "00-disable-suspend")
+                    (content
+                     '("[org/gnome/settings-daemon/plugins/power]"
+                       "sleep-inactive-ac-type='nothing'"
+                       "sleep-inactive-battery-type='nothing'"
+                       "sleep-inactive-ac-timeout=0"
+                       "sleep-inactive-battery-timeout=0"))))))))
+
 (operating-system
   (locale "en_US.utf8")
   (timezone "Europe/Berlin")
@@ -72,6 +89,7 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
 ;;; Use an Inetd-style service, which runs the Xvnc server on demand.
 ;;; (default: #f)
                                              (inetd? #t)))
+                 ;; disable-suspend-srvc
                  )
 
            ;; This is the default list of services we are appending to.
