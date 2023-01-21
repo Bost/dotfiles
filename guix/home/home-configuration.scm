@@ -59,15 +59,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (define home-games-config #f)
 
-(define development-config
-  (let* ((ret (exec "hostname")))
-    (if (= 0 (car ret))
-        (let* ((output (cdr ret)))
-          (string=? "ecke" (car output)))
-        (begin
-          (format #t "~a\n" (error-command-failed))
-          *unspecified*))))
-
 (define channels-scm-filepath
   (str (basename xdg-config-home) "/guix/channels.scm"))
 
@@ -779,7 +770,7 @@ Note:
 ;;; TODO what's the difference between specification->package+output and
 ;;; specification->package ?
                   specification->package+output)
-         (used-packages development-config)))
+         packages-to-install))
 
 ;;; TODO see [PATCH] services: Add udev-rules-service helper.
 ;;; https://issues.guix.gnu.org/40454

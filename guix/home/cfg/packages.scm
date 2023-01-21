@@ -2,6 +2,7 @@
   #:use-module (srfi srfi-1)
   #:use-module (utils)
   #:use-module (cfg spguimacs-packages)
+  #:use-module (common settings)
   #:export (
             basic-profile-packages
             kde-dependent-packages
@@ -9,7 +10,7 @@
             slow-packages
             user-profile-packages
 
-            used-packages
+            packages-to-install
             ))
 
 (define (packages-from-additional-channels)
@@ -221,20 +222,24 @@
    "youtube-dl"
    ))
 
-(define (used-packages development-config)
-  "Packages which are going to be installed"
-  ((compose
-    (lambda (lst)
-      (if development-config
-        (append
-         lst
-;;; activate the following sexp one by one when on a slow computer or
-;;; connectivity
-         (user-profile-packages)
-         (kde-dependent-packages)
-         (slow-packages)
-         (packages-from-additional-channels)
-         (spguimacs-packages))
-        lst)))
-   (basic-profile-packages)))
-
+;; Packages which are going to be installed
+(define packages-to-install
+  (cond
+   [(string=? "lukas" hostname)
+    (basic-profile-packages)]
+   [(string=? "ecke" hostname)
+    (append
+     (basic-profile-packages)
+     (user-profile-packages)
+     (kde-dependent-packages)
+     (slow-packages)
+     (packages-from-additional-channels)
+     (spguimacs-packages))]
+   [#t
+    (begin
+      (format #t
+              #;error
+              "[ERR] hostname '~a' must be one of the: ~a\n"
+              hostname (string-join hostnames))
+      *unspecified*)
+    (basic-profile-packages)]))
