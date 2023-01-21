@@ -65,13 +65,9 @@
    "git"
    "git:gui"
    "git:send-email"
-   "guile"
    "rsync"
    "unzip"
    "vim"
-   "xfce4-clipman-plugin"
-   "xfce4-netload-plugin" ;; traffic indicator
-   "xkeyboard-config"
    "zip"
    ))
 
@@ -123,6 +119,7 @@
    "grub"
    "gsettings-desktop-schemas"
    "gtk"
+   "guile"
    "guile-hall" ;; to build guile projects
    "guile-studio"
    "gv"
@@ -208,8 +205,11 @@
    "virt-viewer"
    "xdg-utils"
    "xev"
+   "xfce4-clipman-plugin"
+   "xfce4-netload-plugin" ;; traffic indicator
    "xfce4-notifyd"
    "xfce4-screenshooter"
+   "xkeyboard-config"
    "xmodmap"
    "xmonad"
    "xrandr"
