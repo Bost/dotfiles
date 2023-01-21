@@ -689,8 +689,7 @@ Note:
        (bash-config-file
         "bash-profile"
         (str
-         "\n" "export HISTFILE=" (getenv "XDG_CACHE_HOME")
-         "/.bash_history"))
+         "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))
        ;; (local-file ".bashrc" "bash_profile") should work too
        ;; (local-file
        ;;  (dotfiles-home "/.bash_profile_additions")
