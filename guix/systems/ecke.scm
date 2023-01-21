@@ -63,7 +63,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
     (keyboard-layout
      "us,de,sk" "altgr-intl,,qwerty"
      #:options '("compose:menu,grp:ctrls_toggle")))
-   (host-name "ecke")
+   (host-name host-ecke)
    (users (cons*
            ;; Password for some new <user> must be set by 'sudo passwd <user>'. See
            ;; https://guix.gnu.org/manual/en/html_node/User-Accounts.html

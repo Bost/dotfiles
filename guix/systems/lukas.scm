@@ -50,7 +50,7 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
   (locale "en_US.utf8")
   (timezone "Europe/Berlin")
   (keyboard-layout (keyboard-layout "us" "altgr-intl"))
-  (host-name "lukas")
+  (host-name host-lukas)
 
   ;; The list of user accounts ('root' is implicit).
   (users (cons* (user-account

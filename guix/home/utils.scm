@@ -43,6 +43,8 @@ be already in the (ice-9 popen)
             user
             user-home
             xdg-config-home
+            hostname
+
             analyze-pids-flag-variable
             analyze-pids-call/cc
             compute-cmd
@@ -138,7 +140,7 @@ TODO what's the clojure variant?"
 (define* (error-command-failed #:rest args)
   (format #t
           #;error
-          "[ERR] Command failed"))
+          "[ERR] Command failed\n"))
 
 (define (string-sff ch s-list)
   ((compose
@@ -397,3 +399,13 @@ Usage:
 ;;      (begin
 ;;        (define name val)
 ;;        (export name)))))
+
+(define hostname
+  (let* ((ret (exec "hostname")))
+    (if (= 0 (car ret))
+        (let* [(output (cdr ret))
+               (hostname (car output))]
+          hostname)
+        (begin
+          (format #t "~a\n" (error-command-failed))
+          *unspecified*))))
