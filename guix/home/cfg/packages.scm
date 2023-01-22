@@ -64,8 +64,6 @@
   (list
    "bash"
    "direnv"
-   "emacs"
-   "emacs-with-editor"
    "fish"
    "git"
    "git:gui"
@@ -74,6 +72,12 @@
    "unzip"
    "vim"
    "zip"
+   ))
+
+(define (devel-profile-packages)
+  (list
+   "emacs"
+   "emacs-with-editor"
    ))
 
 (define (user-profile-packages)
@@ -230,6 +234,7 @@
    [(string=? "ecke" hostname)
     (append
      (basic-profile-packages)
+     (devel-profile-packages)
      (user-profile-packages)
      (kde-dependent-packages)
      (slow-packages)

@@ -546,16 +546,15 @@ Note:
 (define scheme-files-service
   ((compose
     (partial simple-service 'scheme-files-service home-files-service-type)
-    (partial remove unspecified?)
     (partial append
-             (when (or
-                    #t
-                    (string=? hostname host-ecke))
-               (list
-                (service-file #:program-name "e" #:desc "emacs-launcher"
-                              #:scheme-file-name "emacs-launcher")
-                (service-file #:program-name "s" #:desc "spguimacs-launcher"
-                              #:scheme-file-name "spguimacs-launcher")))))
+             (if (string=? hostname host-ecke)
+                 (list
+                  (service-file #:program-name "e" #:desc "emacs-launcher"
+                                #:scheme-file-name "emacs-launcher")
+                  (service-file #:program-name "s" #:desc "spguimacs-launcher"
+                                #:scheme-file-name "spguimacs-launcher"))
+                 ;; empty list
+                 (list))))
    (list
 ;;; TODO `gui' should do `cd ~/dev/guix'
 ;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
