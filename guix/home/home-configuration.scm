@@ -544,9 +544,18 @@ Note:
     ))
 
 (define scheme-files-service
-  (simple-service
-   'scheme-files-service
-   home-files-service-type
+  ((compose
+    (partial simple-service 'scheme-files-service home-files-service-type)
+    (partial remove unspecified?)
+    (partial append
+             (when (or
+                    #t
+                    (string=? hostname host-ecke))
+               (list
+                (service-file #:program-name "e" #:desc "emacs-launcher"
+                              #:scheme-file-name "emacs-launcher")
+                (service-file #:program-name "s" #:desc "spguimacs-launcher"
+                              #:scheme-file-name "spguimacs-launcher")))))
    (list
 ;;; TODO `gui' should do `cd ~/dev/guix'
 ;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
@@ -590,10 +599,6 @@ Note:
                   #:scheme-file-name "extract")
     (service-file #:program-name "c"       #:desc "batcat"
                   #:scheme-file-name "bat")
-    (service-file #:program-name "e"       #:desc "emacs-launcher"
-                  #:scheme-file-name "emacs-launcher")
-    (service-file #:program-name "s"       #:desc "spguimacs-launcher"
-                  #:scheme-file-name "spguimacs-launcher")
     (service-file #:program-name "f"       #:desc "find-alternative")
     (service-file #:program-name "gcl"     #:desc "git-clone")
     (service-file #:program-name "gre"     #:desc "git-remote")
@@ -620,6 +625,9 @@ Note:
     (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
     (service-file #:program-name "spag"
                   #:desc "spacemacs-git-fetch-rebase"))))
+
+(format #t "done\n")
+
 (format #t "done\n")
 
 (define my=services
