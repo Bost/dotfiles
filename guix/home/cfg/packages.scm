@@ -64,6 +64,8 @@
   (list
    "bash"
    "direnv"
+   "exa"
+   "fd"
    "fish"
    "git"
    "git:gui"
@@ -104,8 +106,6 @@
    "dconf-editor"
    "dos2unix"
    "evince"
-   "exa"
-   "fd"
    "ffmpeg"
    "flatpak"
    "font-adobe-source-code-pro"
