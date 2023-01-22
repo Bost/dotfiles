@@ -22,6 +22,7 @@ set fish_greeting ""
 set usbDevice /dev/sdc1
 
 set --local localStuff ~/local-stuff.fish
-test -e $localStuff && source $localStuff || printf "No %s found\n" $localStuff
+test -e $localStuff \
+    && source $localStuff # || printf "[WRN] File not found: %s\n" $localStuff
 
 #### config.fish manual configuration end
