@@ -63,6 +63,7 @@
 (define (basic-profile-packages)
   (list
    "bash"
+   "bat"
    "direnv"
    "exa"
    "fd"
@@ -94,7 +95,6 @@
    "aspell-dict-en"
    "aspell-dict-fr"
    "autoconf"
-   "bat"
    "bc"
    "bind:utils"
    "clang"
