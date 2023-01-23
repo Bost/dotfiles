@@ -20,9 +20,9 @@ guix shell --development guix help2man git strace --pure
 
 (getcwd)
 (add-to-load-path
- (str home "/dev/guix"))
+ (hu:str hu:home "/dev/guix"))
 (add-to-load-path
- (str home "/dev/dotfiles.dev/guix/home"))
+ (hu:str hu:home "/dev/dotfiles.dev/guix/home"))
 ;; see 'include', which unlike 'load', also works within nested lexical contexts
 ;; can't use the `~'
 ,load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm"
@@ -34,13 +34,13 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (define-module (home-configuration)
   ;; #:use-module (cfg packages-new)
-  #:use-module (common settings)
-  #:use-module (utils)
-  #:use-module (fs-utils)
-  #:use-module (cfg packages)
+  #:use-module ((common settings) #:prefix hs:)
+  #:use-module ((utils) #:prefix hu:)
+  #:use-module ((fs-utils) #:prefix hf:)
+  #:use-module ((cfg packages) #:prefix hp:)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
-  #:use-module (srvc my=simple-services)
+  #:use-module ((srvc my=simple-services) #:prefix srvc:)
   ;; See service-file -> with-imported-modules
   #:use-module (scm-bin gcl)
   #:use-module (gnu home)
@@ -69,11 +69,11 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
     ;; Warn about deprecated Guile features
     ("GUILE_WARN_DEPRECATED" . "detailed")
     ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
-    ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
+    ("CC" . ,(hu:user-home "/.guix-home/profile/bin/gcc"))
 
     ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
     ;; See https://github.com/phiresky/ripgrep-all
-    ;; ("PATH" . ,(string-join (usr-home "/bin/ripgrep_all") path))
+    ;; ("PATH" . ,(string-join (hu:user-home "/bin/ripgrep_all") path))
 
     ;; Remedy against:
     ;; $ lein uberjar
@@ -93,12 +93,12 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
     ;; Setting the locale correctly:
     ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
     ;; When 'setlocale: LC_ALL: cannot change locale'
-    ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
+    ;; ("GUIX_LOCPATH" . ,(hu:user-home "/.guix-profile/lib/locale"))
 
     ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
     ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
     ("CORONA_ENV_TYPE" . "devel")
-    ("REPL_USER" . ,user)
+    ("REPL_USER" . ,hu:user)
 
     ;; needed by `help`; e.g. `help expand`
     ("BROWSER" . "firefox")
@@ -106,19 +106,19 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
     ;; for `flatpak run ...`
     ("XDG_DATA_DIRS" . ,(string-join
                          (list
-                          (user-home "/.local/share/flatpak/exports/share")
+                          (hu:user-home "/.local/share/flatpak/exports/share")
                           "/var/lib/flatpak/exports/share"
                           (getenv "XDG_DATA_DIRS"))))
 
-    ("dev"   . ,dev)
-    ("dec"   . ,(user-home "/dec"))
-    ("der"   . ,(user-home "/der"))
-    ("bin"   . ,(user-home bin-dirpath))
-    ("cheat" . ,(str dev "/cheat"))
-    ("dotf"  . ,(str dev "/dotfiles"))
+    ("dev"   . ,hf:dev)
+    ("dec"   . ,(hu:user-home "/dec"))
+    ("der"   . ,(hu:user-home "/der"))
+    ("bin"   . ,(hu:user-home hf:bin-dirpath))
+    ("cheat" . ,(hu:str hf:dev "/cheat"))
+    ("dotf"  . ,(hu:str hf:dev "/dotfiles"))
 
-    ("user_full_name"    . ,user-full-name)
-    ("user_mail_address" . ,user-mail-address)
+    ("user_full_name"    . ,hs:user-full-name)
+    ("user_mail_address" . ,hs:user-mail-address)
 
     ;; used by ghog glog
     ("remotes" . ,(string-join (list "origin" "gitlab")
@@ -131,31 +131,31 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
     ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
 
     ;; My own scripts and guix-home profile take precedence over $PATH.
-    ("PATH" . ,(string-join (list (str home scm-bin-dirpath)
-                                  (str home bin-dirpath)
-   ;; The paths to bin and sbin for guix-home profile are inserted here.
+    ("PATH" . ,(string-join (list (hu:str hu:home hf:scm-bin-dirpath)
+                                  (hu:str hu:home hf:bin-dirpath)
+;;; The paths to bin and sbin for guix-home profile are inserted here.
                                   "$PATH"
                                   "/usr/local/bin"
 ;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
 ;;; See also ~/.npm, ~/.npmrc, ~/node_modules
-                                  #;(str home "/.npm-packages"))
+                                  #;(hu:str hu:home "/.npm-packages"))
                             list-separator))))
 
 (define environment-variables-service
   (simple-service
    'environment-variables-service
    home-environment-variables-service-type
-   (environment-vars list-separator-bash)))
+   (environment-vars hf:list-separator-bash)))
 
 (define (read-module relative-path name)
   "TODO use monad"
-  (let* [(iindent (str indent indent-inc))
-         (name-scm (str name ".scm"))
-         (filepath (dotfiles-home "/guix/home" relative-path "/" name-scm))]
+  (let* [(iindent (hu:str indent indent-inc))
+         (name-scm (hu:str name ".scm"))
+         (filepath (hf:dotfiles-home "/guix/home" relative-path "/" name-scm))]
     (format #t "~aread-module: ~a ... " iindent filepath)
     (let ((sf (scheme-file name-scm
                            (sexp->gexp
-                            (call-with-input-file filepath read-all-sexprs))
+                            (call-with-input-file filepath hu:read-all-sexprs))
                            #:splice? #t)))
       (format #t "done\n")
       sf)))
@@ -163,13 +163,14 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (format #t "~a:\n" "Pre-calculating modules")
 (define module-utils (read-module "" "utils"))
 (define module-common-settings (read-module "/common" "settings"))
-(define module-ls (read-module scm-bin-dirpath "ls"))
-(define module-chmod (read-module scm-bin-dirpath "chmod"))
-(define module-search-notes (read-module scm-bin-dirpath "search-notes"))
+(define module-ls (read-module hf:scm-bin-dirpath "ls"))
+(define module-chmod (read-module hf:scm-bin-dirpath "chmod"))
+(define module-search-notes (read-module hf:scm-bin-dirpath "search-notes"))
 (format #t "done\n")
 
-(define* (service-file
-          #:key program-name desc scheme-file-name module-name chmod-params files)
+(define* (service-file #:key
+                       program-name desc scheme-file-name module-name
+                       chmod-params files)
   "The priority is 1. module-name, 2. scheme-file-name, 3. program-name
 
 TODO The `search-notes' program should read a `search-space-file' containing
@@ -178,13 +179,13 @@ a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  `(,(str scm-bin-dirname "/" program-name)
+  `(,(hu:str hf:scm-bin-dirname "/" program-name)
     ,(program-file
       (cond
        ((equal? scheme-file-name "chmod")
-        (str "chmod-plus-" chmod-params))
+        (hu:str "chmod-plus-" chmod-params))
        ((equal? scheme-file-name "search-notes")
-        (str "search-notes-" program-name))
+        (hu:str "search-notes-" program-name))
        (#t
         desc))
       ;; TODO clarify if source-module-closure is needed only for imports of
@@ -201,28 +202,28 @@ Example:
                                 files))
                              (command-line)))))
         (with-imported-modules
-         (remove
-          unspecified?
-          `(((utils) => ,module-utils)
-            ((common settings) => ,module-common-settings)
-            ;; module-search-notes
-            ;; 'ls' is needed only for 'lf.scm'
-            ,(cond
-              ((equal? symb-string "lf")
-               `((scm-bin ls) => ,module-ls))
+            (remove
+             unspecified?
+             `(((utils) => ,module-utils)
+               ((common settings) => ,module-common-settings)
+               ;; module-search-notes
+               ;; 'ls' is needed only for 'lf.scm'
+               ,(cond
+                 ((equal? symb-string "lf")
+                  `((scm-bin ls) => ,module-ls))
 
-              ((equal? scheme-file-name "chmod")
-               `((scm-bin ,symb) => ,module-chmod))
+                 ((equal? scheme-file-name "chmod")
+                  `((scm-bin ,symb) => ,module-chmod))
 
-              ((equal? scheme-file-name "search-notes")
-               `((scm-bin ,symb) => ,module-search-notes))
+                 ((equal? scheme-file-name "search-notes")
+                  `((scm-bin ,symb) => ,module-search-notes))
 
-              (#t
-               `((scm-bin ,symb) => ,(read-module scm-bin-dirpath
-                                                  symb-string))))))
-         #~(begin
-             (use-modules (scm-bin #$symb))
-             #$main-call))))))
+                 (#t
+                  `((scm-bin ,symb) => ,(read-module hf:scm-bin-dirpath
+                                                     symb-string))))))
+          #~(begin
+              (use-modules (scm-bin #$symb))
+              #$main-call))))))
 
 ;; xfce4-keyboard: repeat-delay 160 repeat-speed 60
 
@@ -277,19 +278,19 @@ Example:
 (define (obtain-and-setup dest-dir repo)
   (let* [(gitlab "git@gitlab.com:rostislav.svoboda")
          (github "git@github.com:Bost")
-         (dest-dir-repo (str home dest-dir repo))
+         (dest-dir-repo (hu:str hu:home dest-dir repo))
          (repo-url (if #f ; (url? repo)
                        repo
-                       (str gitlab repo)))]
+                       (hu:str gitlab repo)))]
     (gcl "--origin=gitlab" repo-url dest-dir-repo)
     (exec-system*
-     "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
-     (str github repo))))
+     "git" (hu:str "--git-dir=" dest-dir-repo "/.git") "remote add github"
+     (hu:str github repo))))
 
 ;; Existing projects won't be overridden
 ;; (map (lambda (project)
 ;;        (let ((dest-dir (car project)))
-;;          (map (partial obtain-and-setup dest-dir) (cdr project))))
+;;          (map (hu:partial obtain-and-setup dest-dir) (cdr project))))
 ;;      projects)
 (format #t "done\n")
 
@@ -305,23 +306,23 @@ Example:
 
 (define (obtain-and-setup-heroku dest-dir repo)
   (let* ((heroku "https://git.heroku.com/")
-         (dest-dir-repo (str home dest-dir repo))
+         (dest-dir-repo (hu:str hu:home dest-dir repo))
          (repo-url (if #f ; (url? repo)
                        repo
-                       (str heroku repo ".git"))))
+                       (hu:str heroku repo ".git"))))
     (gcl "--origin=vojto" repo-url dest-dir-repo)))
 
 ;; Existing projects won't be overridden
 ;; (map (lambda (project)
 ;;        (let ((dest-dir (car project)))
-;;          (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
+;;          (map (hu:partial obtain-and-setup-heroku dest-dir) (cdr project))))
 ;;      projects-heroku)
 (format #t "done\n")
 
 (define (shell-config-file shell name content)
   (plain-file
    name
-   (str
+   (hu:str
     "\n" "#### home-" shell "-configuration -> " name ": begin"
     "\n"
     content
@@ -335,13 +336,13 @@ Example:
 ;;   ;; fish-config-base and fish-config-dotfiles are also defined in the my=fish
 ;;   (define* (fish-config-base #:rest args)
 ;;     "(fish-config-base) ; => \".config/fish\""
-;;     (apply str (basename xdg-config-home) "/fish" args))
+;;     (apply hu:str (basename xdg-config-home) "/fish" args))
 
 ;;   (define* (fish-config-dotfiles #:rest args)
 ;;     "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
 ;; Note:
 ;; (format #t \"~a\" \"foo\") doesn't work"
-;;     (apply str (dotfiles-home) "/" (fish-config-base) args))
+;;     (apply hu:str (hf:dotfiles-home) "/" (fish-config-base) args))
 
 ;; ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
 ;; ;;; when the 'guix home reconfigure ...' fails or is interrupted.
@@ -349,10 +350,10 @@ Example:
 ;; ;;; `fish_variables' must be editable
 ;;   (let* [(filepath "/fish_variables")
 ;;          (src (fish-config-dotfiles filepath))
-;;          (dst (user-home "/" (fish-config-base filepath)))
+;;          (dst (hu:user-home "/" (fish-config-base filepath)))
 ;;          (dstdir (dirname dst))]
 ;;     (unless (file-exists? dstdir)
-;;       (let [(indent (str indent indent-inc))]
+;;       (let [(indent (hu:str indent indent-inc))]
 ;;         (format #t "~a(mkdir ~a) ... " indent src dstdir)
 ;;         (let ((retval (mkdir dstdir)))
 ;;           (format #t "retval: ~a\n" retval)
@@ -360,7 +361,7 @@ Example:
 ;; ;;; TODO continuation: executing the block only if the dstdir was created.
 ;;           retval)))
 ;; ;;; TODO is this sexp is not executed because of lazy-evaluation?
-;;     (let [(indent (str indent indent-inc))]
+;;     (let [(indent (hu:str indent indent-inc))]
 ;;       (format #t "~a(copy-file ~a ~a) ... " indent src dst)
 ;;       (let ((retval (copy-file src dst)))
 ;;         (format #t "retval: ~a\n" retval)
@@ -379,16 +380,17 @@ Example:
 
 (define scheme-files-service
   ((compose
-    (partial simple-service 'scheme-files-service home-files-service-type)
-    (partial append
-             (if home-ecke-config
-                 (list
-                  (service-file #:program-name "e" #:desc "emacs-launcher"
-                                #:scheme-file-name "emacs-launcher")
-                  (service-file #:program-name "s" #:desc "spguimacs-launcher"
-                                #:scheme-file-name "spguimacs-launcher"))
-                 ;; empty list
-                 (list))))
+    (hu:partial simple-service 'scheme-files-service home-files-service-type)
+    (hu:partial
+     append
+     (if hu:home-ecke-config
+         (list
+          (service-file #:program-name "e" #:desc "emacs-launcher"
+                        #:scheme-file-name "emacs-launcher")
+          (service-file #:program-name "s" #:desc "spguimacs-launcher"
+                        #:scheme-file-name "spguimacs-launcher"))
+         ;; empty list
+         (list))))
    (list
 ;;; TODO `gui' should do `cd ~/dev/guix'
 ;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
@@ -489,7 +491,7 @@ Example:
       (list
        (bash-config-file
         "bashrc"
-        (str
+        (hu:str
 ;;; Also https://github.com/oh-my-fish/plugin-foreign-env
 ;;; 1. ~/.guix-home/setup-environment does:
 ;;;     source ~/.guix-home/profile/etc/profile"
@@ -506,21 +508,21 @@ Example:
 
        (let* [(filename ".bashrc_additions")]
          ;; this should work too:
-         ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
+         ;; (local-file ".bashrc" (hf:fix-leading-dot ".bashrc"))
          (local-file
-          (dotfiles-home "/guix/home/" filename)
-          (fix-leading-dot filename)))))
+          (hf:dotfiles-home "/guix/home/" filename)
+          (hf:fix-leading-dot filename)))))
 
      ;; List of file-like objects, which will be ADDED(!) to .bash_profile
      (bash-profile
       (list
        (bash-config-file
         "bash-profile"
-        (str
+        (hu:str
          "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))
        ;; (local-file ".bashrc" "bash_profile") should work too
        ;; (local-file
-       ;;  (dotfiles-home "/.bash_profile_additions")
+       ;;  (hf:dotfiles-home "/.bash_profile_additions")
        ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
        ;;  "bash_profile_additions")
        ))))
@@ -542,7 +544,7 @@ Example:
 
    my=fish-service
    environment-variables-service
-   home-dir-config-service
+   srvc:home-dir-cfg-srvc
    scheme-files-service
    ;; mcron-service
 
@@ -555,8 +557,8 @@ Example:
    ;;          (home-git-configuration
    ;;           (config
    ;;            `((user
-   ;;               ((name . ,user-full-name)
-   ;;                (email . ,user-mail-address)
+   ;;               ((name . ,hs:user-full-name)
+   ;;                (email . ,hs:user-mail-address)
    ;;                #;(signingKey . "...")))
    ;;              (github
    ;;               ((user . "Bost")))
@@ -607,7 +609,7 @@ Example:
 ;;; TODO what's the difference between specification->package+output and
 ;;; specification->package ?
                   specification->package+output)
-         packages-to-install))
+         hp:packages-to-install))
 
 ;;; TODO see [PATCH] services: Add udev-rules-service helper.
 ;;; https://issues.guix.gnu.org/40454

@@ -54,7 +54,7 @@ Note:
 ;;; TODO is this sexp is not executed because of lazy-evaluation?
   (let [(indent (str indent indent-inc))]
     (format #t "~a(copy-file ~a ~a) ... " indent src dst)
-    (let ((retval (copy-file src dst)))
+    (let ((retval (copy-file src dst))) ;; consider using `symlink'
       (format #t "retval: ~a\n" retval)
       ;; The value of 'retval' is '#<unspecified>'
       retval))
@@ -252,7 +252,6 @@ end\n\n")
 ;;; this function returns all the installed fish-shell packages from the
 ;;; home-profile-service
                    my=fish-packages)
-
                   ))
 
                 (compose identity)

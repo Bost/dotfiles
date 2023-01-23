@@ -1,8 +1,8 @@
 ;; (format #t "[my=simple-services] evaluating module ...\n")
 (define-module (srvc my=simple-services)
   ;; See service-file -> with-imported-modules
-  #:use-module (common settings)
-  #:use-module (utils)
+  #:use-module ((common settings) #:prefix ss:)
+  #:use-module ((utils) #:prefix su:)
   #:use-module (fs-utils)
   #:use-module (gnu services)
   ;; program-file local-file
@@ -19,8 +19,10 @@
             extra-channels
             gaming-configuration
             host-ecke-configuration
-            home-dir-config-service
+            home-dir-cfg-srvc
             ))
+
+(define m "[my=simple-services]") ;; module-name
 
 ;; ;; See https://10years.guix.gnu.org/static/slides/05-wilson.org
 ;; (define (home-xsettingsd-files-service config)
@@ -37,60 +39,75 @@
 ;;                 (description "Configures UI appearance settings for Xorg
 ;; sessions using the xsettingsd daemon.")))
 
-;; (format #t "[my=simple-services] home-games-config ~a\n" home-games-config)
-;; (format #t "[my=simple-services] home-ecke-config ~a\n" home-ecke-config)
-
+;; (format #t "~a su:home-ecke-config: ~a\n" m su:home-ecke-config)
+;; (format #t "~a su:home-games-config: ~a\n" m su:home-games-config)
 (define extra-channels
-  (cond
-   [home-ecke-config
-    `((channel
-       (name 'haskell-and-clojure)
-       (url
-        ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
-        ;; "https://github.com/Bost/haskell-guix"
-        (format #f "file://~a/dev/haskell-guix" home)
-        ))
-      ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
-      (channel
-       (name 'bost)
-       (url
-        ;; "https://github.com/Bost/guix-packages"
-        (format #f "file://~a/dev/guix-packages" home))))]
-   [home-games-config
-    `(
+  (let* [(ret (cond
+               [su:home-ecke-config
+                (begin
+                  ;; (format #t "~a cond su:home-ecke-config\n" m)
+                  (let* [
+                         ;; (url (format #f "file://~a/dev/haskell-guix" su:home))
+                         (ret
+                          `((channel
+                             (name 'haskell-and-clojure)
+                             (url
+                              ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
+                              ;; "https://github.com/Bost/haskell-guix"
+                              ,(format #f "file://~a/dev/haskell-guix" su:home)
+                              ))
+                            ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
+                            (channel
+                             (name 'bost)
+                             (url
+                              ;; "https://github.com/Bost/guix-packages"
+                              ,(format #f "file://~a/dev/guix-packages" su:home))))
+                          )
+                         ]
+                    ;; (format #t "~a cond su:home-ecke-config; ret:\n\n~a\n\n" m ret)
+                    ret)
+                  )]
+               [su:home-games-config
+                (begin
+                  ;; (format #t "~a cond su:home-games-config\n" m)
+                  `(
 ;;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 ;;; Use:
 ;;;     guix package --load-path=./ --install=factorio
 ;;; '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
 ;;; wrong
-      (channel
-       (name 'guix-gaming-games)
-       (url
-        ;; "https://gitlab.com/rostislav.svoboda/games"
-        ;; (string-append "file://" home "/dev/games")
-        "https://gitlab.com/guix-gaming-channels/games.git")
-       ;; Enable signature verification:
-       (introduction
-        (make-channel-introduction
-         "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
-         (openpgp-fingerprint
-          "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))]))
-;; (format #t "[my=simple-services] extra-channels: ~a\n" extra-channels)
+                    (channel
+                     (name 'guix-gaming-games)
+                     (url
+                      ;; "https://gitlab.com/rostislav.svoboda/games"
+                      ;; ,(format #f "file://%s/dev/games" home)
+                      "https://gitlab.com/guix-gaming-channels/games.git")
+                     ;; Enable signature verification:
+                     (introduction
+                      (make-channel-introduction
+                       "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
+                       (openpgp-fingerprint
+                        "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))))]))]
+    ;; (format #t "~a extra-channels:; ret:\n\n~a\n\n" m ret)
+    ret
+    ))
+;; (format #t "~a extra-channels: ~a\n" m extra-channels)
+;; (format #t "~a (defined? 'extra-channels): ~a\n" m (defined? 'extra-channels))
 
 (define (gaming-configuration extra-channels)
   (list
-   (local-dotfile "/" (str (basename xdg-config-home)
-                           "/guix-gaming-channels/games.scm"))
+   (local-dotfile "/" (su:str (basename xdg-config-home)
+                              "/guix-gaming-channels/games.scm"))
    (let* [(lst (car (syntax->datum
                      (call-with-input-file channels-scm-filepath
-                       (read-all read-syntax)))))]
+                       (su:read-all read-syntax)))))]
      (call-with-values
          (lambda () (split-at lst (1- (length lst))))
        (lambda (fst snd)
          ((compose
            ;; (lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
            (lambda (sexp)
-             (format #t "########## Creating plain-file gaming-configuration ... \n")
+             (format #t "~a ### Creating plain-file gaming-configuration ... \n" m)
              (list
               channels-scm-filepath
               #;(scheme-file "channels.scm" (sexp->gexp sexp))
@@ -107,20 +124,25 @@
                "channels.scm")))
            (lambda (sexp) (append fst sexp (list (car snd)))))
           extra-channels))))))
-;; (format #t "[my=simple-services] gaming-configuration ~a\n" gaming-configuration)
+;; (format #t "~a gaming-configuration ~a\n" m gaming-configuration)
 
 (define (host-ecke-configuration extra-channels)
+  ;; (format #t "~a [host-ecke-configuration] extra-channels: ~a\n" m extra-channels)
+  ;; (format #t "~a [host-ecke-configuration] channels-scm-filepath: ~a\n" m channels-scm-filepath)
+  ;; (format #t "~a [host-ecke-configuration] (dotfiles-home \"/\" channels-scm-filepath): ~a\n" m (dotfiles-home "/" channels-scm-filepath))
   (list
-   (let* [(lst (car (syntax->datum
-                     (call-with-input-file channels-scm-filepath
-                       (read-all read-syntax)))))]
+   (let* [(channels-scm (dotfiles-home "/" channels-scm-filepath))
+          (lst (car (syntax->datum
+                     (call-with-input-file channels-scm
+                       (su:read-all read-syntax)))))]
+     ;; (format #t "~a [host-ecke-configuration] lst: ~a\n" m lst)
      (call-with-values
          (lambda () (split-at lst (1- (length lst))))
        (lambda (fst snd)
          ((compose
            ;; (lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
            (lambda (sexp)
-             (format #t "\n\n########## Creating plain-file host-ecke-configuration ... \n\n")
+             ;; (format #t "~a ### Creating plain-file host-ecke-configuration ... \n" m)
              (let* [(ret
                      (list
                       channels-scm-filepath
@@ -137,34 +159,41 @@
                          tmpfile)
                        "channels.scm")))]
                ret))
-           (lambda (sexp) (append fst sexp (list (car snd)))))
+           ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 1.\n") p)
+           (lambda (sexp) (append fst sexp (list (car snd))))
+           ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 0.\n") p)
+           )
           extra-channels))))))
-;; (format #t "[my=simple-services] host-ecke-configuration ~a\n" host-ecke-configuration)
+;; (format #t "~a host-ecke-configuration ~a\n" m host-ecke-configuration)
 
-(define home-dir-config-service
-  ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d directory
-  (simple-service
-   'home-dir-config-service home-files-service-type
-   ((compose
-     (partial append
-              (cond
-               [home-games-config
-                (gaming-configuration extra-channels)]
-               [home-ecke-config
-                (host-ecke-configuration extra-channels)]
-               [#t
-                (list
-                 (local-dotfile "/" channels-scm-filepath))]))
-     (partial append
-              (remove
-               unspecified-or-empty-or-false?
-               (list
-                (local-dotfile "/" ".guile") ;; used by `guix repl'
-                (local-dotfile "/" ".gitconfig")
-                (local-dotfile "/" ".spacemacs")
-                (local-dotfile "/" ".spguimacs")
-                (local-dotfile "/guix/home/" "local-stuff.fish"))))
-     (partial append
+(define home-dir-cfg-srvc-files
+  ((compose
+    ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 3.\n") p)
+    (su:partial append
+                (cond
+                 [su:home-games-config
+                  (gaming-configuration extra-channels)]
+                 [su:home-ecke-config
+                  ;; (format #t "~a cond su:home-ecke-config\n" m)
+                  (let* [(ret (host-ecke-configuration extra-channels))]
+                    ;; (format #t "~a cond su:home-ecke-config; ret:\n\n~a\n\n" m ret)
+                    ret
+                    )]
+                 [#t
+                  (list
+                   (local-dotfile "/" channels-scm-filepath))]))
+    ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 2.\n") p)
+    (su:partial append
+                (remove
+                 su:unspecified-or-empty-or-false?
+                 (list
+                  (local-dotfile "/" ".guile") ;; used by `guix repl'
+                  (local-dotfile "/" ".gitconfig")
+                  (local-dotfile "/" ".spacemacs")
+                  (local-dotfile "/" ".spguimacs")
+                  (local-dotfile "/guix/home/" "local-stuff.fish"))))
+    ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 1.\n") p)
+    (su:partial append
 ;;; This can't be used:
 ;;;           `((".emacs.d/private" ;; destination
 ;;;              ,(local-file (dotfiles-home "/.emacs.d/private")
@@ -177,28 +206,39 @@
 ;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
-              (list
-               (let ((dir "bin"))
-                 `(,dir ;; destination
-                   ,(local-file (dotfiles-home "/" dir)
-                                #:recursive? #t)))
-               (let ((destination
-                      (str ".emacs.d"
-                           "/private/themes"
-                           "/farmhouse-light-mod-theme"))
-                     (dir (str ".emacs.d/private/local"
-                               "/farmhouse-light-mod-theme")))
-                 `(,destination ,(local-file (dotfiles-home "/" dir)
-                                             #:recursive? #t)))
+                (list
+                 (let ((dir "bin"))
+                   `(,dir ;; destination
+                     ,(local-file (dotfiles-home "/" dir)
+                                  #:recursive? #t)))
+                 (let ((destination
+                        (su:str ".emacs.d"
+                                "/private/themes"
+                                "/farmhouse-light-mod-theme"))
+                       (dir (su:str ".emacs.d/private/local"
+                                    "/farmhouse-light-mod-theme")))
+                   `(,destination ,(local-file (dotfiles-home "/" dir)
+                                               #:recursive? #t)))
 ;;; See value of `spacemacs-data-directory' in the $dev/guix-packages/spacemacs
-               (let ((destination
-                      (str ".local/share/spacemacs"
-                           "/private/themes"
-                           "/farmhouse-light-mod-theme"))
-                     (dir (str ".emacs.d/private/local"
-                               "/farmhouse-light-mod-theme")))
-                 `(,destination ,(local-file (dotfiles-home "/" dir)
-                                             #:recursive? #t)))))))))
-;; (format #t "[my=simple-services] home-dir-config-service: ~a\n" home-dir-config-service)
+                 (let ((destination
+                        (su:str ".local/share/spacemacs"
+                                "/private/themes"
+                                "/farmhouse-light-mod-theme"))
+                       (dir (su:str ".emacs.d/private/local"
+                                    "/farmhouse-light-mod-theme")))
+                   `(,destination ,(local-file (dotfiles-home "/" dir)
+                                               #:recursive? #t)))))
+    ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 0.\n") p)
+    )
+   ;; empty list
+   (list)))
+;; (format #t "~a home-dir-cfg-srvc-files: ~a\n" m home-dir-cfg-srvc-files)
+;; (format #t "~a (defined? 'home-dir-cfg-srvc-files): ~a\n" m (defined? 'home-dir-cfg-srvc-files))
 
-(format #t "[my=simple-services] module evaluated\n")
+(define home-dir-cfg-srvc
+  ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d directory
+  (simple-service
+   'home-dir-cfg-srvc home-files-service-type home-dir-cfg-srvc-files))
+;; (format #t "~a (defined? 'home-dir-cfg-srvc:) ~a\n" m (defined? 'home-dir-cfg-srvc))
+
+(format #t "~a module evaluated\n" m)
