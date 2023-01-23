@@ -66,6 +66,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (define (environment-vars list-separator)
   `(
+    ;; Warn about deprecated Guile features
+    ("GUILE_WARN_DEPRECATED" . "detailed")
     ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
     ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
 
