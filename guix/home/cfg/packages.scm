@@ -229,9 +229,9 @@
 ;; Packages which are going to be installed
 (define packages-to-install
   (cond
-   [(string=? "lukas" hostname)
+   [home-lukas-config
     (basic-profile-packages)]
-   [(string=? "ecke" hostname)
+   [home-ecke-config
     (append
      (basic-profile-packages)
      (devel-profile-packages)

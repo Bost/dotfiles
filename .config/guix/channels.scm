@@ -31,22 +31,7 @@
     (openpgp-fingerprint
      "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
 
- ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
- (channel
-  (name 'bost)
-  (url
-   #;"https://github.com/Bost/guix-packages"
-   (string-append "file://" (getenv "HOME") "/dev/guix-packages")))
-
- (channel
-  (name 'haskell-and-clojure)
-  (url
-   ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
-   ;; "https://github.com/Bost/haskell-guix"
-   (format #f "file://~a/dev/haskell-guix" (getenv "HOME"))
-   ))
-
- ;; The guix-gaming-games channel is added programmatically from the
- ;; home-configuration.scm
+;;; Following channels are added by the home-configuration.scm
+;;; bost haskell-and-clojure guix-gaming-games
 
  %default-channels)

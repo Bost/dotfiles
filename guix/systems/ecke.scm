@@ -52,7 +52,6 @@ sudo reboot # press <f12> during the reboot and fix the boot order
  shells   ; for login shell
  )
 
-
 (format #t "user-full-name: ~a\n" user-full-name)
 
 (define operating-system-retval

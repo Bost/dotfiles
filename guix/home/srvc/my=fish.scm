@@ -1,3 +1,4 @@
+(format #t "[my=fish] evaluating module ...\n")
 (define-module (srvc my=fish)
   ;; See service-file -> with-imported-modules
   #:use-module (utils)
@@ -19,16 +20,16 @@
 (define indent "")
 (define indent-inc "   ")
 
-(def* (dotfiles-home #:rest args)
+(define* (dotfiles-home #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str home "/dev/dotfiles" args))
 
-(def* (fish-config-base #:rest args)
+(define* (fish-config-base #:rest args)
   "(fish-config-base) ; => \".config/fish\""
   (apply str (basename xdg-config-home) "/fish" args))
 
-(def* (fish-config-dotfiles #:rest args)
+(define* (fish-config-dotfiles #:rest args)
   "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
 Note:
 (format #t \"~a\" \"foo\") doesn't work"
@@ -67,13 +68,12 @@ Note:
     (format #t "(chmod ~a ~a)\n" dst #o644)
     (chmod dst #o644)))
 
-(def* (append-fish-config-dir dir lst)
+(define* (append-fish-config-dir dir lst)
   (append
    `((,(fish-config-base dir)
       ,(local-file (fish-config-dotfiles dir)
                    #:recursive? #t)))
    lst))
-
 
 (define (my=serialize-fish-aliases field-name val)
   ;; (format #t "[serialize-fish-aliases] field-name: ~a; val: ~a\n" field-name val)
@@ -134,7 +134,7 @@ when typed in the shell, will automatically expand to the full text."
 (define (my=fish-packages config)
   "Defines how is the `home-profile' (i.e. the `home-profile-service-type') extended."
   (let ((ret (list (my=home-fish-configuration-package config))))
-    (format #t "### [my=fish-packages] ret: \n~a\n\n" ret)
+    ;; (format #t "### [my=fish-packages] ret: \n~a\n\n" ret)
     ret))
 
 (define-configuration/no-serialization my=home-fish-extension
@@ -206,13 +206,13 @@ and begin
 end\n\n")
                   (serialize-configuration
                    config my=home-fish-configuration-fields))))))
-    (format #t "### [my=fish-config-files] ret: \n~a\n\n" ret)
+    ;; (format #t "### [my=fish-config-files] ret: \n~a\n\n" ret)
     ret))
 
 (define (my=home-fish-extensions original-config extension-configs)
   "`home-fish-extensions' defines how the value of the service is extended with the composition of the extensions"
-  (format #t "### [my=home-fish-extensions] original-config: \n~a\n\n" original-config)
-  (format #t "### [my=home-fish-extensions] extension-configs: \n~a\n\n" extension-configs)
+  ;; (format #t "### [my=home-fish-extensions] original-config: \n~a\n\n" original-config)
+  ;; (format #t "### [my=home-fish-extensions] extension-configs: \n~a\n\n" extension-configs)
   (let ((ret (my=home-fish-configuration
               (inherit original-config)
               (config
@@ -231,7 +231,7 @@ end\n\n")
                (append (my=home-fish-configuration-abbreviations original-config)
                        (append-map
                         my=home-fish-extension-abbreviations extension-configs))))))
-    (format #t "### [my=home-fish-extensions] ret: \n~a\n\n" ret)
+    ;; (format #t "### [my=home-fish-extensions] ret: \n~a\n\n" ret)
     ret))
 
 (define my=home-fish-service-type
@@ -279,7 +279,7 @@ end\n\n")
                  ,(local-file (fish-config-dotfiles "/fish_plugins")))))
          (ret (append my=home-fish-configuration-fields m2=))
          )
-    (format #t "### [m2=fish-config-files] ret: \n~a\n\n" ret)
+    ;; (format #t "### [m2=fish-config-files] ret: \n~a\n\n" ret)
     ret))
 
 (define m2=home-fish-service-type
@@ -311,3 +311,5 @@ end\n\n")
      (list
       (local-file
        (fish-config-dotfiles "/config.fish")))))))
+
+(format #t "[my=fish] module evaluated\n")

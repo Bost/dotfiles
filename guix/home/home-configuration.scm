@@ -30,96 +30,41 @@ guix shell --development guix help2man git strace --pure
 
 TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 |#
+(format #t "[home-configuration] evaluating module ...\n")
 
 (define-module (home-configuration)
   ;; #:use-module (cfg packages-new)
+  #:use-module (common settings)
+  #:use-module (utils)
+  #:use-module (fs-utils)
   #:use-module (cfg packages)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
+  #:use-module (srvc my=simple-services)
   ;; See service-file -> with-imported-modules
-  #:use-module (utils)
-  #:use-module (common settings)
   #:use-module (scm-bin gcl)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
-  #:use-module (guix gexp)               #| program-file local-file |#
+  ;; program-file local-file
+  #:use-module (guix gexp)
   #:use-module (gnu home services shells)
-  #:use-module (gnu home services)       #| simple-service |#
-  #| take remove delete-duplicates append-map etc. |#
+  ;; simple-service
+  #:use-module (gnu home services)
+  ;; take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  #:use-module (ice-9 pretty-print)      #| pretty-print |#
+  ;; pretty-print
+  ;; #:use-module (ice-9 pretty-print)
+
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
-  #| home-git-service-type |#
+  ;; home-git-service-type
   ;; #:use-module (gnu home services version-control)
   )
 
 (define indent "")
 (define indent-inc "   ")
 
-(define home-games-config #f)
-
-(define channels-scm-filepath
-  (str (basename xdg-config-home) "/guix/channels.scm"))
-
-(define (fix-leading-dot filename)
-  (string-replace filename "dot-" 0 1))
-
-(def* (dotfiles-home #:rest args)
-  "Note:
-(format #t \"~a\" \"foo\") doesn't work"
-  (apply str home "/dev/dotfiles" args))
-
-;;;      ...                      #:optional (<parameter-name> <default-value>)
-(def* (any-local-file filepath #:optional (filename (basename filepath)))
-  ;; 'local-file' is a macro and cannot be used by 'apply'
-
-  (if (equal? "." (substring filename 0 1))
-      ;; filename of the local-file can't start with '.'
-      (local-file filepath (fix-leading-dot filename))
-      (local-file filepath)))
-
-(def* (local-dotfile path filename)
-  "
-(local-dotfile \"/path/to/\" \"file.ext\")
-=>
-(list \"file.ext\"
-      (local-file \"/home/bost/dev/dotfiles/path/to/file.ext\"))
-
-(local-dotfile \"/path/to/\" \".file.ext\")
-=>
-(list \".file.ext\"
-      (local-file
-       \"/home/bost/dev/dotfiles/path/to/.file.ext\" \"dot-file.ext\"))
-
-(local-dotfile \"/path/to/\" \".file\")
-=>
-(list \".file\"
-      (local-file \"/home/bost/dev/dotfiles/path/to/.file\" \"dot-file\"))
-
-(local-dotfile \"/\" \"path/to/file.ext\")
-=>
-(\"path/to/file.ext\" (local-file \"/home/bost/dev/dotfiles/path/to/file.ext\"))
-
-"
-  (let [(filepath (dotfiles-home path filename))]
-    (if (access? filepath R_OK)
-      (list filename
-            (any-local-file filepath (basename filename)))
-      (begin
-        (format #t "ERROR: can't read ~a\n" filepath)
-        #f))))
-
-;; fish and bash separate elements of a list with a different separator
-(define list-separator-bash ":")
-#;(define list-separator-fish " ") ;; not needed
-(define bin-dirpath "/bin")
-(define sbin-dirpath "/sbin")
-(define scm-bin-dirname "scm-bin")
-(define scm-bin-dirpath (str "/" scm-bin-dirname))
-(define dev (user-home "/dev"))
-
-(def* (environment-vars list-separator)
+(define (environment-vars list-separator)
   `(
     ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
     ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
@@ -194,13 +139,13 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                                   #;(str home "/.npm-packages"))
                             list-separator))))
 
-(def* environment-variables-service
+(define environment-variables-service
   (simple-service
    'environment-variables-service
    home-environment-variables-service-type
    (environment-vars list-separator-bash)))
 
-(def* (read-module relative-path name)
+(define (read-module relative-path name)
   "TODO use monad"
   (let* [(iindent (str indent indent-inc))
          (name-scm (str name ".scm"))
@@ -215,13 +160,14 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (format #t "~a:\n" "Pre-calculating modules")
 (define module-utils (read-module "" "utils"))
+(define module-common-settings (read-module "/common" "settings"))
 (define module-ls (read-module scm-bin-dirpath "ls"))
 (define module-chmod (read-module scm-bin-dirpath "chmod"))
 (define module-search-notes (read-module scm-bin-dirpath "search-notes"))
 (format #t "done\n")
 
-(def* (service-file
-       #:key program-name desc scheme-file-name module-name chmod-params files)
+(define* (service-file
+          #:key program-name desc scheme-file-name module-name chmod-params files)
   "The priority is 1. module-name, 2. scheme-file-name, 3. program-name
 
 TODO The `search-notes' program should read a `search-space-file' containing
@@ -256,6 +202,7 @@ Example:
          (remove
           unspecified?
           `(((utils) => ,module-utils)
+            ((common settings) => ,module-common-settings)
             ;; module-search-notes
             ;; 'ls' is needed only for 'lf.scm'
             ,(cond
@@ -369,71 +316,6 @@ Example:
 ;;      projects-heroku)
 (format #t "done\n")
 
-;; ;; See https://10years.guix.gnu.org/static/slides/05-wilson.org
-;; (define (home-xsettingsd-files-service config)
-;;   (list `(".config/xsettingsd/xsettingsd.conf"
-;;           ,(local-file "xsettingsd.conf"))))
-
-;; (define home-xsettingsd-service-type
-;;   (service-type (name 'home-xsettingsd)
-;;                 (extensions
-;;                  (list (service-extension
-;;                         home-files-service-type
-;;                         home-xsettingsd-files-service)))
-;;                 (default-value #f)
-;;                 (description "Configures UI appearance settings for Xorg
-;; sessions using the xsettingsd daemon.")))
-
-(def* guix-channels-configuration
-  (if home-games-config
-      (list
-       (local-dotfile "/" (str (basename xdg-config-home)
-                               "/guix-gaming-channels/games.scm"))
-       (let* [(lst (car (syntax->datum
-                         (call-with-input-file channels-scm-filepath
-                           (read-all read-syntax)))))]
-         (call-with-values
-             (lambda () (split-at lst (1- (length lst))))
-           (lambda (fst snd)
-             ((compose
-               #;(lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
-               (lambda (sexp)
-                 (format #t "########## Creating plain-file ... \n")
-                 (list
-                  channels-scm-filepath
-                  #;(scheme-file "channels.scm" (sexp->gexp sexp))
-                  (local-file
-                   (let* [(tmpfile (tmpnam))
-                          (port
-                           ;; create temporary file
-                           #;(mkstemp! (string-copy "/tmp/myfile-XXXXXX"))
-                           (open-output-file tmpfile))]
-                     ;; save the channel configuration to a temporary file
-                     (pretty-print sexp port)
-                     (close-port port)
-                     tmpfile)
-                   "channels.scm")))
-               (lambda (sexp) (append fst (list sexp) (list (car snd)))))
-;;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
-;;; Use:
-;;;     guix package --load-path=./ --install=factorio
-;;; '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
-;;; wrong
-              '(channel
-                (name 'guix-gaming-games)
-                (url
-                 #;"https://gitlab.com/rostislav.svoboda/games"
-                 #;(string-append "file://" home "/dev/games")
-                 "https://gitlab.com/guix-gaming-channels/games.git")
-                ;; Enable signature verification:
-                (introduction
-                 (make-channel-introduction
-                  "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
-                  (openpgp-fingerprint
-                   "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))))))
-      (list
-       (local-dotfile "/" channels-scm-filepath))))
-
 (define (shell-config-file shell name content)
   (plain-file
    name
@@ -447,107 +329,57 @@ Example:
 (define (bash-config-file name content)
   (shell-config-file "bash" name content))
 
-(def* home-dir-config-service
-  ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d directory
-  (simple-service
-   'home-dir-config-service home-files-service-type
-   ((compose
-     (partial append guix-channels-configuration)
-     (partial append
-              (remove
-               unspecified-or-empty-or-false?
-               (list
-                (local-dotfile "/" ".guile") ;; used by `guix repl'
-                (local-dotfile "/" ".gitconfig")
-                (local-dotfile "/" ".spacemacs")
-                (local-dotfile "/" ".spguimacs")
-                (local-dotfile "/guix/home/" "local-stuff.fish"))))
-     (partial append
-;;; This can't be used:
-;;;           `((".emacs.d/private" ;; destination
-;;;              ,(local-file (dotfiles-home "/.emacs.d/private")
-;;;                           #:recursive? #t)))
-;;; because:
-;;; 1. Can't store the whole ".emacs.d/private" since there are some README.md
-;;; files and `git ... rebase develop cycle' b/c they will be symlinked (from
-;;; the /gnu/store/).
-;;;
-;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
-;;; them after `guix home ...', since `git restore ...' overwrites the symlink
-;;; (to the /gnu/store/).
-              (list
-               (let ((dir "bin"))
-                 `(,dir ;; destination
-                   ,(local-file (dotfiles-home "/" dir)
-                                #:recursive? #t)))
-               (let ((destination
-                      (str ".emacs.d"
-                           "/private/themes"
-                           "/farmhouse-light-mod-theme"))
-                     (dir (str ".emacs.d/private/local"
-                               "/farmhouse-light-mod-theme")))
-                 `(,destination ,(local-file (dotfiles-home "/" dir)
-                                             #:recursive? #t)))
-;;; See value of `spacemacs-data-directory' in the $dev/guix-packages/spacemacs
-               (let ((destination
-                      (str ".local/share/spacemacs"
-                           "/private/themes"
-                           "/farmhouse-light-mod-theme"))
-                     (dir (str ".emacs.d/private/local"
-                               "/farmhouse-light-mod-theme")))
-                 `(,destination ,(local-file (dotfiles-home "/" dir)
-                                             #:recursive? #t)))))))))
+;; (begin
+;;   ;; fish-config-base and fish-config-dotfiles are also defined in the my=fish
+;;   (define* (fish-config-base #:rest args)
+;;     "(fish-config-base) ; => \".config/fish\""
+;;     (apply str (basename xdg-config-home) "/fish" args))
 
-(begin
-  (def* (fish-config-base #:rest args)
-    "(fish-config-base) ; => \".config/fish\""
-    (apply str (basename xdg-config-home) "/fish" args))
+;;   (define* (fish-config-dotfiles #:rest args)
+;;     "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
+;; Note:
+;; (format #t \"~a\" \"foo\") doesn't work"
+;;     (apply str (dotfiles-home) "/" (fish-config-base) args))
 
-  (def* (fish-config-dotfiles #:rest args)
-    "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
-Note:
-(format #t \"~a\" \"foo\") doesn't work"
-    (apply str (dotfiles-home) "/" (fish-config-base) args))
+;; ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
+;; ;;; when the 'guix home reconfigure ...' fails or is interrupted.
+;; ;;; Can't use `local-file' or `mixed-text-file' or something similar since the
+;; ;;; `fish_variables' must be editable
+;;   (let* [(filepath "/fish_variables")
+;;          (src (fish-config-dotfiles filepath))
+;;          (dst (user-home "/" (fish-config-base filepath)))
+;;          (dstdir (dirname dst))]
+;;     (unless (file-exists? dstdir)
+;;       (let [(indent (str indent indent-inc))]
+;;         (format #t "~a(mkdir ~a) ... " indent src dstdir)
+;;         (let ((retval (mkdir dstdir)))
+;;           (format #t "retval: ~a\n" retval)
+;;           ;; The value of 'retval' is '#<unspecified>'
+;; ;;; TODO continuation: executing the block only if the dstdir was created.
+;;           retval)))
+;; ;;; TODO is this sexp is not executed because of lazy-evaluation?
+;;     (let [(indent (str indent indent-inc))]
+;;       (format #t "~a(copy-file ~a ~a) ... " indent src dst)
+;;       (let ((retval (copy-file src dst)))
+;;         (format #t "retval: ~a\n" retval)
+;;         ;; The value of 'retval' is '#<unspecified>'
+;;         retval))
+;; ;;; Just changing ownership and permissions of `fish_variables' doesn't work:
 
-;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
-;;; when the 'guix home reconfigure ...' fails or is interrupted.
-;;; Can't use `local-file' or `mixed-text-file' or something similar since the
-;;; `fish_variables' must be editable
-  (let* [(filepath "/fish_variables")
-         (src (fish-config-dotfiles filepath))
-         (dst (user-home "/" (fish-config-base filepath)))
-         (dstdir (dirname dst))]
-    (unless (file-exists? dstdir)
-      (let [(indent (str indent indent-inc))]
-        (format #t "~a(mkdir ~a) ... " indent src dstdir)
-        (let ((retval (mkdir dstdir)))
-          (format #t "retval: ~a\n" retval)
-          ;; The value of 'retval' is '#<unspecified>'
-          ;; TODO continuation: executing the block only if the dstdir was created.
-          retval)))
-;;; TODO is this sexp is not executed because of lazy-evaluation?
-    (let [(indent (str indent indent-inc))]
-      (format #t "~a(copy-file ~a ~a) ... " indent src dst)
-      (let ((retval (copy-file src dst)))
-        (format #t "retval: ~a\n" retval)
-        ;; The value of 'retval' is '#<unspecified>'
-        retval))
-;;; Just changing ownership and permissions of `fish_variables' doesn't work:
-
-    ;; (begin
-    ;;   ;; .rw-r--r-- bost users fish_variables
-    ;;   (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
-    ;;   (chown dst (getuid) (getgid))
-    ;;   ;; .rw-r--r-- fish_variables
-    ;;   (format #t "(chmod ~a ~a)\n" dst #o644)
-    ;;   (chmod dst #o644))
-    ))
+;;     ;; (begin
+;;     ;;   ;; .rw-r--r-- bost users fish_variables
+;;     ;;   (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
+;;     ;;   (chown dst (getuid) (getgid))
+;;     ;;   ;; .rw-r--r-- fish_variables
+;;     ;;   (format #t "(chmod ~a ~a)\n" dst #o644)
+;;     ;;   (chmod dst #o644))
+;;     ))
 
 (define scheme-files-service
   ((compose
     (partial simple-service 'scheme-files-service home-files-service-type)
     (partial append
-             (if (string=? hostname host-ecke)
+             (if home-ecke-config
                  (list
                   (service-file #:program-name "e" #:desc "emacs-launcher"
                                 #:scheme-file-name "emacs-launcher")
@@ -624,10 +456,6 @@ Note:
     (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
     (service-file #:program-name "spag"
                   #:desc "spacemacs-git-fetch-rebase"))))
-
-(format #t "done\n")
-
-(format #t "done\n")
 
 (define my=services
   (list
@@ -786,5 +614,7 @@ Note:
 
 ;; TODO put home-configuration and system-configuration in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
+
+(format #t "[home-configuration] module evaluated\n")
 
 home-env

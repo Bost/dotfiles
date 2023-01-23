@@ -19,7 +19,6 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
   #:use-module (gnu)
   #:use-module (gnu services vnc)
   ;; #:use-module (gnu system shadow)     ; for user-group; user-account-shell
-  ;; #:use-module (common settings)
   )
 
 (use-service-modules

@@ -8,16 +8,18 @@
 ;;              [#:renamer RENAMER]
 ;;              [#:version VERSION-SPEC]) ;; R6RS-compatible version reference
 (define-module (utils)
-  #:use-module (ice-9 popen)    #| open-input-pipe |#
-#|
-(ice-9 readline) requires `guix install guile-readline'. However read-line might
-be already in the (ice-9 popen)
-|#
+  #:use-module (common settings)
+  ;; open-input-pipe
+  #:use-module (ice-9 popen)
+;;; (ice-9 readline) requires `guix install guile-readline'. However read-line
+;;; might be already in the (ice-9 popen)
   ;; #:use-module (ice-9 readline)
   #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 regex)    #| string-match |#
-  #:use-module (srfi srfi-1)    #| delete-duplicates |#
-  #| #:use-module (guix build utils) ;; invoke - not needed |#
+  ;; string-match
+  #:use-module (ice-9 regex)
+  ;; delete-duplicates
+  #:use-module (srfi srfi-1)
+  ;; #:use-module (guix build utils) ;; invoke - not needed
   #:export (
             dbg
             dbg-exec
@@ -44,6 +46,10 @@ be already in the (ice-9 popen)
             user-home
             xdg-config-home
             hostname
+
+            home-games-config
+            home-ecke-config
+            home-lukas-config
 
             analyze-pids-flag-variable
             analyze-pids-call/cc
@@ -409,3 +415,10 @@ Usage:
         (begin
           (format #t "~a\n" (error-command-failed))
           *unspecified*))))
+;; (format #t "[utils] hostname: ~a\n" hostname)
+
+(define home-games-config #f)
+(define home-ecke-config (equal? hostname host-ecke))
+(define home-lukas-config (equal? hostname host-lukas))
+
+(format #t "[utils] module evaluated\n")
