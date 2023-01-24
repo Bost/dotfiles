@@ -152,7 +152,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   (let* [(iindent (hu:str indent indent-inc))
          (name-scm (hu:str name ".scm"))
          (filepath (hf:dotfiles-home "/guix/home" relative-path "/" name-scm))]
-    (format #t "~aread-module: ~a ... " iindent filepath)
+    (format #t "~aread-module: ~a ... " iindent name)
     (let ((sf (scheme-file name-scm
                            (sexp->gexp
                             (call-with-input-file filepath hu:read-all-sexprs))
@@ -384,7 +384,7 @@ Example:
     (hu:partial
      append
      (cond
-      [hu:home-ecke-config
+      [(hu:home-ecke-config)
        (list
         (service-file #:program-name "e" #:desc "emacs-launcher"
                       #:scheme-file-name "emacs-launcher")

@@ -1,3 +1,6 @@
+;;; This module is required by some of the scm-bin CLI utilities. The output of
+;;; the `format' will also appear in the console such a utility is executed.
+
 ;; TODO create a package installable by `guix install my=utils`
 ;; See: jaro the resource opener - an alternative to xdg-open
 ;; https://github.com/isamert/jaro/blob/master/jaro
@@ -140,7 +143,7 @@ TODO what's the clojure variant?"
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
   ;; ~% is newline \n
-  (format #t "\n$ ~a\n" prm)
+  (format #t "$ ~a\n" prm)
   prm)
 
 (define* (error-command-failed #:rest args)
@@ -406,9 +409,9 @@ Usage:
 ;;        (define name val)
 ;;        (export name)))))
 
+;;; Use function-implementations so that the code below is not evaluated every
+;;; time some of the scm-bin CLI utility requiring this module is executed.
 (define (hostname)
-  "Implement this as a function so that the code below is not evaluated every
-time some of the scm-bin CLI utility requiring this module is executed."
   (let* ((ret (exec "hostname")))
     (if (= 0 (car ret))
         (let* [(output (cdr ret))
@@ -419,8 +422,8 @@ time some of the scm-bin CLI utility requiring this module is executed."
           *unspecified*))))
 ;; (format #t "[utils] hostname: ~a\n" hostname)
 
-(define home-games-config #f)
-(define home-ecke-config (equal? (hostname) host-ecke))
-(define home-lukas-config (equal? (hostname) host-lukas))
+(define (home-games-config) #f)
+(define (home-ecke-config) (equal? (hostname) host-ecke))
+(define (home-lukas-config) (equal? (hostname) host-lukas))
 
 ;; (format #t "[utils] module evaluated\n")

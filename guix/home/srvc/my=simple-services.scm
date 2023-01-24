@@ -43,7 +43,7 @@
 ;; (format #t "~a su:home-games-config: ~a\n" m su:home-games-config)
 (define extra-channels
   (let* [(ret (cond
-               [su:home-ecke-config
+               [(su:home-ecke-config)
                 (begin
                   ;; (format #t "~a cond su:home-ecke-config\n" m)
                   (let* [
@@ -67,7 +67,7 @@
                     ;; (format #t "~a cond su:home-ecke-config; ret:\n\n~a\n\n" m ret)
                     ret)
                   )]
-               [su:home-games-config
+               [(su:home-games-config)
                 (begin
                   ;; (format #t "~a cond su:home-games-config\n" m)
                   `(
@@ -171,9 +171,9 @@
     ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 3.\n") p)
     (su:partial append
                 (cond
-                 [su:home-games-config
+                 [(su:home-games-config)
                   (gaming-configuration extra-channels)]
-                 [su:home-ecke-config
+                 [(su:home-ecke-config)
                   ;; (format #t "~a cond su:home-ecke-config\n" m)
                   (let* [(ret (host-ecke-configuration extra-channels))]
                     ;; (format #t "~a cond su:home-ecke-config; ret:\n\n~a\n\n" m ret)

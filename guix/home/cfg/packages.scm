@@ -1,6 +1,6 @@
 (define-module (cfg packages)
   #:use-module (srfi srfi-1)
-  #:use-module (utils)
+  #:use-module ((utils) #:prefix pu:)
   #:use-module (cfg spguimacs-packages)
   #:use-module (common settings)
   #:export (
@@ -229,9 +229,9 @@
 ;; Packages which are going to be installed
 (define packages-to-install
   (cond
-   [home-lukas-config
+   [(pu:home-lukas-config)
     (basic-profile-packages)]
-   [home-ecke-config
+   [(pu:home-ecke-config)
     (append
      (basic-profile-packages)
      (devel-profile-packages)
@@ -245,6 +245,6 @@
       (format #t
               #;error
               "[ERR] hostname '~a' must be one of the: ~a\n"
-              hostname (string-join hostnames))
+              (pu:hostname) (string-join hostnames))
       *unspecified*)
     (basic-profile-packages)]))

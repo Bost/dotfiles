@@ -1,3 +1,7 @@
+;;; This module is required by #:use-module in some of the scm-bin/*.scm CLI
+;;; utilities. The output of the `format' will also appear in the console such a
+;;; utility is executed.
+
 ;; (format #t "[<home> common settings] evaluating module ...\n")
 (define-module (common settings)
   ;; #:use-module (ice-9 r5rs)
@@ -17,4 +21,4 @@
 
 (define hostnames (list host-lukas host-ecke))
 
-(format #t "[<home> common settings] module evaluated\n")
+;; (format #t "[<home> common settings] module evaluated\n")
