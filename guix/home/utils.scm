@@ -131,7 +131,7 @@ TODO what's the clojure variant?"
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
   ;; ~% is newline \n
-  (format #t "~%~a~%" prm)
+  (format #t "\n~a\n" prm)
   prm)
 
 (define (dbg-exec prm)
@@ -140,7 +140,7 @@ TODO what's the clojure variant?"
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
   ;; ~% is newline \n
-  (format #t "~%$ ~a~%" prm)
+  (format #t "\n$ ~a\n" prm)
   prm)
 
 (define* (error-command-failed #:rest args)
