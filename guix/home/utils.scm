@@ -406,7 +406,9 @@ Usage:
 ;;        (define name val)
 ;;        (export name)))))
 
-(define hostname
+(define (hostname)
+  "Implement this as a function so that the code below is not evaluated every
+time some of the scm-bin CLI utility requiring this module is executed."
   (let* ((ret (exec "hostname")))
     (if (= 0 (car ret))
         (let* [(output (cdr ret))
@@ -418,7 +420,7 @@ Usage:
 ;; (format #t "[utils] hostname: ~a\n" hostname)
 
 (define home-games-config #f)
-(define home-ecke-config (equal? hostname host-ecke))
-(define home-lukas-config (equal? hostname host-lukas))
+(define home-ecke-config (equal? (hostname) host-ecke))
+(define home-lukas-config (equal? (hostname) host-lukas))
 
-(format #t "[utils] module evaluated\n")
+;; (format #t "[utils] module evaluated\n")
