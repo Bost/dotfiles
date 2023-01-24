@@ -383,49 +383,55 @@ Example:
     (hu:partial simple-service 'scheme-files-service home-files-service-type)
     (hu:partial
      append
-     (if hu:home-ecke-config
-         (list
-          (service-file #:program-name "e" #:desc "emacs-launcher"
-                        #:scheme-file-name "emacs-launcher")
-          (service-file #:program-name "s" #:desc "spguimacs-launcher"
-                        #:scheme-file-name "spguimacs-launcher"))
-         ;; empty list
-         (list))))
-   (list
+     (cond
+      [hu:home-ecke-config
+       (list
+        (service-file #:program-name "e" #:desc "emacs-launcher"
+                      #:scheme-file-name "emacs-launcher")
+        (service-file #:program-name "s" #:desc "spguimacs-launcher"
+                      #:scheme-file-name "spguimacs-launcher")
 ;;; TODO `gui' should do `cd ~/dev/guix'
 ;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
 ;;; checkout)
 ;;; TODO crc should search in the $dec
-    (service-file #:program-name "crc"  #:files "clojure"
-                  #:scheme-file-name "search-notes")
+        (service-file #:program-name "crc"  #:files "clojure"
+                      #:scheme-file-name "search-notes")
 ;;; TODO cre should also search in the ~/.emacs.d/, ~/.spacemacs, kill-buffes
 ;;; and my=tweaks, farmhouse-light-mod
-    (service-file #:program-name "cre"  #:files "vim|emacs|org_mode"
-                  #:scheme-file-name "search-notes")
-    (service-file #:program-name "crep" #:files ".*"
-                  #:scheme-file-name "search-notes")
-    (service-file #:program-name "crf"  #:files "find_and_grep"
-                  #:scheme-file-name "search-notes")
+        (service-file #:program-name "cre"  #:files "vim|emacs|org_mode"
+                      #:scheme-file-name "search-notes")
+        (service-file #:program-name "crep" #:files ".*"
+                      #:scheme-file-name "search-notes")
+        (service-file #:program-name "crf"  #:files "find_and_grep"
+                      #:scheme-file-name "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
-    (service-file #:program-name "crg"  #:files "guix|guile"
-                  #:scheme-file-name "search-notes")
+        (service-file #:program-name "crg"  #:files "guix|guile"
+                      #:scheme-file-name "search-notes")
 ;;; TODO crgi should also search in the output of `git config --get',
 ;;; ~/.gitconfig, etc.
-    (service-file #:program-name "crgi" #:files "git"
-                  #:scheme-file-name "search-notes")
+        (service-file #:program-name "crgi" #:files "git"
+                      #:scheme-file-name "search-notes")
 ;;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile (and
 ;;; other profile files), etc.
-    (service-file #:program-name "crl"
-                  #:files "guix|shells|linux|android"
-                  #:scheme-file-name "search-notes")
+        (service-file #:program-name "crl"
+                      #:files "guix|shells|linux|android"
+                      #:scheme-file-name "search-notes")
 ;;; TODO crr should also search in the $der
-    (service-file #:program-name "crr"  #:files "racket"
-                  #:scheme-file-name "search-notes")
+        (service-file #:program-name "crr"  #:files "racket"
+                      #:scheme-file-name "search-notes")
 ;;; TODO crs should be like crl
-    (service-file #:program-name "crs"  #:files "shells"
-                  #:scheme-file-name "search-notes")
-    (service-file #:program-name "cru"  #:files "utf8"
-                  #:scheme-file-name "search-notes")
+        (service-file #:program-name "crs"  #:files "shells"
+                      #:scheme-file-name "search-notes")
+        (service-file #:program-name "cru"  #:files "utf8"
+                      #:scheme-file-name "search-notes")
+        (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
+        (service-file #:program-name "spag"
+                      #:desc "spacemacs-git-fetch-rebase")
+        )]
+      [#t
+       ;; empty list
+       (list)])))
+   (list
     (service-file #:program-name "prw"  #:chmod-params "rw"
                   #:scheme-file-name "chmod")
     (service-file #:program-name "px"   #:chmod-params "x"
@@ -457,9 +463,7 @@ Example:
                   #:scheme-file-name "ls")
     (service-file #:program-name "lf"
                   #:desc "list-directory-contents-with-full-paths")
-    (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
-    (service-file #:program-name "spag"
-                  #:desc "spacemacs-git-fetch-rebase"))))
+    )))
 
 (define my=services
   (list
