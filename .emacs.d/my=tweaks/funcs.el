@@ -868,6 +868,9 @@ Thanks to https://stackoverflow.com/a/2238589"
   (and (member bufname (mapcar #'buffer-name (buffer-list)))
        t))
 
+;; TODO add SHELL-PATH parameter so for setting
+;;   (setq shell-pop-term-shell SHELL-PATH)
+;; and also probably the `multi-term-program'
 (defun my=toggle-shell-pop-term ()
   (interactive)
   (cond
