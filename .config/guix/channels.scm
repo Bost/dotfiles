@@ -24,7 +24,9 @@
  (channel
   (name 'nonguix)
   (url "https://gitlab.com/nonguix/nonguix")
-  ;; Enable signature verification:
+  ;; Enable signature verification, i.e. declare that in the nonguix repository,
+  ;; the first commit which can be trusted is the 897c1a470d and it was created
+  ;; by someone who's GnuPG fingerprint is the "2A39 3FFF ..."
   (introduction
    (make-channel-introduction
     "897c1a470da759236cc11798f4e0a5f7d4d59fbc"

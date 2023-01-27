@@ -51,7 +51,7 @@
 	# The secret key is not in git's configs but in the GnuPG's "keyring".
 	# The signingkey value only instructs gpg which secret key to select.
 	# https://stackoverflow.com/a/48067999
-	signingkey = 9403F3A0D4BAFE08
+	signingkey = --gpg-sign=A2FED89D9A10000E5BF63B37612D36368877DC81
 [color]
 	ui = auto
 [push]

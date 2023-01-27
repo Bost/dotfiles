@@ -85,9 +85,12 @@
                      ;; Enable signature verification:
                      (introduction
                       (make-channel-introduction
+                       ;; The is 1st commit from this repository which can be trusted is:
                        "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
                        (openpgp-fingerprint
-                        "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))))]))]
+                        ;; ... as it was made by some with OpenPGP fingerprint:
+                        "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"
+                        ))))))]))]
     ;; (format #t "~a extra-channels:; ret:\n\n~a\n\n" m ret)
     ret
     ))
