@@ -755,8 +755,9 @@ It should only modify the values of Spacemacs settings."
    ;; Default font or prioritized list of fonts. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
+   ;; :size 8.8 is `(- 10.0 text-scale-mode-step)', like M-x text-scale-decrease
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 10.0
+                               :size 8.8
                                :weight normal
                                :width normal)
 
@@ -1231,11 +1232,11 @@ before packages are loaded."
      command))
 
   (defun fish-shell-path ()
-    ;; (getenv "SHELL")
-    (shell-which "fish"))
+    (getenv "SHELL")
+    ;; (shell-which "fish")
+    )
 
   (setq                                 ; of dotspacemacs/user-config
-
    ;; The program of term.
    ;; If this is nil, setup to environment variable of `SHELL'.
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
@@ -1723,7 +1724,8 @@ Some binding snippets / examples:
                    (message "Use ~s-F~ instead of ~s-r~ for M-x helm-recentf")))
      ("M-y"    . helm-show-kill-ring)   ; replaces evil-paste-pop
      ("s-G"    . helm-google-suggest)
-     ("s-/"    . helm-swoop)
+     ("s-/"    . helm-swoop)                          ; advice-d
+     ("s-?"    . helm-multi-swoop-all)
      ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
 
      ;; TODO crux-duplicate-current-line-or-region gets confused with registry
@@ -2138,8 +2140,11 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
              ("C-s-l" . my=elisp-insert-let)
              ("C-s-m" . my=elisp-insert-message)
              ("C-s-p" . my=elisp-insert-message)
+             ;; Evaluates the defun above the point. (Is a bit buggy)
              ("C-s-d" . my=elisp-insert-defun)
-             ("s-d"   . my=eval-current-defun)
+             ("s-d"   . eval-defun) ;; my=eval-current-defun
+             ;; The point must be inside the right sexp
+             ("M-s-d" . eval-sexp-fu-eval-sexp-inner-list)
              ("#"     . endless/sharp)
              ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp))
 
@@ -2162,10 +2167,11 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   ;; Setup for Hacking on Guix
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
-  (let* ((guix-checkout-dir (format "%s/guix" (getenv "dev"))))
+  (let* ((dotf (getenv "dotf"))
+         (guix-checkout-dir (format "%s/guix" (getenv "dev"))))
     (with-eval-after-load #'geiser-guile
       ;; The goal is to have utils.scm on the geiser-guile-load-path
-      (add-to-list 'geiser-guile-load-path (format "%s/guix/home" (getenv "dotf")))
+      (add-to-list 'geiser-guile-load-path (format "%s/guix/home" dotf))
       (add-to-list 'geiser-guile-load-path guix-checkout-dir))
     ;; (with-eval-after-load 'yasnippet
     ;;   (add-to-list #'yas-snippet-dirs (concat guix-checkout-dir "/etc/snippets")))
@@ -2266,8 +2272,15 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                        (message
                         "[advice spacemacs/hsearch-project] %s"
                         (concat
-                         "Try also: ~SPC *~ for"
-                         " M-x spacemacs/hsearch-project-region-or-symbol"))))
+                         "Try ~SPC *~ for "
+                         "M-x spacemacs/hsearch-project-region-or-symbol"))))
+
+  (advice-add #'helm-swoop
+              :after
+              (defun my=note--helm-swoop (&optional _)
+                (let ((p "[advice my=note--helm-swoop] %s"))
+                  (message
+                   p "Try ~SPC s C-s~ for M-x helm-multi-swoop-all"))))
 
   (advice-add #'my=search-region-or-symbol
               :after
@@ -2275,7 +2288,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                 (let ((p "[advice my=search-region-or-symbol] "))
                   (message
                    (concat
-                    p "Try also:\n"
+                    p "Try:\n"
                     p "1. ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode)"
                     " mark something and press ~SPC s e~\n"
                     p "2. ~M-<f3>~ for M-x spacemacs/hsearch-project")))))
