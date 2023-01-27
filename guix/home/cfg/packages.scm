@@ -81,6 +81,7 @@
   (list
    "emacs"
    "emacs-with-editor"
+   "pinentry" ;; needed to sign commits
    ))
 
 (define (user-profile-packages)
@@ -97,6 +98,11 @@
    "autoconf"
    "bc"
    "bind:utils"
+
+   ;; Contains mkisofs, which can create an hybrid ISO-9660/JOLIET/HFS/UDF
+   ;; filesystem-image with optional Rock Ridge attributes. See also xorriso
+   ;; "cdrtools"
+
    "clang"
    "clojure-tools"
    "clusterssh"
@@ -221,6 +227,10 @@
    "xkeyboard-config"
    "xmodmap"
    "xmonad"
+
+   ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
+   "xorriso"
+
    "xrandr"
    "xsel"
    "youtube-dl"
