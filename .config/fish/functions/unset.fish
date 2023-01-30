@@ -1,5 +1,5 @@
 function unset
-  set cmd set --erase (string escape -- $argv)
-  echo $cmd
-  eval $cmd
+  set cmd (printf "set --erase %s" (string escape -- $argv))
+  printf "ERR: command doesn't work '%s'\n" $cmd
+  return 1 # retcode 1 means: command failed to perform the requested operation
 end
