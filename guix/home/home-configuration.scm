@@ -241,7 +241,7 @@ Example:
 ;;                        ;; #t to copy directory
 ;;                        #:recursive? #t))))))
 
-(format #t "~a ... " "Obtaining projects")
+(format #t "~a obtaining projects ... " m)
 ;; See https://gitlab.com/guile-git/guile-git.git
 ;; Guile bindings to libgit2, to manipulate repositories of the Git.
 (define projects (list))
@@ -287,7 +287,7 @@ Example:
 ;;      projects)
 (format #t "done\n")
 
-(format #t "~a ... " "Obtaining projects-heroku")
+(format #t "~a obtaining projects-heroku ... " m)
 (define projects-heroku
   (list
    (cons "/der" (list
