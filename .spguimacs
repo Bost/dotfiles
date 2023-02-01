@@ -2165,14 +2165,19 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               (bind-keys :map LaTeX-mode-map
                          ("<menu>" . latex/build))))
 
-  ;; Setup for Hacking on Guix
+  ;; Setup for Hacking on Guix and Scheme Code
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
   (let* ((dotf (getenv "dotf"))
-         (guix-checkout-dir (format "%s/guix" (getenv "dev"))))
+         (dev (getenv "dev"))
+         (guix-checkout-dir (format "%s/guix" dev)))
     (with-eval-after-load #'geiser-guile
-      ;; The goal is to have utils.scm on the geiser-guile-load-path
-      (add-to-list 'geiser-guile-load-path (format "%s/guix/home" dotf))
-      (add-to-list 'geiser-guile-load-path guix-checkout-dir))
+      (mapcar
+       (-partial #'add-to-list 'geiser-guile-load-path)
+              (list
+               ;; The goal is to have utils.scm on the geiser-guile-load-path
+               (format "%s/guix/home" dotf)
+               guix-checkout-dir
+               (format "%s/guix-packages/packages" dev))))
     ;; (with-eval-after-load 'yasnippet
     ;;   (add-to-list #'yas-snippet-dirs (concat guix-checkout-dir "/etc/snippets")))
 
