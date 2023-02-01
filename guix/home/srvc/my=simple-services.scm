@@ -1,4 +1,6 @@
-;; (format #t "[my=simple-services] evaluating module ...\n")
+;; (define m "[my=simple-services]") ;; module-name
+;; (format #t "~a evaluating module ...\n" m)
+
 (define-module (srvc my=simple-services)
   ;; See service-file -> with-imported-modules
   #:use-module ((common settings) #:prefix ss:)
@@ -21,8 +23,6 @@
             host-ecke-configuration
             home-dir-cfg-srvc
             ))
-
-(define m "[my=simple-services]") ;; module-name
 
 ;; ;; See https://10years.guix.gnu.org/static/slides/05-wilson.org
 ;; (define (home-xsettingsd-files-service config)

@@ -1,5 +1,6 @@
 (define-module (scm-bin spguimacs-launcher)
   #:use-module (utils)
+  ;; #:use-module (bost utils)
   #:export (main))
 
 #|
@@ -9,8 +10,9 @@
 !#
 
 |#
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating ...\n" m)
 
-(format #t "~a ... " "Evaluating spguimacs-launcher.scm")
 (define init-cmd "spacemacs")
 
 (define client-cmd (str "emacsclient --no-wait --socket-name="
@@ -36,4 +38,5 @@
     (lambda (prms) (if (null? prms) '("./") prms))
     cdr)
    args))
-(format #t "done\n")
+
+(format #t "~a module evaluated\n" m)

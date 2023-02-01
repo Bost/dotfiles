@@ -8,6 +8,7 @@
   |#
 
   #:use-module (utils)
+  ;; #:use-module (bost utils)
   #:export (main))
 
 #|
@@ -18,7 +19,8 @@
 
 |#
 
-(format #t "~a ... " "Evaluating emacs-launcher.scm")
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating ...\n" m)
 
 ;; returns "/home/bost/.guix-home/profile/bin/emacs"
 (define (which-emacs)
@@ -53,4 +55,4 @@
     cdr)
    args))
 
-(format #t "done\n")
+(format #t "~a module evaluated\n" m)

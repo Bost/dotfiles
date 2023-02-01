@@ -30,12 +30,16 @@ guix shell --development guix help2man git strace --pure
 
 TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 |#
-(format #t "[home-configuration] evaluating module ...\n")
+;; (format #t "[home-configuration] evaluating module ...\n")
 
 (define-module (home-configuration)
   ;; #:use-module (cfg packages-new)
   #:use-module ((common settings) #:prefix hs:)
   #:use-module ((utils) #:prefix hu:)
+
+  ;; the code of this module comes in via the 'bost' channel
+  ;; #:use-module (bost utils)
+
   #:use-module ((fs-utils) #:prefix hf:)
   #:use-module ((cfg packages) #:prefix hp:)
   ;; #:use-module (cfg mcron)
@@ -60,6 +64,9 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; home-git-service-type
   ;; #:use-module (gnu home services version-control)
   )
+
+(define m (hu:module-name-for-logging))
+(format #t "~a evaluating module ...\n" m)
 
 (define indent "")
 (define indent-inc "   ")
@@ -140,33 +147,13 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;; See also ~/.npm, ~/.npmrc, ~/node_modules
                                   #;(hu:str hu:home "/.npm-packages"))
                             list-separator))))
+(hu:testsymb 'environment-vars)
 
 (define environment-variables-service
   (simple-service
    'environment-variables-service
    home-environment-variables-service-type
    (environment-vars hf:list-separator-bash)))
-
-(define (read-module relative-path name)
-  "TODO use monad"
-  (let* [(iindent (hu:str indent indent-inc))
-         (name-scm (hu:str name ".scm"))
-         (filepath (hf:dotfiles-home "/guix/home" relative-path "/" name-scm))]
-    (format #t "~aread-module: ~a ... " iindent name)
-    (let ((sf (scheme-file name-scm
-                           (sexp->gexp
-                            (call-with-input-file filepath hu:read-all-sexprs))
-                           #:splice? #t)))
-      (format #t "done\n")
-      sf)))
-
-(format #t "~a:\n" "Pre-calculating modules")
-(define module-utils (read-module "" "utils"))
-(define module-common-settings (read-module "/common" "settings"))
-(define module-ls (read-module hf:scm-bin-dirpath "ls"))
-(define module-chmod (read-module hf:scm-bin-dirpath "chmod"))
-(define module-search-notes (read-module hf:scm-bin-dirpath "search-notes"))
-(format #t "done\n")
 
 (define* (service-file #:key
                        program-name desc scheme-file-name module-name
@@ -204,23 +191,29 @@ Example:
         (with-imported-modules
             (remove
              unspecified?
-             `(((utils) => ,module-utils)
-               ((common settings) => ,module-common-settings)
+             `((utils)
+               (common settings)
+
+               ;; ,(cond
+               ;;   ((or
+               ;;     (equal? scheme-file-name "emacs-launcher")
+               ;;     (equal? scheme-file-name "spguimacs-launcher"))
+               ;;    `(bost utils)))
+
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
                ,(cond
                  ((equal? symb-string "lf")
-                  `((scm-bin ls) => ,module-ls))
+                  `(scm-bin ls))
 
                  ((equal? scheme-file-name "chmod")
-                  `((scm-bin ,symb) => ,module-chmod))
+                  `(scm-bin ,symb))
 
                  ((equal? scheme-file-name "search-notes")
-                  `((scm-bin ,symb) => ,module-search-notes))
+                  `(scm-bin ,symb))
 
                  (#t
-                  `((scm-bin ,symb) => ,(read-module hf:scm-bin-dirpath
-                                                     symb-string))))))
+                  `(scm-bin ,symb)))))
           #~(begin
               (use-modules (scm-bin #$symb))
               #$main-call))))))
@@ -623,6 +616,6 @@ Example:
 ;; TODO put home-configuration and system-configuration in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
-(format #t "[home-configuration] module evaluated\n")
+(format #t "~a module evaluated\n" m)
 
 home-env

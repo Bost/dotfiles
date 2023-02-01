@@ -24,6 +24,9 @@
   #:use-module (srfi srfi-1)
   ;; #:use-module (guix build utils) ;; invoke - not needed
   #:export (
+            module-name-for-logging
+            testsymb
+
             dbg
             dbg-exec
             cmd->string
@@ -66,6 +69,30 @@
 ;; (use-service-modules desktop xorg)
 ;; (use-package-modules certs)
 ;; (use-package-modules shells)
+
+(define (module-name-for-logging)
+  ((compose
+    (partial format #f "[~a]")
+    (partial string-join)
+    (partial map (partial format #f "~a"))
+    (partial module-name))
+   (current-module)))
+
+(define-syntax testsymb
+  (syntax-rules ()
+    ((_ symbol)
+     (begin
+       ;; (let [(module (module-name-for-logging))]
+       ;;   (if (defined? symbol)
+       ;;       (format #t "~a ~a defined\n" module symbol)
+       ;;       (error (format #f "~a ~a undefined\n" module symbol))))
+       ))))
+
+;; (define f 42)
+;; (testsymb 'f)
+
+;;; testsymb doesn't work in the let-syntax
+;; (let [(ff 42)] (testsymb 'ff))
 
 (define (unspecified-or-empty-or-false? obj)
   (or (unspecified? obj)
