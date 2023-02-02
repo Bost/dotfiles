@@ -54,8 +54,9 @@
             hostname
 
             home-games-config
-            home-ecke-config
             home-lukas-config
+            home-ecke-config
+            home-geek-config
 
             analyze-pids-flag-variable
             analyze-pids-call/cc
@@ -450,7 +451,8 @@ Usage:
 ;; (format #t "[utils] hostname: ~a\n" hostname)
 
 (define (home-games-config) #f)
-(define (home-ecke-config) (equal? (hostname) host-ecke))
 (define (home-lukas-config) (equal? (hostname) host-lukas))
+(define (home-ecke-config) (equal? (hostname) host-ecke))
+(define (home-geek-config) (equal? (hostname) host-geek))
 
 ;; (format #t "[utils] module evaluated\n")

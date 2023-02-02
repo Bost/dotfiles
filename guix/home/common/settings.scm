@@ -10,6 +10,7 @@
             user-mail-address
             host-lukas
             host-ecke
+            host-geek
             hostnames
             ))
 
@@ -18,7 +19,8 @@
 
 (define host-lukas "lukas")
 (define host-ecke "ecke")
+(define host-geek "geek")
 
-(define hostnames (list host-lukas host-ecke))
+(define hostnames (list host-lukas host-ecke host-geek))
 
 ;; (format #t "[<home> common settings] module evaluated\n")

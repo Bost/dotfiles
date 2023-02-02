@@ -61,7 +61,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
      #:options '("compose:menu,grp:ctrls_toggle")))
    (host-name host-ecke)
 
-   ;; The list of user accounts ('root' is implicit).
+;;; The list of user accounts ('root' is implicit).
    (users (cons*
            ;; Password for some new <user> must be set by 'sudo passwd <user>'. See
            ;; https://guix.gnu.org/manual/en/html_node/User-Accounts.html
@@ -102,16 +102,18 @@ sudo reboot # press <f12> during the reboot and fix the boot order
                "netdev" "audio" "video" "adbusers")))
            %base-user-accounts))
 
-   ;; Packages installed system-wide.  Users can also install packages
-   ;; under their own account: use 'guix search KEYWORD' to search
-   ;; for packages and 'guix install PACKAGE' to install a package.
+;;; Packages installed system-wide. Users can also install packages under their
+;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
+;;; install PACKAGE' to install a package.
    (packages
     (append
-     (map specification->package
-          (list "emacs" "nss-certs"
-                ;; "fish" ;; needed if it is the login-shell
-                "gparted"
-                "vim"))
+     (map specification->package (list
+                                  "nss-certs"
+                                  "git"
+                                  ;; "gparted" ;; disk partition
+                                  ;; "rsync" ;; 'scp' is preinstalled
+                                  ;; "vim" ;; 'vi' is preinstalled
+                                  ))
      %base-packages))
    #;
    (skeletons

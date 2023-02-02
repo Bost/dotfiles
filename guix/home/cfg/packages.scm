@@ -236,7 +236,6 @@
    "youtube-dl"
    ))
 
-;; Packages which are going to be installed
 (define packages-to-install
   (cond
    [(pu:home-lukas-config)
@@ -250,11 +249,17 @@
      (slow-packages)
      (packages-from-additional-channels)
      (spguimacs-packages))]
+   [(pu:home-geek-config)
+    (append
+     (basic-profile-packages)
+     (devel-profile-packages)
+     (user-profile-packages)
+     (kde-dependent-packages)
+     (slow-packages)
+     (packages-from-additional-channels)
+     ;; (spguimacs-packages)
+     )]
    [#t
-    (begin
-      (format #t
-              #;error
-              "[ERR] hostname '~a' must be one of the: ~a\n"
-              (pu:hostname) (string-join hostnames))
-      *unspecified*)
-    (basic-profile-packages)]))
+    (error
+     (format #f "hostname '~a' must be one of the: ~a\n"
+             (pu:hostname) (string-join hostnames)))]))

@@ -51,7 +51,7 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
   (keyboard-layout (keyboard-layout "us" "altgr-intl"))
   (host-name host-lukas)
 
-  ;; The list of user accounts ('root' is implicit).
+;;; The list of user accounts ('root' is implicit).
   (users (cons* (user-account
                   (name "bost")
                   (comment "Rostislav Svoboda")
@@ -59,10 +59,17 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
                   (home-directory "/home/bost")
                   (supplementary-groups '("wheel" "netdev" "audio" "video")))
                 %base-user-accounts))
-  (packages (append (list
-                     (specification->package "nss-certs")
-;;; Install git system-wide so that I can do `git clone '
-                     (specification->package "git"))
+;;; Packages installed system-wide. Users can also install packages under their
+;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
+;;; install PACKAGE' to install a package.
+  (packages (append
+             (map specification->package (list
+                                          "nss-certs"
+;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
+                                          "git"
+                                          "gparted" ;; disk partition
+                                          "rsync"
+                                          "vim"))
                     %base-packages))
 
   ;; Below is the list of system services.  To search for available

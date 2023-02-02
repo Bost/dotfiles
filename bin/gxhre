@@ -1,7 +1,10 @@
 #!/bin/sh
 
+file=$(printf "%s/guix/home/home-config-%s.scm" $dotf $(hostname))
+
 set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null
-guix home --allow-downgrades --load-path=$dotf/guix/home reconfigure $dotf/guix/home/home-configuration.scm "$@"
+guix home --allow-downgrades --load-path=$dotf/guix/home reconfigure $file "$@"
 { retval="$?"; set +x; } 2>/dev/null
+
 exit $retval

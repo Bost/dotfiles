@@ -1433,30 +1433,30 @@ before packages are loaded."
   (defun my=find-dotf-spacemacs ()
     "Edit the `$dotf/.spacemacs', in the current window."
     (interactive)
-    (find-file-existing (concat (getenv "dotf") "/.spacemacs")))
+    (find-file-existing (format "%s/.spacemacs" (getenv "dotf"))))
 
   (defun my=find-dotf-spguimacs ()
     "Edit the `$dotf/.spguimacs', in the current window."
     (interactive)
-    (find-file-existing (concat (getenv "dotf") "/.spguimacs")))
+    (find-file-existing (format "%s/.spguimacs" (getenv "dotf"))))
 
   (defun my=find-home-configuration.scm ()
-    "Edit the `$dotf/.../home-configuration.scm', in the current window."
+    "Edit the `$dotf/.../home-config-<hostname>.scm', in the current window."
     (interactive)
-    (find-file-existing (concat (getenv "dotf")
-                                "/guix/home/home-configuration.scm")))
+    (find-file-existing
+     (format "%s/guix/home/home-config-%s.scm" (getenv "dotf") (system-name))))
 
   (defun my=find-configuration.scm ()
-    "Edit the `$dotf/.../configuration.scm', in the current window."
+    "Edit the `$dotf/.../<hostname>.scm', in the current window."
     (interactive)
-    (find-file-existing (concat (getenv "dotf")
-                                "/guix/system/configuration.scm")))
+    (find-file-existing
+     (format "%s/guix/system/%s.scm" (getenv "dotf") (system-name))))
 
   (defun my=find-spguimacs-packages.scm ()
     "Edit the `$dotf/.../spguimacs-packages.scm', in the current window."
     (interactive)
-    (find-file-existing (concat (getenv "dotf")
-                                "/guix/home/cfg/spguimacs-packages.scm")))
+    (find-file-existing
+     (format "%s/guix/home/cfg/spguimacs-packages.scm" (getenv "dotf"))))
 
   ;; TODO autoload
   (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")

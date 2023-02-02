@@ -8,9 +8,9 @@
 # To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
-$ source /etc/profile
-$ guix home --allow-downgrades --load-path=$dotf/guix/home \
-       reconfigure $dotf/guix/home/home-configuration.scm
+source /etc/profile && dxh=~/dev/dotfiles/guix/home
+guix home --allow-downgrades -L $dxh reconfigure $dxh/home-config-ecke.scm
+# -L --load-path
 
 # The tilda `~' is only expanded by shells when it's the first character of a
 # command-line argument. Use $HOME instead
@@ -25,14 +25,14 @@ guix shell --development guix help2man git strace --pure
  (hu:str hu:home "/dev/dotfiles.dev/guix/home"))
 ;; see 'include', which unlike 'load', also works within nested lexical contexts
 ;; can't use the `~'
-,load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm"
-(load "/home/bost/dev/dotfiles.dev/guix/home/home-configuration.scm")
+,load "/home/bost/dev/dotfiles.dev/guix/home/home-config-ecke.scm"
+(load "/home/bost/dev/dotfiles.dev/guix/home/home-config-ecke.scm")
 
 TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 |#
-;; (format #t "[home-configuration] evaluating module ...\n")
+;; (format #t "[home-config-ecke] evaluating module ...\n")
 
-(define-module (home-configuration)
+(define-module (home-config-ecke)
   ;; #:use-module (cfg packages-new)
   #:use-module ((common settings) #:prefix hs:)
   #:use-module ((utils) #:prefix hu:)
@@ -613,7 +613,7 @@ Example:
 
    (services my=services)))
 
-;; TODO put home-configuration and system-configuration in one file
+;; TODO put home-config-ecke and system-configuration in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
 (format #t "~a module evaluated\n" m)

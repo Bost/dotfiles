@@ -39,63 +39,56 @@
 ;;                 (description "Configures UI appearance settings for Xorg
 ;; sessions using the xsettingsd daemon.")))
 
-;; (format #t "~a su:home-ecke-config: ~a\n" m su:home-ecke-config)
-;; (format #t "~a su:home-games-config: ~a\n" m su:home-games-config)
 (define extra-channels
-  (let* [(ret (cond
-               [(su:home-ecke-config)
-                (begin
-                  ;; (format #t "~a cond su:home-ecke-config\n" m)
-                  (let* [
-                         ;; (url (format #f "file://~a/dev/haskell-guix" su:home))
-                         (ret
-                          `((channel
-                             (name 'haskell-and-clojure)
-                             (url
-                              ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
-                              ;; "https://github.com/Bost/haskell-guix"
-                              ,(format #f "file://~a/dev/haskell-guix" su:home)
-                              ))
-                            ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
-                            (channel
-                             (name 'bost)
-                             (url
-                              ;; "https://github.com/Bost/guix-packages"
-                              ,(format #f "file://~a/dev/guix-packages" su:home))))
-                          )
-                         ]
-                    ;; (format #t "~a cond su:home-ecke-config; ret:\n\n~a\n\n" m ret)
-                    ret)
-                  )]
-               [(su:home-games-config)
-                (begin
-                  ;; (format #t "~a cond su:home-games-config\n" m)
-                  `(
+  (cond
+   [(su:home-ecke-config)
+    `((channel (name 'haskell-and-clojure)
+               (url
+                ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
+                ;; "https://github.com/Bost/haskell-guix"
+                ,(format #f "file://~a/dev/haskell-guix" su:home)
+                ))
+      ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
+      (channel (name 'bost)
+               (url
+                ;; "https://github.com/Bost/guix-packages"
+                ,(format #f "file://~a/dev/guix-packages" su:home))))]
+   [(su:home-geek-config)
+    `((channel (name 'haskell-and-clojure)
+               (url
+                ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
+                "https://github.com/Bost/haskell-guix"
+                ;; ,(format #f "file://~a/dev/haskell-guix" su:home)
+                ))
+      ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
+      (channel (name 'bost)
+               (url
+                "https://github.com/Bost/guix-packages"
+                ;; ,(format #f "file://~a/dev/guix-packages" su:home)
+                )))]
+   [(su:home-games-config)
+    (begin
+      ;; (format #t "~a cond su:home-games-config\n" m)
+      `(
 ;;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 ;;; Use:
 ;;;     guix package --load-path=./ --install=factorio
 ;;; '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
 ;;; wrong
-                    (channel
-                     (name 'guix-gaming-games)
-                     (url
-                      ;; "https://gitlab.com/rostislav.svoboda/games"
-                      ;; ,(format #f "file://%s/dev/games" home)
-                      "https://gitlab.com/guix-gaming-channels/games.git")
-                     ;; Enable signature verification:
-                     (introduction
-                      (make-channel-introduction
-                       ;; The is 1st commit from this repository which can be trusted is:
-                       "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
-                       (openpgp-fingerprint
-                        ;; ... as it was made by some with OpenPGP fingerprint:
-                        "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"
-                        ))))))]))]
-    ;; (format #t "~a extra-channels:; ret:\n\n~a\n\n" m ret)
-    ret
-    ))
-;; (format #t "~a extra-channels: ~a\n" m extra-channels)
-;; (format #t "~a (defined? 'extra-channels): ~a\n" m (defined? 'extra-channels))
+        (channel (name 'guix-gaming-games)
+                 (url
+                  ;; "https://gitlab.com/rostislav.svoboda/games"
+                  ;; ,(format #f "file://%s/dev/games" home)
+                  "https://gitlab.com/guix-gaming-channels/games.git")
+                 ;; Enable signature verification:
+                 (introduction
+                  (make-channel-introduction
+                   ;; The 1st commit from this repository which can be trusted is:
+                   "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
+                   (openpgp-fingerprint
+                    ;; ... as it was made by some with OpenPGP fingerprint:
+                    "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"
+                    ))))))]))
 
 (define (gaming-configuration extra-channels)
   (list
