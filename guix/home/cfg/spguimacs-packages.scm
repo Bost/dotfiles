@@ -46,6 +46,47 @@
 ;; See the *Messages* buffer ~SPC b m~
 (define needed-packages
   (list
+   "emacs-alert"
+   "emacs-annalist"
+   "emacs-autothemer"
+   "emacs-bui"
+   "emacs-epl"
+   "emacs-evil-evilified-state"
+   "emacs-evil-unimpaired"
+   "emacs-evil-visual-mark-mode"
+   "emacs-f"
+   "emacs-gntp"
+   "emacs-help-fns+"
+   "emacs-holy-mode"
+   "emacs-ht"
+   "emacs-hybrid-mode"
+   "emacs-imenu-list"
+   "emacs-inflections"
+   "emacs-lcr"
+   "emacs-log4e"
+   "emacs-loop"
+   "emacs-memoize"
+   "emacs-multiple-cursors"
+   "emacs-package-lint"
+   "emacs-paredit"
+   "emacs-parent-mode"
+   "emacs-parseclj"
+   "emacs-parseedn"
+   "emacs-pfuture"
+   "emacs-pkg-info"
+   "emacs-powerline"
+   "emacs-s"
+   "emacs-sesman"
+   "emacs-shut-up"
+   "emacs-simple-httpd"
+   "emacs-space-doc"
+   "emacs-spacemacs-purpose-popwin"
+   "emacs-spacemacs-whitespace-cleanup"
+   "emacs-tablist"
+   "emacs-treepy"
+   "emacs-vim-powerline"
+   "emacs-yaml"
+
    "emacs-ac-ispell"
    "emacs-ace-jump-helm-line"
    "emacs-ace-link"
@@ -1835,7 +1876,7 @@
    "spacemacs-rolling-release"
    )) ;; installed-and-available-packages
 
-(define not-needed-packages
+(define orphants
   (list
    "emacs-faceup"
    "emacs-deferred"
@@ -1853,9 +1894,10 @@
    general-packages
    (lset-difference
     eqv?
-    (lset-intersection eqv? needed-packages installed-and-available-packages)
-    excluded-packages
-    not-needed-packages
-    )))
+    (lset-intersection eqv? (lset-union eqv? needed-packages orphants)
+                       installed-and-available-packages)
+    excluded-packages)))
+
+(format #t "module evaluated\n")
 
 #;(specifications->manifest spguimacs-packages)
