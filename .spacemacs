@@ -1326,7 +1326,8 @@ before packages are loaded."
   ;; (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
 
   ;; diff-hl - diff hightlights in right gutter as you type
-  ;; (diff-hl-flydiff-mode)
+  ;; (diff-hl-flydiff-mode)    ;; enable
+  (diff-hl-flydiff-mode -1) ;; disable
 
   (setq-default
    ;; Truncate lines in every buffer. Overridden by
