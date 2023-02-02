@@ -2411,27 +2411,20 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (my=end #'dotspacemacs/user-config)
   )
 
-;; TODO `package-directory-list' should be deduplicated. See package.el.gz
-;; ;#autoload
-;; (defcustom package-directory-list
-;;   ;; Defaults are subdirs named "elpa" in the site-lisp dirs.
-;;   (let (result)
-;;     (dolist (f load-path)
-;;       (and (stringp f)
-;;            (equal (file-name-nondirectory f) "site-lisp")
-;;            (push (expand-file-name "elpa" f) result)))
-;;     ;; (nreverse result)
-;;     result
-;;     )
-;;   "List of additional directories containing Emacs Lisp packages.
-;; Each directory name should be absolute.
+;;; `package-directory-list' is list of directories containing packages intended
+;;; for system-wide use. Original value of `package-directory-list' contains
+;;; duplicates.
+(delq nil (delete-dups package-directory-list))
 
-;; These directories contain packages intended for system-wide; in
-;; contrast, `package-user-dir' contains packages for personal use."
-;;   :type '(repeat directory)
-;;   :initialize #'custom-initialize-delay
-;;   :risky t
-;;   :version "24.1")
+;;; Value of `package-directory-list' is:
+;;;   "/home/bost/.guix-home/profile/share/emacs/site-lisp/elpa"
+;;;   "/home/bost/.guix-profile/share/emacs/site-lisp/elpa"
+;;;   "/run/current-system/profile/share/emacs/site-lisp/elpa"
+;;; However none of these directories exit under Guix.
+
+;;; `package-user-dir' - directory containing packages for personal use.
+;;; Value of `package-user-dir' is:
+;;;   "/home/bost/.local/share/spacemacs/elpa/28.2/develop/"
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
