@@ -1,6 +1,3 @@
-;; This is an operating system configuration generated
-;; by the graphical installer.
-
 ;; TODO compare /run/current-system/configuration.scm with
 ;; guix system describe | rg "configuration file" | rg -o "/gnu/.*"
 
@@ -36,11 +33,11 @@ sudo reboot # press <f12> during the reboot and fix the boot order
   #:use-module (common settings))
 
 (use-service-modules
-  cups
-  desktop
-  networking
-  ssh
-  xorg)
+ cups
+ desktop
+ networking
+ ssh
+ xorg)
 
 ;; 'use-package-modules' is unlike the general 'use-modules' specifically for
 ;; packages. Every package module from 'use-package-modules' can be included
@@ -54,7 +51,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
 
 (format #t "user-full-name: ~a\n" user-full-name)
 
-(define operating-system-retval
+(define operating-system-configuration
   (operating-system
    (locale "en_US.utf8")
    (timezone "Europe/Berlin")
@@ -63,6 +60,8 @@ sudo reboot # press <f12> during the reboot and fix the boot order
      "us,de,sk" "altgr-intl,,qwerty"
      #:options '("compose:menu,grp:ctrls_toggle")))
    (host-name host-ecke)
+
+   ;; The list of user accounts ('root' is implicit).
    (users (cons*
            ;; Password for some new <user> must be set by 'sudo passwd <user>'. See
            ;; https://guix.gnu.org/manual/en/html_node/User-Accounts.html
@@ -95,13 +94,17 @@ sudo reboot # press <f12> during the reboot and fix the boot order
             (group "users")
             (home-directory "/home/bost")
             ;; login shell; see also `packages`
+            ;; explicitly define fish / bash:
             ;; (shell (file-append fish "/bin/fish"))
-            ;; explicitly define bash!
             (shell (file-append bash "/bin/bash"))
             (supplementary-groups
              '("wheel" ;; gives access to 'sudo'
                "netdev" "audio" "video" "adbusers")))
            %base-user-accounts))
+
+   ;; Packages installed system-wide.  Users can also install packages
+   ;; under their own account: use 'guix search KEYWORD' to search
+   ;; for packages and 'guix install PACKAGE' to install a package.
    (packages
     (append
      (map specification->package
@@ -142,20 +145,18 @@ sudo reboot # press <f12> during the reboot and fix the boot order
            (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
            (udev-rules-service 'android android-udev-rules
                                #:groups '("adbusers")))
-     (modify-services
-      %desktop-services
-      (guix-service-type
-       config =>
-       (guix-configuration
-        (inherit config)
-        (substitute-urls
-         (append (list "https://substitutes.nonguix.org")
-                 %default-substitute-urls))
-        (authorized-keys
-         ;; The signing-key.pub should be obtained by
-         ;; wget https://substitutes.nonguix.org/signing-key.pub
-         (append (list (local-file "./signing-key.pub"))
-                 %default-authorized-guix-keys)))))))
+     (modify-services %desktop-services
+       (guix-service-type
+        config => (guix-configuration
+                   (inherit config)
+                   (substitute-urls
+                    (append (list "https://substitutes.nonguix.org")
+                            %default-substitute-urls))
+                   (authorized-keys
+                    ;; The signing-key.pub should be obtained by
+                    ;; wget https://substitutes.nonguix.org/signing-key.pub
+                    (append (list (local-file "./signing-key.pub"))
+                            %default-authorized-guix-keys)))))))
 
    ;; see
    ;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
@@ -203,5 +204,6 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    (swap-devices (list (swap-space (target "/swapfile"))))))
 
 (format #t "\n[ecke] evaluated\n")
+
 ;; operating-system (or image) must be returned
-operating-system-retval
+operating-system-configuration
