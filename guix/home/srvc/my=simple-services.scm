@@ -24,6 +24,8 @@
             home-dir-cfg-srvc
             ))
 
+(define m (su:module-name-for-logging))
+
 ;; ;; See https://10years.guix.gnu.org/static/slides/05-wilson.org
 ;; (define (home-xsettingsd-files-service config)
 ;;   (list `(".config/xsettingsd/xsettingsd.conf"
