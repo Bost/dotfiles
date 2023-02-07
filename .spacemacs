@@ -196,6 +196,8 @@ This function should only modify configuration layer settings."
      haskell
      ;; hy ;; hylang - lisp embedded in python
 
+     ;; See helm-map in the
+     ;; ~/.emacs.d/elpa/28.2/develop/helm-core-20230117.1925/helm-core.el
      (helm :variables
            ;; (setq
 
@@ -208,7 +210,32 @@ This function should only modify configuration layer settings."
            ;; helm-display-function 'helm-display-buffer-in-own-frame
 
            ;; nil - use the longest `buffer-name' length found. (Default 20)
+           ;; When in M-x helm-mini ~s-]~ see also:
+           ;; ~C-]~ / M-x helm-ff-run-toggle-basename
+           ;; C-i
+
+           ;; Doesn't work / does nothing
+           ;; (add-to-list 'helm-commands-using-frame #'helm-M-x) ;; (Default nil)
+           ;; (setq helm-commands-using-frame nil) ;; (Default nil)
+
+           ;; (Default ((width . 80) (height . 2)))
+           ;; (setq minibuffer-frame-alist '((minibuffer . only)))
+           ;; (setq minibuffer-frame-alist '((width . 80) (height . 2)))
+           ;; (setq minibuffer-frame-alist '((top . 1) (left . 1) (width . 80) (height . 2)))
+
+           ;; (setq helm-split-window-inside-p t) ;; (Default nil)
+           ;; (setq helm-split-window-inside-p nil) ;; (Default nil)
+
+           ;; https://github.com/emacs-helm/helm/issues/2039#issuecomment-390103697
+           ;; (setq helm-always-two-windows nil) ;; (Default nil)
+           ;; (setq helm-display-buffer-default-height 23) ;; (Default nil)
+           ;; (setq helm-display-buffer-default-height nil) ;; (Default nil)
+           ;; (setq helm-default-display-buffer-functions '(display-buffer-in-side-window))
+
            helm-buffer-max-length nil
+
+           ;; Truncate lines in ‘helm-buffers-list’ when non-nil. (Default t)
+           ;; helm-buffers-truncate-lines nil
 
            ;; helm-display-buffer-width 100 ;; (Default 72)
 
