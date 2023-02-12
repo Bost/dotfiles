@@ -46,6 +46,9 @@
 ;; See the *Messages* buffer ~SPC b m~
 (define needed-packages
   (list
+   "emacs-compat"
+   "emacs-ghub"
+
    "emacs-alert"
    "emacs-annalist"
    "emacs-autothemer"
@@ -526,8 +529,6 @@
   (list
    "emacs-auto-yasnippet"
    "emacs-clojure-snippets"
-   "emacs-auto-yasnippet"
-   "emacs-clojure-snippets"
 
 ;;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
 ;;; https://github.com/kidd/erc-image.el Not really needed.
@@ -590,6 +591,9 @@
 ;; guix package --list-installed='emacs-*' --list-available='emacs-*' | awk '{print "\""$1"\""}'
 (define installed-and-available-packages
   (list
+   "emacs-compat"
+   "emacs-ghub"
+
    "emacs"
    "emacs-2048-game"
    "emacs-4clojure"
