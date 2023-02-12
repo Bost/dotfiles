@@ -18,9 +18,13 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
 
 ;; (format #t "[geek] evaluating module ...\n")
 
-(use-modules (gnu)
-             (nongnu packages linux)
-             (nongnu system linux-initrd))
+(define-module (geek)
+  #:use-module (gnu)
+  #:use-module (gnu system shadow)     ; for user-group; user-account-shell
+  #:use-module (common settings)
+  #:use-module (nongnu packages linux)
+  #:use-module (nongnu system linux-initrd)
+  )
 
 (use-service-modules
  cups

@@ -1,6 +1,6 @@
 ;;; This module is required by #:use-module in some of the scm-bin/*.scm CLI
-;;; utilities. The output of the `format' will also appear in the console such a
-;;; utility is executed.
+;;; utilities. The `(format ...)' output will also appear in the console when
+;;; such a utility is executed.
 
 ;; (format #t "[<home> common settings] evaluating module ...\n")
 (define-module (common settings)

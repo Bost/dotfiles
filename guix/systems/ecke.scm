@@ -8,7 +8,8 @@
 sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems/ecke.scm
 set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda
 udisksctl mount --block-device=(blkid --uuid $UUID)
-sudo cp /media/$USER/$UUID/boot/grub/grub.cfg /tmp/grub.cfg
+;; sudo cp /media/$USER/$UUID/boot/grub/grub.cfg /tmp/
+sudo cp /media/$USER/qubuntu-filesyst/boot/grub/grub.cfg /tmp/
 sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
 ## Match the version number and place it to clipboard:
 ##  Also: grep -oP "(\d{1,}\.)+\d{1,}"
@@ -21,16 +22,18 @@ e /tmp/grub.cfg                    # edit the file
 ## Extract the time and generation number:
 guix system describe | rg current | rg "(\d{2,}:\d{2,})" -o | xsel -bi
 ## <paste the block>
-sudo cp /tmp/grub.cfg /media/$USER/$UUID/boot/grub/grub.cfg
+;; sudo cp /tmp/grub.cfg /media/$USER//boot/grub/grub.cfg
+sudo cp /tmp/grub.cfg /media/$USER/ubuntu-filesyst/boot/grub/
 sudo reboot # press <f12> during the reboot and fix the boot order
 |#
 
-(format #t "[ecke] evaluating ...\n")
+;; (format #t "[ecke] evaluating ...\n")
 
 (define-module (ecke)
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
-  #:use-module (common settings))
+  #:use-module (common settings)
+  )
 
 (use-service-modules
  cups
@@ -49,7 +52,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
  shells   ; for login shell
  )
 
-(format #t "user-full-name: ~a\n" user-full-name)
+;; (format #t "user-full-name: ~a\n" user-full-name)
 
 (define operating-system-configuration
   (operating-system
@@ -205,7 +208,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    ;; See "(guix) operating-system Reference" for more details.
    (swap-devices (list (swap-space (target "/swapfile"))))))
 
-(format #t "\n[ecke] evaluated\n")
+;; (format #t "\n[ecke] evaluated\n")
 
 ;; operating-system (or image) must be returned
 operating-system-configuration
