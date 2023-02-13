@@ -1079,6 +1079,14 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (my=beg #'dotspacemacs/user-init)
+
+  ;; If non-nil then the `spacemacs-buffer/message'-messages appear in the
+  ;; *Messages* buffer. Setting this variable in the `dotspacemacs/user-init'
+  ;; ensures the output of layer-loading processes, ie. from
+  ;; (configuration-layer/load) and (configuration-layer//load)
+  ;; appears there too. (Default nil)
+  ;; (setq init-file-debug t)
+
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
   (setq custom-file (concat
