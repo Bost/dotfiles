@@ -2251,6 +2251,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ("C-s-p"  . my=scheme-insert-log)
                  ;; ("s-;"    . my=racket-toggle-reader-comment-current-sexp)
                  ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
+                 ("s-d"    . geiser-eval-definition)
                  ("s-x"    . geiser-mode-switch-to-repl))
       (bind-chords :map map
                    ("le" . my=scheme-insert-let*)
