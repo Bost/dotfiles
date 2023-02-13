@@ -603,8 +603,7 @@ Example:
 ;;; instead of
 ;;;    (list hello) ;; hint need to add: #:use-module (gnu packages base) #| hello |#
     (map (compose identity list
-;;; TODO what's the difference between specification->package+output and
-;;; specification->package ?
+;;; TODO difference specification->package+output, specification->package ?
                   specification->package+output)
          hp:packages-to-install))
 

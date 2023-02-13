@@ -5,21 +5,22 @@
   #:use-module (guix gexp)
   ;; take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  #:export
-  (
-   channels-scm-filepath
-   fix-leading-dot
-   dotfiles-home
-   any-local-file
-   local-dotfile
-   list-separator-bash
-   bin-dirpath
-   sbin-dirpath
-   scm-bin-dirname
-   scm-bin-dirpath
-   dev
-   )
-  )
+  #:export (
+            channels-scm-filepath
+            fix-leading-dot
+            dotfiles-home
+            any-local-file
+            local-dotfile
+            list-separator-bash
+            bin-dirpath
+            sbin-dirpath
+            scm-bin-dirname
+            scm-bin-dirpath
+            dev
+            ))
+
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
 (define channels-scm-filepath
   (str (basename xdg-config-home) "/guix/channels.scm"))
@@ -85,4 +86,4 @@
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
 (define dev (user-home "/dev"))
 
-(format #t "[fs-utils] module evaluated\n")
+;; (format #t "~a module evaluated\n" m)

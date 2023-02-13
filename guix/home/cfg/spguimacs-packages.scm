@@ -1,8 +1,12 @@
 (define-module (cfg spguimacs-packages)
   #:use-module (srfi srfi-1)
+  #:use-module (utils) ;; partial, m
   #:export (
             spguimacs-packages
             ))
+
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
 (define spacemacs-development-packages
   ;; used by `guix shell ...', specified by run.sh
@@ -35,6 +39,7 @@
    "sed"
    "which"
    ))
+(testsymb 'spacemacs-development-packages)
 
 (define general-packages
   (list
@@ -42,6 +47,7 @@
    "emacs-spacemacs"
    "spacemacs-rolling-release"
    ))
+(testsymb 'general-packages)
 
 ;; See the *Messages* buffer ~SPC b m~
 (define needed-packages
@@ -508,7 +514,8 @@
    "emacs-zenburn-theme"
    "emacs-zonokai-emacs"
    "emacs-zop-to-char"
-   )) ;; needed-packages
+   ))
+(testsymb 'needed-packages)
 
 (define excluded-packages
   ;; (ya)snippet-relates packages cause adding various paths to `yas-snippet-dirs',
@@ -587,9 +594,10 @@
    "emacs-yasnippet"
    "emacs-yasnippet-snippets"
    ))
+(testsymb 'excluded-packages)
 
-;; guix package --list-installed='emacs-*' --list-available='emacs-*' | awk '{print "\""$1"\""}'
-(define installed-and-available-packages
+;; guix package --list-available='^emacs-' | awk '{print "\""$1"\""}'
+(define available-packages
   (list
    "emacs-compat"
    "emacs-ghub"
@@ -1878,30 +1886,43 @@
    "rust-emacs-macros"
    "rust-emacs-module"
    "spacemacs-rolling-release"
-   )) ;; installed-and-available-packages
+   ))
+(testsymb 'available-packages)
 
-(define orphants
+;; Orphan packages according to spguimacs
+(define orphan-packages
   (list
    "emacs-faceup"
    "emacs-deferred"
    "emacs-undercover"
-   "emacs-treeview"
+   "emacs-treeview" ;; installed by emacs-inspector
    "emacs-pg"
    "emacs-finalize"
    "emacs-ivy"
    "emacs-a"
    ))
+(testsymb 'orphan-packages)
+
+;; `=' doesn't work. `eqv?' must be used
+(define (s+ . rest) (apply (partial lset-union eqv?) rest))
+(testsymb 's+)
+(define (s- . rest) (apply (partial lset-difference eqv?) rest))
+(testsymb 's-)
+(define (sx . rest) (apply (partial lset-intersection eqv?) rest))
+(testsymb 'sx)
 
 (define (spguimacs-packages)
-  (lset-union
-   eqv?
-   general-packages
-   (lset-difference
-    eqv?
-    (lset-intersection eqv? (lset-union eqv? needed-packages orphants)
-                       installed-and-available-packages)
-    excluded-packages)))
+  (let [(G general-packages)
+        (N needed-packages)
+        (O orphan-packages)
+        (A available-packages)
+        (E excluded-packages)]
+    (s+ G
+        (s- (sx (s+ N O)
+                A)
+            E))))
+(testsymb 'spguimacs-packages)
 
-(format #t "module evaluated\n")
+;; (format #t "~a module evaluated\n" m)
 
 #;(specifications->manifest spguimacs-packages)

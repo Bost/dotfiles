@@ -239,4 +239,4 @@
    'home-dir-cfg-srvc home-files-service-type home-dir-cfg-srvc-files))
 ;; (format #t "~a (defined? 'home-dir-cfg-srvc:) ~a\n" m (defined? 'home-dir-cfg-srvc))
 
-(format #t "~a module evaluated\n" m)
+;; (format #t "~a module evaluated\n" m)

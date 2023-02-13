@@ -1,6 +1,6 @@
 (define-module (cfg packages)
   #:use-module (srfi srfi-1)
-  #:use-module ((utils) #:prefix pu:)
+  #:use-module (utils)
   #:use-module (cfg spguimacs-packages)
   #:use-module (common settings)
   #:export (
@@ -12,6 +12,9 @@
 
             packages-to-install
             ))
+
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
 (define (packages-from-additional-channels)
   "Packages from additional channels?"
@@ -235,31 +238,43 @@
    "xsel"
    "youtube-dl"
    ))
+(testsymb 'user-profile-packages)
 
 (define packages-to-install
   (cond
-   [(pu:home-lukas-config)
-    (basic-profile-packages)]
-   [(pu:home-ecke-config)
-    (append
-     (basic-profile-packages)
-     (devel-profile-packages)
-     (user-profile-packages)
-     (kde-dependent-packages)
-     (slow-packages)
-     (packages-from-additional-channels)
-     (spguimacs-packages))]
-   [(pu:home-geek-config)
-    (append
-     (basic-profile-packages)
-     (devel-profile-packages)
-     (user-profile-packages)
-     (kde-dependent-packages)
-     (slow-packages)
-     (packages-from-additional-channels)
-     ;; (spguimacs-packages)
-     )]
+   [(home-lukas-config)
+    (begin
+      ;; (format #t "(home-lukas-config)\n")
+      (basic-profile-packages))]
+   [(home-ecke-config)
+    (begin
+      ;; (format #t "(home-ecke-config)\n")
+      (append
+       (basic-profile-packages)
+       (devel-profile-packages)
+       (user-profile-packages)
+       (kde-dependent-packages)
+       (slow-packages)
+       (packages-from-additional-channels)
+       (spguimacs-packages)))]
+   [(home-geek-config)
+    (begin
+      ;; (format #t "(home-geek-config)\n")
+      (append
+       (basic-profile-packages)
+       (devel-profile-packages)
+       (user-profile-packages)
+       (kde-dependent-packages)
+       (slow-packages)
+       (packages-from-additional-channels)
+       ;; (spguimacs-packages)
+       ))]
    [#t
     (error
      (format #f "hostname '~a' must be one of the: ~a\n"
-             (pu:hostname) (string-join hostnames)))]))
+             (hostname) (string-join hostnames)))]))
+(testsymb 'packages-to-install)
+
+(format #t "~a ~a packages-to-install\n" m (length packages-to-install))
+
+;; (format #t "~a module evaluated\n" m)
