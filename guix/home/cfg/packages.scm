@@ -38,16 +38,16 @@
    "audacity" ;; 35.8MiB
    "inkscape" ;; ~93MiB
 
-   ;; rust-1.59.0  121.1MiB
-   ;; rust-1.59.0-cargo  3.2MiB
-   ;; rustc-1.60.0-src.tar.xz  63.6MiB
+   ;; rust downloads (see below) and then it needs to be build:
+   ;;     rust-1.59.0  121.1MiB
+   ;;     rust-1.59.0-cargo  3.2MiB
+   ;;     rustc-1.60.0-src.tar.xz  63.6MiB
    "rust" ;; the 1.60 has to be build
 
    "tectonic" ;; embeddable TeX/LaTeX engine
 
-   ;; texlive-texmf-20210325  3.24GiB
-   ;; "texlive"                 ; may take too long to graft
-   ;; "texlive-latex-pdfpages"  ; may take too long to graft
+   ;; texlive downloads:
+   ;;    texlive-texmf-20210325  3.24GiB
 
    "ungoogled-chromium"
 
@@ -226,6 +226,7 @@
    "xfce4-clipman-plugin"
    "xfce4-netload-plugin" ;; traffic indicator
    "xfce4-notifyd"
+   "xfce4-screensaver"
    "xfce4-screenshooter"
    "xkeyboard-config"
    "xmodmap"
@@ -265,7 +266,7 @@
        (devel-profile-packages)
        (user-profile-packages)
        (kde-dependent-packages)
-       (slow-packages)
+       ;; (slow-packages)
        (packages-from-additional-channels)
        ;; (spguimacs-packages)
        ))]
