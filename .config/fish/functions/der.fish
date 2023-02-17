@@ -1,3 +1,3 @@
-function der --description "mkcd $der"
-    mkcd $der
+function der --description "cd $der"
+    cd $der
 end

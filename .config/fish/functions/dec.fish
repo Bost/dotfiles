@@ -1,3 +1,3 @@
-function dec --description "mkcd $dec"
-    mkcd $dec
+function dec --description "cd $dec"
+    cd $dec
 end

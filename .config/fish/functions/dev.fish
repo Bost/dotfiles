@@ -1,3 +1,3 @@
-function dev --description "mkcd $dev"
-    mkcd $dev
+function dev --description "cd $dev"
+    cd $dev
 end

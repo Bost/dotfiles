@@ -44,6 +44,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module ((cfg packages) #:prefix hp:)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
+  #:use-module (srvc dirs)
   #:use-module ((srvc my=simple-services) #:prefix srvc:)
   ;; See service-file -> with-imported-modules
   #:use-module (scm-bin gcl)
@@ -67,6 +68,16 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (define m (hu:module-name-for-logging))
 (format #t "~a evaluating module ...\n" m)
+
+(define-syntax testsymb
+  (syntax-rules ()
+    ((_ symbol)
+     (begin
+       (let [(module m)]
+         (if (defined? symbol)
+             (format #t "~a ~a defined\n" module symbol)
+             (error (format #f "~a ~a undefined\n" module symbol))))
+       ))))
 
 (define indent "")
 (define indent-inc "   ")
@@ -539,6 +550,7 @@ Example:
    ;; https://github.com/search?q=home-fish-service-type&type=code
    ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
 
+   (service dirs-service-type)
    my=fish-service
    environment-variables-service
    srvc:home-dir-cfg-srvc
@@ -611,6 +623,7 @@ Example:
 ;;; https://issues.guix.gnu.org/40454
 
    (services my=services)))
+(hu:testsymb 'home-env)
 
 ;; TODO put home-config-ecke and system-configuration in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
