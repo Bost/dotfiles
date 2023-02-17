@@ -17,13 +17,17 @@
 ;; (format #t "~a evaluating module ...\n" m)
 
 (define (packages-from-additional-channels)
-  "Packages from additional channels?"
+  "Packages from additional channels?
+Including these packages in the `packages-to-install' causes:
+   error: <package-naae>: unknown package
+when called from the Emacs Geiser REPL by ,use or ,load"
   (list
    "leiningen"
    "babashka"
    "firefox"
    ;; "factorio" ;; temporarily disabled, install it using:
    ;; cd ~/dev/games && guix package --load-path=./ --install=factorio
+   "signal-desktop"
    ))
 
 (define (kde-dependent-packages)
@@ -209,7 +213,6 @@
    "screen"
    "scsh"
    "seahorse"
-   "signal-desktop"
    "spice-vdagent"
    "taglib"
    "texinfo"
