@@ -4,12 +4,6 @@
   #:use-module (cfg spguimacs-packages)
   #:use-module (common settings)
   #:export (
-            basic-profile-packages
-            kde-dependent-packages
-            packages-from-additional-channels
-            slow-packages
-            user-profile-packages
-
             packages-to-install
             ))
 
@@ -36,8 +30,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "konsole"
    "krusader"))
 
-(define (slow-packages)
-  "Packages slow to build, graft, download, etc."
+(define (large-packages)
+  "Large packages, slow to build, graft, download, etc."
   (list
    "audacity" ;; 35.8MiB
    "inkscape" ;; ~93MiB
@@ -50,8 +44,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    "tectonic" ;; embeddable TeX/LaTeX engine
 
-   ;; texlive downloads:
-   ;;    texlive-texmf-20210325  3.24GiB
+   ;; Graphviz to LaTeX converter
+   "dot2tex"
+
+   ;; complete TeX Live distribution
+   "texlive"                 ; may take too long to graft
 
    "ungoogled-chromium"
 
@@ -87,6 +84,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (devel-profile-packages)
   (list
    "emacs"
+   "emacs-next"
+   "emacs-next-pgtk"
    "emacs-with-editor"
    "pinentry" ;; needed to sign commits
    ))
@@ -258,7 +257,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
        (devel-profile-packages)
        (user-profile-packages)
        (kde-dependent-packages)
-       (slow-packages)
+       (large-packages)
        (packages-from-additional-channels)
        (spguimacs-packages)))]
    [(home-geek-config)
@@ -269,7 +268,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
        (devel-profile-packages)
        (user-profile-packages)
        (kde-dependent-packages)
-       ;; (slow-packages)
+       ;; (large-packages)
        (packages-from-additional-channels)
        ;; (spguimacs-packages)
        ))]
