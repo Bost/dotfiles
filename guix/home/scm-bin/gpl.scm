@@ -1,4 +1,4 @@
-(define-module (scm-bin glo)
+(define-module (scm-bin gpl)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (ice-9 popen)
@@ -11,7 +11,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (glo) -s
+-L ./ -e (gpl) -s
 !#
 
 |#

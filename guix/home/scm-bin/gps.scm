@@ -1,4 +1,4 @@
-(define-module (scm-bin ghog)
+(define-module (scm-bin gps)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (ice-9 popen)
@@ -8,7 +8,7 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (ghog) -s
+-L ./ -e (gps) -s
 !#
 
 |#
@@ -22,7 +22,9 @@
       exec
       (lambda (remote)
         (append
-         (list "git" "push" "--follow-tags" "--verbose" remote)
+         (list "git" "push" "--follow-tags"
+               ;; "--verbose"
+               remote)
          (cdr args)))
       car))
     (partial filter (lambda (remote-url)

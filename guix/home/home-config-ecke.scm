@@ -138,7 +138,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
     ("user_full_name"    . ,hs:user-full-name)
     ("user_mail_address" . ,hs:user-mail-address)
 
-    ;; used by ghog glog
+    ;; used by gps, gpl
     ("remotes" . ,(string-join (list "origin" "gitlab")
                                list-separator))
 
@@ -436,34 +436,33 @@ Example:
        ;; empty list
        (list)])))
    (list
-    (service-file #:program-name "prw"  #:chmod-params "rw"
+    (service-file #:program-name "prw"
+                  #:chmod-params "rw"
                   #:scheme-file-name "chmod")
-    (service-file #:program-name "px"   #:chmod-params "x"
+    (service-file #:program-name "px"
+                  #:chmod-params "x"
                   #:scheme-file-name "chmod")
-    (service-file #:program-name "ext"     #:desc "extract-uncompress"
+    (service-file #:program-name "ext" #:desc "extract-uncompress"
                   #:scheme-file-name "extract")
-    (service-file #:program-name "c"       #:desc "batcat"
+    (service-file #:program-name "c"   #:desc "batcat"
                   #:scheme-file-name "bat")
-    (service-file #:program-name "f"       #:desc "find-alternative")
-    (service-file #:program-name "gcl"     #:desc "git-clone")
-    (service-file #:program-name "gre"     #:desc "git-remote")
-    (service-file #:program-name "gfe"     #:desc "git-fetch")
-    (service-file #:program-name "gco"     #:desc "git-checkout")
-    (service-file #:program-name "gcod"
-                  #:desc "git-checkout-previous-branch")
-    (service-file #:program-name "gcom"
-                  #:desc "git-checkout-master")
-    (service-file #:program-name "gg"      #:desc "git-gui")
-    (service-file #:program-name "ghog"
-                  #:desc "git-push-to-remotes")
-    (service-file #:program-name "gk"
-                  #:desc "git-repository-browser")
-    (service-file #:program-name "glo"
-                  #:desc "git-fech-and-rebase-from-origin")
-    (service-file #:program-name "gs"      #:desc "git-status")
-    (service-file #:program-name "gtg"     #:desc "git-tag")
-    (service-file #:program-name "l"
-                  #:desc "list-directory-contents"
+    (service-file #:program-name "f"   #:desc "find-alternative")
+    (service-file #:program-name "gcl" #:desc "git-clone")
+    (service-file #:program-name "gre" #:desc "git-remote")
+    (service-file #:program-name "gfe" #:desc "git-fetch")
+    (service-file #:program-name "gco" #:desc "git-checkout")
+    (service-file #:program-name "gcod"#:desc "git-checkout-prev-branch")
+    (service-file #:program-name "gcom"#:desc "git-checkout-master")
+    (service-file #:program-name "gg"  #:desc "git-gui")
+    ;; former ghog
+    (service-file #:program-name "gps" #:desc "git-push")
+    (service-file #:program-name "gk"  #:desc "git-repo-browser")
+    ;; former glo
+    (service-file #:program-name "gpl" #:desc "git-pull--rebase")
+    (service-file #:program-name "gs"  #:desc "git-status")
+    (service-file #:program-name "gtg" #:desc "git-tag")
+    ;; FIXME `l' doesn't list 7Sketches.toc
+    (service-file #:program-name "l"   #:desc "list-directory-contents"
                   #:scheme-file-name "ls")
     (service-file #:program-name "lf"
                   #:desc "list-directory-contents-with-full-paths")
