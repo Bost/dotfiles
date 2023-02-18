@@ -2180,15 +2180,21 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
          (dev (getenv "dev"))
          (guix-checkout-dir (format "%s/guix" dev)))
     (with-eval-after-load #'geiser-guile
+      ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
       (mapcar
        (-partial #'add-to-list 'geiser-guile-load-path)
-              (list
-               ;; The goal is to have utils.scm on the geiser-guile-load-path
-               (format "%s/guix/home" dotf)
-               guix-checkout-dir
-               (format "%s/guix-packages/packages" dev))))
+       (list
+        guix-checkout-dir
+        (format "%s/nonguix" dev)
+        (format "%s/guix/home" dotf)
+        (format "%s/guix/systems" dotf)
+;;; Excluded it b/c:
+;;; WARNING: compilation of /home/bost/dev/rde-andrew-tropin/guix.scm failed
+        ;; (format "%s/rde-andrew-tropin" dev)
+        (format "%s/guix-packages/packages" dev))))
     ;; (with-eval-after-load 'yasnippet
-    ;;   (add-to-list #'yas-snippet-dirs (concat guix-checkout-dir "/etc/snippets")))
+    ;;   (add-to-list #'yas-snippet-dirs
+    ;;                (concat guix-checkout-dir "/etc/snippets")))
 
     ;; TODO extend the GuixOS with a service providing user full-name and email
     ;; or parse (one of):
@@ -2196,11 +2202,13 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
     ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
 
     (setq
+     ;; Location for geiser-history.guile and geiser-history.racket. (Default
+     ;; "~/.geiser_history")
+     ;; geiser-repl-history-filename "..."
      user-full-name         (getenv "user_full_name")
      user-mail-address      (getenv "user_mail_address")
      copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
 
-    ;; Assuming the Guix checkout is in ~/src/guix.
     (load-file (concat guix-checkout-dir "/etc/copyright.el"))
     ;; check if the copyright is up to date M-x copyright-update.
     ;; automatically add copyright after each buffer save
