@@ -991,7 +991,7 @@ It should only modify the values of Spacemacs settings."
    ;;
    ;; - In a shell-script buffer: it reports 'while: End of buffer' even if
    ;;   there's some comment following the cursor
-   dotspacemacs-smart-closing-parenthesis t
+   dotspacemacs-smart-closing-parenthesis nil
 
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
@@ -1661,6 +1661,9 @@ Some binding snippets / examples:
     ;; since this function changes 'evil-state' to 'lisp'.
     ;; ~ESC~ / M-x evil-lisp-state/quit
     (global-unset-key (kbd "C-z"))
+
+    ;; See also the value of `dotspacemacs-smart-closing-parenthesis'
+    ;; (unbind-key ")" term-mode-map)
 
     (bind-chords :map global-map
                  ("KK" . my=switch-to-previous-buffer)
