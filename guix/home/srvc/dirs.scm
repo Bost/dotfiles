@@ -34,16 +34,6 @@
 
 (define m (su:module-name-for-logging))
 
-(define-syntax testsymb
-  (syntax-rules ()
-    ((_ symbol)
-     (begin
-       (let [(module m)]
-         (if (defined? symbol)
-             (format #t "~a ~a defined\n" module symbol)
-             (error (format #f "~a ~a undefined\n" module symbol))))
-       ))))
-
 ;;;
 ;;; user directories.
 ;;;
@@ -79,7 +69,7 @@
   (dev (string "$HOME/dev") "Default development directory.")
   (der (string "$HOME/der") "Development directory for Racket project.")
   (dec (string "$HOME/dec") "Development directory for Clojure(Script) projects."))
-(testsymb 'dirs-configuration)
+(su:testsymb 'dirs-configuration)
 
 ;; (define (dirs-files-service config)
 ;;   `(("user-dirs.conf"
@@ -105,13 +95,13 @@
         (display "Creating user directories...")
         (map ensure-dir '#$dirs)
         (display " done\n"))))
-(testsymb 'dirs-activation-service)
+(su:testsymb 'dirs-activation-service)
 
 (define (last-extension-or-cfg config extensions)
   "Picks configuration value from last provided extension.  If there
 are no extensions use configuration instead."
   (or (and (not (null? extensions)) (last extensions)) config))
-(testsymb 'last-extension-or-cfg)
+(su:testsymb 'last-extension-or-cfg)
 
 (define dirs-service-type
   (service-type (name 'dirs)
@@ -133,13 +123,13 @@ are no extensions use configuration instead."
                 (extend last-extension-or-cfg)
                 (description "Configure user directories. To disable a
 directory, point it to the $HOME.")))
-(testsymb 'dirs-service-type)
+(su:testsymb 'dirs-service-type)
 
 (define (generate-dirs-documentation)
   (generate-documentation
    `((dirs-configuration
      ,dirs-configuration-fields))
    'dirs-configuration))
-(testsymb 'generate-dirs-documentation)
+(su:testsymb 'generate-dirs-documentation)
 
 ;; (format #t "~a module evaluated\n" m)

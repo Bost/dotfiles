@@ -83,11 +83,9 @@
   (syntax-rules ()
     ((_ symbol)
      (begin
-       ;; (let [(module (module-name-for-logging))]
-       ;;   (if (defined? symbol)
-       ;;       (format #t "~a ~a defined\n" module symbol)
-       ;;       (error (format #f "~a ~a undefined\n" module symbol))))
-       ))))
+       (let [(module (module-name-for-logging))]
+         (unless (defined? symbol)
+           (error (format #f "~a ~a undefined\n" module symbol))))))))
 
 ;; (define f 42)
 ;; (testsymb 'f)
