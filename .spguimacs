@@ -2005,7 +2005,7 @@ Some binding snippets / examples:
                   ("s-<prior>"   . evil-scroll-page-up)
                   ("s-<next>"    . evil-scroll-page-down)
                   ))
-     '(term-raw-map)))
+     '(term-raw-map term-mode-map)))
 
   (bind-keys :map dired-mode-map
              ("<f5>"        . my=revert-buffer-no-confirm)
