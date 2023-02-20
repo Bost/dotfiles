@@ -278,6 +278,4 @@ when called from the Emacs Geiser REPL by ,use or ,load"
              (hostname) (string-join hostnames)))]))
 (testsymb 'packages-to-install)
 
-(format #t "~a ~a packages-to-install\n" m (length packages-to-install))
-
 ;; (format #t "~a module evaluated\n" m)

@@ -613,10 +613,15 @@ Example:
 ;;;    (list (specification->package+output "hello"))
 ;;; instead of
 ;;;    (list hello) ;; hint need to add: #:use-module (gnu packages base) #| hello |#
-    (map (compose identity list
+    ((compose
+      (lambda (pkgs)
+        (format #t "~a ~a packages in the home-profile\n" m (length pkgs))
+        ;; (format #t "~a\n~a\n" m pkgs)
+        pkgs)
+      (hu:partial map (compose identity list
 ;;; TODO difference specification->package+output, specification->package ?
-                  specification->package+output)
-         hp:packages-to-install))
+                               specification->package+output)))
+     hp:packages-to-install))
 
 ;;; TODO see [PATCH] services: Add udev-rules-service helper.
 ;;; https://issues.guix.gnu.org/40454
