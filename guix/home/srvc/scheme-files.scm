@@ -166,10 +166,14 @@ Example:
     (service-file #:program-name "gs"  #:desc "git-status")
     (service-file #:program-name "gtg" #:desc "git-tag")
     ;; FIXME `l' doesn't list 7Sketches.toc
-    (service-file #:program-name "l"   #:desc "list-directory-contents"
+    (service-file #:program-name "l"   #:desc "list-dir-contents"
                   #:scheme-file-name "ls")
     (service-file #:program-name "lf"
                   #:desc "list-directory-contents-with-full-paths")
+    (service-file #:program-name "lt"  #:desc "list-dir-sorted-by-time-descending"
+                  #:scheme-file-name "lt")
+    (service-file #:program-name "lT"  #:desc "list-dir-sorted-by-time-ascending"
+                  #:scheme-file-name "lT")
     )))
 
 ;; (format #t "~a module evaluated\n" m)
