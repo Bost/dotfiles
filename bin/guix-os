@@ -1,10 +1,17 @@
 #!/bin/sh
 
-isoFile=~/virt-machines/guix-system-install-1.4.0.x86_64-linux.iso
-gd=~/scm-bin
-# qemu-vm is managed by guix-home
-scmFile=$gd/qemu-vm
-guild compile --load-path=$gd -W0 $scmFile 1>/dev/null
-# guile doesn't have the long version of '-L' for '--load-path'
-echo sudo guile -L $gd -e main $scmFile --user=$USER --iso-file=$isoFile $@
-     sudo guile -L $gd -e main $scmFile --user=$USER --iso-file=$isoFile $@
+qcow=~/virt-machines/guix-system-vm-image-1.4.0.x86_64-linux.qcow2
+
+# when deployed:
+ld=~/scm-bin
+scm=$ld/scm-bin/qemu-vm     # managed by guix-home
+
+# for development:
+ld=$dotf/guix/home
+scm=$ld/scm-bin/qemu-vm.scm
+
+## guile doesn't have the long version of '-L' for '--load-path'
+set -x  # Print commands and their arguments as they are executed.
+sudo guile -e '(@ (scm-bin qemu-vm) main)' $scm --user=$USER --qcow2-file=$qcow $@
+# { retval="$?"; set +x; } 2>/dev/null
+
