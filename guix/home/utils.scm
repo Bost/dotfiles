@@ -23,8 +23,10 @@
   ;; delete-duplicates
   #:use-module (srfi srfi-1)
   ;; #:use-module (guix build utils) ;; invoke - not needed
+  #:use-module (ice-9 pretty-print)
   #:export (
             module-name-for-logging
+            pretty-print->string
             testsymb
 
             dbg
@@ -79,13 +81,20 @@
     (partial module-name))
    (current-module)))
 
+(define (pretty-print->string sexp)
+  (let [(port (open-output-string))]
+    (pretty-print sexp port)
+    (let* [(ret (get-output-string port))]
+      (close-output-port port)
+      ret)))
+
 (define-syntax testsymb
   (syntax-rules ()
     ((_ symbol)
      (begin
        (let [(module (module-name-for-logging))]
          (unless (defined? symbol)
-           (error (format #f "~a ~a undefined\n" module symbol))))))))
+           (error (format #f "~a Symbol undefined: ~a" module symbol))))))))
 
 ;; (define f 42)
 ;; (testsymb 'f)
@@ -197,7 +206,7 @@ TODO what's the clojure variant?"
 (string-split-whitespace
  "gcl  /some/other/path/
   xxx
-		yyy
+    yyy
 /some/path")
 
 (define* (exec-system* #:rest args)
