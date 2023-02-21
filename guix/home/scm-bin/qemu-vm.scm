@@ -5,6 +5,7 @@
   #:export (main))
 
 ;;;;;; Code duplication ;;;;;;
+;;; TODO look at other scripts in the scm-bin, how they use the `utils' module.
 
 ;;;;;; begin: from utils.scm
 (define (partial fun . args)
@@ -126,6 +127,7 @@ Usage:
 " ssh vmSSHPort (user-localhost vmUser))))
 
 (define* (start-vm user #:key qcow2File (isoFile #f))
+  "TODO Auto-detect qcow2File / isoFile according to file extension"
   ((compose
     exec
     (lambda (args)

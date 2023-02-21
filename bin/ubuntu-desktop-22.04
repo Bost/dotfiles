@@ -1,18 +1,8 @@
 #!/bin/sh
 # Download verification:
 # echo "b85286d9855f549ed9895763519f6a295a7698fb9c5c5345811b3eefadfb6f07 *ubuntu-22.04-desktop-amd64.iso" | shasum -a 256 --check
-iso=~/virt-machines/ubuntu-22.04-desktop-amd64.iso
-qcow=~/virt-machines/ubuntu-22.04-desktop-amd64.iso.qcow2
 
-# when deployed:
-ld=~/scm-bin
-scm=$ld/scm-bin/qemu-vm     # managed by guix-home
-
-# for development:
-ld=$dotf/guix/home
-scm=$ld/scm-bin/qemu-vm.scm
-
-set -x  # Print commands and their arguments as they are executed.
-sudo guile -L $ld -e '(@ (scm-bin qemu-vm) main)' $scm \
-     --user=$USER --iso-file=$iso --qcow2-file=$qcow $@
-# { retval="$?"; set +x; } 2>/dev/null
+run-qemu \
+     --iso-file=$HOME/virt-machines/ubuntu-22.04-desktop-amd64.iso \
+     --qcow2-file=$HOME/virt-machines/ubuntu-22.04-desktop-amd64.iso.qcow2 \
+     $@

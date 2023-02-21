@@ -1,17 +1,4 @@
 #!/bin/sh
-
-qcow=~/virt-machines/guix-system-vm-image-1.4.0.x86_64-linux.qcow2
-
-# when deployed:
-ld=~/scm-bin
-scm=$ld/scm-bin/qemu-vm     # managed by guix-home
-
-# for development:
-ld=$dotf/guix/home
-scm=$ld/scm-bin/qemu-vm.scm
-
-## guile doesn't have the long version of '-L' for '--load-path'
-set -x  # Print commands and their arguments as they are executed.
-sudo guile -e '(@ (scm-bin qemu-vm) main)' $scm --user=$USER --qcow2-file=$qcow $@
-# { retval="$?"; set +x; } 2>/dev/null
-
+run-qemu \
+    --qcow2-file=$HOME/virt-machines/guix-system-vm-image-1.4.0.x86_64-linux.qcow2 \
+    $@

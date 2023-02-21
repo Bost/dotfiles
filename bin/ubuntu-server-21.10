@@ -1,16 +1,5 @@
 #!/bin/sh
-iso=~/virt-machines/ubuntu-21.10-live-server-amd64.iso
-qcow=~/virt-machines/ubuntu-21.10-live-server-amd64.iso.qcow2
-
-# when deployed:
-ld=~/scm-bin
-scm=$ld/scm-bin/qemu-vm     # managed by guix-home
-
-# for development:
-ld=$dotf/guix/home
-scm=$ld/scm-bin/qemu-vm.scm
-
-set -x  # Print commands and their arguments as they are executed.
-sudo guile -L $ld -e '(@ (scm-bin qemu-vm) main)' $scm \
-     --user=$USER --iso-file=$iso --qcow2-file=$qcow $@
-# { retval="$?"; set +x; } 2>/dev/null
+run-qemu \
+    --iso-file=$HOME/virt-machines/ubuntu-21.10-live-server-amd64.iso \
+    --qcow-file=$HOME/virt-machines/ubuntu-21.10-live-server-amd64.iso.qcow2 \
+$@
