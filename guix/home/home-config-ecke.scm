@@ -41,7 +41,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; #:use-module (bost utils)
 
   #:use-module ((fs-utils) #:prefix hf:)
-  #:use-module ((cfg packages) #:prefix hp:)
+  #:use-module ((cfg packages all) #:prefix hp:)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
   #:use-module (srvc dirs)

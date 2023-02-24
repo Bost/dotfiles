@@ -1,4 +1,4 @@
-(define-module (cfg packages-new)
+(define-module (cfg packages all-new)
   #:use-module (srfi srfi-1)
 
   #:use-module (gnu packages shellutils)

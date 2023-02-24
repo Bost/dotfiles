@@ -1,7 +1,7 @@
-(define-module (cfg packages)
+(define-module (cfg packages all)
   #:use-module (srfi srfi-1)
   #:use-module (utils)
-  #:use-module (cfg spguimacs-packages)
+  #:use-module (cfg packages spguimacs all)
   #:use-module (common settings)
   #:export (
             packages-to-install

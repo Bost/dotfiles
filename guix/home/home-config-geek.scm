@@ -28,7 +28,6 @@ guix shell --development guix help2man git strace --pure
 ,load "/home/bost/dev/dotfiles.dev/guix/home/home-config-geek.scm"
 (load "/home/bost/dev/dotfiles.dev/guix/home/home-config-geek.scm")
 
-TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 |#
 ;; (format #t "[home-config-geek] evaluating module ...\n")
 
@@ -41,7 +40,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; #:use-module (bost utils)
 
   #:use-module ((fs-utils) #:prefix hf:)
-  #:use-module ((cfg packages) #:prefix hp:)
+  #:use-module ((cfg packages all) #:prefix hp:)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
   #:use-module (srvc dirs)
@@ -439,27 +438,15 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;; TODO see also the xfce4 chromium launcher -> command
 ;;; /home/bost/.guix-profile/bin/chromium %U
 
-
-;;; TODO make it support inferior packages
-;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
-;;; TODO packages should accept expressions like the -e, e.g.
-;;;   guix package                        -e '(@ (bost packages maven) maven)'
-;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
    (packages
-;;; TODO following warning appears:
-;;;     hint: Did you forget `(use-modules (gnu services))'?
-;;; when using
-;;;    (list (specification->package+output "hello"))
-;;; instead of
-;;;    (list hello) ;; hint need to add: #:use-module (gnu packages base) #| hello |#
-    (map (compose identity list
-;;; TODO what's the difference between specification->package+output and
-;;; specification->package ?
-                  specification->package+output)
-         hp:packages-to-install))
-
-;;; TODO see [PATCH] services: Add udev-rules-service helper.
-;;; https://issues.guix.gnu.org/40454
+    ((compose
+      (lambda (pkgs)
+        (format #t "~a ~a packages in the home-profile\n" m (length pkgs))
+        ;; (format #t "~a\n~a\n" m pkgs)
+        pkgs)
+      (hu:partial map (compose identity list
+                               specification->package+output)))
+     hp:packages-to-install))
 
    (services my=services)))
 
