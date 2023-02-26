@@ -33,7 +33,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; (format #t "[home-config-ecke] evaluating module ...\n")
 
 (define-module (home-config-ecke)
-  ;; #:use-module (cfg packages-new)
   #:use-module ((common settings) #:prefix hs:)
   #:use-module ((utils) #:prefix hu:)
 
@@ -41,6 +40,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; #:use-module (bost utils)
 
   #:use-module ((fs-utils) #:prefix hf:)
+  ;; #:use-module ((cfg packages all-new) #:prefix hp:)
   #:use-module ((cfg packages all) #:prefix hp:)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
@@ -55,7 +55,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module (gnu home services shells)
   ;; simple-service
   #:use-module (gnu home services)
-  ;; take remove delete-duplicates append-map etc.
+  ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
   ;; pretty-print
   ;; #:use-module (ice-9 pretty-print)
@@ -66,17 +66,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   )
 
 (define m (hu:module-name-for-logging))
-(format #t "~a evaluating module ...\n" m)
-
-(define-syntax testsymb
-  (syntax-rules ()
-    ((_ symbol)
-     (begin
-       (let [(module m)]
-         (if (defined? symbol)
-             (format #t "~a ~a defined\n" module symbol)
-             (error (format #f "~a ~a undefined\n" module symbol))))
-       ))))
 
 (define indent "")
 (define indent-inc "   ")
@@ -428,7 +417,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
-(define home-env
+(define (home-env)
   (home-environment
 ;;; TODO why are the channels listed here???
 ;;; $ guix package --profile=/home/bost/.config/guix/current --list-installed
@@ -450,38 +439,17 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;; TODO see also the xfce4 chromium launcher -> command
 ;;; /home/bost/.guix-profile/bin/chromium %U
 
-
-;;; TODO make it support inferior packages
-;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
-;;; TODO packages should accept expressions like the -e, e.g.
-;;;   guix package                        -e '(@ (bost packages maven) maven)'
-;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
-   (packages
-;;; TODO following warning appears:
-;;;     hint: Did you forget `(use-modules (gnu services))'?
-;;; when using
-;;;    (list (specification->package+output "hello"))
-;;; instead of
-;;;    (list hello) ;; hint need to add: #:use-module (gnu packages base) #| hello |#
-    ((compose
-      (lambda (pkgs)
-        (format #t "~a ~a packages in the home-profile\n" m (length pkgs))
-        ;; (format #t "~a\n~a\n" m pkgs)
-        pkgs)
-      (hu:partial map (compose identity list
-;;; TODO difference specification->package+output, specification->package ?
-                               specification->package+output)))
-     hp:packages-to-install))
-
 ;;; TODO see [PATCH] services: Add udev-rules-service helper.
 ;;; https://issues.guix.gnu.org/40454
 
+;;; TODO home-git-configuration
+
+   (packages hp:packages-to-install)
    (services my=services)))
 (hu:testsymb 'home-env)
 
 ;; TODO put home-config-ecke and system-configuration in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
-(format #t "~a module evaluated\n" m)
-
-home-env
+(when (hu:home-ecke-config)
+  (home-env))

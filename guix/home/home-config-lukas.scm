@@ -32,7 +32,6 @@ guix shell --development guix help2man git strace --pure
 ;; (format #t "[home-config-lukas] evaluating module ...\n")
 
 (define-module (home-config-lukas)
-  ;; #:use-module (cfg packages-new)
   #:use-module ((common settings) #:prefix hs:)
   #:use-module ((utils) #:prefix hu:)
 
@@ -40,6 +39,7 @@ guix shell --development guix help2man git strace --pure
   ;; #:use-module (bost utils)
 
   #:use-module ((fs-utils) #:prefix hf:)
+  ;; #:use-module ((cfg packages all-new) #:prefix hp:)
   #:use-module ((cfg packages all) #:prefix hp:)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc my=fish)
@@ -65,7 +65,6 @@ guix shell --development guix help2man git strace --pure
   )
 
 (define m (hu:module-name-for-logging))
-(format #t "~a evaluating module ...\n" m)
 
 (define indent "")
 (define indent-inc "   ")
@@ -416,43 +415,14 @@ guix shell --development guix help2man git strace --pure
 
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
-(define home-env
+(define (home-env)
   (home-environment
-;;; TODO why are the channels listed here???
-;;; $ guix package --profile=/home/bost/.config/guix/current --list-installed
-;;; guix     0321cee out /gnu/store/ada4wp2h2xqmrmz448xyp6nzli6drwsv-guix-0321ceef0
-;;; nonguix  9563de3 out /gnu/store/1qz2whvn763yhxs5gdrsf9zqip3zspc2-nonguix
-;;; babashka 31edde3 out /gnu/store/k64hd1q6gv3aa9r8arrdlaspzxy68444-babashka
-
-;;; `guix package --list-profiles` doesn't know about / ignores the
-;;; package-profile of the home-environment (~/.guix-home/profile/manifest)
-;;; see also /run/current-system/profile
-
-;;; $ guix package --search-paths --profile=~/.guix-home/profile -I | sort > /tmp/packages-guix-home.txt
-;;; $ guix package --search-paths --profile=~/.guix-home/profile -I fish
-;;; fish	3.5.1	out	/gnu/store/vj3kqlk3w7x6gqqb3qzl4jxq34xvy3q2-fish-3.5.1
-
-;;; $ guix package --search-paths --profile=~/.guix-profile -I | sort > /tmp/packages-guix-profile.txt
-;;; $ guix package --search-paths --profile=~/.guix-profile -I fish
-
-;;; TODO see also the xfce4 chromium launcher -> command
-;;; /home/bost/.guix-profile/bin/chromium %U
-
-   (packages
-    ((compose
-      (lambda (pkgs)
-        (format #t "~a ~a packages in the home-profile\n" m (length pkgs))
-        ;; (format #t "~a\n~a\n" m pkgs)
-        pkgs)
-      (hu:partial map (compose identity list
-                               specification->package+output)))
-     hp:packages-to-install))
-
+   (packages hp:packages-to-install)
    (services my=services)))
+(hu:testsymb 'home-env)
 
 ;; TODO put home-config-ecke and system-configuration in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
-(format #t "~a module evaluated\n" m)
-
-home-env
+(when (hu:home-lukas-config)
+  (home-env))

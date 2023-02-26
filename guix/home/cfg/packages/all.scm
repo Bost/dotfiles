@@ -1,8 +1,13 @@
 (define-module (cfg packages all)
-  #:use-module (srfi srfi-1)
-  #:use-module (utils)
   #:use-module (cfg packages spguimacs all)
   #:use-module (common settings)
+  #:use-module (gnu packages)
+  #:use-module (guix channels)
+  #:use-module (guix inferior)
+  ;; first take remove delete-duplicates append-map etc.
+  #:use-module (srfi srfi-1)
+  #:use-module (utils)
+
   #:export (
             packages-to-install
             ))
@@ -204,7 +209,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "qemu"
 ;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
 ;;; This will happen automatically if `search-notes' is a proper Guix package.
-   "racket"
+   ;; "racket"
    "readline"
    "recutils"
    "ripgrep"
@@ -243,39 +248,108 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'user-profile-packages)
 
+(define inferior-racket
+  ;; An inferior representing the above revision.
+  (inferior-for-channels
+   (list (channel
+          (name 'guix)
+          (url "https://git.savannah.gnu.org/git/guix.git")
+          (commit
+           ;; "<predecessor-sha1>"
+           "e1290c0d43cb2916a5908f15b3211911ee257968")))))
+(testsymb 'inferior-racket)
+
 (define packages-to-install
-  (cond
-   [(home-lukas-config)
-    (begin
-      ;; (format #t "(home-lukas-config)\n")
-      (basic-profile-packages))]
-   [(home-ecke-config)
-    (begin
-      ;; (format #t "(home-ecke-config)\n")
-      (append
-       (basic-profile-packages)
-       (devel-profile-packages)
-       (user-profile-packages)
-       (kde-dependent-packages)
-       (large-packages)
-       (packages-from-additional-channels)
-       (spguimacs-packages)))]
-   [(home-geek-config)
-    (begin
-      ;; (format #t "(home-geek-config)\n")
-      (append
-       (basic-profile-packages)
-       (devel-profile-packages)
-       (user-profile-packages)
-       (kde-dependent-packages)
-       ;; (large-packages)
-       (packages-from-additional-channels)
-       ;; (spguimacs-packages)
-       ))]
-   [#t
-    (error
-     (format #f "hostname '~a' must be one of the: ~a\n"
-             (hostname) (string-join hostnames)))]))
+;;; TODO make it support inferior packages
+;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
+;;; TODO packages should accept expressions like the -e, e.g.
+;;;   guix package                        -e '(@ (bost packages maven) maven)'
+;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
+
+;;; TODO following warning appears:
+;;;     hint: Did you forget `(use-modules (gnu services))'?
+;;; when using
+;;;    (list (specification->package+output "hello"))
+;;; instead of
+;;;    (list hello) ;; hint need to add: #:use-module (gnu packages base) #| hello |#
+    ((compose
+      (lambda (pkgs)
+        (format #t "~a ~a packages to install\n" m (length pkgs))
+        ;; (format #t "~a\n~a\n" m pkgs)
+        pkgs)
+      (partial append
+                  (list
+                   ;; in the $dotf/guix/home/cfg/packages/all.scm
+                   ;; comment out "racket" in the (user-profile-packages)
+                   (first (lookup-inferior-packages inferior-racket "racket")))
+                  )
+      ;; (packages->manifest
+      ;;  (list
+      ;;   (first (lookup-inferior-packages inferior "racket"))))
+      (lambda (pkgs)
+        ;; The spguimacs-packages should be installed only on the ecke-machine,
+        ;; i.e. no need to install any emacs-packages on any other machine
+        (if (home-ecke-config)
+            (append (list
+                     ;; emacs-ac-ispell
+                     ;; emacs-ac-php
+                     ;; emacs-ace-jump-helm-line
+                     ;; emacs-afternoon-theme
+                     ;; emacs-cfrs
+                     ;; emacs-cider-eval-sexp-fu
+                     ;; emacs-font-lock+
+                     ;; emacs-xcscope
+
+                     (@ (bost packages emacs-xyz) emacs-ac-ispell)
+                     (@ (bost packages emacs-xyz) emacs-ac-php)
+                     (@ (bost packages emacs-xyz) emacs-ace-jump-helm-line)
+                     (@ (bost packages emacs-xyz) emacs-afternoon-theme)
+                     (@ (bost packages emacs-xyz) emacs-cfrs)
+                     (@ (bost packages emacs-xyz) emacs-cider-eval-sexp-fu)
+                     (@ (bost packages emacs-xyz) emacs-font-lock+)
+                     (@ (bost packages emacs-xyz) emacs-xcscope))
+                    pkgs)
+            pkgs))
+      (partial map (compose identity list
+;;; TODO difference specification->package+output, specification->package ?
+                               specification->package+output)))
+     (cond
+        [(home-lukas-config)
+         (begin
+           ;; (format #t "(home-lukas-config)\n")
+           (basic-profile-packages))]
+        [(home-ecke-config)
+         (begin
+           ;; (format #t "(home-ecke-config)\n")
+           (append
+            (basic-profile-packages)
+            (devel-profile-packages)
+            (user-profile-packages)
+            (kde-dependent-packages)
+            (large-packages)
+            (packages-from-additional-channels)
+            (spguimacs-packages)))]
+        [(home-geek-config)
+         (begin
+           ;; (format #t "(home-geek-config)\n")
+           (append
+            (basic-profile-packages)
+            (devel-profile-packages)
+            (user-profile-packages)
+            (kde-dependent-packages)
+            ;; (large-packages)
+            (packages-from-additional-channels)
+            ;; (spguimacs-packages)
+            ))]
+        [#t
+         (error
+          (format #f "hostname '~a' must be one of the: ~a\n"
+                  (hostname) (string-join hostnames)))])
+    ))
 (testsymb 'packages-to-install)
+
+(define (use-and-load-in-repl)
+  (use-modules (cfg packages all))
+  (load (string-append (getenv "dotf") "/guix/home/cfg/packages/all.scm")))
 
 ;; (format #t "~a module evaluated\n" m)
