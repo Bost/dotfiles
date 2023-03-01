@@ -143,6 +143,7 @@ Usage:
         ;;
         ;; With shared clipboard and SSH access:
         "qemu-system-x86_64"
+        "-vga" "virtio"  ;; video card type
         "-smp" (vmCPUCores user))
        (if isoFile (list "-cdrom" isoFile) (list))
        (list
