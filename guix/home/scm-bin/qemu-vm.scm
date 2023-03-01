@@ -155,20 +155,19 @@ Usage:
         "-enable-kvm" "-m" vmRAM
         "-device" "virtio-blk,drive=myhd"
         "-drive" (string-append "if=none,file=" qcow2File ",id=myhd")
-        ;; spice remote-viewer
-        #;
+;;; Access the VM with spice remote-viewer. With clipboard sharing. See `usage'
+        ;;  remote-viewer spice://localhost:5930 & disown
         (string-join
-        (list
-        "-device"
-        "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
-        "-chardev" "spicevmc,name=vdagent,id=vdagent"
-        "-device"
-        (string-append
-        "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
-        ",name=com.redhat.spice.0")
-        "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
-        "-vga" "qxl"
-        ) " ")
+         (list
+          "-device"
+          "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
+          "-chardev" "spicevmc,name=vdagent,id=vdagent"
+          "-device"
+          (string-append
+           "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
+           ",name=com.redhat.spice.0")
+          "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
+          ) " ")
         ;; "&" "disown" ;; TODO where is disown located???
         )))
     exec
