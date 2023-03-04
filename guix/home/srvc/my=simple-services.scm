@@ -94,7 +94,7 @@
 
 (define (gaming-configuration extra-channels)
   (list
-   (local-dotfile "/" (su:str (basename xdg-config-home)
+   (local-dotfile "/" (su:str (basename su:xdg-config-home)
                               "/guix-gaming-channels/games.scm"))
    (let* [(lst (car (syntax->datum
                      (call-with-input-file channels-scm-filepath
