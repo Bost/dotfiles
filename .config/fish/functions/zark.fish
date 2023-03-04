@@ -1,5 +1,3 @@
-function zark
-  set cmd cd $dec/zark
-  echo $cmd
-  eval $cmd
+function zark --describe "cd $dec/zark"
+    cd $dec/zark
 end

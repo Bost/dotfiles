@@ -1,5 +1,3 @@
-function dotf
-  set cmd cd $dotf
-  echo $cmd
-  eval $cmd
+function dotf --description "cd $dotf"
+    cd $dotf
 end

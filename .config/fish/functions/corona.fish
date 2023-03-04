@@ -1,5 +1,3 @@
-function corona
-  set cmd cd $dec/corona_cases
-  echo $cmd
-  eval $cmd
+function corona --describe "cd $dec/corona_cases"
+    cd $dec/corona_cases
 end

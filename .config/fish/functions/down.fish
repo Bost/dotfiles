@@ -1,5 +1,3 @@
-function down
-  set cmd cd ~/downloads
-  echo $cmd
-  eval $cmd
+function down --description "cd ~/Downloads"
+    cd ~/Downloads
 end

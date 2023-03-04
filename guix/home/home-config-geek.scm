@@ -18,22 +18,18 @@ guix home --allow-downgrades -L $dxh reconfigure $dxh/home-config-geek.scm
 guix shell --development guix help2man git strace --pure
 ./pre-inst-env guix repl
 
-(getcwd)
-(add-to-load-path
- (hu:str hu:home "/dev/guix"))
-(add-to-load-path
- (hu:str hu:home "/dev/dotfiles.dev/guix/home"))
 ;; see 'include', which unlike 'load', also works within nested lexical contexts
 ;; can't use the `~'
-,load "/home/bost/dev/dotfiles.dev/guix/home/home-config-geek.scm"
 (load "/home/bost/dev/dotfiles.dev/guix/home/home-config-geek.scm")
-
 |#
 ;; (format #t "[home-config-geek] evaluating module ...\n")
 
 (define-module (home-config-geek)
   #:use-module ((common settings) #:prefix hs:)
-  #:use-module ((utils) #:prefix hu:)
+  #:use-module (utils)
+
+  ;; gcl
+  #:use-module (scm-bin gcl)
 
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
@@ -64,7 +60,7 @@ guix shell --development guix help2man git strace --pure
   ;; #:use-module (gnu home services version-control)
   )
 
-(define m (hu:module-name-for-logging))
+(define m (module-name-for-logging))
 
 (define indent "")
 (define indent-inc "   ")
@@ -74,11 +70,11 @@ guix shell --development guix help2man git strace --pure
     ;; Warn about deprecated Guile features
     ("GUILE_WARN_DEPRECATED" . "detailed")
     ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
-    ("CC" . ,(hu:user-home "/.guix-home/profile/bin/gcc"))
+    ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
 
     ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
     ;; See https://github.com/phiresky/ripgrep-all
-    ;; ("PATH" . ,(string-join (hu:user-home "/bin/ripgrep_all") path))
+    ;; ("PATH" . ,(string-join (user-home "/bin/ripgrep_all") path))
 
     ;; Remedy against:
     ;; $ lein uberjar
@@ -98,12 +94,12 @@ guix shell --development guix help2man git strace --pure
     ;; Setting the locale correctly:
     ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
     ;; When 'setlocale: LC_ALL: cannot change locale'
-    ;; ("GUIX_LOCPATH" . ,(hu:user-home "/.guix-profile/lib/locale"))
+    ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
 
     ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
     ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
     ("CORONA_ENV_TYPE" . "devel")
-    ("REPL_USER" . ,hu:user)
+    ("REPL_USER" . ,user)
 
     ;; needed by `help`; e.g. `help expand`
     ("BROWSER" . "firefox")
@@ -111,16 +107,18 @@ guix shell --development guix help2man git strace --pure
     ;; for `flatpak run ...`
     ("XDG_DATA_DIRS" . ,(string-join
                          (list
-                          (hu:user-home "/.local/share/flatpak/exports/share")
+                          (user-home "/.local/share/flatpak/exports/share")
                           "/var/lib/flatpak/exports/share"
                           (getenv "XDG_DATA_DIRS"))))
 
     ("dev"   . ,hf:dev)
-    ("dec"   . ,(hu:user-home "/dec"))
-    ("der"   . ,(hu:user-home "/der"))
-    ("bin"   . ,(hu:user-home hf:bin-dirpath))
-    ("cheat" . ,(hu:str hf:dev "/cheat"))
-    ("dotf"  . ,(hu:str hf:dev "/dotfiles"))
+    ("dec"   . ,(user-home "/dec"))
+    ("der"   . ,(user-home "/der"))
+    ("bin"   . ,(user-home hf:bin-dirpath))
+    ("cheat" . ,(str hf:dev "/cheat"))
+    ("dotf"  . ,(str hf:dev "/dotfiles"))
+    ("dgx"   . ,(str hf:dev "/guix"))
+    ("dgl"   . ,(str hf:dev "/guile"))
 
     ("user_full_name"    . ,hs:user-full-name)
     ("user_mail_address" . ,hs:user-mail-address)
@@ -136,16 +134,16 @@ guix shell --development guix help2man git strace --pure
     ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
 
     ;; My own scripts and guix-home profile take precedence over $PATH.
-    ("PATH" . ,(string-join (list (hu:str hu:home hf:scm-bin-dirpath)
-                                  (hu:str hu:home hf:bin-dirpath)
+    ("PATH" . ,(string-join (list (str home hf:scm-bin-dirpath)
+                                  (str home hf:bin-dirpath)
 ;;; The paths to bin and sbin for guix-home profile are inserted here.
                                   "$PATH"
                                   "/usr/local/bin"
 ;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
 ;;; See also ~/.npm, ~/.npmrc, ~/node_modules
-                                  #;(hu:str hu:home "/.npm-packages"))
+                                  #;(str home "/.npm-packages"))
                             list-separator))))
-(hu:testsymb 'environment-vars)
+(testsymb 'environment-vars)
 
 (define environment-variables-service
   (simple-service
@@ -206,19 +204,19 @@ guix shell --development guix help2man git strace --pure
 (define (obtain-and-setup dest-dir repo)
   (let* [(gitlab "git@gitlab.com:rostislav.svoboda")
          (github "git@github.com:Bost")
-         (dest-dir-repo (hu:str hu:home dest-dir repo))
+         (dest-dir-repo (str home dest-dir repo))
          (repo-url (if #f ; (url? repo)
                        repo
-                       (hu:str gitlab repo)))]
+                       (str gitlab repo)))]
     (gcl "--origin=gitlab" repo-url dest-dir-repo)
     (exec-system*
-     "git" (hu:str "--git-dir=" dest-dir-repo "/.git") "remote add github"
-     (hu:str github repo))))
+     "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
+     (str github repo))))
 
 ;; Existing projects won't be overridden
 ;; (map (lambda (project)
 ;;        (let ((dest-dir (car project)))
-;;          (map (hu:partial obtain-and-setup dest-dir) (cdr project))))
+;;          (map (partial obtain-and-setup dest-dir) (cdr project))))
 ;;      projects)
 (format #t "done\n")
 
@@ -234,23 +232,23 @@ guix shell --development guix help2man git strace --pure
 
 (define (obtain-and-setup-heroku dest-dir repo)
   (let* ((heroku "https://git.heroku.com/")
-         (dest-dir-repo (hu:str hu:home dest-dir repo))
+         (dest-dir-repo (str home dest-dir repo))
          (repo-url (if #f ; (url? repo)
                        repo
-                       (hu:str heroku repo ".git"))))
+                       (str heroku repo ".git"))))
     (gcl "--origin=vojto" repo-url dest-dir-repo)))
 
 ;; Existing projects won't be overridden
 ;; (map (lambda (project)
 ;;        (let ((dest-dir (car project)))
-;;          (map (hu:partial obtain-and-setup-heroku dest-dir) (cdr project))))
+;;          (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
 ;;      projects-heroku)
 (format #t "done\n")
 
 (define (shell-config-file shell name content)
   (plain-file
    name
-   (hu:str
+   (str
     "\n" "#### home-" shell "-configuration -> " name ": begin"
     "\n"
     content
@@ -264,13 +262,13 @@ guix shell --development guix help2man git strace --pure
 ;;   ;; fish-config-base and fish-config-dotfiles are also defined in the my=fish
 ;;   (define* (fish-config-base #:rest args)
 ;;     "(fish-config-base) ; => \".config/fish\""
-;;     (apply hu:str (basename xdg-config-home) "/fish" args))
+;;     (apply str (basename xdg-config-home) "/fish" args))
 
 ;;   (define* (fish-config-dotfiles #:rest args)
 ;;     "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
 ;; Note:
 ;; (format #t \"~a\" \"foo\") doesn't work"
-;;     (apply hu:str (hf:dotfiles-home) "/" (fish-config-base) args))
+;;     (apply str (hf:dotfiles-home) "/" (fish-config-base) args))
 
 ;; ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
 ;; ;;; when the 'guix home reconfigure ...' fails or is interrupted.
@@ -278,10 +276,10 @@ guix shell --development guix help2man git strace --pure
 ;; ;;; `fish_variables' must be editable
 ;;   (let* [(filepath "/fish_variables")
 ;;          (src (fish-config-dotfiles filepath))
-;;          (dst (hu:user-home "/" (fish-config-base filepath)))
+;;          (dst (user-home "/" (fish-config-base filepath)))
 ;;          (dstdir (dirname dst))]
 ;;     (unless (file-exists? dstdir)
-;;       (let [(indent (hu:str indent indent-inc))]
+;;       (let [(indent (str indent indent-inc))]
 ;;         (format #t "~a(mkdir ~a) ... " indent src dstdir)
 ;;         (let ((retval (mkdir dstdir)))
 ;;           (format #t "retval: ~a\n" retval)
@@ -289,7 +287,7 @@ guix shell --development guix help2man git strace --pure
 ;; ;;; TODO continuation: executing the block only if the dstdir was created.
 ;;           retval)))
 ;; ;;; TODO is this sexp is not executed because of lazy-evaluation?
-;;     (let [(indent (hu:str indent indent-inc))]
+;;     (let [(indent (str indent indent-inc))]
 ;;       (format #t "~a(copy-file ~a ~a) ... " indent src dst)
 ;;       (let ((retval (copy-file src dst)))
 ;;         (format #t "retval: ~a\n" retval)
@@ -336,7 +334,7 @@ guix shell --development guix help2man git strace --pure
       (list
        (bash-config-file
         "bashrc"
-        (hu:str
+        (str
 ;;; Also https://github.com/oh-my-fish/plugin-foreign-env
 ;;; 1. ~/.guix-home/setup-environment does:
 ;;;     source ~/.guix-home/profile/etc/profile"
@@ -363,7 +361,7 @@ guix shell --development guix help2man git strace --pure
       (list
        (bash-config-file
         "bash-profile"
-        (hu:str
+        (str
          "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))
        ;; (local-file ".bashrc" "bash_profile") should work too
        ;; (local-file
@@ -419,10 +417,10 @@ guix shell --development guix help2man git strace --pure
   (home-environment
    (packages (hp:packages-to-install))
    (services my=services)))
-(hu:testsymb 'home-env)
+(testsymb 'home-env)
 
 ;; TODO put home-config-geek and system-configuration in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
-(when (hu:home-geek-config)
+(when (home-geek-config)
   (home-env))
