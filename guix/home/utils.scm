@@ -211,7 +211,10 @@ TODO what's the clojure variant?"
 
 (define* (exec-system* #:rest args)
   "Execute system command and returns its ret-code. E.g.:
-(exec-system* \"echo\" \"bar\" \"baz\")"
+(exec-system* \"echo\" \"bar\" \"baz\") ;; =>
+$ (echo bar baz)
+bar baz
+$9 = 0 ;; return code"
   ((compose
     (partial apply system*)
     dbg-exec
@@ -312,7 +315,7 @@ Usage:
       (begin
         (format #t \"~a\\n\" (error-command-failed))
         *unspecified*)))"
-  ;; ,use (guix build utils) contains `invoke'
+  ;; ,use (guix build utils) ;; contains `invoke'
   ;; `invoke' does `(apply system* program args)'; `system*' waits for the program
   ;; to finish, The command is executed using fork and execlp.
 

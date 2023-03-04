@@ -157,6 +157,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "inxi"
    "ispell"
    "jmtpfs"
+   "jq" ;; json formatting
    "libavc1394"
    "libavif"
    "libconfini"

@@ -180,11 +180,12 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (format #t "~a obtaining projects ... " m)
 ;; See https://gitlab.com/guile-git/guile-git.git
 ;; Guile bindings to libgit2, to manipulate repositories of the Git.
-(define projects (list))
-;; (define projects
-;;   (list
+
+(define projects
+  (list
 ;;    (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"
-;;                       "/morse" "/utils" "/clj-time" "/cljplot"))
+;;                       "/morse" "/utils" "/clj-time" "/cljplot"
+;;                       "/zark"))
 ;;    (cons "/der" (list "/search-notes" "/racket-koans"
 ;;                       ;; "/vesmir" is in the projects-heroku list
 ;;                       "/heroku-buildpack-racket"))
@@ -200,7 +201,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; ;;;   git remote add origin https://git.savannah.gnu.org/git/guix.git
 ;; ;;;   git fetch --tags origin
 ;;             ;;;; (cons "/guile" "https://git.savannah.gnu.org/git/guix.git")
-;;                  "/notes" "/dotfiles"))))
+;;                  "/notes" "/dotfiles"))
+   ))
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
