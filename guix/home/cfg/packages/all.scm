@@ -290,25 +290,58 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         ;; The spguimacs-packages should be installed only on the ecke-machine,
         ;; i.e. no need to install any emacs-packages on any other machine
         (if (home-ecke-config)
-            (append (list
-                     ;; emacs-ac-ispell
-                     ;; emacs-ac-php
-                     ;; emacs-ace-jump-helm-line
-                     ;; emacs-afternoon-theme
-                     ;; emacs-cfrs
-                     ;; emacs-cider-eval-sexp-fu
-                     ;; emacs-font-lock+
-                     ;; emacs-xcscope
+            (append
+             (list
+              ;; Won't work probably
+              ;; emacs-eziam-theme-emacs
+              ;; emacs-lsp-python-ms
+              ;; emacs-moe-theme
+              ;; emacs-slim-mode
+              ;; emacs-zop-to-char
+              ;; emacs-font-utils
+              ;; emacs-lush
 
-                     (@ (bost packages emacs-xyz) emacs-ac-ispell)
-                     (@ (bost packages emacs-xyz) emacs-ac-php)
-                     (@ (bost packages emacs-xyz) emacs-ace-jump-helm-line)
-                     (@ (bost packages emacs-xyz) emacs-afternoon-theme)
-                     (@ (bost packages emacs-xyz) emacs-cfrs)
-                     (@ (bost packages emacs-xyz) emacs-cider-eval-sexp-fu)
-                     (@ (bost packages emacs-xyz) emacs-font-lock+)
-                     (@ (bost packages emacs-xyz) emacs-xcscope))
-                    pkgs)
+              (@ (bost packages emacs-xyz) emacs-eziam-theme-emacs) ;; doesn't work
+              (@ (bost packages emacs-xyz) emacs-lsp-python-ms)
+              (@ (bost packages emacs-xyz) emacs-moe-theme)
+              (@ (bost packages emacs-xyz) emacs-slim-mode)
+              (@ (bost packages emacs-xyz) emacs-zop-to-char)
+              (@ (bost packages emacs-xyz) emacs-font-utils)
+              (@ (bost packages emacs-xyz) emacs-lush) ;; doesn't work
+
+              ;; emacs-column-enforce-mode
+              ;; emacs-pippel
+              ;; emacs-railscasts-theme
+              ;; emacs-color-theme-sanityinc-tomorrow
+              ;; emacs-gruvbox
+              ;; emacs-sphinx-doc
+
+              (@ (bost packages emacs-xyz) emacs-column-enforce-mode)
+              (@ (bost packages emacs-xyz) emacs-pippel)
+              (@ (bost packages emacs-xyz) emacs-railscasts-theme)
+              (@ (bost packages emacs-xyz) emacs-color-theme-sanityinc-tomorrow) ;; doesn't work
+              (@ (bost packages emacs-xyz) emacs-gruvbox) ;; doesn't work
+              (@ (bost packages emacs-xyz) emacs-sphinx-doc)
+
+              ;; emacs-ac-ispell
+              ;; emacs-ac-php
+              ;; emacs-ace-jump-helm-line
+              ;; emacs-afternoon-theme
+              ;; emacs-cfrs
+              ;; emacs-cider-eval-sexp-fu
+              ;; emacs-font-lock+
+              ;; emacs-xcscope
+
+              (@ (bost packages emacs-xyz) emacs-ac-ispell)
+              (@ (bost packages emacs-xyz) emacs-ac-php)
+              (@ (bost packages emacs-xyz) emacs-ace-jump-helm-line)
+              (@ (bost packages emacs-xyz) emacs-afternoon-theme)
+              (@ (bost packages emacs-xyz) emacs-cfrs)
+              (@ (bost packages emacs-xyz) emacs-cider-eval-sexp-fu)
+              (@ (bost packages emacs-xyz) emacs-font-lock+)
+              (@ (bost packages emacs-xyz) emacs-xcscope)
+              )
+             pkgs)
             pkgs))
       (partial map (compose identity list
 ;;; TODO difference specification->package+output, specification->package ?
@@ -328,7 +361,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (kde-dependent-packages)
             (large-packages)
             (packages-from-additional-channels)
-            (spguimacs-packages)))]
+            (spguimacs-packages)
+            ))]
         [(home-geek-config)
          (begin
            ;; (format #t "(home-geek-config)\n")
