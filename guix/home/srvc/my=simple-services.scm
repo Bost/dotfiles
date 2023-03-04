@@ -110,11 +110,8 @@
               channels-scm-filepath
               #;(scheme-file "channels.scm" (sexp->gexp sexp))
               (local-file
-               (let* [(tmpfile (tmpnam))
-                      (port
-                       ;; create temporary file
-                       ;; (mkstemp! (string-copy "/tmp/myfile-XXXXXX"))
-                       (open-output-file tmpfile))]
+               (let* [(tmpfile (su:mktmpfile))
+                      (port (open-output-file tmpfile))]
                  ;; save the channel configuration to a temporary file
                  (pretty-print sexp port)
                  (close-port port)
@@ -146,11 +143,8 @@
                       channels-scm-filepath
                       ;; (scheme-file "channels.scm" (sexp->gexp sexp))
                       (local-file
-                       (let* [(tmpfile (tmpnam))
-                              (port
-                               ;; create temporary file
-                               #;(mkstemp! (string-copy "/tmp/myfile-XXXXXX"))
-                               (open-output-file tmpfile))]
+                       (let* [(tmpfile (su:mktmpfile))
+                              (port (open-output-file tmpfile))]
                          ;; save the channel configuration to a temporary file
                          (pretty-print sexp port)
                          (close-port port)

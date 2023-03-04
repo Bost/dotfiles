@@ -64,6 +64,8 @@
             analyze-pids-call/cc
             compute-cmd
             def*
+
+            mktmpfile
             ))
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
@@ -465,4 +467,13 @@ Usage:
 (define (home-ecke-config) (equal? (hostname) host-ecke))
 (define (home-geek-config) (equal? (hostname) host-geek))
 
+(define (mktmpfile)
+  ;; (tmpnam) could be used instead of all of this, however I get deprecation
+  ;; warning sometimes
+  ((compose
+    port-filename
+    mkstemp!
+    ;; prevent the 'string is read-only ...' error
+    string-copy)
+   "/tmp/myfile-XXXXXX"))
 ;; (format #t "[utils] module evaluated\n")
