@@ -260,7 +260,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            "e1290c0d43cb2916a5908f15b3211911ee257968")))))
 (testsymb 'inferior-racket)
 
-(define packages-to-install
+(define (packages-to-install)
 ;;; TODO make it support inferior packages
 ;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
 ;;; TODO packages should accept expressions like the -e, e.g.

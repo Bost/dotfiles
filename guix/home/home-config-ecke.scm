@@ -446,7 +446,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 ;;; TODO home-git-configuration
 
-   (packages hp:packages-to-install)
+   (packages (hp:packages-to-install))
    (services my=services)))
 (hu:testsymb 'home-env)
 

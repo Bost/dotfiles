@@ -417,7 +417,7 @@ guix shell --development guix help2man git strace --pure
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
 (define (home-env)
   (home-environment
-   (packages hp:packages-to-install)
+   (packages (hp:packages-to-install))
    (services my=services)))
 (hu:testsymb 'home-env)
 
