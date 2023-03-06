@@ -25,6 +25,7 @@
   ;; #:use-module (guix build utils) ;; invoke - not needed
   #:use-module (ice-9 pretty-print)
   #:export (
+            last
             module-name-for-logging
             pretty-print->string
             testsymb
@@ -74,6 +75,8 @@
 ;; (use-service-modules desktop xorg)
 ;; (use-package-modules certs)
 ;; (use-package-modules shells)
+
+(define (last lst) (car (reverse lst)))
 
 (define (module-name-for-logging)
   ((compose
