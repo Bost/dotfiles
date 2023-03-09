@@ -1924,9 +1924,15 @@ Some binding snippets / examples:
 
   (defun enable-hyper-super-modifiers-linux-x ()
     (interactive)
-    ;; on nowadays linux, <windows> key is usually configured to Super
+    ;; On nowadays linux, ~<windows>~ key is usually configured to Super
 
-    ;; menu key as hyper (for H-s release <menu> key before pressing 's')
+    ;; Menu key as hyper. Examples:
+    ;; * ~H-s-d~:
+    ;;   1. Press ~<menu>~ and release it.
+    ;;   2. Press simultaneously ~<windows>~ and ~d~
+    ;; * ~H-s-<menu>~:
+    ;;   1. Press ~<menu>~ and release it.
+    ;;   2. Press simultaneously ~<windows>~ and ~<menu>~
     (define-key key-translation-map [menu] #'event-apply-hyper-modifier) ;H-
     ;; (define-key key-translation-map [apps] #'event-apply-hyper-modifier)
 
@@ -1947,7 +1953,7 @@ Some binding snippets / examples:
      ))
 
   (defun enable-hyper-super-modifiers ()
-    (let ( (frame (framep (selected-frame))))
+    (let ((frame (framep (selected-frame))))
       (cond
        ((memq frame '(w32 win32))
         (enable-hyper-super-modifiers-win32))
@@ -1959,17 +1965,26 @@ Some binding snippets / examples:
         (message "%s %s %s"
                  "[enable-hyper-super-modifiers]"
                  "No enabler implemented for the frame:" frame))))
-
+    ;; I.e. ~C-c h d~ is ~H-d~ i.e.:
+    ;;   1. press and release ~<menu>~
+    ;;   2. press ~d~
+    ;; What following does mean?:
     ;; you can always use "C-c h" as 'hyper modifier, even in Linux console or DOS
     (define-key key-translation-map (kbd "C-c h") #'event-apply-hyper-modifier)
     (define-key key-translation-map (kbd "C-c s") #'event-apply-super-modifier)
     (define-key key-translation-map (kbd "C-c a") #'event-apply-alt-modifier))
 
   (enable-hyper-super-modifiers)
-  ;; this doesn't work:
-  (define-key key-translation-map (kbd "H-3") (kbd "•")) ; bullet
 
-  (my=eval-bind-keys-and-chords)        ; call using ~s-<kp-add>~ or ~s-+~
+  ;; works but won't work in isearch
+  (global-set-key                 (kbd "H-5") (lambda () (interactive) (insert "•")))
+  (define-key key-translation-map (kbd "H-6") (kbd "↑")) ;; Error: H-6 is undefined
+  ;; works
+  (define-key key-translation-map (kbd "<pause> u <down>") (kbd "↓"))
+  ;; swap keys
+  ;; (define-key key-translation-map (kbd "<f11>") (kbd "<f12>"))
+
+  (my=eval-bind-keys-and-chords) ;; bound to ~s-<kp-add>~ or ~s-+~
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
@@ -2194,7 +2209,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
              ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp))
 
   (bind-keys :map org-mode-map
-             ("<menu>" . org-latex-export-to-pdf))
+             ("H-<menu>" . org-latex-export-to-pdf)) ;; ~<menu>~ pressed twice
 
   (bind-keys :map prog-mode-map
              ;; M-/  M-x hippie-expand
@@ -2208,7 +2223,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (bind-keys :map LaTeX-mode-map
-                         ("<menu>" . latex/build))))
+                         ("H-<menu>" . latex/build)))) ;; ~<menu>~ pressed twice
 
   ;; Setup for Hacking on Guix and Scheme Code
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup

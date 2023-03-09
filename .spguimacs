@@ -1094,7 +1094,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq init-file-debug t)
 
   ;; Don't download archive-contents of the gnu, melpa, nongnu
-  (setq my=retrieve-package-archives nil)
+  ;; (setq my=retrieve-package-archives nil)
+  (setq my=retrieve-package-archives t)
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
@@ -1936,14 +1937,24 @@ Some binding snippets / examples:
                  "[enable-hyper-super-modifiers]"
                  "No enabler implemented for the frame:" frame))))
 
+    ;; I.e. ~C-c h d~ is ~H-d~ i.e.:
+    ;;   1. press and release ~<menu>~
+    ;;   2. press ~d~
+    ;; What following does mean?:
     ;; you can always use "C-c h" as 'hyper modifier, even in Linux console or DOS
     (define-key key-translation-map (kbd "C-c h") #'event-apply-hyper-modifier)
     (define-key key-translation-map (kbd "C-c s") #'event-apply-super-modifier)
     (define-key key-translation-map (kbd "C-c a") #'event-apply-alt-modifier))
 
   (enable-hyper-super-modifiers)
-  ;; this doesn't work:
-  (define-key key-translation-map (kbd "H-3") (kbd "•")) ; bullet
+
+  ;; works but won't work in isearch
+  (global-set-key                 (kbd "H-5") (lambda () (interactive) (insert "•")))
+  (define-key key-translation-map (kbd "H-6") (kbd "↑")) ;; Error: H-6 is undefined
+  ;; works
+  (define-key key-translation-map (kbd "<pause> u <down>") (kbd "↓"))
+  ;; swap keys
+  ;; (define-key key-translation-map (kbd "<f11>") (kbd "<f12>"))
 
   (my=eval-bind-keys-and-chords)        ; call using ~s-<kp-add>~ or ~s-+~
 
@@ -2170,7 +2181,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
              ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp))
 
   (bind-keys :map org-mode-map
-             ("<menu>" . org-latex-export-to-pdf))
+             ("H-<menu>" . org-latex-export-to-pdf)) ;; ~<menu>~ pressed twice
 
   (bind-keys :map prog-mode-map
              ;; M-/  M-x hippie-expand
@@ -2184,7 +2195,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (bind-keys :map LaTeX-mode-map
-                         ("<menu>" . latex/build))))
+                         ("H-<menu>" . latex/build)))) ;; ~<menu>~ pressed twice
 
   ;; Setup for Hacking on Guix and Scheme Code
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
