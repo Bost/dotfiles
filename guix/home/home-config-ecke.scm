@@ -420,23 +420,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
 (define (home-env)
   (home-environment
-;;; TODO why are the channels listed here???
-;;; $ guix package --profile=/home/bost/.config/guix/current --list-installed
-;;; guix     0321cee out /gnu/store/ada4wp2h2xqmrmz448xyp6nzli6drwsv-guix-0321ceef0
-;;; nonguix  9563de3 out /gnu/store/1qz2whvn763yhxs5gdrsf9zqip3zspc2-nonguix
-;;; babashka 31edde3 out /gnu/store/k64hd1q6gv3aa9r8arrdlaspzxy68444-babashka
-
-;;; `guix package --list-profiles` doesn't know about / ignores the
-;;; package-profile of the home-environment (~/.guix-home/profile/manifest)
-;;; see also /run/current-system/profile
-
-;;; $ guix package --search-paths --profile=~/.guix-home/profile -I | sort > /tmp/packages-guix-home.txt
-;;; $ guix package --search-paths --profile=~/.guix-home/profile -I fish
-;;; fish	3.5.1	out	/gnu/store/vj3kqlk3w7x6gqqb3qzl4jxq34xvy3q2-fish-3.5.1
-
-;;; $ guix package --search-paths --profile=~/.guix-profile -I | sort > /tmp/packages-guix-profile.txt
-;;; $ guix package --search-paths --profile=~/.guix-profile -I fish
-
 ;;; TODO see also the xfce4 chromium launcher -> command
 ;;; /home/bost/.guix-profile/bin/chromium %U
 
