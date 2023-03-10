@@ -29,6 +29,7 @@
             module-name-for-logging
             pretty-print->string
             testsymb
+            testsymb-trace
 
             dbg
             dbg-exec
@@ -78,6 +79,9 @@
 
 (define (last lst) (car (reverse lst)))
 
+(define (partial fun . args)
+  (lambda x (apply fun (append args x))))
+
 (define (module-name-for-logging)
   ((compose
     (partial format #f "[~a]")
@@ -95,14 +99,26 @@
 
 (define-syntax testsymb
   (syntax-rules ()
-    ((_ symbol)
+    [(_ symbol)
      (begin
        (let [(module (module-name-for-logging))]
          (unless (defined? symbol)
-           (error (format #f "~a Symbol undefined: ~a" module symbol))))))))
+           (error (format #f "~a Symbol undefined: ~a" module symbol)))))]))
 
-;; (define f 42)
-;; (testsymb 'f)
+(define-syntax testsymb-trace
+  (syntax-rules ()
+    [(_ symbol)
+     (begin
+       (let [(module (module-name-for-logging))]
+         (if (defined? symbol)
+             (format #t "~a Symbol defined: ~a\n" module symbol)
+             (error (format #f "~a Symbol undefined: ~a" module symbol)))))]))
+
+(define (test-testsymb)
+  (define f 42)
+  (testsymb 'f)
+  (testsymb-trace 'f)
+  )
 
 ;;; testsymb doesn't work in the let-syntax
 ;; (let [(ff 42)] (testsymb 'ff))
@@ -164,9 +180,6 @@ TODO what's the clojure variant?"
   (cond ((null? x) '())
         ((pair? x) (append (flatten (car x)) (flatten (cdr x))))
         (else (list x))))
-
-(define (partial fun . args)
-  (lambda x (apply fun (append args x))))
 
 (define (dbg prm)
   "`pk', i.e. `peek' can be used instead of this function"
@@ -479,4 +492,9 @@ Usage:
     ;; prevent the 'string is read-only ...' error
     string-copy)
    "/tmp/myfile-XXXXXX"))
+
+(define (repl)
+  (load "/home/bost/dev/dotfiles/guix/home/fs-utils.scm")
+  )
+
 ;; (format #t "[utils] module evaluated\n")

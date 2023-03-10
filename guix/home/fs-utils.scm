@@ -86,4 +86,7 @@
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
 (define dev (user-home "/dev"))
 
+(define (repl)
+  (load "/home/bost/dev/dotfiles/guix/home/fs-utils.scm")
+  )
 ;; (format #t "~a module evaluated\n" m)
