@@ -39,7 +39,7 @@ guix shell --development guix help2man git strace --pure
   ;; #:use-module ((cfg packages all-new) #:prefix hp:)
   #:use-module ((cfg packages all) #:prefix hp:)
   ;; #:use-module (cfg mcron)
-  #:use-module (srvc my=fish)
+  #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
   #:use-module ((srvc home-dir-cfg) #:prefix srvc:)
@@ -260,7 +260,7 @@ guix shell --development guix help2man git strace --pure
   (shell-config-file "bash" name content))
 
 ;; (begin
-;;   ;; fish-config-base and fish-config-dotfiles are also defined in the my=fish
+;;   ;; fish-config-base and fish-config-dotfiles are also defined in the (srvc fish)
 ;;   (define* (fish-config-base #:rest args)
 ;;     "(fish-config-base) ; => \".config/fish\""
 ;;     (apply str (basename xdg-config-home) "/fish" args))
@@ -386,7 +386,7 @@ guix shell --development guix help2man git strace --pure
    ;; https://github.com/search?q=home-fish-service-type&type=code
    ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
 
-   my=fish-service
+   fish-service
    environment-variables-service
    srvc:home-dir-cfg-srvc
    scheme-files-service

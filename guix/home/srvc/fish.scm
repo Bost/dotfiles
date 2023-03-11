@@ -1,5 +1,4 @@
-(format #t "[my=fish] evaluating module ...\n")
-(define-module (srvc my=fish)
+(define-module (srvc fish)
   ;; See service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (gnu services)
@@ -13,9 +12,11 @@
   #:use-module (guix packages)
   #:use-module (ice-9 match)
   #:export (
-            my=fish-service
-            m2=fish-service
+            fish-service
             ))
+
+(define m (module-name-for-logging))
+(format #t "~a evaluating module ...\n" m)
 
 (define indent "")
 (define indent-inc "   ")
@@ -75,7 +76,7 @@ Note:
                    #:recursive? #t)))
    lst))
 
-(define (my=serialize-fish-aliases field-name val)
+(define (serialize-fish-aliases field-name val)
   ;; (format #t "[serialize-fish-aliases] field-name: ~a; val: ~a\n" field-name val)
   #~(string-append
      #$@(map (match-lambda
@@ -84,7 +85,7 @@ Note:
                (_ ""))
              val)))
 
-(define (my=serialize-fish-abbreviations field-name val)
+(define (serialize-fish-abbreviations field-name val)
   ;; (format #t "[serialize-fish-abbreviations] field-name: ~a; val: ~a\n" field-name val)
   #~(string-append
      #$@(map (match-lambda
@@ -93,7 +94,7 @@ Note:
                (_ ""))
              val)))
 
-(define (my=serialize-fish-env-vars field-name val)
+(define (serialize-fish-env-vars field-name val)
   ;; (format #t "[serialize-fish-env-vars] field-name: ~a; val: ~a\n" field-name val)
   #~(string-append
      #$@(map (match-lambda
@@ -105,7 +106,7 @@ Note:
                 #~(string-append "set -x " #$key " "  #$value "\n")))
              val)))
 
-(define-configuration my=home-fish-configuration
+(define-configuration home-fish-config
   (package
     (package fish)
     "The Fish package to use.")
@@ -116,28 +117,29 @@ Note:
   (environment-variables
    (alist '())
    "Association list of environment variables to set in Fish."
-   my=serialize-fish-env-vars)
+   serialize-fish-env-vars)
   (aliases
    (alist '())
    "Association list of aliases for Fish, both the key and the value
 should be a string.  An alias is just a simple function that wraps a
 command, If you want something more akin to @dfn{aliases} in POSIX
 shells, see the @code{abbreviations} field."
-   my=serialize-fish-aliases)
+   serialize-fish-aliases)
   (abbreviations
    (alist '())
    "Association list of abbreviations for Fish.  These are words that,
 when typed in the shell, will automatically expand to the full text."
-   my=serialize-fish-abbreviations)
+   serialize-fish-abbreviations)
   )
 
-(define (my=fish-packages config)
-  "Defines how is the `home-profile' (i.e. the `home-profile-service-type') extended."
-  (let ((ret (list (my=home-fish-configuration-package config))))
-    ;; (format #t "### [my=fish-packages] ret: \n~a\n\n" ret)
+(define (fish-packages config)
+  "Defines how is the `home-profile' (i.e. the `home-profile-service-type')
+extended."
+  (let ((ret (list (home-fish-config-package config))))
+    ;; (format #t "### [fish-packages] ret: \n~a\n\n" ret)
     ret))
 
-(define-configuration/no-serialization my=home-fish-extension
+(define-configuration/no-serialization home-fish-extension
   (config
    (text-config '())
    "List of file-like objects for extending the Fish initialization file.")
@@ -152,8 +154,9 @@ when typed in the shell, will automatically expand to the full text."
    "Association list of Fish abbreviations.")
   )
 
-(define (my=fish-config-files config)
-  "Defines how is the `home-xdg-configuration' (i.e. the `home-xdg-configuration-files-service-type') extended"
+(define (fish-config-files config)
+  "Defines how is the `home-xdg-configuration' (i.e. the
+`home-xdg-configuration-files-service-type') extended"
      #|
      (partial append
               `((,(fish-config-base)
@@ -205,37 +208,38 @@ and begin
 
 end\n\n")
                   (serialize-configuration
-                   config my=home-fish-configuration-fields))))))
-    ;; (format #t "### [my=fish-config-files] ret: \n~a\n\n" ret)
+                   config home-fish-config-fields))))))
+    ;; (format #t "### [fish-config-files] ret: \n~a\n\n" ret)
     ret))
 
-(define (my=home-fish-extensions original-config extension-configs)
-  "`home-fish-extensions' defines how the value of the service is extended with the composition of the extensions"
-  ;; (format #t "### [my=home-fish-extensions] original-config: \n~a\n\n" original-config)
-  ;; (format #t "### [my=home-fish-extensions] extension-configs: \n~a\n\n" extension-configs)
-  (let ((ret (my=home-fish-configuration
+(define (home-fish-extensions original-config extension-configs)
+  "`home-fish-extensions' defines how the value of the service is extended with
+the composition of the extensions"
+  ;; (format #t "### [home-fish-extensions] original-config: \n~a\n\n" original-config)
+  ;; (format #t "### [home-fish-extensions] extension-configs: \n~a\n\n" extension-configs)
+  (let ((ret (home-fish-config
               (inherit original-config)
               (config
-               (append (my=home-fish-configuration-config original-config)
+               (append (home-fish-config-config original-config)
                        (append-map
-                        my=home-fish-extension-config extension-configs)))
+                        home-fish-extension-config extension-configs)))
               (environment-variables
-               (append (my=home-fish-configuration-environment-variables original-config)
+               (append (home-fish-config-environment-variables original-config)
                        (append-map
-                        my=home-fish-extension-environment-variables extension-configs)))
+                        home-fish-extension-environment-variables extension-configs)))
               (aliases
-               (append (my=home-fish-configuration-aliases original-config)
+               (append (home-fish-config-aliases original-config)
                        (append-map
-                        my=home-fish-extension-aliases extension-configs)))
+                        home-fish-extension-aliases extension-configs)))
               (abbreviations
-               (append (my=home-fish-configuration-abbreviations original-config)
+               (append (home-fish-config-abbreviations original-config)
                        (append-map
-                        my=home-fish-extension-abbreviations extension-configs))))))
-    ;; (format #t "### [my=home-fish-extensions] ret: \n~a\n\n" ret)
+                        home-fish-extension-abbreviations extension-configs))))))
+    ;; (format #t "### [home-fish-extensions] ret: \n~a\n\n" ret)
     ret))
 
-(define my=home-fish-service-type
-  (service-type (name 'my=home-fish)
+(define home-fish-service-type
+  (service-type (name 'home-fish)
                 (extensions
                  (list
                   (service-extension
@@ -246,57 +250,57 @@ end\n\n")
 
 ;;; TODO what about the content of the completions directory? Should it return
 ;;; too?
-                   my=fish-config-files)
+                   fish-config-files)
                   (service-extension
                    home-profile-service-type
 ;;; this function returns all the installed fish-shell packages from the
 ;;; home-profile-service
-                   my=fish-packages)
+                   fish-packages)
                   ))
 
                 (compose identity)
 
                 (extend
-;;; `my=home-fish-extensions' defines how the value of the service is extended
+;;; `home-fish-extensions' defines how the value of the service is extended
 ;;; with the composition of the extensions
-                 my=home-fish-extensions)
-                (default-value (my=home-fish-configuration))
-                (description "my=home-fish-service-type with completions.")))
+                 home-fish-extensions)
+                (default-value (home-fish-config))
+                (description "home-fish-service-type with completions.")))
 
-(define (m2=fish-config-files config)
-  (let* ((m2= `(("fish/completions"
-                 ,(local-file (fish-config-dotfiles "/completions")
-                              #:recursive? #t))
-                ("fish/conf.d"
-                 ,(local-file (fish-config-dotfiles "/conf.d")
-                              #:recursive? #t))
-                ("fish/functions"
-                 ,(local-file (fish-config-dotfiles "/functions")
-                              #:recursive? #t))
-                ("fish/fish_plugins"
-                 ;; fish_plugins is just a file, not a directory
-                 ,(local-file (fish-config-dotfiles "/fish_plugins")))))
-         (ret (append my=home-fish-configuration-fields m2=))
+(define (fish-config-files2 config)
+  (let* ((m2 `(("fish/completions"
+                ,(local-file (fish-config-dotfiles "/completions")
+                             #:recursive? #t))
+               ("fish/conf.d"
+                ,(local-file (fish-config-dotfiles "/conf.d")
+                             #:recursive? #t))
+               ("fish/functions"
+                ,(local-file (fish-config-dotfiles "/functions")
+                             #:recursive? #t))
+               ("fish/fish_plugins"
+                ;; fish_plugins is just a file, not a directory
+                ,(local-file (fish-config-dotfiles "/fish_plugins")))))
+         (ret (append home-fish-config-fields m2))
          )
-    ;; (format #t "### [m2=fish-config-files] ret: \n~a\n\n" ret)
+    ;; (format #t "### [fish-config-files2] ret: \n~a\n\n" ret)
     ret))
 
-(define m2=home-fish-service-type
-  (service-type (name 'm2=home-fish)
+(define home-fish-service-type2
+  (service-type (name 'home-fish2)
                 (extensions
                  (list
                   (service-extension
-                   my=home-fish-service-type
-                   m2=fish-config-files)
+                   home-fish-service-type
+                   fish-config-files2)
                   ))
-                (description "m2=home-fish-service-type with completions.")))
+                (description "home-fish-service-type2 with completions.")))
 
-(define my=fish-service
+(define fish-service
   (service
-   my=home-fish-service-type
+   home-fish-service-type
    #;home-fish-service-type
    ;; fish configuration - see ~/dev/guix/gnu/home/services/shells.scm
-   (my=home-fish-configuration
+   (home-fish-config
     ;; Abbreviations are implemented as shell scripts. The TAB key is annoying.
     ;; 1. Erase all abbreviations in the fish-shell:
     ;;     abbr --erase (abbr --list)
@@ -311,4 +315,4 @@ end\n\n")
       (local-file
        (fish-config-dotfiles "/config.fish")))))))
 
-(format #t "[my=fish] module evaluated\n")
+(format #t "~a module evaluated\n" m)
