@@ -55,12 +55,6 @@
             user
             user-home
             xdg-config-home
-            hostname
-
-            home-games-config
-            home-lukas-config
-            home-ecke-config
-            home-geek-config
 
             analyze-pids-flag-variable
             analyze-pids-call/cc
@@ -465,24 +459,6 @@ Usage:
 ;;        (define name val)
 ;;        (export name)))))
 
-;;; Use function-implementations so that the code below is not evaluated every
-;;; time some of the scm-bin CLI utility requiring this module is executed.
-(define (hostname)
-  (let* ((ret (exec "hostname")))
-    (if (= 0 (car ret))
-        (let* [(output (cdr ret))
-               (hostname (car output))]
-          hostname)
-        (begin
-          (format #t "~a\n" (error-command-failed))
-          *unspecified*))))
-;; (format #t "[utils] hostname: ~a\n" hostname)
-
-(define (home-games-config) #f)
-(define (home-lukas-config) (equal? (hostname) host-lukas))
-(define (home-ecke-config) (equal? (hostname) host-ecke))
-(define (home-geek-config) (equal? (hostname) host-geek))
-
 (define (mktmpfile)
   ;; (tmpnam) could be used instead of all of this, however I get deprecation
   ;; warning sometimes
@@ -494,7 +470,8 @@ Usage:
    "/tmp/myfile-XXXXXX"))
 
 (define (repl)
-  (load "/home/bost/dev/dotfiles/guix/home/fs-utils.scm")
+  (use-modules (utils))
+  (load (string-append (getenv "dotf") "/guix/home/fs-utils.scm"))
   )
 
 ;; (format #t "[utils] module evaluated\n")

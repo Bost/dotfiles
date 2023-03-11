@@ -29,6 +29,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (define-module (home-config-ecke)
   #:use-module ((common settings) #:prefix hs:)
   #:use-module (utils)
+  #:use-module (memo)
 
   ;; fix the 'error: leiningen: unknown package', but it doesn't work
   #:use-module (nongnu packages clojure)
@@ -415,6 +416,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
    ;;              #;(commit ((gpgSign . #t)))
    ;;              #;(tag ((gpgSign . #t)))))))
    ))
+(testsymb 'my=services)
 
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)

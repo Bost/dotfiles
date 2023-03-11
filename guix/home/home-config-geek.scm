@@ -27,6 +27,7 @@ guix shell --development guix help2man git strace --pure
 (define-module (home-config-geek)
   #:use-module ((common settings) #:prefix hs:)
   #:use-module (utils)
+  #:use-module (memo)
 
   ;; gcl
   #:use-module (scm-bin gcl)
@@ -410,6 +411,7 @@ guix shell --development guix help2man git strace --pure
    ;;              #;(commit ((gpgSign . #t)))
    ;;              #;(tag ((gpgSign . #t)))))))
    ))
+(testsymb 'my=services)
 
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)

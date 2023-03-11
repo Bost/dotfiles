@@ -5,6 +5,7 @@
   ;; See service-file -> with-imported-modules
   #:use-module ((common settings) #:prefix ss:)
   #:use-module (utils)
+  #:use-module (memo)
   #:use-module (fs-utils)
   #:use-module (gnu services)
   ;; program-file local-file

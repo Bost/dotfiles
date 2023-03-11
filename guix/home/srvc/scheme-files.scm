@@ -1,6 +1,7 @@
 (define-module (srvc scheme-files)
   ;; #:use-module (cfg packages-new)
-  #:use-module ((utils) #:prefix hu:)
+  #:use-module (memo)
+  #:use-module (utils)
   #:use-module ((fs-utils) #:prefix hf:)
   ;; See service-file -> with-imported-modules
   #:use-module (scm-bin gcl)
@@ -20,7 +21,7 @@
             scheme-files-service
             ))
 
-(define m (hu:module-name-for-logging))
+(define m (module-name-for-logging))
 (format #t "~a evaluating module ...\n" m)
 
 (define* (service-file #:key
@@ -34,13 +35,13 @@ a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  `(,(hu:str hf:scm-bin-dirname "/" program-name)
+  `(,(str hf:scm-bin-dirname "/" program-name)
     ,(program-file
       (cond
        ((equal? scheme-file-name "chmod")
-        (hu:str "chmod-plus-" chmod-params))
+        (str "chmod-plus-" chmod-params))
        ((equal? scheme-file-name "search-notes")
-        (hu:str "search-notes-" program-name))
+        (str "search-notes-" program-name))
        (#t
         desc))
       ;; TODO clarify if source-module-closure is needed only for imports of
@@ -85,14 +86,15 @@ Example:
           #~(begin
               (use-modules (scm-bin #$symb))
               #$main-call))))))
+(testsymb 'service-file)
 
 (define scheme-files-service
   ((compose
-    (hu:partial simple-service 'scheme-files-service home-files-service-type)
-    (hu:partial
+    (partial simple-service 'scheme-files-service home-files-service-type)
+    (partial
      append
      (cond
-      [(hu:home-ecke-config)
+      [(home-ecke-config)
        (list
         (service-file #:program-name "e" #:desc "emacs-launcher"
                       #:scheme-file-name "emacs-launcher")
@@ -175,5 +177,5 @@ Example:
     (service-file #:program-name "lT"  #:desc "list-dir-sorted-by-time-ascending"
                   #:scheme-file-name "lT")
     )))
-
+(testsymb 'scheme-files-service)
 ;; (format #t "~a module evaluated\n" m)

@@ -27,6 +27,7 @@ guix shell --development guix help2man git strace --pure
 (define-module (home-config-lukas)
   #:use-module ((common settings) #:prefix hs:)
   #:use-module (utils)
+  #:use-module (memo)
 
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
@@ -377,6 +378,7 @@ guix shell --development guix help2man git strace --pure
    ;;              #;(commit ((gpgSign . #t)))
    ;;              #;(tag ((gpgSign . #t)))))))
    ))
+(testsymb 'my=services)
 
 ;; Note: `home-environment' is (lazily?) evaluated as a last command
 ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)

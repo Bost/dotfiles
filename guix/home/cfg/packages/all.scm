@@ -7,6 +7,7 @@
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
   #:use-module (utils)
+  #:use-module (memo)
 
   #:export (
             packages-to-install
@@ -379,7 +380,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         [#t
          (error
           (format #f "hostname '~a' must be one of the: ~a\n"
-                  (hostname) (string-join hostnames)))])
+                  (hostname-memoized) (string-join hostnames)))])
     ))
 (testsymb 'packages-to-install)
 
