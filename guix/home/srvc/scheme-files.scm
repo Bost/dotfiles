@@ -22,7 +22,7 @@
             ))
 
 (define m (module-name-for-logging))
-(format #t "~a evaluating module ...\n" m)
+;; (format #t "~a evaluating module ...\n" m)
 
 (define* (service-file #:key
                        program-name desc scheme-file-name module-name
@@ -178,4 +178,5 @@ Example:
                   #:scheme-file-name "lT")
     )))
 (testsymb 'scheme-files-service)
+
 ;; (format #t "~a module evaluated\n" m)
