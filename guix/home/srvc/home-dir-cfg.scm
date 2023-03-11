@@ -1,7 +1,7 @@
-;; (define m "[my=simple-services]") ;; module-name
+;; (define m "[home-dir-cfg]") ;; module-name
 ;; (format #t "~a evaluating module ...\n" m)
 
-(define-module (srvc my=simple-services)
+(define-module (srvc home-dir-cfg)
   ;; See service-file -> with-imported-modules
   #:use-module ((common settings) #:prefix ss:)
   #:use-module (utils)
@@ -116,6 +116,7 @@
               "channels.scm")))
           (lambda (sexp) (append fst sexp (list (car snd)))))
          extra-channels)))))
+(testsymb 'create-channels-scm)
 
 (define home-dir-cfg-srvc-files
   ((compose
@@ -128,7 +129,8 @@
                 (local-dotfile "/" (str (basename xdg-config-home)
                                              "/guix-gaming-channels/games.scm")))]
               [(home-ecke-config)
-               (create-channels-scm extra-channels)]
+               (list
+                (create-channels-scm extra-channels))]
               [#t
                (list
                 (local-dotfile "/" channels-scm-filepath))]))
@@ -192,6 +194,7 @@
 ;; (format #t "~a (defined? 'home-dir-cfg-srvc:) ~a\n" m (defined? 'home-dir-cfg-srvc))
 
 (define (repl)
-  (load "/home/bost/dev/dotfiles/guix/home/srvc/my=simple-services.scm")
+  (use-modules (srvc home-dir-cfg))
+  (load (string-append (getenv "dotf") "/guix/home/srvc/home-dir-cfg.scm"))
   )
 

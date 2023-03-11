@@ -43,7 +43,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module (srvc my=fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
-  #:use-module ((srvc my=simple-services) #:prefix srvc:)
+  #:use-module ((srvc home-dir-cfg) #:prefix srvc:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
