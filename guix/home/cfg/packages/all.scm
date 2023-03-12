@@ -88,12 +88,22 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 
 (define (devel-profile-packages)
+  (append
+   (fennel-devel-packages)
+   (list
+    "emacs"
+    "emacs-next"
+    "emacs-next-pgtk"
+    "emacs-with-editor"
+    "pinentry" ;; needed to sign commits
+    )))
+
+(define (fennel-devel-packages)
+  "Fennel: Lua + Lisp. For e.g. Factorio modding."
   (list
-   "emacs"
-   "emacs-next"
-   "emacs-next-pgtk"
-   "emacs-with-editor"
-   "pinentry" ;; needed to sign commits
+   "fennel"
+   "emacs-fennel-mode"
+   "fnlfmt" ;; Automatic formatting of Fennel code
    ))
 
 (define (user-profile-packages)
