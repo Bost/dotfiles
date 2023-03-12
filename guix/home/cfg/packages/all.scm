@@ -101,9 +101,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (fennel-devel-packages)
   "Fennel: Lua + Lisp. For e.g. Factorio modding."
   (list
+   "lua"
    "fennel"
    "emacs-fennel-mode"
-   "fnlfmt" ;; Automatic formatting of Fennel code
+
+   ;; Automatic formatting of Fennel code
+   ;; "fnlfmt" ; doesn't compile
    ))
 
 (define (user-profile-packages)

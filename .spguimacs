@@ -184,6 +184,8 @@ This function should only modify configuration layer settings."
           ;; )
           )
 
+     fennel ;; fennel = lua in lisp
+
      ;; gnus
      ;; go
 
@@ -270,6 +272,11 @@ This function should only modify configuration layer settings."
 
       ;; show reference count for functions (assume more lenses added in future)
       lsp-lens-enable t ; )
+      )
+
+     (lua
+      :variables
+      lua-backend 'lua-mode ;; 'lsp is better, but requires more setup
       )
 
      ;; Editing multiple lines of text concurrently
