@@ -90,6 +90,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (devel-profile-packages)
   (append
    (fennel-devel-packages)
+   (chez-scheme-devel-packages)
    (list
     "emacs"
     "emacs-next"
@@ -108,6 +109,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Automatic formatting of Fennel code
    ;; "fnlfmt" ; doesn't compile
    ))
+
+(define (chez-scheme-devel-packages)
+  "See https://github.com/mnieper/scheme-macros"
+  (list
+   "chez-srfi"
+   "chez-fmt"
+   "chez-scheme"
+   "emacs-geiser-chez"
+   ;; Portable hygienic pattern matcher for Scheme
+   "chez-matchable"))
 
 (define (user-profile-packages)
   (list
