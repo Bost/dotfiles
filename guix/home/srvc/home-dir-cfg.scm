@@ -128,7 +128,7 @@
                (list
                 (create-channels-scm extra-channels)
                 (local-dotfile "/" (str (basename xdg-config-home)
-                                             "/guix-gaming-channels/games.scm")))]
+                                        "/guix-gaming-channels/games.scm")))]
               [(home-ecke-config)
                (list
                 (create-channels-scm extra-channels))]
@@ -137,14 +137,14 @@
                 (local-dotfile "/" channels-scm-filepath))]))
     ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 2.\n") p)
     (partial append
-                (remove
-                 unspecified-or-empty-or-false?
-                 (list
-                  (local-dotfile "/" ".guile") ;; used by `guix repl'
-                  (local-dotfile "/" ".gitconfig")
-                  (local-dotfile "/" ".spacemacs")
-                  (local-dotfile "/" ".spguimacs")
-                  (local-dotfile "/guix/home/" "local-stuff.fish"))))
+             (remove
+              unspecified-or-empty-or-false?
+              (list
+               (local-dotfile "/" ".guile") ;; used by `guix repl'
+               (local-dotfile "/" ".gitconfig")
+               (local-dotfile "/" ".spacemacs")
+               (local-dotfile "/" ".spguimacs")
+               (local-dotfile "/guix/home/" "local-stuff.fish"))))
     ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 1.\n") p)
     (partial append
 ;;; This can't be used:
@@ -159,28 +159,28 @@
 ;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
-                (list
-                 (let ((dir "bin"))
-                   `(,dir ;; destination
-                     ,(local-file (dotfiles-home "/" dir)
-                                  #:recursive? #t)))
-                 (let ((destination
-                        (str ".emacs.d"
-                                "/private/themes"
-                                "/farmhouse-light-mod-theme"))
-                       (dir (str ".emacs.d/private/local"
-                                    "/farmhouse-light-mod-theme")))
-                   `(,destination ,(local-file (dotfiles-home "/" dir)
-                                               #:recursive? #t)))
+             (list
+              (let ((dir "bin"))
+                `(,dir ;; destination
+                  ,(local-file (dotfiles-home "/" dir)
+                               #:recursive? #t)))
+              (let ((destination
+                     (str ".emacs.d"
+                          "/private/themes"
+                          "/farmhouse-light-mod-theme"))
+                    (dir (str ".emacs.d/private/local"
+                              "/farmhouse-light-mod-theme")))
+                `(,destination ,(local-file (dotfiles-home "/" dir)
+                                            #:recursive? #t)))
 ;;; See value of `spacemacs-data-directory' in the $dev/guix-packages/spacemacs
-                 (let ((destination
-                        (str ".local/share/spacemacs"
-                                "/private/themes"
-                                "/farmhouse-light-mod-theme"))
-                       (dir (str ".emacs.d/private/local"
-                                    "/farmhouse-light-mod-theme")))
-                   `(,destination ,(local-file (dotfiles-home "/" dir)
-                                               #:recursive? #t)))))
+              (let ((destination
+                     (str ".local/share/spacemacs"
+                          "/private/themes"
+                          "/farmhouse-light-mod-theme"))
+                    (dir (str ".emacs.d/private/local"
+                              "/farmhouse-light-mod-theme")))
+                `(,destination ,(local-file (dotfiles-home "/" dir)
+                                            #:recursive? #t)))))
     ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 0.\n") p)
     )
    ;; empty list
@@ -198,4 +198,3 @@
   (use-modules (srvc home-dir-cfg))
   (load (string-append (getenv "dotf") "/guix/home/srvc/home-dir-cfg.scm"))
   )
-
