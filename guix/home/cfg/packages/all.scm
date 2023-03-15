@@ -408,7 +408,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ))
 (testsymb 'packages-to-install)
 
-(define (use-and-load-in-repl)
+(define (repl)
   (use-modules (cfg packages all))
   (load (string-append (getenv "dotf") "/guix/home/cfg/packages/all.scm")))
 

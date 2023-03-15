@@ -9,7 +9,7 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
 set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda
 udisksctl mount --block-device=(blkid --uuid $UUID)
 ;; sudo cp /media/$USER/$UUID/boot/grub/grub.cfg /tmp/
-sudo cp /media/$USER/qubuntu-filesyst/boot/grub/grub.cfg /tmp/
+sudo cp /media/$USER/ubuntu-filesyst/boot/grub/grub.cfg /tmp/
 sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
 ## Match the version number and place it to clipboard:
 ##  Also: grep -oP "(\d{1,}\.)+\d{1,}"
@@ -22,8 +22,8 @@ e /tmp/grub.cfg                    # edit the file
 ## Extract the time and generation number:
 guix system describe | rg current | rg "(\d{2,}:\d{2,})" -o | xsel -bi
 ## <paste the block>
-;; sudo cp /tmp/grub.cfg /media/$USER//boot/grub/grub.cfg
-sudo cp /tmp/grub.cfg /media/$USER/ubuntu-filesyst/boot/grub/
+;; sudo cp /tmp/grub.cfg /media/$USER/boot/grub/grub.cfg
+sudo cp -i /tmp/grub.cfg /media/$USER/ubuntu-filesyst/boot/grub/
 sudo reboot # press <f12> during the reboot and fix the boot order
 |#
 
