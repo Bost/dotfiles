@@ -9,8 +9,9 @@ guix shell --development guix help2man git strace --pure
 |#
 
 (define-module (cfg mcron)
-  ;; #:use-module (guix gexp)              ;; #| #~ #$ etc. |#
   #:use-module (gnu home services mcron) #| home-mcron-service-type |#
+  #:use-module (gnu services)            #| service                 |#
+  #:use-module (guix gexp)               #| #~ #$ etc. |#
   #:export (mcron-service))
 
 ;; https://github.com/clojure-quant/infra-guix/blob/main/home/config-nuc.scm

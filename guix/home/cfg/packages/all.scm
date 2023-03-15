@@ -292,12 +292,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;;   guix package                        -e '(@ (bost packages maven) maven)'
 ;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
 
-;;; TODO following warning appears:
-;;;     hint: Did you forget `(use-modules (gnu services))'?
-;;; when using
-;;;    (list (specification->package+output "hello"))
-;;; instead of
-;;;    (list hello) ;; hint need to add: #:use-module (gnu packages base) #| hello |#
     ((compose
       (lambda (pkgs)
         (format #t "~a ~a packages to install\n" m (length pkgs))
