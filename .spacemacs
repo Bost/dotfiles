@@ -152,6 +152,8 @@ This function should only modify configuration layer settings."
 
      ;; docker
 
+     elixir ; Erlang VM
+
      ;; For Spacemacs configuration files and packages
      emacs-lisp
 

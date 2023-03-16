@@ -91,6 +91,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
   (append
    (fennel-devel-packages)
    (chez-scheme-devel-packages)
+   (elixir-devel-packages)
    (list
     "emacs"
     "emacs-next"
@@ -119,6 +120,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "emacs-geiser-chez"
    ;; Portable hygienic pattern matcher for Scheme
    "chez-matchable"))
+
+(define (elixir-devel-packages)
+  "See https://github.com/mnieper/scheme-macros"
+  (list
+   "elixir"
+   "emacs-elixir-mode"
+   "tree-sitter-elixir"
+   "emacs-alchemist"
+   "emacs-eval-in-repl-iex"
+   ))
 
 (define (user-profile-packages)
   (list
