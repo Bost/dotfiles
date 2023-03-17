@@ -94,6 +94,10 @@ Example:
     (partial
      append
      (cond
+      [(home-geek-config)
+       (list
+        (service-file #:program-name "e" #:desc "emacs-launcher"
+                      #:scheme-file-name "emacs-launcher"))]
       [(home-ecke-config)
        (list
         (service-file #:program-name "e" #:desc "emacs-launcher"
