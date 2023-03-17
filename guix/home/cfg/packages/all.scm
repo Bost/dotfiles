@@ -87,11 +87,20 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "zip"
    ))
 
+(define (agda-devel-packages)
+  (list
+   "agda"
+   "emacs-agda2-mode"
+   ;; "agda-ial" ;; broken build
+   ;; "cedille" ;; depends on agda-ial
+   "idris"))
+
 (define (devel-profile-packages)
   (append
    (fennel-devel-packages)
    (chez-scheme-devel-packages)
    (elixir-devel-packages)
+   (agda-devel-packages)
    (list
     "emacs"
     "emacs-next"
