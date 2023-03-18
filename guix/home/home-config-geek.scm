@@ -152,8 +152,6 @@ guix shell --development guix help2man git strace --pure
    home-environment-variables-service-type
    (environment-vars hf:list-separator-bash)))
 
-;; xfce4-keyboard: repeat-delay 160 repeat-speed 60
-
 ;; "copying files"
 ;; there should be a service type to place particular files (or file-like
 ;; objects) to a target destination
