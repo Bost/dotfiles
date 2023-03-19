@@ -255,7 +255,14 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "qemu"
 ;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
 ;;; This will happen automatically if `search-notes' is a proper Guix package.
+
+;;; racket 8.8 returns:
+;;;     $ racket
+;;;     munmap_chunk(): invalid pointer
+;;;     Aborted
+;;; racket 8.7 (pulled via inferior mechanism) works fine.
    ;; "racket"
+
    "readline"
    "recutils"
    "ripgrep"
@@ -318,14 +325,17 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         ;; (format #t "~a\n~a\n" m pkgs)
         pkgs)
       (partial append
-                  (list
-                   ;; in the $dotf/guix/home/cfg/packages/all.scm
-                   ;; comment out "racket" in the (user-profile-packages)
-                   (first (lookup-inferior-packages inferior-racket "racket")))
-                  )
-      ;; (packages->manifest
-      ;;  (list
-      ;;   (first (lookup-inferior-packages inferior "racket"))))
+               ;; in the $dotf/guix/home/cfg/packages/all.scm
+               ;; comment out "racket" in the (user-profile-packages)
+               (list
+                ;; in the $dotf/guix/home/cfg/packages/all.scm
+                ;; comment out "racket" in the (user-profile-packages)
+                (first (lookup-inferior-packages inferior-racket "racket")))
+               #;
+               ((compose
+                 first
+                 (partial lookup-inferior-packages inferior-racket))
+                "racket"))
       (lambda (pkgs)
         ;; The spguimacs-packages should be installed only on the ecke-machine,
         ;; i.e. no need to install any emacs-packages on any other machine
