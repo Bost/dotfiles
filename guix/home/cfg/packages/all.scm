@@ -362,24 +362,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               (@ (bost packages emacs-xyz) emacs-color-theme-sanityinc-tomorrow) ;; doesn't work
               (@ (bost packages emacs-xyz) emacs-gruvbox) ;; doesn't work
               (@ (bost packages emacs-xyz) emacs-sphinx-doc)
-
-              ;; emacs-ac-ispell
-              ;; emacs-ac-php
-              ;; emacs-ace-jump-helm-line
-              ;; emacs-afternoon-theme
-              ;; emacs-cfrs
-              ;; emacs-cider-eval-sexp-fu
-              ;; emacs-font-lock+
-              ;; emacs-xcscope
-
-              (@ (bost packages emacs-xyz) emacs-ac-ispell)
-              (@ (bost packages emacs-xyz) emacs-ac-php)
-              (@ (bost packages emacs-xyz) emacs-ace-jump-helm-line)
-              (@ (bost packages emacs-xyz) emacs-afternoon-theme)
-              (@ (bost packages emacs-xyz) emacs-cfrs)
-              (@ (bost packages emacs-xyz) emacs-cider-eval-sexp-fu)
-              (@ (bost packages emacs-xyz) emacs-font-lock+)
-              (@ (bost packages emacs-xyz) emacs-xcscope)
               )
              pkgs)
             pkgs))
