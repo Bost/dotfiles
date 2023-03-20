@@ -1,5 +1,6 @@
 (define-module (cfg packages all)
   #:use-module (cfg packages spguimacs all)
+  #:use-module ((bost packages emacs-xyz) #:prefix bst:)
   #:use-module (common settings)
   #:use-module (gnu packages)
   #:use-module (guix channels)
@@ -368,36 +369,53 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         (if (home-ecke-config)
             (append
              (list
-              ;; Won't work probably
-              ;; emacs-eziam-theme-emacs
-              ;; emacs-lsp-python-ms
-              ;; emacs-moe-theme
-              ;; emacs-slim-mode
-              ;; emacs-zop-to-char
-              ;; emacs-font-utils
-              ;; emacs-lush
+              ;; below are good
+              bst:emacs-company-web
+              bst:emacs-web-completion-data
+              bst:emacs-centered-cursor-mode
+              bst:emacs-company-statistics
+              bst:emacs-json-navigator
+              bst:emacs-eziam-themes
+              bst:emacs-tangotango
+              bst:emacs-helm-cider-history
+              bst:emacs-flx
+              bst:emacs-twilight-bright
+              ;; bst:emacs-haskell-snippets
+              bst:emacs-lsp-haskell
+              bst:emacs-darkmine
+              bst:emacs-helm-css-scss
+              ;; bst:emacs-auto-yasnippet
+              bst:emacs-composer
+              bst:emacs-soft-stone
+              bst:emacs-twilight-anti-bright
+              bst:emacs-erc-social-graph
+              bst:emacs-hlint-refactor
+              bst:emacs-chocolate
+              bst:emacs-soft-charcoal
+              bst:emacs-clues
+              bst:emacs-planet
+              bst:emacs-occidental
+              bst:emacs-gruber-darker
 
-              (@ (bost packages emacs-xyz) emacs-eziam-theme-emacs) ;; doesn't work
-              (@ (bost packages emacs-xyz) emacs-lsp-python-ms)
-              (@ (bost packages emacs-xyz) emacs-moe-theme)
-              (@ (bost packages emacs-xyz) emacs-slim-mode)
-              (@ (bost packages emacs-xyz) emacs-zop-to-char)
-              (@ (bost packages emacs-xyz) emacs-font-utils)
-              (@ (bost packages emacs-xyz) emacs-lush) ;; doesn't work
+              bst:emacs-vi-tilde-fringe
+              bst:emacs-popwin
+              ;; bst:emacs-paradox
+              bst:emacs-lsp-volar
 
-              ;; emacs-column-enforce-mode
-              ;; emacs-pippel
-              ;; emacs-railscasts-theme
-              ;; emacs-color-theme-sanityinc-tomorrow
-              ;; emacs-gruvbox
-              ;; emacs-sphinx-doc
+              bst:emacs-eziam-theme-emacs ;; doesn't work
+              bst:emacs-lsp-python-ms
+              bst:emacs-moe-theme
+              bst:emacs-slim-mode
+              bst:emacs-zop-to-char
+              bst:emacs-font-utils
+              bst:emacs-lush ;; doesn't work
 
-              (@ (bost packages emacs-xyz) emacs-column-enforce-mode)
-              (@ (bost packages emacs-xyz) emacs-pippel)
-              (@ (bost packages emacs-xyz) emacs-railscasts-theme)
-              (@ (bost packages emacs-xyz) emacs-color-theme-sanityinc-tomorrow) ;; doesn't work
-              (@ (bost packages emacs-xyz) emacs-gruvbox) ;; doesn't work
-              (@ (bost packages emacs-xyz) emacs-sphinx-doc)
+              bst:emacs-color-theme-sanityinc-tomorrow ;; doesn't work
+              bst:emacs-gruvbox ;; doesn't work
+              bst:emacs-pippel
+              bst:emacs-railscasts-theme
+              bst:emacs-sphinx-doc
+              bst:emacs-xcscope
               )
              pkgs)
             pkgs))
