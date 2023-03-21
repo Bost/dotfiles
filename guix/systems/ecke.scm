@@ -56,9 +56,9 @@ sudo reboot # press <f12> during the reboot and fix the boot order
   (operating-system
    (locale "en_US.utf8")
    (timezone "Europe/Berlin")
-   (keyboard-layout
+   (keyboard-layout ; keyboard-layout for the console
     (keyboard-layout
-     "us,de,sk" "altgr-intl,,qwerty"
+     "us,de,sk,fr" "altgr-intl,,qwerty,"
      #:options '("compose:menu,grp:ctrls_toggle")))
    (host-name host-ecke)
 
@@ -135,7 +135,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
 
              (service cups-service-type)
              (set-xorg-configuration
-              (xorg-configuration
+              (xorg-configuration ; keyboard-layout for the XOrg
                (keyboard-layout keyboard-layout)))
              ;; (udev-rules-service 'mtp libmtp)
              ;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
@@ -193,8 +193,8 @@ sudo reboot # press <f12> during the reboot and fix the boot order
                              ;; unspecified
                              #;"$vt_handoff"))
           (initrd (format #t "/boot/initrd.img-~a-generic" linux-version))))))
+     (keyboard-layout keyboard-layout))) ; keyboard-layout for the GRUB
 
-     (keyboard-layout keyboard-layout)))
    (file-systems
     (cons* (file-system
             (mount-point "/")

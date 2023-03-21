@@ -37,7 +37,7 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
     (timezone "Europe/Berlin")
     (keyboard-layout
      (keyboard-layout
-      "us,de,sk" "altgr-intl,,qwerty"
+      "us,de,sk,fr" "altgr-intl,,qwerty,"
       #:options '("compose:menu,grp:ctrls_toggle")))
     (host-name "geek")
 
