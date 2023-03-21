@@ -111,9 +111,9 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    (packages
     (append
      (map specification->package (list
-                                  "nss-certs"
                                   "git"
                                   ;; "gparted" ;; disk partition
+                                  "nss-certs"
                                   ;; "rsync" ;; 'scp' is preinstalled
                                   ;; "vim" ;; 'vi' is preinstalled
                                   ))

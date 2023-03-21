@@ -63,9 +63,10 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
     (packages
      (append
       (map specification->package (list
-                                   "nss-certs"
+                                   "brightnessctl" ;; backlight and LED brightness control
                                    "git"
                                    ;; "gparted" ;; disk partition
+                                   "nss-certs"
                                    ;; "rsync" ;; 'scp' is preinstalled
                                    ;; "vim" ;; 'vi' is preinstalled
                                    ))
