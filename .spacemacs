@@ -1500,7 +1500,7 @@ before packages are loaded."
     "Edit the `$dotf/.../<hostname>.scm', in the current window."
     (interactive)
     (find-file-existing
-     (format "%s/guix/system/%s.scm" (getenv "dotf") (system-name))))
+     (format "%s/guix/systems/%s.scm" (getenv "dotf") (system-name))))
 
   (defun my=find-spguimacs-packages.scm ()
     "Edit the `$dotf/.../spguimacs-packages.scm', in the current window."
