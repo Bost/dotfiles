@@ -62,18 +62,19 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
 ;;; install PACKAGE' to install a package.
     (packages
      (append
-      (map specification->package (list
-                                   "brightnessctl" ;; backlight and LED brightness control
-                                   "git"
-                                   ;; "gparted" ;; disk partition
-                                   "nss-certs"
-                                   ;; "rsync" ;; 'scp' is preinstalled
-                                   ;; "vim" ;; 'vi' is preinstalled
-                                   ))
+      (map specification->package
+           (list
+            "brightnessctl" ; backlight and LED brightness control
+            "git"
+            ;; "gparted"    ; disk partition
+            "nss-certs"
+            ;; "rsync"      ; 'scp' is preinstalled
+            ;; "vim"        ; 'vi' is preinstalled
+            ))
       %base-packages))
 
-    ;; Below is the list of system services.  To search for available
-    ;; services, run 'guix system search KEYWORD' in a terminal.
+;;; Below is the list of system services. To search for available services, run
+;;; 'guix system search KEYWORD' in a terminal.
     (services
      (append (list
               (service xfce-desktop-service-type)
@@ -102,8 +103,8 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
                             (append (list "https://substitutes.nonguix.org")
                                     %default-substitute-urls))
                            (authorized-keys
-                            ;; The signing-key.pub should be obtained by
-                            ;; wget https://substitutes.nonguix.org/signing-key.pub
+;;; The signing-key.pub should be obtained by
+;;;   wget https://substitutes.nonguix.org/signing-key.pub
                             (append (list (local-file "./signing-key.pub"))
                                     %default-authorized-guix-keys)))))))
     (bootloader

@@ -64,15 +64,16 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
 ;;; install PACKAGE' to install a package.
   (packages (append
-             (map specification->package (list
+             (map specification->package
+                  (list
 ;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
-                                          "git"
-                                          "gparted" ;; disk partition
-                                          "nss-certs"
-                                          "rsync"
-                                          "vim"
-                                          ))
-                    %base-packages))
+                   "git"
+                   "gparted"    ; disk partition
+                   "nss-certs"
+                   "rsync"      ; 'scp' is preinstalled
+                   "vim"        ; 'vi' is preinstalled
+                   ))
+             %base-packages))
 
   ;; Below is the list of system services.  To search for available
   ;; services, run 'guix system search KEYWORD' in a terminal.

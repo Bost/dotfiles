@@ -110,13 +110,14 @@ sudo reboot # press <f12> during the reboot and fix the boot order
 ;;; install PACKAGE' to install a package.
    (packages
     (append
-     (map specification->package (list
-                                  "git"
-                                  ;; "gparted" ;; disk partition
-                                  "nss-certs"
-                                  ;; "rsync" ;; 'scp' is preinstalled
-                                  ;; "vim" ;; 'vi' is preinstalled
-                                  ))
+     (map specification->package
+          (list
+           "git"
+           ;; "gparted"    ; disk partition
+           "nss-certs"
+           ;; "rsync"      ; 'scp' is preinstalled
+           ;; "vim"        ; 'vi' is preinstalled
+           ))
      %base-packages))
    #;
    (skeletons
