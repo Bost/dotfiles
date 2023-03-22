@@ -70,7 +70,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "icedtea" ; ~240MiB; provides OpenJDK built with the IcedTea build harness
    ))
 
-(define (basic-profile-packages)
+(define (basic-packages)
   (list
    "bash"
    "bat"
@@ -95,7 +95,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "cedille" ;; depends on agda-ial
    "idris"))
 
-(define (devel-profile-packages)
+(define (devel-packages)
   (append
    (fennel-devel-packages)
    (chez-scheme-devel-packages)
@@ -140,7 +140,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "emacs-eval-in-repl-iex"
    ))
 
-(define (user-profile-packages)
+(define (rest-packages)
   (list
    "adb"
    "alsa-utils"
@@ -281,25 +281,51 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "uniutils"
    "usbutils"
    "virt-viewer"
-   "xdg-utils"
-   "xev"
+
+   ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
+   ;; "xdg-utils"
+
+   ;; Wayland event viewer
+   ;; "xev"
+
+   ;; Xorg XKB configuration files - probably not needed in Xfce
+   "xkeyboard-config"
+
+   ;; Modify keymaps and button mappings on X server
+   ;; "xmodmap"
+
+   ;; Tiling window manager
+   ;; "xmonad"
+
+   ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
+   "xorriso"
+
+   ;; Command line interface to X11 Resize, Rotate, and Reflect (RandR)
+   ;; See the command:
+   ;;    xrandr --output HDMI-1 --auto --left-of DP-1 --auto
+   ;; See under:
+   ;;    Xfce Settings Manager -> Session and Startup -> Dual display for two monitors
+   ;; the command:
+   ;;    xfconf-query --create --type string --channel displays --property /Schemes/Apply --set a93ccfa35c66cf3bc719e997533c55d24167cdc9
+   "xrandr"
+
+   ;; Manipulate X selection, i.e. the clipboard from the command line.
+   "xsel"
+
+   "youtube-dl"
+   ))
+
+(define (xfce-packages)
+  (list
+   ;; TODO add ~/.config/xfce4/xfconf/xfce-perchannel-xml/ to the home config
    "xfce4-clipman-plugin"
    "xfce4-netload-plugin" ;; traffic indicator
    "xfce4-notifyd"
    "xfce4-screensaver"
    "xfce4-screenshooter"
-   "xkeyboard-config"
-   "xmodmap"
-   "xmonad"
-
-   ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
-   "xorriso"
-
-   "xrandr"
-   "xsel"
-   "youtube-dl"
+   "xfce4-settings"
    ))
-(testsymb 'user-profile-packages)
+(testsymb 'rest-packages)
 
 (define inferior-racket
   ;; An inferior representing the above revision.
@@ -326,10 +352,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         pkgs)
       (partial append
                ;; in the $dotf/guix/home/cfg/packages/all.scm
-               ;; comment out "racket" in the (user-profile-packages)
+               ;; comment out "racket" in the (rest-packages)
                (list
                 ;; in the $dotf/guix/home/cfg/packages/all.scm
-                ;; comment out "racket" in the (user-profile-packages)
+                ;; comment out "racket" in the (rest-packages)
                 (first (lookup-inferior-packages inferior-racket "racket")))
                #;
                ((compose
@@ -382,14 +408,15 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         [(home-lukas-config)
          (begin
            ;; (format #t "(home-lukas-config)\n")
-           (basic-profile-packages))]
+           (basic-packages))]
         [(home-ecke-config)
          (begin
            ;; (format #t "(home-ecke-config)\n")
            (append
-            (basic-profile-packages)
-            (devel-profile-packages)
-            (user-profile-packages)
+            (basic-packages)
+            (devel-packages)
+            (rest-packages)
+            (xfce-packages)
             (kde-dependent-packages)
             (large-packages)
             (packages-from-additional-channels)
@@ -399,9 +426,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
          (begin
            ;; (format #t "(home-geek-config)\n")
            (append
-            (basic-profile-packages)
-            (devel-profile-packages)
-            (user-profile-packages)
+            (basic-packages)
+            (devel-packages)
+            (rest-packages)
+            (xfce-packages)
             (kde-dependent-packages)
             ;; (large-packages)
             (packages-from-additional-channels)
