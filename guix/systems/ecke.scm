@@ -20,7 +20,11 @@ rg -N -A 4 -m 1 "GNU with Linux-Libre" /boot/grub/grub.cfg | xsel -bi
 e /tmp/grub.cfg                    # edit the file
 ## <paste the block>
 ## Extract the time and generation number:
-guix system describe | rg current | rg "(\d{2,}:\d{2,})" -o | xsel -bi
+set n2 "\d{2,}"
+set tstp (date +"%Y-%m-%d")
+set replacement (printf '(#$1 %s $2)' $tstp)
+set regex (printf ".*? (\d{1,}).*(%s:%s):%s.*current" $n2 $n2)
+guix system describe | rg $regex -o -r $replacement | xsel -bi
 ## <paste the block>
 ;; sudo cp /tmp/grub.cfg /media/$USER/boot/grub/grub.cfg
 sudo cp -i /tmp/grub.cfg /media/$USER/ubuntu-filesyst/boot/grub/
@@ -35,21 +39,15 @@ sudo reboot # press <f12> during the reboot and fix the boot order
   #:use-module (common settings)
   )
 
-(use-service-modules
- cups
- desktop
- networking
- ssh
- xorg)
+;; no need to write: #:use-module (gnu services <module>)
+(use-service-modules cups desktop networking ssh xorg)
 
-;; 'use-package-modules' is unlike the general 'use-modules' specifically for
-;; packages. Every package module from 'use-package-modules' can be included
-;; under the 'use-modules'.
+;; no need to write: #:use-module (gnu packages <module>)
 (use-package-modules
- android  ; for android-udev-rules - access smartphone via mtp://
+ android  ; android-udev-rules - access smartphone via mtp://
  bash
- libusb   ; for libmtp
- shells   ; for login shell
+ libusb   ; libmtp
+ shells   ; login shell
  )
 
 ;; (format #t "user-full-name: ~a\n" user-full-name)

@@ -26,12 +26,7 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
   #:use-module (nongnu system linux-initrd)
   )
 
-(use-service-modules
- cups
- desktop
- networking
- ssh
- xorg)
+(use-service-modules cups desktop networking ssh xorg)
 
 (define operating-system-configuration
   (operating-system
