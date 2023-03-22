@@ -22,12 +22,7 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
   #:use-module (common settings)
   )
 
-(use-service-modules
- cups
- desktop
- networking
- ssh
- xorg)
+(use-service-modules desktop networking ssh xorg)
 
 (define disable-suspend-srvc
 ;;; GDM auto-suspend? is not system-wide and can be overriden by users. Create a
