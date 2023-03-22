@@ -75,13 +75,23 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
     ;; Below is the list of system services.  To search for available
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
-     (append (list (service xfce-desktop-service-type)
+     (append (list
+              (service xfce-desktop-service-type)
 
-                   ;; To configure OpenSSH, pass an 'openssh-configuration'
-                   ;; record as a second argument to 'service' below.
-                   (service openssh-service-type)
-                   (set-xorg-configuration
-                    (xorg-configuration (keyboard-layout keyboard-layout))))
+              ;; for the NetworkManager
+              (service network-manager-service-type)
+
+              (service wpa-supplicant-service-type)
+
+              ;; ntp-service-type for system clock sync is in the
+              ;; %desktop-services by default
+
+              ;; To configure OpenSSH, pass an 'openssh-configuration'
+              ;; record as a second argument to 'service' below.
+              (service openssh-service-type)
+
+              (set-xorg-configuration
+               (xorg-configuration (keyboard-layout keyboard-layout))))
 
              ;; This is the default list of services we are appending to.
              (modify-services %desktop-services

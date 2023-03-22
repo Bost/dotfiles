@@ -77,37 +77,42 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
   ;; Below is the list of system services.  To search for available
   ;; services, run 'guix system search KEYWORD' in a terminal.
   (services
-   (append (list (service xfce-desktop-service-type)
+   (append (list
+            (service xfce-desktop-service-type)
 
-                 ;; To configure OpenSSH, pass an 'openssh-configuration'
-                 ;; record as a second argument to 'service' below.
-                 (service openssh-service-type)
-                 (set-xorg-configuration
-                  (xorg-configuration (keyboard-layout keyboard-layout)))
-                 (service xvnc-service-type (xvnc-configuration
-                                             (display-number 5)
+            ;; ntp-service-type for system clock sync is in the
+            ;; %desktop-services by default
+
+            ;; To configure OpenSSH, pass an 'openssh-configuration'
+            ;; record as a second argument to 'service' below.
+            (service openssh-service-type)
+
+            (set-xorg-configuration
+             (xorg-configuration (keyboard-layout keyboard-layout)))
+            (service xvnc-service-type (xvnc-configuration
+                                        (display-number 5)
 ;;; Warning: Unless your machine is in a controlled environment, for security
 ;;; reasons, the localhost? configuration of the xvnc-configuration record
 ;;; should be left to its default #t value and exposed via a secure means such
 ;;; as an SSH port forward. The XDMCP port, UDP 177 should also be blocked from
 ;;; the outside by a firewall, as it is not a secure protocol and can expose
 ;;; login credentials in clear.
-                                             ;; (localhost? #f)
-                                             ;; (xdmcp? #t)
+                                        ;; (localhost? #f)
+                                        ;; (xdmcp? #t)
 ;;; Use an Inetd-style service, which runs the Xvnc server on demand.
 ;;; (default: #f)
-                                             (inetd? #t)))
-                 ;; disable-suspend-srvc
-                 )
+                                        (inetd? #t)))
+            ;; disable-suspend-srvc
+            )
 
            ;; This is the default list of services we are appending to.
            (modify-services %desktop-services
-                            (gdm-service-type config => (gdm-configuration
-                                                         (inherit config)
-                                                         (auto-suspend? #f)
+             (gdm-service-type config => (gdm-configuration
+                                          (inherit config)
+                                          (auto-suspend? #f)
 ;;; See the Warning above in the xvnc-configuration
-                                                         ;; (xdmcp? #t)
-                                                         )))))
+                                          ;; (xdmcp? #t)
+                                          )))))
   (bootloader (bootloader-configuration
                 (bootloader grub-bootloader)
                 (targets (list "/dev/sda"))

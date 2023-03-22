@@ -124,32 +124,39 @@ sudo reboot # press <f12> during the reboot and fix the boot order
    "(use-modules (ice-9 readline))
    (activate-readline)"))))
    (services
-    (append
-     (list (service xfce-desktop-service-type)
-           (service openssh-service-type)
-           (service cups-service-type)
-           (set-xorg-configuration
-            (xorg-configuration
-             (keyboard-layout keyboard-layout)))
-           ;; (udev-rules-service 'mtp libmtp)
-           ;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
-           ;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
-           ;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
-           ;; see https://issues.guix.gnu.org/40454
-           ;; (modify-services base:services
-           ;;                  (udev-service-type
-           ;;                   config =>
-           ;;                   (udev-configuration
-           ;;                    (inherit config)
-           ;;                    (rules (cons*
-           ;;                            light
-           ;;                            pipewire-0.3
-           ;;                            android-udev-rules
-           ;;                            libu2f-host
-           ;;                            (udev-configuration-rules config))))))
-           (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
-           (udev-rules-service 'android android-udev-rules
-                               #:groups '("adbusers")))
+    (append (list
+             (service xfce-desktop-service-type)
+
+             ;; To configure OpenSSH, pass an 'openssh-configuration'
+             ;; record as a second argument to 'service' below.
+             (service openssh-service-type)
+
+             ;; ntp-service-type for system clock sync is in the
+             ;; %desktop-services by default
+
+             (service cups-service-type)
+             (set-xorg-configuration
+              (xorg-configuration
+               (keyboard-layout keyboard-layout)))
+             ;; (udev-rules-service 'mtp libmtp)
+             ;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
+             ;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
+             ;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
+             ;; see https://issues.guix.gnu.org/40454
+             ;; (modify-services base:services
+             ;;                  (udev-service-type
+             ;;                   config =>
+             ;;                   (udev-configuration
+             ;;                    (inherit config)
+             ;;                    (rules (cons*
+             ;;                            light
+             ;;                            pipewire-0.3
+             ;;                            android-udev-rules
+             ;;                            libu2f-host
+             ;;                            (udev-configuration-rules config))))))
+             (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
+             (udev-rules-service 'android android-udev-rules
+                                 #:groups '("adbusers")))
      (modify-services %desktop-services
        (guix-service-type
         config => (guix-configuration
