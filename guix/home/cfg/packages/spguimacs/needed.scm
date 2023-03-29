@@ -152,6 +152,7 @@
    "emacs-f"
    "emacs-fancy-battery"
    "emacs-farmhouse-light-mod-theme"
+   "emacs-farmhouse-light-mod-theme"
    "emacs-farmhouse-themes"
    "emacs-fish-mode"
    "emacs-flatland-theme"

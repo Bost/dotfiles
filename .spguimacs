@@ -1116,15 +1116,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
-
-  ;; Can't use -partial, -compose, etc. dash.el not loaded yet at this point
-  (mapcar (lambda (theme)
-            (add-to-list 'custom-theme-load-path
-                         (format "%sprivate/themes/%s-theme"
-                                 spacemacs-data-directory
-                                 (symbol-name theme))))
-          '(farmhouse-light-mod))
-
   (my=end #'dotspacemacs/user-init)
   )
 

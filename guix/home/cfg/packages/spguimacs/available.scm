@@ -445,6 +445,7 @@
    "emacs-faceup"
    "emacs-fancy-battery"
    "emacs-fancy-narrow"
+   "emacs-farmhouse-light-mod-theme"
    "emacs-fd"
    "emacs-feature-mode"
    "emacs-fennel-mode"

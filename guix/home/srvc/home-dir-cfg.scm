@@ -163,24 +163,7 @@
               (let ((dir "bin"))
                 `(,dir ;; destination
                   ,(local-file (dotfiles-home "/" dir)
-                               #:recursive? #t)))
-              (let ((destination
-                     (str ".emacs.d"
-                          "/private/themes"
-                          "/farmhouse-light-mod-theme"))
-                    (dir (str ".emacs.d/private/local"
-                              "/farmhouse-light-mod-theme")))
-                `(,destination ,(local-file (dotfiles-home "/" dir)
-                                            #:recursive? #t)))
-;;; See value of `spacemacs-data-directory' in the $dev/guix-packages/spacemacs
-              (let ((destination
-                     (str ".local/share/spacemacs"
-                          "/private/themes"
-                          "/farmhouse-light-mod-theme"))
-                    (dir (str ".emacs.d/private/local"
-                              "/farmhouse-light-mod-theme")))
-                `(,destination ,(local-file (dotfiles-home "/" dir)
-                                            #:recursive? #t)))))
+                               #:recursive? #t)))))
     ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 0.\n") p)
     )
    ;; empty list
