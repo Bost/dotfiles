@@ -488,6 +488,8 @@ This function should only modify configuration layer settings."
      ;;    https://git.savannah.gnu.org/git/guix/emacs-guix.git
      (guix :location "~/dev/emacs-guix/")
 
+     (gptel :location (recipe :fetcher github :repo "karthink/gptel"))
+
      ;; Highlight output from `strace'
      ;; strace-mode
 
@@ -1287,6 +1289,8 @@ before packages are loaded."
     )
 
   (setq                                 ; of dotspacemacs/user-config
+   gptel-api-key (getenv "OPENAI_API_KEY")
+
    ;; The program of term.
    ;; If this is nil, setup to environment variable of `SHELL'.
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
