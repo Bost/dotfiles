@@ -385,7 +385,7 @@
    "emacs-purple-haze-theme"
    "emacs-quickrun"
    "emacs-racket-mode"
-   ;; "emacs-railscasts-theme"
+   "emacs-railscasts-theme"
    "emacs-rainbow-delimiters"
    "emacs-rainbow-identifiers"
    "emacs-rainbow-mode"

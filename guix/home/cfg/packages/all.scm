@@ -413,12 +413,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               bst:emacs-zop-to-char
               bst:emacs-font-utils
               bst:emacs-lush ;; doesn't work
+              bst:emacs-pythonic
 
               bst:emacs-color-theme-sanityinc-tomorrow ;; doesn't work
               bst:emacs-gruvbox ;; doesn't work
-              bst:emacs-pippel
-              bst:emacs-railscasts-theme
-              bst:emacs-sphinx-doc
               bst:emacs-xcscope
               )
              pkgs)
