@@ -26,8 +26,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "leiningen"
    "babashka"
    "firefox"
-   ;; "factorio" ;; temporarily disabled, install it using:
-   ;; cd ~/dev/games && guix package --load-path=./ --install=factorio
+   #|
+   "factorio" ;; temporarily disabled, install it using:
+   guix package --load-path=$dev/games --install=factorio
+   set experimentalVersion @1.1.78 # set --erase experimentalVersion
+   guix package --load-path=$dev/games --install=factorio$experimentalVersion
+   |#
    "signal-desktop"
    ))
 
