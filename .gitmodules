@@ -1,0 +1,3 @@
+[submodule ".emacs.d/fennel-layer"]
+	path = .emacs.d/fennel
+	url = https://github.com/mitchellw/fennel-layer.git
