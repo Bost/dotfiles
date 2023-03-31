@@ -71,8 +71,9 @@ Usage:
    command))
 ;;;;;; end: from utils.scm
 
-(define vmRAM "4G")
-(define vmHDDSize "16G")
+(define vmRAM (format #f "~aG" 16))
+;; The HDD can be resized using `qemu-image'. See notes.
+(define vmHDDSize (format #f "~aG" 30))
 (define vmRemoteViewPort "5930")
 (define vmSSHPort "10022")
 (define vmApache2Port "10080")
@@ -154,6 +155,19 @@ Usage:
          vmSSHPort vmApache2Port)
         "-enable-kvm" "-m" vmRAM
         "-device" "virtio-blk,drive=myhd"
+        #|
+        ;; see https://superuser.com/a/454814
+        EPYC-v1  AMD EPYC Processor              ;; works
+        EPYC-v2  AMD EPYC Processor (with IBPB)  ;; works
+        EPYC-v3  AMD EPYC Processor              ;; doesn't work
+        Opteron_G1 ;; test it
+        Opteron_G2 ;; test it
+        Opteron_G3 ;; test it
+        Opteron_G4 ;; test it
+        Opteron_G5 ;; test it
+        phenom     ;; test it
+        |#
+        "-cpu EPYC-v1,+avx,enforce"
         "-drive" (string-append "if=none,file=" qcow2File ",id=myhd")
 ;;; Access the VM with spice remote-viewer. With clipboard sharing. See `usage'
         ;;  remote-viewer spice://localhost:5930 & disown
