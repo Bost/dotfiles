@@ -1283,6 +1283,8 @@ before packages are loaded."
 
   (setq                                 ; of dotspacemacs/user-config
    gptel-api-key (getenv "OPENAI_API_KEY")
+   ;; gptel-model "gpt-3.5-turbo" ;; (Default "gpt-3.5-turbo)
+   gptel-model "gpt-4"  ;; costs money https://platform.openai.com/account/usage
 
    ;; The program of term.
    ;; If this is nil, setup to environment variable of `SHELL'.
