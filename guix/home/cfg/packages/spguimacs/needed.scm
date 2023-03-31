@@ -11,6 +11,7 @@
 ;; See the *Messages* buffer ~SPC b m~
 (define needed-packages
   (list
+   "emacs-copilot"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
    "emacs-json-navigator"

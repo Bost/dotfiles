@@ -241,7 +241,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "ncurses"
    "network-manager"
    "nmap"
-   "node"
+   "node"     ;; node-lts 14.19.3, node 10.24.1
    "openssl"
    "parted"
    "pavucontrol"
@@ -373,6 +373,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         (if (home-ecke-config)
             (append
              (list
+              bst:emacs-copilot
               ;; below are good
               bst:emacs-company-web
               bst:emacs-web-completion-data
