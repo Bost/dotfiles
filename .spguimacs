@@ -176,11 +176,13 @@ This function should only modify configuration layer settings."
      (git :variables
           ;; TODO implement it as spacemacs|toggle
           ;; (setq
-          ;; git-magit-status-fullscreen t ;; (Default nil)
-          git-enable-magit-todos-plugin t
-          magit-diff-refine-hunk nil       ;; (Default nil)
-          ;; magit-diff-refine-hunk 'all
-          ;; magit-diff-refine-hunk t
+          ;; git-magit-status-fullscreen t   ;; (Default nil)
+          ;; git-enable-magit-todos-plugin t ;; (Default nil)
+
+          ;; `nil'  Never show fine differences. (Default nil)
+          ;; `t'    Show fine differences for the current diff hunk only.
+          ;; `'all' Show fine differences for all displayed diff hunks.
+          magit-diff-refine-hunk t
           ;; )
           )
 
