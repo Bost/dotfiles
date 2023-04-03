@@ -654,6 +654,39 @@ TODO finish the implementation"
     (define-key helm-map (kbd "s-a") 'helm-next-line)
     (define-key helm-map (kbd "s-]") 'helm-next-line)))
 
+(defun my=find-ai-scrbl ()
+  "Edit the `$dev/notes/notes/ai.scrbl', in the current window."
+  (interactive)
+  (find-file-existing (format "%s/notes/notes/ai.scrbl" (getenv "dev"))))
+
+(defun my=find-dotf-spacemacs ()
+  "Edit the `$dotf/.spacemacs', in the current window."
+  (interactive)
+  (find-file-existing (format "%s/.spacemacs" (getenv "dotf"))))
+
+(defun my=find-dotf-spguimacs ()
+  "Edit the `$dotf/.spguimacs', in the current window."
+  (interactive)
+  (find-file-existing (format "%s/.spguimacs" (getenv "dotf"))))
+
+(defun my=find-home-configuration.scm ()
+  "Edit the `$dotf/.../home-config-<hostname>.scm', in the current window."
+  (interactive)
+  (find-file-existing
+   (format "%s/guix/home/home-config-%s.scm" (getenv "dotf") (system-name))))
+
+(defun my=find-configuration.scm ()
+  "Edit the `$dotf/.../<hostname>.scm', in the current window."
+  (interactive)
+  (find-file-existing
+   (format "%s/guix/systems/%s.scm" (getenv "dotf") (system-name))))
+
+(defun my=find-spguimacs-packages.scm ()
+  "Edit the `$dotf/.../spguimacs-packages.scm', in the current window."
+  (interactive)
+  (find-file-existing
+   (format "%s/guix/home/cfg/spguimacs-packages.scm" (getenv "dotf"))))
+
 (defun my=cider-clear-compilation-highlights ()
   (interactive)
   (cider-clear-compilation-highlights t))
