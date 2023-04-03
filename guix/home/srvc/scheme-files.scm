@@ -99,6 +99,8 @@ Example:
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crep" #:files ".*"
                  #:scheme-file-name "search-notes")
+   (service-file #:program-name "cra"  #:files "ai"
+                 #:scheme-file-name "search-notes")
    (service-file #:program-name "crf"  #:files "find_and_grep"
                  #:scheme-file-name "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
