@@ -774,8 +774,13 @@ It should only modify the values of Spacemacs settings."
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    ;; :size 8.8 is `(- 10.0 text-scale-mode-step)', like M-x text-scale-decrease
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 8.8
+   dotspacemacs-default-font `("Source Code Pro"
+                               :size
+                               ,(let ((syst-name (system-name)))
+                                  (cond
+                                   ((string= syst-name "geek") 17)
+                                   ((string= syst-name "ecke") 8.8)
+                                   (t 10.0)))
                                :weight normal
                                :width normal)
 
