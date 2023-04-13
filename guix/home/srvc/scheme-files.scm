@@ -154,6 +154,10 @@ Example:
        ;; empty list
        (list)])))
    (list
+    ;; pwr and prw do the same
+    (service-file #:program-name "pwr"
+                  #:chmod-params "rw"
+                  #:scheme-file-name "chmod")
     (service-file #:program-name "prw"
                   #:chmod-params "rw"
                   #:scheme-file-name "chmod")
