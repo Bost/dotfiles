@@ -1,7 +1,12 @@
 #!/bin/sh
 
+# guix home load path
+gxhlp=$dotf/guix/home
+# guix home configuration file
+gxhcf=$(printf "%s/home-config-%s.scm" $gxhlp $(hostname))
+
 set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null
-guix home --allow-downgrades --load-path=$dotf/guix/home container $dotf/guix/home/home-configuration.scm "$@"
+guix home --allow-downgrades --load-path=$gxhlp container $gxhcf "$@"
 { retval="$?"; set +x; } 2>/dev/null
 exit $retval
