@@ -119,6 +119,7 @@ guix shell --development guix help2man git strace --pure
     ("cheat" . ,(str hf:dev "/cheat"))
     ("dotf"  . ,(str hf:dev "/dotfiles"))
     ("dgx"   . ,(str hf:dev "/guix"))
+    ("dgxp"  . ,(str hf:dev "/guix-packages"))
     ("dgl"   . ,(str hf:dev "/guile"))
 
     ("user_full_name"    . ,hs:user-full-name)
