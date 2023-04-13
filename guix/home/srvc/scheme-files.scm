@@ -135,7 +135,9 @@ Example:
         search-notes-service-files
         (list
          (service-file #:program-name "e" #:desc "emacs-launcher"
-                       #:scheme-file-name "emacs-launcher")))]
+                       #:scheme-file-name "emacs-launcher")
+         (service-file #:program-name "s" #:desc "spguimacs-launcher"
+                       #:scheme-file-name "spguimacs-launcher")))]
       [(home-ecke-config)
        (append
         search-notes-service-files

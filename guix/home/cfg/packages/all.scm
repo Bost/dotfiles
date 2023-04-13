@@ -454,7 +454,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (kde-dependent-packages)
             ;; (large-packages)
             (packages-from-additional-channels)
-            ;; (spguimacs-packages)
+            (spguimacs-packages)
             ))]
         [#t
          (error
