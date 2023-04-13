@@ -187,6 +187,8 @@ This function should only modify configuration layer settings."
           magit-diff-refine-hunk t
           ;; )
           )
+
+     ;; Requires running `git submodule update --init'
      fennel ;; fennel = lua in lisp
 
      ;; gnus

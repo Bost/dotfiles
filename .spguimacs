@@ -186,6 +186,7 @@ This function should only modify configuration layer settings."
           ;; )
           )
 
+     ;; Requires running `git submodule update --init'
      fennel ;; fennel = lua in lisp
 
      ;; gnus
