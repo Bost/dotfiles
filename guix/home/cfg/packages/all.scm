@@ -22,6 +22,17 @@
 Including these packages in the `packages-to-install' causes:
    error: <package-naae>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
+  (append
+   (packages-from-additional-channels-base)
+   (list
+    "signal-desktop" ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
+    )))
+
+(define (packages-from-additional-channels-base)
+  "Packages from additional channels?
+Including these packages in the `packages-to-install' causes:
+   error: <package-naae>: unknown package
+when called from the Emacs Geiser REPL by ,use or ,load"
   (list
    "leiningen"
    "babashka"
@@ -32,7 +43,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    set experimentalVersion @1.1.78 # set --erase experimentalVersion
    guix package --load-path=$dev/games --install=factorio$experimentalVersion
    |#
-   "signal-desktop"
    ))
 
 (define (kde-dependent-packages)
@@ -453,7 +463,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (xfce-packages)
             (kde-dependent-packages)
             ;; (large-packages)
-            (packages-from-additional-channels)
+            (packages-from-additional-channels-base)
             (spguimacs-packages)
             ))]
         [#t
