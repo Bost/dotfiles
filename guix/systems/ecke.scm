@@ -1,35 +1,7 @@
 ;; TODO compare /run/current-system/configuration.scm with
 ;; guix system describe | rg "configuration file" | rg -o "/gnu/.*"
 
-#|
-## Run this file by (the `~' doesn't work as a value of --load-path):
-# --fallback         fall back to building when the substituter fails
-# -L --load-path
-sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems/ecke.scm
-set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda
-udisksctl mount --block-device=(blkid --uuid $UUID)
-;; sudo cp /media/$USER/$UUID/boot/grub/grub.cfg /tmp/
-sudo cp /media/$USER/ubuntu-filesyst/boot/grub/grub.cfg /tmp/
-sudo chown $USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
-## Match the version number and place it to clipboard:
-##  Also: grep -oP "(\d{1,}\.)+\d{1,}"
-## Parameter abbreviations:
-#   rg:   -N --no-line-number; -A --after-context; -m --max-count
-#   xsel: -b --clipboard; -i --input
-rg -N -A 4 -m 1 "GNU with Linux-Libre" /boot/grub/grub.cfg | xsel -bi
-e /tmp/grub.cfg                    # edit the file
-## <paste the block>
-## Extract the time and generation number:
-set n2 "\d{2,}"
-set tstp (date +"%Y-%m-%d")
-set replacement (printf '(#$1 %s $2)' $tstp)
-set regex (printf ".*? (\d{1,}).*(%s:%s):%s.*current" $n2 $n2)
-guix system describe | rg $regex -o -r $replacement | xsel -bi
-## <paste the block>
-;; sudo cp /tmp/grub.cfg /media/$USER/boot/grub/grub.cfg
-sudo cp -i /tmp/grub.cfg /media/$USER/ubuntu-filesyst/boot/grub/
-sudo reboot # press <f12> during the reboot and fix the boot order
-|#
+;;; To run this file see: $dotf/bin/sgxsr
 
 ;; (format #t "[ecke] evaluating ...\n")
 
@@ -100,7 +72,9 @@ sudo reboot # press <f12> during the reboot and fix the boot order
             (shell (file-append bash "/bin/bash"))
             (supplementary-groups
              '("wheel" ;; gives access to 'sudo'
-               "netdev" "audio" "video" "adbusers")))
+               "netdev" "audio" "video"
+               "adbusers" ;; for android
+               )))
            %base-user-accounts))
 
 ;;; Packages installed system-wide. Users can also install packages under their
@@ -156,6 +130,7 @@ sudo reboot # press <f12> during the reboot and fix the boot order
              (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
              (udev-rules-service 'android android-udev-rules
                                  #:groups '("adbusers")))
+
      (modify-services %desktop-services
        (guix-service-type
         config => (guix-configuration
