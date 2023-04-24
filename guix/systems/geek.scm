@@ -28,6 +28,14 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
 
 (use-service-modules cups desktop networking ssh xorg)
 
+;; no need to write: #:use-module (gnu packages <module>)
+(use-package-modules
+ android  ; android-udev-rules - access smartphone via mtp://
+ bash
+ libusb   ; libmtp
+ shells   ; login shell
+ )
+
 (define operating-system-configuration
   (operating-system
     (kernel linux)
@@ -49,7 +57,9 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
                    (home-directory "/home/bost")
                    (supplementary-groups
                     '("wheel" ;; gives access to 'sudo'
-                      "netdev" "audio" "video")))
+                      "netdev" "audio" "video"
+                      "adbusers" ;; for android
+                      )))
                   %base-user-accounts))
 
 ;;; Packages installed system-wide. Users can also install packages under their
@@ -74,11 +84,6 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
      (append (list
               (service xfce-desktop-service-type)
 
-              ;; for the NetworkManager
-              (service network-manager-service-type)
-
-              (service wpa-supplicant-service-type)
-
               ;; ntp-service-type for system clock sync is in the
               ;; %desktop-services by default
 
@@ -87,7 +92,11 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
               (service openssh-service-type)
 
               (set-xorg-configuration
-               (xorg-configuration (keyboard-layout keyboard-layout))))
+               (xorg-configuration (keyboard-layout keyboard-layout)))
+
+              (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
+              (udev-rules-service 'android android-udev-rules
+                                  #:groups '("adbusers")))
 
              ;; This is the default list of services we are appending to.
              (modify-services %desktop-services
