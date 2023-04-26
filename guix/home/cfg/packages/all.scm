@@ -252,7 +252,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "ncurses"
    "network-manager"
    "nmap"
-   "node"     ;; node-lts 14.19.3, node 10.24.1
+
+;;; Use manually compiled $dev/node-vx.y.z until the more recent node versions
+;;; make it to the upstream. See https://issues.guix.gnu.org/53414,
+;;; https://issues.guix.gnu.org/59188 .
+   ;; "node"     ;; node-lts 14.19.3, node 10.24.1
+
    "openssl"
    "parted"
    "pavucontrol"
