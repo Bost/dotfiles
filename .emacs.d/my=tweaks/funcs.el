@@ -669,13 +669,13 @@ TODO finish the implementation"
   (interactive)
   (find-file-existing (format "%s/.spguimacs" (getenv "dotf"))))
 
-(defun my=find-home-configuration.scm ()
+(defun my=find-home-config.scm ()
   "Edit the `$dotf/.../home-config-<hostname>.scm', in the current window."
   (interactive)
   (find-file-existing
    (format "%s/guix/home/home-config-%s.scm" (getenv "dotf") (system-name))))
 
-(defun my=find-configuration.scm ()
+(defun my=find-syst-config.scm ()
   "Edit the `$dotf/.../<hostname>.scm', in the current window."
   (interactive)
   (find-file-existing

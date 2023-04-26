@@ -1503,10 +1503,10 @@ before packages are loaded."
     "oeg" #'my=find-dotf-spguimacs
     "ogg" #'google-this
     "ogr" #'google-this-region
-    "oh"  #'my=find-home-configuration.scm
+    "oh"  #'my=find-home-config.scm
     "oep" #'my=find-spguimacs-packages.scm
     "or"  #'rotate-frame
-    "os"  #'my=find-configuration.scm
+    "os"  #'my=find-syst-config.scm
     ;; Revert buffer - loads in .dir-locals.el changes
     "oR"  #'my=revert-buffer-no-confirm
     ;; Show list of references to a given node from other nodes
