@@ -192,7 +192,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "fuse"
    ;; Make sure the CC environment variable has the value `(which gcc)'
    ;; See home-environment-variables-service-type
-   "gcc"
    "gcc-toolchain"
    "gdm"
    "ghc"
