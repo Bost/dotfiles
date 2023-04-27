@@ -1,6 +1,8 @@
 (define-module (cfg packages all)
   #:use-module (cfg packages spguimacs all)
-  #:use-module ((bost packages emacs-xyz) #:prefix bst:)
+  #:use-module ((bost packages emacs-xyz) #:prefix bste:)
+  #:use-module ((bost packages maven) #:prefix bstm:)
+  #:use-module ((bost packages clojure) #:prefix bstc:)
   #:use-module (common settings)
   #:use-module (gnu packages)
   #:use-module (guix channels)
@@ -176,7 +178,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "cdrtools"
 
    "clang"
-   "clojure-tools"
+   ;; "clojure-tools"
    "clusterssh"
    "cmake"
    "curl"
@@ -233,12 +235,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "lshw"
    "lsof"
    "make"
+
    ;; maven is required by emacs, however the 3.8.6 from %default-channels is buggy so:
    ;; (A) either the 3.8.5 installed using the inferior mechanism
    ;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
    ;; (B) or the fix proposed by https://issues.guix.gnu.org/57749 is used from
    ;; a local guix repo activated in the ~/.config/guix/channels.scm
-   "maven"
+   ;; "maven"
    ;; "bost/packages/maven"
    ;; "(@ (bost packages maven) maven)"
    ;; '(@ (bost packages maven) maven)
@@ -300,7 +303,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "udiskie"
    "uniutils"
    "usbutils"
-   "virt-viewer"
+   ;; "virt-viewer"
 
    ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
    ;; "xdg-utils"
@@ -347,6 +350,28 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'rest-packages)
 
+(define inferior-virt-viewer
+  ;; An inferior representing the above revision.
+  (inferior-for-channels
+   (list (channel
+          (name 'guix)
+          (url "https://git.savannah.gnu.org/git/guix.git")
+          (commit
+           ;; "<predecessor-sha1>"
+           "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")))))
+(testsymb 'inferior-virt-viewer)
+
+(define inferior-maven
+  ;; An inferior representing the above revision.
+  (inferior-for-channels
+   (list (channel
+          (name 'guix)
+          (url "https://git.savannah.gnu.org/git/guix.git")
+          (commit
+           ;; "<predecessor-sha1>"
+           "6199ee19ff84f904972fcc703442dff24018ef4d")))))
+(testsymb 'inferior-maven)
+
 (define inferior-racket
   ;; An inferior representing the above revision.
   (inferior-for-channels
@@ -371,12 +396,20 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         ;; (format #t "~a\n~a\n" m pkgs)
         pkgs)
       (partial append
-               ;; in the $dotf/guix/home/cfg/packages/all.scm
-               ;; comment out "racket" in the (rest-packages)
                (list
+
+                ;; in the $dotf/guix/home/cfg/packages/all.scm
+                ;; comment out "maven" in the (rest-packages)
+                ;; (first (lookup-inferior-packages inferior-maven "maven"))
+
+                ;; in the $dotf/guix/home/cfg/packages/all.scm
+                ;; comment out "virt-viewer" in the (rest-packages)
+                (first (lookup-inferior-packages inferior-virt-viewer "virt-viewer"))
+
                 ;; in the $dotf/guix/home/cfg/packages/all.scm
                 ;; comment out "racket" in the (rest-packages)
-                (first (lookup-inferior-packages inferior-racket "racket")))
+                (first (lookup-inferior-packages inferior-racket "racket"))
+                )
                #;
                ((compose
                  first
@@ -388,52 +421,55 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         (if (home-ecke-config)
             (append
              (list
-              bst:emacs-copilot
+              ;; bstc:clojure-tools
+              bstm:maven
+
+              bste:emacs-copilot
               ;; below are good
-              bst:emacs-company-web
-              bst:emacs-web-completion-data
-              bst:emacs-centered-cursor-mode
-              bst:emacs-company-statistics
-              bst:emacs-json-navigator
-              bst:emacs-eziam-themes
-              bst:emacs-tangotango
-              bst:emacs-helm-cider-history
-              bst:emacs-flx
-              bst:emacs-twilight-bright
-              ;; bst:emacs-haskell-snippets
-              bst:emacs-lsp-haskell
-              bst:emacs-darkmine
-              bst:emacs-helm-css-scss
-              ;; bst:emacs-auto-yasnippet
-              bst:emacs-composer
-              bst:emacs-soft-stone
-              bst:emacs-twilight-anti-bright
-              bst:emacs-erc-social-graph
-              bst:emacs-hlint-refactor
-              bst:emacs-chocolate
-              bst:emacs-soft-charcoal
-              bst:emacs-clues
-              bst:emacs-planet
-              bst:emacs-occidental
-              bst:emacs-gruber-darker
+              bste:emacs-company-web
+              bste:emacs-web-completion-data
+              bste:emacs-centered-cursor-mode
+              bste:emacs-company-statistics
+              bste:emacs-json-navigator
+              bste:emacs-eziam-themes
+              bste:emacs-tangotango
+              bste:emacs-helm-cider-history
+              bste:emacs-flx
+              bste:emacs-twilight-bright
+              ;; bste:emacs-haskell-snippets
+              bste:emacs-lsp-haskell
+              bste:emacs-darkmine
+              bste:emacs-helm-css-scss
+              ;; bste:emacs-auto-yasnippet
+              bste:emacs-composer
+              bste:emacs-soft-stone
+              bste:emacs-twilight-anti-bright
+              bste:emacs-erc-social-graph
+              bste:emacs-hlint-refactor
+              bste:emacs-chocolate
+              bste:emacs-soft-charcoal
+              bste:emacs-clues
+              bste:emacs-planet
+              bste:emacs-occidental
+              bste:emacs-gruber-darker
 
-              bst:emacs-vi-tilde-fringe
-              bst:emacs-popwin
-              ;; bst:emacs-paradox
-              bst:emacs-lsp-volar
+              bste:emacs-vi-tilde-fringe
+              bste:emacs-popwin
+              ;; bste:emacs-paradox
+              bste:emacs-lsp-volar
 
-              bst:emacs-eziam-theme-emacs ;; doesn't work
-              bst:emacs-lsp-python-ms
-              bst:emacs-moe-theme
-              bst:emacs-slim-mode
-              bst:emacs-zop-to-char
-              bst:emacs-font-utils
-              bst:emacs-lush ;; doesn't work
-              bst:emacs-pythonic
+              bste:emacs-eziam-theme-emacs ;; doesn't work
+              bste:emacs-lsp-python-ms
+              bste:emacs-moe-theme
+              bste:emacs-slim-mode
+              bste:emacs-zop-to-char
+              bste:emacs-font-utils
+              bste:emacs-lush ;; doesn't work
+              bste:emacs-pythonic
 
-              bst:emacs-color-theme-sanityinc-tomorrow ;; doesn't work
-              bst:emacs-gruvbox ;; doesn't work
-              bst:emacs-xcscope
+              bste:emacs-color-theme-sanityinc-tomorrow ;; doesn't work
+              bste:emacs-gruvbox ;; doesn't work
+              bste:emacs-xcscope
               )
              pkgs)
             pkgs))
