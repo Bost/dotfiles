@@ -220,6 +220,7 @@
    "emacs-gruber-darker-theme"
    "emacs-gruvbox"
    "emacs-gruvbox-theme"
+   "emacs-guix"
    "emacs-haml-mode"
    "emacs-haskell-mode"
    "emacs-hc-zenburn-theme"
