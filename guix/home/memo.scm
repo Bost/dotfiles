@@ -38,7 +38,7 @@
 
 (define hostname-memoized (memoize hostname))
 
-(define (home-games-config) #f)
+(define (home-games-config) #t)
 
 (define (home-lukas-config) (equal? (hostname-memoized) host-lukas))
 (testsymb 'home-lukas-config)

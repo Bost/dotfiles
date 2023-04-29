@@ -1,8 +1,8 @@
 (define-module (cfg packages all)
   #:use-module (cfg packages spguimacs all)
   #:use-module ((bost packages emacs-xyz) #:prefix bste:)
-  #:use-module ((bost packages maven) #:prefix bstm:)
-  #:use-module ((bost packages clojure) #:prefix bstc:)
+  ;; #:use-module ((bost packages maven) #:prefix bstm:)
+  ;; #:use-module ((bost packages clojure) #:prefix bstc:)
   #:use-module (common settings)
   #:use-module (gnu packages)
   #:use-module (guix channels)
@@ -178,7 +178,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "cdrtools"
 
    "clang"
-   ;; "clojure-tools"
+   "clojure-tools"
    "clusterssh"
    "cmake"
    "curl"
@@ -236,12 +236,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "lsof"
    "make"
 
-   ;; maven is required by emacs, however the 3.8.6 from %default-channels is buggy so:
-   ;; (A) either the 3.8.5 installed using the inferior mechanism
-   ;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
-   ;; (B) or the fix proposed by https://issues.guix.gnu.org/57749 is used from
-   ;; a local guix repo activated in the ~/.config/guix/channels.scm
-   ;; "maven"
+   "maven"
    ;; "bost/packages/maven"
    ;; "(@ (bost packages maven) maven)"
    ;; '(@ (bost packages maven) maven)
@@ -361,16 +356,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")))))
 (testsymb 'inferior-virt-viewer)
 
-(define inferior-maven
-  ;; An inferior representing the above revision.
-  (inferior-for-channels
-   (list (channel
-          (name 'guix)
-          (url "https://git.savannah.gnu.org/git/guix.git")
-          (commit
-           ;; "<predecessor-sha1>"
-           "6199ee19ff84f904972fcc703442dff24018ef4d")))))
-(testsymb 'inferior-maven)
+;; (define inferior-maven
+;;   ;; An inferior representing the above revision.
+;;   (inferior-for-channels
+;;    (list (channel
+;;           (name 'guix)
+;;           (url "https://git.savannah.gnu.org/git/guix.git")
+;;           (commit
+;;            ;; "<predecessor-sha1>"
+;;            "6199ee19ff84f904972fcc703442dff24018ef4d")))))
+;; (testsymb 'inferior-maven)
 
 (define inferior-racket
   ;; An inferior representing the above revision.
@@ -422,7 +417,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (append
              (list
               ;; bstc:clojure-tools
-              bstm:maven
+              ;; bstm:mavenx
 
               bste:emacs-copilot
               ;; below are good
