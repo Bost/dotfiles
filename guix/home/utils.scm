@@ -71,7 +71,7 @@
 ;; (use-package-modules certs)
 ;; (use-package-modules shells)
 
-(define (last lst) (car (reverse lst)))
+;;;;;; beg: testsymb, testsymb-trace
 
 (define (partial fun . args)
   (lambda x (apply fun (append args x))))
@@ -83,13 +83,6 @@
     (partial map (partial format #f "~a"))
     (partial module-name))
    (current-module)))
-
-(define (pretty-print->string sexp)
-  (let [(port (open-output-string))]
-    (pretty-print sexp port)
-    (let* [(ret (get-output-string port))]
-      (close-output-port port)
-      ret)))
 
 (define-syntax testsymb
   (syntax-rules ()
@@ -114,8 +107,19 @@
   (testsymb-trace 'f)
   )
 
+;;;;;; end: testsymb, testsymb-trace
+
 ;;; testsymb doesn't work in the let-syntax
 ;; (let [(ff 42)] (testsymb 'ff))
+
+(define (last lst) (car (reverse lst)))
+
+(define (pretty-print->string sexp)
+  (let [(port (open-output-string))]
+    (pretty-print sexp port)
+    (let* [(ret (get-output-string port))]
+      (close-output-port port)
+      ret)))
 
 (define (unspecified-or-empty-or-false? obj)
   (or (unspecified? obj)
