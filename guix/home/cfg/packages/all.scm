@@ -347,35 +347,26 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'rest-packages)
 
-(define (inferior-guix-channel commit)
+(define (inferior-package-in-guix-channel package commit)
   "Returns an inferior representing the `commit' (predecessor-sha1) revision."
-  (inferior-for-channels
-   (list (channel
-          (name 'guix)
-          (url "https://git.savannah.gnu.org/git/guix.git")
-          (commit commit)))))
-
-(define inferior-virt-viewer
-  (inferior-guix-channel "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1"))
-
-(define inferior-chromium
-  (inferior-guix-channel "5834953573a00793fbee8918d9d53897e25fa363"))
-
-;; (define inferior-maven
-;;   (inferior-guix-channel "6199ee19ff84f904972fcc703442dff24018ef4d"))
-
-(define inferior-racket
-  (inferior-guix-channel "e1290c0d43cb2916a5908f15b3211911ee257968"))
+  (first
+   (lookup-inferior-packages
+    (inferior-for-channels
+     (list (channel
+            (name 'guix)
+            (url "https://git.savannah.gnu.org/git/guix.git")
+            (commit commit))))
+    package)))
 
 (define (inferior-pkgs pkgs)
   ((compose
     (partial append pkgs)
-    (partial map first))
+    (partial map (partial apply inferior-package-in-guix-channel)))
    (list
-    ;; (lookup-inferior-packages inferior-maven "maven")
-    (lookup-inferior-packages inferior-virt-viewer "virt-viewer")
-    (lookup-inferior-packages inferior-chromium "ungoogled-chromium")
-    (lookup-inferior-packages inferior-racket "racket"))))
+    ;; (list "maven"              "6199ee19ff84f904972fcc703442dff24018ef4d")
+    (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
+    (list "ungoogled-chromium" "5834953573a00793fbee8918d9d53897e25fa363")
+    (list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968"))))
 
 (define (packages-to-install)
 ;;; TODO make it support inferior packages
