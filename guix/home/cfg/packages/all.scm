@@ -97,7 +97,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "fish"
    "git"
    "git:gui"
-   "git:send-email"
    "rsync"
    "unzip"
    "vim"
@@ -123,7 +122,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     "emacs-next"
     "emacs-next-pgtk"
     "emacs-with-editor"
+    "git:send-email"
     "pinentry" ;; needed to sign commits
+    "pwclient"
     )))
 
 (define (fennel-devel-packages)
@@ -345,7 +346,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "xfce4-screenshooter"
    "xfce4-settings"
    ))
-(testsymb 'rest-packages)
 
 (define (inferior-package-in-guix-channel package commit)
   "Returns an inferior representing the `commit' (predecessor-sha1) revision."
