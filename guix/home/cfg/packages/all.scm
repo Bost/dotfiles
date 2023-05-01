@@ -73,7 +73,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; complete TeX Live distribution
    "texlive"                 ; may take too long to graft
 
-   ;; "ungoogled-chromium"
+   "ungoogled-chromium"
 
    ;; openjdk-17.0.3  199.5MiB
    ;; openjdk-17.0.3-doc  9.6MiB
@@ -363,9 +363,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     (partial append pkgs)
     (partial map (partial apply inferior-package-in-guix-channel)))
    (list
-    ;; (list "maven"              "6199ee19ff84f904972fcc703442dff24018ef4d")
     (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
-    (list "ungoogled-chromium" "5834953573a00793fbee8918d9d53897e25fa363")
     (list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968"))))
 
 (define (packages-to-install)
