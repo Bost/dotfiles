@@ -73,7 +73,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; complete TeX Live distribution
    "texlive"                 ; may take too long to graft
 
-   "ungoogled-chromium"
+   ;; "ungoogled-chromium"
 
    ;; openjdk-17.0.3  199.5MiB
    ;; openjdk-17.0.3-doc  9.6MiB
@@ -198,6 +198,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "gdm"
    "ghc"
    "glib:bin"
+   "glibc"
    "glibc-locales"
    "gnupg"
    "gnutls"
@@ -289,6 +290,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "scsh"
    "seahorse"
    "spice-vdagent"
+   "strace"
    "taglib"
    "texinfo"
    "thunar-volman"
@@ -356,6 +358,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")))))
 (testsymb 'inferior-virt-viewer)
 
+(define inferior-chromium
+  ;; An inferior representing the above revision.
+  (inferior-for-channels
+   (list (channel
+          (name 'guix)
+          (url "https://git.savannah.gnu.org/git/guix.git")
+          (commit
+           ;; "<predecessor-sha1>"
+           "5834953573a00793fbee8918d9d53897e25fa363")))))
+
 ;; (define inferior-maven
 ;;   ;; An inferior representing the above revision.
 ;;   (inferior-for-channels
@@ -378,6 +390,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            "e1290c0d43cb2916a5908f15b3211911ee257968")))))
 (testsymb 'inferior-racket)
 
+(define (inferior-pkgs pkgs)
+  ((compose
+    (partial append pkgs)
+    (partial map first))
+   (list
+    ;; (lookup-inferior-packages inferior-maven "maven")
+    (lookup-inferior-packages inferior-virt-viewer "virt-viewer")
+    (lookup-inferior-packages inferior-chromium "ungoogled-chromium")
+    (lookup-inferior-packages inferior-racket "racket"))))
+
 (define (packages-to-install)
 ;;; TODO make it support inferior packages
 ;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
@@ -390,26 +412,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         (format #t "~a ~a packages to install\n" m (length pkgs))
         ;; (format #t "~a\n~a\n" m pkgs)
         pkgs)
-      (partial append
-               (list
-
-                ;; in the $dotf/guix/home/cfg/packages/all.scm
-                ;; comment out "maven" in the (rest-packages)
-                ;; (first (lookup-inferior-packages inferior-maven "maven"))
-
-                ;; in the $dotf/guix/home/cfg/packages/all.scm
-                ;; comment out "virt-viewer" in the (rest-packages)
-                (first (lookup-inferior-packages inferior-virt-viewer "virt-viewer"))
-
-                ;; in the $dotf/guix/home/cfg/packages/all.scm
-                ;; comment out "racket" in the (rest-packages)
-                (first (lookup-inferior-packages inferior-racket "racket"))
-                )
-               #;
-               ((compose
-                 first
-                 (partial lookup-inferior-packages inferior-racket))
-                "racket"))
+      inferior-pkgs
       (lambda (pkgs)
         ;; The spguimacs-packages should be installed only on the ecke-machine,
         ;; i.e. no need to install any emacs-packages on any other machine
