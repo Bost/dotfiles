@@ -347,48 +347,25 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'rest-packages)
 
-(define inferior-virt-viewer
-  ;; An inferior representing the above revision.
+(define (inferior-guix-channel commit)
+  "Returns an inferior representing the `commit' (predecessor-sha1) revision."
   (inferior-for-channels
    (list (channel
           (name 'guix)
           (url "https://git.savannah.gnu.org/git/guix.git")
-          (commit
-           ;; "<predecessor-sha1>"
-           "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")))))
-(testsymb 'inferior-virt-viewer)
+          (commit commit)))))
+
+(define inferior-virt-viewer
+  (inferior-guix-channel "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1"))
 
 (define inferior-chromium
-  ;; An inferior representing the above revision.
-  (inferior-for-channels
-   (list (channel
-          (name 'guix)
-          (url "https://git.savannah.gnu.org/git/guix.git")
-          (commit
-           ;; "<predecessor-sha1>"
-           "5834953573a00793fbee8918d9d53897e25fa363")))))
+  (inferior-guix-channel "5834953573a00793fbee8918d9d53897e25fa363"))
 
 ;; (define inferior-maven
-;;   ;; An inferior representing the above revision.
-;;   (inferior-for-channels
-;;    (list (channel
-;;           (name 'guix)
-;;           (url "https://git.savannah.gnu.org/git/guix.git")
-;;           (commit
-;;            ;; "<predecessor-sha1>"
-;;            "6199ee19ff84f904972fcc703442dff24018ef4d")))))
-;; (testsymb 'inferior-maven)
+;;   (inferior-guix-channel "6199ee19ff84f904972fcc703442dff24018ef4d"))
 
 (define inferior-racket
-  ;; An inferior representing the above revision.
-  (inferior-for-channels
-   (list (channel
-          (name 'guix)
-          (url "https://git.savannah.gnu.org/git/guix.git")
-          (commit
-           ;; "<predecessor-sha1>"
-           "e1290c0d43cb2916a5908f15b3211911ee257968")))))
-(testsymb 'inferior-racket)
+  (inferior-guix-channel "e1290c0d43cb2916a5908f15b3211911ee257968"))
 
 (define (inferior-pkgs pkgs)
   ((compose
