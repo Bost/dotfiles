@@ -33,7 +33,7 @@
 
 
 set -x  # Print commands and their arguments as they are executed.
-sudo guix system reconfigure $HOME/guix-conf/configuration.scm
+sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems/ecke.scm
 { retval="$?"; set +x; } 2>/dev/null
 
 echo "udisksctl mount --block-device=(blkid --uuid a8fb1680-eef5-49a0-98a3-8169c9b8eeda)"
