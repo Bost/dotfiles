@@ -48,11 +48,23 @@
                 ;; "https://github.com/Bost/haskell-guix"
                 ,(format #f "file://~a/dev/haskell-guix" home)
                 ))
+
       ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
       (channel (name 'bost)
                (url
                 ;; "https://github.com/Bost/guix-packages"
-                ,(format #f "file://~a/dev/guix-packages" home))))]
+                ,(format #f "file://~a/dev/guix-packages" home)))
+
+      ;; Andrew Tropin's tools for managing reproducible development
+      ;; environments
+      (channel (name 'rde)
+               (url "https://git.sr.ht/~abcdw/rde")
+               (introduction
+                (make-channel-introduction
+                 "257cebd587b66e4d865b3537a9a88cccd7107c95"
+                 (openpgp-fingerprint
+                  "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))
+      )]
    [(home-geek-config)
     `((channel (name 'haskell-and-clojure)
                (url
