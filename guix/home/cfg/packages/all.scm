@@ -1,9 +1,6 @@
 (define-module (cfg packages all)
   #:use-module (cfg packages spguimacs all)
   #:use-module ((bost packages emacs-xyz) #:prefix bste:)
-  ;; #:use-module ((bost packages maven) #:prefix bstm:)
-  ;; #:use-module ((bost packages clojure) #:prefix bstc:)
-  ;; #:use-module ((bost packages node) #:prefix bstn:)
   #:use-module (common settings)
   #:use-module (gnu packages)
   #:use-module (guix channels)
@@ -238,12 +235,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "lshw"
    "lsof"
    "make"
-
    "maven"
-   ;; "bost/packages/maven"
-   ;; "(@ (bost packages maven) maven)"
-   ;; '(@ (bost packages maven) maven)
-
    "mcron"
    "mercurial"
    "mesa-utils"
@@ -252,14 +244,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "ncurses"
    "network-manager"
    "nmap"
-
-;;; Use manually compiled $dev/node-vx.y.z until the more recent node versions
-;;; make it to the upstream. See https://issues.guix.gnu.org/53414,
-;;; https://issues.guix.gnu.org/59188 .
-   ;; "node"     ;; 18.16.0
-   "node@18.16.0"
-   ;; "node-lts"    ;; unknown package
-
+   "node"
    "openssl"
    "parted"
    "pavucontrol"
@@ -388,11 +373,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         (if (home-ecke-config)
             (append
              (list
-              ;; bstn:node-lts         ;; v18.16.0
-              ;; bstn:node             ;; v10.24.1
               ;; bstc:clojure-tools
-              ;; bstm:mavenx
-
               bste:emacs-copilot
               ;; below are good
               bste:emacs-company-web
