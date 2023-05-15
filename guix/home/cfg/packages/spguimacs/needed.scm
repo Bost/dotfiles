@@ -8,7 +8,8 @@
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
-;; See the *Messages* buffer ~SPC b m~
+;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
+;; doesn't work
 (define needed-packages
   (list
    "emacs-copilot"
@@ -220,7 +221,10 @@
    "emacs-gruber-darker-theme"
    "emacs-gruvbox"
    "emacs-gruvbox-theme"
-   "emacs-guix"
+
+   ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
+   ;; "emacs-guix"
+
    "emacs-haml-mode"
    "emacs-haskell-mode"
    "emacs-hc-zenburn-theme"

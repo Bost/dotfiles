@@ -1,9 +1,13 @@
 (define-module (cfg packages all)
   #:use-module (cfg packages spguimacs all)
   #:use-module ((bost packages emacs-xyz) #:prefix bste:)
+  ;; some packages may clash with (rde packages emacs-xyz)
+  #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module (bost packages clojure) ;; provides clojure-lsp
+  #:use-module ((bost packages xdisorg) #:prefix bstx:) ;; provides xsel
   #:use-module (common settings)
   #:use-module (gnu packages)
+  #:use-module (guix packages)
   #:use-module (guix channels)
   #:use-module (guix inferior)
   ;; first take remove delete-duplicates append-map etc.
@@ -32,7 +36,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (packages-from-additional-channels-base)
   "Packages from additional channels?
 Including these packages in the `packages-to-install' causes:
-   error: <package-naae>: unknown package
+   error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
    "leiningen"
@@ -322,7 +326,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "xrandr"
 
    ;; Manipulate X selection, i.e. the clipboard from the command line.
-   "xsel"
+   ;; "xsel" ;; see bstx:...
 
    "youtube-dl"
    ))
@@ -352,6 +356,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (inferior-pkgs pkgs)
   ((compose
     (partial append pkgs)
+    ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
     (partial map (partial apply inferior-package-in-guix-channel)))
    (list
     (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
@@ -366,8 +371,34 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
     ((compose
       (lambda (pkgs)
+        #|
+        (format #t "~a\n~a\n" m
+                ((compose
+                  (partial filter
+                           (lambda (p)
+                             (and (list? p)
+                                  ;; eq? doesn't work
+                                  (string=? "emacs-guix"
+                                            (package-name (car p))))))
+                  ;; we have a colorful mix here:
+                  (partial map
+                           (lambda (p)
+                             (cond
+                              [(list? p)
+                               (format #t "list    ~a: filter: ~a\n"
+                                       (package-name (car p))
+                                       (and (list? p)
+                                            (string=? "emacs-guix"
+                                                      (package-name (car p)))))]
+                              [(string? p)  (format #t "string  ~a\n" p)]
+                              [(package? p) (format #t "package ~a\n" p)]
+                              [(record? p)  (format #t "record  ~a\n" p)]
+                              [else         (format #t "else    ~a\n" p)])
+                             p))
+                  identity)
+                 pkgs))
+        |#
         (format #t "~a ~a packages to install\n" m (length pkgs))
-        ;; (format #t "~a\n~a\n" m pkgs)
         pkgs)
       inferior-pkgs
       (lambda (pkgs)
@@ -376,6 +407,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         (if (home-ecke-config)
             (append
              (list
+              bstx:xsel
+
+              pkg:emacs-geiser
+              pkg:emacs-geiser-guile
+              pkg:emacs-guix
+
               ;; bstc:clojure-tools
               bste:emacs-copilot
               ;; below are good

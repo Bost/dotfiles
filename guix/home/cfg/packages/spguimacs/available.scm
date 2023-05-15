@@ -9,6 +9,8 @@
 ;; (format #t "~a evaluating module ...\n" m)
 
 ;; guix package --list-available='^emacs-' | awk '{print "\""$1"\""}'
+;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
+;; doesn't work
 (define available-packages
   (list
    "emacs-company-web"
@@ -529,10 +531,16 @@
    "emacs-fzf"
    "emacs-gcmh"
    "emacs-gdscript-mode"
-   "emacs-geiser"
+
+   ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
+   ;; "emacs-geiser"
+
    "emacs-geiser-chez"
    "emacs-geiser-gauche"
-   "emacs-geiser-guile"
+
+   ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
+   ;; "emacs-geiser-guile"
+
    "emacs-geiser-racket"
    "emacs-general"
    "emacs-ggtags"
@@ -576,7 +584,10 @@
    "emacs-gruvbox"
    "emacs-gruvbox-theme"
    "emacs-gtk-look"
-   "emacs-guix"
+
+   ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
+   ;; "emacs-guix"
+
    "emacs-habitica"
    "emacs-hackernews"
    "emacs-handle"
