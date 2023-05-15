@@ -117,19 +117,19 @@ Note:
   (environment-variables
    (alist '())
    "Association list of environment variables to set in Fish."
-   serialize-fish-env-vars)
+   (serializer serialize-fish-env-vars))
   (aliases
    (alist '())
    "Association list of aliases for Fish, both the key and the value
 should be a string.  An alias is just a simple function that wraps a
 command, If you want something more akin to @dfn{aliases} in POSIX
 shells, see the @code{abbreviations} field."
-   serialize-fish-aliases)
+   (serializer serialize-fish-aliases))
   (abbreviations
    (alist '())
    "Association list of abbreviations for Fish.  These are words that,
 when typed in the shell, will automatically expand to the full text."
-   serialize-fish-abbreviations)
+   (serializer serialize-fish-abbreviations))
   )
 
 (define (fish-packages config)
