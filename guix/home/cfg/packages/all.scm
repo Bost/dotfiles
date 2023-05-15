@@ -1,6 +1,7 @@
 (define-module (cfg packages all)
   #:use-module (cfg packages spguimacs all)
   #:use-module ((bost packages emacs-xyz) #:prefix bste:)
+  #:use-module (bost packages clojure) ;; provides clojure-lsp
   #:use-module (common settings)
   #:use-module (gnu packages)
   #:use-module (guix channels)
@@ -177,6 +178,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "cdrtools"
 
    "clang"
+   "clojure"
+   "clojure-lsp" ;; from (bost packages clojure)
    "clojure-tools"
    "clusterssh"
    "cmake"
