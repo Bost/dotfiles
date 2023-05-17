@@ -57,6 +57,7 @@
 
       ;; Andrew Tropin's tools for managing reproducible development
       ;; environments
+      #;
       (channel (name 'rde)
                (url "https://git.sr.ht/~abcdw/rde")
                (introduction
