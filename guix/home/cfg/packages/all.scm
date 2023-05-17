@@ -402,8 +402,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         pkgs)
       inferior-pkgs
       (lambda (pkgs)
-        ;; The spguimacs-packages should be installed only on the ecke-machine,
-        ;; i.e. no need to install any emacs-packages on any other machine
         (if (home-ecke-config)
             (append
              (list
@@ -471,6 +469,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
          (begin
            ;; (format #t "(home-lukas-config)\n")
            (basic-packages))]
+        ;; The spguimacs-packages should be installed only on the ecke- and
+        ;; geek-machines, i.e. no need to install it elsewhere.
         [(home-ecke-config)
          (begin
            ;; (format #t "(home-ecke-config)\n")
