@@ -25,7 +25,10 @@ ptrn=$(printf '\(define-public\s+%s\s+"(.*)"\)' $llVer)
 # printf "ptrn: %s\n" $ptrn
 
 kernelVer=$(rg --no-line-number --replace '$1' $ptrn $linux_scm)
-printf "Using kernel version: %s\n" $kernelVer
+printf "Reconfigure system with kernel %s\n" $kernelVer
+
+lpath=$dotf/guix/systems
+hostname=$(hostname)
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
@@ -33,7 +36,7 @@ set -e # Exit immediately if a command exits with a non-zero status.
 # --fallback         fall back to building when the substituter fails
 # -L --load-path
 set -x  # Print commands and their arguments as they are executed.
-sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems/ecke.scm
+sudo guix system --fallback -L $lpath reconfigure $lpath/$hostname.scm
 { retval="$?"; set +x; } 2>/dev/null
 
 echo -e "\n\n" # output two new lines
