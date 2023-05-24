@@ -16,11 +16,6 @@
 # function.
 set fish_greeting ""
 
-# see: lsblk, mount, sudo fdisk -l
-# TODO usbDevice varies among machines
-# set usbDevice /dev/sdg1
-set usbDevice /dev/sdc1
-
 set --local localStuff ~/local-stuff.fish
 test -e $localStuff \
     && source $localStuff # || printf "[WRN] File not found: %s\n" $localStuff
