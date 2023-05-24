@@ -38,8 +38,6 @@
 
 (define hostname-memoized (memoize hostname))
 
-(define (home-games-config) #t)
-
 (define (home-lukas-config) (equal? (hostname-memoized) host-lukas))
 (testsymb 'home-lukas-config)
 
@@ -48,3 +46,7 @@
 
 (define (home-geek-config) (equal? (hostname-memoized) host-geek))
 (testsymb 'home-geek-config)
+
+;; games are available only on the ecke-machine
+(define (home-games-config) (home-ecke-config))
+
