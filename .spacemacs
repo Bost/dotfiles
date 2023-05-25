@@ -2002,7 +2002,20 @@ Some binding snippets / examples:
                    (tramp-remote-shell "/bin/sh")
                    (tramp-remote-shell-login ("-l"))
                    (tramp-remote-shell-args ("-c"))))
-    (tramp-set-completion-function "sshq" tramp-completion-function-alist-ssh))
+    (tramp-set-completion-function "sshq" tramp-completion-function-alist-ssh)
+
+    ;; Make sure tramp work on remote guix machines. It probably only helps if
+    ;; tramp is starte on a guix machine. It also fixes:
+    ;;    "Couldn't find a proper `ls' command"
+    (setq tramp-remote-path
+          (append tramp-remote-path
+                  '(tramp-own-remote-path)
+                  ;; Alternatively try following value:
+                  ;; '("~/.guix-profile/bin"
+                  ;;   "/run/current-system/profile/bin"
+                  ;;   "/run/current-system/profile/sbin")
+                  ))
+    )
 
   (with-eval-after-load 'magit-mode
     (bind-keys :map magit-mode-map
