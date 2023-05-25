@@ -14,10 +14,9 @@
   #:use-module (common settings)
   ;; open-input-pipe
   #:use-module (ice-9 popen)
-;;; (ice-9 readline) requires `guix install guile-readline'. However read-line
-;;; might be already in the (ice-9 popen)
+;;; (ice-9 readline) requires `guix install guile-readline'.
   ;; #:use-module (ice-9 readline)
-  #:use-module (ice-9 rdelim)
+  #:use-module (ice-9 rdelim) ;; read-line
   ;; string-match
   #:use-module (ice-9 regex)
   ;; delete-duplicates
@@ -280,7 +279,7 @@ READER-FUNCTION on them. "
   "Return a list of all lines of text from the PORT.
 Returns a list of strings"
   (let loop ((res '())
-             (str (read-line port))) ; from (ice-9 readline)
+             (str (read-line port))) ; from (ice-9 rdelim)
     (if (and str (not (eof-object? str)))
         (loop (append res (list str))
               (read-line port))
