@@ -45,6 +45,7 @@
             has-suffix?
             home
             partial
+            comp
             path
             read-all
             read-all-sexprs
@@ -75,6 +76,18 @@
 
 (define (partial fun . args)
   (lambda x (apply fun (append args x))))
+
+(define (comp . fns)
+  "Like `compose'. Can be called with zero arguments. I.e. (thunk? comp) => #t
+Works also for functions returning and accepting multiple values."
+  (lambda args
+    (if (null? fns)
+        (apply values args)
+        (let [(proc (car fns)) (rest (cdr fns))]
+          (if (null? rest)
+              (apply proc args)
+              (let ((g (apply comp rest)))
+                (call-with-values (lambda () (apply g args)) proc)))))))
 
 (define (module-name-for-logging)
   ((compose
