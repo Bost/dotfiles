@@ -100,6 +100,21 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "fish"
    "git"
    "git:gui"
+
+;;; glibc and glibc-locales are needed to prevent:
+;;;     guile: warning: failed to install locale
+;;; also following steps may be needed:
+;;; sudo su
+;;; guix archive --authorize < $(find /root/.cache/ -name ci.guix.gnu.org.pub)
+;;; exit             # exit the root shell
+;;; guix pull        # not sure if this is needed, but it shouldn't do any harm
+;;;
+;;; Here the `guix archive ...' reports:
+;;; guix archive: warning: replacing symbolic link /etc/guix/acl with a regular file
+;;; hint: On Guix System, add all `authorized-keys' to the `guix-service-type' service of your `operating-system' instead.
+   "glibc"
+   "glibc-locales"
+
    "rsync"
    "unzip"
    "vim"
@@ -204,8 +219,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "gdm"
    "ghc"
    "glib:bin"
-   "glibc"
-   "glibc-locales"
    "gnupg"
    "gnutls"
    ;; "gksudo" ;; not available in the Guix package repository
