@@ -459,16 +459,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               ;; bste:emacs-paradox
               bste:emacs-lsp-volar
 
-              bste:emacs-eziam-themes
               bste:emacs-lsp-python-ms
               bste:emacs-moe-theme
               bste:emacs-slim-mode
               bste:emacs-zop-to-char
               bste:emacs-font-utils
-              bste:emacs-lush ;; doesn't work
               bste:emacs-pythonic
 
-              bste:emacs-color-theme-sanityinc-tomorrow ;; doesn't work
               bste:emacs-xcscope
               )
              pkgs)

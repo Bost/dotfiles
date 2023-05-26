@@ -301,7 +301,6 @@
    "emacs-lsp-python-ms"
    "emacs-lsp-treemacs"
    "emacs-lsp-ui"
-   "emacs-lush"
    "emacs-lush-theme"
    "emacs-macrostep"
    "emacs-madhat2r-theme"
