@@ -176,6 +176,7 @@
    "emacs-cmake-mode"
    "emacs-cnfonts"
    "emacs-code-cells"
+   "emacs-color-identifiers-mode"
    "emacs-color-theme-modern"
    "emacs-color-theme-sanityinc-solarized"
    "emacs-color-theme-sanityinc-tomorrow"
