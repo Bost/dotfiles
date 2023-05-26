@@ -581,7 +581,6 @@
    "emacs-grep-a-lot"
    "emacs-grep-context"
    "emacs-groovy-modes"
-   "emacs-gruvbox"
    "emacs-gruvbox-theme"
    "emacs-gtk-look"
 

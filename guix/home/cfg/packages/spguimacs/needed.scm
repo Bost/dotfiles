@@ -219,7 +219,6 @@
    "emacs-groovy-imports"
    "emacs-groovy-mode"
    "emacs-gruber-darker-theme"
-   "emacs-gruvbox"
    "emacs-gruvbox-theme"
 
    ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
