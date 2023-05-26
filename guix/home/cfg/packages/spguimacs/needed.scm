@@ -174,7 +174,6 @@
    "emacs-exotica-theme"
    "emacs-expand-region"
    "emacs-eyebrowse"
-   "emacs-eziam-theme-emacs"
    "emacs-f"
    "emacs-fancy-battery"
    "emacs-farmhouse-light-mod-theme"

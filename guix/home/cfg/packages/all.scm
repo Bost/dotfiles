@@ -459,7 +459,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               ;; bste:emacs-paradox
               bste:emacs-lsp-volar
 
-              bste:emacs-eziam-theme-emacs ;; doesn't work
+              bste:emacs-eziam-themes
               bste:emacs-lsp-python-ms
               bste:emacs-moe-theme
               bste:emacs-slim-mode
