@@ -776,10 +776,10 @@ It should only modify the values of Spacemacs settings."
    ;; I.e. the ':location local' won't work on Guix for private themes. Use
    ;; `custom-theme-load-path' and/or `custom-theme-directory'.
    dotspacemacs-themes '(
+                         spacemacs-light
                          farmhouse-light-mod
                          material
                          misterioso
-                         spacemacs-light
                          spacemacs-dark
                          twilight-anti-bright
                          underwater
