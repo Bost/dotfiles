@@ -22,6 +22,11 @@
    "emacs-bubbleberry-theme"
    "emacs-busybee-theme"
 
+   "emacs-cherry-blossom"
+   "emacs-chocolate-theme"
+   "emacs-clues-theme"
+   "emacs-dakrone-theme"
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
