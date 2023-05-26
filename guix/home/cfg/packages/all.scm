@@ -469,7 +469,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               bste:emacs-pythonic
 
               bste:emacs-color-theme-sanityinc-tomorrow ;; doesn't work
-              bste:emacs-gruvbox ;; doesn't work
               bste:emacs-xcscope
               )
              pkgs)
