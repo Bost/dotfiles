@@ -13,6 +13,10 @@
 ;; doesn't work
 (define available-packages
   (list
+   "emacs-ample-zen-theme"
+   "emacs-anti-zenburn-theme"
+   "emacs-apropospriate-theme"
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
