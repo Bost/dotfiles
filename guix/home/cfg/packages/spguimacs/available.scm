@@ -17,6 +17,11 @@
    "emacs-anti-zenburn-theme"
    "emacs-apropospriate-theme"
 
+   "emacs-badwolf-theme"
+   "emacs-birds-of-paradise-plus-theme"
+   "emacs-bubbleberry-theme"
+   "emacs-busybee-theme"
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
