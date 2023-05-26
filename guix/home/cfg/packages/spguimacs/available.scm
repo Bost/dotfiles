@@ -27,6 +27,10 @@
    "emacs-clues-theme"
    "emacs-dakrone-theme"
 
+   "emacs-darkmine-theme"
+   "emacs-darkokai-theme"
+   "emacs-darktooth-theme"
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
