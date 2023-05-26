@@ -131,13 +131,6 @@
 ;;; TODO test use-package
    "emacs-use-package"
 
-;;; Distraction-free writing for Emacs.
-;;; https://github.com/joostkremers/writeroom-mode emacs-writeroom corresponds
-;;; to writeroom-mode, however it's ignored by Spacemacs. Probably due to the
-;;; missing '-mode'.
-;;; Not really needed
-   "emacs-writeroom"
-
    "emacs-yasnippet"
    "emacs-yasnippet-snippets"
    ))
