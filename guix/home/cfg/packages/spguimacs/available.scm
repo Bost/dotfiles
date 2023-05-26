@@ -30,6 +30,11 @@
    "emacs-darkmine-theme"
    "emacs-darkokai-theme"
    "emacs-darktooth-theme"
+   "emacs-django-theme"
+   "emacs-espresso-theme"
+   "emacs-exotica-theme"
+   "emacs-flatland-theme"
+   "emacs-flatui-theme"
 
    "emacs-company-web"
    "emacs-centered-cursor-mode"
