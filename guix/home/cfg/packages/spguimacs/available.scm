@@ -469,7 +469,6 @@
    "emacs-exwm-no-x-toolkit"
    "emacs-exwm-x"
    "emacs-eyebrowse"
-   "emacs-eziam-theme-emacs"
    "emacs-f"
    "emacs-f3"
    "emacs-faceup"
