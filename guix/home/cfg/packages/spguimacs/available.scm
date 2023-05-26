@@ -1344,7 +1344,7 @@
    "emacs-wordgen"
    "emacs-wordnut"
    "emacs-writegood-mode"
-   "emacs-writeroom"
+   "emacs-writeroom-mode"
    "emacs-ws-butler"
    "emacs-wttrin"
    "emacs-wucuo"
