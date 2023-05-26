@@ -36,6 +36,11 @@
    "emacs-flatland-theme"
    "emacs-flatui-theme"
 
+   "emacs-gandalf-theme"
+   "emacs-gotham-theme"
+   "emacs-grandshell-theme"
+   "emacs-gruber-darker-theme"
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
