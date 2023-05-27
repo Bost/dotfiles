@@ -41,6 +41,13 @@
    "emacs-grandshell-theme"
    "emacs-gruber-darker-theme"
 
+   "emacs-hc-zenburn-theme"
+   "emacs-hemisu-theme"
+   "emacs-heroku-theme"
+   "emacs-inkpot-theme"
+   "emacs-ir-black-theme"
+   "emacs-jazz-theme"
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
