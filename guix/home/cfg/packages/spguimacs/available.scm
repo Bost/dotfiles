@@ -48,6 +48,8 @@
    "emacs-ir-black-theme"
    "emacs-jazz-theme"
 
+   "emacs-jbeans-theme"
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
