@@ -422,8 +422,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
               pkg:emacs-geiser
               pkg:emacs-geiser-guile
-              pkg:emacs-guix
 
+              pkg:emacs-guix
               ;; bstc:clojure-tools
               bste:emacs-copilot
               ;; below are good
@@ -435,7 +435,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               bste:emacs-eziam-themes
               bste:emacs-tangotango
               bste:emacs-helm-cider-history
-              bste:emacs-flx
               bste:emacs-twilight-bright
               ;; bste:emacs-haskell-snippets
               bste:emacs-lsp-haskell
@@ -446,12 +445,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               bste:emacs-soft-stone
               bste:emacs-twilight-anti-bright
               bste:emacs-erc-social-graph
-              bste:emacs-hlint-refactor
               bste:emacs-chocolate
               bste:emacs-soft-charcoal
               bste:emacs-clues
-              bste:emacs-planet
-              bste:emacs-occidental
               bste:emacs-gruber-darker
 
               bste:emacs-vi-tilde-fringe
@@ -460,12 +456,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               bste:emacs-lsp-volar
 
               bste:emacs-lsp-python-ms
-              bste:emacs-moe-theme
               bste:emacs-slim-mode
               bste:emacs-zop-to-char
               bste:emacs-font-utils
               bste:emacs-pythonic
-
               bste:emacs-xcscope
               )
              pkgs)
