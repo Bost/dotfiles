@@ -15,6 +15,9 @@
    "emacs-color-theme"
    "emacs-molokai-theme"  ;; need emacs-color-theme
 
+   ;; defines emacs-omtose-darker-theme emacs-omtose-softer-theme
+   "emacs-omtose-phellack-theme"
+
    "emacs-copilot"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
@@ -419,7 +422,7 @@
    "emacs-soft-charcoal-theme"
    "emacs-soft-morning-theme"
    "emacs-soft-stone-theme"
-   "emacs-solarized-theme"
+   "emacs-solarized" ;; "emacs-solarized-theme"
    "emacs-soothe-theme"
    "emacs-space-doc"
    "emacs-spacegray-theme"
