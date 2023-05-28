@@ -13,8 +13,15 @@
 ;; doesn't work
 (define available-packages
   (list
-   "emacs-color-theme"
-   "emacs-molokai-theme"  ;; need emacs-color-theme
+   ;; "emacs-color-theme"
+   ;; "emacs-molokai-theme"  ;; need emacs-color-theme
+
+   "emacs-haskell-snippets"
+   "emacs-unicode-fonts"
+   "emacs-sublime-themes"
+   "emacs-farmhouse-themes"
+
+   ;; "emacs-noctilux-theme" ;; doesn't compile
 
    "emacs-ample-zen-theme"
    "emacs-anti-zenburn-theme"
@@ -70,6 +77,9 @@
    "emacs-phoenix-dark-mono-theme"
    "emacs-phoenix-dark-pink-theme"
    "emacs-planet-theme"
+
+   ;; defines emacs-omtose-darker-theme emacs-omtose-softer-theme
+   "emacs-omtose-phellack-theme"
 
    "emacs-professional-theme"
    "emacs-purple-haze-theme"
@@ -1265,7 +1275,7 @@
    "emacs-so-long"
    "emacs-soap-client"
    "emacs-solaire-mode"
-   "emacs-solarized-theme"
+   "emacs-solarized" ;; "emacs-solarized-theme"
    "emacs-solidity"
    "emacs-soothe-theme"
    "emacs-sourcemap"
