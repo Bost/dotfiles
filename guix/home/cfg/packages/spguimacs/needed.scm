@@ -12,6 +12,9 @@
 ;; doesn't work
 (define needed-packages
   (list
+   "emacs-color-theme"
+   "emacs-molokai-theme"  ;; need emacs-color-theme
+
    "emacs-copilot"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
