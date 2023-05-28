@@ -52,9 +52,14 @@
 
    "emacs-light-soap-theme"
    "emacs-madhat2r-theme"
-   "emacs-majapahit-theme"
+   ;; "emacs-majapahit-theme" ;; doesn't work
    "emacs-material-theme"
    "emacs-minimal-theme"
+
+   "emacs-monochrome-theme"
+   "emacs-mustang-theme"
+   "emacs-naquadah-theme"
+   "emacs-obsidian-theme"
 
    "emacs-company-web"
    "emacs-centered-cursor-mode"
