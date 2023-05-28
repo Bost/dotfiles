@@ -118,8 +118,6 @@
    "emacs-chocolate"
    "emacs-soft-charcoal"
    "emacs-clues"
-   "emacs-planet"
-   "emacs-occidental"
    "emacs-gruber-darker"
    "emacs-vi-tilde-fringe"
    "emacs-popwin"
