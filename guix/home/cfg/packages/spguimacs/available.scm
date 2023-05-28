@@ -68,6 +68,17 @@
    "emacs-phoenix-dark-pink-theme"
    "emacs-planet-theme"
 
+   "emacs-professional-theme"
+   "emacs-purple-haze-theme"
+   "emacs-rebecca-theme"
+   "emacs-reverse-theme"
+   "emacs-seti-theme"
+   "emacs-smyx-theme"
+   "emacs-soft-charcoal-theme"
+   "emacs-soft-morning-theme"
+   "emacs-soft-stone-theme"
+   "emacs-subatomic256-theme"
+   "emacs-subatomic-theme"
 
    "emacs-company-web"
    "emacs-centered-cursor-mode"
