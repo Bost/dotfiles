@@ -71,13 +71,6 @@
   (list
 
    ;; beg: Temporarily exclude following packages. They are added in the home-config-ecke.scm
-   "emacs-ac-ispell"
-   "emacs-ac-php"
-   "emacs-ace-jump-helm-line"
-   "emacs-afternoon-theme"
-   "emacs-cfrs"
-   "emacs-cider-eval-sexp-fu"
-   "emacs-font-lock+"
    "emacs-xcscope"
    ;; end: Temporarily exclude following packages. They are added in the home-config-ecke.scm
 
