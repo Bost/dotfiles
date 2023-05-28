@@ -13,6 +13,9 @@
 ;; doesn't work
 (define available-packages
   (list
+   "emacs-color-theme"
+   "emacs-molokai-theme"  ;; need emacs-color-theme
+
    "emacs-ample-zen-theme"
    "emacs-anti-zenburn-theme"
    "emacs-apropospriate-theme"
