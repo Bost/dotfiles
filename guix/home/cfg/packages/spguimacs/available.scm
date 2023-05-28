@@ -61,6 +61,14 @@
    "emacs-naquadah-theme"
    "emacs-obsidian-theme"
 
+   "emacs-occidental-theme"
+   "emacs-oldlace-theme"
+   "emacs-organic-green-theme"
+   "emacs-phoenix-dark-mono-theme"
+   "emacs-phoenix-dark-pink-theme"
+   "emacs-planet-theme"
+
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
