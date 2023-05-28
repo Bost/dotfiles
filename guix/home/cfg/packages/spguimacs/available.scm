@@ -50,6 +50,12 @@
 
    "emacs-jbeans-theme"
 
+   "emacs-light-soap-theme"
+   "emacs-madhat2r-theme"
+   "emacs-majapahit-theme"
+   "emacs-material-theme"
+   "emacs-minimal-theme"
+
    "emacs-company-web"
    "emacs-centered-cursor-mode"
    "emacs-company-statistics"
