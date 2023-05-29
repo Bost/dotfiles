@@ -12,8 +12,8 @@
 ;; doesn't work
 (define needed-packages
   (list
-   "emacs-color-theme"
-   "emacs-molokai-theme"  ;; need emacs-color-theme
+   "emacs-color-theme"    ;; required by emacs-molokai-theme
+   "emacs-molokai-theme"  ;; needs emacs-color-theme
 
    ;; defines emacs-omtose-darker-theme emacs-omtose-softer-theme
    "emacs-omtose-phellack-theme"
