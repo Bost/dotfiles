@@ -74,9 +74,6 @@
    "emacs-xcscope"
    ;; end: Temporarily exclude following packages. They are added in the home-config-ecke.scm
 
-   "emacs-auto-yasnippet"
-   "emacs-clojure-snippets"
-
 ;;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
 ;;; https://github.com/kidd/erc-image.el Not really needed.
 ;;; Throws:
@@ -105,8 +102,6 @@
 ;;; broken! spacemacs doesn't start: invalid version 0.5.0-dev
    "emacs-feature-mode"
 
-   "emacs-helm-c-yasnippet"
-
 ;;; Extras for the comint-mode shell. https://github.com/riscy/shx-for-emacs
 ;;; Would be nice to have.
 ;;; "compilation" problem
@@ -122,9 +117,6 @@
 
 ;;; TODO test use-package
    "emacs-use-package"
-
-   "emacs-yasnippet"
-   "emacs-yasnippet-snippets"
    ))
 (testsymb 'excluded-packages)
 
