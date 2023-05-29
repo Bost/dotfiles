@@ -112,6 +112,7 @@ guix shell --development guix help2man git strace --pure
                           "/var/lib/flatpak/exports/share"
                           (getenv "XDG_DATA_DIRS"))))
 
+    ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
     ("dev"   . ,hf:dev)
     ("dec"   . ,(user-home "/dec"))
     ("der"   . ,(user-home "/der"))

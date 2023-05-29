@@ -114,6 +114,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                           "/var/lib/flatpak/exports/share"
                           (getenv "XDG_DATA_DIRS"))))
 
+    ("cores" . "22") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
     ("dev"   . ,hf:dev)
     ("dec"   . ,(user-home "/dec"))
     ("der"   . ,(user-home "/der"))
