@@ -12,6 +12,11 @@
 ;; doesn't work
 (define needed-packages
   (list
+   ;; :beg: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
+   ;; "emacs-flycheck-joker"
+   ;; "emacs-kaocha-runner"
+   ;; :end: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
+
    "emacs-color-theme"    ;; required by emacs-molokai-theme
    "emacs-molokai-theme"  ;; needs emacs-color-theme
 
