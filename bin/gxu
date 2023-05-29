@@ -2,6 +2,6 @@
 
 set -x  # Print commands and their arguments as they are executed.
 # -u, --upgrade[=REGEXP]
-guix package --upgrade="$@"
+guix package --cores=$cores --upgrade="$@"
 { retval="$?"; set +x; } 2>/dev/null
 exit $retval
