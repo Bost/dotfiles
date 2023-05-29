@@ -388,25 +388,40 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         (format #t "~a\n~a\n" m
                 ((compose
                   (partial filter
+                           ;; see also `string=?', `eq?', `equal?', etc. ;; member uses `equal?'
                            (lambda (p)
-                             (and (list? p)
-                                  ;; eq? doesn't work
-                                  (string=? "emacs-guix"
-                                            (package-name (car p))))))
+                             (let* [(search-space
+                                     '(
+                                       "emacs-haskell-snippets"
+                                       "emacs-yasnippet"
+                                       "emacs-yasnippet-snippets"
+                                       ))]
+                               ;; (format #t "p ~a\n" p)
+                               (cond
+                                [(list? p)    (member (package-name (car p)) search-space)]
+                                [(string? p)  (member (package-name p) search-space)]
+                                [(package? p) (member (package-name p) search-space)]
+                                [(record? p)  (member (inferior-package-name p) search-space)]
+                                [else         (member (package-name p) search-space)]))))
                   ;; we have a colorful mix here:
                   (partial map
                            (lambda (p)
                              (cond
-                              [(list? p)
-                               (format #t "list    ~a: filter: ~a\n"
-                                       (package-name (car p))
-                                       (and (list? p)
-                                            (string=? "emacs-guix"
-                                                      (package-name (car p)))))]
-                              [(string? p)  (format #t "string  ~a\n" p)]
-                              [(package? p) (format #t "package ~a\n" p)]
-                              [(record? p)  (format #t "record  ~a\n" p)]
-                              [else         (format #t "else    ~a\n" p)])
+                              [(list? p)    (when (member (package-name (car p))
+                                                          '(
+                                                            "emacs-haskell-snippets"
+                                                            "emacs-yasnippet"
+                                                            "emacs-yasnippet-snippets"
+                                                            ))
+                                              (format #t "list    ~a\n" p))]
+                              [(string? p)  (when #t
+                                              (format #t "string  ~a\n" p))]
+                              [(package? p) (when #t
+                                              (format #t "package ~a\n" p))]
+                              [(record? p)  (when #t
+                                              (format #t "record  ~a\n" p))]
+                              [else         (when #t
+                                              (format #t "else    ~a\n" p))])
                              p))
                   identity)
                  pkgs))
