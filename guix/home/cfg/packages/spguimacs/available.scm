@@ -17,6 +17,10 @@
    ;; "emacs-molokai-theme"  ;; need emacs-color-theme
    ;; "emacs-noctilux-theme" ;; doesn't compile
 
+   "emacs-sayid"
+   "emacs-flycheck-clj-kondo"
+   "emacs-flycheck-joker"
+   "emacs-kaocha-runner"
    "emacs-cider-hydra"
 
    "emacs-unicode-fonts"
