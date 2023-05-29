@@ -105,7 +105,6 @@
 ;;; broken! spacemacs doesn't start: invalid version 0.5.0-dev
    "emacs-feature-mode"
 
-   "emacs-haskell-snippets"
    "emacs-helm-c-yasnippet"
 
 ;;; Extras for the comint-mode shell. https://github.com/riscy/shx-for-emacs
