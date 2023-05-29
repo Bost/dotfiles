@@ -436,7 +436,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               bste:emacs-tangotango
               bste:emacs-helm-cider-history
               bste:emacs-twilight-bright
-              ;; bste:emacs-haskell-snippets
               bste:emacs-lsp-haskell
               bste:emacs-darkmine
               bste:emacs-helm-css-scss

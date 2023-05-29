@@ -15,13 +15,14 @@
   (list
    ;; "emacs-color-theme"
    ;; "emacs-molokai-theme"  ;; need emacs-color-theme
+   ;; "emacs-noctilux-theme" ;; doesn't compile
 
-   "emacs-haskell-snippets"
+   "emacs-cider-hydra"
+
    "emacs-unicode-fonts"
    "emacs-sublime-themes"
    "emacs-farmhouse-themes"
 
-   ;; "emacs-noctilux-theme" ;; doesn't compile
 
    "emacs-ample-zen-theme"
    "emacs-anti-zenburn-theme"
