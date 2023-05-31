@@ -493,10 +493,10 @@ This function should only modify configuration layer settings."
 
      (gptel :location (recipe :fetcher github :repo "karthink/gptel"))
 
-     (copilot :location (recipe
-                         :fetcher github
-                         :repo "zerolfx/copilot.el"
-                         :files ("*.el" "dist")))
+     ;; (copilot :location (recipe
+     ;;                     :fetcher github
+     ;;                     :repo "zerolfx/copilot.el"
+     ;;                     :files ("*.el" "dist")))
 
      ;; Highlight output from `strace'
      ;; strace-mode
@@ -2489,18 +2489,18 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; accept completion from copilot and fallback to company
 
   ;;; github copilot config begin
-  (with-eval-after-load 'company
-    ;; disable inline previews
-    (delq 'company-preview-if-just-one-frontend company-frontends))
+  ;; (with-eval-after-load 'company
+  ;;   ;; disable inline previews
+  ;;   (delq 'company-preview-if-just-one-frontend company-frontends))
 
-  (with-eval-after-load 'copilot
-    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
+  ;; (with-eval-after-load 'copilot
+  ;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+  ;;   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
 
-  (add-hook 'prog-mode-hook 'copilot-mode)
+  ;; (add-hook 'prog-mode-hook 'copilot-mode)
 
-  (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
-  (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
+  ;; (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
+  ;; (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
   ;;; github copilot config end
 
   (my=end #'dotspacemacs/user-config)
