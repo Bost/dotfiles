@@ -1118,6 +1118,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Don't download archive-contents of the gnu, melpa, nongnu
   ;; (setq my=retrieve-package-archives nil)
   (setq my=retrieve-package-archives t)
+  (setq yas--default-user-snippets-dir (concat
+                                        spacemacs-data-directory
+                                        "snippets"))
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891

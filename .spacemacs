@@ -1144,6 +1144,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; appears there too. (Default nil)
   ;; (setq init-file-debug t)
 
+  (setq yas--default-user-snippets-dir (concat
+                                        "~/.emacs.d/"
+                                        "snippets"))
+
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
   (setq custom-file (concat
