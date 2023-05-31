@@ -137,6 +137,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (agda-devel-packages)
    (list
     "emacs"
+    "emacs-gptel"
     "emacs-next"
     "emacs-next-pgtk"
     "emacs-with-editor"
@@ -440,7 +441,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
               pkg:emacs-guix
               ;; bstc:clojure-tools
-              bste:emacs-copilot
+              ;; bste:emacs-copilot
               ;; below are good
               bste:emacs-company-web
               bste:emacs-web-completion-data
