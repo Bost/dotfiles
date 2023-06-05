@@ -36,10 +36,10 @@
 
 ;;; TODO the list channels can't be generated, since guix home reconfigure
 ;;; expects them to be already available, i.e. guix-pull-ed-in
- (channel (name 'haskell-and-clojure)
-          (url "https://github.com/Bost/haskell-guix"))
- ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
- (channel (name 'bost)
-          (url "https://github.com/Bost/guix-packages"))
+ ;; (channel (name 'haskell-and-clojure)
+ ;;          (url "https://github.com/Bost/haskell-guix"))
+ ;; ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
+ ;; (channel (name 'bost)
+ ;;          (url "https://github.com/Bost/guix-packages"))
 
  %default-channels)
