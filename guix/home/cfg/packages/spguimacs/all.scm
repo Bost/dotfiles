@@ -114,9 +114,6 @@
 ;;; Error (use-package): Failed to parse package indent-guide: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
 ;;; Error (use-package): Failed to parse package fill-column-indicator: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
    "emacs-spaceleader"
-
-;;; TODO test use-package
-   "emacs-use-package"
    ))
 (testsymb 'excluded-packages)
 
