@@ -780,6 +780,7 @@
    "emacs-kana"
    "emacs-kanji"
    "emacs-kaocha-runner"
+   "emacs-kaolin-themes"
    "emacs-kbd"
    "emacs-key-chord"
    "emacs-keycast"
