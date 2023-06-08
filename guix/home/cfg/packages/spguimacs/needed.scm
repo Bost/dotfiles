@@ -17,6 +17,11 @@
    ;; "emacs-kaocha-runner"
    ;; :end: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
 
+   ;; "emacs-edbi-sqlite"
+   "emacs-emacsql-sqlite3"
+   "emacs-sqlite"
+   "emacs-sqlite3-api"
+
    ;; "emacs-molokai-theme"  ;; needs emacs-color-theme ;; doesn't compile
    ;; "emacs-noctilux-theme" ;; doesn't compile
 
