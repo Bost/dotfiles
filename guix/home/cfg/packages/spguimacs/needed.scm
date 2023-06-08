@@ -341,7 +341,7 @@
    "emacs-magit"
    "emacs-magit-section"
    "emacs-magit-todos"
-   "emacs-majapahit-theme"
+   "emacs-majapahit-themes"
    "emacs-markdown-mode"
    "emacs-markdown-toc"
    "emacs-material-theme"

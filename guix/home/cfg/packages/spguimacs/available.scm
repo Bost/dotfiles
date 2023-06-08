@@ -852,7 +852,7 @@
    "emacs-magit-popup"
    "emacs-magit-svn"
    "emacs-magit-todos"
-   "emacs-majapahit-theme"
+   "emacs-majapahit-themes"
    "emacs-major-mode-hydra"
    "emacs-make-it-so"
    "emacs-makey"
