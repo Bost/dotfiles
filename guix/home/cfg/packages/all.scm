@@ -475,7 +475,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               bste:emacs-zop-to-char
               bste:emacs-font-utils
               bste:emacs-pythonic
-              bste:emacs-xcscope
               )
              pkgs)
             pkgs))
