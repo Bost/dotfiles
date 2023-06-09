@@ -47,6 +47,7 @@
   (list
    "emacs"
    "emacs-spacemacs"
+   "mu" ;; for mu4e, which is for treemacs-mu4e
    "spacemacs-rolling-release"
    ))
 (testsymb 'general-packages)
@@ -71,7 +72,6 @@
   (list
 
    ;; beg: Temporarily exclude following packages. They are added in the home-config-ecke.scm
-   "emacs-xcscope"
    ;; end: Temporarily exclude following packages. They are added in the home-config-ecke.scm
 
 ;;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
@@ -79,16 +79,6 @@
 ;;; Throws:
 ;;; Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/w29gvdsv26r5minwgdmb1pq4dzgbi959-emacs-erc-image-0-3.82fb387/share/emacs/site-lisp/erc-image-0-3.82fb387/erc-image-autoloads)
    "emacs-erc-image"
-
-;;; Show '<current match> / <total matches>' in the mode-line.
-;;; https://github.com/syohex/emacs-evil-anzu . Doesn't work with
-;;; (spaceline-all-the-icons-theme) enabled. Would be really nice to have, and
-;;; nice to have it working even under the spaceline-all-the-icons-theme.
-;;; Throws:
-;;; Error loading autoloads: (file-missing Cannot open load file No such
-;;; file or directory
-;;; /gnu/store/wfy7v1jm0hjhv8cjxgi5asfcn5ma6795-emacs-evil-anzu-0.03/share/emacs/site-lisp/evil-anzu-0.03/evil-anzu-autoloads)
-   "emacs-evil-anzu"
 
 ;;; Preview candidates when using Evil registers and marks.
 ;;; https://github.com/mamapanda/evil-owl
