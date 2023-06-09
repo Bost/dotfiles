@@ -18,15 +18,9 @@
    ;; :end: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
 
    ;; "emacs-edbi-sqlite"
-   "emacs-emacsql-sqlite3"
-   "emacs-sqlite"
-   "emacs-sqlite3-api"
 
    ;; "emacs-molokai-theme"  ;; needs emacs-color-theme ;; doesn't compile
    ;; "emacs-noctilux-theme" ;; doesn't compile
-
-   ;; defines emacs-omtose-darker-theme emacs-omtose-softer-theme
-   "emacs-omtose-phellack-theme"
 
    "emacs-ac-ispell"
    "emacs-ac-php"
@@ -40,8 +34,10 @@
    "emacs-all-the-icons"
    "emacs-ample-theme"
    "emacs-ample-zen-theme"
+   "emacs-anaconda-mode"
    "emacs-annalist"
    "emacs-anti-zenburn-theme"
+   "emacs-anzu"
    "emacs-apropospriate-theme"
    "emacs-async"
    "emacs-attrap"
@@ -132,6 +128,7 @@
    "emacs-elisp-slime-nav"
    "emacs-elisp-slime-nav"
    "emacs-elm-mode"
+   "emacs-emacsql-sqlite3"
    "emacs-emmet-mode"
    "emacs-emr"
    "emacs-epl"
@@ -375,6 +372,7 @@
    "emacs-occidental-theme"
    "emacs-oldlace-theme"
    "emacs-omtose-phellack-theme"
+   "emacs-omtose-phellack-theme" ;; defines emacs-omtose-darker-theme emacs-omtose-softer-theme
    "emacs-open-junk-file"
    "emacs-org"
    "emacs-org-cliplink"
@@ -389,7 +387,8 @@
    "emacs-organic-green-theme"
    "emacs-orgit"
    "emacs-orgit-forge"
-   "emacs-origami-el"
+   "emacs-origami"
+   "emacs-origami-el" ;; this one is probably not needed
    "emacs-overseer"
    "emacs-package-lint"
    "emacs-packed"
@@ -403,6 +402,7 @@
    "emacs-pdf-tools"
    "emacs-pdf-view-restore"
    "emacs-persp-mode"
+   "emacs-perspective"
    "emacs-pfuture"
    "emacs-phoenix-dark-mono-theme"
    "emacs-phoenix-dark-pink-theme"
@@ -483,6 +483,8 @@
    "emacs-sphinx-doc"
    "emacs-sql"
    "emacs-sql-indent"
+   "emacs-sqlite"
+   "emacs-sqlite3-api"
    "emacs-string-edit-at-point"
    "emacs-string-inflection"
    "emacs-subatomic-theme"
