@@ -70,6 +70,7 @@
    "emacs-clj-refactor"
    "emacs-clojure-mode"
    "emacs-clojure-snippets"
+   ;; "emacs-closql" ;; pulls-in the emacs-emacsql; using bste:emacs-closql
    "emacs-clues"
    "emacs-clues-theme"
    "emacs-cmm-mode"
@@ -128,8 +129,8 @@
    "emacs-elisp-slime-nav"
    "emacs-elisp-slime-nav"
    "emacs-elm-mode"
-   "emacs-emacsql"
-   "emacs-emacsql-sqlite3"
+   ;; "emacs-emacsql"         ;; using bste:emacs-emacsql
+   ;; "emacs-emacsql-sqlite3" ;; pulls-in the emacs-emacsql; using bste:emacs-emacsql-sqlite3
    "emacs-emmet-mode"
    "emacs-emr"
    "emacs-epl"
@@ -218,7 +219,7 @@
    "emacs-flyspell-correct-helm"
    "emacs-font-lock+"
    "emacs-font-utils"
-   "emacs-forge"
+   ;; "emacs-forge" ;; pulls-in the emacs-emacsql; ; using bste:emacs-forge
    "emacs-fuzzy"
    "emacs-gandalf-theme"
    "emacs-geben"
