@@ -443,6 +443,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
               ;; bstc:clojure-tools
               ;; bste:emacs-copilot
               ;; below are good
+              bste:emacs-emacsql
+              bste:emacs-closql
+              bste:emacs-forge
+              bste:emacs-emacsql-sqlite3
               bste:emacs-company-web
               bste:emacs-web-completion-data
               bste:emacs-centered-cursor-mode
