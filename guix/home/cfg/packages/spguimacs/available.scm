@@ -764,7 +764,8 @@
    "emacs-jq-mode"
    "emacs-js-comint"
    "emacs-js2-mode"
-   "emacs-js2-refactor-el"
+   "emacs-js2-refactor"
+   "emacs-js2-refactor-el"  ;; probably not needed
    "emacs-jsdoc"
    "emacs-json-mode"
    "emacs-json-navigator"
