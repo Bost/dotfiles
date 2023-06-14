@@ -39,21 +39,23 @@
 ;;                 (description "Configures UI appearance settings for Xorg
 ;; sessions using the xsettingsd daemon.")))
 
-(define extra-channels
+(define (extra-channels use-remote-url)
+  "use-remote-url - if #t then use github or gitlab, etc."
   (cond
    [(home-ecke-config)
     `((channel (name 'haskell-and-clojure)
                (url
-                ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
-                ;; "https://github.com/Bost/haskell-guix"
-                ,(format #f "file://~a/dev/haskell-guix" home)
-                ))
+                ,(if use-remote-url
+                     ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
+                     "https://github.com/Bost/haskell-guix"
+                     (format #f "file://~a/dev/haskell-guix" home))))
 
       ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
       (channel (name 'bost)
                (url
-                ;; "https://github.com/Bost/guix-packages"
-                ,(format #f "file://~a/dev/guix-packages" home)))
+                ,(if use-remote-url
+                     "https://github.com/Bost/guix-packages"
+                     (format #f "file://~a/dev/guix-packages" home))))
 
       ;; Andrew Tropin's tools for managing reproducible development
       ;; environments
@@ -69,16 +71,16 @@
    [(home-geek-config)
     `((channel (name 'haskell-and-clojure)
                (url
-                ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
-                "https://github.com/Bost/haskell-guix"
-                ;; ,(format #f "file://~a/dev/haskell-guix" home)
-                ))
+                ,(if use-remote-url
+                     ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
+                     "https://github.com/Bost/haskell-guix"
+                     (format #f "file://~a/dev/haskell-guix" home))))
       ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
       (channel (name 'bost)
                (url
-                "https://github.com/Bost/guix-packages"
-                ;; ,(format #f "file://~a/dev/guix-packages" home)
-                )))]
+                ,(if use-remote-url
+                     "https://github.com/Bost/guix-packages"
+                     (format #f "file://~a/dev/guix-packages" home)))))]
    [(home-games-config)
     `(
 ;;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
@@ -102,7 +104,7 @@
                   )))))]))
 (testsymb 'extra-channels)
 
-(define (create-channels-scm extra-channels)
+(define (create-channels-scm additional-channels)
   (let* [(channels-scm (dotfiles-home "/" channels-scm-filepath))
          (lst
           ((compose
@@ -129,8 +131,11 @@
                 tmpfile)
               "channels.scm")))
           (lambda (sexp) (append fst sexp (list (car snd)))))
-         extra-channels)))))
+         additional-channels)))))
 (testsymb 'create-channels-scm)
+
+;; i.e. use github / gitlab urls for extra channels, not from the HDD.
+(define use-remote-url #f)
 
 (define home-dir-cfg-srvc-files
   ((compose
@@ -139,12 +144,12 @@
              (cond
               [(home-games-config)
                (list
-                (create-channels-scm extra-channels)
+                (create-channels-scm (extra-channels use-remote-url))
                 (local-dotfile "/" (str (basename xdg-config-home)
                                         "/guix-gaming-channels/games.scm")))]
               [(home-ecke-config)
                (list
-                (create-channels-scm extra-channels))]
+                (create-channels-scm (extra-channels use-remote-url)))]
               [#t
                (list
                 (local-dotfile "/" channels-scm-filepath))]))
