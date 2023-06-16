@@ -64,6 +64,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   )
 
 (define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
 (define indent "")
 (define indent-inc "   ")

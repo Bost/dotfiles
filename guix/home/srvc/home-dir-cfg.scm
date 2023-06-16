@@ -50,7 +50,9 @@
                      "https://github.com/Bost/haskell-guix"
                      (format #f "file://~a/dev/haskell-guix" home))))
 
-      ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
+      ;; provides:
+      ;; - (bost packages emacs-xyz) module
+      ;; - clojure, babashka, postgres 13.3, openjdk18 etc.
       (channel (name 'bost)
                (url
                 ,(if use-remote-url
@@ -74,7 +76,9 @@
                      ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
                      "https://github.com/Bost/haskell-guix"
                      (format #f "file://~a/dev/haskell-guix" home))))
-      ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
+      ;; provides:
+      ;; - (bost packages emacs-xyz) module
+      ;; - clojure, babashka, postgres 13.3, openjdk18 etc.
       (channel (name 'bost)
                (url
                 ,(if use-remote-url
@@ -134,25 +138,26 @@
 (testsymb 'create-channels-scm)
 
 ;; i.e. use github / gitlab urls for extra channels, not from the HDD.
-(define use-remote-url #f)
+(define use-remote-url #t)
+(define use-local-url (not use-remote-url))
 
 (define home-dir-cfg-srvc-files
   ((compose
-    ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 3.\n") p)
+    ;; (lambda (p) (format #t "############## 3.\n") p)
     (partial append
              (cond
               [(home-games-config)
                (list
-                (create-channels-scm (extra-channels use-remote-url))
+                (create-channels-scm (extra-channels use-local-url))
                 (local-dotfile "/" (str (basename xdg-config-home)
                                         "/guix-gaming-channels/games.scm")))]
               [(home-ecke-config)
                (list
-                (create-channels-scm (extra-channels use-remote-url)))]
+                (create-channels-scm (extra-channels use-local-url)))]
               [#t
                (list
                 (local-dotfile "/" channels-scm-filepath))]))
-    ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 2.\n") p)
+    ;; (lambda (p) (format #t "############## 2.\n") p)
     (partial append
              (remove
               unspecified-or-empty-or-false?
@@ -162,7 +167,7 @@
                (local-dotfile "/" ".spacemacs")
                (local-dotfile "/" ".spguimacs")
                (local-dotfile "/guix/home/" "local-stuff.fish"))))
-    ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 1.\n") p)
+    ;; (lambda (p) (format #t "############## 1.\n") p)
     (partial append
 ;;; This can't be used:
 ;;;           `((".emacs.d/private" ;; destination
@@ -181,7 +186,7 @@
                 `(,dir ;; destination
                   ,(local-file (dotfiles-home "/" dir)
                                #:recursive? #t)))))
-    ;; (lambda (p) (format #t "$$$$$$$$$$$$$$ 0.\n") p)
+    ;; (lambda (p) (format #t "############## 0.\n") p)
     )
    ;; empty list
    (list)))

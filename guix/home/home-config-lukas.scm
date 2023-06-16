@@ -59,6 +59,7 @@ guix shell --development guix help2man git strace --pure
   )
 
 (define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
 (define indent "")
 (define indent-inc "   ")
