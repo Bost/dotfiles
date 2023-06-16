@@ -13,7 +13,6 @@
 ;; doesn't work
 (define available-packages
   (list
-   ;; "emacs-color-theme"
    ;; "emacs-molokai-theme"  ;; need emacs-color-theme
    ;; "emacs-noctilux-theme" ;; doesn't compile
 
@@ -165,14 +164,13 @@
    "emacs-clojure-snippets"
    "emacs-closql"
    "emacs-clue"
-   "emacs-clues"
    "emacs-clues-theme"
    "emacs-cmake-font-lock"
    "emacs-cmake-mode"
    "emacs-cnfonts"
    "emacs-code-cells"
    "emacs-color-identifiers-mode"
-   "emacs-color-theme"
+   "emacs-color-theme"        ;; obsolete - replaced by emacs-color-theme-modern
    "emacs-color-theme-modern"
    "emacs-color-theme-sanityinc-solarized"
    "emacs-color-theme-sanityinc-tomorrow"
@@ -247,7 +245,6 @@
    "emacs-danneskjold-theme"
    "emacs-dante"
    "emacs-dap-mode"
-   "emacs-darkmine"
    "emacs-darkmine-theme"
    "emacs-darkokai-theme"
    "emacs-darkroom"
@@ -1274,10 +1271,8 @@
    "emacs-snow"
    "emacs-so-long"
    "emacs-soap-client"
-   "emacs-soft-charcoal"
    "emacs-soft-charcoal-theme"
    "emacs-soft-morning-theme"
-   "emacs-soft-stone"
    "emacs-soft-stone-theme"
    "emacs-solaire-mode"
    "emacs-solarized-theme"
@@ -1342,7 +1337,6 @@
    "emacs-tamil99"
    "emacs-tango-2-theme"
    "emacs-tango-plus-theme"
-   "emacs-tangotango"
    "emacs-tangotango-theme"
    "emacs-tao-theme"
    "emacs-taskrunner"
@@ -1392,9 +1386,7 @@
    "emacs-tshell"
    "emacs-tuareg"
    "emacs-tup-mode"
-   "emacs-twilight-anti-bright"
    "emacs-twilight-anti-bright-theme"
-   "emacs-twilight-bright"
    "emacs-twilight-bright-theme"
    "emacs-twilight-theme"
    "emacs-twittering-mode"

@@ -455,20 +455,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             bste:emacs-company-statistics
             bste:emacs-json-navigator
             bste:emacs-eziam-themes
-            bste:emacs-tangotango
             bste:emacs-helm-cider-history
-            bste:emacs-twilight-bright
             bste:emacs-lsp-haskell
-            bste:emacs-darkmine
             bste:emacs-helm-css-scss
             ;; bste:emacs-auto-yasnippet
             bste:emacs-composer
-            bste:emacs-soft-stone
-            bste:emacs-twilight-anti-bright
             bste:emacs-erc-social-graph
             bste:emacs-chocolate
-            bste:emacs-soft-charcoal
-            bste:emacs-clues
             bste:emacs-gruber-darker
 
             bste:emacs-vi-tilde-fringe
