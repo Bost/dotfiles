@@ -214,13 +214,6 @@
                (list
                 (create-channels-scm
                  `(
-                   (channel (name 'haskell-and-clojure)
-                            (url
-                             ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
-                             ;; "https://github.com/Bost/haskell-guix"
-                             ,(format #f "file://~a/dev/haskell-guix" home)
-                             ))
-
                    ;; provides:
                    ;; - (bost packages emacs-xyz) module
                    ;; - clojure, babashka, postgres 13.3, openjdk18 etc.
