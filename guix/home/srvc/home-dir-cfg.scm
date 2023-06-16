@@ -82,7 +82,7 @@
                             (url
                              ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
                              ;; "https://github.com/Bost/haskell-guix"
-                             (format #f "file://~a/dev/haskell-guix" home)
+                             ,(format #f "file://~a/dev/haskell-guix" home)
                              ))
 
                    ;; provides:
@@ -91,7 +91,7 @@
                    (channel (name 'bost)
                             (url
                              ;; "https://github.com/Bost/guix-packages"
-                             (format #f "file://~a/dev/guix-packages" home)))
+                             ,(format #f "file://~a/dev/guix-packages" home)))
 
                    #|
 ;;; Andrew Tropin's tools for managing reproducible development environments
@@ -139,7 +139,7 @@
                             (url
                              ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
                              ;; "https://github.com/Bost/haskell-guix"
-                             (format #f "file://~a/dev/haskell-guix" home)
+                             ,(format #f "file://~a/dev/haskell-guix" home)
                              ))
 
                    ;; provides:
@@ -148,7 +148,7 @@
                    (channel (name 'bost)
                             (url
                              ;; "https://github.com/Bost/guix-packages"
-                             (format #f "file://~a/dev/guix-packages" home))))))]
+                             ,(format #f "file://~a/dev/guix-packages" home))))))]
               [(home-lukas-config)
                (list
                 (create-channels-scm
@@ -159,7 +159,7 @@
                    (channel (name 'bost)
                             (url
                              "https://github.com/Bost/guix-packages"
-                             ;; (format #f "file://~a/dev/guix-packages" home)
+                             ;; ,(format #f "file://~a/dev/guix-packages" home)
                              )))))]
               [#t
                (list
