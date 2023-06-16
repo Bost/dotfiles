@@ -1,5 +1,7 @@
 (define-module (cfg packages all)
   #:use-module (cfg packages spguimacs all)
+  ;; the code for this module comes from the 'bost' channel. See
+  ;; ~/.config/guix/channels.scm
   #:use-module ((bost packages emacs-xyz) #:prefix bste:)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
@@ -375,6 +377,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (list
     (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
     (list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968"))))
+(testsymb 'inferior-pkgs)
 
 (define (packages-to-install)
 ;;; TODO make it support inferior packages
@@ -382,147 +385,146 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; TODO packages should accept expressions like the -e, e.g.
 ;;;   guix package                        -e '(@ (bost packages maven) maven)'
 ;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
-
-    ((compose
-      (lambda (pkgs)
-        #|
-        (format #t "~a\n~a\n" m
-                ((compose
-                  (partial filter
-                           ;; see also `string=?', `eq?', `equal?', etc. ;; member uses `equal?'
-                           (lambda (p)
-                             (let* [(search-space
-                                     '(
-                                       "emacs-haskell-snippets"
-                                       "emacs-yasnippet"
-                                       "emacs-yasnippet-snippets"
-                                       ))]
-                               ;; (format #t "p ~a\n" p)
-                               (cond
-                                [(list? p)    (member (package-name (car p)) search-space)]
-                                [(string? p)  (member (package-name p) search-space)]
-                                [(package? p) (member (package-name p) search-space)]
-                                [(record? p)  (member (inferior-package-name p) search-space)]
-                                [else         (member (package-name p) search-space)]))))
-                  ;; we have a colorful mix here:
-                  (partial map
-                           (lambda (p)
+  ((compose
+    (lambda (pkgs)
+      #|
+      (format #t "~a\n~a\n" m
+              ((compose
+                (partial filter
+                         ;; see also `string=?', `eq?', `equal?', etc. ;; member uses `equal?'
+                         (lambda (p)
+                           (let* [(search-space
+                                   '(
+                                     "emacs-haskell-snippets"
+                                     "emacs-yasnippet"
+                                     "emacs-yasnippet-snippets"
+                                     ))]
+                             ;; (format #t "p ~a\n" p)
                              (cond
-                              [(list? p)    (when (member (package-name (car p))
-                                                          '(
-                                                            "emacs-haskell-snippets"
-                                                            "emacs-yasnippet"
-                                                            "emacs-yasnippet-snippets"
-                                                            ))
-                                              (format #t "list    ~a\n" p))]
-                              [(string? p)  (when #t
-                                              (format #t "string  ~a\n" p))]
-                              [(package? p) (when #t
-                                              (format #t "package ~a\n" p))]
-                              [(record? p)  (when #t
-                                              (format #t "record  ~a\n" p))]
-                              [else         (when #t
-                                              (format #t "else    ~a\n" p))])
-                             p))
-                  identity)
-                 pkgs))
-        |#
-        (format #t "~a ~a packages to install\n" m (length pkgs))
-        pkgs)
-      inferior-pkgs
-      (lambda (pkgs)
-        (if (home-ecke-config)
-            (append
-             (list
-              bstx:xsel
+                              [(list? p)    (member (package-name (car p)) search-space)]
+                              [(string? p)  (member (package-name p) search-space)]
+                              [(package? p) (member (package-name p) search-space)]
+                              [(record? p)  (member (inferior-package-name p) search-space)]
+                              [else         (member (package-name p) search-space)]))))
+                ;; we have a colorful mix here:
+                (partial map
+                         (lambda (p)
+                           (cond
+                            [(list? p)    (when (member (package-name (car p))
+                                                        '(
+                                                          "emacs-haskell-snippets"
+                                                          "emacs-yasnippet"
+                                                          "emacs-yasnippet-snippets"
+                                                          ))
+                                            (format #t "list    ~a\n" p))]
+                            [(string? p)  (when #t
+                                            (format #t "string  ~a\n" p))]
+                            [(package? p) (when #t
+                                            (format #t "package ~a\n" p))]
+                            [(record? p)  (when #t
+                                            (format #t "record  ~a\n" p))]
+                            [else         (when #t
+                                            (format #t "else    ~a\n" p))])
+                           p))
+                identity)
+               pkgs))
+      |#
+      (format #t "~a ~a packages to install\n" m (length pkgs))
+      pkgs)
+    inferior-pkgs
+    (lambda (pkgs)
+      (if (home-ecke-config)
+          (append
+           (list
+            bstx:xsel
 
-              pkg:emacs-geiser
-              pkg:emacs-geiser-guile
+            pkg:emacs-geiser
+            pkg:emacs-geiser-guile
 
-              pkg:emacs-guix
-              ;; bstc:clojure-tools
-              ;; bste:emacs-copilot
-              ;; below are good
-              bste:emacs-emacsql
-              bste:emacs-closql
-              bste:emacs-forge
-              bste:emacs-emacsql-sqlite3
-              bste:emacs-company-web
-              bste:emacs-web-completion-data
-              bste:emacs-centered-cursor-mode
-              bste:emacs-company-statistics
-              bste:emacs-json-navigator
-              bste:emacs-eziam-themes
-              bste:emacs-tangotango
-              bste:emacs-helm-cider-history
-              bste:emacs-twilight-bright
-              bste:emacs-lsp-haskell
-              bste:emacs-darkmine
-              bste:emacs-helm-css-scss
-              ;; bste:emacs-auto-yasnippet
-              bste:emacs-composer
-              bste:emacs-soft-stone
-              bste:emacs-twilight-anti-bright
-              bste:emacs-erc-social-graph
-              bste:emacs-chocolate
-              bste:emacs-soft-charcoal
-              bste:emacs-clues
-              bste:emacs-gruber-darker
+            pkg:emacs-guix
+            ;; bstc:clojure-tools
+            ;; bste:emacs-copilot
+            ;; below are good
+            bste:emacs-emacsql
+            bste:emacs-closql
+            bste:emacs-forge
+            bste:emacs-emacsql-sqlite3
+            bste:emacs-company-web
+            bste:emacs-web-completion-data
+            bste:emacs-centered-cursor-mode
+            bste:emacs-company-statistics
+            bste:emacs-json-navigator
+            bste:emacs-eziam-themes
+            bste:emacs-tangotango
+            bste:emacs-helm-cider-history
+            bste:emacs-twilight-bright
+            bste:emacs-lsp-haskell
+            bste:emacs-darkmine
+            bste:emacs-helm-css-scss
+            ;; bste:emacs-auto-yasnippet
+            bste:emacs-composer
+            bste:emacs-soft-stone
+            bste:emacs-twilight-anti-bright
+            bste:emacs-erc-social-graph
+            bste:emacs-chocolate
+            bste:emacs-soft-charcoal
+            bste:emacs-clues
+            bste:emacs-gruber-darker
 
-              bste:emacs-vi-tilde-fringe
-              bste:emacs-popwin
-              ;; bste:emacs-paradox
-              bste:emacs-lsp-volar
+            bste:emacs-vi-tilde-fringe
+            bste:emacs-popwin
+            ;; bste:emacs-paradox
+            bste:emacs-lsp-volar
 
-              bste:emacs-lsp-python-ms
-              bste:emacs-slim-mode
-              bste:emacs-zop-to-char
-              bste:emacs-font-utils
-              bste:emacs-pythonic
-              )
-             pkgs)
-            pkgs))
-      (partial map (compose identity list
+            bste:emacs-lsp-python-ms
+            bste:emacs-slim-mode
+            bste:emacs-zop-to-char
+            bste:emacs-font-utils
+            bste:emacs-pythonic
+            )
+           pkgs)
+          pkgs))
+    (partial map (compose identity list
 ;;; TODO difference specification->package+output, specification->package ?
-                               specification->package+output)))
-     (cond
-        [(home-lukas-config)
-         (begin
-           ;; (format #t "(home-lukas-config)\n")
-           (basic-packages))]
-        ;; The spguimacs-packages should be installed only on the ecke- and
-        ;; geek-machines, i.e. no need to install it elsewhere.
-        [(home-ecke-config)
-         (begin
-           ;; (format #t "(home-ecke-config)\n")
-           (append
-            (basic-packages)
-            (devel-packages)
-            (rest-packages)
-            (xfce-packages)
-            (kde-dependent-packages)
-            (large-packages)
-            (packages-from-additional-channels)
-            (spguimacs-packages)
-            ))]
-        [(home-geek-config)
-         (begin
-           ;; (format #t "(home-geek-config)\n")
-           (append
-            (basic-packages)
-            (devel-packages)
-            (rest-packages)
-            (xfce-packages)
-            (kde-dependent-packages)
-            ;; (large-packages)
-            (packages-from-additional-channels-base)
-            (spguimacs-packages)
-            ))]
-        [#t
-         (error
-          (format #f "hostname '~a' must be one of the: ~a\n"
-                  (hostname-memoized) (string-join hostnames)))])
-    ))
+                          specification->package+output)))
+   (cond
+    [(home-lukas-config)
+     (begin
+       ;; (format #t "(home-lukas-config)\n")
+       (basic-packages))]
+    ;; The spguimacs-packages should be installed only on the ecke- and
+    ;; geek-machines, i.e. no need to install it elsewhere.
+    [(home-ecke-config)
+     (begin
+       ;; (format #t "(home-ecke-config)\n")
+       (append
+        (basic-packages)
+        (devel-packages)
+        (rest-packages)
+        (xfce-packages)
+        (kde-dependent-packages)
+        (large-packages)
+        (packages-from-additional-channels)
+        (spguimacs-packages)
+        ))]
+    [(home-geek-config)
+     (begin
+       ;; (format #t "(home-geek-config)\n")
+       (append
+        (basic-packages)
+        (devel-packages)
+        (rest-packages)
+        (xfce-packages)
+        (kde-dependent-packages)
+        ;; (large-packages)
+        (packages-from-additional-channels-base)
+        (spguimacs-packages)
+        ))]
+    [#t
+     (error
+      (format #f "hostname '~a' must be one of the: ~a\n"
+              (hostname-memoized) (string-join hostnames)))])
+   ))
 (testsymb 'packages-to-install)
 
 (define (repl)

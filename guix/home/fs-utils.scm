@@ -53,7 +53,7 @@
 (list \"file.ext\"
       (local-file \"/home/bost/dev/dotfiles/path/to/file.ext\"))
 
-(local-dotfile \"/path/to/\" \".file.ext\")
+(local-dotfile \"/path/to/\" \".file.ext\") ;; with '.' before file.ext
 =>
 (list \".file.ext\"
       (local-file
@@ -74,7 +74,7 @@
       (list filename
             (any-local-file filepath (basename filename)))
       (begin
-        (format #t "ERROR: can't read ~a\n" filepath)
+        (format #t "WARNING: [local-dotfile] can't read ~a\n" filepath)
         #f))))
 
 ;; fish and bash separate elements of a list with a different separator
