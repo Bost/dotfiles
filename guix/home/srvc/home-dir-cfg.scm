@@ -148,23 +148,82 @@
          additional-channels)))))
 (testsymb 'create-channels-scm)
 
-;; i.e. use github / gitlab urls for extra channels, not from the HDD.
-(define use-remote-url #t)
-(define use-local-url (not use-remote-url))
-
 (define home-dir-cfg-srvc-files
   ((compose
     ;; (lambda (p) (format #t "############## 3.\n") p)
     (partial append
              (cond
-              [(home-games-config)
-               (list
-                (create-channels-scm (extra-channels use-local-url))
-                (local-dotfile "/" (str (basename xdg-config-home)
-                                        "/guix-gaming-channels/games.scm")))]
               [(home-ecke-config)
                (list
-                (create-channels-scm (extra-channels use-local-url)))]
+                (create-channels-scm
+                 `(
+                   (channel (name 'haskell-and-clojure)
+                            (url
+                             ;; "https://github.com/Tass0sm/guix-develop/tassos-guix"
+                             ;; "https://github.com/Bost/haskell-guix"
+                             (format #f "file://~a/dev/haskell-guix" home)
+                             ))
+
+                   ;; provides:
+                   ;; - (bost packages emacs-xyz) module
+                   ;; - clojure, babashka, postgres 13.3, openjdk18 etc.
+                   (channel (name 'bost)
+                            (url
+                             ;; "https://github.com/Bost/guix-packages"
+                             (format #f "file://~a/dev/guix-packages" home)))
+
+                   #|
+;;; Andrew Tropin's tools for managing reproducible development environments
+                   (channel (name 'rde)
+                            (url "https://git.sr.ht/~abcdw/rde")
+                            (introduction
+                             (make-channel-introduction
+                              "257cebd587b66e4d865b3537a9a88cccd7107c95"
+                              (openpgp-fingerprint
+                               "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))
+                   |#
+                   #|
+;;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
+;;; Use:
+;;;     guix package --load-path=./ --install=factorio
+;;; '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
+;;; wrong
+                   ;; requires the guix-gaming-channels/games.scm - see below
+                   (channel (name 'guix-gaming-games)
+                            (url
+                             ;; "https://gitlab.com/rostislav.svoboda/games"
+                             ;; ,(format #f "file://%s/dev/games" home)
+                             "https://gitlab.com/guix-gaming-channels/games.git")
+                            ;; Enable signature verification:
+                            (introduction
+                             (make-channel-introduction
+                              ;; The 1st commit from this repository which can be trusted is:
+                              "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
+                              (openpgp-fingerprint
+                               ;; ... as it was made by some with OpenPGP fingerprint:
+                               "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"
+                               ))))
+                   |#
+                   ))
+                #|
+                (local-dotfile "/" (str (basename xdg-config-home)
+                                        "/guix-gaming-channels/games.scm"))
+                |#
+                )]
+              [(home-lukas-config)
+               (list
+                (create-channels-scm
+                 `(
+                   ;; provides:
+                   ;; - (bost packages emacs-xyz) module
+                   ;; - clojure, babashka, postgres 13.3, openjdk18 etc.
+                   (channel (name 'bost)
+                            (url
+                             "https://github.com/Bost/guix-packages"
+                             ;; (format #f "file://~a/dev/guix-packages" home)
+                             ))
+                   )
+                 ))]
               [#t
                (list
                 (local-dotfile "/" channels-scm-filepath))]))
