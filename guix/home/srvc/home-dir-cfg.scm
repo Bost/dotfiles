@@ -42,6 +42,17 @@
 (define (extra-channels use-remote-url)
   "use-remote-url - if #t then use github or gitlab, etc."
   (cond
+   [(home-lukas-config)
+    `(
+      ;; provides:
+      ;; - (bost packages emacs-xyz) module
+      ;; - clojure, babashka, postgres 13.3, openjdk18 etc.
+      (channel (name 'bost)
+               (url
+                ,(if use-remote-url
+                     "https://github.com/Bost/guix-packages"
+                     (format #f "file://~a/dev/guix-packages" home))))
+      )]
    [(home-ecke-config)
     `((channel (name 'haskell-and-clojure)
                (url
