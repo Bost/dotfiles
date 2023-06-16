@@ -22,6 +22,11 @@
    ;; "emacs-molokai-theme"  ;; needs emacs-color-theme ;; doesn't compile
    ;; "emacs-noctilux-theme" ;; doesn't compile
 
+   "emacs-magit-annex"
+   "emacs-magit-gerrit"
+   "emacs-magit-org-todos-el"
+   ;; "emacs-magit-svn"
+
    "emacs-ac-ispell"
    "emacs-ac-php"
    "emacs-ace-jump-helm-line"
@@ -94,7 +99,7 @@
    "emacs-company-web"
    "emacs-compat"
    "emacs-composer"
-   "emacs-copilot"
+   ;; "emacs-copilot"
    "emacs-copy-sexp"
    "emacs-crux"
    "emacs-css-mode"
@@ -317,6 +322,7 @@
    "emacs-jump-last"
    "emacs-kaolin-themes"
    "emacs-kbd-mode"
+   "emacs-key-chord"
    "emacs-kill-buffers"
    "emacs-lcr"
    "emacs-less-css-mode"
