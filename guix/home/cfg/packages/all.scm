@@ -433,7 +433,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
       pkgs)
     inferior-pkgs
     (lambda (pkgs)
-      (if (home-ecke-config)
+      (if (or (home-ecke-config) (home-geek-config))
           (append
            (list
             bstx:xsel
