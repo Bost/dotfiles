@@ -17,7 +17,6 @@
   #:export (
             hostname-memoized
 
-            home-games-config
             home-lukas-config
             home-ecke-config
             home-geek-config
@@ -46,7 +45,4 @@
 
 (define (home-geek-config) (equal? (hostname-memoized) host-geek))
 (testsymb 'home-geek-config)
-
-;; games are available only on the ecke-machine
-(define (home-games-config) (home-ecke-config))
 
