@@ -2,8 +2,14 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-(defun my=dbg=tstp () (if (functionp #'dbg=tstp) (dbg=tstp) (car (time-convert nil t))))
-(setq my=dbg=init-time (if (boundp #'dbg=init-time) dbg=init-time (my=dbg=tstp)))
+(defun my=dbg=tstp ()
+  0
+  ;; (if (functionp #'dbg=tstp) (dbg=tstp) (car (time-convert nil t)))
+  )
+(setq my=dbg=init-time
+      0
+      ;; (if (boundp #'dbg=init-time) dbg=init-time (my=dbg=tstp))
+      )
 (setq my=dbg=fmt (if (boundp #'dbg=fmt) dbg=fmt "%012d"))
 
 (defun my=log (fun-point)
