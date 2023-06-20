@@ -1130,6 +1130,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
+  ;; ~/.local/share/spacemacs/.cache/.custom-settings
   (setq custom-file (concat
                      spacemacs-data-directory
                      ".cache/.custom-settings"))
@@ -1367,9 +1368,11 @@ before packages are loaded."
    )
 
   ;; Safe structural editing for all major modes:
-  (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
+  (when (boundp 'spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
+    (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks))
   ;; Safe structural editing for clojure layer only (comment out line above):
-  ;; (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
+  ;; (when (boundp 'spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
+  ;;   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode))
 
   ;; diff-hl - diff hightlights in right gutter as you type
   ;; (diff-hl-flydiff-mode)    ;; enable
