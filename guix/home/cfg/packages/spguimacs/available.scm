@@ -14,8 +14,6 @@
 (define available-packages
   (list
    ;; "emacs-molokai-theme"  ;; need emacs-color-theme
-   ;; "emacs-noctilux-theme" ;; doesn't compile
-
    "emacs-2048-game"
    "emacs-4clojure"
    "emacs-a"

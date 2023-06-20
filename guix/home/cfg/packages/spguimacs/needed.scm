@@ -20,13 +20,6 @@
    ;; "emacs-edbi-sqlite"
 
    ;; "emacs-molokai-theme"  ;; needs emacs-color-theme ;; doesn't compile
-   ;; "emacs-noctilux-theme" ;; doesn't compile
-
-   "emacs-magit-annex"
-   "emacs-magit-gerrit"
-   "emacs-magit-org-todos-el"
-   ;; "emacs-magit-svn"
-
    "emacs-ac-ispell"
    "emacs-ac-php"
    "emacs-ace-jump-helm-line"
@@ -345,6 +338,9 @@
    "emacs-macrostep"
    "emacs-madhat2r-theme"
    "emacs-magit"
+   "emacs-magit-annex"
+   "emacs-magit-gerrit"
+   "emacs-magit-org-todos-el"
    "emacs-magit-popup"
    "emacs-magit-section"
    "emacs-magit-todos"
@@ -371,6 +367,7 @@
    "emacs-mwim"
    "emacs-nameless"
    "emacs-naquadah-theme"
+   "emacs-noctilux-theme"
    "emacs-nodejs-repl"
    "emacs-npm-mode"
    "emacs-ob-erlang"
