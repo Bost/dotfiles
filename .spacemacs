@@ -444,6 +444,7 @@ This function should only modify configuration layer settings."
               vinegar-reuse-dired-buffer t
               vinegar-dired-hide-details nil)
 
+     openai
      ;; windows-scripts
 
      yaml
