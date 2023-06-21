@@ -2098,10 +2098,11 @@ Some binding snippets / examples:
   ;;              (dired up)
   ;;              (dired-goto-file dir))))))
 
-  (bind-keys :map paredit-mode-map
-             ;; these keybindings don't work in the cider-repl-mode-map
-             ("<C-right>"    . right-word)
-             ("<C-left>"     . left-word))
+  (with-eval-after-load 'paredit-mode
+    (bind-keys :map paredit-mode-map
+               ;; these keybindings don't work in the cider-repl-mode-map
+               ("<C-right>"    . right-word)
+               ("<C-left>"     . left-word)))
 
   (mapcar
    (lambda (map)
