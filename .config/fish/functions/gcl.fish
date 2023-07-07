@@ -1,7 +1,10 @@
-function gcl
+function gcl --description "git clone & cd"
     # 'string escape' doesn't work for https://git.sr.ht/~krevedkokun/dotfiles
     # set escArgv (string escape -- $argv)
-    set escArgv $argv
+
+    # Remove .git suffix
+    set escArgv (string replace --regex "\.git\$" "" $argv)
+
     set cmd ~/scm-bin/gcl $escArgv # gcl is implemented in Guile Scheme
     echo $cmd
     eval $cmd
