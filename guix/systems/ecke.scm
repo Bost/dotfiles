@@ -158,7 +158,7 @@
        (let ((linux-version "5.15.0-47"))
          (menu-entry
           (label "Ubuntu")
-          (linux (format #t "/boot/vmlinuz-~a-generic" linux-version))
+          (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
           ;; ro - mount the root disk read only.
           ;; quiet - don’t display console messages
           ;; splash - show a graphical "splash" screen while booting.
@@ -167,7 +167,7 @@
                              ;; value $vt_handoff is "vt.handoff=7" or
                              ;; unspecified
                              #;"$vt_handoff"))
-          (initrd (format #t "/boot/initrd.img-~a-generic" linux-version))))))
+          (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))
      (keyboard-layout keyboard-layout))) ; keyboard-layout for the GRUB
 
    (file-systems
