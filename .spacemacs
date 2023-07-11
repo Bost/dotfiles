@@ -2262,6 +2262,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               (list
                guix-checkout-dir
                (format "%s/nonguix" dev)
+               (format "%s/guix/common" dotf)
                (format "%s/guix/home" dotf)
                (format "%s/guix/systems" dotf)
 ;;; Excluded it b/c:

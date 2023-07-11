@@ -1,11 +1,8 @@
-;; (define m "[dirs]") ;; module-name
-;; (format #t "~a evaluating module ...\n" m)
-
 (define-module (srvc dirs)
   ;; See service-file -> with-imported-modules
-  #:use-module ((common settings) #:prefix ss:)
-  #:use-module ((utils) #:prefix su:)
+  #:use-module (utils)
   #:use-module (fs-utils)
+
   #:use-module (gnu services)
   ;; program-file local-file
   #:use-module (guix gexp)
@@ -32,7 +29,7 @@
             dirs-configuration
             ))
 
-(define m (su:module-name-for-logging))
+(define m (module-name-for-logging))
 
 ;;;
 ;;; user directories.
@@ -69,7 +66,7 @@
   (dev (string "$HOME/dev") "Default development directory.")
   (der (string "$HOME/der") "Development directory for Racket project.")
   (dec (string "$HOME/dec") "Development directory for Clojure(Script) projects."))
-(su:testsymb 'dirs-configuration)
+(testsymb 'dirs-configuration)
 
 ;; (define (dirs-files-service config)
 ;;   `(("user-dirs.conf"
@@ -95,13 +92,13 @@
         (display "Creating user directories...")
         (map ensure-dir '#$dirs)
         (display " done\n"))))
-(su:testsymb 'dirs-activation-service)
+(testsymb 'dirs-activation-service)
 
 (define (last-extension-or-cfg config extensions)
   "Picks configuration value from last provided extension.  If there
 are no extensions use configuration instead."
   (or (and (not (null? extensions)) (last extensions)) config))
-(su:testsymb 'last-extension-or-cfg)
+(testsymb 'last-extension-or-cfg)
 
 (define dirs-service-type
   (service-type (name 'dirs)
@@ -123,13 +120,13 @@ are no extensions use configuration instead."
                 (extend last-extension-or-cfg)
                 (description "Configure user directories. To disable a
 directory, point it to the $HOME.")))
-(su:testsymb 'dirs-service-type)
+(testsymb 'dirs-service-type)
 
 (define (generate-dirs-documentation)
   (generate-documentation
    `((dirs-configuration
      ,dirs-configuration-fields))
    'dirs-configuration))
-(su:testsymb 'generate-dirs-documentation)
+(testsymb 'generate-dirs-documentation)
 
 ;; (format #t "~a module evaluated\n" m)

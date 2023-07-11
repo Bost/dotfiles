@@ -61,7 +61,7 @@ Example:
             (remove
              unspecified?
              `((utils)
-               (common settings)
+               (settings)
 
                ;; ,(cond
                ;;   ((or
@@ -130,7 +130,7 @@ Example:
     (partial
      append
      (cond
-      [(home-geek-config)
+      [(is-system-geek)
        (append
         search-notes-service-files
         (list
@@ -138,7 +138,7 @@ Example:
                        #:scheme-file-name "emacs-launcher")
          (service-file #:program-name "s" #:desc "spguimacs-launcher"
                        #:scheme-file-name "spguimacs-launcher")))]
-      [(home-ecke-config)
+      [(is-system-ecke)
        (append
         search-notes-service-files
         (list

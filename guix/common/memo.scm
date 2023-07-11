@@ -1,6 +1,7 @@
 (define-module (memo)
+  #:use-module (settings)
   #:use-module (utils)
-  #:use-module (common settings)
+
   #:use-module (guix memoization)
   ;; open-input-pipe
   #:use-module (ice-9 popen)
@@ -17,9 +18,9 @@
   #:export (
             hostname-memoized
 
-            home-lukas-config
-            home-ecke-config
-            home-geek-config
+            is-system-lukas
+            is-system-ecke
+            is-system-geek
             ))
 
 ;;; Use function-implementations so that the code below is not evaluated every
@@ -37,12 +38,11 @@
 
 (define hostname-memoized (memoize hostname))
 
-(define (home-lukas-config) (equal? (hostname-memoized) host-lukas))
-(testsymb 'home-lukas-config)
+(define (is-system-lukas) (equal? (hostname-memoized) host-lukas))
+(testsymb 'is-system-lukas)
 
-(define (home-ecke-config) (equal? (hostname-memoized) host-ecke))
-(testsymb 'home-ecke-config)
+(define (is-system-ecke) (equal? (hostname-memoized) host-ecke))
+(testsymb 'is-system-ecke)
 
-(define (home-geek-config) (equal? (hostname-memoized) host-geek))
-(testsymb 'home-geek-config)
-
+(define (is-system-geek) (equal? (hostname-memoized) host-geek))
+(testsymb 'is-system-geek)
