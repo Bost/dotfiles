@@ -43,7 +43,7 @@ echo -e "\n\n" # output two new lines
 
 echo "set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda"
 echo "set device (blkid --uuid \$UUID)"
-echo "if not udisksctl info --block-device=\$device | rg --quiet MountPoints:"
+echo "if test ! (findmnt -nr -o target -S \$device)"
 echo "   udisksctl mount --block-device=\$device"
 echo "# else"
 echo "#    printf \"%s is mounted already\n\" \$device"
