@@ -1,4 +1,8 @@
 (define-module (cfg packages all)
+  #:use-module (settings)
+  #:use-module (utils)
+  #:use-module (memo)
+
   #:use-module (cfg packages spguimacs all)
   ;; the code for this module comes from the 'bost' channel. See
   ;; ~/.config/guix/channels.scm
@@ -7,15 +11,12 @@
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module (bost packages clojure) ;; provides clojure-lsp
   #:use-module ((bost packages xdisorg) #:prefix bstx:) ;; provides xsel
-  #:use-module (common settings)
   #:use-module (gnu packages)
   #:use-module (guix packages)
   #:use-module (guix channels)
   #:use-module (guix inferior)
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  #:use-module (utils)
-  #:use-module (memo)
 
   #:export (
             packages-to-install
@@ -433,7 +434,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
       pkgs)
     inferior-pkgs
     (lambda (pkgs)
-      (if (or (home-ecke-config) (home-geek-config))
+      (if (or (is-system-ecke) (is-system-geek))
           (append
            (list
             bstx:xsel
@@ -481,15 +482,15 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; TODO difference specification->package+output, specification->package ?
                           specification->package+output)))
    (cond
-    [(home-lukas-config)
+    [(is-system-lukas)
      (begin
-       ;; (format #t "(home-lukas-config)\n")
+       ;; (format #t "(is-system-lukas)\n")
        (basic-packages))]
     ;; The spguimacs-packages should be installed only on the ecke- and
     ;; geek-machines, i.e. no need to install it elsewhere.
-    [(home-ecke-config)
+    [(is-system-ecke)
      (begin
-       ;; (format #t "(home-ecke-config)\n")
+       ;; (format #t "(is-system-ecke)\n")
        (append
         (basic-packages)
         (devel-packages)
@@ -500,9 +501,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
         (packages-from-additional-channels)
         (spguimacs-packages)
         ))]
-    [(home-geek-config)
+    [(is-system-geek)
      (begin
-       ;; (format #t "(home-geek-config)\n")
+       ;; (format #t "(is-system-geek)\n")
        (append
         (basic-packages)
         (devel-packages)

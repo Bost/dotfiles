@@ -1,33 +1,6 @@
 #!/bin/sh
 
-guix_repo=https://git.savannah.gnu.org/git/guix.git
-for d in $HOME/.cache/guix/checkouts/*; do
-    if [ -d "$d" ] && [ ! -L "$d" ]; then
-        # echo "is dir: $d"
-        if git --git-dir=$d/.git remote -v | rg --quiet $guix_repo; then
-            coDir=$d
-            # echo "Guix channel checkout directory: $coDir"
-            break
-        fi
-    fi
-done
-
-# linux_scm=$dgx/gnu/packages/linux.scm
-linux_scm=$coDir/gnu/packages/linux.scm
-
-printf "Analyzing %s ...\n" $linux_scm
-
-llVer=$(rg --no-line-number --replace '$1' \
-               '\(define-public\s+linux-libre-version\s+(.*)\)' $linux_scm)
-# printf "llVer: %s\n" $llVer
-
-ptrn=$(printf '\(define-public\s+%s\s+"(.*)"\)' $llVer)
-# printf "ptrn: %s\n" $ptrn
-
-kernelVer=$(rg --no-line-number --replace '$1' $ptrn $linux_scm)
-printf "Reconfigure system with kernel %s\n" $kernelVer
-
-lpath=$dotf/guix/systems
+baseLP=$dotf/guix # base-load-path
 hostname=$(hostname)
 
 set -e # Exit immediately if a command exits with a non-zero status.
@@ -35,39 +8,45 @@ set -e # Exit immediately if a command exits with a non-zero status.
 ## Run this file by (the `~' doesn't work as a value of --load-path):
 # --fallback         fall back to building when the substituter fails
 # -L --load-path
+# -v, --verbosity=LEVEL  use the given verbosity LEVEL
 set -x  # Print commands and their arguments as they are executed.
-sudo guix system --fallback -L $lpath reconfigure $lpath/$hostname.scm
+sudo guix system --verbosity=3 --fallback \
+     -L $baseLP/common \
+     -L $baseLP/systems \
+     reconfigure $baseLP/systems/$hostname.scm
 { retval="$?"; set +x; } 2>/dev/null
 
-echo -e "\n\n" # output two new lines
+if [ $hostname == "ecke" ]; then
+    echo -e "\n\n" # output two new lines
 
-echo "set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda"
-echo "set device (blkid --uuid \$UUID)"
-echo "if test ! (findmnt -nr -o target -S $device)"
-echo "   udisksctl mount --block-device=\$device"
-echo "# else"
-echo "#    printf \"%s is mounted already\n\" \$device"
-echo "end"
-echo "# sudo cp /media/\$USER/\$UUID/boot/grub/grub.cfg /tmp/"
-echo "sudo cp /media/\$USER/ubuntu-filesyst/boot/grub/grub.cfg /tmp/"
-echo "sudo chown \$USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg"
-echo "## Match the version number and place it to clipboard:"
-echo "##  Also: grep -oP \"(\d{1,}\.)+\d{1,}\""
-echo "## Parameter abbreviations:"
-echo "#   rg:   -N --no-line-number; -A --after-context; -m --max-count"
-echo "#   xsel: -b --clipboard; -i --input"
-echo "rg -N -A 4 -m 1 \"GNU with Linux-Libre\" /boot/grub/grub.cfg | xsel -bi"
-echo "s /tmp/grub.cfg                    # edit the file"
-echo "## <paste the block>"
-echo "## Extract the time and generation number:"
-echo "set n2 \"\d{2,}\""
-echo "set tstp (date +\"%Y-%m-%d\")"
-echo "set replacement (printf '(#\$1 %s \$2)' \$tstp)"
-echo "set regex (printf \".*? (\d{1,}).*(%s:%s):%s.*current\" \$n2 \$n2)"
-echo "guix system describe | rg \$regex -o -r \$replacement | xsel -bi"
-echo "## <paste the block>"
-echo "# sudo cp /tmp/grub.cfg /media/\$USER/boot/grub/grub.cfg"
-echo "sudo cp -i /tmp/grub.cfg /media/\$USER/ubuntu-filesyst/boot/grub/"
-echo "sudo reboot # press <f12> during the reboot and fix the boot order"
+    echo "set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda"
+    echo "set device (blkid --uuid \$UUID)"
+    echo "if test ! (findmnt -nr -o target -S $device)"
+    echo "   udisksctl mount --block-device=\$device"
+    echo "# else"
+    echo "#    printf \"%s is mounted already\n\" \$device"
+    echo "end"
+    echo "# sudo cp /media/\$USER/\$UUID/boot/grub/grub.cfg /tmp/"
+    echo "sudo cp /media/\$USER/ubuntu-filesyst/boot/grub/grub.cfg /tmp/"
+    echo "sudo chown \$USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg"
+    echo "## Match the version number and place it to clipboard:"
+    echo "##  Also: grep -oP \"(\d{1,}\.)+\d{1,}\""
+    echo "## Parameter abbreviations:"
+    echo "#   rg:   -N --no-line-number; -A --after-context; -m --max-count"
+    echo "#   xsel: -b --clipboard; -i --input"
+    echo "rg -N -A 4 -m 1 \"GNU with Linux-Libre\" /boot/grub/grub.cfg | xsel -bi"
+    echo "s /tmp/grub.cfg                    # edit the file"
+    echo "## <paste the block>"
+    echo "## Extract the time and generation number:"
+    echo "set n2 \"\d{2,}\""
+    echo "set tstp (date +\"%Y-%m-%d\")"
+    echo "set replacement (printf '(#\$1 %s \$2)' \$tstp)"
+    echo "set regex (printf \".*? (\d{1,}).*(%s:%s):%s.*current\" \$n2 \$n2)"
+    echo "guix system describe | rg \$regex -o -r \$replacement | xsel -bi"
+    echo "## <paste the block>"
+    echo "# sudo cp /tmp/grub.cfg /media/\$USER/boot/grub/grub.cfg"
+    echo "sudo cp -i /tmp/grub.cfg /media/\$USER/ubuntu-filesyst/boot/grub/"
+    echo "sudo reboot # press <f12> during the reboot and fix the boot order"
+fi
 
 exit $retval

@@ -1,9 +1,5 @@
-;; (define m "[home-dir-cfg]") ;; module-name
-;; (format #t "~a evaluating module ...\n" m)
-
 (define-module (srvc home-dir-cfg)
   ;; See service-file -> with-imported-modules
-  #:use-module ((common settings) #:prefix ss:)
   #:use-module (utils)
   #:use-module (memo)
   #:use-module (fs-utils)
@@ -52,8 +48,8 @@
       (lambda (fst snd)
         ((compose
           ;; (lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
+          (lambda (s) (format #t "done\n") s)
           (lambda (sexp)
-            (format #t "~a ### Creating plain-file channels.scm ... \n" m)
             (list
              channels-scm-filepath
              #;(scheme-file "channels.scm" (sexp->gexp sexp))
@@ -65,6 +61,7 @@
                 (close-port port)
                 tmpfile)
               "channels.scm")))
+          (lambda (s) (format #t "~a ### Creating channels.scm ... " m) s)
           (lambda (sexp) (append fst sexp (list (car snd)))))
          additional-channels)))))
 (testsymb 'create-channels-scm)
@@ -74,7 +71,7 @@
     ;; (lambda (p) (format #t "############## 3.\n") p)
     (partial append
              (cond
-              [(home-ecke-config)
+              [(is-system-ecke)
                (list
                 (create-channels-scm
                  `(
@@ -131,7 +128,7 @@
                                         "/guix-gaming-channels/games.scm"))
                 |#
                 )]
-              [(home-geek-config)
+              [(is-system-geek)
                (list
                 (create-channels-scm
                  `(
@@ -142,7 +139,7 @@
                             (url
                              ;; "https://github.com/Bost/guix-packages"
                              ,(format #f "file://~a/dev/guix-packages" home))))))]
-              [(home-lukas-config)
+              [(is-system-lukas)
                (list
                 (create-channels-scm
                  `(
