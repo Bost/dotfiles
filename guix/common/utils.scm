@@ -88,6 +88,11 @@ Works also for functions returning and accepting multiple values."
               (let ((g (apply comp rest)))
                 (call-with-values (lambda () (apply g args)) proc)))))))
 
+;; (warn ...) doesn't print anything
+(define (my=warn s)
+  ;; (error s)
+  (format #t "WARN ~a\n" s))
+
 (define (module-name-for-logging)
   ((compose
     (partial format #f "[~a]")
@@ -102,7 +107,7 @@ Works also for functions returning and accepting multiple values."
      (begin
        (let [(module (module-name-for-logging))]
          (unless (defined? symbol)
-           (error (format #f "~a Symbol undefined: ~a" module symbol)))))]))
+           (my=warn (format #f "~a Symbol undefined: ~a" module symbol)))))]))
 
 (define-syntax testsymb-trace
   (syntax-rules ()
@@ -111,7 +116,7 @@ Works also for functions returning and accepting multiple values."
        (let [(module (module-name-for-logging))]
          (if (defined? symbol)
              (format #t "~a Symbol defined: ~a\n" module symbol)
-             (error (format #f "~a Symbol undefined: ~a" module symbol)))))]))
+             (my=warn (format #f "~a Symbol undefined: ~a" module symbol)))))]))
 
 (define (test-testsymb)
   (define f 42)
