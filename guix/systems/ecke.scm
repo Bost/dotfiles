@@ -3,13 +3,16 @@
 
 ;;; To run this file see: $dotf/bin/sgxsr
 
-;; (format #t "[ecke] evaluating ...\n")
-
 (define-module (ecke)
+  #:use-module (utils)                 ; for partial
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (common settings)
+  #:use-module (guix)                  ; for package-version
   )
+
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules cups desktop networking ssh xorg)
@@ -21,8 +24,6 @@
  libusb   ; libmtp
  shells   ; login shell
  )
-
-;; (format #t "user-full-name: ~a\n" user-full-name)
 
 (define operating-system-configuration
   (operating-system
@@ -63,7 +64,10 @@
 
            (user-account
             (name "bost")
-            (comment user-full-name)
+            (comment
+             (begin
+               ;; (format #t "~a user-full-name: ~a\n" m user-full-name)
+               user-full-name))
             (group "users")
             (home-directory "/home/bost")
             ;; login shell; see also `packages`
@@ -189,7 +193,13 @@
    ;; See "(guix) operating-system Reference" for more details.
    (swap-devices (list (swap-space (target "/swapfile"))))))
 
-;; (format #t "\n[ecke] evaluated\n")
+((compose
+  (partial format #t "~a kernel-version: ~a\n" m)
+  package-version
+  operating-system-kernel)
+ operating-system-configuration)
+
+;; (format #t "~a module evaluated\n" m)
 
 ;; operating-system (or image) must be returned
 operating-system-configuration

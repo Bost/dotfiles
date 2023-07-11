@@ -16,15 +16,18 @@ sudo guix system --fallback reconfigure geek.scm
 sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems/geek.scm
 |#
 
-;; (format #t "[geek] evaluating module ...\n")
-
 (define-module (geek)
+  #:use-module (utils)                 ; for partial
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (common settings)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
+  #:use-module (guix)                  ; for package-version
   )
+
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
 (use-service-modules cups desktop networking ssh xorg)
 
@@ -47,20 +50,24 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
      (keyboard-layout
       "us,de,sk,fr" "altgr-intl,,qwerty,"
       #:options '("compose:menu,grp:ctrls_toggle")))
-    (host-name "geek")
+    (host-name host-geek)
 
     ;; The list of user accounts ('root' is implicit).
-    (users (cons* (user-account
-                   (name "bost")
-                   (comment "Rostislav Svoboda")
-                   (group "users")
-                   (home-directory "/home/bost")
-                   (supplementary-groups
-                    '("wheel" ;; gives access to 'sudo'
-                      "netdev" "audio" "video"
-                      "adbusers" ;; for android
-                      )))
-                  %base-user-accounts))
+    (users (cons*
+            (user-account
+             (name "bost")
+             (comment
+              (begin
+                ;; (format #t "~a user-full-name: ~a\n" m user-full-name)
+                user-full-name))
+             (group "users")
+             (home-directory "/home/bost")
+             (supplementary-groups
+              '("wheel" ;; gives access to 'sudo'
+                "netdev" "audio" "video"
+                "adbusers" ;; for android
+                )))
+            %base-user-accounts))
 
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
@@ -136,7 +143,13 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
                                          'fat32))
                            (type "vfat")) %base-file-systems))))
 
-;; (format #t "[geek] module evaluated\n")
+((compose
+  (partial format #t "~a kernel-version: ~a\n" m)
+  package-version
+  operating-system-kernel)
+ operating-system-configuration)
+
+;; (format #t "~a module evaluated\n" m)
 
 ;; operating-system (or image) must be returned
 operating-system-configuration
