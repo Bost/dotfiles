@@ -11,7 +11,7 @@
 ;;              [#:renamer RENAMER]
 ;;              [#:version VERSION-SPEC]) ;; R6RS-compatible version reference
 (define-module (utils)
-  #:use-module (common settings)
+  #:use-module (settings)
   ;; open-input-pipe
   #:use-module (ice-9 popen)
 ;;; (ice-9 readline) requires `guix install guile-readline'.
