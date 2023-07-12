@@ -19,6 +19,8 @@
 
    ;; "emacs-edbi-sqlite"
 
+   ;; "emacs-hybrid-mode"  ;; part of spacemacs
+
    ;; "emacs-molokai-theme"  ;; needs emacs-color-theme ;; doesn't compile
    "emacs-ac-ispell"
    "emacs-ac-php"
@@ -99,7 +101,7 @@
    "emacs-cyberpunk-theme"
    "emacs-dakrone-theme"
    "emacs-dante"
-   "emacs-dap-mode"
+   ;; "emacs-dap-mode"         ;; uses emacs-lsp-treemacs
    "emacs-darkmine-theme"
    "emacs-darkokai-theme"
    "emacs-darktooth-theme"
@@ -325,15 +327,16 @@
    "emacs-loop"
    "emacs-lorem-ipsum"
    "emacs-lsp-haskell"
-   "emacs-lsp-java"
+   ;; "emacs-lsp-java"     ;; uses emacs-dap-mode
    "emacs-lsp-latex"
-   "emacs-lsp-metals"
+   ;; "emacs-lsp-metals"    ;; uses emacs-dap-mode
    "emacs-lsp-mode"
    "emacs-lsp-origami"
    "emacs-lsp-python-ms"
-   "emacs-lsp-treemacs"
+   ;; "emacs-lsp-treemacs"    ;; uses emacs-treemacs
    "emacs-lsp-ui"
    "emacs-lsp-volar"
+   "emacs-lua-mode"
    "emacs-lush-theme"
    "emacs-macrostep"
    "emacs-madhat2r-theme"
@@ -424,6 +427,7 @@
    "emacs-pollen-mode"
    "emacs-popup"
    "emacs-popwin"
+   "emacs-pos-tip"
    "emacs-posframe"
    "emacs-powerline"
    "emacs-prettier-js"
@@ -450,6 +454,7 @@
    "emacs-scala-mode"
    "emacs-scribble-mode"
    "emacs-scss-mode"
+   "emacs-seq"
    "emacs-sesman"
    "emacs-seti-theme"
    "emacs-shell-pop"
@@ -485,6 +490,7 @@
    "emacs-spacemacs-purpose-popwin"
    "emacs-spacemacs-whitespace-cleanup"
    "emacs-sphinx-doc"
+   "emacs-spinner"
    "emacs-sql"
    "emacs-sql-indent"
    "emacs-sqlite"
@@ -515,12 +521,13 @@
    "emacs-tramp-auto-auth"
    "emacs-transient"
    "emacs-transpose-frame"
-   "emacs-treemacs"
-   "emacs-treemacs-evil"
-   "emacs-treemacs-icons-dired"
-   "emacs-treemacs-magit"
-   "emacs-treemacs-persp"
-   "emacs-treemacs-projectile"
+   ;; "emacs-treemacs"        ;; using the package from the 'bost' channel
+   ;; "emacs-treemacs-evil"
+   ;; "emacs-treemacs-icons-dired"
+   ;; "emacs-treemacs-magit"  ;; existing package
+   ;; "emacs-treemacs-mu4e"   ;; existing package
+   ;; "emacs-treemacs-persp"
+   ;; "emacs-treemacs-projectile"
    "emacs-treepy"
    "emacs-twilight-anti-bright-theme"
    "emacs-twilight-bright-theme"

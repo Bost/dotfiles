@@ -475,6 +475,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             bste:emacs-zop-to-char
             bste:emacs-font-utils
             bste:emacs-pythonic
+
+            bste:emacs-lsp-metals
+            bste:emacs-lsp-java
+            bste:emacs-dap-mode
+            bste:emacs-lsp-treemacs
+            bste:emacs-treemacs
             )
            pkgs)
           pkgs))
