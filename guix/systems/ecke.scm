@@ -12,6 +12,7 @@
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
   #:use-module (srfi srfi-1)           ; for remove
+  ;; #:use-module (gnu services xorg)     ; for gdm-service-type
   )
 
 ;; no need to write: #:use-module (gnu services <module>)
@@ -25,7 +26,15 @@
  shells   ; login shell
 
  ;; vim
- wm
+
+ ;; Window Managers:
+ ;; - sway
+ ;; - herbstluftwm
+ ;; - i3-wm
+ ;; - xmonad (Tiling window manager)
+ ;; ...
+ wm ;; provides "sway" "swaybg" "swayidle" "swaylock"
+
  ;; video
  ;; certs
  ;; version-control
