@@ -11,6 +11,7 @@
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
+  #:use-module (srfi srfi-1)           ; for remove
   )
 
 ;; no need to write: #:use-module (gnu services <module>)
@@ -22,7 +23,18 @@
  bash
  libusb   ; libmtp
  shells   ; login shell
+
+ ;; vim
+ wm
+ ;; video
+ ;; certs
+ ;; version-control
+ ;; terminals
+ ;; disk
+ ;; xdisorg
+ ;; web-browsers
  )
+
 
 (when (is-system-ecke)
   (let* []
@@ -94,12 +106,18 @@
         (packages
          (append
           (map specification->package
-               (list
-                "git"
-                #| "gparted" ; disk partition |#
-                "nss-certs"
-                #| "rsync"   ; 'scp' is preinstalled |#
-                #| "vim"     ; 'vi' is preinstalled |#))
+               (append
+                (list "sway" "swaybg" "swayidle" "swaylock"
+                      #;"bemenu" #| Dynamic menu library and client program inspired by dmenu |#
+			                #;"ranger" #| minimalistic console file manager with Vi key bindings |#
+			                #;"luakit" #| simple browser extensible by Lua based on WebKit & GTK+ toolkit |#
+			                #;"mpv"    #| Audio and video player |#)
+                (list
+                 "git"
+                 #;"gparted" #|  disk partition |#
+                 "nss-certs"
+                 #;"rsync"  #| 'scp' is preinstalled |#
+                 #;"vim" #| 'vi' is preinstalled |#)))
           %base-packages))
         #;
         (skeletons
@@ -107,6 +125,7 @@
         "(use-modules (ice-9 readline))
         (activate-readline)"))))
         (services
+         ;; ((compose))
          (append (list
                   (service xfce-desktop-service-type)
 
@@ -141,7 +160,10 @@
                   (udev-rules-service 'android android-udev-rules
                                       #:groups '("adbusers")))
 
-                 (modify-services %desktop-services
+                 (modify-services
+                   (remove (lambda (service)
+		                         (eq? (service-kind service) gdm-service-type))
+			                     %desktop-services)
                    (guix-service-type
                     config => (guix-configuration
                                (inherit config)
