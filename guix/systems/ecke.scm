@@ -78,11 +78,14 @@
                  ;; explicitly define fish / bash:
                  ;; (shell (file-append fish "/bin/fish"))
                  (shell (file-append bash "/bin/bash"))
+
+                 ;; list of group names that this user-account belongs to
                  (supplementary-groups
-                  '("wheel" ;; gives access to 'sudo'
-                    "netdev" "audio" "video"
-                    "adbusers" ;; for android
-                    )))
+                  ;; grant access to:
+                  '("wheel"  #| sudo etc.; See polkit-wheel-service for administrative tasks for non-root users |#
+                    "netdev" #| network devices |#
+                    "audio"  #| sound card |#
+                    "video"  #| video devices, e.g. webcams |#)))
                 %base-user-accounts))
 
 ;;; Packages installed system-wide. Users can also install packages under their
@@ -93,11 +96,10 @@
           (map specification->package
                (list
                 "git"
-                ;; "gparted"    ; disk partition
+                #| "gparted" ; disk partition |#
                 "nss-certs"
-                ;; "rsync"      ; 'scp' is preinstalled
-                ;; "vim"        ; 'vi' is preinstalled
-                ))
+                #| "rsync"   ; 'scp' is preinstalled |#
+                #| "vim"     ; 'vi' is preinstalled |#))
           %base-packages))
         #;
         (skeletons

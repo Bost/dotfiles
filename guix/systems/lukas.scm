@@ -70,10 +70,14 @@ sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
                     user-full-name))
                  (group "users")
                  (home-directory "/home/bost")
+
+                 ;; list of group names that this user-account belongs to
                  (supplementary-groups
-                  '("wheel" ;; gives access to 'sudo'
-                    "netdev" "audio" "video"
-                    )))
+                  ;; grant access to:
+                  '("wheel"  #| sudo etc. |#
+                    "netdev" #| network devices |#
+                    "audio"  #| sound card |#
+                    "cdrom"  #| access to CD-ROM |#)))
                 %base-user-accounts))
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
