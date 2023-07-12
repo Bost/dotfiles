@@ -12,7 +12,7 @@
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
   #:use-module (srfi srfi-1)           ; for remove
-  ;; #:use-module (gnu services xorg)     ; for gdm-service-type
+  #:use-module (gnu services xorg)     ; for gdm-service-type
   )
 
 ;; no need to write: #:use-module (gnu services <module>)
@@ -116,6 +116,12 @@
          (append
           (map specification->package
                (append
+
+;;; # Get the sway configuration file:
+;;; mkdir -p $dotf/.config/sway
+;;; # -O/--output-document works only if the given output file does not exist.
+;;; wget https://raw.githubusercontent.com/swaywm/sway/master/config.in \
+;;;      --output-document=$dotf/.config/sway
                 (list "sway" "swaybg" "swayidle" "swaylock"
                       #;"bemenu" #| Dynamic menu library and client program inspired by dmenu |#
 			                #;"ranger" #| minimalistic console file manager with Vi key bindings |#
@@ -137,7 +143,10 @@
          ((compose
            ;; TODO create macros pappend, premove, etc.
            (partial remove (lambda (service)
-		                         (eq? (service-kind service) gdm-service-type)))
+                             (let* [found? (eq? (service-kind service) gdm-service-type)]
+                               (when found?
+                                 (format #t "~a removing gdm-service-type\n" m))
+                               found?)))
            (partial
             append
             (list
