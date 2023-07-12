@@ -11,7 +11,6 @@
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
-  #:use-module (srfi srfi-1)           ; for remove
   #:use-module (gnu services xorg)     ; for gdm-service-type
   )
 
@@ -122,6 +121,9 @@
 ;;; # -O/--output-document works only if the given output file does not exist.
 ;;; wget https://raw.githubusercontent.com/swaywm/sway/master/config.in \
 ;;;      --output-document=$dotf/.config/sway
+
+;;; Crafting a Minimal Sway Environment with Guix - System Crafters Live!
+;;; https://www.youtube.com/live/OYbenLOm3Js?feature=share&t=5122
                 (list "sway" "swaybg" "swayidle" "swaylock"
                       #;"bemenu" #| Dynamic menu library and client program inspired by dmenu |#
 			                #;"ranger" #| minimalistic console file manager with Vi key bindings |#
@@ -140,50 +142,44 @@
         "(use-modules (ice-9 readline))
         (activate-readline)"))))
         (services
-         ((compose
-           ;; TODO create macros pappend, premove, etc.
-           (partial remove (lambda (service)
-                             (let* [found? (eq? (service-kind service) gdm-service-type)]
-                               (when found?
-                                 (format #t "~a removing gdm-service-type\n" m))
-                               found?)))
-           (partial
-            append
-            (list
-             (service xfce-desktop-service-type)
+         ;; TODO create macros pappend, premove, etc.
 
-             ;; To configure OpenSSH, pass an 'openssh-configuration'
-             ;; record as a second argument to 'service' below.
-             (service openssh-service-type)
+         (append
+          (list
+           (service xfce-desktop-service-type)
 
-             ;; ntp-service-type for system clock sync is in the
-             ;; %desktop-services by default
+           ;; To configure OpenSSH, pass an 'openssh-configuration'
+           ;; record as a second argument to 'service' below.
+           (service openssh-service-type)
 
-             (service cups-service-type)
-             (set-xorg-configuration
-              (xorg-configuration ; keyboard-layout for the XOrg
-               (keyboard-layout keyboard-layout)))
-             ;; (udev-rules-service 'mtp libmtp)
-             ;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
-             ;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
-             ;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
-             ;; see https://issues.guix.gnu.org/40454
-             ;; (modify-services base:services
-             ;;                  (udev-service-type
-             ;;                   config =>
-             ;;                   (udev-configuration
-             ;;                    (inherit config)
-             ;;                    (rules (cons*
-             ;;                            light
-             ;;                            pipewire-0.3
-             ;;                            android-udev-rules
-             ;;                            libu2f-host
-             ;;                            (udev-configuration-rules config))))))
+           ;; ntp-service-type for system clock sync is in the
+           ;; %desktop-services by default
 
-             ;; mtp - Media Transfer Protocol
-             (udev-rules-service 'mtp libmtp)
-             (udev-rules-service 'android android-udev-rules
-                                 #:groups '("adbusers")))))
+           (service cups-service-type)
+           (set-xorg-configuration
+            (xorg-configuration ; keyboard-layout for the XOrg
+             (keyboard-layout keyboard-layout)))
+           ;; (udev-rules-service 'mtp libmtp)
+           ;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
+           ;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
+           ;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
+           ;; see https://issues.guix.gnu.org/40454
+           ;; (modify-services base:services
+           ;;                  (udev-service-type
+           ;;                   config =>
+           ;;                   (udev-configuration
+           ;;                    (inherit config)
+           ;;                    (rules (cons*
+           ;;                            light
+           ;;                            pipewire-0.3
+           ;;                            android-udev-rules
+           ;;                            libu2f-host
+           ;;                            (udev-configuration-rules config))))))
+
+           ;; mtp - Media Transfer Protocol
+           (udev-rules-service 'mtp libmtp)
+           (udev-rules-service 'android android-udev-rules
+                               #:groups '("adbusers")))
           (modify-services
            %desktop-services
            (guix-service-type
@@ -196,7 +192,11 @@
                         ;; The signing-key.pub should be obtained by
                         ;; wget https://substitutes.nonguix.org/signing-key.pub
                         (append (list (local-file "./signing-key.pub"))
-                                %default-authorized-guix-keys)))))))
+                                %default-authorized-guix-keys))))
+           ;; for sway - see the patch:
+           ;;   Add a guide to the guix cookbook about setting up sway.
+           ;;   https://issues.guix.gnu.org/issue/39271
+           (delete gdm-service-type))))
 
         ;; see
         ;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
