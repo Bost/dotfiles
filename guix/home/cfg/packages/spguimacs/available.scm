@@ -13,6 +13,8 @@
 ;; doesn't work
 (define available-packages
   (list
+   ;; "emacs-hybrid-mode"  ;; part of spacemacs
+
    ;; "emacs-molokai-theme"  ;; need emacs-color-theme
    "emacs-2048-game"
    "emacs-4clojure"
@@ -1381,8 +1383,8 @@
    "emacs-tree-mode"
    "emacs-treemacs"
    "emacs-treemacs-extra"
-   "emacs-treemacs-magit"
-   "emacs-treemacs-mu4e"
+   ;; "emacs-treemacs-magit"
+   ;; "emacs-treemacs-mu4e"
    "emacs-treepy"
    "emacs-treeview"
    "emacs-ts"
@@ -1497,6 +1499,7 @@
    "emacs-zmq"
    "emacs-znc"
    "emacs-zones"
+   "emacs-zonokai-emacs"
    "emacs-zop-to-char"
    "emacs-zotxt"
    "emacs-zoutline"
