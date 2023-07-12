@@ -67,10 +67,21 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
                     user-full-name))
                  (group "users")
                  (home-directory "/home/bost")
+
+                 ;; list of group names that this user-account belongs to
                  (supplementary-groups
-                  '("wheel" ;; gives access to 'sudo'
-                    "netdev" "audio" "video"
-                    "adbusers" ;; for android
+                  ;; grant access to:
+                  '("wheel"  #| sudo etc.; See polkit-wheel-service for administrative tasks for non-root users |#
+                    "netdev" #| network devices |#
+                    "audio"  #| sound card |#
+                    "video"  #| video devices, e.g. webcams |#
+                    "lp"     #| control bluetooth devices |#
+
+                    ;; "kvm"
+                    ;; "tty"
+                    ;; "input"
+                    ;; "docker"
+                    ;; "realtime"  #| Enable realtime scheduling |#
                     )))
                 %base-user-accounts))
 
@@ -81,12 +92,12 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
          (append
           (map specification->package
                (list
-                "brightnessctl" ; backlight and LED brightness control
+                "brightnessctl" #| backlight and LED brightness control |#
                 "git"
-                ;; "gparted"    ; disk partition
-                "nss-certs"
-                ;; "rsync"      ; 'scp' is preinstalled
-                ;; "vim"        ; 'vi' is preinstalled
+                ;; "gparted"    #| disk partition |#
+                "nss-certs"     #| HTTPS access |#
+                ;; "rsync"      #| 'scp' is preinstalled |#
+                ;; "vim"        #| 'vi' is preinstalled |#
                 ))
           %base-packages))
 
