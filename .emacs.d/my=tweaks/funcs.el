@@ -650,6 +650,7 @@ TODO finish the implementation"
 (defun my=helm-mini ()
   ;; (define-key helm-map (kbd "s-a") nil)
   ;; (unbind-key (kbd "s-a") helm-map)
+  (message "[advice helm-mini] (boundp 'helm-map): %s" (boundp 'helm-map))
   (when (boundp 'helm-map)
     (define-key helm-map (kbd "s-a") 'helm-next-line)
     (define-key helm-map (kbd "s-]") 'helm-next-line)))
