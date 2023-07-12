@@ -15,6 +15,14 @@
             fish-service
             ))
 
+;;; `guix home reconfigure` keeps on adding fish-shell abbreviations instead of
+;;; recreating them. Consequently the `guix home roll-back` and `guix home
+;;; switch-generation` don't correctly restore the previous state.
+;;;
+;;; "Each abbreviation is stored in its own global or universal variable"
+;;; https://fishshell.com/docs/current/cmds/abbr.html#internals
+;;; See also https://issues.guix.gnu.org/30265
+
 (define m (module-name-for-logging))
 (format #t "~a evaluating module ...\n" m)
 
