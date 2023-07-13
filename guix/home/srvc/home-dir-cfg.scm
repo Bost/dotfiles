@@ -179,10 +179,12 @@
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
              (list
+              (let ((dir ".config/sway"))
+                `(,dir ;; destination
+                  ,(local-file (dotfiles-home "/" dir) #:recursive? #t)))
               (let ((dir "bin"))
                 `(,dir ;; destination
-                  ,(local-file (dotfiles-home "/" dir)
-                               #:recursive? #t)))))
+                  ,(local-file (dotfiles-home "/" dir) #:recursive? #t)))))
     ;; (lambda (p) (format #t "############## 0.\n") p)
     )
    ;; empty list
