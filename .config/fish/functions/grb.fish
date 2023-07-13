@@ -1,3 +1,3 @@
-function grb
+function grb --description "git rebase"
     gr $argv
 end
