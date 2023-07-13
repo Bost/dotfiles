@@ -1,5 +1,6 @@
 function h
-    set cmd history --show-time="[%Y-%m-%d %H:%M:%S]\ " (string escape -- $argv)
+    set escArgv (string escape -- $argv)
+    set cmd (printf "history --show-time=\"%s\" %s" $HISTTIMEFORMAT $escArgv)
     echo $cmd
     eval $cmd
 end

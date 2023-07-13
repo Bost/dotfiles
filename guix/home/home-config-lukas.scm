@@ -264,7 +264,10 @@ guix shell --development guix help2man git strace --pure
            (bash-config-file
             "bash-profile"
             (str
-             "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))
+             "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
+             ;; %H:%M:%S can be abbreviated by %T
+             "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
+             ))
            ;; (local-file ".bashrc" "bash_profile") should work too
            ;; (local-file
            ;;  (hf:dotfiles-home "/.bash_profile_additions")
