@@ -105,6 +105,10 @@
                   '("wheel"  #| sudo etc.; See polkit-wheel-service for administrative tasks for non-root users |#
                     "netdev" #| network devices |#
                     "audio"  #| sound card |#
+
+                    ;; guix system: error: supplementary group 'seat' of user 'bost' is undeclared
+                    ;; "seat"   #| handle permissions for creating and managing graphical sessions |#
+
                     "video"  #| video devices, e.g. webcams |#)))
                 %base-user-accounts))
 
