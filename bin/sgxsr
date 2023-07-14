@@ -13,7 +13,7 @@ set -x  # Print commands and their arguments as they are executed.
 sudo guix system --verbosity=3 --fallback \
      -L $baseLP/common \
      -L $baseLP/systems \
-     reconfigure $baseLP/systems/$hostname.scm
+     reconfigure $baseLP/systems/syst-$hostname.scm
 { retval="$?"; set +x; } 2>/dev/null
 
 if [ $hostname == "ecke" ]; then

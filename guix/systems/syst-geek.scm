@@ -16,7 +16,7 @@ sudo guix system --fallback reconfigure geek.scm
 sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems/geek.scm
 |#
 
-(define-module (geek)
+(define-module (syst-geek)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
