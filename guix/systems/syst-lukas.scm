@@ -15,7 +15,7 @@
 dotf=$HOME/dev/dotfiles
 sudo guix system -L $dotf/guix/systems reconfigure $dotf/guix/systems/lukas.scm
 |#
-(define-module (lukas)
+(define-module (syst-lukas)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)

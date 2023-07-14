@@ -3,7 +3,7 @@
 
 ;;; To run this file see: $dotf/bin/sgxsr
 
-(define-module (ecke)
+(define-module (syst-ecke)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
@@ -42,7 +42,6 @@
  ;; xdisorg
  ;; web-browsers
  )
-
 
 (when (is-system-ecke)
   (let* []
