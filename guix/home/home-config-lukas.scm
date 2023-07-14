@@ -25,7 +25,6 @@ guix shell --development guix help2man git strace --pure
 ;; (format #t "[home-config-lukas] evaluating module ...\n")
 
 (define-module (home-config-lukas)
-  #:use-module ((settings) #:prefix hs:)
   #:use-module (utils)
   #:use-module (memo)
 
@@ -39,7 +38,6 @@ guix shell --development guix help2man git strace --pure
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
-  #:use-module ((srvc home-dir-cfg) #:prefix srvc:)
   #:use-module ((home-config-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
