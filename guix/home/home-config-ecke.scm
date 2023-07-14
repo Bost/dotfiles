@@ -26,7 +26,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 |#
 
 (define-module (home-config-ecke)
-  #:use-module ((settings) #:prefix hs:)
   #:use-module (utils)
   #:use-module (memo)
 
@@ -43,7 +42,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
-  #:use-module ((srvc home-dir-cfg) #:prefix srvc:)
   #:use-module ((home-config-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)

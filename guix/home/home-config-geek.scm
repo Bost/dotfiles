@@ -24,7 +24,6 @@ guix shell --development guix help2man git strace --pure
 |#
 
 (define-module (home-config-geek)
-  #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
 
@@ -41,7 +40,6 @@ guix shell --development guix help2man git strace --pure
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
-  #:use-module ((srvc home-dir-cfg) #:prefix srvc:)
   #:use-module ((home-config-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
