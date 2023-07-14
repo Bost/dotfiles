@@ -1,5 +1,5 @@
-function shut
-  set cmd xfce4-session-logout --halt --fast
+function shut --description "sudo shutdown ..."
+  set cmd sudo shutdown (string escape -- $argv)
   echo $cmd
   eval $cmd
 end
