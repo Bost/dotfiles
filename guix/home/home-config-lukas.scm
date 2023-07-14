@@ -31,7 +31,6 @@ guix shell --development guix help2man git strace --pure
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
 
-  #:use-module ((fs-utils) #:prefix hf:)
   ;; #:use-module ((cfg packages all-new) #:prefix hp:)
   #:use-module ((cfg packages all) #:prefix hp:)
   ;; #:use-module (cfg mcron)
@@ -85,7 +84,7 @@ guix shell --development guix help2man git strace --pure
       (simple-service
        'environment-variables-service
        home-environment-variables-service-type
-       (environment-vars hf:list-separator-bash)))
+       (environment-vars list-separator-bash)))
 
     ;; "copying files"
     ;; there should be a service type to place particular files (or file-like
@@ -118,7 +117,7 @@ guix shell --development guix help2man git strace --pure
     ;;     "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
     ;; Note:
     ;; (format #t \"~a\" \"foo\") doesn't work"
-    ;;     (apply str (hf:dotfiles-home) "/" (fish-config-base) args))
+    ;;     (apply str (dotfiles-home) "/" (fish-config-base) args))
 
     ;; ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
     ;; ;;; when the 'guix home reconfigure ...' fails or is interrupted.
