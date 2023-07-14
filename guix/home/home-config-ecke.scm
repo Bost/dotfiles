@@ -44,7 +44,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
   #:use-module ((srvc home-dir-cfg) #:prefix srvc:)
-  #:use-module (srvc all)
+  #:use-module ((home-config-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -277,7 +277,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
         ((compose
           ;; (lambda (v) (format #t "~a 0\n" m) v)
           (partial append (list environment-variables-service)))
-         all-services))))
+         base:services))))
     (testsymb 'home-env)
 
     ;; (format #t "~a module evaluated\n" m)

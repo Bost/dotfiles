@@ -1,4 +1,4 @@
-(define-module (srvc all)
+(define-module (home-config-base)
   #:use-module ((settings) #:prefix hs:)
   #:use-module (utils)
   #:use-module (memo)
@@ -28,8 +28,8 @@
   ;; home-git-service-type
   ;; #:use-module (gnu home services version-control)
   #:export (
-            all-services
-            base:environment-vars
+            services
+            environment-vars
             ))
 
 (define m (module-name-for-logging))
@@ -48,7 +48,7 @@
 (define (bash-config-file name content)
   (shell-config-file "bash" name content))
 
-(define all-services
+(define services
   ((compose
     ;; (lambda (v) (format #t "~a 7\n" m) v)
     (partial
@@ -170,9 +170,9 @@
     ;; (lambda (v) (format #t "~a 0\n" m) v)
     )
    (list) #| empty list |#))
-(testsymb 'all-services)
+(testsymb 'services)
 
-(define (base:environment-vars list-separator)
+(define (environment-vars list-separator)
   ((compose
     (lambda (v)
       ;; (format #t "~a 0\n" m)
