@@ -74,85 +74,43 @@ guix shell --development guix help2man git strace --pure
     (define indent-inc "   ")
 
     (define (environment-vars list-separator)
-      `(
-        ;; Warn about deprecated Guile features
-        ("GUILE_WARN_DEPRECATED" . "detailed")
-        ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
-        ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
+      ((compose
+        (partial
+         append
+         `(
+           ;; Remedy against:
+           ;; $ lein uberjar
+           ;; Release versions may not depend upon snapshots.
+           ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
+           ;; environment variable to override.
+           ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
 
-        ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
-        ;; See https://github.com/phiresky/ripgrep-all
-        ;; ("PATH" . ,(string-join (user-home "/bin/ripgrep_all") path))
+           ;; JAVA_HOME definitions - see (changes require logout & login):
+           ;;     /etc/profile.d/jdk.csh
+           ;;     /etc/profile.d/jdk.sh
+           ;;     /etc/environment
+           ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
+           ;;                             ;; "java-8-openjdk-amd64"
+           ;;                                "java-11-openjdk-amd64"))
 
-        ;; Remedy against:
-        ;; $ lein uberjar
-        ;; Release versions may not depend upon snapshots.
-        ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
-        ;; environment variable to override.
-        ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
+           ;; Setting the locale correctly:
+           ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
+           ;; When 'setlocale: LC_ALL: cannot change locale'
+           ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
 
-        ;; JAVA_HOME definitions - see (changes require logout & login):
-        ;;     /etc/profile.d/jdk.csh
-        ;;     /etc/profile.d/jdk.sh
-        ;;     /etc/environment
-        ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
-        ;;                             ;; "java-8-openjdk-amd64"
-        ;;                                "java-11-openjdk-amd64"))
+           ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
+           ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
+           ("CORONA_ENV_TYPE" . "devel")
+           ("REPL_USER" . ,user)
 
-        ;; Setting the locale correctly:
-        ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
-        ;; When 'setlocale: LC_ALL: cannot change locale'
-        ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
+           ;; needed by `help`; e.g. `help expand`
+           ("BROWSER" . "firefox")
 
-        ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
-        ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
-        ("CORONA_ENV_TYPE" . "devel")
-        ("REPL_USER" . ,user)
-
-        ;; needed by `help`; e.g. `help expand`
-        ("BROWSER" . "firefox")
-
-        ;; for `flatpak run ...`
-        ("XDG_DATA_DIRS" . ,(string-join
-                             (list
-                              (user-home "/.local/share/flatpak/exports/share")
-                              "/var/lib/flatpak/exports/share"
-                              (getenv "XDG_DATA_DIRS"))))
-
-        ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
-        ("dev"   . ,hf:dev)
-        ("dec"   . ,(user-home "/dec"))
-        ("der"   . ,(user-home "/der"))
-        ("bin"   . ,(user-home hf:bin-dirpath))
-        ("cheat" . ,(str hf:dev "/cheat"))
-        ("dotf"  . ,(str hf:dev "/dotfiles"))
-        ("dgx"   . ,(str hf:dev "/guix"))
-        ("dgxp"  . ,(str hf:dev "/guix-packages"))
-        ("dgl"   . ,(str hf:dev "/guile"))
-
-        ("user_full_name"    . ,user-full-name)
-        ("user_mail_address" . ,user-mail-address)
-
-        ;; used by ghog glog
-        ("remotes" . ,(string-join (list "origin" "gitlab")
-                                   list-separator))
-
-        ;; `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
-        ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e
-        ;; TODO test if the library exists:
-        ;;   test -e $LDP && set --export LD_PRELOAD $LDP
-        ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
-
-        ;; My own scripts and guix-home profile take precedence over $PATH.
-        ("PATH" . ,(string-join (list (str home hf:scm-bin-dirpath)
-                                      (str home hf:bin-dirpath)
-;;; The paths to bin and sbin for guix-home profile are inserted here.
-                                      "$PATH"
-                                      "/usr/local/bin"
-;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
-;;; See also ~/.npm, ~/.npmrc, ~/node_modules
-                                      #;(str home "/.npm-packages"))
-                                list-separator))))
+           ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
+           ("dec"   . ,(user-home "/dec"))
+           ("der"   . ,(user-home "/der"))
+           )))
+       (base:environment-vars list-separator)))
     (testsymb 'environment-vars)
 
     (define environment-variables-service
