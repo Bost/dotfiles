@@ -29,6 +29,7 @@
   ;; #:use-module (gnu home services version-control)
   #:export (
             all-services
+            base:environment-vars
             ))
 
 (define m (module-name-for-logging))
@@ -170,5 +171,56 @@
     )
    (list) #| empty list |#))
 (testsymb 'all-services)
+
+(define (base:environment-vars list-separator)
+  ((compose
+    (lambda (v)
+      ;; (format #t "~a 0\n" m)
+      v))
+   `(
+     ;; Warn about deprecated Guile features
+     ("GUILE_WARN_DEPRECATED" . "detailed")
+     ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
+     ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
+
+     ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
+     ;; See https://github.com/phiresky/ripgrep-all
+     ;; ("PATH" . ,(string-join (user-home "/bin/ripgrep_all") path))
+
+     ;; for `flatpak run ...`
+     ("XDG_DATA_DIRS" . ,(string-join
+                          (list
+                           (user-home "/.local/share/flatpak/exports/share")
+                           "/var/lib/flatpak/exports/share"
+                           (getenv "XDG_DATA_DIRS"))))
+
+     ("dev"   . ,hf:dev)
+     ("bin"   . ,(user-home hf:bin-dirpath))
+     ("cheat" . ,(str hf:dev "/cheat"))
+     ("dotf"  . ,(str hf:dev "/dotfiles"))
+     ("dgx"   . ,(str hf:dev "/guix"))
+     ("dgxp"  . ,(str hf:dev "/guix-packages"))
+     ("dgl"   . ,(str hf:dev "/guile"))
+
+     ("user_full_name"    . ,hs:user-full-name)
+     ("user_mail_address" . ,hs:user-mail-address)
+
+     ;; used by gps, gpl
+     ("remotes" . ,(string-join (list "origin" "gitlab")
+                                list-separator))
+
+     ;; `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
+     ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e
+
+     ;; My own scripts and guix-home profile take precedence over $PATH.
+     ("PATH" . ,(string-join (list (str home hf:scm-bin-dirpath)
+                                   (str home hf:bin-dirpath)
+;;; The paths to bin and sbin for guix-home profile are inserted here.
+                                   "$PATH"
+                                   "/usr/local/bin"
+;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
+;;; See also ~/.npm, ~/.npmrc, ~/node_modules
+                                   #;(str home "/.npm-packages"))
+                             list-separator)))))
 
 ;; (format #t "~a module evaluated\n" m)
