@@ -4,7 +4,7 @@ ld=~/scm-bin
 scm=$ld/scm-bin/qemu-vm     # managed by guix-home
 
 # for development:
-ld=$dotf/guix/home
+ld=$dotf/guix/home/common
 scm=$ld/scm-bin/qemu-vm.scm
 
 set -x  # Print commands and their arguments as they are executed.

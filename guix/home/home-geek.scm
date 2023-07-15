@@ -60,104 +60,100 @@ guix home --allow-downgrades --cores=24 \
 ;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
-(when (is-system-geek)
-  ;; since (define ...) are used, the code must be enclosed in (let* ...); (begin
-  ;; ...) doesn't work
-  (let* []
-    (define m (module-name-for-logging))
-    ;; (format #t "~a evaluating module ...\n" m)
+(define m (module-name-for-logging))
+(format #t "~a evaluating module ...\n" m)
 
-    ;; "copying files"
-    ;; there should be a service type to place particular files (or file-like
-    ;; objects) to a target destination
+;; "copying files"
+;; there should be a service type to place particular files (or file-like
+;; objects) to a target destination
 
-    ;; extend home-activation-service-type or home-run-on-first-login-service-type
-    ;; to run some scripts, required to be idempotent though.
+;; extend home-activation-service-type or home-run-on-first-login-service-type
+;; to run some scripts, required to be idempotent though.
 
-    ;; use home-files-service-type for copying configurations
-    ;; home-files-service-type example:
-    ;; (services
-    ;;  ...
-    ;;  (list
-    ;;   (simple-service 'dotfiles-installation
-    ;;                   home-files-service-type
-    ;;                   `((".config/zsh" ;; destination
-    ;;                      ,(local-file
-    ;;                        "/home/foobar/etc/zsh/.config/zsh" ;; source file/directory
-    ;;                        "zsh-config"
-    ;;                        ;; #t to copy directory
-    ;;                        #:recursive? #t))))))
+;; use home-files-service-type for copying configurations
+;; home-files-service-type example:
+;; (services
+;;  ...
+;;  (list
+;;   (simple-service 'dotfiles-installation
+;;                   home-files-service-type
+;;                   `((".config/zsh" ;; destination
+;;                      ,(local-file
+;;                        "/home/foobar/etc/zsh/.config/zsh" ;; source file/directory
+;;                        "zsh-config"
+;;                        ;; #t to copy directory
+;;                        #:recursive? #t))))))
 
-    (format #t "~a obtaining projects ... " m)
-    ;; See https://gitlab.com/guile-git/guile-git.git
-    ;; Guile bindings to libgit2, to manipulate repositories of the Git.
-    (define projects (list))
-    ;; (define projects
-    ;;   (list
-    ;;    (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"
-    ;;                       "/morse" "/utils" "/clj-time" "/cljplot"))
-    ;;    (cons "/der" (list "/search-notes" "/racket-koans"
-    ;;                       ;; "/vesmir" is in the projects-heroku list
-    ;;                       "/heroku-buildpack-racket"))
-    ;;    (cons "/dev" (list
-    ;;                  "/guix-packages" ;; "/guix"
-    ;;                  "/copy-sexp" "/kill-buffers" "/jump-last"
-    ;; ;;; use the local guix repo-checkout instead of git.savannah.gnu.org:
-    ;; ;;; set latest (ls --sort=time --almost-all ~/.cache/guix/checkouts/ | head -1)
-    ;; ;;; cd ~/.cache/guix/checkouts/$latest
-    ;;             ;;;; (cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
-    ;; ;;; ... then
-    ;; ;;;   git remote rename origin checkout
-    ;; ;;;   git remote add origin https://git.savannah.gnu.org/git/guix.git
-    ;; ;;;   git fetch --tags origin
-    ;;             ;;;; (cons "/guile" "https://git.savannah.gnu.org/git/guix.git")
-    ;;                  "/notes" "/dotfiles"))))
+(format #t "~a obtaining projects ... " m)
+;; See https://gitlab.com/guile-git/guile-git.git
+;; Guile bindings to libgit2, to manipulate repositories of the Git.
+(define projects (list))
+;; (define projects
+;;   (list
+;;    (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"
+;;                       "/morse" "/utils" "/clj-time" "/cljplot"))
+;;    (cons "/der" (list "/search-notes" "/racket-koans"
+;;                       ;; "/vesmir" is in the projects-heroku list
+;;                       "/heroku-buildpack-racket"))
+;;    (cons "/dev" (list
+;;                  "/guix-packages" ;; "/guix"
+;;                  "/copy-sexp" "/kill-buffers" "/jump-last"
+;; ;;; use the local guix repo-checkout instead of git.savannah.gnu.org:
+;; ;;; set latest (ls --sort=time --almost-all ~/.cache/guix/checkouts/ | head -1)
+;; ;;; cd ~/.cache/guix/checkouts/$latest
+;;             ;;;; (cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
+;; ;;; ... then
+;; ;;;   git remote rename origin checkout
+;; ;;;   git remote add origin https://git.savannah.gnu.org/git/guix.git
+;; ;;;   git fetch --tags origin
+;;             ;;;; (cons "/guile" "https://git.savannah.gnu.org/git/guix.git")
+;;                  "/notes" "/dotfiles"))))
 
-    ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
-    ;; ln -s ~/dev/dotfiles/.lein
-    (define (obtain-and-setup dest-dir repo)
-      (let* [(gitlab "git@gitlab.com:rostislav.svoboda")
-             (github "git@github.com:Bost")
-             (dest-dir-repo (str home dest-dir repo))
-             (repo-url (if #f ; (url? repo)
-                           repo
-                           (str gitlab repo)))]
-        (gcl "--origin=gitlab" repo-url dest-dir-repo)
-        (exec-system*
-         "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
-         (str github repo))))
+;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+;; ln -s ~/dev/dotfiles/.lein
+(define (obtain-and-setup dest-dir repo)
+  (let* [(gitlab "git@gitlab.com:rostislav.svoboda")
+         (github "git@github.com:Bost")
+         (dest-dir-repo (str home dest-dir repo))
+         (repo-url (if #f ; (url? repo)
+                       repo
+                       (str gitlab repo)))]
+    (gcl "--origin=gitlab" repo-url dest-dir-repo)
+    (exec-system*
+     "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
+     (str github repo))))
 
-    ;; Existing projects won't be overridden
-    ;; (map (lambda (project)
-    ;;        (let ((dest-dir (car project)))
-    ;;          (map (partial obtain-and-setup dest-dir) (cdr project))))
-    ;;      projects)
-    (format #t "done\n")
+;; Existing projects won't be overridden
+;; (map (lambda (project)
+;;        (let ((dest-dir (car project)))
+;;          (map (partial obtain-and-setup dest-dir) (cdr project))))
+;;      projects)
+(format #t "done\n")
 
-    (format #t "~a obtaining projects-heroku ... " m)
-    (define projects-heroku
-      (list
-       (cons "/der" (list
-                     ;; "/pictures"
-                     ;; "/covid-survey"
-                     "/vesmir"
-                     ;; "/tetris"
-                     "/vojto"))))
+(format #t "~a obtaining projects-heroku ... " m)
+(define projects-heroku
+  (list
+   (cons "/der" (list
+                 ;; "/pictures"
+                 ;; "/covid-survey"
+                 "/vesmir"
+                 ;; "/tetris"
+                 "/vojto"))))
 
-    (define (obtain-and-setup-heroku dest-dir repo)
-      (let* ((heroku "https://git.heroku.com/")
-             (dest-dir-repo (str home dest-dir repo))
-             (repo-url (if #f ; (url? repo)
-                           repo
-                           (str heroku repo ".git"))))
-        (gcl "--origin=vojto" repo-url dest-dir-repo)))
+(define (obtain-and-setup-heroku dest-dir repo)
+  (let* ((heroku "https://git.heroku.com/")
+         (dest-dir-repo (str home dest-dir repo))
+         (repo-url (if #f ; (url? repo)
+                       repo
+                       (str heroku repo ".git"))))
+    (gcl "--origin=vojto" repo-url dest-dir-repo)))
 
-    ;; Existing projects won't be overridden
-    ;; (map (lambda (project)
-    ;;        (let ((dest-dir (car project)))
-    ;;          (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
-    ;;      projects-heroku)
-    (format #t "done\n")
+;; Existing projects won't be overridden
+;; (map (lambda (project)
+;;        (let ((dest-dir (car project)))
+;;          (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
+;;      projects-heroku)
+(format #t "done\n")
 
 ;;     (begin
 ;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (srvc fish)
@@ -207,55 +203,55 @@ guix home --allow-downgrades --cores=24 \
 ;;         ;;   (chmod dst #o644))
 ;;         ))
 
-    (define home-env
-      (home-environment
-       (packages (hp:packages-to-install))
-       (services
-        ((compose
-          #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
-          (partial append base:services)
-          #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
-          list
-          base:environment-variables-service
-          #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
-          (partial
-           append
-           `(
-             ;; Remedy against:
-             ;; $ lein uberjar
-             ;; Release versions may not depend upon snapshots.
-             ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
-             ;; environment variable to override.
-             ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
+(define home-env
+  (home-environment
+   (packages (hp:packages-to-install))
+   (services
+    ((compose
+      #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
+      (partial append base:services)
+      #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
+      list
+      base:environment-variables-service
+      #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
+      (partial
+       append
+       `(
+         ;; Remedy against:
+         ;; $ lein uberjar
+         ;; Release versions may not depend upon snapshots.
+         ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
+         ;; environment variable to override.
+         ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
 
-             ;; JAVA_HOME definitions - see (changes require logout & login):
-             ;;     /etc/profile.d/jdk.csh
-             ;;     /etc/profile.d/jdk.sh
-             ;;     /etc/environment
-             ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
-             ;;                             ;; "java-8-openjdk-amd64"
-             ;;                                "java-11-openjdk-amd64"))
+         ;; JAVA_HOME definitions - see (changes require logout & login):
+         ;;     /etc/profile.d/jdk.csh
+         ;;     /etc/profile.d/jdk.sh
+         ;;     /etc/environment
+         ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
+         ;;                             ;; "java-8-openjdk-amd64"
+         ;;                                "java-11-openjdk-amd64"))
 
-             ;; Setting the locale correctly:
-             ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
-             ;; When 'setlocale: LC_ALL: cannot change locale'
-             ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
+         ;; Setting the locale correctly:
+         ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
+         ;; When 'setlocale: LC_ALL: cannot change locale'
+         ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
 
-             ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
-             ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
-             ("CORONA_ENV_TYPE" . "devel")
-             ("REPL_USER" . ,user)
+         ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
+         ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
+         ("CORONA_ENV_TYPE" . "devel")
+         ("REPL_USER" . ,user)
 
-             ;; needed by `help`; e.g. `help expand`
-             ("BROWSER" . "firefox")
+         ;; needed by `help`; e.g. `help expand`
+         ("BROWSER" . "firefox")
 
-             ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
-             ("dec"   . ,(user-home "/dec"))
-             ("der"   . ,(user-home "/der"))
-             ))
-          #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
-         (base:environment-vars hf:list-separator-bash)))))
-    (testsymb 'home-env)
+         ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
+         ("dec"   . ,(user-home "/dec"))
+         ("der"   . ,(user-home "/der"))
+         ))
+      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
+     (base:environment-vars hf:list-separator-bash)))))
+(testsymb 'home-env)
 
-    ;; (format #t "~a module evaluated\n" m)
-    home-env))
+;; (format #t "~a module evaluated\n" m)
+home-env
