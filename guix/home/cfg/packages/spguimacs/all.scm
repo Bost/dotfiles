@@ -41,7 +41,6 @@
    "sed"
    "which"
    ))
-(testsymb 'spacemacs-development-packages)
 
 (define general-packages
   (list
@@ -50,8 +49,6 @@
    "mu" ;; for mu4e, which is for treemacs-mu4e
    "spacemacs-rolling-release"
    ))
-(testsymb 'general-packages)
-
 
 (define excluded-packages
   ;; (ya)snippet-relates packages cause adding various paths to `yas-snippet-dirs',
@@ -70,9 +67,8 @@
   ;;   ("/home/bost/.emacs.d/snippets")
 
   (list
-
-   ;; beg: Temporarily exclude following packages. They are added in the home-config-ecke.scm
-   ;; end: Temporarily exclude following packages. They are added in the home-config-ecke.scm
+   ;; beg: Temporarily exclude following packages. They are added in the home-<hostname>.scm
+   ;; end: Temporarily exclude following packages. They are added in the home-<hostname>.scm
 
 ;;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
 ;;; https://github.com/kidd/erc-image.el Not really needed.
@@ -105,7 +101,6 @@
 ;;; Error (use-package): Failed to parse package fill-column-indicator: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
    "emacs-spaceleader"
    ))
-(testsymb 'excluded-packages)
 
 ;; Orphan packages according to spguimacs
 (define orphan-packages
@@ -119,17 +114,12 @@
    "emacs-ivy"
    "emacs-a"
    ))
-(testsymb 'orphan-packages)
 
 ;; neither `=' nor `eqv?' work
 (define eq-op? string-ci=?)
-
 (define (s+ . rest) (apply (partial lset-union eq-op?) rest))
-(testsymb 's+)
 (define (s- . rest) (apply (partial lset-difference eq-op?) rest))
-(testsymb 's-)
 (define (sx . rest) (apply (partial lset-intersection eq-op?) rest))
-(testsymb 'sx)
 
 #|
 (define G general-packages)
@@ -149,7 +139,6 @@
         (s- (sx (s+ N O)
                 A)
             E))))
-(testsymb 'spguimacs-packages)
 
 ;; (format #t "~a module evaluated\n" m)
 

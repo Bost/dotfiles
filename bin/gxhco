@@ -3,7 +3,7 @@
 baseLP=$dotf/guix # base-load-path
 hostname=$(hostname)
 
-configFile=$(printf "%s/home/home-config-%s.scm" $baseLP $hostname)
+configFile=$(printf "%s/home/home-%s.scm" $baseLP $hostname)
 
 set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null

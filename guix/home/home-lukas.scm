@@ -8,23 +8,20 @@
 # To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
-source /etc/profile && dxh=~/dev/dotfiles/guix/home
-guix home --allow-downgrades -L $dxh reconfigure $dxh/home-config-lukas.scm
+source /etc/profile && dx=$HOME/dev/dotfiles/guix
+guix home --allow-downgrades --cores=24 \
+     -L $dx/common -L $dx/home reconfigure $dx/guix/home/home-lukas.scm
 # -L --load-path
 
 # The tilda `~' is only expanded by shells when it's the first character of a
 # command-line argument. Use $HOME instead
 
-guix shell --development guix help2man git strace --pure
-./pre-inst-env guix repl
-
 ;; see 'include', which unlike 'load', also works within nested lexical contexts
 ;; can't use the `~'
-(load "/home/bost/dev/dotfiles.dev/guix/home/home-config-lukas.scm")
+(load "/home/bost/dev/dotfiles.dev/guix/home/home-lukas.scm")
 |#
-;; (format #t "[home-config-lukas] evaluating module ...\n")
 
-(define-module (home-config-lukas)
+(define-module (home-lukas)
   #:use-module (utils)
   #:use-module (memo)
 
@@ -38,7 +35,7 @@ guix shell --development guix help2man git strace --pure
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
-  #:use-module ((home-config-base) #:prefix base:)
+  #:use-module ((home-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -57,41 +54,37 @@ guix shell --development guix help2man git strace --pure
   ;; #:use-module (gnu home services version-control)
   )
 
-;; TODO consider putting home-config-ecke and system-configuration in one file
+;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
 (when (is-system-lukas)
+  ;; since (define ...) are used, the code must be enclosed in (let* ...); (begin
+  ;; ...) doesn't work
   (let* []
     (define m (module-name-for-logging))
     ;; (format #t "~a evaluating module ...\n" m)
 
-    (define indent "")
-    (define indent-inc "   ")
-
-    (define (environment-vars list-separator)
-      ((compose
-        (partial
-         append
-         `(
-           ("cores" . "2") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
-           ;; TODO test if the library exists:
-           ;;   test -e $LDP && set --export LD_PRELOAD $LDP
-           ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
-          )))
-       (base:environment-vars list-separator)))
-    (testsymb 'environment-vars)
-
-    ;; Note: `home-environment' is (lazily?) evaluated as a last command
-    ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
     (define home-env
       (home-environment
        (packages (hp:packages-to-install))
        (services
         ((compose
-          ;; (lambda (v) (format #t "~a 0\n" m) v)
-          (partial append (base:environment-variables-service
-                           (environment-vars hf:list-separator-bash))))
-         base:services))))
+          #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
+          (partial append base:services)
+          #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
+          list
+          base:environment-variables-service
+          #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
+          (partial
+           append
+           `(
+             ("cores" . "2") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
+             ;; TODO test if the library exists:
+             ;;   test -e $LDP && set --export LD_PRELOAD $LDP
+             ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
+             ))
+          #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
+         (base:environment-vars hf:list-separator-bash)))))
     (testsymb 'home-env)
 
     ;; (format #t "~a module evaluated\n" m)

@@ -1,4 +1,4 @@
-(define-module (home-config-base)
+(define-module (home-base)
   #:use-module ((settings) #:prefix hs:)
   #:use-module (utils)
   #:use-module (memo)

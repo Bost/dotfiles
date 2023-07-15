@@ -8,22 +8,20 @@
 # To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
-source /etc/profile && dxh=~/dev/dotfiles/guix/home
-guix home --allow-downgrades -L $dxh reconfigure $dxh/home-config-geek.scm
+source /etc/profile && dx=$HOME/dev/dotfiles/guix
+guix home --allow-downgrades --cores=24 \
+     -L $dx/common -L $dx/home reconfigure $dx/guix/home/home-geek.scm
 # -L --load-path
 
 # The tilda `~' is only expanded by shells when it's the first character of a
 # command-line argument. Use $HOME instead
 
-guix shell --development guix help2man git strace --pure
-./pre-inst-env guix repl
-
 ;; see 'include', which unlike 'load', also works within nested lexical contexts
 ;; can't use the `~'
-(load "/home/bost/dev/dotfiles.dev/guix/home/home-config-geek.scm")
+(load "/home/bost/dev/dotfiles.dev/guix/home/home-geek.scm")
 |#
 
-(define-module (home-config-geek)
+(define-module (home-geek)
   #:use-module (utils)
   #:use-module (memo)
 
@@ -40,7 +38,7 @@ guix shell --development guix help2man git strace --pure
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
-  #:use-module ((home-config-base) #:prefix base:)
+  #:use-module ((home-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -59,7 +57,7 @@ guix shell --development guix help2man git strace --pure
   ;; #:use-module (gnu home services version-control)
   )
 
-;; TODO consider putting home-config-geek and system-configuration in one file
+;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
 (when (is-system-geek)
@@ -68,48 +66,6 @@ guix shell --development guix help2man git strace --pure
   (let* []
     (define m (module-name-for-logging))
     ;; (format #t "~a evaluating module ...\n" m)
-    (define indent "")
-    (define indent-inc "   ")
-
-    (define (environment-vars list-separator)
-      ((compose
-        (partial
-         append
-         `(
-           ;; Remedy against:
-           ;; $ lein uberjar
-           ;; Release versions may not depend upon snapshots.
-           ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
-           ;; environment variable to override.
-           ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
-
-           ;; JAVA_HOME definitions - see (changes require logout & login):
-           ;;     /etc/profile.d/jdk.csh
-           ;;     /etc/profile.d/jdk.sh
-           ;;     /etc/environment
-           ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
-           ;;                             ;; "java-8-openjdk-amd64"
-           ;;                                "java-11-openjdk-amd64"))
-
-           ;; Setting the locale correctly:
-           ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
-           ;; When 'setlocale: LC_ALL: cannot change locale'
-           ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
-
-           ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
-           ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
-           ("CORONA_ENV_TYPE" . "devel")
-           ("REPL_USER" . ,user)
-
-           ;; needed by `help`; e.g. `help expand`
-           ("BROWSER" . "firefox")
-
-           ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
-           ("dec"   . ,(user-home "/dec"))
-           ("der"   . ,(user-home "/der"))
-           )))
-       (base:environment-vars list-separator)))
-    (testsymb 'environment-vars)
 
     ;; "copying files"
     ;; there should be a service type to place particular files (or file-like
@@ -251,17 +207,54 @@ guix shell --development guix help2man git strace --pure
 ;;         ;;   (chmod dst #o644))
 ;;         ))
 
-    ;; Note: `home-environment' is (lazily?) evaluated as a last command
-    ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
     (define home-env
       (home-environment
        (packages (hp:packages-to-install))
        (services
         ((compose
-          ;; (lambda (v) (format #t "~a 0\n" m) v)
-          (partial append (base:environment-variables-service
-                           (environment-vars hf:list-separator-bash))))
-         base:services))))
+          #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
+          (partial append base:services)
+          #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
+          list
+          base:environment-variables-service
+          #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
+          (partial
+           append
+           `(
+             ;; Remedy against:
+             ;; $ lein uberjar
+             ;; Release versions may not depend upon snapshots.
+             ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
+             ;; environment variable to override.
+             ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
+
+             ;; JAVA_HOME definitions - see (changes require logout & login):
+             ;;     /etc/profile.d/jdk.csh
+             ;;     /etc/profile.d/jdk.sh
+             ;;     /etc/environment
+             ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
+             ;;                             ;; "java-8-openjdk-amd64"
+             ;;                                "java-11-openjdk-amd64"))
+
+             ;; Setting the locale correctly:
+             ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
+             ;; When 'setlocale: LC_ALL: cannot change locale'
+             ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
+
+             ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
+             ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
+             ("CORONA_ENV_TYPE" . "devel")
+             ("REPL_USER" . ,user)
+
+             ;; needed by `help`; e.g. `help expand`
+             ("BROWSER" . "firefox")
+
+             ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
+             ("dec"   . ,(user-home "/dec"))
+             ("der"   . ,(user-home "/der"))
+             ))
+          #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
+         (base:environment-vars hf:list-separator-bash)))))
     (testsymb 'home-env)
 
     ;; (format #t "~a module evaluated\n" m)
