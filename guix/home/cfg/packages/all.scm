@@ -119,6 +119,21 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "glibc-locales"
 
    "rsync"
+
+   ;; terminal multiplexer
+   "tmux"
+
+   ;; tmux-based terminal divider
+   ;; * Split tmux window into multiple panes.
+   ;; * Build command lines & execute them on the panes.
+   ;; * Runnable from outside of tmux session.
+   ;; * Runnable from inside of tmux session.
+   ;; * Record operation log.
+   ;; * Flexible layout arrangement for panes.
+   ;; * Display pane title on each pane.
+   ;; * Generate command lines from standard input (Pipe mode).
+   "tmux-xpanes"
+
    "unzip"
    "vim"
    "zip"
@@ -131,23 +146,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "agda-ial" ;; broken build
    ;; "cedille" ;; depends on agda-ial
    "idris"))
-
-(define (devel-packages)
-  (append
-   (fennel-devel-packages)
-   (chez-scheme-devel-packages)
-   (elixir-devel-packages)
-   (agda-devel-packages)
-   (list
-    "emacs"
-    "emacs-gptel"
-    "emacs-next"
-    "emacs-next-pgtk"
-    "emacs-with-editor"
-    "git:send-email"
-    "pinentry" ;; needed to sign commits
-    "pwclient"
-    )))
 
 (define (fennel-devel-packages)
   "Fennel: Lua + Lisp. For e.g. Factorio modding."
@@ -235,7 +233,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "guile-hall" ;; to build guile projects
    "guile-studio"
    "gv"
-   "gvfs"
+   "gvfs" #| user mounts |#
    "gwl"
    "htop"
    "hwinfo"
@@ -380,6 +378,33 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     (list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968"))))
 (testsymb 'inferior-pkgs)
 
+(define (devel-packages)
+  (append
+   (fennel-devel-packages)
+   (chez-scheme-devel-packages)
+   (elixir-devel-packages)
+   (agda-devel-packages)
+   (list
+    "emacs"
+    "emacs-gptel"
+    "emacs-next"
+    "emacs-next-pgtk"
+    "emacs-with-editor"
+    "git:send-email"
+    "pinentry" ;; needed to sign commits
+    "pwclient"
+
+    ;; GPU-based terminal emulator:
+    ;; * Offloads rendering to the GPU for lower system load and buttery smooth scrolling.  Uses threaded rendering to minimize input latency.
+    ;; * Supports all modern terminal features: graphics (images), unicode, true-color, OpenType ligatures, mouse protocol, focus tracking, bracketed paste and several new terminal protocol extensions.
+    ;; * Supports tiling multiple terminal windows side by side in different layouts without needing to use an extra program like tmux.
+    ;; * Can be controlled from scripts or the shell prompt, even over SSH.
+    ;; * Has a framework for Kittens, small terminal programs that can be used to extend kitty's functionality.  For example, they are used for Unicode input, hints, and side-by-side diff.
+    ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
+    ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
+    "kitty"
+    )))
+
 (define (packages-to-install)
 ;;; TODO make it support inferior packages
 ;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
@@ -486,45 +511,43 @@ when called from the Emacs Geiser REPL by ,use or ,load"
           pkgs))
     (partial map (compose identity list
 ;;; TODO difference specification->package+output, specification->package ?
-                          specification->package+output)))
-   (cond
-    [(is-system-lukas)
-     (begin
-       ;; (format #t "(is-system-lukas)\n")
-       (basic-packages))]
-    ;; The spguimacs-packages should be installed only on the ecke- and
-    ;; geek-machines, i.e. no need to install it elsewhere.
-    [(is-system-ecke)
-     (begin
-       ;; (format #t "(is-system-ecke)\n")
-       (append
-        (basic-packages)
-        (devel-packages)
-        (rest-packages)
-        (xfce-packages)
-        (kde-dependent-packages)
-        (large-packages)
-        (packages-from-additional-channels)
-        (spguimacs-packages)
-        ))]
-    [(is-system-geek)
-     (begin
-       ;; (format #t "(is-system-geek)\n")
-       (append
-        (basic-packages)
-        (devel-packages)
-        (rest-packages)
-        (xfce-packages)
-        (kde-dependent-packages)
-        ;; (large-packages)
-        (packages-from-additional-channels-base)
-        (spguimacs-packages)
-        ))]
-    [#t
-     (error
-      (format #f "hostname '~a' must be one of the: ~a\n"
-              (hostname-memoized) (string-join hostnames)))])
-   ))
+                          specification->package+output))
+    (partial
+       append
+       (cond
+        [(is-system-lukas)
+         (begin
+           ;; (format #t "(is-system-lukas)\n")
+           (list))]
+        ;; The spguimacs-packages should be installed only on the ecke- and
+        ;; geek-machines, i.e. no need to install it elsewhere.
+        [(is-system-ecke)
+         (begin
+           ;; (format #t "(is-system-ecke)\n")
+           (append
+            (devel-packages)
+            (rest-packages)
+            (xfce-packages)
+            (kde-dependent-packages)
+            (large-packages)
+            (packages-from-additional-channels)
+            (spguimacs-packages)
+            (list)))]
+        [(is-system-geek)
+         (begin
+           ;; (format #t "(is-system-geek)\n")
+           (append
+            (devel-packages)
+            (rest-packages)
+            (xfce-packages)
+            (kde-dependent-packages)
+            ;; (large-packages)
+            (packages-from-additional-channels-base)
+            (spguimacs-packages)
+            (list)))]
+        [#t (error (format #f "hostname '~a' must be one of the: ~a\n"
+                           (hostname-memoized) (string-join hostnames)))])))
+   (basic-packages)))
 (testsymb 'packages-to-install)
 
 (define (repl)
