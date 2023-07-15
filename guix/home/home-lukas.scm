@@ -57,35 +57,31 @@ guix home --allow-downgrades --cores=24 \
 ;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
-(when (is-system-lukas)
-  ;; since (define ...) are used, the code must be enclosed in (let* ...); (begin
-  ;; ...) doesn't work
-  (let* []
-    (define m (module-name-for-logging))
-    ;; (format #t "~a evaluating module ...\n" m)
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
-    (define home-env
-      (home-environment
-       (packages (hp:packages-to-install))
-       (services
-        ((compose
-          #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
-          (partial append base:services)
-          #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
-          list
-          base:environment-variables-service
-          #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
-          (partial
-           append
-           `(
-             ("cores" . "2") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
-             ;; TODO test if the library exists:
-             ;;   test -e $LDP && set --export LD_PRELOAD $LDP
-             ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
-             ))
-          #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
-         (base:environment-vars hf:list-separator-bash)))))
-    (testsymb 'home-env)
+(define home-env
+  (home-environment
+   (packages (hp:packages-to-install))
+   (services
+    ((compose
+      #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
+      (partial append base:services)
+      #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
+      list
+      base:environment-variables-service
+      #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
+      (partial
+       append
+       `(
+         ("cores" . "2") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
+         ;; TODO test if the library exists:
+         ;;   test -e $LDP && set --export LD_PRELOAD $LDP
+         ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
+         ))
+      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
+     (base:environment-vars hf:list-separator-bash)))))
+(testsymb 'home-env)
 
-    ;; (format #t "~a module evaluated\n" m)
-    home-env))
+;; (format #t "~a module evaluated\n" m)
+home-env

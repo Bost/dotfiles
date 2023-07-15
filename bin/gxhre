@@ -9,7 +9,7 @@ set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null
 guix home --allow-downgrades \
      -L $baseLP/common \
-     -L $baseLP/home \
+     -L $baseLP/home/common \
      reconfigure \
      $configFile "$@"
 { retval="$?"; set +x; } 2>/dev/null
