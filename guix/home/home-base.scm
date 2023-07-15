@@ -35,18 +35,14 @@
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
-(define (shell-config-file shell name content)
-  (plain-file
-   name
-   (str
-    "\n" "#### home-" shell "-configuration -> " name ": begin"
-    "\n"
-    content
-    "\n"
-    "\n" "#### home-" shell "-configuration -> " name ": end")))
-
 (define (bash-config-file name content)
-  (shell-config-file "bash" name content))
+  (plain-file name
+              (str
+               "\n" "#### home-bash-configuration -> " name ": beg"
+               "\n"
+               content
+               "\n"
+               "\n" "#### home-bash-configuration -> " name ": end")))
 
 (define services
   ((compose
