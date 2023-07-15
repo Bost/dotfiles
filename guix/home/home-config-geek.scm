@@ -32,6 +32,7 @@ guix shell --development guix help2man git strace --pure
 
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
+  #:use-module ((fs-utils) #:prefix hf:)
 
   ;; #:use-module ((cfg packages all-new) #:prefix hp:)
   #:use-module ((cfg packages all) #:prefix hp:)
@@ -109,12 +110,6 @@ guix shell --development guix help2man git strace --pure
            )))
        (base:environment-vars list-separator)))
     (testsymb 'environment-vars)
-
-    (define environment-variables-service
-      (simple-service
-       'environment-variables-service
-       home-environment-variables-service-type
-       (environment-vars list-separator-bash)))
 
     ;; "copying files"
     ;; there should be a service type to place particular files (or file-like
@@ -208,63 +203,66 @@ guix shell --development guix help2man git strace --pure
     ;;      projects-heroku)
     (format #t "done\n")
 
-    ;; (begin
-    ;;   ;; fish-config-base and fish-config-dotfiles are also defined in the (srvc fish)
-    ;;   (define* (fish-config-base #:rest args)
-    ;;     "(fish-config-base) ; => \".config/fish\""
-    ;;     (apply str (basename xdg-config-home) "/fish" args))
+;;     (begin
+;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (srvc fish)
+;;       (define* (fish-config-base #:rest args)
+;;         "(fish-config-base) ; => \".config/fish\""
+;;         (apply str (basename xdg-config-home) "/fish" args))
 
-    ;;   (define* (fish-config-dotfiles #:rest args)
-    ;;     "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
-    ;; Note:
-    ;; (format #t \"~a\" \"foo\") doesn't work"
-    ;;     (apply str (dotfiles-home) "/" (fish-config-base) args))
+;;       (define* (fish-config-dotfiles #:rest args)
+;;         "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
+;;     Note:
+;;     (format #t \"~a\" \"foo\") doesn't work"
+;;         (apply str (dotfiles-home) "/" (fish-config-base) args))
 
-    ;; ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
-    ;; ;;; when the 'guix home reconfigure ...' fails or is interrupted.
-    ;; ;;; Can't use `local-file' or `mixed-text-file' or something similar since the
-    ;; ;;; `fish_variables' must be editable
-    ;;   (let* [(filepath "/fish_variables")
-    ;;          (src (fish-config-dotfiles filepath))
-    ;;          (dst (user-home "/" (fish-config-base filepath)))
-    ;;          (dstdir (dirname dst))]
-    ;;     (unless (file-exists? dstdir)
-    ;;       (let [(indent (str indent indent-inc))]
-    ;;         (format #t "~a(mkdir ~a) ... " indent src dstdir)
-    ;;         (let ((retval (mkdir dstdir)))
-    ;;           (format #t "retval: ~a\n" retval)
-    ;;           ;; The value of 'retval' is '#<unspecified>'
-    ;; ;;; TODO continuation: executing the block only if the dstdir was created.
-    ;;           retval)))
-    ;; ;;; TODO is this sexp is not executed because of lazy-evaluation?
-    ;;     (let [(indent (str indent indent-inc))]
-    ;;       (format #t "~a(copy-file ~a ~a) ... " indent src dst)
-    ;;       (let ((retval (copy-file src dst)))
-    ;;         (format #t "retval: ~a\n" retval)
-    ;;         ;; The value of 'retval' is '#<unspecified>'
-    ;;         retval))
-    ;; ;;; Just changing ownership and permissions of `fish_variables' doesn't work:
+;; ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
+;; ;;; when the 'guix home reconfigure ...' fails or is interrupted.
+;; ;;; Can't use `local-file' or `mixed-text-file' or something similar since the
+;; ;;; `fish_variables' must be editable
+;;       (let* [(indent "")
+;;              (indent-inc "   ")
+;;              (filepath "/fish_variables")
+;;              (src (fish-config-dotfiles filepath))
+;;              (dst (user-home "/" (fish-config-base filepath)))
+;;              (dstdir (dirname dst))]
+;;         (unless (file-exists? dstdir)
+;;           (let [(indent (str indent indent-inc))]
+;;             (format #t "~a(mkdir ~a) ... " indent src dstdir)
+;;             (let ((retval (mkdir dstdir)))
+;;               (format #t "retval: ~a\n" retval)
+;;               ;; The value of 'retval' is '#<unspecified>'
+;; ;;; TODO continuation: executing the block only if the dstdir was created.
+;;               retval)))
+;; ;;; TODO is this sexp is not executed because of lazy-evaluation?
+;;         (let [(indent (str indent indent-inc))]
+;;           (format #t "~a(copy-file ~a ~a) ... " indent src dst)
+;;           (let ((retval (copy-file src dst)))
+;;             (format #t "retval: ~a\n" retval)
+;;             ;; The value of 'retval' is '#<unspecified>'
+;;             retval))
+;; ;;; Just changing ownership and permissions of `fish_variables' doesn't work:
 
-    ;;     ;; (begin
-    ;;     ;;   ;; .rw-r--r-- bost users fish_variables
-    ;;     ;;   (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
-    ;;     ;;   (chown dst (getuid) (getgid))
-    ;;     ;;   ;; .rw-r--r-- fish_variables
-    ;;     ;;   (format #t "(chmod ~a ~a)\n" dst #o644)
-    ;;     ;;   (chmod dst #o644))
-    ;;     ))
+;;         ;; (begin
+;;         ;;   ;; .rw-r--r-- bost users fish_variables
+;;         ;;   (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
+;;         ;;   (chown dst (getuid) (getgid))
+;;         ;;   ;; .rw-r--r-- fish_variables
+;;         ;;   (format #t "(chmod ~a ~a)\n" dst #o644)
+;;         ;;   (chmod dst #o644))
+;;         ))
 
     ;; Note: `home-environment' is (lazily?) evaluated as a last command
     ;; (let ((he (home-environment ...))) (format #t "Should be last\n") he)
-    (define (home-env)
+    (define home-env
       (home-environment
        (packages (hp:packages-to-install))
        (services
         ((compose
           ;; (lambda (v) (format #t "~a 0\n" m) v)
-          (partial append (list environment-variables-service)))
+          (partial append (base:environment-variables-service
+                           (environment-vars hf:list-separator-bash))))
          base:services))))
     (testsymb 'home-env)
 
     ;; (format #t "~a module evaluated\n" m)
-    (home-env)))
+    home-env))

@@ -5,7 +5,6 @@
 
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
-
   #:use-module ((fs-utils) #:prefix hf:)
 
   #:use-module (srvc fish)
@@ -30,6 +29,7 @@
   #:export (
             services
             environment-vars
+            environment-variables-service
             ))
 
 (define m (module-name-for-logging))
@@ -223,4 +223,9 @@
                                    #;(str home "/.npm-packages"))
                              list-separator)))))
 
+(define (environment-variables-service environment-vars)
+  (simple-service
+   'environment-variables-service
+   home-environment-variables-service-type
+   environment-vars))
 ;; (format #t "~a module evaluated\n" m)
