@@ -285,14 +285,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "qemu"
 ;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
 ;;; This will happen automatically if `search-notes' is a proper Guix package.
-
-;;; racket 8.8 returns:
-;;;     $ racket
-;;;     munmap_chunk(): invalid pointer
-;;;     Aborted
-;;; racket 8.7 (pulled via inferior mechanism) works fine.
-   ;; "racket"
-
+   "racket"
    "readline"
    "recutils"
    "ripgrep"
@@ -311,6 +304,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "udiskie"
    "uniutils"
    "usbutils"
+
+   ;; version 11.0 throws a compilation error:
+   ;; ../virt-viewer-11.0/data/meson.build:4:7: ERROR: Function does not take positional arguments.
    ;; "virt-viewer"
 
    ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
@@ -374,8 +370,14 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
     (partial map (partial apply inferior-package-in-guix-channel)))
    (list
+;;; virt-viewer 7.0 works fine
     (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
-    (list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968"))))
+;;; racket 8.8 returns:
+;;;     $ racket
+;;;     munmap_chunk(): invalid pointer
+;;;     Aborted
+;;; racket 8.7 works fine
+    #;(list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968"))))
 (testsymb 'inferior-pkgs)
 
 (define (devel-packages)
