@@ -1,5 +1,4 @@
 #!/bin/sh
-run-qemu \
-    --iso-file=$HOME/virt-machines/ubuntu-21.10-desktop-amd64.iso \
-    --qcow2-file=$HOME/virt-machines/ubuntu-21.10-desktop-amd64.iso.qcow2 \
-    $@
+
+iso=$HOME/virt-machines/ubuntu-21.10-desktop-amd64.iso
+run-qemu --iso-file=$iso --qcow2-file=$iso.qcow2 $@
