@@ -145,6 +145,10 @@
          additional-channels)))))
 (testsymb 'create-channels-scm)
 
+(define (dotfiles-home-to-dir dir)
+  `(,dir ;; destination
+    ,(local-file (dotfiles-home "/" dir) #:recursive? #t)))
+
 (define home-dir-cfg-srvc-files
   ((compose
     ;; (lambda (p) (format #t "############## 3.\n") p)
@@ -258,12 +262,8 @@
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
              (list
-              (let ((dir ".config/sway"))
-                `(,dir ;; destination
-                  ,(local-file (dotfiles-home "/" dir) #:recursive? #t)))
-              (let ((dir "bin"))
-                `(,dir ;; destination
-                  ,(local-file (dotfiles-home "/" dir) #:recursive? #t)))))
+              (dotfiles-home-to-dir ".config/sway")
+              (dotfiles-home-to-dir "bin")))
     ;; (lambda (p) (format #t "############## 0.\n") p)
     )
    ;; empty list
