@@ -93,7 +93,7 @@ Example:
 ;;; TODO crc should search in the $dec
    (service-file #:program-name "crc"  #:files "clojure"
                  #:scheme-file-name "search-notes")
-;;; TODO cre should also search in the ~/.emacs.d/, ~/.spacemacs, kill-buffes
+;;; TODO cre should also search in the ~/.emacs.d/, ~/.spacemacs, kill-buffers
 ;;; and my=tweaks, farmhouse-light-mod
    (service-file #:program-name "cre"  #:files "vim|emacs|org_mode"
                  #:scheme-file-name "search-notes")
@@ -113,7 +113,7 @@ Example:
 ;;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile (and
 ;;; other profile files), etc.
    (service-file #:program-name "crl"
-                 #:files "guix|shells|linux|android"
+                 #:files "guix|shells|linux|android|cvs|systemd|heroku|gui"
                  #:scheme-file-name "search-notes")
 ;;; TODO crr should also search in the $der
    (service-file #:program-name "crr"  #:files "racket"
