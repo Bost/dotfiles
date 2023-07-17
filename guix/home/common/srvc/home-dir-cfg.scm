@@ -146,6 +146,7 @@
 (testsymb 'create-channels-scm)
 
 (define (dotfiles-home-to-dir dir)
+  ;; TODO (dotfiles-home-to-dir ".tmux") doesn't work
   `(,dir ;; destination
     ,(local-file (dotfiles-home "/" dir) #:recursive? #t)))
 
@@ -262,6 +263,8 @@
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
              (list
+              ;; (dotfiles-home-to-dir ".tmux")
+              (dotfiles-home-to-dir ".config/tmux")
               (dotfiles-home-to-dir ".config/sway")
               (dotfiles-home-to-dir "bin")))
     ;; (lambda (p) (format #t "############## 0.\n") p)
