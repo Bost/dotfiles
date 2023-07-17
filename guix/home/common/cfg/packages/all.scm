@@ -205,10 +205,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "clusterssh"
    "cmake"
    "curl"
-   "dconf"
-   "dconf-editor"
    "dos2unix"
-   "evince"
    "ffmpeg"
    "flatpak"
    "font-adobe-source-code-pro"
@@ -218,17 +215,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Make sure the CC environment variable has the value `(which gcc)'
    ;; See home-environment-variables-service-type
    "gcc-toolchain"
-   "gdm"
+
    "ghc"
    "glib:bin"
    "gnupg"
    "gnutls"
-   ;; "gksudo" ;; not available in the Guix package repository
-   "gparted"
    "graphviz"
    "grub"
-   "gsettings-desktop-schemas"
-   "gtk"
    "guile"
    "guile-hall" ;; to build guile projects
    "guile-studio"
@@ -247,7 +240,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "libconfini"
    "libjpeg-turbo"
    "libmtp"
-   "libreoffice"
    "libtiff"
    "libtool"
    "libungif"
@@ -287,17 +279,20 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; This will happen automatically if `search-notes' is a proper Guix package.
    "racket"
    "readline"
+
+   ;; Manipulate plain text files as databases
    "recutils"
+
    "ripgrep"
    "rlwrap"
+
+   ;; Full-screen window manager providing multiple terminals
    "screen"
-   "scsh"
-   "seahorse"
-   "spice-vdagent"
+
+   "scsh" ;; Unix shell embedded in Scheme
    "strace"
    "taglib"
    "texinfo"
-   "thunar-volman"
    "tig"
    "tree"
    "tzdata"
@@ -305,27 +300,55 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "uniutils"
    "usbutils"
 
+   ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
+   "xorriso"
+
+   "youtube-dl"
+   ))
+
+(define (other-gui-packages)
+  (list
+   "gdm"
+   "dconf"
+   "dconf-editor"
+   "evince"
+   ;; "gksudo" ;; not available in the Guix package repository
+   "gparted"
+   "gsettings-desktop-schemas"
+   "gtk"
+   "libreoffice"
+   ;; Manage encryption keys and passwords in the GNOME keyring
+   "seahorse"
+
    ;; version 11.0 throws a compilation error:
    ;; ../virt-viewer-11.0/data/meson.build:4:7: ERROR: Function does not take positional arguments.
-   ;; "virt-viewer"
+   ;; "virt-viewer" ;; in gnu/packages/spice.scm
+
+   ;; share the clipboard and guest display resolution scaling on graphical
+   ;; console window resize.
+   "spice-vdagent"
 
    ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
-   ;; "xdg-utils"
+   ;; "xdg-utils"  ;; in gnu/packages/freedesktop.scm
 
-   ;; Wayland event viewer
-   ;; "xev"
+   ;; GPU-based terminal emulator:
+   ;; * Offloads rendering to the GPU for lower system load and buttery smooth scrolling.  Uses threaded rendering to minimize input latency.
+   ;; * Supports all modern terminal features: graphics (images), unicode, true-color, OpenType ligatures, mouse protocol, focus tracking, bracketed paste and several new terminal protocol extensions.
+   ;; * Supports tiling multiple terminal windows side by side in different layouts without needing to use an extra program like tmux.
+   ;; * Can be controlled from scripts or the shell prompt, even over SSH.
+   ;; * Has a framework for Kittens, small terminal programs that can be used to extend kitty's functionality.  For example, they are used for Unicode input, hints, and side-by-side diff.
+   ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
+   ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
+   "kitty"
+   ))
 
+(define (xorg-packages)
+  (list
    ;; Xorg XKB configuration files - probably not needed in Xfce
    "xkeyboard-config"
 
    ;; Modify keymaps and button mappings on X server
    ;; "xmodmap"
-
-   ;; Tiling window manager
-   ;; "xmonad"
-
-   ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
-   "xorriso"
 
    ;; Command line interface to X11 Resize, Rotate, and Reflect (RandR)
    ;; See the command:
@@ -336,10 +359,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;    xfconf-query --create --type string --channel displays --property /Schemes/Apply --set a93ccfa35c66cf3bc719e997533c55d24167cdc9
    "xrandr"
 
+   ;; Print contents of X events: move, resize, type in, click in, etc. See
+   ;; "wev" the Wayland event viewer
+   "xev"
+
    ;; Manipulate X selection, i.e. the clipboard from the command line.
    ;; "xsel" ;; see bstx:...
-
-   "youtube-dl"
    ))
 
 (define (xfce-packages)
@@ -351,6 +376,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "xfce4-screensaver"
    "xfce4-screenshooter"
    "xfce4-settings"
+   "thunar-volman" ;; in gnu/packages/xfce.scm
    ))
 
 (define (inferior-package-in-guix-channel package commit)
@@ -395,16 +421,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     "git:send-email"
     "pinentry" ;; needed to sign commits
     "pwclient"
-
-    ;; GPU-based terminal emulator:
-    ;; * Offloads rendering to the GPU for lower system load and buttery smooth scrolling.  Uses threaded rendering to minimize input latency.
-    ;; * Supports all modern terminal features: graphics (images), unicode, true-color, OpenType ligatures, mouse protocol, focus tracking, bracketed paste and several new terminal protocol extensions.
-    ;; * Supports tiling multiple terminal windows side by side in different layouts without needing to use an extra program like tmux.
-    ;; * Can be controlled from scripts or the shell prompt, even over SSH.
-    ;; * Has a framework for Kittens, small terminal programs that can be used to extend kitty's functionality.  For example, they are used for Unicode input, hints, and side-by-side diff.
-    ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
-    ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
-    "kitty"
     )))
 
 (define (packages-to-install)
@@ -535,6 +551,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (devel-packages)
             (rest-packages)
             (xfce-packages)
+            (xorg-packages)
+            (other-gui-packages)
             (kde-dependent-packages)
             (large-packages)
             (packages-from-additional-channels)
@@ -547,6 +565,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (devel-packages)
             (rest-packages)
             (xfce-packages)
+            (xorg-packages)
+            (other-gui-packages)
             (kde-dependent-packages)
             ;; (large-packages)
             (packages-from-additional-channels-base)
