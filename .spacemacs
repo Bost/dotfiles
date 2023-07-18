@@ -318,6 +318,9 @@ This function should only modify configuration layer settings."
      my=tweaks ;; see `dotspacemacs-configuration-layer-path'
 
      (org :variables
+          ;; Don't ask for confirmation before interactively evaluating code
+          org-confirm-babel-evaluate nil ;; (Default t)
+
           org-support-shift-select 'always
           org-src-tab-acts-natively nil ;; default is t
           ;; org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
