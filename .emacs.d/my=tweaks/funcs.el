@@ -1,3 +1,14 @@
+(defun my=shell-which (command)
+  "Execute the 'which' command in the current shell"
+  (funcall
+   (-compose
+    ;; TODO implement fallback to bash if fish not found
+    #'string-trim-right
+    #'shell-command-to-string
+    (lambda (strings) (string-join strings " "))
+    (-partial #'list "which"))
+   command))
+
 (defun my=what-face (pos)
   ;; see also C-u C-x =
   (interactive "d")
@@ -904,20 +915,39 @@ Thanks to https://stackoverflow.com/a/2238589"
 ;; TODO add SHELL-PATH parameter so for setting
 ;;   (setq shell-pop-term-shell SHELL-PATH)
 ;; and also probably the `multi-term-program'
-(defun my=toggle-shell-pop-term ()
+(defun my=toggle-shell-pop-some-term (term-type &optional ARG)
+  "term-type is 'term or 'multiterm"
+  (if (not (cl-find term-type '(multiterm term)))
+      ;; (error "Unknown term-type: %s. Expecting 'term or 'multiterm" term-type)
+      (message "Unknown term-type. Expecting 'term or 'multiterm")
+    (let ((default-buffer
+            ;; "*Default-multiterm-0*"
+            (format "*Default-%s-0*" term-type)
+            ))
+      (cond
+       ;; 'term-mode' works apparently also for multiterm
+       ((equal 'term-mode major-mode)
+        (my=delete-window))
+
+       ;; can't use (let ...) inside cond
+       ((buffer-exists-p default-buffer)
+        (pop-to-buffer default-buffer))
+
+       (t
+        ;; `spacemacs/shell-pop-term' and `spacemacs/shell-pop-multiterm'
+        ;; are defined in layers/+tools/shell/packages.el
+        (cond
+         ((equal term-type 'multiterm) (spacemacs/shell-pop-multiterm ARG))
+         ((equal term-type 'term) (spacemacs/shell-pop-term ARG)))))
+      (balance-windows-area))))
+
+(defun my=toggle-shell-pop-term (&optional ARG)
   (interactive)
-  (cond
-   ((equal 'term-mode major-mode)
-    (my=delete-window))
+  (my=toggle-shell-pop-some-term 'term ARG))
 
-   ;; can't use (let ...)
-   ((buffer-exists-p "*Default-term-0*")
-    (pop-to-buffer "*Default-term-0*"))
-
-   (t
-    ;; `spacemacs/shell-pop-term' defined in layers/+tools/shell/packages.el
-    (spacemacs/shell-pop-term 0)))
-  (balance-windows-area))
+(defun my=toggle-shell-pop-multiterm (&optional ARG)
+  (interactive)
+  (my=toggle-shell-pop-some-term 'multiterm ARG))
 
 (defun my=dired-sort ()
   "Sort dired dir listing in different ways.

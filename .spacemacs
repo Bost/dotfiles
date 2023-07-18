@@ -1292,21 +1292,8 @@ before packages are loaded."
 
   ;; (spaceline-all-the-icons-theme)
 
-  (defun shell-which (command)
-    "Execute the 'which' command in the current shell"
-    (funcall
-     (-compose
-      ;; TODO implement fallback to bash if fish not found
-      #'string-trim-right
-      #'shell-command-to-string
-      (lambda (strings) (string-join strings " "))
-      (-partial #'list "which"))
-     command))
-
-  (defun fish-shell-path ()
-    (getenv "SHELL")
-    ;; (shell-which "fish")
-    )
+  (defun shell-path () (getenv "SHELL"))
+  ;; (defun shell-path () (my=shell-which "fish"))
 
   (setq                                 ; of dotspacemacs/user-config
    gptel-api-key (getenv "OPENAI_API_KEY")
@@ -1319,10 +1306,10 @@ before packages are loaded."
    ;; If this is nil, setup to environment variable of `SHELL'.
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
    ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
-   multi-term-program (fish-shell-path)
+   multi-term-program (shell-path)
 
    ;; Shell used in `term' and `ansi-term'.
-   shell-pop-term-shell (fish-shell-path)
+   shell-pop-term-shell (shell-path)
 
    ;; Position of the popped buffer. (default "bottom")
    shell-pop-window-position "right"
@@ -1746,7 +1733,7 @@ Some binding snippets / examples:
      ("C-s-<right>" . sp-backward-barf-sexp)
      ("s-;"         . spacemacs/comment-or-uncomment-lines)
      ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
-     ("s-<f1>"      . my=toggle-shell-pop-term)
+     ("s-<f1>"      . my=toggle-shell-pop-multiterm) ;; my=toggle-shell-pop-term
      ("s-<f2>"      . projectile-multi-term-in-root)
      ;; terminal in the current working directory
      ;; ("s-<f1>"      . terminal-here-launch)
