@@ -495,7 +495,10 @@ This function should only modify configuration layer settings."
      ;;    https://git.savannah.gnu.org/git/guix/emacs-guix.git
      ;; (guix :location "~/dev/emacs-guix/") ;; not working
 
-     (gptel :location (recipe :fetcher github :repo "karthink/gptel"))
+     ;; gptel
+     chatgpt-shell
+     ob-chatgpt-shell
+     pcsv ;; needed by `chatgpt-shell-load-awesome-prompts'
 
      ;; (copilot :location (recipe
      ;;                     :fetcher github
@@ -1303,15 +1306,29 @@ before packages are loaded."
 
   ;; (spaceline-all-the-icons-theme)
 
+  ;; org-babel setup and usage:
+  (use-package ob-chatgpt-shell :config (ob-chatgpt-shell-setup))
+  ;; #+begin_src chatgpt-shell
+  ;; Mirror, mirror, who's the most beautiful person on Earth?
+  ;; #+end_src
+  ;; #+begin_src chatgpt-shell :temperature 0.3
+  ;; hello
+  ;; #+end_src
+
   (defun shell-path () (getenv "SHELL"))
   ;; (defun shell-path () (my=shell-which "fish"))
 
   (setq                                 ; of dotspacemacs/user-config
-   gptel-api-key (getenv "OPENAI_API_KEY")
-   gptel-model "gpt-3.5-turbo" ;; (Default "gpt-3.5-turbo)
    ;; Costs money https://platform.openai.com/account/usage
    ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
-   ;; gptel-model "gpt-4"
+   ;; Change it using `(chatgpt-shell-swap-model-version)'
+   ;; chatgpt-shell-model-version "gpt-4" ;; (Default 0; i.e. "gpt-3.5-turbo")
+   chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")
+
+   ;; gptel-api-key (getenv "OPENAI_API_KEY")
+   ;; ;; Costs money https://platform.openai.com/account/usage
+   ;; ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
+   ;; ;; gptel-model "gpt-4" ;; (Default "gpt-3.5-turbo")
 
    ;; The program of term.
    ;; If this is nil, setup to environment variable of `SHELL'.
