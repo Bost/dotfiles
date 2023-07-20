@@ -623,14 +623,22 @@ It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
-   ;; Local mirrors created using https://github.com/redguardtoo/elpa-mirror
-   ;; (default (("melpa"  . "melpa.org/packages/")
-   ;;           ("gnu"    . "elpa.gnu.org/packages/")
-   ;;           ("nongnu" . "elpa.nongnu.org/nongnu/")))
    configuration-layer-elpa-archives
-   `(("melpa"  . ,(concat (getenv "dev") "/elpa-mirror/elpa-mirror/melpa/"))
-     ("gnu"    . ,(concat (getenv "dev") "/elpa-mirror/elpa-mirror/gnu/"))
-     ("nongnu" . ,(concat (getenv "dev") "/elpa-mirror/elpa-mirror/nongnu/")))
+   ;; Default values
+   `(("melpa"  . "melpa.org/packages/")
+     ("gnu"    . "elpa.gnu.org/packages/")
+     ("nongnu" . "elpa.nongnu.org/nongnu/"))
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ;; Local mirrors created by https://github.com/d12frosted/elpa-mirror
+   ;; See also:
+   ;;   https://github.com/redguardtoo/elpa-mirror
+   ;;   https://github.com/melpa/melpa
+   ;; Update by running:
+   ;;   cd $dev/elpa-mirror.d12frosted && gpl
+   ;; (let ((dev (getenv "dev")))
+   ;;   `(("melpa"  . ,(concat dev "/elpa-mirror.d12frosted/melpa/"))
+   ;;     ("gnu"    . ,(concat dev "/elpa-mirror.d12frosted/gnu/"))
+   ;;     ("nongnu" . ,(concat dev "/elpa-mirror.d12frosted/nongnu/"))))
 
    ;; If non-nil then enable support for the portable dumper. You'll need to
    ;; compile Emacs 27 from source following the instructions in file
@@ -2079,6 +2087,22 @@ Some binding snippets / examples:
              ;; ("<return>"    . dired-x-find-file)
              ("<return>"    . dired-find-file) ;; default
              ("<S-delete>"  . my=dired-do-delete))
+  ;; (with-eval-after-load 'dired-mode
+  ;;   (bind-keys :map dired-mode-map
+  ;;              ("<f5>"        . my=revert-buffer-no-confirm)
+  ;;              ;; ("<f5>"        . revert-buffer)
+
+  ;;              ;; Use ~C-s-h~ b/c ~C-H~ (shift-h) doesn't work
+  ;;              ("C-s-h"       . my=dired-dotfiles-toggle)
+  ;;              ("<backspace>" . (lambda () (interactive)
+  ;;                                 (find-alternate-file "..")))
+  ;;              ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
+  ;;              ;; ("<return>"    . dired-find-alternate-file)
+  ;;              ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
+  ;;              ;; asks for file instead of opening it
+  ;;              ;; ("<return>"    . dired-x-find-file)
+  ;;              ("<return>"    . dired-find-file) ;; default
+  ;;              ("<S-delete>"  . my=dired-do-delete)))
 
   ;; (eval-after-load "dired"
   ;;   '(progn
@@ -2225,6 +2249,11 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   (bind-keys :map org-mode-map
              ("H-<menu>" . org-latex-export-to-pdf)) ;; ~<menu>~ pressed twice
+
+  ;; (with-eval-after-load 'org-mode
+  ;;   (bind-keys :map org-mode-map
+  ;;              ;; ~<menu>~ pressed twice
+  ;;              ("H-<menu>" . org-latex-export-to-pdf)))
 
   (bind-keys :map prog-mode-map
              ;; M-/  M-x hippie-expand
@@ -2475,6 +2504,18 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                 ("C-M-k" . kill-sexp)))
    '(evil-normal-state-map evil-insert-state-map))
 
+;;   (with-eval-after-load 'evil-normal-state
+;;     (bind-keys :map evil-normal-state-map
+;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+;; ;;; layers/+misc/multiple-cursors/packages.el
+;;                   ("C-M-k" . kill-sexp)))
+
+;;   (with-eval-after-load 'evil-insert-state
+;;     (bind-keys :map evil-insert-state-map
+;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+;; ;;; layers/+misc/multiple-cursors/packages.el
+;;                   ("C-M-k" . kill-sexp)))
+
   (mapcar
    (lambda (map)
      ;; Move by screen lines instead of logical (long) lines
@@ -2485,6 +2526,20 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   (bind-keys :map evil-visual-state-map
              ("p" . my=evil-paste-after-from-0))
+
+  ;; (with-eval-after-load 'evil-motion-state
+  ;;    ;; Move by screen lines instead of logical (long) lines
+  ;;    (bind-keys :map evil-motion-state-map
+  ;;               ("j" . evil-next-visual-line)
+  ;;               ("k" . evil-previous-visual-line)))
+
+  ;; (with-eval-after-load 'evil-visual-state
+  ;;   ;; Move by screen lines instead of logical (long) lines
+  ;;   (bind-keys :map evil-visual-state-map
+  ;;                   ("j" . evil-next-visual-line)
+  ;;                   ("k" . evil-previous-visual-line))
+  ;;   (bind-keys :map evil-visual-state-map
+  ;;              ("p" . my=evil-paste-after-from-0)))
 
   ;; see also binding for <f2>
   ;; (bind-keys :map evil-normal-state-map
