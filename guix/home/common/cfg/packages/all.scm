@@ -120,6 +120,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    "rsync"
 
+   ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
+   ;; "sysstat"
+
    ;; terminal multiplexer
    "tmux"
 
@@ -304,6 +307,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "xorriso"
 
    "youtube-dl"
+
+   ;; "tesseract-ocr"               ;; OCR Optical character recognition engine
+   ;; "tesseract-ocr-tessdata-fast" ;; Fast versions of trained LSTM models
+   ;; "gimagereader"                ;; Qt front-end to tesseract-ocr
+
    ))
 
 (define (other-gui-packages)
@@ -340,6 +348,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
    ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
    "kitty"
+   "neovim"
    ))
 
 (define (xorg-packages)
@@ -377,6 +386,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "xfce4-screenshooter"
    "xfce4-settings"
    "thunar-volman" ;; in gnu/packages/xfce.scm
+
+   ;; "xfce4-volumed-pulse" ;;  XFCE volume keys daemon
+   "xfce4-pulseaudio-plugin"
    ))
 
 (define (inferior-package-in-guix-channel package commit)
@@ -420,7 +432,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     "emacs-with-editor"
     "git:send-email"
     "pinentry" ;; needed to sign commits
-    "pwclient"
+    "pwclient" ;; CLI client for Patchwork patch tracking tool (*.patch files)
     )))
 
 (define (packages-to-install)
