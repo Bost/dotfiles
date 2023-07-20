@@ -1705,6 +1705,7 @@ Some binding snippets / examples:
      ;; `unfill-toggle'?)
      ;; ("M-q" . unfill-toggle)
 
+     ("s-="       . balance-windows-area)
      ("s-K"       . my=kill-buffers--unwanted)
      ("s-C-K"     . my=kill-buffers--dired)
      ("s-R"       . spacemacs/rename-current-buffer-file)
