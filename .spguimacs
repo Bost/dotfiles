@@ -600,16 +600,22 @@ It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
-   ;; Local mirrors created using https://github.com/redguardtoo/elpa-mirror
-   ;; (default (("melpa"  . "melpa.org/packages/")
-   ;;           ("gnu"    . "elpa.gnu.org/packages/")
-   ;;           ("nongnu" . "elpa.nongnu.org/nongnu/")))
-   ;; (setq
    configuration-layer-elpa-archives
-   `(("melpa"  . ,(concat (getenv "dev") "/elpa-mirror/elpa-mirror/melpa/"))
-     ("gnu"    . ,(concat (getenv "dev") "/elpa-mirror/elpa-mirror/gnu/"))
-     ("nongnu" . ,(concat (getenv "dev") "/elpa-mirror/elpa-mirror/nongnu/")))
-   ;; )
+   ;; Default values
+   `(("melpa"  . "melpa.org/packages/")
+     ("gnu"    . "elpa.gnu.org/packages/")
+     ("nongnu" . "elpa.nongnu.org/nongnu/"))
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ;; Local mirrors created by https://github.com/d12frosted/elpa-mirror
+   ;; See also:
+   ;;   https://github.com/redguardtoo/elpa-mirror
+   ;;   https://github.com/melpa/melpa
+   ;; Update by running:
+   ;;   cd $dev/elpa-mirror.d12frosted && gpl
+   ;; (let ((dev (getenv "dev")))
+   ;;   `(("melpa"  . ,(concat dev "/elpa-mirror.d12frosted/melpa/"))
+   ;;     ("gnu"    . ,(concat dev "/elpa-mirror.d12frosted/gnu/"))
+   ;;     ("nongnu" . ,(concat dev "/elpa-mirror.d12frosted/nongnu/"))))
 
    ;; If non-nil then enable support for the portable dumper. You'll need to
    ;; compile Emacs 27 from source following the instructions in file
