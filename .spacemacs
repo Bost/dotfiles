@@ -1680,7 +1680,8 @@ Some binding snippets / examples:
                  ;; don't need to switch keyboards just because of parenthesis
                  ("fj" . (my=insert-str "()" 1)))
 
-    (bind-keys
+    ;; the comment is here just to get a better listing in `helm-swoop'
+    (bind-keys ; :map global-map
      :map global-map
      ("<f5>" . my=revert-buffer-no-confirm)
      ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
@@ -2145,7 +2146,7 @@ Some binding snippets / examples:
 
   (mapcar
    (lambda (map)
-     (bind-keys :map map
+     (bind-keys :map map ; clojure-mode-map cider-repl-mode-map
                 ;; on German keyboard the #-key is next to the Enter-key
                 ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
                 ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
@@ -2153,7 +2154,7 @@ Some binding snippets / examples:
                 ("s-e"   . cider-eval-last-sexp)
                 ("s-j"   . cider-format-defun)
                 ("s-i"   . cljr-rename-symbol))
-     (bind-chords :map map
+     (bind-chords :map map ; clojure-mode-map cider-repl-mode-map
                   ("pr" . (lambda () (interactive)
                             (my=insert-str "(println \"\")" 2)))
                   ("rm" . (lambda () (interactive)
@@ -2249,7 +2250,8 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
              ("s-\\"  . my=elisp-toggle-reader-comment-current-sexp))
 
   (bind-keys :map org-mode-map
-             ("H-<menu>" . org-latex-export-to-pdf)) ;; ~<menu>~ pressed twice
+             ;; ~<menu>~ pressed twice
+             ("H-<menu>" . org-latex-export-to-pdf))
 
   ;; (with-eval-after-load 'org-mode
   ;;   (bind-keys :map org-mode-map
