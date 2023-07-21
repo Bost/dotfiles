@@ -2033,6 +2033,18 @@ Some binding snippets / examples:
                   ))
     )
 
+  ;; TODO This doesn't work:
+  ;; (with-eval-after-load 'magit-status-mode
+  ;;   (bind-keys :map magit-status-mode-map
+  ;;              ;; TODO use my cycle functionality
+  ;;              ("s-\\" . magit-diff-toggle-refine-hunk)))
+
+  ;; TODO This doesn't work:
+  ;; (with-eval-after-load 'magit-revision-mode
+  ;;   (bind-keys :map magit-revision-mode-map
+  ;;              ;; TODO use my cycle functionality
+  ;;              ("s-\\" . magit-diff-toggle-refine-hunk)))
+
   (with-eval-after-load 'magit-mode
     (bind-keys :map magit-mode-map
                ;; Workaround for the
