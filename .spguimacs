@@ -1483,10 +1483,6 @@ before packages are loaded."
            (lambda () ;; capital lambda char Λ
              (push '("my=interactive-lambda" . 923) prettify-symbols-alist))))
 
-  (use-package clojure-mode) ;; must be here for the bind-keys
-  ;; '(use-package cider ...)' must be here for the bind-keys
-  (use-package cider)
-
   ;; TODO autoload
   (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")
   (spacemacs/declare-prefix "og" "google-this")
@@ -2114,71 +2110,73 @@ Some binding snippets / examples:
                ("<C-right>"    . right-word)
                ("<C-left>"     . left-word)))
 
-  (mapcar
-   (lambda (map)
-     (bind-keys :map map ; clojure-mode-map cider-repl-mode-map
-                ;; on German keyboard the #-key is next to the Enter-key
-                ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
-                ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
-                ("s-X"   . my=switch-to-repl-start-figwheel)
-                ("s-e"   . cider-eval-last-sexp)
-                ("s-j"   . cider-format-defun)
-                ("s-i"   . cljr-rename-symbol))
-     (bind-chords :map map ; clojure-mode-map cider-repl-mode-map
-                  ("pr" . (lambda () (interactive)
-                            (my=insert-str "(println \"\")" 2)))
-                  ("rm" . (lambda () (interactive)
-                            (my=insert-str "(remove (fn []))" 3)))
-                  ("fi" . my=clj-insert-filter-fn)
-                  ("de" . my=clj-insert-defn)
-                  ("db" . my=clj-insert-debugf)
-                  ("dg" . my=clj-insert-debugf)
-                  ("df" . my=clj-insert-fn)
-                  ("ds" . my=clj-insert-doseq)
-                  ("fn" . my=clj-insert-fn)
-                  ("do" . my=clj-insert-do)
-                  ("co" . my=clj-insert-comp)
-                  ("cd" . my=insert-clojuredocs)
-                  ("pa" . my=insert-partial)
-                  ("le" . my=clj-insert-let)
-                  ("fo" . my=clj-insert-for)
-                  ("ty" . my=clj-insert-type)
-                  ("ma" . my=clj-insert-map-fn)))
-   '(clojure-mode-map cider-repl-mode-map))
+  (defun my=clj-bind-keys-and-chords (map)
+    (bind-keys :map map
+               ;; on German keyboard the #-key is next to the Enter-key
+               ("C-s-\\" . my=clj-toggle-reader-comment-current-sexp)
+               ("s-\\"   . my=clj-toggle-reader-comment-fst-sexp-on-line)
+               ("s-X"   . my=switch-to-repl-start-figwheel)
+               ("s-e"   . cider-eval-last-sexp)
+               ("s-j"   . cider-format-defun)
+               ("s-i"   . cljr-rename-symbol))
+    (bind-chords :map map ; clojure-mode-map cider-repl-mode-map
+                 ("pr" . (lambda () (interactive)
+                           (my=insert-str "(println \"\")" 2)))
+                 ("rm" . (lambda () (interactive)
+                           (my=insert-str "(remove (fn []))" 3)))
+                 ("fi" . my=clj-insert-filter-fn)
+                 ("de" . my=clj-insert-defn)
+                 ("db" . my=clj-insert-debugf)
+                 ("dg" . my=clj-insert-debugf)
+                 ("df" . my=clj-insert-fn)
+                 ("ds" . my=clj-insert-doseq)
+                 ("fn" . my=clj-insert-fn)
+                 ("do" . my=clj-insert-do)
+                 ("co" . my=clj-insert-comp)
+                 ("cd" . my=insert-clojuredocs)
+                 ("pa" . my=insert-partial)
+                 ("le" . my=clj-insert-let)
+                 ("fo" . my=clj-insert-for)
+                 ("ty" . my=clj-insert-type)
+                 ("ma" . my=clj-insert-map-fn)))
 
-  (bind-keys :map cider-repl-mode-map
-             ("<menu>" . my=stop-synths-metronoms)
-             ("s-h"    . helm-cider-history)
-             ("s-j"    . cider-format-defun)
-             ("s-x"    . cider-switch-to-last-clojure-buffer)
-             ("M-s-l"  . my=cider-reload-ns-from-file)
-             ("s-u"    . my=cider-reload-ns-from-file)
-             ;; invoke from clojure buffer
-             ("<C-s-delete>" . cider-repl-clear-buffer))
+  (with-eval-after-load 'cider-repl-mode
+    (my=clj-bind-keys-and-chords cider-repl-mode-map)
+    (bind-keys :map cider-repl-mode-map
+               ("<menu>" . my=stop-synths-metronoms)
+               ("s-h"    . helm-cider-history)
+               ("s-j"    . cider-format-defun)
+               ("s-x"    . cider-switch-to-last-clojure-buffer)
+               ("M-s-l"  . my=cider-reload-ns-from-file)
+               ("s-u"    . my=cider-reload-ns-from-file)
+               ;; invoke from clojure buffer
+               ("<C-s-delete>" . cider-repl-clear-buffer)))
 
-  (bind-keys :map clojure-mode-map
-             ("s-d"    . cider-eval-defun-at-point)
-             ("s-x"    . my=cider-switch-to-repl-buffer)
-             ("C-s-c"  . cider-connect-clj)
-             ("C-s-j"  . cider-jack-in)
-             ;; ("s-r" . cider-eval-last-expression-in-repl)
-             ("M-s-l"  . my=cider-save-and-load-current-buffer)
-             ("s-u"    . my=cider-save-and-load-current-buffer)
-             ("M-s-n"  . cider-repl-set-ns)
-             ("s-t"    . cider-test-run-tests)
+  (with-eval-after-load 'clojure-mode
+    (my=clj-bind-keys-and-chords clojure-mode-map)
+    (bind-keys :map clojure-mode-map
+               ("s-d"    . cider-eval-defun-at-point)
+               ("s-x"    . my=cider-switch-to-repl-buffer)
+               ("C-s-c"  . cider-connect-clj)
+               ("C-s-j"  . cider-jack-in)
+               ;; ("s-r" . cider-eval-last-expression-in-repl)
+               ("M-s-l"  . my=cider-save-and-load-current-buffer)
+               ("s-u"    . my=cider-save-and-load-current-buffer)
+               ("M-s-n"  . cider-repl-set-ns)
+               ("s-t"    . cider-test-run-tests)
 
-             ;; TODO see global-map keybindings
-             ;; ("s-."  . cider-find-var)
-             ;; ("s-,"  . cider-pop-back)
-             ;; TODO s-M does not work in REPL buffer
+               ;; TODO see global-map keybindings
+               ;; ("s-."  . cider-find-var)
+               ;; ("s-,"  . cider-pop-back)
+               ;; TODO s-M does not work in REPL buffer
 
-             ;; Reload modified and unloaded namespaces on the classpath
-             ("s-o"     . cider-ns-refresh)
+               ;; Reload modified and unloaded namespaces on the classpath
+               ("s-o"     . cider-ns-refresh)
 
-             ;; Send a (require ’ns :reload) to the REPL
-             ;; ("s-o"  . cider-ns-reload)
+               ;; Send a (require ’ns :reload) to the REPL
+               ;; ("s-o"  . cider-ns-reload)
 
-             ("C-s-o"   . my=cider-clear-compilation-highlights))
+               ("C-s-o"   . my=cider-clear-compilation-highlights)))
 
   (defun endless/sharp ()
     "Insert the function form abbreviation #' unless in a string
