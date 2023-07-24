@@ -3,6 +3,16 @@
 baseLP=$dotf/guix # base-load-path
 hostname=$(hostname)
 
+# GUILE_LOAD_PATH, GUILE_LOAD_COMPILED_PATH have the same values in both
+# invocations
+# code='(pk %load-path)'
+# guile -c "${code}"
+# echo ${code} | guix repl --type=machine
+
+# code='(use-modules (gnu packages) (guix packages)) (format #t "~a\n" (package-version (car (find-packages-by-name "linux-libre"))))'
+# guile -c "${code}"
+# echo ${code} | guix repl --type=machine
+
 set -e # Exit immediately if a command exits with a non-zero status.
 
 ## Run this file by (the `~' doesn't work as a value of --load-path):
@@ -10,10 +20,15 @@ set -e # Exit immediately if a command exits with a non-zero status.
 # -L --load-path
 # -v, --verbosity=LEVEL  use the given verbosity LEVEL
 set -x  # Print commands and their arguments as they are executed.
+
+guix repl \
+     -L $baseLP/common \
+     $baseLP/systems/common/kernel-version.scm
+
 sudo guix system --verbosity=3 --fallback \
      -L $baseLP/common \
-     -L $baseLP/systems \
      reconfigure $baseLP/systems/syst-$hostname.scm
+
 { retval="$?"; set +x; } 2>/dev/null
 
 if [ $hostname == "ecke" ]; then
