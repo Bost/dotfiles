@@ -986,7 +986,11 @@
    "emacs-ol-notmuch"
    "emacs-oldlace-theme"
    "emacs-olivetti"
-   "emacs-omtose-phellack-theme" ; defines emacs-omtose-darker-theme emacs-omtose-softer-theme
+
+;;; ~/.config/emacs/bin/doom install
+;;; No such file or directory /gnu/store/k8y1npgp5w7y96vrgddyx3svh2h69zxj-emacs-omtose-phellack-theme-0.2.0-0.66f9963/share/emacs/site-lisp/omtose-phellack-theme-0.2.0-0.66f9963/omtose-phellack-theme-autoloads
+   ;; "emacs-omtose-phellack-theme" ;; omtose-darker-theme omtose-softer-theme
+
    "emacs-on"
    "emacs-on-screen"
    "emacs-opencl-mode"
