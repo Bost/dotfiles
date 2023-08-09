@@ -188,8 +188,11 @@ This function should only modify configuration layer settings."
           ;; )
           )
 
-     ;; Requires running `git submodule update --init'
-     fennel ;; fennel = lua in lisp
+     ;; Try some of the following commands:
+     ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
+     ;;                     ~/.emacs.d/layers/fennel
+     ;;   git submodule update --init
+     ;; fennel ;; fennel = lua in lisp
 
      ;; gnus
      ;; go
