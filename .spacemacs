@@ -21,6 +21,11 @@
   ;; (message (my=log #'end) f)
   )
 
+;; When running from bash on a non-Guix system, some environment variables may
+;; not be defined
+(setq dev  (or (getenv "dev") "~/dev"))
+(setq dotf (or (getenv "dotf") "~/dev/dotfiles"))
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -48,8 +53,7 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path
-   `(,(concat (getenv "dotf") "/.emacs.d/"))
+   dotspacemacs-configuration-layer-path `(,(concat dotf "/.emacs.d/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -1386,7 +1390,7 @@ before packages are loaded."
 
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
-   bookmark-default-file (concat (getenv "dotf") "/emacs/bookmarks")
+   bookmark-default-file (format "%s/emacs/bookmarks" dotf)
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
    ediff-window-setup-function 'ediff-setup-windows-default
 
@@ -1501,7 +1505,7 @@ before packages are loaded."
     ;; :load-path "~/.config/emacs/elisp/"
     :custom
     (kbd-mode-kill-kmonad "pkill -9 kmonad")
-    (kbd-mode-start-kmonad "kmonad ~/dev/dotfiles/kmonad/KMonad.kbd"))
+    (kbd-mode-start-kmonad (format "kmonad %s/kmonad/KMonad.kbd" dotf)))
 
   (use-package org
     :hook
@@ -2304,9 +2308,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   ;; Setup for Hacking on Guix and Scheme Code
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
-  (let* ((dotf (getenv "dotf"))
-         (dev (getenv "dev"))
-         (guix-checkout-dir (format "%s/guix" dev)))
+  (let* ((guix-checkout-dir (format "%s/guix" dev)))
     (with-eval-after-load #'geiser-guile
       ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
       (mapcar
