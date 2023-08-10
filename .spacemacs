@@ -25,6 +25,7 @@
 ;; not be defined
 (setq dev  (or (getenv "dev") "~/dev"))
 (setq dotf (or (getenv "dotf") "~/dev/dotfiles"))
+(setq hostname (system-name))
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
@@ -806,9 +807,11 @@ It should only modify the values of Spacemacs settings."
    ;;     /gnu/store/*-spacemacs-rolling-release-*/private/local
    ;; I.e. the ':location local' won't work on Guix for private themes. Use
    ;; `custom-theme-load-path' and/or `custom-theme-directory'.
-   dotspacemacs-themes '(
+   dotspacemacs-themes `(
                          spacemacs-light
-                         farmhouse-light-mod
+                         ,(if (string= hostname "martin")
+                              '(farmhouse-light-mod :location local)
+                            'farmhouse-light-mod)
                          material
                          misterioso
                          spacemacs-dark
@@ -835,12 +838,10 @@ It should only modify the values of Spacemacs settings."
    ;; Point size is recommended, because it's device independent. (default 10.0)
    ;; :size 8.8 is `(- 10.0 text-scale-mode-step)', like M-x text-scale-decrease
    dotspacemacs-default-font `("Source Code Pro"
-                               :size
-                               ,(let ((syst-name (system-name)))
-                                  (cond
-                                   ((string= syst-name "geek") 17)
-                                   ((string= syst-name "ecke") 8.8)
-                                   (t 10.0)))
+                               :size ,(cond
+                                       ((string= hostname "geek") 17)
+                                       ((string= hostname "ecke") 8.8)
+                                       (t 10.0))
                                :weight normal
                                :width normal)
 
