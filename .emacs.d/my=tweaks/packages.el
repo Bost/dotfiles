@@ -124,14 +124,14 @@ Each entry is either:
 Selected text has higher priority than URL. A YouTube URL is
 immediately opened by `browse-url-firefox', anything else is put
 on prompt with the `my=search-url' prefix and handled by
-`browse-url-chromium'."
+`browse-url-firefox'."
   (interactive "p")
   (cond
    ((or (region-active-p) (evil-visual-state-p))
     ;; Select text as if done from the insert state.
-    (browse-url-chromium
+    (browse-url-firefox
      (format my=search-url
-             (read-string "[chromium] search region: "
+             (read-string "[firefox] search region: "
                           (buffer-substring-no-properties (region-beginning)
                                                           (region-end))))))
 
@@ -143,11 +143,11 @@ on prompt with the `my=search-url' prefix and handled by
 
    ;; test http://bla.com
    ((string-prefix-p "http" (thing-at-point 'url))
-    (browse-url-chromium (thing-at-point 'url)))
+    (browse-url-firefox (thing-at-point 'url)))
 
    (t
-    (browse-url-chromium
+    (browse-url-firefox
      (format my=search-url
-             (read-string "[chromium] search thing: "
+             (read-string "[firefox] search thing: "
                           (thing-at-point 'symbol)))))))
 
