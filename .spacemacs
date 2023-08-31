@@ -2083,6 +2083,27 @@ Some binding snippets / examples:
                ("C-3" . magit-section-show-level-3)
                ("C-4" . magit-section-show-level-4)))
 
+  (defun my=evil-keybindings-in-term (map)
+    "Fix evil keybindings in terminals. Alternatively just disable evil-mode:
+  (evil-set-initial-state 'term-mode 'emacs)
+See also:
+- evil-collection-term-setup
+- \"TODO: Add support for normal-state editing.\"
+https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collection-term.el#L61
+"
+    (evil-collection-define-key 'insert map (kbd "S-<up>")   #'previous-line)
+    (evil-collection-define-key 'insert map (kbd "S-<down>") #'next-line)
+    (evil-collection-define-key 'insert map (kbd "C-<up>")   #'previous-line)
+    (evil-collection-define-key 'insert map (kbd "C-<down>") #'next-line)
+    (evil-collection-define-key 'insert map (kbd "<delete>") #'term-send-del)
+    (evil-collection-define-key 'insert map (kbd "<prior>")  #'evil-scroll-page-up)
+    (evil-collection-define-key 'insert map (kbd "<next>")   #'evil-scroll-page-down)
+;;; simple ~<prior>~, ~<next>~ (i.e. pgup / pgdown) don't even get registered by
+;;; Emacs. See: xfconf-query -c xfce4-keyboard-shortcuts -lv | grep Page
+    ;; (evil-collection-define-key 'insert map (kbd "s-<prior>") #'evil-scroll-page-up)
+    ;; (evil-collection-define-key 'insert map (kbd "s-<next>")  #'evil-scroll-page-down)
+    )
+
 ;;; (funcall
 ;;;  (-compose
 ;;;; 1. `-partial', `apply-partially' and `-compose' accept only functions, not
@@ -2093,21 +2114,10 @@ Some binding snippets / examples:
 ;;;; evaluation won't work. `term-raw-map' is defined only after loading
 ;;;; `multi-term'
 ;;;   (lambda (body) (with-eval-after-load 'multi-term body)))
+;;;
   (with-eval-after-load 'multi-term
-    (mapcar
-     (lambda (map)
-       (bind-keys :map map
-                  ("C-<right>" . right-word)
-                  ("C-<left>"  . left-word)
-                  ("<delete>"  . term-send-del)
-                  ("<prior>"   . evil-scroll-page-up)
-                  ("<next>"    . evil-scroll-page-down)
-;;; simple ~<prior>~, ~<next>~ (i.e. pgup / pgdown) don't even get registered by
-;;; Emacs. See: xfconf-query -c xfce4-keyboard-shortcuts -lv | grep Page
-                  ("s-<prior>"   . evil-scroll-page-up)
-                  ("s-<next>"    . evil-scroll-page-down)
-                  ))
-     '(term-raw-map term-mode-map)))
+    ;; term-mode-map is apparently not needed
+    (mapcar #'my=evil-keybindings-in-term '(term-raw-map)))
 
   (bind-keys :map dired-mode-map
              ("<f5>"        . my=revert-buffer-no-confirm)
