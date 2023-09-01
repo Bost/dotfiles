@@ -203,6 +203,7 @@ guix home --allow-downgrades --cores=24 \
 ;;         ;;   (chmod dst #o644))
 ;;         ))
 
+;; See also $dotf/.bashrc.martin
 (define home-env
   (home-environment
    (packages (hp:packages-to-install))
