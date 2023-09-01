@@ -215,6 +215,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 ;;; TODO home-git-configuration
 
+;; See also $dotf/.bashrc.martin
 (define home-env
   (home-environment
    (packages (hp:packages-to-install))

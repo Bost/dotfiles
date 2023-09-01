@@ -168,6 +168,7 @@
    (list) #| empty list |#))
 (testsymb 'services)
 
+;; See also $dotf/.bashrc.martin
 (define (environment-vars list-separator)
   ((compose
     (lambda (v)

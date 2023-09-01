@@ -60,6 +60,7 @@ guix home --allow-downgrades --cores=24 \
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
+;; See also $dotf/.bashrc.martin
 (define home-env
   (home-environment
    (packages (hp:packages-to-install))

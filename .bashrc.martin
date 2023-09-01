@@ -118,3 +118,27 @@ fi
 
 # export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
 # export LD_PRELOAD=
+
+### See definitons of:
+### - environment-vars in $dotf/guix/home/common/home-base.scm
+### - home-env's in $dotf/guix/home/home-*.scm
+
+# Warn about deprecated Guile features
+export GUILE_WARN_DEPRECATED=detailed
+
+export dev=/home/bost/dev
+export bin=/home/bost/bin
+export cheat=$dev/cheat
+export dotf=$dev/dotfiles
+export dgx=$dev/guix
+export dgxp=$dev/guix-packages
+export dgl=$dev/guile
+
+# used by gps, gpl
+export remotes=origin:gitlab
+
+# `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
+export EDITOR=e # which "e": /home/bost/scm-bin/e
+
+# My own scripts and guix-home profile take precedence over $PATH.
+export PATH=/home/bost/scm-bin:$bin:$PATH:/usr/local/bin
