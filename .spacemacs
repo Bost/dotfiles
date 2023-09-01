@@ -406,7 +406,7 @@ This function should only modify configuration layer settings."
      sql
      ;; swift
      syntax-checking
-     ;; systemd
+     systemd
 
      ;; M-x centaur-tab-mode
      ;; (tabs :variables
