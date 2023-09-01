@@ -191,6 +191,7 @@
                            (getenv "XDG_DATA_DIRS"))))
 
      ("dev"   . ,hf:dev)
+     ;; TODO unify value of `bin' with the value in the `PATH' definition
      ("bin"   . ,(user-home hf:bin-dirpath))
      ("cheat" . ,(str hf:dev "/cheat"))
      ("dotf"  . ,(str hf:dev "/dotfiles"))
