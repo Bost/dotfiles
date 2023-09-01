@@ -20,7 +20,7 @@ bash_profile=${HOME}/.bash_profile
 
 if [ -z ${dotfilesHOME} ]; then
     source ${bash_profile}
-    # TODO check if ~/.bashrc executed is not executed twice
+    # TODO make sure ~/.bashrc is not executed twice, eg in a loop:
     # ~/.bashrc -> ~/.bash_profile -> ~/.bashrc
 fi
 
