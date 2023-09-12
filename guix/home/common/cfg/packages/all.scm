@@ -328,9 +328,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Manage encryption keys and passwords in the GNOME keyring
    "seahorse"
 
-   ;; version 11.0 throws a compilation error:
-   ;; ../virt-viewer-11.0/data/meson.build:4:7: ERROR: Function does not take positional arguments.
-   ;; "virt-viewer" ;; in gnu/packages/spice.scm
+   "virt-viewer"
 
    ;; share the clipboard and guest display resolution scaling on graphical
    ;; console window resize.
@@ -409,7 +407,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     (partial map (partial apply inferior-package-in-guix-channel)))
    (list
 ;;; virt-viewer 7.0 works fine
-    (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
+;;;    (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
 ;;; racket 8.8 returns:
 ;;;     $ racket
 ;;;     munmap_chunk(): invalid pointer
