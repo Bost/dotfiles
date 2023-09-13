@@ -70,10 +70,10 @@
                     (list
 ;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
                      "git"
-                     "gparted"    ; disk partition
+                     "gparted"    #| disk partition |#
                      "nss-certs"
-                     "rsync"      ; 'scp' is preinstalled
-                     "vim"        ; 'vi' is preinstalled
+                     "rsync"      #| 'scp' is preinstalled |#
+                     "vim"        #| 'vi' is preinstalled |#
                      ))
                %base-packages))
 

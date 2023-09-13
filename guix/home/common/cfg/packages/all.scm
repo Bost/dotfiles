@@ -321,7 +321,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "dconf-editor"
    "evince"
    ;; "gksudo" ;; not available in the Guix package repository
-   "gparted"
+   "gparted"    #| disk partition |#
    "gsettings-desktop-schemas"
    "gtk"
    "libreoffice"
