@@ -94,10 +94,10 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
            (list
             "brightnessctl" #| backlight and LED brightness control |#
             "git"
-            ;; "gparted"    #| disk partition |#
+            #;"gparted"     #| disk partition |#
             "nss-certs"     #| HTTPS access |#
-            ;; "rsync"      #| 'scp' is preinstalled |#
-            ;; "vim"        #| 'vi' is preinstalled |#
+            #;"rsync"       #| 'scp' is preinstalled |#
+            #;"vim"         #| 'vi' is preinstalled |#
             ))
       %base-packages))
 
