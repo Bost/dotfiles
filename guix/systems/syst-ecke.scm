@@ -2,6 +2,7 @@
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
+  #:use-module (cfg packages all)      ; for packages-to-install
 
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
@@ -127,13 +128,7 @@
 			            #;"ranger" #| minimalistic console file manager with Vi key bindings |#
 			            #;"luakit" #| simple browser extensible by Lua based on WebKit & GTK+ toolkit |#
 			            #;"mpv"    #| Audio and video player |#)
-            (list
-             "git"
-             #;"gparted"    #| disk partition |#
-             #;"mtools"     #| used by gparted |#
-             "nss-certs"
-             #;"rsync"      #| 'scp' is preinstalled |#
-             #;"vim"        #| 'vi' is preinstalled |#)))
+            packages-to-install))
       %base-packages))
     #;
     (skeletons
