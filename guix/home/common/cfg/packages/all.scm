@@ -322,6 +322,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "evince"
    ;; "gksudo" ;; not available in the Guix package repository
    "gparted"    #| disk partition |#
+   "mtools"     #| used by gparted |#
    "gsettings-desktop-schemas"
    "gtk"
    "libreoffice"
