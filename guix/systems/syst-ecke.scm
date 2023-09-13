@@ -130,6 +130,7 @@
             (list
              "git"
              #;"gparted"    #| disk partition |#
+             #;"mtools"     #| used by gparted |#
              "nss-certs"
              #;"rsync"      #| 'scp' is preinstalled |#
              #;"vim"        #| 'vi' is preinstalled |#)))
