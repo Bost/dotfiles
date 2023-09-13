@@ -129,10 +129,10 @@
 			            #;"mpv"    #| Audio and video player |#)
             (list
              "git"
-             #;"gparted" #|  disk partition |#
+             #;"gparted"    #| disk partition |#
              "nss-certs"
-             #;"rsync"  #| 'scp' is preinstalled |#
-             #;"vim" #| 'vi' is preinstalled |#)))
+             #;"rsync"      #| 'scp' is preinstalled |#
+             #;"vim"        #| 'vi' is preinstalled |#)))
       %base-packages))
     #;
     (skeletons
