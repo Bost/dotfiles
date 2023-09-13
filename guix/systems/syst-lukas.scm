@@ -71,6 +71,7 @@
 ;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
                      "git"
                      "gparted"    #| disk partition |#
+                     "mtools"     #| used by gparted |#
                      "nss-certs"
                      "rsync"      #| 'scp' is preinstalled |#
                      "vim"        #| 'vi' is preinstalled |#
