@@ -2,6 +2,7 @@
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
+  #:use-module (cfg packages all)      ; for packages-to-install
 
   #:use-module (gnu)
   ;; #:use-module (gnu system shadow)  ; for user-group; user-account-shell
@@ -67,15 +68,7 @@
 ;;; install PACKAGE' to install a package.
     (packages (append
                (map specification->package
-                    (list
-;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
-                     "git"
-                     "gparted"    #| disk partition |#
-                     "mtools"     #| used by gparted |#
-                     "nss-certs"
-                     "rsync"      #| 'scp' is preinstalled |#
-                     "vim"        #| 'vi' is preinstalled |#
-                     ))
+                    packages-to-install)
                %base-packages))
 
     ;; Below is the list of system services.  To search for available

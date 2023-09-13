@@ -20,6 +20,7 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
+  #:use-module (cfg packages all)      ; for packages-to-install
 
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
@@ -91,15 +92,11 @@ sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems
     (packages
      (append
       (map specification->package
-           (list
-            "brightnessctl" #| backlight and LED brightness control |#
-            "git"
-            #;"gparted"     #| disk partition |#
-            #;"mtools"      #| used by gparted |#
-            "nss-certs"     #| HTTPS access |#
-            #;"rsync"       #| 'scp' is preinstalled |#
-            #;"vim"         #| 'vi' is preinstalled |#
-            ))
+           (append
+            packages-to-install
+            (list
+             "brightnessctl" #| backlight and LED brightness control |#
+             )))
       %base-packages))
 
 ;;; Below is the list of system services. To search for available services, run
