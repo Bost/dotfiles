@@ -32,36 +32,39 @@ sudo guix system --verbosity=3 --fallback \
 { retval="$?"; set +x; } 2>/dev/null
 
 if [ $hostname == "ecke" ]; then
-    echo -e "\n\n" # output two new lines
+    # output two new lines
+    echo "
 
-    echo "set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda"
-    echo "set device (blkid --uuid \$UUID)"
-    echo "if test ! (findmnt -nr -o target -S \$device)"
-    echo "   udisksctl mount --block-device=\$device"
-    echo "# else"
-    echo "#    printf \"%s is mounted already\n\" \$device"
-    echo "end"
-    echo "# sudo cp /media/\$USER/\$UUID/boot/grub/grub.cfg /tmp/"
-    echo "sudo cp /media/\$USER/ubuntu-filesyst/boot/grub/grub.cfg /tmp/"
-    echo "sudo chown \$USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg"
-    echo "## Match the version number and place it to clipboard:"
-    echo "##  Also: grep -oP \"(\d{1,}\.)+\d{1,}\""
-    echo "## Parameter abbreviations:"
-    echo "#   rg:   -N --no-line-number; -A --after-context; -m --max-count"
-    echo "#   xsel: -b --clipboard; -i --input"
-    echo "rg -N -A 4 -m 1 \"GNU with Linux-Libre\" /boot/grub/grub.cfg | xsel -bi"
-    echo "s /tmp/grub.cfg                    # edit the file"
-    echo "## <paste the block>"
-    echo "## Extract the time and generation number:"
-    echo "set n2 \"\d{2,}\""
-    echo "set tstp (date +\"%Y-%m-%d\")"
-    echo "set replacement (printf '(#\$1 %s \$2)' \$tstp)"
-    echo "set regex (printf \".*? (\d{1,}).*(%s:%s):%s.*current\" \$n2 \$n2)"
-    echo "guix system describe | rg \$regex -o -r \$replacement | xsel -bi"
-    echo "## <paste the block>"
-    echo "# sudo cp /tmp/grub.cfg /media/\$USER/boot/grub/grub.cfg"
-    echo "sudo cp -i /tmp/grub.cfg /media/\$USER/ubuntu-filesyst/boot/grub/"
-    echo "sudo reboot # press <f12> during the reboot and fix the boot order"
+set UUID a8fb1680-eef5-49a0-98a3-8169c9b8eeda
+set device (blkid --uuid \$UUID)
+if test ! (findmnt -nr -o target -S \$device)
+   udisksctl mount --block-device=\$device
+# else
+#    printf \"%s is mounted already\n\" \$device
+end
+# sudo cp /media/\$USER/\$UUID/boot/grub/grub.cfg /tmp/
+sudo cp /media/\$USER/ubuntu-filesyst/boot/grub/grub.cfg /tmp/
+sudo chown \$USER /tmp/grub.cfg && sudo chmod +rw /tmp/grub.cfg
+## Match the version number and place it to clipboard:
+##  Also: grep -oP \"(\d{1,}\.)+\d{1,}\"
+## Parameter abbreviations:
+#   rg:   -N --no-line-number; -A --after-context; -m --max-count
+#   xsel: -b --clipboard; -i --input
+rg -N -A 4 -m 1 \"GNU with Linux-Libre\" /boot/grub/grub.cfg | xsel -bi
+s /tmp/grub.cfg                    # edit the file
+## <paste the block>
+## Extract the time and generation number:
+set n2 \"\d{2,}\"
+set tstp (date +\"%Y-%m-%d\")
+set replacement (printf '(#\$1 %s \$2)' \$tstp)
+set regex (printf \".*? (\d{1,}).*(%s:%s):%s.*current\" \$n2 \$n2)
+guix system describe | rg \$regex -o -r \$replacement | xsel -bi
+## <paste the block>
+# sudo cp /tmp/grub.cfg /media/\$USER/boot/grub/grub.cfg
+sudo cp -i /tmp/grub.cfg /media/\$USER/ubuntu-filesyst/boot/grub/
+sudo reboot # press <f12> during the reboot and fix the boot order
+"
+
 fi
 
 exit $retval
