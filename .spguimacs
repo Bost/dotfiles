@@ -60,6 +60,7 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
+   ;; Direct jump with ~g f~ to $dotf/.emacs.d/
    dotspacemacs-configuration-layer-path `(,(concat dotf "/.emacs.d/"))
 
    ;; List of configuration layers to load.
@@ -300,7 +301,9 @@ This function should only modify configuration layer settings."
      ;; `g r' menu in Emacs normal state
      multiple-cursors
 
-     my=tweaks ;; see `dotspacemacs-configuration-layer-path'
+     ;; Direct jump with ~g f~ $dotf/.emacs.d/my=tweaks/funcs.el doesn't work.
+     ;; The '=' in the file-path makes problems.
+     my=tweaks ;; See `dotspacemacs-configuration-layer-path'
 
      (org :variables
           ;; Don't ask for confirmation before interactively evaluating code
