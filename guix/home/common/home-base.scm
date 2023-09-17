@@ -1,6 +1,7 @@
 (define-module (home-base)
   #:use-module ((settings) #:prefix hs:)
   #:use-module (utils)
+  #:use-module (store-utils)
   #:use-module (memo)
 
   ;; the code of this module comes in via the 'bost' channel
@@ -26,6 +27,9 @@
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
   ;; home-git-service-type
   ;; #:use-module (gnu home services version-control)
+
+  #:use-module (gnu packages commencement)
+
   #:export (
             services
             environment-vars
@@ -168,6 +172,11 @@
    (list) #| empty list |#))
 (testsymb 'services)
 
+(define gcc-filepath
+  ;; (user-home "/.guix-home/profile/bin/gcc")
+  (format #f "~a/bin/gcc" (package-derivation-output!
+                           (@(gnu packages commencement) gcc-toolchain))))
+
 ;; See also $dotf/.bashrc.martin
 (define (environment-vars list-separator)
   ((compose
@@ -177,8 +186,22 @@
    `(
      ;; Warn about deprecated Guile features
      ("GUILE_WARN_DEPRECATED" . "detailed")
+
+     ;; hunting down the native-compiler-error:
+     ;;     ld: cannot find crtbeginS.o: No such file or directory
+     ;;     ld: cannot find -lgcc
+     ;;     ld: cannot find -lgcc_s
+     ;;     ld: cannot find -lgcc_s
+     ;;     libgccjit.so: error: error invoking gcc driver
+     ;; https://lists.gnu.org/archive/html/guix-devel/2020-03/msg00256.html
+     ;; https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
+     ;; TODO try the v3 patches from
+     ;; [PATCH 0/6] Add native compilation to Emacs
+     ;; https://issues.guix.gnu.org/57086#9
+     ;;
      ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
-     ("CC" . ,(user-home "/.guix-home/profile/bin/gcc"))
+     ("CC"               . ,gcc-filepath)
+     ("CMAKE_C_COMPILER" . ,gcc-filepath)
 
      ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
      ;; See https://github.com/phiresky/ripgrep-all
@@ -226,4 +249,5 @@
    'environment-variables-service
    home-environment-variables-service-type
    environment-vars))
+
 ;; (format #t "~a module evaluated\n" m)
