@@ -1,3 +1,38 @@
+(defun my=escape-quotes (Begin End)
+  "Add slash before double quote in current line or selection.
+Double quote is codepoint 34.
+See also: `xah-unescape-quotes'
+URL `http://xahlee.info/emacs/emacs/elisp_escape_quotes.html'
+Version: 2017-01-11"
+  (interactive
+   (if (region-active-p)
+       (list (region-beginning) (region-end))
+     (list (line-beginning-position) (line-end-position))))
+  (save-excursion
+      (save-restriction
+        (narrow-to-region Begin End)
+        (goto-char (point-min))
+        (while (search-forward "\"" nil t)
+          (replace-match "\\\"" t t)))))
+
+(defun my=unescape-quotes (Begin End)
+  "Replace  「\\\"」 by 「\"」 in current line or selection.
+See also: `xah-escape-quotes'
+
+URL `http://xahlee.info/emacs/emacs/elisp_escape_quotes.html'
+Version: 2017-01-11"
+  (interactive
+   (if (region-active-p)
+       (list (region-beginning) (region-end))
+     (list (line-beginning-position) (line-end-position))))
+  (save-excursion
+    (save-restriction
+      (narrow-to-region Begin End)
+      (goto-char (point-min))
+      (while (search-forward "\\\"" nil t)
+        (replace-match "\"" t t)))))
+
+
 (defun my=shell-which (command)
   "Execute the 'which' command in the current shell"
   (funcall
