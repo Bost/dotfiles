@@ -191,7 +191,7 @@
 ;;; '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
 ;;; wrong
                    ;; requires the guix-gaming-channels/games.scm - see below
-                   (channel (name 'guix-gaming-games)
+                   (channel (name 'games)
                             (url
                              ;; "https://gitlab.com/rostislav.svoboda/games"
                              ;; ,(format #f "file://%s/dev/games" home)
