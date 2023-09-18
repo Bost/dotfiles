@@ -98,6 +98,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "bash"
    "bat"
    "direnv"
+   "dmidecode" ;; read hardware information from the BIOS
    "exa"
    "fd"
    "fish"
