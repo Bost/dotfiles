@@ -1,10 +1,10 @@
-(use-modules
- (utils)         ; partial
- (gnu packages)  ; find-packages-by-name
- (guix packages) ; package-version
- ;; (gnu system)    ; operating-system-kernel
- ;; (memo)          ; hostname-memoized
- ;; (gnu tests)     ; %simple-os
+(define-module (kernel-version)
+  #:use-module (utils)         ; partial
+  #:use-module (gnu packages)  ; find-packages-by-name
+  #:use-module (guix packages) ; package-version
+  ;; #:use-module (gnu system)    ; operating-system-kernel
+  ;; #:use-module (memo)          ; hostname-memoized
+  ;; #:use-module (gnu tests)     ; %simple-os
  )
 
 ((compose
