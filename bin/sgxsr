@@ -27,6 +27,7 @@ guix repl \
 
 sudo guix system --verbosity=3 --fallback \
      -L $baseLP/common \
+     -L $baseLP/systems/common \
      reconfigure $baseLP/systems/syst-$hostname.scm
 
 { retval="$?"; set +x; } 2>/dev/null
