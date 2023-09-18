@@ -9,8 +9,10 @@
   #:use-module ((bost packages emacs-xyz) #:prefix bste:)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
-  #:use-module (bost packages clojure) ;; provides clojure-lsp
-  #:use-module ((bost packages xdisorg) #:prefix bstx:) ;; provides xsel
+  ;; provides clojure related packages
+  #:use-module ((bost packages clojure) #:prefix bstc:)
+  ;; provides xsel
+  #:use-module ((bost packages xdisorg) #:prefix bstx:)
   #:use-module (gnu packages)
   #:use-module (guix packages)
   #:use-module (guix channels)
@@ -203,9 +205,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "cdrtools"
 
    "clang"
-   "clojure"
-   "clojure-lsp" ;; from (bost packages clojure)
-   "clojure-tools"
+
+   ;; Use the (bost packages clojure) definitions for clojure-related packages
+   ;; "clojure"
+   ;; "clojure-lsp"
+   ;; "clojure-tools"
+
    "clusterssh"
    "cmake"
    "curl"
@@ -495,13 +500,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
       (if (or (is-system-ecke) (is-system-geek))
           (append
            (list
+            bstc:clojure
+            bstc:clojure-lsp
+            bstc:clojure-tools
+
             bstx:xsel
 
             pkg:emacs-geiser
             pkg:emacs-geiser-guile
 
             pkg:emacs-guix
-            ;; bstc:clojure-tools
             ;; bste:emacs-copilot
             ;; below are good
             bste:emacs-emacsql
