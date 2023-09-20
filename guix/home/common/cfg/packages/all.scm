@@ -309,6 +309,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "uniutils"
    "usbutils"
 
+   ;; Interactive viewer for graphviz dot files. Useful to view package dependency graph.
+   "xdot" ;; guix graph coreutils | xdot -
+
    ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
    "xorriso"
 
@@ -347,6 +350,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
    ;; "xdg-utils"  ;; in gnu/packages/freedesktop.scm
 
+   ;; $ time exa -abghHliS --color=always --time-style=full-iso /gnu/store
+   ;;
    ;; GPU-based terminal emulator:
    ;; * Offloads rendering to the GPU for lower system load and buttery smooth scrolling.  Uses threaded rendering to minimize input latency.
    ;; * Supports all modern terminal features: graphics (images), unicode, true-color, OpenType ligatures, mouse protocol, focus tracking, bracketed paste and several new terminal protocol extensions.
@@ -355,7 +360,20 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; * Has a framework for Kittens, small terminal programs that can be used to extend kitty's functionality.  For example, they are used for Unicode input, hints, and side-by-side diff.
    ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
    ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
-   "kitty"
+   ;; "kitty"           ;;  5.443s; no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
+   ;;
+   ;; "terminator"      ;;  8.916s; no drop-down; has splits
+   "alacritty"          ;;  4.393s; no drop-down; no splits; no tabs
+   ;; "xfce4-terminal"  ;;  9.905s; has --drop-down; has context menu; already present, no splits
+   ;; "yakuake"         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
+   ;; "guake"           ;;        ; not packaged for Guix
+   ;; "tilda"           ;;  9.256s; drop down with F1 by default; has tabs; no splits
+   "qterminal"          ;;  6.147s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
+   ;; "tilix"           ;;        ; can't see a shit, the text (foreground color) is too dark
+   ;; "xterm"           ;; 17.341s; has nothing, too basic
+   ;; "lxterminal"      ;;  9.022s; has context-menu; no drop-down; no splits; has tabs
+   ;; "cool-retro-term" ;; 25.256s; is cool!
+
    "neovim"
    ))
 
