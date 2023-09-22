@@ -827,7 +827,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-default-font `("Source Code Pro"
                                :size ,(cond
                                        ((string= hostname "geek") 17)
-                                       ((string= hostname "ecke") 8.8)
+                                       ;; ((string= hostname "ecke") 8.8)
                                        (t 10.0))
                                :weight normal
                                :width normal)
