@@ -1707,8 +1707,6 @@ Some binding snippets / examples:
 
      ;; TODO The <escape> keybinding seems not to work.
      ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-     ;; TODO bind stuff with mouse-buttons and also the mouse-wheel
-     ;; C-<down-mouse-4> C-<mouse-4> - like zoom in/out
      ;; TODO notmuch
 
      ;; TODO my=emacs-comment-sexp: mark-sexp C-M-@ comment-dwim M-;
@@ -1925,8 +1923,8 @@ Some binding snippets / examples:
 
      ("s-\"" . my=select-in-string)
 
-     ;; ("<C-mouse-5>" . (lambda () (interactive) (message "zoom-out")))
-     ;; ("<C-mouse-4>" . (lambda () (interactive) (message "zoom-out")))
+     ("C-S-<mouse-4>" . my=zoom-all-frames-in)  ;; mouse-up
+     ("C-S-<mouse-5>" . my=zoom-all-frames-out) ;; mouse-down
 
      ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
      ;; <menu> is not a prefix key. See:

@@ -131,6 +131,20 @@ Example: (my=buffer-mode (current-buffer))"
 (defun my=select-in-crl-bracket () (interactive) (my=select-inner "vi{"))
 (defun my=select-in-string () (interactive) (my=select-inner "vi\""))
 
+(defun my=zoom-all-frames (zoom-function)
+  (unless (functionp zoom-function)
+    (require 'zoom-frm))
+  (funcall zoom-function)
+  (message "%s" zoom-function))
+
+(defun my=zoom-all-frames-in ()
+    (interactive)
+    (my=zoom-all-frames #'zoom-all-frames-in))
+
+(defun my=zoom-all-frames-out ()
+  (interactive)
+  (my=zoom-all-frames #'zoom-all-frames-out))
+
 (defun my=disable-y-or-n-p (orig-fun &rest args)
   (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
     (apply orig-fun args)))
