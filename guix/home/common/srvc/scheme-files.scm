@@ -113,7 +113,7 @@ Example:
 ;;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile (and
 ;;; other profile files), etc.
    (service-file #:program-name "crl"
-                 #:files (str "guix|shells|linux|android|cvs|"
+                 #:files (str "guix|shells|linux|network|android|cvs|"
                               "systemd|heroku|gui|packaging|rsync")
                  #:scheme-file-name "search-notes")
 ;;; TODO crr should also search in the $der
