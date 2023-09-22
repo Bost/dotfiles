@@ -847,14 +847,22 @@ It should only modify the values of Spacemacs settings."
    ;; Default font or prioritized list of fonts. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
-   ;; :size 8.8 is `(- 10.0 text-scale-mode-step)', like M-x text-scale-decrease
-   dotspacemacs-default-font `("Source Code Pro"
-                               :size ,(cond
-                                       ((string= hostname "geek") 17)
-                                       ;; ((string= hostname "ecke") 8.8)
-                                       (t 10.0))
-                               :weight normal
-                               :width normal)
+   ;; See functions and keybindings for `text-scale-...' and `zoom-...'
+   dotspacemacs-default-font
+   `("Source Code Pro"
+     :size
+     , (let* ((default 10.0)
+              ;; The `text-scale-mode-step' is not accessible at this moment.
+              (text-scale-mode-step 1.2)
+              (size (cond
+                     ((string= hostname "geek") 17)
+                     ((string= hostname "ecke")
+                      (+ default (* 6 text-scale-mode-step)))
+                     (t default))))
+         (message "#### dotspacemacs-default-font :size: %s" size)
+         size)
+     :weight normal
+     :width normal)
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
