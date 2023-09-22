@@ -1927,7 +1927,7 @@ Some binding snippets / examples:
      ("H-2" . my=H-2)
      ("H-4" . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
      )
-    (message "[my=eval-bind-keys-and-chords] evaluated")
+    (message "(my=eval-bind-keys-and-chords) evaluated")
     )
 
   ;; Thanx to
@@ -1957,7 +1957,7 @@ Some binding snippets / examples:
     ;; (global-set-key (kbd "<H-menu>") #'execute-extended-command)
     ;; (global-unset-key (kbd "<menu>"))
     ;; (global-unset-key (kbd "<H-menu>"))
-    (message "[enable-hyper-super-modifiers-linux-x] evaluated"))
+    (message "(enable-hyper-super-modifiers-linux-x) evaluated"))
 
   (defun enable-hyper-super-modifiers-macos ()
     ;; http://xahlee.org/emacs/emacs_hyper_super_keys.html
