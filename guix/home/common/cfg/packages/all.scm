@@ -281,8 +281,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "pulseaudio"
    "pv"
    "pybind11"
-   "python"
+
+ ;;; `python' should not be installed `python' with `python-wrapper'.
+ ;;; `python-wrapper' uses the `python' package as a propagated input
+   ;; "python"
+
+;;; `python-wrapper' enables invocation of python3 under under their usual
+;;; names---e.g., `python' instead of `python3' or `pip' instead of `pip3'
+   "python-wrapper"
    "python2"
+
    "qemu"
 ;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
 ;;; This will happen automatically if `search-notes' is a proper Guix package.
