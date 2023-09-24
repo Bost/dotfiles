@@ -444,12 +444,17 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (list
 ;;; virt-viewer 7.0 works fine
 ;;;    (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
+
 ;;; racket 8.8 returns:
 ;;;     $ racket
 ;;;     munmap_chunk(): invalid pointer
 ;;;     Aborted
-;;; racket 8.7 works fine
-    #;(list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968"))))
+;;; racket 8.7 works fine:
+;;;    (list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968")
+
+;;; emacs 28.2
+    (list "emacs"             "772eaa69f31457aa19ca4dc4ce755c791d722054")
+    )))
 (testsymb 'inferior-pkgs)
 
 (define (devel-packages)
@@ -458,17 +463,19 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; (chez-scheme-devel-packages)
    (elixir-devel-packages)
    (agda-devel-packages)
+   ;; remove packages from this list if their inferior version should be used
    (list
 ;;; Make sure that emacs is also in the default profile, i.e. installed by
 ;;;   guix install emacs
 ;;; otherwise the:
 ;;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
 ;;; gets triggered. See https://issues.guix.gnu.org/issue/52002
-    "emacs"
+    ;; "emacs"            ;; use inferior version 28.2
     "emacs-gptel"
-    "emacs-next"
-    "emacs-next-pgtk"
+    ;; "emacs-next"       ;; 29.0.92
+    ;; "emacs-next-pgtk"  ;; 29.0.92
     "emacs-with-editor" ;; for using Emacsclient as EDITOR
+    "leafpad"           ;; simple editor to use when emacs doesn't work
     "git:send-email"
     "pinentry" ;; needed to sign commits
     "pwclient" ;; CLI client for Patchwork patch tracking tool (*.patch files)
@@ -524,7 +531,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
                   identity)
                  pkgs)))
       |#
-      (format #t "~a ~a packages to install\n" m (length pkgs))
+      ;; (format #t "~a\n" (string-join (map (partial format #f "~a") pkgs) "\n"))
+      (format #t "~a packages to install: ~a\n" m (length pkgs))
       pkgs)
     inferior-pkgs
     (lambda (pkgs)
