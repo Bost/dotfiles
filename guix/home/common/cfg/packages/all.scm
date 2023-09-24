@@ -455,7 +455,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     "emacs-gptel"
     "emacs-next"
     "emacs-next-pgtk"
-    "emacs-with-editor"
+    "emacs-with-editor" ;; for using Emacsclient as EDITOR
     "git:send-email"
     "pinentry" ;; needed to sign commits
     "pwclient" ;; CLI client for Patchwork patch tracking tool (*.patch files)
@@ -471,45 +471,45 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     (lambda (pkgs)
       #|
       (format #t "~a\n~a\n" m
-              ((compose
-                (partial filter
-                         ;; see also `string=?', `eq?', `equal?', etc. ;; member uses `equal?'
-                         (lambda (p)
-                           (let* [(search-space
-                                   '(
-                                     "emacs-haskell-snippets"
-                                     "emacs-yasnippet"
-                                     "emacs-yasnippet-snippets"
-                                     ))]
-                             ;; (format #t "p ~a\n" p)
-                             (cond
-                              [(list? p)    (member (package-name (car p)) search-space)]
-                              [(string? p)  (member (package-name p) search-space)]
-                              [(package? p) (member (package-name p) search-space)]
-                              [(record? p)  (member (inferior-package-name p) search-space)]
-                              [else         (member (package-name p) search-space)]))))
-                ;; we have a colorful mix here:
-                (partial map
-                         (lambda (p)
-                           (cond
-                            [(list? p)    (when (member (package-name (car p))
-                                                        '(
-                                                          "emacs-haskell-snippets"
-                                                          "emacs-yasnippet"
-                                                          "emacs-yasnippet-snippets"
-                                                          ))
-                                            (format #t "list    ~a\n" p))]
-                            [(string? p)  (when #t
-                                            (format #t "string  ~a\n" p))]
-                            [(package? p) (when #t
-                                            (format #t "package ~a\n" p))]
-                            [(record? p)  (when #t
-                                            (format #t "record  ~a\n" p))]
-                            [else         (when #t
-                                            (format #t "else    ~a\n" p))])
-                           p))
-                identity)
-               pkgs))
+              (let* [(search-space
+                      '(
+                        "emacs-haskell-snippets"
+                        "emacs-yasnippet"
+                        "emacs-yasnippet-snippets"
+                        ))]
+                ((compose
+                  (partial
+                   filter
+                   ;; see also `string=?', `eq?', `equal?', etc.
+                   ;; member uses `equal?'
+                   (lambda (p)
+                     (cond
+                      [(list? p)    (member (package-name (car p))
+                                            search-space)]
+                      [(string? p)  (member (package-name p) search-space)]
+                      [(package? p) (member (package-name p) search-space)]
+                      [(record? p)  (member (inferior-package-name p)
+                                            search-space)]
+                      [else         (member (package-name p) search-space)])))
+                  ;; we have a colorful mix here:
+                  (partial
+                   map
+                   (lambda (p)
+                     (cond
+                      [(list? p)    (when (member (package-name (car p))
+                                                  search-space)
+                                      (format #t "list    ~a\n" p))]
+                      [(string? p)  (when #t
+                                      (format #t "string  ~a\n" p))]
+                      [(package? p) (when #t
+                                      (format #t "package ~a\n" p))]
+                      [(record? p)  (when #t
+                                      (format #t "record  ~a\n" p))]
+                      [else         (when #t
+                                      (format #t "else    ~a\n" p))])
+                     p))
+                  identity)
+                 pkgs)))
       |#
       (format #t "~a ~a packages to install\n" m (length pkgs))
       pkgs)
