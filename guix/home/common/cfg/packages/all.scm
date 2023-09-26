@@ -459,6 +459,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (elixir-devel-packages)
    (agda-devel-packages)
    (list
+;;; Make sure that emacs is also in the default profile, i.e. installed by
+;;;   guix install emacs
+;;; otherwise the:
+;;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
+;;; gets triggered. See https://issues.guix.gnu.org/issue/52002
     "emacs"
     "emacs-gptel"
     "emacs-next"
