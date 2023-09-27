@@ -1,6 +1,5 @@
 (define-module (cfg packages spguimacs all)
-  #:use-module (srfi srfi-1)
-  #:use-module (utils) ;; partial, m
+  #:use-module (utils) ;; partial m s+ s- sx
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
   #:export (
@@ -113,12 +112,6 @@
    "emacs-ivy"
    "emacs-a"
    ))
-
-;; neither `=' nor `eqv?' work
-(define eq-op? string-ci=?)
-(define (s+ . rest) (apply (partial lset-union eq-op?) rest))
-(define (s- . rest) (apply (partial lset-difference eq-op?) rest))
-(define (sx . rest) (apply (partial lset-intersection eq-op?) rest))
 
 #|
 (define G general-packages)
