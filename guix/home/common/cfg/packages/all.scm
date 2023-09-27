@@ -455,7 +455,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (devel-packages)
   (append
    (fennel-devel-packages)
-   (chez-scheme-devel-packages)
+   ;; (chez-scheme-devel-packages)
    (elixir-devel-packages)
    (agda-devel-packages)
    (list
