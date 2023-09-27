@@ -1,6 +1,8 @@
 (define-module (cfg packages spguimacs available)
   #:use-module (srfi srfi-1)
   #:use-module (utils) ;; partial, m
+  #:use-module (gnu packages) ;; find-packages-by-name
+  #:use-module (guix)         ;; package-name
   #:export (
             available-packages
             ))
@@ -11,7 +13,7 @@
 ;; guix package --list-available='^emacs-' | awk '{print "\""$1"\""}'
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
 ;; doesn't work
-(define available-packages
+(define guix-package---list-available
   (list
    "emacs-2048-game"
    "emacs-4clojure"
@@ -1551,4 +1553,19 @@
    "emacs-zoutline"
    "emacs-ztree"
    ))
+(testsymb 'guix-package---list-available)
+
+;;; found fresh local cache at /home/bost/.cache/guile/ccache/3.0-LE-8-4.6/home/bost/dev/guix/gnu/packages.scm.go
+(define found-packages
+  ((compose
+    ;; length
+    (partial map package-name)
+    flatten
+    (partial remove null?)
+    (partial map find-packages-by-name)
+    )
+   guix-package---list-available))
+(testsymb 'found-packages)
+
+(define available-packages (sx guix-package---list-available found-packages))
 (testsymb 'available-packages)
