@@ -221,9 +221,21 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "font-gnu-freefont"
    "font-gnu-unifont"
    "fuse"
+
+   ;; guix package --list-available=gcc | awk '{print $1}' | sort | uniq
+   ;; Try to install all gcc-relevant packages to fix the
+   ;; native-compiler-error:
+   ;;     libgccjit.so: error: error invoking gcc driver
+   "gcc-bootstrap"
+   "gccgo"
+   "gccmakedep"
+   "gcc-objc"
+   "gcc-objc++"
    ;; Make sure the CC environment variable has the value `(which gcc)'
    ;; See home-environment-variables-service-type
    "gcc-toolchain"
+   "libgccjit"
+   "rust-gcc"
 
    "ghc"
    "glib:bin"
