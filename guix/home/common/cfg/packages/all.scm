@@ -475,6 +475,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; "emacs-next"       ;; 29.0.92
     ;; "emacs-next-pgtk"  ;; 29.0.92
     "emacs-with-editor" ;; for using Emacsclient as EDITOR
+
+    "emacs-geiser"
+    "emacs-geiser-guile"
+    "emacs-guix"
+
     "leafpad"           ;; simple editor to use when emacs doesn't work
     "git:send-email"
     "pinentry" ;; needed to sign commits
@@ -544,11 +549,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             bstc:clojure-tools
 
             bstx:xsel
-
-            pkg:emacs-geiser
-            pkg:emacs-geiser-guile
-
-            pkg:emacs-guix
             ;; bste:emacs-copilot
             ;; below are good
             bste:emacs-emacsql
