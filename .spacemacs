@@ -1210,7 +1210,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
-
   (my=end #'dotspacemacs/user-init)
   )
 
@@ -1440,6 +1439,7 @@ before packages are loaded."
    ;; color-identifiers-mode t
    )
 
+  ;; Safe structural editing for all major modes:
   (when (boundp 'spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
     (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks))
   ;; Safe structural editing for clojure layer only (comment out line above):
@@ -2341,16 +2341,16 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
       ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
       (mapcar
        (-partial #'add-to-list 'geiser-guile-load-path)
-              (list
-               guix-checkout-dir
-               (format "%s/nonguix" dev)
-               (format "%s/guix/common" dotf)
-               (format "%s/guix/home" dotf)
-               (format "%s/guix/systems" dotf)
+       (list
+        guix-checkout-dir
+        (format "%s/nonguix" dev)
+        (format "%s/guix/common" dotf)
+        (format "%s/guix/home" dotf)
+        (format "%s/guix/systems" dotf)
 ;;; Excluded it b/c:
 ;;; WARNING: compilation of /home/bost/dev/rde-andrew-tropin/guix.scm failed
-               ;; (format "%s/rde-andrew-tropin" dev)
-               (format "%s/guix-packages/packages" dev))))
+        ;; (format "%s/rde-andrew-tropin" dev)
+        (format "%s/guix-packages/packages" dev))))
     ;; (with-eval-after-load 'yasnippet
     ;;   (add-to-list #'yas-snippet-dirs
     ;;                (concat guix-checkout-dir "/etc/snippets")))
