@@ -23,16 +23,20 @@
   #:use-module (srfi srfi-1)
   ;; #:use-module (guix build utils) ;; invoke - not needed
   #:use-module (ice-9 pretty-print)
-  #:export (
-            last
-            module-name-for-logging
-            pretty-print->string
-            testsymb
-            testsymb-trace
 
+  ;; first take remove delete-duplicates append-map etc.
+  #:use-module (srfi srfi-1)
+
+  #:export (
+            analyze-pids-call/cc
+            analyze-pids-flag-variable
+            cmd->string
+            comp
+            compute-cmd
+            cnt
             dbg
             dbg-exec
-            cmd->string
+            def*
             drop-left
             drop-right
             error-command-failed
@@ -43,25 +47,26 @@
             has-substring?
             has-suffix?
             home
+            last
+            mktmpfile
+            module-name-for-logging
             partial
-            comp
             path
+            pretty-print->string
             read-all
             read-all-sexprs
             read-all-syntax
+            s+
+            s-
+            sx
             str
             string-split-whitespace
+            testsymb
+            testsymb-trace
             unspecified-or-empty-or-false?
             user
             user-home
             xdg-config-home
-
-            analyze-pids-flag-variable
-            analyze-pids-call/cc
-            compute-cmd
-            def*
-
-            mktmpfile
             ))
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
@@ -72,6 +77,14 @@
 ;; (use-package-modules shells)
 
 ;;;;;; beg: testsymb, testsymb-trace
+
+;; neither `=' nor `eqv?' work
+(define eq-op? string-ci=?)
+(define (s+ . rest) (apply (partial lset-union eq-op?) rest))
+(define (s- . rest) (apply (partial lset-difference eq-op?) rest))
+(define (sx . rest) (apply (partial lset-intersection eq-op?) rest))
+
+(define cnt length+)
 
 (define (partial fun . args)
   (lambda x (apply fun (append args x))))
