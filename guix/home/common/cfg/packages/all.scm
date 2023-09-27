@@ -4,9 +4,6 @@
   #:use-module (memo)
 
   #:use-module (cfg packages spguimacs all)
-  ;; the code for this module comes from the 'bost' channel. See
-  ;; ~/.config/guix/channels.scm
-  #:use-module ((bost packages emacs-xyz) #:prefix bste:)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   ;; provides clojure related packages
@@ -559,46 +556,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             bstc:clojure
             bstc:clojure-lsp
             bstc:clojure-tools
-
-            bstx:xsel
-            ;; bste:emacs-copilot
-            ;; below are good
-            bste:emacs-emacsql
-            bste:emacs-closql
-            bste:emacs-forge
-            bste:emacs-emacsql-sqlite3
-            bste:emacs-company-web
-            bste:emacs-web-completion-data
-            bste:emacs-centered-cursor-mode
-            bste:emacs-company-statistics
-            bste:emacs-json-navigator
-            bste:emacs-eziam-themes
-            bste:emacs-helm-cider-history
-            bste:emacs-lsp-haskell
-            bste:emacs-helm-css-scss
-            ;; bste:emacs-auto-yasnippet
-            bste:emacs-composer
-            bste:emacs-erc-social-graph
-            bste:emacs-chocolate
-            bste:emacs-gruber-darker
-
-            bste:emacs-vi-tilde-fringe
-            bste:emacs-popwin
-            ;; bste:emacs-paradox
-            bste:emacs-lsp-volar
-
-            bste:emacs-lsp-python-ms
-            bste:emacs-slim-mode
-            bste:emacs-zop-to-char
-            bste:emacs-font-utils
-            bste:emacs-pythonic
-
-            bste:emacs-lsp-metals
-            bste:emacs-lsp-java
-            bste:emacs-dap-mode
-            bste:emacs-lsp-treemacs
-            bste:emacs-treemacs
-            )
+            bstx:xsel)
            pkgs)
           pkgs))
     (partial map (compose identity list
@@ -630,7 +588,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (kde-dependent-packages)
             (large-packages)
             (packages-from-additional-channels)
-            (spguimacs-packages)
             (list)))]
         [(is-system-geek)
          (begin
@@ -644,7 +601,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (kde-dependent-packages)
             ;; (large-packages)
             (packages-from-additional-channels-base)
-            (spguimacs-packages)
             (list)))]
         [#t (error (format #f "hostname '~a' must be one of the: ~a\n"
                            (hostname-memoized) (string-join hostnames)))])))
