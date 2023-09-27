@@ -2,6 +2,18 @@
   #:use-module (utils) ;; partial m s+ s- sx
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
+
+  ;; the code for this module comes from the 'bost' channel. See
+  ;; ~/.config/guix/channels.scm
+  #:use-module ((bost packages emacs-xyz) #:prefix bste:)
+
+  #:use-module (gnu packages)
+  #:use-module (guix packages)
+  #:use-module (guix channels)
+  #:use-module (guix inferior)
+  ;; first take remove delete-duplicates append-map etc.
+  #:use-module (srfi srfi-1)
+
   #:export (
             spguimacs-packages
             ))
@@ -121,17 +133,114 @@
 (define E excluded-packages)
 (load "/home/bost/dev/dotfiles/guix/home/cfg/packages/spguimacs/all.scm")
 |#
+
 (define (spguimacs-packages)
-  (let [(G general-packages)
-        (N needed-packages)
-        (O orphan-packages)
-        (A available-packages)
-        (E excluded-packages)]
-    (s+ G
-        (s- (sx (s+ N O)
-                A)
-            E))))
+  ((compose
+    ;; (lambda (pkgs)
+    ;;   ;;
+    ;;   (format #t "~a\n~a\n" m
+    ;;           (let* [(search-space
+    ;;                   '(
+    ;;                     "emacs-haskell-snippets"
+    ;;                     "emacs-yasnippet"
+    ;;                     "emacs-yasnippet-snippets"
+    ;;                     ))]
+    ;;             ((compose
+    ;;               (partial
+    ;;                filter
+    ;;                ;; see also `string=?', `eq?', `equal?', etc.
+    ;;                ;; member uses `equal?'
+    ;;                (lambda (p)
+    ;;                  (cond
+    ;;                   [(list? p)    (member (package-name (car p))
+    ;;                                         search-space)]
+    ;;                   [(string? p)  (member (package-name p) search-space)]
+    ;;                   [(package? p) (member (package-name p) search-space)]
+    ;;                   [(record? p)  (member (inferior-package-name p)
+    ;;                                         search-space)]
+    ;;                   [else         (member (package-name p) search-space)])))
+    ;;               ;; we have a colorful mix here:
+    ;;               (partial
+    ;;                map
+    ;;                (lambda (p)
+    ;;                  (cond
+    ;;                   [(list? p)    (when (member (package-name (car p))
+    ;;                                               search-space)
+    ;;                                   (format #t "list    ~a\n" p))]
+    ;;                   [(string? p)  (when #t
+    ;;                                   (format #t "string  ~a\n" p))]
+    ;;                   [(package? p) (when #t
+    ;;                                   (format #t "package ~a\n" p))]
+    ;;                   [(record? p)  (when #t
+    ;;                                   (format #t "record  ~a\n" p))]
+    ;;                   [else         (when #t
+    ;;                                   (format #t "else    ~a\n" p))])
+    ;;                  p))
+    ;;               identity)
+    ;;              pkgs)))
+    ;;   ;;
+    ;;   ;; (format #t "~a\n" (string-join (map (partial format #f "~a") pkgs) "\n"))
+    ;;   (format #t "~a packages to install: ~a\n" m (length pkgs))
+    ;;   pkgs)
+
+    ;; (partial append (list
+    ;;                  ;; bste:emacs-copilot
+    ;;                  ;; below are good
+    ;;                  ;; bste:emacs-lua-mode
+    ;;                  bste:emacs-emacsql
+    ;;                  bste:emacs-closql
+    ;;                  bste:emacs-forge
+    ;;                  ;; bste:emacs-emacsql-sqlite3
+    ;;                  bste:emacs-company-web
+    ;;                  bste:emacs-web-completion-data
+    ;;                  bste:emacs-centered-cursor-mode
+    ;;                  bste:emacs-company-statistics
+    ;;                  bste:emacs-json-navigator
+    ;;                  bste:emacs-eziam-themes
+    ;;                  bste:emacs-helm-cider-history
+    ;;                  bste:emacs-lsp-haskell
+    ;;                  bste:emacs-helm-css-scss
+    ;;                  ;; bste:emacs-auto-yasnippet
+    ;;                  bste:emacs-composer
+    ;;                  bste:emacs-erc-social-graph
+    ;;                  bste:emacs-chocolate
+    ;;                  bste:emacs-gruber-darker
+
+    ;;                  bste:emacs-vi-tilde-fringe
+    ;;                  bste:emacs-popwin
+    ;;                  ;; bste:emacs-paradox
+    ;;                  bste:emacs-lsp-volar
+
+    ;;                  bste:emacs-lsp-python-ms
+    ;;                  bste:emacs-slim-mode
+    ;;                  bste:emacs-zop-to-char
+    ;;                  bste:emacs-font-utils
+    ;;                  ;; bste:emacs-pythonic
+
+    ;;                  bste:emacs-lsp-metals
+    ;;                  bste:emacs-lsp-java
+    ;;                  bste:emacs-dap-mode
+    ;;                  bste:emacs-lsp-treemacs
+    ;;                  bste:emacs-treemacs
+    ;;                  ))
+
+    (partial map (compose identity list specification->package))
+
+    ;; (lambda (v) (format #t "1\n~a\n" v) v)
+    ;; TODO `eq?' works for "lua" but not for "emacs-popwin". WTF!?
+    (partial remove (partial string= "emacs-popwin"))
+    ;; (lambda (v) (map (lambda (p) (format #t "~a ~a\n" p (string? p))) v) v)
+    ;; (lambda (v) (format #t "0\n~a\n" v) v)
+    )
+   (let [(G general-packages)
+         (N needed-packages)
+         (O orphan-packages)
+         (A available-packages)
+         (E excluded-packages)]
+     (s+ G
+         (s- (sx (s+ N O)
+                 A)
+             E)))))
+(testsymb 'spguimacs-packages)
 
 ;; (format #t "~a module evaluated\n" m)
-
-#;(specifications->manifest spguimacs-packages)
