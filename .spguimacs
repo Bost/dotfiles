@@ -303,7 +303,7 @@ This function should only modify configuration layer settings."
 
      ;; Direct jump with ~g f~ $dotf/.emacs.d/my=tweaks/funcs.el doesn't work.
      ;; The '=' in the file-path makes problems.
-     my=tweaks ;; See `dotspacemacs-configuration-layer-path'
+     my=tweaks ;; See `dotspacemacs-configuration-layer-path'.
 
      (org :variables
           ;; Don't ask for confirmation before interactively evaluating code
@@ -1704,6 +1704,7 @@ Some binding snippets / examples:
 
     ;; the comment is here just to get a better listing in `helm-swoop'
     (bind-keys ; :map global-map
+     :map global-map
      ("<f5>" . my=revert-buffer-no-confirm)
      ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
 
@@ -1954,9 +1955,15 @@ Some binding snippets / examples:
 
   (defun enable-hyper-super-modifiers-linux-x ()
     (interactive)
-    ;; on nowadays linux, <windows> key is usually configured to Super
+    ;; On nowadays linux, ~<windows>~ key is usually configured to Super
 
-    ;; menu key as hyper (for H-s release <menu> key before pressing 's')
+    ;; Menu key as hyper. Examples:
+    ;; * ~H-s-d~:
+    ;;   1. Press ~<menu>~ and release it.
+    ;;   2. Press simultaneously ~<windows>~ and ~d~
+    ;; * ~H-s-<menu>~:
+    ;;   1. Press ~<menu>~ and release it.
+    ;;   2. Press simultaneously ~<windows>~ and ~<menu>~
     (define-key key-translation-map [menu] #'event-apply-hyper-modifier) ;H-
     ;; (define-key key-translation-map [apps] #'event-apply-hyper-modifier)
 
@@ -1977,7 +1984,7 @@ Some binding snippets / examples:
      ))
 
   (defun enable-hyper-super-modifiers ()
-    (let ( (frame (framep (selected-frame))))
+    (let ((frame (framep (selected-frame))))
       (cond
        ((memq frame '(w32 win32))
         (enable-hyper-super-modifiers-win32))
@@ -1989,7 +1996,6 @@ Some binding snippets / examples:
         (message "%s %s %s"
                  "[enable-hyper-super-modifiers]"
                  "No enabler implemented for the frame:" frame))))
-
     ;; I.e. ~C-c h d~ is ~H-d~ i.e.:
     ;;   1. press and release ~<menu>~
     ;;   2. press ~d~
@@ -2009,7 +2015,7 @@ Some binding snippets / examples:
   ;; swap keys
   ;; (define-key key-translation-map (kbd "<f11>") (kbd "<f12>"))
 
-  (my=eval-bind-keys-and-chords)        ; call using ~s-<kp-add>~ or ~s-+~
+  (my=eval-bind-keys-and-chords) ;; bound to ~s-<kp-add>~ or ~s-+~
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
