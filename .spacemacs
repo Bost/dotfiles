@@ -641,20 +641,20 @@ It should only modify the values of Spacemacs settings."
   (setq-default
    configuration-layer-elpa-archives
    ;; Default values
-   `(("melpa"  . "melpa.org/packages/")
-     ("gnu"    . "elpa.gnu.org/packages/")
-     ("nongnu" . "elpa.nongnu.org/nongnu/"))
-   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ;; `(("melpa"  . "melpa.org/packages/")
+   ;;   ("gnu"    . "elpa.gnu.org/packages/")
+   ;;   ("nongnu" . "elpa.nongnu.org/nongnu/"))
    ;; Local mirrors created by https://github.com/d12frosted/elpa-mirror
    ;; See also:
    ;;   https://github.com/redguardtoo/elpa-mirror
    ;;   https://github.com/melpa/melpa
-   ;; Update by running:
-   ;;   cd $dev/elpa-mirror.d12frosted && gpl
-   ;; (let ((dev (getenv "dev")))
-   ;;   `(("melpa"  . ,(concat dev "/elpa-mirror.d12frosted/melpa/"))
-   ;;     ("gnu"    . ,(concat dev "/elpa-mirror.d12frosted/gnu/"))
-   ;;     ("nongnu" . ,(concat dev "/elpa-mirror.d12frosted/nongnu/"))))
+   ;; Update by running (fish-shell):
+   ;;   set mirror $dev/elpa-mirror.d12frosted
+   ;;   git --git-dir=$mirror/.git --work-tree=$mirror pull --rebase
+   (let ((mirror (concat dev "/elpa-mirror.d12frosted")))
+     `(("melpa"  . ,(concat mirror "/melpa/"))
+       ("gnu"    . ,(concat mirror "/gnu/"))
+       ("nongnu" . ,(concat mirror "/nongnu/"))))
 
    ;; If non-nil then enable support for the portable dumper. You'll need to
    ;; compile Emacs 27 from source following the instructions in file
