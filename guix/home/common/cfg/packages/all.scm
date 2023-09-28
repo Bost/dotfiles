@@ -126,7 +126,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
    ;; "sysstat"
 
-   ;; terminal multiplexer
+   ;; terminal multiplexer, more popular and modern than 'screen'
    "tmux"
 
    ;; tmux-based terminal divider
@@ -315,9 +315,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "ripgrep"
    "rlwrap"
 
-   ;; Full-screen window manager providing multiple terminals
-   "screen"
-
    "scsh" ;; Unix shell embedded in Scheme
    "strace"
    "taglib"
@@ -335,7 +332,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
    "xorriso"
 
+   "mps-youtube" ;; yewtube forked from mps-youtube. Terminal based YT player and downloader. No API key required.
    "youtube-dl"
+   "yt-dlp" ;; fork of youtube-dl with a focus on adding new features
+   ;; "youtube-viewer" ;; search & play YT videos in a native player
 
    ;; "tesseract-ocr"               ;; OCR Optical character recognition engine
    ;; "tesseract-ocr-tessdata-fast" ;; Fast versions of trained LSTM models
