@@ -1,4 +1,6 @@
 (define-module (scm-bin restore-spacemacs)
+;;; All used modules must be present in the module (srvc scheme-files) under:
+;;;   service-file -> with-imported-modules
   #:use-module (scm-bin spag)            #| git-spacemacs |#
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)

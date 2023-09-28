@@ -1,4 +1,6 @@
 (define-module (scm-bin gs)
+;;; All used modules must be present in the module (srvc scheme-files) under:
+;;;   service-file -> with-imported-modules
   #:use-module (utils)
   #:export (main gs))
 
