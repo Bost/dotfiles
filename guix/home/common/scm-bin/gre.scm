@@ -1,4 +1,6 @@
 (define-module (scm-bin gre)
+;;; All used modules must be present in the module (srvc scheme-files) under:
+;;;   service-file -> with-imported-modules
   #:use-module (utils)
   #:export (main gre))
 

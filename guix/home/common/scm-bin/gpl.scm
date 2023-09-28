@@ -1,4 +1,6 @@
 (define-module (scm-bin gpl)
+;;; All used modules must be present in the module (srvc scheme-files) under:
+;;;   service-file -> with-imported-modules
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (ice-9 popen)

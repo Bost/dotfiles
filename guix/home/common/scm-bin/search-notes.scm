@@ -1,4 +1,6 @@
 (define-module (scm-bin search-notes)
+;;; All used modules must be present in the module (srvc scheme-files) under:
+;;;   service-file -> with-imported-modules
   #:use-module (utils)
   ;; #:use-module (guix build utils) #| invoke |#
   #:export (main))
