@@ -2392,6 +2392,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ("C-s-\\" . my=racket-toggle-reader-comment-current-sexp)
                  ("C-s-m"  . my=scheme-insert-log)
                  ("C-s-p"  . my=scheme-insert-log)
+                 ("s-."    . geiser-edit-symbol-at-point)
                  ;; ("s-;"    . my=racket-toggle-reader-comment-current-sexp)
                  ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
                  ("s-d"    . geiser-eval-definition)
