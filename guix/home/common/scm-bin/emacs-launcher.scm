@@ -1,4 +1,6 @@
 (define-module (scm-bin emacs-launcher)
+;;; All used modules must be present in the module (srvc scheme-files) under:
+;;;   service-file -> with-imported-modules
   #|
   #:use-module (gnu packages emacs) ; for emacs-output-path
   #:use-module (guix)               ; for open-connection

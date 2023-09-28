@@ -1,6 +1,6 @@
 (define-module (scm-bin lf)
-;;; All used modules must be present in the:
-;;;   home-configuration.scm -> service-file -> with-imported-modules
+;;; All used modules must be present in the module (srvc scheme-files) under:
+;;;   service-file -> with-imported-modules
   #:use-module (scm-bin ls)
   #:use-module (utils)
   #:export (main lf))
