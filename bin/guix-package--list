@@ -1,10 +1,14 @@
 #!/bin/sh
 
-myProfiles=(
-    $HOME/.config/guix/current
-    $HOME/.guix-profile
-    $HOME/.guix-home/profile
-)
+# myProfiles=(
+#     $HOME/.config/guix/current
+#     $HOME/.guix-profile
+#     $HOME/.guix-home/profile
+# )
+myProfiles=($(guix package --list-profiles))
+myProfiles+=($HOME/.guix-home/profile)
+
+# printf "length myProfiles: %s\n" ${#myProfiles[@]}
 
 # declare -p $myProfiles 2> /dev/null | grep -q '^declare \-a'
 
@@ -12,16 +16,11 @@ for profile in ${myProfiles[@]}; do
     # printf "profile: %s\n" $profile
 
     # set -x  # Print commands and their arguments as they are executed.
-
-    # set -x also causes printing of the 'result=' assignment and the
-    # '... | column --table' redirection. That's too much noise
-
-    echo guix package \
-         --profile=$profile \
-         "$@"
-    result=$(guix package \
-                  --profile=$profile \
-                  "$@")
+    # It also causes printing of the 'result=' assignment and the
+    # '... | column --table' redirection. That's too much noise.
+    cmd=$(printf "guix package --profile=%s %s" $profile "$@")
+    echo "+ $cmd"
+    result=$($cmd)
     # { retval="$?"; set +x; } 2>/dev/null
     # printf -- "--profile=%s\n" $profile
     line0='                         '
