@@ -1124,5 +1124,10 @@ block of the same language with the previous."
 
 (defun my=org-babel-demarcate-block-fish-with-results (&optional arg)
   (interactive)
+  (let ((current-buffer-name (buffer-name)))
+    (when (and (string= "*scratch*" current-buffer-name)
+               (not (eq 'org-mode major-mode)))
+      (with-current-buffer current-buffer-name
+        (org-mode))))
   (my=org-babel-demarcate-block-fish arg)
   (org-babel-insert-header-arg "results" "replace output"))
