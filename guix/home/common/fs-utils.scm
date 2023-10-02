@@ -18,6 +18,7 @@
             scm-bin-dirname
             scm-bin-dirpath
             dev
+            user-dev
             user-home
             xdg-config-home
             ))
@@ -94,7 +95,12 @@
 (define sbin-dirpath "/sbin")
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
+
+;; TODO consider moving dev definition to the settings module
 (define dev (user-home "/dev"))
+
+(define* (user-dev #:rest args)
+  (apply str dev args))
 
 (define (repl)
   (load (string-append (getenv "dotf") "/guix/home/fs-utils.scm"))
