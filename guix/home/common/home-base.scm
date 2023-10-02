@@ -234,12 +234,11 @@
      ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e
 
      ;; My own scripts and guix-home profile take precedence over $PATH.
-     ("PATH" . ,(string-join (list (str home scm-bin-dirpath)
-                                   (str home bin-dirpath)
-;;; The paths to bin and sbin for guix-home profile are inserted here.
-                                   "$PATH"
-                                   "/usr/local/bin"
-                             list-separator)))))
+     ("PATH" . ,((compose
+                  (lambda (lst) (string-join lst list-separator))
+                  (lambda (lst) (append lst (list "$PATH" "/usr/local/bin")))
+                  (partial map user-home))
+                 (list scm-bin-dirpath bin-dirpath))))))
 
 (define (environment-variables-service environment-vars)
   (simple-service
