@@ -27,7 +27,7 @@ guix home --allow-downgrades --cores=24 \
 
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
-  #:use-module ((fs-utils) #:prefix hf:)
+  #:use-module (fs-utils)
 
   ;; #:use-module ((cfg packages all-new) #:prefix hp:)
   #:use-module ((cfg packages all) #:prefix hp:)
@@ -81,7 +81,7 @@ guix home --allow-downgrades --cores=24 \
          ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
          ))
       #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
-     (base:environment-vars hf:list-separator-bash)))))
+     (base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)
 
 ;; (format #t "~a module evaluated\n" m)

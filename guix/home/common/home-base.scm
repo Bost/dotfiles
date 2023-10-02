@@ -6,7 +6,7 @@
 
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
-  #:use-module ((fs-utils) #:prefix hf:)
+  #:use-module (fs-utils)
 
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
@@ -99,10 +99,10 @@
 
           (let* [(filename ".bashrc_additions")]
             ;; this should work too:
-            ;; (local-file ".bashrc" (hf:fix-leading-dot ".bashrc"))
+            ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
             (local-file
-             (hf:dotfiles-home "/guix/home/" filename)
-             (hf:fix-leading-dot filename)))))
+             (dotfiles-home "/guix/home/" filename)
+             (fix-leading-dot filename)))))
 
         ;; List of file-like objects, which will be ADDED(!) to .bash_profile
         (bash-profile
@@ -116,7 +116,7 @@
             ))
           ;; (local-file ".bashrc" "bash_profile") should work too
           ;; (local-file
-          ;;  (hf:dotfiles-home "/.bash_profile_additions")
+          ;;  (dotfiles-home "/.bash_profile_additions")
           ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
           ;;  "bash_profile_additions")
           ))))))
@@ -214,14 +214,14 @@
                            "/var/lib/flatpak/exports/share"
                            (getenv "XDG_DATA_DIRS"))))
 
-     ("dev"   . ,hf:dev)
+     ("dev"   . ,dev)
      ;; TODO unify value of `bin' with the value in the `PATH' definition
-     ("bin"   . ,(user-home hf:bin-dirpath))
-     ("cheat" . ,(str hf:dev "/cheat"))
-     ("dotf"  . ,(str hf:dev "/dotfiles"))
-     ("dgx"   . ,(str hf:dev "/guix"))
-     ("dgxp"  . ,(str hf:dev "/guix-packages"))
-     ("dgl"   . ,(str hf:dev "/guile"))
+     ("bin"   . ,(user-home bin-dirpath))
+     ("cheat" . ,(str dev "/cheat"))
+     ("dotf"  . ,(str dev "/dotfiles"))
+     ("dgx"   . ,(str dev "/guix"))
+     ("dgxp"  . ,(str dev "/guix-packages"))
+     ("dgl"   . ,(str dev "/guile"))
 
      ("user_full_name"    . ,hs:user-full-name)
      ("user_mail_address" . ,hs:user-mail-address)
@@ -234,8 +234,8 @@
      ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e
 
      ;; My own scripts and guix-home profile take precedence over $PATH.
-     ("PATH" . ,(string-join (list (str home hf:scm-bin-dirpath)
-                                   (str home hf:bin-dirpath)
+     ("PATH" . ,(string-join (list (str home scm-bin-dirpath)
+                                   (str home bin-dirpath)
 ;;; The paths to bin and sbin for guix-home profile are inserted here.
                                    "$PATH"
                                    "/usr/local/bin"

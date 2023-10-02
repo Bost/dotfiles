@@ -2,7 +2,7 @@
   ;; #:use-module (cfg packages-new)
   #:use-module (memo)
   #:use-module (utils)
-  #:use-module ((fs-utils) #:prefix hf:)
+  #:use-module (fs-utils)
   ;; See service-file -> with-imported-modules
   #:use-module (scm-bin gcl)
   #:use-module (gnu home)
@@ -35,7 +35,7 @@ a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  `(,(str hf:scm-bin-dirname "/" program-name)
+  `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
       (cond
        ((equal? scheme-file-name "chmod")
