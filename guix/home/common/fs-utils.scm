@@ -9,7 +9,6 @@
   #:export (
             channels-scm-filepath
             fix-leading-dot
-            user-dotf
             any-local-file
             local-dotfile
             list-separator-bash
@@ -17,17 +16,24 @@
             sbin-dirpath
             scm-bin-dirname
             scm-bin-dirpath
+
+            user-home
             dev
             user-dev
-            user-home
+            dotf
+            user-dotf
             xdg-config-home
             ))
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
-(define* (user-home #:rest args)
-  (apply str home args))
+;; TODO consider moving dev,dotf definitions to the settings module
+(define* (user-home #:rest args) (apply str home args))
+(define  dev (user-home "/dev"))
+(define* (user-dev #:rest args)  (apply str dev args))
+(define  dotf (user-dev "/dotfiles"))
+(define* (user-dotf #:rest args) (apply str dotf args))
 
 ;; see gnu/home/services/symlink-manager.scm
 (define xdg-config-home (or (getenv "XDG_CONFIG_HOME")
@@ -38,11 +44,6 @@
 
 (define (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
-
-(define* (user-dotf #:rest args)
-  "Note:
-(format #t \"~a\" \"foo\") doesn't work"
-  (apply str home "/dev/dotfiles" args))
 
 ;;;      ...                      #:optional (<parameter-name> <default-value>)
 (define* (any-local-file filepath #:optional (filename (basename filepath)))
@@ -95,12 +96,6 @@
 (define sbin-dirpath "/sbin")
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
-
-;; TODO consider moving dev definition to the settings module
-(define dev (user-home "/dev"))
-
-(define* (user-dev #:rest args)
-  (apply str dev args))
 
 (define (repl)
   (load (string-append (getenv "dotf") "/guix/home/fs-utils.scm"))
