@@ -63,8 +63,6 @@
             testsymb
             testsymb-trace
             unspecified-or-empty-or-false?
-            user-home
-            xdg-config-home
             ))
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
@@ -161,13 +159,6 @@ Works also for functions returning and accepting multiple values."
               (parse-path (getenv "PATH"))))
 
 (define str string-append)
-
-(define* (user-home #:rest args)
-  (apply str home args))
-
-;; see gnu/home/services/symlink-manager.scm
-(define xdg-config-home (or (getenv "XDG_CONFIG_HOME")
-                            (user-home "/.config")))
 
 ;; TODO see
 ;; (define s (string-match "[0-9][0-9][0-9][0-9]" "blah2002foo"))

@@ -1,5 +1,6 @@
 ;; (format #t "[fs-utils] evaluating module ...\n")
 (define-module (fs-utils)
+  #:use-module (settings)
   #:use-module (utils)
   ;; program-file local-file
   #:use-module (guix gexp)
@@ -17,10 +18,19 @@
             scm-bin-dirname
             scm-bin-dirpath
             dev
+            user-home
+            xdg-config-home
             ))
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
+
+(define* (user-home #:rest args)
+  (apply str home args))
+
+;; see gnu/home/services/symlink-manager.scm
+(define xdg-config-home (or (getenv "XDG_CONFIG_HOME")
+                            (user-home "/.config")))
 
 (define channels-scm-filepath
   (str (basename xdg-config-home) "/guix/channels.scm"))
