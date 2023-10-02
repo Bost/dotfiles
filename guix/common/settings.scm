@@ -11,12 +11,16 @@
             host-ecke
             host-geek
             hostnames
+            user
+            home
             ))
 
 ;; (format #t "[settings] evaluating module ...\n")
 
 (define user-full-name "Rostislav Svoboda")
 (define user-mail-address "Rostislav.Svoboda@gmail.com")
+(define user "bost")
+(define home (string-append "/home/" user))
 
 (define host-lukas "lukas")
 (define host-ecke "ecke")

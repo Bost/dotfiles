@@ -1,6 +1,8 @@
 (define-module (srvc fish)
   ;; See service-file -> with-imported-modules
+  #:use-module (settings)
   #:use-module (utils)
+  #:use-module (fs-utils)
   #:use-module (gnu services)
   #:use-module (guix gexp)               #| program-file local-file |#
   #:use-module (gnu home services)       #| simple-service |#

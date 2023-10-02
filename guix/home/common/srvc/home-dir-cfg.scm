@@ -1,5 +1,6 @@
 (define-module (srvc home-dir-cfg)
   ;; See service-file -> with-imported-modules
+  #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
   #:use-module (fs-utils)

@@ -46,7 +46,6 @@
             flatten
             has-substring?
             has-suffix?
-            home
             last
             mktmpfile
             module-name-for-logging
@@ -64,7 +63,6 @@
             testsymb
             testsymb-trace
             unspecified-or-empty-or-false?
-            user
             user-home
             xdg-config-home
             ))
@@ -156,9 +154,6 @@ Works also for functions returning and accepting multiple values."
       (null? obj)
       (and (string? obj) (string-null? obj))
       (eq? #f obj)))
-
-(define home (getenv "HOME"))
-(define user (getenv "USER"))
 
 ;; Turn the colon-separated PATH-string, into a list and
 ;; return the resulting list with tail appended
