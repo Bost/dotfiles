@@ -140,8 +140,6 @@
 
      (append
       (list
-       (service xfce-desktop-service-type)
-
        ;; To configure OpenSSH, pass an 'openssh-configuration'
        ;; record as a second argument to 'service' below.
        (service openssh-service-type)
@@ -150,9 +148,6 @@
        ;; %desktop-services by default
 
        (service cups-service-type)
-       (set-xorg-configuration
-        (xorg-configuration ; keyboard-layout for the XOrg
-         (keyboard-layout keyboard-layout)))
        ;; (udev-rules-service 'mtp libmtp)
        ;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
        ;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
