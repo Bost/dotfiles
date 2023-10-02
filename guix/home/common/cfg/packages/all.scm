@@ -181,6 +181,111 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "emacs-eval-in-repl-iex"
    ))
 
+(define (video-packages)
+  (list
+   ;; OpenGL and Vulkan implementations
+   ;; "mesa"
+   ;; "mesa:bin"
+   ;; "mesa:out"
+
+   ;; contains utility tools for Mesa: eglinfo, glxdemo, glxgears, glxheads, glxinfo.
+   ;; "mesa-utils"
+
+   ;; Proprietary NVIDIA driver
+   ;; Use the transformation option `--with-graft=mesa=nvda' to use the NVIDIA
+   ;; driver with a package that requires mesa
+   ;; "nvda"
+
+   ;; EGLStream-based Wayland external platform
+   ;; "egl-wayland"
+
+   ;; "mesa-opencl"
+   ;; "mesa-opencl:out"
+   ;; "mesa-opencl:bin"
+
+   ;; "mesa-opencl-icd"
+   ;; "mesa-opencl-icd:out"
+   ;; "mesa-opencl-icd:bin"
+
+   ;; GLU, or OpenGL Utility Library provides some higher-level functionality not provided by just OpenGL itself
+   ;; "glu"
+
+   ;; Nonfree firmware for older AMD graphics chips
+   ;; "radeon-firmware"
+
+   ;; The Direct Rendering Infrastructure - userspace library
+   ;; "libdrm"
+
+   ;; Wayland compositor compatible with i3
+   "sway"
+
+   ;; Window-switcher for the sway window manager
+   ;; "swayr"
+
+   ;; Sway Fork with extra options and effects
+   ;; "swayfx"
+
+   ;; Swallow windows on swaywm
+   ;; "swayhide"
+
+   ;; Notification daemon with a graphical interface
+   ;; "swaynotificationcenter"
+
+   ;; Screen locking utility for Wayland compositors with effects
+   ;; "swaylock-effects"
+
+   ;; Screen locking utility for Wayland compositors
+   "swaylock"
+
+   ;; Idle management daemon for Wayland compositors
+   "swayidle"
+
+   ;; Screen wallpaper utility for Wayland compositors
+   "swaybg"
+
+   ;; Wayland bar for Sway and Wlroots based compositors
+   ;; "waybar"
+
+   ;; Waybar with experimental features
+   ;; "waybar-experimental"
+
+   ;; Screenshot utility for the Sway window manager
+   ;; "grimshot"
+
+   ;; Notification daemon for Sway
+   ;; "avizo"
+
+   ;; Launcher/menu program for wayland
+   ;; "wofi"
+
+   ;; Bare-bones Wayland-based greeter for `greetd'
+   ;; "wlgreet"
+
+   ;; Application launcher for Wayland
+   ;; "tofi"
+
+   ;; Grab and edit on the fly snapshots of a Wayland compositor
+   ;; "swappy"
+
+   ;; Application launchers for wlroots
+   ;; "nwg-launchers"
+
+   ;; Window-stacking compositor for Wayland
+   ;; "labwc"
+
+   ;; Reference implementation of a Wayland compositor
+   ;; weston
+
+   ;; Core Wayland window system code and protocol
+   ;; "wayland"
+
+   ;; Wayland protocols
+   ;; "wayland-protocols"
+
+   ;; QML based X11 and Wayland display manager
+   ;; "sddm"
+   ))
+
 (define (rest-packages)
   (list
    "adb"
@@ -270,7 +375,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "maven"
    "mcron"
    "mercurial"
-   "mesa-utils"
    "mlt"
    "mtr"
    "ncurses"
@@ -586,6 +690,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            (append
             (devel-packages)
             (rest-packages)
+            ;; (video-packages)
             (xfce-packages)
             (xorg-packages)
             (other-gui-packages)
