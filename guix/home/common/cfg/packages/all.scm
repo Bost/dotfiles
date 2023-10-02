@@ -276,7 +276,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "ncurses"
    "network-manager"
    "nmap"
+
+;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
+;;; See also ~/.npm, ~/.npmrc, ~/node_modules
    "node"
+
    "openssl"
    "parted"
    "pavucontrol"
