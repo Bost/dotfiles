@@ -82,13 +82,13 @@
             |#
 
             (user-account
-             (name "bost")
+             (name user)
              (comment
               (begin
                 ;; (format #t "~a user-full-name: ~a\n" m user-full-name)
                 user-full-name))
              (group "users")
-             (home-directory "/home/bost")
+             (home-directory home)
              ;; login shell; see also `packages`
              ;; explicitly define fish / bash:
              ;; (shell (file-append fish "/bin/fish"))

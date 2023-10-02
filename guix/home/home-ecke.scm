@@ -24,6 +24,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 |#
 
 (define-module (home-ecke)
+  #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
 
