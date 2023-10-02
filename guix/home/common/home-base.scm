@@ -101,7 +101,7 @@
             ;; this should work too:
             ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
             (local-file
-             (dotfiles-home "/guix/home/" filename)
+             (user-dotf "/guix/home/" filename)
              (fix-leading-dot filename)))))
 
         ;; List of file-like objects, which will be ADDED(!) to .bash_profile
@@ -116,7 +116,7 @@
             ))
           ;; (local-file ".bashrc" "bash_profile") should work too
           ;; (local-file
-          ;;  (dotfiles-home "/.bash_profile_additions")
+          ;;  (user-dotf "/.bash_profile_additions")
           ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
           ;;  "bash_profile_additions")
           ))))))

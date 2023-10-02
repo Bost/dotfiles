@@ -116,7 +116,7 @@
 (testsymb 'extra-channels)
 
 (define (create-channels-scm additional-channels)
-  (let* [(channels-scm (dotfiles-home "/" channels-scm-filepath))
+  (let* [(channels-scm (user-dotf "/" channels-scm-filepath))
          (lst
           ((compose
             car
@@ -146,10 +146,10 @@
          additional-channels)))))
 (testsymb 'create-channels-scm)
 
-(define (dotfiles-home-to-dir dir)
-  ;; TODO (dotfiles-home-to-dir ".tmux") doesn't work
+(define (user-dotf-to-dir dir)
+  ;; TODO (user-dotf-to-dir ".tmux") doesn't work
   `(,dir ;; destination
-    ,(local-file (dotfiles-home "/" dir) #:recursive? #t)))
+    ,(local-file (user-dotf "/" dir) #:recursive? #t)))
 
 (define home-dir-cfg-srvc-files
   ((compose
@@ -253,7 +253,7 @@
     (partial append
 ;;; This can't be used:
 ;;;           `((".emacs.d/private" ;; destination
-;;;              ,(local-file (dotfiles-home "/.emacs.d/private")
+;;;              ,(local-file (user-dotf "/.emacs.d/private")
 ;;;                           #:recursive? #t)))
 ;;; because:
 ;;; 1. Can't store the whole ".emacs.d/private" since there are some README.md
@@ -264,10 +264,10 @@
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
              (list
-              ;; (dotfiles-home-to-dir ".tmux")
-              (dotfiles-home-to-dir ".config/tmux")
-              (dotfiles-home-to-dir ".config/sway")
-              (dotfiles-home-to-dir "bin")))
+              ;; (user-dotf-to-dir ".tmux")
+              (user-dotf-to-dir ".config/tmux")
+              (user-dotf-to-dir ".config/sway")
+              (user-dotf-to-dir "bin")))
     ;; (lambda (p) (format #t "############## 0.\n") p)
     )
    ;; empty list
