@@ -1,5 +1,5 @@
 (define-module (home-base)
-  #:use-module ((settings) #:prefix hs:)
+  #:use-module (settings)
   #:use-module (utils)
   #:use-module (store-utils)
   #:use-module (memo)
@@ -158,8 +158,8 @@
     ;;           (home-git-configuration
     ;;            (config
     ;;             `((user
-    ;;                ((name . ,hs:user-full-name)
-    ;;                 (email . ,hs:user-mail-address)
+    ;;                ((name . ,user-full-name)
+    ;;                 (email . ,user-mail-address)
     ;;                 #;(signingKey . "...")))
     ;;               (github
     ;;                ((user . "Bost")))
@@ -223,8 +223,8 @@
      ("dgxp"  . ,(str dev "/guix-packages"))
      ("dgl"   . ,(str dev "/guile"))
 
-     ("user_full_name"    . ,hs:user-full-name)
-     ("user_mail_address" . ,hs:user-mail-address)
+     ("user_full_name"    . ,user-full-name)
+     ("user_mail_address" . ,user-mail-address)
 
      ;; used by gps, gpl
      ("remotes" . ,(string-join (list "origin" "gitlab")
