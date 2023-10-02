@@ -165,7 +165,7 @@ guix home --allow-downgrades --cores=24 \
 ;;         "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
 ;;     Note:
 ;;     (format #t \"~a\" \"foo\") doesn't work"
-;;         (apply str (dotfiles-home) "/" (fish-config-base) args))
+;;         (apply str (user-dotf) "/" (fish-config-base) args))
 
 ;; ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
 ;; ;;; when the 'guix home reconfigure ...' fails or is interrupted.

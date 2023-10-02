@@ -31,7 +31,7 @@
 (define indent "")
 (define indent-inc "   ")
 
-(define* (dotfiles-home #:rest args)
+(define* (user-dotf #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str home "/dev/dotfiles" args))
@@ -44,7 +44,7 @@
   "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
 Note:
 (format #t \"~a\" \"foo\") doesn't work"
-  (apply str (dotfiles-home) "/" (fish-config-base) args))
+  (apply str (user-dotf) "/" (fish-config-base) args))
 
 ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
 ;;; when the 'guix home reconfigure ...' fails or is interrupted.

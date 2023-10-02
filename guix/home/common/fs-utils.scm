@@ -9,7 +9,7 @@
   #:export (
             channels-scm-filepath
             fix-leading-dot
-            dotfiles-home
+            user-dotf
             any-local-file
             local-dotfile
             list-separator-bash
@@ -39,7 +39,7 @@
 (define (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
 
-(define* (dotfiles-home #:rest args)
+(define* (user-dotf #:rest args)
   "Note:
 (format #t \"~a\" \"foo\") doesn't work"
   (apply str home "/dev/dotfiles" args))
@@ -80,7 +80,7 @@
 (\"path/to/file.ext\" (local-file \"/home/bost/dev/dotfiles/path/to/file.ext\"))
 
 "
-  (let [(filepath (dotfiles-home path filename))]
+  (let [(filepath (user-dotf path filename))]
     (if (access? filepath R_OK)
       (list filename
             (any-local-file filepath (basename filename)))
