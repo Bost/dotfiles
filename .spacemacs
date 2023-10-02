@@ -1471,6 +1471,8 @@ before packages are loaded."
     (setq key-chord-two-keys-delay 0.02)
     (key-chord-mode 1))
 
+  (setq org-src-lang-modes-orig org-src-lang-modes)
+  (setq org-src-lang-modes (cons '("fish" . fish) org-src-lang-modes))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '(
@@ -1550,6 +1552,7 @@ before packages are loaded."
   ;; TODO autoload
   (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")
   (spacemacs/declare-prefix "og" "google-this")
+  (spacemacs/declare-prefix "oo" "org")
   (spacemacs/set-leader-keys
     "oa"  #'my=find-ai-scrbl
     "oc"  #'my=cider-clear-compilation-highlights
@@ -1561,6 +1564,7 @@ before packages are loaded."
     "ogr" #'google-this-region
     "oh"  #'my=find-home-config.scm
     "oep" #'my=find-spguimacs-packages.scm
+    "oof" #'my=org-babel-demarcate-block-fish-with-results
     "or"  #'rotate-frame
     "os"  #'my=find-syst-config.scm
     ;; Revert buffer - loads in .dir-locals.el changes
