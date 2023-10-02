@@ -217,11 +217,11 @@
      ("dev"   . ,dev)
      ;; TODO unify value of `bin' with the value in the `PATH' definition
      ("bin"   . ,(user-home bin-dirpath))
-     ("cheat" . ,(str dev "/cheat"))
-     ("dotf"  . ,(str dev "/dotfiles"))
-     ("dgx"   . ,(str dev "/guix"))
-     ("dgxp"  . ,(str dev "/guix-packages"))
-     ("dgl"   . ,(str dev "/guile"))
+     ("cheat" . ,(user-dev "/cheat"))
+     ("dotf"  . ,(user-dev "/dotfiles"))
+     ("dgx"   . ,(user-dev "/guix"))
+     ("dgxp"  . ,(user-dev "/guix-packages"))
+     ("dgl"   . ,(user-dev "/guile"))
 
      ("user_full_name"    . ,user-full-name)
      ("user_mail_address" . ,user-mail-address)
