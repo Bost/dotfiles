@@ -239,9 +239,6 @@
 ;;; The paths to bin and sbin for guix-home profile are inserted here.
                                    "$PATH"
                                    "/usr/local/bin"
-;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
-;;; See also ~/.npm, ~/.npmrc, ~/node_modules
-                                   #;(str home "/.npm-packages"))
                              list-separator)))))
 
 (define (environment-variables-service environment-vars)

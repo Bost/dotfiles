@@ -25,6 +25,8 @@
               ;; returns only #t
               (invoke "search-notes" "-f" (string-append "'" files "'") "-p" "title"))
             #;(lambda (p) (format #t "0: ~a\n" p) p)
+;;; TODO compile search-notes if it doesn't exits in the PATH.
+;;; See $der/search-notes/README.md
             (partial cons* (format #f "search-notes -f '~a' -p" files))
             cdr)
            args)))

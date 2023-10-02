@@ -119,7 +119,7 @@
 ;;; mkdir -p $dotf/.config/sway
 ;;; # -O/--output-document works only if the given output file does not exist.
 ;;; wget https://raw.githubusercontent.com/swaywm/sway/master/config.in \
-;;;      --output-document=$dotf/.config/sway
+;;;      --output-document=$dotf/.config/sway/config
 
 ;;; Crafting a Minimal Sway Environment with Guix - System Crafters Live!
 ;;; https://www.youtube.com/live/OYbenLOm3Js?feature=share&t=5122
