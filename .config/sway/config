@@ -18,12 +18,12 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | wmenu | xargs swaymsg exec --
+set $menu dmenu_path | dmenu | xargs swaymsg exec --
 
 ### Output configuration
 #
-# Default wallpaper (more resolutions are available in @datadir@/backgrounds/sway/)
-output * bg @datadir@/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+# Default wallpaper (more resolutions are available in /gnu/store/z6gg2zwj99aca03l33d55q3b8wywprqr-sway-1.8.1/share/backgrounds/sway/)
+output * bg /gnu/store/z6gg2zwj99aca03l33d55q3b8wywprqr-sway-1.8.1/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 #
 # Example configuration:
 #
@@ -214,4 +214,4 @@ bar {
     }
 }
 
-include @sysconfdir@/sway/config.d/*
+include /gnu/store/z6gg2zwj99aca03l33d55q3b8wywprqr-sway-1.8.1/etc/sway/config.d/*
