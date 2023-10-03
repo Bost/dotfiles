@@ -124,10 +124,12 @@
 ;;; Crafting a Minimal Sway Environment with Guix - System Crafters Live!
 ;;; https://www.youtube.com/live/OYbenLOm3Js?feature=share&t=5122
             (list "sway" "swaybg" "swayidle" "swaylock"
-                  #;"bemenu" #| Dynamic menu library and client program inspired by dmenu |#
-			            #;"ranger" #| minimalistic console file manager with Vi key bindings |#
-			            #;"luakit" #| simple browser extensible by Lua based on WebKit & GTK+ toolkit |#
-			            #;"mpv"    #| Audio and video player |#)
+                  "bemenu"   ;; Dynamic menu library and client program inspired by dmenu
+                  "ranger"   ;; Minimalistic console file manager with Vi key bindings
+                  #;"luakit" ;; Simple browser extensible by Lua based on WebKit & GTK+ toolkit
+                  #;"mpv"    ;; Audio and video player
+                  "termite"  ;; Minimal terminal emulator. Designed for use with tiling window managers.
+                  )
             packages-to-install))
       %base-packages))
     #;
