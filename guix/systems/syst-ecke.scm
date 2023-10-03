@@ -7,13 +7,16 @@
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
-  #:use-module (gnu services xorg)     ; for gdm-service-type
   #:export (
             syst-config
             ))
 
 ;; no need to write: #:use-module (gnu services <module>)
-(use-service-modules cups desktop networking ssh xorg)
+(use-service-modules
+ cups desktop networking ssh
+ xorg     ; for gdm-service-type
+ sddm     ; for sddm-service-type
+ )
 
 ;; no need to write: #:use-module (gnu packages <module>)
 (use-package-modules
@@ -171,8 +174,17 @@
        (udev-rules-service 'mtp libmtp)
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers")))
+
       (modify-services
-          %desktop-services
+          (append (list
+                   (set-xorg-configuration
+                    (xorg-configuration
+                     (keyboard-layout keyboard-layout))
+                    sddm-service-type)
+                   (service gnome-desktop-service-type)
+                   (service mate-desktop-service-type)
+                   (service xfce-desktop-service-type))
+                  %desktop-services)
         (guix-service-type
          config => (guix-configuration
                     (inherit config)
