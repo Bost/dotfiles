@@ -44,11 +44,17 @@
  ;; web-browsers
  )
 
+(use-modules (nongnu packages linux)
+             (nongnu system linux-initrd))
+
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
 (define syst-config
   (operating-system
+   (kernel linux)
+    (initrd microcode-initrd)
+    (firmware (list linux-firmware))
     (locale "en_US.utf8")
     (timezone "Europe/Berlin")
     (keyboard-layout ; keyboard-layout for the console
