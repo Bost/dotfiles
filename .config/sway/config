@@ -7,7 +7,24 @@
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
-set $mod Mod4
+# set $mod Mod4
+# Lock is Caps_Lock.
+# Caps_Lock should behave as a pure modifier key, without toggling caps.
+# None of the following works as intended:
+input type:keyboard {
+  # xkb_options caps:ctrl_modifier
+  # xkb_options ctrl:nocaps
+  # xkb_options caps:nocaps
+  # xkb_options grp:caps_toggle,grp_led:caps
+  # xkb_capslock disable
+  # xkb_options ctr:escape_shifted_capslock
+  # xkb_options caps:swayescape
+  # xkb_options caps:none
+  # xkb_options caps:escape
+  # xkb_options caps:super
+}
+set $mod Lock
+
 # Home row direction keys, like vim
 set $left h
 set $down j
