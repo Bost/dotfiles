@@ -22,6 +22,7 @@ guix home --allow-downgrades --cores=24 \
 |#
 
 (define-module (home-geek)
+  #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
 
@@ -112,9 +113,7 @@ guix home --allow-downgrades --cores=24 \
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
 (define (obtain-and-setup dest-dir repo)
-  (let* [(gitlab "git@gitlab.com:rostislav.svoboda")
-         (github "git@github.com:Bost")
-         (dest-dir-repo (str home dest-dir repo))
+  (let* [(dest-dir-repo (str home dest-dir repo))
          (repo-url (if #f ; (url? repo)
                        repo
                        (str gitlab repo)))]
