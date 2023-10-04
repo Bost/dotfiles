@@ -29,8 +29,8 @@ guix home --allow-downgrades --cores=24 \
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
-  ;; #:use-module ((cfg packages all-new) #:prefix hp:)
-  #:use-module ((cfg packages all) #:prefix hp:)
+  ;; #:use-module (cfg packages all-new)
+  #:use-module (cfg packages all)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
@@ -63,7 +63,7 @@ guix home --allow-downgrades --cores=24 \
 ;; See also $dotf/.bashrc.martin
 (define home-env
   (home-environment
-   (packages (hp:packages-to-install))
+   (packages (packages-to-install))
    (services
     ((compose
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
