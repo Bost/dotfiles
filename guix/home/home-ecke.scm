@@ -117,9 +117,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
 (define (obtain-and-setup dest-dir repo)
-  (let* [(gitlab "git@gitlab.com:rostislav.svoboda")
-         (github "git@github.com:Bost")
-         (dest-dir-repo (str home dest-dir repo))
+  (let* [(dest-dir-repo (str home dest-dir repo))
          (repo-url (if #f ; (url? repo)
                        repo
                        (str gitlab repo)))]

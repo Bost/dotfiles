@@ -5,7 +5,10 @@
 (define-module (settings)
   ;; #:use-module (ice-9 r5rs)
   ;; #:use-module (srfi srfi-1)    #| delete-duplicates |#
-  #:export (user-full-name
+  #:export (
+            gitlab
+            github
+            user-full-name
             user-mail-address
             host-lukas
             host-ecke
@@ -17,6 +20,8 @@
 
 ;; (format #t "[settings] evaluating module ...\n")
 
+(define gitlab "git@gitlab.com:rostislav.svoboda")
+(define github "git@github.com:Bost")
 (define user-full-name "Rostislav Svoboda")
 (define user-mail-address "Rostislav.Svoboda@gmail.com")
 (define user "bost")
