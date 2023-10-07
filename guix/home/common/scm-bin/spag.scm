@@ -5,6 +5,7 @@
   #:use-module (ice-9 regex)
   #:use-module (ice-9 popen)
   #:use-module (utils)
+  #:use-module (settings)
   #:export (main git-spacemacs))
 
 #|
@@ -16,10 +17,10 @@
 |#
 
 (define* (git-spacemacs #:rest args)
-  (let ((h (getenv "HOME")))
+  (let ((sp-path (str home "/" spacemacs-dir)))
     (cons* "git"
-           (string-append "--git-dir=" h "/.emacs.d/.git")
-           (string-append "--work-tree=" h "/.emacs.d")
+           (str "--git-dir=" sp-path "/.git")
+           (str "--work-tree=" sp-path)
            args)))
 
 (define (main args)

@@ -62,7 +62,7 @@
   ;;    "/gnu/store/lm1pa3z1aafp62fw6vf5fwfbic7wf6yw-emacs-clojure-snippets-1.0.1-0.6068dca/share/emacs/site-lisp/clojure-snippets-1.0.1-0.6068dca/snippets"
   ;;    "/home/bost/snippets")
   ;; The original value was:
-  ;;   ("/home/bost/.emacs.d/snippets")
+  ;;   ("/home/bost/.emacs.d.spacemacs/snippets")
 
   (list
    ;; beg: Temporarily exclude following packages. They are added in the home-<hostname>.scm

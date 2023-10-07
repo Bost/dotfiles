@@ -16,6 +16,7 @@
             hostnames
             user
             home
+            spacemacs-dir
             ))
 
 ;; (format #t "[settings] evaluating module ...\n")
@@ -26,6 +27,8 @@
 (define user-mail-address "Rostislav.Svoboda@gmail.com")
 (define user "bost")
 (define home (string-append "/home/" user))
+
+(define spacemacs-dir ".emacs.d.spacemacs")
 
 (define host-lukas "lukas")
 (define host-ecke "ecke")

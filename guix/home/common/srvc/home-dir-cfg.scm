@@ -260,15 +260,15 @@
     ;; (lambda (p) (format #t "############## 1.\n") p)
     (partial append
 ;;; This can't be used:
-;;;           `((".emacs.d/private" ;; destination
-;;;              ,(local-file (user-dotf "/.emacs.d/private")
+;;;           `((".emacs.d.spacemacs/private" ;; destination
+;;;              ,(local-file (user-dotf "/.emacs.d.spacemacs/private")
 ;;;                           #:recursive? #t)))
 ;;; because:
-;;; 1. Can't store the whole ".emacs.d/private" since there are some README.md
+;;; 1. Can't store the whole ".emacs.d.spacemacs/private" since there are some README.md
 ;;; files and `git ... rebase develop cycle' b/c they will be symlinked (from
 ;;; the /gnu/store/).
 ;;;
-;;; 2. Can't store the ".emacs.d/private" w/o the README.md files and restore
+;;; 2. Can't store the ".emacs.d.spacemacs/private" w/o the README.md files and restore
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
              (list
@@ -283,7 +283,7 @@
 (testsymb 'home-dir-cfg-srvc-files)
 
 (define home-dir-cfg-srvc
-  ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d directory
+  ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d.spacemacs directory
   (simple-service
    'home-dir-cfg-srvc home-files-service-type home-dir-cfg-srvc-files))
 (testsymb 'home-dir-cfg-srvc)

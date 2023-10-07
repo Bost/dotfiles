@@ -31,6 +31,8 @@
 ;; not be defined
 (setq dev  (or (getenv "dev") "~/dev"))
 (setq dotf (or (getenv "dotf") "~/dev/dotfiles"))
+(setq sp-dir ".emacs.d.spacemacs")
+(setq sp-home-dir (concat "~/" sp-dir))
 (setq hostname (system-name))
 
 (defun dotspacemacs/layers ()
@@ -60,8 +62,8 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
-   ;; Direct jump with ~g f~ to $dotf/.emacs.d/
-   dotspacemacs-configuration-layer-path `(,(concat dotf "/.emacs.d/"))
+   ;; Direct jump with ~g f~ to $dotf/.emacs.d.spacemacs/
+   dotspacemacs-configuration-layer-path `(,(concat dotf "/" sp-dir "/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -98,7 +100,7 @@ This function should only modify configuration layer settings."
      ;; (unbind-key "s-<delete>" cider-repl-mode-map)
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
      ;; cider package location configured by
-     ;; ~/.emacs.d/layers/+lang/clojure/packages.el in its 'use-package'
+     ;; ~/.emacs.d.spacemacs/layers/+lang/clojure/packages.el in its 'use-package'
      (clojure
       :variables
       ;; (Default '(macro core deprecated))
@@ -200,7 +202,7 @@ This function should only modify configuration layer settings."
 
      ;; Try some of the following commands:
      ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
-     ;;                     ~/.emacs.d/layers/fennel
+     ;;                     ~/.emacs.d.spacemacs/layers/fennel
      ;;   git submodule update --init
      ;; fennel ;; fennel = lua in lisp
 
@@ -228,7 +230,32 @@ This function should only modify configuration layer settings."
            ;; helm-display-function 'helm-display-buffer-in-own-frame
 
            ;; nil - use the longest `buffer-name' length found. (Default 20)
+           ;; When in M-x helm-mini ~s-]~ see also:
+           ;; ~C-]~ / M-x helm-ff-run-toggle-basename
+           ;; C-i
+
+           ;; Doesn't work / does nothing
+           ;; (add-to-list 'helm-commands-using-frame #'helm-M-x) ;; (Default nil)
+           ;; (setq helm-commands-using-frame nil) ;; (Default nil)
+
+           ;; (Default ((width . 80) (height . 2)))
+           ;; (setq minibuffer-frame-alist '((minibuffer . only)))
+           ;; (setq minibuffer-frame-alist '((width . 80) (height . 2)))
+           ;; (setq minibuffer-frame-alist '((top . 1) (left . 1) (width . 80) (height . 2)))
+
+           ;; (setq helm-split-window-inside-p t) ;; (Default nil)
+           ;; (setq helm-split-window-inside-p nil) ;; (Default nil)
+
+           ;; https://github.com/emacs-helm/helm/issues/2039#issuecomment-390103697
+           ;; (setq helm-always-two-windows nil) ;; (Default nil)
+           ;; (setq helm-display-buffer-default-height 23) ;; (Default nil)
+           ;; (setq helm-display-buffer-default-height nil) ;; (Default nil)
+           ;; (setq helm-default-display-buffer-functions '(display-buffer-in-side-window))
+
            helm-buffer-max-length nil
+
+           ;; Truncate lines in ‘helm-buffers-list’ when non-nil. (Default t)
+           ;; helm-buffers-truncate-lines nil
 
            ;; helm-display-buffer-width 100 ;; (Default 72)
 
@@ -301,7 +328,7 @@ This function should only modify configuration layer settings."
      ;; `g r' menu in Emacs normal state
      multiple-cursors
 
-     ;; Direct jump with ~g f~ $dotf/.emacs.d/my=tweaks/funcs.el doesn't work.
+     ;; Direct jump with ~g f~ $dotf/.emacs.d.spacemacs/my=tweaks/funcs.el doesn't work.
      ;; The '=' in the file-path makes problems.
      my=tweaks ;; See `dotspacemacs-configuration-layer-path'.
 
@@ -436,7 +463,7 @@ This function should only modify configuration layer settings."
               vinegar-dired-hide-details nil)
 
      openai
-    ;; windows-scripts
+     ;; windows-scripts
 
      yaml
 
@@ -469,7 +496,7 @@ This function should only modify configuration layer settings."
      ;;   '(geiser-company--setup geiser-repl-company-p)'
      ;; However geiser-company.el has been removed in upstream repo:
      ;; https://gitlab.com/emacs-geiser/geiser/-/commit/18faa0ba32c9ce751c16960b2a39b3880b523272
-     ;; See, e.g. ~/.emacs.d/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
+     ;; See, e.g. ~/.emacs.d.spacemacs/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
      guix
      ;;
      ;; 2. By Guix:
@@ -632,8 +659,6 @@ It should only modify the values of Spacemacs settings."
      `(("melpa"  . ,(concat mirror "/melpa/"))
        ("gnu"    . ,(concat mirror "/gnu/"))
        ("nongnu" . ,(concat mirror "/nongnu/"))))
-   ;;   set mirror $dev/elpa-mirror.d12frosted
-   ;;   git --git-dir=$mirror/.gitb  --work-tree=$mirror pull --rebase
 
    ;; If non-nil then enable support for the portable dumper. You'll need to
    ;; compile Emacs 27 from source following the instructions in file
@@ -654,7 +679,7 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
+   ;;   ./emacs --dump-file=$HOME/.emacs.d.spacemacs/.cache/dumps/spacemacs-27.1.pdmp
    ;; (default (format "spacemacs-%s.pdmp" emacs-version))
    dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
 
@@ -786,7 +811,7 @@ It should only modify the values of Spacemacs settings."
    ;;
    ;; '(<theme-name> :location local)' on a:
    ;; - non-Guix machine:
-   ;;     ~/.emacs.d/private/local/<theme-name>-theme/
+   ;;     ~/.emacs.d.spacemacs/private/local/<theme-name>-theme/
    ;; - Guix machine:
    ;;     /gnu/store/*-spacemacs-rolling-release-*/private/local
    ;; TODO check the
@@ -1054,11 +1079,11 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
-   dotspacemacs-enable-server t
+   dotspacemacs-enable-server nil
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
-   ;; like \"~/.emacs.d/server\". It has no effect if
+   ;; like \"~/.emacs.d.spacemacs/server\". It has no effect if
    ;; `dotspacemacs-enable-server' is nil.
    ;; (default nil)
    dotspacemacs-server-socket-dir (concat
@@ -2135,6 +2160,22 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
              ;; ("<return>"    . dired-x-find-file)
              ("<return>"    . dired-find-file) ;; default
              ("<S-delete>"  . my=dired-do-delete))
+  ;; (with-eval-after-load 'dired-mode
+  ;;   (bind-keys :map dired-mode-map
+  ;;              ("<f5>"        . my=revert-buffer-no-confirm)
+  ;;              ;; ("<f5>"        . revert-buffer)
+
+  ;;              ;; Use ~C-s-h~ b/c ~C-H~ (shift-h) doesn't work
+  ;;              ("C-s-h"       . my=dired-dotfiles-toggle)
+  ;;              ("<backspace>" . (lambda () (interactive)
+  ;;                                 (find-alternate-file "..")))
+  ;;              ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
+  ;;              ;; ("<return>"    . dired-find-alternate-file)
+  ;;              ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
+  ;;              ;; asks for file instead of opening it
+  ;;              ;; ("<return>"    . dired-x-find-file)
+  ;;              ("<return>"    . dired-find-file) ;; default
+  ;;              ("<S-delete>"  . my=dired-do-delete)))
 
   ;; (eval-after-load "dired"
   ;;   '(progn
@@ -2284,6 +2325,11 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (bind-keys :map org-mode-map
              ;; ~<menu>~ pressed twice
              ("H-<menu>" . org-latex-export-to-pdf))
+
+  ;; (with-eval-after-load 'org-mode
+  ;;   (bind-keys :map org-mode-map
+  ;;              ;; ~<menu>~ pressed twice
+  ;;              ("H-<menu>" . org-latex-export-to-pdf)))
 
   (bind-keys :map prog-mode-map
              ;; M-/  M-x hippie-expand
@@ -2537,6 +2583,18 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                 ("C-M-k" . kill-sexp)))
    '(evil-normal-state-map evil-insert-state-map))
 
+;;   (with-eval-after-load 'evil-normal-state
+;;     (bind-keys :map evil-normal-state-map
+;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+;; ;;; layers/+misc/multiple-cursors/packages.el
+;;                   ("C-M-k" . kill-sexp)))
+
+;;   (with-eval-after-load 'evil-insert-state
+;;     (bind-keys :map evil-insert-state-map
+;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+;; ;;; layers/+misc/multiple-cursors/packages.el
+;;                   ("C-M-k" . kill-sexp)))
+
   (mapcar
    (lambda (map)
      ;; Move by screen lines instead of logical (long) lines
@@ -2548,6 +2606,20 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (bind-keys :map evil-visual-state-map
              ("p" . my=evil-paste-after-from-0))
 
+  ;; (with-eval-after-load 'evil-motion-state
+  ;;    ;; Move by screen lines instead of logical (long) lines
+  ;;    (bind-keys :map evil-motion-state-map
+  ;;               ("j" . evil-next-visual-line)
+  ;;               ("k" . evil-previous-visual-line)))
+
+  ;; (with-eval-after-load 'evil-visual-state
+  ;;   ;; Move by screen lines instead of logical (long) lines
+  ;;   (bind-keys :map evil-visual-state-map
+  ;;                   ("j" . evil-next-visual-line)
+  ;;                   ("k" . evil-previous-visual-line))
+  ;;   (bind-keys :map evil-visual-state-map
+  ;;              ("p" . my=evil-paste-after-from-0)))
+
   ;; see also binding for <f2>
   ;; (bind-keys :map evil-normal-state-map
   ;;            ("f" . evil-avy-goto-char-timer)
@@ -2555,6 +2627,8 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   ;; (add-to-list 'spacemacs-indent-sensitive-modes #'clojure-mode)
   ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojurescript-mode)
+
+  ;; accept completion from copilot and fallback to company
 
   ;;; github copilot config begin
   ;; (with-eval-after-load 'company

@@ -7,6 +7,7 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 r5rs)
   #:use-module (utils)
+  #:use-module (settings)
   #:export (main restore-spacemacs))
 
 #|
@@ -25,7 +26,7 @@
   (primitive-eval `(1+ ,(append `(+ 1 2) (list 3 4))))
   ((compose
     (lambda (files)
-      (let ((dir (str home "/.emacs.d/private")))
+      (let ((dir (str home "/" spacemacs-dir "/private")))
         (if (null? files)
             (format #t "Nothing to restore in ~a.\n" dir)
             ((compose
