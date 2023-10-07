@@ -187,19 +187,9 @@
      ;; Warn about deprecated Guile features
      ("GUILE_WARN_DEPRECATED" . "detailed")
 
-     ;; hunting down the native-compiler-error:
-     ;;     ld: cannot find crtbeginS.o: No such file or directory
-     ;;     ld: cannot find -lgcc
-     ;;     ld: cannot find -lgcc_s
-     ;;     ld: cannot find -lgcc_s
-     ;;     libgccjit.so: error: error invoking gcc driver
-     ;; https://lists.gnu.org/archive/html/guix-devel/2020-03/msg00256.html
-     ;; https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
-     ;; TODO try the v3 patches from
-     ;; [PATCH 0/6] Add native compilation to Emacs
-     ;; https://issues.guix.gnu.org/57086#9
-     ;;
-     ;; CC (or maybe CMAKE_C_COMPILER) is needed for: npm install --global heroku
+     ;; CC and CMAKE_C_COMPILER may NOT need be defined in the environment, if
+     ;; the "native-compiler-error (libgccjit.so: error invoking gcc driver)"
+     ;; doesn't come up.
      ("CC"               . ,gcc-filepath)
      ("CMAKE_C_COMPILER" . ,gcc-filepath)
 
