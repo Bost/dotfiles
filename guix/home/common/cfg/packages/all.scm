@@ -324,20 +324,22 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "font-gnu-unifont"
    "fuse"
 
-   ;; guix package --list-available=gcc | awk '{print $1}' | sort | uniq
-   ;; Try to install all gcc-relevant packages to fix the
-   ;; native-compiler-error:
+   ;; Seems like the "native-compiler-error (libgccjit.so: error invoking gcc
+   ;; driver)":
+   ;;     ld: cannot find crtbeginS.o: No such file or directory
+   ;;     ld: cannot find -lgcc
+   ;;     ld: cannot find -lgcc_s
+   ;;     ld: cannot find -lgcc_s
    ;;     libgccjit.so: error: error invoking gcc driver
-   "gcc-bootstrap"
-   "gccgo"
-   "gccmakedep"
-   "gcc-objc"
-   "gcc-objc++"
-   ;; Make sure the CC environment variable has the value `(which gcc)'
-   ;; See home-environment-variables-service-type
-   "gcc-toolchain"
-   "libgccjit"
-   "rust-gcc"
+   ;; doesn't come up if the 11.3.0 is used.
+   ;; See also:
+   ;; - CC and CMAKE_C_COMPILER environment definition
+   ;; - https://lists.gnu.org/archive/html/guix-devel/2020-03/msg00256.html
+   ;;   https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
+   ;;   https://issues.guix.gnu.org/57086#9
+
+   "gcc-toolchain@11.3.0"
+   "libgccjit@11.3.0"
 
    "ghc"
    "glib:bin"
@@ -570,7 +572,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;;    (list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968")
 
 ;;; emacs 28.2
-    (list "emacs"             "772eaa69f31457aa19ca4dc4ce755c791d722054")
+    ;; (list "emacs"             "772eaa69f31457aa19ca4dc4ce755c791d722054")
     )))
 (testsymb 'inferior-pkgs)
 
@@ -587,7 +589,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; otherwise the:
 ;;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
 ;;; gets triggered. See https://issues.guix.gnu.org/issue/52002
-    ;; "emacs"            ;; use inferior version 28.2
+    "emacs"
     "emacs-gptel"
     ;; "emacs-next"       ;; 29.0.92
     ;; "emacs-next-pgtk"  ;; 29.0.92
