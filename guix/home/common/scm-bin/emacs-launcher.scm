@@ -10,6 +10,7 @@
   |#
 
   #:use-module (utils)
+  #:use-module (settings)
   ;; #:use-module (bost utils)
   #:export (main))
 
@@ -50,7 +51,7 @@
               (str "emacsclient --no-wait --socket-name="
 ;;; See `dotspacemacs-server-socket-dir' in the `.spacemacs'.
 ;;; Tilda '~' doesn't work
-                   "$HOME/.emacs.d" "/server/server")
+                   "$HOME/" spacemacs-dir "/server/server")
               ;; (emacs-output-path)
               (which-emacs)))
     (lambda (prms) (if (null? prms) '("./") prms))

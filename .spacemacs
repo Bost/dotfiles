@@ -25,6 +25,8 @@
 ;; not be defined
 (setq dev  (or (getenv "dev") "~/dev"))
 (setq dotf (or (getenv "dotf") "~/dev/dotfiles"))
+(setq sp-dir ".emacs.d.spacemacs")
+(setq sp-home-dir (concat "~/" sp-dir))
 (setq hostname (system-name))
 
 (defun dotspacemacs/layers ()
@@ -54,8 +56,8 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
-   ;; Direct jump with ~g f~ to $dotf/.emacs.d/
-   dotspacemacs-configuration-layer-path `(,(concat dotf "/.emacs.d/"))
+   ;; Direct jump with ~g f~ to $dotf/.emacs.d.spacemacs/
+   dotspacemacs-configuration-layer-path `(,(concat dotf "/" sp-dir "/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -92,7 +94,7 @@ This function should only modify configuration layer settings."
      ;; (unbind-key "s-<delete>" cider-repl-mode-map)
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
      ;; cider package location configured by
-     ;; ~/.emacs.d/layers/+lang/clojure/packages.el in its 'use-package'
+     ;; ~/.emacs.d.spacemacs/layers/+lang/clojure/packages.el in its 'use-package'
      (clojure
       :variables
       ;; (Default '(macro core deprecated))
@@ -196,7 +198,7 @@ This function should only modify configuration layer settings."
 
      ;; Try some of the following commands:
      ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
-     ;;                     ~/.emacs.d/layers/fennel
+     ;;                     ~/.emacs.d.spacemacs/layers/fennel
      ;;   git submodule update --init
      ;; fennel ;; fennel = lua in lisp
 
@@ -212,8 +214,6 @@ This function should only modify configuration layer settings."
      haskell
      ;; hy ;; hylang - lisp embedded in python
 
-     ;; See helm-map in the
-     ;; ~/.emacs.d/elpa/28.2/develop/helm-core-20230117.1925/helm-core.el
      (helm :variables
            ;; (setq
 
@@ -324,7 +324,7 @@ This function should only modify configuration layer settings."
      ;; `g r' menu in Emacs normal state
      multiple-cursors
 
-     ;; Direct jump with ~g f~ $dotf/.emacs.d/my=tweaks/funcs.el doesn't work.
+     ;; Direct jump with ~g f~ $dotf/.emacs.d.spacemacs/my=tweaks/funcs.el doesn't work.
      ;; The '=' in the file-path makes problems.
      my=tweaks ;; See `dotspacemacs-configuration-layer-path'.
 
@@ -492,7 +492,7 @@ This function should only modify configuration layer settings."
      ;;   '(geiser-company--setup geiser-repl-company-p)'
      ;; However geiser-company.el has been removed in upstream repo:
      ;; https://gitlab.com/emacs-geiser/geiser/-/commit/18faa0ba32c9ce751c16960b2a39b3880b523272
-     ;; See, e.g. ~/.emacs.d/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
+     ;; See, e.g. ~/.emacs.d.spacemacs/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
      guix
      ;;
      ;; 2. By Guix:
@@ -675,7 +675,7 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
+   ;;   ./emacs --dump-file=$HOME/.emacs.d.spacemacs/.cache/dumps/spacemacs-27.1.pdmp
    ;; (default (format "spacemacs-%s.pdmp" emacs-version))
    dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
 
@@ -807,7 +807,7 @@ It should only modify the values of Spacemacs settings."
    ;;
    ;; '(<theme-name> :location local)' on a:
    ;; - non-Guix machine:
-   ;;     ~/.emacs.d/private/local/<theme-name>-theme/
+   ;;     ~/.emacs.d.spacemacs/private/local/<theme-name>-theme/
    ;; - Guix machine:
    ;;     /gnu/store/*-spacemacs-rolling-release-*/private/local
    ;; TODO check the
@@ -1076,15 +1076,15 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
-   dotspacemacs-enable-server t
+   dotspacemacs-enable-server nil
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
-   ;; like \"~/.emacs.d/server\". It has no effect if
+   ;; like \"~/.emacs.d.spacemacs/server\". It has no effect if
    ;; `dotspacemacs-enable-server' is nil.
    ;; (default nil)
    dotspacemacs-server-socket-dir (concat
-                                   "~/.emacs.d/"
+                                   sp-home-dir "/"
                                    "server")
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
@@ -1196,14 +1196,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; (setq init-file-debug t)
 
   (setq yas--default-user-snippets-dir (concat
-                                        "~/.emacs.d/"
+                                        sp-home-dir "/"
                                         "snippets"))
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
-  ;; ~/.emacs.d/.cache/.custom-settings
+  ;; ~/.emacs.d.spacemacs/.cache/.custom-settings
   (setq custom-file (concat
-                     "~/.emacs.d/"
+                     sp-home-dir "/"
                      ".cache/.custom-settings"))
   (load custom-file) ;; `custom-file' is not auto-loaded
 
@@ -1370,7 +1370,7 @@ before packages are loaded."
 
    ;; See also undo-tree-auto-save-history
    undo-tree-history-directory-alist `(("." . ,(concat
-                                                "~/.emacs.d/"
+                                                sp-home-dir "/"
                                                 "undo")))
 
    ;; TODO If the "Search failed. ... unmatched expression ... " persists, try:
@@ -1505,7 +1505,7 @@ before packages are loaded."
     "docstring"
     (interactive)
     (persp-load-state-from-file (concat
-                                 "~/.emacs.d/"
+                                 sp-home-dir "/"
                                  ".cache/layouts/persp-auto-save")))
 
   (defun my=delete-other-windows ()

@@ -93,7 +93,7 @@ Example:
 ;;; TODO crc should search in the $dec
    (service-file #:program-name "crc"  #:files "clojure"
                  #:scheme-file-name "search-notes")
-;;; TODO cre should also search in the ~/.emacs.d/, ~/.spacemacs, kill-buffers
+;;; TODO cre should also search in the ~/.emacs.d.spacemacs/, ~/.spacemacs, kill-buffers
 ;;; and my=tweaks, farmhouse-light-mod
    (service-file #:program-name "cre"  #:files "vim|emacs|org_mode"
                  #:scheme-file-name "search-notes")
