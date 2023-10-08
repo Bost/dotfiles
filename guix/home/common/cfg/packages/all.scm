@@ -684,12 +684,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
          (begin
            ;; (format #t "(is-system-lukas)\n")
            (list))]
-        ;; The spguimacs-packages should be installed only on the ecke- and
-        ;; geek-machines, i.e. no need to install it elsewhere.
         [(is-system-ecke)
          (begin
            ;; (format #t "(is-system-ecke)\n")
            (append
+            (spguimacs-packages) ;; pulls in ~350 additional packages
             (devel-packages)
             (rest-packages)
             ;; (video-packages)
