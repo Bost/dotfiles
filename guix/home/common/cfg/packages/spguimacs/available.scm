@@ -54,7 +54,7 @@
    "emacs-ample-theme"
    "emacs-ample-zen-theme"
    "emacs-amx"
-   "emacs-anaconda-mode"
+   ;; "emacs-anaconda-mode" ;; requires emacs-pythonic which fails to compile
    "emacs-anakondo"
    "emacs-anaphora"
    "emacs-anki-editor"
@@ -1196,7 +1196,7 @@
    "emacs-pyimport"
    "emacs-python-black"
    "emacs-python-environment"
-   "emacs-pythonic"
+   ;; "emacs-pythonic"    ;; fails to compile
    "emacs-pyvenv"
    "emacs-qml-mode"
    "emacs-qrencode"
@@ -1379,7 +1379,7 @@
    "emacs-syslog-mode"
    "emacs-systemd-mode"
    "emacs-tablist"
-   "emacs-tagedit"
+   ;; "emacs-tagedit" ;; fails to compile
    "emacs-tamil99"
    "emacs-tango-2-theme"
    "emacs-tango-plus-theme"
