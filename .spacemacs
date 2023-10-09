@@ -57,7 +57,9 @@ This function should only modify configuration layer settings."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
    ;; Direct jump with ~g f~ to $dotf/.emacs.d.spacemacs/
-   dotspacemacs-configuration-layer-path `(,(concat dotf "/" sp-dir "/"))
+   ;; The path is the same for all sp*macs.
+   dotspacemacs-configuration-layer-path
+   `(,(concat dotf "/.emacs.d.spacemacs/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -1083,9 +1085,7 @@ It should only modify the values of Spacemacs settings."
    ;; like \"~/.emacs.d.spacemacs/server\". It has no effect if
    ;; `dotspacemacs-enable-server' is nil.
    ;; (default nil)
-   dotspacemacs-server-socket-dir (concat
-                                   sp-home-dir "/"
-                                   "server")
+   dotspacemacs-server-socket-dir (concat sp-home-dir "/" "server")
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)

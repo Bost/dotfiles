@@ -31,7 +31,7 @@
 ;; not be defined
 (setq dev  (or (getenv "dev") "~/dev"))
 (setq dotf (or (getenv "dotf") "~/dev/dotfiles"))
-(setq sp-dir ".emacs.d.spacemacs")
+(setq sp-dir ".emacs.d.spguimacs")
 (setq sp-home-dir (concat "~/" sp-dir))
 (setq hostname (system-name))
 
@@ -63,7 +63,9 @@ This function should only modify configuration layer settings."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
    ;; Direct jump with ~g f~ to $dotf/.emacs.d.spacemacs/
-   dotspacemacs-configuration-layer-path `(,(concat dotf "/" sp-dir "/"))
+   ;; The path is the same for all sp*macs.
+   dotspacemacs-configuration-layer-path
+   `(,(concat dotf "/.emacs.d.spacemacs/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -1086,9 +1088,7 @@ It should only modify the values of Spacemacs settings."
    ;; like \"~/.emacs.d.spacemacs/server\". It has no effect if
    ;; `dotspacemacs-enable-server' is nil.
    ;; (default nil)
-   dotspacemacs-server-socket-dir (concat
-                                   spacemacs-data-directory
-                                   "server")
+   dotspacemacs-server-socket-dir (concat sp-home-dir "/" "server")
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
@@ -1202,14 +1202,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; (setq my=retrieve-package-archives nil)
   (setq my=retrieve-package-archives t)
   (setq yas--default-user-snippets-dir (concat
-                                        spacemacs-data-directory
+                                        sp-home-dir "/"
                                         "snippets"))
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
   ;; ~/.local/share/spacemacs/.cache/.custom-settings
   (setq custom-file (concat
-                     spacemacs-data-directory
+                     sp-home-dir "/"
                      ".cache/.custom-settings"))
   (load custom-file) ;; `custom-file' is not auto-loaded
 
