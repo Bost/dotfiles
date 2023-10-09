@@ -861,7 +861,7 @@ It should only modify the values of Spacemacs settings."
                      ((string= hostname "ecke")
                       (+ default (* 6 text-scale-mode-step)))
                      (t default))))
-         (message "#### dotspacemacs-default-font :size: %s" size)
+         ;; (message "#### dotspacemacs-default-font :size: %s" size)
          size)
      :weight normal
      :width normal)
