@@ -260,6 +260,25 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
          ("cores" . "22") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
          ("dec"   . ,(user-home "/dec"))
          ("der"   . ,(user-home "/der"))
+         ;; guile / guix load-path
+         ("glp"  . ,((compose
+                      (lambda (lst) (string-join lst list-separator-bash)))
+                     (append
+                      (list dgx)
+                      (map user-dev
+                           (list
+                            "/nonguix"
+                            "/andrew-rde/src"))
+                      (map user-dotf
+                           (list
+                            "/guix/common"
+                            "/guix/home/common"
+                            "/guix/systems/common"
+                            "/guix/home"
+                            "/guix/systems"
+                            ))
+                      (list (str dgxp "/packages"))
+                      )))
          ))
       #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
      (base:environment-vars list-separator-bash)))))
