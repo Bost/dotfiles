@@ -2350,7 +2350,8 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   ;; Setup for Hacking on Guix and Scheme Code
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
-  (let ((glp (parse-colon-path (getenv "glp")))) ; list items end with '/'
+  (let ((glp (parse-colon-path (getenv "glp"))) ; list items end with '/'
+        (dgx (getenv "dgx")))
     (when glp
       (with-eval-after-load #'geiser-guile
         ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
@@ -2359,7 +2360,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
          glp))
       ;; (with-eval-after-load 'yasnippet
       ;;   (add-to-list #'yas-snippet-dirs
-      ;;                (concat guix-checkout-dir "/etc/snippets")))
+      ;;                (concat dgx "/etc/snippets")))
 
       ;; TODO extend the GuixOS with a service providing user full-name and email
       ;; or parse (one of):
@@ -2374,7 +2375,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
        user-mail-address      (getenv "user_mail_address")
        copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
 
-      (load-file (concat (getenv "dgx") "/etc/copyright.el"))
+      (load-file (concat dgx "/etc/copyright.el"))
       ;; check if the copyright is up to date M-x copyright-update.
       ;; automatically add copyright after each buffer save
       ;; (add-hook 'after-save-hook 'copyright-update)
