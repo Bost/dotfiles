@@ -57,6 +57,11 @@
      ;; "~/dev/kill-buffers/"
      (recipe :fetcher github :repo "Bost/kill-buffers")
      )
+    (tweaks
+     :location
+     ;; "~/dev/tweaks/"
+     (recipe :fetcher github :repo "Bost/tweaks")
+     )
     )
   "The list of Lisp packages required by the my=tweaks layer.
 
@@ -86,9 +91,6 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
 
-(setq my=iedit-mode nil)
-;; (defvar my=iedit-mode nil) ;; TRY defvar
-
 (defun my=tweaks/post-init-equake ()
   ;; Under xfce4-keyboard-settings -> Application shortcuts
   ;; set: emacsclient -n -e '(equake-invoke)'
@@ -115,39 +117,5 @@ Each entry is either:
   ;; `eval-after-load' in the package
   (use-package copy-sexp))
 
-;; The url is from
-;;   ~/.spacemacs.d/layers/+web-services/search-engine/packages.el
-(setq my=search-url "https://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
-
-(defun my=search-or-browse (&optional args)
-  "'&optional args' must be declared otherwise the key binding doesn't work.
-Selected text has higher priority than URL. A YouTube URL is
-immediately opened by `browse-url-firefox', anything else is put
-on prompt with the `my=search-url' prefix and handled by
-`browse-url-firefox'."
-  (interactive "p")
-  (cond
-   ((or (region-active-p) (evil-visual-state-p))
-    ;; Select text as if done from the insert state.
-    (browse-url-firefox
-     (format my=search-url
-             (read-string "[firefox] search region: "
-                          (buffer-substring-no-properties (region-beginning)
-                                                          (region-end))))))
-
-   ((let ((url-string (thing-at-point 'url)))
-      (or
-       (string-prefix-p "https://youtu.be" url-string)
-       (string-prefix-p "https://www.youtube" url-string)))
-    (browse-url-firefox (thing-at-point 'url)))
-
-   ;; test http://bla.com
-   ((string-prefix-p "http" (thing-at-point 'url))
-    (browse-url-firefox (thing-at-point 'url)))
-
-   (t
-    (browse-url-firefox
-     (format my=search-url
-             (read-string "[firefox] search thing: "
-                          (thing-at-point 'symbol)))))))
-
+(defun my=tweaks/init-tweaks ()
+  (use-package tweaks))
