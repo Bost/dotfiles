@@ -165,7 +165,7 @@
    "emacs-eval-in-repl-sly"
    "emacs-eval-in-repl-sly"
    "emacs-eval-in-repl-sml"
-   "emacs-eval-sexp-fu"
+   "emacs-eval-sexp-fu-el"
    "emacs-evil"
    "emacs-evil-anzu"
    "emacs-evil-args"
