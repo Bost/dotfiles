@@ -2340,25 +2340,19 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   ;; Setup for Hacking on Guix and Scheme Code
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
-  (let ((guix-checkout-dir (format "%s/guix" dev)))
-    (when (file-exists-p guix-checkout-dir)
+  ;;
+  ;; `parse-colon-path' returns a list with items containing trailing slash '/',
+  ;; geiser-guile-load-path doesn't like it.
+  (let ((glp (split-string (getenv "glp") ":"))
+        (dgx (getenv "dgx")))
+    (when glp
+      ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
+      ;; TODO move this to project's .dir-locals.el
       (with-eval-after-load #'geiser-guile
-        ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
         (mapcar
+         ;; Add ELEMENT to the value of LIST-VAR if it isn't there yet.
          (-partial #'add-to-list 'geiser-guile-load-path)
-         (list
-          guix-checkout-dir
-          (format "%s/nonguix" dev)
-          (format "%s/andrew-rde/src" dev)
-          (format "%s/guix/common" dotf)
-          (format "%s/guix/home/common" dotf)
-          (format "%s/guix/systems/common" dotf)
-          (format "%s/guix/home" dotf)
-          (format "%s/guix/systems" dotf)
-;;; Excluded it b/c:
-;;; WARNING: compilation of /home/bost/dev/rde-andrew-tropin/guix.scm failed
-          ;; (format "%s/rde-andrew-tropin" dev)
-          (format "%s/guix-packages/packages" dev))))
+         glp))
       ;; (with-eval-after-load 'yasnippet
       ;;   (add-to-list #'yas-snippet-dirs
       ;;                (concat guix-checkout-dir "/etc/snippets")))
@@ -2376,7 +2370,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
        user-mail-address      (getenv "user_mail_address")
        copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
 
-      (load-file (concat guix-checkout-dir "/etc/copyright.el"))
+      (load-file (concat (getenv "dgx") "/etc/copyright.el"))
       ;; check if the copyright is up to date M-x copyright-update.
       ;; automatically add copyright after each buffer save
       ;; (add-hook 'after-save-hook 'copyright-update)
