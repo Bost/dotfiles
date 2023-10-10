@@ -529,6 +529,7 @@
    ;; "emacs-treemacs-persp"
    ;; "emacs-treemacs-projectile"
    "emacs-treepy"
+   "emacs-tweaks"
    "emacs-twilight-anti-bright-theme"
    "emacs-twilight-bright-theme"
    "emacs-twilight-theme"
