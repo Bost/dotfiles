@@ -1443,6 +1443,7 @@
    "emacs-tshell"
    "emacs-tuareg"
    "emacs-tup-mode"
+   "emacs-tweaks"
    "emacs-twilight-anti-bright-theme"
    "emacs-twilight-bright-theme"
    "emacs-twilight-theme"
