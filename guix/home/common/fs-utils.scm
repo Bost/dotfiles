@@ -23,6 +23,8 @@
             dotf
             user-dotf
             xdg-config-home
+            dgx
+            dgxp
             ))
 
 (define m (module-name-for-logging))
@@ -34,6 +36,9 @@
 (define* (user-dev #:rest args)  (apply str dev args))
 (define  dotf (user-dev "/dotfiles"))
 (define* (user-dotf #:rest args) (apply str dotf args))
+
+(define dgx  (user-dev "/guix"))
+(define dgxp (user-dev "/guix-packages"))
 
 ;; see gnu/home/services/symlink-manager.scm
 (define xdg-config-home (or (getenv "XDG_CONFIG_HOME")
