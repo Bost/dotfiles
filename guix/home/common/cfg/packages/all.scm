@@ -62,6 +62,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
   "Large packages, slow to build, graft, download, etc."
   (list
    "audacity" ;; 35.8MiB
+
+   ;; Rebranded Mozilla Thunderbird email client. Optionally install also
+   ;; "libotr" the Off-the-Record (OTR) Messaging Library and Toolkit. See
+   ;; Thunderbird console Ctrl-Shift-j
+   "icedove"  ;; 48.8MiB
+
    "inkscape" ;; ~93MiB
 
    ;; rust downloads (see below) and then it needs to be build:
