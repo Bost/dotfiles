@@ -8,8 +8,6 @@
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   ;; provides clojure related packages
   #:use-module ((bost packages clojure) #:prefix bstc:)
-  ;; provides xsel
-  #:use-module ((bost packages xdisorg) #:prefix bstx:)
   #:use-module (gnu packages)
   #:use-module (guix packages)
   #:use-module (guix channels)
@@ -532,7 +530,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "xev"
 
    ;; Manipulate X selection, i.e. the clipboard from the command line.
-   ;; "xsel" ;; see bstx:...
+   "xsel"
    ))
 
 (define (xfce-packages)
@@ -671,8 +669,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            (list
             bstc:clojure
             bstc:clojure-lsp
-            bstc:clojure-tools
-            bstx:xsel)
+            bstc:clojure-tools)
            pkgs)
           pkgs))
     (partial map (compose identity list
