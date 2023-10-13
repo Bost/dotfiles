@@ -34,6 +34,13 @@
  tmux
  compression
  vim
+ audio
+ gnuzilla
+ inkscape
+ rust
+ graphviz
+ texlive
+ chromium
  )
 
 (define (packages-from-additional-channels)
@@ -73,30 +80,30 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (large-packages)
   "Large packages, slow to build, graft, download, etc."
   (list
-   "audacity" ;; 35.8MiB
+   audacity ;; 35.8MiB
 
    ;; Rebranded Mozilla Thunderbird email client. Optionally install also
-   ;; "libotr" the Off-the-Record (OTR) Messaging Library and Toolkit. See
+   ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
    ;; Thunderbird console Ctrl-Shift-j
-   "icedove"  ;; 48.8MiB
+   icedove  ;; 48.8MiB
 
-   "inkscape" ;; ~93MiB
+   inkscape ;; ~93MiB
 
    ;; rust downloads (see below) and then it needs to be build:
    ;;     rust-1.59.0  121.1MiB
    ;;     rust-1.59.0-cargo  3.2MiB
    ;;     rustc-1.60.0-src.tar.xz  63.6MiB
-   "rust" ;; the 1.60 has to be build
+   rust ;; the 1.60 has to be build
 
-   "tectonic" ;; embeddable TeX/LaTeX engine
+   tectonic ;; embeddable TeX/LaTeX engine
 
    ;; Graphviz to LaTeX converter
-   "dot2tex"
+   dot2tex
 
    ;; complete TeX Live distribution
-   "texlive"                 ; may take too long to graft
+   texlive                 ; may take too long to graft
 
-   "ungoogled-chromium"
+   ungoogled-chromium
 
    ;; openjdk-17.0.3  199.5MiB
    ;; openjdk-17.0.3-doc  9.6MiB
@@ -104,10 +111,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; in total ~485 MiB
 
    ;; causes java.lang.ClassNotFoundException: jdk.javadoc.doclet.Doclet
-   ;; "openjdk"
-   "openjdk:jdk"
-
-   ;; "icedtea" ; ~240MiB; provides OpenJDK built with the IcedTea build harness
+   ;; openjdk
+   (specification->package+output "openjdk:jdk")
+   
+   ;; icedtea ; ~240MiB; provides OpenJDK built with the IcedTea build harness
    ))
 
 (define (basic-packages)
@@ -713,7 +720,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (map (comp list specification->package+output) (xorg-packages))
             (map (comp list specification->package+output) (other-gui-packages))
             (map (comp list specification->package+output) (kde-dependent-packages))
-            (map (comp list specification->package+output) (large-packages))
+            (large-packages)
             (map (comp list specification->package+output) (packages-from-additional-channels))
             (list)))]
         [(is-system-geek)
@@ -726,7 +733,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (map (comp list specification->package+output) (xorg-packages))
             (map (comp list specification->package+output) (other-gui-packages))
             (map (comp list specification->package+output) (kde-dependent-packages))
-            ;; (map (comp list specification->package+output) (large-packages))
+            ;; (large-packages)
             (map (comp list specification->package+output) (packages-from-additional-channels-base))
             (list)))]
         [#t (error (format #f "hostname '~a' must be one of the: ~a\n"
