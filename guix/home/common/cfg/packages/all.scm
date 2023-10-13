@@ -43,6 +43,12 @@
  chromium
  kde-systemtools
  kde-utils
+ gnome
+ gtk
+ libreoffice
+ spice
+ terminals
+ lxqt
  )
 
 (define (packages-from-additional-channels)
@@ -479,30 +485,30 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 (define (other-gui-packages)
   (list
-   "gdm"
-   "dconf"
-   "dconf-editor"
-   "evince"
-   ;; "gksudo" ;; not available in the Guix package repository
+   gdm
+   dconf
+   dconf-editor
+   evince
+   ;; gksudo ;; not available in the Guix package repository
 
    ;; gparged and mtools are installed system-wide
-   #;"gparted"    #| disk partition |#
-   #;"mtools"     #| used by gparted |#
+   #;gparted    #| disk partition |#
+   #;mtools     #| used by gparted |#
 
-   "gsettings-desktop-schemas"
-   "gtk"
-   "libreoffice"
+   gsettings-desktop-schemas
+   gtk
+   libreoffice
    ;; Manage encryption keys and passwords in the GNOME keyring
-   "seahorse"
+   seahorse
 
-   "virt-viewer"
+   virt-viewer
 
    ;; share the clipboard and guest display resolution scaling on graphical
    ;; console window resize.
-   "spice-vdagent"
+   spice-vdagent
 
    ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
-   ;; "xdg-utils"  ;; in gnu/packages/freedesktop.scm
+   ;; xdg-utils  ;; in gnu/packages/freedesktop.scm
 
    ;; $ time exa -abghHliS --color=always --time-style=full-iso /gnu/store
    ;;
@@ -514,21 +520,21 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; * Has a framework for Kittens, small terminal programs that can be used to extend kitty's functionality.  For example, they are used for Unicode input, hints, and side-by-side diff.
    ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
    ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
-   ;; "kitty"           ;;  5.443s; no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
+   ;; kitty           ;;  5.443s; no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
    ;;
-   ;; "terminator"      ;;  8.916s; no drop-down; has splits
-   "alacritty"          ;;  4.393s; no drop-down; no splits; no tabs
-   ;; "xfce4-terminal"  ;;  9.905s; has --drop-down; has context menu; already present, no splits
-   ;; "yakuake"         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
-   ;; "guake"           ;;        ; not packaged for Guix
-   ;; "tilda"           ;;  9.256s; drop down with F1 by default; has tabs; no splits
-   "qterminal"          ;;  6.147s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
-   ;; "tilix"           ;;        ; can't see a shit, the text (foreground color) is too dark
-   ;; "xterm"           ;; 17.341s; has nothing, too basic
-   ;; "lxterminal"      ;;  9.022s; has context-menu; no drop-down; no splits; has tabs
-   ;; "cool-retro-term" ;; 25.256s; is cool!
+   ;; terminator      ;;  8.916s; no drop-down; has splits
+   alacritty          ;;  4.393s; no drop-down; no splits; no tabs
+   ;; xfce4-terminal  ;;  9.905s; has --drop-down; has context menu; already present, no splits
+   ;; yakuake         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
+   ;; guake           ;;        ; not packaged for Guix
+   ;; tilda           ;;  9.256s; drop down with F1 by default; has tabs; no splits
+   qterminal          ;;  6.147s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
+   ;; tilix           ;;        ; can't see a shit, the text (foreground color) is too dark
+   ;; xterm           ;; 17.341s; has nothing, too basic
+   ;; lxterminal      ;;  9.022s; has context-menu; no drop-down; no splits; has tabs
+   ;; cool-retro-term ;; 25.256s; is cool!
 
-   "neovim"
+   neovim
    ))
 
 (define (xorg-packages)
@@ -720,7 +726,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             ;; (map (comp list specification->package+output) (video-packages))
             (map (comp list specification->package+output) (xfce-packages))
             (map (comp list specification->package+output) (xorg-packages))
-            (map (comp list specification->package+output) (other-gui-packages))
+            (other-gui-packages)
             (kde-dependent-packages)
             (large-packages)
             (map (comp list specification->package+output) (packages-from-additional-channels))
@@ -733,7 +739,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (map (comp list specification->package+output) (rest-packages))
             (map (comp list specification->package+output) (xfce-packages))
             (map (comp list specification->package+output) (xorg-packages))
-            (map (comp list specification->package+output) (other-gui-packages))
+            (other-gui-packages)
             (kde-dependent-packages)
             ;; (large-packages)
             (map (comp list specification->package+output) (packages-from-additional-channels-base))
