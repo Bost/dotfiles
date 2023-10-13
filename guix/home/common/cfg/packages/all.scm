@@ -2,6 +2,7 @@
   #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
+  #:use-module (gnu) ;; use-package-modules
 
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
@@ -21,6 +22,19 @@
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
+
+(use-package-modules
+ bash
+ rust-apps
+ shellutils
+ admin
+ shells
+ version-control
+ rsync
+ tmux
+ compression
+ vim
+ )
 
 (define (packages-from-additional-channels)
   "Packages from additional channels?
@@ -98,15 +112,15 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 (define (basic-packages)
   (list
-   "bash"
-   "bat"
-   "direnv"
-   "dmidecode" ;; read hardware information from the BIOS
-   "exa"
-   "fd"
-   "fish"
-   "git"
-   "git:gui"
+   bash
+   bat
+   direnv
+   dmidecode ;; read hardware information from the BIOS
+   exa
+   fd
+   fish
+   git
+   (specification->package+output "git:gui")
 
 ;;; glibc and glibc-locales are needed to prevent:
 ;;;     guile: warning: failed to install locale
@@ -119,16 +133,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; Here the `guix archive ...' reports:
 ;;; guix archive: warning: replacing symbolic link /etc/guix/acl with a regular file
 ;;; hint: On Guix System, add all `authorized-keys' to the `guix-service-type' service of your `operating-system' instead.
-   "glibc"
-   "glibc-locales"
+   glibc
+   glibc-locales
 
-   "rsync"
+   rsync
 
    ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
-   ;; "sysstat"
+   ;; sysstat
 
    ;; terminal multiplexer, more popular and modern than 'screen'
-   "tmux"
+   tmux
 
    ;; tmux-based terminal divider
    ;; * Split tmux window into multiple panes.
@@ -139,11 +153,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; * Flexible layout arrangement for panes.
    ;; * Display pane title on each pane.
    ;; * Generate command lines from standard input (Pipe mode).
-   "tmux-xpanes"
+   tmux-xpanes
 
-   "unzip"
-   "vim"
-   "zip"
+   unzip
+   vim
+   zip
    ))
 
 (define (agda-devel-packages)
@@ -718,8 +732,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
              (packages-from-additional-channels-base)
              (list)))]
          [#t (error (format #f "hostname '~a' must be one of the: ~a\n"
-                            (hostname-memoized) (string-join hostnames)))])))
-    (partial map (comp list specification->package+output)))
+                            (hostname-memoized) (string-join hostnames)))]))))
    (basic-packages)))
 (testsymb 'packages-to-install)
 
