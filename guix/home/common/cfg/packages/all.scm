@@ -560,7 +560,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     package)))
 
 (define (inferior-pkgs pkgs)
-  ((compose
+  ((comp
     (partial append pkgs)
     ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
     (partial map (partial apply inferior-package-in-guix-channel)))
@@ -615,7 +615,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; TODO packages should accept expressions like the -e, e.g.
 ;;;   guix package                        -e '(@ (bost packages maven) maven)'
 ;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
-  ((compose
+  ((comp
     (lambda (pkgs)
       #|
       (format #t "~a\n~a\n" m
@@ -625,7 +625,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
                         "emacs-yasnippet"
                         "emacs-yasnippet-snippets"
                         ))]
-                ((compose
+                ((comp
                   (partial
                    filter
                    ;; see also `string=?', `eq?', `equal?', etc.
@@ -672,9 +672,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             bstc:clojure-tools)
            pkgs)
           pkgs))
-    (partial map (compose identity list
+    (partial map (comp list
 ;;; TODO difference specification->package+output, specification->package ?
-                          specification->package+output))
+                       specification->package+output))
     ;; (lambda (v) (format #t "1\n~a\n" v) v)
     ;; TODO `eq?' works for "lua" but not for "emacs-popwin". WTF!?
     (partial remove (partial string= "emacs-popwin"))
