@@ -51,6 +51,7 @@
  lxqt
  xorg
  xdisorg
+ xfce
  )
 
 (define (packages-from-additional-channels)
@@ -567,16 +568,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (xfce-packages)
   (list
    ;; TODO add ~/.config/xfce4/xfconf/xfce-perchannel-xml/ to the home config
-   "xfce4-clipman-plugin"
-   "xfce4-netload-plugin" ;; traffic indicator
-   "xfce4-notifyd"
-   "xfce4-screensaver"
-   "xfce4-screenshooter"
-   "xfce4-settings"
-   "thunar-volman" ;; in gnu/packages/xfce.scm
+   xfce4-clipman-plugin
+   xfce4-netload-plugin ;; traffic indicator
+   xfce4-notifyd
+   xfce4-screensaver
+   xfce4-screenshooter
+   xfce4-settings
+   thunar-volman ;; in gnu/packages/xfce.scm
 
-   ;; "xfce4-volumed-pulse" ;;  XFCE volume keys daemon
-   "xfce4-pulseaudio-plugin"
+   ;; xfce4-volumed-pulse ;;  XFCE volume keys daemon
+   xfce4-pulseaudio-plugin
    ))
 
 (define (inferior-package-in-guix-channel package commit)
@@ -726,7 +727,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (map (comp list specification->package+output) (devel-packages))
             (map (comp list specification->package+output) (rest-packages))
             ;; (map (comp list specification->package+output) (video-packages))
-            (map (comp list specification->package+output) (xfce-packages))
+            (xfce-packages)
             (xorg-packages)
             (other-gui-packages)
             (kde-dependent-packages)
@@ -739,7 +740,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            (append
             (map (comp list specification->package+output) (devel-packages))
             (map (comp list specification->package+output) (rest-packages))
-            (map (comp list specification->package+output) (xfce-packages))
+            (xfce-packages)
             (xorg-packages)
             (other-gui-packages)
             (kde-dependent-packages)
