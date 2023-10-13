@@ -41,6 +41,8 @@
  graphviz
  texlive
  chromium
+ kde-systemtools
+ kde-utils
  )
 
 (define (packages-from-additional-channels)
@@ -74,8 +76,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (kde-dependent-packages)
   "KDE dependencies are slow to compile"
   (list
-   "konsole"
-   "krusader"))
+   konsole
+   krusader))
 
 (define (large-packages)
   "Large packages, slow to build, graft, download, etc."
@@ -719,7 +721,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (map (comp list specification->package+output) (xfce-packages))
             (map (comp list specification->package+output) (xorg-packages))
             (map (comp list specification->package+output) (other-gui-packages))
-            (map (comp list specification->package+output) (kde-dependent-packages))
+            (kde-dependent-packages)
             (large-packages)
             (map (comp list specification->package+output) (packages-from-additional-channels))
             (list)))]
@@ -732,7 +734,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (map (comp list specification->package+output) (xfce-packages))
             (map (comp list specification->package+output) (xorg-packages))
             (map (comp list specification->package+output) (other-gui-packages))
-            (map (comp list specification->package+output) (kde-dependent-packages))
+            (kde-dependent-packages)
             ;; (large-packages)
             (map (comp list specification->package+output) (packages-from-additional-channels-base))
             (list)))]
