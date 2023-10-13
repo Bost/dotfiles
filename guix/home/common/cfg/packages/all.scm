@@ -49,6 +49,8 @@
  spice
  terminals
  lxqt
+ xorg
+ xdisorg
  )
 
 (define (packages-from-additional-channels)
@@ -540,10 +542,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (xorg-packages)
   (list
    ;; Xorg XKB configuration files - probably not needed in Xfce
-   "xkeyboard-config"
+   xkeyboard-config
 
    ;; Modify keymaps and button mappings on X server
-   ;; "xmodmap"
+   ;; xmodmap
 
    ;; Command line interface to X11 Resize, Rotate, and Reflect (RandR)
    ;; See the command:
@@ -552,14 +554,14 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;    Xfce Settings Manager -> Session and Startup -> Dual display for two monitors
    ;; the command:
    ;;    xfconf-query --create --type string --channel displays --property /Schemes/Apply --set a93ccfa35c66cf3bc719e997533c55d24167cdc9
-   "xrandr"
+   xrandr
 
    ;; Print contents of X events: move, resize, type in, click in, etc. See
-   ;; "wev" the Wayland event viewer
-   "xev"
+   ;; wev the Wayland event viewer
+   xev
 
    ;; Manipulate X selection, i.e. the clipboard from the command line.
-   "xsel"
+   xsel
    ))
 
 (define (xfce-packages)
@@ -725,7 +727,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (map (comp list specification->package+output) (rest-packages))
             ;; (map (comp list specification->package+output) (video-packages))
             (map (comp list specification->package+output) (xfce-packages))
-            (map (comp list specification->package+output) (xorg-packages))
+            (xorg-packages)
             (other-gui-packages)
             (kde-dependent-packages)
             (large-packages)
@@ -738,7 +740,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (map (comp list specification->package+output) (devel-packages))
             (map (comp list specification->package+output) (rest-packages))
             (map (comp list specification->package+output) (xfce-packages))
-            (map (comp list specification->package+output) (xorg-packages))
+            (xorg-packages)
             (other-gui-packages)
             (kde-dependent-packages)
             ;; (large-packages)
