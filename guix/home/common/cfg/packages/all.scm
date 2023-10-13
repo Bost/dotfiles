@@ -120,7 +120,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
   (append
    (packages-from-additional-channels-base)
    (list
-    "signal-desktop" ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
+    (@(nongnu packages messaging) signal-desktop) ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
     )))
 
 (define (packages-from-additional-channels-base)
@@ -129,11 +129,11 @@ Including these packages in the `packages-to-install' causes:
    error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
-   "leiningen"
-   "babashka"
-   "firefox"
+   (@(nongnu packages clojure) leiningen)
+   (@(babashka) babashka)  ;; from the 'bost' channel. TODO move it to a better named module
+   (@(nongnu packages mozilla) firefox)
    #|
-   "factorio" ;; temporarily disabled, install it using:
+   (@(games packages factorio) factorio) ;; temporarily disabled, install it using:
    guix package --load-path=$dev/games --install=factorio
    set experimentalVersion @1.1.78 # set --erase experimentalVersion
    guix package --load-path=$dev/games --install=factorio$experimentalVersion
@@ -801,7 +801,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (other-gui-packages)
             (kde-dependent-packages)
             (large-packages)
-            (map (comp list specification->package+output) (packages-from-additional-channels))
+            (packages-from-additional-channels)
             (list)))]
         [(is-system-geek)
          (begin
@@ -814,7 +814,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (other-gui-packages)
             (kde-dependent-packages)
             ;; (large-packages)
-            (map (comp list specification->package+output) (packages-from-additional-channels-base))
+            (packages-from-additional-channels-base)
             (list)))]
         [#t (error (format #f "hostname '~a' must be one of the: ~a\n"
                            (hostname-memoized) (string-join hostnames)))])))
