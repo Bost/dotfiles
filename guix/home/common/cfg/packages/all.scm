@@ -16,6 +16,8 @@
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
 
+  ;; #:use-module (oop goops) ;; make
+
   #:export (
             packages-to-install
             ))
@@ -52,6 +54,53 @@
  xorg
  xdisorg
  xfce
+
+ android
+ linux
+ aspell
+ autotools
+ algebra
+ llvm
+ cmake
+ curl
+ textutils
+ video
+ package-management
+ fonts
+ haskell
+ gnupg
+ tls
+ bootloaders
+ guile-xyz
+ gv
+ hardware
+ samba
+ web
+ image
+ cpp
+ libusb
+ toys
+ lsof
+ networking
+ ncurses
+ node
+ disk
+ pulseaudio
+ perl
+ php
+ pkg-config
+ search
+ databases
+ pv
+ python-xyz
+ python
+ virtualization
+ racket
+ readline
+ mp3
+ texinfo
+ freedesktop
+ cdrom
  )
 
 (define (packages-from-additional-channels)
@@ -322,43 +371,49 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "sddm"
    ))
 
-(define (rest-packages)
+(define (rest-packages-old)
   (list
-   "adb"
-   "alsa-utils"
-   "android-ext4-utils"
-   "android-file-transfer"
-   "android-udev-rules"
-   "asciinema"
-   "aspell"
-   "aspell-dict-de"
-   "aspell-dict-en"
-   "aspell-dict-fr"
-   "autoconf"
-   "bc"
-   "bind:utils"
+   "glib:bin"
+   "make"
+   ))
+
+(define (rest-packages-new)
+  (list
+   adb
+   alsa-utils
+   android-ext4-utils
+   android-file-transfer
+   android-udev-rules
+   asciinema
+   aspell
+   aspell-dict-de
+   aspell-dict-en
+   aspell-dict-fr
+   autoconf
+   bc
+   (specification->package+output "bind:utils")
 
    ;; Contains mkisofs, which can create an hybrid ISO-9660/JOLIET/HFS/UDF
    ;; filesystem-image with optional Rock Ridge attributes. See also xorriso
-   ;; "cdrtools"
+   ;; cdrtools
 
-   "clang"
+   clang
 
    ;; Use the (bost packages clojure) definitions for clojure-related packages
-   ;; "clojure"
-   ;; "clojure-lsp"
-   ;; "clojure-tools"
+   ;; clojure
+   ;; clojure-lsp
+   ;; clojure-tools
 
-   "clusterssh"
-   "cmake"
-   "curl"
-   "dos2unix"
-   "ffmpeg"
-   "flatpak"
-   "font-adobe-source-code-pro"
-   "font-gnu-freefont"
-   "font-gnu-unifont"
-   "fuse"
+   clusterssh
+   cmake
+   curl
+   dos2unix
+   ffmpeg
+   flatpak
+   font-adobe-source-code-pro
+   font-gnu-freefont
+   font-gnu-unifont
+   fuse
 
    ;; Seems like the "native-compiler-error (libgccjit.so: error invoking gcc
    ;; driver)":
@@ -374,117 +429,122 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;   https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
    ;;   https://issues.guix.gnu.org/57086#9
 
-   "gcc-toolchain@11.3.0"
-   "libgccjit@11.3.0"
+   (specification->package+output "gcc-toolchain@11.3.0")
+   (specification->package+output "libgccjit@11.3.0")
 
-   "ghc"
-   "glib:bin"
-   "gnupg"
-   "gnutls"
-   "graphviz"
-   "grub"
-   "guile"
-   "guile-hall" ;; to build guile projects
-   "guile-studio"
-   "gv"
-   "gvfs" #| user mounts |#
-   "gwl"
-   "htop"
-   "hwinfo"
-   "iniparser"
-   "inxi"
-   "ispell"
-   "jmtpfs"
-   "jq" ;; json formatting
-   "libavc1394"
-   "libavif"
-   "libconfini"
-   "libjpeg-turbo"
-   "libmtp"
-   "libtiff"
-   "libtool"
-   "libungif"
-   "libxaw3d"
-   "libxpm"
-   "lolcat"
-   "lshw"
-   "lsof"
-   "make"
-   "maven"
-   "mcron"
-   "mercurial"
-   "mlt"
-   "mtr"
-   "ncurses"
-   "network-manager"
-   "nmap"
+   ghc
+   ;; (specification->package+output "glib:bin")
+   gnupg
+   gnutls
+   graphviz
+   grub
+   (specification->package+output "guile") ;; produces "error: guile: unbound variable" ???
+   guile-hall ;; to build guile projects
+   guile-studio
+   gv
+   gvfs #| user mounts |#
+   gwl
+   htop
+   hwinfo
+   iniparser
+   inxi
+   ispell
+   jmtpfs
+   jq ;; json formatting
+   libavc1394
+   libavif
+   libconfini
+   libjpeg-turbo
+   libmtp
+   libtiff
+   libtool
+   libungif
+   libxaw3d
+   libxpm
+   lolcat
+   lshw
+   lsof
+   ;; make
+   (specification->package+output "maven")
+   mcron
+   mercurial
+   mlt
+   mtr
+   ncurses
+   network-manager
+   nmap
 
 ;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
 ;;; See also ~/.npm, ~/.npmrc, ~/node_modules
-   "node"
+   node
 
-   "openssl"
-   "parted"
-   "pavucontrol"
-   "perl"
-   "php"
-   "pinentry"
-   "pkg-config"
-   "plocate"
-   "portaudio"
-   "postgresql"
-   "pulseaudio"
-   "pv"
-   "pybind11"
+   openssl
+   parted
+   pavucontrol
+   perl
+   php
+   pinentry
+   pkg-config
+   plocate
+   portaudio
+   postgresql
+   pulseaudio
+   pv
+   pybind11
 
  ;;; `python' should not be installed `python' with `python-wrapper'.
  ;;; `python-wrapper' uses the `python' package as a propagated input
-   ;; "python"
+   ;; python
 
 ;;; `python-wrapper' enables invocation of python3 under under their usual
 ;;; names---e.g., `python' instead of `python3' or `pip' instead of `pip3'
-   "python-wrapper"
-   "python2"
+   python-wrapper
+   (specification->package+output "python2")
 
-   "qemu"
+   qemu
 ;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
 ;;; This will happen automatically if `search-notes' is a proper Guix package.
-   "racket"
-   "readline"
+   racket
+   readline
 
    ;; Manipulate plain text files as databases
-   "recutils"
+   recutils
 
-   "ripgrep"
-   "rlwrap"
+   ripgrep
+   rlwrap
 
-   "scsh" ;; Unix shell embedded in Scheme
-   "strace"
-   "taglib"
-   "texinfo"
-   "tig"
-   "tree"
-   "tzdata"
-   "udiskie"
-   "uniutils"
-   "usbutils"
+   scsh ;; Unix shell embedded in Scheme
+   strace
+   taglib
+   texinfo
+   tig
+   tree
+   tzdata
+   udiskie
+   uniutils
+   usbutils
 
    ;; Interactive viewer for graphviz dot files. Useful to view package dependency graph.
-   "xdot" ;; guix graph coreutils | xdot -
+   xdot ;; guix graph coreutils | xdot -
 
    ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
-   "xorriso"
+   xorriso
 
-   "mps-youtube" ;; yewtube forked from mps-youtube. Terminal based YT player and downloader. No API key required.
-   "youtube-dl"
-   "yt-dlp" ;; fork of youtube-dl with a focus on adding new features
-   ;; "youtube-viewer" ;; search & play YT videos in a native player
+   mps-youtube ;; yewtube forked from mps-youtube. Terminal based YT player and downloader. No API key required.
+   youtube-dl
+   yt-dlp ;; fork of youtube-dl with a focus on adding new features
+   ;; youtube-viewer ;; search & play YT videos in a native player
 
-   ;; "tesseract-ocr"               ;; OCR Optical character recognition engine
-   ;; "tesseract-ocr-tessdata-fast" ;; Fast versions of trained LSTM models
-   ;; "gimagereader"                ;; Qt front-end to tesseract-ocr
+   ;; tesseract-ocr               ;; OCR Optical character recognition engine
+   ;; tesseract-ocr-tessdata-fast ;; Fast versions of trained LSTM models
+   ;; gimagereader                ;; Qt front-end to tesseract-ocr
 
    ))
+
+(define (rest-packages)
+  (append
+   (rest-packages-new)
+   (map (comp list specification->package+output) (rest-packages-old))))
 
 (define (other-gui-packages)
   (list
@@ -725,7 +785,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            (append
             (map (comp list specification->package+output) (spguimacs-packages)) ;; pulls in ~350 additional packages
             (map (comp list specification->package+output) (devel-packages))
-            (map (comp list specification->package+output) (rest-packages))
+            (rest-packages)
             ;; (map (comp list specification->package+output) (video-packages))
             (xfce-packages)
             (xorg-packages)
@@ -739,7 +799,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            ;; (format #t "(is-system-geek)\n")
            (append
             (map (comp list specification->package+output) (devel-packages))
-            (map (comp list specification->package+output) (rest-packages))
+            (rest-packages)
             (xfce-packages)
             (xorg-packages)
             (other-gui-packages)
