@@ -101,6 +101,15 @@
  texinfo
  freedesktop
  cdrom
+ lua
+ emacs-xyz
+ elixir
+ tree-sitter
+ agda
+ idris
+ emacs
+ text-editors
+ patchutils
  )
 
 (define (packages-from-additional-channels)
@@ -229,21 +238,21 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 (define (agda-devel-packages)
   (list
-   "agda"
-   "emacs-agda2-mode"
-   ;; "agda-ial" ;; broken build
-   ;; "cedille" ;; depends on agda-ial
-   "idris"))
+   agda
+   emacs-agda2-mode
+   ;; agda-ial ;; broken build
+   ;; cedille ;; depends on agda-ial
+   idris))
 
 (define (fennel-devel-packages)
   "Fennel: Lua + Lisp. For e.g. Factorio modding."
   (list
-   "lua"
-   "fennel"
-   "emacs-fennel-mode"
+   lua
+   fennel
+   emacs-fennel-mode
 
    ;; Automatic formatting of Fennel code
-   ;; "fnlfmt" ; doesn't compile
+   ;; fnlfmt ; doesn't compile
    ))
 
 (define (chez-scheme-devel-packages)
@@ -259,11 +268,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (elixir-devel-packages)
   "See https://github.com/mnieper/scheme-macros"
   (list
-   "elixir"
-   "emacs-elixir-mode"
-   "tree-sitter-elixir"
-   "emacs-alchemist"
-   "emacs-eval-in-repl-iex"
+   elixir
+   emacs-elixir-mode
+   tree-sitter-elixir
+   emacs-alchemist
+   emacs-eval-in-repl-iex
    ))
 
 (define (video-packages)
@@ -685,20 +694,20 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; otherwise the:
 ;;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
 ;;; gets triggered. See https://issues.guix.gnu.org/issue/52002
-    "emacs"
-    "emacs-gptel"
-    ;; "emacs-next"       ;; 29.0.92
-    ;; "emacs-next-pgtk"  ;; 29.0.92
-    "emacs-with-editor" ;; for using Emacsclient as EDITOR
+    emacs
+    emacs-gptel
+    ;; emacs-next       ;; 29.0.92
+    ;; emacs-next-pgtk  ;; 29.0.92
+    emacs-with-editor ;; for using Emacsclient as EDITOR
 
-    "emacs-geiser"
-    "emacs-geiser-guile"
-    "emacs-guix"
+    emacs-geiser
+    emacs-geiser-guile
+    emacs-guix
 
-    "leafpad"           ;; simple editor to use when emacs doesn't work
-    "git:send-email"
-    "pinentry" ;; needed to sign commits
-    "pwclient" ;; CLI client for Patchwork patch tracking tool (*.patch files)
+    leafpad           ;; simple editor to use when emacs doesn't work
+    (specification->package+output "git:send-email")
+    pinentry ;; needed to sign commits
+    pwclient ;; CLI client for Patchwork patch tracking tool (*.patch files)
     )))
 
 (define (packages-to-install)
@@ -784,7 +793,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            ;; (format #t "(is-system-ecke)\n")
            (append
             (map (comp list specification->package+output) (spguimacs-packages)) ;; pulls in ~350 additional packages
-            (map (comp list specification->package+output) (devel-packages))
+            (devel-packages)
             (rest-packages)
             ;; (map (comp list specification->package+output) (video-packages))
             (xfce-packages)
@@ -798,7 +807,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
          (begin
            ;; (format #t "(is-system-geek)\n")
            (append
-            (map (comp list specification->package+output) (devel-packages))
+            (devel-packages)
             (rest-packages)
             (xfce-packages)
             (xorg-packages)
