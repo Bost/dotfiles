@@ -1,5 +1,6 @@
 (define-module (cfg packages spguimacs all)
   #:use-module (utils) ;; partial m s+ s- sx
+  #:use-module (gnu packages) ;; specification->package+output
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
   #:export (
@@ -122,15 +123,28 @@
 (load "/home/bost/dev/dotfiles/guix/home/cfg/packages/spguimacs/all.scm")
 |#
 (define (spguimacs-packages)
-  (let [(G general-packages)
+  (let [
+        (G general-packages)
         (N needed-packages)
         (O orphan-packages)
         (A available-packages)
-        (E excluded-packages)]
-    (s+ G
-        (s- (sx (s+ N O)
-                A)
-            E))))
+        (E excluded-packages)
+
+;;; The 'specification->package+output' can be reliably called only over
+;;; available-packages since e.g. needed-packages may contain a non-existing
+;;; package, i.e. a package which hasn't been ported to Guix yet.
+        ;; (G (map (comp list specification->package+output) general-packages))
+        ;; (N (map (comp list specification->package+output) needed-packages))
+        ;; (O (map (comp list specification->package+output) orphan-packages))
+        ;; (A (map (comp list specification->package+output) available-packages))
+        ;; (E (map (comp list specification->package+output) excluded-packages))
+        ]
+    ((comp 
+      (partial map (comp list specification->package+output)))
+     (s+ G
+         (s- (sx (s+ N O)
+                 A)
+             E)))))
 
 ;; (format #t "~a module evaluated\n" m)
 

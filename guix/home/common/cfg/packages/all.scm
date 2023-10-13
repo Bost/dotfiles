@@ -2,6 +2,7 @@
   #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
+  #:use-module (gnu) ;; use-package-modules
 
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
@@ -15,12 +16,106 @@
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
 
+  ;; #:use-module (oop goops) ;; make
+
   #:export (
             packages-to-install
             ))
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
+
+(use-package-modules
+ dns
+ bash
+ rust-apps
+ shellutils
+ admin
+ shells
+ version-control
+ rsync
+ tmux
+ compression
+ vim
+ audio
+ gnuzilla
+ inkscape
+ rust
+ graphviz
+ texlive
+ chromium
+ kde-systemtools
+ kde-utils
+ gnome
+ gtk
+ libreoffice
+ spice
+ terminals
+ lxqt
+ xorg
+ xdisorg
+ xfce
+
+ android
+ linux
+ aspell
+ autotools
+ algebra
+ llvm
+ cmake
+ curl
+ textutils
+ video
+ package-management
+ fonts
+ haskell
+ gnupg
+ tls
+ bootloaders
+ guile-xyz
+ guile
+ gv
+ hardware
+ samba
+ web
+ image
+ cpp
+ libusb
+ toys
+ lsof
+ networking
+ ncurses
+ node
+ disk
+ pulseaudio
+ perl
+ php
+ pkg-config
+ search
+ databases
+ pv
+ python-xyz
+ python
+ virtualization
+ racket
+ readline
+ mp3
+ texinfo
+ freedesktop
+ cdrom
+ lua
+ emacs-xyz
+ elixir
+ tree-sitter
+ agda
+ idris
+ emacs
+ text-editors
+ patchutils
+ java
+ glib
+ maven
+ )
 
 (define (packages-from-additional-channels)
   "Packages from additional channels?
@@ -30,7 +125,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
   (append
    (packages-from-additional-channels-base)
    (list
-    "signal-desktop" ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
+    (@(nongnu packages messaging) signal-desktop) ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
     )))
 
 (define (packages-from-additional-channels-base)
@@ -39,11 +134,11 @@ Including these packages in the `packages-to-install' causes:
    error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
-   "leiningen"
-   "babashka"
-   "firefox"
+   (@(nongnu packages clojure) leiningen)
+   (@(babashka) babashka)  ;; from the 'bost' channel. TODO move it to a better named module
+   (@(nongnu packages mozilla) firefox)
    #|
-   "factorio" ;; temporarily disabled, install it using:
+   (@(games packages factorio) factorio) ;; temporarily disabled, install it using:
    guix package --load-path=$dev/games --install=factorio
    set experimentalVersion @1.1.78 # set --erase experimentalVersion
    guix package --load-path=$dev/games --install=factorio$experimentalVersion
@@ -53,60 +148,60 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (kde-dependent-packages)
   "KDE dependencies are slow to compile"
   (list
-   "konsole"
-   "krusader"))
+   konsole
+   krusader))
 
 (define (large-packages)
   "Large packages, slow to build, graft, download, etc."
   (list
-   "audacity" ;; 35.8MiB
+   audacity ;; 35.8MiB
 
    ;; Rebranded Mozilla Thunderbird email client. Optionally install also
-   ;; "libotr" the Off-the-Record (OTR) Messaging Library and Toolkit. See
+   ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
    ;; Thunderbird console Ctrl-Shift-j
-   "icedove"  ;; 48.8MiB
+   icedove  ;; 48.8MiB
 
-   "inkscape" ;; ~93MiB
+   inkscape ;; ~93MiB
 
    ;; rust downloads (see below) and then it needs to be build:
    ;;     rust-1.59.0  121.1MiB
    ;;     rust-1.59.0-cargo  3.2MiB
    ;;     rustc-1.60.0-src.tar.xz  63.6MiB
-   "rust" ;; the 1.60 has to be build
+   rust ;; the 1.60 has to be build
 
-   "tectonic" ;; embeddable TeX/LaTeX engine
+   tectonic ;; embeddable TeX/LaTeX engine
 
    ;; Graphviz to LaTeX converter
-   "dot2tex"
+   dot2tex
 
    ;; complete TeX Live distribution
-   "texlive"                 ; may take too long to graft
+   texlive                 ; may take too long to graft
 
-   "ungoogled-chromium"
+   ungoogled-chromium
 
    ;; openjdk-17.0.3  199.5MiB
    ;; openjdk-17.0.3-doc  9.6MiB
    ;; openjdk-17.0.3-jdk  275.9MiB
    ;; in total ~485 MiB
 
-   ;; causes java.lang.ClassNotFoundException: jdk.javadoc.doclet.Doclet
-   ;; "openjdk"
-   "openjdk:jdk"
+   ;; specifying only 'openjdk' causes java.lang.ClassNotFoundException:
+   ;; jdk.javadoc.doclet.Doclet
+   (list openjdk "jdk")
 
-   ;; "icedtea" ; ~240MiB; provides OpenJDK built with the IcedTea build harness
+   ;; icedtea ; ~240MiB; provides OpenJDK built with the IcedTea build harness
    ))
 
 (define (basic-packages)
   (list
-   "bash"
-   "bat"
-   "direnv"
-   "dmidecode" ;; read hardware information from the BIOS
-   "exa"
-   "fd"
-   "fish"
-   "git"
-   "git:gui"
+   bash
+   bat
+   direnv
+   dmidecode ;; read hardware information from the BIOS
+   exa
+   fd
+   fish
+   git
+   (list git "gui")
 
 ;;; glibc and glibc-locales are needed to prevent:
 ;;;     guile: warning: failed to install locale
@@ -119,16 +214,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; Here the `guix archive ...' reports:
 ;;; guix archive: warning: replacing symbolic link /etc/guix/acl with a regular file
 ;;; hint: On Guix System, add all `authorized-keys' to the `guix-service-type' service of your `operating-system' instead.
-   "glibc"
-   "glibc-locales"
+   glibc
+   glibc-locales
 
-   "rsync"
+   rsync
 
    ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
-   ;; "sysstat"
+   ;; sysstat
 
    ;; terminal multiplexer, more popular and modern than 'screen'
-   "tmux"
+   tmux
 
    ;; tmux-based terminal divider
    ;; * Split tmux window into multiple panes.
@@ -139,30 +234,30 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; * Flexible layout arrangement for panes.
    ;; * Display pane title on each pane.
    ;; * Generate command lines from standard input (Pipe mode).
-   "tmux-xpanes"
+   tmux-xpanes
 
-   "unzip"
-   "vim"
-   "zip"
+   unzip
+   vim
+   zip
    ))
 
 (define (agda-devel-packages)
   (list
-   "agda"
-   "emacs-agda2-mode"
-   ;; "agda-ial" ;; broken build
-   ;; "cedille" ;; depends on agda-ial
-   "idris"))
+   agda
+   emacs-agda2-mode
+   ;; agda-ial ;; broken build
+   ;; cedille ;; depends on agda-ial
+   idris))
 
 (define (fennel-devel-packages)
   "Fennel: Lua + Lisp. For e.g. Factorio modding."
   (list
-   "lua"
-   "fennel"
-   "emacs-fennel-mode"
+   lua
+   fennel
+   emacs-fennel-mode
 
    ;; Automatic formatting of Fennel code
-   ;; "fnlfmt" ; doesn't compile
+   ;; fnlfmt ; doesn't compile
    ))
 
 (define (chez-scheme-devel-packages)
@@ -178,11 +273,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (elixir-devel-packages)
   "See https://github.com/mnieper/scheme-macros"
   (list
-   "elixir"
-   "emacs-elixir-mode"
-   "tree-sitter-elixir"
-   "emacs-alchemist"
-   "emacs-eval-in-repl-iex"
+   elixir
+   emacs-elixir-mode
+   tree-sitter-elixir
+   emacs-alchemist
+   emacs-eval-in-repl-iex
    ))
 
 (define (video-packages)
@@ -192,7 +287,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "mesa:bin"
    ;; "mesa:out"
 
-   ;; contains utility tools for Mesa: eglinfo, glxdemo, glxgears, glxheads, glxinfo.
+   ;; contains utility tools for Mesa: eglinfo, glxdemo, glxgears, glxheads,
+   ;; glxinfo.
    ;; "mesa-utils"
 
    ;; Proprietary NVIDIA driver
@@ -211,7 +307,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "mesa-opencl-icd:out"
    ;; "mesa-opencl-icd:bin"
 
-   ;; GLU, or OpenGL Utility Library provides some higher-level functionality not provided by just OpenGL itself
+   ;; GLU, or OpenGL Utility Library provides some higher-level functionality
+   ;; not provided by just OpenGL itself
    ;; "glu"
 
    ;; Nonfree firmware for older AMD graphics chips
@@ -290,43 +387,51 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "sddm"
    ))
 
-(define (rest-packages)
+(define (rest-packages-old)
   (list
-   "adb"
-   "alsa-utils"
-   "android-ext4-utils"
-   "android-file-transfer"
-   "android-udev-rules"
-   "asciinema"
-   "aspell"
-   "aspell-dict-de"
-   "aspell-dict-en"
-   "aspell-dict-fr"
-   "autoconf"
-   "bc"
-   "bind:utils"
+   "glib:bin"
+   "make"
+   ))
+
+(define (rest-packages-new)
+  (list
+   adb
+   alsa-utils
+   android-ext4-utils
+   android-file-transfer
+   android-udev-rules
+   asciinema
+   aspell
+   aspell-dict-de
+   aspell-dict-en
+   aspell-dict-fr
+   autoconf
+   bc
+
+   ;; specifying only 'bind' leads to "Wrong type argument in position 1 ..."
+   (list isc-bind "utils")
 
    ;; Contains mkisofs, which can create an hybrid ISO-9660/JOLIET/HFS/UDF
    ;; filesystem-image with optional Rock Ridge attributes. See also xorriso
-   ;; "cdrtools"
+   ;; cdrtools
 
-   "clang"
+   clang
 
    ;; Use the (bost packages clojure) definitions for clojure-related packages
-   ;; "clojure"
-   ;; "clojure-lsp"
-   ;; "clojure-tools"
+   ;; clojure
+   ;; clojure-lsp
+   ;; clojure-tools
 
-   "clusterssh"
-   "cmake"
-   "curl"
-   "dos2unix"
-   "ffmpeg"
-   "flatpak"
-   "font-adobe-source-code-pro"
-   "font-gnu-freefont"
-   "font-gnu-unifont"
-   "fuse"
+   clusterssh
+   cmake
+   curl
+   dos2unix
+   ffmpeg
+   flatpak
+   font-adobe-source-code-pro
+   font-gnu-freefont
+   font-gnu-unifont
+   fuse
 
    ;; Seems like the "native-compiler-error (libgccjit.so: error invoking gcc
    ;; driver)":
@@ -342,144 +447,161 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;   https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
    ;;   https://issues.guix.gnu.org/57086#9
 
-   "gcc-toolchain@11.3.0"
-   "libgccjit@11.3.0"
+   ;; In (list <package> <something>) the <something> is a package-output not a
+   ;; package-version.
+   ;; Can't precisely specify the module and version with e.g.:
+   ;;   (specification->package (@(gnu packages commencement) gcc-toolchain) "11.3.0")
+   ;;   (specification->package (@(gnu packages gcc) libgccjit) "11.3.0")
+   (specification->package "gcc-toolchain@11.3.0")
+   (specification->package "libgccjit@11.3.0")
 
-   "ghc"
-   "glib:bin"
-   "gnupg"
-   "gnutls"
-   "graphviz"
-   "grub"
-   "guile"
-   "guile-hall" ;; to build guile projects
-   "guile-studio"
-   "gv"
-   "gvfs" #| user mounts |#
-   "gwl"
-   "htop"
-   "hwinfo"
-   "iniparser"
-   "inxi"
-   "ispell"
-   "jmtpfs"
-   "jq" ;; json formatting
-   "libavc1394"
-   "libavif"
-   "libconfini"
-   "libjpeg-turbo"
-   "libmtp"
-   "libtiff"
-   "libtool"
-   "libungif"
-   "libxaw3d"
-   "libxpm"
-   "lolcat"
-   "lshw"
-   "lsof"
-   "make"
-   "maven"
-   "mcron"
-   "mercurial"
-   "mlt"
-   "mtr"
-   "ncurses"
-   "network-manager"
-   "nmap"
+   ghc
+;;; guix home: error: profile contains conflicting entries for glib:bin
+;;; guix home: error:   first entry: glib@2.72.3:bin /gnu/store/f1b7pp1h07y8ka74bwhjmbwjxfycxrds-glib-2.72.3-bin
+;;; guix home: error:   second entry: glib@2.72.3:bin /gnu/store/zkgaqs8ny43mxnp006lx6ia4wqlb2xl2-glib-2.72.3-bin
+;;; (list glib "bin")
+   gnupg
+   gnutls
+   graphviz
+   grub
+
+   ;; specifying only 'guile' leads to "error: guile: unbound variable"
+   guile-3.0
+
+   guile-hall ;; to build guile projects
+   guile-studio
+   gv
+   gvfs #| user mounts |#
+   gwl
+   htop
+   hwinfo
+   iniparser
+   inxi
+   ispell
+   jmtpfs
+   jq ;; json formatting
+   libavc1394
+   libavif
+   libconfini
+   libjpeg-turbo
+   libmtp
+   libtiff
+   libtool
+   libungif
+   libxaw3d
+   libxpm
+   lolcat
+   lshw
+   lsof
+   ;; make
+   maven
+   mcron
+   mercurial
+   mlt
+   mtr
+   ncurses
+   network-manager
+   nmap
 
 ;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
 ;;; See also ~/.npm, ~/.npmrc, ~/node_modules
-   "node"
+   node
 
-   "openssl"
-   "parted"
-   "pavucontrol"
-   "perl"
-   "php"
-   "pinentry"
-   "pkg-config"
-   "plocate"
-   "portaudio"
-   "postgresql"
-   "pulseaudio"
-   "pv"
-   "pybind11"
+   openssl
+   parted
+   pavucontrol
+   perl
+   php
+   pinentry
+   pkg-config
+   plocate
+   portaudio
+   postgresql
+   pulseaudio
+   pv
+   pybind11
 
  ;;; `python' should not be installed `python' with `python-wrapper'.
  ;;; `python-wrapper' uses the `python' package as a propagated input
-   ;; "python"
+   ;; python
 
 ;;; `python-wrapper' enables invocation of python3 under under their usual
 ;;; names---e.g., `python' instead of `python3' or `pip' instead of `pip3'
-   "python-wrapper"
-   "python2"
+   python-wrapper
+   ;; specifying only 'python2' leads to "error: python2: unbound variable"
+   python-2.7
 
-   "qemu"
+   qemu
 ;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
 ;;; This will happen automatically if `search-notes' is a proper Guix package.
-   "racket"
-   "readline"
+   racket
+   readline
 
    ;; Manipulate plain text files as databases
-   "recutils"
+   recutils
 
-   "ripgrep"
-   "rlwrap"
+   ripgrep
+   rlwrap
 
-   "scsh" ;; Unix shell embedded in Scheme
-   "strace"
-   "taglib"
-   "texinfo"
-   "tig"
-   "tree"
-   "tzdata"
-   "udiskie"
-   "uniutils"
-   "usbutils"
+   scsh ;; Unix shell embedded in Scheme
+   strace
+   taglib
+   texinfo
+   tig
+   tree
+   tzdata
+   udiskie
+   uniutils
+   usbutils
 
    ;; Interactive viewer for graphviz dot files. Useful to view package dependency graph.
-   "xdot" ;; guix graph coreutils | xdot -
+   xdot ;; guix graph coreutils | xdot -
 
    ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
-   "xorriso"
+   xorriso
 
-   "mps-youtube" ;; yewtube forked from mps-youtube. Terminal based YT player and downloader. No API key required.
-   "youtube-dl"
-   "yt-dlp" ;; fork of youtube-dl with a focus on adding new features
-   ;; "youtube-viewer" ;; search & play YT videos in a native player
+   mps-youtube ;; yewtube forked from mps-youtube. Terminal based YT player and downloader. No API key required.
+   youtube-dl
+   yt-dlp ;; fork of youtube-dl with a focus on adding new features
+   ;; youtube-viewer ;; search & play YT videos in a native player
 
-   ;; "tesseract-ocr"               ;; OCR Optical character recognition engine
-   ;; "tesseract-ocr-tessdata-fast" ;; Fast versions of trained LSTM models
-   ;; "gimagereader"                ;; Qt front-end to tesseract-ocr
+   ;; tesseract-ocr               ;; OCR Optical character recognition engine
+   ;; tesseract-ocr-tessdata-fast ;; Fast versions of trained LSTM models
+   ;; gimagereader                ;; Qt front-end to tesseract-ocr
 
    ))
 
+(define (rest-packages)
+  (append
+   (rest-packages-new)
+   (map (comp list specification->package+output) (rest-packages-old))))
+
 (define (other-gui-packages)
   (list
-   "gdm"
-   "dconf"
-   "dconf-editor"
-   "evince"
-   ;; "gksudo" ;; not available in the Guix package repository
+   gdm
+   dconf
+   dconf-editor
+   evince
+   ;; gksudo ;; not available in the Guix package repository
 
    ;; gparged and mtools are installed system-wide
-   #;"gparted"    #| disk partition |#
-   #;"mtools"     #| used by gparted |#
+   #;gparted    #| disk partition |#
+   #;mtools     #| used by gparted |#
 
-   "gsettings-desktop-schemas"
-   "gtk"
-   "libreoffice"
+   gsettings-desktop-schemas
+   gtk
+   libreoffice
    ;; Manage encryption keys and passwords in the GNOME keyring
-   "seahorse"
+   seahorse
 
-   "virt-viewer"
+   virt-viewer
 
    ;; share the clipboard and guest display resolution scaling on graphical
    ;; console window resize.
-   "spice-vdagent"
+   spice-vdagent
 
    ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
-   ;; "xdg-utils"  ;; in gnu/packages/freedesktop.scm
+   ;; xdg-utils  ;; in gnu/packages/freedesktop.scm
 
    ;; $ time exa -abghHliS --color=always --time-style=full-iso /gnu/store
    ;;
@@ -491,30 +613,30 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; * Has a framework for Kittens, small terminal programs that can be used to extend kitty's functionality.  For example, they are used for Unicode input, hints, and side-by-side diff.
    ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
    ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
-   ;; "kitty"           ;;  5.443s; no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
+   ;; kitty           ;;  5.443s; no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
    ;;
-   ;; "terminator"      ;;  8.916s; no drop-down; has splits
-   "alacritty"          ;;  4.393s; no drop-down; no splits; no tabs
-   ;; "xfce4-terminal"  ;;  9.905s; has --drop-down; has context menu; already present, no splits
-   ;; "yakuake"         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
-   ;; "guake"           ;;        ; not packaged for Guix
-   ;; "tilda"           ;;  9.256s; drop down with F1 by default; has tabs; no splits
-   "qterminal"          ;;  6.147s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
-   ;; "tilix"           ;;        ; can't see a shit, the text (foreground color) is too dark
-   ;; "xterm"           ;; 17.341s; has nothing, too basic
-   ;; "lxterminal"      ;;  9.022s; has context-menu; no drop-down; no splits; has tabs
-   ;; "cool-retro-term" ;; 25.256s; is cool!
+   ;; terminator      ;;  8.916s; no drop-down; has splits
+   alacritty          ;;  4.393s; no drop-down; no splits; no tabs
+   ;; xfce4-terminal  ;;  9.905s; has --drop-down; has context menu; already present, no splits
+   ;; yakuake         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
+   ;; guake           ;;        ; not packaged for Guix
+   ;; tilda           ;;  9.256s; drop down with F1 by default; has tabs; no splits
+   qterminal          ;;  6.147s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
+   ;; tilix           ;;        ; can't see a shit, the text (foreground color) is too dark
+   ;; xterm           ;; 17.341s; has nothing, too basic
+   ;; lxterminal      ;;  9.022s; has context-menu; no drop-down; no splits; has tabs
+   ;; cool-retro-term ;; 25.256s; is cool!
 
-   "neovim"
+   neovim
    ))
 
 (define (xorg-packages)
   (list
    ;; Xorg XKB configuration files - probably not needed in Xfce
-   "xkeyboard-config"
+   xkeyboard-config
 
    ;; Modify keymaps and button mappings on X server
-   ;; "xmodmap"
+   ;; xmodmap
 
    ;; Command line interface to X11 Resize, Rotate, and Reflect (RandR)
    ;; See the command:
@@ -523,29 +645,29 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;    Xfce Settings Manager -> Session and Startup -> Dual display for two monitors
    ;; the command:
    ;;    xfconf-query --create --type string --channel displays --property /Schemes/Apply --set a93ccfa35c66cf3bc719e997533c55d24167cdc9
-   "xrandr"
+   xrandr
 
    ;; Print contents of X events: move, resize, type in, click in, etc. See
-   ;; "wev" the Wayland event viewer
-   "xev"
+   ;; wev the Wayland event viewer
+   xev
 
    ;; Manipulate X selection, i.e. the clipboard from the command line.
-   "xsel"
+   xsel
    ))
 
 (define (xfce-packages)
   (list
    ;; TODO add ~/.config/xfce4/xfconf/xfce-perchannel-xml/ to the home config
-   "xfce4-clipman-plugin"
-   "xfce4-netload-plugin" ;; traffic indicator
-   "xfce4-notifyd"
-   "xfce4-screensaver"
-   "xfce4-screenshooter"
-   "xfce4-settings"
-   "thunar-volman" ;; in gnu/packages/xfce.scm
+   xfce4-clipman-plugin
+   xfce4-netload-plugin ;; traffic indicator
+   xfce4-notifyd
+   xfce4-screensaver
+   xfce4-screenshooter
+   xfce4-settings
+   thunar-volman ;; in gnu/packages/xfce.scm
 
-   ;; "xfce4-volumed-pulse" ;;  XFCE volume keys daemon
-   "xfce4-pulseaudio-plugin"
+   ;; xfce4-volumed-pulse ;;  XFCE volume keys daemon
+   xfce4-pulseaudio-plugin
    ))
 
 (define (inferior-package-in-guix-channel package commit)
@@ -593,20 +715,20 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; otherwise the:
 ;;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
 ;;; gets triggered. See https://issues.guix.gnu.org/issue/52002
-    "emacs"
-    "emacs-gptel"
-    ;; "emacs-next"       ;; 29.0.92
-    ;; "emacs-next-pgtk"  ;; 29.0.92
-    "emacs-with-editor" ;; for using Emacsclient as EDITOR
+    emacs
+    emacs-gptel
+    ;; emacs-next       ;; 29.0.92
+    ;; emacs-next-pgtk  ;; 29.0.92
+    emacs-with-editor ;; for using Emacsclient as EDITOR
 
-    "emacs-geiser"
-    "emacs-geiser-guile"
-    "emacs-guix"
+    emacs-geiser
+    emacs-geiser-guile
+    emacs-guix
 
-    "leafpad"           ;; simple editor to use when emacs doesn't work
-    "git:send-email"
-    "pinentry" ;; needed to sign commits
-    "pwclient" ;; CLI client for Patchwork patch tracking tool (*.patch files)
+    leafpad           ;; simple editor to use when emacs doesn't work
+    (list git "send-email")
+    pinentry ;; needed to sign commits
+    pwclient ;; CLI client for Patchwork patch tracking tool (*.patch files)
     )))
 
 (define (packages-to-install)
@@ -691,10 +813,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
          (begin
            ;; (format #t "(is-system-ecke)\n")
            (append
-            (spguimacs-packages) ;; pulls in ~350 additional packages
+            ;; pulls-in ~350 additional packages
+            (spguimacs-packages)
             (devel-packages)
             (rest-packages)
-            ;; (video-packages)
+            ;; (map (comp list specification->package+output) (video-packages))
             (xfce-packages)
             (xorg-packages)
             (other-gui-packages)
