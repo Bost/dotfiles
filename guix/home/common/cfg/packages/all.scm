@@ -682,41 +682,44 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; (lambda (v) (format #t "0\n~a\n" v) v)
     (partial
        append
-       (cond
-        [(is-system-lukas)
-         (begin
-           ;; (format #t "(is-system-lukas)\n")
-           (list))]
-        [(is-system-ecke)
-         (begin
-           ;; (format #t "(is-system-ecke)\n")
-           (append
-            (spguimacs-packages) ;; pulls in ~350 additional packages
-            (devel-packages)
-            (rest-packages)
-            ;; (video-packages)
-            (xfce-packages)
-            (xorg-packages)
-            (other-gui-packages)
-            (kde-dependent-packages)
-            (large-packages)
-            (packages-from-additional-channels)
-            (list)))]
-        [(is-system-geek)
-         (begin
-           ;; (format #t "(is-system-geek)\n")
-           (append
-            (devel-packages)
-            (rest-packages)
-            (xfce-packages)
-            (xorg-packages)
-            (other-gui-packages)
-            (kde-dependent-packages)
-            ;; (large-packages)
-            (packages-from-additional-channels-base)
-            (list)))]
-        [#t (error (format #f "hostname '~a' must be one of the: ~a\n"
-                           (hostname-memoized) (string-join hostnames)))])))
+       ((comp
+         (partial map (comp list specification->package+output)))
+        (cond
+         [(is-system-lukas)
+          (begin
+            ;; (format #t "(is-system-lukas)\n")
+            (list))]
+         [(is-system-ecke)
+          (begin
+            ;; (format #t "(is-system-ecke)\n")
+            (append
+             (spguimacs-packages) ;; pulls in ~350 additional packages
+             (devel-packages)
+             (rest-packages)
+             ;; (video-packages)
+             (xfce-packages)
+             (xorg-packages)
+             (other-gui-packages)
+             (kde-dependent-packages)
+             (large-packages)
+             (packages-from-additional-channels)
+             (list)))]
+         [(is-system-geek)
+          (begin
+            ;; (format #t "(is-system-geek)\n")
+            (append
+             (devel-packages)
+             (rest-packages)
+             (xfce-packages)
+             (xorg-packages)
+             (other-gui-packages)
+             (kde-dependent-packages)
+             ;; (large-packages)
+             (packages-from-additional-channels-base)
+             (list)))]
+         [#t (error (format #f "hostname '~a' must be one of the: ~a\n"
+                            (hostname-memoized) (string-join hostnames)))])))
+    (partial map (comp list specification->package+output)))
    (basic-packages)))
 (testsymb 'packages-to-install)
 
