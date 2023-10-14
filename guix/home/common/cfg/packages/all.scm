@@ -814,7 +814,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
            ;; (format #t "(is-system-ecke)\n")
            (append
             ;; pulls-in ~350 additional packages
-            (map (comp list specification->package+output) (spguimacs-packages))
+            (spguimacs-packages)
             (devel-packages)
             (rest-packages)
             ;; (map (comp list specification->package+output) (video-packages))
