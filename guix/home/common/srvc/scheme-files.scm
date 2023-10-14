@@ -114,7 +114,9 @@ Example:
 ;;; other profile files), etc.
    (service-file #:program-name "crl"
                  #:files (str "guix|shells|linux|network|android|cvs|"
-                              "systemd|heroku|gui|packaging|rsync")
+                              "systemd|heroku|gui|packaging|rsync|listing")
+                 #:scheme-file-name "search-notes")
+   (service-file #:program-name "crli" #:files "listing"
                  #:scheme-file-name "search-notes")
 ;;; TODO crr should also search in the $der
    (service-file #:program-name "crr"  #:files "racket"
