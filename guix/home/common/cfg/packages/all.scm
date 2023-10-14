@@ -26,6 +26,7 @@
 ;; (format #t "~a evaluating module ...\n" m)
 
 (use-package-modules
+ dns
  bash
  rust-apps
  shellutils
@@ -72,6 +73,7 @@
  tls
  bootloaders
  guile-xyz
+ guile
  gv
  hardware
  samba
@@ -110,6 +112,11 @@
  emacs
  text-editors
  patchutils
+ java
+ glib
+ commencement
+ gcc
+ maven
  )
 
 (define (packages-from-additional-channels)
@@ -179,10 +186,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; openjdk-17.0.3-jdk  275.9MiB
    ;; in total ~485 MiB
 
-   ;; causes java.lang.ClassNotFoundException: jdk.javadoc.doclet.Doclet
-   ;; openjdk
-   (specification->package+output "openjdk:jdk")
-   
+   ;; specifying only 'openjdk' causes java.lang.ClassNotFoundException:
+   ;; jdk.javadoc.doclet.Doclet
+   (list openjdk "jdk")
+
    ;; icedtea ; ~240MiB; provides OpenJDK built with the IcedTea build harness
    ))
 
@@ -196,7 +203,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    fd
    fish
    git
-   (specification->package+output "git:gui")
+   (list git "gui")
 
 ;;; glibc and glibc-locales are needed to prevent:
 ;;;     guile: warning: failed to install locale
@@ -400,7 +407,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    aspell-dict-fr
    autoconf
    bc
-   (specification->package+output "bind:utils")
+
+   ;; specifying only 'bind' leads to "Wrong type argument in position 1 ..."
+   (list isc-bind "utils")
 
    ;; Contains mkisofs, which can create an hybrid ISO-9660/JOLIET/HFS/UDF
    ;; filesystem-image with optional Rock Ridge attributes. See also xorriso
@@ -438,16 +447,21 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;   https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
    ;;   https://issues.guix.gnu.org/57086#9
 
+   ;; In (list <package> <something>) the <something> is a package-output not a
+   ;; package-version.
    (specification->package+output "gcc-toolchain@11.3.0")
    (specification->package+output "libgccjit@11.3.0")
 
    ghc
-   ;; (specification->package+output "glib:bin")
+;;; guix home: error: profile contains conflicting entries for glib:bin
+;;; guix home: error:   first entry: glib@2.72.3:bin /gnu/store/f1b7pp1h07y8ka74bwhjmbwjxfycxrds-glib-2.72.3-bin
+;;; guix home: error:   second entry: glib@2.72.3:bin /gnu/store/zkgaqs8ny43mxnp006lx6ia4wqlb2xl2-glib-2.72.3-bin
+;;; (list glib "bin")
    gnupg
    gnutls
    graphviz
    grub
-   (specification->package+output "guile") ;; produces "error: guile: unbound variable" ???
+   guile-3.0  ;; specifying only 'guile' leads to "error: guile: unbound variable"
    guile-hall ;; to build guile projects
    guile-studio
    gv
@@ -474,7 +488,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    lshw
    lsof
    ;; make
-   (specification->package+output "maven")
+   maven
    mcron
    mercurial
    mlt
@@ -508,7 +522,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; `python-wrapper' enables invocation of python3 under under their usual
 ;;; names---e.g., `python' instead of `python3' or `pip' instead of `pip3'
    python-wrapper
-   (specification->package+output "python2")
+   python-2.7 ;; specifying only 'python2' leads to "error: python2: unbound variable"
 
    qemu
 ;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
@@ -705,7 +719,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     emacs-guix
 
     leafpad           ;; simple editor to use when emacs doesn't work
-    (specification->package+output "git:send-email")
+    (list git "send-email")
     pinentry ;; needed to sign commits
     pwclient ;; CLI client for Patchwork patch tracking tool (*.patch files)
     )))
