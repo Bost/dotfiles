@@ -114,8 +114,6 @@
  patchutils
  java
  glib
- commencement
- gcc
  maven
  )
 
@@ -289,7 +287,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "mesa:bin"
    ;; "mesa:out"
 
-   ;; contains utility tools for Mesa: eglinfo, glxdemo, glxgears, glxheads, glxinfo.
+   ;; contains utility tools for Mesa: eglinfo, glxdemo, glxgears, glxheads,
+   ;; glxinfo.
    ;; "mesa-utils"
 
    ;; Proprietary NVIDIA driver
@@ -308,7 +307,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "mesa-opencl-icd:out"
    ;; "mesa-opencl-icd:bin"
 
-   ;; GLU, or OpenGL Utility Library provides some higher-level functionality not provided by just OpenGL itself
+   ;; GLU, or OpenGL Utility Library provides some higher-level functionality
+   ;; not provided by just OpenGL itself
    ;; "glu"
 
    ;; Nonfree firmware for older AMD graphics chips
@@ -449,8 +449,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ;; In (list <package> <something>) the <something> is a package-output not a
    ;; package-version.
-   (specification->package+output "gcc-toolchain@11.3.0")
-   (specification->package+output "libgccjit@11.3.0")
+   ;; Can't precisely specify the module and version with e.g.:
+   ;;   (specification->package (@(gnu packages commencement) gcc-toolchain) "11.3.0")
+   ;;   (specification->package (@(gnu packages gcc) libgccjit) "11.3.0")
+   (specification->package "gcc-toolchain@11.3.0")
+   (specification->package "libgccjit@11.3.0")
 
    ghc
 ;;; guix home: error: profile contains conflicting entries for glib:bin
@@ -461,7 +464,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    gnutls
    graphviz
    grub
-   guile-3.0  ;; specifying only 'guile' leads to "error: guile: unbound variable"
+
+   ;; specifying only 'guile' leads to "error: guile: unbound variable"
+   guile-3.0
+
    guile-hall ;; to build guile projects
    guile-studio
    gv
@@ -522,7 +528,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; `python-wrapper' enables invocation of python3 under under their usual
 ;;; names---e.g., `python' instead of `python3' or `pip' instead of `pip3'
    python-wrapper
-   python-2.7 ;; specifying only 'python2' leads to "error: python2: unbound variable"
+   ;; specifying only 'python2' leads to "error: python2: unbound variable"
+   python-2.7
 
    qemu
 ;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
@@ -806,7 +813,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
          (begin
            ;; (format #t "(is-system-ecke)\n")
            (append
-            (map (comp list specification->package+output) (spguimacs-packages)) ;; pulls in ~350 additional packages
+            ;; pulls-in ~350 additional packages
+            (map (comp list specification->package+output) (spguimacs-packages))
             (devel-packages)
             (rest-packages)
             ;; (map (comp list specification->package+output) (video-packages))
