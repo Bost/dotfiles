@@ -794,13 +794,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             bstc:clojure-tools)
            pkgs)
           pkgs))
-    (partial map (comp list
-;;; TODO difference specification->package+output, specification->package ?
-                       specification->package+output))
-    ;; (lambda (v) (format #t "1\n~a\n" v) v)
-    ;; TODO `eq?' works for "lua" but not for "emacs-popwin". WTF!?
-    (partial remove (partial string= "emacs-popwin"))
-    ;; (lambda (v) (map (lambda (p) (format #t "~a ~a\n" p (string? p))) v) v)
     ;; (lambda (v) (format #t "0\n~a\n" v) v)
     (partial
        append
