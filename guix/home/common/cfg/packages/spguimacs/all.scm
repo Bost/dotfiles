@@ -1,6 +1,9 @@
 (define-module (cfg packages spguimacs all)
   #:use-module (utils) ;; partial m s+ s- sx
+  ;; first take remove delete-duplicates append-map etc.
+  #:use-module (srfi srfi-1)
   #:use-module (gnu packages) ;; specification->package+output
+  #:use-module ((bost packages emacs-xyz) #:prefix bste:)
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
   #:export (
@@ -139,8 +142,14 @@
         ;; (A (map (comp list specification->package+output) available-packages))
         ;; (E (map (comp list specification->package+output) excluded-packages))
         ]
-    ((comp 
-      (partial map (comp list specification->package+output)))
+    ((comp
+      (partial append (list
+                       bste:emacs-popwin
+                       bste:emacs-haskell-snippets))
+      (partial map (comp list specification->package+output))
+      (partial remove (partial string= "emacs-popwin"))
+      (partial remove (partial string= "emacs-haskell-snippets"))
+      )
      (s+ G
          (s- (sx (s+ N O)
                  A)
