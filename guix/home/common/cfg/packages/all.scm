@@ -115,7 +115,17 @@
  java
  glib
  maven
+ mail
  )
+
+(define (email-in-emacs-packages)
+  (list
+   mu    ;; mu generates autoloads for "mu4e"
+   isync ;; isync/mbsync is a command-line tool for two-way synchronization of mailboxes
+   emacs-mbsync
+   emacs-mu4e-alert
+   emacs-helm-mu
+   ))
 
 (define (packages-from-additional-channels)
   "Packages from additional channels?
@@ -708,6 +718,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; (chez-scheme-devel-packages)
    (elixir-devel-packages)
    (agda-devel-packages)
+   (email-in-emacs-packages)
    ;; remove packages from this list if their inferior version should be used
    (list
 ;;; Make sure that emacs is also in the default profile, i.e. installed by
