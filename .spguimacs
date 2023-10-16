@@ -2383,6 +2383,9 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (let ((glp (split-string (getenv "glp") ":"))
         (dgx (getenv "dgx")))
     (when glp
+      ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
+      (add-hook 'scheme-mode-hook #'guix-devel-mode)
+
       ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
       ;; TODO move this to project's .dir-locals.el
       (with-eval-after-load #'geiser-guile
@@ -2455,12 +2458,6 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
     (mapcar (-partial #'apply #'add-hook)
             `((racket-mode-hook      ,(my=fn-kbind-racket racket-mode-map))
               (racket-repl-mode-hook ,(my=fn-kbind-racket racket-repl-mode-map)))))
-
-  ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
-  ;; (add-hook 'scheme-mode-hook 'guix-devel-mode)
-  (with-eval-after-load 'scheme-mode
-    (mapcar (-partial #'apply #'add-hook)
-            `((scheme-mode-hook      #'guix-devel-mode))))
 
   ;; For scm-files the bindings are available via minor mode bindings for
   ;; geiser-mode, not for scheme-mode. See M-x helm-descbinds
