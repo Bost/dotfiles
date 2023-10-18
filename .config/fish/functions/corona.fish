@@ -1,3 +1,3 @@
-function corona --describe "cd $dec/corona_cases"
+function corona --description "cd $dec/corona_cases"
     cd $dec/corona_cases
 end

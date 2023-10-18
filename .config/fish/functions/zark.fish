@@ -1,3 +1,3 @@
-function zark --describe "cd $dec/zark"
+function zark --description "cd $dec/zark"
     cd $dec/zark
 end
