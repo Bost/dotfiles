@@ -501,4 +501,22 @@ Usage:
   (load (string-append (getenv "dotf") "/guix/home/fs-utils.scm"))
   )
 
+;; TODO add install-recursively to (guix build utils) and send it to the upstream.
+(define* (install-recursively source destination
+                              #:key
+                              (log (current-output-port))
+                              (follow-symlinks? #f)
+                              (copy-file copy-file)
+                              keep-mtime? keep-permissions?)
+  "Recursive version of install-file."
+  (mkdir-p destination)
+  (copy-recursively source
+                    (string-append destination "/" (basename destination))
+                    #:log log
+                    #:follow-symlinks? follow-symlinks?
+                    #:copy-file copy-file
+                    #:keep-mtime? keep-mtime?
+                    #:keep-permissions? keep-permissions?
+                    ))
+
 ;; (format #t "[utils] module evaluated\n")
