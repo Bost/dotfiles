@@ -31,9 +31,9 @@
             analyze-pids-call/cc
             analyze-pids-flag-variable
             cmd->string
+            cnt
             comp
             compute-cmd
-            cnt
             dbg
             dbg-exec
             def*
@@ -46,6 +46,7 @@
             flatten
             has-substring?
             has-suffix?
+            juxt
             last
             mktmpfile
             module-name-for-logging
@@ -57,9 +58,9 @@
             read-all-syntax
             s+
             s-
-            sx
             str
             string-split-whitespace
+            sx
             testsymb
             testsymb-trace
             unspecified-or-empty-or-false?
@@ -96,6 +97,12 @@ Works also for functions returning and accepting multiple values."
               (apply proc args)
               (let ((g (apply comp rest)))
                 (call-with-values (lambda () (apply g args)) proc)))))))
+
+(define (juxt . fns)
+  "Naive implementation. Inspired by Clojure's juxt.
+((juxt a b c) x) => (list (a x) (b x) (c x))"
+  (lambda args
+    (map (lambda (fn) (apply fn args)) fns)))
 
 ;; (warn ...) doesn't print anything
 (define (my=warn s)
