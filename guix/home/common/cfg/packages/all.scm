@@ -522,7 +522,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    pavucontrol
    perl
    php
+
+   ;; GnuPG's interfaces to passphrase input
    pinentry
+   pinentry-gtk2
+   pinentry-tty
+
    pkg-config
    plocate
    portaudio
