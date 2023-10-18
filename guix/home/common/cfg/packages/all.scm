@@ -171,6 +171,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Thunderbird console Ctrl-Shift-j
    icedove  ;; 48.8MiB
 
+   ;; default browser
+   icecat ;; 68.9MiB
+
    inkscape ;; ~93MiB
 
    ;; rust downloads (see below) and then it needs to be build:
