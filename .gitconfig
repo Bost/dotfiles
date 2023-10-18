@@ -48,10 +48,16 @@
 [user]
 	name = Rostislav Svoboda
 	email = Rostislav.Svoboda@gmail.com
-	# The secret key is not in git's configs but in the GnuPG's "keyring".
+  # The secret key is not in git's configs but in the GnuPG's "keyring".
 	# The signingkey value only instructs gpg which secret key to select.
 	# https://stackoverflow.com/a/48067999
+	# gpg --list-public-keys $personName
 	signingkey = A2FED89D9A10000E5BF63B37612D36368877DC81
+  # gpg --keyid-format=long
+	# signingkey = 612D36368877DC81
+  # gpg --keyid-format=short
+	# signingkey = 8877DC81
+
 [color]
 	ui = auto
 [push]
