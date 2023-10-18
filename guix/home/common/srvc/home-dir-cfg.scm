@@ -180,7 +180,9 @@
                (local-dotfile "/" ".gitconfig")
                (local-dotfile "/" ".spacemacs")
                (local-dotfile "/" ".spguimacs")
-               (local-dotfile "/guix/home/" "local-stuff.fish"))))
+               (local-dotfile "/" ".envrc")
+               (local-dotfile "/" ".env-secrets.gpg")
+               )))
     ;; (lambda (p) (format #t "############## 1.\n") p)
     (partial append
 ;;; This can't be used:

@@ -230,6 +230,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    glibc
    glibc-locales
 
+   gnupg
+   gnutls ;; transport layer security library, implements SSL, TLS, DTLS
+
    rsync
 
    ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
@@ -473,8 +476,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; guix home: error:   first entry: glib@2.72.3:bin /gnu/store/f1b7pp1h07y8ka74bwhjmbwjxfycxrds-glib-2.72.3-bin
 ;;; guix home: error:   second entry: glib@2.72.3:bin /gnu/store/zkgaqs8ny43mxnp006lx6ia4wqlb2xl2-glib-2.72.3-bin
 ;;; (list glib "bin")
-   gnupg
-   gnutls
    graphviz
    grub
 
