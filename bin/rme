@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# -f, --force
+# ignore nonexistent files and arguments, never prompt; i.e. it overrides -i and
+# won't prompt
+
+# 'test -f' and consequently this whole utility will fail if "$@" contains
+# -i / --ignore. TODO Parse the "$@".
+
+test -f "$@" && rm "$@"
