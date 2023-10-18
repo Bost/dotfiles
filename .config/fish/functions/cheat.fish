@@ -1,3 +1,3 @@
-function cheat --describe "cd $cheat"
+function cheat --description "cd $cheat"
     cd $cheat
 end
