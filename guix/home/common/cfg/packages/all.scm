@@ -518,7 +518,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 ;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
 ;;; See also ~/.npm, ~/.npmrc, ~/node_modules
-   node
+   ;; node ;; this installs only 10.24.1
+   (specification->package "node@18.17.1")
 
    openssl
    parted
