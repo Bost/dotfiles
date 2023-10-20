@@ -104,7 +104,7 @@ Example:
    (service-file #:program-name "crf"  #:files "find_and_grep"
                  #:scheme-file-name "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
-   (service-file #:program-name "crg"  #:files "guix|guile"
+   (service-file #:program-name "crg"  #:files "guix|guile|nix"
                  #:scheme-file-name "search-notes")
 ;;; TODO crgi should also search in the output of `git config --get',
 ;;; ~/.gitconfig, etc.
@@ -113,7 +113,7 @@ Example:
 ;;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile (and
 ;;; other profile files), etc.
    (service-file #:program-name "crl"
-                 #:files (str "guix|shells|linux|network|android|cvs|"
+                 #:files (str "guix|guile|nix|shells|linux|network|android|cvs|"
                               "systemd|heroku|gui|packaging|rsync|listing")
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crli" #:files "listing"
