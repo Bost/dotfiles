@@ -81,15 +81,16 @@
                (list
                 (create-channels-scm
                  `(
-                   (channel
-                    (name 'home-service-dwl-guile)
-                    (url "https://github.com/engstrand-config/home-service-dwl-guile")
-                    (branch "main")
-                    (introduction
-                     (make-channel-introduction
-                      "314453a87634d67e914cfdf51d357638902dd9fe"
-                      (openpgp-fingerprint
-                       "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))
+                   ;; Dynamic tiling Wayland compositor configurable in Guile Scheme
+                   ;; (channel
+                   ;;  (name 'home-service-dwl-guile)
+                   ;;  (url "https://github.com/engstrand-config/home-service-dwl-guile")
+                   ;;  (branch "main")
+                   ;;  (introduction
+                   ;;   (make-channel-introduction
+                   ;;    "314453a87634d67e914cfdf51d357638902dd9fe"
+                   ;;    (openpgp-fingerprint
+                   ;;     "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))
 
                    (channel (name 'haskell-and-clojure)
                             (url
