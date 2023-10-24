@@ -181,10 +181,9 @@ Example:
     (service-file #:program-name "gcod"#:desc "git-checkout-prev-branch")
     (service-file #:program-name "gcom"#:desc "git-checkout-master")
     (service-file #:program-name "gg"  #:desc "git-gui")
-    ;; former ghog
     (service-file #:program-name "gps" #:desc "git-push")
+    (service-file #:program-name "gpsf" #:desc "git-push--force")
     (service-file #:program-name "gk"  #:desc "git-repo-browser")
-    ;; former glo
     (service-file #:program-name "gpl" #:desc "git-pull--rebase")
     (service-file #:program-name "gs"  #:desc "git-status")
     (service-file #:program-name "gtg" #:desc "git-tag")
