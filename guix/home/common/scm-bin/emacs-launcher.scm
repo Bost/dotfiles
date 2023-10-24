@@ -25,37 +25,39 @@
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating ...\n" m)
 
-;; returns "/home/bost/.guix-home/profile/bin/emacs"
-(define (which-emacs)
-  (let* ((ret (exec "which emacs")))
-    (if (= 0 (car ret))
-        (let* ((output (cdr ret)))
-          (car output)
-          #| process output |#)
-        (error-command-failed))))
+(define (emacs-output-path)
+  "(emacs-output-path)
+=> \"/gnu/store/c39qm5ql5w9r6lwwnhangxjby57hshws-emacs-28.2/bin/emacs\""
+  ((compose
+    (partial format #f "~a/bin/emacs")
+    derivation->output-path
+    (partial package-derivation (open-connection)))
+   emacs))
 
-;; returns "/gnu/store/c39qm5ql5w9r6lwwnhangxjby57hshws-emacs-28.2/bin/emacs"
-;; (define (emacs-output-path)
-;;   ((compose
-;;     (partial format #f "~a/bin/emacs")
-;;     derivation->output-path
-;;     (partial package-derivation (open-connection)))
-;;    emacs))
+(define (which-emacs)
+  "(which-emacs) => \"/home/bost/.guix-home/profile/bin/emacs\""
+  ;; (emacs-output-path)
+  (which "emacs"))
+
+(define (which-emacsclient)
+  "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
+  (which "emacsclient"))
 
 (define (main args)
-  ((compose
-    exec-background
-    (partial cons*
-             (compute-cmd
-              "emacs"
-              (str "emacsclient --no-wait --socket-name="
-;;; See `dotspacemacs-server-socket-dir' in the `.spacemacs'.
-;;; Tilda '~' doesn't work
-                   "$HOME/" spacemacs-dir "/server/server")
-              ;; (emacs-output-path)
-              (which-emacs)))
-    (lambda (prms) (if (null? prms) '("./") prms))
-    cdr)
-   args))
+  (let* [(profile "spacemacs")
+         (emacs-bin (which-emacs))
+         (init-cmd (cmd->string
+                    (list emacs-bin (str "--with-profile=" profile) "--daemon")))]
+    ((compose
+      (lambda (cmd) ((if (string= cmd init-cmd) exec exec-background) cmd))
+;;; Search for the full command line:
+;;; $ pgrep --full --euid bost "/home/bost/.guix-home/profile/bin/emacs --with-profile=spacemacs --daemon"
+      (lambda (client-cmd) (compute-cmd init-cmd client-cmd init-cmd))
+      cmd->string
+      (partial append (list (which-emacsclient) "--create-frame"
+                            (str "--socket-name=" profile)))
+      (lambda (prms) (if (null? prms) '("./") prms))
+      cdr)
+     args)))
 
 (format #t "~a module evaluated\n" m)
