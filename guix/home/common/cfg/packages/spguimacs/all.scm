@@ -144,11 +144,9 @@
         ]
     ((comp
       (partial append (list
-                       bste:emacs-popwin
-                       bste:emacs-haskell-snippets))
+                       bste:emacs-popwin))
       (partial map (comp list specification->package+output))
       (partial remove (partial string= "emacs-popwin"))
-      (partial remove (partial string= "emacs-haskell-snippets"))
       )
      (s+ G
          (s- (sx (s+ N O)
