@@ -176,6 +176,7 @@
              (remove
               unspecified-or-empty-or-false?
               (list
+               (local-dotfile "/" ".gnupg/gpg.conf")
                (local-dotfile "/" ".guile") ;; used by `guix repl'
                (local-dotfile "/" ".gitconfig")
                (local-dotfile "/" ".spacemacs")
