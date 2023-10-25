@@ -438,7 +438,8 @@ or the CLIENT-CMD if some process ID was found."
     cdr
     exec
     ;; --euid effective ID
-    (partial format #f "pgrep --full --euid ~a ~a" user))
+    (partial format #f "pgrep --full --euid ~a ~a" user)
+    (lambda (s) (str "\"" s "\"")))
    pattern))
 
 (define-syntax def*
