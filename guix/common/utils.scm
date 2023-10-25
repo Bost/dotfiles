@@ -297,10 +297,9 @@ Returns a list of strings"
         res)))
 
 (define (cmd->string cmd)
-  (dbg-exec
-   (if (list? cmd)
-       (string-join cmd) ;; join with ' ' by default
-       cmd)))
+  (if (list? cmd)
+      (string-join cmd) ;; join with ' ' by default
+      cmd))
 
 ;; 8sync https://www.gnu.org/software/8sync/
 ;; asynchronous programming library for GNU Guile. Based on the actor
@@ -310,9 +309,11 @@ Returns a list of strings"
 
 (define (exec-background command)
   "Execute the COMMAND in background, i.e. in a detached process.
+COMMAND can be a string or a list of strings.
 "
   ((compose close-port
             open-input-pipe
+            dbg-exec
             cmd->string)
    command))
 
@@ -369,6 +370,7 @@ Usage:
         (cons
          (status:exit-val (close-pipe port))
          str)))
+    dbg-exec
     cmd->string)
    command))
 
