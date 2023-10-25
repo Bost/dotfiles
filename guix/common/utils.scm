@@ -309,12 +309,13 @@ Returns a list of strings"
 
 (define (exec-background command)
   "Execute the COMMAND in background, i.e. in a detached process.
-COMMAND can be a string or a list of strings.
-"
-  ((compose close-port
-            open-input-pipe
-            dbg-exec
-            cmd->string)
+COMMAND can be a string or a list of strings."
+  ((compose
+    system
+    dbg-exec
+    cmd->string
+    (lambda (cmd) (list cmd "&" "disown"))
+    cmd->string)
    command))
 
 #;
