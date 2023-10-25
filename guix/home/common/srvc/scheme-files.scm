@@ -91,11 +91,11 @@ Example:
 (define search-notes-service-files
   (list
 ;;; TODO crc should search in the $dec
-   (service-file #:program-name "crc"  #:files "clojure"
+   (service-file #:program-name "crc"  #:files "lisp/clojure"
                  #:scheme-file-name "search-notes")
 ;;; TODO cre should also search in the ~/.emacs.d.spacemacs/, ~/.spacemacs, kill-buffers
 ;;; and my=tweaks, farmhouse-light-mod
-   (service-file #:program-name "cre"  #:files "vim|emacs|org_mode"
+   (service-file #:program-name "cre"  #:files "editors/"
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crep" #:files ".*"
                  #:scheme-file-name "search-notes")
@@ -104,25 +104,29 @@ Example:
    (service-file #:program-name "crf"  #:files "find_and_grep"
                  #:scheme-file-name "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
-   (service-file #:program-name "crg"  #:files "guix|guile|nix"
+   (service-file #:program-name "crg"  #:files "guix-guile-nix/"
                  #:scheme-file-name "search-notes")
 ;;; TODO crgi should also search in the output of `git config --get',
 ;;; ~/.gitconfig, etc.
-   (service-file #:program-name "crgi" #:files "git"
+   (service-file #:program-name "crgi" #:files "cli/git"
                  #:scheme-file-name "search-notes")
 ;;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile (and
 ;;; other profile files), etc.
    (service-file #:program-name "crl"
-                 #:files (str "guix|guile|nix|shells|linux|network|android|cvs|"
-                              "systemd|heroku|gui|packaging|rsync|listing")
+                 #:files (string-join (list
+                                       "guix-guile-nix/"
+                                       "cli/"
+                                       ;; simple files
+                                       "network" "cvs" "gui")
+                                      "|")
                  #:scheme-file-name "search-notes")
-   (service-file #:program-name "crli" #:files "listing"
+   (service-file #:program-name "crli" #:files "cli/listing"
                  #:scheme-file-name "search-notes")
 ;;; TODO crr should also search in the $der
-   (service-file #:program-name "crr"  #:files "racket"
+   (service-file #:program-name "crr" #:files "lisp/racket"
                  #:scheme-file-name "search-notes")
 ;;; TODO crs should be like crl
-   (service-file #:program-name "crs"  #:files "shells"
+   (service-file #:program-name "crs"  #:files "cli/shells"
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "cru"  #:files "utf8"
                  #:scheme-file-name "search-notes")))
