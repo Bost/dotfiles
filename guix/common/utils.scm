@@ -366,10 +366,11 @@ Usage:
   ((compose
     (lambda (command)
       (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
-             (str  (read-all-strings port)))
+             ;; the `read-all-strings' may need to be called before `close-pipe'.
+             (results (read-all-strings port)))
         (cons
          (status:exit-val (close-pipe port))
-         str)))
+         results)))
     dbg-exec
     cmd->string)
    command))
@@ -403,6 +404,8 @@ Usage:
      pids)))
 
 (define (analyze-pids-call/cc init-cmd client-cmd pids)
+  "For a process ID from the list of PIDS, return the INIT-CMD if no process ID was
+found or the CLIENT-CMD if some process ID was found."
   (call/cc
    (lambda (continuation)
      (map
@@ -425,6 +428,8 @@ Usage:
      init-cmd)))
 
 (define (compute-cmd init-cmd client-cmd pattern)
+  "pgrep for a user and PATTERN and return the INIT-CMD if no process ID was found
+or the CLIENT-CMD if some process ID was found."
   ((compose
     (partial
      analyze-pids-call/cc
@@ -432,7 +437,8 @@ Usage:
      init-cmd client-cmd)
     cdr
     exec
-    (partial format #f "pgrep --full -u ~a ~a" user))
+    ;; --euid effective ID
+    (partial format #f "pgrep --full --euid ~a ~a" user))
    pattern))
 
 (define-syntax def*
