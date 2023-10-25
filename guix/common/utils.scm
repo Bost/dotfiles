@@ -64,6 +64,7 @@
             testsymb
             testsymb-trace
             unspecified-or-empty-or-false?
+            which
             ))
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
@@ -505,6 +506,15 @@ or the CLIENT-CMD if some process ID was found."
     ;; prevent the 'string is read-only ...' error
     string-copy)
    "/tmp/myfile-XXXXXX"))
+
+(define (which binary)
+  "(which \"emacs\") => \"/home/bost/.guix-home/profile/bin/emacs\""
+  (let* ((ret (exec (string-join (list "which" binary)))))
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          (car output)
+          #| process output |#)
+        (error-command-failed))))
 
 (define (repl)
   (use-modules (utils))
