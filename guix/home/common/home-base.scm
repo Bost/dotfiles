@@ -103,7 +103,14 @@
 ;;;      GUIX_PROFILE=$HOME/.guix-profile
 ;;;       . "$GUIX_PROFILE/etc/profile"
 ;;;    i.e. `. ~/.guix-profile/etc/profile`
-            "\n" "eval \"$(direnv hook bash)\""))
+
+            ;; Export empty DIRENV_LOG_FORMAT so that e.g. while desktop
+            ;; sharing, it's not obvious what variables are encrypted.
+            ;; (Redirect to /dev/null doesn't work.)
+            ;; See https://github.com/direnv/direnv/issues/68
+            "\n" "export DIRENV_LOG_FORMAT="
+            "\n" "eval \"$(direnv hook bash)\""
+            ))
 
           (let* [(filename ".bashrc_additions")]
             ;; this should work too:
