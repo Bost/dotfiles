@@ -117,7 +117,7 @@
 
 (define (email-in-emacs-packages)
   (list
-   mu    ;; mu generates autoloads for "mu4e"
+   mu    ;; mu generates autoloads for "mu4e", which is for treemacs-mu4e
    isync ;; isync/mbsync is a command-line tool for two-way synchronization of mailboxes
    emacs-mbsync
    emacs-mu4e-alert
@@ -284,13 +284,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "chez-matchable"))
 
 (define (elixir-devel-packages)
-  "See https://github.com/mnieper/scheme-macros"
+  "Elixir is dynamic, functional language. It leverages the Erlang VM"
   (list
    elixir
-   emacs-elixir-mode
+   emacs-alchemist         ;; not among the needed
+   emacs-elixir-mode       ;; not among the needed
+   emacs-eval-in-repl-iex  ;; is needed
    tree-sitter-elixir
-   emacs-alchemist
-   emacs-eval-in-repl-iex
    ))
 
 (define (video-packages)
@@ -708,10 +708,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 (define (devel-packages)
   (append
-   (fennel-devel-packages)
+   ;; (fennel-devel-packages)
    ;; (chez-scheme-devel-packages)
-   (elixir-devel-packages)
-   (agda-devel-packages)
+   ;; (elixir-devel-packages)
+   ;; (agda-devel-packages)
    (email-in-emacs-packages)
    ;; remove packages from this list if their inferior version should be used
    (list

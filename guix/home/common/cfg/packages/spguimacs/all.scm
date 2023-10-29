@@ -48,7 +48,6 @@
 (define general-packages
   (list
    "emacs-spacemacs"
-   "mu" ;; for mu4e, which is for treemacs-mu4e
    "spacemacs-rolling-release"
    ))
 
