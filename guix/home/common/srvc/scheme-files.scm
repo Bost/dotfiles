@@ -17,12 +17,50 @@
   #:use-module (srfi srfi-1)
   ;; pretty-print
   ;; #:use-module (ice-9 pretty-print)
+  ;; scandir
+  #:use-module (ice-9 ftw)
+ ;; string-match
+  #:use-module (ice-9 regex)
   #:export (
             scheme-files-service
             ))
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
+
+(define notes-dir (user-home "/org-roam"))
+
+(define (expand-pattern notes-dir pattern)
+  "Examples:
+(expand-pattern notes-dir \"cli/git\")
+(expand-pattern notes-dir \"cli/\")
+(expand-pattern notes-dir \"cvs\")
+"
+  (let* [(re (let* [(b (basename pattern))]
+               (str (if (string-suffix? "/" b) "" ".*") b ".*")))
+         (dir (str notes-dir "/"
+                   (let* [(d (dirname pattern))]
+                     (if (string= "." d)   "" (str d "/")))
+                   (let* [(dre (dirname re))]
+                     (if (string= "." dre) "" (str dre "/")))))
+         (rem-fn (if (string= pattern ".*")
+                     (lambda _ #f)
+                     file-is-directory?))]
+    ((comp
+      (partial remove rem-fn)
+      (partial map (partial str dir))
+      (partial remove (lambda (f) (member f (list "." ".."))))
+      (partial scandir dir))
+     (lambda (s) (string-match (basename re) s)))))
+
+(define (full-filepaths patterns)
+  ((comp
+    ;; This is not needed. The string will be surrounded by single quotes.
+    ;; (partial format #f "\"~a\"")
+    string-join
+    flatten
+    (partial map (partial expand-pattern notes-dir)))
+   patterns))
 
 (define* (service-file #:key
                        program-name desc scheme-file-name module-name
@@ -55,7 +93,7 @@ Example:
                                ((equal? scheme-file-name "chmod")
                                 chmod-params)
                                ((equal? scheme-file-name "search-notes")
-                                files))
+                                (full-filepaths files)))
                              (command-line)))))
         (with-imported-modules
             (remove
@@ -91,44 +129,54 @@ Example:
 (define search-notes-service-files
   (list
 ;;; TODO crc should search in the $dec
-   (service-file #:program-name "crc"  #:files "lisp/clojure"
+   (service-file #:program-name "crc"
+                 #:files (list "lisp/clojure")
                  #:scheme-file-name "search-notes")
 ;;; TODO cre should also search in the ~/.emacs.d.spacemacs/, ~/.spacemacs, kill-buffers
 ;;; and my=tweaks, farmhouse-light-mod
-   (service-file #:program-name "cre"  #:files "editors/"
+   (service-file #:program-name "cre"
+                 #:files (list "editors/")
                  #:scheme-file-name "search-notes")
-   (service-file #:program-name "crep" #:files ".*"
+   (service-file #:program-name "crep"
+                 #:files (list ".*")
                  #:scheme-file-name "search-notes")
-   (service-file #:program-name "cra"  #:files "ai"
+   (service-file #:program-name "cra"
+                 #:files (list "ai")
                  #:scheme-file-name "search-notes")
-   (service-file #:program-name "crf"  #:files "find_and_grep"
+   (service-file #:program-name "crf"
+                 #:files (list "find_and_grep")
                  #:scheme-file-name "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
-   (service-file #:program-name "crg"  #:files "guix-guile-nix/"
+   (service-file #:program-name "crg"
+                 #:files (list "guix-guile-nix/")
                  #:scheme-file-name "search-notes")
 ;;; TODO crgi should also search in the output of `git config --get',
 ;;; ~/.gitconfig, etc.
-   (service-file #:program-name "crgi" #:files "cli/git"
+   (service-file #:program-name "crgi"
+                 #:files (list "cli/git")
                  #:scheme-file-name "search-notes")
 ;;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile (and
 ;;; other profile files), etc.
    (service-file #:program-name "crl"
-                 #:files (string-join (list
-                                       "guix-guile-nix/"
-                                       "cli/"
-                                       ;; simple files
-                                       "network" "cvs" "gui")
-                                      "|")
+                 #:files (list
+                          "guix-guile-nix/"
+                          "cli/"
+                          ;; simple files
+                          "network" "cvs" "gui")
                  #:scheme-file-name "search-notes")
-   (service-file #:program-name "crli" #:files "cli/listing"
+   (service-file #:program-name "crli"
+                 #:files (list "cli/listing")
                  #:scheme-file-name "search-notes")
 ;;; TODO crr should also search in the $der
-   (service-file #:program-name "crr" #:files "lisp/racket"
+   (service-file #:program-name "crr"
+                 #:files (list "lisp/racket")
                  #:scheme-file-name "search-notes")
 ;;; TODO crs should be like crl
-   (service-file #:program-name "crs"  #:files "cli/shells"
+   (service-file #:program-name "crs"
+                 #:files (list "cli/shells")
                  #:scheme-file-name "search-notes")
-   (service-file #:program-name "cru"  #:files "utf8"
+   (service-file #:program-name "cru"
+                 #:files (list "utf8")
                  #:scheme-file-name "search-notes")))
 
 (define scheme-files-service

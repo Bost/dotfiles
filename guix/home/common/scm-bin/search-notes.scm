@@ -27,7 +27,7 @@
             #;(lambda (p) (format #t "0: ~a\n" p) p)
 ;;; TODO compile search-notes if it doesn't exits in the PATH.
 ;;; See $der/search-notes/README.md
-            (partial cons* (format #f "search-notes -f '~a' -p" files))
+            (partial cons* (format #f "search-notes -e '~a' -p" files))
             cdr)
            args)))
     #;ret
