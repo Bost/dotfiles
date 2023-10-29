@@ -125,7 +125,6 @@
    "emacs-editorconfig"
    "emacs-elisp-def"
    "emacs-elisp-slime-nav"
-   "emacs-elisp-slime-nav"
    "emacs-elm-mode"
    ;; "emacs-emacsql"         ;; using bste:emacs-emacsql
    ;; "emacs-emacsql-sqlite3" ;; pulls-in the emacs-emacsql; using bste:emacs-emacsql-sqlite3
@@ -161,8 +160,6 @@
    "emacs-eval-in-repl-scheme"
    "emacs-eval-in-repl-shell"
    "emacs-eval-in-repl-slime"
-   "emacs-eval-in-repl-slime"
-   "emacs-eval-in-repl-sly"
    "emacs-eval-in-repl-sly"
    "emacs-eval-in-repl-sml"
    "emacs-eval-sexp-fu-el"
