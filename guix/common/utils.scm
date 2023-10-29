@@ -39,6 +39,7 @@
             def*
             drop-left
             drop-right
+            ends-with?
             error-command-failed
             exec
             exec-background
@@ -515,6 +516,11 @@ or the CLIENT-CMD if some process ID was found."
           (car output)
           #| process output |#)
         (error-command-failed))))
+
+(define (ends-with? s postfix)
+  "(ends-with? \"/aaa/bbb/ccc/\" \"/\")
+ => #t"
+  (string-suffix? postfix s))
 
 (define (repl)
   (use-modules (utils))
