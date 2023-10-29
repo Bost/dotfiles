@@ -3,21 +3,18 @@
   #:use-module (utils)
   #:use-module (memo)
   #:use-module (gnu) ;; use-package-modules
-
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   ;; provides clojure related packages
   #:use-module ((bost packages clojure) #:prefix bstc:)
+  ;; specification->package 
   #:use-module (gnu packages)
   #:use-module (guix packages)
   #:use-module (guix channels)
   #:use-module (guix inferior)
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-
-  ;; #:use-module (oop goops) ;; make
-
   #:export (
             packages-to-install
             ))
@@ -403,13 +400,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; "sddm"
    ))
 
-(define (rest-packages-old)
-  (list
-   "glib:bin"
-   "make"
-   ))
-
-(define (rest-packages-new)
+(define (rest-packages)
   (list
    adb
    alsa-utils
@@ -472,10 +463,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (specification->package "libgccjit@11.3.0")
 
    ghc
-;;; guix home: error: profile contains conflicting entries for glib:bin
-;;; guix home: error:   first entry: glib@2.72.3:bin /gnu/store/f1b7pp1h07y8ka74bwhjmbwjxfycxrds-glib-2.72.3-bin
-;;; guix home: error:   second entry: glib@2.72.3:bin /gnu/store/zkgaqs8ny43mxnp006lx6ia4wqlb2xl2-glib-2.72.3-bin
-;;; (list glib "bin")
+   (list glib "bin")
    graphviz
    grub
 
@@ -507,7 +495,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    lolcat
    lshw
    lsof
-   ;; make
+   (specification->package "make@4.3")
    maven
    mcron
    mercurial
@@ -591,10 +579,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ))
 
-(define (rest-packages)
-  (append
-   (rest-packages-new)
-   (map (comp list specification->package+output) (rest-packages-old))))
 
 (define (other-gui-packages)
   (list
@@ -827,11 +811,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
          (begin
            ;; (format #t "(is-system-ecke)\n")
            (append
-            ;; pulls-in ~350 additional packages
+            ;; pulls-in ~430 additional packages
             (spguimacs-packages)
             (devel-packages)
             (rest-packages)
-            ;; (map (comp list specification->package+output) (video-packages))
+            ;; (map (comp list specification->package) (video-packages))
             (xfce-packages)
             (xorg-packages)
             (other-gui-packages)
