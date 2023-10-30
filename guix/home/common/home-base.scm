@@ -55,14 +55,6 @@
      append
      ;; (service home-xsettingsd-service-type)
      (list
-      ;; use this until my patch makes it to the upstream
-      ;; see https://issues.guix.gnu.org/issue/66659
-      (simple-service
-       'avoid-on-first-login-bug-66659
-       home-run-on-first-login-service-type
-       #~(begin
-           (display "Running 'avoid-on-first-login-bug-66659\n")))
-
       (service
        home-bash-service-type
        (home-bash-configuration
