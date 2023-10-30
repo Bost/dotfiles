@@ -17,7 +17,7 @@
   #:use-module (srfi srfi-1)
   ;; pretty-print
   ;; #:use-module (ice-9 pretty-print)
-  ;; scandir
+  ;; scandir nftw
   #:use-module (ice-9 ftw)
  ;; string-match
   #:use-module (ice-9 regex)
@@ -30,28 +30,42 @@
 
 (define notes-dir (user-home "/org-roam"))
 
+(define (list-all-files path)
+  "(list-all-files notes-dir)"
+  (let ((files '()))
+    (define (file-collector filename statinfo flag base level)
+      (when (equal? 'regular flag) ; it's a regular file
+        (set! files (cons filename files)))
+      #t)         ; continue traversing
+    (nftw path file-collector)
+    files))
+
 (define (expand-pattern notes-dir pattern)
   "Examples:
+(expand-pattern notes-dir \".*\")  ;; crep
 (expand-pattern notes-dir \"cli/git\")
 (expand-pattern notes-dir \"cli/\")
 (expand-pattern notes-dir \"cvs\")
 "
-  (let* [(re (let* [(b (basename pattern))]
-               (str (if (string-suffix? "/" b) "" ".*") b ".*")))
-         (dir (str notes-dir "/"
-                   (let* [(d (dirname pattern))]
-                     (if (string= "." d)   "" (str d "/")))
-                   (let* [(dre (dirname re))]
-                     (if (string= "." dre) "" (str dre "/")))))
-         (rem-fn (if (string= pattern ".*")
-                     (lambda _ #f)
-                     file-is-directory?))]
-    ((comp
-      (partial remove rem-fn)
-      (partial map (partial str dir))
-      (partial remove (lambda (f) (member f (list "." ".."))))
-      (partial scandir dir))
-     (lambda (s) (string-match (basename re) s)))))
+  (if (string= ".*" pattern)
+      (list-all-files notes-dir)
+      (let* [(re (let* [(b (basename pattern))]
+                   (str (if (string-suffix? "/" b) "" ".*") b ".*")))
+             (dir (str notes-dir "/"
+                       (let* [(d (dirname pattern))]
+                         (if (string= "." d)   "" (str d "/")))
+                       (let* [(dre (dirname re))]
+                         (if (string= "." dre) "" (str dre "/")))))
+             (rem-fn (if (string= pattern ".*")
+                         (lambda _ #f)
+                         file-is-directory?))]
+        ((comp
+          (partial remove rem-fn)
+          (partial map (partial str dir))
+          (partial remove (lambda (f) (member f (list "." ".."))))
+          (lambda (p) (or p (list))) ;; the notes-dir may not exist
+          (partial scandir dir))
+         (lambda (s) (string-match (basename re) s))))))
 
 (define (full-filepaths patterns)
   ((comp
@@ -144,7 +158,7 @@ Example:
                  #:files (list "ai")
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crf"
-                 #:files (list "find_and_grep")
+                 #:files (list "cli/find_and_grep")
                  #:scheme-file-name "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
    (service-file #:program-name "crg"
