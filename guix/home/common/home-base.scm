@@ -96,6 +96,9 @@
 ;;;       . "$GUIX_PROFILE/etc/profile"
 ;;;    i.e. `. ~/.guix-profile/etc/profile`
 
+            ;; see `info "(gnupg) Invoking GPG-AGENT"`
+            "\n" "export GPG_TTY=$(tty)"
+
             ;; Export empty DIRENV_LOG_FORMAT so that e.g. while desktop
             ;; sharing, it's not obvious what variables are encrypted.
             ;; (Redirect to /dev/null doesn't work.)
