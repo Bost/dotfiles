@@ -20,6 +20,7 @@
 
             is-system-lukas
             is-system-ecke
+            is-system-edge
             is-system-geek
             ))
 
@@ -43,6 +44,9 @@
 
 (define (is-system-ecke) (equal? (hostname-memoized) host-ecke))
 (testsymb 'is-system-ecke)
+
+(define (is-system-edge) (equal? (hostname-memoized) host-edge))
+(testsymb 'is-system-edge)
 
 (define (is-system-geek) (equal? (hostname-memoized) host-geek))
 (testsymb 'is-system-geek)

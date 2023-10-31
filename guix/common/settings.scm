@@ -13,6 +13,7 @@
             host-lukas
             host-ecke
             host-geek
+            host-edge
             hostnames
             user
             home
@@ -33,7 +34,8 @@
 (define host-lukas "lukas")
 (define host-ecke "ecke")
 (define host-geek "geek")
+(define host-edge "edge")
 
-(define hostnames (list host-lukas host-ecke host-geek))
+(define hostnames (list host-lukas host-ecke host-geek host-edge))
 
 ;; (format #t "[settings] module evaluated\n")
