@@ -10,7 +10,7 @@
 # sourcing the default bash profile and run `guix home ...` command from bash:
 source /etc/profile && dx=$HOME/dev/dotfiles/guix
 guix home --allow-downgrades --cores=24 \
-     -L $dx/common -L $dx/home reconfigure $dx/guix/home/home-lukas.scm
+     -L $dx/common -L $dx/home reconfigure $dx/home/home-lukas.scm
 # -L --load-path
 
 # The tilda `~' is only expanded by shells when it's the first character of a
