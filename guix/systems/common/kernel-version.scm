@@ -11,9 +11,11 @@
   (partial apply (partial format #t
                           (str "Kernel used: ~a. "
                                "Latest available: ~a\n"))))
- (list (let* ((ret (exec
- ;;; -o --only-matching, -P --perl-regexp - grep capture group with \K
-                    "uname -r | rg -oP '([0-9]{1,}\\.)+[0-9]{1,}'")))
+ (list (let* ((ret
+               (exec
+ ;;; In the default Guix installation the ripgrep `rg` is not available and grep
+ ;;; is build with --disable-perl-regexp, i.e. no -P --perl-regexp can be used.
+                "uname -r | grep -o '\\([0-9]\\{1,\\}\\.\\)\\+[0-9]\\{1,\\}'")))
          (if (= 0 (car ret))
              (let* ((output (cdr ret)))
                (car output))
