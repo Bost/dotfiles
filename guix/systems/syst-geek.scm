@@ -1,19 +1,22 @@
 #|
 ## Initially:
 ## 1. From another host:
-scp ~/.config/guix/channels.scm geek:~/.config/guix/
-cd $dev/dotfiles/guix/systems && scp signing-key.pub geek.scm geek:/tmp
+# By default git is not installed in the raw Guix iso image / installation.
+# Clone the repo to /tmp so that no uncommitted files (with secrets) are transferred
+git clone $dotf /tmp/dotf && scp -r /tmp/dotf geek:/tmp
 
 ## 2. From the geek machine:
-chmod +rw ~/.config/guix/channels.scm
-vi ~/.config/guix/channels.scm # remove all other channels except 'nonguix'
+dotf=/tmp/dotf
+mkdir -p ~/.config/guix
+cp $dotf/.config/guix/channels.scm ~/.config/guix
+# Make sure the ~/.config/guix/channels.scm contains only 'nonguix' and %default-channels
 guix pull
-sudo guix system --fallback reconfigure geek.scm
+sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common reconfigure $dotf/guix/systems/syst-$(hostname).scm
 
 ## Run this file by (the `~' doesn't work as a value of --load-path):
 # --fallback         fall back to building when the substituter fails
 # -L --load-path
-sudo guix system --fallback -L $dotf/guix/systems reconfigure $dotf/guix/systems/geek.scm
+sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common reconfigure $dotf/guix/systems/syst-$(hostname).scm
 |#
 
 (define-module (syst-geek)
