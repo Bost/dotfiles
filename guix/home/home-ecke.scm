@@ -9,8 +9,8 @@
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
 source /etc/profile && dx=$HOME/dev/dotfiles/guix
-guix home --allow-downgrades --cores=24 \
-     -L $dx/common -L $dx/home reconfigure $dx/guix/home/home-ecke.scm
+guix home --allow-downgrades --cores=$(nproc) \
+     -L $dx/common -L $dx/home/common reconfigure $dx/home/home-$(hostname).scm
 # -L --load-path
 
 # The tilda `~' is only expanded by shells when it's the first character of a
