@@ -2,18 +2,17 @@
   #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
-  #:use-module (gnu) ;; use-package-modules
+  ;; provides: use-package-modules
+  #:use-module (gnu)
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
-  ;; provides clojure related packages - requires the 'bost' channel
-  ;; #:use-module ((bost packages clojure) #:prefix bstc:)
-  ;; specification->package 
+  ;; provides: specification->package 
   #:use-module (gnu packages)
   #:use-module (guix packages)
   #:use-module (guix channels)
   #:use-module (guix inferior)
-  ;; first take remove delete-duplicates append-map etc.
+  ;; provides: first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
   #:export (packages-to-install)
   )
@@ -124,14 +123,20 @@
    ))
 (testsymb-trace 'email-in-emacs-packages)
 
-(define (packages-from-additional-channels-base)
+(define (packages-from-additional-channels)
   "Packages from additional channels?
 Including these packages in the `packages-to-install' causes:
-   error: <package-name>: unknown package
+   error: <package-naae>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
+   (@(bost packages clojure) clojure)
+   (@(bost packages clojure) clojure-lsp)
+   (@(bost packages clojure) clojure-tools)
+   (@(bost packages babashka) babashka)
+
+   ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
+   (@(nongnu packages messaging) signal-desktop)
    (@(nongnu packages clojure) leiningen)
-   (@(babashka) babashka)  ;; from the 'bost' channel. TODO move it to a better named module
    (@(nongnu packages mozilla) firefox)
    #|
    (@(games packages factorio) factorio) ;; temporarily disabled, install it using:
@@ -140,18 +145,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    guix package --load-path=$dev/games --install=factorio$experimentalVersion
    |#
    ))
-(testsymb-trace 'packages-from-additional-channels-base)
-
-(define (packages-from-additional-channels)
-  "Packages from additional channels?
-Including these packages in the `packages-to-install' causes:
-   error: <package-naae>: unknown package
-when called from the Emacs Geiser REPL by ,use or ,load"
-  (append
-   (packages-from-additional-channels-base)
-   (list
-    (@(nongnu packages messaging) signal-desktop) ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
-    )))
 (testsymb-trace 'packages-from-additional-channels)
 
 (define (kde-dependent-packages)
@@ -830,22 +823,23 @@ when called from the Emacs Geiser REPL by ,use or ,load"
           pkgs))
     ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
+      (if (or (is-system-ecke) (is-system-geek))
+          (append (packages-from-additional-channels) pkgs)
+          pkgs))
+    (lambda (pkgs)
       (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
           (append
-           ;; (list bstc:clojure bstc:clojure-lsp bstc:clojure-tools)
            (devel-packages)
+           (kde-dependent-packages)
+           (other-gui-packages)
            (rest-packages)
            (xfce-packages)
            (xorg-packages)
-           (other-gui-packages)
-           (kde-dependent-packages)
-           ;; (packages-from-additional-channels)
            pkgs)
           pkgs))
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
     )
-   (basic-packages)
-   ))
+   (basic-packages)))
 (testsymb-trace 'packages-to-install)
 
 (format #t "~a module evaluated\n" m)
