@@ -841,8 +841,4 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (basic-packages)))
 (testsymb 'packages-to-install)
 
-(define (repl)
-  (use-modules (cfg packages all))
-  (load (string-append (getenv "dotf") "/guix/home/cfg/packages/all.scm")))
-
 ;; (format #t "~a module evaluated\n" m)
