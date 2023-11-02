@@ -6,8 +6,8 @@
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
-  ;; provides clojure related packages
-  #:use-module ((bost packages clojure) #:prefix bstc:)
+  ;; provides clojure related packages - requires the 'bost' channel
+  ;; #:use-module ((bost packages clojure) #:prefix bstc:)
   ;; specification->package 
   #:use-module (gnu packages)
   #:use-module (guix packages)
@@ -15,9 +15,8 @@
   #:use-module (guix inferior)
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  #:export (
-            packages-to-install
-            ))
+  #:export (packages-to-install)
+  )
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
@@ -123,17 +122,7 @@
    emacs-mu4e-alert
    emacs-helm-mu
    ))
-
-(define (packages-from-additional-channels)
-  "Packages from additional channels?
-Including these packages in the `packages-to-install' causes:
-   error: <package-naae>: unknown package
-when called from the Emacs Geiser REPL by ,use or ,load"
-  (append
-   (packages-from-additional-channels-base)
-   (list
-    (@(nongnu packages messaging) signal-desktop) ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
-    )))
+(testsymb-trace 'email-in-emacs-packages)
 
 (define (packages-from-additional-channels-base)
   "Packages from additional channels?
@@ -151,14 +140,28 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    guix package --load-path=$dev/games --install=factorio$experimentalVersion
    |#
    ))
+(testsymb-trace 'packages-from-additional-channels-base)
+
+(define (packages-from-additional-channels)
+  "Packages from additional channels?
+Including these packages in the `packages-to-install' causes:
+   error: <package-naae>: unknown package
+when called from the Emacs Geiser REPL by ,use or ,load"
+  (append
+   (packages-from-additional-channels-base)
+   (list
+    (@(nongnu packages messaging) signal-desktop) ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
+    )))
+(testsymb-trace 'packages-from-additional-channels)
 
 (define (kde-dependent-packages)
   "KDE dependencies are slow to compile"
   (list
    konsole
    krusader))
+(testsymb-trace 'kde-dependent-packages)
 
-(define (large-packages)
+(define (large-packages-ecke)
   "Large packages, slow to build, graft, download, etc."
   (list
    audacity ;; 35.8MiB
@@ -168,16 +171,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Thunderbird console Ctrl-Shift-j
    icedove  ;; 48.8MiB
 
-   ;; default browser
-   icecat ;; 68.9MiB
-
+   ;; Vector graphics editor
    inkscape ;; ~93MiB
-
-   ;; rust downloads (see below) and then it needs to be build:
-   ;;     rust-1.59.0  121.1MiB
-   ;;     rust-1.59.0-cargo  3.2MiB
-   ;;     rustc-1.60.0-src.tar.xz  63.6MiB
-   rust ;; the 1.60 has to be build
 
    tectonic ;; embeddable TeX/LaTeX engine
 
@@ -186,6 +181,20 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ;; complete TeX Live distribution
    texlive                 ; may take too long to graft
+   ))
+(testsymb-trace 'large-packages-ecke)
+
+(define (large-packages-edge-ecke)
+  "Large packages, slow to build, graft, download, etc."
+  (list
+   ;; default browser
+   icecat ;; 68.9MiB
+
+   ;; rust downloads (see below) and then it needs to be build:
+   ;;     rust-1.59.0  121.1MiB
+   ;;     rust-1.59.0-cargo  3.2MiB
+   ;;     rustc-1.60.0-src.tar.xz  63.6MiB
+   rust ;; the 1.60 has to be build
 
    ungoogled-chromium
 
@@ -198,8 +207,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; jdk.javadoc.doclet.Doclet
    (list openjdk "jdk")
 
-   ;; icedtea ; ~240MiB; provides OpenJDK built with the IcedTea build harness
+   ;; Provides OpenJDK built with the IcedTea build harness
+   ;; icedtea ; ~240MiB
    ))
+(testsymb-trace 'large-packages-edge-ecke)
 
 (define (basic-packages)
   (list
@@ -253,6 +264,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    vim
    zip
    ))
+(testsymb-trace 'basic-packages)
 
 (define (agda-devel-packages)
   (list
@@ -261,6 +273,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; agda-ial ;; broken build
    ;; cedille ;; depends on agda-ial
    idris))
+(testsymb-trace 'agda-devel-packages)
 
 (define (fennel-devel-packages)
   "Fennel: Lua + Lisp. For e.g. Factorio modding."
@@ -272,6 +285,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Automatic formatting of Fennel code
    ;; fnlfmt ; doesn't compile
    ))
+(testsymb-trace 'fennel-devel-packages)
 
 (define (chez-scheme-devel-packages)
   "See https://github.com/mnieper/scheme-macros"
@@ -282,6 +296,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "emacs-geiser-chez"
    ;; Portable hygienic pattern matcher for Scheme
    "chez-matchable"))
+(testsymb-trace 'chez-scheme-devel-packages)
 
 (define (elixir-devel-packages)
   "Elixir is dynamic, functional language. It leverages the Erlang VM"
@@ -292,6 +307,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    emacs-eval-in-repl-iex  ;; is needed
    tree-sitter-elixir
    ))
+(testsymb-trace 'elixir-devel-packages)
 
 (define (video-packages)
   (list
@@ -399,6 +415,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; QML based X11 and Wayland display manager
    ;; "sddm"
    ))
+(testsymb-trace 'video-packages)
 
 (define (rest-packages)
   (list
@@ -578,7 +595,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; gimagereader                ;; Qt front-end to tesseract-ocr
 
    ))
-
+(testsymb-trace 'rest-packages)
 
 (define (other-gui-packages)
   (list
@@ -633,6 +650,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    neovim
    ))
+(testsymb-trace 'other-gui-packages)
 
 (define (xorg-packages)
   (list
@@ -658,6 +676,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Manipulate X selection, i.e. the clipboard from the command line.
    xsel
    ))
+(testsymb-trace 'xorg-packages)
 
 (define (xfce-packages)
   (list
@@ -673,6 +692,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; xfce4-volumed-pulse ;;  XFCE volume keys daemon
    xfce4-pulseaudio-plugin
    ))
+(testsymb-trace 'xfce-packages)
 
 (define (inferior-package-in-guix-channel package commit)
   "Returns an inferior representing the `commit' (predecessor-sha1) revision."
@@ -684,6 +704,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (url "https://git.savannah.gnu.org/git/guix.git")
             (commit commit))))
     package)))
+(testsymb-trace 'inferior-package-in-guix-channel)
 
 (define (inferior-pkgs pkgs)
   ((comp
@@ -704,7 +725,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; emacs 28.2
     ;; (list "emacs"             "772eaa69f31457aa19ca4dc4ce755c791d722054")
     )))
-(testsymb 'inferior-pkgs)
+(testsymb-trace 'inferior-pkgs)
 
 (define (devel-packages)
   (append
@@ -735,6 +756,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     pinentry ;; needed to sign commits
     pwclient ;; CLI client for Patchwork patch tracking tool (*.patch files)
     )))
+(testsymb-trace 'devel-packages)
 
 (define (packages-to-install)
 ;;; TODO make it support inferior packages
@@ -790,55 +812,40 @@ when called from the Emacs Geiser REPL by ,use or ,load"
       (format #t "~a packages to install: ~a\n" m (length pkgs))
       pkgs)
     inferior-pkgs
+    ;; (lambda (p) (format #t "~a 4.\n~a\n" p) p))
+    ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
-      (if (or (is-system-ecke) (is-system-geek))
+      (if (or (is-system-ecke))
           (append
-           (list
-            bstc:clojure
-            bstc:clojure-lsp
-            bstc:clojure-tools)
+           ;; (map (comp list specification->package) (video-packages))
+           ;; pulls-in ~430 additional packages
+           (spguimacs-packages)
+           (large-packages-ecke)
            pkgs)
           pkgs))
-    ;; (lambda (v) (format #t "0\n~a\n" v) v)
-    (partial
-       append
-       (cond
-        [(is-system-lukas)
-         (begin
-           ;; (format #t "(is-system-lukas)\n")
-           (list))]
-        [(is-system-ecke)
-         (begin
-           ;; (format #t "(is-system-ecke)\n")
-           (append
-            ;; pulls-in ~430 additional packages
-            (spguimacs-packages)
-            (devel-packages)
-            (rest-packages)
-            ;; (map (comp list specification->package) (video-packages))
-            (xfce-packages)
-            (xorg-packages)
-            (other-gui-packages)
-            (kde-dependent-packages)
-            (large-packages)
-            (packages-from-additional-channels)
-            (list)))]
-        [(is-system-geek)
-         (begin
-           ;; (format #t "(is-system-geek)\n")
-           (append
-            (devel-packages)
-            (rest-packages)
-            (xfce-packages)
-            (xorg-packages)
-            (other-gui-packages)
-            (kde-dependent-packages)
-            ;; (large-packages)
-            (packages-from-additional-channels-base)
-            (list)))]
-        [#t (error (format #f "hostname '~a' must be one of the: ~a\n"
-                           (hostname-memoized) (string-join hostnames)))])))
-   (basic-packages)))
-(testsymb 'packages-to-install)
+    ;; (lambda (p) (format #t "~a 2. (length p): ~a\n" m (length p)) p)
+    (lambda (pkgs)
+      (if (or (is-system-edge) (is-system-ecke))
+          (append (large-packages-edge-ecke) pkgs)
+          pkgs))
+    ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" m (length p)) p)
+    (lambda (pkgs)
+      (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
+          (append
+           ;; (list bstc:clojure bstc:clojure-lsp bstc:clojure-tools)
+           (devel-packages)
+           (rest-packages)
+           (xfce-packages)
+           (xorg-packages)
+           (other-gui-packages)
+           (kde-dependent-packages)
+           ;; (packages-from-additional-channels)
+           pkgs)
+          pkgs))
+    ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
+    )
+   (basic-packages)
+   ))
+(testsymb-trace 'packages-to-install)
 
-;; (format #t "~a module evaluated\n" m)
+(format #t "~a module evaluated\n" m)

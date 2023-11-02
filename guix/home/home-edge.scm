@@ -5,29 +5,29 @@
 ;; See the "Replicating Guix" section in the manual.
 
 #|
-# To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
-# XDG_DATA_DIRS), reset environment variables to their default values by
-# sourcing the default bash profile and run `guix home ...` command from bash:
+To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
+DG_DATA_DIRS), reset environment variables to their default values by sourcing
+the default bash profile and run `guix home ...` command from bash:
+
 source /etc/profile && dx=$HOME/dev/dotfiles/guix
-guix home --allow-downgrades --cores=24 \
-     -L $dx/common -L $dx/home reconfigure $dx/home/home-geek.scm
+guix home --allow-downgrades --cores=$(nproc) \
+     -L $dx/common -L $dx/home/common reconfigure $dx/home/home-$(hostname).scm
 # -L --load-path
 
-# The tilda `~' is only expanded by shells when it's the first character of a
-# command-line argument. Use $HOME instead
-
-;; see 'include', which unlike 'load', also works within nested lexical contexts
-;; can't use the `~'
-(load "/home/bost/dev/dotfiles.dev/guix/home/home-geek.scm")
+(The tilda `~' is only expanded by shells when it's the first character of a
+command-line argument. Use $HOME instead.)
 |#
 
-(define-module (home-geek)
+;; The 'edge' and 'ecke' home environments are almost the same, and it may be
+;; enough to handle the differences just a few branching statements, e.g.
+;; if, cond, etc.
+(define-module (home-edge)
   #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
 
-  ;; gcl
-  #:use-module (scm-bin gcl)
+  ;; fix the 'error: leiningen: unknown package', but it doesn't work
+  #:use-module (nongnu packages clojure)
 
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
@@ -47,7 +47,7 @@ guix home --allow-downgrades --cores=24 \
   #:use-module (gnu home services shells)
   ;; simple-service
   #:use-module (gnu home services)
-  ;; take remove delete-duplicates append-map etc.
+  ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
   ;; pretty-print
   ;; #:use-module (ice-9 pretty-print)
@@ -87,27 +87,29 @@ guix home --allow-downgrades --cores=24 \
 (format #t "~a obtaining projects ... " m)
 ;; See https://gitlab.com/guile-git/guile-git.git
 ;; Guile bindings to libgit2, to manipulate repositories of the Git.
-(define projects (list))
-;; (define projects
-;;   (list
-;;    (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"
-;;                       "/morse" "/utils" "/clj-time" "/cljplot"))
-;;    (cons "/der" (list "/search-notes" "/racket-koans"
-;;                       ;; "/vesmir" is in the projects-heroku list
-;;                       "/heroku-buildpack-racket"))
-;;    (cons "/dev" (list
-;;                  "/guix-packages" ;; "/guix"
-;;                  "/copy-sexp" "/kill-buffers" "/jump-last"
-;; ;;; use the local guix repo-checkout instead of git.savannah.gnu.org:
-;; ;;; set latest (ls --sort=time --almost-all ~/.cache/guix/checkouts/ | head -1)
-;; ;;; cd ~/.cache/guix/checkouts/$latest
-;;             ;;;; (cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
-;; ;;; ... then
-;; ;;;   git remote rename origin checkout
-;; ;;;   git remote add origin https://git.savannah.gnu.org/git/guix.git
-;; ;;;   git fetch --tags origin
-;;             ;;;; (cons "/guile" "https://git.savannah.gnu.org/git/guix.git")
-;;                  "/notes" "/dotfiles"))))
+
+(define projects
+  (list
+   ;;    (cons "/dec" (list "/corona_cases" "/fdk" "/monad_koans"
+   ;;                       "/morse" "/utils" "/clj-time" "/cljplot"
+   ;;                       "/zark"))
+   ;;    (cons "/der" (list "/search-notes" "/racket-koans"
+   ;;                       ;; "/vesmir" is in the projects-heroku list
+   ;;                       "/heroku-buildpack-racket"))
+   ;;    (cons "/dev" (list
+   ;;                  "/guix-packages" ;; "/guix"
+   ;;                  "/copy-sexp" "/kill-buffers" "/jump-last"
+   ;; ;;; use the local guix repo-checkout instead of git.savannah.gnu.org:
+   ;; ;;; set latest (ls --sort=time --almost-all ~/.cache/guix/checkouts/ | head -1)
+   ;; ;;; cd ~/.cache/guix/checkouts/$latest
+   ;;             ;;;; (cons "/guix" "https://git.savannah.gnu.org/git/guix.git")
+   ;; ;;; ... then
+   ;; ;;;   git remote rename origin checkout
+   ;; ;;;   git remote add origin https://git.savannah.gnu.org/git/guix.git
+   ;; ;;;   git fetch --tags origin
+   ;;             ;;;; (cons "/guile" "https://git.savannah.gnu.org/git/guix.git")
+   ;;                  "/notes" "/dotfiles"))
+   ))
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
@@ -201,18 +203,26 @@ guix home --allow-downgrades --cores=24 \
 ;;         ;;   (chmod dst #o644))
 ;;         ))
 
+;;; TODO see also the xfce4 chromium launcher -> command
+;;; /home/bost/.guix-profile/bin/chromium %U
+
+;;; TODO see [PATCH] services: Add udev-rules-service helper.
+;;; https://issues.guix.gnu.org/40454
+
+;;; TODO home-git-configuration
+
 ;; See also $dotf/.bashrc.martin
-(define home-env
+(define-public home-env
   (home-environment
    (packages (packages-to-install))
    (services
     ((compose
-      #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
+      ;; (lambda (v) (format #t "~a 3:\n~a\n" m v) v)
       (partial append base:services)
-      #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
+      ;; (lambda (v) (format #t "~a 2:\n~a\n" m v) v)
       list
       base:environment-variables-service
-      #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
+      ;; (lambda (v) (format #t "~a 1:\n~a\n" m v) v)
       (partial
        append
        `(
@@ -244,11 +254,31 @@ guix home --allow-downgrades --cores=24 \
          ;; needed by `help`; e.g. `help expand`
          ("BROWSER" . "firefox")
 
-         ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
+         ("cores" . "19") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
          ("dec"   . ,(user-home "/dec"))
          ("der"   . ,(user-home "/der"))
+         ;; guile / guix load-path
+         ("glp"  . ,((compose
+                      (lambda (lst) (string-join lst list-separator-bash)))
+                     (append
+                      (list dgx)
+                      (map user-dev
+                           (list
+                            "/nonguix"
+                            "/andrew-rde/src"))
+                      (map user-dotf
+                           (list
+                            "/guix/common"
+                            "/guix/home/common"
+                            "/guix/systems/common"
+                            "/guix/home"
+                            "/guix/systems"
+                            ))
+                      (list (str dgxp "/packages"))
+                      )))
          ))
-      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
+      ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
+      )
      (base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)
 
