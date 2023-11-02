@@ -35,7 +35,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
-  ;; #:use-module (cfg packages all-new)
   #:use-module (cfg packages all)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc fish)
