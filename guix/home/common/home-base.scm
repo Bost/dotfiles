@@ -246,4 +246,91 @@
    home-environment-variables-service-type
    environment-vars))
 
+(define projects
+  (list
+   (cons "/dec" (list
+                 "/clj-time"
+                 "/cljplot"
+                 "/corona_cases"
+                 "/fdk"
+                 "/monad_koans"
+                 "/morse"
+                 "/utils"
+                 "/zark"
+                 ))
+   (cons "/der" (list
+                 "/heroku-buildpack-racket"
+                 "/racket-koans"
+                 "/search-notes"
+                 ;; "/vesmir" ;; is in the projects-heroku list
+                 ))
+   (cons "/dev" (append
+;;;   cp -r <repo-local-checkout> $dev
+;;;   cd $dev/<repo-name>
+;;;   git remote add origin <repo-url>
+;;; The repo-url can be obtained from `guix describe --format=channels`
+;;;   git fetch --tags origin master
+                 (list
+                  (car (cons "/guix" "https://git.savannah.gnu.org/git/guix.git"))
+                  (car (cons "/nonguix" "https://gitlab.com/nonguix/nonguix"))
+                  )
+                 (list
+                  (car (cons "/elpa-mirror.d12frosted" "https://github.com/d12frosted/elpa-mirror"))
+                  "/copy-sexp"
+                  "/dotfiles"
+                  "/guix-packages"
+                  "/jump-last"
+                  "/kill-buffers"
+                  "/notes"
+                  (car (cons "/guile" "https://git.savannah.gnu.org/git/guix.git"))
+                  )))
+   ))
+
+;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+;; ln -s ~/dev/dotfiles/.lein
+(define (obtain-and-setup dest-dir repo)
+  "TODO See https://gitlab.com/guile-git/guile-git.git
+Guile bindings to libgit2, to manipulate repositories of the Git."
+  (let* [(dest-dir-repo (str home dest-dir repo))]
+    (unless (access? dest-dir-repo F_OK)
+      (let* [(repo-url (if (url? repo)
+                           repo
+                           (str gitlab repo)))]
+        (format #t "~a TODO clone ~a to ~a\n" m repo-url dest-dir-repo)
+        #;
+        (begin
+          (gcl "--origin=gitlab" repo-url dest-dir-repo)
+          (exec-system*
+           "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
+           (str github repo)))))))
+
+(define projects-heroku
+  (list
+   (cons "/der" (list
+                 ;; "/pictures"
+                 ;; "/covid-survey"
+                 "/vesmir"
+                 ;; "/tetris"
+                 "/vojto"))))
+
+(define (obtain-and-setup-heroku dest-dir repo)
+  (let* [(dest-dir-repo (str home dest-dir repo))]
+    (unless (access? dest-dir-repo F_OK)
+      (let [(repo-url (if #f ; (url? repo)
+                          repo
+                          (str "https://git.heroku.com/" repo ".git")))]
+        (format #t "~a TODO clone ~a to ~a\n" m repo-url dest-dir-repo)
+        #;
+        (gcl "--origin=vojto" repo-url dest-dir-repo)))))
+
+(define-public (install-all-projects)
+  (map (lambda (project)
+         (let ((dest-dir (car project)))
+           (map (partial obtain-and-setup dest-dir) (cdr project))))
+       projects)
+  (map (lambda (project)
+         (let ((dest-dir (car project)))
+           (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
+       projects-heroku))
+
 ;; (format #t "~a module evaluated\n" m)
