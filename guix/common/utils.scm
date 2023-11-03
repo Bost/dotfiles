@@ -545,4 +545,14 @@ or the CLIENT-CMD if some process ID was found."
                     #:keep-permissions? keep-permissions?
                     ))
 
+(define-public (url? url)
+  "Is URL a valid url?"
+  #f
+  #;
+  (let ((url-regex (rx (and string-start
+                            (or "http" "https" "ftp") "://"
+                            (one-or-more (not (any " ")))
+                            string-end))))
+    (regexp-match url-regex url)))
+
 ;; (format #t "[utils] module evaluated\n")
