@@ -5,11 +5,12 @@
   #:export (main ls))
 
 #|
-
 #!/usr/bin/env -S guile \\
--L ./ -e (ls) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ ls) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/ls.scm /home/bost/.lein
 |#
 
 (define* (ls #:rest args)

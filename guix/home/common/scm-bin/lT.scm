@@ -7,8 +7,11 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (lT) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ lT) -s
 !#
+
+cd $dotf
+./guix/home/common/scm-bin/lT.scm /home/bost/
 
 |#
 

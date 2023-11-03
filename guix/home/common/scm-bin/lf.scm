@@ -8,8 +8,11 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (lf) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ lf) -s
 !#
+
+cd $dotf
+./guix/home/common/scm-bin/lf.scm .envrc
 
 |#
 
