@@ -236,11 +236,6 @@ guix home --allow-downgrades --cores=24 \
          ;; When 'setlocale: LC_ALL: cannot change locale'
          ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
 
-         ;; TODO move CORONA_ENV_TYPE and REPL_USER to .envrc
-         ;; see also $dec/corona_cases/.env and $dec/corona_cases/.heroku-local.env
-         ("CORONA_ENV_TYPE" . "devel")
-         ("REPL_USER" . ,user)
-
          ;; needed by `help`; e.g. `help expand`
          ("BROWSER" . "firefox")
 
