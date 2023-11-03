@@ -20,6 +20,7 @@
             ))
 
 (define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
 
 ;; ;; See https://10years.guix.gnu.org/static/slides/05-wilson.org
 ;; (define (home-xsettingsd-files-service config)
@@ -188,9 +189,5 @@
   (simple-service
    'home-dir-cfg-srvc home-files-service-type home-dir-cfg-srvc-files))
 (testsymb 'home-dir-cfg-srvc)
-;; (format #t "~a (defined? 'home-dir-cfg-srvc:) ~a\n" m (defined? 'home-dir-cfg-srvc))
 
-(define (repl)
-  (use-modules (srvc home-dir-cfg))
-  (load (string-append (getenv "dotf") "/guix/home/srvc/home-dir-cfg.scm"))
-  )
+;; (format #t "~a module evaluated\n" m)
