@@ -154,6 +154,7 @@
                ".spguimacs"
                ".envrc"
                ".env-secrets.gpg"
+               ".emacs-profiles.el"
                )))
     
     ;; (lambda (p) (format #t "############## 1.\n") p)
