@@ -143,17 +143,19 @@
                           #;,(format #f "file://~a/dev/guix-packages" home))))))
     ;; (lambda (p) (format #t "############## 2.\n") p)
     (partial append
-             (remove
-              unspecified-or-empty-or-false?
+             ((comp
+               (partial remove unspecified-or-empty-or-false?)
+               (partial map (partial local-dotfile "/")))
               (list
-               (local-dotfile "/" ".gnupg/gpg.conf")
-               (local-dotfile "/" ".guile") ;; used by `guix repl'
-               (local-dotfile "/" ".gitconfig")
-               (local-dotfile "/" ".spacemacs")
-               (local-dotfile "/" ".spguimacs")
-               (local-dotfile "/" ".envrc")
-               (local-dotfile "/" ".env-secrets.gpg")
+               ".gnupg/gpg.conf"
+               ".guile" ;; used by `guix repl'
+               ".gitconfig"
+               ".spacemacs"
+               ".spguimacs"
+               ".envrc"
+               ".env-secrets.gpg"
                )))
+    
     ;; (lambda (p) (format #t "############## 1.\n") p)
     (partial append
 ;;; This can't be used:
@@ -168,11 +170,12 @@
 ;;; 2. Can't store the ".emacs.d.spacemacs/private" w/o the README.md files and restore
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
-             (list
-              ;; (user-dotf-to-dir ".tmux")
-              (user-dotf-to-dir ".config/tmux")
-              (user-dotf-to-dir ".config/sway")
-              (user-dotf-to-dir "bin")))
+             (map user-dotf-to-dir
+                  (list
+                   ;; ".tmux"
+                   ".config/tmux"
+                   ".config/sway"
+                   "bin")))
     ;; (lambda (p) (format #t "############## 0.\n") p)
     )
    ;; empty list
