@@ -21,7 +21,26 @@
 ;; > #t
 "
   (apply exec-system*
-         "exa" "-abghHliS" "--color=always" "--time-style=full-iso"
+         "exa"
+          (str
+            "-abghHliS"
+            ;; "a" ;; this second 'a' also displays '..':
+;;; $ exa -aabghHliS --color=always --time-style=full-iso /home/bost/.lein
+;;; inode Permissions Links  Size Blocks User Group Date Modified                       Name
+;;; 11844576 lrwxrwxrwx      1    29      0 bost users 2022-04-11 13:26:27.833652179 +0200 . -> /home/bost/dev/dotfiles/.lein
+;;; 28578649 drwxr-xr-x     18     -      - bost users 2023-11-03 01:28:21.806608724 +0100 ..
+;;; 28603148 .rw-r--r--      1 1.7Ki      8 bost users 2023-10-02 11:23:42.290304922 +0200 profiles.clj
+
+            ;; "d" ;; this displays the arrow -> '..' for the links, ...
+;;; $ exa -daabghHliS --color=always --time-style=full-iso /home/bost/.lein
+;;; inode Permissions Links Size Blocks User Group Date Modified                       Name
+;;; 11844576 lrwxrwxrwx      1   29      0 bost users 2022-04-11 13:26:27.833652179 +0200 /home/bost/.lein -> /home/bost/dev/dotfiles/.lein
+;;; ... however it doesn't list the content of directories:
+;;; $ exa -daabghHliS --color=always --time-style=full-iso /home/bost
+;;; inode Permissions Links Size Blocks User Group Date Modified                       Name
+;;; 11796482 drwx------    115    -      - bost users 2023-11-03 19:51:27.577156745 +0100 /home/bost
+            )
+         "--color=always" "--time-style=full-iso"
          #|
          "exa" "-abghHliS" "--color=always"
          ;; exa has no support for '+%d-%m-%Y %H:%M:%S' time formatters
