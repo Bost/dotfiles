@@ -256,6 +256,7 @@ This function should only modify configuration layer settings."
            ;; (setq helm-display-buffer-default-height nil) ;; (Default nil)
            ;; (setq helm-default-display-buffer-functions '(display-buffer-in-side-window))
 
+           ;; Max column width of buffer names before truncate. (Default 20)
            helm-buffer-max-length nil
 
            ;; Truncate lines in ‘helm-buffers-list’ when non-nil. (Default t)
