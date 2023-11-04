@@ -143,9 +143,11 @@
         ]
     ((comp
       (partial append (list
+                       bste:emacs-evil-anzu
                        bste:emacs-popwin))
       (partial map (comp list specification->package+output))
       (partial remove (partial string= "emacs-popwin"))
+      (partial remove (partial string= "emacs-evil-anzu"))
       )
      (s+ G
          (s- (sx (s+ N O)
