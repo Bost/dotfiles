@@ -148,6 +148,12 @@
                (partial remove unspecified-or-empty-or-false?)
                (partial map (partial local-dotfile "/")))
               (list
+               #|
+;;; TODO make sure that .gnupg and its content have the right ownership and permissions:
+chown -R $(whoami) ~/.gnupg
+find ~/.gnupg -type f -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 600 for files
+find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directories
+               |#
                ".gnupg/gpg.conf"
                ".guile" ;; used by `guix repl'
                ".gitconfig"
