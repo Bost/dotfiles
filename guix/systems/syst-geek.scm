@@ -95,11 +95,10 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
     (packages
      (append
       (map specification->package
-           (append
-            packages-to-install
-            (list
-             "brightnessctl" #| backlight and LED brightness control |#
-             )))
+           (list
+            "brightnessctl" #| backlight and LED brightness control |#
+            ))
+      packages-to-install
       %base-packages))
 
 ;;; Below is the list of system services. To search for available services, run
