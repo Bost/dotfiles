@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# TODO the sequence should be: 'configure channels' && guix pull && gxhre ...
+
 set -x  # Print commands and their arguments as they are executed.
 guix pull "$@"
 { retval="$?"; set +x; } 2>/dev/null
