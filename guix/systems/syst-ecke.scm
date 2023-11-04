@@ -6,8 +6,8 @@
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
-  #:use-module (nongnu packages linux)
-  #:use-module (nongnu system linux-initrd)
+  ;; #:use-module (nongnu packages linux)
+  ;; #:use-module (nongnu system linux-initrd)
   #:export (
             syst-config
             ))
@@ -50,9 +50,9 @@
 
 (define syst-config
   (operating-system
-    (kernel linux)
-    (initrd microcode-initrd)
-    (firmware (list linux-firmware))
+    ;; (kernel linux)
+    ;; (initrd microcode-initrd)
+    ;; (firmware (list linux-firmware))
     (locale "en_US.utf8")
     (timezone "Europe/Berlin")
     (keyboard-layout ; keyboard-layout for the console
