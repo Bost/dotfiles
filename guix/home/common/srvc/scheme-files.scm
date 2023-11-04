@@ -241,7 +241,9 @@ Example:
                   #:scheme-file-name "bat")
     (service-file #:program-name "f"   #:desc "find-alternative")
     (service-file #:program-name "gcl" #:desc "git-clone")
+    ;; TODO DRY gre.scm & grev.scm, gps.scm & gspf.scm
     (service-file #:program-name "gre" #:desc "git-remote")
+    (service-file #:program-name "grev" #:desc "git-remote--verbose")
     (service-file #:program-name "gfe" #:desc "git-fetch")
     (service-file #:program-name "gco" #:desc "git-checkout")
     (service-file #:program-name "gcod"#:desc "git-checkout-prev-branch")
