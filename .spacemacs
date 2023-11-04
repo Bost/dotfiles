@@ -25,8 +25,8 @@
 ;; not be defined
 (setq dev  (or (getenv "dev") "~/dev"))
 (setq dotf (or (getenv "dotf") "~/dev/dotfiles"))
-(setq sp-dir ".emacs.d.spacemacs")
-(setq sp-home-dir (concat "~/" sp-dir))
+(setq sp-dir "spacemacs")
+(setq sp-home-dir (concat "~/.emacs.d.distros/" sp-dir))
 (setq hostname (system-name))
 
 (defun dotspacemacs/layers ()
