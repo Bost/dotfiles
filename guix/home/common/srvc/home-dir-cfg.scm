@@ -163,7 +163,7 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
                ".env-secrets.gpg"
                ".emacs-profiles.el"
                )))
-    
+
     ;; (lambda (p) (format #t "############## 1.\n") p)
     (partial append
 ;;; This can't be used:

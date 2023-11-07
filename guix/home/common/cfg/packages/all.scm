@@ -7,7 +7,7 @@
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
-  ;; provides: specification->package 
+  ;; provides: specification->package
   #:use-module (gnu packages)
   #:use-module (guix packages)
   #:use-module (guix channels)
@@ -121,7 +121,7 @@
    emacs-mu4e-alert
    emacs-helm-mu
    ))
-(testsymb-trace 'email-in-emacs-packages)
+(testsymb 'email-in-emacs-packages)
 
 (define (packages-from-additional-channels)
   "Packages from additional channels?
@@ -145,14 +145,14 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    guix package --load-path=$dev/games --install=factorio$experimentalVersion
    |#
    ))
-(testsymb-trace 'packages-from-additional-channels)
+(testsymb 'packages-from-additional-channels)
 
 (define (kde-dependent-packages)
   "KDE dependencies are slow to compile"
   (list
    konsole
    krusader))
-(testsymb-trace 'kde-dependent-packages)
+(testsymb 'kde-dependent-packages)
 
 (define (large-packages-ecke)
   "Large packages, slow to build, graft, download, etc."
@@ -175,7 +175,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; complete TeX Live distribution
    texlive                 ; may take too long to graft
    ))
-(testsymb-trace 'large-packages-ecke)
+(testsymb 'large-packages-ecke)
 
 (define (large-packages-edge-ecke)
   "Large packages, slow to build, graft, download, etc."
@@ -203,7 +203,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Provides OpenJDK built with the IcedTea build harness
    ;; icedtea ; ~240MiB
    ))
-(testsymb-trace 'large-packages-edge-ecke)
+(testsymb 'large-packages-edge-ecke)
 
 (define (basic-packages)
   (list
@@ -257,7 +257,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    vim
    zip
    ))
-(testsymb-trace 'basic-packages)
+(testsymb 'basic-packages)
 
 (define (agda-devel-packages)
   (list
@@ -266,7 +266,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; agda-ial ;; broken build
    ;; cedille ;; depends on agda-ial
    idris))
-(testsymb-trace 'agda-devel-packages)
+(testsymb 'agda-devel-packages)
 
 (define (fennel-devel-packages)
   "Fennel: Lua + Lisp. For e.g. Factorio modding."
@@ -278,7 +278,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Automatic formatting of Fennel code
    ;; fnlfmt ; doesn't compile
    ))
-(testsymb-trace 'fennel-devel-packages)
+(testsymb 'fennel-devel-packages)
 
 (define (chez-scheme-devel-packages)
   "See https://github.com/mnieper/scheme-macros"
@@ -289,7 +289,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    "emacs-geiser-chez"
    ;; Portable hygienic pattern matcher for Scheme
    "chez-matchable"))
-(testsymb-trace 'chez-scheme-devel-packages)
+(testsymb 'chez-scheme-devel-packages)
 
 (define (elixir-devel-packages)
   "Elixir is dynamic, functional language. It leverages the Erlang VM"
@@ -300,7 +300,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    emacs-eval-in-repl-iex  ;; is needed
    tree-sitter-elixir
    ))
-(testsymb-trace 'elixir-devel-packages)
+(testsymb 'elixir-devel-packages)
 
 (define (video-packages)
   (list
@@ -408,7 +408,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; QML based X11 and Wayland display manager
    ;; "sddm"
    ))
-(testsymb-trace 'video-packages)
+(testsymb 'video-packages)
 
 (define (rest-packages)
   (list
@@ -588,7 +588,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; gimagereader                ;; Qt front-end to tesseract-ocr
 
    ))
-(testsymb-trace 'rest-packages)
+(testsymb 'rest-packages)
 
 (define (other-gui-packages)
   (list
@@ -643,7 +643,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    neovim
    ))
-(testsymb-trace 'other-gui-packages)
+(testsymb 'other-gui-packages)
 
 (define (xorg-packages)
   (list
@@ -669,7 +669,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Manipulate X selection, i.e. the clipboard from the command line.
    xsel
    ))
-(testsymb-trace 'xorg-packages)
+(testsymb 'xorg-packages)
 
 (define (xfce-packages)
   (list
@@ -685,7 +685,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; xfce4-volumed-pulse ;;  XFCE volume keys daemon
    xfce4-pulseaudio-plugin
    ))
-(testsymb-trace 'xfce-packages)
+(testsymb 'xfce-packages)
 
 (define (inferior-package-in-guix-channel package commit)
   "Returns an inferior representing the `commit' (predecessor-sha1) revision."
@@ -697,7 +697,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (url "https://git.savannah.gnu.org/git/guix.git")
             (commit commit))))
     package)))
-(testsymb-trace 'inferior-package-in-guix-channel)
+(testsymb 'inferior-package-in-guix-channel)
 
 (define (inferior-pkgs pkgs)
   ((comp
@@ -718,7 +718,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; emacs 28.2
     ;; (list "emacs"             "772eaa69f31457aa19ca4dc4ce755c791d722054")
     )))
-(testsymb-trace 'inferior-pkgs)
+(testsymb 'inferior-pkgs)
 
 (define (devel-packages)
   (append
@@ -749,7 +749,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     pinentry ;; needed to sign commits
     pwclient ;; CLI client for Patchwork patch tracking tool (*.patch files)
     )))
-(testsymb-trace 'devel-packages)
+(testsymb 'devel-packages)
 
 (define (packages-to-install)
 ;;; TODO make it support inferior packages
@@ -850,6 +850,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
     )
    (basic-packages)))
-(testsymb-trace 'packages-to-install)
+(testsymb 'packages-to-install)
 
 (format #t "~a module evaluated\n" m)
