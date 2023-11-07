@@ -245,6 +245,7 @@
    'environment-variables-service
    home-environment-variables-service-type
    environment-vars))
+(testsymb 'environment-variables-service)
 
 (define projects
   (list
@@ -283,10 +284,10 @@
                   "/jump-last"
                   "/kill-buffers"
                   "/notes"
-                  ;; guile is too large. Fetch just --dept=100 or something similar
-                  #;(list "/guile" "https://git.savannah.gnu.org/git/guix.git")
+                  (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
                   )))
    ))
+(testsymb 'projects)
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
