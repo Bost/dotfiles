@@ -808,6 +808,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; (lambda (p) (format #t "~a 4.\n~a\n" p) p))
     ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
+      (if (or (is-system-edge))
+          (append
+           ;; (map (comp list specification->package) (video-packages))
+           (list (@(bost packages emacs-xyz) emacs-farmhouse-light-mod-theme))
+           ;; TODO check ‘all-the-icons’ in the  ‘/home/bost/.local/share/fonts/’ and call (all-the-icons-install-fonts) when installing emacs
+           ;; pulls-in ~430 additional packages
+           ;; (spguimacs-packages)
+           pkgs)
+          pkgs))
+    (lambda (pkgs)
       (if (or (is-system-ecke))
           (append
            ;; (map (comp list specification->package) (video-packages))
