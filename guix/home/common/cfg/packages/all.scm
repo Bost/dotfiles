@@ -604,7 +604,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    gsettings-desktop-schemas
    gtk
-   libreoffice
+   ;; libreoffice ;; replaced by inferior version
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
 
@@ -700,11 +700,17 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (testsymb 'inferior-package-in-guix-channel)
 
 (define (inferior-pkgs pkgs)
+  "The original, i.e. non-inferior packages must not be present in the
+home-profile. Comment them out."
   ((comp
     (partial append pkgs)
     ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
     (partial map (partial apply inferior-package-in-guix-channel)))
    (list
+    ;; the e18af936ff85442a841886c9434f862fb595a8b2 leads to failing
+    ;; compilation: No package 'mdds-2.0'
+    (list "libreoffice"           "a4db19d8e07eeb26931edfde0f0e6bca4e0448d3")
+
 ;;; virt-viewer 7.0 works fine
 ;;;    (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
 
