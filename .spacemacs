@@ -886,10 +886,15 @@ It should only modify the values of Spacemacs settings."
               (text-scale-mode-step 1.2)
               (size (cond
                      ((string= hostname "geek") 17)
+                     ((string= hostname "edge")
+                      17
+                      ;; (+ default (* 17 text-scale-mode-step))
+                      )
                      ((string= hostname "ecke")
                       (+ default (* 6 text-scale-mode-step)))
                      (t default))))
-         ;; (message "#### dotspacemacs-default-font :size: %s" size)
+         (message "#### dotspacemacs-default-font hostname: %s; size: %s"
+                  hostname size)
          size)
      :weight normal
      :width normal)
