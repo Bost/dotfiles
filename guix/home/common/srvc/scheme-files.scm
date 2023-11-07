@@ -207,7 +207,7 @@ Example:
                        #:scheme-file-name "emacs-launcher")
          (service-file #:program-name "s" #:desc "spguimacs-launcher"
                        #:scheme-file-name "spguimacs-launcher")))]
-      [(is-system-ecke)
+      [(or (is-system-ecke) (is-system-edge))
        (append
         search-notes-service-files
         (list
