@@ -547,7 +547,8 @@ or the CLIENT-CMD if some process ID was found."
 
 (define-public (url? url)
   "Is URL a valid url?"
-  #f
+  (or (string-prefix? "https://" url)
+      (string-prefix? "http://" url))
   #;
   (let ((url-regex (rx (and string-start
                             (or "http" "https" "ftp") "://"
