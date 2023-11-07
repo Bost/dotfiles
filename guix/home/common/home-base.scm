@@ -258,6 +258,7 @@
                  "/utils"
                  "/zark"
                  ))
+   #;
    (cons "/der" (list
                  "/heroku-buildpack-racket"
                  "/racket-koans"
@@ -271,38 +272,42 @@
 ;;; The repo-url can be obtained from `guix describe --format=channels`
 ;;;   git fetch --tags origin master
                  (list
-                  (car (cons "/guix" "https://git.savannah.gnu.org/git/guix.git"))
-                  (car (cons "/nonguix" "https://gitlab.com/nonguix/nonguix"))
+                  (list "/guix" "https://git.savannah.gnu.org/git/guix.git")
+                  (list "/nonguix" "https://gitlab.com/nonguix/nonguix")
                   )
                  (list
-                  (car (cons "/elpa-mirror.d12frosted" "https://github.com/d12frosted/elpa-mirror"))
+                  (list "/elpa-mirror.d12frosted" "https://github.com/d12frosted/elpa-mirror")
                   "/copy-sexp"
                   "/dotfiles"
                   "/guix-packages"
                   "/jump-last"
                   "/kill-buffers"
                   "/notes"
-                  (car (cons "/guile" "https://git.savannah.gnu.org/git/guix.git"))
+                  ;; guile is too large. Fetch just --dept=100 or something similar
+                  #;(list "/guile" "https://git.savannah.gnu.org/git/guix.git")
                   )))
    ))
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
-(define (obtain-and-setup dest-dir repo)
+(define (obtain-and-setup dest-dir repo-orig)
   "TODO See https://gitlab.com/guile-git/guile-git.git
 Guile bindings to libgit2, to manipulate repositories of the Git."
-  (let* [(dest-dir-repo (str home dest-dir repo))]
+  (let* [(repo (if (list? repo-orig)
+                   (cadr repo-orig)
+                   repo-orig))
+         (dest-dir-repo (if (list? repo-orig)
+                            (str home dest-dir (car repo-orig))
+                            (str home dest-dir repo)))]
     (unless (access? dest-dir-repo F_OK)
       (let* [(repo-url (if (url? repo)
                            repo
                            (str gitlab repo)))]
-        (format #t "~a TODO clone ~a to ~a\n" m repo-url dest-dir-repo)
-        #;
-        (begin
-          (gcl "--origin=gitlab" repo-url dest-dir-repo)
-          (exec-system*
-           "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
-           (str github repo)))))))
+        (map (partial apply exec-system*)
+             (list
+              (list "git" "clone" "--origin=gitlab" repo-url dest-dir-repo)
+              (list "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
+                    (str github repo))))))))
 
 (define projects-heroku
   (list
@@ -328,6 +333,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
          (let ((dest-dir (car project)))
            (map (partial obtain-and-setup dest-dir) (cdr project))))
        projects)
+  #;
   (map (lambda (project)
          (let ((dest-dir (car project)))
            (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
