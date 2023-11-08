@@ -283,6 +283,7 @@
                   "/guix-packages"
                   "/jump-last"
                   "/kill-buffers"
+                  "/tweaks"
                   "/notes"
                   (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
                   )))
