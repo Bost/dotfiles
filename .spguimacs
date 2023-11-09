@@ -1970,7 +1970,8 @@ Some binding snippets / examples:
      ;; C-o; evil-jump-backward
      ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
 
-     ("<print>" . describe-text-properties) ; my=what-face
+     ;; M-x my=what-face; <C-M-print> on edge doesn't work
+     ("<C-print>" . describe-text-properties)
 
      ("s-<return>"   . my=jump-last-edited-place)
      ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
