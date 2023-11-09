@@ -3,9 +3,7 @@
   #:use-module (utils) ;; partial, m
   #:use-module (gnu packages) ;; find-packages-by-name
   #:use-module (guix)         ;; package-name
-  #:export (
-            available-packages
-            ))
+)
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
@@ -1567,5 +1565,6 @@
    guix-package---list-available))
 (testsymb 'found-packages)
 
-(define available-packages (sx guix-package---list-available found-packages))
+(define-public available-packages
+  (sx guix-package---list-available found-packages))
 (testsymb 'available-packages)

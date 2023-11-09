@@ -6,9 +6,7 @@
   #:use-module ((bost packages emacs-xyz) #:prefix bste:)
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
-  #:export (
-            spguimacs-packages
-            ))
+)
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
@@ -124,7 +122,7 @@
 (define E excluded-packages)
 (load "/home/bost/dev/dotfiles/guix/home/cfg/packages/spguimacs/all.scm")
 |#
-(define (spguimacs-packages)
+(define-public (spguimacs-packages)
   (let [
         (G general-packages)
         (N needed-packages)
