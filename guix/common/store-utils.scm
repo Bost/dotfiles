@@ -2,14 +2,12 @@
   #:use-module (utils)
   #:use-module (guix)
   #:use-module (guix store)
-  #:export (
-            package-derivation-output!
-            ))
+)
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
-(define (package-derivation-output! package)
+(define-public (package-derivation-output! package)
   "
 (package-derivation-output gcc-toolchain)
 => \"/gnu/store/fzsz6gk7g5spr7j5jx5zh6rysd5r0n64-gcc-toolchain-11.3.0\"
