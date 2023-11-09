@@ -25,7 +25,6 @@
   ;; ,use (gnu home services utils)
 
   #:export (
-            dirs-service-type
             dirs-configuration
             ))
 
@@ -100,7 +99,7 @@ are no extensions use configuration instead."
   (or (and (not (null? extensions)) (last extensions)) config))
 (testsymb 'last-extension-or-cfg)
 
-(define dirs-service-type
+(define-public dirs-service-type
   (service-type (name 'dirs)
                 (extensions
                  (list

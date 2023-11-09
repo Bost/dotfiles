@@ -8,9 +8,7 @@
   #:use-module (guix)                  ; for package-version
   ;; #:use-module (nongnu packages linux)
   ;; #:use-module (nongnu system linux-initrd)
-  #:export (
-            syst-config
-            ))
+)
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
@@ -48,7 +46,7 @@
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
-(define syst-config
+(define-public syst-config
   (operating-system
     ;; (kernel linux)
     ;; (initrd microcode-initrd)
