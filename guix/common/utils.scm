@@ -28,21 +28,8 @@
   #:use-module (srfi srfi-1)
 
   #:export (
-            analyze-pids-call/cc
-            analyze-pids-flag-variable
-            cmd->string
-            cnt
-            comp
-            compute-cmd
-            dbg
-            dbg-exec
             def*
-            drop-left
-            drop-right
-            ends-with?
             error-command-failed
-            exec
-            exec-background
             exec-system*
             flatten
             has-substring?
@@ -83,12 +70,12 @@
 (define (s- . rest) (apply (partial lset-difference eq-op?) rest))
 (define (sx . rest) (apply (partial lset-intersection eq-op?) rest))
 
-(define cnt length+)
+(define-public cnt length+)
 
 (define (partial fun . args)
   (lambda x (apply fun (append args x))))
 
-(define (comp . fns)
+(define-public (comp . fns)
   "Like `compose'. Can be called with zero arguments. I.e. (thunk? comp) => #t
 Works also for functions returning and accepting multiple values."
   (lambda args
@@ -183,12 +170,12 @@ Works also for functions returning and accepting multiple values."
 (define (has-substring? str subs)
   (not (not (string-match subs str))))
 
-(define (drop-right xs n)
+(define-public (drop-right xs n)
   "(drop-right (list 1 2 3 4 5) 2) ;; => (1 2 3)
 TODO what's the clojure variant?"
   (reverse (list-tail (reverse xs) n)))
 
-(define (drop-left xs n)
+(define-public (drop-left xs n)
   "(drop-left (list 1 2 3 4 5) 2) ;; => (4 5)
 TODO what's the clojure variant?"
   (reverse (list-head (reverse xs) n)))
@@ -204,7 +191,7 @@ TODO what's the clojure variant?"
         ((pair? x) (append (flatten (car x)) (flatten (cdr x))))
         (else (list x))))
 
-(define (dbg prm)
+(define-public (dbg prm)
   "`pk', i.e. `peek' can be used instead of this function"
   ;; TODO implement pretty-print for bash commands
   ;; ~a - outputs an argument like display
@@ -213,7 +200,7 @@ TODO what's the clojure variant?"
   (format #t "\n~a\n" prm)
   prm)
 
-(define (dbg-exec prm)
+(define-public (dbg-exec prm)
   "`pk', i.e. `peek' can be used instead of this function"
   ;; TODO implement pretty-print for bash commands
   ;; ~a - outputs an argument like display
@@ -298,7 +285,7 @@ Returns a list of strings"
               (read-line port))
         res)))
 
-(define (cmd->string cmd)
+(define-public (cmd->string cmd)
   (if (list? cmd)
       (string-join cmd) ;; join with ' ' by default
       cmd))
@@ -309,7 +296,7 @@ Returns a list of strings"
 ;; resulting in clean, easy to read non-blocking code.
 #;(import (language wisp spec)) ;; whitespace lisp
 
-(define (exec-background command)
+(define-public (exec-background command)
   "Execute the COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings."
   ((compose
@@ -342,7 +329,7 @@ COMMAND can be a string or a list of strings."
         ;; case we want to wait for it at some point in the future.
         child-pid)))
 
-(define (exec command)
+(define-public (exec command)
   "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
 from the subprocess. Wait for the command to terminate and return a string
 containing its output.
@@ -378,7 +365,7 @@ Usage:
     cmd->string)
    command))
 
-(define (analyze-pids-flag-variable init-cmd client-cmd pids)
+(define-public (analyze-pids-flag-variable init-cmd client-cmd pids)
   "Breakout implementation using a flag variable"
   (let [(ret-cmd init-cmd)]
     ((compose
@@ -406,7 +393,7 @@ Usage:
          ret-cmd)))
      pids)))
 
-(define (analyze-pids-call/cc init-cmd client-cmd pids)
+(define-public (analyze-pids-call/cc init-cmd client-cmd pids)
   "For a process ID from the list of PIDS, return the INIT-CMD if no process ID was
 found or the CLIENT-CMD if some process ID was found."
   (call/cc
@@ -430,7 +417,7 @@ found or the CLIENT-CMD if some process ID was found."
      ;; The pids-list is empty. No such binary has been started yet.
      init-cmd)))
 
-(define (compute-cmd init-cmd client-cmd pattern)
+(define-public (compute-cmd init-cmd client-cmd pattern)
   "pgrep for a user and PATTERN and return the INIT-CMD if no process ID was found
 or the CLIENT-CMD if some process ID was found."
   ((compose
@@ -517,7 +504,7 @@ or the CLIENT-CMD if some process ID was found."
           #| process output |#)
         (error-command-failed))))
 
-(define (ends-with? s postfix)
+(define-public (ends-with? s postfix)
   "(ends-with? \"/aaa/bbb/ccc/\" \"/\")
  => #t"
   (string-suffix? postfix s))

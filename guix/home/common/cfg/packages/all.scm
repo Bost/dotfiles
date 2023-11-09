@@ -14,7 +14,6 @@
   #:use-module (guix inferior)
   ;; provides: first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  #:export (packages-to-install)
   )
 
 (define m (module-name-for-logging))
@@ -757,7 +756,7 @@ home-profile. Comment them out."
     )))
 (testsymb 'devel-packages)
 
-(define (packages-to-install)
+(define-public (packages-to-install)
 ;;; TODO make it support inferior packages
 ;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
 ;;; TODO packages should accept expressions like the -e, e.g.
