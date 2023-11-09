@@ -29,12 +29,7 @@
   ;; #:use-module (gnu home services version-control)
 
   #:use-module (gnu packages commencement)
-
-  #:export (
-            services
-            environment-vars
-            environment-variables-service
-            ))
+)
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
@@ -48,7 +43,7 @@
                "\n"
                "\n" "#### home-bash-configuration -> " name ": end")))
 
-(define services
+(define-public services
   ((compose
     ;; (lambda (v) (format #t "~a 7\n" m) v)
     (partial
@@ -188,7 +183,7 @@
                            (@(gnu packages commencement) gcc-toolchain))))
 
 ;; See also $dotf/.bashrc.martin
-(define (environment-vars list-separator)
+(define-public (environment-vars list-separator)
   ((compose
     (lambda (v)
       ;; (format #t "~a 0\n" m)
@@ -240,7 +235,7 @@
                   (partial map user-home))
                  (list scm-bin-dirpath bin-dirpath))))))
 
-(define (environment-variables-service environment-vars)
+(define-public (environment-variables-service environment-vars)
   (simple-service
    'environment-variables-service
    home-environment-variables-service-type
