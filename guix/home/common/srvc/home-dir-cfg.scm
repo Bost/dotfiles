@@ -184,6 +184,7 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
                    ;; ".tmux"
                    ".config/tmux"
                    ".config/sway"
+                   ".config/xfce4/xfconf/xfce-perchannel-xml"
                    "bin")))
     ;; (lambda (p) (format #t "############## 0.\n") p)
     )
