@@ -13,9 +13,7 @@
   #:use-module (gnu services configuration)
   #:use-module (guix packages)
   #:use-module (ice-9 match)
-  #:export (
-            fish-service
-            ))
+)
 
 ;;; `guix home reconfigure` keeps on adding fish-shell abbreviations instead of
 ;;; recreating them. Consequently the `guix home roll-back` and `guix home
@@ -305,7 +303,7 @@ the composition of the extensions"
                   ))
                 (description "home-fish-service-type2 with completions.")))
 
-(define fish-service
+(define-public fish-service
   (service
    home-fish-service-type
    #;home-fish-service-type

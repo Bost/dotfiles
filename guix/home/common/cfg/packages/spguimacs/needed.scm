@@ -1,16 +1,14 @@
 (define-module (cfg packages spguimacs needed)
   #:use-module (srfi srfi-1)
   #:use-module (utils) ;; partial, m
-  #:export (
-            needed-packages
-            ))
+)
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
 ;; doesn't work
-(define needed-packages
+(define-public needed-packages
   (list
    ;; :beg: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
    ;; "emacs-flycheck-joker"

@@ -12,7 +12,7 @@ guix shell --development guix help2man git strace --pure
   #:use-module (gnu home services mcron) #| home-mcron-service-type |#
   #:use-module (gnu services)            #| service                 |#
   #:use-module (guix gexp)               #| #~ #$ etc. |#
-  #:export (mcron-service))
+)
 
 ;; https://github.com/clojure-quant/infra-guix/blob/main/home/config-nuc.scm
 
@@ -60,7 +60,7 @@ guix shell --development guix help2man git strace --pure
      (kill (getppid) SIGINT)))
 
 ;; See also https://github.com/leahneukirchen/snooze
-(define mcron-service
+(define-public mcron-service
   ;; TODO test if the command-string can be created by string-append
   (service
    home-mcron-service-type
