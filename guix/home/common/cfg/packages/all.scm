@@ -817,7 +817,10 @@ home-profile. Comment them out."
       (if (or (is-system-edge))
           (append
            ;; (map (comp list specification->package) (video-packages))
-           (list (@(bost packages emacs-xyz) emacs-farmhouse-light-mod-theme))
+           (list
+            (@(bost packages emacs-xyz) emacs-farmhouse-light-mod-theme)
+            (@(bost packages emacs-xyz) emacs-tweaks)
+            )
            ;; TODO check ‘all-the-icons’ in the  ‘/home/bost/.local/share/fonts/’ and call (all-the-icons-install-fonts) when installing emacs
            ;; pulls-in ~430 additional packages
            ;; (spguimacs-packages)

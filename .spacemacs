@@ -22,9 +22,22 @@
   )
 
 ;; When running from bash on a non-Guix system, some environment variables may
-;; not be defined
-(setq dev  (or (getenv "dev") "~/dev"))
-(setq dotf (or (getenv "dotf") "~/dev/dotfiles"))
+;; not be defined.
+
+;; It seems that this macro cannot be added to emacs-tweaks, as it only gets
+;; loaded during a later stage of Spacemacs initialization.
+(defmacro my=def-evar (elisp-var def-val evar-name)
+  "Define an Emacs variable from environment with defaults. Warn if
+differences were encountered."
+  `(let* ((evar-val (or (getenv ,evar-name) ,def-val)))
+     (setq ,elisp-var (or (getenv ,evar-name) ,def-val))
+     (unless (string= ,elisp-var ,def-val)
+       (message "WARN def-val %s and evar %s=%s differ"
+                ,def-val ,evar-name evar-val))))
+
+(my=def-evar dev  "~/dev"          "dev")
+(my=def-evar dotf "~/dev/dotfiles" "dotf")
+
 (setq sp-dir "spacemacs")
 (setq sp-home-dir (concat "~/.emacs.d.distros/" sp-dir))
 (setq hostname (system-name))
