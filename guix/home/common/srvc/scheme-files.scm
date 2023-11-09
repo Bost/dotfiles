@@ -21,9 +21,7 @@
   #:use-module (ice-9 ftw)
  ;; string-match
   #:use-module (ice-9 regex)
-  #:export (
-            scheme-files-service
-            ))
+)
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
@@ -193,7 +191,7 @@ Example:
                  #:files (list "utf8")
                  #:scheme-file-name "search-notes")))
 
-(define scheme-files-service
+(define-public scheme-files-service
   ((compose
     (partial simple-service 'scheme-files-service home-files-service-type)
     (partial

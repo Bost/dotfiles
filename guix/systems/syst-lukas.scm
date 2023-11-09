@@ -7,9 +7,7 @@
   #:use-module (gnu)
   ;; #:use-module (gnu system shadow)  ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
-  #:export (
-            syst-config
-            ))
+)
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules desktop networking ssh
@@ -36,7 +34,7 @@
                        "sleep-inactive-ac-timeout=0"
                        "sleep-inactive-battery-timeout=0"))))))))
 
-(define syst-config
+(define-public syst-config
   (operating-system
     (locale "en_US.utf8")
     (timezone "Europe/Berlin")

@@ -30,9 +30,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (guix)                  ; for package-version
-  #:export (
-            syst-config
-            ))
+)
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
@@ -52,7 +50,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
-(define syst-config
+(define-public syst-config
   (operating-system
     (kernel linux)
     (initrd microcode-initrd)
