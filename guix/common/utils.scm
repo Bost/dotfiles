@@ -31,25 +31,8 @@
             def*
             error-command-failed
             exec-system*
-            juxt
-            last
-            mktmpfile
-            module-name-for-logging
-            partial
-            path
-            pretty-print->string
-            read-all
-            read-all-sexprs
-            read-all-syntax
-            s+
-            s-
-            str
-            string-split-whitespace
-            sx
             testsymb
             testsymb-trace
-            unspecified-or-empty-or-false?
-            which
             ))
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
@@ -63,13 +46,13 @@
 
 ;; neither `=' nor `eqv?' work
 (define eq-op? string-ci=?)
-(define (s+ . rest) (apply (partial lset-union eq-op?) rest))
-(define (s- . rest) (apply (partial lset-difference eq-op?) rest))
-(define (sx . rest) (apply (partial lset-intersection eq-op?) rest))
+(define-public (s+ . rest) (apply (partial lset-union eq-op?) rest))
+(define-public (s- . rest) (apply (partial lset-difference eq-op?) rest))
+(define-public (sx . rest) (apply (partial lset-intersection eq-op?) rest))
 
 (define-public cnt length+)
 
-(define (partial fun . args)
+(define-public (partial fun . args)
   (lambda x (apply fun (append args x))))
 
 (define-public (comp . fns)
@@ -84,7 +67,7 @@ Works also for functions returning and accepting multiple values."
               (let ((g (apply comp rest)))
                 (call-with-values (lambda () (apply g args)) proc)))))))
 
-(define (juxt . fns)
+(define-public (juxt . fns)
   "Naive implementation. Inspired by Clojure's juxt.
 ((juxt a b c) x) => (list (a x) (b x) (c x))"
   (lambda args
@@ -95,7 +78,7 @@ Works also for functions returning and accepting multiple values."
   ;; (error s)
   (format #t "WARN ~a\n" s))
 
-(define (module-name-for-logging)
+(define-public (module-name-for-logging)
   ((compose
     (partial format #f "[~a]")
     (partial string-join)
@@ -131,16 +114,16 @@ Works also for functions returning and accepting multiple values."
 ;;; testsymb doesn't work in the let-syntax
 ;; (let [(ff 42)] (testsymb 'ff))
 
-(define (last lst) (car (reverse lst)))
+(define-public (last lst) (car (reverse lst)))
 
-(define (pretty-print->string sexp)
+(define-public (pretty-print->string sexp)
   (let [(port (open-output-string))]
     (pretty-print sexp port)
     (let* [(ret (get-output-string port))]
       (close-output-port port)
       ret)))
 
-(define (unspecified-or-empty-or-false? obj)
+(define-public (unspecified-or-empty-or-false? obj)
   (or (unspecified? obj)
       (null? obj)
       (and (string? obj) (string-null? obj))
@@ -148,10 +131,10 @@ Works also for functions returning and accepting multiple values."
 
 ;; Turn the colon-separated PATH-string, into a list and
 ;; return the resulting list with tail appended
-(define path (delete-duplicates
-              (parse-path (getenv "PATH"))))
+(define-public path
+  (delete-duplicates (parse-path (getenv "PATH"))))
 
-(define str string-append)
+(define-public str string-append)
 
 ;; TODO see
 ;; (define s (string-match "[0-9][0-9][0-9][0-9]" "blah2002foo"))
@@ -218,7 +201,7 @@ TODO what's the clojure variant?"
     (partial map (lambda (s) (string-split s ch))))
    s-list))
 
-(define (string-split-whitespace arg)
+(define-public (string-split-whitespace arg)
   ((compose
     (partial string-sff #\space)
     (partial string-sff #\newline)
@@ -246,7 +229,7 @@ $9 = 0 ;; return code"
     string-split-whitespace)
    args))
 
-(define (read-all reader-function)
+(define-public (read-all reader-function)
   "Returns a function which reads all lines of text from the PORT and applies
 READER-FUNCTION on them. "
   (lambda (port)
@@ -257,13 +240,13 @@ READER-FUNCTION on them. "
                 (reader-function port))
           res))))
 
-(define (read-all-sexprs p)
+(define-public (read-all-sexprs p)
   (let f ((x (read p)))
     (if (eof-object? x)
         '()
         (cons x (f (read p))))))
 
-(define (read-all-syntax port)
+(define-public (read-all-syntax port)
   "Return a list of all lines from the PORT."
   (let loop ((res '())
              (str (read-syntax port))) ; from (ice-9 popen)
@@ -482,7 +465,7 @@ or the CLIENT-CMD if some process ID was found."
 ;;        (define name val)
 ;;        (export name)))))
 
-(define (mktmpfile)
+(define-public (mktmpfile)
   ;; (tmpnam) could be used instead of all of this, however I get deprecation
   ;; warning sometimes
   ((compose
@@ -492,7 +475,7 @@ or the CLIENT-CMD if some process ID was found."
     string-copy)
    "/tmp/myfile-XXXXXX"))
 
-(define (which binary)
+(define-public (which binary)
   "(which \"emacs\") => \"/home/bost/.guix-home/profile/bin/emacs\""
   (let* ((ret (exec (string-join (list "which" binary)))))
     (if (= 0 (car ret))
