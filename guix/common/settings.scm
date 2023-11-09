@@ -5,37 +5,21 @@
 (define-module (settings)
   ;; #:use-module (ice-9 r5rs)
   ;; #:use-module (srfi srfi-1)    #| delete-duplicates |#
-  #:export (
-            gitlab
-            github
-            user-full-name
-            user-mail-address
-            host-lukas
-            host-ecke
-            host-geek
-            host-edge
-            hostnames
-            user
-            home
-            spacemacs-dir
-            ))
+)
 
 ;; (format #t "[settings] evaluating module ...\n")
 
-(define gitlab "git@gitlab.com:rostislav.svoboda")
-(define github "git@github.com:Bost")
-(define user-full-name "Rostislav Svoboda")
-(define user-mail-address "Rostislav.Svoboda@gmail.com")
-(define user "bost")
-(define home (string-append "/home/" user))
-
-(define spacemacs-dir ".emacs.d.spacemacs")
-
-(define host-lukas "lukas")
-(define host-ecke "ecke")
-(define host-geek "geek")
-(define host-edge "edge")
-
-(define hostnames (list host-lukas host-ecke host-geek host-edge))
+(define-public gitlab "git@gitlab.com:rostislav.svoboda")
+(define-public github "git@github.com:Bost")
+(define-public user-full-name "Rostislav Svoboda")
+(define-public user-mail-address "Rostislav.Svoboda@gmail.com")
+(define-public user "bost")
+(define-public home (string-append "/home/" user))
+(define-public spacemacs-dir ".emacs.d.spacemacs")
+(define-public host-lukas "lukas")
+(define-public host-ecke "ecke")
+(define-public host-geek "geek")
+(define-public host-edge "edge")
+(define-public hostnames (list host-lukas host-ecke host-geek host-edge))
 
 ;; (format #t "[settings] module evaluated\n")
