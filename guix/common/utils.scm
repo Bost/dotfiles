@@ -141,11 +141,7 @@ Works also for functions returning and accepting multiple values."
 ;; (match:end s) ⇒ 8
 (define-public (has-suffix? str suf)
   "Returns #t if the given string ends with the given suffix, otherwise or #f."
-  (define len-str (string-length str))
-  (define len-suf (string-length suf))
-  (if (>= len-str len-suf)
-      (string=? (substring str (- len-str len-suf) len-str) suf)
-      #f))
+  (string-suffix? suf str))
 
 (define-public (has-substring? str subs)
   (not (not (string-match subs str))))
