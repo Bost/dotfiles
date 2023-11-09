@@ -31,9 +31,6 @@
             def*
             error-command-failed
             exec-system*
-            flatten
-            has-substring?
-            has-suffix?
             juxt
             last
             mktmpfile
@@ -159,7 +156,7 @@ Works also for functions returning and accepting multiple values."
 ;; TODO see
 ;; (define s (string-match "[0-9][0-9][0-9][0-9]" "blah2002foo"))
 ;; (match:end s) ⇒ 8
-(define (has-suffix? str suf)
+(define-public (has-suffix? str suf)
   "Returns #t if the given string ends with the given suffix, otherwise or #f."
   (define len-str (string-length str))
   (define len-suf (string-length suf))
@@ -167,7 +164,7 @@ Works also for functions returning and accepting multiple values."
       (string=? (substring str (- len-str len-suf) len-str) suf)
       #f))
 
-(define (has-substring? str subs)
+(define-public (has-substring? str subs)
   (not (not (string-match subs str))))
 
 (define-public (drop-right xs n)
@@ -180,7 +177,7 @@ TODO what's the clojure variant?"
 TODO what's the clojure variant?"
   (reverse (list-head (reverse xs) n)))
 
-(define (flatten x)
+(define-public (flatten x)
   "(flatten (list (cons 1 (cons 2 3))))
    ;; => (1 2 3)
    (equal? (list 1 2 3)
