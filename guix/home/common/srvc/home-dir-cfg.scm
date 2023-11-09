@@ -15,9 +15,7 @@
   ;; #:use-module (gnu packages shells)
   ;; pretty-print
   #:use-module (ice-9 pretty-print)
-  #:export (
-            home-dir-cfg-srvc
-            ))
+)
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
@@ -192,7 +190,7 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
    (list)))
 (testsymb 'home-dir-cfg-srvc-files)
 
-(define home-dir-cfg-srvc
+(define-public home-dir-cfg-srvc
   ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d.spacemacs directory
   (simple-service
    'home-dir-cfg-srvc home-files-service-type home-dir-cfg-srvc-files))
