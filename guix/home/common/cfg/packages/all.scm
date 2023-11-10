@@ -748,6 +748,10 @@ home-profile. Comment them out."
     emacs-geiser
     emacs-geiser-guile
     emacs-guix
+    ;; Launch and manage detached processes
+    emacs-detached
+    ;; Real-time collaborative editing environment
+    emacs-crdt
 
     leafpad           ;; simple editor to use when emacs doesn't work
     (list git "send-email")

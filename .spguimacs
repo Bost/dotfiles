@@ -530,6 +530,12 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     ;; Real-time collaborative editing environment
+     crdt
+
+     ;; Launch and manage detached processes
+     detached
+
      ;; dired alternative
      dirvish
 
