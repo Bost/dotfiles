@@ -37,9 +37,9 @@
 differences were encountered."
   `(let* ((evar-val (or (getenv ,evar-name) ,def-val)))
      (setq ,elisp-var (or (getenv ,evar-name) ,def-val))
-     (unless (string= ,elisp-var ,def-val)
-       (message "WARN def-val %s and evar %s=%s differ"
-                ,def-val ,evar-name evar-val))))
+     (unless (string= ,elisp-var (expand-file-name ,def-val))
+       (message "WARN (expand-file-name def-val): %s and evar: %s=%s differ"
+                (expand-file-name ,def-val) ,evar-name evar-val))))
 
 (my=def-evar dev  "~/dev"          "dev")
 (my=def-evar dotf "~/dev/dotfiles" "dotf")
