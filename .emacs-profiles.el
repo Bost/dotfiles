@@ -35,11 +35,17 @@
    ))
 
  ;; cd <user-emacs-directory>
- ;; ./doom install --doomdir=<DOOMDIR>
-("doom" .
- ((user-emacs-directory . "~/.emacs.d.distros/doom-emacs")
-  (server-name . "doom")
-  (env . (("DOOMDIR" . "~/.config/doom-emacs")))))
+ ;; ./bin/doom install --doomdir=<DOOMDIR>
+ ;; # i.e.
+ ;; mkdir ~/.config/doom
+ ;; cd ~/.emacs.d.distros/doom-emacs
+ ;; ./bin/doom install --doomdir ~/.config/doom
+ ("doom" .
+  ((user-emacs-directory . "~/.emacs.d.distros/doom-emacs")
+   (server-name . "doom")
+   (env . (("DOOMDIR" .
+            ;; "~/.config/doom-emacs" ; doesn't work
+            "~/.config/doom")))))
 
  ("crafted" .
   ((user-emacs-directory . "~/.emacs.d.distros/crafted-emacs")
