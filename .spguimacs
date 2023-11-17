@@ -907,21 +907,19 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-default-font
    `("Source Code Pro"
      :size
-     , (let* ((default 10.0)
-              ;; The `text-scale-mode-step' is not accessible at this moment.
-              (text-scale-mode-step 1.2)
-              (size (cond
-                     ((string= hostname "geek") 17)
-                     ((string= hostname "edge")
-                      17
-                      ;; (+ default (* 17 text-scale-mode-step))
-                      )
-                     ((string= hostname "ecke")
-                      (+ default (* 6 text-scale-mode-step)))
-                     (t default))))
-         (message "#### dotspacemacs-default-font hostname: %s; size: %s"
-                  hostname size)
-         size)
+     ,(let* ((default 10.0)
+             ;; The `text-scale-mode-step' is not accessible at this moment.
+             (text-scale-mode-step 1.2)
+             (point-size (cond
+                          ((string= hostname "edge") 19.0)
+                          ;; TODO this is a pixel-size not point-size
+                          ((string= hostname "geek") 17)
+                          ((string= hostname "ecke")
+                           (+ default (* 6 text-scale-mode-step)))
+                          (t default))))
+        ;; (message "### dotspacemacs-default-font hostname: %s; point-size: %s"
+        ;;          hostname point-size)
+        point-size)
      :weight normal
      :width normal)
 
