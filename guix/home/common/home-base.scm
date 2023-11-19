@@ -280,6 +280,7 @@
                   "/kill-buffers"
                   "/tweaks"
                   "/notes"
+                  "/farmhouse-light-mod-theme"
                   (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
                   )))
    ))
