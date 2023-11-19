@@ -66,6 +66,10 @@
          (lambda (s) (string-match (basename re) s))))))
 
 (define (full-filepaths patterns)
+  "Returns a string containing paths. E.g.:
+(full-filepaths (list \"ai\")) =>
+\"/home/bost/org-roam/ai.scrbl /home/bost/org-roam/mainframe_and_host.scrbl /home/bost/org-roam/main.rkt\"
+"
   ((comp
     ;; This is not needed. The string will be surrounded by single quotes.
     ;; (partial format #f "\"~a\"")
@@ -76,7 +80,8 @@
 
 (define* (service-file #:key
                        program-name desc scheme-file-name module-name
-                       chmod-params files)
+                       chmod-params files
+                       (other-files (list)))
   "The priority is 1. module-name, 2. scheme-file-name, 3. program-name
 
 TODO The `search-notes' program should read a `search-space-file' containing
@@ -105,7 +110,15 @@ Example:
                                ((equal? scheme-file-name "chmod")
                                 chmod-params)
                                ((equal? scheme-file-name "search-notes")
-                                (full-filepaths files)))
+                                #;
+                                (begin
+                                  (format #t "(list? ~a)\n" (list? other-files))
+                                  (full-filepaths files))
+                                (string-join
+                                 (append
+                                  other-files
+                                  (list
+                                   (full-filepaths files))))))
                              (command-line)))))
         (with-imported-modules
             (remove
@@ -138,16 +151,37 @@ Example:
               #$main-call))))))
 (testsymb 'service-file)
 
+(define corona-dir "/home/bost/dec/corona_cases")
+(define fdk-dir "/home/bost/dec/corona_cases")
+
 (define search-notes-service-files
   (list
-;;; TODO crc should search in the $dec
+;;; TODO crc should search in the fdk-directories
    (service-file #:program-name "crc"
                  #:files (list "lisp/clojure")
+                 #:other-files
+                 (append
+                  (expand-pattern corona-dir "clj")
+                  (expand-pattern corona-dir "src/corona/")
+                  (expand-pattern corona-dir "src/corona/api/")
+                  (expand-pattern corona-dir "src/corona/models/")
+                  (expand-pattern corona-dir "src/corona/msg/graph/")
+                  (expand-pattern corona-dir "src/corona/msg/text/")
+                  (expand-pattern corona-dir "src/corona/web/")
+                  (expand-pattern corona-dir "test/corona/")
+                  )
                  #:scheme-file-name "search-notes")
-;;; TODO cre should also search in the ~/.emacs.d.spacemacs/, ~/.spacemacs, kill-buffers
-;;; and my=tweaks, farmhouse-light-mod
    (service-file #:program-name "cre"
                  #:files (list "editors/")
+                 #:other-files
+                 (append
+                  (expand-pattern "/home/bost/.emacs.d.distros/spguimacs" "core/el")
+                  (expand-pattern "/home/bost/dev/kill-buffers" "el")
+                  (expand-pattern "/home/bost/dev/dotfiles" ".sp.*macs")
+                  (expand-pattern "/home/bost/dev/jump-last" "el")
+                  (expand-pattern "/home/bost/dev/tweaks" "el")
+                  (expand-pattern "/home/bost/dev/farmhouse-light-mod-theme" "el")
+                  )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crep"
                  #:files (list ".*")
@@ -161,31 +195,48 @@ Example:
 ;;; TODO crg should also search in the $dotf/guix/
    (service-file #:program-name "crg"
                  #:files (list "guix-guile-nix/")
+                 #:other-files
+                 (append
+                  (expand-pattern "/home/bost/dev/guix" "scm")
+                  )
                  #:scheme-file-name "search-notes")
-;;; TODO crgi should also search in the output of `git config --get',
-;;; ~/.gitconfig, etc.
+;;; TODO crgi should also search in the output of `git config --get' etc.
    (service-file #:program-name "crgi"
                  #:files (list "cli/git")
+                 #:other-files
+                 (append
+                  (expand-pattern "/home/bost/dev/dotfiles" ".gitconfig")
+                  )
                  #:scheme-file-name "search-notes")
-;;; TODO crl should search in the $dotf/.config/fish .bashrc, .bash_profile (and
-;;; other profile files), etc.
+;;; TODO crl should search in the $dotf/.config/fish and other profile files
    (service-file #:program-name "crl"
                  #:files (list
                           "guix-guile-nix/"
                           "cli/"
                           ;; simple files
                           "network" "cvs" "gui")
+                 #:other-files
+                 (append
+                  (expand-pattern "/home/bost/dev/dotfiles" ".bash")
+                  )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crli"
                  #:files (list "cli/listing")
                  #:scheme-file-name "search-notes")
-;;; TODO crr should also search in the $der
    (service-file #:program-name "crr"
                  #:files (list "lisp/racket")
+                 #:other-files
+                 (append
+                  (expand-pattern "/home/bost/der/search-notes" "rkt")
+                  )
                  #:scheme-file-name "search-notes")
 ;;; TODO crs should be like crl
    (service-file #:program-name "crs"
                  #:files (list "cli/shells")
+                 ;; #:other-files
+                 ;; (append
+                 ;;  (expand-pattern "/home/bost/dev/dotfiles" ".bash")
+                 ;;  )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "cru"
                  #:files (list "utf8")
