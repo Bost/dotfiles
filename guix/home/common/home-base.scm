@@ -202,13 +202,6 @@
      ;; See https://github.com/phiresky/ripgrep-all
      ;; ("PATH" . ,(string-join (user-home "/bin/ripgrep_all") path))
 
-     ;; for `flatpak run ...`
-     ("XDG_DATA_DIRS" . ,(string-join
-                          (list
-                           (user-home "/.local/share/flatpak/exports/share")
-                           "/var/lib/flatpak/exports/share"
-                           (getenv "XDG_DATA_DIRS"))))
-
      ("dev"   . ,dev)
      ;; TODO unify value of `bin' with the value in the `PATH' definition
      ("bin"   . ,(user-home bin-dirpath))
