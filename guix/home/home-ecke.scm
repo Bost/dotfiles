@@ -182,6 +182,9 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
          ;; needed by `help`; e.g. `help expand`
          ("BROWSER" . "firefox")
 
+         ;; open man-pages in nvim
+         ("MANPAGER" . "nvim +Man!")
+
          ("cores" . "22") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
          ("dec"   . ,(user-home "/dec"))
          ("der"   . ,(user-home "/der"))
