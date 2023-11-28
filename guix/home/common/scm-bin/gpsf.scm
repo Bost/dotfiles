@@ -5,46 +5,45 @@
   #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (ice-9 popen)
   #:use-module (utils)
-  #:export (main))
+  #:use-module (scm-bin gps)
+  #:export (main gpsf))
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gpsf) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ gpsf) -s
 !#
+
+cd $dotf
+./guix/home/common/scm-bin/gpsf.scm
 
 |#
 
-(define (main args)
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
+
+(define* (gpsf #:rest args)
+  "Usage:
+"
+  (let* ((ret (gps (cmd->string (append (list "--force") args)))))
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          ;; process output
+          ;; (map (partial format #t "output: ~a\n") output)
+          ret)
+        (begin
+          (format #t "~a\n" (error-command-failed))
+          *unspecified*))))
+(testsymb 'gpsf)
+
+(define* (main #:rest args)
+  "Usage:
+"
   ((compose
-    (partial
-     map
-     (compose
-      cdr
-      exec
-      (lambda (remote)
-        (append
-         (list "git" "push" "--force" "--follow-tags"
-               ;; "--verbose"
-               remote)
-         (cdr args)))
-      car))
-    (partial filter (lambda (remote-url)
-                      (not (null? (cdr remote-url)))))
-    (partial map
-             (lambda (remote)
-               (cons remote
-                     ((compose
-                       (partial filter
-                                (lambda (url)
-                                  (string-match "git@" url)))
-                       cdr
-                       exec
-                       (partial list "git" "remote" "get-url"))
-                      remote))))
-    (partial filter (lambda (remote)
-                      (not (string-match "heroku" remote))))
-    cdr
-    exec)
-   (list
-    "git" "remote")))
+    (partial apply gpsf)
+    (partial apply cdr)
+    #;dbg)
+   args))
+(testsymb 'main)
+
+;; (format #t "~a module evaluated\n" m)
