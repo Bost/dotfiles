@@ -239,6 +239,9 @@ guix home --allow-downgrades --cores=24 \
          ;; needed by `help`; e.g. `help expand`
          ("BROWSER" . "firefox")
 
+         ;; open man-pages in nvim
+         ("MANPAGER" . "nvim +Man!")
+
          ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
          ("dec"   . ,(user-home "/dec"))
          ("der"   . ,(user-home "/der"))
