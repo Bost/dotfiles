@@ -7,28 +7,39 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gre) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ gre) -s
 !#
+
+cd $dotf
+./guix/home/common/scm-bin/gre.scm 
 
 |#
 
+(define m (module-name-for-logging))
+;; (format #t "~a evaluating module ...\n" m)
+
 (define* (gre #:rest args)
-  "Usage:
-(gre \"-f\" \"arg0\")
-(gre \"-f arg0\")
-(equal? (gre \"-f\" \"arg0\")
-        (gre \"-f arg0\"))
-;; > #t
-"
-  (apply exec-system*
-         "git" "remote"
-         args))
+  "Usage: "
+  (let* ((ret (exec (append 
+                     (list "git" "remote")
+                     args))))
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          ;; process output
+          (map (partial format #t "~a\n") output)
+          ret)
+        (begin
+          (format #t "~a\n" (error-command-failed))
+          *unspecified*))))
+(testsymb 'gre)
 
 (define* (main #:rest args)
-  "Usage:
-(main \"<ignored>\" \"-f\" \"arg0\")"
+  "Usage: "
   ((compose
     (partial apply gre)
     (partial apply cdr)
     #;dbg)
    args))
+(testsymb 'main)
+
+;; (format #t "~a module evaluated\n" m)
