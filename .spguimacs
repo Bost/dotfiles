@@ -663,6 +663,8 @@ This function should only modify configuration layer settings."
      ;; dired+ is unavailable
 
      sqlite3 ;; for magit
+
+     tldr ;; access `tldr' pages from within Emacs
      ) ;; End of dotspacemacs-additional-packages
 
    ;; A list of packages that cannot be updated.
