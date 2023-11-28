@@ -125,6 +125,8 @@ Example:
              unspecified?
              `((utils)
                (settings)
+               (scm-bin gre)
+               (scm-bin gps)
 
                ;; ,(cond
                ;;   ((or
