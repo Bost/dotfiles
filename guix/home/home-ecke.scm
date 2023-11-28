@@ -185,6 +185,14 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
          ;; open man-pages in nvim
          ("MANPAGER" . "nvim +Man!")
 
+         ;; for `flatpak run ...`
+         ("XDG_DATA_DIRS" . ,((compose
+                               (lambda (lst) (string-join lst list-separator-bash)))
+                              (list
+                               (user-home "/.local/share/flatpak/exports/share")
+                               "/var/lib/flatpak/exports/share"
+                               (getenv "XDG_DATA_DIRS"))))
+
          ("cores" . "22") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
          ("dec"   . ,(user-home "/dec"))
          ("der"   . ,(user-home "/der"))
