@@ -198,10 +198,6 @@
      ("CC"               . ,gcc-filepath)
      ("CMAKE_C_COMPILER" . ,gcc-filepath)
 
-     ;; rga: ripgrep, plus search in pdf, E-Books, Office docs, zip, tar.gz, etc.
-     ;; See https://github.com/phiresky/ripgrep-all
-     ;; ("PATH" . ,(string-join (user-home "/bin/ripgrep_all") path))
-
      ("dev"   . ,dev)
      ;; TODO unify value of `bin' with the value in the `PATH' definition
      ("bin"   . ,(user-home bin-dirpath))
@@ -226,7 +222,12 @@
                   (lambda (lst) (string-join lst list-separator))
                   (lambda (lst) (append lst (list "$PATH" "/usr/local/bin")))
                   (partial map user-home))
-                 (list scm-bin-dirpath bin-dirpath))))))
+                 (list scm-bin-dirpath bin-dirpath
+                       ;; rga: ripgrep, plus search in pdf, E-Books, Office
+                       ;; docs, zip, tar.gz, etc.
+                       ;; See https://github.com/phiresky/ripgrep-all
+                       ;; "user-home-relative/path/to/ripgrep_all"
+                       ))))))
 
 (define-public (environment-variables-service environment-vars)
   (simple-service
