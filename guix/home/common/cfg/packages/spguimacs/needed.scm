@@ -510,6 +510,7 @@
    "emacs-term-cursor"
    "emacs-terminal-here"
    "emacs-tide"
+   "emacs-tldr" ;; access `tldr' pages from within Emacs
    "emacs-toc-org"
    "emacs-toxi-theme"
    "emacs-tramp"

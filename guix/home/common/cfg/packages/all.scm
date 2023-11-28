@@ -563,6 +563,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    scsh ;; Unix shell embedded in Scheme
    strace
    taglib
+   tealdeer ;; Rust implementation of the tldr "Too Long Didn't Read"
    texinfo
    tig
    tree
