@@ -154,6 +154,8 @@ Example:
 (define corona-dir "/home/bost/dec/corona_cases")
 (define fdk-dir "/home/bost/dec/corona_cases")
 
+;; TODO create an alias for searching in /home/bost/dec/cheatsheet/langs/expressions.edn
+
 (define search-notes-service-files
   (list
 ;;; TODO crc should search in the fdk-directories

@@ -246,6 +246,7 @@
                  "/monad_koans"
                  "/morse"
                  "/utils"
+                 "/cheatsheet"
                  "/zark"
                  ))
    #;
