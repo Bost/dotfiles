@@ -20,6 +20,7 @@
 ;; (format #t "~a evaluating module ...\n" m)
 
 (use-package-modules
+ w3m
  dns
  bash
  rust-apps
@@ -587,6 +588,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; tesseract-ocr-tessdata-fast ;; Fast versions of trained LSTM models
    ;; gimagereader                ;; Qt front-end to tesseract-ocr
 
+   surfraw ;; Unix command line interface to the www 
+   w3m     ;; Text-mode web browser
    ))
 (testsymb 'rest-packages)
 
