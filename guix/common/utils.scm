@@ -514,4 +514,38 @@ or the CLIENT-CMD if some process ID was found."
                             string-end))))
     (regexp-match url-regex url)))
 
+(define-public (remove-kw-from-args kw init-args)
+  "init-args must be a list containing a sequence key-val pairs. E.g.:
+(#:x 'x #:y 'y)"
+  (let loop ((args init-args)
+             (result '()))
+    ;; (format #t "kw: ~a; args: ~a; result: ~a\n" kw args result)
+    (cond ((null? args) (reverse result))
+          (
+           (and
+            (equal? kw (car args))
+            (>= (length args) 2)
+            )
+           (begin
+             ;; (format #t "Skipping over: ~a\n" (list (car args) (cadr args)))
+             (loop
+              (cddr args) ;; skip first 2
+              result)))
+
+          (else
+           (loop
+            (cdr args)
+            (append (list (car args)) result))))))
+
+;; (define* (fox #:key x y #:rest args)
+;;   (format #t "input : args: ~a\n" args)
+;;   (let* ((args (remove-kw-from-args #:x args))
+;;          (args (remove-kw-from-args #:y args))
+;;          )
+;;     (format #t "output: args: ~a\n" args)))
+
+;; (fox #:x "x" #:y "y" 'bla)
+;; ;; => input : args: (#:x x #:y y bla)
+;; ;; => output: args: (bla)
+
 ;; (format #t "[utils] module evaluated\n")
