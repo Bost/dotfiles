@@ -6,7 +6,7 @@
   #:use-module (ice-9 popen)
   #:use-module (utils)
   #:use-module (scm-bin gre)
-  #:export (main gps))
+  #:export (main gps gps-all))
 
 #|
 
@@ -22,7 +22,30 @@ cd $dotf
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
 
-(define* (gps #:rest args)
+(define* (gps #:key remote #:allow-other-keys #:rest init-args)
+  "Usage: "
+  ;; (format #t "remote : ~a\n" remote)
+  ;; (format #t "init-args : ~a\n" init-args)
+  (let* ((args (remove-kw-from-args #:remote init-args))
+         (ret (exec (append
+                     (list "git" "push")
+                     args
+                     (list remote)
+                     ))))
+    ;; (format #t "args : ~a\n" args)
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          ;; Process output.
+          ;; if `git push ...` needs to return anything more except just a
+          ;; retcode - implement it here
+          (map (partial format #t "~a\n") output)
+          ret)
+        (begin
+          (format #t "~a\n" (error-command-failed))
+          *unspecified*))))
+(testsymb 'gps)
+
+(define* (gps-all #:rest args)
   "This git-pushes to all remote repos. TODO implement basic `gps`"
   ((compose
     (lambda (ret-vals) ;; the reducer
@@ -31,20 +54,11 @@ cd $dotf
       ;;  (ret-code-N list-of-vals-N))
       ;; where ret-code-i is a number, list-of-vals-i can consist of any values
       (list (apply max (map car ret-vals)) (map cdr ret-vals)))
-    
-    (partial
-     map
-     (compose
-      ;; if `git push ...` needs to return anything more except just a retcode -
-      ;; implement it here
-      exec
-      (lambda (remote)
-        (append
-         (list "git" "push" "--follow-tags"
-               ;; "--verbose"
-               remote)
-         args))
-      car))
+
+    (partial map
+             (compose
+              (lambda (remote) (gps #:remote remote "--follow-tags" "--verbose"))
+              car))
     (partial filter (lambda (remote-url)
                       (not (null? (cdr remote-url)))))
     (partial map
@@ -61,13 +75,14 @@ cd $dotf
                       (not (string-match "heroku" remote))))
     cdr)
    (gre)))
-(testsymb 'gps)
+(testsymb 'gps-all)
 
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"arg0\")"
   ((compose
-    (partial apply gps)
+    (partial apply gps-all)
+    ;; (partial apply gps #:remote "github")
     (partial apply cdr)
     #;dbg)
    args))
