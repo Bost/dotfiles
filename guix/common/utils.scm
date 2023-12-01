@@ -485,11 +485,6 @@ or the CLIENT-CMD if some process ID was found."
  => #t"
   (string-suffix? postfix s))
 
-(define (repl)
-  (use-modules (utils))
-  (load (string-append (getenv "dotf") "/guix/home/fs-utils.scm"))
-  )
-
 ;; TODO add install-recursively to (guix build utils) and send it to the upstream.
 (define* (install-recursively source destination
                               #:key
