@@ -27,6 +27,9 @@
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
 
+  ;; TODO seems like it must be added to (srvc scheme-files)
+  ;; #:use-module (guix monads)
+
   #:export (
             def*
             error-command-failed
@@ -563,5 +566,55 @@ or the CLIENT-CMD if some process ID was found."
 ;; (fox #:x "x" #:y "y" 'bla)
 ;; ;; => input : args: (#:x x #:y y bla)
 ;; ;; => output: args: (bla)
+
+
+(define-inlinable (pipe-return command)
+  (list
+   ;; Return code signaling that some hypothetical previous command terminated
+   ;; successfully.
+   0
+   ;; String containing the command to execute as next
+   command))
+
+(define-inlinable (pipe-bind m f)
+  (let* ((m-retcode (car m)))
+    (if (= 0 m-retcode)
+        ;; the f-function parses the output
+        (f (cadr m))
+        (begin
+          (format #t "~a\n" (error-command-failed))
+          m))))
+
+;; (define-monad compose-shell-commands
+;;   (bind pipe-bind)
+;;   (return pipe-return))
+
+(define* (echo #:key (string "") (options ""))
+  "
+(echo #:options \"-e\" #:string \"Top\\\\nBottom\")
+$ echo -e Top\\nBottom
+Top
+Bottom
+;; => (0 \"Top\" \"Bottom\")"
+  ;; (format #t "options : ~a\n" options)
+  ;; (format #t "string : ~a\n" string)
+  (let* ((ret (exec
+               (list "echo" options string)
+               ;; (append (list "echo") (list options) (list string))
+               )))
+    (map (partial format #t "~a\n") (cdr ret))
+    ret))
+
+;; (with-monad compose-shell-commands
+;;   (>>= (return "uname -o")
+;;        exec
+;;        (partial echo #:string)
+;;        ))
+
+;; (define x "aaa")
+;; (define m (return x))
+;; (define f (partial echo #:string))
+;; (define g (partial echo #:string))
+;; (proper-monad? m x f g)
 
 ;; (format #t "[utils] module evaluated\n")
