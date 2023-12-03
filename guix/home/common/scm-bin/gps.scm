@@ -57,7 +57,9 @@ cd $dotf
 
     (partial map
              (compose
-              (lambda (remote) (gps #:remote remote "--follow-tags" "--verbose"))
+              (lambda (remote)
+                (apply (partial gps #:remote remote "--follow-tags" "--verbose")
+                       args))
               car))
     (partial filter (lambda (remote-url)
                       (not (null? (cdr remote-url)))))
