@@ -263,7 +263,10 @@ Returns a list of strings"
 
 (define-public (cmd->string cmd)
   (if (list? cmd)
-      (string-join cmd) ;; join with ' ' by default
+      ;; join with ' ' by default
+      (string-join
+       (remove unspecified-or-empty-or-false?
+               cmd))
       cmd))
 
 ;; 8sync https://www.gnu.org/software/8sync/
