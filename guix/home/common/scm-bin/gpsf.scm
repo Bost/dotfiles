@@ -6,7 +6,7 @@
   #:use-module (ice-9 popen)
   #:use-module (utils)
   #:use-module (scm-bin gps)
-  #:export (main gpsf))
+  #:export (main gpsf gpsf-all))
 
 #|
 
@@ -36,11 +36,25 @@ cd $dotf
           *unspecified*))))
 (testsymb 'gpsf)
 
+(define* (gpsf-all #:rest args)
+  "Usage:
+"
+  (let* ((ret (gps-all (cmd->string (append (list "--force") args)))))
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          ;; process output
+          ;; (map (partial format #t "output: ~a\n") output)
+          ret)
+        (begin
+          (format #t "~a\n" (error-command-failed))
+          *unspecified*))))
+(testsymb 'gpsf-all)
+
 (define* (main #:rest args)
   "Usage:
 "
   ((compose
-    (partial apply gpsf)
+    (partial apply gpsf-all)
     (partial apply cdr)
     #;dbg)
    args))
