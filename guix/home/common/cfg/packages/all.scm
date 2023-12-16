@@ -410,6 +410,14 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'video-packages)
 
+(define (nix-packages)
+  (list
+   nix    ;; The Nix package manager
+   nixfmt ;; Opinionated formatter for Nix
+   emacs-nix-mode ;; Emacs major mode for editing Nix expressions
+   ))
+(testsymb 'nix-packages)
+
 (define (rest-packages)
   (list
    adb
