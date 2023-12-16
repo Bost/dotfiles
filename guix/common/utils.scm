@@ -308,6 +308,18 @@ COMMAND can be a string or a list of strings."
         ;; case we want to wait for it at some point in the future.
         child-pid)))
 
+;;; See https://www.draketo.de/software/guile-capture-stdout-stderr.html
+;; (format #t "current-error-port:\n~a\n"
+;;         (let* ((error-port (open-output-string)))
+;;           (with-error-to-port error-port
+;;             (lambda ()
+;;               (display "Err msg1\n" (current-error-port))))
+;;           (get-output-string error-port)))
+
+;; (format #t "(output-port? error-port): ~a\n"
+;;         (let* ((error-port (open-output-string)))
+;;           (output-port? error-port)))
+
 (define-public (exec command)
   "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
 from the subprocess. Wait for the command to terminate and return a string
@@ -334,8 +346,9 @@ Usage:
 
   ((compose
     (lambda (command)
+      ;; Can't use the `call-with-port' since the exit-val is needed.
       (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
-             ;; the `read-all-strings' may need to be called before `close-pipe'.
+             ;; the `read-all-strings' must be called before `close-pipe'.
              (results (read-all-strings port)))
         (cons
          (status:exit-val (close-pipe port))

@@ -596,7 +596,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; tesseract-ocr-tessdata-fast ;; Fast versions of trained LSTM models
    ;; gimagereader                ;; Qt front-end to tesseract-ocr
 
-   surfraw ;; Unix command line interface to the www 
+   surfraw ;; Unix command line interface to the www
    w3m     ;; Text-mode web browser
    ))
 (testsymb 'rest-packages)
@@ -623,7 +623,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ;; share the clipboard and guest display resolution scaling on graphical
    ;; console window resize.
-   spice-vdagent
+   spice-vdagent  ;; shared clipboard works for Ubuntu but doesn't work for NixOS
 
    ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
    ;; xdg-utils  ;; in gnu/packages/freedesktop.scm
