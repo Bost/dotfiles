@@ -1,9 +1,10 @@
 (define-module (scm-bin qemu-vm)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
+  ;; #:use-module (memo) ;; is-system-ecke is-system-edge
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
-  #:use-module (ice-9 getopt-long) #| see also `info "guile-config"'|#
+  #:use-module (ice-9 getopt-long) ;; see also `info "guile-config"'
   #:export (main))
 
 ;;;;;; Code duplication ;;;;;;
@@ -95,6 +96,32 @@ Usage:
     exec)
    (list "sudo" (string-append "--user=" user) "nproc")))
 
+#|
+See https://www.qemu.org/docs/master/system/qemu-cpu-models.html
+How do I get AVX support in QEMU?
+https://superuser.com/a/454814
+
+(is-system-ecke):
+EPYC-v1  AMD EPYC Processor              ;; works
+EPYC-v2  AMD EPYC Processor (with IBPB)  ;; works
+EPYC-v3  AMD EPYC Processor              ;; doesn't work
+Opteron_G1 ;; test it
+Opteron_G2 ;; test it
+Opteron_G3 ;; test it
+Opteron_G4 ;; test it
+Opteron_G5 ;; test it
+phenom     ;; test it
+
+Using `-cpu host` may cause troubles when moving between machines,e.g. host A ->
+host B, i.e. when on host A something is compiled using some CPU instruction
+which is not supported by the CPU on the host B
+|#
+(define vmCPUModel
+  (cond
+   #;((is-system-ecke) "EPYC-v1,+avx,enforce")
+   #;((is-system-edge) "SapphireRapids" #;"SapphireRapids,+avx") ;; both work
+   (#t "host")))
+
 (define ssh
   (format
    #f
@@ -157,19 +184,7 @@ Usage:
          vmSSHPort vmApache2Port)
         "-enable-kvm" "-m" vmRAM
         "-device" "virtio-blk,drive=myhd"
-        #|
-        ;; see https://superuser.com/a/454814
-        EPYC-v1  AMD EPYC Processor              ;; works
-        EPYC-v2  AMD EPYC Processor (with IBPB)  ;; works
-        EPYC-v3  AMD EPYC Processor              ;; doesn't work
-        Opteron_G1 ;; test it
-        Opteron_G2 ;; test it
-        Opteron_G3 ;; test it
-        Opteron_G4 ;; test it
-        Opteron_G5 ;; test it
-        phenom     ;; test it
-        |#
-        "-cpu EPYC-v1,+avx,enforce"
+        "-cpu" vmCPUModel
         "-drive" (string-append "if=none,file=" qcow2File ",id=myhd")
 ;;; Access the VM with spice remote-viewer. With clipboard sharing. See `usage'
         ;;  remote-viewer spice://localhost:5930 & disown
