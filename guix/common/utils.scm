@@ -589,21 +589,6 @@ or the CLIENT-CMD if some process ID was found."
 ;;   (bind pipe-bind)
 ;;   (return pipe-return))
 
-(define* (echo #:key (string "") (options ""))
-  "
-(echo #:options \"-e\" #:string \"Top\\\\nBottom\")
-$ echo -e Top\\nBottom
-Top
-Bottom
-;; => (0 \"Top\" \"Bottom\")"
-  ;; (format #t "options : ~a\n" options)
-  ;; (format #t "string : ~a\n" string)
-  (let* ((ret (exec
-               (list "echo" options string)
-               ;; (append (list "echo") (list options) (list string))
-               )))
-    (map (partial format #t "~a\n") (cdr ret))
-    ret))
 
 ;; (with-monad compose-shell-commands
 ;;   (>>= (return "uname -o")
