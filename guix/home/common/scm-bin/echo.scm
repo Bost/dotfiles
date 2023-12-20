@@ -2,6 +2,10 @@
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
+
+  ;; TODO seems like it must be added to (srvc scheme-files)
+  ;; #:use-module (guix monads)
+
   #:export (main echo))
 
 #|
