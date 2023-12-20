@@ -111,6 +111,8 @@
  glib
  maven
  mail
+ messaging
+ irc
  )
 
 (define (email-in-emacs-packages)
@@ -417,6 +419,14 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    emacs-nix-mode ;; Emacs major mode for editing Nix expressions
    ))
 (testsymb 'nix-packages)
+
+(define (irc-packages)
+  "See https://www.slant.co/topics/1323/~best-irc-clients-for-linux"
+  (list
+   hexchat ;; Graphical IRC client
+   ;; weechat ;; Extensible chat client
+   ;; irssi   ;; Extensible terminal-based IRC client
+   ))
 
 (define (rest-packages)
   (list
@@ -866,6 +876,7 @@ home-profile. Comment them out."
            (devel-packages)
            (kde-dependent-packages)
            (other-gui-packages)
+           (irc-packages)
            (rest-packages)
            (xfce-packages)
            (xorg-packages)
