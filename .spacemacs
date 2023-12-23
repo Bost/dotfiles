@@ -76,7 +76,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   `(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -293,33 +293,35 @@ This function should only modify configuration layer settings."
      javascript
      json
      markdown
-     (mu4e
-      :variables
-      ;; mu4e-installation-path "/usr/share/emacs/site-lisp"
 
-      ;; This is set to 't' to avoid mail syncing issues when using mbsync
-      mu4e-change-filenames-when-moving t
+     ,(let ((maildir "~/Mail"))
+        (when (file-directory-p maildir)
+          (mu4e
+           :variables
+           ;; mu4e-installation-path "/usr/share/emacs/site-lisp"
 
-      ;; Refresh mail using isync every 10 minutes.
-      ;; (Default nil - don't update automatically)
-      mu4e-update-interval (* 10 60)
+           ;; This is set to 't' to avoid mail syncing issues when using mbsync
+           mu4e-change-filenames-when-moving t
 
-      mu4e-maildir "~/Mail"
-      mu4e-get-mail-command "mbsync -a"
-      ;; mu4e-compose-signature-auto-include nil
-      mu4e-drafts-folder "/[Gmail]/Drafts"
-      mu4e-sent-folder   "/[Gmail]/Sent Mail"
-      mu4e-refile-folder "/[Gmail]/All Mail"
-      mu4e-trash-folder  "/[Gmail]/Trash"
+           ;; Refresh mail using isync every 10 minutes.
+           ;; (Default nil - don't update automatically)
+           mu4e-update-interval (* 10 60)
 
-      mu4e-maildir-shortcuts '(
-                               (:maildir "/Inbox"             :key ?i)
-                               (:maildir "/[Gmail]/Sent Mail" :key ?s)
-                               (:maildir "/[Gmail]/Trash"     :key ?t)
-                               (:maildir "/[Gmail]/Drafts"    :key ?d)
-                               (:maildir "/[Gmail]/All Mail"  :key ?a)
-                               )
-      )
+           mu4e-maildir maildir
+           mu4e-get-mail-command "mbsync -a"
+           ;; mu4e-compose-signature-auto-include nil
+           mu4e-drafts-folder "/[Gmail]/Drafts"
+           mu4e-sent-folder   "/[Gmail]/Sent Mail"
+           mu4e-refile-folder "/[Gmail]/All Mail"
+           mu4e-trash-folder  "/[Gmail]/Trash"
+
+           mu4e-maildir-shortcuts '(
+                                    (:maildir "/Inbox"             :key ?i)
+                                    (:maildir "/[Gmail]/Sent Mail" :key ?s)
+                                    (:maildir "/[Gmail]/Trash"     :key ?t)
+                                    (:maildir "/[Gmail]/Drafts"    :key ?d)
+                                    (:maildir "/[Gmail]/All Mail"  :key ?a)
+                                    ))))
      ;; multiple-cursors
      ;; nginx
 
