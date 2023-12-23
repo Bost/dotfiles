@@ -43,6 +43,8 @@
                "\n"
                "\n" "#### home-bash-configuration -> " name ": end")))
 
+;; TODO check if GPG keys are present and show commands how to transfer them:
+;; See `crep 'copy\ \/\ transfer'`
 (define-public services
   ((compose
     ;; (lambda (v) (format #t "~a 7\n" m) v)
