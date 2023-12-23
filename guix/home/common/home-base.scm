@@ -268,6 +268,7 @@
                   )
                  (list
                   (list "/elpa-mirror.d12frosted" "https://github.com/d12frosted/elpa-mirror")
+                  "/blog"
                   "/copy-sexp"
                   "/dotfiles"
                   "/guix-packages"
