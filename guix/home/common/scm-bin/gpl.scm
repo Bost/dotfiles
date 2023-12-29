@@ -13,8 +13,11 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gpl) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ gpl) -s
 !#
+
+cd $dotf
+./guix/home/common/scm-bin/gpl.scm
 
 |#
 
@@ -113,7 +116,8 @@ Requires:
      branches)))
 
 (define (main args)
-  (format #t "# Note: 'args' is applied only to `git rebase'\n")
+  (when (not (null? (cdr args)))
+    (format #t "# Note: 'args' is applied only to `git rebase'\n"))
   ((compose
     (partial rebase-bottom-call/cc args)
     ;; (partial rebase-bottom-flag-variable args)
