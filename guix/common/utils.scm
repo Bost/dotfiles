@@ -504,7 +504,7 @@ or the CLIENT-CMD if some process ID was found."
  => #t"
   (string-suffix? postfix s))
 
-;; TODO add install-recursively to (guix build utils) and send it to the upstream.
+;; TODO add install-recursively to (guix build utils) and send it to upstream
 (define* (install-recursively source destination
                               #:key
                               (log (current-output-port))
