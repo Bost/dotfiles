@@ -30,10 +30,12 @@
   ;; TODO seems like it must be added to (srvc scheme-files)
   ;; #:use-module (guix monads)
 
+  #:use-module (rnrs io ports) ;; for the exec-with-error-to-string
   #:export (
             def*
             error-command-failed
             exec-system*
+            exec-with-error-to-string
             testsymb
             testsymb-trace
             ))
@@ -322,6 +324,32 @@ COMMAND can be a string or a list of strings."
 ;; (format #t "(output-port? error-port): ~a\n"
 ;;         (let* ((error-port (open-output-string)))
 ;;           (output-port? error-port)))
+
+(define (exec-with-error-to-string cmd)
+  "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
+from the subprocess. Wait for the command to terminate and return 3 values:
+- `#t' if the port was successfully closed or `#f' if it was already closed.
+- a string containing standard output
+- a string containing standard error output
+
+Usage:
+(receive (retval stdout stderr)
+    (exec-with-error-to-string \"echo to-stdout; echo to-stderr >&2\")
+  (format #t \"receive retval:~a\\n\" retval)
+  (format #t \"receive stdout:~a\\n\" stdout)
+  (format #t \"receive stderr:~a\\n\" stderr))
+"
+  (let* ((err-cons (pipe))
+         (port (with-error-to-port (cdr err-cons)
+                 (lambda () (open-input-pipe cmd))))
+         ;; the err-cons buffer size is 16 MiB
+         (_ (setvbuf (car err-cons) 'block (* 1024 1024 16)))
+         (stdout (read-delimited "" port)))
+    (values
+     (close-port (cdr err-cons))
+     stdout
+     ;; the port must be closed before calling the following
+     (read-delimited "" (car err-cons)))))
 
 (define-public (exec command)
   "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
