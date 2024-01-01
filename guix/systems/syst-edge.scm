@@ -67,21 +67,25 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
     (users (cons*
             (user-account
              (name user)
-             (comment
-              (begin
-                ;; (format #t "~a user-full-name: ~a\n" m user-full-name)
-                user-full-name))
+             (comment user-full-name)
              (group "users")
              (home-directory home)
 
              ;; list of group names that this user-account belongs to
              (supplementary-groups
-              ;; grant access to:
-              '("wheel"  #| sudo etc.; See polkit-wheel-service for administrative tasks for non-root users |#
-                "netdev" #| network devices |#
-                "audio"  #| sound card |#
-                "video"  #| video devices, e.g. webcams |#
-                "lp"     #| control bluetooth devices |#
+              '(
+                ;; sudo etc.; See polkit-wheel-service for administrative tasks
+                ;; for non-root users
+                "wheel"
+
+                ;; network devices; WiFi network connections done by this user
+                ;; are not propagated to other users. IOW every user must know
+                ;; and type-in the WIFI passwords by him or herself.
+                "netdev"
+
+                "audio"  ;; sound card
+                "video"  ;; video devices, e.g. webcams
+                "lp"     ;; control bluetooth devices
 
                 ;; "kvm"
                 ;; "tty"
@@ -89,6 +93,15 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                 ;; "docker"
                 ;; "realtime"  #| Enable realtime scheduling |#
                 )))
+
+            ;; Example of an ordinary, non-privileged user, without root
+            ;; permissions and access to home-directories of other users
+            ;; (user-account
+            ;;  (name "jimb")
+            ;;  (comment "Jim Beam")
+            ;;  (group "users")
+            ;;  (password (crypt "password" "salt")) ;; SHA-512-hashed
+            ;;  (home-directory "/home/jimb"))
             %base-user-accounts))
 
     ;; Packages installed system-wide.  Users can also install packages
@@ -103,8 +116,8 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
       packages-to-install
       %base-packages))
 
-    ;; Below is the list of system services.  To search for available
-    ;; services, run 'guix system search KEYWORD' in a terminal.
+    ;; System services. Search for available services by
+    ;;     guix system search KEYWORD
     (services
      (append (list
               (service xfce-desktop-service-type)
@@ -115,7 +128,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
               ;; To configure OpenSSH, pass an 'openssh-configuration'
               ;; record as a second argument to 'service' below.
               (service openssh-service-type)
-              
+
               (set-xorg-configuration
                (xorg-configuration (keyboard-layout keyboard-layout)))
 
