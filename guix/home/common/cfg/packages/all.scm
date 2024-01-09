@@ -20,6 +20,7 @@
 ;; (format #t "~a evaluating module ...\n" m)
 
 (use-package-modules
+ rdesktop
  w3m
  dns
  bash
@@ -692,6 +693,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'xorg-packages)
 
+(define* (remote-desktop-packages #:key is-server)
+  (if is-server
+      (list
+       xrdp ;; Remote Desktop Protocol server; access to the entire desktop
+       xpra ;; Remote access to individual applications or full desktops
+       xorgxrdp ;; Xorg drivers for xrdp
+       )
+      (list ;; the clients
+       rdesktop)))
+
 (define (xfce-packages)
   (list
    ;; TODO add ~/.config/xfce4/xfconf/xfce-perchannel-xml/ to the home config
@@ -846,6 +857,7 @@ home-profile. Comment them out."
             (@(bost packages emacs-xyz) emacs-farmhouse-light-mod-theme)
             (@(bost packages emacs-xyz) emacs-tweaks)
             )
+           (remote-desktop-packages #:is-server #t)
            ;; TODO check ‘all-the-icons’ in the  ‘/home/bost/.local/share/fonts/’ and call (all-the-icons-install-fonts) when installing emacs
            ;; pulls-in ~430 additional packages
            ;; (spguimacs-packages)
@@ -858,6 +870,7 @@ home-profile. Comment them out."
            ;; pulls-in ~430 additional packages
            (spguimacs-packages)
            (large-packages-ecke)
+           (remote-desktop-packages #:is-server #f)
            pkgs)
           pkgs))
     ;; (lambda (p) (format #t "~a 2. (length p): ~a\n" m (length p)) p)
