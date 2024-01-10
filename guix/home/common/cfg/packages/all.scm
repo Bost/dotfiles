@@ -129,7 +129,7 @@
 (define (packages-from-additional-channels)
   "Packages from additional channels?
 Including these packages in the `packages-to-install' causes:
-   error: <package-naae>: unknown package
+   error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
    (@(bost packages clojure) clojure)
@@ -455,7 +455,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ;; Use the (bost packages clojure) definitions for clojure-related packages
    ;; clojure
-   ;; clojure-lsp
    ;; clojure-tools
 
    clusterssh
@@ -847,8 +846,8 @@ home-profile. Comment them out."
       (format #t "~a packages to install: ~a\n" m (length pkgs))
       pkgs)
     inferior-pkgs
-    ;; (lambda (p) (format #t "~a 4.\n~a\n" p) p))
-    ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
+    ;; (lambda (p) (format #t "~a 5.\n~a\n" p) p))
+    ;; (lambda (p) (format #t "~a 4. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
       (if (or (is-system-edge))
           (append
@@ -863,6 +862,7 @@ home-profile. Comment them out."
            ;; (spguimacs-packages)
            pkgs)
           pkgs))
+    ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
       (if (or (is-system-ecke))
           (append
@@ -900,4 +900,4 @@ home-profile. Comment them out."
    (basic-packages)))
 (testsymb 'packages-to-install)
 
-(format #t "~a module evaluated\n" m)
+;; (format #t "~a module evaluated\n" m)

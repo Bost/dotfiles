@@ -6,7 +6,7 @@
   #:use-module ((bost packages emacs-xyz) #:prefix bste:)
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
-)
+  )
 
 (define m (module-name-for-logging))
 ;; (format #t "~a evaluating module ...\n" m)
@@ -149,6 +149,7 @@
          (s- (sx (s+ N O)
                  A)
              E)))))
+(testsymb 'spguimacs-packages)
 
 ;; (format #t "~a module evaluated\n" m)
 

@@ -1568,3 +1568,5 @@
 (define-public available-packages
   (sx guix-package---list-available found-packages))
 (testsymb 'available-packages)
+
+;; (format #t "~a module evaluated\n" m)

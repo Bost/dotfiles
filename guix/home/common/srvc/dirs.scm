@@ -29,6 +29,7 @@
             ))
 
 (define m (module-name-for-logging))
+;; (format #t "~a evaluating ...\n" m)
 
 ;;;
 ;;; user directories.
