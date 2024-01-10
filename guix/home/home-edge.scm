@@ -5,17 +5,22 @@
 ;; See the "Replicating Guix" section in the manual.
 
 #|
-To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
-DG_DATA_DIRS), reset environment variables to their default values by sourcing
-the default bash profile and run `guix home ...` command from bash:
+# To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
+# XDG_DATA_DIRS), reset environment variables to their default values by
+# sourcing the default bash profile and run `guix home ...` command from bash:
 
 source /etc/profile && dx=$HOME/dev/dotfiles/guix
 guix home --allow-downgrades --cores=$(nproc) \
      -L $dx/common -L $dx/home/common reconfigure $dx/home/home-$(hostname).scm
 # -L --load-path
 
-(The tilda `~' is only expanded by shells when it's the first character of a
-command-line argument. Use $HOME instead.)
+# The tilda `~' is only expanded by shells when it's the first character of a
+# command-line argument. Use $HOME instead.
+
+;; see 'include', which unlike 'load', works within nested lexical contexts
+;; can't use the `~'
+(load "/home/bost/dev/dotfiles/guix/home/home-ecke.scm")
+
 |#
 
 ;; The 'edge' and 'ecke' home environments are almost the same, and it may be
@@ -61,7 +66,7 @@ command-line argument. Use $HOME instead.)
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
 (define m (module-name-for-logging))
-(format #t "~a evaluating module ...\n" m)
+;; (format #t "~a evaluating module ...\n" m)
 
 ;; "copying files"
 ;; there should be a service type to place particular files (or file-like
@@ -143,7 +148,7 @@ command-line argument. Use $HOME instead.)
 ;;; TODO home-git-configuration
 
 ;; See also $dotf/.bashrc.martin
-(define-public home-env
+(define home-env
   (home-environment
    (packages (packages-to-install))
    (services

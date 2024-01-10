@@ -8,13 +8,14 @@
 # To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
+
 source /etc/profile && dx=$HOME/dev/dotfiles/guix
 guix home --allow-downgrades --cores=$(nproc) \
      -L $dx/common -L $dx/home/common reconfigure $dx/home/home-$(hostname).scm
 # -L --load-path
 
 # The tilda `~' is only expanded by shells when it's the first character of a
-# command-line argument. Use $HOME instead
+# command-line argument. Use $HOME instead.
 
 ;; see 'include', which unlike 'load', works within nested lexical contexts
 ;; can't use the `~'
@@ -23,6 +24,9 @@ guix home --allow-downgrades --cores=$(nproc) \
 TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 |#
 
+;; The 'edge' and 'ecke' home environments are almost the same, and it may be
+;; enough to handle the differences just a few branching statements, e.g.
+;; if, cond, etc.
 (define-module (home-ecke)
   #:use-module (settings)
   #:use-module (utils)
@@ -150,12 +154,12 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
    (packages (packages-to-install))
    (services
     ((compose
-      #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
+      ;; (lambda (v) (format #t "~a 3:\n~a\n" m v) v)
       (partial append base:services)
-      #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
+      ;; (lambda (v) (format #t "~a 2:\n~a\n" m v) v)
       list
       base:environment-variables-service
-      #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
+      ;; (lambda (v) (format #t "~a 1:\n~a\n" m v) v)
       (partial
        append
        `(
@@ -216,7 +220,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                       (list (str dgxp "/packages"))
                       )))
          ))
-      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
+      ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
+      )
      (base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)
 

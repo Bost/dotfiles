@@ -334,5 +334,6 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
          (let ((dest-dir (car project)))
            (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
        projects-heroku))
+(testsymb 'install-all-projects)
 
 ;; (format #t "~a module evaluated\n" m)
