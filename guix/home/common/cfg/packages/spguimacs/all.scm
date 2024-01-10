@@ -3,7 +3,7 @@
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
   #:use-module (gnu packages) ;; specification->package+output
-  #:use-module ((bost packages emacs-xyz) #:prefix bste:)
+  #:use-module ((bost gnu packages emacs-xyz) #:prefix bste:)
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
   )
