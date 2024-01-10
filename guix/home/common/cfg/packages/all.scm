@@ -132,10 +132,10 @@ Including these packages in the `packages-to-install' causes:
    error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
-   (@(bost packages clojure) clojure)
-   (@(bost packages clojure) clojure-lsp)
-   (@(bost packages clojure) clojure-tools)
-   (@(bost packages babashka) babashka)
+   (@(bost gnu packages clojure) clojure)
+   (@(bost gnu packages clojure) clojure-lsp)
+   (@(bost gnu packages clojure) clojure-tools)
+   (@(bost gnu packages babashka) babashka)
 
    ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
    (@(nongnu packages messaging) signal-desktop)
@@ -453,7 +453,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    clang
 
-   ;; Use the (bost packages clojure) definitions for clojure-related packages
+   ;; Use the (bost gnu packages clojure) definitions for clojure-related packages
    ;; clojure
    ;; clojure-tools
 
@@ -796,8 +796,8 @@ home-profile. Comment them out."
 ;;; TODO make it support inferior packages
 ;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
 ;;; TODO packages should accept expressions like the -e, e.g.
-;;;   guix package                        -e '(@ (bost packages maven) maven)'
-;;;   guix package --install-from-expression='(@ (bost packages maven) maven)'
+;;;   guix package                        -e '(@ (bost gnu packages maven) maven)'
+;;;   guix package --install-from-expression='(@ (bost gnu packages maven) maven)'
   ((comp
     (lambda (pkgs)
       #|
@@ -853,8 +853,8 @@ home-profile. Comment them out."
           (append
            ;; (map (comp list specification->package) (video-packages))
            (list
-            (@(bost packages emacs-xyz) emacs-farmhouse-light-mod-theme)
-            (@(bost packages emacs-xyz) emacs-tweaks)
+            (@(bost gnu packages emacs-xyz) emacs-farmhouse-light-mod-theme)
+            (@(bost gnu packages emacs-xyz) emacs-tweaks)
             )
            (remote-desktop-packages #:is-server #t)
            ;; TODO check ‘all-the-icons’ in the  ‘/home/bost/.local/share/fonts/’ and call (all-the-icons-install-fonts) when installing emacs

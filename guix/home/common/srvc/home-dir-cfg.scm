@@ -135,7 +135,7 @@
                      lst)))
               `(
                 ;; provides:
-                ;; - (bost packages emacs-xyz) module
+                ;; - (bost gnu packages emacs-xyz) module
                 ;; - clojure, babashka, postgres 13.3, openjdk18 etc.
                 (channel (name 'bost)
                          (url
