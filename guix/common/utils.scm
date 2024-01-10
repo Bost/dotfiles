@@ -40,6 +40,9 @@
             testsymb-trace
             ))
 
+(define m "[utils]")
+;; (format #t "~a evaluating module ...\n" m)
+
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
 ;; Also (examples)
 ;; (use-service-modules nix)
@@ -90,6 +93,10 @@ Works also for functions returning and accepting multiple values."
     (partial map (partial format #f "~a"))
     (partial module-name))
    (current-module)))
+
+(unless (equal? (module-name-for-logging) m)
+  (format #t "WARN ~a (equal? (module-name-for-logging) m): ~a\n"
+          m (equal? (module-name-for-logging) m)))
 
 (define-syntax testsymb
   (syntax-rules ()
@@ -630,4 +637,4 @@ or the CLIENT-CMD if some process ID was found."
 ;; (define g (partial echo #:string))
 ;; (proper-monad? m x f g)
 
-;; (format #t "[utils] module evaluated\n")
+;; (format #t "~a module evaluated\n" m)

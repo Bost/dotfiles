@@ -1,4 +1,3 @@
-;; (format #t "[fs-utils] evaluating module ...\n")
 (define-module (fs-utils)
   #:use-module (settings)
   #:use-module (utils)

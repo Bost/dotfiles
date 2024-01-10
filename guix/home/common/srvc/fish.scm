@@ -24,7 +24,7 @@
 ;;; See also https://issues.guix.gnu.org/30265
 
 (define m (module-name-for-logging))
-(format #t "~a evaluating module ...\n" m)
+;; (format #t "~a evaluating module ...\n" m)
 
 (define indent "")
 (define indent-inc "   ")
@@ -323,4 +323,4 @@ the composition of the extensions"
       (local-file
        (fish-config-dotfiles "/config.fish")))))))
 
-(format #t "~a module evaluated\n" m)
+;; (format #t "~a module evaluated\n" m)

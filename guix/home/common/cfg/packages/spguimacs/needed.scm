@@ -569,3 +569,5 @@
    ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
    ))
 (testsymb 'needed-packages)
+
+;; (format #t "~a module evaluated\n" m)
