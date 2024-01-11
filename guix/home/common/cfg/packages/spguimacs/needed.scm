@@ -4,7 +4,7 @@
 )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
 ;; doesn't work
@@ -570,4 +570,4 @@
    ))
 (testsymb 'needed-packages)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)

@@ -24,7 +24,7 @@
 )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 (define notes-dir (user-home "/org-roam"))
 
@@ -320,4 +320,4 @@ Example:
     )))
 (testsymb 'scheme-files-service)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)

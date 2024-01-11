@@ -9,7 +9,7 @@
   )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 (define spacemacs-development-packages
   ;; used by `guix shell ...', specified by run.sh
@@ -151,6 +151,6 @@
              E)))))
 (testsymb 'spguimacs-packages)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)
 
 #;(specifications->manifest spguimacs-packages)

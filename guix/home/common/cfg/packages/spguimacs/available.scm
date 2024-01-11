@@ -6,7 +6,7 @@
 )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 ;; guix package --list-available='^emacs-' | awk '{print "\""$1"\""}'
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
@@ -1569,4 +1569,4 @@
   (sx guix-package---list-available found-packages))
 (testsymb 'available-packages)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)

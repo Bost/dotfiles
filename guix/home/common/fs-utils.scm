@@ -27,7 +27,7 @@
             ))
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 ;; TODO consider moving dev,dotf definitions to the settings module
 (define* (user-home #:rest args) (apply str home args))
@@ -104,4 +104,4 @@
 (define (repl)
   (load (string-append (getenv "dotf") "/guix/home/fs-utils.scm"))
   )
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)

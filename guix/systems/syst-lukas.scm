@@ -15,7 +15,7 @@
                      xorg)
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 (define disable-suspend-srvc
 ;;; GDM auto-suspend? is not system-wide and can be overriden by users. Create a
@@ -129,7 +129,7 @@
   operating-system-kernel)
  syst-config)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)
 
 ;; operating-system (or image) must be returned
 syst-config

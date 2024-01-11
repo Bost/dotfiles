@@ -16,7 +16,7 @@ cd $dotf
 |#
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 (define* (echo #:key (options "") (string ""))
   "
@@ -46,4 +46,37 @@ Bottom
    args))
 (testsymb 'main)
 
-;; (format #t "~a module evaluated\n" m)
+(define-inlinable (pipe-return command)
+  (list
+   ;; Return code signaling that some hypothetical previous command terminated
+   ;; successfully.
+   0
+   ;; String containing the command to execute as next
+   command))
+
+(define-inlinable (pipe-bind m f)
+  (let* ((m-retcode (car m)))
+    (if (= 0 m-retcode)
+        ;; the f-function parses the output
+        (f (cadr m))
+        (begin
+          (format #t "~a\n" (error-command-failed))
+          m))))
+
+;; (define-monad compose-shell-commands
+;;   (bind pipe-bind)
+;;   (return pipe-return))
+
+;; (with-monad compose-shell-commands
+;;   (>>= (return "uname -o")
+;;        exec
+;;        (partial echo #:string)
+;;        ))
+
+;; (define x "aaa")
+;; (define m (return x))
+;; (define f (partial echo #:string))
+;; (define g (partial echo #:string))
+;; (proper-monad? m x f g)
+
+(module-evaluated m)
