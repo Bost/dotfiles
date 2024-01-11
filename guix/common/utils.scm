@@ -38,6 +38,8 @@
             exec-with-error-to-string
             testsymb
             testsymb-trace
+            evaluating-module
+            module-evaluated
             ))
 
 (define m "[utils]")
@@ -97,6 +99,14 @@ Works also for functions returning and accepting multiple values."
 (unless (equal? (module-name-for-logging) m)
   (format #t "WARN ~a (equal? (module-name-for-logging) m): ~a\n"
           m (equal? (module-name-for-logging) m)))
+
+(define* (evaluating-module m #:key (show #t))
+  (when show
+    (format #t "~a evaluating module ...\n" m)))
+
+(define* (module-evaluated m #:key (show #t))
+  (when show
+    (format #t "~a module evaluated\n" m)))
 
 (define-syntax testsymb
   (syntax-rules ()
