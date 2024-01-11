@@ -100,11 +100,11 @@ Works also for functions returning and accepting multiple values."
   (format #t "WARN ~a (equal? (module-name-for-logging) m): ~a\n"
           m (equal? (module-name-for-logging) m)))
 
-(define* (evaluating-module m #:key (show #t))
+(define* (evaluating-module m #:key (show #f))
   (when show
     (format #t "~a evaluating module ...\n" m)))
 
-(define* (module-evaluated m #:key (show #t))
+(define* (module-evaluated m #:key (show #f))
   (when show
     (format #t "~a module evaluated\n" m)))
 
@@ -647,4 +647,4 @@ or the CLIENT-CMD if some process ID was found."
 ;; (define g (partial echo #:string))
 ;; (proper-monad? m x f g)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)

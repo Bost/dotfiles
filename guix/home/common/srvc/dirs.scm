@@ -129,4 +129,4 @@ directory, point it to the $HOME.")))
    'dirs-configuration))
 (testsymb 'generate-dirs-documentation)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)

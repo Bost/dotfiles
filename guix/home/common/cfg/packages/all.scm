@@ -17,7 +17,7 @@
   )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 (use-package-modules
  rdesktop
@@ -900,4 +900,4 @@ home-profile. Comment them out."
    (basic-packages)))
 (testsymb 'packages-to-install)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)

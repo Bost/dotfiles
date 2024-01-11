@@ -44,7 +44,7 @@
  )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 (define-public syst-config
   (operating-system
@@ -246,7 +246,7 @@
     ;; See "(guix) operating-system Reference" for more details.
     (swap-devices (list (swap-space (target "/swapfile"))))))
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)
 
 ;; and operating-system (or image) must be returned
 syst-config

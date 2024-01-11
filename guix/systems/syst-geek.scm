@@ -44,7 +44,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
  )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 (define-public syst-config
   (operating-system
@@ -157,7 +157,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                          'fat32))
                            (type "vfat")) %base-file-systems))))
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)
 
 ;; operating-system (or image) must be returned
 syst-config
