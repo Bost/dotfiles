@@ -18,7 +18,7 @@
 )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 ;; ;; See https://10years.guix.gnu.org/static/slides/05-wilson.org
 ;; (define (home-xsettingsd-files-service config)
@@ -196,4 +196,4 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
    'home-dir-cfg-srvc home-files-service-type home-dir-cfg-srvc-files))
 (testsymb 'home-dir-cfg-srvc)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)

@@ -258,5 +258,5 @@ guix home --allow-downgrades --cores=24 \
      (base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)
 home-env

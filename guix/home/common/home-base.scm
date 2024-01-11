@@ -32,7 +32,7 @@
 )
 
 (define m (module-name-for-logging))
-;; (format #t "~a evaluating module ...\n" m)
+(evaluating-module m)
 
 (define (bash-config-file name content)
   (plain-file name
@@ -336,4 +336,4 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
        projects-heroku))
 (testsymb 'install-all-projects)
 
-;; (format #t "~a module evaluated\n" m)
+(module-evaluated m)
