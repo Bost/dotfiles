@@ -17,7 +17,7 @@
   )
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 (use-package-modules
  rdesktop
@@ -900,4 +900,4 @@ home-profile. Comment them out."
    (basic-packages)))
 (testsymb 'packages-to-install)
 
-(module-evaluated m)
+(module-evaluated)

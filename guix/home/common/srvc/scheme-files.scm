@@ -24,7 +24,7 @@
 )
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 (define notes-dir (user-home "/org-roam"))
 
@@ -320,4 +320,4 @@ Example:
     )))
 (testsymb 'scheme-files-service)
 
-(module-evaluated m)
+(module-evaluated)

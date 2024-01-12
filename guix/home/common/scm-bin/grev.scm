@@ -17,7 +17,7 @@ cd $dotf
 |#
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 (define* (grev #:rest args)
   "Usage:
@@ -43,4 +43,4 @@ cd $dotf
    args))
 (testsymb 'main)
 
-(module-evaluated m)
+(module-evaluated)
