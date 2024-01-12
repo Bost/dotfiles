@@ -48,7 +48,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
  )
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 (define-public syst-config
   (operating-system
@@ -172,7 +172,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                     'ext4))
                            (type "ext4")) %base-file-systems))))
 
-(module-evaluated m)
+(module-evaluated)
 
 ;; operating-system (or image) must be returned
 syst-config

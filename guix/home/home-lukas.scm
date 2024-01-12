@@ -58,7 +58,7 @@ guix home --allow-downgrades --cores=24 \
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 ;; See also $dotf/.bashrc.martin
 (define home-env
@@ -84,5 +84,5 @@ guix home --allow-downgrades --cores=24 \
      (base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)
 
-(module-evaluated m)
+(module-evaluated)
 home-env

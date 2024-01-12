@@ -5,7 +5,7 @@
 )
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 (define-public (package-derivation-output! package)
   "
@@ -36,4 +36,4 @@ In the REPL invoke:
   ;; => ("." ".." "bin" "etc" "include" "lib" "libexec" "sbin" "share" "var" "x86_64-unknown-linux-gnu")
   package-drv-out)
 
-(module-evaluated m)
+(module-evaluated)
