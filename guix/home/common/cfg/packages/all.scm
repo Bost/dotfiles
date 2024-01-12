@@ -625,7 +625,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    gsettings-desktop-schemas
    gtk
-   ;; libreoffice ;; replaced by inferior version
+   libreoffice
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
 
@@ -740,7 +740,7 @@ home-profile. Comment them out."
    (list
     ;; the e18af936ff85442a841886c9434f862fb595a8b2 leads to failing
     ;; compilation: No package 'mdds-2.0'
-    (list "libreoffice"           "a4db19d8e07eeb26931edfde0f0e6bca4e0448d3")
+    ;; (list "libreoffice"        "a4db19d8e07eeb26931edfde0f0e6bca4e0448d3")
 
 ;;; virt-viewer 7.0 works fine
 ;;;    (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
