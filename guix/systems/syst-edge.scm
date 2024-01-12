@@ -35,8 +35,9 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
  cups desktop networking ssh
+ vnc      ; for xvnc-service-type
+ lightdm  ; for lightdm-service-type
  xorg     ; for gdm-service-type
- sddm     ; for sddm-service-type
  )
 
 ;; no need to write: #:use-module (gnu packages <module>)
@@ -49,6 +50,38 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 
 (evaluating-module)
 
+(define keyb-layout
+  (keyboard-layout
+   "us,de,sk,fr" "altgr-intl,,qwerty,"
+   #:options '("compose:menu,grp:ctrls_toggle")))
+
+(define xorg-conf
+  (xorg-configuration (keyboard-layout keyb-layout)))
+
+(define lightdm-conf
+  (lightdm-configuration
+   (xorg-configuration xorg-conf)
+   ;; (allow-empty-passwords? #t)
+
+   ;; XDMCP is not encrypted; it has more modern
+   ;; alternatives VNC, RDP
+   ;; (xdmcp? #t)
+
+   ;; should be the TigerVNC for remote desktop access
+   (vnc-server? #t)
+
+   ;; (vnc-server-command
+   ;;  (file-append tigervnc-server "/bin/Xvnc"
+   ;;               "  -SecurityTypes None"))
+   ;; (seats
+   ;;  (list (lightdm-seat-configuration
+   ;;         (name "*")
+   ;;         (user-session "ratpoison"))))
+   ))
+
+(define lightdm-srvc
+  (service lightdm-service-type lightdm-conf))
+
 (define-public syst-config
   (operating-system
     (kernel linux)
@@ -57,9 +90,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
     (locale "en_US.utf8")
     (timezone "Europe/Berlin")
     (keyboard-layout ; keyboard-layout for the console
-     (keyboard-layout
-      "us,de,sk,fr" "altgr-intl,,qwerty,"
-      #:options '("compose:menu,grp:ctrls_toggle")))
+     keyb-layout)
     (host-name host-edge)
 
     ;; The list of user accounts ('root' is implicit).
@@ -117,37 +148,55 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 
     ;; System services. Search for available services by
     ;;     guix system search KEYWORD
+
     (services
-     (append (list
-              (service xfce-desktop-service-type)
+     (append
+      (list
+       ;; ntp-service-type for system clock sync is in the
+       ;; %desktop-services by default
 
-              ;; ntp-service-type for system clock sync is in the
-              ;; %desktop-services by default
+       ;; To configure OpenSSH, pass an 'openssh-configuration'
+       ;; record as a second argument to 'service' below.
+       (service openssh-service-type)
 
-              ;; To configure OpenSSH, pass an 'openssh-configuration'
-              ;; record as a second argument to 'service' below.
-              (service openssh-service-type)
-
-              (set-xorg-configuration
-               (xorg-configuration (keyboard-layout keyboard-layout)))
-
-              (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
-              (udev-rules-service 'android android-udev-rules
-                                  #:groups '("adbusers")))
-
-             ;; This is the default list of services we are appending to.
-             (modify-services %desktop-services
-               (guix-service-type
-                config => (guix-configuration
-                           (inherit config)
-                           (substitute-urls
-                            (append (list "https://substitutes.nonguix.org")
-                                    %default-substitute-urls))
-                           (authorized-keys
+       (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
+       (udev-rules-service 'android android-udev-rules
+                           #:groups '("adbusers")))
+      ;; This is the default list of services we are appending to.
+      (modify-services
+          (append (list
+                   ;; TODO lightdm doesn't work properly. The login fails
+                   ;; lightdm-srvc
+                   (service xvnc-service-type (xvnc-configuration
+                                               (display-number 5)
+                                               (localhost? #f)
+                                               (geometry
+                                                "1920x1080"
+                                                ;; "2880x1620"
+                                                ;; "2880x1800"
+                                                ;; "2880x1800*"
+                                                )
+                                               #;(xdmcp? #t)
+                                               #;(inetd? #t)))
+                   (service xfce-desktop-service-type))
+                  %desktop-services)
+        (guix-service-type
+         config => (guix-configuration
+                    (inherit config)
+                    (substitute-urls
+                     (append (list "https://substitutes.nonguix.org")
+                             %default-substitute-urls))
+                    (authorized-keys
 ;;; The signing-key.pub should be obtained by
 ;;;   wget https://substitutes.nonguix.org/signing-key.pub
-                            (append (list (local-file "./signing-key.pub"))
-                                    %default-authorized-guix-keys)))))))
+                     (append (list (local-file "./signing-key.pub"))
+                             %default-authorized-guix-keys))))
+        (gdm-service-type config => (gdm-configuration
+                                     (inherit config)
+                                     (auto-suspend? #f)
+                                     #;(xdmcp? #t)))
+        #;(delete gdm-service-type))))
+    
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets (list "/boot/efi"))
