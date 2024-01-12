@@ -20,6 +20,7 @@
 (evaluating-module)
 
 (use-package-modules
+ vnc
  rdesktop
  w3m
  dns
@@ -700,6 +701,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
        xorgxrdp ;; Xorg drivers for xrdp
        )
       (list ;; the clients
+       tigervnc-client
        rdesktop)))
 
 (define (xfce-packages)
