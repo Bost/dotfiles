@@ -100,13 +100,33 @@ Works also for functions returning and accepting multiple values."
   (format #t "WARN ~a (equal? (module-name-for-logging) m): ~a\n"
           m (equal? (module-name-for-logging) m)))
 
-(define* (evaluating-module m #:key (show #f))
-  (when show
-    (format #t "~a evaluating module ...\n" m)))
+(define-syntax evaluating-module
+  (syntax-rules ()
+    [(_ show)
+     (begin
+       (let [(m (module-name-for-logging))]
+         (when show
+           (format #t "~a evaluating module ...\n" m))))]
+    [(_)
+     (begin
+       (let [(m (module-name-for-logging))
+             (show #f)]
+         (when show
+           (format #t "~a evaluating module ...\n" m))))]))
 
-(define* (module-evaluated m #:key (show #f))
-  (when show
-    (format #t "~a module evaluated\n" m)))
+(define-syntax module-evaluated
+  (syntax-rules ()
+    [(_ show)
+     (begin
+       (let [(m (module-name-for-logging))]
+         (when show
+           (format #t "~a module evaluated\n" m))))]
+    [(_)
+     (begin
+       (let [(m (module-name-for-logging))
+             (show #f)]
+         (when show
+           (format #t "~a module evaluated\n" m))))]))
 
 (define-syntax testsymb
   (syntax-rules ()
@@ -647,4 +667,4 @@ or the CLIENT-CMD if some process ID was found."
 ;; (define g (partial echo #:string))
 ;; (proper-monad? m x f g)
 
-(module-evaluated m)
+(module-evaluated)

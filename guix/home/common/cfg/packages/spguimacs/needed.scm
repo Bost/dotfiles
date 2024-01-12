@@ -4,7 +4,7 @@
 )
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
 ;; doesn't work
@@ -570,4 +570,4 @@
    ))
 (testsymb 'needed-packages)
 
-(module-evaluated m)
+(module-evaluated)

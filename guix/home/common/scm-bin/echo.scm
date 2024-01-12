@@ -16,7 +16,7 @@ cd $dotf
 |#
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 (define* (echo #:key (options "") (string ""))
   "
@@ -79,4 +79,4 @@ Bottom
 ;; (define g (partial echo #:string))
 ;; (proper-monad? m x f g)
 
-(module-evaluated m)
+(module-evaluated)

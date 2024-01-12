@@ -20,7 +20,7 @@ cd $dotf
 |#
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 (define* (gpsf #:rest args)
   "Usage:
@@ -60,4 +60,4 @@ cd $dotf
    args))
 (testsymb 'main)
 
-(module-evaluated m)
+(module-evaluated)

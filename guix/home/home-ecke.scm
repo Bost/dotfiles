@@ -66,8 +66,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
-(define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 ;; "copying files"
 ;; there should be a service type to place particular files (or file-like
@@ -225,5 +224,5 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
      (base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)
 
-(module-evaluated m)
+(module-evaluated)
 home-env

@@ -66,7 +66,7 @@ guix home --allow-downgrades --cores=$(nproc) \
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
 (define m (module-name-for-logging))
-(evaluating-module m)
+(evaluating-module)
 
 ;; "copying files"
 ;; there should be a service type to place particular files (or file-like
@@ -224,5 +224,5 @@ guix home --allow-downgrades --cores=$(nproc) \
      (base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)
 
-(module-evaluated m)
+(module-evaluated)
 home-env
