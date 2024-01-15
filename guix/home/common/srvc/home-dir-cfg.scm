@@ -17,7 +17,6 @@
   #:use-module (ice-9 pretty-print)
 )
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 ;; ;; See https://10years.guix.gnu.org/static/slides/05-wilson.org

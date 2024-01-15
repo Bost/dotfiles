@@ -16,7 +16,6 @@
   #:use-module (srfi srfi-1)
   )
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 (use-package-modules

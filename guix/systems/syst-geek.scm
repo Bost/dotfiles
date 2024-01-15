@@ -43,7 +43,6 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
  shells   ; login shell
  )
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 (define-public syst-config

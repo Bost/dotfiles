@@ -23,7 +23,6 @@
   #:use-module (ice-9 regex)
 )
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 (define notes-dir (user-home "/org-roam"))
