@@ -28,7 +28,6 @@
             dirs-configuration
             ))
 
-(define m (module-name-for-logging))
 ;; (format #t "~a evaluating ...\n" m)
 
 ;;;

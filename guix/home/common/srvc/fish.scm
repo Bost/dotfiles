@@ -23,7 +23,6 @@
 ;;; https://fishshell.com/docs/current/cmds/abbr.html#internals
 ;;; See also https://issues.guix.gnu.org/30265
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 (define indent "")

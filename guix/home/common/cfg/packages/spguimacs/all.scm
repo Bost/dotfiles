@@ -8,7 +8,6 @@
   #:use-module (cfg packages spguimacs available)
   )
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 (define spacemacs-development-packages
