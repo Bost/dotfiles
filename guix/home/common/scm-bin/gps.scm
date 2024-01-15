@@ -19,7 +19,6 @@ cd $dotf
 
 |#
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 (define* (gps #:key remote #:allow-other-keys #:rest init-args)

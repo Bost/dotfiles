@@ -22,7 +22,6 @@
 
 |#
 
-(define m (module-name-for-logging))
 ;; (format #t "~a evaluating ...\n" m)
 
 (define (emacs-output-path)

@@ -26,7 +26,6 @@
             dgxp
             ))
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 ;; TODO consider moving dev,dotf definitions to the settings module

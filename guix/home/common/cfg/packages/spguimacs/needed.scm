@@ -3,7 +3,6 @@
   #:use-module (utils) ;; partial, m
 )
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"

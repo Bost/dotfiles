@@ -5,7 +5,6 @@
   #:use-module (guix)         ;; package-name
 )
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 ;; guix package --list-available='^emacs-' | awk '{print "\""$1"\""}'

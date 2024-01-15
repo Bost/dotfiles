@@ -4,7 +4,6 @@
   #:use-module (guix store)
 )
 
-(define m (module-name-for-logging))
 (evaluating-module)
 
 (define-public (package-derivation-output! package)
