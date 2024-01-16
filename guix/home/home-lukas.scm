@@ -57,6 +57,7 @@ guix home --allow-downgrades --cores=24 \
 ;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 ;; See also $dotf/.bashrc.martin

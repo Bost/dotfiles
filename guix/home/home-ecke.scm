@@ -66,6 +66,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 ;; "copying files"

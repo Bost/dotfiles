@@ -28,7 +28,7 @@
             dirs-configuration
             ))
 
-;; (format #t "~a evaluating ...\n" m)
+;; (evaluating-module)
 
 ;;;
 ;;; user directories.
