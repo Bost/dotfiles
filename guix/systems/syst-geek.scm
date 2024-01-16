@@ -20,6 +20,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 |#
 
 (define-module (syst-geek)
+  #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
@@ -46,17 +47,21 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define-public syst-config
+(define syst-config-linux
   (operating-system
+    (inherit base:syst-config)
     (kernel linux)
     (initrd microcode-initrd)
-    (firmware (list linux-firmware))
-    (locale "en_US.utf8")
-    (timezone "Europe/Berlin")
-    (keyboard-layout ; keyboard-layout for the console
-     (keyboard-layout
-      "us,de,sk,fr" "altgr-intl,,qwerty,"
-      #:options '("compose:menu,grp:ctrls_toggle")))
+    (firmware (list linux-firmware))))
+
+(define-public syst-config
+  (operating-system
+    (inherit syst-config-linux)
+
+    ;; keyboard-layout is not inherited
+    (keyboard-layout base:keyb-layout)
+    ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
+
     (host-name host-geek)
 
     ;; The list of user accounts ('root' is implicit).

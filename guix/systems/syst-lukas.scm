@@ -1,4 +1,5 @@
 (define-module (syst-lukas)
+  #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
@@ -36,10 +37,11 @@
 
 (define-public syst-config
   (operating-system
-    (locale "en_US.utf8")
-    (timezone "Europe/Berlin")
-    (keyboard-layout ; keyboard-layout for the console
-     (keyboard-layout "us" "altgr-intl"))
+    (inherit base:syst-config)
+
+    ;; keyboard-layout for the console
+    (keyboard-layout (keyboard-layout "us" "altgr-intl"))
+
     (host-name host-lukas)
 
 ;;; The list of user accounts ('root' is implicit).
