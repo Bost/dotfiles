@@ -20,6 +20,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 |#
 
 (define-module (syst-edge)
+  #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
@@ -82,57 +83,26 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 (define lightdm-srvc
   (service lightdm-service-type lightdm-conf))
 
-(define-public syst-config
+(define syst-config-linux
   (operating-system
+    (inherit base:syst-config)
     (kernel linux)
     (initrd microcode-initrd)
-    (firmware (list linux-firmware))
-    (locale "en_US.utf8")
-    (timezone "Europe/Berlin")
-    (keyboard-layout ; keyboard-layout for the console
-     keyb-layout)
+    (firmware (list linux-firmware))))
+
+(define-public syst-config
+  (operating-system
+    (inherit syst-config-linux)
+
+    ;; keyboard-layout is not inherited
+    (keyboard-layout base:keyb-layout)
+    ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
+
     (host-name host-edge)
-
-    ;; The list of user accounts ('root' is implicit).
-    (users (cons*
-            (user-account
-             (name user)
-             (comment user-full-name)
-             (group "users")
-             (home-directory home)
-
-             ;; list of group names that this user-account belongs to
-             (supplementary-groups
-              '(
-                ;; sudo etc.; See polkit-wheel-service for administrative tasks
-                ;; for non-root users
-                "wheel"
-
-                ;; network devices; WiFi network connections done by this user
-                ;; are not propagated to other users. IOW every user must know
-                ;; and type-in the WIFI passwords by him or herself.
-                "netdev"
-
-                "audio"  ;; sound card
-                "video"  ;; video devices, e.g. webcams
-                "lp"     ;; control bluetooth devices
-
-                ;; "kvm"
-                ;; "tty"
-                ;; "input"
-                ;; "docker"
-                ;; "realtime"  #| Enable realtime scheduling |#
-                )))
-
-            ;; Example of an ordinary, non-privileged user, without root
-            ;; permissions and access to home-directories of other users
-            ;; (user-account
-            ;;  (name "jimb")
-            ;;  (comment "Jim Beam")
-            ;;  (group "users")
-            ;;  (password (crypt "password" "salt")) ;; SHA-512-hashed
-            ;;  (home-directory "/home/jimb"))
-            %base-user-accounts))
+    (users (base:users-config (list
+                               "video"  ;; video devices, e.g. webcams
+                               "lp"     ;; control bluetooth devices
+                               )))
 
     ;; Packages installed system-wide.  Users can also install packages
     ;; under their own account: use 'guix search KEYWORD' to search
@@ -196,7 +166,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                      (auto-suspend? #f)
                                      #;(xdmcp? #t)))
         #;(delete gdm-service-type))))
-    
+
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets (list "/boot/efi"))

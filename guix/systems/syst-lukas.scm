@@ -1,4 +1,5 @@
 (define-module (syst-lukas)
+  #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
@@ -36,31 +37,16 @@
 
 (define-public syst-config
   (operating-system
-    (locale "en_US.utf8")
-    (timezone "Europe/Berlin")
-    (keyboard-layout ; keyboard-layout for the console
-     (keyboard-layout "us" "altgr-intl"))
+    (inherit base:syst-config)
+
+    ;; keyboard-layout for the console
+    (keyboard-layout (keyboard-layout "us" "altgr-intl"))
+
     (host-name host-lukas)
+    (users (base:users-config (list
+                               "cdrom" ;; access to CD-ROM
+                               )))
 
-;;; The list of user accounts ('root' is implicit).
-    (users (cons*
-            (user-account
-             (name user)
-             (comment
-              (begin
-                ;; (format #t "~a user-full-name: ~a\n" m user-full-name)
-                user-full-name))
-             (group "users")
-             (home-directory home)
-
-             ;; list of group names that this user-account belongs to
-             (supplementary-groups
-              ;; grant access to:
-              '("wheel"  #| sudo etc. |#
-                "netdev" #| network devices |#
-                "audio"  #| sound card |#
-                "cdrom"  #| access to CD-ROM |#)))
-            %base-user-accounts))
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
 ;;; install PACKAGE' to install a package.
