@@ -628,16 +628,16 @@ This function should only modify configuration layer settings."
 
      ;; cobol-mode
 
-     ;; org-mode-babel packages {{{
-     ;; see also org-babel-load-languages
-     (ob-racket
-      :location (recipe :fetcher github :repo "hasu/emacs-ob-racket"))
-     ;; TODO add scribble-mode pollen-mode to the racket layer; with :defer t
-     ;; (defun racket/init-pollen-mode () (use-package pollen-mode :defer t))
-     ;; (defun racket/init-scribble-mode () (use-package scribble-mode :defer t))
-     scribble-mode
-     pollen-mode
-     ;; }}}
+     ;; racket ;; ;; org-mode-babel packages {{{
+     ;; racket ;; ;; see also org-babel-load-languages
+     ;; racket ;; (ob-racket
+     ;; racket ;;  :location (recipe :fetcher github :repo "hasu/emacs-ob-racket"))
+     ;; racket ;; ;; TODO add scribble-mode pollen-mode to the racket layer; with :defer t
+     ;; racket ;; ;; (defun racket/init-pollen-mode () (use-package pollen-mode :defer t))
+     ;; racket ;; ;; (defun racket/init-scribble-mode () (use-package scribble-mode :defer t))
+     ;; racket ;; scribble-mode
+     ;; racket ;; pollen-mode
+     ;; racket ;; ;; }}}
 
      helm-cider-history
      helm-system-packages
@@ -1545,7 +1545,7 @@ before packages are loaded."
      (emacs-lisp . t)
      (C . t)
      (scheme . t)
-     (racket . t)
+     ;; racket ;; (racket . t)
      ;; Although adviced by https://github.com/hasu/emacs-ob-racket this leads
      ;; to 'ob-scribble not found' when activated:
      ;; (scribble . t)
