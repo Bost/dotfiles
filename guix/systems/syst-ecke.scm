@@ -1,4 +1,5 @@
 (define-module (syst-ecke)
+  #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
@@ -47,15 +48,11 @@
 
 (define-public syst-config
   (operating-system
-    ;; (kernel linux)
-    ;; (initrd microcode-initrd)
-    ;; (firmware (list linux-firmware))
-    (locale "en_US.utf8")
-    (timezone "Europe/Berlin")
-    (keyboard-layout ; keyboard-layout for the console
-     (keyboard-layout
-      "us,de,sk,fr" "altgr-intl,,qwerty,"
-      #:options '("compose:menu,grp:ctrls_toggle")))
+    (inherit base:syst-config)
+    ;; keyboard-layout is not inherited
+    (keyboard-layout base:keyb-layout)
+    ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
+
     (host-name host-ecke)
 
 ;;; The list of user accounts ('root' is implicit).

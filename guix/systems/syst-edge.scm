@@ -20,6 +20,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 |#
 
 (define-module (syst-edge)
+  #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
@@ -82,15 +83,21 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 (define lightdm-srvc
   (service lightdm-service-type lightdm-conf))
 
-(define-public syst-config
+(define syst-config-linux
   (operating-system
+    (inherit base:syst-config)
     (kernel linux)
     (initrd microcode-initrd)
-    (firmware (list linux-firmware))
-    (locale "en_US.utf8")
-    (timezone "Europe/Berlin")
-    (keyboard-layout ; keyboard-layout for the console
-     keyb-layout)
+    (firmware (list linux-firmware))))
+
+(define-public syst-config
+  (operating-system
+    (inherit syst-config-linux)
+
+    ;; keyboard-layout is not inherited
+    (keyboard-layout base:keyb-layout)
+    ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
+
     (host-name host-edge)
 
     ;; The list of user accounts ('root' is implicit).
@@ -196,7 +203,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                      (auto-suspend? #f)
                                      #;(xdmcp? #t)))
         #;(delete gdm-service-type))))
-    
+
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets (list "/boot/efi"))
