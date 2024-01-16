@@ -14,6 +14,7 @@
                      vnc
                      xorg)
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define disable-suspend-srvc

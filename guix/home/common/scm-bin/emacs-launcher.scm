@@ -22,7 +22,7 @@
 
 |#
 
-;; (format #t "~a evaluating ...\n" m)
+;; (evaluating-module)
 
 (define (emacs-output-path)
   "(emacs-output-path)
@@ -59,4 +59,4 @@
       cdr)
      args)))
 
-(format #t "~a module evaluated\n" m)
+(module-evaluated)
