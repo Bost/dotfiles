@@ -31,6 +31,7 @@
   #:use-module (gnu packages commencement)
 )
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define (bash-config-file name content)

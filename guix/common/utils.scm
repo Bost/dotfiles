@@ -641,14 +641,14 @@ or the CLIENT-CMD if some process ID was found."
    ;; String containing the command to execute as next
    command))
 
-(define-inlinable (pipe-bind m f)
-  (let* ((m-retcode (car m)))
-    (if (= 0 m-retcode)
+(define-inlinable (pipe-bind mv f)
+  (let* ((mv-retcode (car mv)))
+    (if (= 0 mv-retcode)
         ;; the f-function parses the output
-        (f (cadr m))
+        (f (cadr mv))
         (begin
           (format #t "~a\n" (error-command-failed))
-          m))))
+          mv))))
 
 ;; (define-monad compose-shell-commands
 ;;   (bind pipe-bind)
@@ -662,9 +662,9 @@ or the CLIENT-CMD if some process ID was found."
 ;;        ))
 
 ;; (define x "aaa")
-;; (define m (return x))
+;; (define mv (return x))
 ;; (define f (partial echo #:string))
 ;; (define g (partial echo #:string))
-;; (proper-monad? m x f g)
+;; (proper-monad? mv x f g)
 
 (module-evaluated)
