@@ -54,59 +54,9 @@
     ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
 
     (host-name host-ecke)
-
-;;; The list of user accounts ('root' is implicit).
-    (users (cons*
-            ;; Password for some new <user> must be set by 'sudo passwd <user>'. See
-            ;; https://guix.gnu.org/manual/en/html_node/User-Accounts.html
-            ;; for 'guix home' I had to create /var/guix/profiles/per-user/<user>
-            ;;   sudo mkdir /var/guix/profiles/per-user/<user>
-            ;;   sudo chown -R <user>:users /var/guix/profiles/per-user/<user>
-            #|
-            (user-account
-            (name "foo")
-            (comment "Foo")
-            (group "users")
-            (home-directory "/home/foo")
-            ;; login shell declaration. See also `packages` and:
-            ;;   ~/dev/guix/gnu/home/services/shells.scm
-            ;;   ~/dev/guix/gnu/system/shadow.scm
-            ;;   ~/dev/guix/guix/build/r-build-system.scm
-            ;;   ~/dev/guix/tests/store.scm
-            ;;   ~/dev/guix/guix/build/haskell-build-system.scm
-            ;;   ~/dev/guix/guix/scripts/environment.scm
-            ;;   ~/dev/guix/guix/scripts/home.scm
-            ;;   ~/dev/guix/guix/build/gnu-build-system.scm
-            ;;   ~/dev/guix/guix/build/utils.scm
-            ;;   ~/dev/guix/guix/build/emacs-build-system.scm
-            ;; (shell (file-append fish "/bin/fish")))
-            |#
-
-            (user-account
-             (name user)
-             (comment
-              (begin
-                ;; (format #t "~a user-full-name: ~a\n" m user-full-name)
-                user-full-name))
-             (group "users")
-             (home-directory home)
-             ;; login shell; see also `packages`
-             ;; explicitly define fish / bash:
-             ;; (shell (file-append fish "/bin/fish"))
-             (shell (file-append bash "/bin/bash"))
-
-             ;; list of group names that this user-account belongs to
-             (supplementary-groups
-              ;; grant access to:
-              '("wheel"  #| sudo etc.; See polkit-wheel-service for administrative tasks for non-root users |#
-                "netdev" #| network devices |#
-                "audio"  #| sound card |#
-
-                ;; guix system: error: supplementary group 'seat' of user 'bost' is undeclared
-                ;; "seat"   #| handle permissions for creating and managing graphical sessions |#
-
-                "video"  #| video devices, e.g. webcams |#)))
-            %base-user-accounts))
+    (users (base:users-config (list
+                               "video"  ;; video devices, e.g. webcams
+                               )))
 
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix

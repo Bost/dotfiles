@@ -4,6 +4,7 @@
   #:use-module (memo)
   #:use-module (cfg packages all)      ; for packages-to-install
   #:use-module (gnu)
+  #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
 )
 
@@ -14,6 +15,53 @@
    "us,de,sk,fr" "altgr-intl,,qwerty,"
    #:options '("compose:menu,grp:ctrls_toggle")))
 (testsymb 'keyb-layout)
+
+(define-public (users-config additional-supplementary-groups)
+  "The list of user accounts ('root' is implicit)."
+  (cons*
+   (user-account
+    (name user)
+    (comment user-full-name)
+    (group "users")
+    (home-directory home)
+    ;; login shell; see also `packages`
+    ;; explicitly define fish / bash:
+    ;; (shell (file-append fish "/bin/fish"))
+    ;; (shell (file-append bash "/bin/bash"))
+
+    ;; list of group names that this user-account belongs to
+    (supplementary-groups
+     (append
+      (list
+       ;; sudo etc.; See polkit-wheel-service for administrative tasks
+       ;; for non-root users
+       "wheel"
+
+       ;; network devices; WiFi network connections done by this user
+       ;; are not propagated to other users. IOW every user must know
+       ;; and type-in the WIFI passwords by him or herself.
+       "netdev"
+
+       "audio"  ;; sound card
+
+       ;; "kvm"
+       ;; "tty"
+       ;; "input"
+       ;; "docker"
+       ;; "realtime"  #| Enable realtime scheduling |#
+       )
+      additional-supplementary-groups)))
+
+   ;; Example of an ordinary, non-privileged user, without root
+   ;; permissions and access to home-directories of other users
+   ;; (user-account
+   ;;  (name "jimb")
+   ;;  (comment "Jim Beam")
+   ;;  (group "users")
+   ;;  (password (crypt "password" "salt")) ;; SHA-512-hashed
+   ;;  (home-directory "/home/jimb"))
+   %base-user-accounts))
+(testsymb-trace 'base:users-config)
 
 (define-public syst-config
   (operating-system

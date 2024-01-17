@@ -99,47 +99,10 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
     ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
 
     (host-name host-edge)
-
-    ;; The list of user accounts ('root' is implicit).
-    (users (cons*
-            (user-account
-             (name user)
-             (comment user-full-name)
-             (group "users")
-             (home-directory home)
-
-             ;; list of group names that this user-account belongs to
-             (supplementary-groups
-              '(
-                ;; sudo etc.; See polkit-wheel-service for administrative tasks
-                ;; for non-root users
-                "wheel"
-
-                ;; network devices; WiFi network connections done by this user
-                ;; are not propagated to other users. IOW every user must know
-                ;; and type-in the WIFI passwords by him or herself.
-                "netdev"
-
-                "audio"  ;; sound card
-                "video"  ;; video devices, e.g. webcams
-                "lp"     ;; control bluetooth devices
-
-                ;; "kvm"
-                ;; "tty"
-                ;; "input"
-                ;; "docker"
-                ;; "realtime"  #| Enable realtime scheduling |#
-                )))
-
-            ;; Example of an ordinary, non-privileged user, without root
-            ;; permissions and access to home-directories of other users
-            ;; (user-account
-            ;;  (name "jimb")
-            ;;  (comment "Jim Beam")
-            ;;  (group "users")
-            ;;  (password (crypt "password" "salt")) ;; SHA-512-hashed
-            ;;  (home-directory "/home/jimb"))
-            %base-user-accounts))
+    (users (base:users-config (list
+                               "video"  ;; video devices, e.g. webcams
+                               "lp"     ;; control bluetooth devices
+                               )))
 
     ;; Packages installed system-wide.  Users can also install packages
     ;; under their own account: use 'guix search KEYWORD' to search
