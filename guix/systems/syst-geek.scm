@@ -63,34 +63,10 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
     ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
 
     (host-name host-geek)
-
-    ;; The list of user accounts ('root' is implicit).
-    (users (cons*
-            (user-account
-             (name user)
-             (comment
-              (begin
-                ;; (format #t "~a user-full-name: ~a\n" m user-full-name)
-                user-full-name))
-             (group "users")
-             (home-directory home)
-
-             ;; list of group names that this user-account belongs to
-             (supplementary-groups
-              ;; grant access to:
-              '("wheel"  #| sudo etc.; See polkit-wheel-service for administrative tasks for non-root users |#
-                "netdev" #| network devices |#
-                "audio"  #| sound card |#
-                "video"  #| video devices, e.g. webcams |#
-                "lp"     #| control bluetooth devices |#
-
-                ;; "kvm"
-                ;; "tty"
-                ;; "input"
-                ;; "docker"
-                ;; "realtime"  #| Enable realtime scheduling |#
-                )))
-            %base-user-accounts))
+    (users (base:users-config (list
+                               "video"  ;; video devices, e.g. webcams
+                               "lp"     ;; control bluetooth devices
+                               )))
 
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
