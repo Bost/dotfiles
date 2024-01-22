@@ -129,27 +129,27 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
        ;; record as a second argument to 'service' below.
        (service openssh-service-type)
 
+       (service xfce-desktop-service-type)
+
+       ;; TODO lightdm doesn't work properly. The login fails
+       ;; lightdm-srvc
+       (service xvnc-service-type (xvnc-configuration
+                                   (display-number 5)
+                                   (localhost? #f)
+                                   (geometry
+                                    "1920x1080"
+                                    ;; "2880x1620"
+                                    ;; "2880x1800"
+                                    ;; "2880x1800*"
+                                    )
+                                   #;(xdmcp? #t)
+                                   #;(inetd? #t)))
        (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers")))
+
       ;; This is the default list of services we are appending to.
-      (modify-services
-          (append (list
-                   ;; TODO lightdm doesn't work properly. The login fails
-                   ;; lightdm-srvc
-                   (service xvnc-service-type (xvnc-configuration
-                                               (display-number 5)
-                                               (localhost? #f)
-                                               (geometry
-                                                "1920x1080"
-                                                ;; "2880x1620"
-                                                ;; "2880x1800"
-                                                ;; "2880x1800*"
-                                                )
-                                               #;(xdmcp? #t)
-                                               #;(inetd? #t)))
-                   (service xfce-desktop-service-type))
-                  %desktop-services)
+      (modify-services %desktop-services
         (guix-service-type
          config => (guix-configuration
                     (inherit config)
@@ -164,7 +164,9 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
         (gdm-service-type config => (gdm-configuration
                                      (inherit config)
                                      (auto-suspend? #f)
-                                     #;(xdmcp? #t)))
+;;; See the Warning above in the xvnc-configuration
+                                     #;(xdmcp? #t)
+                                     ))
         #;(delete gdm-service-type))))
 
     (bootloader (bootloader-configuration
