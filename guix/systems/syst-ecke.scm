@@ -91,12 +91,21 @@
 
      (append
       (list
+       ;; ntp-service-type for system clock sync is in the
+       ;; %desktop-services by default
+
        ;; To configure OpenSSH, pass an 'openssh-configuration'
        ;; record as a second argument to 'service' below.
        (service openssh-service-type)
 
-       ;; ntp-service-type for system clock sync is in the
-       ;; %desktop-services by default
+       (service xfce-desktop-service-type)
+
+       (set-xorg-configuration
+        (xorg-configuration
+         (keyboard-layout keyboard-layout))
+        sddm-service-type)
+       (service gnome-desktop-service-type)
+       (service mate-desktop-service-type)
 
        (service cups-service-type)
        ;; (udev-rules-service 'mtp libmtp)
@@ -121,16 +130,7 @@
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers")))
 
-      (modify-services
-          (append (list
-                   (set-xorg-configuration
-                    (xorg-configuration
-                     (keyboard-layout keyboard-layout))
-                    sddm-service-type)
-                   (service gnome-desktop-service-type)
-                   (service mate-desktop-service-type)
-                   (service xfce-desktop-service-type))
-                  %desktop-services)
+      (modify-services %desktop-services
         (guix-service-type
          config => (guix-configuration
                     (inherit config)
