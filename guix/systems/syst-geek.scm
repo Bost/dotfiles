@@ -83,36 +83,38 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 ;;; Below is the list of system services. To search for available services, run
 ;;; 'guix system search KEYWORD' in a terminal.
     (services
-     (append (list
-              (service xfce-desktop-service-type)
+     (append
+      (list
+       ;; ntp-service-type for system clock sync is in the
+       ;; %desktop-services by default
 
-              ;; ntp-service-type for system clock sync is in the
-              ;; %desktop-services by default
+       ;; To configure OpenSSH, pass an 'openssh-configuration'
+       ;; record as a second argument to 'service' below.
+       (service openssh-service-type)
 
-              ;; To configure OpenSSH, pass an 'openssh-configuration'
-              ;; record as a second argument to 'service' below.
-              (service openssh-service-type)
+       (service xfce-desktop-service-type)
 
-              (set-xorg-configuration
-               (xorg-configuration (keyboard-layout keyboard-layout)))
+       (set-xorg-configuration
+        (xorg-configuration (keyboard-layout keyboard-layout)))
 
-              (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
-              (udev-rules-service 'android android-udev-rules
-                                  #:groups '("adbusers")))
+       (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
+       (udev-rules-service 'android android-udev-rules
+                           #:groups '("adbusers")))
 
-             ;; This is the default list of services we are appending to.
-             (modify-services %desktop-services
-               (guix-service-type
-                config => (guix-configuration
-                           (inherit config)
-                           (substitute-urls
-                            (append (list "https://substitutes.nonguix.org")
-                                    %default-substitute-urls))
-                           (authorized-keys
-;;; The signing-key.pub should be obtained by
-;;;   wget https://substitutes.nonguix.org/signing-key.pub
-                            (append (list (local-file "./signing-key.pub"))
-                                    %default-authorized-guix-keys)))))))
+      ;; This is the default list of services we are appending to.
+      (modify-services %desktop-services
+        (guix-service-type
+         config => (guix-configuration
+                    (inherit config)
+                    (substitute-urls
+                     (append (list "https://substitutes.nonguix.org")
+                             %default-substitute-urls))
+                    (authorized-keys
+                     ;; The signing-key.pub should be obtained by
+                     ;; wget https://substitutes.nonguix.org/signing-key.pub
+                     (append (list (local-file "./signing-key.pub"))
+                             %default-authorized-guix-keys)))))))
+
     (bootloader
      (bootloader-configuration
       (bootloader grub-efi-bootloader)
