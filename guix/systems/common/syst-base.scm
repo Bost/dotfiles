@@ -8,6 +8,12 @@
   #:use-module (guix)                  ; for package-version
 )
 
+(use-service-modules
+ cups desktop networking ssh
+ xorg     ; for gdm-service-type
+ sddm     ; for sddm-service-type
+ )
+
 (evaluating-module #t)
 
 (define-public keyb-layout
@@ -61,7 +67,19 @@
    ;;  (password (crypt "password" "salt")) ;; SHA-512-hashed
    ;;  (home-directory "/home/jimb"))
    %base-user-accounts))
-(testsymb-trace 'base:users-config)
+(testsymb-trace 'users-config)
+
+(define-public services
+  (list
+   ;; ntp-service-type for system clock sync is in the
+   ;; %desktop-services by default
+
+   ;; To configure OpenSSH, pass an 'openssh-configuration'
+   ;; record as a second argument to 'service' below.
+   (service openssh-service-type)
+
+   (service xfce-desktop-service-type)))
+(testsymb-trace 'services)
 
 (define-public syst-config
   (operating-system
