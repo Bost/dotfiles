@@ -73,8 +73,7 @@
 ;;; Use an Inetd-style service, which runs the Xvnc server on demand.
 ;;; (default: #f)
                                    (inetd? #t)))
-       ;; disable-suspend-srvc
-       )
+       #;disable-suspend-srvc)
 
       ;; This is the default list of services we are appending to.
       (modify-services %desktop-services
@@ -82,16 +81,14 @@
                                      (inherit config)
                                      (auto-suspend? #f)
 ;;; See the Warning above in the xvnc-configuration
-                                     ;; (xdmcp? #t)
-                                     )))))
+                                     #;(xdmcp? #t))))))
 
-    (bootloader (bootloader-configuration
-                 (bootloader grub-bootloader)
-                 (targets (list "/dev/sda"))
-                 (keyboard-layout keyboard-layout)))
-    (swap-devices (list (swap-space
-                         (target (uuid
-                                  "a4767437-a9c8-4d57-9755-4fcd2aef73da")))))
+    (bootloader
+     (bootloader-configuration
+      (bootloader grub-bootloader)
+      (targets (list "/dev/sda"))
+      ;; keyboard-layout for the GRUB
+      (keyboard-layout keyboard-layout)))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
@@ -101,7 +98,11 @@
                            (device (uuid
                                     "cf11628d-4887-42d2-aef1-635ad5089ce1"
                                     'ext4))
-                           (type "ext4")) %base-file-systems))))
+                           (type "ext4")) %base-file-systems))
+
+    (swap-devices (list
+                   (swap-space
+                    (target (uuid "a4767437-a9c8-4d57-9755-4fcd2aef73da")))))))
 
 ((compose
   (partial format #t "~a kernel-version: ~a\n" m)
