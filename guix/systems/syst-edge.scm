@@ -161,28 +161,30 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                      ))
         #;(delete gdm-service-type))))
 
-    (bootloader (bootloader-configuration
-                 (bootloader grub-efi-bootloader)
-                 (targets (list "/boot/efi"))
-                 (keyboard-layout keyboard-layout)))
-    (swap-devices (list (swap-space
-                         (target (uuid
-                                  "875b3ddd-1d5a-4358-9285-b6fbf4007d15")))))
+    (bootloader
+     (bootloader-configuration
+      (bootloader grub-efi-bootloader)
+      (targets (list "/boot/efi"))
+      ;; keyboard-layout for the GRUB
+      (keyboard-layout keyboard-layout)))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
     ;; by running 'blkid' in a terminal.
-    (file-systems (cons* (file-system
-                           (mount-point "/boot/efi")
-                           (device (uuid "2A99-FCA1"
-                                         'fat32))
-                           (type "vfat"))
-                         (file-system
-                           (mount-point "/")
-                           (device (uuid
-                                    "61048634-de01-4e76-ae08-4e1ae09b63f5"
-                                    'ext4))
-                           (type "ext4")) %base-file-systems))))
+    (file-systems
+     (cons* (file-system
+              (mount-point "/boot/efi")
+              (device (uuid "2A99-FCA1" 'fat32))
+              (type "vfat"))
+            (file-system
+              (mount-point "/")
+              (device (uuid "61048634-de01-4e76-ae08-4e1ae09b63f5" 'ext4))
+              (type "ext4"))
+            %base-file-systems))
+
+    (swap-devices (list
+                   (swap-space
+                    (target (uuid "875b3ddd-1d5a-4358-9285-b6fbf4007d15")))))))
 
 (module-evaluated)
 
