@@ -90,17 +90,6 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
     (initrd microcode-initrd)
     (firmware (list linux-firmware))))
 
-(define-public base-services
-  (list
-  ;; ntp-service-type for system clock sync is in the
-  ;; %desktop-services by default
-
-  ;; To configure OpenSSH, pass an 'openssh-configuration'
-  ;; record as a second argument to 'service' below.
-  (service openssh-service-type)
-
-  (service xfce-desktop-service-type)))
-
 (define-public syst-config
   (operating-system
     (inherit syst-config-linux)
@@ -132,7 +121,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 
     (services
      (append
-      base-services
+      base:services
       (list
        ;; TODO lightdm doesn't work properly. The login fails
        ;; lightdm-srvc
