@@ -98,13 +98,11 @@
         sddm-service-type)
        (service gnome-desktop-service-type)
        (service mate-desktop-service-type)
-
        (service cups-service-type)
-       ;; (udev-rules-service 'mtp libmtp)
-       ;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
-       ;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
-       ;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
-       ;; see https://issues.guix.gnu.org/40454
+;;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
+;;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
+;;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
+;;; see https://issues.guix.gnu.org/40454
        ;; (modify-services base:services
        ;;                  (udev-service-type
        ;;                   config =>
@@ -139,15 +137,16 @@
         ;;   https://issues.guix.gnu.org/issue/39271
         (delete gdm-service-type))))
 
-    ;; see
-    ;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
-    ;; https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dinstall.html#Invoking-grub_002dinstall
-    ;; https://github.com/babariviere/dotfiles/blob/guix/baba/bootloader/grub.scm
-
+;;; See
+;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
+;;; https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dinstall.html#Invoking-grub_002dinstall
+;;; https://github.com/babariviere/dotfiles/blob/guix/baba/bootloader/grub.scm
     (bootloader
      (bootloader-configuration
       (bootloader grub-efi-bootloader)
       (targets '("/boot/efi1")) ;; (target "/boot/efi")
+      ;; keyboard-layout for the GRUB
+      (keyboard-layout keyboard-layout)
       (menu-entries
        (list
         (let ((linux-version "5.15.0-47"))
@@ -162,27 +161,28 @@
                               ;; value $vt_handoff is "vt.handoff=7" or
                               ;; unspecified
                               #;"$vt_handoff"))
-           (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))
-      (keyboard-layout keyboard-layout))) ; keyboard-layout for the GRUB
+           (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
 
     (file-systems
      (cons* (file-system
-              (mount-point "/")
-              (device (uuid "67ce5d9c-7af1-4435-a2a9-68651ab9a281" 'ext4))
-              (type "ext4"))
-            (file-system
               (mount-point "/boot/efi1")
               (device (uuid "DC78-41C2" 'fat32))
               (type "vfat"))
+            (file-system
+              (mount-point "/")
+              (device (uuid "67ce5d9c-7af1-4435-a2a9-68651ab9a281" 'ext4))
+              (type "ext4"))
             ;; (file-system
             ;;   (mount-point "/boot/efi2")
             ;;   (device (uuid "B513-9669" 'fat32))
             ;;   (type "vfat"))
             %base-file-systems))
+
     ;; warning: List elements of the field 'swap-devices' should now use the
     ;; <swap-space> record, as the old method is deprecated.
     ;; See "(guix) operating-system Reference" for more details.
-    (swap-devices (list (swap-space (target "/swapfile"))))))
+    (swap-devices (list
+                   (swap-space (target "/swapfile"))))))
 
 (module-evaluated)
 

@@ -111,26 +111,28 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
      (bootloader-configuration
       (bootloader grub-efi-bootloader)
       (targets (list "/boot/efi"))
+      ;; keyboard-layout for the GRUB
       (keyboard-layout keyboard-layout)))
-    (mapped-devices (list (mapped-device
-                           (source (uuid
-                                    "fe8beac5-240d-4850-b67c-347b8cf4dc7e"))
-                           (target "encrypted")
-                           (type luks-device-mapping))))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
     ;; by running 'blkid' in a terminal.
     (file-systems (cons* (file-system
+                           (mount-point "/boot/efi")
+                           (device (uuid "FC73-7111" 'fat32))
+                           (type "vfat"))
+                         (file-system
                            (mount-point "/")
                            (device "/dev/mapper/encrypted")
                            (type "ext4")
                            (dependencies mapped-devices))
-                         (file-system
-                           (mount-point "/boot/efi")
-                           (device (uuid "FC73-7111"
-                                         'fat32))
-                           (type "vfat")) %base-file-systems))))
+                         %base-file-systems))
+
+    (mapped-devices (list
+                     (mapped-device
+                      (source (uuid "fe8beac5-240d-4850-b67c-347b8cf4dc7e"))
+                      (target "encrypted")
+                      (type luks-device-mapping))))))
 
 (module-evaluated)
 
