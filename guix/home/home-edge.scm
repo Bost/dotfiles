@@ -216,7 +216,7 @@ guix home --allow-downgrades --cores=$(nproc) \
                             "/guix/home"
                             "/guix/systems"
                             ))
-                      (list (str dgxp "/packages"))
+                      (list (str dgxp "/src"))
                       )))
          ))
       ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
