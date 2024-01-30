@@ -217,7 +217,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                             "/guix/home"
                             "/guix/systems"
                             ))
-                      (list (str dgxp "/packages"))
+                      (list (str dgxp "/src"))
                       )))
          ))
       ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
