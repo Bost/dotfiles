@@ -133,7 +133,6 @@ Including these packages in the `packages-to-install' causes:
    error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
-   (@(bost gnu packages clojure) clojure)
    (@(bost gnu packages clojure) clojure-lsp)
    (@(bost gnu packages clojure) clojure-tools)
    (@(bost gnu packages babashka) babashka)
@@ -455,7 +454,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    clang
 
    ;; Use the (bost gnu packages clojure) definitions for clojure-related packages
-   ;; clojure
    ;; clojure-tools
 
    clusterssh
