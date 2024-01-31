@@ -177,13 +177,25 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
 ;;; 2. Can't store the ".emacs.d.spacemacs/private" w/o the README.md files and restore
 ;;; them after `guix home ...', since `git restore ...' overwrites the symlink
 ;;; (to the /gnu/store/).
-             (map user-dotf-to-dir
-                  (list
-                   ;; ".tmux"
-                   ".config/tmux"
-                   ".config/sway"
-                   ".config/xfce4/xfconf/xfce-perchannel-xml"
-                   "bin")))
+             ((comp
+               (partial map user-dotf-to-dir)
+               ;; (lambda (p) (format #t "############## 1.:\n~a\n" p) p)
+               (lambda (lst)
+                 (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
+                     (append (list
+                              ".lein/profiles.clj"
+                              )
+                             lst)
+                     lst))
+               ;; (lambda (p) (format #t "############## 0.:\n~a\n" p) p)
+               )
+              (list
+               ;; ".tmux"
+               ".config/tmux"
+               ".config/sway"
+               ".config/xfce4/xfconf/xfce-perchannel-xml"
+               "bin"
+               )))
     ;; (lambda (p) (format #t "############## 0.\n") p)
     )
    ;; empty list
