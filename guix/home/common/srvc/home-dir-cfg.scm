@@ -170,13 +170,13 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
 ;;;              ,(local-file (user-dotf "/.emacs.d.spacemacs/private")
 ;;;                           #:recursive? #t)))
 ;;; because:
-;;; 1. Can't store the whole ".emacs.d.spacemacs/private" since there are some README.md
-;;; files and `git ... rebase develop cycle' b/c they will be symlinked (from
-;;; the /gnu/store/).
+;;; 1. Can't store the whole ".emacs.d.spacemacs/private" since there are some
+;;; README.md files and `git ... rebase develop cycle' b/c they will be
+;;; symlinked (from the /gnu/store/).
 ;;;
-;;; 2. Can't store the ".emacs.d.spacemacs/private" w/o the README.md files and restore
-;;; them after `guix home ...', since `git restore ...' overwrites the symlink
-;;; (to the /gnu/store/).
+;;; 2. Can't store the ".emacs.d.spacemacs/private" w/o the README.md files and
+;;; restore them after `guix home ...', since `git restore ...' overwrites the
+;;; symlink (to the /gnu/store/).
              ((comp
                (partial map user-dotf-to-dir)
                ;; (lambda (p) (format #t "############## 1.:\n~a\n" p) p)
