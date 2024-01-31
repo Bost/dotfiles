@@ -880,12 +880,9 @@ home-profile. Comment them out."
           pkgs))
     ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
-      (if (or (is-system-ecke) (is-system-geek))
-          (append (packages-from-additional-channels) pkgs)
-          pkgs))
-    (lambda (pkgs)
       (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
           (append
+           (packages-from-additional-channels)
            (devel-packages)
            (kde-dependent-packages)
            (other-gui-packages)
