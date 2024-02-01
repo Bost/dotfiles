@@ -104,6 +104,8 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                "lp"     ;; control bluetooth devices
                                )))
 
+    (locale "fr_FR.utf8")
+
     ;; Packages installed system-wide.  Users can also install packages
     ;; under their own account: use 'guix search KEYWORD' to search
     ;; for packages and 'guix install PACKAGE' to install a package.
