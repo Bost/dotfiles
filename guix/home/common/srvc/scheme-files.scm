@@ -267,7 +267,6 @@ Example:
                        #:scheme-file-name "emacs-launcher")
          (service-file #:program-name "s" #:desc "spguimacs-launcher"
                        #:scheme-file-name "spguimacs-launcher")
-;;; TODO `gui' should do `cd ~/dev/guix'
 ;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
 ;;; checkout)
          (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
@@ -293,7 +292,6 @@ Example:
                   #:scheme-file-name "bat")
     (service-file #:program-name "f"   #:desc "find-alternative")
     (service-file #:program-name "gcl" #:desc "git-clone")
-    ;; TODO DRY gre.scm & grev.scm, gps.scm & gspf.scm
     (service-file #:program-name "gre" #:desc "git-remote")
     (service-file #:program-name "grev" #:desc "git-remote--verbose")
     (service-file #:program-name "gfe" #:desc "git-fetch")
@@ -308,7 +306,6 @@ Example:
     (service-file #:program-name "gs"  #:desc "git-status")
     (service-file #:program-name "gtg" #:desc "git-tag")
     (service-file #:program-name "gpg-pinentry-setup" #:desc "gpg-pinentry-setup")
-    ;; FIXME `l' doesn't list 7Sketches.toc
     (service-file #:program-name "l"   #:desc "list-dir-contents"
                   #:scheme-file-name "ls")
     (service-file #:program-name "lf"
