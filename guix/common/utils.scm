@@ -224,7 +224,9 @@ TODO what's the clojure variant?"
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
   ;; ~% is newline \n
-  (format #t "$ ~a\n" prm)
+  (if (list? prm)
+      (format #t "$ ~a\n" (string-join prm))
+      (format #t "$ ~a\n" prm))
   prm)
 
 (define* (error-command-failed #:rest args)
