@@ -307,6 +307,7 @@ Example:
     (service-file #:program-name "gpl" #:desc "git-pull--rebase")
     (service-file #:program-name "gs"  #:desc "git-status")
     (service-file #:program-name "gtg" #:desc "git-tag")
+    (service-file #:program-name "gpg-pinentry-setup" #:desc "gpg-pinentry-setup")
     ;; FIXME `l' doesn't list 7Sketches.toc
     (service-file #:program-name "l"   #:desc "list-dir-contents"
                   #:scheme-file-name "ls")
