@@ -12,6 +12,7 @@
 ;;              [#:version VERSION-SPEC]) ;; R6RS-compatible version reference
 (define-module (utils)
   #:use-module (settings)
+  #:use-module (guix build utils)
   ;; open-input-pipe
   #:use-module (ice-9 popen)
 ;;; (ice-9 readline) requires `guix install guile-readline'.
@@ -40,7 +41,11 @@
             testsymb-trace
             evaluating-module
             module-evaluated
-            ))
+            )
+  #:re-export (
+               which ;; from (guix build utils)
+               )
+  )
 
 (define m "[utils]")
 ;; (format #t "~a evaluating module ...\n" m)
@@ -556,15 +561,6 @@ or the CLIENT-CMD if some process ID was found."
     ;; prevent the 'string is read-only ...' error
     string-copy)
    "/tmp/myfile-XXXXXX"))
-
-(define-public (which binary)
-  "(which \"emacs\") => \"/home/bost/.guix-home/profile/bin/emacs\""
-  (let* ((ret (exec (string-join (list "which" binary)))))
-    (if (= 0 (car ret))
-        (let* ((output (cdr ret)))
-          (car output)
-          #| process output |#)
-        (error-command-failed))))
 
 (define-public (ends-with? s postfix)
   "(ends-with? \"/aaa/bbb/ccc/\" \"/\")

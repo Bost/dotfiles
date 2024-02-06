@@ -81,20 +81,12 @@ Usage:
 (define vmSSHPort "10022")
 (define vmApache2Port "10080")
 (define (vmCPUCores user)
-  "The VM gets 90% of the available CPUs."
+  "The VM gets all available CPUs. This script runs as root, however the $cores
+environment variable is not available for the root user."
   ((compose
     (partial format #f "cpus=~s")
-    inexact->exact
-    round
-    (partial * 0.9)
-    string->number
-    (lambda (ret)
-      (if (= 0 (car ret))
-          (let* ((output (cdr ret)))
-            (car output))
-          (error-command-failed)))
-    exec)
-   (list "sudo" (string-append "--user=" user) "nproc")))
+    number->string)
+   ((@(ice-9 threads) current-processor-count))))
 
 #|
 See https://www.qemu.org/docs/master/system/qemu-cpu-models.html
