@@ -9,7 +9,7 @@
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
 source /etc/profile && dx=$HOME/dev/dotfiles/guix
-guix home --allow-downgrades --cores=24 \
+guix home --allow-downgrades --cores=$cores \
      -L $dx/common -L $dx/home reconfigure $dx/home/home-lukas.scm
 # -L --load-path
 
@@ -71,15 +71,6 @@ guix home --allow-downgrades --cores=24 \
       #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
       list
       base:environment-variables-service
-      #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
-      (partial
-       append
-       `(
-         ("cores" . "2") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
-         ;; TODO test if the library exists:
-         ;;   test -e $LDP && set --export LD_PRELOAD $LDP
-         ;; ("LD_PRELOAD" . "/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0")
-         ))
       #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
      (base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)

@@ -10,7 +10,7 @@
 # sourcing the default bash profile and run `guix home ...` command from bash:
 
 source /etc/profile && dx=$HOME/dev/dotfiles/guix
-guix home --allow-downgrades --cores=$(nproc) \
+guix home --allow-downgrades --cores=$cores \
      -L $dx/common -L $dx/home/common reconfigure $dx/home/home-$(hostname).scm
 # -L --load-path
 
@@ -196,8 +196,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                                (user-home "/.local/share/flatpak/exports/share")
                                "/var/lib/flatpak/exports/share"
                                (getenv "XDG_DATA_DIRS"))))
-
-         ("cores" . "22") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
          ("dec"   . ,(user-home "/dec"))
          ("der"   . ,(user-home "/der"))
          ;; guile / guix load-path
