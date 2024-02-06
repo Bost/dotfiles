@@ -204,6 +204,8 @@
      ;; TODO unify value of `bin' with the value in the `PATH' definition
      ("bin"   . ,(user-home bin-dirpath))
      ("cheat" . ,(user-dev "/cheat"))
+     ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
+     ("cores" . ,(number->string ((@(ice-9 threads) current-processor-count))))
      ("dotf"  . ,(user-dev "/dotfiles"))
      ("dgx"   . ,(user-dev "/guix"))
      ("dgxp"  . ,(user-dev "/guix-packages"))

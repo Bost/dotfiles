@@ -9,7 +9,7 @@
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
 source /etc/profile && dx=$HOME/dev/dotfiles/guix
-guix home --allow-downgrades --cores=24 \
+guix home --allow-downgrades --cores=$cores \
      -L $dx/common -L $dx/home reconfigure $dx/home/home-geek.scm
 # -L --load-path
 
@@ -250,7 +250,6 @@ guix home --allow-downgrades --cores=24 \
                                "/var/lib/flatpak/exports/share"
                                (getenv "XDG_DATA_DIRS"))))
 
-         ("cores" . "4") ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
          ("dec"   . ,(user-home "/dec"))
          ("der"   . ,(user-home "/der"))
          ))
