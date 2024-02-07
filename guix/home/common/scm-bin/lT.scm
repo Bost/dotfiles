@@ -15,6 +15,8 @@ cd $dotf
 
 |#
 
+(evaluating-module)
+
 (define* (lT #:rest args)
   "List directory content sorted by time, oldest on top.
 
@@ -49,3 +51,6 @@ Usage:
     (partial apply cdr)
     #;dbg)
    args))
+(testsymb 'main)
+
+(module-evaluated)

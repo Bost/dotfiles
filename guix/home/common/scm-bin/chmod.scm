@@ -7,10 +7,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (chmod) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ chmod) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/chmod.scm 
+
 |#
+
+(evaluating-module)
 
 ;; new implementation
 (define* (chmod #:rest args)
@@ -35,4 +40,6 @@
     (partial cons* (string-append "chmod +" modifier))
     cdr)
    args))
+(testsymb 'main)
 
+(module-evaluated)

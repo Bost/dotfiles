@@ -11,10 +11,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (spag) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ spag) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/spag.scm 
+
 |#
+
+(evaluating-module)
 
 (define* (git-spacemacs #:rest args)
   (let ((sp-path (str home "/" spacemacs-dir)))
@@ -29,3 +34,6 @@
         (git-spacemacs "fetch" "--tags" "origin" "develop")
         (git-spacemacs "rebase" "origin/develop" "develop")
         (git-spacemacs "rebase" "develop" "cycle"))))
+(testsymb 'main)
+
+(module-evaluated)

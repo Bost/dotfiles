@@ -7,10 +7,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gg) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ gg) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/gg.scm 
+
 |#
+
+(evaluating-module)
 
 (define (main args)
   ((compose
@@ -19,3 +24,6 @@
     (lambda (p) (append '("git" "gui") p '("&")))
     cdr)
    args))
+(testsymb 'main)
+
+(module-evaluated)

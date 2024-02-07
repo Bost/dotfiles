@@ -5,13 +5,17 @@
   #:export (main ls))
 
 #|
+
 #!/usr/bin/env -S guile \\
 -L ./guix/common -L ./guix/home/common -e (scm-bin\ ls) -s
 !#
 
 cd $dotf
 ./guix/home/common/scm-bin/ls.scm /home/bost/.lein
+
 |#
+
+(evaluating-module)
 
 (define* (ls #:rest args)
   "Usage:
@@ -63,3 +67,6 @@ cd $dotf
     (partial apply cdr)
     #;dbg)
    args))
+(testsymb 'main)
+
+(module-evaluated)

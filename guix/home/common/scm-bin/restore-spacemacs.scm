@@ -13,13 +13,17 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -l spag.scm -e (restore-spacemacs) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ restore-spacemacs) -s
 !#
+
+cd $dotf
+./guix/home/common/scm-bin/restore-spacemacs.scm 
 
 |#
 
-(define* (restore-spacemacs #:rest args)
+(evaluating-module)
 
+(define* (restore-spacemacs #:rest args)
   #;
   (eval `(1+ ,(append `(+ 1 2) (list 3 4))) (interaction-environment))
   #;
@@ -43,3 +47,6 @@
 
 (define (main args)
   (restore-spacemacs))
+(testsymb 'main)
+
+(module-evaluated)

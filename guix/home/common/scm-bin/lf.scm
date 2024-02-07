@@ -16,6 +16,8 @@ cd $dotf
 
 |#
 
+(evaluating-module)
+
 ;;; TODO get the content of the current working directory, i.e emulate the
 ;;; globing expansion of "{*,.*}"
 (define* (lf #:rest args)
@@ -50,3 +52,6 @@ cd $dotf
     (partial apply cdr)
     #;dbg)
    args))
+(testsymb 'main)
+
+(module-evaluated)
