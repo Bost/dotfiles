@@ -1,8 +1,6 @@
 ;;; This module is required by some of the scm-bin CLI utilities. The output of
 ;;; the `format' will also appear in the console such a utility is executed.
 
-;; TODO add --dry-run parameter to every exec* command
-
 ;; TODO create a package installable by `guix install my=utils`
 ;; See: jaro the resource opener - an alternative to xdg-open
 ;; https://github.com/isamert/jaro/blob/master/jaro
@@ -264,6 +262,16 @@ TODO what's the clojure variant?"
     yyy
 /some/path")
 
+(define dry-run-prm "--gx-dry-run")
+
+(define* (exec-or-dry-run exec-function args)
+  (if (or (and (list? args) (member dry-run-prm args))
+          (and (string? args) (string-contains args dry-run-prm)))
+      args
+      (if (list? args)
+          (apply exec-function args)
+          (exec-function args))))
+
 (define* (exec-system* #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
@@ -271,7 +279,7 @@ $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
   ((compose
-    (partial apply system*)
+    (partial exec-or-dry-run system*)
     dbg-exec
     string-split-whitespace)
    args))
@@ -330,7 +338,7 @@ Returns a list of strings"
   "Execute the COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings."
   ((compose
-    system
+    (partial exec-or-dry-run system)
     dbg-exec
     cmd->string
     (lambda (cmd) (list cmd "&" "disown"))
@@ -371,7 +379,7 @@ COMMAND can be a string or a list of strings."
 ;;         (let* ((error-port (open-output-string)))
 ;;           (output-port? error-port)))
 
-(define (exec-with-error-to-string cmd)
+(define (exec-with-error-to-string commad)
   "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
 from the subprocess. Wait for the command to terminate and return 3 values:
 - `#t' if the port was successfully closed or `#f' if it was already closed.
@@ -379,23 +387,36 @@ from the subprocess. Wait for the command to terminate and return 3 values:
 - a string containing standard error output
 
 Usage:
+(use-module (ice-9 receive)) ;; or (srfi srfi-8)
 (receive (retval stdout stderr)
     (exec-with-error-to-string \"echo to-stdout; echo to-stderr >&2\")
   (format #t \"receive retval:~a\\n\" retval)
   (format #t \"receive stdout:~a\\n\" stdout)
   (format #t \"receive stderr:~a\\n\" stderr))
 "
-  (let* ((err-cons (pipe))
-         (port (with-error-to-port (cdr err-cons)
-                 (lambda () (open-input-pipe cmd))))
-         ;; the err-cons buffer size is 16 MiB
-         (_ (setvbuf (car err-cons) 'block (* 1024 1024 16)))
-         (stdout (read-delimited "" port)))
-    (values
-     (close-port (cdr err-cons))
-     stdout
-     ;; the port must be closed before calling the following
-     (read-delimited "" (car err-cons)))))
+  (define (exec-function commad)
+    (if (string-contains commad dry-run-prm)
+        (values "" "" "")
+        (let* ((err-cons (pipe))
+               (port (with-error-to-port (cdr err-cons)
+                       (lambda () (open-input-pipe commad))))
+               ;; the err-cons buffer size is 16 MiB
+               (_ (setvbuf (car err-cons) 'block (* 1024 1024 16)))
+               (stdout (read-delimited "" port)))
+          (values
+           (close-port (cdr err-cons))
+           stdout
+           ;; the port must be closed before calling the following
+           (read-delimited "" (car err-cons))))))
+
+  ((compose
+    ;; Can't use the (partial exec-or-dry-run exec-function) since the
+    ;; exec-function returns multiple values contains and the exec-or-dry-run is
+    ;; able to return only one value.
+    exec-function
+    dbg-exec
+    cmd->string)
+   commad))
 
 (define-public (exec command)
   "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
@@ -420,16 +441,17 @@ Usage:
   ;; TODO
   ;; Scheme Procedure: chdir str
   ;; Change the current working directory to str. The return value is unspecified.
+  (define (exec-function command)
+    ;; Can't use the `call-with-port' since the exit-val is needed.
+    (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
+           ;; the `read-all-strings' must be called before `close-pipe'.
+           (results (read-all-strings port)))
+      (cons
+       (status:exit-val (close-pipe port))
+       results)))
 
   ((compose
-    (lambda (command)
-      ;; Can't use the `call-with-port' since the exit-val is needed.
-      (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
-             ;; the `read-all-strings' must be called before `close-pipe'.
-             (results (read-all-strings port)))
-        (cons
-         (status:exit-val (close-pipe port))
-         results)))
+    (partial exec-or-dry-run exec-function)
     dbg-exec
     cmd->string)
    command))
