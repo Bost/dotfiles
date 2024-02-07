@@ -8,10 +8,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (search-notes) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ search-notes) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/search-notes.scm 
+
 |#
+
+(evaluating-module)
 
 (define (main files args)
   (let* ((ret
@@ -36,5 +41,8 @@
           #| process output |#
           (map (partial format #t "~a\n") output))
         (error-command-failed))))
+(testsymb 'main)
+
+(module-evaluated)
 
 ;; (main "shells" (list "_" "title"))

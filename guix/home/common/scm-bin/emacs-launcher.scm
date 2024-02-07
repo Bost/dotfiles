@@ -17,12 +17,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (emacs-launcher) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-launcher) -s
 !#
+
+cd $dotf
+./guix/home/common/scm-bin/emacs-launcher.scm 
 
 |#
 
-;; (evaluating-module)
+(evaluating-module)
 
 (define (emacs-output-path)
   "(emacs-output-path)
@@ -58,5 +61,6 @@
       (lambda (prms) (if (null? prms) '("./") prms))
       cdr)
      args)))
+(testsymb 'main)
 
 (module-evaluated)

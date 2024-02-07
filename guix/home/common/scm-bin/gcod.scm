@@ -7,10 +7,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gcod) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ gcod) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/gcod.scm 
+
 |#
+
+(evaluating-module)
 
 (define* (gcod #:rest args)
   "Usage:
@@ -32,4 +37,6 @@
     (partial apply cdr)
     #;dbg)
    args))
+(testsymb 'main)
 
+(module-evaluated)

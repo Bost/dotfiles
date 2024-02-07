@@ -9,10 +9,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (extract) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ extract) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/extract.scm 
+
 |#
+
+(evaluating-module)
 
 (define* (extract #:rest args)
   "Usage:
@@ -64,3 +69,6 @@
     (partial apply cdr)
     #;dbg)
    args))
+(testsymb 'main)
+
+(module-evaluated)
