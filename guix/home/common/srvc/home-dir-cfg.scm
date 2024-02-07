@@ -73,10 +73,13 @@
 
 (define home-dir-cfg-srvc-files
   ((comp
-    ;; (lambda (p) (format #t "############## 3.p:\n~a\n" (pretty-print->string p)) p)
+    ;; (lambda (p) (format #t "######## 3.p:\n~a\n" (pretty-print->string p)) p)
     (partial append
              ((comp
-               ;; (partial append (list (local-dotfile "/" (str (basename xdg-config-home) "/guix-gaming-channels/games.scm"))))
+               ;; (partial append (list (local-dotfile
+               ;;                        "/"
+               ;;                        (str (basename xdg-config-home)
+               ;;                             "/guix-gaming-channels/games.scm"))))
                list create-channels-scm
                (lambda (lst)
                  (if (or (is-system-ecke) (is-system-edge))
@@ -141,7 +144,7 @@
                          (url
                           "https://github.com/Bost/guix-packages"
                           #;,(format #f "file://~a/dev/guix-packages" home))))))
-    ;; (lambda (p) (format #t "############## 2.\n") p)
+    ;; (lambda (p) (format #t "######## 2.\n") p)
     (partial append
              ((comp
                (partial remove unspecified-or-empty-or-false?)
@@ -163,7 +166,7 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
                ".emacs-profiles.el"
                )))
 
-    ;; (lambda (p) (format #t "############## 1.\n") p)
+    ;; (lambda (p) (format #t "######## 1.\n") p)
     (partial append
 ;;; This can't be used:
 ;;;           `((".emacs.d.spacemacs/private" ;; destination
@@ -179,7 +182,7 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
 ;;; symlink (to the /gnu/store/).
              ((comp
                (partial map user-dotf-to-dir)
-               ;; (lambda (p) (format #t "############## 1.:\n~a\n" p) p)
+               ;; (lambda (p) (format #t "######## 1.:\n~a\n" p) p)
                (lambda (lst)
                  (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
                      (append (list
@@ -187,7 +190,7 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
                               )
                              lst)
                      lst))
-               ;; (lambda (p) (format #t "############## 0.:\n~a\n" p) p)
+               ;; (lambda (p) (format #t "######## 0.:\n~a\n" p) p)
                )
               (list
                ;; ".tmux"
@@ -196,7 +199,7 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
                ".config/xfce4/xfconf/xfce-perchannel-xml"
                "bin"
                )))
-    ;; (lambda (p) (format #t "############## 0.\n") p)
+    ;; (lambda (p) (format #t "######## 0.\n") p)
     )
    ;; empty list
    (list)))

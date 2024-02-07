@@ -29,6 +29,7 @@ cd $dotf
       (partial format #f "gpg-agent --pinentry-program=~a --daemon")
       cadr
       exec
+      ;; TODO see $GUIX_CHECKOUT/guix/guix/build/utils.scm
       (partial format #f "which ~a"))
      pinentry-binary)))
 

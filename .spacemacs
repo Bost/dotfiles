@@ -1904,6 +1904,8 @@ Some binding snippets / examples:
      ("C-s-<backspace>" . crux-kill-line-backwards) ; kill-line-backward
      ("s-j"             . crux-top-join-line)
 
+     ;; TODO xah-backward-block xah-forward-block were removed (by a mistake)
+     ;; in cf18cf842d4097934f58977665925eff004702e2
      ("<C-up>"            . xah-backward-block)
      ("<C-down>"          . xah-forward-block)
      ;; TODO make pg-up / pg-down major-mode specific
