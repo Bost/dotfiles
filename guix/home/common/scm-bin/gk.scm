@@ -7,10 +7,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gk) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ gk) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/gk.scm 
+
 |#
+
+(evaluating-module)
 
 (define (main args)
   ((compose
@@ -19,3 +24,6 @@
     (lambda (p) (append '("gitk") (if (null? p) '("--all") p) '("&")))
     cdr)
    args))
+(testsymb 'main)
+
+(module-evaluated)

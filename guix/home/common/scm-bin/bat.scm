@@ -8,10 +8,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (bat) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ bat) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/bat.scm 
+
 |#
+
+(evaluating-module)
 
 (define* (bat #:rest args)
   "Usage:
@@ -33,4 +38,6 @@
     (partial apply cdr)
     #;dbg)
    args))
+(testsymb 'main)
 
+(module-evaluated)
