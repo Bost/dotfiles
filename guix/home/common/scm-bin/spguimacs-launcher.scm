@@ -17,12 +17,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (spguimacs-launcher) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ spguimacs-launcher) -s
 !#
+
+cd $dotf
+./guix/home/common/scm-bin/spguimacs-launcher.scm 
 
 |#
 
-;; (evaluating-module)
+(evaluating-module)
 
 (define (emacs-output-path)
   "(emacs-output-path)

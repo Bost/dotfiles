@@ -7,10 +7,15 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./ -e (gcl) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ gcl) -s
 !#
 
+cd $dotf
+./guix/home/common/scm-bin/gcl.scm 
+
 |#
+
+(evaluating-module)
 
 (define* (gcl #:rest args)
   "Usage:
@@ -91,8 +96,7 @@ Options:
 
 ;; https://gitlab.com/alezost-config/guile/-/blob/master/scripts/profile
 (define* (main #:rest args)
-  (
-   (compose
+  ((compose
     (partial apply gcl)
     (partial apply cdr)
     #;dbg)
@@ -107,5 +111,7 @@ Options:
         ))
     (partial apply cdr)
     #;dbg)
-   args)
-  )
+   args))
+(testsymb 'main)
+
+(module-evaluated)
