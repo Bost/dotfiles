@@ -1,6 +1,8 @@
 ;;; This module is required by some of the scm-bin CLI utilities. The output of
 ;;; the `format' will also appear in the console such a utility is executed.
 
+;; TODO add --dry-run parameter to every exec* command
+
 ;; TODO create a package installable by `guix install my=utils`
 ;; See: jaro the resource opener - an alternative to xdg-open
 ;; https://github.com/isamert/jaro/blob/master/jaro
@@ -60,11 +62,6 @@
 ;;;;;; beg: testsymb, testsymb-trace
 
 ;; neither `=' nor `eqv?' work
-(define eq-op? string-ci=?)
-(define-public (s+ . rest) (apply (partial lset-union eq-op?) rest))
-(define-public (s- . rest) (apply (partial lset-difference eq-op?) rest))
-(define-public (sx . rest) (apply (partial lset-intersection eq-op?) rest))
-
 (define-public cnt length+)
 
 (define-public (partial fun . args)
@@ -87,6 +84,11 @@ Works also for functions returning and accepting multiple values."
 ((juxt a b c) x) => (list (a x) (b x) (c x))"
   (lambda args
     (map (lambda (fn) (apply fn args)) fns)))
+
+(define eq-op? string-ci=?)
+(define-public (s+ . rest) (apply (partial lset-union eq-op?) rest))
+(define-public (s- . rest) (apply (partial lset-difference eq-op?) rest))
+(define-public (sx . rest) (apply (partial lset-intersection eq-op?) rest))
 
 ;; (warn ...) doesn't print anything
 (define (my=warn s)

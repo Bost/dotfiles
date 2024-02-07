@@ -32,7 +32,6 @@ Requires:
 
 ;; TODO if remote/origin is not present then try to use remote/upstream, then
 ;; remote/gitlab, then remote/github
-;; TODO add --dry-run parameter
 
 #|
 (define (test values)
