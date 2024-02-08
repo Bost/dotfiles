@@ -205,6 +205,7 @@ guix home --allow-downgrades --cores=$cores \
                       (list dgx)
                       (map user-dev
                            (list
+                            "/guile"
                             "/nonguix"
                             "/andrew-rde/src"))
                       (map user-dotf

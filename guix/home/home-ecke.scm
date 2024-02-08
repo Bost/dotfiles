@@ -205,6 +205,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
                       (list dgx)
                       (map user-dev
                            (list
+                            "/guile"
                             "/nonguix"
                             "/andrew-rde/src"))
                       (map user-dotf
