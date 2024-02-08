@@ -535,6 +535,9 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     ;; Guile IDE
+     arei
+
      ;; Real-time collaborative editing environment
      crdt
 
