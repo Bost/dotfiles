@@ -757,6 +757,14 @@ home-profile. Comment them out."
     )))
 (testsymb 'inferior-pkgs)
 
+(define (devel-guile-ide-arei-packages)
+  (list
+   emacs-arei    ;; Guile IDE
+   guile-next
+   guile-ares-rs ;; Asyncronous Reliable Extensible Sleek RPC Server for Guile
+   ))
+(testsymb 'devel-guile-ide-arei-packages)
+
 (define (devel-packages)
   (append
    ;; (fennel-devel-packages)
@@ -764,6 +772,7 @@ home-profile. Comment them out."
    ;; (elixir-devel-packages)
    ;; (agda-devel-packages)
    (email-in-emacs-packages)
+   (devel-guile-ide-arei-packages)
    ;; remove packages from this list if their inferior version should be used
    (list
 ;;; Make sure that emacs is also in the default profile, i.e. installed by
