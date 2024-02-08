@@ -2472,6 +2472,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ;; ("s-;"    . my=racket-toggle-reader-comment-current-sexp)
                  ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
                  ("s-d"    . geiser-eval-definition)
+                 ("s-e"    . geiser-eval-last-sexp)
                  ("s-x"    . geiser-mode-switch-to-repl))
       (bind-chords :map map
                    ("le" . my=scheme-insert-let*)
@@ -2486,6 +2487,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ("M-s-d"  . my=racket-insert-fn)
                  ("M-s-p"  . my=insert-partial)
                  ("s-\\"   . my=racket-toggle-reader-comment-fst-sexp-on-line)
+                 ("s-e"    . racket-eval-last-sexp)
                  ("s-o"    . racket-run-and-switch-to-repl)
                  ("s-x"    . racket-repl))
       (bind-chords :map map
