@@ -20,6 +20,7 @@
 (evaluating-module)
 
 (use-package-modules
+ uml
  vnc
  rdesktop
  w3m
@@ -760,6 +761,8 @@ home-profile. Comment them out."
 (define (devel-guile-ide-arei-packages)
   (list
    emacs-arei    ;; Guile IDE
+   emacs-plantuml-mode ;; Edit and preview PlantUML diagrams
+   plantuml ;; Draw UML diagrams from simple textual description  
    guile-next
    guile-ares-rs ;; Asyncronous Reliable Extensible Sleek RPC Server for Guile
    ))

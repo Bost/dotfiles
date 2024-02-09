@@ -531,8 +531,10 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
-     ;; Guile IDE
-     arei
+     ;; {{{ Guile IDE
+     arei          ;; Guile IDE
+     plantuml-mode ;; Edit and preview PlantUML diagrams
+     ;; }}}
 
      ;; Real-time collaborative editing environment
      crdt
@@ -1411,7 +1413,27 @@ before packages are loaded."
   (defun shell-path () (getenv "SHELL"))
   ;; (defun shell-path () (my=shell-which "fish"))
 
+  (defun my=shell-readlink (file)
+    "Execute the `readlink FILE` command in the current shell."
+    (funcall
+     (-compose
+      ;; TODO implement fallback to bash if fish not found
+      #'string-trim-right
+      #'shell-command-to-string
+      (lambda (strings) (string-join strings " "))
+      (-partial #'list "readlink"))
+     file))
+
   (setq                                 ; of dotspacemacs/user-config
+   org-plantuml-jar-path (funcall
+                          (-compose
+                           (-partial #'format "%s/share/java/plantuml.jar")
+                           #'directory-file-name
+                           #'directory-file-name
+                           #'my=shell-readlink
+                           #'my=shell-which)
+                          "plantuml")
+
    ;; Costs money https://platform.openai.com/account/usage
    ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
    ;; Change it using `(chatgpt-shell-swap-model-version)'
@@ -1561,7 +1583,8 @@ before packages are loaded."
      (js . t)
      ;; (kotlin . t)
      (lisp . t)
-     ;; (ruby . t)
+     (ruby . t)     ;; also needed for plantuml - UML diagrams
+     (plantuml . t) ;; UML diagrams
      (haskell . t)
      ))
 
