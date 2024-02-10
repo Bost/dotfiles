@@ -2533,6 +2533,15 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
             `((geiser-mode-hook      ,(my=fn-kbind-scheme geiser-mode-map))
               (geiser-repl-mode-hook ,(my=fn-kbind-scheme geiser-repl-mode-map)))))
 
+  (with-eval-after-load 'scheme-mode
+    (font-lock-add-keywords
+     'scheme-mode (mapcar (lambda (keyword)
+                            `(,(concat "(" (regexp-quote keyword) "\\>")
+                              . 'font-lock-keyword-face))
+                          '("if-let")))
+    ;; indentation for 'if-let' should be same as for e.g. 'let'.
+    (put 'if-let 'scheme-indent-function 1))
+
   ;; advice, defadvice and letf shouldn't be used:
   ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
   ;; Emacs 24.4 replaces this mechanism with advice-add
