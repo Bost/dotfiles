@@ -38,7 +38,6 @@ guix home --allow-downgrades --cores=$cores \
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
-  #:use-module (cfg packages all)
   ;; #:use-module (cfg mcron)
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
@@ -147,82 +146,6 @@ guix home --allow-downgrades --cores=$cores \
 
 ;;; TODO home-git-configuration
 
-;; See also $dotf/.bashrc.martin
-(define home-env
-  (home-environment
-   (packages (packages-to-install))
-   (services
-    ((compose
-      ;; (lambda (v) (format #t "~a 3:\n~a\n" m v) v)
-      (partial append base:services)
-      ;; (lambda (v) (format #t "~a 2:\n~a\n" m v) v)
-      list
-      base:environment-variables-service
-      ;; (lambda (v) (format #t "~a 1:\n~a\n" m v) v)
-      (partial
-       append
-       `(
-         ;; Remedy against:
-         ;; $ lein uberjar
-         ;; Release versions may not depend upon snapshots.
-         ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
-         ;; environment variable to override.
-         ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
-
-         ;; JAVA_HOME definitions - see (changes require logout & login):
-         ;;     /etc/profile.d/jdk.csh
-         ;;     /etc/profile.d/jdk.sh
-         ;;     /etc/environment
-         ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
-         ;;                             ;; "java-8-openjdk-amd64"
-         ;;                                "java-11-openjdk-amd64"))
-
-         ;; Setting the locale correctly:
-         ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
-         ;; When 'setlocale: LC_ALL: cannot change locale'
-         ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
-
-         ;; needed by `help`; e.g. `help expand`
-         ("BROWSER" . "firefox")
-
-         ;; open man-pages in nvim
-         ("MANPAGER" . "nvim +Man!")
-
-         ;; for `flatpak run ...`
-         ("XDG_DATA_DIRS" . ,((compose
-                               (lambda (lst) (string-join lst list-separator-bash)))
-                              (list
-                               (user-home "/.local/share/flatpak/exports/share")
-                               "/var/lib/flatpak/exports/share"
-                               (getenv "XDG_DATA_DIRS"))))
-
-         ("dec"   . ,(user-home "/dec"))
-         ("der"   . ,(user-home "/der"))
-         ;; guile / guix load-path
-         ("glp"  . ,((compose
-                      (lambda (lst) (string-join lst list-separator-bash)))
-                     (append
-                      (list dgx)
-                      (map user-dev
-                           (list
-                            "/guile"
-                            "/nonguix"
-                            "/andrew-rde/src"))
-                      (map user-dotf
-                           (list
-                            "/guix/common"
-                            "/guix/home/common"
-                            "/guix/systems/common"
-                            "/guix/home"
-                            "/guix/systems"
-                            ))
-                      (list (str dgxp "/src"))
-                      )))
-         ))
-      ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
-      )
-     (base:environment-vars list-separator-bash)))))
-(testsymb 'home-env)
-
+(define home-env (base:home-env-edge-ecke list-separator-bash))
 (module-evaluated)
 home-env
