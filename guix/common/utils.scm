@@ -41,6 +41,7 @@
             testsymb-trace
             evaluating-module
             module-evaluated
+            if-let
             )
   #:re-export (
                which ;; from (guix build utils)
@@ -104,6 +105,33 @@ Works also for functions returning and accepting multiple values."
 (unless (equal? (module-name-for-logging) m)
   (format #t "WARN ~a (equal? (module-name-for-logging) m): ~a\n"
           m (equal? (module-name-for-logging) m)))
+
+(define-syntax if-let
+  (syntax-rules ()
+    [(_ (var test) then)
+     (let ((var test))
+       (if var then))]
+    ;; same as the above just adding the brackets
+    [(_ ((var test)) then)
+     (let ((var test))
+       (if var then))]
+
+    [(_ (var test) then else)
+     (let ((var test))
+       (if var then else))]
+    ;; same as the above just adding the brackets
+    [(_ ((var test)) then else)
+     (let ((var test))
+       (if var then else))]))
+#|
+(if-let (result (+ 2 2))
+        (format #t "Truthy Test Passed: ~a\n" (number->string result))
+        (format #t "Truthy Test Failed: Should not reach here\n"))
+
+(if-let (result (and #f (some-computation)))
+        (format #t "Falsey Test Failed: Should not reach here\n")
+        (format #t "Falsey Test Passed: Correctly reached else clause\n"))
+|#
 
 (define-syntax evaluating-module
   (syntax-rules ()
@@ -688,5 +716,54 @@ or the CLIENT-CMD if some process ID was found."
 ;; (define f (partial echo #:string))
 ;; (define g (partial echo #:string))
 ;; (proper-monad? mv x f g)
+
+(define-public (string-in? lst string-elem)
+  "Return the first element of @var{lst} that equals (string=)
+@var{string-elem}, or @code{#f} if no such element is found.
+
+(string-in? (list \"a\" \"b\" \"c\") \"b\") ; => \"b\"
+(string-in? (list \"a\" \"b\" \"c\") \"X\") ; => #f
+(string-in? (list \"a\" \"b\" \"c\") \"\")  ; => #f
+(string-in? (list \"a\" \"b\" \"c\") #f)    ; => Exception
+
+Requires:
+  (use-modules (srfi srfi-1))"
+  (find (lambda (e) (string= string-elem e)) lst)
+  ;; Alternative implementation
+  #;
+  (if-let [r (member string-elem lst)]
+    (car r)))
+
+#|
+(use-modules (ice-9 exceptions))
+;;;
+(define (disk-space-amount) 1000)
+(define (disk-space-left? query) (< query (disk-space-amount)))
+;;;
+(define-exception-type &read-exception &exception make-read-exception read-exception?
+                                        ; (field-name field-accessor) ...
+  (read-reason read-exception-reason)
+  (read-severity read-exception-severity))
+;;;
+(with-exception-handler
+    (lambda (exception)
+      (cond
+       ((and (read-exception? exception)
+             (eq? (read-exception-reason exception)  'almost-full))
+        (format #t "the disk is almost full, only has ~a left.\n"
+                (disk-space-amount))
+        (format #t "please provide a different file size: ")
+        (let ((new-file-size (read)))
+          (if (disk-space-left? new-file-size)
+              new-file-size
+              (raise-exception exception))))
+       (else (raise-exception exception))))
+  (lambda ()
+    (let ((file-size (if (disk-space-left? 1028)
+                         1028
+                         (raise-continuable
+                          (make-read-exception 'almost-full 'medium)))))
+      (format #t "writing ~a\n" file-size))))
+|#
 
 (module-evaluated)
