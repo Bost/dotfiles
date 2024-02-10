@@ -8,6 +8,7 @@
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
+  #:use-module (cfg packages all) ;; packages-to-install
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
@@ -233,6 +234,69 @@
                        ;; "user-home-relative/path/to/ripgrep_all"
                        ))))))
 
+(define-public (environment-vars-edge-ecke list-separator)
+  ((compose
+    (lambda (v)
+      ;; (format #t "~a 0\n" m)
+      v))
+   `(
+     ;; Remedy against:
+     ;; $ lein uberjar
+     ;; Release versions may not depend upon snapshots.
+     ;; Freeze snapshots to dated versions or set the LEIN_SNAPSHOTS_IN_RELEASE
+     ;; environment variable to override.
+     ("LEIN_SNAPSHOTS_IN_RELEASE" . "allowed")
+
+     ;; JAVA_HOME definitions - see (changes require logout & login):
+     ;;     /etc/profile.d/jdk.csh
+     ;;     /etc/profile.d/jdk.sh
+     ;;     /etc/environment
+     ;; ("JAVA_HOME" . ,(string-append "/usr/lib/jvm/"
+     ;;                             ;; "java-8-openjdk-amd64"
+     ;;                                "java-11-openjdk-amd64"))
+
+     ;; Setting the locale correctly:
+     ;; https://systemcrafters.cc/craft-your-system-with-guix/installing-the-package-manager/#setting-the-locale-correctly
+     ;; When 'setlocale: LC_ALL: cannot change locale'
+     ;; ("GUIX_LOCPATH" . ,(user-home "/.guix-profile/lib/locale"))
+
+     ;; needed by `help`; e.g. `help expand`
+     ("BROWSER" . "firefox")
+
+     ;; open man-pages in nvim
+     ("MANPAGER" . "nvim +Man!")
+
+     ;; for `flatpak run ...`
+     ("XDG_DATA_DIRS" . ,((compose
+                           (lambda (lst) (string-join lst list-separator)))
+                          (list
+                           (user-home "/.local/share/flatpak/exports/share")
+                           "/var/lib/flatpak/exports/share"
+                           (getenv "XDG_DATA_DIRS"))))
+
+     ("dec"   . ,(user-home "/dec"))
+     ("der"   . ,(user-home "/der"))
+     ;; guile / guix load-path
+     ("glp"  . ,((compose
+                  (lambda (lst) (string-join lst list-separator)))
+                 (append
+                  (list dgx)
+                  (map user-dev
+                       (list
+                        "/guile"
+                        "/nonguix"
+                        "/andrew-rde/src"))
+                  (map user-dotf
+                       (list
+                        "/guix/common"
+                        "/guix/home/common"
+                        "/guix/systems/common"
+                        "/guix/home"
+                        "/guix/systems"
+                        ))
+                  (list (str dgxp "/src"))))))))
+(testsymb 'environment-vars-edge-ecke)
+
 (define-public (environment-variables-service environment-vars)
   (simple-service
    'environment-variables-service
@@ -337,5 +401,20 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
            (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
        projects-heroku))
 (testsymb 'install-all-projects)
+
+(define-public (home-env-edge-ecke list-separator)
+  (home-environment
+   (packages (packages-to-install))
+   (services
+    ((compose
+      (partial append services)
+      list
+      environment-variables-service
+      (partial append (environment-vars-edge-ecke list-separator))
+      (partial append (environment-vars           list-separator))
+      ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
+      )
+     (list)))))
+(testsymb 'home-env-edge-ecke)
 
 (module-evaluated)
