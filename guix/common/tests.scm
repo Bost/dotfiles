@@ -3,7 +3,8 @@
   ;; #:use-module (ice-9 rdelim)
   ;; #:use-module (ice-9 popen)
   ;; #:use-module (ice-9 regex)
-  ;; #:use-module (srfi srfi-1) ;; fold
+  #:use-module (srfi srfi-1) ;; fold remove
+  #:use-module (ice-9 exceptions) ;; guard
   #:use-module (system syntax internal) ;; syntax?
   #| #:use-module (language cps intmap) |#)
 
@@ -11,7 +12,9 @@
   (syntax-rules ()
     ((_ symbol arg ...)
      ((compose
-       (lambda (function) (when (function arg ...) symbol))
+       (lambda (function)
+         (when (guard (ex (else #f)) (function arg ...))
+           symbol))
        #;(lambda (p) (format #t "p: ~a\n" p) p))
       (eval symbol (interaction-environment))))))
 
@@ -23,8 +26,10 @@
 (test-type 1)       ; => (complex? real? integer? number?)
 (test-type (+ 1 2)) ; => (complex? real? integer? number?)
 (test-type (* 3-8i 2.3+0.3i)) ; => (complex? number?)
+(test-type #\\space)           ; => (char-whitespace?)
+(test-type #\\a)               ; => (char-alphabetic?)
+(test-type #\\1)               ; => (char-numeric?)
 "
-
   ((compose
     (partial remove unspecified?)
     (partial map (lambda (symbol) (do-test symbol o))))
@@ -45,6 +50,15 @@
     'char?
     'null?
     'parameter? ;; ? is this for macros ?
+    'zero?
+    'positive?
+    'negative?
+    'odd?
+    'even?
+    'eof-object?
+    'char-alphabetic?
+    'char-numeric?
+    'char-whitespace?
     )))
 
 (define (test-equality a b)
@@ -57,39 +71,7 @@
     (partial remove unspecified?)
     (partial map (lambda (symbol) (do-test symbol a b))))
    (list
+    'string=? ;; returns #t only if both parameters are strings
     'eq?
     'eqv?
-    'equal?
-    ;; works only if both parameters are strings
-    ;; 'string=?
-    )))
-
-(define (test-type-numeric o)
-  "Numeric Predicates.
-Doesn't work for complex numbers. TODO continue the tests only if (number? o) succeeds
-(test-type-numeric (* 3-8i 2.3+0.3i)) ; TODO
-"
-  ((compose
-    (partial remove unspecified?)
-    (partial map (lambda (symbol) (do-test symbol o))))
-   (list
-    'zero?
-    'positive?
-    'negative?
-    'odd?
-    'even?
-    )))
-
-(define (test-type-other o)
-  "Other Useful Predicates.
-(test-type-other (* 3-8i 2.3+0.3i)) ; TODO
-(test-type-other #\\space) ; => (char-whitespace?)
-"
-  ((compose
-    (partial remove unspecified?)
-    (partial map (lambda (symbol) (do-test symbol o))))
-   (list
-    'eof-object?
-    'char-alphabetic?
-    'char-numeric?
-    'char-whitespace?)))
+    'equal?)))
