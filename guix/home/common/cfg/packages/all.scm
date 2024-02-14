@@ -461,6 +461,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    cmake
    curl
    dos2unix
+   drawing ;; basic image editor
    ffmpeg
    flatpak
    font-adobe-source-code-pro
