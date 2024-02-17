@@ -324,19 +324,28 @@ READER-FUNCTION on them. "
           res))))
 
 (define-public (read-all-sexprs p)
+  "TODO better implementation of read-all-sexprs"
   (let f ((x (read p)))
     (if (eof-object? x)
         '()
         (cons x (f (read p))))))
 
 (define-public (read-all-syntax port)
-  "Return a list of all lines from the PORT."
+  "Return a list of all s-expressions from the PORT."
+  ((read-all read-syntax) port))
+
+(define-public (read-all-syntax port)
+  "Return a list of all s-expressions from the PORT."
   (let loop ((res '())
              (str (read-syntax port))) ; from (ice-9 popen)
     (if (and str (not (eof-object? str)))
         (loop (append res (list str))
               (read-syntax port))
         res)))
+
+(define-public (read-all-strings port)
+  "Return a list of all lines, i.e. a list of string of text from the PORT."
+  ((read-all reader-line) port))
 
 (define (read-all-strings port)
   "Return a list of all lines of text from the PORT.
