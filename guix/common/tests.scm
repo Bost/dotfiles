@@ -6,6 +6,8 @@
   #:use-module (srfi srfi-1) ;; fold remove
   #:use-module (ice-9 exceptions) ;; guard
   #:use-module (system syntax internal) ;; syntax?
+  #:use-module (guix gexp) ;; contains extended reader for #~ #$ #+ #$@
+  #:use-module (guix build utils) ;; find-files
   #| #:use-module (language cps intmap) |#)
 
 (define-syntax do-test
@@ -17,6 +19,9 @@
            symbol))
        #;(lambda (p) (format #t "p: ~a\n" p) p))
       (eval symbol (interaction-environment))))))
+
+(define-public (true? x) (eq? x #t))
+(define-public (false? x) (eq? x #f))
 
 (define (test-type o)
   "Type Testing Predicates.
@@ -34,7 +39,10 @@
     (partial remove unspecified?)
     (partial map (lambda (symbol) (do-test symbol o))))
    (list
+    'unspecified?
     'boolean?
+    'true?
+    'false?
     'port?
     'string?
     'symbol?
@@ -75,3 +83,15 @@
     'eq?
     'eqv?
     'equal?)))
+
+(define-public (syntax->list orig-ls)
+  "From $der/racket/pkgs/racket-benchmarks/tests/racket/benchmarks/common/psyntax-input.txt
+
+(syntax->list (call-with-input-string \"  (+ 1 2)\" read-syntax))
+"
+  (let f ((ls orig-ls))
+    (syntax-case ls ()
+      (() '())
+      ((x . r) (cons (syntax x) (f (syntax r))))
+      (_ (error 'syntax->list "invalid argument ~s" orig-ls)))))
+
