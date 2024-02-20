@@ -153,7 +153,7 @@ Example:
 (testsymb 'service-file)
 
 (define corona-dir "/home/bost/dec/corona_cases")
-(define fdk-dir "/home/bost/dec/corona_cases")
+(define fdk-dir "/home/bost/dec/fdk")
 
 ;; TODO create an alias for searching in /home/bost/dec/cheatsheet/langs/expressions.edn
 
