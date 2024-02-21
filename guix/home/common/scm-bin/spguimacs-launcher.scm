@@ -9,9 +9,8 @@
   ;;   In procedure resolve-interface: no code for module (guix)
   |#
 
-  #:use-module (utils)
-  #:use-module (settings)
-  ;; #:use-module (bost utils)
+  #:use-module (utils) ;; partial
+  #:use-module (scm-bin emacs-launcher)
   #:export (main))
 
 #|
@@ -21,45 +20,15 @@
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/spguimacs-launcher.scm 
+./guix/home/common/scm-bin/spguimacs-launcher.scm rest args
+./guix/home/common/scm-bin/spguimacs-launcher.scm --profile=my-profile rest args
 
 |#
 
 (evaluating-module)
 
-(define (emacs-output-path)
-  "(emacs-output-path)
-=> \"/gnu/store/c39qm5ql5w9r6lwwnhangxjby57hshws-emacs-28.2/bin/emacs\""
-  ((compose
-    (partial format #f "~a/bin/emacs")
-    derivation->output-path
-    (partial package-derivation (open-connection)))
-   emacs))
-
-(define (which-emacs)
-  "(which-emacs) => \"/home/bost/.guix-home/profile/bin/emacs\""
-  ;; (emacs-output-path)
-  (which "emacs"))
-
-(define (which-emacsclient)
-  "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
-  (which "emacsclient"))
-
 (define (main args)
-  (let* [(profile "spguimacs")
-         (emacs-bin (which-emacs))
-         (init-cmd (cmd->string
-                    (list emacs-bin (str "--with-profile=" profile) "--daemon")))]
-    ((compose
-      (lambda (cmd) ((if (string= cmd init-cmd) exec exec-background) cmd))
-;;; Search for the full command line:
-;;; $ pgrep --full --euid bost "/home/bost/.guix-home/profile/bin/emacs --with-profile=spguimacs --daemon"
-      (lambda (client-cmd) (compute-cmd init-cmd client-cmd init-cmd))
-      cmd->string
-      (partial append (list (which-emacsclient) "--create-frame"
-                            (str "--socket-name=" profile)))
-      (lambda (prms) (if (null? prms) '("./") prms))
-      cdr)
-     args)))
+  (apply (partial emacs-launcher #:profile "spguimacs")
+         (cdr args)))
 
 (module-evaluated)
