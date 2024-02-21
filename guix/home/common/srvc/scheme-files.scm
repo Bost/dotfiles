@@ -129,7 +129,9 @@ Example:
                (scm-bin gps)
 
                ,(cond
-                 ((equal? scheme-file-name "spguimacs-launcher")
+                 ((or
+                   (equal? scheme-file-name "crafted-launcher")
+                   (equal? scheme-file-name "spguimacs-launcher"))
                   `(scm-bin emacs-launcher)))
 
                ;; module-search-notes
@@ -266,6 +268,8 @@ Example:
                        #:scheme-file-name "emacs-launcher")
          (service-file #:program-name "s" #:desc "spguimacs-launcher"
                        #:scheme-file-name "spguimacs-launcher")
+         (service-file #:program-name "r" #:desc "crafted-emacs-launcher"
+                       #:scheme-file-name "crafted-launcher")
 ;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
 ;;; checkout)
          (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
