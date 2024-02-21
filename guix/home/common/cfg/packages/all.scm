@@ -798,6 +798,11 @@ home-profile. Comment them out."
     ;; Real-time collaborative editing environment
     emacs-crdt
 
+    ;; crafted emacs
+    emacs-elisp-demos
+    emacs-helpful
+    emacs-keycast
+
     leafpad           ;; simple editor to use when emacs doesn't work
     (list git "send-email")
     pinentry ;; needed to sign commits
