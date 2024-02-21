@@ -89,6 +89,7 @@ a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
+  #;(format #t "scheme-file-name: ~a\n" scheme-file-name)
   `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
       (cond
@@ -127,11 +128,9 @@ Example:
                (scm-bin gre)
                (scm-bin gps)
 
-               ;; ,(cond
-               ;;   ((or
-               ;;     (equal? scheme-file-name "emacs-launcher")
-               ;;     (equal? scheme-file-name "spguimacs-launcher"))
-               ;;    `(bost utils)))
+               ,(cond
+                 ((equal? scheme-file-name "spguimacs-launcher")
+                  `(scm-bin emacs-launcher)))
 
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
