@@ -675,6 +675,11 @@ This function should only modify configuration layer settings."
      sqlite3 ;; for magit
 
      tldr ;; access `tldr' pages from within Emacs
+
+     ;; M-x xhair-mode
+     ;; https://github.com/Boruch-Baum/emacs-xhair
+     (xhair :location (recipe :fetcher github :repo "Boruch-Baum/emacs-xhair"))
+
      ) ;; End of dotspacemacs-additional-packages
 
    ;; A list of packages that cannot be updated.
