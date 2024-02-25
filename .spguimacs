@@ -921,6 +921,7 @@ It should only modify the values of Spacemacs settings."
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    ;; See functions and keybindings for `text-scale-...' and `zoom-...'
+   ;; Reset by (spacemacs/set-default-font dotspacemacs-default-font)
    dotspacemacs-default-font
    `("Source Code Pro"
      :size
@@ -1893,6 +1894,7 @@ Some binding snippets / examples:
      ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
      ("s-<f1>"      . my=toggle-shell-pop-multiterm) ;; my=toggle-shell-pop-term
      ("s-<f2>"      . projectile-multi-term-in-root)
+     ("s-<f3>"      . vterm)
      ;; terminal in the current working directory
      ;; ("s-<f1>"      . terminal-here-launch)
      ;; ("s-<f1>"      . spacemacs/default-pop-shell)
@@ -1900,7 +1902,6 @@ Some binding snippets / examples:
      ;; jumps to the shell opened by `spacemacs/projectile-shell'
      ;; ("s-<f1>"      . spacemacs/projectile-shell-pop)
      ;; ("s-<f1>"      . terminal-here-project-launch)
-     ;; ("s-<f1>"      . spacemacs/default-pop-shell)
      ("s-W"         . whitespace-cleanup)
      ("s-w"         . my=whitespace-mode-toggle)
      ("s-m"         . my=magit-status)
@@ -2021,12 +2022,20 @@ Some binding snippets / examples:
      ("M-z" . zop-up-to-char)
      ("M-Z" . zop-to-char)
 
-     ("C-s-."    . spacemacs/jump-to-definition-other-window)
-     ("s->"      . spacemacs/jump-to-definition-other-window)
-     ("s-."      . spacemacs/jump-to-definition)
+     ("C-s-." . spacemacs/jump-to-definition-other-window)
+     ("s->"   . spacemacs/jump-to-definition-other-window)
 
-     ("s-,"      . evil-jump-backward)
-     ;; ("s-,"   . dumb-jump-back)
+     ("s-." . spacemacs/jump-to-definition)
+     ("s-," . evil-jump-backward)
+
+     ;; ("s-." . evil-goto-definition-imenu)
+     ;; ("s-." . evil-goto-definition-xref)
+     ;; ("s-," . evil-jump-backward)
+
+     ;; dumb-jump-go has been obsoleted by the xref interface.
+     ;; ("s-." . xref-find-definitions) ;; function is part of Emacs
+     ;; ("s-," . xref-go-back) ;; function is part of Emacs
+
      ;; ("s-,"   . cider-pop-back)
 
      ;; C-o; evil-jump-backward
@@ -2064,8 +2073,9 @@ Some binding snippets / examples:
      ("H-2" . my=H-2)
      ("H-4" . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
      )
-    (message "(my=eval-bind-keys-and-chords) evaluated")
-    )
+    (message "%s   Note: %s"
+             "(my=eval-bind-keys-and-chords) evaluated"
+             "~SPC k $~ sp-end-of-sexp"))
 
   ;; Thanx to
   ;; https://github.com/fanhongtao/_emacs.d/blob/master/conf/my-key-modifiers.el
