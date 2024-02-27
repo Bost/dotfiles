@@ -2036,8 +2036,11 @@ Some binding snippets / examples:
      ;; M-x my=what-face; <C-M-print> on edge doesn't work
      ("<C-print>" . describe-text-properties)
 
-     ("s-<return>"   . my=jump-last-edited-place)
+     ("s-<return>"   . jl-jump-last-edited-place)
      ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
+     ;; it's easy to press Shift while holding s-<return> already
+     ("S-s-<return>" . evil-jump-backward)
+
      ("s-J"          . evil-join)
 
      ("<s-print>" . my=ediff-buffers-left-right) ; see advice-add
