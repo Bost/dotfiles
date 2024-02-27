@@ -230,6 +230,7 @@
    "emacs-golden-ratio"
    "emacs-google-translate"
    "emacs-gotham-theme"
+   "emacs-goto-chg"
    "emacs-grandshell-theme"
    "emacs-graphviz-dot-mode"
    "emacs-groovy-imports"
