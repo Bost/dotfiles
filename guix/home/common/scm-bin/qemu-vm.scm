@@ -84,7 +84,7 @@ Usage:
   "The VM gets all available CPUs. This script runs as root, however the $cores
 environment variable is not available for the root user."
   ((compose
-    (partial format #f "cpus=~s")
+    (partial format #f "cpus=~a")
     number->string)
    ((@(ice-9 threads) current-processor-count))))
 
@@ -123,7 +123,7 @@ which is not supported by the CPU on the host B
 (define (user-localhost user)
   (format #f "~a@localhost" user))
 
-(define (usage vmUser)
+(define (usage user)
   (format #f
           "~a\n~a\n~a"
           (format #f
@@ -132,6 +132,7 @@ which is not supported by the CPU on the host B
 ###     sudo usermod --append --groups kvm $USER
 
 # Open a new terminal on the (Ubuntu) host and connect with:
+# Ctrl+Alt+F toggle full-screen
    remote-viewer spice://localhost:~a & disown"
                   vmRemoteViewPort)
           (format #f
@@ -139,14 +140,14 @@ which is not supported by the CPU on the host B
 # or with SSH on Ubuntu:
    sudo apt install openssh-server:
 # with SSH on the host:
-   ~a ~a" ssh (user-localhost vmUser))
+   ~a ~a" ssh (user-localhost user))
           (format #f
                   "
 # File transfer example:
   set remoteShell \"~a\"
   set noWarn \"Permanently added '\\[localhost\\]:~a'\"
   rsync -avz --rsh=\"$remoteShell\" /tmp/foo ~a:/tmp/ 2>&1 | grep -v \"$noWarn\"
-" ssh vmSSHPort (user-localhost vmUser))))
+" ssh vmSSHPort (user-localhost user))))
 
 (define* (start-vm user #:key qcow2File (isoFile #f))
   "TODO Auto-detect qcow2File / isoFile according to file extension"
@@ -166,6 +167,7 @@ which is not supported by the CPU on the host B
         ;; With shared clipboard and SSH access:
         "qemu-system-x86_64"
         "-vga" "virtio"  ;; video card type
+        "-display" "gtk" ;; no need to use remote-viewer
         "-smp" (vmCPUCores user))
        (if isoFile (list "-cdrom" isoFile) (list))
        (list
