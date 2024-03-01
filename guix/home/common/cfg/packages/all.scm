@@ -215,7 +215,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    bat
    direnv
    dmidecode ;; read hardware information from the BIOS
-   exa
+   ;; exa deprecated by eza in the daaedc9ab3; TODO the package is aliased but the binary is not
+   eza
    fd
    fish
    git
