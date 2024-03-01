@@ -28,14 +28,14 @@ Usage:
 ;; > #t
 "
   (apply exec-system*
-         "exa" "-abghHliS" "--color=always" "--time-style=full-iso"
+         "eza" "-abghHliS" "--color=always" "--time-style=full-iso"
          "--sort=time"
          #|
-         "exa" "-abghHliS" "--color=always"
+         "eza" "-abghHliS" "--color=always"
          ;; exa has no support for '+%d-%m-%Y %H:%M:%S' time formatters
-         "exa" "-abghHliS" "--color=always" "--time-style=default"
-         "exa" "-abghHliS" "--color=always" "--time-style=iso"
-         "exa" "-abghHliS" "--color=always" "--time-style=long-iso"
+         "eza" "-abghHliS" "--color=always" "--time-style=default"
+         "eza" "-abghHliS" "--color=always" "--time-style=iso"
+         "eza" "-abghHliS" "--color=always" "--time-style=long-iso"
          ;; '--file-type' append indicator (one of /=>@|) to entries
          ;; TODO consider custom coloring after `ls --color=never`
          "ls" "-lA" "--file-type" "--color"
