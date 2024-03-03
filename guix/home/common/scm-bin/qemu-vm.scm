@@ -166,8 +166,27 @@ which is not supported by the CPU on the host B
         ;;
         ;; With shared clipboard and SSH access:
         "qemu-system-x86_64"
+
+;;; The 'addr' values for '-audiodev' and '-device virtio-serial-pci' must be
+;;; different. See also:
+;;; https://www.kraxel.org/blog/2020/01/qemu-sound-audiodev/
+;;; https://github.com/quickemu-project/quickemu/blob/master/quickemu#L415
+;;; https://www.reddit.com/r/kvm/comments/kmz3bu/audiodev_with_alsa/
+;;;
+;;; However the 'spice' has something to do with remote-viewer. Hmm.
+;;; Useful commands:
+;;;   hwinfo --sound
+;;;   speaker-test -c2 -l5 -twav
+;;; The 'speaker-test ...' works only after(!) connected with remote-viewer
+        "-audiodev spice,id=snd0"
+        "-device intel-hda,addr=0x6"
+        "-device hda-duplex,audiodev=snd0"
+
+;;; No need to use remote-viewer spice://localhost:5930 if '-display gtk' is
+;;; added, however with '-display gtk' the sound doesn't work. Hmm.
+        ;; "-display" "gtk"
+
         "-vga" "virtio"  ;; video card type
-        "-display" "gtk" ;; no need to use remote-viewer
         "-smp" (vmCPUCores user))
        (if isoFile (list "-cdrom" isoFile) (list))
        (list
