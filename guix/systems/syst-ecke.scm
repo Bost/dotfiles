@@ -151,14 +151,14 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "5.15.0-47"))
+        (let ((linux-version "6.5.0-21"))
           (menu-entry
            (label "Ubuntu")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            ;; ro - mount the root disk read only.
            ;; quiet - don’t display console messages
            ;; splash - show a graphical "splash" screen while booting.
-           (linux-arguments '("root=UUID=a8fb1680-eef5-49a0-98a3-8169c9b8eeda"
+           (linux-arguments '("root=UUID=fe7ecf10-c42e-4bbf-b377-3a9346088e63"
                               "ro" "quiet" "splash"
                               ;; value $vt_handoff is "vt.handoff=7" or
                               ;; unspecified
