@@ -155,14 +155,14 @@
           (menu-entry
            (label "Ubuntu")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
-           ;; ro - mount the root disk read only.
-           ;; quiet - don’t display console messages
-           ;; splash - show a graphical "splash" screen while booting.
-           (linux-arguments '("root=UUID=fe7ecf10-c42e-4bbf-b377-3a9346088e63"
-                              "ro" "quiet" "splash"
-                              ;; value $vt_handoff is "vt.handoff=7" or
-                              ;; unspecified
-                              #;"$vt_handoff"))
+           (linux-arguments
+            '("root=UUID=fe7ecf10-c42e-4bbf-b377-3a9346088e63"
+              "ro"     ; mount the root disk read only
+              "quiet"  ; don't display console messages
+              "splash" ; show a graphical "splash" screen while booting
+              ;; value $vt_handoff is "vt.handoff=7" or
+              ;; unspecified
+              #;"$vt_handoff"))
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
 
     (file-systems
