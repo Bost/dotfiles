@@ -168,7 +168,23 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
       (bootloader grub-efi-bootloader)
       (targets (list "/boot/efi"))
       ;; keyboard-layout for the GRUB
-      (keyboard-layout keyboard-layout)))
+      (keyboard-layout keyboard-layout)
+      (menu-entries
+       (list
+        (let ((linux-version "6.5.0-21"
+                             #;"6.5.0-18"))
+          (menu-entry
+           (label "Ubuntu")
+           (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
+           ;; ro - mount the root disk read only.
+           ;; quiet - don’t display console messages
+           ;; splash - show a graphical "splash" screen while booting.
+           (linux-arguments '("root=UUID=5d34339c-38fb-445f-be0d-09037a7e01d2"
+                              "ro" "quiet" "splash"
+                              ;; value $vt_handoff is "vt.handoff=7" or
+                              ;; unspecified
+                              #;"$vt_handoff"))
+           (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
 
     ;; The list of file systems that get "mounted".  The unique
     ;; file system identifiers there ("UUIDs") can be obtained
