@@ -653,6 +653,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; kitty           ;;  5.443s; no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
    ;;
    ;; terminator      ;;  8.916s; no drop-down; has splits
+
+#|
+   thread 'main' panicked at /tmp/guix-build-alacritty-0.13.1.drv-0/source/guix-vendor/rust-xkbcommon-dl-0.4.1.tar.gz/src/x11.rs:59:28:
+   Library libxkbcommon-x11.so could not be loaded.
+   note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+|#
    alacritty          ;;  4.393s; no drop-down; no splits; no tabs
    ;; xfce4-terminal  ;;  9.905s; has --drop-down; has context menu; already present, no splits
    ;; yakuake         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files

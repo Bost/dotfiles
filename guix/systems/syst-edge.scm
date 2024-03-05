@@ -176,14 +176,14 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
           (menu-entry
            (label "Ubuntu")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
-           ;; ro - mount the root disk read only.
-           ;; quiet - don’t display console messages
-           ;; splash - show a graphical "splash" screen while booting.
-           (linux-arguments '("root=UUID=5d34339c-38fb-445f-be0d-09037a7e01d2"
-                              "ro" "quiet" "splash"
-                              ;; value $vt_handoff is "vt.handoff=7" or
-                              ;; unspecified
-                              #;"$vt_handoff"))
+           (linux-arguments
+            '("root=UUID=5d34339c-38fb-445f-be0d-09037a7e01d2"
+              "ro"     ; mount the root disk read only
+              "quiet"  ; don't display console messages
+              "splash" ; show a graphical "splash" screen while booting
+              ;; value $vt_handoff is "vt.handoff=7" or
+              ;; unspecified
+              #;"$vt_handoff"))
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
 
     ;; The list of file systems that get "mounted".  The unique
