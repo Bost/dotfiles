@@ -68,8 +68,8 @@
 
 (define (user-dotf-to-dir dir)
   ;; TODO (user-dotf-to-dir ".tmux") doesn't work
-  `(,dir ;; destination
-    ,(local-file (user-dotf "/" dir) #:recursive? #t)))
+  (list dir ;; destination
+        (local-file (user-dotf "/" dir) #:recursive? #t)))
 
 (define home-dir-cfg-srvc-files
   ((comp
@@ -182,9 +182,10 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
 ;;; symlink (to the /gnu/store/).
              ((comp
                (partial map user-dotf-to-dir)
-               ;; (lambda (p) (format #t "######## 1.:\n~a\n" p) p)
+               (lambda (p) (format #t "######## 1.:\n~a\n" p) p)
                (lambda (lst)
                  (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
+                     ;; TODO `git status` indicated typechange: .lein/profiles.clj WTF?
                      (append (list
                               ".lein/profiles.clj"
                               )
