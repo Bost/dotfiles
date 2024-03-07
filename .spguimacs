@@ -1399,6 +1399,19 @@ before packages are loaded."
   ;; (add-hook 'yas-before-expand-snippet-hook (lambda () (smartparens-mode -1)))
   ;; (add-hook 'yas-after-exit-snippet-hook (lambda () (smartparens-mode 1)))
 
+  (evil-goggles-mode) ;; Display visual hint on evil edit operations 
+  (setq evil-goggles-async-duration 0.200)
+  ;; run `M-x list-faces-display` in a fresh emacs to get a list of faces on your emacs
+  ;; (custom-set-faces
+  ;;  ;; inherits from 'region by default
+  ;;  '(evil-goggles-default-face ((t (:inherit 'highlight))))
+  ;;  '(evil-goggles-delete-face ((t (:inherit 'shadow))))
+  ;;  '(evil-goggles-paste-face ((t (:inherit 'lazy-highlight))))
+  ;;  '(evil-goggles-yank-face ((t (:inherit 'isearch-fail)))))
+
+  ;; disable the hint when pasting - ??? doesn't work, i.e. no difference ???
+  ;; (setq evil-goggles-enable-paste nil)
+
   (global-flycheck-mode)
   (add-hook 'after-init-hook #'global-flycheck-mode)
 
