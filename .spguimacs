@@ -1907,7 +1907,11 @@ Some binding snippets / examples:
      ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
      ("s-<f1>"      . my=toggle-shell-pop-multiterm) ;; my=toggle-shell-pop-term
      ("s-<f2>"      . projectile-multi-term-in-root)
+
+     ;; M-x term-line-mode - emacs keybindings
+     ;; M-x term-char-mode - chars sent directly to terminal
      ("s-<f3>"      . vterm)
+
      ;; terminal in the current working directory
      ;; ("s-<f1>"      . terminal-here-launch)
      ;; ("s-<f1>"      . spacemacs/default-pop-shell)
