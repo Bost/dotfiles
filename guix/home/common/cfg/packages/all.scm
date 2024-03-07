@@ -578,7 +578,15 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Manipulate plain text files as databases
    recutils
 
-   ripgrep
+   ;; Workaround for:
+   ;;   SPC * not working with ripgrep 14
+   ;;   https://github.com/syl20bnr/spacemacs/issues/16200
+   ;; ripgrep 13.0.0 is needed. However when pulled-in via the
+   ;; inferior-mechanism the `gxhre` compilation takes too long. This problem
+   ;; doesn't come up when the ripgrep 13.0.0. is pulled from a separate
+   ;; channel.
+   (@(bost gnu packages rust-apps) ripgrep)
+
    rlwrap
 
    scsh ;; Unix shell embedded in Scheme
@@ -752,6 +760,17 @@ home-profile. Comment them out."
     ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
     (partial map (partial apply inferior-package-in-guix-channel)))
    (list
+
+    ;; Workaround for:
+    ;;   SPC * not working with ripgrep 14
+    ;;   https://github.com/syl20bnr/spacemacs/issues/16200
+    ;; This is the last commit containing 14.0.3
+    ;; (list "ripgrep"        "9778ce6b898021bc8f0e4a6e51fda8c13d78b310")
+
+    ;; This is the last commit containing 13.0.0. The `gxhre` (guix home
+    ;; reconfigure) takes too long to compile.
+    ;; (list "ripgrep"        "fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df")
+
     ;; the e18af936ff85442a841886c9434f862fb595a8b2 leads to failing
     ;; compilation: No package 'mdds-2.0'
     ;; (list "libreoffice"        "a4db19d8e07eeb26931edfde0f0e6bca4e0448d3")
