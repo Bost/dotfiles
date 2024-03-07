@@ -708,8 +708,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
        xorgxrdp ;; Xorg drivers for xrdp
        )
       (list ;; the clients
+       rdesktop
+       remmina
+
+       ;; tigervnc-client also provides extensions for advanced authentication
+       ;; methods and TLS encryption
        tigervnc-client
-       rdesktop)))
+       )))
 
 (define (xfce-packages)
   (list
