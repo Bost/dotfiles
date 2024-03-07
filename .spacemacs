@@ -1899,7 +1899,11 @@ Some binding snippets / examples:
      ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
      ("s-<f1>"      . my=toggle-shell-pop-multiterm) ;; my=toggle-shell-pop-term
      ("s-<f2>"      . projectile-multi-term-in-root)
+
+     ;; M-x term-line-mode - emacs keybindings
+     ;; M-x term-char-mode - chars sent directly to terminal
      ("s-<f3>"      . vterm)
+
      ;; terminal in the current working directory
      ;; ("s-<f1>"      . terminal-here-launch)
      ;; ("s-<f1>"      . spacemacs/default-pop-shell)
@@ -2541,6 +2545,34 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ("s-x"    . racket-repl))
       (bind-chords :map map
                    ("pr" . my=racket-insert-log))))
+
+  ;; (defun set-frame-theme (theme)
+  ;;   "Set the THEME for the current frame only. TODO doesn't work"
+  ;;   (interactive
+  ;;    (list
+  ;;     (intern (completing-read "Theme: " (mapcar 'symbol-name (custom-available-themes))))))
+  ;;   ;; Disable all current themes to avoid mixing theme elements
+  ;;   (mapc #'disable-theme custom-enabled-themes)
+  ;;   (load-theme theme t t) ;; Load the chosen theme without enabling it
+  ;;   ;; Re-enable the previously active themes for other frames
+  ;;   (dolist (other-theme custom-enabled-themes)
+  ;;     (unless (eq other-theme theme)
+  ;;       (enable-theme other-theme)))
+  ;;   ;; Apply the theme only to the current frame - doesn't work!!!
+  ;;   (with-selected-frame (selected-frame)
+  ;;     (enable-theme theme)))
+  ;; (set-frame-theme 'zenburn)
+
+  ;; (set-background-color "gray0")   ;; black
+  ;; (set-background-color "gray100") ;; white
+
+  ;; (defun my-haskell-faces ()
+  ;;   "Buffer-local face remapping for `haskell-mode-hook'."
+  ;;   (face-remap-add-relative 'default
+  ;;                            :background "darkgreen"
+  ;;                            :foreground "lightblue"))
+
+  ;; (add-hook 'haskell-mode-hook #'my-haskell-faces)
 
   ;; For rkt-files the bindings are available via major mode bindings.
   ;; See M-x helm-descbinds
