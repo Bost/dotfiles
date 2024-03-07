@@ -234,6 +234,7 @@ Example:
                   (expand-pattern "/home/bost/der/search-notes" "rkt")
                   )
                  #:scheme-file-name "search-notes")
+;;; TODO create crct - search in category-theory notes
 ;;; TODO crs should be like crl
    (service-file #:program-name "crs"
                  #:files (list "cli/shells")
