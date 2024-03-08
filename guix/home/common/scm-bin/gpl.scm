@@ -69,7 +69,7 @@ cd $dotf
 (define (rebase-bottom-flag-variable rebase-args branches)
   "Breakout implementation using a flag variable"
   (let ((found #f))
-    ((compose
+    ((comp
       (partial
        map
        (lambda (remote)
@@ -107,7 +107,7 @@ cd $dotf
 (define (main args)
   (when (not (null? (cdr args)))
     (format #t "# Note: 'args' is applied only to `git rebase'\n"))
-  ((compose
+  ((comp
     (partial rebase-bottom-call/cc args)
     ;; (partial rebase-bottom-flag-variable args)
     ;; dbg

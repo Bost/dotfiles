@@ -248,7 +248,7 @@ Example:
                  #:scheme-file-name "search-notes")))
 
 (define-public scheme-files-service
-  ((compose
+  ((comp
     (partial simple-service 'scheme-files-service home-files-service-type)
     (partial
      append

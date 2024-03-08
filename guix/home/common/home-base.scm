@@ -47,7 +47,7 @@
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
 (define-public services
-  ((compose
+  ((comp
     ;; (lambda (v) (format #t "~a 7\n" m) v)
     (partial
      append
@@ -187,7 +187,7 @@
 
 ;; See also $dotf/.bashrc.martin
 (define-public (environment-vars list-separator)
-  ((compose
+  ((comp
     (lambda (v)
       ;; (format #t "~a 0\n" m)
       v))
@@ -223,7 +223,7 @@
      ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e
 
      ;; My own scripts and guix-home profile take precedence over $PATH.
-     ("PATH" . ,((compose
+     ("PATH" . ,((comp
                   (lambda (lst) (string-join lst list-separator))
                   (lambda (lst) (append lst (list "$PATH" "/usr/local/bin")))
                   (partial map user-home))
@@ -235,7 +235,7 @@
                        ))))))
 
 (define-public (environment-vars-edge-ecke list-separator)
-  ((compose
+  ((comp
     (lambda (v)
       ;; (format #t "~a 0\n" m)
       v))
@@ -267,7 +267,7 @@
      ("MANPAGER" . "nvim +Man!")
 
      ;; for `flatpak run ...`
-     ("XDG_DATA_DIRS" . ,((compose
+     ("XDG_DATA_DIRS" . ,((comp
                            (lambda (lst) (string-join lst list-separator)))
                           (list
                            (user-home "/.local/share/flatpak/exports/share")
@@ -277,7 +277,7 @@
      ("dec"   . ,(user-home "/dec"))
      ("der"   . ,(user-home "/der"))
      ;; guile / guix load-path
-     ("glp"  . ,((compose
+     ("glp"  . ,((comp
                   (lambda (lst) (string-join lst list-separator)))
                  (append
                   (list dgx)
@@ -406,7 +406,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
   (home-environment
    (packages (packages-to-install))
    (services
-    ((compose
+    ((comp
       (partial append services)
       list
       environment-variables-service

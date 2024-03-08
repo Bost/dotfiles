@@ -38,7 +38,7 @@
 (define (create-channels-scm additional-channels)
   (let* [(channels-scm (user-dotf "/" channels-scm-filepath))
          (lst
-          ((compose
+          ((comp
             car
             syntax->datum
             (partial call-with-input-file channels-scm))
@@ -46,7 +46,7 @@
     (call-with-values
         (lambda () (split-at lst (1- (length lst))))
       (lambda (fst snd)
-        ((compose
+        ((comp
           ;; (lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
           (lambda (s) (format #t "done\n") s)
           (lambda (sexp)
