@@ -71,7 +71,57 @@
   (list dir ;; destination
         (local-file (user-dotf "/" dir) #:recursive? #t)))
 
-(define home-dir-cfg-srvc-files
+(define (host-specific-config)
+  "Handle the host-specific configuration settings from .config<.hostname>/
+See also (@(fs-utils) local-dotfile)
+"
+  (let* [(hn (hostname-memoized))]
+    ((comp
+      (partial remove unspecified-or-empty-or-false?)
+      (partial
+       map
+       (lambda (f)
+         (let* [(destination (str ".config/xfce4/" f))
+                (path "/")
+                (filename (str ".config/xfce4." hn "/" f))
+                (filepath (user-dotf path filename))]
+           (if (access? filepath R_OK)
+               (list destination
+                     (let [(base-filename (basename filename))]
+                       ;; 'local-file' is a macro and cannot be used by 'apply'
+                       (if (equal? "." (substring base-filename 0 1))
+                           ;; base-filename of the local-file can't start with '.'
+                           ;; use the `(...) forms for debugging
+                           ;; `(local-file ,filepath ,(fix-leading-dot base-filename))
+                           ;; `(local-file ,filepath)
+                           (local-file filepath (fix-leading-dot base-filename))
+                           (local-file filepath))))
+               (begin
+                 (format #t "E ~a Can't read ~a\n" m filepath)
+                 #f)))))
+      #;(lambda (lst) (take lst 2)))
+     (list
+      "panel/launcher-17/17100751821.desktop"
+      "panel/launcher-18/17100751822.desktop"
+      "panel/launcher-19/17100751823.desktop"
+      "panel/launcher-20/17100751824.desktop"
+      "panel/xfce4-clipman-actions.xml"
+      "xfconf/xfce-perchannel-xml/displays.xml"
+      "xfconf/xfce-perchannel-xml/keyboards.xml"
+      "xfconf/xfce-perchannel-xml/thunar.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-appfinder.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-notifyd.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-power-manager.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-screensaver.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-session.xml"
+      "xfconf/xfce-perchannel-xml/xfce4-terminal.xml"
+      "xfconf/xfce-perchannel-xml/xfwm4.xml"
+      ))))
+
+(define (home-dir-cfg-srvc-files)
   ((comp
     ;; (lambda (p) (format #t "######## 3.p:\n~a\n" (pretty-print->string p)) p)
     (partial append
@@ -144,7 +194,9 @@
                          (url
                           "https://github.com/Bost/guix-packages"
                           #;,(format #f "file://~a/dev/guix-packages" home))))))
-    ;; (lambda (p) (format #t "######## 2.\n") p)
+    ;; (lambda (p) (format #t "######## 3.\n~a\n" p) p)
+    (partial append (host-specific-config))
+    ;; (lambda (p) (format #t "######## 2.\n~a\n" p) p)
     (partial append
              ((comp
                (partial remove unspecified-or-empty-or-false?)
@@ -156,6 +208,9 @@ chown -R $(whoami) ~/.gnupg
 find ~/.gnupg -type f -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 600 for files
 find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directories
                |#
+               ".config/sway/config"
+               ".config/tmux/tmux.conf"
+
                ".gnupg/gpg.conf"
                ".guile" ;; used by `guix repl'
                ".gitconfig"
@@ -164,6 +219,7 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
                ".envrc"
                ".env-secrets.gpg"
                ".emacs-profiles.el"
+               ".lein/profiles.clj"
                )))
 
     ;; (lambda (p) (format #t "######## 1.\n") p)
@@ -178,26 +234,13 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
 ;;; symlinked (from the /gnu/store/).
 ;;;
 ;;; 2. Can't store the ".emacs.d.spacemacs/private" w/o the README.md files and
-;;; restore them after `guix home ...', since `git restore ...' overwrites the
+;;; restore them after `guix home ...`, since `git restore ...` overwrites the
 ;;; symlink (to the /gnu/store/).
              ((comp
                (partial map user-dotf-to-dir)
-               (lambda (p) (format #t "######## 1.:\n~a\n" p) p)
-               (lambda (lst)
-                 (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
-                     ;; TODO `git status` indicated typechange: .lein/profiles.clj WTF?
-                     (append (list
-                              ".lein/profiles.clj"
-                              )
-                             lst)
-                     lst))
                ;; (lambda (p) (format #t "######## 0.:\n~a\n" p) p)
                )
               (list
-               ;; ".tmux"
-               ".config/tmux"
-               ".config/sway"
-               ".config/xfce4/xfconf/xfce-perchannel-xml"
                "bin"
                )))
     ;; (lambda (p) (format #t "######## 0.\n") p)
@@ -206,10 +249,10 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
    (list)))
 (testsymb 'home-dir-cfg-srvc-files)
 
-(define-public home-dir-cfg-srvc
+(define-public (home-dir-cfg-srvc)
   ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d.spacemacs directory
   (simple-service
-   'home-dir-cfg-srvc home-files-service-type home-dir-cfg-srvc-files))
+   'home-dir-cfg-srvc home-files-service-type (home-dir-cfg-srvc-files)))
 (testsymb 'home-dir-cfg-srvc)
 
 (module-evaluated)

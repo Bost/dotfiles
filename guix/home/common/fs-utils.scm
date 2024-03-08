@@ -49,21 +49,9 @@
 (define (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
 
-;;;      ...                      #:optional (<parameter-name> <default-value>)
-(define* (any-local-file filepath #:optional (filename (basename filepath)))
-  ;; 'local-file' is a macro and cannot be used by 'apply'
-
-  (if (equal? "." (substring filename 0 1))
-      ;; filename of the local-file can't start with '.'
-      ;; use the `(...) forms for debugging
-      ;; `(local-file ,filepath ,(fix-leading-dot filename))
-      ;; `(local-file ,filepath)
-      (local-file filepath (fix-leading-dot filename))
-      (local-file filepath)
-      ))
-
 (define (local-dotfile path filename)
-  "
+  "See also (@(srvc home-dir-cfg) host-specific-config).
+
 (local-dotfile \"/guix/home/\" \".dir-locals.el\") ; with '.' before file-name
 ;; =>
 (list \".dir-locals.el\"
@@ -85,7 +73,15 @@
   (let [(filepath (user-dotf path filename))]
     (if (access? filepath R_OK)
       (list filename
-            (any-local-file filepath (basename filename)))
+            (let [(base-filename (basename filename))]
+              ;; 'local-file' is a macro and cannot be used by 'apply'
+              (if (equal? "." (substring base-filename 0 1))
+                  ;; base-filename of the local-file can't start with '.'
+                  ;; use the `(...) forms for debugging
+                  ;; `(local-file ,filepath ,(fix-leading-dot base-filename))
+                  ;; `(local-file ,filepath)
+                  (local-file filepath (fix-leading-dot base-filename))
+                  (local-file filepath))))
       (begin
         (format #t "E ~a Can't read ~a\n" m filepath)
         #f))))
