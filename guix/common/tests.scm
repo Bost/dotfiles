@@ -13,7 +13,7 @@
 (define-syntax do-test
   (syntax-rules ()
     ((_ symbol arg ...)
-     ((compose
+     ((comp
        (lambda (function)
          (when (guard (ex (else #f)) (function arg ...))
            symbol))
@@ -35,7 +35,7 @@
 (test-type #\\a)               ; => (char-alphabetic?)
 (test-type #\\1)               ; => (char-numeric?)
 "
-  ((compose
+  ((comp
     (partial remove unspecified?)
     (partial map (lambda (symbol) (do-test symbol o))))
    (list
@@ -75,7 +75,7 @@
 (test-equality 1 1)       ; => (eq? eqv? equal?)
 (test-equality \"1\" \"1\")   ; => (eq? eqv? equal?)
 "
-  ((compose
+  ((comp
     (partial remove unspecified?)
     (partial map (lambda (symbol) (do-test symbol a b))))
    (list

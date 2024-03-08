@@ -26,7 +26,7 @@ cd $dotf
 ;; (define* (main #:rest args)
 ;;   "Usage:
 ;; (main \"<ignored>\" \"-f\" \"arg0\")"
-;;   ((compose
+;;   ((comp
 ;;     (partial apply chmod)
 ;;     (partial apply cdr)
 ;;     dbg)
@@ -35,7 +35,7 @@ cd $dotf
 
 ;; old implementation
 (define (main modifier args)
-  ((compose
+  ((comp
     exec
     (partial cons* (string-append "chmod +" modifier))
     cdr)

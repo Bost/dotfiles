@@ -265,6 +265,7 @@ the composition of the extensions"
                    fish-packages)
                   ))
 
+                ;; service-type is a macro, `comp` doesn't work
                 (compose identity)
 
                 (extend

@@ -104,7 +104,7 @@
                    (swap-space
                     (target (uuid "a4767437-a9c8-4d57-9755-4fcd2aef73da")))))))
 
-((compose
+((comp
   (partial format #t "~a kernel-version: ~a\n" m)
   package-version
   operating-system-kernel)

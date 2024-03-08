@@ -35,7 +35,7 @@ cd $dotf
 (define* (main #:rest args)
   "Usage:
 "
-  ((compose
+  ((comp
     (partial apply grev)
     (partial apply cdr)
     #;dbg)

@@ -28,12 +28,12 @@ cd $dotf
   (eval `(1+ ,(append `(+ 1 2) (list 3 4))) (interaction-environment))
   #;
   (primitive-eval `(1+ ,(append `(+ 1 2) (list 3 4))))
-  ((compose
+  ((comp
     (lambda (files)
       (let ((dir (str home "/" spacemacs-dir "/private")))
         (if (null? files)
             (format #t "Nothing to restore in ~a.\n" dir)
-            ((compose
+            ((comp
                 exec
                 (partial apply (partial git-spacemacs "restore"))
                 #;

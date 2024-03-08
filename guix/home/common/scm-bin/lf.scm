@@ -36,7 +36,7 @@ cd $dotf
 ;; > #t
 "
   (let* [(pwd (getenv "PWD"))]
-    ((compose
+    ((comp
       (partial apply (partial ls "--list-dirs" "--oneline"))
       (partial map (partial str pwd "/"))
       #;(lambda (args)
@@ -47,7 +47,7 @@ cd $dotf
 (define* (main #:rest args)
   "Example:
 (main \"<ignored>\" \"-d\" \"lf.scm\")"
-  ((compose
+  ((comp
     (partial apply lf)
     (partial apply cdr)
     #;dbg)

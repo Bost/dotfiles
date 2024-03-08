@@ -65,7 +65,7 @@ guix home --allow-downgrades --cores=$cores \
   (home-environment
    (packages (packages-to-install))
    (services
-    ((compose
+    ((comp
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
       (partial append base:services)
       #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)

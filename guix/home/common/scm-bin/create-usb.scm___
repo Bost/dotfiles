@@ -35,7 +35,7 @@ sudo dd bs=4M if=$isoFile of=$usbDevice status=progress oflag=sync && sync
         (error-command-failed))))
 
 (define (main args)
-  ((compose
+  ((comp
     #;(partial map car)
     dbg
     (lambda (output)

@@ -96,12 +96,12 @@ Options:
 
 ;; https://gitlab.com/alezost-config/guile/-/blob/master/scripts/profile
 (define* (main #:rest args)
-  ((compose
+  ((comp
     (partial apply gcl)
     (partial apply cdr)
     #;dbg)
    #;
-   (compose
+   (comp
     (lambda (cdr-args)
       (match (cdr-args)
         (((or "-h" "--help" "help"))
