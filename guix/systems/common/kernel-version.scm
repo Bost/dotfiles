@@ -7,7 +7,7 @@
   ;; #:use-module (gnu tests)     ; %simple-os
  )
 
-((compose
+((comp
   (partial apply (partial format #t
                           (str "Kernel used: ~a. "
                                "Latest available: ~a\n"))))

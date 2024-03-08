@@ -18,7 +18,7 @@ cd $dotf
 (evaluating-module)
 
 (define (main args)
-  ((compose
+  ((comp
     exec-background
     dbg
     (lambda (p) (append '("git" "gui") p '("&")))

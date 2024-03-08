@@ -30,7 +30,7 @@ cd $dotf
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
-  ((compose
+  ((comp
     (partial apply f)
     (partial apply cdr)
     #;dbg)

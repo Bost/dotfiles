@@ -19,12 +19,12 @@ cd $dotf
 
 (define* (gpg-pinentry-setup #:rest args)
   (let [(pinentry-binary "pinentry-gtk-2" #;"pinentry-tty")]
-    (when ((compose
+    (when ((comp
             exec-system*
             (partial format #f "pgrep --full gpg-agent.*~a"))
            pinentry-binary)
       (exec-system* "pkill gpg-agent"))
-    ((compose
+    ((comp
       exec-system*
       (partial format #f "gpg-agent --pinentry-program=~a --daemon")
       cadr
@@ -36,7 +36,7 @@ cd $dotf
 (define* (main #:rest args)
   "Usage:
 (main (list \"<ignored>\"))"
-  ((compose
+  ((comp
     (partial apply gpg-pinentry-setup)
     (partial apply cdr)
     #;dbg)

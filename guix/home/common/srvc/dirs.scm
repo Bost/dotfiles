@@ -49,7 +49,7 @@
 ;;                 (extensions
 ;;                  (list (service-extension home-files-service-type
 ;;                                           dev-configuration-files)))
-;;                 (compose concatenate)
+;;                 (comp concatenate)
 ;;                 (extend append)
 ;;                 (default-value '())
 ;;                 (description "Files that will be put in
@@ -115,7 +115,10 @@ are no extensions use configuration instead."
                    ;; service-extension
                    dirs-activation-service)))
                 (default-value (dirs-configuration))
+
+                ;; service-type is a macro, `comp` doesn't work
                 (compose identity)
+
                 (extend last-extension-or-cfg)
                 (description "Configure user directories. To disable a
 directory, point it to the $HOME.")))

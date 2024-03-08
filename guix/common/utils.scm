@@ -95,7 +95,7 @@ Works also for functions returning and accepting multiple values."
   (format #t "WARN ~a\n" s))
 
 (define-public (module-name-for-logging)
-  ((compose
+  ((comp
     (partial format #f "[~a]")
     (partial string-join)
     (partial map (partial format #f "~a"))
@@ -268,14 +268,14 @@ TODO what's the clojure variant?"
           "[ERR] Command failed\n"))
 
 (define (string-sff ch s-list)
-  ((compose
-    (partial filter (compose not string-null?))
+  ((comp
+    (partial filter (comp not string-null?))
     flatten
     (partial map (lambda (s) (string-split s ch))))
    s-list))
 
 (define-public (string-split-whitespace arg)
-  ((compose
+  ((comp
     (partial string-sff #\space)
     (partial string-sff #\newline)
     (partial string-sff #\tab)
@@ -306,7 +306,7 @@ TODO what's the clojure variant?"
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
-  ((compose
+  ((comp
     (partial exec-or-dry-run system*)
     dbg-exec
     string-split-whitespace)
@@ -374,7 +374,7 @@ Returns a list of strings"
 (define-public (exec-background command)
   "Execute the COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings."
-  ((compose
+  ((comp
     (partial exec-or-dry-run system)
     dbg-exec
     cmd->string
@@ -446,7 +446,7 @@ Usage:
            ;; the port must be closed before calling the following
            (read-delimited "" (car err-cons))))))
 
-  ((compose
+  ((comp
     ;; Can't use the (partial exec-or-dry-run exec-function) since the
     ;; exec-function returns multiple values contains and the exec-or-dry-run is
     ;; able to return only one value.
@@ -487,7 +487,7 @@ Usage:
        (status:exit-val (close-pipe port))
        results)))
 
-  ((compose
+  ((comp
     (partial exec-or-dry-run exec-function)
     dbg-exec
     cmd->string)
@@ -496,7 +496,7 @@ Usage:
 (define-public (analyze-pids-flag-variable init-cmd client-cmd pids)
   "Breakout implementation using a flag variable"
   (let [(ret-cmd init-cmd)]
-    ((compose
+    ((comp
       (lambda (p)
         (if (null? p)
             init-cmd ;; No such binary has been started yet.
@@ -505,7 +505,7 @@ Usage:
        map
        (lambda (pid)
          (when (string=? ret-cmd init-cmd) ;; check the flag
-           (let ((proc-user ((compose
+           (let ((proc-user ((comp
                               cadr
                               exec)
 ;;; '-o' user defined format, 'h' no header, '-p' pid
@@ -528,14 +528,14 @@ found or the CLIENT-CMD if some process ID was found."
    (lambda (continuation)
      (map
       (lambda (pid)
-        (let ((proc-user ((compose
+        (let ((proc-user ((comp
                            cadr
                            exec)
 ;;; '-o' user defined format, 'h' no header, '-p' pid
                           (format #f "ps -o user= h -p ~a" pid))))
           (when (and (not (string-null? proc-user))
                      (string=? user proc-user))
-            (let ((proc-cmd ((compose cadr exec)
+            (let ((proc-cmd ((comp cadr exec)
 ;;; '-o' user defined format, 'h' no header, '-p' pid
                              (format #f "ps -o command= h -p ~a" pid))))
               (unless (string-match ".*<defunct>$" proc-cmd)
@@ -548,7 +548,7 @@ found or the CLIENT-CMD if some process ID was found."
 (define-public (compute-cmd init-cmd client-cmd pattern)
   "pgrep for a user and PATTERN and return the INIT-CMD if no process ID was found
 or the CLIENT-CMD if some process ID was found."
-  ((compose
+  ((comp
     (partial
      analyze-pids-call/cc
      ;; analyze-pids-flag-variable
@@ -616,7 +616,7 @@ or the CLIENT-CMD if some process ID was found."
 (define-public (mktmpfile)
   ;; (tmpnam) could be used instead of all of this, however I get deprecation
   ;; warning sometimes
-  ((compose
+  ((comp
     port-filename
     mkstemp!
     ;; prevent the 'string is read-only ...' error

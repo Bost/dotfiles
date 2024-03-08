@@ -1554,7 +1554,7 @@
 
 ;;; found fresh local cache at /home/bost/.cache/guile/ccache/3.0-LE-8-4.6/home/bost/dev/guix/gnu/packages.scm.go
 (define found-packages
-  ((compose
+  ((comp
     ;; length
     (partial map package-name)
     flatten

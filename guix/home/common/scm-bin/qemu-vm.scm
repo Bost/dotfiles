@@ -63,7 +63,7 @@ Usage:
   ;; Scheme Procedure: chdir str
   ;; Change the current working directory to str. The return value is unspecified.
 
-  ((compose
+  ((comp
     (lambda (command)
       (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
              (str  (read-all-strings port)))
@@ -83,7 +83,7 @@ Usage:
 (define (vmCPUCores user)
   "The VM gets all available CPUs. This script runs as root, however the $cores
 environment variable is not available for the root user."
-  ((compose
+  ((comp
     (partial format #f "cpus=~a")
     number->string)
    ((@(ice-9 threads) current-processor-count))))
@@ -151,7 +151,7 @@ which is not supported by the CPU on the host B
 
 (define* (start-vm user #:key qcow2File (isoFile #f))
   "TODO Auto-detect qcow2File / isoFile according to file extension"
-  ((compose
+  ((comp
     exec
     (lambda (args)
       (append
