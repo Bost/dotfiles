@@ -26,6 +26,7 @@
             dgxp
             ))
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 ;; TODO consider moving dev,dotf definitions to the settings module
@@ -63,33 +64,30 @@
 
 (define (local-dotfile path filename)
   "
-(local-dotfile \"/path/to/\" \"file.ext\")
-=>
-(list \"file.ext\"
-      (local-file \"/home/bost/dev/dotfiles/path/to/file.ext\"))
+(local-dotfile \"/guix/home/\" \".dir-locals.el\") ; with '.' before file-name
+;; =>
+(list \".dir-locals.el\"
+      (local-file \"/home/bost/dev/dotfiles/guix/home/.dir-locals.el\"
+                  \"dot-dir-locals.el\"))
 
-(local-dotfile \"/path/to/\" \".file.ext\") ;; with '.' before file.ext
-=>
-(list \".file.ext\"
-      (local-file
-       \"/home/bost/dev/dotfiles/path/to/.file.ext\" \"dot-file.ext\"))
+(local-dotfile \"/guix/home/\" \"home-ecke.scm\")
+;; =>
+(list \"home-ecke.scm\"
+      (local-file \"/home/bost/dev/dotfiles/guix/home/home-ecke.scm\"
+                  \"home-ecke.scm\"))
 
-(local-dotfile \"/path/to/\" \".file\")
-=>
-(list \".file\"
-      (local-file \"/home/bost/dev/dotfiles/path/to/.file\" \"dot-file\"))
-
-(local-dotfile \"/\" \"path/to/file.ext\")
-=>
-(\"path/to/file.ext\" (local-file \"/home/bost/dev/dotfiles/path/to/file.ext\"))
-
+(local-dotfile \"/\" \"guix/home/.guile\")
+;; =>
+(list \"guix/home/.guile\"
+      (local-file \"/home/bost/dev/dotfiles/guix/home/.guile\"
+                  \"dot-guile\")
 "
   (let [(filepath (user-dotf path filename))]
     (if (access? filepath R_OK)
       (list filename
             (any-local-file filepath (basename filename)))
       (begin
-        (format #t "WARNING: [local-dotfile] can't read ~a\n" filepath)
+        (format #t "E ~a Can't read ~a\n" m filepath)
         #f))))
 
 ;; fish and bash separate elements of a list with a different separator
@@ -100,7 +98,4 @@
 (define scm-bin-dirname "scm-bin")
 (define scm-bin-dirpath (str "/" scm-bin-dirname))
 
-(define (repl)
-  (load (string-append (getenv "dotf") "/guix/home/fs-utils.scm"))
-  )
 (module-evaluated)
