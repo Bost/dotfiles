@@ -206,7 +206,7 @@ guix home --allow-downgrades --cores=$cores \
   (home-environment
    (packages (packages-to-install))
    (services
-    ((compose
+    ((comp
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
       (partial append base:services)
       #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
@@ -243,7 +243,7 @@ guix home --allow-downgrades --cores=$cores \
          ("MANPAGER" . "nvim +Man!")
 
          ;; for `flatpak run ...`
-         ("XDG_DATA_DIRS" . ,((compose
+         ("XDG_DATA_DIRS" . ,((comp
                                (lambda (lst) (string-join lst list-separator-bash)))
                               (list
                                (user-home "/.local/share/flatpak/exports/share")

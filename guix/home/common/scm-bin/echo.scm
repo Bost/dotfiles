@@ -41,7 +41,7 @@ Bottom
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"arg0\")"
-  ((compose
+  ((comp
     (partial apply (lambda (options string)
                      (echo #:options options #:string string)))
     (partial apply cdr)

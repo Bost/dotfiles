@@ -46,7 +46,7 @@ cd $dotf
 
 (define* (gps-all #:rest args)
   "This git-pushes to all remote repos. TODO implement basic `gps`"
-  ((compose
+  ((comp
     (lambda (ret-vals) ;; the reducer
       ;; ret-vals is a list consisting of sublists:
       ;; ((ret-code-0 list-of-vals-0)
@@ -55,7 +55,7 @@ cd $dotf
       (list (apply max (map car ret-vals)) (map cdr ret-vals)))
 
     (partial map
-             (compose
+             (comp
               (lambda (remote)
                 (apply (partial gps #:remote remote "--follow-tags" "--verbose")
                        args))
@@ -65,7 +65,7 @@ cd $dotf
     (partial map
              (lambda (remote)
                (cons remote
-                     ((compose
+                     ((comp
                        (partial filter
                                 (lambda (url)
                                   (string-match "git@" url)))
@@ -81,7 +81,7 @@ cd $dotf
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"arg0\")"
-  ((compose
+  ((comp
     (partial apply gps-all)
     ;; (partial apply gps #:remote "github")
     (partial apply cdr)

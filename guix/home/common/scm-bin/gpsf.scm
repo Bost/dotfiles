@@ -52,7 +52,7 @@ cd $dotf
 (define* (main #:rest args)
   "Usage:
 "
-  ((compose
+  ((comp
     (partial apply gpsf-all)
     (partial apply cdr)
     #;dbg)

@@ -35,7 +35,7 @@ cd $dotf
 (define (emacs-output-path)
   "(emacs-output-path)
 => \"/gnu/store/c39qm5ql5w9r6lwwnhangxjby57hshws-emacs-28.2/bin/emacs\""
-  ((compose
+  ((comp
     (partial format #f "~a/bin/emacs")
     derivation->output-path
     (partial package-derivation (open-connection)))
@@ -65,7 +65,7 @@ cd $dotf
               ;; the init-cmd must not contain the args otherwise the `pgrep
               ;; ...` detection won't work
               #;args)))]
-      ((compose
+      ((comp
         (lambda (cmd) ((if (string= cmd init-cmd) exec exec-background) cmd))
         ;; (lambda (p) (format #t "4:\n~a\n" p) p)
 ;;; Search for the full command line:

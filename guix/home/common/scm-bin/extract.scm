@@ -25,7 +25,7 @@ cd $dotf
 "
   (call/cc
    (lambda (continuation)
-     ((compose
+     ((comp
        (partial apply exec-system*)
        ;; (lambda (a) (format #t "2 file: ~a\n" a) a)
        (lambda (a)
@@ -64,7 +64,7 @@ cd $dotf
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" ...)"
-  ((compose
+  ((comp
     (partial apply extract)
     (partial apply cdr)
     #;dbg)

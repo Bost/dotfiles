@@ -20,7 +20,7 @@ cd $dotf
 
 (define (main files args)
   (let* ((ret
-          ((compose
+          ((comp
             #;(lambda (p) (format #t "1: ~a\n" p) p)
             exec
             #;
