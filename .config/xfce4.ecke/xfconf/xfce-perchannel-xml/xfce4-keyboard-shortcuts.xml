@@ -33,9 +33,6 @@
     </property>
     <property name="custom" type="empty">
       <property name="F1" type="string" value="xfce4-terminal --zoom=3 --drop-down"/>
-      <property name="&lt;Alt&gt;F2" type="string" value="xfce4-appfinder --collapsed">
-        <property name="startup-notify" type="bool" value="true"/>
-      </property>
       <property name="&lt;Alt&gt;Print" type="string" value="xfce4-screenshooter -w"/>
       <property name="XF86WWW" type="string" value="exo-open --launch WebBrowser"/>
       <property name="XF86Mail" type="string" value="exo-open --launch MailReader"/>
