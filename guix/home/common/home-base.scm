@@ -149,7 +149,7 @@
     ;; (lambda (v) (format #t "~a 5\n" m) v)
     (partial append (list fish-service))
     ;; (lambda (v) (format #t "~a 3\n" m) v)
-    (partial append (list srvc:home-dir-cfg-srvc))
+    (partial append (list (srvc:home-dir-cfg-srvc)))
     ;; (lambda (v) (format #t "~a 2\n" m) v)
     (partial append (list scheme-files-service))
     ;; (lambda (v) (format #t "~a 1\n" m) v)
