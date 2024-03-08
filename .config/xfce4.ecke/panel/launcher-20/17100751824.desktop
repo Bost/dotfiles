@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Exec=/gnu/store/wl79b25vkh3j6163ckyk5gml5vdy3c8r-xfce4-appfinder-4.18.0/bin/xfce4-appfinder
+Icon=org.xfce.appfinder
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Utility;X-XFCE;
+Name=Application Finder
+Comment=Find and launch applications installed on your system
+Keywords=program;applications;bookmarks;
+X-XFCE-Source=file:///run/current-system/profile/share/applications/xfce4-appfinder.desktop
