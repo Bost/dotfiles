@@ -882,14 +882,9 @@ home-profile. Comment them out."
       (if (or (is-system-edge))
           (append
            ;; (map (comp list specification->package) (video-packages))
-           (list
-            (@(bost gnu packages emacs-xyz) emacs-farmhouse-light-mod-theme)
-            (@(bost gnu packages emacs-xyz) emacs-tweaks)
-            )
+           ;; TODO check ‘all-the-icons’ in the /home/bost/.local/share/fonts/
+           ;; and call (all-the-icons-install-fonts) when installing emacs
            (remote-desktop-packages #:is-server #t)
-           ;; TODO check ‘all-the-icons’ in the  ‘/home/bost/.local/share/fonts/’ and call (all-the-icons-install-fonts) when installing emacs
-           ;; pulls-in ~430 additional packages
-           ;; (spguimacs-packages)
            pkgs)
           pkgs))
     ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
@@ -897,8 +892,6 @@ home-profile. Comment them out."
       (if (or (is-system-ecke))
           (append
            ;; (map (comp list specification->package) (video-packages))
-           ;; pulls-in ~430 additional packages
-           (spguimacs-packages)
            (large-packages-ecke)
            (remote-desktop-packages #:is-server #f)
            pkgs)
@@ -906,7 +899,10 @@ home-profile. Comment them out."
     ;; (lambda (p) (format #t "~a 2. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
       (if (or (is-system-edge) (is-system-ecke))
-          (append (large-packages-edge-ecke) pkgs)
+          (append
+           (large-packages-edge-ecke)
+           (spguimacs-packages) ;; pulls-in ~430 additional packages
+           pkgs)
           pkgs))
     ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
