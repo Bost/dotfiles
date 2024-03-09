@@ -1,0 +1,13 @@
+app=/gnu/store/n61idi5p1npx6bi35kd5116ykaj6i9nm-ristretto-0.13.1/bin/ristretto
+custom_action_command=none
+last_user=
+last_extension=png
+enable_imgur_upload=true
+show_in_folder=false
+screenshot_dir=file:///home/bost
+action=2
+delay=0
+region=3
+show_mouse=0
+show_border=1
+

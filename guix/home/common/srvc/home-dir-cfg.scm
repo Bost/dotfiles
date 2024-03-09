@@ -75,7 +75,46 @@
   "Handle the host-specific configuration settings from .config<.hostname>/
 See also (@(fs-utils) local-dotfile)
 "
-  (let* [(hn (hostname-memoized))]
+  (let [(hn (hostname-memoized))
+        (files (cond
+                [(is-system-ecke)
+                 (list
+                  "panel/launcher-17/17100751821.desktop"
+                  "panel/launcher-18/17100751822.desktop"
+                  "panel/launcher-19/17100751823.desktop"
+                  "panel/launcher-20/17100751824.desktop"
+                  "panel/xfce4-clipman-actions.xml"
+                  "xfconf/xfce-perchannel-xml/displays.xml"
+                  "xfconf/xfce-perchannel-xml/keyboards.xml"
+                  "xfconf/xfce-perchannel-xml/thunar.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-appfinder.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-notifyd.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-power-manager.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-screensaver.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-session.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-terminal.xml"
+                  "xfconf/xfce-perchannel-xml/xfwm4.xml"
+                  )]
+                [(is-system-edge)
+                 (list
+                  "xfce4-screenshooter"
+                  "xfconf/xfce-perchannel-xml/displays.xml"
+                  "xfconf/xfce-perchannel-xml/keyboards.xml"
+                  "xfconf/xfce-perchannel-xml/thunar.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-notifyd.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-power-manager.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-screensaver.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-session.xml"
+                  "xfconf/xfce-perchannel-xml/xfce4-terminal.xml"
+                  "xfconf/xfce-perchannel-xml/xfwm4.xml"
+                  )]
+                [#t (list)]))]
     ((comp
       (partial remove unspecified-or-empty-or-false?)
       (partial
