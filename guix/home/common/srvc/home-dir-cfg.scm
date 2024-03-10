@@ -61,7 +61,7 @@
                 (close-port port)
                 tmpfile)
               "channels.scm")))
-          (lambda (s) (format #t "~a ### Creating channels.scm ... " m) s)
+          (lambda (s) (format #t "I ~a Creating channels.scm ... " m) s)
           (lambda (sexp) (append fst sexp (list (car snd)))))
          additional-channels)))))
 (testsymb 'create-channels-scm)
