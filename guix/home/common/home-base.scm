@@ -188,9 +188,7 @@
 ;; See also $dotf/.bashrc.martin
 (define-public (environment-vars list-separator)
   ((comp
-    (lambda (v)
-      ;; (format #t "~a 0\n" m)
-      v))
+    #;(lambda (v) (format #t "~a 0\n" m) v))
    `(
      ;; Warn about deprecated Guile features
      ("GUILE_WARN_DEPRECATED" . "detailed")
@@ -236,9 +234,7 @@
 
 (define-public (environment-vars-edge-ecke list-separator)
   ((comp
-    (lambda (v)
-      ;; (format #t "~a 0\n" m)
-      v))
+    #;(lambda (v) (format #t "~a 0\n" m) v))
    `(
      ;; Remedy against:
      ;; $ lein uberjar
@@ -263,7 +259,7 @@
      ;; needed by `help`; e.g. `help expand`
      ("BROWSER" . "firefox")
 
-     ;; open man-pages in nvim
+     ;; open man-pages in neovim
      ("MANPAGER" . "nvim +Man!")
 
      ;; for `flatpak run ...`
