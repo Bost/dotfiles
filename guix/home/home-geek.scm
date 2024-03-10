@@ -25,16 +25,9 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
-
-  ;; gcl
   #:use-module (scm-bin gcl)
-
-  ;; the code of this module comes in via the 'bost' channel
-  ;; #:use-module (bost utils)
   #:use-module (fs-utils)
-
   #:use-module (cfg packages all)
-  ;; #:use-module (cfg mcron)
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
@@ -49,7 +42,6 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (gnu home services)
   ;; take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  ;; pretty-print
   ;; #:use-module (ice-9 pretty-print)
 
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet

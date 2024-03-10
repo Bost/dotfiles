@@ -794,7 +794,7 @@ home-profile. Comment them out."
   (list
    emacs-arei    ;; Guile IDE
    emacs-plantuml-mode ;; Edit and preview PlantUML diagrams
-   plantuml ;; Draw UML diagrams from simple textual description  
+   plantuml ;; Draw UML diagrams from simple textual description
    guile-next
    guile-ares-rs ;; Asyncronous Reliable Extensible Sleek RPC Server for Guile
    ))
@@ -892,7 +892,7 @@ home-profile. Comment them out."
                  pkgs)))
       |#
       ;; (format #t "~a\n" (string-join (map (partial format #f "~a") pkgs) "\n"))
-      (format #t "~a packages to install: ~a\n" m (length pkgs))
+      (format #t "I ~a Packages to install: ~a\n" m (length pkgs))
       pkgs)
     inferior-pkgs
     ;; (lambda (p) (format #t "~a 5.\n~a\n" p) p))
