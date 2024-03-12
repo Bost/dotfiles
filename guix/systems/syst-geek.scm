@@ -77,14 +77,14 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
            (list
             "brightnessctl" #| backlight and LED brightness control |#
             ))
-      packages-to-install
+      (packages-to-install)
       %base-packages))
 
 ;;; Below is the list of system services. To search for available services, run
 ;;; 'guix system search KEYWORD' in a terminal.
     (services
      (append
-      base:services
+      (base:services)
       (list
        (set-xorg-configuration
         (xorg-configuration (keyboard-layout keyboard-layout)))

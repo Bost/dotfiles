@@ -115,7 +115,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
            (list
             "brightnessctl" #| backlight and LED brightness control |#
             ))
-      packages-to-install
+      (packages-to-install)
       %base-packages))
 
     ;; System services. Search for available services by
@@ -123,7 +123,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 
     (services
      (append
-      base:services
+      (base:services)
       (list
        ;; TODO lightdm doesn't work properly. The login fails
        ;; lightdm-srvc

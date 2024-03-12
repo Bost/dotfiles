@@ -10,7 +10,7 @@
 
 (evaluating-module)
 
-(define spacemacs-development-packages
+(define (spacemacs-development-packages)
   ;; used by `guix shell ...', specified by run.sh
   (list
    "bash"
@@ -41,14 +41,16 @@
    "sed"
    "which"
    ))
+(testsymb 'spacemacs-development-packages)
 
-(define general-packages
+(define (general-packages)
   (list
    "emacs-spacemacs"
    "spacemacs-rolling-release"
    ))
+(testsymb 'general-packages)
 
-(define excluded-packages
+(define (excluded-packages)
   ;; (ya)snippet-relates packages cause adding various paths to `yas-snippet-dirs',
   ;; among others the <current-dir>/snippets which cannot be opened.
   ;; The error is, e.g.:
@@ -99,9 +101,10 @@
 ;;; Error (use-package): Failed to parse package fill-column-indicator: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
    "emacs-spaceleader"
    ))
+(testsymb 'excluded-packages)
 
 ;; Orphan packages according to spguimacs
-(define orphan-packages
+(define (orphan-packages)
   (list
    "emacs-faceup"
    "emacs-deferred"
@@ -112,31 +115,32 @@
    "emacs-ivy"
    "emacs-a"
    ))
+(testsymb 'orphan-packages)
 
 #|
-(define G general-packages)
-(define N needed-packages)
-(define O orphan-packages)
-(define A available-packages)
-(define E excluded-packages)
+(define G (general-packages))
+(define N (needed-packages))
+(define O (orphan-packages))
+(define A (available-packages))
+(define E (excluded-packages))
 (load "/home/bost/dev/dotfiles/guix/home/cfg/packages/spguimacs/all.scm")
 |#
 (define-public (spguimacs-packages)
   (let [
-        (G general-packages)
-        (N needed-packages)
-        (O orphan-packages)
-        (A available-packages)
-        (E excluded-packages)
+        (G (general-packages))
+        (N (needed-packages))
+        (O (orphan-packages))
+        (A (available-packages))
+        (E (excluded-packages))
 
 ;;; The 'specification->package+output' can be reliably called only over
 ;;; available-packages since e.g. needed-packages may contain a non-existing
 ;;; package, i.e. a package which hasn't been ported to Guix yet.
-        ;; (G (map (comp list specification->package+output) general-packages))
-        ;; (N (map (comp list specification->package+output) needed-packages))
-        ;; (O (map (comp list specification->package+output) orphan-packages))
-        ;; (A (map (comp list specification->package+output) available-packages))
-        ;; (E (map (comp list specification->package+output) excluded-packages))
+        ;; (G (map (comp list specification->package+output) (general-packages)))
+        ;; (N (map (comp list specification->package+output) (needed-packages)))
+        ;; (O (map (comp list specification->package+output) (orphan-packages)))
+        ;; (A (map (comp list specification->package+output) (available-packages)))
+        ;; (E (map (comp list specification->package+output) (excluded-packages)))
         ]
     ((comp
       (partial append (list
@@ -152,4 +156,4 @@
 
 (module-evaluated)
 
-#;(specifications->manifest spguimacs-packages)
+#;(specifications->manifest (spguimacs-packages))

@@ -47,34 +47,35 @@ Note:
 ;;; when the 'guix home reconfigure ...' fails or is interrupted.
 ;;; Can't use `local-file' or `mixed-text-file' or something similar since the
 ;;; `fish_variables' must be editable
-(let* [(filepath "/fish_variables")
-       (src (fish-config-dotfiles filepath))
-       (dst (user-home "/" (fish-config-base filepath)))
-       (dstdir (dirname dst))]
-  (unless (file-exists? dstdir)
+(define-public (copy-fish-config-dotfiles)
+  (let* [(filepath "/fish_variables")
+         (src (fish-config-dotfiles filepath))
+         (dst (user-home "/" (fish-config-base filepath)))
+         (dstdir (dirname dst))]
+    (unless (file-exists? dstdir)
+      (let [(indent (str indent indent-inc))]
+        (format #t "~a(mkdir ~a) ... " indent dstdir)
+        (let ((retval (mkdir dstdir)))
+          (format #t "retval: ~a\n" retval)
+          ;; The value of 'retval' is '#<unspecified>'
+;;; TODO continuation: executing the block only if the dstdir was created.
+          retval)))
+;;; TODO is this sexp is not executed because of lazy-evaluation?
     (let [(indent (str indent indent-inc))]
-      (format #t "~a(mkdir ~a) ... " indent dstdir)
-      (let ((retval (mkdir dstdir)))
+      (format #t "~a(copy-file ~a ~a) ... " indent src dst)
+      (let ((retval (copy-file src dst))) ;; consider using `symlink'
         (format #t "retval: ~a\n" retval)
         ;; The value of 'retval' is '#<unspecified>'
-;;; TODO continuation: executing the block only if the dstdir was created.
-        retval)))
-;;; TODO is this sexp is not executed because of lazy-evaluation?
-  (let [(indent (str indent indent-inc))]
-    (format #t "~a(copy-file ~a ~a) ... " indent src dst)
-    (let ((retval (copy-file src dst))) ;; consider using `symlink'
-      (format #t "retval: ~a\n" retval)
-      ;; The value of 'retval' is '#<unspecified>'
-      retval))
+        retval))
 ;;; Just changing ownership and permissions of `fish_variables' doesn't work:
-  #;
-  (begin
-    ;; .rw-r--r-- bost users fish_variables
-    (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
-    (chown dst (getuid) (getgid))
-    ;; .rw-r--r-- fish_variables
-    (format #t "(chmod ~a ~a)\n" dst #o644)
-    (chmod dst #o644)))
+    #;
+    (begin
+      ;; .rw-r--r-- bost users fish_variables
+      (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
+      (chown dst (getuid) (getgid))
+      ;; .rw-r--r-- fish_variables
+      (format #t "(chmod ~a ~a)\n" dst #o644)
+      (chmod dst #o644))))
 
 (define* (append-fish-config-dir dir lst)
   (append
@@ -245,7 +246,7 @@ the composition of the extensions"
     ;; (format #t "### [home-fish-extensions] ret: \n~a\n\n" ret)
     ret))
 
-(define home-fish-service-type
+(define (home-fish-service-type)
   (service-type (name 'home-fish)
                 (extensions
                  (list
@@ -293,7 +294,7 @@ the composition of the extensions"
     ;; (format #t "### [fish-config-files2] ret: \n~a\n\n" ret)
     ret))
 
-(define home-fish-service-type2
+(define (home-fish-service-type2)
   (service-type (name 'home-fish2)
                 (extensions
                  (list
@@ -303,9 +304,10 @@ the composition of the extensions"
                   ))
                 (description "home-fish-service-type2 with completions.")))
 
-(define-public fish-service
+(define-public (fish-service)
+  (copy-fish-config-dotfiles) ;; with side effects!
   (service
-   home-fish-service-type
+   (home-fish-service-type)
    #;home-fish-service-type
    ;; fish configuration - see ~/dev/guix/gnu/home/services/shells.scm
    (home-fish-config

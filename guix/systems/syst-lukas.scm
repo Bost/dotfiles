@@ -50,13 +50,13 @@
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
 ;;; install PACKAGE' to install a package.
-    (packages (append packages-to-install %base-packages))
+    (packages (append (packages-to-install) %base-packages))
 
     ;; Below is the list of system services.  To search for available
     ;; services, run 'guix system search KEYWORD' in a terminal.
     (services
      (append
-      base:services
+      (base:services)
       (list
        (set-xorg-configuration
         (xorg-configuration (keyboard-layout keyboard-layout)))

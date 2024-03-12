@@ -17,6 +17,9 @@
   #:use-module (ice-9 pretty-print)
 )
 
+(define m (module-name-for-logging))
+(evaluating-module)
+
 ;;; Use function-implementations so that the code below is not evaluated every
 ;;; time some of the scm-bin CLI utility requiring this module is executed.
 (define (hostname)
@@ -43,3 +46,5 @@
 
 (define-public (is-system-geek) (equal? (hostname-memoized) host-geek))
 (testsymb 'is-system-geek)
+
+(module-evaluated)

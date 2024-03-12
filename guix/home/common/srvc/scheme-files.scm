@@ -247,7 +247,7 @@ Example:
                  #:files (list "utf8")
                  #:scheme-file-name "search-notes")))
 
-(define-public scheme-files-service
+(define-public (scheme-files-service)
   ((comp
     (partial simple-service 'scheme-files-service home-files-service-type)
     (partial
@@ -277,7 +277,6 @@ Example:
          (service-file #:program-name "spag"
                        #:desc "spacemacs-git-fetch-rebase")))]
       [#t
-       ;; empty list
        (list)])))
    (list
     ;; pwr and prw do the same

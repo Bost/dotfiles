@@ -30,8 +30,6 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (settings)
   #:use-module (utils)
   #:use-module (memo)
-  ;; fix the 'error: leiningen: unknown package', but it doesn't work
-  #:use-module (nongnu packages clojure)
   #:use-module (fs-utils)
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
