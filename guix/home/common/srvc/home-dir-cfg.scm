@@ -265,7 +265,6 @@ find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \; # i.e. 700 for directo
                )))
     ;; (lambda (p) (format #t "######## 0.\n") p)
     )
-   ;; empty list
    (list)))
 (testsymb 'home-dir-cfg-srvc-files)
 

@@ -81,7 +81,7 @@
                  #;"mpv"    ;; Audio and video player
                  "termite"  ;; Minimal terminal emulator. Designed for use with tiling window managers.
                  ))
-      packages-to-install
+      (packages-to-install)
       %base-packages))
     #;
     (skeletons
@@ -92,7 +92,7 @@
      ;; TODO create macros pappend, premove, etc.
 
      (append
-      base:services
+      (base:services)
       (list
        (set-xorg-configuration
         (xorg-configuration
@@ -105,7 +105,7 @@
 ;;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
 ;;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
 ;;; see https://issues.guix.gnu.org/40454
-       ;; (modify-services base:services
+       ;; (modify-services (base:services)
        ;;                  (udev-service-type
        ;;                   config =>
        ;;                   (udev-configuration
