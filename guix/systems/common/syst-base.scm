@@ -69,7 +69,7 @@
    %base-user-accounts))
 (testsymb-trace 'users-config)
 
-(define-public services
+(define-public (services)
   (list
    ;; ntp-service-type for system clock sync is in the
    ;; %desktop-services by default

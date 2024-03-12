@@ -10,7 +10,7 @@
 ;; guix package --list-available='^emacs-' | awk '{print "\""$1"\""}'
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
 ;; doesn't work
-(define guix-package---list-available
+(define (guix-package---list-available)
   (list
    "emacs-2048-game"
    "emacs-4clojure"
@@ -1553,7 +1553,7 @@
 (testsymb 'guix-package---list-available)
 
 ;;; found fresh local cache at /home/bost/.cache/guile/ccache/3.0-LE-8-4.6/home/bost/dev/guix/gnu/packages.scm.go
-(define found-packages
+(define (found-packages)
   ((comp
     ;; length
     (partial map package-name)
@@ -1561,11 +1561,11 @@
     (partial remove null?)
     (partial map find-packages-by-name)
     )
-   guix-package---list-available))
+   (guix-package---list-available)))
 (testsymb 'found-packages)
 
-(define-public available-packages
-  (sx guix-package---list-available found-packages))
+(define-public (available-packages)
+  (sx (guix-package---list-available) (found-packages)))
 (testsymb 'available-packages)
 
 (module-evaluated)
