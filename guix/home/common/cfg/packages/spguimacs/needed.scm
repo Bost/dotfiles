@@ -7,7 +7,7 @@
 
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
 ;; doesn't work
-(define-public needed-packages
+(define-public (needed-packages)
   (list
    ;; :beg: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
    ;; "emacs-flycheck-joker"

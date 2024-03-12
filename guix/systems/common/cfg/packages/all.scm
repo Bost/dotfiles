@@ -1,6 +1,8 @@
 (define-module (cfg packages all)
   ;; provides: use-package-modules
-  #:use-module (gnu))
+  #:use-module (utils)
+  #:use-module (gnu)
+  )
 
 (use-package-modules
  version-control ;; git
@@ -12,7 +14,10 @@
  vim
  )
 
-(define-public packages-to-install
+(define m (module-name-for-logging))
+(evaluating-module)
+
+(define-public (packages-to-install)
   (list
 ;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
    git
@@ -23,3 +28,7 @@
    rsync      ;; 'scp' is preinstalled
    vim        ;; 'vi' is preinstalled
    ))
+(testsymb-trace 'packages-to-install)
+
+(module-evaluated)
+

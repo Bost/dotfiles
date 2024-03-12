@@ -196,11 +196,12 @@ guix home --allow-downgrades --cores=$cores \
 ;; See also $dotf/.bashrc.martin
 (define home-env
   (home-environment
-   (packages (packages-to-install))
+   ;; Replaced by $dotf/guix/home/common/manifest.scm
+   ;; (packages (packages-to-install))
    (services
     ((comp
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
-      (partial append base:services)
+      (partial append (base:services))
       #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
       list
       base:environment-variables-service

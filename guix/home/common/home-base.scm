@@ -46,7 +46,7 @@
 
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
-(define-public services
+(define-public (services)
   ((comp
     ;; (lambda (v) (format #t "~a 7\n" m) v)
     (partial
@@ -121,6 +121,8 @@
             "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
             ;; %H:%M:%S can be abbreviated by %T
             "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
+            "\n" "GUIX_PROFILE=$HOME/.guix-profile"
+            "\n" " . \"$GUIX_PROFILE/etc/profile\""
             ))
           ;; (local-file ".bashrc" "bash_profile") should work too
           ;; (local-file
@@ -147,11 +149,11 @@
     ;; (lambda (v) (format #t "~a 6\n" m) v)
     (partial append (list (service dirs-service-type)))
     ;; (lambda (v) (format #t "~a 5\n" m) v)
-    (partial append (list fish-service))
+    (partial append (list (fish-service)))
     ;; (lambda (v) (format #t "~a 3\n" m) v)
     (partial append (list (srvc:home-dir-cfg-srvc)))
     ;; (lambda (v) (format #t "~a 2\n" m) v)
-    (partial append (list scheme-files-service))
+    (partial append (list (scheme-files-service)))
     ;; (lambda (v) (format #t "~a 1\n" m) v)
     ;; (partial append mcron-service)
 
@@ -177,10 +179,10 @@
     ;;               #;(tag ((gpgSign . #t))))))))
     ;; (lambda (v) (format #t "~a 0\n" m) v)
     )
-   (list) #| empty list |#))
+   (list)))
 (testsymb 'services)
 
-(define gcc-filepath
+(define (gcc-filepath)
   ;; (user-home "/.guix-home/profile/bin/gcc")
   (format #f "~a/bin/gcc" (package-derivation-output!
                            (@(gnu packages commencement) gcc-toolchain))))
@@ -196,8 +198,8 @@
      ;; CC and CMAKE_C_COMPILER may NOT need be defined in the environment, if
      ;; the "native-compiler-error (libgccjit.so: error invoking gcc driver)"
      ;; doesn't come up.
-     ("CC"               . ,gcc-filepath)
-     ("CMAKE_C_COMPILER" . ,gcc-filepath)
+     ("CC"               . ,(gcc-filepath))
+     ("CMAKE_C_COMPILER" . ,(gcc-filepath))
 
      ("dev"   . ,dev)
      ;; TODO unify value of `bin' with the value in the `PATH' definition
@@ -300,7 +302,7 @@
    environment-vars))
 (testsymb 'environment-variables-service)
 
-(define projects
+(define (projects)
   (list
    (cons "/dec" (list
                  "/clj-time"
@@ -367,7 +369,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
               (list "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
                     (str github repo))))))))
 
-(define projects-heroku
+(define (projects-heroku)
   (list
    (cons "/der" (list
                  ;; "/pictures"
@@ -390,25 +392,26 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
   (map (lambda (project)
          (let ((dest-dir (car project)))
            (map (partial obtain-and-setup dest-dir) (cdr project))))
-       projects)
+       (projects))
   #;
   (map (lambda (project)
          (let ((dest-dir (car project)))
            (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
-       projects-heroku))
+       (projects-heroku)))
 (testsymb 'install-all-projects)
 
 (define-public (home-env-edge-ecke list-separator)
   (home-environment
-   (packages (packages-to-install))
+   ;; Replaced by $dotf/guix/home/common/manifest.scm
+   ;; (packages (packages-to-install))
    (services
     ((comp
-      (partial append services)
+      (partial append (services))
       list
       environment-variables-service
       (partial append (environment-vars-edge-ecke list-separator))
       (partial append (environment-vars           list-separator))
-      ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
+      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
       )
      (list)))))
 (testsymb 'home-env-edge-ecke)

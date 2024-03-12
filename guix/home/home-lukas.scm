@@ -25,7 +25,6 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (utils)
   #:use-module (memo)
   #:use-module (fs-utils)
-  #:use-module (cfg packages all)
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
@@ -56,16 +55,19 @@ guix home --allow-downgrades --cores=$cores \
 ;; See also $dotf/.bashrc.martin
 (define home-env
   (home-environment
-   (packages (packages-to-install))
+   ;; Replaced by $dotf/guix/home/common/manifest.scm
+   ;; (packages ((@(cfg packages all) packages-to-install)))
    (services
     ((comp
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
-      (partial append base:services)
+      (partial append (base:services))
       #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
       list
       base:environment-variables-service
-      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
-     (base:environment-vars list-separator-bash)))))
+      (partial append (base:environment-vars list-separator-bash))
+      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
+      )
+     (list)))))
 (testsymb 'home-env)
 
 (module-evaluated)
