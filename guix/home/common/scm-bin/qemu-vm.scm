@@ -147,10 +147,8 @@ which is not supported by the CPU on the host B
           (string-append
            "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
            ",name=com.redhat.spice.0")
-          "-spice" (string-append "port=" vmRemoteViewPort ",disable-ticketing=on")
-          ) " ")
-        ;; "&" "disown" ;; TODO where is disown located???
-        )))
+          "-spice" (str "port=" vmRemoteViewPort ",disable-ticketing=on")
+          ) " "))))
     exec
     (lambda ()
       (if (access? qcow2File W_OK)
