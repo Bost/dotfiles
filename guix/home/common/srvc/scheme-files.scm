@@ -160,11 +160,11 @@ Example:
 
 (define search-notes-service-files
   (list
-;;; TODO crc should search in the fdk-directories
    (service-file #:program-name "crc"
                  #:files (list "lisp/clojure")
                  #:other-files
                  (append
+                  ;; TODO should search also in the *.edn files
                   (expand-pattern corona-dir "clj")
                   (expand-pattern corona-dir "src/corona/")
                   (expand-pattern corona-dir "src/corona/api/")
@@ -173,6 +173,24 @@ Example:
                   (expand-pattern corona-dir "src/corona/msg/text/")
                   (expand-pattern corona-dir "src/corona/web/")
                   (expand-pattern corona-dir "test/corona/")
+
+                  (expand-pattern fdk-dir "clj")
+                  (expand-pattern fdk-dir "data/src/fdk/datasrc/")
+                  (expand-pattern fdk-dir "data/src/fdk/")
+                  (expand-pattern fdk-dir "data/test/fdk/")
+                  (expand-pattern fdk-dir "env/dev/clj/fdk/cmap/")
+                  (expand-pattern fdk-dir "env/dev/clj/")
+                  (expand-pattern fdk-dir "env/prod/clj/")
+                  (expand-pattern fdk-dir "env/prod/clj/fdk/cmap/")
+                  (expand-pattern fdk-dir "src/clj/fdk/cmap/")
+                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/controllers/")
+                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/")
+                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/middleware/")
+                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/pages/")
+                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/routes/")
+                  (expand-pattern fdk-dir "src/clj/fdk/data/")
+                  (expand-pattern fdk-dir "test/clj/fdk/cmap/")
+                  (expand-pattern fdk-dir "src/cljs/fdk/cmap/")
                   )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "cre"
