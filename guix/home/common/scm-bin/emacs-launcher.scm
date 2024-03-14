@@ -30,6 +30,7 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define (emacs-output-path)
@@ -66,15 +67,17 @@ cd $dotf
               ;; ...` detection won't work
               #;args)))]
       ((comp
-        (lambda (cmd) ((if (string= cmd init-cmd) exec exec-background) cmd))
         ;; (lambda (p) (format #t "4:\n~a\n" p) p)
 ;;; Search for the full command line:
 ;;; $ pgrep --full --euid bost "/home/bost/.guix-home/profile/bin/emacs --with-profile=spacemacs --daemon"
         (lambda (client-cmd)
-          (let [(cmd (compute-cmd init-cmd client-cmd init-cmd))]
-            (unless (string=? cmd client-cmd)
-              (format #t "[WARN] Ignoring parameters: ~a\n" (string-join args)))
-            cmd))
+          (if (string=? (compute-cmd init-cmd client-cmd init-cmd)
+                        client-cmd)
+              (exec-background client-cmd)
+              (when (zero? (car (exec init-cmd)))
+                ;; Calling (exec-background cmd) makes sense only if the emacs
+                ;; server has been started successfully.
+                (exec-background client-cmd))))
         ;; (lambda (p) (format #t "3:\n~a\n" p) p)
         cmd->string
         ;; (lambda (p) (format #t "2:\n~a\n" p) p)
