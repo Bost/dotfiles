@@ -21,6 +21,7 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define* (restore-spacemacs #:rest args)
