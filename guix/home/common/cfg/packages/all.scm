@@ -726,7 +726,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 (define (xfce-packages)
   (list
-   ;; TODO add ~/.config/xfce4/xfconf/xfce-perchannel-xml/ to the home config
    xfce4-clipman-plugin
    xfce4-netload-plugin ;; traffic indicator
    xfce4-notifyd
@@ -845,11 +844,6 @@ home-profile. Comment them out."
 (testsymb 'devel-packages)
 
 (define-public (packages-to-install)
-;;; TODO make it support inferior packages
-;;; https://guix.gnu.org/manual/devel/en/html_node/Inferiors.html
-;;; TODO packages should accept expressions like the -e, e.g.
-;;;   guix package                        -e '(@ (bost gnu packages maven) maven)'
-;;;   guix package --install-from-expression='(@ (bost gnu packages maven) maven)'
   ((comp
     (lambda (pkgs)
       #|

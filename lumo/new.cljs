@@ -1,6 +1,10 @@
 #!/usr/bin/env lumo
 ;; -*- clojurescript -*-
 
+;;; Lumo is a standalone ClojureScript environment that runs on Node.js and the
+;;; V8 JavaScript engine. The repo https://github.com/anmonteiro/lumo has been
+;;; archived by the owner on Jun 4, 2022. It is now read-only.
+
 ;;;; in config.fish:
 ;; set -x NODE_PATH ~/node_modules
 
@@ -80,7 +84,6 @@
            [(str "(" cmt-str ".*" ptrn ".*\n" "){1,}")  #_"{1,}  greedy"
             (str "("         ".*" ptrn ".*\n" "){1,}?") #_"{1,}? lazy"]))))))
 
-;; TODO utf8.txt doesn't use block syntax
 (defn search-new [file ptrn cmt-str err data]
   (if err
     (throw (js/Error. err))
