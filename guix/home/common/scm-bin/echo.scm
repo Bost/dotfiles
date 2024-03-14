@@ -64,7 +64,7 @@ Bottom
         ;; the f-function parses the output
         (f (cadr mv))
         (begin
-          (format #t "~a\n" (error-command-failed))
+          (error-command-failed m)
           mv))))
 
 ;; (define-monad compose-shell-commands

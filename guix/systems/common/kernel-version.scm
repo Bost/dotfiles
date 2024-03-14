@@ -7,6 +7,9 @@
   ;; #:use-module (gnu tests)     ; %simple-os
  )
 
+(define m (module-name-for-logging))
+(evaluating-module)
+
 ((comp
   (partial apply (partial format #t
                           (str "Kernel used: ~a. "
@@ -20,7 +23,7 @@
              (let* ((output (cdr ret)))
                (car output))
              (begin
-               (format #t "~a\n" (error-command-failed))
+               (error-command-failed m)
                *unspecified*)))
        (package-version
         (car (find-packages-by-name "linux-libre"))
@@ -30,3 +33,5 @@
         (load
          (format #f "~a/guix/systems/syst-~a.scm"
                  (getenv "dotf") (hostname-memoized)))))))
+
+(module-evaluated)

@@ -32,7 +32,7 @@ cd $dotf
           ;; (map (partial format #t "output: ~a\n") output)
           ret)
         (begin
-          (format #t "~a\n" (error-command-failed))
+          (error-command-failed m)
           *unspecified*))))
 (testsymb 'gpsf)
 
@@ -46,7 +46,7 @@ cd $dotf
           ;; (map (partial format #t "output: ~a\n") output)
           ret)
         (begin
-          (format #t "~a\n" (error-command-failed))
+          (error-command-failed m)
           *unspecified*))))
 (testsymb 'gpsf-all)
 
