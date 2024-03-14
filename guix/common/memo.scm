@@ -29,9 +29,9 @@
                (hostname (car output))]
           hostname)
         (begin
-          (format #t "~a\n" (error-command-failed))
+          (error-command-failed m)
           *unspecified*))))
-;; (format #t "[utils] hostname: ~a\n" hostname)
+;; (format #t "D ~a hostname: ~a\n" m hostname)
 
 (define-public hostname-memoized (memoize hostname))
 

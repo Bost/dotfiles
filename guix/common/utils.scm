@@ -470,7 +470,7 @@ Usage:
         (let* ((output (cdr ret)))
           #| process output |#)
       (begin
-        (format #t \"~a\\n\" (error-command-failed))
+        ;; (error-command-failed \"[module]\" \"extra_info\")
         *unspecified*)))"
   ;; ,use (guix build utils) ;; contains `invoke'
   ;; `invoke' does `(apply system* program args)'; `system*' waits for the program
@@ -707,7 +707,7 @@ or the CLIENT-CMD if some process ID was found."
         ;; the f-function parses the output
         (f (cadr mv))
         (begin
-          (format #t "~a\n" (error-command-failed))
+          (error-command-failed m)
           mv))))
 
 ;; (define-monad compose-shell-commands

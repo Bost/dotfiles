@@ -41,7 +41,7 @@ cd $dotf
         (let* ((output (cdr ret)))
           #| process output |#
           (map (partial format #t "~a\n") output))
-        (error-command-failed))))
+        (error-command-failed m))))
 (testsymb 'main)
 
 (module-evaluated)

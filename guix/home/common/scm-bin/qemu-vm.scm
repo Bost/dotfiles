@@ -57,7 +57,7 @@ Usage:
         (let* ((output (cdr ret)))
           #| process output |#)
       (begin
-        (format #t \"~a\\n\" (error-command-failed))
+        (error-command-failed m)
         *unspecified*)))"
   ;; ,use (guix build utils) contains `invoke'
   ;; `invoke' does `(apply system* program args)'; `system*' waits for the program
