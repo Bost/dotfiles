@@ -13,6 +13,7 @@
 (define-module (utils)
   #:use-module (settings)
   #:use-module (guix build utils)
+  #:use-module (ice-9 match) ;; match
   ;; open-input-pipe
   #:use-module (ice-9 popen)
 ;;; (ice-9 readline) requires `guix install guile-readline'.
@@ -92,7 +93,7 @@ Works also for functions returning and accepting multiple values."
 ;; (warn ...) doesn't print anything
 (define (my=warn s)
   ;; (error s)
-  (format #t "WARN ~a\n" s))
+  (format #t "W ~a\n" s))
 
 (define-public (module-name-for-logging)
   ((comp
@@ -103,25 +104,25 @@ Works also for functions returning and accepting multiple values."
    (current-module)))
 
 (unless (equal? (module-name-for-logging) m)
-  (format #t "WARN ~a (equal? (module-name-for-logging) m): ~a\n"
+  (format #t "W ~a (equal? (module-name-for-logging) m): ~a\n"
           m (equal? (module-name-for-logging) m)))
 
 (define-syntax if-let
   (syntax-rules ()
     [(_ (var test) then)
-     (let ((var test))
+     (let [(var test)]
        (if var then))]
     ;; same as the above just adding the brackets
     [(_ ((var test)) then)
-     (let ((var test))
+     (let [(var test)]
        (if var then))]
 
     [(_ (var test) then else)
-     (let ((var test))
+     (let [(var test)]
        (if var then else))]
     ;; same as the above just adding the brackets
     [(_ ((var test)) then else)
-     (let ((var test))
+     (let [(var test)]
        (if var then else))]))
 #|
 (if-let (result (+ 2 2))
@@ -263,9 +264,28 @@ TODO what's the clojure variant?"
   prm)
 
 (define* (error-command-failed #:rest args)
-  (format #t
-          #;error
-          "[ERR] Command failed\n"))
+  "Returns #t and prints \"Command failed.\" with some extra text.
+
+(error-command-failed \"[module]\" \"extra_text\")
+;; =>
+E [module] Command failed: extra_text
+
+(error-command-failed \"[module]\")
+;; =>
+E [module] Command failed.
+
+(error-command-failed)
+;; =>
+E Command failed."
+  (match args
+    ['()
+     (format #t
+             #;error
+             "E Command failed.\n")]
+    [(module)
+     (format #t "E ~a Command failed.\n" module)]
+    [(module extra-text)
+     (format #t "E ~a Command failed: ~a\n" module extra-text)]))
 
 (define (string-sff ch s-list)
   ((comp
@@ -316,8 +336,8 @@ $9 = 0 ;; return code"
   "Returns a function which reads all lines of text from the PORT and applies
 READER-FUNCTION on them. "
   (lambda (port)
-    (let loop ((res '())
-               (str (reader-function port))) ; from (ice-9 popen)
+    (let loop [(res '())
+               (str (reader-function port))] ; from (ice-9 popen)
       (if (and str (not (eof-object? str)))
           (loop (append res (list str))
                 (reader-function port))
@@ -325,37 +345,18 @@ READER-FUNCTION on them. "
 
 (define-public (read-all-sexprs p)
   "TODO better implementation of read-all-sexprs"
-  (let f ((x (read p)))
+  (let loop [(x (read p))]
     (if (eof-object? x)
         '()
-        (cons x (f (read p))))))
+        (cons x (loop (read p))))))
 
 (define-public (read-all-syntax port)
   "Return a list of all s-expressions from the PORT."
   ((read-all read-syntax) port))
 
-(define-public (read-all-syntax port)
-  "Return a list of all s-expressions from the PORT."
-  (let loop ((res '())
-             (str (read-syntax port))) ; from (ice-9 popen)
-    (if (and str (not (eof-object? str)))
-        (loop (append res (list str))
-              (read-syntax port))
-        res)))
-
 (define-public (read-all-strings port)
   "Return a list of all lines, i.e. a list of string of text from the PORT."
-  ((read-all reader-line) port))
-
-(define (read-all-strings port)
-  "Return a list of all lines of text from the PORT.
-Returns a list of strings"
-  (let loop ((res '())
-             (str (read-line port))) ; from (ice-9 rdelim)
-    (if (and str (not (eof-object? str)))
-        (loop (append res (list str))
-              (read-line port))
-        res)))
+  ((read-all read-line) port))
 
 (define-public (cmd->string cmd)
   (if (list? cmd)
