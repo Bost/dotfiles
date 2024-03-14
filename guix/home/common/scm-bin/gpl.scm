@@ -21,6 +21,9 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
+(evaluating-module)
+
 (define origin-remotes (list "origin" "github" "gitlab"))
 
 ;; TODO if remote/origin is not present then try to use remote/upstream, then
@@ -116,3 +119,5 @@ cd $dotf
     exec)
    (list
     "git" "remote")))
+
+(module-evaluated)
