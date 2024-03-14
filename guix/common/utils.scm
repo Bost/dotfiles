@@ -224,12 +224,12 @@ reversed. See also:
 
 (define-public (drop-right xs n)
   "(drop-right (list 1 2 3 4 5) 2) ;; => (1 2 3)
-TODO what's the clojure variant?"
+Corresponds to `drop-last' in Clojure"
   (reverse (list-tail (reverse xs) n)))
 
 (define-public (drop-left xs n)
   "(drop-left (list 1 2 3 4 5) 2) ;; => (4 5)
-TODO what's the clojure variant?"
+Corresponds to `drop' in Clojure"
   (reverse (list-head (reverse xs) n)))
 
 (define-public (flatten x)
@@ -243,9 +243,9 @@ TODO what's the clojure variant?"
         ((pair? x) (append (flatten (car x)) (flatten (cdr x))))
         (else (list x))))
 
+;; TODO implement pretty-print for bash commands
 (define-public (dbg prm)
   "`pk', i.e. `peek' can be used instead of this function"
-  ;; TODO implement pretty-print for bash commands
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
   ;; ~% is newline \n
@@ -254,10 +254,6 @@ TODO what's the clojure variant?"
 
 (define-public (dbg-exec prm)
   "`pk', i.e. `peek' can be used instead of this function"
-  ;; TODO implement pretty-print for bash commands
-  ;; ~a - outputs an argument like display
-  ;; ~s - outputs an argument like write (i.e. print to string)
-  ;; ~% is newline \n
   (if (list? prm)
       (format #t "$ ~a\n" (string-join prm))
       (format #t "$ ~a\n" prm))
@@ -379,6 +375,9 @@ COMMAND can be a string or a list of strings."
     (partial exec-or-dry-run system)
     dbg-exec
     cmd->string
+    ;; disown belongs to shells. See `help disown`. The semicolon, as indicated
+    ;; by `help disown` ivoked from the fish-shell, in eg. `echo foo &; disown`,
+    ;; doesn't work in bash, only in the fish-shell
     (lambda (cmd) (list cmd "&" "disown"))
     cmd->string)
    command))
@@ -418,7 +417,7 @@ COMMAND can be a string or a list of strings."
 ;;           (output-port? error-port)))
 
 (define (exec-with-error-to-string commad)
-  "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
+  "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return 3 values:
 - `#t' if the port was successfully closed or `#f' if it was already closed.
 - a string containing standard output
@@ -457,7 +456,7 @@ Usage:
    commad))
 
 (define-public (exec command)
-  "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
+  "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return a string
 containing its output.
 
@@ -476,8 +475,7 @@ Usage:
   ;; `invoke' does `(apply system* program args)'; `system*' waits for the program
   ;; to finish, The command is executed using fork and execlp.
 
-  ;; TODO
-  ;; Scheme Procedure: chdir str
+  ;; TODO write a scheme procedure: chdir str
   ;; Change the current working directory to str. The return value is unspecified.
   (define (exec-function command)
     ;; Can't use the `call-with-port' since the exit-val is needed.
