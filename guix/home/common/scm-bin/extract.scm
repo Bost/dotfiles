@@ -17,6 +17,7 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define* (extract #:rest args)

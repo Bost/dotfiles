@@ -8,8 +8,7 @@
   ;;   In procedure resolve-interface: no code for module (gnu packages emacs)
   ;;   In procedure resolve-interface: no code for module (guix)
   |#
-
-  #:use-module (utils) ;; partial
+  #:use-module (utils)
   #:use-module (scm-bin emacs-launcher)
   #:export (main))
 
@@ -25,6 +24,7 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define (main args)

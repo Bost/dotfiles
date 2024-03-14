@@ -19,6 +19,7 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define* (echo #:key (options "") (string ""))
