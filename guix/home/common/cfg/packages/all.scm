@@ -816,6 +816,9 @@ home-profile. Comment them out."
 ;;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
 ;;; gets triggered. See https://issues.guix.gnu.org/issue/52002
     emacs
+    ;; emacs-native-comp doesn't compile. Ups
+    ;; (@(flat packages emacs) emacs-native-comp) ;; version: 28.2.50-205.ae9bfed
+
     emacs-gptel
     ;; emacs-next       ;; 29.0.92
     ;; emacs-next-pgtk  ;; 29.0.92
