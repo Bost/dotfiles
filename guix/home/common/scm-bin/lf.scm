@@ -16,6 +16,7 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 ;;; TODO get the content of the current working directory, i.e emulate the

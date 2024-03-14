@@ -8,13 +8,9 @@
   ;;   In procedure resolve-interface: no code for module (gnu packages emacs)
   ;;   In procedure resolve-interface: no code for module (guix)
   |#
-
   #:use-module (utils) ;; partial
   #:use-module (settings)
-  ;; #:use-module (bost utils)
-
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
-
   #:export (main emacs-launcher))
 
 #|
@@ -56,8 +52,8 @@ cd $dotf
 (emacs-launcher #:profile \"my-profile\" \"rest\" \"args\")
 "
   (let* ((args (remove-kw-from-args #:profile args)))
-    ;; (format #t "[emacs-launcher] profile : ~a\n" profile)
-    ;; (format #t "[emacs-launcher] args : ~a\n" args)
+    ;; (format #t "~a profile : ~a\n" m profile)
+    ;; (format #t "~a args : ~a\n" m args)
     (let* [(emacs-bin (which-emacs))
            (init-cmd
             (cmd->string

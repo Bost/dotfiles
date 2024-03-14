@@ -2,6 +2,7 @@
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   ;; #:use-module (memo) ;; is-system-ecke is-system-edge
+  #:use-module (utils) ;; partial
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 getopt-long) ;; see also `info "guile-config"'
@@ -9,6 +10,9 @@
 
 ;;;;;; Code duplication ;;;;;;
 ;;; TODO look at other scripts in the scm-bin, how they use the `utils' module.
+
+(define m (module-name-for-logging))
+(evaluating-module)
 
 ;;;;;; begin: from utils.scm
 (define (partial fun . args)
@@ -272,3 +276,5 @@ which is not supported by the CPU on the host B
                     #:isoFile iso-file)))))
 (unless (defined? 'main)
   (error (format #f "Symbol undefined: ~a" 'main)))
+
+(module-evaluated)

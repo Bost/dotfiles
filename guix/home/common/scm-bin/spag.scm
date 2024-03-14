@@ -19,6 +19,7 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define* (git-spacemacs #:rest args)

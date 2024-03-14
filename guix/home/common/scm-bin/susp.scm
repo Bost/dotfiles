@@ -15,6 +15,7 @@ cd $dotf
 
 |#
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define* (susp #:rest args)
