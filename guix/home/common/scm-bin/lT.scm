@@ -29,18 +29,18 @@ Usage:
 ;; > #t
 "
   (apply exec-system*
-         "eza" "-abghHliS" "--color=always" "--time-style=full-iso"
+         "eza" "-abghHliS"
+         "--color=always" "--time-style=+%d-%m-%Y\\ %H:%M:%S"
          "--sort=time"
          #|
          "eza" "-abghHliS" "--color=always"
-         ;; exa has no support for '+%d-%m-%Y %H:%M:%S' time formatters
          "eza" "-abghHliS" "--color=always" "--time-style=default"
          "eza" "-abghHliS" "--color=always" "--time-style=iso"
          "eza" "-abghHliS" "--color=always" "--time-style=long-iso"
          ;; '--file-type' append indicator (one of /=>@|) to entries
-         ;; TODO consider custom coloring after `ls --color=never`
+         ;; custom coloring can be done after after `ls --color=never`
          "ls" "-lA" "--file-type" "--color"
-         "--time-style=+%d-%m-%Y %H:%M:%S"
+         "--time-style=+%d-%m-%Y\\ %H:%M:%S"
          |#
          args))
 
