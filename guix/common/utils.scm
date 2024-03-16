@@ -25,6 +25,8 @@
   #:use-module (srfi srfi-1)
   ;; #:use-module (guix build utils) ;; invoke - not needed
   #:use-module (ice-9 pretty-print)
+  ;; string-replace-substring
+  #:use-module (ice-9 string-fun)
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
   ;; return, bind
@@ -283,7 +285,18 @@ E Command failed."
     [(module extra-text)
      (format #t "E ~a Command failed: ~a\n" module extra-text)]))
 
+(define (split-space-escaped input)
+  "(split-space-escaped \"a b\\ c\") ;; => (\"a\" \"b c\")"
+  (let* [(placeholder "#\\space")]
+    ((comp
+      (partial map (lambda (s) (string-replace-substring s placeholder " ")))
+      (lambda (prepared) (string-split prepared #\space))
+      (lambda (input) (string-replace-substring input "\\ " placeholder)))
+     input)))
+
 (define (string-sff ch s-list)
+  "(string-sff #\\space (list \"foo bar baz\"))
+;; => (\"foo\" \"bar\" \"baz\")"
   ((comp
     (partial filter (comp not string-null?))
     flatten
@@ -292,11 +305,11 @@ E Command failed."
 
 (define-public (string-split-whitespace arg)
   ((comp
-    (partial string-sff #\space)
+    ;; (partial string-sff #\space)
+    flatten (partial map split-space-escaped)
     (partial string-sff #\newline)
     (partial string-sff #\tab)
-    (lambda (arg)
-      (if (list? arg) arg (list arg))))
+    (lambda (arg) (if (list? arg) arg (list arg))))
    arg))
 
 #;
