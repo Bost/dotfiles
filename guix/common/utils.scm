@@ -212,12 +212,14 @@ Works also for functions returning and accepting multiple values."
 
 (define-public str string-append)
 
-;; TODO see
-;; (define s (string-match "[0-9][0-9][0-9][0-9]" "blah2002foo"))
-;; (match:end s) ⇒ 8
-(define-public (has-suffix? str suf)
-  "Returns #t if the given string ends with the given suffix, otherwise or #f."
-  (string-suffix? suf str))
+(define-public (has-suffix? string suffix)
+  "Does STRING end with the SUFFIX? As `string-suffix?' but the parameters are
+reversed. See also:
+(define s (string-match \"[0-9][0-9][0-9][0-9]\" \"blah2002foo\"))
+(match:end s) ;; ⇒ 8"
+  (string-suffix? suffix string))
+
+(define-public ends-with? has-suffix?)
 
 (define-public (has-substring? str subs)
   (not (not (string-match subs str))))
@@ -623,11 +625,6 @@ or the CLIENT-CMD if some process ID was found."
     ;; prevent the 'string is read-only ...' error
     string-copy)
    "/tmp/myfile-XXXXXX"))
-
-(define-public (ends-with? s postfix)
-  "(ends-with? \"/aaa/bbb/ccc/\" \"/\")
- => #t"
-  (string-suffix? postfix s))
 
 ;; TODO add install-recursively to (guix build utils) and send it to upstream
 (define* (install-recursively source destination
