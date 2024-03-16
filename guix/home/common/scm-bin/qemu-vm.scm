@@ -8,75 +8,8 @@
   #:use-module (ice-9 getopt-long) ;; see also `info "guile-config"'
   #:export (main))
 
-;;;;;; Code duplication ;;;;;;
-;;; TODO look at other scripts in the scm-bin, how they use the `utils' module.
-
 (define m (module-name-for-logging))
 (evaluating-module)
-
-;;;;;; begin: from utils.scm
-(define (partial fun . args)
-  (lambda x (apply fun (append args x))))
-
-(define (dbg-exec prm)
-  "`pk', i.e. `peek' can be used instead of this function"
-  ;; TODO implement pretty-print for bash commands
-  ;; ~a - outputs an argument like display
-  ;; ~s - outputs an argument like write (i.e. print to string)
-  ;; ~% is newline \n
-  (format #t "$ ~a\n" prm)
-  prm)
-
-(define (cmd->string cmd)
-  (dbg-exec
-   (if (list? cmd)
-       (string-join cmd) ;; join with ' ' by default
-       cmd)))
-
-(define (read-all-strings port)
-  "Return a list of all lines of text from the PORT.
-Returns a list of strings"
-  (let loop ((res '())
-             (str (read-line port))) ; from (ice-9 readline)
-    (if (and str (not (eof-object? str)))
-        (loop (append res (list str))
-              (read-line port))
-        res)))
-
-(define (exec command)
-  "Run the shell COMMAND using ‘/bin/sh -c’ with ‘OPEN_READ’ mode, ie. to read
-from the subprocess. Wait for the command to terminate and return a string
-containing its output.
-
-TODO have a look if a delimited continuation can be used to break out of `exec',
-i.e. skip the `read-all-strings' and thus make `exec-background' out of it.
-
-Usage:
-(let* ((ret (exec command)))
-    (if (= 0 (car ret))
-        (let* ((output (cdr ret)))
-          #| process output |#)
-      (begin
-        (error-command-failed m)
-        *unspecified*)))"
-  ;; ,use (guix build utils) contains `invoke'
-  ;; `invoke' does `(apply system* program args)'; `system*' waits for the program
-  ;; to finish, The command is executed using fork and execlp.
-
-  ;; TODO
-  ;; Scheme Procedure: chdir str
-  ;; Change the current working directory to str. The return value is unspecified.
-
-  ((comp
-    (lambda (command)
-      (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
-             (str  (read-all-strings port)))
-        (cons
-         (status:exit-val (close-pipe port))
-         str)))
-    cmd->string)
-   command))
-;;;;;; end: from utils.scm
 
 (define vmRAM (format #f "~aG" 16))
 ;; The HDD can be resized using `qemu-image'. See notes.
@@ -274,7 +207,6 @@ which is not supported by the CPU on the host B
           (start-vm user
                     #:qcow2File qcow2-file
                     #:isoFile iso-file)))))
-(unless (defined? 'main)
-  (error (format #f "Symbol undefined: ~a" 'main)))
+(testsymb 'main)
 
 (module-evaluated)
