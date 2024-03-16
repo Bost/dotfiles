@@ -1,12 +1,12 @@
 #!/bin/sh
-# when deployed:
-ld=~/scm-bin
-scm=$ld/scm-bin/qemu-vm     # managed by guix-home
 
-# for development:
-ld=$dotf/guix/home/common
-scm=$ld/scm-bin/qemu-vm.scm
-
+# '--preserve-env=GUILE_LOAD_COMPILED_PATH' makes the (utils) scheme module
+# accessible to the super-user
 set -x  # Print commands and their arguments as they are executed.
-sudo guile -L $ld -e '(@ (scm-bin qemu-vm) main)' $scm --user=$USER $@
+sudo --preserve-env=GUILE_LOAD_COMPILED_PATH \
+     guile \
+     -e '(@ (scm-bin qemu-vm) main)' \
+     ~/scm-bin/qemu-vm \
+     --user=$USER \
+     $@
 # { retval="$?"; set +x; } 2>/dev/null
