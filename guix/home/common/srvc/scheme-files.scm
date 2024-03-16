@@ -123,7 +123,8 @@ Example:
         (with-imported-modules
             (remove
              unspecified?
-             `((utils)
+             `((guix monads)
+               (utils)
                (settings)
                (scm-bin gre)
                (scm-bin gps)

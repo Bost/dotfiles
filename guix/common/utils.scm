@@ -25,29 +25,27 @@
   #:use-module (srfi srfi-1)
   ;; #:use-module (guix build utils) ;; invoke - not needed
   #:use-module (ice-9 pretty-print)
-
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-
-  ;; TODO seems like it must be added to (srvc scheme-files)
-  ;; #:use-module (guix monads)
-
-  #:use-module (rnrs io ports) ;; for the exec-with-error-to-string
+  ;; return, bind
+  #:use-module (guix monads)
+  ;; for the exec-with-error-to-string
+  #:use-module (rnrs io ports)
   #:export (
+            compose-shell-commands
             def*
             error-command-failed
+            evaluating-module
             exec-system*
             exec-with-error-to-string
+            if-let
+            module-evaluated
             testsymb
             testsymb-trace
-            evaluating-module
-            module-evaluated
-            if-let
             )
   #:re-export (
                which ;; from (guix build utils)
-               )
-  )
+               ))
 
 (define m "[utils]")
 ;; (format #t "~a evaluating module ...\n" m)
@@ -707,22 +705,9 @@ or the CLIENT-CMD if some process ID was found."
           (error-command-failed m)
           mv))))
 
-;; (define-monad compose-shell-commands
-;;   (bind pipe-bind)
-;;   (return pipe-return))
-
-
-;; (with-monad compose-shell-commands
-;;   (>>= (return "uname -o")
-;;        exec
-;;        (partial echo #:string)
-;;        ))
-
-;; (define x "aaa")
-;; (define mv (return x))
-;; (define f (partial echo #:string))
-;; (define g (partial echo #:string))
-;; (proper-monad? mv x f g)
+(define-monad compose-shell-commands
+  (bind pipe-bind)
+  (return pipe-return))
 
 (define-public (string-in? lst string-elem)
   "Return the first element of @var{lst} that equals (string=)

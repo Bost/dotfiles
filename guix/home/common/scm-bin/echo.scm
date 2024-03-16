@@ -2,10 +2,6 @@
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
-
-  ;; TODO seems like it must be added to (srvc scheme-files)
-  ;; #:use-module (guix monads)
-
   #:export (main echo))
 
 #|
@@ -50,37 +46,10 @@ Bottom
    args))
 (testsymb 'main)
 
-(define-inlinable (pipe-return command)
-  (list
-   ;; Return code signaling that some hypothetical previous command terminated
-   ;; successfully.
-   0
-   ;; String containing the command to execute as next
-   command))
-
-(define-inlinable (pipe-bind mv f)
-  (let* ((mv-retcode (car mv)))
-    (if (= 0 mv-retcode)
-        ;; the f-function parses the output
-        (f (cadr mv))
-        (begin
-          (error-command-failed m)
-          mv))))
-
-;; (define-monad compose-shell-commands
-;;   (bind pipe-bind)
-;;   (return pipe-return))
-
 ;; (with-monad compose-shell-commands
-;;   (>>= (return "uname -o")
-;;        exec
-;;        (partial echo #:string)
-;;        ))
-
-;; (define x "aaa")
-;; (define mv (return x))
-;; (define f (partial echo #:string))
-;; (define g (partial echo #:string))
-;; (proper-monad? mv x f g)
+;;   (>>=
+;;    (return "uname -o")
+;;    exec   ; => (0 "GNU/Linux")
+;;    (partial echo #:string)))
 
 (module-evaluated)
