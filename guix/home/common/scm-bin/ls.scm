@@ -46,17 +46,17 @@ cd $dotf
 ;;; inode Permissions Links Size Blocks User Group Date Modified                       Name
 ;;; 11796482 drwx------    115    -      - bost users 2023-11-03 19:51:27.577156745 +0100 /home/bost
             )
-         "--color=always" "--time-style=full-iso"
+         "--color=always" "--time-style=+%d-%m-%Y\\ %H:%M:%S"
          #|
          "eza" "-abghHliS" "--color=always"
-         ;; exa has no support for '+%d-%m-%Y %H:%M:%S' time formatters
          "eza" "-abghHliS" "--color=always" "--time-style=default"
          "eza" "-abghHliS" "--color=always" "--time-style=iso"
          "eza" "-abghHliS" "--color=always" "--time-style=long-iso"
+         "eza" "-abghHliS" "--color=always" "--time-style=relative"
          ;; '--file-type' append indicator (one of /=>@|) to entries
-         ;; TODO consider custom coloring after `ls --color=never`
+         ;; custom coloring can be done after after `ls --color=never`
          "ls" "-lA" "--file-type" "--color"
-         "--time-style=+%d-%m-%Y %H:%M:%S"
+         "--time-style=+%d-%m-%Y\\ %H:%M:%S"
          |#
          args))
 
