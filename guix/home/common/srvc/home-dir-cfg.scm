@@ -229,6 +229,12 @@ See also (@(fs-utils) local-dotfile)
     ;; (lambda (p) (format #t "######## 2.\n~a\n" p) p)
     (partial append
              ((comp
+               (partial
+                append (map
+                 (comp
+                  (partial local-dotfile "/")
+                  (partial format #f ".emacs.d.distros/~a-config/init.el"))
+                 (list "spacemacs" "spguimacs")))
                (partial remove unspecified-or-empty-or-false?)
                (partial map (partial local-dotfile "/")))
               (list
@@ -245,8 +251,6 @@ See also (@(fs-utils) local-dotfile)
                ".gnupg/gpg.conf"
                ".guile" ;; used by `guix repl'
                ".gitconfig"
-               ".spacemacs"
-               ".spguimacs"
                ".envrc"
                ".env-secrets.gpg"
                ".emacs-profiles.el"

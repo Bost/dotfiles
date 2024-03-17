@@ -20,7 +20,10 @@
 
 cd $dotf
 ./guix/home/common/scm-bin/spguimacs-launcher.scm rest args
-./guix/home/common/scm-bin/spguimacs-launcher.scm --profile=my-profile rest args
+./guix/home/common/scm-bin/spguimacs-launcher.scm --profile=spguimacs rest args
+
+./guix/home/common/scm-bin/spguimacs-launcher.scm ~/.emacs.d.distros/spguimacs-config/.spacemacs
+./guix/home/common/scm-bin/spguimacs-launcher.scm --profile=spguimacs ~/.emacs.d.distros/spguimacs-config/.spacemacs
 
 |#
 

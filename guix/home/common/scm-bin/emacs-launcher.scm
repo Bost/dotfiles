@@ -10,6 +10,12 @@
   |#
   #:use-module (utils) ;; partial
   #:use-module (settings)
+  ;; #:use-module (guix derivations) ;; derivation->output-path
+  ;; #:use-module (guix packages)    ;; package-derivation
+  ;; #:use-module (guix store)       ;; open-connection
+  ;;; scm-bin/emacs-launcher.scm:47:33: warning: possibly unbound variable `open-connection'
+;;; scm-bin/emacs-launcher.scm:48:3: warning: possibly unbound variable `emacs'
+
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:export (main emacs-launcher))
 
@@ -24,6 +30,10 @@ cd $dotf
 ./guix/home/common/scm-bin/emacs-launcher.scm rest args
 ./guix/home/common/scm-bin/emacs-launcher.scm --profile=my-profile rest args
 
+
+./guix/home/common/scm-bin/emacs-launcher.scm --profile=spacemacs ~/.emacs.d.distros/spguimacs-config/.spacemacs
+./guix/home/common/scm-bin/emacs-launcher.scm --profile=spguimacs ~/.emacs.d.distros/spguimacs-config/.spacemacs
+
 |#
 
 (define m (module-name-for-logging))
@@ -34,8 +44,9 @@ cd $dotf
 => \"/gnu/store/c39qm5ql5w9r6lwwnhangxjby57hshws-emacs-28.2/bin/emacs\""
   ((comp
     (partial format #f "~a/bin/emacs")
-    derivation->output-path
-    (partial package-derivation (open-connection)))
+    (@(guix derivations) derivation->output-path)
+    (partial (@(guix packages) package-derivation)
+             ((@(guix store) open-connection))))
    emacs))
 
 (define (which-emacs)
@@ -58,7 +69,10 @@ cd $dotf
            (init-cmd
             (cmd->string
              (append
-              (list emacs-bin (str "--with-profile=" profile) "--daemon")
+              (list emacs-bin
+                    (str "--with-profile=" profile)
+                    ;; (str "--init-directory=$HOME/.emacs.d.distros/" profile)
+                    "--daemon")
               ;; the init-cmd must not contain the args otherwise the `pgrep
               ;; ...` detection won't work
               #;args)))]
