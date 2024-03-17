@@ -174,7 +174,7 @@ See also (@(fs-utils) local-dotfile)
                   "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))
 
               (channel
-               (name 'haskell-and-clojure)
+               (name 'hask-clj)
                (url
                 #;"https://github.com/Tass0sm/guix-develop"
                 "https://github.com/Bost/haskell-guix"
