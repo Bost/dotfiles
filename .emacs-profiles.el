@@ -16,15 +16,21 @@
  ("spguimacs" .
   ((user-emacs-directory . "~/.emacs.d.distros/spguimacs")
    (server-name . "spguimacs")
-   ;; location of .spguimacs and init.el
-   ;; (env . (("SPGUIMACSDIR" . "...")))
+   ;; mv /path/to/.spguimacs $SPACEMACSDIR/init.el
+   (env . (("SPACEMACSDIR" .
+            "~/.emacs.d.distros/spguimacs-config"
+;;; Following leads to:
+;;; Error loading .spacemacs: (error "Recursive load" ... )
+            ;; "~/.emacs.d.distros/spguimacs"
+            )))
    ))
 
  ("spacemacs" .
   ((user-emacs-directory . "~/.emacs.d.distros/spacemacs")
    (server-name . "spacemacs")
-   ;; location of .spacemacs and init.el
-   ;; (env . (("SPACEMACSDIR" . "...")))
+   ;; mv /path/to/.spguimacs $SPACEMACSDIR/init.el
+   (env . (("SPACEMACSDIR" .
+            "~/.emacs.d.distros/spacemacs-config")))
    ))
 
  ("practicalli" .
@@ -50,5 +56,6 @@
  ("crafted" .
   ((user-emacs-directory . "~/.emacs.d.distros/crafted-emacs")
    (server-name . "crafted")
-   (env . (("CRAFTED_EMACS_HOME" . "~/.emacs.d.distros/crafted-emacs/personal")))))
+   (env . (("CRAFTED_EMACS_HOME" .
+	          "~/.emacs.d.distros/crafted-emacs/personal")))))
  )
