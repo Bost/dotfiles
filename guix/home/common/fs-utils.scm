@@ -6,50 +6,34 @@
   ;; take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
   #:export (
-            channels-scm-filepath
-            fix-leading-dot
-            any-local-file
-            local-dotfile
-            list-separator-bash
-            bin-dirpath
-            sbin-dirpath
-            scm-bin-dirname
-            scm-bin-dirpath
-
             user-home
-            dev
             user-dev
-            dotf
             user-dotf
-            xdg-config-home
-            dgx
-            dgxp
             ))
 
 (define m (module-name-for-logging))
 (evaluating-module)
 
-;; TODO consider moving dev,dotf definitions to the settings module
 (define* (user-home #:rest args) (apply str home args))
-(define  dev (user-home "/dev"))
+(define-public dev (user-home "/dev"))
 (define* (user-dev #:rest args)  (apply str dev args))
-(define  dotf (user-dev "/dotfiles"))
+(define-public dotf (user-dev "/dotfiles"))
 (define* (user-dotf #:rest args) (apply str dotf args))
 
-(define dgx  (user-dev "/guix"))
-(define dgxp (user-dev "/guix-packages"))
+(define-public dgx  (user-dev "/guix"))
+(define-public dgxp (user-dev "/guix-packages"))
 
 ;; see gnu/home/services/symlink-manager.scm
-(define xdg-config-home (or (getenv "XDG_CONFIG_HOME")
-                            (user-home "/.config")))
+(define-public xdg-config-home (or (getenv "XDG_CONFIG_HOME")
+                                   (user-home "/.config")))
 
-(define channels-scm-filepath
+(define-public channels-scm-filepath
   (str (basename xdg-config-home) "/guix/channels.scm"))
 
-(define (fix-leading-dot filename)
+(define-public (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
 
-(define (local-dotfile path filename)
+(define-public (local-dotfile path filename)
   "See also (@(srvc home-dir-cfg) host-specific-config).
 
 (local-dotfile \"/guix/home/\" \".dir-locals.el\") ; with '.' before file-name
@@ -87,11 +71,11 @@
         #f))))
 
 ;; fish and bash separate elements of a list with a different separator
-(define list-separator-bash ":")
+(define-public list-separator-bash ":")
 #;(define list-separator-fish " ") ;; not needed
-(define bin-dirpath "/bin")
-(define sbin-dirpath "/sbin")
-(define scm-bin-dirname "scm-bin")
-(define scm-bin-dirpath (str "/" scm-bin-dirname))
+(define-public bin-dirpath "/bin")
+(define-public sbin-dirpath "/sbin")
+(define-public scm-bin-dirname "scm-bin")
+(define-public scm-bin-dirpath (str "/" scm-bin-dirname))
 
 (module-evaluated)
