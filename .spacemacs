@@ -300,34 +300,34 @@ This function should only modify configuration layer settings."
      json
      markdown
 
-     ,(let ((maildir "~/Mail"))
-        (when (file-directory-p maildir)
-          (mu4e
-           :variables
-           ;; mu4e-installation-path "/usr/share/emacs/site-lisp"
-
-           ;; This is set to 't' to avoid mail syncing issues when using mbsync
-           mu4e-change-filenames-when-moving t
-
-           ;; Refresh mail using isync every 10 minutes.
-           ;; (Default nil - don't update automatically)
-           mu4e-update-interval (* 10 60)
-
-           mu4e-maildir maildir
-           mu4e-get-mail-command "mbsync -a"
-           ;; mu4e-compose-signature-auto-include nil
-           mu4e-drafts-folder "/[Gmail]/Drafts"
-           mu4e-sent-folder   "/[Gmail]/Sent Mail"
-           mu4e-refile-folder "/[Gmail]/All Mail"
-           mu4e-trash-folder  "/[Gmail]/Trash"
-
-           mu4e-maildir-shortcuts '(
-                                    (:maildir "/Inbox"             :key ?i)
-                                    (:maildir "/[Gmail]/Sent Mail" :key ?s)
-                                    (:maildir "/[Gmail]/Trash"     :key ?t)
-                                    (:maildir "/[Gmail]/Drafts"    :key ?d)
-                                    (:maildir "/[Gmail]/All Mail"  :key ?a)
-                                    ))))
+;;;     ,(let ((maildir "~/Mail"))
+;;;        (when (file-directory-p maildir)
+;;;          (mu4e
+;;;           :variables
+;;;           ;; mu4e-installation-path "/usr/share/emacs/site-lisp"
+;;;
+;;;           ;; This is set to 't' to avoid mail syncing issues when using mbsync
+;;;           mu4e-change-filenames-when-moving t
+;;;
+;;;           ;; Refresh mail using isync every 10 minutes.
+;;;           ;; (Default nil - don't update automatically)
+;;;           mu4e-update-interval (* 10 60)
+;;;
+;;;           mu4e-maildir maildir
+;;;           mu4e-get-mail-command "mbsync -a"
+;;;           ;; mu4e-compose-signature-auto-include nil
+;;;           mu4e-drafts-folder "/[Gmail]/Drafts"
+;;;           mu4e-sent-folder   "/[Gmail]/Sent Mail"
+;;;           mu4e-refile-folder "/[Gmail]/All Mail"
+;;;           mu4e-trash-folder  "/[Gmail]/Trash"
+;;;
+;;;           mu4e-maildir-shortcuts '(
+;;;                                    (:maildir "/Inbox"             :key ?i)
+;;;                                    (:maildir "/[Gmail]/Sent Mail" :key ?s)
+;;;                                    (:maildir "/[Gmail]/Trash"     :key ?t)
+;;;                                    (:maildir "/[Gmail]/Drafts"    :key ?d)
+;;;                                    (:maildir "/[Gmail]/All Mail"  :key ?a)
+;;;                                    ))))
      ;; multiple-cursors
      ;; nginx
 
@@ -1013,6 +1013,10 @@ It should only modify the values of Spacemacs settings."
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
+   ;; It is also possible to use a posframe with the following cons cell
+   ;; `(posframe . position)' where position can be one of `center',
+   ;; `top-center', `bottom-center', `top-left-corner', `top-right-corner',
+   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
 
@@ -1156,7 +1160,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
-   ;; like \"~/.emacs.d.spacemacs/server\". It has no effect if
+   ;; like \"~/.emacs.d.distros/spacemacs/server\". It has no effect if
    ;; `dotspacemacs-enable-server' is nil.
    ;; (default nil)
    dotspacemacs-server-socket-dir (concat sp-home-dir "/" "server")
