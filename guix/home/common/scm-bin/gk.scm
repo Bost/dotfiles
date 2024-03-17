@@ -11,7 +11,7 @@
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/gk.scm 
+./guix/home/common/scm-bin/gk.scm
 
 |#
 
@@ -22,7 +22,7 @@ cd $dotf
   ((comp
     exec-background
     dbg
-    (lambda (p) (append '("gitk") (if (null? p) '("--all") p) '("&")))
+    (lambda (p) (append '("gitk") (if (null? p) '("--all") p)))
     cdr)
    args))
 (testsymb 'main)
