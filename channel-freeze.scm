@@ -42,7 +42,7 @@
             (openpgp-fingerprint
               "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))
       (channel
-        (name 'haskell-and-clojure)
+        (name 'hask-clj)
         (url "file:///home/bost/dev/haskell-guix")
         (branch "master")
         (commit
