@@ -121,6 +121,7 @@
    "emacs-edit-indirect"
    "emacs-editorconfig"
    "emacs-elisp-def"
+   "emacs-elisp-refs"
    "emacs-elisp-slime-nav"
    "emacs-elm-mode"
    ;; "emacs-emacsql"         ;; using bste:emacs-emacsql
@@ -135,6 +136,7 @@
    "emacs-erc-view-log"
    "emacs-erc-yt"
    "emacs-erlang"
+   "emacs-eros"
    "emacs-esh-help"
    "emacs-eshell-prompt-extras"
    "emacs-eshell-z"
