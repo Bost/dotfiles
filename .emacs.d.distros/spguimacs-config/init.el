@@ -1892,8 +1892,8 @@ Some binding snippets / examples:
      ;; see ~SPC w /~ and ~SPC w 2~
      ("s-3"       . split-window-right-and-focus)
      ("s-9"       . my=load-layout)
-     ("s-+"       . tw-eval-bind-keys-and-chords)
-     ("s-<kp-add>". tw-eval-bind-keys-and-chords)
+     ("s-+"       . my=eval-bind-keys-and-chords)
+     ("s-<kp-add>". my=eval-bind-keys-and-chords)
      ("s-z"       . tw-buffer-selection-show)
      ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
      ("s-D"       . dired-jump) ;; just open a dired buffer
