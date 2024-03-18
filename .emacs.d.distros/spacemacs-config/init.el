@@ -1909,7 +1909,7 @@ Some binding snippets / examples:
 
      ;; M-x term-line-mode - emacs keybindings
      ;; M-x term-char-mode - chars sent directly to terminal
-     ("s-<f3>"      . vterm)
+     ("s-<f3>"      . spacemacs/shell-pop-vterm)
 
      ;; terminal in the current working directory
      ;; ("s-<f1>"      . terminal-here-launch)
