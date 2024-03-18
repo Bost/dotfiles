@@ -216,7 +216,13 @@
    "emacs-flyspell-correct"
    "emacs-flyspell-correct-helm"
    "emacs-font-lock+"
-   "emacs-font-utils"
+
+   ;; deactivated due to
+   ;;    Unable to activate package ‘font-utils’.
+   ;;    Required package ‘persistent-soft-0.8.8’ is unavailable
+   ;; otherwise the emacsclient doesn't start
+   ;; "emacs-font-utils"
+
    ;; "emacs-forge" ;; pulls-in the emacs-emacsql; ; using bste:emacs-forge
    "emacs-fuzzy"
    "emacs-gandalf-theme"
@@ -543,7 +549,13 @@
    "emacs-underwater-theme"
    "emacs-undo-tree"
    "emacs-unfill"
-   "emacs-unicode-fonts"
+
+   ;; deactivated due to
+   ;;   Unable to activate package ‘unicode-fonts’.
+   ;;   Required package ‘font-utils-0.7.8’ is unavailable
+   ;; otherwise the emacsclient doesn't start
+   ;; "emacs-unicode-fonts"
+
    "emacs-use-package"
    "emacs-use-package-chords"
    "emacs-uuidgen"
