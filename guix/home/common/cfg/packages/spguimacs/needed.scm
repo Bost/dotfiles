@@ -43,6 +43,7 @@
    "emacs-auto-complete"
    "emacs-auto-dictionary"
    "emacs-auto-highlight-symbol"
+   "emacs-auto-yasnippet"
    "emacs-autothemer"
    "emacs-avy"
    "emacs-badwolf-theme"
@@ -57,6 +58,7 @@
    "emacs-busybee-theme"
    "emacs-centered-cursor-mode"
    "emacs-cfrs"
+   "emacs-chatgpt-shell"
    "emacs-cherry-blossom-theme"
    "emacs-chocolate"
    "emacs-chocolate-theme"
@@ -70,6 +72,7 @@
    ;; "emacs-closql" ;; pulls-in the emacs-emacsql; using bste:emacs-closql
    "emacs-clues-theme"
    "emacs-cmm-mode"
+   "emacs-code-cells"
    "emacs-color-identifiers-mode"
    "emacs-color-theme"        ;; obsolete - replaced by emacs-color-theme-modern
    "emacs-color-theme-modern"
@@ -80,6 +83,7 @@
    "emacs-company"
    "emacs-company-auctex"
    "emacs-company-cabal"
+   "emacs-company-lua"
    "emacs-company-math"
    "emacs-company-php"
    "emacs-company-phpactor"
@@ -98,7 +102,7 @@
    "emacs-cyberpunk-theme"
    "emacs-dakrone-theme"
    "emacs-dante"
-   ;; "emacs-dap-mode"         ;; uses emacs-lsp-treemacs
+   "emacs-dap-mode"         ;; uses emacs-lsp-treemacs
    "emacs-darkmine-theme"
    "emacs-darkokai-theme"
    "emacs-darktooth-theme"
@@ -324,13 +328,13 @@
    "emacs-loop"
    "emacs-lorem-ipsum"
    "emacs-lsp-haskell"
-   ;; "emacs-lsp-java"     ;; uses emacs-dap-mode
+   "emacs-lsp-java"     ;; uses emacs-dap-mode
    "emacs-lsp-latex"
-   ;; "emacs-lsp-metals"    ;; uses emacs-dap-mode
+   "emacs-lsp-metals"    ;; uses emacs-dap-mode
    "emacs-lsp-mode"
    "emacs-lsp-origami"
    "emacs-lsp-python-ms"
-   ;; "emacs-lsp-treemacs"    ;; uses emacs-treemacs
+   "emacs-lsp-treemacs"
    "emacs-lsp-ui"
    "emacs-lsp-volar"
    "emacs-lua-mode"
@@ -343,6 +347,7 @@
    "emacs-magit-org-todos-el"
    "emacs-magit-popup"
    "emacs-magit-section"
+   "emacs-magit-svn"
    "emacs-magit-todos"
    "emacs-majapahit-themes"
    "emacs-map"
@@ -502,13 +507,15 @@
    "emacs-super-save"
    "emacs-symbol-overlay"
    "emacs-symon"
+   "emacs-systemd-mode"
    "emacs-tablist"
    "emacs-tagedit"
    "emacs-tango-2-theme"
    "emacs-tango-plus-theme"
    "emacs-tangotango-theme"
    "emacs-tao-theme"
-   ;; "emacs-taxy-magit-section" ;; this seems not to be the magit-section
+   "emacs-taxy"
+   "emacs-taxy-magit-section" ;; this seems not to be the magit-section
    "emacs-term-cursor"
    "emacs-terminal-here"
    "emacs-tide"
@@ -540,6 +547,8 @@
    "emacs-use-package"
    "emacs-use-package-chords"
    "emacs-uuidgen"
+   "emacs-vdiff"
+   "emacs-vdiff-magit"
    "emacs-vi-tilde-fringe"
    "emacs-vim-powerline"
    "emacs-visual-fill-column"
@@ -565,7 +574,6 @@
    "emacs-zenburn-theme"
    "emacs-zonokai-emacs"
    "emacs-zop-to-char"
-   ;; "emacs-auto-yasnippet"
    ;; "emacs-guix"
    ;; "emacs-paradox"
    ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
