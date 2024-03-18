@@ -232,7 +232,10 @@ This function should only modify configuration layer settings."
      ;; https://develop.spacemacs.org/layers/+lang/graphviz/README.html
      graphviz
 
-     haskell
+     ;; the guix packaes emacs-haskell-mode and/or emacs-haskell-snippets cause
+     ;; Error (use-package): tweaks/:catch: Opening directory: Aucun fichier ou dossier de ce type, /gnu/store/...-emacs-haskell-snippets-.../share/emacs/site-lisp/snippets
+     ;; haskell
+
      ;; hy ;; hylang - lisp embedded in python
 
      (helm :variables
