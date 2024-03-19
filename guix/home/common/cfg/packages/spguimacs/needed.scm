@@ -26,12 +26,13 @@
    "emacs-ace-window"
    "emacs-afternoon-theme"
    "emacs-aggressive-indent"
+   "emacs-alchemist"
    "emacs-alect-themes"
    "emacs-alert"
    "emacs-all-the-icons"
    "emacs-ample-theme"
    "emacs-ample-zen-theme"
-   "emacs-anaconda-mode"
+   ;; "emacs-anaconda-mode" ;; requires emacs-pythonic which fails to compile
    "emacs-annalist"
    "emacs-anti-zenburn-theme"
    "emacs-anzu"
@@ -56,6 +57,10 @@
    "emacs-bubbleberry-theme"
    "emacs-bui"
    "emacs-busybee-theme"
+
+   ;; the dired mode doesn't work if emacs-cc-mode is in the profile
+   ;; "emacs-cc-mode"
+
    "emacs-centered-cursor-mode"
    "emacs-cfrs"
    "emacs-chatgpt-shell"
@@ -69,7 +74,7 @@
    "emacs-clj-refactor"
    "emacs-clojure-mode"
    "emacs-clojure-snippets"
-   ;; "emacs-closql" ;; pulls-in the emacs-emacsql; using bste:emacs-closql
+   "emacs-closql"
    "emacs-clues-theme"
    "emacs-cmm-mode"
    "emacs-code-cells"
@@ -83,7 +88,7 @@
    "emacs-company"
    "emacs-company-auctex"
    "emacs-company-cabal"
-   "emacs-company-lua"
+   ;; "emacs-company-lua" ;; emacs-lua-mode 20210802 doesn't compile, 20221027 is fine
    "emacs-company-math"
    "emacs-company-php"
    "emacs-company-phpactor"
@@ -127,9 +132,10 @@
    "emacs-elisp-def"
    "emacs-elisp-refs"
    "emacs-elisp-slime-nav"
+   "emacs-elixir-mode"
    "emacs-elm-mode"
-   ;; "emacs-emacsql"         ;; using bste:emacs-emacsql
-   ;; "emacs-emacsql-sqlite3" ;; pulls-in the emacs-emacsql; using bste:emacs-emacsql-sqlite3
+   "emacs-emacsql"
+   ;; "emacs-emacsql-sqlite3" ;; only in bste:emacs-emacsql-sqlite3; build fails
    "emacs-emmet-mode"
    "emacs-emr"
    "emacs-epl"
@@ -223,7 +229,9 @@
    ;; otherwise the emacsclient doesn't start
    ;; "emacs-font-utils"
 
-   ;; "emacs-forge" ;; pulls-in the emacs-emacsql; ; using bste:emacs-forge
+   "emacs-forge"
+   "emacs-frame-cmds"
+   "emacs-frame-fns"
    "emacs-fuzzy"
    "emacs-gandalf-theme"
    "emacs-geben"
@@ -326,9 +334,11 @@
    "emacs-kill-buffers"
    "emacs-lcr"
    "emacs-less-css-mode"
+   "emacs-let-alist"
    "emacs-ligature"
    "emacs-light-soap-theme"
    "emacs-link-hint"
+   "emacs-list-utils"
    "emacs-livid-mode"
    "emacs-log4e"
    "emacs-loop"
@@ -339,11 +349,12 @@
    "emacs-lsp-metals"    ;; uses emacs-dap-mode
    "emacs-lsp-mode"
    "emacs-lsp-origami"
+   "emacs-lsp-pyright"
    "emacs-lsp-python-ms"
    "emacs-lsp-treemacs"
    "emacs-lsp-ui"
    "emacs-lsp-volar"
-   "emacs-lua-mode"
+   "emacs-lua-mode" ;; emacs-lua-mode 20210802 doesn't compile, 20221027 is fine
    "emacs-lush-theme"
    "emacs-macrostep"
    "emacs-madhat2r-theme"
@@ -532,13 +543,8 @@
    "emacs-tramp-auto-auth"
    "emacs-transient"
    "emacs-transpose-frame"
-   ;; "emacs-treemacs"        ;; using the package from the 'bost' channel
-   ;; "emacs-treemacs-evil"
-   ;; "emacs-treemacs-icons-dired"
-   ;; "emacs-treemacs-magit"  ;; existing package
-   ;; "emacs-treemacs-mu4e"   ;; existing package
-   ;; "emacs-treemacs-persp"
-   ;; "emacs-treemacs-projectile"
+   "emacs-treemacs"           ;; there's a version in the 'bost' channel, too
+   "emacs-treemacs-extra"
    "emacs-treepy"
    "emacs-tweaks"
    "emacs-twilight-anti-bright-theme"
@@ -573,6 +579,7 @@
    "emacs-white-sand-theme"
    "emacs-window-purpose"
    "emacs-winum"
+   "emacs-with-editor"
    "emacs-writeroom-mode"
    "emacs-ws-butler"
    "emacs-xcscope"
@@ -585,6 +592,7 @@
    "emacs-zen-and-art-theme"
    "emacs-zenburn-theme"
    "emacs-zonokai-emacs"
+   "emacs-zoom-frm"
    "emacs-zop-to-char"
    ;; "emacs-guix"
    ;; "emacs-paradox"
