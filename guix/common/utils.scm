@@ -44,10 +44,7 @@
             module-evaluated
             testsymb
             testsymb-trace
-            )
-  #:re-export (
-               which ;; from (guix build utils)
-               ))
+            ))
 
 (define m "[utils]")
 ;; (format #t "~a evaluating module ...\n" m)
@@ -768,5 +765,15 @@ Requires:
                           (make-read-exception 'almost-full 'medium)))))
       (format #t "writing ~a\n" file-size))))
 |#
+
+(define-public (package-output-path package)
+  "(package-output-path (@(gnu packages emacs) emacs))
+=> \"/gnu/store/09a50cl6ndln4nmp56nsdvn61jgz2m07-emacs-29.1\""
+  ((comp
+    ;; (partial format #f "~a/bin/emacs")
+    (@(guix derivations) derivation->output-path)
+    (partial (@(guix packages) package-derivation)
+             ((@(guix store) open-connection))))
+   package))
 
 (module-evaluated)
