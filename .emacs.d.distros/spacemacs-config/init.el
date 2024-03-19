@@ -115,7 +115,7 @@ This function should only modify configuration layer settings."
      ;; (unbind-key "s-<delete>" cider-repl-mode-map)
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
      ;; cider package location configured by
-     ;; ~/.emacs.d.spacemacs/layers/+lang/clojure/packages.el in its 'use-package'
+     ;; ~/.emacs.d.distros/spacemacs/layers/+lang/clojure/packages.el in its 'use-package'
      (clojure
       :variables
       ;; (Default '(macro core deprecated))
@@ -219,7 +219,7 @@ This function should only modify configuration layer settings."
 
      ;; Try some of the following commands:
      ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
-     ;;                     ~/.emacs.d.spacemacs/layers/fennel
+     ;;                     ~/.emacs.d.distros/spacemacs/layers/fennel
      ;;   git submodule update --init
      ;; fennel ;; fennel = lua in lisp
 
@@ -557,7 +557,7 @@ This function should only modify configuration layer settings."
      ;;   '(geiser-company--setup geiser-repl-company-p)'
      ;; However geiser-company.el has been removed in upstream repo:
      ;; https://gitlab.com/emacs-geiser/geiser/-/commit/18faa0ba32c9ce751c16960b2a39b3880b523272
-     ;; See, e.g. ~/.emacs.d.spacemacs/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
+     ;; See, e.g. ~/.emacs.d.distros/spacemacs/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
      guix
      ;;
      ;; 2. By Guix:
@@ -747,7 +747,7 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=$HOME/.emacs.d.spacemacs/.cache/dumps/spacemacs-27.1.pdmp
+   ;;   ./emacs --dump-file=$HOME/.emacs.d.distros/spacemacs/.cache/dumps/spacemacs-27.1.pdmp
    ;; (default (format "spacemacs-%s.pdmp" emacs-version))
    dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
 
@@ -879,7 +879,7 @@ It should only modify the values of Spacemacs settings."
    ;;
    ;; '(<theme-name> :location local)' on a:
    ;; - non-Guix machine:
-   ;;     ~/.emacs.d.spacemacs/private/local/<theme-name>-theme/
+   ;;     ~/.emacs.d.distros/spacemacs/private/local/<theme-name>-theme/
    ;; - Guix machine:
    ;;     /gnu/store/*-spacemacs-rolling-release-*/private/local
    ;; TODO check the
