@@ -1,20 +1,8 @@
 (define-module (scm-bin emacs-launcher)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
-  #|
-  #:use-module (gnu packages emacs) ; for emacs-output-path
-  #:use-module (guix)               ; for open-connection
-  ;; Activating the two lines above leads to:
-  ;;   In procedure resolve-interface: no code for module (gnu packages emacs)
-  ;;   In procedure resolve-interface: no code for module (guix)
-  |#
   #:use-module (utils) ;; partial
   #:use-module (settings)
-  ;; #:use-module (guix derivations) ;; derivation->output-path
-  ;; #:use-module (guix packages)    ;; package-derivation
-  ;; #:use-module (guix store)       ;; open-connection
-  ;;; scm-bin/emacs-launcher.scm:47:33: warning: possibly unbound variable `open-connection'
-;;; scm-bin/emacs-launcher.scm:48:3: warning: possibly unbound variable `emacs'
 
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:export (main emacs-launcher))
@@ -39,24 +27,22 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define (emacs-output-path)
-  "(emacs-output-path)
-=> \"/gnu/store/c39qm5ql5w9r6lwwnhangxjby57hshws-emacs-28.2/bin/emacs\""
+(define (emacs-binary-path)
+  "(emacs-binary-path)
+=> \"/gnu/store/09a50cl6ndln4nmp56nsdvn61jgz2m07-emacs-29.1/bin/emacs\""
   ((comp
     (partial format #f "~a/bin/emacs")
-    (@(guix derivations) derivation->output-path)
-    (partial (@(guix packages) package-derivation)
-             ((@(guix store) open-connection))))
-   emacs))
+    package-output-path)
+   (@(gnu packages emacs) emacs)))
 
 (define (which-emacs)
   "(which-emacs) => \"/home/bost/.guix-home/profile/bin/emacs\""
-  ;; (emacs-output-path)
-  (which "emacs"))
+  ;; (emacs-binary-path)
+  ((@(guix build utils) which) "emacs"))
 
 (define (which-emacsclient)
   "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
-  (which "emacsclient"))
+  ((@(guix build utils) which) "emacsclient"))
 
 (define* (emacs-launcher #:key profile #:rest args)
   "
