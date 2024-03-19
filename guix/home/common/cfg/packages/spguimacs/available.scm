@@ -7,10 +7,16 @@
 
 (evaluating-module)
 
-;; guix package --list-available='^emacs-' | awk '{print "\""$1"\""}'
 ;; Specifying package using @, ie. "(@ (gnu packages emacs-xyz) emacs-guix)"
 ;; doesn't work
+
+#|
+guix package --list-available='^emacs-' | awk '{print "   \""$1"\""}' | uniq
+|#
 (define (guix-package---list-available)
+  "
+guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | uniq
+"
   (list
    "emacs-2048-game"
    "emacs-4clojure"
@@ -54,7 +60,7 @@
    "emacs-ample-theme"
    "emacs-ample-zen-theme"
    "emacs-amx"
-   ;; "emacs-anaconda-mode" ;; requires emacs-pythonic which fails to compile
+   "emacs-anaconda-mode"
    "emacs-anakondo"
    "emacs-anaphora"
    "emacs-anki-editor"
@@ -173,7 +179,7 @@
    "emacs-cnfonts"
    "emacs-code-cells"
    "emacs-color-identifiers-mode"
-   "emacs-color-theme"        ;; obsolete - replaced by emacs-color-theme-modern
+   "emacs-color-theme"
    "emacs-color-theme-modern"
    "emacs-color-theme-sanityinc-solarized"
    "emacs-color-theme-sanityinc-tomorrow"
@@ -581,17 +587,11 @@
    "emacs-gc-stats"
    "emacs-gcmh"
    "emacs-gdscript-mode"
-
-   ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
-   ;; "emacs-geiser"
-
+   "emacs-geiser"
    "emacs-geiser-chez"
    "emacs-geiser-eros"
    "emacs-geiser-gauche"
-
-   ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
-   ;; "emacs-geiser-guile"
-
+   "emacs-geiser-guile"
    "emacs-geiser-racket"
    "emacs-gemini"
    "emacs-general"
@@ -643,10 +643,7 @@
    "emacs-gruber-darker-theme"
    "emacs-gruvbox-theme"
    "emacs-gtk-look"
-
-   ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
-   ;; "emacs-guix"
-
+   "emacs-guix"
    "emacs-habitica"
    "emacs-hackernews"
    "emacs-handle"
@@ -730,7 +727,7 @@
    "emacs-html-to-hiccup"
    "emacs-htmlize"
    "emacs-hy-mode"
-   ;; "emacs-hybrid-mode"  ;; part of spacemacs
+   "emacs-hybrid-mode"
    "emacs-hydra"
    "emacs-hyperbole"
    "emacs-hyperspace"
@@ -793,7 +790,7 @@
    "emacs-js-comint"
    "emacs-js2-mode"
    "emacs-js2-refactor"
-   "emacs-js2-refactor-el"  ;; probably not needed
+   "emacs-js2-refactor-el"
    "emacs-jsdoc"
    "emacs-json-mode"
    "emacs-json-navigator"
@@ -869,6 +866,8 @@
    "emacs-lsp-lua-emmy"
    "emacs-lsp-metals"
    "emacs-lsp-mode"
+   "emacs-lsp-origami"
+   "emacs-lsp-pyright"
    "emacs-lsp-python-ms"
    "emacs-lsp-treemacs"
    "emacs-lsp-ui"
@@ -937,7 +936,7 @@
    "emacs-modus-themes"
    "emacs-moe-theme"
    "emacs-moe-theme-el"
-   ;; "emacs-molokai-theme"  ;; needs emacs-color-theme
+   "emacs-molokai-theme"
    "emacs-monky"
    "emacs-monochrome-theme"
    "emacs-monokai-theme"
@@ -1014,11 +1013,7 @@
    "emacs-ol-notmuch"
    "emacs-oldlace-theme"
    "emacs-olivetti"
-
-;;; ~/.config/emacs/bin/doom install
-;;; No such file or directory /gnu/store/k8y1npgp5w7y96vrgddyx3svh2h69zxj-emacs-omtose-phellack-theme-0.2.0-0.66f9963/share/emacs/site-lisp/omtose-phellack-theme-0.2.0-0.66f9963/omtose-phellack-theme-autoloads
-   ;; "emacs-omtose-phellack-theme" ;; omtose-darker-theme omtose-softer-theme
-
+   "emacs-omtose-phellack-theme"
    "emacs-on"
    "emacs-on-screen"
    "emacs-opencl-mode"
@@ -1167,6 +1162,7 @@
    "emacs-pippel"
    "emacs-pkg-info"
    "emacs-placeholder"
+   "emacs-plan9-theme"
    "emacs-planet-theme"
    "emacs-plantuml-mode"
    "emacs-platformio-mode"
@@ -1223,7 +1219,7 @@
    "emacs-pyimport"
    "emacs-python-black"
    "emacs-python-environment"
-   ;; "emacs-pythonic"    ;; fails to compile
+   "emacs-pythonic"
    "emacs-pyvenv"
    "emacs-qml-mode"
    "emacs-qrencode"
@@ -1410,7 +1406,7 @@
    "emacs-syslog-mode"
    "emacs-systemd-mode"
    "emacs-tablist"
-   ;; "emacs-tagedit" ;; fails to compile
+   "emacs-tagedit"
    "emacs-tamil99"
    "emacs-tango-2-theme"
    "emacs-tango-plus-theme"
@@ -1427,6 +1423,7 @@
    "emacs-tempel"
    "emacs-tempel-collection"
    "emacs-templatel"
+   "emacs-term-cursor"
    "emacs-terminal-here"
    "emacs-terraform-mode"
    "emacs-test-simple"
