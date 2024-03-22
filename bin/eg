@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# make the config file editable
+
+v=spguimacs
+f=~/.emacs.d.distros/$v-config/init.el
+
+set -x  # Print commands and their arguments as they are executed.
+[ -f $f ] && rm $f
+cp $dotf/.$v $f
+{ retval="$?"; set +x; } 2>/dev/null
+
+exit $retval
