@@ -1283,6 +1283,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
   ;; ~/.emacs.d.distros/spacemacs/.cache/.custom-settings
+  ;; See also ~/.emacs.d.distros/spacemacs/core/core-custom-settings.el
   (setq custom-file (concat
                      sp-home-dir "/"
                      ".cache/.custom-settings"))
@@ -1399,7 +1400,7 @@ before packages are loaded."
   ;; (add-hook 'yas-before-expand-snippet-hook (lambda () (smartparens-mode -1)))
   ;; (add-hook 'yas-after-exit-snippet-hook (lambda () (smartparens-mode 1)))
 
-  (evil-goggles-mode) ;; Display visual hint on evil edit operations 
+  (evil-goggles-mode) ;; Display visual hint on evil edit operations
   (setq evil-goggles-async-duration 0.200)
   ;; run `M-x list-faces-display` in a fresh emacs to get a list of faces on your emacs
   ;; (custom-set-faces
@@ -2081,6 +2082,7 @@ Some binding snippets / examples:
      ("C-}" . tw-ins-right-paren)
 
      ("s-\"" . tw-select-in-string)
+
 
      ("C-S-<mouse-4>" . tw-zoom-all-frames-in)  ;; mouse-up
      ("C-S-<mouse-5>" . tw-zoom-all-frames-out) ;; mouse-down
