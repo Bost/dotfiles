@@ -1,6 +1,11 @@
 #!/bin/sh
 
-# TODO the sequence should be: 'configure channels' && guix pull && gxhre ...
+# TODO the sequence should be:
+# 'configure channels: copy channels.scm etc.' && \
+# 'configure fish-configL copy fish/config.fish etc.' && \
+#  guix pull && \
+#  guix package --profile= && \
+#  guix home reconfigure
 
 set -x  # Print commands and their arguments as they are executed.
 guix pull "$@"
