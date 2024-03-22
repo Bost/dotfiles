@@ -20,6 +20,7 @@
 (evaluating-module)
 
 (use-package-modules
+ haskell-apps
  uml
  vnc
  rdesktop
@@ -840,6 +841,12 @@ home-profile. Comment them out."
     (list git "send-email")
     pinentry ;; needed to sign commits
     pwclient ;; CLI client for Patchwork patch tracking tool (*.patch files)
+
+    ;; Static analysis for shell scripts
+    shellcheck ;; prevent "shellcheck not available ..." in *bash-ls::stderr*
+    ;; See also emacs-flymake-shellcheck: Flymake backend for Bash/Sh powered by
+    ;; ShellCheck
+
     )))
 (testsymb 'devel-packages)
 
