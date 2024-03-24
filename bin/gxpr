@@ -16,7 +16,7 @@ source /etc/profile 2>/dev/null
 guix package \
      -L $baseLP/common \
      -L $baseLP/home/common \
-     --profile=$HOME/.guix-home \
+     --profile=$HOME/.guix-profile \
      --manifest=$baseLP/manifest.scm \
      "$@"
 { retval="$?"; set +x; } 2>/dev/null
