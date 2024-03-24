@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# TODO the sequence should be:
+# 'configure channels: copy channels.scm etc.' && \
+# 'configure fish-configL copy fish/config.fish etc.' && \
+#  guix pull && \
+#  guix package --profile= && \
+#  guix home reconfigure
+
+set -x  # Print commands and their arguments as they are executed.
+[ ! $(pgrep -f xfce4-screensaver) ] && xfce4-screensaver & disown
+xflock4
+
+{ retval="$?"; set +x; } 2>/dev/null
+exit $retval
