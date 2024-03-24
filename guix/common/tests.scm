@@ -23,7 +23,7 @@
 (define-public (true? x) (eq? x #t))
 (define-public (false? x) (eq? x #f))
 
-(define (test-type o)
+(define-public (test-type o)
   "Type Testing Predicates.
 (test-type (call-with-input-string \"  (+ x y)\" read-syntax)) ; => (syntax?)
 (test-type '())     ; => (list? null?)
@@ -34,6 +34,7 @@
 (test-type #\\space)           ; => (char-whitespace?)
 (test-type #\\a)               ; => (char-alphabetic?)
 (test-type #\\1)               ; => (char-numeric?)
+(test-type (gexp 42))          ; => (gexp?)
 "
   ((comp
     (partial remove unspecified?)
@@ -54,6 +55,7 @@
     'integer?
     'number?
     'syntax?
+    'gexp?
     'pair?
     'char?
     'null?
