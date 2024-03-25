@@ -1,26 +1,26 @@
-(define-module (scm-bin emacs-launcher)
+(define-module (scm-bin launcher-emacs)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils) ;; partial
   #:use-module (settings)
 
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
-  #:export (main emacs-launcher))
+  #:export (main launcher-emacs))
 
 #|
 ;; -e calls the `main` function
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-launcher) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ launcher-emacs) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/emacs-launcher.scm rest args
-./guix/home/common/scm-bin/emacs-launcher.scm --profile=my-profile rest args
+./guix/home/common/scm-bin/launcher-emacs.scm rest args
+./guix/home/common/scm-bin/launcher-emacs.scm --profile=my-profile rest args
 
 
-./guix/home/common/scm-bin/emacs-launcher.scm --profile=spacemacs ~/.emacs.d.distros/spguimacs-config/.spacemacs
-./guix/home/common/scm-bin/emacs-launcher.scm --profile=spguimacs ~/.emacs.d.distros/spguimacs-config/.spacemacs
+./guix/home/common/scm-bin/launcher-emacs.scm --profile=spacemacs ~/.emacs.d.distros/spguimacs-config/.spacemacs
+./guix/home/common/scm-bin/launcher-emacs.scm --profile=spguimacs ~/.emacs.d.distros/spguimacs-config/.spacemacs
 
 |#
 
@@ -44,9 +44,9 @@ cd $dotf
   "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
   ((@(guix build utils) which) "emacsclient"))
 
-(define* (emacs-launcher #:key profile #:rest args)
+(define* (launcher-emacs #:key profile #:rest args)
   "
-(emacs-launcher #:profile \"my-profile\" \"rest\" \"args\")
+(launcher-emacs #:profile \"my-profile\" \"rest\" \"args\")
 "
   (let* ((args (remove-kw-from-args #:profile args)))
     ;; (format #t "~a profile : ~a\n" m profile)
@@ -88,8 +88,8 @@ cd $dotf
 
 (define (main args)
   "
-(main (list \"emacs-launcher\" \"rest\" \"args\"))
-(main (list \"emacs-launcher\" \"--profile=aaa\" \"rest\" \"args\"))
+(main (list \"launcher-emacs\" \"rest\" \"args\"))
+(main (list \"launcher-emacs\" \"--profile=aaa\" \"rest\" \"args\"))
 "
   ;; (format #t "[main] args: ~a\n" args)
   (let* ((option-spec
@@ -120,13 +120,13 @@ cd $dotf
           (begin
             (if help-wanted
                 (format #t "
-      emacs-launcher [options]
+      launcher-emacs [options]
       -v, --version    Display version
       -h, --help       Display this help
       ")))
           (begin
             (apply
-             (partial emacs-launcher #:profile profile)
+             (partial launcher-emacs #:profile profile)
              rest-args)
             )))))
 
