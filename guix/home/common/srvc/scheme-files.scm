@@ -312,6 +312,7 @@ Example:
                   #:scheme-file-name "extract")
     (service-file #:program-name "c"   #:desc "batcat"
                   #:scheme-file-name "bat")
+    (service-file #:program-name "ee"  #:desc "edit-spacemac-emacs")
     (service-file #:program-name "f"   #:desc "find-alternative")
     (service-file #:program-name "gcl" #:desc "git-clone")
     (service-file #:program-name "gre" #:desc "git-remote")
