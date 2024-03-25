@@ -22,7 +22,10 @@ cd $dotf
 
 (define* (main #:rest args)
   "Usage:
-(main \"<ignored>\" \"arg0\")"
+(main \"<ignored>\" \"arg0\")
+(main \"<ignored>\" \"--gx-dry-run\" \"arg0\")
+(main \"<ignored>\" \"--gx-dry-run\")
+"
 
   (with-monad compose-shell-commands
     (return "/tmp/fox"))
@@ -33,16 +36,30 @@ cd $dotf
      exec   ; => (0 "GNU/Linux")
      (partial echo #:string)))
 
-  (with-monad compose-guix-shell-commands
+  (with-monad compose-commands-guix-shell
     (return '("/tmp/fox")))
 
-  (with-monad compose-guix-shell-commands
+  (with-monad compose-commands-guix-shell
     (>>=
      (return '("/tmp/fox"))
      mdelete-file
      `(override-mv ,(string-append (getenv "HOME") "/.bashrc") "/tmp/fox")
      mcopy-file
-     )))
+     ))
+
+  (let* [(dry-run (contains--gx-dry-run args))
+         (monad (if dry-run
+                    compose-commands-guix-shell-dry-run
+                    compose-commands-guix-shell))]
+    (when dry-run
+      (format #t "~a monad: ~a\n" m monad))
+    (with-monad monad
+      (>>=
+       (return '("/tmp/fox"))
+       mdelete-file
+       `(override-mv ,(string-append (getenv "HOME") "/.bashrc") "/tmp/fox")
+       mcopy-file
+       ))))
 
 (testsymb 'main)
 
