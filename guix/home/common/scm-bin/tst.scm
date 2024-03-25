@@ -23,11 +23,27 @@ cd $dotf
 (define* (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"arg0\")"
+
+  (with-monad compose-shell-commands
+    (return "/tmp/fox"))
+
   (with-monad compose-shell-commands
     (>>=
      (return "uname -o")
      exec   ; => (0 "GNU/Linux")
-     (partial echo #:string))))
+     (partial echo #:string)))
+
+  (with-monad compose-guix-shell-commands
+    (return '("/tmp/fox")))
+
+  (with-monad compose-guix-shell-commands
+    (>>=
+     (return '("/tmp/fox"))
+     mdelete-file
+     `(override-mv ,(string-append (getenv "HOME") "/.bashrc") "/tmp/fox")
+     mcopy-file
+     )))
+
 (testsymb 'main)
 
 (module-evaluated)

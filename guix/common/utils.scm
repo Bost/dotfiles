@@ -34,6 +34,7 @@
   ;; for the exec-with-error-to-string
   #:use-module (rnrs io ports)
   #:export (
+            compose-guix-shell-commands
             compose-shell-commands
             def*
             error-command-failed
@@ -714,6 +715,51 @@ or the CLIENT-CMD if some process ID was found."
 (define-monad compose-shell-commands
   (bind pipe-bind)
   (return pipe-return))
+
+
+(define-inlinable (dry-run-return lst-params)
+  (list
+   ;; Return code signaling that some hypothetical previous command terminated
+   ;; successfully.
+   ;; copy-file, delete-file return *unspecified*
+   lst-params  ;; output returned by some previous command
+   ;; String containing the parameters of the next command
+   lst-params))
+
+(define-inlinable (dry-run-bind mv mf)
+  ;; (format #t "\n")
+  ;; (format #t "mv: ~a\n" mv)
+  ;; (format #t "mf: ~a; (list? mf): ~a\n" mf (list? mf))
+  (if (and (list? mf) (equal? (car mf) 'override-mv))
+      (begin
+        ;; (format #t "mf: (cdr mf): ~a\n" (cdr mf))
+        (dry-run-return (cdr mf)))
+      (let* [(lst-output-of-previous-cmd (car mv))
+             (lst-params (cadr mv))]
+        (if (equal? lst-output-of-previous-cmd lst-params)
+            (begin
+              (format #t "~s ... " `(,mf ,lst-params))
+              ;; (format #t "~s ...\n" `(,mf ,lst-params))
+              (mf lst-params)
+              ;; (format #t "~s ... done\n" `(,mf ,lst-params))
+              (format #t "done\n")
+              ;; enforce manual command params specification by returning an
+              ;; empty list
+              (dry-run-return '()))
+            (begin
+              (error-command-failed m)
+              mv)))))
+
+(define-monad compose-guix-shell-commands
+  (bind dry-run-bind)
+  (return dry-run-return))
+
+(define (mdelete-file prms)
+  (let [(file (car prms))]
+    (when (access? file F_OK)
+      (delete-file file))))
+
+(define (mcopy-file prms) (apply copy-file prms))
 
 (define-public (string-in? lst string-elem)
   "Return the first element of @var{lst} that equals (string=)
