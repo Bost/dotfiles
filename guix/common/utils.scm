@@ -695,20 +695,18 @@ or the CLIENT-CMD if some process ID was found."
 ;; ;; => input : args: (#:x x #:y y bla)
 ;; ;; => output: args: (bla)
 
-
-(define-inlinable (pipe-return command)
+(define-inlinable (pipe-return params)
   (list
    ;; Return code signaling that some hypothetical previous command terminated
    ;; successfully.
    0
-   ;; String containing the command to execute as next
-   command))
+   ;; String containing the parameters of the next command
+   params))
 
-(define-inlinable (pipe-bind mv f)
+(define-inlinable (pipe-bind mv mf)
   (let* ((mv-retcode (car mv)))
     (if (= 0 mv-retcode)
-        ;; the f-function parses the output
-        (f (cadr mv))
+        (mf (cadr mv))
         (begin
           (error-command-failed m)
           mv))))
