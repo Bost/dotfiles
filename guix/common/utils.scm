@@ -34,8 +34,10 @@
   ;; for the exec-with-error-to-string
   #:use-module (rnrs io ports)
   #:export (
-            compose-guix-shell-commands
+            compose-commands-guix-shell-dry-run
+            compose-commands-guix-shell
             compose-shell-commands
+            contains--gx-dry-run
             def*
             error-command-failed
             evaluating-module
@@ -319,9 +321,12 @@ E Command failed."
 
 (define dry-run-prm "--gx-dry-run")
 
+(define* (contains--gx-dry-run args)
+  (or (and (list? args) (member dry-run-prm args))
+      (and (string? args) (string-contains args dry-run-prm))))
+
 (define* (exec-or-dry-run exec-function args)
-  (if (or (and (list? args) (member dry-run-prm args))
-          (and (string? args) (string-contains args dry-run-prm)))
+  (if (contains--gx-dry-run args)
       args
       (if (list? args)
           (apply exec-function args)
@@ -717,7 +722,7 @@ or the CLIENT-CMD if some process ID was found."
   (return pipe-return))
 
 
-(define-inlinable (dry-run-return lst-params)
+(define-inlinable (guix-shell-return lst-params)
   (list
    ;; Return code signaling that some hypothetical previous command terminated
    ;; successfully.
@@ -726,14 +731,15 @@ or the CLIENT-CMD if some process ID was found."
    ;; String containing the parameters of the next command
    lst-params))
 
-(define-inlinable (dry-run-bind mv mf)
+(define-inlinable (guix-shell-bind mv mf)
+  "Contains (mf lst-params)"
   ;; (format #t "\n")
   ;; (format #t "mv: ~a\n" mv)
   ;; (format #t "mf: ~a; (list? mf): ~a\n" mf (list? mf))
   (if (and (list? mf) (equal? (car mf) 'override-mv))
       (begin
         ;; (format #t "mf: (cdr mf): ~a\n" (cdr mf))
-        (dry-run-return (cdr mf)))
+        (guix-shell-return (cdr mf)))
       (let* [(lst-output-of-previous-cmd (car mv))
              (lst-params (cadr mv))]
         (if (equal? lst-output-of-previous-cmd lst-params)
@@ -745,21 +751,50 @@ or the CLIENT-CMD if some process ID was found."
               (format #t "done\n")
               ;; enforce manual command params specification by returning an
               ;; empty list
-              (dry-run-return '()))
+              (guix-shell-return '()))
             (begin
               (error-command-failed m)
               mv)))))
 
-(define-monad compose-guix-shell-commands
-  (bind dry-run-bind)
-  (return dry-run-return))
+(define-inlinable (guix-shell-dry-run-bind mv mf)
+  "Does NOT contain (mf lst-params)"
+  ;; (format #t "\n")
+  ;; (format #t "mv: ~a\n" mv)
+  ;; (format #t "mf: ~a; (list? mf): ~a\n" mf (list? mf))
+  (if (and (list? mf) (equal? (car mf) 'override-mv))
+      (begin
+        ;; (format #t "mf: (cdr mf): ~a\n" (cdr mf))
+        (guix-shell-return (cdr mf)))
+      (let* [(lst-output-of-previous-cmd (car mv))
+             (lst-params (cadr mv))]
+        (if (equal? lst-output-of-previous-cmd lst-params)
+            (begin
+              (format #t "~s ... " `(,mf ,lst-params))
+              ;; (format #t "~s ...\n" `(,mf ,lst-params))
+              ;; (mf lst-params)
+              ;; (format #t "~s ... done\n" `(,mf ,lst-params))
+              (format #t "done\n")
+              ;; enforce manual command params specification by returning an
+              ;; empty list
+              (guix-shell-return '()))
+            (begin
+              (error-command-failed m)
+              mv)))))
 
-(define (mdelete-file prms)
+(define-monad compose-commands-guix-shell-dry-run
+  (bind guix-shell-dry-run-bind)
+  (return guix-shell-return))
+
+(define-monad compose-commands-guix-shell
+  (bind guix-shell-bind)
+  (return guix-shell-return))
+
+(define-public (mdelete-file prms)
   (let [(file (car prms))]
     (when (access? file F_OK)
       (delete-file file))))
 
-(define (mcopy-file prms) (apply copy-file prms))
+(define-public (mcopy-file prms) (apply copy-file prms))
 
 (define-public (string-in? lst string-elem)
   "Return the first element of @var{lst} that equals (string=)
