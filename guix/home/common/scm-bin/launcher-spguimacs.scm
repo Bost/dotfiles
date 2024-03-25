@@ -1,4 +1,4 @@
-(define-module (scm-bin crafted-launcher)
+(define-module (scm-bin launcher-spguimacs)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #|
@@ -8,19 +8,22 @@
   ;;   In procedure resolve-interface: no code for module (gnu packages emacs)
   ;;   In procedure resolve-interface: no code for module (guix)
   |#
-  #:use-module (utils) ;; partial
-  #:use-module (scm-bin emacs-launcher)
+  #:use-module (utils)
+  #:use-module (scm-bin launcher-emacs)
   #:export (main))
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ crafted-launcher) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ launcher-spguimacs) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/crafted-launcher.scm rest args
-./guix/home/common/scm-bin/crafted-launcher.scm --profile=my-profile rest args
+./guix/home/common/scm-bin/launcher-spguimacs.scm rest args
+./guix/home/common/scm-bin/launcher-spguimacs.scm --profile=spguimacs rest args
+
+./guix/home/common/scm-bin/launcher-spguimacs.scm ~/.emacs.d.distros/spguimacs-config/.spacemacs
+./guix/home/common/scm-bin/launcher-spguimacs.scm --profile=spguimacs ~/.emacs.d.distros/spguimacs-config/.spacemacs
 
 |#
 
@@ -28,7 +31,7 @@ cd $dotf
 (evaluating-module)
 
 (define (main args)
-  (apply (partial emacs-launcher #:profile "crafted")
+  (apply (partial launcher-emacs #:profile "spguimacs")
          (cdr args)))
 
 (module-evaluated)

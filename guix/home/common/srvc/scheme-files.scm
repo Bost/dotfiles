@@ -131,9 +131,9 @@ Example:
 
                ,(cond
                  ((or
-                   (equal? scheme-file-name "crafted-launcher")
-                   (equal? scheme-file-name "spguimacs-launcher"))
-                  `(scm-bin emacs-launcher)))
+                   (equal? scheme-file-name "launcher-crafted")
+                   (equal? scheme-file-name "launcher-spguimacs"))
+                  `(scm-bin launcher-emacs)))
 
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
@@ -276,20 +276,20 @@ Example:
        (append
         search-notes-service-files
         (list
-         (service-file #:program-name "e" #:desc "emacs-launcher"
-                       #:scheme-file-name "emacs-launcher")
-         (service-file #:program-name "s" #:desc "spguimacs-launcher"
-                       #:scheme-file-name "spguimacs-launcher")))]
+         (service-file #:program-name "e" #:desc "launcher-emacs"
+                       #:scheme-file-name "launcher-emacs")
+         (service-file #:program-name "s" #:desc "launcher-spguimacs"
+                       #:scheme-file-name "launcher-spguimacs")))]
       [(or (is-system-ecke) (is-system-edge))
        (append
         search-notes-service-files
         (list
-         (service-file #:program-name "e" #:desc "emacs-launcher"
-                       #:scheme-file-name "emacs-launcher")
-         (service-file #:program-name "s" #:desc "spguimacs-launcher"
-                       #:scheme-file-name "spguimacs-launcher")
-         (service-file #:program-name "r" #:desc "crafted-emacs-launcher"
-                       #:scheme-file-name "crafted-launcher")
+         (service-file #:program-name "e" #:desc "launcher-emacs"
+                       #:scheme-file-name "launcher-emacs")
+         (service-file #:program-name "s" #:desc "launcher-spguimacs"
+                       #:scheme-file-name "launcher-spguimacs")
+         (service-file #:program-name "r" #:desc "launcher-crafted-emacs"
+                       #:scheme-file-name "launcher-crafted")
 ;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
 ;;; checkout)
          (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
