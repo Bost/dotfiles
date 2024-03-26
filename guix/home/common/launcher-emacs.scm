@@ -1,11 +1,11 @@
-(define-module (scm-bin launcher-emacs)
+(define-module (launcher-emacs)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils) ;; partial
   #:use-module (settings)
 
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
-  #:export (main launcher-emacs))
+  #:export (handle-cli create-emacs-launcher))
 
 #|
 ;; -e calls the `main` function
@@ -27,6 +27,9 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(define dbg #f)
+(define utility-name (last (module-name (current-module))))
+
 (define (emacs-binary-path)
   "(emacs-binary-path)
 => \"/gnu/store/09a50cl6ndln4nmp56nsdvn61jgz2m07-emacs-29.1/bin/emacs\""
@@ -44,11 +47,11 @@ cd $dotf
   "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
   ((@(guix build utils) which) "emacsclient"))
 
-(define* (launcher-emacs #:key profile #:rest args)
+(define* (create-emacs-launcher #:key profile #:rest args)
   "
-(launcher-emacs #:profile \"my-profile\" \"rest\" \"args\")
+(create-emacs-launcher #:profile \"spacemacs\" \"rest\" \"args\")
 "
-  (let* ((args (remove-kw-from-args #:profile args)))
+  (let* [(args (remove-kw-from-args #:profile args))]
     ;; (format #t "~a profile : ~a\n" m profile)
     ;; (format #t "~a args : ~a\n" m args)
     (let* [(emacs-bin (which-emacs))
@@ -86,50 +89,43 @@ cd $dotf
         )
        args))))
 
-(define (main args)
-  "
-(main (list \"launcher-emacs\" \"rest\" \"args\"))
-(main (list \"launcher-emacs\" \"--profile=aaa\" \"rest\" \"args\"))
-"
-  ;; (format #t "[main] args: ~a\n" args)
-  (let* ((option-spec
-          ;; (value #t): a given option expects accept a value
-          ;; 'profile' corresponds to '--profile' or '-p' on the command line
-          '(
-            (profile (single-char #\p) (value #t))
-            (version (single-char #\v) (value #f))
-            (help    (single-char #\h) (value #f))
-            (rest-args (value #f))
-            )))
-    ;; (format #t "[main] option-spec : ~a\n" option-spec)
-    (let*
-        ((options (getopt-long args option-spec))
-         ;; #f means that the expected value wasn't specified
-         (profile (option-ref options 'profile "spacemacs"))
-         (help-wanted (option-ref options 'help #f))
-         (version-wanted (option-ref options 'version #f))
-         (rest-args (option-ref options '() #f))
-         )
-      ;; (format #t "[main] options : ~a\n" options)
-      ;; (format #t "[main] profile : ~a\n" profile)
-      ;; (format #t "[main] (string? profile) : ~a\n" (string? profile))
-      ;; (format #t "[main] help-wanted : ~a\n" help-wanted)
-      ;; (format #t "[main] version-wanted : ~a\n" version-wanted)
-      (format #t "[main] rest-args : ~a\n" rest-args)
-      (if (or version-wanted help-wanted)
-          (begin
-            (if help-wanted
-                (format #t "
-      launcher-emacs [options]
-      -v, --version    Display version
-      -h, --help       Display this help
-      ")))
-          (begin
-            (apply
-             (partial launcher-emacs #:profile profile)
-             rest-args)
-            )))))
-
-(testsymb 'main)
+;; TODO --version is not needed
+(define* (handle-cli #:key utility-name fun #:rest args)
+  "All the options, except rest-args, must be specified for the option-spec so that
+the options-parser doesn't complain about e.g. 'no such option: -p'."
+  ;; (format #t "~a args: ~a\n" m args)
+  (let* [
+         (args (remove-kw-from-args #:utility-name args))
+         (args (remove-kw-from-args #:fun args))
+         ]
+    (let* [(option-spec
+            '[
+              (help       (single-char #\h))
+              (version    (single-char #\v))
+              (profile    (single-char #\p))
+              ])]
+      ;; TODO isn't the #:stop-at-first-non-option swapped?
+      (let* [(options (getopt-long args option-spec #:stop-at-first-non-option #t))
+             ;; #f means that the expected value wasn't specified
+             (val-help       (option-ref options 'help    #f))
+             (val-version    (option-ref options 'version #f))
+             (val-rest-args  (option-ref options '()      #f))]
+        (when dbg
+          (format #t "~a option-spec   : ~a\n" m option-spec)
+          (format #t "~a val-help      : ~a\n" m val-help)
+          (format #t "~a val-version   : ~a\n" m val-version)
+          (format #t "~a val-rest-args : ~a\n" m val-rest-args))
+        (cond
+         [(option-ref options 'help #f)
+          (format #t "~a [options]
+    -v, --version    Display version
+    -h, --help       Display this help
+" utility-name)]
+         [(option-ref options 'version #f)
+          (format #t "~a version 1.23
+" utility-name)]
+         [#t
+          (fun args)])))))
+(testsymb 'handle-cli)
 
 (module-evaluated)
