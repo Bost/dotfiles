@@ -307,13 +307,13 @@ Example:
         search-notes-service-files
         (list
          (service-file #:program-name "s"  #:scheme-file-name launcher-spacemacs)
-         (service-file #:program-name "es" #:desc "edit-spacemacs-config")
+         (service-file #:program-name "es" #:desc (format #f "edit-~a-config" spacemacs))
 
-         ;; (service-file #:program-name "g"  #:scheme-file-name launcher-spguimacs)
-         ;; (service-file #:program-name "eg" #:desc "edit-spguimacs-config")
+         (service-file #:program-name "g"  #:scheme-file-name launcher-spguimacs)
+         (service-file #:program-name "eg" #:desc (format #f "edit-~a-config" spguimacs))
 
-         ;; (service-file #:program-name "r"  #:scheme-file-name launcher-crafted)
-         ;; (service-file #:program-name "er" #:desc "edit-crafted-config")
+         (service-file #:program-name "r"  #:scheme-file-name launcher-crafted)
+         (service-file #:program-name "er" #:desc (format #f "edit-~a-config" crafted))
         ))]
       [#t
        (list)])))

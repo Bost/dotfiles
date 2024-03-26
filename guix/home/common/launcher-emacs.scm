@@ -88,6 +88,7 @@ cd $dotf
         ;; cdr
         )
        args))))
+(testsymb 'create-emacs-launcher)
 
 ;; TODO --version is not needed
 (define* (handle-cli #:key utility-name fun #:rest args)
