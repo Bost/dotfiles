@@ -37,7 +37,7 @@
             compose-commands-guix-shell-dry-run
             compose-commands-guix-shell
             compose-shell-commands
-            contains--gx-dry-run
+            contains--gx-dry-run?
             def*
             error-command-failed
             evaluating-module
@@ -321,12 +321,12 @@ E Command failed."
 
 (define dry-run-prm "--gx-dry-run")
 
-(define* (contains--gx-dry-run args)
+(define* (contains--gx-dry-run? args)
   (or (and (list? args) (member dry-run-prm args))
       (and (string? args) (string-contains args dry-run-prm))))
 
 (define* (exec-or-dry-run exec-function args)
-  (if (contains--gx-dry-run args)
+  (if (contains--gx-dry-run? args)
       args
       (if (list? args)
           (apply exec-function args)
@@ -854,5 +854,10 @@ Requires:
     (partial (@(guix packages) package-derivation)
              ((@(guix store) open-connection))))
    package))
+
+(define-public spacemacs "spacemacs")
+(define-public spguimacs "spguimacs")
+(define-public crafted "crafted")
+(define-public is-valid-profile? (partial string-in? (list spacemacs spguimacs crafted)))
 
 (module-evaluated)
