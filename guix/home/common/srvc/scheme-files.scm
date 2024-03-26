@@ -15,14 +15,14 @@
   #:use-module (gnu home services)
   ;; take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  ;; pretty-print
   ;; #:use-module (ice-9 pretty-print)
   ;; scandir nftw
   #:use-module (ice-9 ftw)
- ;; string-match
+  ;; string-match
   #:use-module (ice-9 regex)
-)
+  )
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define notes-dir (user-home "/org-roam"))
@@ -64,6 +64,10 @@
           (partial scandir dir))
          (lambda (s) (string-match (basename re) s))))))
 
+(define launcher-spacemacs (format #f "launcher-~a" spacemacs))
+(define launcher-spguimacs (format #f "launcher-~a" spguimacs))
+(define launcher-crafted   (format #f "launcher-~a" crafted))
+
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
 (full-filepaths (list \"ai\")) =>
@@ -89,16 +93,21 @@ a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  #;(format #t "scheme-file-name: ~a\n" scheme-file-name)
+  ;; (format #t "~a scheme-file-name : ~s; program-name : ~s\n" m scheme-file-name program-name)
   `(,(str scm-bin-dirname "/" program-name)
     ,(program-file
       (cond
-       ((equal? scheme-file-name "chmod")
-        (str "chmod-plus-" chmod-params))
-       ((equal? scheme-file-name "search-notes")
-        (str "search-notes-" program-name))
-       (#t
-        desc))
+       [(equal? scheme-file-name "chmod")
+        (str "chmod-plus-" chmod-params)]
+       [(equal? scheme-file-name "search-notes")
+        (str "search-notes-" program-name)]
+       [(member scheme-file-name
+                (list launcher-spacemacs
+                      launcher-spguimacs
+                      launcher-crafted))
+        scheme-file-name]
+       [#t
+        desc])
       ;; TODO clarify if source-module-closure is needed only for imports of
       ;; guix modules?
       (let* ((symb-string (or scheme-file-name program-name))
@@ -107,18 +116,18 @@ Example:
              (main-call
               (remove unspecified?
                       `(main ,(cond
-                               ((equal? scheme-file-name "chmod")
-                                chmod-params)
-                               ((equal? scheme-file-name "search-notes")
+                               [(equal? scheme-file-name "chmod")
+                                chmod-params]
+                               [(equal? scheme-file-name "search-notes")
                                 #;
                                 (begin
-                                  (format #t "(list? ~a)\n" (list? other-files))
+                                  (format #t "~a (list? ~a)\n" m (list? other-files))
                                   (full-filepaths files))
                                 (string-join
                                  (append
                                   other-files
                                   (list
-                                   (full-filepaths files))))))
+                                   (full-filepaths files))))])
                              (command-line)))))
         (with-imported-modules
             (remove
@@ -129,26 +138,47 @@ Example:
                (scm-bin gre)
                (scm-bin gps)
 
-               ,(cond
-                 ((or
-                   (equal? scheme-file-name "launcher-crafted")
-                   (equal? scheme-file-name "launcher-spguimacs"))
-                  `(scm-bin launcher-emacs)))
+               ,(begin
+                  #;
+                  (format #t "1. member : ~a\n" (member program-name
+                                                        (list "es"
+                                                              "eg"
+                                                              "er")))
+                  (cond
+                   [(member program-name
+                            (list "es"
+                                  "eg"
+                                  "er"))
+                    `(editable-emacs-config)]))
+
+
+               ,(begin
+                  #;
+                  (format #t "2. member : ~a\n" (member scheme-file-name
+                                                        (list launcher-spacemacs
+                                                              launcher-spguimacs
+                                                              launcher-crafted)))
+                 (cond
+                  [(member scheme-file-name
+                           (list launcher-spacemacs
+                                 launcher-spguimacs
+                                 launcher-crafted))
+                   `(launcher-emacs)]))
 
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
                ,(cond
-                 ((equal? symb-string "lf")
-                  `(scm-bin ls))
+                 [(equal? symb-string "lf")
+                  `(scm-bin ls)]
 
-                 ((equal? scheme-file-name "chmod")
-                  `(scm-bin ,symb))
+                 [(equal? scheme-file-name "chmod")
+                  `(scm-bin ,symb)]
 
-                 ((equal? scheme-file-name "search-notes")
-                  `(scm-bin ,symb))
+                 [(equal? scheme-file-name "search-notes")
+                  `(scm-bin ,symb)]
 
-                 (#t
-                  `(scm-bin ,symb)))))
+                 [#t
+                  `(scm-bin ,symb)])))
           #~(begin
               (use-modules (scm-bin #$symb))
               #$main-call))))))
@@ -272,29 +302,19 @@ Example:
     (partial
      append
      (cond
-      [(is-system-geek)
-       (append
-        search-notes-service-files
-        (list
-         (service-file #:program-name "e" #:desc "launcher-emacs"
-                       #:scheme-file-name "launcher-emacs")
-         (service-file #:program-name "s" #:desc "launcher-spguimacs"
-                       #:scheme-file-name "launcher-spguimacs")))]
       [(or (is-system-ecke) (is-system-edge))
        (append
         search-notes-service-files
         (list
-         (service-file #:program-name "e" #:desc "launcher-emacs"
-                       #:scheme-file-name "launcher-emacs")
-         (service-file #:program-name "s" #:desc "launcher-spguimacs"
-                       #:scheme-file-name "launcher-spguimacs")
-         (service-file #:program-name "r" #:desc "launcher-crafted-emacs"
-                       #:scheme-file-name "launcher-crafted")
-;;; TODO `guixg' should do `git pull --rebase' (preferably from a local guix
-;;; checkout)
-         (service-file #:program-name "qemu-vm" #:desc "qemu-virt-machine")
-         (service-file #:program-name "spag"
-                       #:desc "spacemacs-git-fetch-rebase")))]
+         (service-file #:program-name "s"  #:scheme-file-name launcher-spacemacs)
+         (service-file #:program-name "es" #:desc "edit-spacemacs-config")
+
+         ;; (service-file #:program-name "g"  #:scheme-file-name launcher-spguimacs)
+         ;; (service-file #:program-name "eg" #:desc "edit-spguimacs-config")
+
+         ;; (service-file #:program-name "r"  #:scheme-file-name launcher-crafted)
+         ;; (service-file #:program-name "er" #:desc "edit-crafted-config")
+        ))]
       [#t
        (list)])))
    (list
@@ -312,7 +332,7 @@ Example:
                   #:scheme-file-name "extract")
     (service-file #:program-name "c"   #:desc "batcat"
                   #:scheme-file-name "bat")
-    (service-file #:program-name "ee"  #:desc "edit-spacemac-emacs")
+
     (service-file #:program-name "f"   #:desc "find-alternative")
     (service-file #:program-name "gcl" #:desc "git-clone")
     (service-file #:program-name "gre" #:desc "git-remote")

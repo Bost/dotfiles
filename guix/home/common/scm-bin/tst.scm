@@ -47,7 +47,7 @@ cd $dotf
      mcopy-file
      ))
 
-  (let* [(dry-run (contains--gx-dry-run args))
+  (let* [(dry-run (contains--gx-dry-run? args))
          (monad (if dry-run
                     compose-commands-guix-shell-dry-run
                     compose-commands-guix-shell))]
