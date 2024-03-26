@@ -48,7 +48,6 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
          (partial create-emacs-launcher #:profile spacemacs)
          val-rest-args)))))
 
-;; TODO in the launchen-<...>
 (define (main args)
   "Usage:
 (main (list \"<ignored>\" \"--help\" \"args\"))

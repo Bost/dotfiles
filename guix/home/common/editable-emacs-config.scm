@@ -41,7 +41,7 @@ Usage:
            `(override-mv ,src ,dst)
            mcopy-file))
         (copy-file src dst)))))
-(testsymb 'editable-emacs-config)
+(testsymb 'set-config-editable)
 
 ;; TODO --version is not needed
 (define* (handle-cli #:key utility-name fun #:rest args)
