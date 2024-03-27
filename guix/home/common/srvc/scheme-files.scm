@@ -67,6 +67,23 @@
 (define launcher-spacemacs (format #f "launcher-~a" spacemacs))
 (define launcher-spguimacs (format #f "launcher-~a" spguimacs))
 (define launcher-crafted   (format #f "launcher-~a" crafted))
+(define launcher-lst       (list launcher-spacemacs
+                                 launcher-spguimacs
+                                 launcher-crafted))
+
+(define editable-spacemacs (format #f "editable-~a" spacemacs))
+(define editable-spguimacs (format #f "editable-~a" spguimacs))
+(define editable-crafted   (format #f "editable-~a" crafted))
+(define editable-lst       (list editable-spacemacs
+                                 editable-spguimacs
+                                 editable-crafted))
+
+(define pkill-spacemacs (format #f "pkill-~a" spacemacs))
+(define pkill-spguimacs (format #f "pkill-~a" spguimacs))
+(define pkill-crafted   (format #f "pkill-~a" crafted))
+(define pkill-lst       (list pkill-spacemacs
+                              pkill-spguimacs
+                              pkill-crafted))
 
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
@@ -101,10 +118,7 @@ Example:
         (str "chmod-plus-" chmod-params)]
        [(equal? scheme-file-name "search-notes")
         (str "search-notes-" program-name)]
-       [(member scheme-file-name
-                (list launcher-spacemacs
-                      launcher-spguimacs
-                      launcher-crafted))
+       [(member scheme-file-name (append launcher-lst editable-lst pkill-lst))
         scheme-file-name]
        [#t
         desc])
@@ -139,31 +153,19 @@ Example:
                (scm-bin gps)
 
                ,(begin
-                  #;
-                  (format #t "1. member : ~a\n" (member program-name
-                                                        (list "es"
-                                                              "eg"
-                                                              "er")))
                   (cond
-                   [(member program-name
-                            (list "es"
-                                  "eg"
-                                  "er"))
-                    `(editable-emacs-config)]))
-
+                   [(member scheme-file-name launcher-lst)
+                    `(launcher-emacs)]))
 
                ,(begin
-                  #;
-                  (format #t "2. member : ~a\n" (member scheme-file-name
-                                                        (list launcher-spacemacs
-                                                              launcher-spguimacs
-                                                              launcher-crafted)))
-                 (cond
-                  [(member scheme-file-name
-                           (list launcher-spacemacs
-                                 launcher-spguimacs
-                                 launcher-crafted))
-                   `(launcher-emacs)]))
+                  (cond
+                   [(member scheme-file-name editable-lst)
+                    `(editable-emacs-config)]))
+
+               ,(begin
+                  (cond
+                   [(member scheme-file-name pkill-lst)
+                    `(pkill)]))
 
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
@@ -307,13 +309,16 @@ Example:
         search-notes-service-files
         (list
          (service-file #:program-name "s"  #:scheme-file-name launcher-spacemacs)
-         (service-file #:program-name "es" #:desc (format #f "edit-~a-config" spacemacs))
+         (service-file #:program-name "es" #:scheme-file-name editable-spacemacs)
+         (service-file #:program-name "ks" #:scheme-file-name pkill-spacemacs)
 
          (service-file #:program-name "g"  #:scheme-file-name launcher-spguimacs)
-         (service-file #:program-name "eg" #:desc (format #f "edit-~a-config" spguimacs))
+         (service-file #:program-name "eg" #:scheme-file-name editable-spacemacs)
+         (service-file #:program-name "kg" #:scheme-file-name pkill-spguimacs)
 
          (service-file #:program-name "r"  #:scheme-file-name launcher-crafted)
-         (service-file #:program-name "er" #:desc (format #f "edit-~a-config" crafted))
+         (service-file #:program-name "er" #:scheme-file-name editable-spacemacs)
+         (service-file #:program-name "kr" #:scheme-file-name pkill-crafted)
         ))]
       [#t
        (list)])))
