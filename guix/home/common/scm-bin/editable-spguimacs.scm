@@ -1,4 +1,4 @@
-(define-module (scm-bin es)
+(define-module (scm-bin editable-spguimacs)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
@@ -9,19 +9,19 @@
 #|
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ es) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ editable-spguimacs) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/es.scm --gx-dry-run
-./guix/home/common/scm-bin/es.scm
+./guix/home/common/scm-bin/editable-spguimacs.scm --gx-dry-run
+./guix/home/common/scm-bin/editable-spguimacs.scm
 
 |#
 
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define dbg #t)
+(define dbg #f)
 (define utility-name (last (module-name (current-module))))
 
 (define (fun args)
@@ -30,15 +30,15 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
   (let* [(option-spec
           ;; (value #t): a given option expects accept a value
           `[
-            (rest-args                    (value #f))
             (help       (single-char #\h) (value #f))
             (version    (single-char #\v) (value #f))
             (gx-dry-run (single-char #\d) (value #f))
+            (rest-args                    (value #f))
             ])]
     ;; (format #t "~a option-spec : ~a\n" m option-spec)
     (let* [(options (getopt-long args option-spec))
            ;; #f means that the expected value wasn't specified
-           (val-gx-dry-run (option-ref options 'gx-dry-run #f))
+           (val-gx-dry-run (option-ref options 'gx-dry-run #t))
            (val-rest-args  (option-ref options '()         #f))
            ]
       (when dbg
@@ -48,8 +48,10 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
       (begin
         (apply
          (partial set-config-editable
-                  #:gx-dry-run val-gx-dry-run #:profile spacemacs)
+                  #:gx-dry-run val-gx-dry-run
+                  #:profile spguimacs)
          val-rest-args)))))
+(testsymb 'fun)
 
 (define (main args)
   "Usage:

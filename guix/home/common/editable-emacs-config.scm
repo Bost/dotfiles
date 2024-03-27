@@ -56,26 +56,23 @@ the options-parser doesn't complain about e.g. 'no such option: -p'."
             '[
               (help       (single-char #\h))
               (version    (single-char #\v))
-              (gx-dry-run (single-char #\d))
               ])]
       ;; TODO isn't the #:stop-at-first-non-option swapped?
       (let* [(options (getopt-long args option-spec #:stop-at-first-non-option #t))
              ;; #f means that the expected value wasn't specified
              (val-help       (option-ref options 'help    #f))
-             (val-version    (option-ref options 'version #f))
-             (val-rest-args  (option-ref options '()      #f))]
+             (val-version    (option-ref options 'version #f))]
         (when dbg
           (format #t "~a option-spec   : ~a\n" m option-spec)
           (format #t "~a val-help      : ~a\n" m val-help)
-          (format #t "~a val-version   : ~a\n" m val-version)
-          (format #t "~a val-rest-args : ~a\n" m val-rest-args))
+          (format #t "~a val-version   : ~a\n" m val-version))
         (cond
-         [(option-ref options 'help #f)
+         [val-help
           (format #t "~a [options]
     -v, --version    Display version
     -h, --help       Display this help
 " utility-name)]
-         [(option-ref options 'version #f)
+         [val-version
           (format #t "~a version 1.23
 " utility-name)]
          [#t
