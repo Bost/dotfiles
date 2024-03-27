@@ -1,9 +1,9 @@
-(define-module (scm-bin pkill-spacemacs)
+(define-module (scm-bin emacs-pkill-crafted)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils) ;; partial
   #:use-module (settings)
-  #:use-module (pkill)
+  #:use-module (emacs-pkill)
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:export (main))
 
@@ -11,12 +11,12 @@
 ;; -e calls the `main` function
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ pkill-spacemacs) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-pkill-crafted) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/pkill-spacemacs.scm --gx-dry-run
-./guix/home/common/scm-bin/pkill-spacemacs.scm
+./guix/home/common/scm-bin/emacs-pkill-crafted.scm --gx-dry-run
+./guix/home/common/scm-bin/emacs-pkill-crafted.scm
 
 |#
 
@@ -52,7 +52,7 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
         (apply
          (partial pkill-server
                   #:gx-dry-run val-gx-dry-run
-                  #:profile spacemacs)
+                  #:profile crafted)
          val-rest-args)))))
 (testsymb 'fun)
 
