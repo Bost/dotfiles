@@ -1,20 +1,20 @@
-(define-module (scm-bin editable-crafted)
+(define-module (scm-bin emacs-editable-spacemacs)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
-  #:use-module (editable-emacs-config)
+  #:use-module (emacs-editable-config)
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:export (main))
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ editable-crafted) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-editable-spacemacs) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/editable-crafted.scm --gx-dry-run
-./guix/home/common/scm-bin/editable-crafted.scm
+./guix/home/common/scm-bin/emacs-editable-spacemacs.scm --gx-dry-run
+./guix/home/common/scm-bin/emacs-editable-spacemacs.scm
 
 |#
 
@@ -49,7 +49,7 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
         (apply
          (partial set-config-editable
                   #:gx-dry-run val-gx-dry-run
-                  #:profile crafted)
+                  #:profile spacemacs)
          val-rest-args)))))
 (testsymb 'fun)
 

@@ -1,9 +1,9 @@
-(define-module (scm-bin launcher-crafted)
+(define-module (scm-bin emacs-launcher-spguimacs)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils) ;; partial
   #:use-module (settings)
-  #:use-module (launcher-emacs)
+  #:use-module (emacs-config-launcher)
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:export (main))
 
@@ -11,11 +11,11 @@
 ;; -e calls the `main` function
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ launcher-crafted) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-launcher-spguimacs) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/launcher-crafted.scm
+./guix/home/common/scm-bin/emacs-launcher-spguimacs.scm
 
 |#
 
@@ -31,9 +31,9 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
   (let* [(option-spec
           ;; (value #t): a given option expects accept a value
           `[
-            (rest-args                    (value #f))
             (help       (single-char #\h) (value #f))
             (version    (single-char #\v) (value #f))
+            (rest-args                    (value #f))
             ])]
     ;; (format #t "~a option-spec : ~a\n" m option-spec)
     (let* [(options (getopt-long args option-spec))
@@ -45,7 +45,8 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
         (format #t "~a val-rest-args : ~a\n" m val-rest-args))
       (begin
         (apply
-         (partial create-emacs-launcher #:profile crafted)
+         (partial create-emacs-launcher
+                  #:profile spguimacs)
          val-rest-args)))))
 
 (define (main args)
