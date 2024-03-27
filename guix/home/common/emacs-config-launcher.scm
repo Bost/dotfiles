@@ -1,4 +1,4 @@
-(define-module (launcher-emacs)
+(define-module (emacs-config-launcher)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils) ;; partial
@@ -11,7 +11,7 @@
 ;; -e calls the `main` function
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (launcher-emacs) -s
+-L ./guix/common -L ./guix/home/common -e (emacs-config-launcher) -s
 !#
 
 cd $dotf

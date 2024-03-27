@@ -1,4 +1,4 @@
-(define-module (pkill)
+(define-module (emacs-pkill)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
@@ -13,7 +13,7 @@
 
 ;; TODO the value of (which-emacs) may or may not be a closure, with it's value
 ;; closed at the runtime of `gxhre`
-;; Code dupllication, see the launcher-emacs module
+;; Code dupllication, see the emacs-config-launcher module
 (define-public (which-emacs)
   "(which-emacs) => \"/home/bost/.guix-home/profile/bin/emacs\""
   ;; (emacs-binary-path)
