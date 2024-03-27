@@ -64,23 +64,23 @@
           (partial scandir dir))
          (lambda (s) (string-match (basename re) s))))))
 
-(define launcher-spacemacs (format #f "launcher-~a" spacemacs))
-(define launcher-spguimacs (format #f "launcher-~a" spguimacs))
-(define launcher-crafted   (format #f "launcher-~a" crafted))
+(define launcher-spacemacs (format #f "emacs-launcher-~a" spacemacs))
+(define launcher-spguimacs (format #f "emacs-launcher-~a" spguimacs))
+(define launcher-crafted   (format #f "emacs-launcher-~a" crafted))
 (define launcher-lst       (list launcher-spacemacs
                                  launcher-spguimacs
                                  launcher-crafted))
 
-(define editable-spacemacs (format #f "editable-~a" spacemacs))
-(define editable-spguimacs (format #f "editable-~a" spguimacs))
-(define editable-crafted   (format #f "editable-~a" crafted))
+(define editable-spacemacs (format #f "emacs-editable-~a" spacemacs))
+(define editable-spguimacs (format #f "emacs-editable-~a" spguimacs))
+(define editable-crafted   (format #f "emacs-editable-~a" crafted))
 (define editable-lst       (list editable-spacemacs
                                  editable-spguimacs
                                  editable-crafted))
 
-(define pkill-spacemacs (format #f "pkill-~a" spacemacs))
-(define pkill-spguimacs (format #f "pkill-~a" spguimacs))
-(define pkill-crafted   (format #f "pkill-~a" crafted))
+(define pkill-spacemacs (format #f "emacs-pkill-~a" spacemacs))
+(define pkill-spguimacs (format #f "emacs-pkill-~a" spguimacs))
+(define pkill-crafted   (format #f "emacs-pkill-~a" crafted))
 (define pkill-lst       (list pkill-spacemacs
                               pkill-spguimacs
                               pkill-crafted))
@@ -155,17 +155,17 @@ Example:
                ,(begin
                   (cond
                    [(member scheme-file-name launcher-lst)
-                    `(launcher-emacs)]))
+                    `(emacs-config-launcher)]))
 
                ,(begin
                   (cond
                    [(member scheme-file-name editable-lst)
-                    `(editable-emacs-config)]))
+                    `(emacs-editable-config)]))
 
                ,(begin
                   (cond
                    [(member scheme-file-name pkill-lst)
-                    `(pkill)]))
+                    `(emacs-pkill)]))
 
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
