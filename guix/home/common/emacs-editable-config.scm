@@ -1,4 +1,4 @@
-(define-module (editable-emacs-config)
+(define-module (emacs-editable-config)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)

@@ -1,27 +1,27 @@
-(define-module (scm-bin editable-spguimacs)
+(define-module (scm-bin emacs-editable-crafted)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
-  #:use-module (editable-emacs-config)
+  #:use-module (emacs-editable-config)
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:export (main))
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ editable-spguimacs) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-editable-crafted) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/editable-spguimacs.scm --gx-dry-run
-./guix/home/common/scm-bin/editable-spguimacs.scm
+./guix/home/common/scm-bin/emacs-editable-crafted.scm --gx-dry-run
+./guix/home/common/scm-bin/emacs-editable-crafted.scm
 
 |#
 
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define dbg #f)
+(define dbg #t)
 (define utility-name (last (module-name (current-module))))
 
 (define (fun args)
@@ -49,7 +49,7 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
         (apply
          (partial set-config-editable
                   #:gx-dry-run val-gx-dry-run
-                  #:profile spguimacs)
+                  #:profile crafted)
          val-rest-args)))))
 (testsymb 'fun)
 

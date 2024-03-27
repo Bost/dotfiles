@@ -1,9 +1,9 @@
-(define-module (scm-bin launcher-spacemacs)
+(define-module (scm-bin emacs-launcher-spguimacs)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils) ;; partial
   #:use-module (settings)
-  #:use-module (launcher-emacs)
+  #:use-module (emacs-config-launcher)
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:export (main))
 
@@ -11,26 +11,25 @@
 ;; -e calls the `main` function
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ launcher-spacemacs) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-launcher-spguimacs) -s
 !#
 
 cd $dotf
-set f ~/dev/dotfiles/guix/home/common/scm-bin/emacs-launcher-spacemacs.scm
-./guix/home/common/scm-bin/emacs-launcher-spacemacs.scm --gx-dry-run $f
+set f $dotf/guix/home/common/scm-bin/emacs-launcher-spguimacs.scm
+./guix/home/common/scm-bin/emacs-launcher-spguimacs.scm $f
 
 |#
 
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define dbg #t)
+(define dbg #f)
 (define utility-name (last (module-name (current-module))))
 
 (define (fun args)
   "All the options, including(!) rest-args, must be specified for the option-spec
 so that the options-parser doesn't complain about e.g. 'no such option: -p'."
-  (let* [(f "[fun]")
-         (option-spec
+  (let* [(option-spec
           ;; (value #t): a given option expects accept a value
           `[
             (help       (single-char #\h) (value #f))
@@ -43,12 +42,12 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
            (val-rest-args  (option-ref options '()         #f))
            ]
       (when dbg
-        (format #t "~a ~a options       : ~a\n" m f options)
-        (format #t "~a ~a val-rest-args : ~a\n" m f val-rest-args))
+        (format #t "~a options       : ~a\n" m options)
+        (format #t "~a val-rest-args : ~a\n" m val-rest-args))
       (begin
         (apply
          (partial create-emacs-launcher
-                  #:profile spacemacs)
+                  #:profile spguimacs)
          val-rest-args)))))
 
 (define (main args)
@@ -57,7 +56,7 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
 (main (list \"<ignored>\" \"rest\" \"args\"))
 "
   (let* [(f "[main]")]
-    (format #t "~a ~a args : ~a\n" m f args)
+    ;; (format #t "~a ~a args : ~a\n" m f args)
     (handle-cli #:utility-name utility-name #:fun fun args)))
 
 (testsymb 'main)
