@@ -11,6 +11,7 @@
   #:export (main))
 
 #|
+;; -e calls the `main` function
 
 #!/usr/bin/env -S guile \\
 -L ./guix/common -L ./guix/home/common -e (scm-bin\ gpl) -s

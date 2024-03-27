@@ -1,22 +1,20 @@
-(define-module (scm-bin launcher-spacemacs)
+(define-module (scm-bin editable-crafted)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (utils) ;; partial
-  #:use-module (settings)
-  #:use-module (launcher-emacs)
+  #:use-module (utils)
+  #:use-module (editable-emacs-config)
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:export (main))
 
 #|
-;; -e calls the `main` function
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ launcher-spacemacs) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ editable-crafted) -s
 !#
 
 cd $dotf
-set f ~/dev/dotfiles/guix/home/common/scm-bin/emacs-launcher-spacemacs.scm
-./guix/home/common/scm-bin/emacs-launcher-spacemacs.scm --gx-dry-run $f
+./guix/home/common/scm-bin/editable-crafted.scm --gx-dry-run
+./guix/home/common/scm-bin/editable-crafted.scm
 
 |#
 
@@ -29,37 +27,39 @@ set f ~/dev/dotfiles/guix/home/common/scm-bin/emacs-launcher-spacemacs.scm
 (define (fun args)
   "All the options, including(!) rest-args, must be specified for the option-spec
 so that the options-parser doesn't complain about e.g. 'no such option: -p'."
-  (let* [(f "[fun]")
-         (option-spec
+  (let* [(option-spec
           ;; (value #t): a given option expects accept a value
           `[
             (help       (single-char #\h) (value #f))
             (version    (single-char #\v) (value #f))
+            (gx-dry-run (single-char #\d) (value #f))
             (rest-args                    (value #f))
             ])]
     ;; (format #t "~a option-spec : ~a\n" m option-spec)
     (let* [(options (getopt-long args option-spec))
            ;; #f means that the expected value wasn't specified
+           (val-gx-dry-run (option-ref options 'gx-dry-run #t))
            (val-rest-args  (option-ref options '()         #f))
            ]
       (when dbg
-        (format #t "~a ~a options       : ~a\n" m f options)
-        (format #t "~a ~a val-rest-args : ~a\n" m f val-rest-args))
+        (format #t "~a options        : ~a\n" m options)
+        (format #t "~a val-gx-dry-run : ~a\n" m val-gx-dry-run)
+        (format #t "~a val-rest-args  : ~a\n" m val-rest-args))
       (begin
         (apply
-         (partial create-emacs-launcher
-                  #:profile spacemacs)
+         (partial set-config-editable
+                  #:gx-dry-run val-gx-dry-run
+                  #:profile crafted)
          val-rest-args)))))
+(testsymb 'fun)
 
 (define (main args)
   "Usage:
 (main (list \"<ignored>\" \"--help\" \"args\"))
 (main (list \"<ignored>\" \"rest\" \"args\"))
+(main (list \"<ignored>\" \"--gx-dry-run\" \"rest\" \"args\"))
 "
-  (let* [(f "[main]")]
-    (format #t "~a ~a args : ~a\n" m f args)
-    (handle-cli #:utility-name utility-name #:fun fun args)))
-
+  (handle-cli #:utility-name utility-name #:fun fun args))
 (testsymb 'main)
 
 (module-evaluated)
