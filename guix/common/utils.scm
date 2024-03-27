@@ -42,6 +42,7 @@
             error-command-failed
             evaluating-module
             exec-system*
+            exec-system*-new
             exec-with-error-to-string
             if-let
             module-evaluated
@@ -312,13 +313,6 @@ E Command failed."
     (lambda (arg) (if (list? arg) arg (list arg))))
    arg))
 
-#;
-(string-split-whitespace
- "gcl  /some/other/path/
-  xxx
-    yyy
-/some/path")
-
 (define dry-run-prm "--gx-dry-run")
 
 (define* (contains--gx-dry-run? args)
@@ -343,6 +337,48 @@ $9 = 0 ;; return code"
     dbg-exec
     string-split-whitespace)
    args))
+
+(define* (exec-or-dry-run-new #:key exec-function (gx-dry-run #f) #:rest args)
+  ;; (format #t "~a ~a args          : ~a\n" m "[exec-or-dry-run-new]" args)
+  (let* [(f "[exec-or-dry-run-new]")
+         (args (remove-kw-from-args #:exec-function args))
+         (args (remove-kw-from-args #:gx-dry-run    args))
+         (args (car args))]
+    ;; (format #t "~a ~a exec-function : ~a\n" m f exec-function)
+    ;; (format #t "~a ~a dry-run       : ~a\n" m f
+    ;;         (or (contains--gx-dry-run? args) gx-dry-run))
+    ;; (format #t "~a ~a args          : ~a\n" m f args)
+    (if (or (contains--gx-dry-run? args) gx-dry-run)
+        0 ;; the exit status OK
+        (if (list? args)
+            (apply exec-function args)
+            (exec-function args)))))
+
+(define* (exec-system*-new #:key (split-whitespace #t) (gx-dry-run #f) #:rest args)
+  "Execute system command and returns its ret-code. E.g.:
+(exec-system* \"echo\" \"bar\" \"baz\") ;; =>
+$ (echo bar baz)
+bar baz
+$9 = 0 ;; return code"
+  (let* [(f "[exec-system*]")
+         (args (remove-kw-from-args #:split-whitespace args))
+         (args (remove-kw-from-args #:gx-dry-run       args))]
+    ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
+    ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)
+    ;; (format #t "~a ~a args             : ~a\n" m f args)
+    ;; (format #t "~a ~a (list? args)     : ~a\n" m f (list? args))
+    ;; (format #t "~a ~a (length args)    : ~a\n" m f (length args))
+    ((comp
+      (lambda (exit-status)
+        ;; (format #t "~a ~a exit-status       : ~a\n" m f exit-status)
+        ;; (format #t "~a ~a (= exit-status 0) : ~a\n" m f (= exit-status 0))
+        (exit (= exit-status 0)))
+      (partial exec-or-dry-run-new
+               #:gx-dry-run gx-dry-run
+               #:exec-function system*)
+      dbg-exec
+      (partial map (lambda (s) (if split-whitespace (string-split-whitespace s) s))))
+     args)))
 
 (define-public (read-all reader-function)
   "Returns a function which reads all lines of text from the PORT and applies
@@ -464,13 +500,14 @@ Usage:
 
   ((comp
     ;; Can't use the (partial exec-or-dry-run exec-function) since the
-    ;; exec-function returns multiple values contains and the exec-or-dry-run is
-    ;; able to return only one value.
+    ;; exec-function returns multiple values and the exec-or-dry-run is able to
+    ;; return only one value.
     exec-function
     dbg-exec
     cmd->string)
    commad))
 
+;; TODO modify exec to use define* and add it to the #:export list
 (define-public (exec command)
   "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return a string
@@ -495,9 +532,9 @@ Usage:
   ;; Change the current working directory to str. The return value is unspecified.
   (define (exec-function command)
     ;; Can't use the `call-with-port' since the exit-val is needed.
-    (let* ((port (open-input-pipe command)) ; from (ice-9 rdelim)
+    (let* [(port (open-input-pipe command)) ; from (ice-9 rdelim)
            ;; the `read-all-strings' must be called before `close-pipe'.
-           (results (read-all-strings port)))
+           (results (read-all-strings port))]
       (cons
        (status:exit-val (close-pipe port))
        results)))

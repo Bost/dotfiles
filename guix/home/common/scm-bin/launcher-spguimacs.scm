@@ -31,9 +31,9 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
   (let* [(option-spec
           ;; (value #t): a given option expects accept a value
           `[
-            (rest-args                    (value #f))
             (help       (single-char #\h) (value #f))
             (version    (single-char #\v) (value #f))
+            (rest-args                    (value #f))
             ])]
     ;; (format #t "~a option-spec : ~a\n" m option-spec)
     (let* [(options (getopt-long args option-spec))
@@ -45,7 +45,8 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
         (format #t "~a val-rest-args : ~a\n" m val-rest-args))
       (begin
         (apply
-         (partial create-emacs-launcher #:profile spguimacs)
+         (partial create-emacs-launcher
+                  #:profile spguimacs)
          val-rest-args)))))
 
 (define (main args)
