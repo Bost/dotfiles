@@ -445,6 +445,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    aspell-dict-en
    aspell-dict-fr
    autoconf
+   automake ;; for `make doc/guix.info`
    bc
 
    ;; specifying only 'bind' leads to "Wrong type argument in position 1 ..."
