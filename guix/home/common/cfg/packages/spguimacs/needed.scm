@@ -9,6 +9,8 @@
 ;; doesn't work
 (define-public (needed-packages)
   (list
+   "emacs-core-load-paths"
+
    ;; :beg: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
    ;; "emacs-flycheck-joker"
    ;; "emacs-kaocha-runner"
@@ -18,7 +20,7 @@
 
    ;; "emacs-hybrid-mode"  ;; part of spacemacs
 
-   ;; "emacs-molokai-theme"  ;; needs emacs-color-theme ;; doesn't compile
+   ;; "emacs-molokai-theme"  ;; needs emacs-color-theme which is obsoleted by emacs-color-theme-modern
    "emacs-ac-ispell"
    "emacs-ac-php"
    "emacs-ace-jump-helm-line"
@@ -79,7 +81,6 @@
    "emacs-cmm-mode"
    "emacs-code-cells"
    "emacs-color-identifiers-mode"
-   "emacs-color-theme"        ;; obsolete - replaced by emacs-color-theme-modern
    "emacs-color-theme-modern"
    "emacs-color-theme-sanityinc-solarized"
    "emacs-color-theme-sanityinc-tomorrow"
@@ -489,7 +490,7 @@
    "emacs-sly"
    "emacs-sly-asdf"
    "emacs-sly-macrostep"
-   "emacs-sly-named-readtables"
+   ;; "emacs-sly-named-readtables" doesn't compile
    "emacs-sly-package-inferred"
    "emacs-sly-quicklisp"
    "emacs-sly-stepper"
@@ -565,6 +566,7 @@
    "emacs-use-package"
    "emacs-use-package-chords"
    "emacs-uuidgen"
+   "emacs-validate"
    "emacs-vdiff"
    "emacs-vdiff-magit"
    "emacs-vi-tilde-fringe"
