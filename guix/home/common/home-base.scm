@@ -126,6 +126,17 @@
             "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
             "\n" "GUIX_PROFILE=$HOME/.guix-profile"
             "\n" " . \"$GUIX_PROFILE/etc/profile\""
+
+            ;; enable all profiles on login
+            "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
+            "\n" "for i in $GUIX_EXTRA_PROFILES/*; do"
+            "\n" "  profile=$i/$(basename \"$i\")"
+            "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
+            "\n" "    GUIX_PROFILE=\"$profile\""
+            "\n" "    . \"$GUIX_PROFILE\"/etc/profile"
+            "\n" "  fi"
+            "\n" "  unset profile"
+            "\n" "done"
             ))
           ;; (local-file ".bashrc" "bash_profile") should work too
           ;; (local-file
