@@ -472,27 +472,28 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    font-gnu-unifont
    fuse
 
-   ;; Seems like the "native-compiler-error (libgccjit.so: error invoking gcc
-   ;; driver)":
-   ;;     ld: cannot find crtbeginS.o: No such file or directory
-   ;;     ld: cannot find -lgcc
-   ;;     ld: cannot find -lgcc_s
-   ;;     ld: cannot find -lgcc_s
-   ;;     libgccjit.so: error: error invoking gcc driver
-   ;; doesn't come up if the 11.3.0 is used.
-   ;; See also:
-   ;; - CC and CMAKE_C_COMPILER environment definition
-   ;; - https://lists.gnu.org/archive/html/guix-devel/2020-03/msg00256.html
-   ;;   https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
-   ;;   https://issues.guix.gnu.org/57086#9
-
-   ;; In (list <package> <something>) the <something> is a package-output not a
-   ;; package-version.
-   ;; Can't precisely specify the module and version with e.g.:
-   ;;   (specification->package (@(gnu packages commencement) gcc-toolchain) "11.3.0")
-   ;;   (specification->package (@(gnu packages gcc) libgccjit) "11.3.0")
-   (specification->package "gcc-toolchain@11.3.0")
-   (specification->package "libgccjit@11.3.0")
+;;; In Emacs the "native-compiler-error (libgccjit.so: error invoking
+;;; gcc driver)":
+;;;     ld: cannot find crtbeginS.o: No such file or directory
+;;;     ld: cannot find -lgcc
+;;;     ld: cannot find -lgcc_s
+;;;     ld: cannot find -lgcc_s
+;;;     libgccjit.so: error: error invoking gcc driver
+;;; doesn't come up if the 11.3.0 is used. See also:
+;;; - CC and CMAKE_C_COMPILER environment definition
+;;; - https://lists.gnu.org/archive/html/guix-devel/2020-03/msg00256.html
+;;;   https://gcc.gnu.org/onlinedocs/jit/internals/index.html#environment-variables
+;;;   https://issues.guix.gnu.org/57086#9
+;;;
+;;; In (list <package> <something>) the <something> is a
+;;; package-output not a package-version.
+;;; Can't precisely specify the module and version with e.g.:
+;;;   (specification->package (@(gnu packages commencement) gcc-toolchain) "11.3.0")
+;;;   (specification->package (@(gnu packages gcc) libgccjit) "11.3.0")
+   #;(specification->package "gcc-toolchain@11.3.0")
+   #;(specification->package "libgccjit@11.3.0")
+   (specification->package "gcc-toolchain@12.3.0")
+   (specification->package "libgccjit@12.3.0")
 
    ghc
    (list glib "bin")
