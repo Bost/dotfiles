@@ -8,6 +8,17 @@
 myProfiles=($(guix package --list-profiles))
 myProfiles+=($HOME/.guix-home/profile)
 
+for i in $GUIX_EXTRA_PROFILES/*; do
+  profile=$i/$(basename "$i")
+  if [ -f "$profile"/etc/profile ]; then
+      myProfiles+=("$profile"/etc/profile)
+      # printf "Added %s\n" "$profile"/etc/profile
+  else
+      :
+      # printf "NOT Added %s\n" "$profile"/etc/profile
+  fi
+done
+
 # printf "length myProfiles: %s\n" ${#myProfiles[@]}
 
 # declare -p $myProfiles 2> /dev/null | grep -q '^declare \-a'
