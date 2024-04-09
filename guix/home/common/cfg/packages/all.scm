@@ -9,9 +9,14 @@
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   ;; provides: specification->package
   #:use-module (gnu packages)
+
+  ;; for inferior-package-in-guix-channel : beg
   #:use-module (guix packages)
-  #:use-module (guix channels)
   #:use-module (guix inferior)
+  #:use-module (guix channels)
+  ;; #:use-module (guix profiles) ;; probably not needed
+  ;; for inferior-package-in-guix-channel : end
+
   ;; provides: first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
   )
@@ -767,8 +772,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'xfce-packages)
 
-(define (inferior-package-in-guix-channel package commit)
-  "Returns an inferior representing the `commit' (predecessor-sha1) revision."
+(define-public (inferior-package-in-guix-channel package commit)
+  "Returns an inferior representing the `commit' (predecessor-sha1) revision.
+Can't be in the guix/common/utils.scm. Therefore duplicated.
+See guix/manifest-emacs-29.1.scm, guix/home/common/cfg/packages/all.scm"
   (first
    (lookup-inferior-packages
     (inferior-for-channels
@@ -777,7 +784,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
             (url "https://git.savannah.gnu.org/git/guix.git")
             (commit commit))))
     package)))
-(testsymb 'inferior-package-in-guix-channel)
 
 (define (inferior-pkgs pkgs)
   "The original, i.e. non-inferior packages must not be present in the
@@ -889,52 +895,6 @@ home-profile. Comment them out."
 
 (define-public (packages-to-install)
   ((comp
-    (lambda (pkgs)
-      #|
-      (format #t "~a\n~a\n" m
-              (let* [(search-space
-                      '(
-                        "emacs-haskell-snippets"
-                        "emacs-yasnippet"
-                        "emacs-yasnippet-snippets"
-                        ))]
-                ((comp
-                  (partial
-                   filter
-                   ;; see also `string=?', `eq?', `equal?', etc.
-                   ;; member uses `equal?'
-                   (lambda (p)
-                     (cond
-                      [(list? p)    (member (package-name (car p))
-                                            search-space)]
-                      [(string? p)  (member (package-name p) search-space)]
-                      [(package? p) (member (package-name p) search-space)]
-                      [(record? p)  (member (inferior-package-name p)
-                                            search-space)]
-                      [else         (member (package-name p) search-space)])))
-                  ;; we have a colorful mix here:
-                  (partial
-                   map
-                   (lambda (p)
-                     (cond
-                      [(list? p)    (when (member (package-name (car p))
-                                                  search-space)
-                                      (format #t "list    ~a\n" p))]
-                      [(string? p)  (when #t
-                                      (format #t "string  ~a\n" p))]
-                      [(package? p) (when #t
-                                      (format #t "package ~a\n" p))]
-                      [(record? p)  (when #t
-                                      (format #t "record  ~a\n" p))]
-                      [else         (when #t
-                                      (format #t "else    ~a\n" p))])
-                     p))
-                  identity)
-                 pkgs)))
-      |#
-      ;; (format #t "~a\n" (string-join (map (partial format #f "~a") pkgs) "\n"))
-      (format #t "I ~a Packages to install: ~a\n" m (length pkgs))
-      pkgs)
     inferior-pkgs
     ;; (lambda (p) (format #t "~a 5.\n~a\n" p) p))
     ;; (lambda (p) (format #t "~a 4. (length p): ~a\n" m (length p)) p)

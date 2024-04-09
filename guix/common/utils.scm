@@ -28,6 +28,14 @@
   #:use-module (guix monads)
   ;; for the exec-with-error-to-string
   #:use-module (rnrs io ports)
+
+  ;; for inferior-package-in-guix-channel : beg
+  ;; #:use-module (guix channels)  ;; WTF? not found by `guix home ...`
+  ;; #:use-module (guix inferior)
+  ;; #:use-module (guix packages)
+  ;; #:use-module (guix profiles) ;; probably not needed
+  ;; for inferior-package-in-guix-channel : end
+
   #:export (
             compose-commands-guix-shell-dry-run
             compose-commands-guix-shell
@@ -39,6 +47,7 @@
             exec-system*
             exec-system*-new
             exec-with-error-to-string
+            dbg-packages-to-install
             if-let
             module-evaluated
             testsymb
@@ -897,5 +906,19 @@ Requires:
 (define-public spguimacs "spguimacs")
 (define-public crafted "crafted")
 (define-public is-valid-profile? (partial string-in? (list spacemacs spguimacs crafted)))
+
+;; (define-public (inferior-package-in-guix-channel package commit)
+;;   "Returns an inferior representing the `commit' (predecessor-sha1) revision.
+;; Can't be in the guix/common/utils.scm. Therefore duplicated.
+;; See guix/manifest-emacs-29.1.scm, guix/home/common/cfg/packages/all.scm"
+;;   (first
+;;    (lookup-inferior-packages
+;;     (inferior-for-channels
+;;      (list (channel
+;;             (name 'guix)
+;;             (url "https://git.savannah.gnu.org/git/guix.git")
+;;             (commit commit))))
+;;     package)))
+;; (testsymb 'inferior-package-in-guix-channel)
 
 (module-evaluated)
