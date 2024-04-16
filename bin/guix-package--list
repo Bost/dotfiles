@@ -4,9 +4,11 @@
 #     $HOME/.config/guix/current
 #     $HOME/.guix-profile
 #     $HOME/.guix-home/profile
+#     /run/current-system/profile
 # )
 myProfiles=($(guix package --list-profiles))
 myProfiles+=($HOME/.guix-home/profile)
+myProfiles+=(/run/current-system/profile)
 
 for i in $GUIX_EXTRA_PROFILES/*; do
   profile=$i/$(basename "$i")
