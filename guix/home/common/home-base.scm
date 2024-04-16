@@ -296,6 +296,7 @@
                   (map user-dev
                        (list
                         "/guile"
+                        "/guile-git"
                         "/nonguix"
                         "/andrew-rde/src"))
                   (map user-dotf
@@ -358,6 +359,7 @@
                   "/notes"
                   "/farmhouse-light-mod-theme"
                   (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
+                  (list "/guile-git" "https://gitlab.com/guile-git/guile-git.git")
                   )))
    ))
 (testsymb 'projects)
