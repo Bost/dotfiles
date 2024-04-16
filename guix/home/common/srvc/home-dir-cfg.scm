@@ -79,6 +79,7 @@ See also (@(fs-utils) local-dotfile)
         (path "/")]
     ((comp
       (partial remove unspecified-or-empty-or-false?)
+      ;; (lambda (p) (format #t "######## 2.:\n~a\n" (pretty-print->string p)) p)
       (partial
        map
        (lambda (config-file)
@@ -100,10 +101,12 @@ See also (@(fs-utils) local-dotfile)
                (begin
                  (format #t "E ~a Can't read ~a\n" m filepath)
                  #f)))))
+      ;; (lambda (p) (format #t "######## 1.:\n~a\n" (pretty-print->string p)) p)
       #;(lambda (lst) (take lst 2))
       (partial remove unspecified-or-empty-or-false?)
       (partial append
-               (when (or (is-system-edge) (is-system-ecke))
+               (cond
+                [(or (is-system-edge) (is-system-ecke))
                  (list
                   "xfconf/xfce-perchannel-xml/displays.xml"
                   "xfconf/xfce-perchannel-xml/keyboards.xml"
@@ -116,7 +119,10 @@ See also (@(fs-utils) local-dotfile)
                   "xfconf/xfce-perchannel-xml/xfce4-screensaver.xml"
                   "xfconf/xfce-perchannel-xml/xfce4-session.xml"
                   "xfconf/xfce-perchannel-xml/xfce4-terminal.xml"
-                  "xfconf/xfce-perchannel-xml/xfwm4.xml"))))
+                  "xfconf/xfce-perchannel-xml/xfwm4.xml")]
+                [else (list)]))
+      ;; (lambda (p) (format #t "######## 0:\n~a\n" (pretty-print->string p)) p)
+      )
      (cond
       [(is-system-ecke)
        (list
@@ -128,9 +134,9 @@ See also (@(fs-utils) local-dotfile)
         "xfconf/xfce-perchannel-xml/xfce4-appfinder.xml")]
       [(is-system-edge)
        (list
-        "xfce4-screenshooter"
-        )]
-      [#t (list)]))))
+        "xfce4-screenshooter")]
+      [else (list)]))))
+(testsymb 'host-specific-config)
 
 (define (home-dir-cfg-srvc-files)
   ((comp
@@ -147,7 +153,8 @@ See also (@(fs-utils) local-dotfile)
        (lambda (lst)
          (append
           lst
-          (when (or (is-system-ecke) (is-system-edge))
+          (cond
+           [(or (is-system-ecke) (is-system-edge))
             `(
 ;;; Dynamic tiling Wayland compositor configurable in Guile Scheme
               #;
@@ -214,7 +221,8 @@ See also (@(fs-utils) local-dotfile)
                  "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
                  (openpgp-fingerprint
                   ;; ... as it was made by some with OpenPGP fingerprint:
-                  "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))))
+                  "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))]
+           [else (list)])
           lst)))
       `(
         ;; provides:
