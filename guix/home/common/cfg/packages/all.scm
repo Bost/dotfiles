@@ -849,6 +849,7 @@ home-profile. Comment them out."
     ;; See also emacs-flymake-shellcheck: Flymake backend for Bash/Sh powered by
     ;; ShellCheck
 
+    vim-paredit ;; the support for very large files is not great
     )))
 (testsymb 'devel-packages)
 
