@@ -5,11 +5,6 @@
 ;; See: jaro the resource opener - an alternative to xdg-open
 ;; https://github.com/isamert/jaro/blob/master/jaro
 ;; See `guile-build-system'
-;; Syntax:
-;; (MODULE-NAME [#:select SELECTION]
-;;              [#:prefix PREFIX]
-;;              [#:renamer RENAMER]
-;;              [#:version VERSION-SPEC]) ;; R6RS-compatible version reference
 (define-module (utils)
   #:use-module (settings)
   #:use-module (guix build utils)
