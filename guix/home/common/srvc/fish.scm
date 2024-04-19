@@ -1,3 +1,4 @@
+;; TODO fish+starship https://starship.rs/
 (define-module (srvc fish)
   ;; See service-file -> with-imported-modules
   #:use-module (settings)
