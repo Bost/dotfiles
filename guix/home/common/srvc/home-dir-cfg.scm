@@ -144,10 +144,10 @@ See also (@(fs-utils) local-dotfile)
     (partial
      append
      ((comp
-       ;; (partial append (list (local-dotfile
-       ;;                        "/"
-       ;;                        (str (basename xdg-config-home)
-       ;;                             "/guix-gaming-channels/games.scm"))))
+       (partial append (list (local-dotfile
+                              "/"
+                              (str (basename xdg-config-home)
+                                   "/guix-gaming-channels/games.scm"))))
        list create-channels-scm
        (partial remove unspecified-or-empty-or-false?)
        (lambda (lst)
@@ -156,49 +156,12 @@ See also (@(fs-utils) local-dotfile)
           (cond
            [(or (is-system-ecke) (is-system-edge))
             `(
-;;; Dynamic tiling Wayland compositor configurable in Guile Scheme
-              #;
-              (channel
-               (name 'home-service-dwl-guile)
-               (url
-                "https://github.com/engstrand-config/home-service-dwl-guile")
-               (branch "main")
-               (introduction
-                (make-channel-introduction
-                 "314453a87634d67e914cfdf51d357638902dd9fe"
-                 (openpgp-fingerprint
-                  "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))
-
-;;; flatwhatson contains emacs-native-comp, however it doesn't compile
-              #;
-              (channel
-               (name 'flat)
-               (url "https://github.com/flatwhatson/guix-channel.git")
-               (introduction
-                (make-channel-introduction
-                 "33f86a4b48205c0dc19d7c036c85393f0766f806"
-                 (openpgp-fingerprint
-                  "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))
-
               (channel
                (name 'hask-clj)
                (url
                 #;"https://github.com/Tass0sm/guix-develop"
                 "https://github.com/Bost/haskell-guix"
                 #;,(format #f "file://~a/dev/haskell-guix" home)))
-
-;;; Andrew Tropin's tools for managing reproducible development environments
-              #;
-              (channel
-               (name 'rde)
-               (url
-                "https://git.sr.ht/~abcdw/rde"
-                #;,(format #f "file://~a/dev/andrew-rde" home))
-               (introduction
-                (make-channel-introduction
-                 "257cebd587b66e4d865b3537a9a88cccd7107c95"
-                 (openpgp-fingerprint
-                  "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))
 
 ;;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 ;;; Use:
@@ -207,7 +170,6 @@ See also (@(fs-utils) local-dotfile)
 ;;; wrong
 ;;;
 ;;; The games channel requires the guix-gaming-channels/games.scm - see above
-              #;
               (channel
                (name 'games)
                (url
@@ -221,7 +183,43 @@ See also (@(fs-utils) local-dotfile)
                  "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
                  (openpgp-fingerprint
                   ;; ... as it was made by some with OpenPGP fingerprint:
-                  "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))]
+                  "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))
+              #|
+;;; Dynamic tiling Wayland compositor configurable in Guile Scheme
+              (channel
+               (name 'home-service-dwl-guile)
+               (url
+                "https://github.com/engstrand-config/home-service-dwl-guile")
+               (branch "main")
+               (introduction
+                (make-channel-introduction
+                 "314453a87634d67e914cfdf51d357638902dd9fe"
+                 (openpgp-fingerprint
+                  "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))
+
+;;; flatwhatson contains emacs-native-comp, however it doesn't compile
+              (channel
+               (name 'flat)
+               (url "https://github.com/flatwhatson/guix-channel.git")
+               (introduction
+                (make-channel-introduction
+                 "33f86a4b48205c0dc19d7c036c85393f0766f806"
+                 (openpgp-fingerprint
+                  "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))
+
+;;; Andrew Tropin's tools for managing reproducible development environments
+              (channel
+               (name 'rde)
+               (url
+                "https://git.sr.ht/~abcdw/rde"
+                #;,(format #f "file://~a/dev/andrew-rde" home))
+               (introduction
+                (make-channel-introduction
+                 "257cebd587b66e4d865b3537a9a88cccd7107c95"
+                 (openpgp-fingerprint
+              "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))
+              |#
+              )]
            [else (list)])
           lst)))
       `(
