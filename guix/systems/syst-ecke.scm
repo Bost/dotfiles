@@ -120,7 +120,8 @@
        ;; mtp - Media Transfer Protocol
        (udev-rules-service 'mtp libmtp)
        (udev-rules-service 'android android-udev-rules
-                           #:groups '("adbusers")))
+                           #:groups '("adbusers"))
+       (udev-rules-service 'steam-devices steam-devices-udev-rules))
 
       (modify-services %desktop-services
         (guix-service-type
