@@ -34,7 +34,6 @@
    "grep"
    "less"
    "ncurses"
-   "nss-certs"
 
    "openssh"
    "ripgrep"

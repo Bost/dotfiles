@@ -9,7 +9,6 @@
  gnupg           ;; gpg
  disk            ;; gparted
  mtools          ;; used by gparted
- certs           ;; nss-certs  ;; HTTPS access
  rsync
  vim
  )
@@ -24,7 +23,6 @@
    gnupg
    gparted    ;; disk partition
    mtools     ;; used by gparted
-   nss-certs  ;; HTTPS access
    rsync      ;; 'scp' is preinstalled
    vim        ;; 'vi' is preinstalled
    ))
