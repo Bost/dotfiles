@@ -242,6 +242,9 @@
         bst:emacs-underwater-theme
         bst:emacs-white-sand-theme
         bst:emacs-zen-and-art-theme
+;;; bst:emacs-omtose-phellack-theme produces:
+;;;    Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/...-emacs-omtose-phellack-theme-0.2.0-0.66f9963/share/emacs/site-lisp/omtose-phellack-theme-0.2.0-0.66f9963/omtose-phellack-theme-autoloads)
+;;; but this doesn't stop spacemacs from running.
         bst:emacs-omtose-phellack-theme
         bst:emacs-unicode-fonts
         bst:emacs-sublime-themes
