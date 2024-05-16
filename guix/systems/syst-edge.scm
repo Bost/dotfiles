@@ -25,19 +25,18 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
   #:use-module (cfg packages all)      ; for packages-to-install
-
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
-  #:use-module (nongnu packages linux)
-  #:use-module (nongnu system linux-initrd)
   #:use-module (guix)                  ; for package-version
+  ;; #:use-module (gnu packages games)    ; for steam-devices-udev-rules
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
  cups desktop networking ssh
- vnc      ; for xvnc-service-type
  lightdm  ; for lightdm-service-type
+ vnc      ; for xvnc-service-type
+ ;; sddm     ; for sddm-service-type
  xorg     ; for gdm-service-type
  )
 
@@ -49,15 +48,29 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
  shells   ; login shell
  )
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(define m (module-name-for-logging))
 (evaluating-module)
 
-(define keyb-layout
-  (keyboard-layout
-   "us,de,sk,fr" "altgr-intl,,qwerty,"
-   #:options '("compose:menu,grp:ctrls_toggle")))
-
 (define xorg-conf
-  (xorg-configuration (keyboard-layout keyb-layout)))
+  (xorg-configuration (keyboard-layout (base:keyb-layout))))
 
 (define lightdm-conf
   (lightdm-configuration
@@ -83,45 +96,50 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 (define lightdm-srvc
   (service lightdm-service-type lightdm-conf))
 
-(define syst-config-linux
-  (operating-system
-    (inherit base:syst-config)
-    (kernel linux)
-    (initrd microcode-initrd)
-    (firmware (list linux-firmware))))
-
 (define-public syst-config
   (operating-system
-    (inherit syst-config-linux)
-
-    ;; keyboard-layout is not inherited
-    (keyboard-layout base:keyb-layout)
-    ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
-
+    (inherit (base:syst-config-linux))
+    (keyboard-layout
+     #;(operating-system-keyboard-layout (base:syst-config))
+     (base:keyb-layout))
     (host-name host-edge)
     (users (base:users-config (list
                                "video"  ;; video devices, e.g. webcams
                                "lp"     ;; control bluetooth devices
                                )))
-
     (locale "fr_FR.utf8")
 
-    ;; Packages installed system-wide.  Users can also install packages
-    ;; under their own account: use 'guix search KEYWORD' to search
-    ;; for packages and 'guix install PACKAGE' to install a package.
+;;; Packages installed system-wide. Users can also install packages under their
+;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
+;;; install PACKAGE' to install a package.
     (packages
      (append
       (map specification->package
            (list
             "brightnessctl" #| backlight and LED brightness control |#
             ))
+
+
+
+
+
+
+
+
+
+
+
+
       (packages-to-install)
       %base-packages))
 
-    ;; System services. Search for available services by
-    ;;     guix system search KEYWORD
+
+
+
+
 
     (services
+     ;; TODO create macros pappend, premove, etc. - parallel processing
      (append
       (base:services)
       (list
@@ -138,12 +156,23 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                     )
                                    (xdmcp? #t)  ;; default:#f
                                    (inetd? #t)  ;; default:#f
-				   ))
+                                   ))
+
+
+
+
+
+
+
+
+
+
        (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers")))
 
-      ;; This is the default list of services we are appending to.
+
+      ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
         (guix-service-type
          config => (guix-configuration
@@ -160,10 +189,13 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                      (inherit config)
                                      (auto-suspend? #f)
 ;;; See the Warning above in the xvnc-configuration
-                                     (xdmcp? #t)
-                                     ))
+                                     (xdmcp? #t)))
         #;(delete gdm-service-type))))
 
+;;; See
+;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
+;;; https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dinstall.html#Invoking-grub_002dinstall
+;;; https://github.com/babariviere/dotfiles/blob/guix/baba/bootloader/grub.scm
     (bootloader
      (bootloader-configuration
       (bootloader grub-efi-bootloader)
@@ -172,8 +204,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "6.5.0-21"
-                             #;"6.5.0-18"))
+        (let ((linux-version "6.5.0-21" #;"6.5.0-18"))
           (menu-entry
            (label "Ubuntu")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
@@ -187,9 +218,9 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
               #;"$vt_handoff"))
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
 
-    ;; The list of file systems that get "mounted".  The unique
-    ;; file system identifiers there ("UUIDs") can be obtained
-    ;; by running 'blkid' in a terminal.
+;;; The list of file systems that get "mounted". The unique file system
+;;; identifiers there ("UUIDs") can be obtained by running 'blkid' in a
+;;; terminal.
     (file-systems
      (cons* (file-system
               (mount-point "/boot/efi")
@@ -199,7 +230,14 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
               (mount-point "/")
               (device (uuid "61048634-de01-4e76-ae08-4e1ae09b63f5" 'ext4))
               (type "ext4"))
+
+
+
+
             %base-file-systems))
+
+
+
 
     (swap-devices (list
                    (swap-space
@@ -207,5 +245,4 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 
 (module-evaluated)
 
-;; operating-system (or image) must be returned
-syst-config
+syst-config ;; operating-system (or image) must be returned
