@@ -25,16 +25,20 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
   #:use-module (cfg packages all)      ; for packages-to-install
-
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
-  #:use-module (nongnu packages linux)
-  #:use-module (nongnu system linux-initrd)
   #:use-module (guix)                  ; for package-version
+  ;; #:use-module (gnu packages games)    ; for steam-devices-udev-rules
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
-(use-service-modules cups desktop networking ssh xorg)
+(use-service-modules
+ cups desktop networking ssh
+ ;; lightdm  ; for lightdm-service-type
+ ;; vnc      ; for xvnc-service-type
+ ;; sddm     ; for sddm-service-type
+ xorg     ; for gdm-service-type
+ )
 
 ;; no need to write: #:use-module (gnu packages <module>)
 (use-package-modules
@@ -47,26 +51,63 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define syst-config-linux
-  (operating-system
-    (inherit base:syst-config)
-    (kernel linux)
-    (initrd microcode-initrd)
-    (firmware (list linux-firmware))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (define-public syst-config
   (operating-system
-    (inherit syst-config-linux)
-
-    ;; keyboard-layout is not inherited
-    (keyboard-layout base:keyb-layout)
-    ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
-
+    (inherit (base:syst-config-linux))
+    (keyboard-layout
+     #;(operating-system-keyboard-layout (base:syst-config))
+     (base:keyb-layout))
     (host-name host-geek)
     (users (base:users-config (list
                                "video"  ;; video devices, e.g. webcams
                                "lp"     ;; control bluetooth devices
                                )))
+    ;; (locale "fr_FR.utf8")
 
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
@@ -77,23 +118,60 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
            (list
             "brightnessctl" #| backlight and LED brightness control |#
             ))
+
+
+
+
+
+
+
+
+
+
+
+
       (packages-to-install)
       %base-packages))
 
-;;; Below is the list of system services. To search for available services, run
-;;; 'guix system search KEYWORD' in a terminal.
+
+
+
+
+
     (services
+     ;; TODO create macros pappend, premove, etc. - parallel processing
      (append
       (base:services)
       (list
        (set-xorg-configuration
-        (xorg-configuration (keyboard-layout keyboard-layout)))
+        (xorg-configuration
+         (keyboard-layout keyboard-layout)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
        (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers")))
 
-      ;; This is the default list of services we are appending to.
+
+      ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
         (guix-service-type
          config => (guix-configuration
@@ -102,11 +180,21 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                      (append (list "https://substitutes.nonguix.org")
                              %default-substitute-urls))
                     (authorized-keys
-                     ;; The signing-key.pub should be obtained by
-                     ;; wget https://substitutes.nonguix.org/signing-key.pub
+;;; The signing-key.pub should be obtained by
+;;;   wget https://substitutes.nonguix.org/signing-key.pub
                      (append (list (local-file "./signing-key.pub"))
                              %default-authorized-guix-keys)))))))
 
+
+
+
+
+
+
+;;; See
+;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
+;;; https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dinstall.html#Invoking-grub_002dinstall
+;;; https://github.com/babariviere/dotfiles/blob/guix/baba/bootloader/grub.scm
     (bootloader
      (bootloader-configuration
       (bootloader grub-efi-bootloader)
@@ -114,19 +202,38 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
       ;; keyboard-layout for the GRUB
       (keyboard-layout keyboard-layout)))
 
-    ;; The list of file systems that get "mounted".  The unique
-    ;; file system identifiers there ("UUIDs") can be obtained
-    ;; by running 'blkid' in a terminal.
-    (file-systems (cons* (file-system
-                           (mount-point "/boot/efi")
-                           (device (uuid "FC73-7111" 'fat32))
-                           (type "vfat"))
-                         (file-system
-                           (mount-point "/")
-                           (device "/dev/mapper/encrypted")
-                           (type "ext4")
-                           (dependencies mapped-devices))
-                         %base-file-systems))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;;; The list of file systems that get "mounted". The unique file system
+;;; identifiers there ("UUIDs") can be obtained by running 'blkid' in a
+;;; terminal.
+    (file-systems
+     (cons* (file-system
+              (mount-point "/boot/efi")
+              (device (uuid "FC73-7111" 'fat32))
+              (type "vfat"))
+            (file-system
+              (mount-point "/")
+              (device "/dev/mapper/encrypted")
+              (type "ext4")
+              (dependencies mapped-devices))
+
+
+
+            %base-file-systems))
 
     (mapped-devices (list
                      (mapped-device
@@ -134,7 +241,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                       (target "encrypted")
                       (type luks-device-mapping))))))
 
+
 (module-evaluated)
 
-;; operating-system (or image) must be returned
-syst-config
+syst-config ;; operating-system (or image) must be returned

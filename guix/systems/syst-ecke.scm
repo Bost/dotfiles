@@ -7,15 +7,16 @@
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
   #:use-module (guix)                  ; for package-version
-  ;; #:use-module (nongnu packages linux)
-  ;; #:use-module (nongnu system linux-initrd)
+  #:use-module (gnu packages games)    ; for steam-devices-udev-rules
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
  cups desktop networking ssh
- xorg     ; for gdm-service-type
+ ;; lightdm  ; for lightdm-service-type
+ ;; vnc      ; for xvnc-service-type
  sddm     ; for sddm-service-type
+ xorg     ; for gdm-service-type
  )
 
 ;; no need to write: #:use-module (gnu packages <module>)
@@ -44,20 +45,47 @@
  ;; web-browsers
  )
 
+(define m (module-name-for-logging))
 (evaluating-module)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (define-public syst-config
   (operating-system
-    (inherit base:syst-config)
-    ;; keyboard-layout is not inherited
-    (keyboard-layout base:keyb-layout)
-    ;; (keyboard-layout (operating-system-keyboard-layout base:syst-config))
-
+    (inherit (base:syst-config-linux))
+    (keyboard-layout
+     #;(operating-system-keyboard-layout (base:syst-config))
+     (base:keyb-layout))
     (host-name host-ecke)
     (users (base:users-config (list
                                "video"  ;; video devices, e.g. webcams
+                               ;; "lp"     ;; control bluetooth devices
                                )))
-
     (locale "fr_FR.utf8")
 
 ;;; Packages installed system-wide. Users can also install packages under their
@@ -88,9 +116,9 @@
     `((".guile" ,(plain-file "guile"
     "(use-modules (ice-9 readline))
     (activate-readline)"))))
-    (services
-     ;; TODO create macros pappend, premove, etc.
 
+    (services
+     ;; TODO create macros pappend, premove, etc. - parallel processing
      (append
       (base:services)
       (list
@@ -117,12 +145,12 @@
        ;;                            libu2f-host
        ;;                            (udev-configuration-rules config))))))
 
-       ;; mtp - Media Transfer Protocol
-       (udev-rules-service 'mtp libmtp)
+       (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers"))
        (udev-rules-service 'steam-devices steam-devices-udev-rules))
 
+      ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
         (guix-service-type
          config => (guix-configuration
@@ -131,10 +159,12 @@
                      (append (list "https://substitutes.nonguix.org")
                              %default-substitute-urls))
                     (authorized-keys
-                     ;; The signing-key.pub should be obtained by
-                     ;; wget https://substitutes.nonguix.org/signing-key.pub
+;;; The signing-key.pub should be obtained by
+;;;   wget https://substitutes.nonguix.org/signing-key.pub
                      (append (list (local-file "./signing-key.pub"))
                              %default-authorized-guix-keys))))
+
+
         ;; for sway - see the patch:
         ;;   Add a guide to the guix cookbook about setting up sway.
         ;;   https://issues.guix.gnu.org/issue/39271
@@ -166,6 +196,9 @@
               #;"$vt_handoff"))
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
 
+;;; The list of file systems that get "mounted". The unique file system
+;;; identifiers there ("UUIDs") can be obtained by running 'blkid' in a
+;;; terminal.
     (file-systems
      (cons* (file-system
               (mount-point "/boot/efi1")
@@ -185,9 +218,9 @@
     ;; <swap-space> record, as the old method is deprecated.
     ;; See "(guix) operating-system Reference" for more details.
     (swap-devices (list
-                   (swap-space (target "/swapfile"))))))
+                   (swap-space
+                    (target "/swapfile"))))))
 
 (module-evaluated)
 
-;; and operating-system (or image) must be returned
-syst-config
+syst-config ;; operating-system (or image) must be returned
