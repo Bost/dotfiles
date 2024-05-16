@@ -129,15 +129,16 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
        ;; lightdm-srvc
        (service xvnc-service-type (xvnc-configuration
                                    (display-number 5)
-                                   (localhost? #f)
+                                   ;; (localhost? #f) ;; see Guix-Manual
                                    (geometry
                                     "1920x1080"
                                     ;; "2880x1620"
                                     ;; "2880x1800"
                                     ;; "2880x1800*"
                                     )
-                                   #;(xdmcp? #t)
-                                   #;(inetd? #t)))
+                                   (xdmcp? #t)  ;; default:#f
+                                   (inetd? #t)  ;; default:#f
+				   ))
        (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers")))
@@ -159,7 +160,7 @@ sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common re
                                      (inherit config)
                                      (auto-suspend? #f)
 ;;; See the Warning above in the xvnc-configuration
-                                     #;(xdmcp? #t)
+                                     (xdmcp? #t)
                                      ))
         #;(delete gdm-service-type))))
 
