@@ -5,6 +5,8 @@
   #:use-module (cfg packages all)      ; for packages-to-install
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; for user-group; user-account-shell
+  #:use-module (nongnu packages linux)
+  #:use-module (nongnu system linux-initrd)
   #:use-module (guix)                  ; for package-version
 )
 
@@ -16,7 +18,7 @@
 
 (evaluating-module #t)
 
-(define-public keyb-layout
+(define-public (keyb-layout)
   (keyboard-layout
    "us,de,sk,fr" "altgr-intl,,qwerty,"
    #:options '("compose:menu,grp:ctrls_toggle")))
@@ -81,18 +83,26 @@
    (service xfce-desktop-service-type)))
 (testsymb-trace 'services)
 
-(define-public syst-config
+(define-public (syst-config)
   (operating-system
     (locale "en_US.utf8")
     (timezone "Europe/Berlin")
      ;; keyboard-layout for the console
-    (keyboard-layout keyb-layout)
+    (keyboard-layout (keyb-layout))
     (host-name "dummy")
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets (list "/boot/efi"))
                  (keyboard-layout keyboard-layout)))
     (file-systems %base-file-systems)))
+
+(define-public (syst-config-linux)
+  (operating-system
+    (inherit (syst-config))
+    (kernel linux)
+    (initrd microcode-initrd)
+    (firmware (list linux-firmware))))
+
 (testsymb 'syst-config)
 
 (module-evaluated #t)
