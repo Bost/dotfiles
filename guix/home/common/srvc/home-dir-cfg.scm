@@ -79,7 +79,7 @@ See also (@(fs-utils) local-dotfile)
         (path "/")]
     ((comp
       (partial remove unspecified-or-empty-or-false?)
-      ;; (lambda (p) (format #t "######## 2.:\n~a\n" (pretty-print->string p)) p)
+      ;; (lambda (p) (format #t "###### 2.:\n~a\n" (pretty-print->string p)) p)
       (partial
        map
        (lambda (config-file)
@@ -101,7 +101,7 @@ See also (@(fs-utils) local-dotfile)
                (begin
                  (format #t "E ~a Can't read ~a\n" m filepath)
                  #f)))))
-      ;; (lambda (p) (format #t "######## 1.:\n~a\n" (pretty-print->string p)) p)
+      ;; (lambda (p) (format #t "###### 1.:\n~a\n" (pretty-print->string p)) p)
       #;(lambda (lst) (take lst 2))
       (partial remove unspecified-or-empty-or-false?)
       (partial append
@@ -121,7 +121,7 @@ See also (@(fs-utils) local-dotfile)
                   "xfconf/xfce-perchannel-xml/xfce4-terminal.xml"
                   "xfconf/xfce-perchannel-xml/xfwm4.xml")]
                 [else (list)]))
-      ;; (lambda (p) (format #t "######## 0:\n~a\n" (pretty-print->string p)) p)
+      ;; (lambda (p) (format #t "###### 0:\n~a\n" (pretty-print->string p)) p)
       )
      (cond
       [(is-system-ecke)
@@ -140,7 +140,7 @@ See also (@(fs-utils) local-dotfile)
 
 (define (home-dir-cfg-srvc-files)
   ((comp
-    ;; (lambda (p) (format #t "######## 3.p:\n~a\n" (pretty-print->string p)) p)
+    ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)
     (partial
      append
      ((comp
@@ -230,9 +230,9 @@ See also (@(fs-utils) local-dotfile)
                  (url
                   "https://github.com/Bost/guix-packages"
                   #;,(format #f "file://~a/dev/guix-packages" home))))))
-    ;; (lambda (p) (format #t "######## 3.\n~a\n" p) p)
+    ;; (lambda (p) (format #t "###### 3.\n~a\n" p) p)
     (partial append (host-specific-config))
-    ;; (lambda (p) (format #t "######## 2.\n~a\n" p) p)
+    ;; (lambda (p) (format #t "###### 2.\n~a\n" p) p)
     (partial append
              ((comp
                (partial
@@ -263,7 +263,7 @@ See also (@(fs-utils) local-dotfile)
                ".lein/profiles.clj"
                )))
 
-    ;; (lambda (p) (format #t "######## 1.\n") p)
+    ;; (lambda (p) (format #t "###### 1.\n") p)
     (partial append
 ;;; This can't be used:
 ;;;           `((".emacs.d.spacemacs/private" ;; destination
@@ -279,12 +279,12 @@ See also (@(fs-utils) local-dotfile)
 ;;; symlink (to the /gnu/store/).
              ((comp
                (partial map user-dotf-to-dir)
-               ;; (lambda (p) (format #t "######## 0.:\n~a\n" p) p)
+               ;; (lambda (p) (format #t "###### 0.:\n~a\n" p) p)
                )
               (list
                "bin"
                )))
-    ;; (lambda (p) (format #t "######## 0.\n") p)
+    ;; (lambda (p) (format #t "###### 0.\n") p)
     )
    (list)))
 (testsymb 'home-dir-cfg-srvc-files)
