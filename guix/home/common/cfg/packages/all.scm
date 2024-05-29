@@ -528,6 +528,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    lolcat
    lshw
    lsof
+   ;; lynx ; Text Web Browser
    (specification->package "make@4.3")
    maven
    mcron
