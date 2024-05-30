@@ -71,6 +71,29 @@
   (list dir ;; destination
         (local-file (user-dotf "/" dir) #:recursive? #t)))
 
+(define (make-config-xfce4-local-file hostname file)
+  "For a given hostname handle creation of a local-file"
+  (let* [(basename-file (basename file))
+         (config-xfce ".config/xfce4")
+         (config-xfce-file (str config-xfce "/" file))
+         (dotf-config-xfce-hostname-file
+          (user-dotf "/" (str config-xfce "." hostname "/" file)))]
+    (if (access? dotf-config-xfce-hostname-file R_OK)
+        (list
+         config-xfce-file
+         ;; 'local-file' is a macro and cannot be used by 'apply'
+         (if (equal? "." (substring basename-file 0 1))
+;;; basename-file of the local-file can't start with '.'
+;;; Use the `(...) forms for debugging
+;;;`(local-file ,dotf-config-xfce-hostname-file ,(fix-leading-dot basename-file))
+;;;`(local-file ,dotf-config-xfce-hostname-file)
+             (local-file dotf-config-xfce-hostname-file
+                         (fix-leading-dot basename-file))
+             (local-file dotf-config-xfce-hostname-file)))
+        (begin
+          (format #t "E ~a Can't read ~a\n" m dotf-config-xfce-hostname-file)
+          #f))))
+
 (define (host-specific-config)
   "Handle the host-specific configuration settings from .config<.hostname>/
 See also:
@@ -81,30 +104,7 @@ See also:
     ((comp
       (partial remove unspecified-or-empty-or-false?)
       ;; (lambda (p) (format #t "###### 2.:\n~a\n" (pretty-print->string p)) p)
-      (partial
-       map
-       (lambda (file)
-         (let* [(basename-file (basename file))
-                (config-xfce ".config/xfce4")
-                (config-xfce-file (str config-xfce "/" file))
-                (dotf-config-xfce-hostname-file
-                 (user-dotf "/" (str config-xfce "." hostname "/" file)))]
-           (if (access? dotf-config-xfce-hostname-file R_OK)
-               (list
-                config-xfce-file
-                ;; 'local-file' is a macro and cannot be used by 'apply'
-                (if (equal? "." (substring basename-file 0 1))
-;;; basename-file of the local-file can't start with '.'
-;;; Use the `(...) forms for debugging
-;;;`(local-file ,dotf-config-xfce-hostname-file ,(fix-leading-dot basename-file))
-;;;`(local-file ,dotf-config-xfce-hostname-file)
-                    (local-file dotf-config-xfce-hostname-file
-                                (fix-leading-dot basename-file))
-                    (local-file dotf-config-xfce-hostname-file)))
-               (begin
-                 (format #t "E ~a Can't read ~a\n" m
-                         dotf-config-xfce-hostname-file)
-                 #f)))))
+      (partial map (partial make-config-xfce4-local-file hostname))
       ;; (lambda (p) (format #t "###### 1.:\n~a\n" (pretty-print->string p)) p)
       #;(lambda (lst) (take lst 2))
       (partial remove unspecified-or-empty-or-false?)
