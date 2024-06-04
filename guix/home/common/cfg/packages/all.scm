@@ -523,6 +523,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    libavc1394
    libavif
    libconfini
+
+   ;; guix compilation: `make --jobs=24 check TESTS="tests/guix-daemon.sh"`
+   libgcrypt
+
    libjpeg-turbo
    libmtp
    libtiff
