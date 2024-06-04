@@ -218,9 +218,15 @@
     ;; warning: List elements of the field 'swap-devices' should now use the
     ;; <swap-space> record, as the old method is deprecated.
     ;; See "(guix) operating-system Reference" for more details.
-    (swap-devices (list
-                   (swap-space
-                    (target "/swapfile"))))))
+    ;;
+    ;; Use the file '/swapfile' as swap space, which depends on the file system
+    ;; mounted at '/'
+    (swap-devices
+     (list
+      (swap-space
+       (target "/swapfile")
+       (dependencies (filter (file-system-mount-point-predicate "/")
+                             file-systems)))))))
 
 (module-evaluated)
 
