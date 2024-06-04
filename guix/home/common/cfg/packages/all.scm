@@ -20,6 +20,7 @@
 (evaluating-module)
 
 (use-package-modules
+  web-browsers
  haskell-apps
  uml
  vnc
@@ -518,6 +519,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    libavc1394
    libavif
    libconfini
+
+   ;; guix compilation: `make --jobs=24 check TESTS="tests/guix-daemon.sh"`
+   libgcrypt
+
    libjpeg-turbo
    libmtp
    libtiff
@@ -528,6 +533,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    lolcat
    lshw
    lsof
+   lynx ; Text Web Browser
    (specification->package "make@4.3")
    maven
    mcron
