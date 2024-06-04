@@ -25,6 +25,7 @@
 (evaluating-module)
 
 (use-package-modules
+  web-browsers
  haskell-apps
  uml
  vnc
@@ -537,7 +538,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    lolcat
    lshw
    lsof
-   ;; lynx ; Text Web Browser
+   lynx ; Text Web Browser
    (specification->package "make@4.3")
    maven
    mcron
