@@ -5,8 +5,12 @@
   ;; #:use-module (ice-9 regex)
   #:use-module (srfi srfi-1) ;; fold remove
   #:use-module (ice-9 exceptions) ;; guard
-  #:use-module (system syntax internal) ;; syntax?
-  #:use-module (guix gexp) ;; contains extended reader for #~ #$ #+ #$@
+
+  ;; The syntax? and gexp? may not be defined when resolved by '#:use-module'.
+  ;; Use module scoping '@@' instead.
+  ;; #:use-module (system syntax internal) ;; syntax?
+  ;; #:use-module (guix gexp) ;; gexp?, and extended reader for #~ #$ #+ #$@
+
   #:use-module (guix build utils) ;; find-files
   #| #:use-module (language cps intmap) |#)
 
@@ -50,21 +54,23 @@
     'list?
     'vector?
     'procedure?
+
+    'number?
     'complex?
     'real?
     'integer?
-    'number?
-    'syntax?
-    'gexp?
-    'pair?
-    'char?
-    'null?
-    'parameter? ;; ? is this for macros ?
-    'zero?
     'positive?
     'negative?
     'odd?
     'even?
+    'zero?
+
+    '(@@(system syntax internal) syntax?)
+    '(@@(guix gexp) gexp?)
+    'pair?
+    'char?
+    'null?
+    'parameter? ;; ? is this for macros ?
     'eof-object?
     'char-alphabetic?
     'char-numeric?
