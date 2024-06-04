@@ -512,10 +512,14 @@ TODO have a look if a delimited continuation can be used to break out of `exec',
 i.e. skip the `read-all-strings' and thus make `exec-background' out of it.
 
 Usage:
+(define (process output)
+  (format #t \"(test-type output): ~a\n\" (test-type output))
+  ...)
+
 (let* ((ret (exec command)))
     (if (= 0 (car ret))
         (let* ((output (cdr ret)))
-          #| process output |#)
+          (process output))
       (begin
         ;; (error-command-failed \"[module]\" \"extra_info\")
         *unspecified*)))"
