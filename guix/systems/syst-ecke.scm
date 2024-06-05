@@ -149,23 +149,23 @@
        (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers"))
-       (udev-rules-service 'steam-devices steam-devices-udev-rules))
+       (udev-rules-service 'steam-devices steam-devices-udev-rules)
+
+       ;; Configure the Guix service and ensure we use Nonguix substitutes
+       (simple-service 'add-nonguix-substitutes
+                       guix-service-type
+                       (guix-extension
+                        (substitute-urls
+                         (append (list "https://substitutes.nonguix.org")
+                                 %default-substitute-urls))
+                        (authorized-keys
+;;; The signing-key.pub should be obtained by
+;;;   wget https://substitutes.nonguix.org/signing-key.pub
+                         (append (list (local-file "./signing-key.pub"))
+                                 %default-authorized-guix-keys)))))
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
-        (guix-service-type
-         config => (guix-configuration
-                    (inherit config)
-                    (substitute-urls
-                     (append (list "https://substitutes.nonguix.org")
-                             %default-substitute-urls))
-                    (authorized-keys
-;;; The signing-key.pub should be obtained by
-;;;   wget https://substitutes.nonguix.org/signing-key.pub
-                     (append (list (local-file "./signing-key.pub"))
-                             %default-authorized-guix-keys))))
-
-
         ;; for sway - see the patch:
         ;;   Add a guide to the guix cookbook about setting up sway.
         ;;   https://issues.guix.gnu.org/issue/39271
