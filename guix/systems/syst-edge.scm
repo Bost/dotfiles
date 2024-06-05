@@ -167,22 +167,23 @@
 
        (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
-                           #:groups '("adbusers")))
+                           #:groups '("adbusers"))
 
+       ;; Configure the Guix service and ensure we use Nonguix substitutes
+       (simple-service 'add-nonguix-substitutes
+                       guix-service-type
+                       (guix-extension
+                        (substitute-urls
+                         (append (list "https://substitutes.nonguix.org")
+                                 %default-substitute-urls))
+                        (authorized-keys
+;;; The signing-key.pub should be obtained by
+;;;   wget https://substitutes.nonguix.org/signing-key.pub
+                         (append (list (local-file "./signing-key.pub"))
+                                 %default-authorized-guix-keys)))))
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
-        (guix-service-type
-         config => (guix-configuration
-                    (inherit config)
-                    (substitute-urls
-                     (append (list "https://substitutes.nonguix.org")
-                             %default-substitute-urls))
-                    (authorized-keys
-;;; The signing-key.pub should be obtained by
-;;;   wget https://substitutes.nonguix.org/signing-key.pub
-                     (append (list (local-file "./signing-key.pub"))
-                             %default-authorized-guix-keys))))
         (gdm-service-type config => (gdm-configuration
                                      (inherit config)
                                      (auto-suspend? #f)
