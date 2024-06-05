@@ -1,13 +1,15 @@
 (define-module (syst-ecke)
   #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
-  #:use-module (utils)                 ; for partial
+  #:use-module (utils)                  ; partial
   #:use-module (memo)
-  #:use-module (cfg packages all)      ; for packages-to-install
+  #:use-module (cfg packages all)       ; packages-to-install
   #:use-module (gnu)
-  #:use-module (gnu system shadow)     ; for user-group; user-account-shell
-  #:use-module (guix)                  ; for package-version
-  #:use-module (gnu packages games)    ; for steam-devices-udev-rules
+  #:use-module (gnu system shadow)      ; user-group user-account-shell
+  #:use-module (guix)                   ; package-version
+  #:use-module (gnu packages games)     ; steam-devices-udev-rules
+  #:use-module (nongnu packages nvidia) ; replace-mesa nvda
+  #:use-module (nongnu services nvidia) ; nvidia-service-type
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
@@ -23,6 +25,8 @@
 (use-package-modules
  android  ; android-udev-rules - access smartphone via mtp://
  bash
+ fonts    ; font-terminus font-tamzen
+ ;; gnome ; for (gnome-desktop-configuration (gnome (replace-mesa gnome)))
  libusb   ; libmtp
  shells   ; login shell
 
@@ -94,6 +98,10 @@
 (define-public syst-config
   (operating-system
     (inherit (base:syst-config-linux))
+    (kernel-arguments '("modprobe.blacklist=nouveau"
+                        ;; Set this if the card is not used for displaying or
+                        ;; you're using Wayland:
+                        "nvidia_drm.modeset=1"))
     (keyboard-layout
      #;(operating-system-keyboard-layout (base:syst-config))
      (base:keyb-layout))
@@ -125,9 +133,18 @@
       (list
        (set-xorg-configuration
         (xorg-configuration
+         (modules (cons nvda %default-xorg-modules))
+         (drivers '("nvidia"))
          (keyboard-layout keyboard-layout))
         sddm-service-type)
-       (service gnome-desktop-service-type)
+       (service nvidia-service-type)
+       ;; Configure desktop environment, GNOME for example.
+       (service gnome-desktop-service-type
+                ;; Enable NVIDIA support, only do this when the card is
+                ;; used for displaying.
+                ;; (gnome-desktop-configuration
+                ;;  (gnome (replace-mesa gnome)))
+                )
        (service mate-desktop-service-type)
        (service cups-service-type)
 ;;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
@@ -162,13 +179,60 @@
 ;;; The signing-key.pub should be obtained by
 ;;;   wget https://substitutes.nonguix.org/signing-key.pub
                          (append (list (local-file "./signing-key.pub"))
-                                 %default-authorized-guix-keys)))))
+                                 %default-authorized-guix-keys))))
+
+       ;; Configure TTYs and graphical greeter
+       (service
+        console-font-service-type
+        `(("tty1" . "LatGrkCyr-8x16")
+          ("tty2" . ,(file-append
+                      font-tamzen
+                      "/share/kbd/consolefonts/TamzenForPowerline10x20.psf"))
+          ("tty3" . ,(file-append
+                      font-terminus
+                      "/share/consolefonts/ter-132n")))
+
+        ;; Larger font for HIDPI screens, however this is too large
+        ;; (map (lambda (tty)
+        ;;        (cons tty (file-append
+        ;;                   font-terminus
+        ;;                   "/share/consolefonts/ter-132n")))
+        ;;      '("tty1" "tty2" "tty3"))
+        )
+
+       (service greetd-service-type
+                (greetd-configuration
+                 (greeter-supplementary-groups (list "video" "input"))
+                 (terminals
+                  (list
+                   ;; TTY1 is the graphical login screen for Sway
+                   (greetd-terminal-configuration
+                    (terminal-vt "1")
+                    (terminal-switch #t))
+
+                   ;; Set up remaining TTYs for terminal use
+                   (greetd-terminal-configuration (terminal-vt "2"))
+                   (greetd-terminal-configuration (terminal-vt "3"))))))
+
+       ;; Configure swaylock as a setuid program
+       (service screen-locker-service-type
+                (screen-locker-configuration
+                 (name "swaylock")
+                 (program (file-append swaylock "/bin/swaylock"))
+                 (using-pam? #t)
+                 (using-setuid? #f)))
+       )
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
+        (delete login-service-type)
+        (delete mingetty-service-type)
+        (delete console-font-service-type)
         ;; for sway - see the patch:
         ;;   Add a guide to the guix cookbook about setting up sway.
         ;;   https://issues.guix.gnu.org/issue/39271
+
+        ;; service "xorg-server" must be defined only once (see above)
         (delete gdm-service-type))))
 
 ;;; See
@@ -195,7 +259,8 @@
               ;; value $vt_handoff is "vt.handoff=7" or
               ;; unspecified
               #;"$vt_handoff"))
-           (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
+           (initrd
+            (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
 
 ;;; The list of file systems that get "mounted". The unique file system
 ;;; identifiers there ("UUIDs") can be obtained by running 'blkid' in a
