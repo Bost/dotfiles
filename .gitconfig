@@ -8,13 +8,14 @@
 	co = checkout
 	df = diff --word-diff
 	bi = bisect
-	who = shortlog -s --
+	# -s, --no-messages  suppress error messages
+	who = shortlog --no-messages --
 	undo = reset --hard
 	lg-20     = log         -20                        --color               --pretty=format:'%Cred%h%Creset%C(white) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --date=short
 	lg-all-20 = log --graph -20                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
 	lg-30     = log         -30                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
 	lg-all-30 = log --graph -30                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-	# lg-20     = log --graph -20 --color --oneline --graph --pickaxe-all --decorate --stat -G 'master' # see https://zwischenzugs.com/2018/03/26/git-log-the-good-parts/
+	# lg-20   = log --graph -20 --color --oneline --graph --pickaxe-all --decorate --stat -G 'master' # see https://zwischenzugs.com/2018/03/26/git-log-the-good-parts/
 	lg        = log                                    --color               --pretty=format:'%Cred%h%Creset%C(white) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --date=short
 	lg-all    = log --graph --full-history             --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
 	alg       = log --graph --abbrev-commit            --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --
@@ -30,20 +31,21 @@
 	tig = !tig
 
 	# files modified in last commit
-	dl = "!git log -u -1"
+	dl = "!git log --patch -1"
 
 	# show files modified in last commit - another
 	# dlc = diff --cached HEAD^
 
-	# find-file
-	ff = "!git ls-files | grep -i"
+	# find-file; --ignore-case -i
+	ff = "!git ls-files | grep --ignore-case"
 
 	sl = stash list
 	ss = stash save
 	sp = stash pop
 
-	# find-string; ! is needed to pass argument correctly to -S
-  fs = "!git log --color --patch -S "
+	# ! is needed to pass argument correctly to -S
+  fsc = "!git log --color --patch -S " # find-string in the content of commits
+  fsm = "!git log --grep "             # find-string in commit messages
 
 [user]
 	name = Rostislav Svoboda
