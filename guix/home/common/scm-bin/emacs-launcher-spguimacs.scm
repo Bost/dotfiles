@@ -46,8 +46,7 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
         (format #t "~a val-rest-args : ~a\n" m val-rest-args))
       (begin
         (apply
-         (partial create-emacs-launcher
-                  #:profile spguimacs)
+         (partial create-emacs-launcher #:profile spguimacs)
          val-rest-args)))))
 
 (define (main args)
