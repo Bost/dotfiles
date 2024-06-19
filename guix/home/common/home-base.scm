@@ -317,6 +317,18 @@
    environment-vars))
 (testsymb 'environment-variables-service)
 
+;;; TODO add:
+;;;   'Practicalli Clojure CLI Config'
+;;;   https://github.com/practicalli/clojure-cli-config/
+;;; to the projects, then:
+;;    cd $XDG_CONFIG_HOME/clojure/
+;;    git fetch --tags origin
+;;; Checkout the latest tag:
+;;    git checkout $(git tag --sort=-creatordate | head -n 1)
+;;
+;;  # when the tags are named v1.0.1, v1.0.2 etc.
+;;  # git checkout $(git tag --sort=-v:refname | head -n 1)
+
 (define (projects)
   (list
    (cons "/dec" (list
