@@ -154,10 +154,12 @@ This function should only modify configuration layer settings."
       ;; (Default ?)
       clojure-enable-linters 'clj-kondo
 
-      ;; Debugger & Profiler. (Default nil) - really nil?
+      ;; Debugger & Profiler. Requires:
+      ;; {:deps {com.billpiel/sayid {:mvn/version "0.1.0"}}}
+      ;; in the deps.end of a given Clojure project. (Default nil)
       clojure-enable-sayid t
 
-      ;; Evaluate expressions in comment as top level. (Default ?)
+      ;; Evaluate expressions in comment as top level. (Default nil)
       clojure-toplevel-inside-comment-form t
 
       ;; Indentation of function forms
