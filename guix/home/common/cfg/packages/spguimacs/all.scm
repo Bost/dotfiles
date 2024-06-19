@@ -168,7 +168,6 @@
         bst:emacs-lsp-python-ms
         bst:emacs-moe-theme
         bst:emacs-slim-mode
-        bst:emacs-zop-to-char
         bst:emacs-font-utils
         bst:emacs-lush-theme
         bst:emacs-vi-tilde-fringe
@@ -314,7 +313,6 @@
       (partial remove (partial string= "emacs-lsp-python-ms"))
       (partial remove (partial string= "emacs-moe-theme"))
       (partial remove (partial string= "emacs-slim-mode"))
-      (partial remove (partial string= "emacs-zop-to-char"))
       (partial remove (partial string= "emacs-font-utils"))
       (partial remove (partial string= "emacs-lush-theme"))
       (partial remove (partial string= "emacs-vi-tilde-fringe"))
