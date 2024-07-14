@@ -79,3 +79,9 @@
   smtpuser = Rostislav.Svoboda@gmail.com
 [commit]
   gpgsign = true
+[merge]
+	tool = meld
+[mergetool "meld"]
+	path = /home/bost/.guix-profile/bin/meld
+[mergetool]
+	prompt = false
