@@ -21,7 +21,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define dbg #f)
+(define dbg #t)
 (define utility-name (last (module-name (current-module))))
 
 (define (fun args)
