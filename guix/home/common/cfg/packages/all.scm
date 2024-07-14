@@ -845,6 +845,7 @@ home-profile. Comment them out."
     emacs-helpful
     emacs-keycast
 
+    meld              ;; Compare files, directories and working copies
     leafpad           ;; simple editor to use when emacs doesn't work
     (list git "send-email")
     pinentry ;; needed to sign commits
