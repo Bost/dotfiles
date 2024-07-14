@@ -23,13 +23,14 @@ set f $dotf/guix/home/common/scm-bin/emacs-launcher-spguimacs.scm
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define dbg #f)
+(define dbg #t)
 (define utility-name (last (module-name (current-module))))
 
 (define (fun args)
   "All the options, including(!) rest-args, must be specified for the option-spec
 so that the options-parser doesn't complain about e.g. 'no such option: -p'."
-  (let* [(option-spec
+  (let* [(f "[fun]")
+         (option-spec
           ;; (value #t): a given option expects accept a value
           `[
             (help       (single-char #\h) (value #f))
@@ -42,8 +43,8 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
            (val-rest-args  (option-ref options '()         #f))
            ]
       (when dbg
-        (format #t "~a options       : ~a\n" m options)
-        (format #t "~a val-rest-args : ~a\n" m val-rest-args))
+        (format #t "~a ~a options       : ~a\n" m f options)
+        (format #t "~a ~a val-rest-args : ~a\n" m f val-rest-args))
       (begin
         (apply
          (partial create-emacs-launcher #:profile spguimacs)
