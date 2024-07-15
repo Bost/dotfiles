@@ -244,7 +244,7 @@ See also:
                  (comp
                   (partial local-dotfile "/")
                   (partial format #f ".emacs.d.distros/~a-config/init.el"))
-                 (list "spacemacs" "spguimacs")))
+                 (list "spacemacs" "spguimacs" "spguimacs-default")))
                (partial remove unspecified-or-empty-or-false?)
                (partial map (partial local-dotfile "/")))
               (list

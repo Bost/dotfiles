@@ -81,10 +81,10 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
-   ;; Direct jump with ~g f~ to $dotf/.emacs.d.spacemacs/
+   ;; Direct jump with ~g f~ to $dotf/.emacs.d.sp---macs/
    ;; The path is the same for all sp*macs.
    dotspacemacs-configuration-layer-path
-   `(,(concat dotf "/.emacs.d.spacemacs/"))
+   `(,(concat dotf "/.emacs.d.sp---macs/"))
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -755,9 +755,9 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=$HOME/.emacs.d.distros/spguimacs/.cache/dumps/spacemacs-27.1.pdmp
-   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
-   dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
+   ;;   ./emacs --dump-file=$HOME/.emacs.d.distros/spguimacs/.cache/dumps/spguimacs-29.4.pdmp
+   ;; (default (format "spguimacs-%s.pdmp" emacs-version))
+   dotspacemacs-emacs-dumper-dump-file (format "spguimacs-%s.pdmp" emacs-version)
 
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
@@ -2753,17 +2753,17 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                 ("C-M-k" . kill-sexp)))
    '(evil-normal-state-map evil-insert-state-map))
 
-;;   (with-eval-after-load 'evil-normal-state
-;;     (bind-keys :map evil-normal-state-map
-;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
-;; ;;; layers/+misc/multiple-cursors/packages.el
-;;                   ("C-M-k" . kill-sexp)))
+  ;;   (with-eval-after-load 'evil-normal-state
+  ;;     (bind-keys :map evil-normal-state-map
+  ;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+  ;; ;;; layers/+misc/multiple-cursors/packages.el
+  ;;                   ("C-M-k" . kill-sexp)))
 
-;;   (with-eval-after-load 'evil-insert-state
-;;     (bind-keys :map evil-insert-state-map
-;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
-;; ;;; layers/+misc/multiple-cursors/packages.el
-;;                   ("C-M-k" . kill-sexp)))
+  ;;   (with-eval-after-load 'evil-insert-state
+  ;;     (bind-keys :map evil-insert-state-map
+  ;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+  ;; ;;; layers/+misc/multiple-cursors/packages.el
+  ;;                   ("C-M-k" . kill-sexp)))
 
   (mapcar
    (lambda (map)
