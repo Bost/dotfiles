@@ -1515,6 +1515,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-typing"
    "emacs-typit"
    "emacs-typo"
+   "emacs-ucs-utils"
    "emacs-ujelly-theme"
    "emacs-ukrainian-holidays"
    "emacs-uml-mode"
