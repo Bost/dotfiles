@@ -25,7 +25,8 @@
 (evaluating-module)
 
 (use-package-modules
-  web-browsers
+ file
+ web-browsers
  haskell-apps
  uml
  vnc
@@ -472,6 +473,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    dos2unix
    drawing ;; basic image editor
    ffmpeg
+   file    ;; File type guesser
    flatpak
    font-adobe-source-code-pro
    font-gnu-freefont
