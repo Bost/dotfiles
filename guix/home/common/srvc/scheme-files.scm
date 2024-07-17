@@ -313,11 +313,11 @@ Example:
          (service-file #:program-name "ks" #:scheme-file-name pkill-spacemacs)
 
          (service-file #:program-name "g"  #:scheme-file-name launcher-spguimacs)
-         (service-file #:program-name "eg" #:scheme-file-name editable-spacemacs)
+         (service-file #:program-name "eg" #:scheme-file-name editable-spguimacs)
          (service-file #:program-name "kg" #:scheme-file-name pkill-spguimacs)
 
          (service-file #:program-name "r"  #:scheme-file-name launcher-crafted)
-         (service-file #:program-name "er" #:scheme-file-name editable-spacemacs)
+         (service-file #:program-name "er" #:scheme-file-name editable-crafted)
          (service-file #:program-name "kr" #:scheme-file-name pkill-crafted)
         ))]
       [#t

@@ -38,7 +38,7 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
     ;; (format #t "~a option-spec : ~a\n" m option-spec)
     (let* [(options (getopt-long args option-spec))
            ;; #f means that the expected value wasn't specified
-           (val-gx-dry-run (option-ref options 'gx-dry-run #t))
+           (val-gx-dry-run (option-ref options 'gx-dry-run #f))
            (val-rest-args  (option-ref options '()         #f))
            ]
       (when dbg
