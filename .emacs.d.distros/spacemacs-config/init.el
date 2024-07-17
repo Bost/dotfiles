@@ -2,8 +2,15 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-(defun my=dbg=tstp () (if (functionp #'dbg=tstp) (dbg=tstp) (car (time-convert nil t))))
-(setq my=dbg=init-time (if (boundp #'dbg=init-time) dbg=init-time (my=dbg=tstp)))
+;; Set `init-file-debug' to t in the dotspacemacs/user-init to obtain timestamps
+(defun my=dbg=tstp ()
+  ;; 0
+  (if (functionp #'dbg=tstp) (dbg=tstp) (car (time-convert nil t)))
+  )
+(setq my=dbg=init-time
+      ;; 0
+      (if (boundp #'dbg=init-time) dbg=init-time (my=dbg=tstp))
+      )
 (setq my=dbg=fmt (if (boundp #'dbg=fmt) dbg=fmt "%012d"))
 
 (defun my=log (fun-point)
@@ -115,7 +122,8 @@ This function should only modify configuration layer settings."
      ;; (unbind-key "s-<delete>" cider-repl-mode-map)
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
      ;; cider package location configured by
-     ;; ~/.emacs.d.distros/spacemacs/layers/+lang/clojure/packages.el in its 'use-package'
+     ;; ~/.emacs.d.distros/spacemacs/layers/+lang/clojure/packages.el
+     ;; in its 'use-package'
      (clojure
       :variables
       ;; (Default '(macro core deprecated))
@@ -559,7 +567,7 @@ This function should only modify configuration layer settings."
      ;;   '(geiser-company--setup geiser-repl-company-p)'
      ;; However geiser-company.el has been removed in upstream repo:
      ;; https://gitlab.com/emacs-geiser/geiser/-/commit/18faa0ba32c9ce751c16960b2a39b3880b523272
-     ;; See, e.g. ~/.emacs.d.distros/spacemacs/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
+     ;; See e.g. ~/.emacs.d.distros/spacemacs/elpa/29.4/develop/guix-20231206.2147/guix-repl.el
      guix
      ;;
      ;; 2. By Guix:
@@ -2085,9 +2093,9 @@ Some binding snippets / examples:
 
      ("s-\"" . tw-select-in-string)
 
-
-     ("C-S-<mouse-4>" . tw-zoom-all-frames-in)  ;; mouse-up
-     ("C-S-<mouse-5>" . tw-zoom-all-frames-out) ;; mouse-down
+     ;; C-<mouse-4> and C-<mouse-4> might work too
+     ("C-<wheel-up>"   . tw-zoom-all-frames-in)  ;; mouse-4 / mouse-up
+     ("C-<wheel-down>" . tw-zoom-all-frames-out) ;; mouse-5 / mouse-down
 
      ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
      ;; <menu> is not a prefix key. See:
