@@ -1798,7 +1798,7 @@ ARGS is the list arguments with which Emacs should be started"
 ;;;; '--eval', assuming it is a valid sexp,i.e. surrounded by parens or alike.
            ;; (format "%s" (shell-command-to-string
            ;;               (format "ps -ho command -p %s" (emacs-pid))))
-           (format "%s/scm-bin/s & disown" (getenv "HOME"))))
+           (format "%s/scm-bin/g & disown" (getenv "HOME"))))
       (call-process "sh" nil 0 nil "-c" command)))
 
   (advice-add #'restart-emacs--start-gui-using-sh
