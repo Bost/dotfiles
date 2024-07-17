@@ -2,6 +2,7 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+;; Set `init-file-debug' to t in the dotspacemacs/user-init to obtain timestamps
 (defun my=dbg=tstp ()
   0
   ;; (if (functionp #'dbg=tstp) (dbg=tstp) (car (time-convert nil t)))
@@ -121,7 +122,8 @@ This function should only modify configuration layer settings."
      ;; (unbind-key "s-<delete>" cider-repl-mode-map)
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
      ;; cider package location configured by
-     ;; ~/.emacs.d.distros/spguimacs/layers/+lang/clojure/packages.el in its 'use-package'
+     ;; ~/.emacs.d.distros/spguimacs/layers/+lang/clojure/packages.el
+     ;; in its 'use-package'
      (clojure
       :variables
       ;; (Default '(macro core deprecated))
@@ -565,7 +567,7 @@ This function should only modify configuration layer settings."
      ;;   '(geiser-company--setup geiser-repl-company-p)'
      ;; However geiser-company.el has been removed in upstream repo:
      ;; https://gitlab.com/emacs-geiser/geiser/-/commit/18faa0ba32c9ce751c16960b2a39b3880b523272
-     ;; See, e.g. ~/.emacs.d.distros/spguimacs/elpa/28.2/develop/guix-20210608.1653/guix-repl.el
+     ;; See e.g. ~/.emacs.d.distros/spacemacs/elpa/29.4/develop/guix-20231206.2147/guix-repl.el
      guix
      ;;
      ;; 2. By Guix:
@@ -704,8 +706,8 @@ This function should only modify configuration layer settings."
    ;; (default is `used-only')
    ;; `used-but-keep-unused' is handy for debugging, when often restarting emacs
    dotspacemacs-install-packages
-   ;; 'used-but-keep-unused
-   'used-only
+   'used-but-keep-unused
+   ;; 'used-only
    )
   (my=end #'dotspacemacs/layers)
   )
@@ -755,7 +757,7 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=$HOME/.emacs.d.distros/spguimacs/.cache/dumps/spguimacs-29.4.pdmp
+   ;;   ./emacs --dump-file=$HOME/.emacs.d.distros/spguimacs/.cache/dumps/spguimacs-27.1.pdmp
    ;; (default (format "spguimacs-%s.pdmp" emacs-version))
    dotspacemacs-emacs-dumper-dump-file (format "spguimacs-%s.pdmp" emacs-version)
 
@@ -1027,7 +1029,8 @@ It should only modify the values of Spacemacs settings."
    ;; It is also possible to use a posframe with the following cons cell
    ;; `(posframe . position)' where position can be one of `center',
    ;; `top-center', `bottom-center', `top-left-corner', `top-right-corner',
-   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'   ;; (default 'bottom)
+   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'
+   ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
 
    ;; Control where `switch-to-buffer' displays the buffer. If nil,
@@ -1281,7 +1284,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; ensures the output of layer-loading processes, ie. from
   ;; (configuration-layer/load) and (configuration-layer//load)
   ;; appears there too. (Default nil)
-  (setq init-file-debug t)
+  ;; (setq init-file-debug t)
 
   ;; Don't download archive-contents of the gnu, melpa, nongnu
   ;; (setq my=retrieve-package-archives nil)
@@ -2093,9 +2096,9 @@ Some binding snippets / examples:
 
      ("s-\"" . tw-select-in-string)
 
-     ;; mouse-4 and mouse-5 work in spacemacs, strange.
-     ("C-<wheel-up>"   . tw-zoom-all-frames-in)  ;; mouse-4
-     ("C-<wheel-down>" . tw-zoom-all-frames-out) ;; mouse-5
+     ;; C-<mouse-4> and C-<mouse-4> might work too
+     ("C-<wheel-up>"   . tw-zoom-all-frames-in)  ;; mouse-4 / mouse-up
+     ("C-<wheel-down>" . tw-zoom-all-frames-out) ;; mouse-5 / mouse-down
 
      ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
      ;; <menu> is not a prefix key. See:
