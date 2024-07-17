@@ -289,8 +289,38 @@
         bst:emacs-frame-fns
         bst:emacs-frame-cmds
         bst:emacs-zoom-frm
+
+        bst:emacs-evil-collection
+        bst:emacs-forge
+        bst:emacs-magit
+        bst:emacs-magit-annex
+        bst:emacs-magit-gerrit
+        bst:emacs-magit-org-todos-el
+        bst:emacs-magit-svn
+        bst:emacs-magit-todos
+        bst:emacs-orgit
+        bst:emacs-taxy
+        bst:emacs-taxy-magit-section
+        bst:emacs-treemacs-extra
+        bst:emacs-vdiff-magit
+
         ))
       (partial map (comp list specification->package+output))
+
+      (partial remove (partial string= "emacs-evil-collection"))
+      (partial remove (partial string= "emacs-forge"))
+      (partial remove (partial string= "emacs-magit"))
+      (partial remove (partial string= "emacs-magit-annex"))
+      (partial remove (partial string= "emacs-magit-gerrit"))
+      (partial remove (partial string= "emacs-magit-org-todos-el"))
+      (partial remove (partial string= "emacs-magit-svn"))
+      (partial remove (partial string= "emacs-magit-todos"))
+      (partial remove (partial string= "emacs-orgit"))
+      (partial remove (partial string= "emacs-taxy"))
+      (partial remove (partial string= "emacs-taxy-magit-section"))
+      (partial remove (partial string= "emacs-treemacs-extra"))
+      (partial remove (partial string= "emacs-vdiff-magit"))
+
       (partial remove (partial string= "emacs-lsp-ui"))
       (partial remove (partial string= "emacs-dap-launch"))
       (partial remove (partial string= "emacs-dap-tasks"))
