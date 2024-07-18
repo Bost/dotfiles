@@ -290,6 +290,15 @@
         bst:emacs-frame-cmds
         bst:emacs-zoom-frm
 
+
+        bst:emacs-helm-files
+        bst:emacs-helm-core
+
+        bst:emacs-treemacs-magit
+        bst:emacs-git-commit
+
+        bst:emacs-use-package
+
         bst:emacs-evil-collection
         bst:emacs-forge
         bst:emacs-magit
@@ -303,9 +312,17 @@
         bst:emacs-taxy-magit-section
         bst:emacs-treemacs-extra
         bst:emacs-vdiff-magit
-
         ))
       (partial map (comp list specification->package+output))
+
+       
+      (partial remove (partial string= "emacs-helm-files")) ;; part of emacs-helm
+      (partial remove (partial string= "emacs-helm-core")) ;; part of emacs-helm
+
+      (partial remove (partial string= "emacs-treemacs-magit")) ;; part of emacs-treemacs-extra
+      (partial remove (partial string= "emacs-git-commit")) ;; part of emacs
+
+      (partial remove (partial string= "emacs-use-package"))
 
       (partial remove (partial string= "emacs-evil-collection"))
       (partial remove (partial string= "emacs-forge"))
