@@ -217,9 +217,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    bash
    bat
    direnv
-   dmidecode ;; read hardware information from the BIOS
+   ;; read hardware information from the BIOS
+   dmidecode
+
    ;; exa deprecated by eza in the daaedc9ab3; TODO the package is aliased but the binary is not
    eza
+
    fd
    fish
    git
@@ -240,9 +243,17 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    glibc-locales
 
    gnupg
-   gnutls ;; transport layer security library, implements SSL, TLS, DTLS
+
+   ;; transport layer security library, implements SSL, TLS, DTLS
+   gnutls
+
+   ;; Read-write access to NTFS file systems
+   ntfs-3g
 
    rsync
+
+   ;; S.M.A.R.T.  harddisk control and monitoring tools
+   smartmontools
 
    ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
    ;; sysstat
