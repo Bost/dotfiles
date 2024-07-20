@@ -1288,6 +1288,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; appears there too. (Default nil)
   ;; (setq init-file-debug t)
 
+  ;; prepend
+  (add-to-list 'package-directory-list
+               "~/.guix-profile/share/emacs/site-lisp")
+
   ;; Don't download archive-contents of the gnu, melpa, nongnu
   ;; (setq my=retrieve-package-archives nil)
   (setq my=retrieve-package-archives t)
