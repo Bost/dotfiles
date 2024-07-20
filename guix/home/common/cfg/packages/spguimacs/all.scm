@@ -294,6 +294,9 @@
         bst:emacs-zoom-frm
 
 
+        bst:emacs-use-package-chords
+        bst:emacs-magit-section
+
         bst:emacs-helm-files
         bst:emacs-helm-core
 
@@ -318,7 +321,9 @@
         ))
       (partial map (comp list specification->package+output))
 
-       
+      (partial remove (partial string= "emacs-use-package-chords"))
+      (partial remove (partial string= "emacs-magit-section"))
+
       (partial remove (partial string= "emacs-helm-files")) ;; part of emacs-helm
       (partial remove (partial string= "emacs-helm-core")) ;; part of emacs-helm
 
