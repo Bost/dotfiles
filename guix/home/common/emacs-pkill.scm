@@ -45,7 +45,6 @@ Usage:
              "pkill" "--full" pkill-pattern args))))
 (testsymb 'pkill-server)
 
-;; TODO --version is not needed
 (define* (handle-cli #:key utility-name fun #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so that
 the options-parser doesn't complain about e.g. 'no such option: -p'."
@@ -58,7 +57,7 @@ the options-parser doesn't complain about e.g. 'no such option: -p'."
     (let* [(option-spec
             '[
               (help       (single-char #\h))
-              (version    (single-char #\v))
+              #;(version    (single-char #\v))
               (gx-dry-run (single-char #\d))
               ])]
       (when dbg
@@ -68,23 +67,23 @@ the options-parser doesn't complain about e.g. 'no such option: -p'."
       (let* [(options (getopt-long args option-spec #:stop-at-first-non-option #t))
              ;; #f means that the expected value wasn't specified
              (val-help       (option-ref options 'help       #f))
-             (val-version    (option-ref options 'version    #f))
+             #;(val-version    (option-ref options 'version    #f))
              (val-gx-dry-run (option-ref options 'gx-dry-run #f))
              (val-rest-args  (option-ref options '()         #f))
              ]
         (when dbg
           (format #t "~a options        : ~a\n" m options)
           (format #t "~a val-help       : ~a\n" m val-help)
-          (format #t "~a val-version    : ~a\n" m val-version)
+          #;(format #t "~a val-version    : ~a\n" m val-version)
           (format #t "~a val-gx-dry-run : ~a\n" m val-gx-dry-run)
           (format #t "~a val-rest-args  : ~a\n" m val-rest-args))
         (cond
          [val-help
-          (format #t "~a [options]
-    -v, --version    Display version
-    -h, --help       Display this help
-" utility-name)]
-         [val-version
+          (format #t "~a [options] ~a\n~a\n\n"
+                  utility-name
+                  #;"    -v, --version    Display version"
+                  "    -h, --help       Display this help")]
+         #;[val-version
           (format #t "~a version 1.23
 " utility-name)]
          [#t
