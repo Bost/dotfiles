@@ -14,10 +14,8 @@
 -L ./guix/common -L ./guix/home/common -e (emacs-config-launcher) -s
 !#
 
-cd $dotf
-./guix/home/common/launcher-emacs.scm --profile=spacemacs ~/.emacs.d.distros/spacemacs-config/init.el
-./guix/home/common/launcher-emacs.scm --profile=spguimacs ~/.emacs.d.distros/spguimacs-config/init.el
-./guix/home/common/launcher-emacs.scm --profile=crafted   ~/.emacs.d.distros/crafted-config/init.el
+This file is not meant to be executed directly, thus no main functions is
+defined.
 
 |#
 

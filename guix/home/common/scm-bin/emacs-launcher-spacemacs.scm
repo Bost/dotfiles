@@ -15,6 +15,8 @@
 !#
 
 cd $dotf
+./guix/home/common/scm-bin/emacs-launcher-spacemacs.scm --version
+
 set f $dotf/guix/home/common/scm-bin/emacs-launcher-spacemacs.scm
 ./guix/home/common/scm-bin/emacs-launcher-spacemacs.scm $f
 
@@ -58,7 +60,6 @@ so that the options-parser doesn't complain about e.g. 'no such option: -p'."
   (let* [(f "[main]")]
     ;; (format #t "~a ~a args : ~a\n" m f args)
     (handle-cli #:utility-name utility-name #:fun fun args)))
-
 (testsymb 'main)
 
 (module-evaluated)
