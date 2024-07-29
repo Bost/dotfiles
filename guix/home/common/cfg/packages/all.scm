@@ -623,13 +623,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    uniutils
    usbutils
 
-   ;; Interactive viewer for graphviz dot files. Useful to view package dependency graph.
+   ;; Viewer for graphviz dot files; display package dependency graph.
    xdot ;; guix graph coreutils | xdot -
 
    ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
    xorriso
 
-   mps-youtube ;; yewtube forked from mps-youtube. Terminal based YT player and downloader. No API key required.
+   ;; yewtube forked from mps-youtube. Terminal based YT player and downloader.
+   ;; No API key required.
+   mps-youtube
+
    youtube-dl
    yt-dlp ;; fork of youtube-dl with a focus on adding new features
    ;; youtube-viewer ;; search & play YT videos in a native player
@@ -689,7 +692,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    Library libxkbcommon-x11.so could not be loaded.
    note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 |#
-   alacritty          ;;  4.393s; no drop-down; no splits; no tabs
+   alacritty          ;;  4.393s; no drop-down; no splits; no tabs; e.g.: alacritty -o font.size=8
    ;; xfce4-terminal  ;;  9.905s; has --drop-down; has context menu; already present, no splits
    ;; yakuake         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
    ;; guake           ;;        ; not packaged for Guix
