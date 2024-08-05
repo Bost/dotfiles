@@ -116,9 +116,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libgtk3-nocsd.so.0
-# export LD_PRELOAD=
-
 ### See definitons of:
 ### - environment-vars in $dotf/guix/home/common/home-base.scm
 ### - home-env's in $dotf/guix/home/home-*.scm
