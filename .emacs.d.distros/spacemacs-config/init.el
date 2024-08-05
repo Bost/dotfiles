@@ -1288,6 +1288,12 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; appears there too. (Default nil)
   ;; (setq init-file-debug t)
 
+  ;; When:
+  ;;   Failed to verify signature archive-contents.sig
+  ;; (setq package-check-signature nil)
+  ;; Then
+  ;;  M-x package-list-packages
+
   (setq yas--default-user-snippets-dir (concat
                                         sp-home-dir "/"
                                         "snippets"))

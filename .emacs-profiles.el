@@ -1,11 +1,21 @@
+;; mkdir -p ~/.emacs.d.distros
+;; mv ~/.emacs.d ~/.emacs.d.distros/spacemacs
 ;; git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
+;; ln -s $dotf/.emacs-profiles.el ~/.emacs-profiles.el
+;; ln -s $dotf/.emacs.d.distros/spacemacs-config ~/.emacs.d.distros/spacemacs-config
 
 ;; Can't use constructs like (concat dir "spacemacs"), since the
 ;; .emacs-profiles.el is not evaluated
 (
  ("default" .
-  ((user-emacs-directory . "~/.emacs.d.distros/default")
-   (server-name . "gnu")
+  ;; ((user-emacs-directory . "~/.emacs.d.distros/default")
+  ;;  (server-name . "gnu")
+  ;;  )
+  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs")
+   (server-name . "spacemacs")
+   ;; mv /path/to/.spguimacs $SPACEMACSDIR/init.el
+   (env . (("SPACEMACSDIR" .
+            "~/.emacs.d.distros/spacemacs-config")))
    ))
 
  ("prelude" .
