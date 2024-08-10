@@ -169,7 +169,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Rebranded Mozilla Thunderbird email client. Optionally install also
    ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
    ;; Thunderbird console Ctrl-Shift-j
-   icedove  ;; 48.8MiB
+   icedove  ;; 48.8MiB ; ie. thunderbird
 
    ;; Vector graphics editor
    inkscape ;; ~93MiB
@@ -196,7 +196,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;     rustc-1.60.0-src.tar.xz  63.6MiB
    rust ;; the 1.60 has to be build
 
-   ungoogled-chromium
+   ungoogled-chromium ; 285MiB
 
    ;; openjdk-17.0.3  199.5MiB
    ;; openjdk-17.0.3-doc  9.6MiB
