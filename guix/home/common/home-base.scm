@@ -321,8 +321,7 @@
 ;;;   'Practicalli Clojure CLI Config'
 ;;;   https://github.com/practicalli/clojure-cli-config/
 ;;; to the projects, then:
-;;    cd $XDG_CONFIG_HOME/clojure/
-;;    git fetch --tags origin
+;;    mkcd $XDG_CONFIG_HOME/clojure/ && git fetch --tags origin
 ;;; Checkout the latest tag:
 ;;    git checkout $(git tag --sort=-creatordate | head -n 1)
 ;;
