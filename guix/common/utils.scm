@@ -43,6 +43,8 @@
             module-evaluated
             testsymb
             testsymb-trace
+            exec
+            dbg-exec
             ))
 
 (define m "[utils]")
@@ -250,11 +252,12 @@ Corresponds to `drop' in Clojure"
   (format #t "\n~a\n" prm)
   prm)
 
-(define-public (dbg-exec prm)
+(define* (dbg-exec prm #:key (verbose #t))
   "`pk', i.e. `peek' can be used instead of this function"
-  (if (list? prm)
-      (format #t "$ ~a\n" (string-join prm))
-      (format #t "$ ~a\n" prm))
+  (when verbose
+    (if (list? prm)
+        (format #t "$ ~a\n" (string-join prm))
+        (format #t "$ ~a\n" prm)))
   prm)
 
 (define* (error-command-failed #:rest args)
@@ -502,8 +505,7 @@ Usage:
     cmd->string)
    commad))
 
-;; TODO modify exec to use define* and add it to the #:export list
-(define-public (exec command)
+(define* (exec command #:key (verbose #t))
   "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return a string
 containing its output.
@@ -540,7 +542,7 @@ Usage:
 
   ((comp
     (partial exec-or-dry-run exec-function)
-    dbg-exec
+    (lambda (prm) (dbg-exec prm #:verbose verbose))
     cmd->string)
    command))
 
