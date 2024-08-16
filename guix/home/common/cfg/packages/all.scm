@@ -201,7 +201,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;     rustc-1.60.0-src.tar.xz  63.6MiB
    rust ;; the 1.60 has to be build
 
-   ungoogled-chromium
+   ungoogled-chromium ; 285MiB
 
    ;; openjdk-17.0.3  199.5MiB
    ;; openjdk-17.0.3-doc  9.6MiB
