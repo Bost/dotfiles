@@ -119,6 +119,8 @@
  mail
  messaging
  irc
+ commencement
+ gcc
  )
 
 (define (email-in-emacs-packages)
@@ -504,10 +506,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; Can't precisely specify the module and version with e.g.:
 ;;;   (specification->package (@(gnu packages commencement) gcc-toolchain) "11.3.0")
 ;;;   (specification->package (@(gnu packages gcc) libgccjit) "11.3.0")
-   #;(specification->package "gcc-toolchain@11.3.0")
-   #;(specification->package "libgccjit@11.3.0")
-   (specification->package "gcc-toolchain@12.3.0")
-   (specification->package "libgccjit@12.3.0")
+   #;(specification->package "gcc-toolchain@12.3.0")
+   #;(specification->package "libgccjit@12.3.0")
+   gcc-toolchain
+   libgccjit
 
    ghc
    (list glib "bin")
