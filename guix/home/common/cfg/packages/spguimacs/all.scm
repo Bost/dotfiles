@@ -180,7 +180,6 @@
         bst:emacs-helm-cider-history
         bst:emacs-flx
         bst:emacs-lsp-haskell
-        bst:emacs-helm-css-scss
         bst:emacs-composer
         bst:emacs-erc-social-graph
         bst:emacs-hlint-refactor
@@ -376,7 +375,6 @@
       (partial remove (partial string= "emacs-helm-cider-history"))
       (partial remove (partial string= "emacs-flx"))
       (partial remove (partial string= "emacs-lsp-haskell"))
-      (partial remove (partial string= "emacs-helm-css-scss"))
       (partial remove (partial string= "emacs-composer"))
       (partial remove (partial string= "emacs-erc-social-graph"))
       (partial remove (partial string= "emacs-hlint-refactor"))
