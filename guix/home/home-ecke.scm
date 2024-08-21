@@ -137,6 +137,33 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 ;;; TODO home-git-configuration
 
-(define home-env (base:home-env-edge-ecke list-separator-bash))
+(define home-env
+  (base:home-env-edge-ecke list-separator-bash)
+  ;; TODO Wayland-specific settings
+  ;; (home-environment
+  ;;  (services
+  ;;   ((comp
+  ;;     (partial append (base:services))
+  ;;     list
+  ;;     base:environment-variables-service
+  ;;     (partial append
+  ;;              `(
+  ;;                ;; Set Wayland-specific environment variables (taken from RDE)
+  ;;                ("XDG_CURRENT_DESKTOP" . "sway")
+  ;;                ("XDG_SESSION_TYPE" . "wayland")
+  ;;                ("RTC_USE_PIPEWIRE" . "true")
+  ;;                ("SDL_VIDEODRIVER" . "wayland")
+  ;;                ("MOZ_ENABLE_WAYLAND" . "1")
+  ;;                ("CLUTTER_BACKEND" . "wayland")
+  ;;                ("ELM_ENGINE" . "wayland_egl")
+  ;;                ("ECORE_EVAS_ENGINE" . "wayland-egl")
+  ;;                ("QT_QPA_PLATFORM" . "wayland-egl")))
+  ;;     (partial append (base:environment-vars-edge-ecke list-separator-bash))
+  ;;     (partial append (base:environment-vars           list-separator-bash))
+  ;;     #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
+  ;;     )
+  ;;    (list))))
+  )
+
 (module-evaluated)
 home-env
