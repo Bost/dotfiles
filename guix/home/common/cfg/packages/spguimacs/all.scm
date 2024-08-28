@@ -312,8 +312,12 @@
         bst:emacs-taxy-magit-section
         bst:emacs-treemacs-extra
         bst:emacs-vdiff-magit
+
+        bst:emacs-chatgpt-shell
         ))
       (partial map (comp list specification->package+output))
+
+      (partial remove (partial string= "emacs-chatgpt-shell"))
 
       (partial remove (partial string= "emacs-use-package-chords"))
       (partial remove (partial string= "emacs-magit-section"))
