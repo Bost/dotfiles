@@ -171,7 +171,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Rebranded Mozilla Thunderbird email client. Optionally install also
    ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
    ;; Thunderbird console Ctrl-Shift-j
-   icedove  ;; 48.8MiB ; ie. thunderbird
+   ;; icedove  ;; 48.8MiB ; ie. thunderbird
 
    ;; Vector graphics editor
    inkscape ;; ~93MiB
@@ -786,6 +786,14 @@ home-profile. Comment them out."
     ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
     (partial map (partial apply inferior-package-in-guix-channel)))
    (list
+
+    ;; This is the last commit before
+    ;; commit 15a96bd6e981f37b7304b1803dbafc75acc0b8f6 (tag: bug-icedove)
+    ;; Author: Jonathan Brielmaier <jonathan.brielmaier@web.de>
+    ;; Date:   Sun Apr 28 21:29:37 2024
+    ;;
+    ;; gnu: icu4c: Add patch for VTIMEZONE bug.
+    (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
 
     ;; Workaround for:
     ;;   SPC * not working with ripgrep 14
