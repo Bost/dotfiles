@@ -9,6 +9,9 @@
 ;; doesn't work
 (define-public (needed-packages)
   (list
+   ;; "emacs-vim-powerline-theme"  ;; exists however it doesn't compile
+   "emacs-pylookup"
+
    "emacs-core-load-paths"
 
    ;; :beg: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
@@ -17,8 +20,6 @@
    ;; :end: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
 
    ;; "emacs-edbi-sqlite"
-
-   ;; "emacs-hybrid-mode"  ;; part of spacemacs
 
    ;; "emacs-molokai-theme"  ;; needs emacs-color-theme which is obsoleted by emacs-color-theme-modern
    "emacs-ac-ispell"
@@ -180,7 +181,7 @@
    "emacs-evil-collection"
    "emacs-evil-easymotion"
    "emacs-evil-escape"
-   "emacs-evil-evilified-state"
+   ;; "emacs-evil-evilified-state" ;; exists however it doesn't compile
    "emacs-evil-exchange"
    "emacs-evil-goggles"
    "emacs-evil-iedit-state"
@@ -196,7 +197,7 @@
    "emacs-evil-tex"
    "emacs-evil-textobj-line"
    "emacs-evil-tutor"
-   "emacs-evil-unimpaired"
+   ;; "emacs-evil-unimpaired" ;; exists however it doesn't compile
    "emacs-evil-visual-mark-mode"
    "emacs-evil-visualstar"
    "emacs-exotica-theme"
@@ -272,7 +273,7 @@
    "emacs-helm-css-scss"
    "emacs-helm-descbinds"
    "emacs-helm-dictionary"
-   "emacs-helm-git-grep"
+   ;; "emacs-helm-git-grep" ;; exists however it doesn't compile
    "emacs-helm-hoogle"
    "emacs-helm-ls-git"
    "emacs-helm-lsp"
@@ -304,7 +305,7 @@
    "emacs-htmlize"
    "emacs-hungry-delete"
    "emacs-hy-mode"
-   "emacs-hybrid-mode"
+   ;; "emacs-hybrid-mode"  ;; part of spacemacs; exists however it doesn't compile
    "emacs-hydra"
    "emacs-iedit"
    "emacs-imenu-list"
@@ -507,7 +508,7 @@
    "emacs-spacegray-theme"
    "emacs-spaceline"
    "emacs-spaceline-all-the-icons"
-   "emacs-spacemacs-purpose-popwin"
+   ;; "emacs-spacemacs-purpose-popwin" ;; exists however it doesn't compile
    "emacs-spacemacs-whitespace-cleanup"
    "emacs-sphinx-doc"
    "emacs-spinner"
