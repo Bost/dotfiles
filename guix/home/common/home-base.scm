@@ -234,7 +234,7 @@
                                 list-separator))
 
      ;; `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
-     ("EDITOR" . "e") ;; which "e": /home/bost/scm-bin/e
+     ("EDITOR" . "g") ;; spguimacs; $ which "g": /home/bost/scm-bin/g
 
      ;; My own scripts and guix-home profile take precedence over $PATH.
      ("PATH" . ,((comp
