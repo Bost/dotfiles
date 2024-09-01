@@ -25,6 +25,7 @@
 (evaluating-module)
 
 (use-package-modules
+ base
  file
  web-browsers
  haskell-apps
@@ -554,7 +555,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    lshw
    lsof
    lynx ; Text Web Browser
-   (specification->package "make@4.3")
+   gnu-make ;; former (specification->package "make@4.3")
    maven
    mcron
    mercurial
