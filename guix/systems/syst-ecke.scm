@@ -8,8 +8,6 @@
   #:use-module (gnu system shadow)      ; user-group user-account-shell
   #:use-module (guix)                   ; package-version
   #:use-module (gnu packages games)     ; steam-devices-udev-rules
-  #:use-module (nongnu packages nvidia) ; replace-mesa nvda
-  #:use-module (nongnu services nvidia) ; nvidia-service-type
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
@@ -98,10 +96,6 @@
 (define-public syst-config
   (operating-system
     (inherit (base:syst-config-linux))
-    (kernel-arguments '("modprobe.blacklist=nouveau"
-                        ;; Set this if the card is not used for displaying or
-                        ;; you're using Wayland:
-                        "nvidia_drm.modeset=1"))
     (keyboard-layout
      #;(operating-system-keyboard-layout (base:syst-config))
      (base:keyb-layout))
@@ -133,18 +127,10 @@
       (list
        (set-xorg-configuration
         (xorg-configuration
-         (modules (cons nvda %default-xorg-modules))
-         (drivers '("nvidia"))
          (keyboard-layout keyboard-layout))
         sddm-service-type)
-       (service nvidia-service-type)
        ;; Configure desktop environment, GNOME for example.
-       (service gnome-desktop-service-type
-                ;; Enable NVIDIA support, only do this when the card is
-                ;; used for displaying.
-                ;; (gnome-desktop-configuration
-                ;;  (gnome (replace-mesa gnome)))
-                )
+       (service gnome-desktop-service-type)
        (service mate-desktop-service-type)
        (service cups-service-type)
 ;;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
