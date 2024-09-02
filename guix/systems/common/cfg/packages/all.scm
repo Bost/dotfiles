@@ -5,15 +5,15 @@
   )
 
 (use-package-modules
- version-control ;; git
- gnupg           ;; gpg
  disk            ;; gparted
+ gnupg           ;; gpg
+ linux           ;; iptables (IP packet filtering rules)
  mtools          ;; used by gparted
  rsync
+ ssh             ;; openssh
+ version-control ;; git
  vim
  wget            ;; wget
- linux           ;; iptables (IP packet filtering rules)
- ssh             ;; openssh
  )
 
 (define m (module-name-for-logging))
