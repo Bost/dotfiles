@@ -9,6 +9,7 @@
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
+ desktop
  networking      ;; dhcp-client-service-type
  ssh             ;; openssh-service-type
  )
@@ -21,10 +22,23 @@
  version-control ;; git
  vim
  wget            ;; wget
+
+ admin
+ package-management
+ tls
  )
 
 (define m (module-name-for-logging))
 (evaluating-module)
+
+;; (define minimal-desktop-services
+;;   (list polkit-wheel-service
+;;         (service upower-service-type)
+;;         (service accountsservice-service-type)
+;;         (service polkit-service-type)
+;;         (service elogind-service-type)
+;;         (service dbus-root-service-type)
+;;         (service x11-socket-directory-service-type)))
 
 (define-public syst-config
   (operating-system
@@ -39,31 +53,29 @@
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
 ;;; install PACKAGE' to install a package.
-    (packages
-     (append
-      (list
+;;;
 ;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
-       ;; From the comment in gnu/packages/version-control.scm
-       ;; The size of the closure of 'git-minimal' is two thirds that of 'git'.
-       ;; Its test suite runs slightly faster and most importantly it doesn't
-       ;; depend on packages that are expensive to build such as Subversion.
-       git-minimal
-       ;; git
+    (packages
+     (cons*
 
-       wget
-       iptables   ;; Programs to configure Linux IP packet filtering rules
-       openssh
-       strace
+      ;; From the comment in gnu/packages/version-control.scm
+      ;; The size of the closure of 'git-minimal' is two thirds that of 'git'.
+      ;; Its test suite runs slightly faster and most importantly it doesn't
+      ;; depend on packages that are expensive to build such as Subversion.
+      git-minimal     ;; git
 
-       gnupg
-       rsync      ;; 'scp' is preinstalled
-       vim        ;; 'vi' is preinstalled
-       )
+      gnupg
+      iptables        ;; Programs to configure Linux IP packet filtering rules
+      openssh
+      openssh-sans-x
+      rsync           ;; 'scp' is preinstalled
+      strace
+      vim             ;; 'vi' is preinstalled
+      wget
       %base-packages))
 
     (services
      (cons*
-      (service dhcp-client-service-type)
       (service openssh-service-type
                #;
                (openssh-configuration
@@ -72,7 +84,7 @@
                 (authorized-keys
                  `(("janedoe" ,(local-file "janedoe_rsa.pub"))
                    ("root" ,(local-file "janedoe_rsa.pub"))))))
-      %base-services))
+      %desktop-services))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
