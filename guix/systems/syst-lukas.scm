@@ -1,174 +1,78 @@
 (define-module (syst-lukas)
   #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
-  #:use-module (utils)                 ; for partial
+  #:use-module (utils)                 ; partial, module-name-for-logging
   #:use-module (memo)
-  #:use-module (cfg packages all)      ; for packages-to-install
   #:use-module (gnu)
-
-  #:use-module (guix)                  ; for package-version
-
+  #:use-module (guix)                  ; package-version
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
- #;cups desktop networking ssh
- vnc      ; for xvnc-service-type
- xorg     ; for gdm-service-type
+ networking      ;; dhcp-client-service-type
+ ssh             ;; openssh-service-type
  )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(use-package-modules
+ gnupg           ;; gpg
+ linux           ;; iptables (IP packet filtering rules)
+ rsync
+ ssh             ;; openssh
+ version-control ;; git
+ vim
+ wget            ;; wget
+ )
 
 (define m (module-name-for-logging))
 (evaluating-module)
-
-(define disable-suspend-srvc
-;;; GDM auto-suspend? is not system-wide and can be overriden by users. Create a
-;;; system-wide local dconf profile. See https://paste.centos.org/view/568513c6
-  (simple-service
-   'disable-auto-suspend dconf-service-type
-   (list (dconf-profile
-          (name "local")
-          (content '("system-db:local"))
-          (keyfile (dconf-keyfile
-                    (name "00-disable-suspend")
-                    (content
-                     '("[org/gnome/settings-daemon/plugins/power]"
-                       "sleep-inactive-ac-type='nothing'"
-                       "sleep-inactive-battery-type='nothing'"
-                       "sleep-inactive-ac-timeout=0"
-                       "sleep-inactive-battery-timeout=0"))))))))
-
-
-
-
-
-
-
-
-
-
 
 (define-public syst-config
   (operating-system
     (inherit (base:syst-config))
     (keyboard-layout
-
      (keyboard-layout "us" "altgr-intl"))
     (host-name host-lukas)
     (users (base:users-config (list
                                "cdrom" ;; access to CD-ROM
-
                                )))
-
 
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
 ;;; install PACKAGE' to install a package.
     (packages
      (append
+      (list
+;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
+       ;; From the comment in gnu/packages/version-control.scm
+       ;; The size of the closure of 'git-minimal' is two thirds that of 'git'.
+       ;; Its test suite runs slightly faster and most importantly it doesn't
+       ;; depend on packages that are expensive to build such as Subversion.
+       git-minimal
+       ;; git
 
+       wget
+       iptables   ;; Programs to configure Linux IP packet filtering rules
+       openssh
+       strace
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      (packages-to-install)
+       gnupg
+       rsync      ;; 'scp' is preinstalled
+       vim        ;; 'vi' is preinstalled
+       )
       %base-packages))
 
-
-
-
-
-
     (services
-     ;; TODO create macros pappend, premove, etc. - parallel processing
-     (append
-      (base:services)
-      (list
-       (set-xorg-configuration
-        (xorg-configuration
-         (keyboard-layout keyboard-layout)))
-
-       (service xvnc-service-type (xvnc-configuration
-                                   (display-number 5)
-;;; Warning: Unless your machine is in a controlled environment, for security
-;;; reasons, the localhost? configuration of the xvnc-configuration record
-;;; should be left to its default #t value and exposed via a secure means such
-;;; as an SSH port forward. The XDMCP port, UDP 177 should also be blocked from
-;;; the outside by a firewall, as it is not a secure protocol and can expose
-;;; login credentials in clear.
-                                   ;; (localhost? #f)
-                                   ;; (xdmcp? #t)
-;;; Use an Inetd-style service, which runs the Xvnc server on demand.
-;;; (default: #f)
-                                   (inetd? #t)))
-       #;disable-suspend-srvc)
-
-
-
-
-
-
-
-
-
-
-      ;; %desktop-services is the default list of services we are appending to.
-      (modify-services %desktop-services
-        (gdm-service-type
-         config => (gdm-configuration
-                    (inherit config)
-                    (auto-suspend? #f)
-;;; See the Warning above in the xvnc-configuration
-                    #;(xdmcp? #t))))))
-
-
-
-
-
-
-
-
-
-
-
+     (cons*
+      (service dhcp-client-service-type)
+      (service openssh-service-type
+               #;
+               (openssh-configuration
+                (openssh openssh-sans-x)
+                (password-authentication? #false)
+                (authorized-keys
+                 `(("janedoe" ,(local-file "janedoe_rsa.pub"))
+                   ("root" ,(local-file "janedoe_rsa.pub"))))))
+      %base-services))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
@@ -181,42 +85,16 @@
       ;; keyboard-layout for the GRUB
       (keyboard-layout keyboard-layout)))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ;;; The list of file systems that get "mounted". The unique file system
 ;;; identifiers there ("UUIDs") can be obtained by running 'blkid' in a
 ;;; terminal.
     (file-systems
      (cons*
-
-
-
-            (file-system
-              (mount-point "/")
-              (device (uuid "cf11628d-4887-42d2-aef1-635ad5089ce1" 'ext4))
-              (type "ext4"))
-
-
-
-
-            %base-file-systems))
-
-
-
-
+      (file-system
+        (mount-point "/")
+        (device (uuid "cf11628d-4887-42d2-aef1-635ad5089ce1" 'ext4))
+        (type "ext4"))
+      %base-file-systems))
     (swap-devices (list
                    (swap-space
                     (target (uuid "a4767437-a9c8-4d57-9755-4fcd2aef73da")))))))
