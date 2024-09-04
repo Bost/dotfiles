@@ -12,6 +12,7 @@
  desktop
  networking      ;; dhcp-client-service-type
  ssh             ;; openssh-service-type
+ xorg            ;; for gdm-service-type
  )
 
 (use-package-modules
@@ -85,7 +86,9 @@
          ;; Assuming the id_rsa.pub exists under given path, e.g. it was
          ;; transferred by `ssh-copy-id` at some point in the past.
          `((,user ,(local-file (string-append home "/.ssh/id_rsa.pub")))))))
-      %desktop-services))
+      (modify-services %desktop-services
+        (gdm-service-type config => (gdm-configuration (inherit config)
+                                                       (auto-suspend? #f))))))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
