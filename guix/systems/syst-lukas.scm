@@ -76,14 +76,15 @@
 
     (services
      (cons*
-      (service openssh-service-type
-               #;
-               (openssh-configuration
-                (openssh openssh-sans-x)
-                (password-authentication? #false)
-                (authorized-keys
-                 `(("janedoe" ,(local-file "janedoe_rsa.pub"))
-                   ("root" ,(local-file "janedoe_rsa.pub"))))))
+      (service
+       openssh-service-type
+       (openssh-configuration
+        (openssh openssh-sans-x)
+        (password-authentication? #false)
+        (authorized-keys
+         ;; Assuming the id_rsa.pub exists under given path, e.g. it was
+         ;; transferred by `ssh-copy-id` at some point in the past.
+         `((,user ,(local-file (string-append home "/.ssh/id_rsa.pub")))))))
       %desktop-services))
 
 ;;; See
