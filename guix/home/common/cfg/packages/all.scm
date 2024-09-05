@@ -656,6 +656,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    surfraw ;; Unix command line interface to the www
    w3m     ;; Text-mode web browser
+   wol     ;; wakeonlan
    ))
 (testsymb 'rest-packages)
 
