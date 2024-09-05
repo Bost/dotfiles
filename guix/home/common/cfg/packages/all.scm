@@ -10,16 +10,21 @@
   ;; provides: specification->package
   #:use-module (gnu packages)
 
-  ;; for inferior-package-in-guix-channel : beg
+  ;; for inferior-package-in-channel : beg
   #:use-module (guix packages)
   #:use-module (guix inferior)
   #:use-module (guix channels)
   ;; #:use-module (guix profiles) ;; probably not needed
-  ;; for inferior-package-in-guix-channel : end
+  ;; for inferior-package-in-channel : end
+
+  ;; Following is needed b/c an inferior version of signal-desktop is used
+  #:use-module (nongnu packages messaging)
 
   ;; provides: first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  )
+  #:export (
+            inferior-package-in-channel
+            ))
 
 (define m (module-name-for-logging))
 (evaluating-module)
@@ -150,7 +155,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (@(bost gnu packages babashka) babashka)
 
    ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
-   (@(nongnu packages messaging) signal-desktop)
+   ;; (@(nongnu packages messaging) signal-desktop)
    (@(nongnu packages clojure) leiningen)
    (@(nongnu packages mozilla) firefox)
    #|
@@ -772,63 +777,80 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'xfce-packages)
 
-(define-public (inferior-package-in-guix-channel package commit)
-  "Returns an inferior representing the `commit' (predecessor-sha1) revision.
+(define* (inferior-package-in-channel package commit #:key (channel-name 'guix))
+  "Returns an inferior representing the `commit' (predecessor-sha1) revision for
+a given channel.
 Can't be in the guix/common/utils.scm. Therefore duplicated.
 See guix/manifest-emacs-29.1.scm, guix/home/common/cfg/packages/all.scm"
   (first
    (lookup-inferior-packages
     (inferior-for-channels
-     (list (channel
-            (name 'guix)
-            (url "https://git.savannah.gnu.org/git/guix.git")
-            (commit commit))))
+     (cond
+      [(eq? channel-name 'nonguix)
+       (cons*
+        (channel
+         (name 'nonguix)
+         (url "https://gitlab.com/nonguix/nonguix")
+         (commit commit)
+         (introduction
+          (make-channel-introduction
+           "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
+           (openpgp-fingerprint
+            "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
+        %default-channels)]
+
+      [#t
+       (list
+        (channel
+         (name 'guix)
+         (url "https://git.savannah.gnu.org/git/guix.git")
+         (commit commit)))]))
     package)))
+(testsymb 'inferior-package-in-channel)
 
 (define (inferior-pkgs pkgs)
   "The original, i.e. non-inferior packages must not be present in the
 home-profile. Comment them out."
   ((comp
-    (partial append pkgs)
     ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
-    (partial map (partial apply inferior-package-in-guix-channel)))
-   (list
+    (partial
+     append
+     (map (lambda (package-commit)
+            (inferior-package-in-channel
+             (car package-commit)
+             (cadr package-commit)
+             #:channel-name 'guix))
+          (list
+           ;; This is the last commit before
+           ;; commit 15a96bd6e981f37b7304b1803dbafc75acc0b8f6 (tag: bug-icedove)
+           ;; Author: Jonathan Brielmaier <jonathan.brielmaier@web.de>
+           ;; Date:   Sun Apr 28 21:29:37 2024
+           ;;
+           ;; gnu: icu4c: Add patch for VTIMEZONE bug.
+           (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
+           )))
+    (partial
+     append
+     (map (lambda (package-commit)
+            (inferior-package-in-channel
+             (car package-commit)
+             (cadr package-commit)
+             #:channel-name 'nonguix))
+          (list
 
-    ;; This is the last commit before
-    ;; commit 15a96bd6e981f37b7304b1803dbafc75acc0b8f6 (tag: bug-icedove)
-    ;; Author: Jonathan Brielmaier <jonathan.brielmaier@web.de>
-    ;; Date:   Sun Apr 28 21:29:37 2024
-    ;;
-    ;; gnu: icu4c: Add patch for VTIMEZONE bug.
-    (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
-
-    ;; Workaround for:
-    ;;   SPC * not working with ripgrep 14
-    ;;   https://github.com/syl20bnr/spacemacs/issues/16200
-    ;; This is the last commit containing 14.0.3
-    ;; (list "ripgrep"        "9778ce6b898021bc8f0e4a6e51fda8c13d78b310")
-
-    ;; This is the last commit containing 13.0.0. The `gxhre` (guix home
-    ;; reconfigure) takes too long to compile.
-    ;; (list "ripgrep"        "fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df")
-
-    ;; the e18af936ff85442a841886c9434f862fb595a8b2 leads to failing
-    ;; compilation: No package 'mdds-2.0'
-    ;; (list "libreoffice"        "a4db19d8e07eeb26931edfde0f0e6bca4e0448d3")
-
-;;; virt-viewer 7.0 works fine
-;;;    (list "virt-viewer"        "87ce7a6f71a0d337e47125ad7e8349f9225c7bf1")
-
-;;; racket 8.8 returns:
-;;;     $ racket
-;;;     munmap_chunk(): invalid pointer
-;;;     Aborted
-;;; racket 8.7 works fine:
-;;;    (list "racket"             "e1290c0d43cb2916a5908f15b3211911ee257968")
-
-;;; emacs 28.2
-    ;; (list "emacs"             "772eaa69f31457aa19ca4dc4ce755c791d722054")
-    )))
+           ;; This is the last commit before
+           ;; commit 60f719b400a73f89b71aa953cbbae00803e37f01
+           ;; Author: John Kehayias <john.kehayias@protonmail.com>
+           ;; Date:   Tue Sep 3 16:10:15 2024 -0400
+           ;;
+           ;; nongnu: signal-desktop: Update to 7.22.2.
+           ;; (list "signal-desktop" "b6bb6276310de10d591f1738492b94e04e33ff1f")
+           (list
+            ;; (@(nongnu packages messaging) signal-desktop)
+            "signal-desktop"
+            "b6bb6276310de10d591f1738492b94e04e33ff1f")
+           ))))
+   pkgs))
 (testsymb 'inferior-pkgs)
 
 (define (devel-guile-ide-arei-packages)
