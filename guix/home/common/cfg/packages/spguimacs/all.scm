@@ -317,9 +317,11 @@
         bst:emacs-vdiff-magit
 
         bst:emacs-chatgpt-shell
+        bst:emacs-nyan-mode
         ))
       (partial map (comp list specification->package+output))
 
+      (partial remove (partial string= "emacs-nyan-mode"))
       (partial remove (partial string= "emacs-chatgpt-shell"))
 
       (partial remove (partial string= "emacs-use-package-chords"))

@@ -394,6 +394,7 @@
    "emacs-noctilux-theme"
    "emacs-nodejs-repl"
    "emacs-npm-mode"
+   "emacs-nyan-mode"
    "emacs-ob-erlang"
    "emacs-ob-racket"
    "emacs-obsidian-theme"
