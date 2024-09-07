@@ -90,7 +90,7 @@
    "emacs-company"
    "emacs-company-auctex"
    "emacs-company-cabal"
-   ;; "emacs-company-lua" ;; emacs-lua-mode 20210802 doesn't compile, 20221027 is fine
+   "emacs-company-lua"
    "emacs-company-math"
    "emacs-company-php"
    "emacs-company-phpactor"
@@ -356,7 +356,7 @@
    "emacs-lsp-treemacs"
    "emacs-lsp-ui"
    "emacs-lsp-volar"
-   "emacs-lua-mode" ;; emacs-lua-mode 20210802 doesn't compile, 20221027 is fine
+   "emacs-lua-mode"
    "emacs-lush-theme"
    "emacs-macrostep"
    "emacs-madhat2r-theme"
@@ -394,6 +394,7 @@
    "emacs-noctilux-theme"
    "emacs-nodejs-repl"
    "emacs-npm-mode"
+   "emacs-nyan-mode"
    "emacs-ob-erlang"
    "emacs-ob-racket"
    "emacs-obsidian-theme"
@@ -491,7 +492,7 @@
    "emacs-sly"
    "emacs-sly-asdf"
    "emacs-sly-macrostep"
-   ;; "emacs-sly-named-readtables" doesn't compile
+   "emacs-sly-named-readtables"
    "emacs-sly-package-inferred"
    "emacs-sly-quicklisp"
    "emacs-sly-stepper"
@@ -508,7 +509,7 @@
    "emacs-spacegray-theme"
    "emacs-spaceline"
    "emacs-spaceline-all-the-icons"
-   ;; "emacs-spacemacs-purpose-popwin" ;; exists however it doesn't compile
+   "emacs-spacemacs-purpose-popwin"
    "emacs-spacemacs-whitespace-cleanup"
    "emacs-sphinx-doc"
    "emacs-spinner"
@@ -545,7 +546,7 @@
    "emacs-tramp-auto-auth"
    "emacs-transient"
    "emacs-transpose-frame"
-   "emacs-treemacs"           ;; there's a version in the 'bost' channel, too
+   "emacs-treemacs"
    "emacs-treemacs-extra"
    "emacs-treepy"
    "emacs-tweaks"
