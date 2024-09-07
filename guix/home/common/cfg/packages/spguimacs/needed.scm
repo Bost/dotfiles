@@ -492,7 +492,7 @@
    "emacs-sly"
    "emacs-sly-asdf"
    "emacs-sly-macrostep"
-   ;; "emacs-sly-named-readtables" doesn't compile
+   "emacs-sly-named-readtables"
    "emacs-sly-package-inferred"
    "emacs-sly-quicklisp"
    "emacs-sly-stepper"
