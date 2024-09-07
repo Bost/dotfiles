@@ -579,7 +579,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    parted
    pavucontrol
    perl
-   ;; php ;; build is failing
+   php
 
    ;; GnuPG's interfaces to passphrase input
    pinentry
