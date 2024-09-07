@@ -509,7 +509,7 @@
    "emacs-spacegray-theme"
    "emacs-spaceline"
    "emacs-spaceline-all-the-icons"
-   ;; "emacs-spacemacs-purpose-popwin" ;; exists however it doesn't compile
+   "emacs-spacemacs-purpose-popwin"
    "emacs-spacemacs-whitespace-cleanup"
    "emacs-sphinx-doc"
    "emacs-spinner"
