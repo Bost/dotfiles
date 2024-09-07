@@ -90,7 +90,7 @@
    "emacs-company"
    "emacs-company-auctex"
    "emacs-company-cabal"
-   ;; "emacs-company-lua" ;; emacs-lua-mode 20210802 doesn't compile, 20221027 is fine
+   "emacs-company-lua"
    "emacs-company-math"
    "emacs-company-php"
    "emacs-company-phpactor"
@@ -356,7 +356,7 @@
    "emacs-lsp-treemacs"
    "emacs-lsp-ui"
    "emacs-lsp-volar"
-   "emacs-lua-mode" ;; emacs-lua-mode 20210802 doesn't compile, 20221027 is fine
+   "emacs-lua-mode"
    "emacs-lush-theme"
    "emacs-macrostep"
    "emacs-madhat2r-theme"
@@ -545,7 +545,7 @@
    "emacs-tramp-auto-auth"
    "emacs-transient"
    "emacs-transpose-frame"
-   "emacs-treemacs"           ;; there's a version in the 'bost' channel, too
+   "emacs-treemacs"
    "emacs-treemacs-extra"
    "emacs-treepy"
    "emacs-tweaks"
