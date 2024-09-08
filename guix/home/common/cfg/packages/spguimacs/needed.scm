@@ -35,7 +35,7 @@
    "emacs-all-the-icons"
    "emacs-ample-theme"
    "emacs-ample-zen-theme"
-   ;; "emacs-anaconda-mode" ;; requires emacs-pythonic which fails to compile
+   "emacs-anaconda-mode"
    "emacs-annalist"
    "emacs-anti-zenburn-theme"
    "emacs-anzu"
@@ -181,7 +181,7 @@
    "emacs-evil-collection"
    "emacs-evil-easymotion"
    "emacs-evil-escape"
-   ;; "emacs-evil-evilified-state" ;; exists however it doesn't compile
+   "emacs-evil-evilified-state"
    "emacs-evil-exchange"
    "emacs-evil-goggles"
    "emacs-evil-iedit-state"
@@ -197,7 +197,7 @@
    "emacs-evil-tex"
    "emacs-evil-textobj-line"
    "emacs-evil-tutor"
-   ;; "emacs-evil-unimpaired" ;; exists however it doesn't compile
+   "emacs-evil-unimpaired"
    "emacs-evil-visual-mark-mode"
    "emacs-evil-visualstar"
    "emacs-exotica-theme"
