@@ -1181,6 +1181,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-org-super-agenda"
    "emacs-org-superstar"
    "emacs-org-tanglesync"
+   "emacs-org-texlive-collection"
    "emacs-org-timeblock"
    "emacs-org-transclusion"
    "emacs-org-tree-slide"
