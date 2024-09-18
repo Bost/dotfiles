@@ -70,36 +70,17 @@
    ;; beg: Temporarily exclude following packages. They are added in the home-<hostname>.scm
    ;; end: Temporarily exclude following packages. They are added in the home-<hostname>.scm
 
-;;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
-;;; https://github.com/kidd/erc-image.el Not really needed.
-;;; Throws:
-;;; Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/w29gvdsv26r5minwgdmb1pq4dzgbi959-emacs-erc-image-0-3.82fb387/share/emacs/site-lisp/erc-image-0-3.82fb387/erc-image-autoloads)
-   "emacs-erc-image"
+   ;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
+   ;; https://github.com/kidd/erc-image.el
+   "emacs-erc-image" 
 
-;;; Preview candidates when using Evil registers and marks.
-;;; https://github.com/mamapanda/evil-owl
-;;; Seems not to be used anyway
-;;; "compilation" problem
-   "emacs-evil-owl"
+   ;; Preview candidates when using Evil registers and marks.
+   ;; https://github.com/mamapanda/evil-owl
+   "emacs-evil-owl" ;; seems not to be used
 
-;;; Edit Gherkin / Cucumber plain text user stories. See examples
-;;; https://cucumber.io/docs/gherkin/reference/
-;;; Not needed.
-;;; broken! spacemacs doesn't start: invalid version 0.5.0-dev
-   "emacs-feature-mode"
-
-;;; Extras for the comint-mode shell. https://github.com/riscy/shx-for-emacs
-;;; Would be nice to have.
-;;; "compilation" problem
+   ;; Display small plots and graphics and lets users write shell commands in
+   ;; Emacs Lisp. https://github.com/riscy/shx-for-emacs
    "emacs-shx"
-
-;;; Emacs leader key implementation from Spacemacs. Should be excluded anyway.
-;;; Throws:
-;;; Error (use-package): Failed to parse package column-enforce-mode: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
-;;; Error (use-package): Failed to parse package highlight-indentation: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
-;;; Error (use-package): Failed to parse package indent-guide: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
-;;; Error (use-package): Failed to parse package fill-column-indicator: use-package: Unrecognized keyword: :spacediminish Disable showing Disable logging
-   "emacs-spaceleader"
    ))
 (testsymb 'excluded-packages)
 
