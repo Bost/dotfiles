@@ -987,6 +987,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-marginalia-emprise"
    "emacs-markdown-mode"
    "emacs-markdown-preview-mode"
+   "emacs-markdown-toc"
    "emacs-markup-faces"
    "emacs-mastodon"
    "emacs-matcha"
