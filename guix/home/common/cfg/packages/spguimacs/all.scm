@@ -297,9 +297,12 @@
         bst:emacs-chatgpt-shell
         bst:emacs-nyan-mode
         bst:emacs-sly-named-readtables
+
+        bst:emacs-markdown-toc
         ))
       (partial map (comp list specification->package+output))
 
+      (partial remove (partial string= "emacs-markdown-toc"))
       (partial remove (partial string= "emacs-sly-named-readtables"))
       (partial remove (partial string= "emacs-nyan-mode"))
       (partial remove (partial string= "emacs-chatgpt-shell"))
