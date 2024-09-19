@@ -24,6 +24,7 @@
    ;; "emacs-molokai-theme"  ;; needs emacs-color-theme which is obsoleted by emacs-color-theme-modern
    "emacs-ac-ispell"
    "emacs-ac-php"
+   "emacs-ac-php-core"
    "emacs-ace-jump-helm-line"
    "emacs-ace-link"
    "emacs-ace-window"
@@ -88,6 +89,7 @@
    "emacs-color-theme-solarized"
    "emacs-column-enforce-mode"
    "emacs-company"
+   "emacs-company-anaconda"
    "emacs-company-auctex"
    "emacs-company-cabal"
    "emacs-company-lua"
