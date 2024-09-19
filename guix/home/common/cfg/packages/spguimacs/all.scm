@@ -72,7 +72,7 @@
 
    ;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
    ;; https://github.com/kidd/erc-image.el
-   "emacs-erc-image" 
+   "emacs-erc-image"
 
    ;; Preview candidates when using Evil registers and marks.
    ;; https://github.com/mamapanda/evil-owl
