@@ -294,7 +294,6 @@
         bst:emacs-treemacs-extra
         bst:emacs-vdiff-magit
 
-        bst:emacs-chatgpt-shell
         bst:emacs-nyan-mode
         bst:emacs-sly-named-readtables
 
@@ -305,7 +304,6 @@
       (partial remove (partial string= "emacs-markdown-toc"))
       (partial remove (partial string= "emacs-sly-named-readtables"))
       (partial remove (partial string= "emacs-nyan-mode"))
-      (partial remove (partial string= "emacs-chatgpt-shell"))
 
       (partial remove (partial string= "emacs-use-package-chords"))
       (partial remove (partial string= "emacs-magit-section"))
