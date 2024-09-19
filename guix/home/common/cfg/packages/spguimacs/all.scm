@@ -298,8 +298,18 @@
         bst:emacs-sly-named-readtables
 
         bst:emacs-markdown-toc
+
+        bst:emacs-ac-php-core
+        bst:emacs-company-anaconda
+        bst:emacs-company-php
+        bst:emacs-company-phpactor
         ))
       (partial map (comp list specification->package+output))
+
+      (partial remove (partial string= "emacs-ac-php-core"))
+      (partial remove (partial string= "emacs-company-anaconda"))
+      (partial remove (partial string= "emacs-company-php"))
+      (partial remove (partial string= "emacs-company-phpactor"))
 
       (partial remove (partial string= "emacs-markdown-toc"))
       (partial remove (partial string= "emacs-sly-named-readtables"))
