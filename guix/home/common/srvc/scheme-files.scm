@@ -362,6 +362,7 @@ Example:
                   #:scheme-file-name "lt")
     (service-file #:program-name "lT"  #:desc "list-dir-sorted-by-time-ascending"
                   #:scheme-file-name "lT")
+    (service-file #:program-name "qemu-vm" #:desc "qemu-vm")
     (service-file #:program-name "susp" #:desc "suspend-to-ram")
     )))
 (testsymb 'scheme-files-service)
