@@ -67,6 +67,7 @@
 
    "emacs-centered-cursor-mode"
    "emacs-cfrs"
+   "emacs-chatgpt"
    "emacs-chatgpt-shell"
    "emacs-cherry-blossom-theme"
    "emacs-chocolate"
@@ -358,6 +359,7 @@
    "emacs-lsp-treemacs"
    "emacs-lsp-ui"
    "emacs-lsp-volar"
+   "emacs-lv"
    "emacs-lua-mode"
    "emacs-lush-theme"
    "emacs-macrostep"
@@ -403,9 +405,9 @@
    "emacs-occidental"
    "emacs-occidental-theme"
    "emacs-oldlace-theme"
-   "emacs-omtose-phellack-theme"
    "emacs-omtose-phellack-theme" ;; defines emacs-omtose-darker-theme emacs-omtose-softer-theme
    "emacs-open-junk-file"
+   "emacs-openai"
    "emacs-org"
    "emacs-org-cliplink"
    "emacs-org-contrib"
