@@ -303,8 +303,22 @@
         bst:emacs-company-anaconda
         bst:emacs-company-php
         bst:emacs-company-phpactor
+
+        bst:emacs-tblui
+        bst:emacs-openai
+        bst:emacs-lv
+        bst:emacs-chatgpt
+        bst:emacs-anaconda-mode
+        bst:emacs-pythonic
         ))
       (partial map (comp list specification->package+output))
+
+      (partial remove (partial string= "emacs-tblui"))
+      (partial remove (partial string= "emacs-openai"))
+      (partial remove (partial string= "emacs-lv"))
+      (partial remove (partial string= "emacs-chatgpt"))
+      (partial remove (partial string= "emacs-anaconda-mode"))
+      (partial remove (partial string= "emacs-pythonic"))
 
       (partial remove (partial string= "emacs-ac-php-core"))
       (partial remove (partial string= "emacs-company-anaconda"))
