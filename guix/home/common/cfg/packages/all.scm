@@ -752,7 +752,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
       (list
        xrdp ;; Remote Desktop Protocol server; access to the entire desktop
        xpra ;; Remote access to individual applications or full desktops
-       xorgxrdp ;; Xorg drivers for xrdp
+       ;; xorgxrdp ;; Xorg drivers for xrdp; doesn't compile
        )
       (list ;; the clients
        rdesktop
