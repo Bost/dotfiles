@@ -757,7 +757,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
       (list
        xrdp ;; Remote Desktop Protocol server; access to the entire desktop
        xpra ;; Remote access to individual applications or full desktops
-       ;; xorgxrdp ;; Xorg drivers for xrdp; doesn't compile
+       ;; xorgxrdp ;; Xorg drivers for xrdp; doesn't compile:
+;;; https://github.com/neutrinolabs/xorgxrdp/issues/189
+;;; rdpClientCon.c: In function ‘rdpClientConProcessMsgClientInfo’:
+;;; rdpClientCon.c:981:31: error: ‘struct xrdp_client_info’ has no member named ‘monitorCount’
        )
       (list ;; the clients
        rdesktop
