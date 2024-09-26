@@ -4,18 +4,16 @@
   #:use-module (utils)                 ; partial, module-name-for-logging
   #:use-module (memo)
   #:use-module (gnu)
+  #:use-module (guix modules)
   #:use-module (guix)                  ; package-version
 )
 
-;; no need to write: #:use-module (gnu services <module>)
-(use-service-modules
- desktop
+(use-service-modules ; no need to write: #:use-module (gnu services <module>)
  networking      ;; dhcp-client-service-type
  ssh             ;; openssh-service-type
- xorg            ;; for gdm-service-type
  )
 
-(use-package-modules
+(use-package-modules ; no need to write: #:use-module (gnu packages <module>)
  gnupg           ;; gpg
  linux           ;; iptables (IP packet filtering rules)
  rsync
@@ -67,7 +65,6 @@
 
       gnupg
       iptables        ;; Programs to configure Linux IP packet filtering rules
-      openssh
       openssh-sans-x
       rsync           ;; 'scp' is preinstalled
       strace
@@ -77,6 +74,8 @@
 
     (services
      (cons*
+      (service network-manager-service-type)
+      (service wpa-supplicant-service-type)
       (service
        openssh-service-type
        (openssh-configuration
@@ -86,9 +85,7 @@
          ;; Assuming the id_rsa.pub exists under given path, e.g. it was
          ;; transferred by `ssh-copy-id` at some point in the past.
          `((,user ,(local-file (string-append home "/.ssh/id_rsa.pub")))))))
-      (modify-services %desktop-services
-        (gdm-service-type config => (gdm-configuration (inherit config)
-                                                       (auto-suspend? #f))))))
+      %base-services))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
