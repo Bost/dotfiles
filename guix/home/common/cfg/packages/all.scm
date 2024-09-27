@@ -155,7 +155,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (@(bost gnu packages babashka) babashka)
 
    ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
-   ;; (@(nongnu packages messaging) signal-desktop)
+   (@(nongnu packages messaging) signal-desktop)
    (@(nongnu packages clojure) leiningen)
    (@(nongnu packages mozilla) firefox)
    #|
@@ -182,7 +182,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Rebranded Mozilla Thunderbird email client. Optionally install also
    ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
    ;; Thunderbird console Ctrl-Shift-j
-   ;; icedove  ;; 48.8MiB ; ie. thunderbird
+   icedove  ;; 48.8MiB ; ie. thunderbird
 
    ;; Vector graphics editor
    inkscape ;; ~93MiB
@@ -822,13 +822,7 @@ home-profile. Comment them out."
              (cadr package-commit)
              #:channel-name 'guix))
           (list
-           ;; This is the last commit before
-           ;; commit 15a96bd6e981f37b7304b1803dbafc75acc0b8f6 (tag: bug-icedove)
-           ;; Author: Jonathan Brielmaier <jonathan.brielmaier@web.de>
-           ;; Date:   Sun Apr 28 21:29:37 2024
-           ;;
-           ;; gnu: icu4c: Add patch for VTIMEZONE bug.
-           (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
+           ;; (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
            )))
     (partial
      append
@@ -838,18 +832,7 @@ home-profile. Comment them out."
              (cadr package-commit)
              #:channel-name 'nonguix))
           (list
-
-           ;; This is the last commit before
-           ;; commit 60f719b400a73f89b71aa953cbbae00803e37f01
-           ;; Author: John Kehayias <john.kehayias@protonmail.com>
-           ;; Date:   Tue Sep 3 16:10:15 2024 -0400
-           ;;
-           ;; nongnu: signal-desktop: Update to 7.22.2.
            ;; (list "signal-desktop" "b6bb6276310de10d591f1738492b94e04e33ff1f")
-           (list
-            ;; (@(nongnu packages messaging) signal-desktop)
-            "signal-desktop"
-            "b6bb6276310de10d591f1738492b94e04e33ff1f")
            ))))
    pkgs))
 (testsymb 'inferior-pkgs)
