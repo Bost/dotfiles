@@ -52,7 +52,7 @@ guix home --allow-downgrades --cores=$cores \
 ;; See also $dotf/.bashrc.martin
 (define home-env
   (home-environment
-   ;; Replaced by $dotf/guix/home/common/manifest.scm
+   ;; Replaced by $dotf/guix/manifest.scm
    ;; (packages ((@(cfg packages all) packages-to-install)))
    (services
     ((comp
