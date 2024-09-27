@@ -239,7 +239,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    fd
    fish
    git
-   (list git "gui")
 
 ;;; glibc and glibc-locales are needed to prevent:
 ;;;     guile: warning: failed to install locale
@@ -263,6 +262,15 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Read-write access to NTFS file systems
    ntfs-3g
 
+   ;; Workaround for:
+   ;;   SPC * not working with ripgrep 14
+   ;;   https://github.com/syl20bnr/spacemacs/issues/16200
+   ;; ripgrep 13.0.0 is needed. However when pulled-in via the
+   ;; inferior-mechanism the `gxhre` compilation takes too long. This problem
+   ;; doesn't come up when the ripgrep 13.0.0. is pulled from a separate
+   ;; channel.
+   (@(bost gnu packages rust-apps) ripgrep)
+
    rsync
 
    ;; S.M.A.R.T.  harddisk control and monitoring tools
@@ -284,6 +292,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; * Display pane title on each pane.
    ;; * Generate command lines from standard input (Pipe mode).
    tmux-xpanes
+
+   ;; udisksctl
+   udisks
 
    unzip
    vim
@@ -613,15 +624,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Manipulate plain text files as databases
    recutils
 
-   ;; Workaround for:
-   ;;   SPC * not working with ripgrep 14
-   ;;   https://github.com/syl20bnr/spacemacs/issues/16200
-   ;; ripgrep 13.0.0 is needed. However when pulled-in via the
-   ;; inferior-mechanism the `gxhre` compilation takes too long. This problem
-   ;; doesn't come up when the ripgrep 13.0.0. is pulled from a separate
-   ;; channel.
-   (@(bost gnu packages rust-apps) ripgrep)
-
    rlwrap
 
    scsh ;; Unix shell embedded in Scheme
@@ -947,6 +949,8 @@ FIXME the inferior-pkgs get installed on every machine"
            (rest-packages)
            (xfce-packages)
            (xorg-packages)
+           (list
+            (list git "gui"))
            pkgs)
           pkgs))
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
