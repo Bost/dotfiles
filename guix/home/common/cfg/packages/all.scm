@@ -687,6 +687,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; https://www.freedesktop.org/wiki/Software/xdg-utils/ - probably not needed
    ;; xdg-utils  ;; in gnu/packages/freedesktop.scm
 
+   ;; https://issues.guix.gnu.org/59825
+   ;; guix shell -NC flatpak-xdg-utils --preserve='^DBUS_SESSION_BUS_ADDRESS$' -- xdg-open "<https://guix.gnu.org>"
+
    ;; $ time exa -abghHliS --color=always --time-style=full-iso /gnu/store
    ;;
    ;; GPU-based terminal emulator:
@@ -811,7 +814,9 @@ See guix/manifest-emacs-29.1.scm, guix/home/common/cfg/packages/all.scm"
 
 (define (inferior-pkgs pkgs)
   "The original, i.e. non-inferior packages must not be present in the
-home-profile. Comment them out."
+home-profile. Comment them out.
+
+FIXME the inferior-pkgs get installed on every machine"
   ((comp
     ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
     (partial

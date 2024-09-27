@@ -50,31 +50,6 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 (define (sway-package-specifications)
 ;;; # Get the sway configuration file:
 ;;; mkdir -p $dotf/.config/sway
