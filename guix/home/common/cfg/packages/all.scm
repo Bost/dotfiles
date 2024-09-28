@@ -229,6 +229,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
   (list
    bash
    bat
+
+   ;; Arbitrary precision numeric processing language
+   bc
+
    direnv
    ;; read hardware information from the BIOS
    dmidecode
@@ -258,6 +262,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ;; transport layer security library, implements SSL, TLS, DTLS
    gnutls
+
+   ;; Command-line JSON processor
+   jq
 
    ;; Read-write access to NTFS file systems
    ntfs-3g
@@ -297,6 +304,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    udisks
 
    unzip
+
+   ;; Tools for working with USB devices
+   usbutils
+
    vim
    zip
    ))
@@ -483,7 +494,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    aspell-dict-fr
    autoconf
    automake ;; for `make doc/guix.info`
-   bc
 
    ;; specifying only 'bind' leads to "Wrong type argument in position 1 ..."
    (list isc-bind "utils")
@@ -552,7 +562,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    inxi
    ispell
    jmtpfs
-   jq ;; json formatting
    libavc1394
    libavif
    libconfini
@@ -635,8 +644,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    tree
    tzdata
    udiskie
-   uniutils
-   usbutils
+   uniutils ; Find out what is in a Unicode file
 
    ;; Viewer for graphviz dot files; display package dependency graph.
    xdot ;; guix graph coreutils | xdot -
@@ -905,6 +913,7 @@ FIXME the inferior-pkgs get installed on every machine"
     ;; See also emacs-flymake-shellcheck: Flymake backend for Bash/Sh powered by
     ;; ShellCheck
 
+    ;; Vim plugin for structured editing of Lisp S-expressions
     vim-paredit ;; the support for very large files is not great
     )))
 (testsymb 'devel-packages)
