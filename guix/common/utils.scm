@@ -72,6 +72,9 @@
 (define-public cnt length+)
 
 (define-public (partial fun . args)
+  "Alternative implementation:
+(use-modules (srfi srfi-26))
+(map (cut * 2 <>) '(1 2 3 4)) ;; => (2 4 6 8)"
   (lambda x (apply fun (append args x))))
 
 (define-public (comp . fns)
@@ -524,7 +527,7 @@ i.e. skip the `read-all-strings' and thus make `exec-background' out of it.
 
 Usage:
 (define (process output)
-  (format #t \"(test-type output): ~a\n\" (test-type output))
+  (format #t \"(test-type output): ~a\\n\" (test-type output))
   ...)
 
 (let* ((ret (exec command)))
