@@ -526,23 +526,28 @@ TODO have a look if a delimited continuation can be used to break out of `exec',
 i.e. skip the `read-all-strings' and thus make `exec-background' out of it.
 
 Usage:
-(define (process output)
+(define (process retvat output)
   (format #t \"(test-type output): ~a\\n\" (test-type output))
-  ...)
+  ...
+  retvat)
 
-(let* ((ret (exec command)))
-    (if (= 0 (car ret))
+(let* ((command (list \"echo\" \"foo\"))
+       (ret (exec command))
+       (retvat (car ret)))
+    (if (= 0 retvat)
         (let* ((output (cdr ret)))
-          (process output))
+          (process retvat output))
       (begin
         ;; (error-command-failed \"[module]\" \"extra_info\")
+        ;; or return `retval' instead of `*unspecified*'
         *unspecified*)))"
   ;; ,use (guix build utils) ;; contains `invoke'
-  ;; `invoke' does `(apply system* program args)'; `system*' waits for the program
-  ;; to finish, The command is executed using fork and execlp.
+  ;; `invoke' does `(apply system* program args)'; `system*' waits for the
+  ;; program to finish, The command is executed using fork and execlp.
 
   ;; TODO write a scheme procedure: chdir str
-  ;; Change the current working directory to str. The return value is unspecified.
+  ;; Change the current working directory to str. The return value is
+  ;; unspecified.
   (define (exec-function command)
     ;; Can't use the `call-with-port' since the exit-val is needed.
     (let* [(port (open-input-pipe command)) ; from (ice-9 rdelim)
@@ -908,7 +913,8 @@ Requires:
 (define-public spacemacs "spacemacs")
 (define-public spguimacs "spguimacs")
 (define-public crafted "crafted")
-(define-public is-valid-profile? (partial string-in? (list spacemacs spguimacs crafted)))
+(define-public is-valid-profile?
+  (partial string-in? (list spacemacs spguimacs crafted)))
 
 ;; (define-public (inferior-package-in-guix-channel package commit)
 ;;   "Returns an inferior representing the `commit' (predecessor-sha1) revision.
@@ -923,5 +929,11 @@ Requires:
 ;;             (commit commit))))
 ;;     package)))
 ;; (testsymb 'inferior-package-in-guix-channel)
+
+(define-public (directory-exists? dir)
+  "Return #t if DIR exists and is a directory. From $dgx/guix/build/utils.scm"
+  (let ((s (stat dir #f)))
+    (and s
+         (eq? 'directory (stat:type s)))))
 
 (module-evaluated)
