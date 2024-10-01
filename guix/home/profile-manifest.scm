@@ -1,4 +1,4 @@
-(define-module (manifest)
+(define-module (profile-manifest)
   #:use-module (utils) ;; partial
   #:use-module (guix profiles)
   #:use-module (cfg packages all) ;; packages-to-install

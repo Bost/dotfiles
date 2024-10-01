@@ -17,7 +17,7 @@ guix package \
      -L $baseLP/common \
      -L $baseLP/home/common \
      --profile=$HOME/.guix-profile \
-     --manifest=$baseLP/manifest.scm \
+     --manifest=$baseLP/profile-manifest.scm \
      "$@"
 { retval="$?"; set +x; } 2>/dev/null
 
