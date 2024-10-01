@@ -12,38 +12,6 @@
 
 (evaluating-module)
 
-(define (spacemacs-development-packages)
-  ;; used by `guix shell ...', specified by run.sh
-  (list
-   "bash"
-
-   "coreutils"
-   "curl"
-
-   ;; provides:
-   ;; find, updatedb, xargs
-   "findutils"
-
-   ;; provides:
-   ;; free, pgrep, pidof, pkill, pmap, ps, pwdx, slabtop, tload, top, vmstat,
-   ;; w, watch and sysctl
-   ;; `w' - Show who is logged on and what they are doing.
-   "procps"
-   "fish"
-   "git"
-   "gnupg"
-   "grep"
-   "less"
-   "ncurses"
-
-   "openssh"
-   "ripgrep"
-   "rsync"
-   "sed"
-   "which"
-   ))
-(testsymb 'spacemacs-development-packages)
-
 (define (general-packages)
   (list
    "emacs-spacemacs"
