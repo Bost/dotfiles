@@ -78,7 +78,15 @@
 
    ;; To configure OpenSSH, pass an 'openssh-configuration'
    ;; record as a second argument to 'service' below.
-   (service openssh-service-type)
+   (service
+    openssh-service-type
+    (openssh-configuration
+     ;; (permit-root-login 'prohibit-password)
+     (password-authentication? #f) ;; default: #t
+     (authorized-keys
+      ;; Assuming the id_rsa.pub exists under given path, e.g. it was
+      ;; transferred by `ssh-copy-id` at some point in the past.
+      `((,user ,(local-file (string-append home "/.ssh/id_rsa.pub")))))))
 
    (service xfce-desktop-service-type)))
 (testsymb-trace 'services)
