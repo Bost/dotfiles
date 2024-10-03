@@ -32,10 +32,23 @@
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
  cups desktop networking ssh
- lightdm  ; for lightdm-service-type
- vnc      ; for xvnc-service-type
- ;; sddm     ; for sddm-service-type
- xorg     ; for gdm-service-type
+
+ ;; for lightdm-service-type - Run `lightdm', the LightDM graphical login
+ ;; manager.
+ lightdm
+
+ ;; for xvnc-service-type - Run the Xvnc server, which creates a virtual X11
+ ;; session and allow remote clients connecting to it via the remote framebuffer
+ ;; (RFB) protocol.
+ vnc
+
+ ;; for sddm-service-type - SDDM, a display and log-in manager for X11 and
+ ;; Wayland
+ sddm
+
+ ;; for gdm-service-type - Run the GNOME Desktop Manager (GDM), which allows you
+ ;; to log in in a graphical session, whether or not you use GNOME.
+ xorg
  )
 
 ;; no need to write: #:use-module (gnu packages <module>)
@@ -46,53 +59,8 @@
  shells   ; login shell
  )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 (define m (module-name-for-logging))
 (evaluating-module)
-
-(define xorg-conf
-  (xorg-configuration (keyboard-layout (base:keyb-layout))))
-
-(define lightdm-conf
-  (lightdm-configuration
-   (xorg-configuration xorg-conf)
-   ;; (allow-empty-passwords? #t)
-
-   ;; XDMCP is not encrypted; it has more modern
-   ;; alternatives VNC, RDP
-   ;; (xdmcp? #t)
-
-   ;; should be the TigerVNC for remote desktop access
-   (vnc-server? #t)
-
-   ;; (vnc-server-command
-   ;;  (file-append tigervnc-server "/bin/Xvnc"
-   ;;               "  -SecurityTypes None"))
-   ;; (seats
-   ;;  (list (lightdm-seat-configuration
-   ;;         (name "*")
-   ;;         (user-session "ratpoison"))))
-   ))
-
-(define lightdm-srvc
-  (service lightdm-service-type lightdm-conf))
 
 (define-public syst-config
   (operating-system
@@ -116,54 +84,61 @@
            (list
             "brightnessctl" #| backlight and LED brightness control |#
             ))
-
-
-
-
-
-
-
-
-
-
-
-
       (packages-to-install)
       %base-packages))
-
-
-
-
-
 
     (services
      ;; TODO create macros pappend, premove, etc. - parallel processing
      (append
-      (base:services)
+      (modify-services (base:services)
+        (openssh-service-type
+         config => (openssh-configuration
+                    (inherit config)
+                    ;; enable forwarding of X11 graphical client connections, so that ssh
+                    ;; options -X and -Y work. However this doesn't fix the remote-desktop
+                    ;; problem
+                    ;; (x11-forwarding? #t)
+                    )))
+      
       (list
        ;; TODO lightdm doesn't work properly. The login fails
-       ;; lightdm-srvc
-       (service xvnc-service-type (xvnc-configuration
-                                   (display-number 5)
-                                   ;; (localhost? #f) ;; see Guix-Manual
-                                   (geometry
-                                    "1920x1080"
-                                    ;; "2880x1620"
-                                    ;; "2880x1800"
-                                    ;; "2880x1800*"
-                                    )
-                                   (xdmcp? #t)  ;; default:#f
-                                   (inetd? #t)  ;; default:#f
-                                   ))
+       ;; (service lightdm-service-type
+       ;;          (lightdm-configuration
+       ;;           (xorg-configuration
+       ;;            (xorg-configuration (keyboard-layout (base:keyb-layout))))
+       ;;           ;; (allow-empty-passwords? #t)
 
+       ;;           ;; Not encrypted. More modern alternatives are VNC, RDP
+       ;;           ;; (xdmcp? #t)
 
+       ;;           ;; should be the TigerVNC for remote desktop access
+       ;;           (vnc-server? #t)
 
+       ;;           ;; (vnc-server-command
+       ;;           ;;  (file-append tigervnc-server "/bin/Xvnc"
+       ;;           ;;               "  -SecurityTypes None"))
+       ;;           ;; (seats
+       ;;           ;;  (list (lightdm-seat-configuration
+       ;;           ;;         (name "*")
+       ;;           ;;         (user-session "ratpoison"))))
+       ;;           ))
 
+       (service xvnc-service-type
+                (xvnc-configuration
+                 (display-number 5)
+                 ;; (localhost? #f) ;; see Guix-Manual
 
-
-
-
-
+                 (geometry    ;; default: "1024x768"
+                  "1920x1080"
+                  ;; "2880x1620"
+                  ;; "2880x1800"
+                  ;; "2880x1800*"
+                  )
+                 ;; enable users to log in a desktop session from the login
+                 ;; manager screen
+                 (xdmcp? #t)  ;; default: #f
+                 (inetd? #t)  ;; default: #f
+                 ))
 
        (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
@@ -229,14 +204,7 @@
               (mount-point "/")
               (device (uuid "61048634-de01-4e76-ae08-4e1ae09b63f5" 'ext4))
               (type "ext4"))
-
-
-
-
             %base-file-systems))
-
-
-
 
     (swap-devices (list
                    (swap-space
