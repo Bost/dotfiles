@@ -21,11 +21,11 @@ set -e # Exit immediately if a command exits with a non-zero status.
 # -v, --verbosity=LEVEL  use the given verbosity LEVEL
 set -x  # Print commands and their arguments as they are executed.
 
-guix repl \
-     -L $baseLP/common \
-     $baseLP/systems/common/kernel-version.scm
+# guix repl \
+#      -L $baseLP/common \
+#      $baseLP/systems/common/kernel-version.scm
 
-sudo guix system --verbosity=3 --fallback \
+sudo guix system --cores=$cores --verbosity=3 --fallback \
      -L $baseLP/common \
      -L $baseLP/systems/common \
      reconfigure $baseLP/systems/syst-$hostname.scm
