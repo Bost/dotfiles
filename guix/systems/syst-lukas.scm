@@ -9,6 +9,7 @@
 )
 
 (use-service-modules ; no need to write: #:use-module (gnu services <module>)
+ desktop         ;; elogind-service-type
  networking      ;; dhcp-client-service-type
  ssh             ;; openssh-service-type
  )
@@ -74,6 +75,9 @@
 
     (services
      (cons*
+      ;; Avoid guix home warning: XDG_RUNTIME_DIR doesn't exists ...
+      (service elogind-service-type)
+
       (service network-manager-service-type)
       (service wpa-supplicant-service-type)
       (service
