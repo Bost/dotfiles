@@ -2,6 +2,6 @@
 
 set -x  # Print commands and their arguments as they are executed.
 # -s, --search=REGEXP; guix search
-guix package --search="$@"
+guix package --cores=$cores --search="$@"
 { retval="$?"; set +x; } 2>/dev/null
 exit $retval

@@ -6,7 +6,7 @@
 #     $HOME/.guix-home/profile
 #     /run/current-system/profile
 # )
-myProfiles=($(guix package --list-profiles))
+myProfiles=($(guix package --cores=$cores --list-profiles))
 myProfiles+=($HOME/.guix-home/profile)
 myProfiles+=(/run/current-system/profile)
 
@@ -31,7 +31,7 @@ for profile in ${myProfiles[@]}; do
     # set -x  # Print commands and their arguments as they are executed.
     # It also causes printing of the 'result=' assignment and the
     # '... | column --table' redirection. That's too much noise.
-    cmd=$(printf "guix package --profile=%s %s" $profile "$@")
+    cmd=$(printf "guix package --cores=$cores --profile=%s %s" $profile "$@")
     echo "+ $cmd"
     result=$($cmd)
     # { retval="$?"; set +x; } 2>/dev/null
