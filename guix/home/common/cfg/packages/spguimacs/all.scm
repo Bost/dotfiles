@@ -81,7 +81,6 @@
    bst:emacs-company-phpactor
    bst:emacs-markdown-toc
    bst:emacs-sly-named-readtables
-   bst:emacs-nyan-mode
    bst:emacs-use-package-chords
    bst:emacs-magit-section
    bst:emacs-helm-files
@@ -90,26 +89,17 @@
    bst:emacs-git-commit
    bst:emacs-use-package
    bst:emacs-evil-collection
-   bst:emacs-forge
-   bst:emacs-magit-annex
    bst:emacs-magit-gerrit
    bst:emacs-magit-org-todos-el
    bst:emacs-magit-svn
    bst:emacs-magit-todos
-   bst:emacs-orgit
-   bst:emacs-taxy
-   bst:emacs-taxy-magit-section
    bst:emacs-treemacs-extra
    bst:emacs-vdiff-magit
-   bst:emacs-lsp-ui
    bst:emacs-dap-launch
    bst:emacs-dap-tasks
-   bst:emacs-lsp-docker
-   bst:emacs-dap-mode
    bst:emacs-dap-utils
    bst:emacs-dap-chrome
    bst:emacs-dap-overlays
-   bst:emacs-lsp-mode
    bst:emacs-helm-lsp
    bst:emacs-lsp-lens
    bst:emacs-lsp-protocol
@@ -146,7 +136,6 @@
    bst:emacs-farmhouse-light-mod-theme
    bst:emacs-web-completion-data
    bst:emacs-company-web
-   bst:emacs-gptel
    bst:emacs-copilot
    bst:emacs-ample-zen-theme
    bst:emacs-anti-zenburn-theme
@@ -225,15 +214,12 @@
    bst:emacs-unicode-fonts
    bst:emacs-sublime-themes
    bst:emacs-cider-hydra
-   bst:emacs-flycheck-clj-kondo
    bst:emacs-flycheck-joker
    bst:emacs-kaocha-runner
    bst:emacs-sayid
    bst:emacs-kaolin-themes
    bst:emacs-emacsql-sqlite3
    bst:emacs-zonokai-emacs
-   bst:emacs-treemacs
-   bst:emacs-lsp-treemacs
    bst:emacs-kill-buffers
    bst:emacs-copy-sexp
    bst:emacs-jump-last
@@ -247,6 +233,7 @@
    bst:emacs-frame-cmds
    bst:emacs-zoom-frm
    ))
+(testsymb-trace 'bst-packages)
 
 #|
 (define G (general-packages))
