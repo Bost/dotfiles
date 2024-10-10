@@ -91,7 +91,6 @@
    bst:emacs-use-package
    bst:emacs-evil-collection
    bst:emacs-forge
-   bst:emacs-magit
    bst:emacs-magit-annex
    bst:emacs-magit-gerrit
    bst:emacs-magit-org-todos-el
