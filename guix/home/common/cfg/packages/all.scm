@@ -132,6 +132,7 @@
  irc
  commencement
  gcc
+ clojure
  )
 
 (define (email-in-emacs-packages)
@@ -150,10 +151,8 @@ Including these packages in the `packages-to-install' causes:
    error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
-   (@(bost gnu packages clojure) clojure-lsp)
-   (@(bost gnu packages clojure) clojure-tools)
-   (@(bost gnu packages babashka) babashka)
-
+   (@(nongnu packages clojure) babashka)
+   (@(nongnu packages clojure) clojure-lsp)
    ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
    (@(nongnu packages messaging) signal-desktop)
    (@(nongnu packages clojure) leiningen)
@@ -503,10 +502,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; cdrtools
 
    clang
-
-   ;; Use the (bost gnu packages clojure) definitions for clojure-related packages
-   ;; clojure-tools
-
+   clojure-tools
    clusterssh
    cmake
    curl
