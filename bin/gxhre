@@ -7,7 +7,7 @@ configFile=$(printf "%s/home/home-%s.scm" $baseLP $hostname)
 
 set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null
-guix home --allow-downgrades \
+guix home --cores=$cores --allow-downgrades \
      -L $baseLP/common \
      -L $baseLP/home/common \
      reconfigure \
