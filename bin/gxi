@@ -2,6 +2,6 @@
 
 set -x  # Print commands and their arguments as they are executed.
 # -i, --install PACKAGE
-guix package --install "$@"
+guix package --cores=$cores --install "$@"
 { retval="$?"; set +x; } 2>/dev/null
 exit $retval
