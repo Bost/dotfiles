@@ -19,31 +19,43 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define (main files args)
-  (let* ((ret
-          ((comp
-            #;(lambda (p) (format #t "1: ~a\n" p) p)
-            exec
-            #;
-            (lambda (p)
-              ;; returns only <retval>
-              (system* "search-notes" "-f" (string-append "'" files "'") "-p" "title")
-              ;; returns only #t
-              (invoke "search-notes" "-f" (string-append "'" files "'") "-p" "title"))
-            #;(lambda (p) (format #t "0: ~a\n" p) p)
-;;; TODO compile search-notes if it doesn't exits in the PATH.
-;;; See $der/search-notes/README.md
-            (partial cons* (format #f "search-notes -e '~a' -p" files))
-            cdr)
-           args)))
-    #;ret
+(define (search-file ptrn file)
+  "
+(search-file
+ \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\"
+ \"pattern\")
+"
+  (let* [(cmd1 (format #f "nl --body-numbering=t '~a'" file))
+         (cmd2 "sed 's/^\\s*$//'")
+         (cmd3
+          ;; Red: \033[31m
+          ;; Bright Red: \033[1;31m
+          ;; Green: \033[32m
+          ;; Yellow: \033[33m
+          ;; Blue: \033[34m
+          ;; Magenta: \033[35m
+          ;; Cyan: \033[36m
+          ;; White: \033[37m
+          ;; Reset: \033[0m
+          (format
+           #f
+           "awk -v RS='' '/~a/ {gsub(/~a/, \"\\033[1;31m&\\033[0m\"); print $0 \"\\n\"}'"
+           ptrn ptrn))
+         (ret (exec (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3)))]
     (if (= 0 (car ret))
-        (let* ((output (cdr ret)))
+        (let* [(output (cdr ret))]
           #| process output |#
           (map (partial format #t "~a\n") output))
         (error-command-failed m))))
+(testsymb 'search-file)
+
+(define (main files args)
+  "
+(main
+  (list \"/home/bost/dev/notes/notes/network.scrbl\"
+        \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\")
+  (list \"_\" \"pattern\"))
+"
+  (let* [(ptrn ((comp car cdr) args))]
+    (map (partial search-file ptrn) files)))
 (testsymb 'main)
-
-(module-evaluated)
-
-;; (main "shells" (list "_" "title"))
