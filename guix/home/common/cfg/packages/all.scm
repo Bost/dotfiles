@@ -621,8 +621,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    python-2.7
 
    qemu
-;;; TODO Auto-rebuild `search-notes' every time a new racket-version is build.
-;;; This will happen automatically if `search-notes' is a proper Guix package.
    racket
    readline
 
