@@ -44,25 +44,29 @@
 (expand-pattern notes-dir \"cli/\")
 (expand-pattern notes-dir \"cvs\")
 "
-  (if (string= ".*" pattern)
-      (list-all-files notes-dir)
-      (let* [(re (let* [(b (basename pattern))]
-                   (str (if (string-suffix? "/" b) "" ".*") b ".*")))
-             (dir (str notes-dir "/"
-                       (let* [(d (dirname pattern))]
-                         (if (string= "." d)   "" (str d "/")))
-                       (let* [(dre (dirname re))]
-                         (if (string= "." dre) "" (str dre "/")))))
-             (rem-fn (if (string= pattern ".*")
-                         (lambda _ #f)
-                         file-is-directory?))]
-        ((comp
-          (partial remove rem-fn)
-          (partial map (partial str dir))
-          (partial remove (lambda (f) (member f (list "." ".."))))
-          (lambda (p) (or p (list))) ;; the notes-dir may not exist
-          (partial scandir dir))
-         (lambda (s) (string-match (basename re) s))))))
+  (let* [(files
+          (if (string= ".*" pattern)
+              (list-all-files notes-dir)
+              (let* [(re (let* [(b (basename pattern))]
+                           (str (if (string-suffix? "/" b) "" ".*") b ".*")))
+                     (dir (str notes-dir "/"
+                               (let* [(d (dirname pattern))]
+                                 (if (string= "." d)   "" (str d "/")))
+                               (let* [(dre (dirname re))]
+                                 (if (string= "." dre) "" (str dre "/")))))
+                     (rem-fn (if (string= pattern ".*")
+                                 (lambda _ #f)
+                                 file-is-directory?))]
+                ((comp
+                  (partial remove rem-fn)
+                  (partial map (partial str dir))
+                  (partial remove (lambda (f) (member f (list "." ".."))))
+                  (lambda (p) (or p (list))) ;; the notes-dir may not exist
+                  (partial scandir dir))
+                 (lambda (s) (string-match (basename re) s))))))]
+    ((comp 
+      (partial remove (lambda (f) (ends-with? (dirname f) "compiled"))))
+     files)))
 
 (define launcher-spacemacs (format #f "emacs-launcher-~a" spacemacs))
 (define launcher-spguimacs (format #f "emacs-launcher-~a" spguimacs))
@@ -88,12 +92,14 @@
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
 (full-filepaths (list \"ai\")) =>
-\"/home/bost/org-roam/ai.scrbl /home/bost/org-roam/mainframe_and_host.scrbl /home/bost/org-roam/main.rkt\"
+(list \"/home/bost/org-roam/ai.scrbl\"
+      \"/home/bost/org-roam/mainframe_and_host.scrbl\"
+      \"/home/bost/org-roam/main.rkt\")
 "
   ((comp
     ;; This is not needed. The string will be surrounded by single quotes.
     ;; (partial format #f "\"~a\"")
-    string-join
+    ;; string-join
     flatten
     (partial map (partial expand-pattern notes-dir)))
    patterns))
@@ -137,11 +143,9 @@ Example:
                                 (begin
                                   (format #t "~a (list? ~a)\n" m (list? other-files))
                                   (full-filepaths files))
-                                (string-join
-                                 (append
-                                  other-files
-                                  (list
-                                   (full-filepaths files))))])
+                                `(list 
+                                 ,@(append other-files
+                                           (full-filepaths files)))])
                              (command-line)))))
         (with-imported-modules
             (remove
