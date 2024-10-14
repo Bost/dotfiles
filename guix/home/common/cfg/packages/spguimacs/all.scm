@@ -92,7 +92,6 @@
    bst:emacs-magit-gerrit
    bst:emacs-magit-org-todos-el
    bst:emacs-magit-svn
-   bst:emacs-magit-todos
    bst:emacs-treemacs-extra
    bst:emacs-vdiff-magit
    bst:emacs-dap-launch
