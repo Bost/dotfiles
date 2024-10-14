@@ -108,7 +108,13 @@
   (operating-system
     (inherit (syst-config))
     (kernel linux)
+
+;;; CPU microcode updates are nonfree blobs that apply directly to a processor
+;;; to patch its behavior, and are therefore not included in upstream GNU Guix.
+;;; However, running the latest microcode is important to avoid nasty CPU bugs
+;;; and hardware security vulnerabilities.
     (initrd microcode-initrd)
+
     (firmware (list linux-firmware))))
 
 (testsymb 'syst-config)
