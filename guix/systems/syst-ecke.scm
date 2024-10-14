@@ -39,7 +39,7 @@
  ;; - i3-wm
  ;; - xmonad (Tiling window manager)
  ;; ...
- ;; wm ;; provides "sway" "swaybg" "swayidle" "swaylock"
+ wm ;; provides "sway" "swaybg" "swayidle" "swaylock"
 
  ;; video
  ;; certs
@@ -89,7 +89,7 @@
 ;;; install PACKAGE' to install a package.
     (packages
      (append
-      ;; (map specification->package (sway-package-specifications))
+      (map specification->package (sway-package-specifications))
       (packages-to-install)
       %base-packages))
 
