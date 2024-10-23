@@ -64,7 +64,7 @@
                   (lambda (p) (or p (list))) ;; the notes-dir may not exist
                   (partial scandir dir))
                  (lambda (s) (string-match (basename re) s))))))]
-    ((comp 
+    ((comp
       (partial remove (lambda (f) (ends-with? (dirname f) "compiled"))))
      files)))
 
@@ -137,19 +137,29 @@ Example:
               (remove unspecified?
                       `(main ,(cond
                                [(equal? scheme-file-name "chmod")
-                                chmod-params]
+                                `(let [(cmd-line (command-line))]
+                                   (append (list (car cmd-line)
+                                                 ,chmod-params)
+                                           (cdr cmd-line)))]
+
                                [(equal? scheme-file-name "search-notes")
-                                #;
-                                (begin
-                                  (format #t "~a (list? ~a)\n" m (list? other-files))
-                                  (full-filepaths files))
-                                `(list 
-                                 ,@(append other-files
-                                           (full-filepaths files)))])
-                             (command-line)))))
+                                `(append (command-line)
+                                         (list ,@(append other-files
+                                                         (full-filepaths files))))]
+
+                               [#t `(command-line)])))))
         (with-imported-modules
-            (remove
-             unspecified?
+            ((comp
+              (partial remove unspecified?)
+              (lambda (lst)
+                (if (equal? scheme-file-name "search-notes")
+                    (append lst `(
+                                  (guix profiling)
+                                  (guix memoization)
+                                  (guix colors)
+                                  ;; (ice-9 getopt-long)
+                                  ))
+                    lst)))
              `((guix monads)
                (utils)
                (settings)
