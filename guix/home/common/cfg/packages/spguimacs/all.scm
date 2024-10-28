@@ -69,70 +69,7 @@
 
 (define bst-packages
   (list
-   bst:emacs-tblui
-   bst:emacs-openai
-   bst:emacs-lv
-   bst:emacs-chatgpt
-   bst:emacs-ac-php-core
-   bst:emacs-company-anaconda
-   bst:emacs-company-php
-   bst:emacs-company-phpactor
-   bst:emacs-markdown-toc
-   bst:emacs-use-package-chords
-   bst:emacs-magit-section
-   bst:emacs-helm-files
-   bst:emacs-helm-core
-   bst:emacs-treemacs-magit
-   bst:emacs-git-commit
-   bst:emacs-use-package
-   bst:emacs-evil-collection
-   bst:emacs-magit-gerrit
-   bst:emacs-magit-org-todos-el
-   bst:emacs-magit-svn
-   bst:emacs-treemacs-extra
-   bst:emacs-vdiff-magit
-   bst:emacs-dap-launch
-   bst:emacs-dap-tasks
-   bst:emacs-dap-utils
-   bst:emacs-dap-chrome
-   bst:emacs-dap-overlays
-   bst:emacs-helm-lsp
-   bst:emacs-lsp-lens
-   bst:emacs-lsp-protocol
-   bst:emacs-lsp-java
-   bst:emacs-lsp-metals
-   bst:emacs-lsp-metals-protocol
-   bst:emacs-lsp-metals-treeview
-   bst:emacs-treemacs-treelib
-   bst:emacs-color-theme-sanityinc-tomorrow
-   bst:emacs-color-theme-sanityinc-solarized
-   bst:emacs-lsp-python-ms
-   bst:emacs-moe-theme
-   bst:emacs-slim-mode
-   bst:emacs-font-utils
-   bst:emacs-lush-theme
-   bst:emacs-vi-tilde-fringe
-   bst:emacs-popwin
-   bst:emacs-lsp-volar
-   bst:emacs-centered-cursor-mode
-   bst:emacs-company-statistics
-   bst:emacs-json-navigator
-   bst:emacs-eziam-themes
-   bst:emacs-helm-cider-history
-   bst:emacs-flx
-   bst:emacs-lsp-haskell
-   bst:emacs-erc-social-graph
-   bst:emacs-hlint-refactor
-   bst:emacs-chocolate
-   bst:emacs-gruber-darker
-   bst:emacs-writeroom-mode
-   bst:emacs-js2-refactor
-   bst:emacs-origami
-   bst:emacs-farmhouse-themes
-   bst:emacs-farmhouse-light-mod-theme
-   bst:emacs-web-completion-data
-   bst:emacs-company-web
-   bst:emacs-copilot
+   ;; bst:emacs-ac-php-core
    bst:emacs-ample-zen-theme
    bst:emacs-anti-zenburn-theme
    bst:emacs-apropospriate-theme
@@ -140,33 +77,96 @@
    bst:emacs-birds-of-paradise-plus-theme
    bst:emacs-bubbleberry-theme
    bst:emacs-busybee-theme
+   bst:emacs-centered-cursor-mode
+   bst:emacs-chatgpt
+   bst:emacs-chatgpt-shell
    bst:emacs-cherry-blossom-theme
+   bst:emacs-chocolate
+   bst:emacs-cider-hydra
    bst:emacs-clues-theme
+   bst:emacs-color-theme
+   bst:emacs-color-theme-sanityinc-solarized
+   bst:emacs-color-theme-sanityinc-tomorrow
+   bst:emacs-company-anaconda
+   bst:emacs-company-php
+   bst:emacs-company-phpactor
+   bst:emacs-company-statistics
+   bst:emacs-company-web
+   bst:emacs-copilot
+   bst:emacs-copy-sexp
    bst:emacs-dakrone-theme
+   bst:emacs-dap-chrome
+   bst:emacs-dap-launch
+   bst:emacs-dap-overlays
+   bst:emacs-dap-tasks
+   bst:emacs-dap-utils
    bst:emacs-darkmine-theme
    bst:emacs-darkokai-theme
    bst:emacs-darktooth-theme
    bst:emacs-django-theme
+   bst:emacs-emacsql-sqlite3
+   bst:emacs-erc-social-graph
    bst:emacs-espresso-theme
+   bst:emacs-evil-collection
+   bst:emacs-evil-iedit-state
+   bst:emacs-eziam-themes
+   bst:emacs-farmhouse-light-mod-theme
+   bst:emacs-farmhouse-themes
    bst:emacs-flatland-theme
    bst:emacs-flatui-theme
+   bst:emacs-flx
+   bst:emacs-flycheck-joker
+   bst:emacs-font-utils
+   bst:emacs-frame-cmds
+   bst:emacs-frame-fns
    bst:emacs-gandalf-theme
+   bst:emacs-git-commit
    bst:emacs-gotham-theme
    bst:emacs-grandshell-theme
+   bst:emacs-gruber-darker
    bst:emacs-gruber-darker-theme
    bst:emacs-hc-zenburn-theme
+   bst:emacs-helm-cider-history
+   bst:emacs-helm-core
+   bst:emacs-helm-files
+   bst:emacs-helm-lsp
    bst:emacs-hemisu-theme
    bst:emacs-heroku-theme
+   bst:emacs-hlint-refactor
    bst:emacs-inkpot-theme
    bst:emacs-ir-black-theme
    bst:emacs-jazz-theme
    bst:emacs-jbeans-theme
+   bst:emacs-js2-refactor
+   bst:emacs-json-navigator
+   bst:emacs-jump-last
+   bst:emacs-kaocha-runner
+   bst:emacs-kaolin-themes
+   bst:emacs-kill-buffers
    bst:emacs-light-soap-theme
+   bst:emacs-lsp-haskell
+   bst:emacs-lsp-java
+   bst:emacs-lsp-lens
+   bst:emacs-lsp-metals
+   bst:emacs-lsp-metals-protocol
+   bst:emacs-lsp-metals-treeview
+   bst:emacs-lsp-origami
+   bst:emacs-lsp-protocol
+   bst:emacs-lsp-pyright
+   bst:emacs-lsp-python-ms
+   bst:emacs-lsp-volar
+   bst:emacs-lush-theme
+   bst:emacs-lv
    bst:emacs-madhat2r-theme
+   bst:emacs-magit-gerrit
+   bst:emacs-magit-org-todos-el
+   bst:emacs-magit-section
+   bst:emacs-magit-svn
    bst:emacs-majapahit-themes
+   bst:emacs-markdown-toc
    bst:emacs-material-theme
    bst:emacs-minimal-theme
-   bst:emacs-color-theme
+   bst:emacs-moe-theme
    ;; bst:emacs-molokai-theme ;; doesn't compile
    bst:emacs-monochrome-theme
    bst:emacs-mustang-theme
@@ -175,62 +175,62 @@
    bst:emacs-obsidian-theme
    bst:emacs-occidental-theme
    bst:emacs-oldlace-theme
-   bst:emacs-organic-green-theme
-   bst:emacs-phoenix-dark-mono-theme
-   bst:emacs-phoenix-dark-pink-theme
-   bst:emacs-planet-theme
-   bst:emacs-professional-theme
-   bst:emacs-purple-haze-theme
-   bst:emacs-reverse-theme
-   bst:emacs-seti-theme
-   bst:emacs-smyx-theme
-   bst:emacs-soft-charcoal-theme
-   bst:emacs-soft-morning-theme
-   bst:emacs-soft-stone-theme
-   bst:emacs-subatomic256-theme
-   bst:emacs-subatomic-theme
-   bst:emacs-sunny-day-theme
-   bst:emacs-tango-2-theme
-   bst:emacs-tango-plus-theme
-   bst:emacs-tangotango-theme
-   bst:emacs-toxi-theme
-   bst:emacs-twilight-anti-bright-theme
-   bst:emacs-twilight-bright-theme
-   bst:emacs-twilight-theme
-   bst:emacs-ujelly-theme
-   bst:emacs-underwater-theme
-   bst:emacs-white-sand-theme
-   bst:emacs-zen-and-art-theme
 
 ;;; bst:emacs-omtose-phellack-theme produces:
 ;;;    Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/...-emacs-omtose-phellack-theme-0.2.0-0.66f9963/share/emacs/site-lisp/omtose-phellack-theme-0.2.0-0.66f9963/omtose-phellack-theme-autoloads)
 ;;; but this doesn't stop spacemacs from running.
    bst:emacs-omtose-phellack-theme
 
-   bst:emacs-unicode-fonts
-   bst:emacs-sublime-themes
-   bst:emacs-cider-hydra
-   bst:emacs-flycheck-joker
-   bst:emacs-kaocha-runner
-   bst:emacs-sayid
-   bst:emacs-kaolin-themes
-   bst:emacs-emacsql-sqlite3
-   bst:emacs-zonokai-emacs
-   bst:emacs-kill-buffers
-   bst:emacs-copy-sexp
-   bst:emacs-jump-last
-   bst:emacs-evil-iedit-state
-   bst:emacs-tweaks
-   bst:emacs-term-cursor
-   bst:emacs-lsp-pyright
-   bst:emacs-lsp-origami
-   bst:emacs-winum
-   bst:emacs-frame-fns
-   bst:emacs-frame-cmds
-   bst:emacs-zoom-frm
-
+   bst:emacs-openai
+   bst:emacs-organic-green-theme
+   bst:emacs-origami
+   bst:emacs-phoenix-dark-mono-theme
+   bst:emacs-phoenix-dark-pink-theme
    bst:emacs-php-runtime
    bst:emacs-phpactor
+   bst:emacs-planet-theme
+   bst:emacs-popwin
+   bst:emacs-professional-theme
+   bst:emacs-purple-haze-theme
+   bst:emacs-reverse-theme
+   bst:emacs-sayid
+   bst:emacs-seti-theme
+   bst:emacs-slim-mode
+   bst:emacs-smyx-theme
+   bst:emacs-soft-charcoal-theme
+   bst:emacs-soft-morning-theme
+   bst:emacs-soft-stone-theme
+   bst:emacs-subatomic-theme
+   bst:emacs-subatomic256-theme
+   bst:emacs-sublime-themes
+   bst:emacs-sunny-day-theme
+   bst:emacs-tango-2-theme
+   bst:emacs-tango-plus-theme
+   bst:emacs-tangotango-theme
+   bst:emacs-tblui
+   bst:emacs-term-cursor
+   bst:emacs-toxi-theme
+   bst:emacs-treemacs-extra
+   bst:emacs-treemacs-magit
+   bst:emacs-treemacs-treelib
+   bst:emacs-tweaks
+   bst:emacs-twilight-anti-bright-theme
+   bst:emacs-twilight-bright-theme
+   bst:emacs-twilight-theme
+   bst:emacs-ujelly-theme
+   bst:emacs-underwater-theme
+   bst:emacs-unicode-fonts
+   bst:emacs-use-package
+   bst:emacs-use-package-chords
+   bst:emacs-vdiff-magit
+   bst:emacs-vi-tilde-fringe
+   bst:emacs-web-completion-data
+   bst:emacs-white-sand-theme
+   bst:emacs-winum
+   bst:emacs-writeroom-mode
+   bst:emacs-zen-and-art-theme
+   bst:emacs-zonokai-emacs
+   bst:emacs-zoom-frm
    ))
 (testsymb-trace 'bst-packages)
 
