@@ -78,7 +78,6 @@
    bst:emacs-company-php
    bst:emacs-company-phpactor
    bst:emacs-markdown-toc
-   bst:emacs-sly-named-readtables
    bst:emacs-use-package-chords
    bst:emacs-magit-section
    bst:emacs-helm-files
