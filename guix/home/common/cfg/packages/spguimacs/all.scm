@@ -73,8 +73,6 @@
    bst:emacs-openai
    bst:emacs-lv
    bst:emacs-chatgpt
-   bst:emacs-anaconda-mode
-   bst:emacs-pythonic
    bst:emacs-ac-php-core
    bst:emacs-company-anaconda
    bst:emacs-company-php
