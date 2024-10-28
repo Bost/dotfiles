@@ -228,6 +228,9 @@
    bst:emacs-frame-fns
    bst:emacs-frame-cmds
    bst:emacs-zoom-frm
+
+   bst:emacs-php-runtime
+   bst:emacs-phpactor
    ))
 (testsymb-trace 'bst-packages)
 
