@@ -352,6 +352,12 @@ This function should only modify configuration layer settings."
       ;; latex-enable-magic t        ;; defaults to nil
       )
 
+     (llm-client
+      :variables
+      gptel-api-key (getenv "OPENAI_KEY")
+      llm-client-enable-gptel t
+      )
+
      ;; Language Server Protocol https://emacs-lsp.github.io/lsp-mode/
      (lsp
       :variables ; (setq
@@ -581,10 +587,11 @@ This function should only modify configuration layer settings."
      ;;    https://git.savannah.gnu.org/git/guix/emacs-guix.git
      ;; (guix :location "~/dev/emacs-guix/") ;; not working
 
-     ;; gptel
-     chatgpt-shell
-     ob-chatgpt-shell
-     pcsv ;; needed by `chatgpt-shell-load-awesome-prompts'
+     ;; gptel ; part of the layer `llm-client'
+     ;; chatgpt
+     ;; chatgpt-shell
+     ;; ob-chatgpt-shell
+     ;; pcsv ;; CSV parser needed by `chatgpt-shell-load-awesome-prompts'
 
      ;; (copilot :location (recipe
      ;;                     :fetcher github
@@ -1447,14 +1454,21 @@ before packages are loaded."
 
   ;; (spaceline-all-the-icons-theme)
 
-  ;; org-babel setup and usage:
-  (use-package ob-chatgpt-shell :config (ob-chatgpt-shell-setup))
-  ;; #+begin_src chatgpt-shell
-  ;; Mirror, mirror, who's the most beautiful person on Earth?
-  ;; #+end_src
-  ;; #+begin_src chatgpt-shell :temperature 0.3
-  ;; hello
-  ;; #+end_src
+  ;; (use-package chatgpt :ensure t)
+  ;; (use-package chatgpt-shell
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (ob-chatgpt-shell-setup)
+  ;;   (setq chatgpt-shell-openai-key (getenv "OPENAI_KEY"))
+  ;;   )
+  ;; ;;; org-babel setup and usage:
+  ;; (use-package ob-chatgpt-shell :config (ob-chatgpt-shell-setup))
+  ;;; #+begin_src chatgpt-shell
+  ;;; Mirror, mirror, who's the most beautiful person on Earth?
+  ;;; #+end_src
+  ;;; #+begin_src chatgpt-shell :temperature 0.3
+  ;;; hello
+  ;;; #+end_src
 
   (defun shell-path () (getenv "SHELL"))
   ;; (defun shell-path () (tw-shell-which "fish"))
@@ -1480,15 +1494,8 @@ before packages are loaded."
                            #'tw-shell-which)
                           "plantuml")
 
-   ;; Costs money https://platform.openai.com/account/usage
-   ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
-   ;; Change it using `(chatgpt-shell-swap-model-version)'
-   ;; chatgpt-shell-model-version "gpt-4" ;; (Default 0; i.e. "gpt-3.5-turbo")
-   chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")
-
-   ;; gptel-api-key (getenv "OPENAI_API_KEY")
-   ;; ;; Costs money https://platform.openai.com/account/usage
-   ;; ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
+   ;; chatgpt-shell-openai-key (getenv "OPENAI_KEY") ;; (getenv "OPENAI_API_KEY")
+   gptel-api-key (getenv "OPENAI_KEY") ;; (getenv "OPENAI_API_KEY")
    ;; ;; gptel-model "gpt-4" ;; (Default "gpt-3.5-turbo")
 
    ;; The program of term.
