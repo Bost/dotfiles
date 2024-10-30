@@ -47,8 +47,7 @@ defined.
 (create-emacs-launcher #:profile \"spacemacs\" \"rest\" \"args\")
 "
   (let* [(args (remove-kw-from-args #:profile args))]
-    ;; (format #t "~a profile : ~a\n" m profile)
-    (format #t "~a args : ~a\n" m args)
+    ;; (format #t "~a profile : ~a; args : \n" m profile args)
     (let* [(emacs-bin (which-emacs))
            (init-cmd
             (cmd->string
