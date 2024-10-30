@@ -354,8 +354,11 @@ This function should only modify configuration layer settings."
 
      (llm-client
       :variables
+      ;; (setq
       gptel-api-key (getenv "OPENAI_KEY")
+      gptel-model 'gpt-4o
       llm-client-enable-gptel t
+      ;; )
       )
 
      ;; Language Server Protocol https://emacs-lsp.github.io/lsp-mode/
