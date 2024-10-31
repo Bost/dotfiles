@@ -750,6 +750,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-helm-css-scss"
    "emacs-helm-dash"
    "emacs-helm-descbinds"
+   "emacs-helm-dictionary"
    "emacs-helm-emms"
    "emacs-helm-eww"
    "emacs-helm-exwm"
