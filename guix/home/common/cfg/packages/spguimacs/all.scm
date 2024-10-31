@@ -69,6 +69,7 @@
 
 (define bst-packages
   (list
+   bst:emacs-helm-dictionary
    bst:emacs-pcache
    bst:emacs-groovy-imports
 
