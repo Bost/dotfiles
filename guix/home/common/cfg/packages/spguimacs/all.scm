@@ -69,6 +69,9 @@
 
 (define bst-packages
   (list
+   bst:emacs-pcache
+   bst:emacs-groovy-imports
+
    ;; bst:emacs-ac-php-core
    bst:emacs-ample-zen-theme
    bst:emacs-anti-zenburn-theme
