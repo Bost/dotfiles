@@ -722,6 +722,15 @@ or the CLIENT-CMD if some process ID was found."
                             string-end))))
     (regexp-match url-regex url)))
 
+(define-public (plist-get plist key)
+  "
+(plist-get (list :y 2 #:x 1) #:y)   ; => 2
+(plist-get (list :y 2 #:x 1) #:z)   ; => #f"
+  (cond
+   ((null? plist) #f)
+   ((equal? (car plist) key) (cadr plist))
+   (else (plist-get (cddr plist) key))))
+
 (define-public (remove-kw-from-args kw init-args)
   "init-args must be a list containing a sequence key-val pairs. E.g.:
 (#:x 'x #:y 'y)"
