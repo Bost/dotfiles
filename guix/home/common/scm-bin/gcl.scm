@@ -18,7 +18,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (gcl #:rest args)
+(define* (gcl #:key (verbose #t) #:rest args)
   "Usage:
 (gcl \"-f\" \"arg0\")
 (gcl \"-f arg0\")
@@ -26,10 +26,12 @@ cd $dotf
         (gcl \"-f arg0\"))
 ;; > #t
 "
-  ;; git-command implementation see $dev/guix/tests/git.scm
-  (apply exec-system*
-         "git" "clone"
-         args))
+  (let* [(f "[gcl]")]
+    ;; (format #t "~a ~a orig-args : ~a\n" m f args)
+    (let* [(args (remove-kw-from-args #:verbose args))]
+      ;; git-command implementation see $dev/guix/tests/git.scm
+      ;; (format #t "~a ~a args : ~a\n" m f args)
+      (apply exec-system* #:verbose verbose "git" "clone" args))))
 
 (define (show-help)
   (format #t "Usage: ~a [OPTION] NAME [ARGS ...]
