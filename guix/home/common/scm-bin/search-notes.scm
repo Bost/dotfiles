@@ -32,6 +32,61 @@ cd $dotf
 (define dbg #f)
 (define utility-name (last (module-name (current-module))))
 
+;; (define diacritic-map
+;;   (hash "a" "[aáäàâæ]"
+;;         "c" "[cčç]"
+;;         "d" "[dď]"
+;;         "e" "[eéèêë]"
+;;         "i" "[iíîï]"
+;;         "l" "[lĺľ]"
+;;         "n" "[nň]"
+;;         "o" "[oóôöœ]"
+;;         "r" "[rŕř]"
+;;         "s" "[sš]"
+;;         "t" "[tť]"
+;;         "u" "[uúûüù]"
+;;         "y" "[yý]"
+;;         "z" "[zž]"
+;;         "A" "[AÁÄÀÂÆ]"
+;;         "C" "[CČÇ]"
+;;         "D" "[DĎ]"
+;;         "E" "[EÉÈÊË]"
+;;         "I" "[IÍÎÏ]"
+;;         "L" "[LĹĽ]"
+;;         "N" "[NŇ]"
+;;         "O" "[OÓÔÖŒ]"
+;;         "R" "[RŔŘ]"
+;;         "S" "[SŠ]"
+;;         "T" "[TŤ]"
+;;         "U" "[UÚÛÜÙ]"
+;;         "Y" "[YÝ]"
+;;         "Z" "[ZŽ]"
+;;         "ß" "ß")) ; German sharp S
+;; 
+;; (define (string-normalize s)
+;;   ;; Normalization Form C, Canonical Decomposition followed by Canonical
+;;   ;; Composition:
+;;   ;; Decompose characters and then recomposes them using canonical
+;;   ;; equivalence. E.g., 'é' would first be split into 'e' and the combining
+;;   ;; accent, and then recomposed back into 'é'.
+;;   ;; Use this when you want to normalize characters to their composed forms
+;;   ;; while still respecting canonical equivalence.
+;;   (string-normalize-nfc s))
+;; 
+;; (define (regexp-normalize-match* regex target-str)
+;;   ;; (printf "[regexp-normalize-match*] regex: ~a\n" regex)
+;;   ;; (printf "[regexp-normalize-match*] target-str : ~a\n" target-str)
+;;   (let* ((normalized-target (string-normalize target-str)))
+;;     ;; (printf "[regexp-normalize-match*] normalized-target: ~a\n" normalized-target)
+;;     (regexp-match* regex normalized-target)))
+;; 
+;; (define (regexp-normalize-split regex target-str)
+;;   ;; (printf "[regexp-normalize-split] regex: ~a\n" regex)
+;;   ;; (printf "[regexp-normalize-split] target-str : ~a\n" target-str)
+;;   (let* ((normalized-target (string-normalize target-str)))
+;;     ;; (printf "[regexp-normalize-split] normalized-target: ~a\n" normalized-target)
+;;     (regexp-split regex normalized-target)))
+
 (define* (search-file #:key ptrn file)
   "
 (search-file
