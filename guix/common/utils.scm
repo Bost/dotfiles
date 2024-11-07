@@ -54,6 +54,8 @@
             testsymb-trace
             exec
             dbg-exec
+            exec-background
+            exec-with-error-to-string
             ))
 
 (define m "[utils]")
@@ -336,59 +338,68 @@ E Command failed."
           (apply exec-function args)
           (exec-function args))))
 
-(define* (exec-system* #:rest args)
+(define* (exec-system* #:key (verbose #t) #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
-  ((comp
-    (partial exec-or-dry-run system*)
-    dbg-exec
-    string-split-whitespace)
-   args))
+  (let* [(f "[exec-system*]")]
+    ;; (format #t "~a ~a orig-args : ~a\n" m f args)
+    (let* [(args (remove-kw-from-args #:verbose args))]
+      ;; (format #t "~a ~a args : ~a\n" m f args)
+      ((comp
+        (partial exec-or-dry-run system*)
+        (lambda (prm) (dbg-exec prm #:verbose verbose))
+        string-split-whitespace)
+       args))))
 
-(define* (exec-or-dry-run-new #:key exec-function (gx-dry-run #f) #:rest args)
+(define* (exec-or-dry-run-new #:key exec-function (gx-dry-run #f) (verbose #f) #:rest args)
   ;; (format #t "~a ~a args          : ~a\n" m "[exec-or-dry-run-new]" args)
-  (let* [(f "[exec-or-dry-run-new]")
-         (args (remove-kw-from-args #:exec-function args))
-         (args (remove-kw-from-args #:gx-dry-run    args))
-         (args (car args))]
-    ;; (format #t "~a ~a exec-function : ~a\n" m f exec-function)
-    ;; (format #t "~a ~a dry-run       : ~a\n" m f
-    ;;         (or (contains--gx-dry-run? args) gx-dry-run))
-    ;; (format #t "~a ~a args          : ~a\n" m f args)
-    (if (or (contains--gx-dry-run? args) gx-dry-run)
-        0 ;; the exit status OK
-        (if (list? args)
-            (apply exec-function args)
-            (exec-function args)))))
+  (let* [(f "[exec-or-dry-run-new]")]
+    ;; (format #t "~a ~a orig-args : ~a\n" m f args)
+   (let* [(args (remove-kw-from-args #:exec-function args))
+          (args (remove-kw-from-args #:gx-dry-run    args))
+          (args (remove-kw-from-args #:verbose       args))
+          (args (car args))]
+     ;; (format #t "~a ~a exec-function : ~a\n" m f exec-function)
+     ;; (format #t "~a ~a dry-run       : ~a\n" m f
+     ;;         (or (contains--gx-dry-run? args) gx-dry-run))
+     ;; (format #t "~a ~a args          : ~a\n" m f args)
+     (if (or (contains--gx-dry-run? args) gx-dry-run)
+         0 ;; the exit status OK
+         (if (list? args)
+             (apply exec-function args) ;; TODO add #:verbose
+             (exec-function args))))))
 
-(define* (exec-system*-new #:key (split-whitespace #t) (gx-dry-run #f) #:rest args)
+(define* (exec-system*-new #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t) #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
-  (let* [(f "[exec-system*]")
-         (args (remove-kw-from-args #:split-whitespace args))
-         (args (remove-kw-from-args #:gx-dry-run       args))]
-    ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
-    ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)
-    ;; (format #t "~a ~a args             : ~a\n" m f args)
-    ;; (format #t "~a ~a (list? args)     : ~a\n" m f (list? args))
-    ;; (format #t "~a ~a (length args)    : ~a\n" m f (length args))
-    ((comp
-      (lambda (exit-status)
-        ;; (format #t "~a ~a exit-status       : ~a\n" m f exit-status)
-        ;; (format #t "~a ~a (= exit-status 0) : ~a\n" m f (= exit-status 0))
-        (exit (= exit-status 0)))
-      (partial exec-or-dry-run-new
-               #:gx-dry-run gx-dry-run
-               #:exec-function system*)
-      dbg-exec
-      (partial map (lambda (s) (if split-whitespace (string-split-whitespace s) s))))
-     args)))
+  (let* [(f "[exec-system*-new]")]
+    (format #t "~a ~a orig-args : ~a\n" m f args)
+    (let* [(args (remove-kw-from-args #:split-whitespace args))
+           (args (remove-kw-from-args #:gx-dry-run       args))
+           (args (remove-kw-from-args #:verbose          args))]
+      ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
+      ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)
+      (format #t "~a ~a args             : ~a\n" m f args)
+      ;; (format #t "~a ~a (list? args)     : ~a\n" m f (list? args))
+      ;; (format #t "~a ~a (length args)    : ~a\n" m f (length args))
+      ((comp
+        (lambda (exit-status)
+          ;; (format #t "~a ~a exit-status       : ~a\n" m f exit-status)
+          ;; (format #t "~a ~a (= exit-status 0) : ~a\n" m f (= exit-status 0))
+          (exit (= exit-status 0)))
+        (partial exec-or-dry-run-new
+                 #:gx-dry-run gx-dry-run
+                 #:verbose verbose
+                 #:exec-function system*)
+        (lambda (prm) (dbg-exec prm #:verbose verbose))
+        (partial map (lambda (s) (if split-whitespace (string-split-whitespace s) s))))
+       args))))
 
 (define-public (read-all reader-function)
   "Returns a function which reads all lines of text from the PORT and applies
@@ -430,12 +441,12 @@ READER-FUNCTION on them. "
 ;; resulting in clean, easy to read non-blocking code.
 #;(import (language wisp spec)) ;; whitespace lisp
 
-(define-public (exec-background command)
+(define* (exec-background command #:key (verbose #t))
   "Execute the COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings."
   ((comp
     (partial exec-or-dry-run system)
-    dbg-exec
+    (lambda (prm) (dbg-exec prm #:verbose verbose))
     cmd->string
     ;; disown belongs to shells. See `help disown`. The semicolon, as indicated
     ;; by `help disown` ivoked from the fish-shell, in eg. `echo foo &; disown`,
@@ -478,7 +489,7 @@ COMMAND can be a string or a list of strings."
 ;;         (let* ((error-port (open-output-string)))
 ;;           (output-port? error-port)))
 
-(define (exec-with-error-to-string commad)
+(define* (exec-with-error-to-string commad #:key (verbose #t))
   "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return 3 values:
 - `#t' if the port was successfully closed or `#f' if it was already closed.
@@ -513,7 +524,7 @@ Usage:
     ;; exec-function returns multiple values and the exec-or-dry-run is able to
     ;; return only one value.
     exec-function
-    dbg-exec
+    (lambda (prm) (dbg-exec prm #:verbose verbose))
     cmd->string)
    commad))
 
