@@ -69,6 +69,13 @@
 
 (define bst-packages
   (list
+   bst:emacs-vim-powerline-theme
+   bst:emacs-scss-mode
+   bst:emacs-helm-pydoc
+   bst:emacs-php-auto-yasnippets
+   bst:emacs-js-doc
+   bst:emacs-multi-line
+
    bst:emacs-helm-dictionary
    bst:emacs-pcache
    bst:emacs-groovy-imports
