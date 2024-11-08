@@ -118,7 +118,6 @@
    bst:emacs-emacsql-sqlite3
    bst:emacs-erc-social-graph
    bst:emacs-espresso-theme
-   bst:emacs-evil-collection
    bst:emacs-evil-iedit-state
    bst:emacs-eziam-themes
    bst:emacs-farmhouse-light-mod-theme
@@ -140,7 +139,6 @@
    bst:emacs-helm-cider-history
    bst:emacs-helm-core
    bst:emacs-helm-files
-   bst:emacs-helm-lsp
    bst:emacs-hemisu-theme
    bst:emacs-heroku-theme
    bst:emacs-hlint-refactor
@@ -156,7 +154,6 @@
    bst:emacs-kill-buffers
    bst:emacs-light-soap-theme
    bst:emacs-lsp-haskell
-   bst:emacs-lsp-java
    bst:emacs-lsp-lens
    bst:emacs-lsp-metals
    bst:emacs-lsp-metals-protocol
@@ -169,10 +166,7 @@
    bst:emacs-lush-theme
    bst:emacs-lv
    bst:emacs-madhat2r-theme
-   bst:emacs-magit-gerrit
-   bst:emacs-magit-org-todos-el
    bst:emacs-magit-section
-   bst:emacs-magit-svn
    bst:emacs-majapahit-themes
    bst:emacs-markdown-toc
    bst:emacs-material-theme
@@ -221,7 +215,6 @@
    bst:emacs-tblui
    bst:emacs-term-cursor
    bst:emacs-toxi-theme
-   bst:emacs-treemacs-extra
    bst:emacs-treemacs-magit
    bst:emacs-treemacs-treelib
    bst:emacs-tweaks
@@ -233,7 +226,6 @@
    bst:emacs-unicode-fonts
    bst:emacs-use-package
    bst:emacs-use-package-chords
-   bst:emacs-vdiff-magit
    bst:emacs-vi-tilde-fringe
    bst:emacs-web-completion-data
    bst:emacs-white-sand-theme
