@@ -97,7 +97,6 @@
    bst:emacs-clues-theme
    bst:emacs-color-theme
    bst:emacs-color-theme-sanityinc-solarized
-   bst:emacs-color-theme-sanityinc-tomorrow
    bst:emacs-company-anaconda
    bst:emacs-company-php
    bst:emacs-company-phpactor
