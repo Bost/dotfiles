@@ -25,7 +25,7 @@ set f $dotf/guix/home/common/scm-bin/emacs-launcher-spacemacs.scm
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define dbg #t)
+(define dbg #f)
 (define utility-name (last (module-name (current-module))))
 
 (define (fun args)
