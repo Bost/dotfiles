@@ -175,24 +175,29 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 (define (large-packages-ecke)
   "Large packages, slow to build, graft, download, etc."
-  (list
-   audacity ;; 35.8MiB
+  (append
+   (list
+    ;; 35.8MiB
+    audacity
 
-   ;; Rebranded Mozilla Thunderbird email client. Optionally install also
-   ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
-   ;; Thunderbird console Ctrl-Shift-j
-   icedove  ;; 48.8MiB ; ie. thunderbird
+    ;; Rebranded Mozilla Thunderbird email client. Optionally install also
+    ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
+    ;; Thunderbird console Ctrl-Shift-j
+    ;; 48.8MiB; ie. thunderbird
+    icedove
 
-   ;; Vector graphics editor
-   inkscape ;; ~93MiB
+    ;; Vector graphics editor. ~93MiB
+    inkscape
+    )
+   ;; (list
+   ;;  ;; Embeddable TeX/LaTeX engine
+   ;;  tectonic
 
-   tectonic ;; embeddable TeX/LaTeX engine
+   ;;  ;; Graphviz to LaTeX converter
+   ;;  dot2tex
 
-   ;; Graphviz to LaTeX converter
-   dot2tex
-
-   ;; complete TeX Live distribution
-   texlive                 ; may take too long to graft
+   ;;  ;; Complete TeX Live distribution. May take too long to graft
+   ;;  texlive)
    ))
 (testsymb 'large-packages-ecke)
 
