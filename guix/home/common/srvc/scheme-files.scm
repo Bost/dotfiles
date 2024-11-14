@@ -163,23 +163,15 @@ Example:
              `((guix monads)
                (utils)
                (settings)
+               ;; following three modules don't need to be everywhere
                (scm-bin gre)
                (scm-bin gps)
 
                ,(begin
                   (cond
-                   [(member scheme-file-name launcher-lst)
-                    `(emacs-config-launcher)]))
-
-               ,(begin
-                  (cond
-                   [(member scheme-file-name editable-lst)
-                    `(emacs-editable-config)]))
-
-               ,(begin
-                  (cond
-                   [(member scheme-file-name pkill-lst)
-                    `(emacs-pkill)]))
+                   [(member scheme-file-name
+                            (append launcher-lst editable-lst pkill-lst))
+                    `(emacs-common)]))
 
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
