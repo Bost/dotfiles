@@ -106,16 +106,15 @@ the options-parser doesn't complain about e.g. 'no such option: -p'."
         (when dbg
           (format #t "~a option-spec   : ~a\n" m option-spec)
           (format #t "~a val-help      : ~a\n" m val-help)
-          #;(format #t "~a val-version   : ~a\n" m val-version))
+          (format #t "~a val-version   : ~a\n" m val-version))
         (cond
          [val-help
           (format #t "~a [options]\n~a\n~a\n\n"
                   utility-name
                   "    -v, --version    Display version"
                   "    -h, --help       Display this help")]
-         #;[val-version
-          (format #t "~a version 1.23
-" utility-name)]
+         [val-version
+          (format #t "~a version <...>\n" utility-name)]
          [#t
           (fun args)])))))
 (testsymb 'handle-cli)

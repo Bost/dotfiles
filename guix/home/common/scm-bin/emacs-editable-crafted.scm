@@ -13,6 +13,7 @@
 !#
 
 cd $dotf
+./guix/home/common/scm-bin/emacs-editable-crafted.scm --version
 ./guix/home/common/scm-bin/emacs-editable-crafted.scm --gx-dry-run
 ./guix/home/common/scm-bin/emacs-editable-crafted.scm
 
