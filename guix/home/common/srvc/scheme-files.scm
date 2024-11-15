@@ -259,6 +259,15 @@ Example:
                  #:files (list "cli/find_and_grep")
                  #:scheme-file-name "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
+;;; XXX Bug: 'Replicating' is on the line 137, not on 118
+;;; $ cd ~ && crg Replicating
+;;; /home/bost/org-roam/guix-guile-nix/nix.scrbl
+;;; 115	@block{@block-name{NixOS Flakes}
+;;; 116    - like guix time-machine with channels
+;;; 117    https://logs.guix.gnu.org/guix/2023-01-31.log#094922
+;;; 118    See 7.3 Replicating Guix in manual
+;;; 119    https://guix.gnu.org/manual/devel/en/html_node/Replicating-Guix.html
+;;; 120	}
    (service-file #:program-name "crg"
                  #:files (list "guix-guile-nix/")
                  #:other-files
