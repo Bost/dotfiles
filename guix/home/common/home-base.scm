@@ -429,8 +429,9 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
 
 (define-public (home-env-edge-ecke list-separator)
   (home-environment
-   ;; Replaced by $dotf/guix/profile-manifest.scm
+   ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
    ;; (packages (packages-to-install))
+
    (services
     ((comp
       (partial append (services))

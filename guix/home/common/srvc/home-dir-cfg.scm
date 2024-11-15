@@ -37,15 +37,14 @@
 
 (define (create-channels-scm additional-channels)
   (let* [(channels-scm (user-dotf "/" channels-scm-filepath))
-         (lst
-          ((comp
-            car
-            syntax->datum
-            (partial call-with-input-file channels-scm))
-           (read-all read-syntax)))]
+         (lst-channels-scm ((comp
+                             car
+                             syntax->datum
+                             (partial call-with-input-file channels-scm))
+                            (read-all read-syntax)))]
     (call-with-values
-        (lambda () (split-at lst (1- (length lst))))
-      (lambda (fst snd)
+        (lambda () (split-at lst-channels-scm (1- (length lst-channels-scm))))
+      (lambda (prm-fst prm-snd)
         ((comp
           ;; (lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
           (lambda (s) (format #t "done\n") s)
@@ -62,7 +61,7 @@
                 tmpfile)
               "channels.scm")))
           (lambda (s) (format #t "I ~a Creating channels.scm ... " m) s)
-          (lambda (sexp) (append fst sexp (list (car snd)))))
+          (lambda (sexp) (append prm-fst sexp (list (car prm-snd)))))
          additional-channels)))))
 (testsymb 'create-channels-scm)
 
@@ -152,11 +151,12 @@ See also:
                               "/"
                               (str (basename xdg-config-home)
                                    "/guix-gaming-channels/games.scm"))))
-       list create-channels-scm
+       list
+       create-channels-scm
        (partial remove unspecified-or-empty-or-false?)
-       (lambda (lst)
+       (lambda (prm-lst)
          (append
-          lst
+          prm-lst
           (cond
            [(or (is-system-ecke) (is-system-edge))
             `(
