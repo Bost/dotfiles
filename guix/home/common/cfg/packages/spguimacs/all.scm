@@ -184,7 +184,7 @@
    bst:emacs-pcache
    bst:emacs-groovy-imports
 
-   ;; bst:emacs-ac-php-core
+   bst:emacs-ac-php-core
    bst:emacs-ample-zen-theme
    bst:emacs-anti-zenburn-theme
    bst:emacs-apropospriate-theme
