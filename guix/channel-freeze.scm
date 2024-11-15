@@ -11,7 +11,7 @@
               "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))
       (channel
         (name 'guix-past)
-        (url "https://gitlab.inria.fr/guix-hpc/guix-past")
+        (url "https://codeberg.org/guix-science/guix-past")
         (branch "master")
         (commit
           "1e25b23faa6b1716deaf7e1782becb5da6855942")
