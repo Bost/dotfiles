@@ -20,6 +20,10 @@
   #:use-module (srfi srfi-1)
   ;; #:use-module (guix build utils) ;; invoke - not needed
   #:use-module (ice-9 pretty-print)
+
+  ;; WTF? following line leads to 'no code for module (guix read-print)'
+  ;; #:use-module (guix read-print)
+
   ;; string-replace-substring
   #:use-module (ice-9 string-fun)
   ;; first take remove delete-duplicates append-map etc.
@@ -210,6 +214,12 @@ Works also for functions returning and accepting multiple values."
     (let* [(ret (get-output-string port))]
       (close-output-port port)
       ret)))
+
+(define-public (pretty-print-with-comments->string sexp)
+  (call-with-output-string
+    (lambda (port)
+      ;; can't use '#:use-module (guix read-print)'. See above module definition
+      ((@(guix read-print) pretty-print-with-comments) port sexp))))
 
 (define-public (unspecified-or-empty-or-false? obj)
   (or (unspecified? obj)
