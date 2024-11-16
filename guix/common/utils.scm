@@ -388,28 +388,27 @@ $9 = 0 ;; return code"
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
-  (let* [(f "[exec-system*-new]")]
-    (format #t "~a ~a orig-args : ~a\n" m f args)
-    (let* [(args (remove-kw-from-args #:split-whitespace args))
-           (args (remove-kw-from-args #:gx-dry-run       args))
-           (args (remove-kw-from-args #:verbose          args))]
-      ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
-      ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)
-      (format #t "~a ~a args             : ~a\n" m f args)
-      ;; (format #t "~a ~a (list? args)     : ~a\n" m f (list? args))
-      ;; (format #t "~a ~a (length args)    : ~a\n" m f (length args))
-      ((comp
-        (lambda (exit-status)
-          ;; (format #t "~a ~a exit-status       : ~a\n" m f exit-status)
-          ;; (format #t "~a ~a (= exit-status 0) : ~a\n" m f (= exit-status 0))
-          (exit (= exit-status 0)))
-        (partial exec-or-dry-run-new
-                 #:gx-dry-run gx-dry-run
-                 #:verbose verbose
-                 #:exec-function system*)
-        (lambda (prm) (dbg-exec prm #:verbose verbose))
-        (partial map (lambda (s) (if split-whitespace (string-split-whitespace s) s))))
-       args))))
+  (let* [(f "[exec-system*-new]")
+         (args (remove-kw-from-args #:split-whitespace args))
+         (args (remove-kw-from-args #:gx-dry-run       args))
+         (args (remove-kw-from-args #:verbose          args))]
+    ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
+    ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)
+    ;; (format #t "~a ~a args             : ~a\n" m f args)
+    ;; (format #t "~a ~a (list? args)     : ~a\n" m f (list? args))
+    ;; (format #t "~a ~a (length args)    : ~a\n" m f (length args))
+    ((comp
+      (lambda (exit-status)
+        ;; (format #t "~a ~a exit-status       : ~a\n" m f exit-status)
+        ;; (format #t "~a ~a (= exit-status 0) : ~a\n" m f (= exit-status 0))
+        (exit (= exit-status 0)))
+      (partial exec-or-dry-run-new
+               #:gx-dry-run gx-dry-run
+               #:verbose verbose
+               #:exec-function system*)
+      (lambda (prm) (dbg-exec prm #:verbose verbose))
+      (partial map (lambda (s) (if split-whitespace (string-split-whitespace s) s))))
+     args)))
 
 (define-public (read-all reader-function)
   "Returns a function which reads all lines of text from the PORT and applies
