@@ -142,6 +142,7 @@
    "emacs-emacsql"
    ;; "emacs-emacsql-sqlite3" ;; only in bste:emacs-emacsql-sqlite3; build fails
    "emacs-emmet-mode"
+   "emacs-emojify"
    "emacs-emr"
    "emacs-epl"
    "emacs-erc"
