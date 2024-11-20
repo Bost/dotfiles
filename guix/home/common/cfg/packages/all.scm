@@ -730,6 +730,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; cool-retro-term ;; 25.256s; is cool!
 
    neovim
+
+   ;; control webcam, capture videos and images
+   guvcview 
    ))
 (testsymb 'other-gui-packages)
 
