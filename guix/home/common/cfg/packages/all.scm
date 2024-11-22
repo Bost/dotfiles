@@ -133,6 +133,7 @@
  commencement
  gcc
  clojure
+ machine-learning
  )
 
 (define (email-in-emacs-packages)
@@ -731,6 +732,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ;; control webcam, capture videos and images
    guvcview 
+
+   ;; Port of Facebook's LLaMA model in C/C++
+   llama-cpp
    ))
 (testsymb 'other-gui-packages)
 
