@@ -75,6 +75,7 @@
    "emacs-cider"
    "emacs-cider-eval-sexp-fu"
    "emacs-cider-hydra"
+   "emacs-clang-format"
    "emacs-clean-aindent-mode"
    "emacs-clj-refactor"
    "emacs-clojure-mode"
