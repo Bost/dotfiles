@@ -1,8 +1,6 @@
 ;; `guix pull` places a union of this file with %default-channels to
-;; `~/.config/guix/current`. See
-;; $ guix repl
-;; scheme@(guix-user)> (use-modules (guix channels))
-;; scheme@(guix-user)> %default-channels
+;; `~/.config/guix/current/manifest`. See
+;; guile -c '(use-modules (guix channels)) (format #t "~a\n" %default-channels)'
 (cons*
  ;; The flat channel doesn't compile at the moment
  ;; (channel (name 'flat)
@@ -32,14 +30,22 @@
              "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
 
 ;;; Following channels are added by the home configuration
-;;; bost haskell-and-clojure guix-gaming-games
 
 ;;; TODO the list channels can't be generated, since guix home reconfigure
 ;;; expects them to be already available, i.e. guix-pull-ed-in
- ;; (channel (name 'haskell-and-clojure)
- ;;          (url "https://github.com/Bost/haskell-guix"))
- ;; ;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
- ;; (channel (name 'bost)
- ;;          (url "https://github.com/Bost/guix-packages"))
+(channel (name 'hask-clj)
+         (url "https://github.com/Bost/haskell-guix"))
+
+;;; provides clojure, babashka, postgres 13.3, openjdk18 etc.
+(channel (name 'bost)
+         (url "https://github.com/Bost/guix-packages"))
+
+(channel (name 'games)
+         (url "https://gitlab.com/guix-gaming-channels/games.git")
+         (introduction
+          (make-channel-introduction
+           "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
+           (openpgp-fingerprint
+            "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))
 
  %default-channels)
