@@ -235,9 +235,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    bash
    bat
 
-   ;; Arbitrary precision numeric processing language
-   bc
-
    direnv
    ;; read hardware information from the BIOS
    dmidecode
@@ -969,6 +966,11 @@ FIXME the inferior-pkgs get installed on every machine"
             (list git "gui"))
            pkgs)
           pkgs))
+    (lambda (pkgs)
+      (append
+       ;; Arbitrary precision numeric processing language
+       (list bc)
+       pkgs))
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
     )
    (basic-packages)))
