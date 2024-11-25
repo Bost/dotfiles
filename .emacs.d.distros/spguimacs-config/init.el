@@ -212,7 +212,9 @@ This function should only modify configuration layer settings."
              ))
           erc-prompt-for-nickserv-password nil
           erc-server-list
-          '(("irc.libera.chat" :port "6667" :nick "bost" :password "")))
+          (list (list "irc.libera.chat" :port "6667"
+                      :nick (getenv "IRC_USER")
+                      :password (getenv "IRC_PASSWD"))))
 
      (git :variables
           ;; TODO implement it as spacemacs|toggle
