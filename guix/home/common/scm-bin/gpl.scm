@@ -64,7 +64,7 @@ cd $dotf
                       (if (= 0 (car ret))
                           (begin
                             (display-success-msg cmd)
-                            (continuation-fun #t))
+                            #;(continuation-fun #t))
                           (begin
                             (display-failed-msg cmd)
                             (cdr ret))))
@@ -95,7 +95,7 @@ cd $dotf
                          (if (= 0 (car ret))
                              (begin
                                (display-success-msg cmd)
-                               (set! is-found #t))
+                               #;(set! is-found #t))
                              (begin
                                (display-failed-msg cmd)
                                (cdr ret))))
