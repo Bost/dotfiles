@@ -46,6 +46,7 @@
                content
                "\n"
                "\n" "#### home-bash-configuration -> " name ": end")))
+(testsymb 'bash-config-file)
 
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
@@ -200,6 +201,7 @@
   ;; (user-home "/.guix-home/profile/bin/gcc")
   (format #f "~a/bin/gcc" (package-derivation-output!
                            (@(gnu packages commencement) gcc-toolchain))))
+(testsymb 'gcc-filepath)
 
 ;; See also $dotf/.bashrc.martin
 (define-public (environment-vars list-separator)
@@ -247,6 +249,7 @@
                        ;; See https://github.com/phiresky/ripgrep-all
                        ;; "user-home-relative/path/to/ripgrep_all"
                        ))))))
+(testsymb 'environment-vars)
 
 (define-public (environment-vars-edge-ecke list-separator)
   ((comp
@@ -416,8 +419,10 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
         (gcl "--origin=vojto" repo-url dest-dir-repo)))))
 
 (define-public (install-all-projects)
+  ;; (format #t "~a projects to install: ~a\n" m (length (projects)))
   (map (lambda (project)
-         (let ((dest-dir (car project)))
+         ;; (format #t "~a project: ~a\n" m project)
+         (let [(dest-dir (car project))]
            (map (partial obtain-and-setup dest-dir) (cdr project))))
        (projects))
   #;
