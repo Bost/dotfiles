@@ -1,13 +1,19 @@
 #!/bin/sh
 
-# TODO the sequence should be:
-# 'configure channels: copy channels.scm etc.' && \
-# 'configure fish-configL copy fish/config.fish etc.' && \
-#  guix pull && \
-#  guix package --profile= && \
-#  guix home reconfigure
+hostname=$(hostname)
 
-set -x  # Print commands and their arguments as they are executed.
-guix pull --cores=$cores "$@"
+# Exit immediately if a command exits with a non-zero status, ie. no need to
+# chain the commands using '&&', since 'set -e' is used.
+set -e
+
+set -x # Print commands and their arguments as they are executed.
+guix pull --cores=$cores \
+     --channels=$dotf/.config/guix/channels-home-$hostname.scm \
+     "$@"
+
+# No need to chain the commands using '&&', since 'set -e' is used.
+
+guix describe
+
 { retval="$?"; set +x; } 2>/dev/null
 exit $retval
