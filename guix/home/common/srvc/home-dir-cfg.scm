@@ -36,21 +36,23 @@
 ;; sessions using the xsettingsd daemon.")))
 
 (define (create-file-channels-scm additional-channels)
-  (let* [(channels-scm (user-dotf "/" channels-scm-filepath))
-         (lst-channels-scm ((comp
-                             car
-                             syntax->datum
-                             (partial call-with-input-file channels-scm))
-                            (read-all read-syntax)))]
+  (let* [(channels-scm-fullpath (user-dotf "/" channels-scm-relpath))]
     (call-with-values
-        (lambda () (split-at lst-channels-scm (1- (length lst-channels-scm))))
+        (lambda ()
+          (let* [(lst-channels-scm
+                  ((comp
+                    car
+                    syntax->datum
+                    (partial call-with-input-file channels-scm-fullpath))
+                   (read-all read-syntax)))]
+            (split-at lst-channels-scm (1- (length lst-channels-scm)))))
       (lambda (prm-fst prm-snd)
         ((comp
           ;; (lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
           (lambda (s) (format #t "done\n") s)
           (lambda (sexp)
             (list
-             channels-scm-filepath
+             channels-scm-relpath
              #;(scheme-file "channels.scm" (sexp->gexp sexp))
              (local-file
               (let* [(tmpfile (mktmpfile))
@@ -59,8 +61,9 @@
                 (pretty-print sexp port)
                 (close-port port)
                 tmpfile)
-              "channels.scm")))
-          (lambda (s) (format #t "I ~a Creating channels.scm ... " m) s)
+              channels-scm)))
+          (lambda (s)
+            (format #t "I ~a Creating ~a ... " m channels-scm-fullpath) s)
           (lambda (sexp) (append prm-fst sexp (list (car prm-snd)))))
          additional-channels)))))
 (testsymb 'create-file-channels-scm)
