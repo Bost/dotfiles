@@ -150,6 +150,9 @@ Works also for functions returning and accepting multiple values."
         (format #t "Falsey Test Passed: Correctly reached else clause\n"))
 |#
 
+(define show-evaluating-module #f) ; placed at the beginning of a module
+(define show-module-evaluated  #f) ; placed at the end of a module
+
 (define-syntax evaluating-module
   (syntax-rules ()
     [(_ show)
@@ -159,9 +162,8 @@ Works also for functions returning and accepting multiple values."
            (format #t "~a evaluating module ...\n" m))))]
     [(_)
      (begin
-       (let [(m (module-name-for-logging))
-             (show #f)]
-         (when show
+       (let [(m (module-name-for-logging))]
+         (when show-evaluating-module
            (format #t "~a evaluating module ...\n" m))))]))
 
 (define-syntax module-evaluated
@@ -173,9 +175,8 @@ Works also for functions returning and accepting multiple values."
            (format #t "~a module evaluated\n" m))))]
     [(_)
      (begin
-       (let [(m (module-name-for-logging))
-             (show #f)]
-         (when show
+       (let [(m (module-name-for-logging))]
+         (when show-module-evaluated
            (format #t "~a module evaluated\n" m))))]))
 
 (define-syntax testsymb
