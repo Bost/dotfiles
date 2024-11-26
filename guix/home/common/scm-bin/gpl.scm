@@ -40,6 +40,15 @@ cd $dotf
 (test '(1 3 3)) ;; = (#f #f #f)
 |#
 
+(define (display-success-msg _)
+  ;; (format #t (str "\n# OS command succeeded."
+  ;;                 " Avoiding further command calls by"
+  ;;                 " breaking out using call/cc..."))
+  *unspecified*)
+
+(define (display-failed-msg cmd)
+  (format #t "OS command failed:\n~a\n" (string-join cmd " ")))
+
 (define (rebase-bottom-call/cc rebase-args branches)
   "Breakout implementation using call-with-current-continuation"
   (call/cc
@@ -54,33 +63,27 @@ cd $dotf
                            (ret (exec cmd)))
                       (if (= 0 (car ret))
                           (begin
-                            (format
-                             #t
-                             (str "\n# OS command succeeded."
-                                  " Avoiding further command calls by"
-                                  " breaking out using call/cc..."))
+                            (display-success-msg cmd)
                             (continuation-fun #t))
                           (begin
-                            #;(format #t "Command failed:\n~a\n"
-                            (string-join cmd " "))
+                            (display-failed-msg cmd)
                             (cdr ret))))
                     (begin
-                      #;(format #t "Command failed:\n~a\n"
-                      (string-join cmd " "))
+                      (display-failed-msg cmd)
                       (cdr ret))))))
           branches))))
 
 (define (rebase-bottom-flag-variable rebase-args branches)
   "Breakout implementation using a flag variable"
-  (let ((found #f))
+  (let ((is-found #f))
     ((comp
       (partial
        map
        (lambda (remote)
-         (if found
-             (format #t "# found is: ~a; Do nothing.\n" found)
+         (if is-found
+             (format #t "# is-found: ~a; Do nothing.\n" is-found)
              (begin
-               (format #t "# found is: ~a; Calling OS command ...\n" found)
+               (format #t "# is-found: ~a; Calling OS command ...\n" is-found)
                (if-let [(r (string-in? origin-remotes remote))]
                  (let* ((cmd (list "git" "fetch" "--tags" r))
                         (ret (exec cmd)))
@@ -91,19 +94,13 @@ cd $dotf
                          ;; 1st elem of the ret-list is `exec' exit-code
                          (if (= 0 (car ret))
                              (begin
-                               (format
-                                #t
-                                (str "\n# OS command succeeded."
-                                     " Avoiding further command calls by"
-                                     " setting & checking a flag..."))
-                               (set! found #t))
+                               (display-success-msg cmd)
+                               (set! is-found #t))
                              (begin
-                               #;(format #t "Command failed:\n~a\n"
-                               (string-join cmd " "))
+                               (display-failed-msg cmd)
                                (cdr ret))))
                        (begin
-                         #;(format #t "Command failed:\n~a\n"
-                         (string-join cmd " "))
+                         (display-failed-msg cmd)
                          (cdr ret))))))
              ))))
      branches)))
