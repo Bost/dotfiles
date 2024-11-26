@@ -35,37 +35,34 @@
 ;;                 (description "Configures UI appearance settings for Xorg
 ;; sessions using the xsettingsd daemon.")))
 
-(define (create-file-channels-scm additional-channels)
-  (let* [(channels-scm-fullpath (user-dotf "/" channels-scm-relpath))]
-    (call-with-values
-        (lambda ()
-          (let* [(lst-channels-scm
-                  ((comp
-                    car
-                    syntax->datum
-                    (partial call-with-input-file channels-scm-fullpath))
-                   (read-all read-syntax)))]
-            (split-at lst-channels-scm (1- (length lst-channels-scm)))))
-      (lambda (prm-fst prm-snd)
-        ((comp
-          ;; (lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
-          (lambda (s) (format #t "done\n") s)
-          (lambda (sexp)
-            (list
-             channels-scm-relpath
-             #;(scheme-file "channels.scm" (sexp->gexp sexp))
-             (local-file
-              (let* [(tmpfile (mktmpfile))
-                     (port (open-output-file tmpfile))]
-                ;; save the channel configuration to a temporary file
-                (pretty-print sexp port)
-                (close-port port)
-                tmpfile)
-              channels-scm)))
-          (lambda (s)
-            (format #t "I ~a Creating ~a ... " m channels-scm-fullpath) s)
-          (lambda (sexp) (append prm-fst sexp (list (car prm-snd)))))
-         additional-channels)))))
+(define (create-file-channels-scm hostname)
+  (let* [(channels-scm-fullpath
+          (user-dotf "/"
+                     (str ".config/guix/channels-home-" hostname ".scm")))
+         (lst-channels-scm
+          ((comp
+            car
+            syntax->datum
+            (partial call-with-input-file channels-scm-fullpath))
+           (read-all read-syntax)))]
+    ((comp
+      (lambda (s) (format #t "done\n") s)
+      ;; (lambda (sexp) (scheme-file channels-scm (sexp->gexp sexp)))
+      (lambda (sexp)
+        (list
+         channels-scm-relpath
+         #;(scheme-file "channels.scm" (sexp->gexp sexp))
+         (local-file
+          (let* [(tmpfile (mktmpfile))
+                 (port (open-output-file tmpfile))]
+            ;; save the channel configuration to a temporary file
+            (pretty-print sexp port)
+            (close-port port)
+            tmpfile)
+          channels-scm)))
+      (lambda (s)
+        (format #t "I ~a Creating ~a ... " m channels-scm-fullpath) s))
+     lst-channels-scm)))
 (testsymb 'create-file-channels-scm)
 
 (define (user-dotf-to-dir dir)
@@ -144,78 +141,6 @@ See also:
       [else (list)]))))
 (testsymb 'host-specific-config)
 
-(define (append-host-specific-channels prm-channel-lst)
-  (append
-   prm-channel-lst
-   (cond
-    [(or (is-system-ecke) (is-system-edge))
-     `(
-       (channel
-        (name 'hask-clj)
-        (url
-         #;"https://github.com/Tass0sm/guix-develop"
-         "https://github.com/Bost/haskell-guix"
-         #;,(format #f "file://~a/dev/haskell-guix" home)))
-
-;;; https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
-;;; Use:
-;;;     guix package --load-path=./ --install=factorio
-;;; '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
-;;; wrong
-;;;
-;;; The games channel requires the guix-gaming-channels/games.scm - see above
-       (channel
-        (name 'games)
-        (url
-         #;"https://gitlab.com/rostislav.svoboda/games"
-         #;,(format #f "file://%s/dev/games" home)
-         "https://gitlab.com/guix-gaming-channels/games.git")
-        ;; Enable signature verification:
-        (introduction
-         (make-channel-introduction
-          ;; 1st commit from this repository which can be trusted is:
-          "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
-          (openpgp-fingerprint
-           ;; ... as it was made by some with OpenPGP fingerprint:
-           "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))
-       #|
-;;; Dynamic tiling Wayland compositor configurable in Guile Scheme
-       (channel
-       (name 'home-service-dwl-guile)
-       (url
-       "https://github.com/engstrand-config/home-service-dwl-guile")
-       (branch "main")
-       (introduction
-       (make-channel-introduction
-       "314453a87634d67e914cfdf51d357638902dd9fe"
-       (openpgp-fingerprint
-       "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))
-
-;;; flatwhatson contains emacs-native-comp, however it doesn't compile
-       (channel
-       (name 'flat)
-       (url "https://github.com/flatwhatson/guix-channel.git")
-       (introduction
-       (make-channel-introduction
-       "33f86a4b48205c0dc19d7c036c85393f0766f806"
-       (openpgp-fingerprint
-       "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))
-
-;;; Andrew Tropin's tools for managing reproducible development environments
-       (channel
-       (name 'rde)
-       (url
-       "https://git.sr.ht/~abcdw/rde"
-       #;,(format #f "file://~a/dev/andrew-rde" home))
-       (introduction
-       (make-channel-introduction
-       "257cebd587b66e4d865b3537a9a88cccd7107c95"
-       (openpgp-fingerprint
-       "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))
-       |#
-       )]
-    [else (list)])))
-
 (define (home-dir-cfg-srvc-files)
   ((comp
     ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)
@@ -226,18 +151,8 @@ See also:
                               "/"
                               (str (basename xdg-config-home)
                                    "/guix-gaming-channels/games.scm"))))
-       list
-       create-file-channels-scm
-       (partial remove unspecified-or-empty-or-false?)
-       append-host-specific-channels)
-      `(
-        ;; provides:
-        ;; - (bost gnu packages emacs-xyz) module
-        ;; - clojure, babashka, postgres 13.3, openjdk18 etc.
-        (channel (name 'bost)
-                 (url
-                  "https://github.com/Bost/guix-packages"
-                  #;,(format #f "file://~a/dev/guix-packages" home))))))
+       list)
+      (create-file-channels-scm (hostname-memoized))))
     ;; (lambda (p) (format #t "###### 3.\n~a\n" p) p)
     (partial append (host-specific-config))
     ;; (lambda (p) (format #t "###### 2.\n~a\n" p) p)
