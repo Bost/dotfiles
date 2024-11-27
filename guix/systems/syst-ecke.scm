@@ -121,8 +121,8 @@
                 (gnome-desktop-configuration
                  (gnome (replace-mesa gnome))))
 
-		   ;; Configure Xorg server, only do this when the card is used for
-		   ;; displaying.
+       ;; Configure Xorg server, only do this when the card is used for
+       ;; displaying.
        (set-xorg-configuration
         (xorg-configuration
          (modules (cons nvda %default-xorg-modules))
@@ -244,17 +244,30 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "6.5.0-21"))
+        (let ((linux-version "6.11.0-9"))
           (menu-entry
-           (label "Ubuntu")
+           (label "Ubuntu 24.10")
+           ;; vmlinuz - compressed linux kernel
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
             '("root=UUID=fe7ecf10-c42e-4bbf-b377-3a9346088e63"
-              "ro"     ; mount the root disk read only
+              "ro"     ; mount the root filesystem as read only
               "quiet"  ; don't display console messages
               "splash" ; show a graphical "splash" screen while booting
-              ;; value $vt_handoff is "vt.handoff=7" or
-              ;; unspecified
+
+              ;; Configure the kexec-based crash kernel. It reserves memory for
+              ;; a secondary kernel used in case the main kernel crashes.
+              "crashkernel=2G-4G:320M,4G-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M"
+
+              ;; In Ubuntu’s grub.cfg, $vt_handoff is a placeholder for GRUB to
+              ;; dynamically manage terminal-to-graphical handoff. However, this
+              ;; mechanism is unnecessary in Guix because the arguments are
+              ;; passed directly to the kernel without relying on GRUB-specific
+              ;; scripting features.
+              ;;
+              ;; If you explicitly include $vt_handoff in your Guix
+              ;; linux-arguments, it will be passed as a literal string, which
+              ;; the kernel won’t understand, potentially causing issues.
               #;"$vt_handoff"))
            (initrd
             (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
