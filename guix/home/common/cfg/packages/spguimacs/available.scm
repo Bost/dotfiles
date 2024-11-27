@@ -1661,6 +1661,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-url-scgi"
    "emacs-use-package"
    "emacs-use-package-chords"
+   "emacs-uuidgen"
    "emacs-vala-mode"
    "emacs-validate"
    "emacs-validate-html"
