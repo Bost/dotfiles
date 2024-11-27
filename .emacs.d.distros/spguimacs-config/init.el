@@ -2306,75 +2306,56 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
     ;; term-mode-map is apparently not needed
     (mapcar #'my=evil-keybindings-in-term '(term-raw-map)))
 
-  (bind-keys :map dired-mode-map
-             ("<f5>"        . tw-revert-buffer-no-confirm)
-             ;; ("<f5>"        . revert-buffer)
+  (with-eval-after-load 'dired
+    ;; ;; don't remove `other-window', the caller expects it to be there
+    ;; (defun dired-up-directory (&optional other-window)
+    ;;   "Run Dired on parent directory of current directory."
+    ;;   (interactive "P")
+    ;;   (let* ((dir (dired-current-directory))
+    ;;          (orig (current-buffer))
+    ;;          (up (file-name-directory (directory-file-name dir))))
+    ;;     (or (dired-goto-file (directory-file-name dir))
+    ;;         ;; Only try dired-goto-subdir if buffer has more than one dir.
+    ;;         (and (cdr dired-subdir-alist)
+    ;;              (dired-goto-subdir up))
+    ;;         (progn
+    ;;           (kill-buffer orig)
+    ;;           (dired up)
+    ;;           (dired-goto-file dir)))))
 
-             ;; Use ~C-s-h~ b/c ~C-H~ (shift-h) doesn't work
-             ("C-s-h"       . tw-dired-dotfiles-toggle)
-             ("<backspace>" . (lambda () (interactive)
-                                (find-alternate-file "..")))
-             ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
-             ;; ("<return>"    . dired-find-alternate-file)
-             ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
-             ;; asks for file instead of opening it
-             ;; ("<return>"    . dired-x-find-file)
-             ("<return>"    . dired-find-file) ;; default
-             ("<S-delete>"  . tw-dired-do-delete))
-  ;; (with-eval-after-load 'dired-mode
-  ;;   (bind-keys :map dired-mode-map
-  ;;              ("<f5>"        . tw-revert-buffer-no-confirm)
-  ;;              ;; ("<f5>"        . revert-buffer)
+    ;; (defadvice dired-advertised-find-file (around dired-subst-directory activate)
+    ;;   "Replace current buffer if file is a directory."
+    ;;   (interactive)
+    ;;   (message "%s" #'dired-advertised-find-file)
+    ;;   (let* ((orig (current-buffer))
+    ;;          ;; (filename (dired-get-filename))
+    ;;          (filename (dired-get-filename t t))
+    ;;          (bye-p (file-directory-p filename)))
+    ;;     ad-do-it
+    ;;     (when (and bye-p (not (string-match "[/\\\\]\\.$" filename)))
+    ;;       (kill-buffer orig))))
 
-  ;;              ;; Use ~C-s-h~ b/c ~C-H~ (shift-h) doesn't work
-  ;;              ("C-s-h"       . tw-dired-dotfiles-toggle)
-  ;;              ("<backspace>" . (lambda () (interactive)
-  ;;                                 (find-alternate-file "..")))
-  ;;              ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
-  ;;              ;; ("<return>"    . dired-find-alternate-file)
-  ;;              ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
-  ;;              ;; asks for file instead of opening it
-  ;;              ;; ("<return>"    . dired-x-find-file)
-  ;;              ("<return>"    . dired-find-file) ;; default
-  ;;              ("<S-delete>"  . tw-dired-do-delete)))
+    (bind-keys :map dired-mode-map
+               ("<f5>"        . tw-revert-buffer-no-confirm)
+               ;; ("<f5>"        . revert-buffer)
 
-  ;; (eval-after-load "dired"
-  ;;   '(progn
-  ;;      (defadvice dired-advertised-find-file (around dired-subst-directory
-  ;;                                                    activate)
-  ;;        "Replace current buffer if file is a directory."
-  ;;        (interactive)
-  ;;        (message "%s" #'dired-advertised-find-file)
-  ;;        (let* ((orig (current-buffer))
-  ;;               ;; (filename (dired-get-filename))
-  ;;               (filename (dired-get-filename t t))
-  ;;               (bye-p (file-directory-p filename)))
-  ;;          ad-do-it
-  ;;          (when (and bye-p (not (string-match "[/\\\\]\\.$" filename)))
-  ;;            (kill-buffer orig))))))
-
-  ;; (eval-after-load "dired"
-  ;;   ;; don't remove `other-window', the caller expects it to be there
-  ;;   '(defun dired-up-directory (&optional other-window)
-  ;;      "Run Dired on parent directory of current directory."
-  ;;      (interactive "P")
-  ;;      (let* ((dir (dired-current-directory))
-  ;;             (orig (current-buffer))
-  ;;             (up (file-name-directory (directory-file-name dir))))
-  ;;        (or (dired-goto-file (directory-file-name dir))
-  ;;            ;; Only try dired-goto-subdir if buffer has more than one dir.
-  ;;            (and (cdr dired-subdir-alist)
-  ;;                 (dired-goto-subdir up))
-  ;;            (progn
-  ;;              (kill-buffer orig)
-  ;;              (dired up)
-  ;;              (dired-goto-file dir))))))
+               ;; Use ~C-s-h~ b/c ~C-H~ (shift-h) doesn't work
+               ("C-s-h"       . tw-dired-dotfiles-toggle)
+               ("<backspace>" . (lambda () (interactive)
+                                  (find-alternate-file "..")))
+               ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
+               ;; ("<return>"    . dired-find-alternate-file)
+               ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
+               ;; asks for file instead of opening it
+               ;; ("<return>"    . dired-x-find-file)
+               ("<return>"    . dired-find-file) ;; default
+               ("S-<delete>"  . tw-dired-do-delete)))
 
   (with-eval-after-load 'paredit-mode
     (bind-keys :map paredit-mode-map
                ;; these keybindings don't work in the cider-repl-mode-map
-               ("<C-right>"    . right-word)
-               ("<C-left>"     . left-word)))
+               ("C-<right>"    . right-word)
+               ("C-<left>"     . left-word)))
 
   (defun my=clj-bind-keys-and-chords (map)
     (bind-keys :map map
@@ -2416,7 +2397,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                ("M-s-l"  . tw-cider-reload-ns-from-file)
                ("s-u"    . tw-cider-reload-ns-from-file)
                ;; invoke from clojure buffer
-               ("<C-s-delete>" . cider-repl-clear-buffer)))
+               ("C-s-<delete>" . cider-repl-clear-buffer)))
 
   (with-eval-after-load 'clojure-mode
     (my=clj-bind-keys-and-chords clojure-mode-map)
