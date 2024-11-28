@@ -351,7 +351,7 @@
    "emacs-loop"
    "emacs-lorem-ipsum"
    "emacs-lsp-haskell"
-   "emacs-lsp-java"     ;; uses emacs-dap-mode
+   "emacs-lsp-java"
    "emacs-lsp-latex"
    "emacs-lsp-metals"    ;; uses emacs-dap-mode
    "emacs-lsp-mode"
