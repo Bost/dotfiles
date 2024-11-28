@@ -208,6 +208,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; default browser
    icecat ;; 68.9MiB
 
+   qemu ;; 688 MiB
+
    ;; rust downloads (see below) and then it needs to be build:
    ;;     rust-1.59.0  121.1MiB
    ;;     rust-1.59.0-cargo  3.2MiB
@@ -623,7 +625,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; specifying only 'python2' leads to "error: python2: unbound variable"
    python-2.7
 
-   qemu
    racket
    readline
 
