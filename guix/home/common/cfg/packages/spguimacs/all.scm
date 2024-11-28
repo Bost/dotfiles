@@ -69,6 +69,7 @@
 
 (define bst-packages
   (list
+   bst:emacs-lsp-java
    bst:emacs-vim-powerline-theme
    bst:emacs-scss-mode
    bst:emacs-helm-pydoc
