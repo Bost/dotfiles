@@ -31,7 +31,10 @@
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
- cups desktop networking ssh
+ cups     ; printer
+ desktop
+ networking
+ ssh
 
  ;; for lightdm-service-type - Run `lightdm', the LightDM graphical login
  ;; manager.
@@ -57,6 +60,7 @@
  bash
  libusb   ; libmtp
  shells   ; login shell
+ linux    ; brightnessctl
  )
 
 (define m (module-name-for-logging))
@@ -80,10 +84,11 @@
 ;;; install PACKAGE' to install a package.
     (packages
      (append
-      (map specification->package
-           (list
-            "brightnessctl" #| backlight and LED brightness control |#
-            ))
+      (list
+       ;; lpinfo
+       cups
+       ;; backlight and LED brightness control
+       brightnessctl)
       (packages-to-install)
       %base-packages))
 
@@ -122,6 +127,12 @@
        ;;           ;;         (name "*")
        ;;           ;;         (user-session "ratpoison"))))
        ;;           ))
+
+       (service cups-service-type
+                (cups-configuration
+                 (web-interface? #t)
+                 (extensions
+                  (list cups-filters hplip-minimal))))
 
        (service xvnc-service-type
                 (xvnc-configuration

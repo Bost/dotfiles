@@ -14,7 +14,10 @@
 
 ;; no need to write: #:use-module (gnu services <module>)
 (use-service-modules
- cups desktop networking ssh
+ cups     ; printer
+ desktop
+ networking
+ ssh
  linux    ; kernel-module-loader-service-type
  ;; lightdm  ; for lightdm-service-type
  ;; vnc      ; for xvnc-service-type
@@ -25,6 +28,7 @@
 ;; no need to write: #:use-module (gnu packages <module>)
 (use-package-modules
  android  ; android-udev-rules - access smartphone via mtp://
+ cups     ; lpinfo (printer)
  bash
  fonts    ; font-terminus font-tamzen
  gnome    ; for (gnome-desktop-configuration (gnome (replace-mesa gnome)))
@@ -90,6 +94,9 @@
     (packages
      (append
       (map specification->package (sway-package-specifications))
+      (list
+       ;; lpinfo
+       cups)
       (packages-to-install)
       %base-packages))
 
@@ -132,7 +139,11 @@
 
        ;; (service mate-desktop-service-type)
 
-       (service cups-service-type)
+       (service cups-service-type
+                (cups-configuration
+                 (web-interface? #t)
+                 (extensions
+                  (list cups-filters hplip-minimal))))
 ;;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
 ;;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
 ;;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
