@@ -403,6 +403,8 @@ This function should only modify configuration layer settings."
      ;; The '=' in the file-path makes problems.
      my=tweaks ;; See `dotspacemacs-configuration-layer-path'.
 
+     octave
+
      (org :variables
           ;; Don't ask for confirmation before interactively evaluating code
           org-confirm-babel-evaluate nil ;; (Default t)
