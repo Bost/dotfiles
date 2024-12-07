@@ -176,8 +176,8 @@ See also:
 ;;; find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \;
                ".config/sway/config"
                ".config/tmux/tmux.conf"
-
                ".gnupg/gpg.conf"
+               ".gnupg/gpg-agent.conf"
                ".guile" ;; used by `guix repl'
                ".gitconfig"
                ".envrc"
