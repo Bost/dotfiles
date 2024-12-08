@@ -315,6 +315,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    vim
    zip
+   zstd ;; Zstandard real-time compression algorithm
    ))
 (testsymb 'basic-packages)
 
