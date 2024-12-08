@@ -159,6 +159,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    (@(nongnu packages messaging) signal-desktop)
    (@(nongnu packages clojure) leiningen)
    (@(nongnu packages mozilla) firefox)
+   (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
    #|
    (@(games packages factorio) factorio) ;; temporarily disabled, install it using:
    guix package --load-path=$dev/games --install=factorio
@@ -509,7 +510,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; cdrtools
 
    clang
-   clojure-tools
+   ;; clojure-tools ;; 1.11.1.1413
    clusterssh
    cmake
    curl
