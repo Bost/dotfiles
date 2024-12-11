@@ -190,7 +190,7 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "6.8.0-49"))
+        (let [(linux-version "6.8.0-49")]
           (menu-entry
            (label "Ubuntu 24.04.1")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
@@ -201,7 +201,21 @@
               "quiet"  ; don't display console messages
               "splash" ; show a graphical "splash" screen while booting
               ))
-           (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))))))
+           (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))
+
+        (let [(linux-version "6.8.0-38")]
+          (menu-entry
+           (label "Linux Mint 22 Cinnamon")
+           (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
+           (linux-arguments
+            ;; See /media/bost/c99384b9-.../boot/grub/grub.cfg
+            '("root=UUID=9025de3c-129b-46fe-bcde-4917d304e4ab"
+              "ro"     ; mount the root disk read only
+              "quiet"  ; don't display console messages
+              "splash" ; show a graphical "splash" screen while booting
+              ))
+           (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))
+        ))))
 
 ;;; The list of file systems that get "mounted". The unique file system
 ;;; identifiers there ("UUIDs") can be obtained by running 'blkid' in a
