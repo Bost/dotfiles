@@ -138,8 +138,6 @@
        (service xvnc-service-type
                 (xvnc-configuration
                  (display-number 5)
-                 ;; (localhost? #f) ;; see Guix-Manual
-
                  (geometry    ;; default: "1024x768"
                   "1920x1080"
                   ;; "2880x1620"
