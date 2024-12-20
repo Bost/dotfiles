@@ -207,7 +207,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (large-packages-edge-ecke)
   "Large packages, slow to build, graft, download, etc."
   (list
-   ;; default browser
+   ;; Default browser. GNU version of the Firefox.
    icecat ;; 68.9MiB
 
    qemu ;; 688 MiB
@@ -229,7 +229,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; jdk.javadoc.doclet.Doclet
    (list openjdk "jdk")
 
-   ;; Provides OpenJDK built with the IcedTea build harness
+   ;; Java development kit. Provides OpenJDK built with the IcedTea build
+   ;; harness
    ;; icedtea ; ~240MiB
    ))
 (testsymb 'large-packages-edge-ecke)
