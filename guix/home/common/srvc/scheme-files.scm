@@ -37,19 +37,20 @@
     (nftw path file-collector)
     files))
 
-(define (expand-pattern notes-dir pattern)
+(define (expand-pattern relative-dir pattern)
   "Examples:
-(expand-pattern notes-dir \".*\")  ;; crep
-(expand-pattern notes-dir \"cli/git\")
-(expand-pattern notes-dir \"cli/\")
-(expand-pattern notes-dir \"cvs\")
+(expand-pattern \"dec/fdk\" \".*\")  ;; crep
+(expand-pattern \"dec/fdk\" \"cli/git\")
+(expand-pattern \"dec/fdk\" \"cli/\")
+(expand-pattern \"dec/fdk\" \"cvs\")
 "
-  (let* [(files
+  (let* [(absolute-dir (str "/home/bost/" relative-dir))
+         (files
           (if (string= ".*" pattern)
-              (list-all-files notes-dir)
+              (list-all-files absolute-dir)
               (let* [(re (let* [(b (basename pattern))]
                            (str (if (string-suffix? "/" b) "" ".*") b ".*")))
-                     (dir (str notes-dir "/"
+                     (dir (str absolute-dir "/"
                                (let* [(d (dirname pattern))]
                                  (if (string= "." d)   "" (str d "/")))
                                (let* [(dre (dirname re))]
@@ -61,7 +62,7 @@
                   (partial remove rem-fn)
                   (partial map (partial str dir))
                   (partial remove (lambda (f) (member f (list "." ".."))))
-                  (lambda (p) (or p (list))) ;; the notes-dir may not exist
+                  (lambda (p) (or p (list))) ;; the absolute-dir may not exist
                   (partial scandir dir))
                  (lambda (s) (string-match (basename re) s))))))]
     ((comp
@@ -192,56 +193,57 @@ Example:
               #$main-call))))))
 (testsymb 'service-file)
 
-(define corona-dir "/home/bost/dec/corona_cases")
-(define fdk-dir "/home/bost/dec/fdk")
-
-;; TODO create an alias for searching in /home/bost/dec/cheatsheet/langs/expressions.edn
-
 (define search-notes-service-files
   (list
    (service-file #:program-name "crc"
                  #:files (list "lisp/clojure")
                  #:other-files
-                 (append
-                  ;; TODO should search also in the *.edn files
-                  (expand-pattern corona-dir "clj")
-                  (expand-pattern corona-dir "src/corona/")
-                  (expand-pattern corona-dir "src/corona/api/")
-                  (expand-pattern corona-dir "src/corona/models/")
-                  (expand-pattern corona-dir "src/corona/msg/graph/")
-                  (expand-pattern corona-dir "src/corona/msg/text/")
-                  (expand-pattern corona-dir "src/corona/web/")
-                  (expand-pattern corona-dir "test/corona/")
-
-                  (expand-pattern fdk-dir "clj")
-                  (expand-pattern fdk-dir "data/src/fdk/datasrc/")
-                  (expand-pattern fdk-dir "data/src/fdk/")
-                  (expand-pattern fdk-dir "data/test/fdk/")
-                  (expand-pattern fdk-dir "env/dev/clj/fdk/cmap/")
-                  (expand-pattern fdk-dir "env/dev/clj/")
-                  (expand-pattern fdk-dir "env/prod/clj/")
-                  (expand-pattern fdk-dir "env/prod/clj/fdk/cmap/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/controllers/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/middleware/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/pages/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/routes/")
-                  (expand-pattern fdk-dir "src/clj/fdk/data/")
-                  (expand-pattern fdk-dir "test/clj/fdk/cmap/")
-                  (expand-pattern fdk-dir "src/cljs/fdk/cmap/")
-                  )
-                 #:scheme-file-name "search-notes")
+                 (flatten
+                  (append
+                   (map (lambda (pattern)
+                          (expand-pattern "dec/corona_cases" pattern))
+                        (list
+                         "end"
+                         "clj"
+                         "src/corona/"
+                         "src/corona/api/"
+                         "src/corona/models/"
+                         "src/corona/msg/graph/"
+                         "src/corona/msg/text/"
+                         "src/corona/web/"
+                         "test/corona/"))
+                   (map (lambda (pattern)
+                          (expand-pattern "dec/fdk" pattern))
+                        (list
+                         "end"
+                         "clj"
+                         "data/src/fdk/datasrc/"
+                         "data/src/fdk/"
+                         "data/test/fdk/"
+                         "env/dev/clj/fdk/cmap/"
+                         "env/dev/clj/"
+                         "env/prod/clj/"
+                         "env/prod/clj/fdk/cmap/"
+                         "src/clj/fdk/cmap/"
+                         "src/clj/fdk/cmap/web/controllers/"
+                         "src/clj/fdk/cmap/web/"
+                         "src/clj/fdk/cmap/web/middleware/"
+                         "src/clj/fdk/cmap/web/pages/"
+                         "src/clj/fdk/cmap/web/routes/"
+                         "src/clj/fdk/data/"
+                         "test/clj/fdk/cmap/"
+                         "src/cljs/fdk/cmap/"))))
+    #:scheme-file-name "search-notes")
    (service-file #:program-name "cre"
                  #:files (list "editors/")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/.emacs.d.distros/spguimacs" "core/el")
-                  (expand-pattern "/home/bost/dev/kill-buffers" "el")
-                  (expand-pattern "/home/bost/dev/dotfiles" ".sp.*macs")
-                  (expand-pattern "/home/bost/dev/jump-last" "el")
-                  (expand-pattern "/home/bost/dev/tweaks" "el")
-                  (expand-pattern "/home/bost/dev/farmhouse-light-mod-theme" "el")
+                  (expand-pattern ".emacs.d.distros/spguimacs" "core/el")
+                  (expand-pattern "dev/kill-buffers" "el")
+                  (expand-pattern "dev/dotfiles" ".sp.*macs")
+                  (expand-pattern "dev/jump-last" "el")
+                  (expand-pattern "dev/tweaks" "el")
+                  (expand-pattern "dev/farmhouse-light-mod-theme" "el")
                   )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crep"
@@ -267,7 +269,7 @@ Example:
                  #:files (list "guix-guile-nix/")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/dev/guix" "scm")
+                  (expand-pattern "dev/guix" "scm")
                   )
                  #:scheme-file-name "search-notes")
 ;;; TODO crgi should also search in the output of `git config --get' etc.
@@ -275,7 +277,7 @@ Example:
                  #:files (list "cli/git")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/dev/dotfiles" ".gitconfig")
+                  (expand-pattern "dev/dotfiles" ".gitconfig")
                   )
                  #:scheme-file-name "search-notes")
 ;;; TODO crl should search in the $dotf/.config/fish and other profile files
@@ -287,7 +289,7 @@ Example:
                           "network" "cvs" "gui")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/dev/dotfiles" ".bash")
+                  (expand-pattern "dev/dotfiles" ".bash")
                   )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crli"
@@ -297,7 +299,7 @@ Example:
                  #:files (list "lisp/racket")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/der/search-notes" "rkt")
+                  (expand-pattern "der/search-notes" "rkt")
                   )
                  #:scheme-file-name "search-notes")
 ;;; TODO create crct - search in category-theory notes
@@ -306,7 +308,7 @@ Example:
                  #:files (list "cli/shells")
                  ;; #:other-files
                  ;; (append
-                 ;;  (expand-pattern "/home/bost/dev/dotfiles" ".bash")
+                 ;;  (expand-pattern "dev/dotfiles" ".bash")
                  ;;  )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "cru"
