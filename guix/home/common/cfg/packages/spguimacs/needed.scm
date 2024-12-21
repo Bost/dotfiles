@@ -144,6 +144,7 @@
    "emacs-elisp-slime-nav"
    "emacs-elixir-mode"
    "emacs-ellama"
+   "emacs-ellama"
    "emacs-elm-mode"
    "emacs-emacsql"
    ;; "emacs-emacsql-sqlite3" ;; only in bste:emacs-emacsql-sqlite3; build fails
@@ -356,6 +357,7 @@
    "emacs-link-hint"
    "emacs-list-utils"
    "emacs-livid-mode"
+   "emacs-llm"
    "emacs-log4e"
    "emacs-loop"
    "emacs-lorem-ipsum"
@@ -596,6 +598,7 @@
    "emacs-vline"
    "emacs-volatile-highlights"
    "emacs-vterm"
+   "emacs-vundo"
    "emacs-web-beautify"
    "emacs-web-completion-data"
    "emacs-web-mode"
