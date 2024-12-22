@@ -10,9 +10,6 @@
 (define-public (needed-packages)
   (list
    ;; "emacs-vim-powerline-theme"  ;; exists however it doesn't compile
-   "emacs-pylookup"
-
-   "emacs-core-load-paths"
 
    ;; :beg: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
    ;; "emacs-flycheck-joker"
@@ -107,6 +104,7 @@
    "emacs-composer"
    ;; "emacs-copilot"
    "emacs-copy-sexp"
+   "emacs-core-load-paths"
    "emacs-crux"
    "emacs-css-mode"
    "emacs-csv-mode"
@@ -463,6 +461,7 @@
    "emacs-projectile"
    "emacs-pug-mode"
    "emacs-purple-haze-theme"
+   "emacs-pylookup"
    "emacs-queue"
    "emacs-quickrun"
    "emacs-racket-mode"
@@ -586,6 +585,7 @@
    "emacs-web-beautify"
    "emacs-web-completion-data"
    "emacs-web-mode"
+   "emacs-wfnames"
    "emacs-which-key"
    "emacs-white-sand-theme"
    "emacs-window-purpose"
@@ -599,6 +599,7 @@
    "emacs-xterm-color"
    "emacs-yaml"
    "emacs-yaml-mode"
+   "emacs-yapfify"
    "emacs-yasnippet"
    "emacs-yasnippet-snippets"
    "emacs-zen-and-art-theme"
