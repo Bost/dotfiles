@@ -450,6 +450,7 @@
    "emacs-pkg-info"
    "emacs-planet"
    "emacs-planet-theme"
+   "emacs-plz"
    "emacs-pollen-mode"
    "emacs-popup"
    "emacs-popwin"
