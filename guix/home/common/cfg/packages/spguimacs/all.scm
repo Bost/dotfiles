@@ -69,6 +69,10 @@
 
 (define bst-packages
   (list
+   bst:emacs-lsp-latex
+   bst:emacs-prettier-js
+   bst:emacs-systemd
+   bst:emacs-sqlite3
    bst:emacs-mvn
    bst:emacs-smeargle
    bst:emacs-pcsv
