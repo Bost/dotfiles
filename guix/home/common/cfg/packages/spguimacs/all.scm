@@ -69,6 +69,19 @@
 
 (define bst-packages
   (list
+   bst:emacs-mvn
+   bst:emacs-smeargle
+   bst:emacs-pcsv
+
+   bst:emacs-core-load-paths
+   bst:emacs-pylookup
+   bst:emacs-wfnames
+   bst:emacs-indent-guide
+   bst:emacs-insert-shebang
+   bst:emacs-xhair
+   bst:emacs-vline
+   bst:emacs-uuidgen
+
    bst:emacs-vim-powerline-theme
    bst:emacs-scss-mode
    bst:emacs-helm-pydoc
