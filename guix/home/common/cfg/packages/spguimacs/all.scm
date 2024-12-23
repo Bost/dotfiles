@@ -69,6 +69,12 @@
 
 (define bst-packages
   (list
+   bst:emacs-groovy-mode
+   bst:emacs-pyenv-mode
+   bst:emacs-eval-sexp-fu
+   bst:emacs-cython-mode
+   bst:emacs-geben
+
    bst:emacs-lsp-latex
    bst:emacs-prettier-js
    bst:emacs-systemd
