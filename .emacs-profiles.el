@@ -30,7 +30,7 @@
    (env . (
            ;; ("EMACSLOADPATH" .
            ;;  '())
-           ("SPGUIMACSDIR" .
+           ("SPACEMACSDIR" .
             "~/.emacs.d.distros/spguimacs-config"
             ;; "~/.emacs.d.distros/spguimacs-default-config"
 ;;; Following leads to:
