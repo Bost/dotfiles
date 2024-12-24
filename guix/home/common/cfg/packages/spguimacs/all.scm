@@ -69,6 +69,16 @@
 
 (define bst-packages
   (list
+   bst:emacs-highlight-parentheses
+   bst:emacs-org-category-capture
+   bst:emacs-org-project-capture
+
+   bst:emacs-omtose-phellack-themes
+   bst:emacs-open-junk-file
+   bst:emacs-ob-elixir
+   bst:emacs-orgit-forge
+   bst:emacs-load-env-vars
+
    bst:emacs-groovy-mode
    bst:emacs-pyenv-mode
    bst:emacs-eval-sexp-fu
