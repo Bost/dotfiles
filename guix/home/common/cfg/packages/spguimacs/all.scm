@@ -69,6 +69,78 @@
 
 (define bst-packages
   (list
+   bst:emacs-drupal-mode
+
+   bst:emacs-vim-colors
+   bst:emacs-vim-powerline
+
+   bst:emacs-molokai-theme
+
+   bst:emacs-helm-git-grep
+   bst:emacs-hide-comnt
+   bst:emacs-hybrid-mode
+   bst:emacs-vimish-fold
+   bst:emacs-evil-vimish-fold
+
+   bst:emacs-livid-mode
+   bst:emacs-helm-purpose
+   bst:emacs-helm-comint
+   bst:emacs-gitignore-templates
+   bst:emacs-flyspell-correct-helm
+   bst:emacs-flycheck-pos-tip
+   bst:emacs-flycheck-elsa
+   bst:emacs-flycheck-credo
+   bst:emacs-flycheck-bashate
+   bst:emacs-pip-requirements
+   bst:emacs-phpunit
+   bst:emacs-org-projectile
+   bst:emacs-evil-visual-mark-mode
+   bst:emacs-evil-textobj-line
+   bst:emacs-evil-lisp-state
+   bst:emacs-dired-quick-sort
+   bst:emacs-codegpt
+   bst:emacs-code-review
+   bst:emacs-evil-tutor
+   bst:emacs-evil-easymotion
+   bst:emacs-company-shell
+
+   bst:emacs-define-word
+   bst:emacs-flx-ido
+   bst:emacs-gh-md
+   bst:emacs-dall-e
+   bst:emacs-elisp-def
+
+   bst:emacs-erc-view-log
+   bst:emacs-erc-yt
+   bst:emacs-erc-tweet
+   bst:emacs-emr
+   bst:emacs-php-extras
+
+   bst:emacs-overseer
+   bst:emacs-haml-mode
+   bst:emacs-treemacs-persp
+   bst:emacs-treemacs-projectile
+   bst:emacs-treemacs-icons-dired
+   bst:emacs-treemacs-evil
+   bst:emacs-string-edit-at-point
+   bst:emacs-shfmt
+   bst:emacs-sass-mode
+
+   bst:emacs-reveal-in-folder
+   bst:emacs-poetry
+   bst:emacs-pipenv
+   bst:emacs-clean-aindent-mode
+   bst:emacs-pdf-view-restore
+
+   bst:emacs-maven-test-mode
+   bst:emacs-kbd-mode
+   bst:emacs-journalctl-mode
+   bst:emacs-importmagic
+   bst:emacs-impatient-mode
+
+   bst:emacs-pytest
+   bst:emacs-hungry-delete
+
    bst:emacs-highlight-parentheses
    bst:emacs-org-category-capture
    bst:emacs-org-project-capture
@@ -102,7 +174,6 @@
    bst:emacs-vline
    bst:emacs-uuidgen
 
-   bst:emacs-vim-powerline-theme
    bst:emacs-scss-mode
    bst:emacs-helm-pydoc
    bst:emacs-php-auto-yasnippets
@@ -204,7 +275,6 @@
    bst:emacs-material-theme
    bst:emacs-minimal-theme
    bst:emacs-moe-theme
-   ;; bst:emacs-molokai-theme ;; doesn't compile
    bst:emacs-monochrome-theme
    bst:emacs-mustang-theme
    bst:emacs-naquadah-theme
