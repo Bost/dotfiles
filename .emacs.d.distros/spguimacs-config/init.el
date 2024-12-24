@@ -958,8 +958,8 @@ It should only modify the values of Spacemacs settings."
                           ((or (string= hostname "ecke")
                                (string= hostname "tuxedo"))
                            ;; (+ default (* 6 text-scale-mode-step)) ; 17.2
-                           (+ default (* 7 text-scale-mode-step)) ; 18.4
-                           )
+                           ;; (+ default (* 7 text-scale-mode-step)) ; 18.4
+                           default)
                           ;; TODO this is a pixel-size not point-size
                           ((string= hostname "geek") 17)
                           (t default))))
