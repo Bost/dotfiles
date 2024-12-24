@@ -69,6 +69,9 @@
 
 (define bst-packages
   (list
+   bst:emacs-pytest
+   bst:emacs-hungry-delete
+
    bst:emacs-highlight-parentheses
    bst:emacs-org-category-capture
    bst:emacs-org-project-capture
