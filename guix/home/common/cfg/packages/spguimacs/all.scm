@@ -69,6 +69,12 @@
 
 (define bst-packages
   (list
+   bst:emacs-maven-test-mode
+   bst:emacs-kbd-mode
+   bst:emacs-journalctl-mode
+   bst:emacs-importmagic
+   bst:emacs-impatient-mode
+
    bst:emacs-pytest
    bst:emacs-hungry-delete
 
