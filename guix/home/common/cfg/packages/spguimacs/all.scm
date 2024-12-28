@@ -69,6 +69,15 @@
 
 (define bst-packages
   (list
+   bst:emacs-haml-mode
+   bst:emacs-treemacs-persp
+   bst:emacs-treemacs-projectile
+   bst:emacs-treemacs-icons-dired
+   bst:emacs-treemacs-evil
+   bst:emacs-string-edit-at-point
+   bst:emacs-shfmt
+   bst:emacs-sass-mode
+
    bst:emacs-reveal-in-folder
    bst:emacs-poetry
    bst:emacs-pipenv
