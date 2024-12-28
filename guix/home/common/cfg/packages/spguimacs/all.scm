@@ -69,6 +69,7 @@
 
 (define bst-packages
   (list
+   bst:emacs-overseer
    bst:emacs-haml-mode
    bst:emacs-treemacs-persp
    bst:emacs-treemacs-projectile
