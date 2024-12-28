@@ -69,6 +69,12 @@
 
 (define bst-packages
   (list
+   bst:emacs-reveal-in-folder
+   bst:emacs-poetry
+   bst:emacs-pipenv
+   bst:emacs-clean-aindent-mode
+   bst:emacs-pdf-view-restore
+
    bst:emacs-maven-test-mode
    bst:emacs-kbd-mode
    bst:emacs-journalctl-mode
