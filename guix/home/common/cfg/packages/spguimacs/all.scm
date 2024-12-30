@@ -69,7 +69,13 @@
 
 (define bst-packages
   (list
-   bst:emacs-drupal-mode
+   ;; bst:emacs-drupal-mode
+
+   bst:emacs-define-word
+   bst:emacs-flx-ido
+   bst:emacs-gh-md
+   bst:emacs-dall-e
+   bst:emacs-elisp-def
 
    bst:emacs-erc-view-log
    bst:emacs-erc-yt
