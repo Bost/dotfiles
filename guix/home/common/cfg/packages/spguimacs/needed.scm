@@ -157,6 +157,7 @@
    "emacs-erc-hl-nicks"
    "emacs-erc-image"
    "emacs-erc-social-graph"
+   "emacs-erc-tweet"
    "emacs-erc-view-log"
    "emacs-erc-yt"
    "emacs-erlang"

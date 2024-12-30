@@ -69,6 +69,14 @@
 
 (define bst-packages
   (list
+   bst:emacs-drupal-mode
+
+   bst:emacs-erc-view-log
+   bst:emacs-erc-yt
+   bst:emacs-erc-tweet
+   bst:emacs-emr
+   bst:emacs-php-extras
+
    bst:emacs-overseer
    bst:emacs-haml-mode
    bst:emacs-treemacs-persp
