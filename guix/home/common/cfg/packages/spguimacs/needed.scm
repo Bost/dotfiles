@@ -113,6 +113,7 @@
    "emacs-cyberpunk-theme"
    "emacs-cython-mode"
    "emacs-dakrone-theme"
+   "emacs-dall-e"
    "emacs-dante"
    "emacs-dap-mode"         ;; uses emacs-lsp-treemacs
    "emacs-darkmine-theme"
