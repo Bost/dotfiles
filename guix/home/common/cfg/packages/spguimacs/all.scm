@@ -69,6 +69,10 @@
 
 (define bst-packages
   (list
+   bst:emacs-evil-tutor
+   bst:emacs-evil-easymotion
+   bst:emacs-company-shell
+
    ;; bst:emacs-drupal-mode
 
    bst:emacs-define-word
