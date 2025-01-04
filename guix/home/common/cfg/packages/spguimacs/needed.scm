@@ -292,6 +292,7 @@
    "emacs-helm-cider-history"
    "emacs-helm-comint"
    "emacs-helm-company"
+   "emacs-helm-core"
    "emacs-helm-css-scss"
    "emacs-helm-descbinds"
    "emacs-helm-dictionary"

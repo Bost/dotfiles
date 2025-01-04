@@ -69,7 +69,6 @@
 
 (define bst-packages
   (list
-   bst:emacs-pos-tip
    bst:emacs-livid-mode
    bst:emacs-helm-purpose
    bst:emacs-helm-comint
