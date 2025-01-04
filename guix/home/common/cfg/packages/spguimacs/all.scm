@@ -69,6 +69,23 @@
 
 (define bst-packages
   (list
+   bst:emacs-livid-mode
+   bst:emacs-helm-purpose
+   bst:emacs-helm-comint
+   bst:emacs-gitignore-templates
+   bst:emacs-flyspell-correct-helm
+   bst:emacs-flycheck-pos-tip
+   bst:emacs-flycheck-elsa
+   bst:emacs-flycheck-credo
+   bst:emacs-flycheck-bashate
+   bst:emacs-pip-requirements
+   bst:emacs-phpunit
+   bst:emacs-org-projectile
+   bst:emacs-evil-visual-mark-mode
+   bst:emacs-evil-textobj-line
+   bst:emacs-evil-lisp-state
+   bst:emacs-dired-quick-sort
+   bst:emacs-codegpt
    bst:emacs-code-review
    bst:emacs-evil-tutor
    bst:emacs-evil-easymotion
