@@ -20,3 +20,16 @@ for cid in $commits; do
          # "\"A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81\""
     { retval="$?"; set +x; } 2>/dev/null
 done
+
+# set -x  # Print commands and their arguments as they are executed.
+# repo=$dev/nonguix
+# commits="$(git --git-dir=$repo/.git log --pretty=format:%H origin/master..master)"
+# { retval="$?"; set +x; } 2>/dev/null
+
+# for cid in $commits; do
+#     # printf "    %s\n" $cid
+#     set -x  # Print commands and their arguments as they are executed.
+#     guix git authenticate --cache-key=channels/nonguix --stats --repository=$repo $cid \
+#          "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"
+#     { retval="$?"; set +x; } 2>/dev/null
+# done
