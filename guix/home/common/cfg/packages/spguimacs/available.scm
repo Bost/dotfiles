@@ -199,6 +199,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-cmake-mode"
    "emacs-cnfonts"
    "emacs-code-cells"
+   "emacs-code-review"
    "emacs-color-identifiers-mode"
    "emacs-color-theme"
    "emacs-color-theme-modern"

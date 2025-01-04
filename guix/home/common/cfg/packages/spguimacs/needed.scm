@@ -81,6 +81,7 @@
    "emacs-clues-theme"
    "emacs-cmm-mode"
    "emacs-code-cells"
+   "emacs-code-review"
    "emacs-color-identifiers-mode"
    "emacs-color-theme-modern"
    "emacs-color-theme-sanityinc-solarized"

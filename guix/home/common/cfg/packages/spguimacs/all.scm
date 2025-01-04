@@ -69,6 +69,7 @@
 
 (define bst-packages
   (list
+   bst:emacs-code-review
    bst:emacs-evil-tutor
    bst:emacs-evil-easymotion
    bst:emacs-company-shell
