@@ -37,7 +37,9 @@
 
  ;; Provides firefox, linux-kerner with non-free proprietary drivers, etc.
  (channel (name 'nonguix)
-          (url "https://gitlab.com/nonguix/nonguix")
+          (url
+           ;; "file:///home/bost/dev/nonguix"
+           "https://gitlab.com/nonguix/nonguix")
 
 ;;; Enable signature verification, i.e. declare that in the nonguix repository,
 ;;; the first commit which can be trusted is the 897c1a470d and it was created
