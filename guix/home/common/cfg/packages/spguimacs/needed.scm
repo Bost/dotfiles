@@ -624,6 +624,7 @@
    "emacs-web-completion-data"
    "emacs-web-mode"
    "emacs-wfnames"
+   "emacs-wgrep"
    "emacs-which-key"
    "emacs-white-sand-theme"
    "emacs-window-purpose"
