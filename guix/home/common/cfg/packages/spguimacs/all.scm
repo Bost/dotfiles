@@ -69,14 +69,15 @@
 
 (define bst-packages
   (list
+   bst:emacs-drupal-mode
+
    bst:emacs-vim-colors
-   bst:emacs-vim-powerline-theme
+   bst:emacs-vim-powerline
 
    bst:emacs-molokai-theme
-   ;; bst:emacs-drupal-mode
 
    bst:emacs-helm-git-grep
-   bst:emacs-hide-cmnt
+   bst:emacs-hide-comnt
    bst:emacs-hybrid-mode
    bst:emacs-vimish-fold
    bst:emacs-evil-vimish-fold

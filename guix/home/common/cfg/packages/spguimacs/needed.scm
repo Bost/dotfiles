@@ -615,7 +615,7 @@
    "emacs-vdiff-magit"
    "emacs-vi-tilde-fringe"
    "emacs-vim-colors"
-   "emacs-vim-powerline-theme"
+   "emacs-vim-powerline"
    "emacs-vimish-fold"
    "emacs-visual-fill-column"
    "emacs-vline"
