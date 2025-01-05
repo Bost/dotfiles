@@ -9,8 +9,6 @@
 ;; doesn't work
 (define-public (needed-packages)
   (list
-   ;; "emacs-vim-powerline-theme"  ;; exists however it doesn't compile
-
    ;; :beg: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
    ;; "emacs-flycheck-joker"
    ;; "emacs-kaocha-runner"
@@ -18,7 +16,7 @@
 
    ;; "emacs-edbi-sqlite"
 
-   ;; "emacs-molokai-theme"  ;; needs emacs-color-theme which is obsoleted by emacs-color-theme-modern
+   "emacs-molokai-theme"
    "emacs-ac-ispell"
    "emacs-ac-php"
    "emacs-ac-php-core"
@@ -616,7 +614,8 @@
    "emacs-vdiff"
    "emacs-vdiff-magit"
    "emacs-vi-tilde-fringe"
-   "emacs-vim-powerline"
+   "emacs-vim-colors"
+   "emacs-vim-powerline-theme"
    "emacs-vimish-fold"
    "emacs-visual-fill-column"
    "emacs-vline"

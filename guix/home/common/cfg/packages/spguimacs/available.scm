@@ -1107,7 +1107,6 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-modus-themes"
    "emacs-moe-theme"
    "emacs-moe-theme-el"
-   "emacs-molokai"
    "emacs-molokai-theme"
    "emacs-monky"
    "emacs-monochrome-theme"

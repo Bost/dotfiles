@@ -69,6 +69,12 @@
 
 (define bst-packages
   (list
+   bst:emacs-vim-colors
+   bst:emacs-vim-powerline-theme
+
+   bst:emacs-molokai-theme
+   ;; bst:emacs-drupal-mode
+
    bst:emacs-helm-git-grep
    bst:emacs-hide-cmnt
    bst:emacs-hybrid-mode
@@ -96,8 +102,6 @@
    bst:emacs-evil-tutor
    bst:emacs-evil-easymotion
    bst:emacs-company-shell
-
-   ;; bst:emacs-drupal-mode
 
    bst:emacs-define-word
    bst:emacs-flx-ido
@@ -169,7 +173,6 @@
    bst:emacs-vline
    bst:emacs-uuidgen
 
-   bst:emacs-vim-powerline-theme
    bst:emacs-scss-mode
    bst:emacs-helm-pydoc
    bst:emacs-php-auto-yasnippets
@@ -271,7 +274,6 @@
    bst:emacs-material-theme
    bst:emacs-minimal-theme
    bst:emacs-moe-theme
-   ;; bst:emacs-molokai-theme ;; doesn't compile
    bst:emacs-monochrome-theme
    bst:emacs-mustang-theme
    bst:emacs-naquadah-theme
