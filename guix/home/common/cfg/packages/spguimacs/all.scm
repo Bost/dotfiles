@@ -69,6 +69,10 @@
 
 (define bst-packages
   (list
+   bst:emacs-hybrid-mode
+   bst:emacs-vimish-fold
+   bst:emacs-evil-vimish-fold
+
    bst:emacs-livid-mode
    bst:emacs-helm-purpose
    bst:emacs-helm-comint
