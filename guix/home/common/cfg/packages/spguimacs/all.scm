@@ -69,6 +69,8 @@
 
 (define bst-packages
   (list
+   bst:emacs-helm-git-grep
+   bst:emacs-hide-cmnt
    bst:emacs-hybrid-mode
    bst:emacs-vimish-fold
    bst:emacs-evil-vimish-fold
