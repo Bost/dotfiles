@@ -418,7 +418,9 @@ This function should only modify configuration layer settings."
           )
 
      pdf
-     php
+
+     ;; php layer pulls in drupal-mode. See also $dev/drupal
+     ;; php
 
      ;; Breaks the ~C-h k command~
      ;; Error message is "mapcar: Symbol’s value as variable is void: code-cells-mode""
