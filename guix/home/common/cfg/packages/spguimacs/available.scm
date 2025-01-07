@@ -402,7 +402,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-dracula-theme"
    "emacs-drag-stuff"
    "emacs-dream-theme"
-   "emacs-drupal-mode"
+   ;; "emacs-drupal-mode"
    "emacs-dtrt-indent"
    "emacs-dts-mode"
    "emacs-dumb-jump"

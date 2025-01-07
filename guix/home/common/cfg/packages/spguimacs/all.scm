@@ -69,7 +69,7 @@
 
 (define bst-packages
   (list
-   bst:emacs-drupal-mode
+   ;; bst:emacs-drupal-mode
 
    bst:emacs-vim-colors
    bst:emacs-vim-powerline
