@@ -68,23 +68,23 @@
       (partial remove (lambda (f) (ends-with? (dirname f) "compiled"))))
      files)))
 
-(define launcher-spacemacs (format #f "emacs-launcher-~a" spacemacs))
-(define launcher-spguimacs (format #f "emacs-launcher-~a" spguimacs))
-(define launcher-crafted   (format #f "emacs-launcher-~a" crafted))
+(define launcher-spacemacs (str "emacs-launcher-" spacemacs))
+(define launcher-spguimacs (str "emacs-launcher-" spguimacs))
+(define launcher-crafted   (str "emacs-launcher-" crafted))
 (define launcher-lst       (list launcher-spacemacs
                                  launcher-spguimacs
                                  launcher-crafted))
 
-(define editable-spacemacs (format #f "emacs-editable-~a" spacemacs))
-(define editable-spguimacs (format #f "emacs-editable-~a" spguimacs))
-(define editable-crafted   (format #f "emacs-editable-~a" crafted))
+(define editable-spacemacs (str "emacs-editable-" spacemacs))
+(define editable-spguimacs (str "emacs-editable-" spguimacs))
+(define editable-crafted   (str "emacs-editable-" crafted))
 (define editable-lst       (list editable-spacemacs
                                  editable-spguimacs
                                  editable-crafted))
 
-(define pkill-spacemacs (format #f "emacs-pkill-~a" spacemacs))
-(define pkill-spguimacs (format #f "emacs-pkill-~a" spguimacs))
-(define pkill-crafted   (format #f "emacs-pkill-~a" crafted))
+(define pkill-spacemacs (str "emacs-pkill-" spacemacs))
+(define pkill-spguimacs (str "emacs-pkill-" spguimacs))
+(define pkill-crafted   (str "emacs-pkill-" crafted))
 (define pkill-lst       (list pkill-spacemacs
                               pkill-spguimacs
                               pkill-crafted))
