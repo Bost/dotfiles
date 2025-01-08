@@ -192,58 +192,64 @@ Example:
               #$main-call))))))
 (testsymb 'service-file)
 
-(define corona-dir "/home/bost/dec/corona_cases")
-(define fdk-dir "/home/bost/dec/fdk")
-
-;; TODO create an alias for searching in /home/bost/dec/cheatsheet/langs/expressions.edn
-
 (define search-notes-service-files
   (list
-   (service-file #:program-name "crc"
-                 #:files (list "lisp/clojure")
-                 #:other-files
-                 (append
-                  ;; TODO should search also in the *.edn files
-                  (expand-pattern corona-dir "clj")
-                  (expand-pattern corona-dir "src/corona/")
-                  (expand-pattern corona-dir "src/corona/api/")
-                  (expand-pattern corona-dir "src/corona/models/")
-                  (expand-pattern corona-dir "src/corona/msg/graph/")
-                  (expand-pattern corona-dir "src/corona/msg/text/")
-                  (expand-pattern corona-dir "src/corona/web/")
-                  (expand-pattern corona-dir "test/corona/")
-
-                  (expand-pattern fdk-dir "clj")
-                  (expand-pattern fdk-dir "data/src/fdk/datasrc/")
-                  (expand-pattern fdk-dir "data/src/fdk/")
-                  (expand-pattern fdk-dir "data/test/fdk/")
-                  (expand-pattern fdk-dir "env/dev/clj/fdk/cmap/")
-                  (expand-pattern fdk-dir "env/dev/clj/")
-                  (expand-pattern fdk-dir "env/prod/clj/")
-                  (expand-pattern fdk-dir "env/prod/clj/fdk/cmap/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/controllers/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/middleware/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/pages/")
-                  (expand-pattern fdk-dir "src/clj/fdk/cmap/web/routes/")
-                  (expand-pattern fdk-dir "src/clj/fdk/data/")
-                  (expand-pattern fdk-dir "test/clj/fdk/cmap/")
-                  (expand-pattern fdk-dir "src/cljs/fdk/cmap/")
-                  )
-                 #:scheme-file-name "search-notes")
-   (service-file #:program-name "cre"
-                 #:files (list "editors/")
-                 #:other-files
-                 (append
-                  (expand-pattern "/home/bost/.emacs.d.distros/spguimacs" "core/el")
-                  (expand-pattern "/home/bost/dev/kill-buffers" "el")
-                  (expand-pattern "/home/bost/dev/dotfiles" ".sp.*macs")
-                  (expand-pattern "/home/bost/dev/jump-last" "el")
-                  (expand-pattern "/home/bost/dev/tweaks" "el")
-                  (expand-pattern "/home/bost/dev/farmhouse-light-mod-theme" "el")
-                  )
-                 #:scheme-file-name "search-notes")
+   (let [(other-files
+          (flatten
+           (append
+            (map (lambda (pattern)
+                   (expand-pattern "/home/bost/dec/corona_cases" pattern))
+                 (list
+                  "end"
+                  "clj"
+                  "src/corona/"
+                  "src/corona/api/"
+                  "src/corona/models/"
+                  "src/corona/msg/graph/"
+                  "src/corona/msg/text/"
+                  "src/corona/web/"
+                  "test/corona/"))
+            (map (lambda (pattern)
+                   (expand-pattern "/home/bost/dec/fdk" pattern))
+                 (list
+                  "end"
+                  "clj"
+                  "data/src/fdk/datasrc/"
+                  "data/src/fdk/"
+                  "data/test/fdk/"
+                  "env/dev/clj/fdk/cmap/"
+                  "env/dev/clj/"
+                  "env/prod/clj/"
+                  "env/prod/clj/fdk/cmap/"
+                  "src/clj/fdk/cmap/"
+                  "src/clj/fdk/cmap/web/controllers/"
+                  "src/clj/fdk/cmap/web/"
+                  "src/clj/fdk/cmap/web/middleware/"
+                  "src/clj/fdk/cmap/web/pages/"
+                  "src/clj/fdk/cmap/web/routes/"
+                  "src/clj/fdk/data/"
+                  "test/clj/fdk/cmap/"
+                  "src/cljs/fdk/cmap/"))))
+          )]
+     (service-file #:program-name "crc"
+                   #:files (list "lisp/clojure")
+                   #:other-files other-files
+                   #:scheme-file-name "search-notes"))
+   (let [(other-files
+         ((comp
+           (partial apply append)
+           (partial map (lambda (params) (apply expand-pattern params))))
+          (list
+           (list "/home/bost/.emacs.d.distros/spguimacs" "core/el")
+           (list "/home/bost/dev/kill-buffers" "el")
+           (list "/home/bost/dev/dotfiles" ".sp.*macs")
+           (list "/home/bost/dev/jump-last" "el")
+           (list "/home/bost/dev/tweaks" "el")
+           (list "/home/bost/dev/farmhouse-light-mod-theme" "el"))))]
+     (service-file #:program-name "cre"
+                   #:files (list "editors/")
+                   #:other-files other-files
+                   #:scheme-file-name "search-notes"))
    (service-file #:program-name "crep"
                  #:files (list ".*")
                  #:scheme-file-name "search-notes")
