@@ -25,7 +25,7 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define notes-dir (user-home "/org-roam"))
+(define notes-dir "org-roam")
 
 (define (list-all-files path)
   "(list-all-files notes-dir)"
@@ -37,14 +37,15 @@
     (nftw path file-collector)
     files))
 
-(define (expand-pattern notes-dir pattern)
+(define (expand-pattern relative-dir pattern)
   "Examples:
 (expand-pattern notes-dir \".*\")  ;; crep
 (expand-pattern notes-dir \"cli/git\")
 (expand-pattern notes-dir \"cli/\")
 (expand-pattern notes-dir \"cvs\")
 "
-  (let* [(files
+  (let* [(notes-dir (str "/home/bost/" relative-dir))
+         (files
           (if (string= ".*" pattern)
               (list-all-files notes-dir)
               (let* [(re (let* [(b (basename pattern))]
@@ -198,7 +199,7 @@ Example:
           (flatten
            (append
             (map (lambda (pattern)
-                   (expand-pattern "/home/bost/dec/corona_cases" pattern))
+                   (expand-pattern "dec/corona_cases" pattern))
                  (list
                   "end"
                   "clj"
@@ -210,7 +211,7 @@ Example:
                   "src/corona/web/"
                   "test/corona/"))
             (map (lambda (pattern)
-                   (expand-pattern "/home/bost/dec/fdk" pattern))
+                   (expand-pattern "dec/fdk" pattern))
                  (list
                   "end"
                   "clj"
@@ -240,12 +241,12 @@ Example:
            (partial apply append)
            (partial map (lambda (params) (apply expand-pattern params))))
           (list
-           (list "/home/bost/.emacs.d.distros/spguimacs" "core/el")
-           (list "/home/bost/dev/kill-buffers" "el")
-           (list "/home/bost/dev/dotfiles" ".sp.*macs")
-           (list "/home/bost/dev/jump-last" "el")
-           (list "/home/bost/dev/tweaks" "el")
-           (list "/home/bost/dev/farmhouse-light-mod-theme" "el"))))]
+           (list ".emacs.d.distros/spguimacs" "core/el")
+           (list "dev/kill-buffers" "el")
+           (list "dev/dotfiles" ".sp.*macs")
+           (list "dev/jump-last" "el")
+           (list "dev/tweaks" "el")
+           (list "dev/farmhouse-light-mod-theme" "el"))))]
      (service-file #:program-name "cre"
                    #:files (list "editors/")
                    #:other-files other-files
@@ -273,7 +274,7 @@ Example:
                  #:files (list "guix-guile-nix/")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/dev/guix" "scm")
+                  (expand-pattern "dev/guix" "scm")
                   )
                  #:scheme-file-name "search-notes")
 ;;; TODO crgi should also search in the output of `git config --get' etc.
@@ -281,7 +282,7 @@ Example:
                  #:files (list "cli/git")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/dev/dotfiles" ".gitconfig")
+                  (expand-pattern "dev/dotfiles" ".gitconfig")
                   )
                  #:scheme-file-name "search-notes")
 ;;; TODO crl should search in the $dotf/.config/fish and other profile files
@@ -293,7 +294,7 @@ Example:
                           "network" "cvs" "gui")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/dev/dotfiles" ".bash")
+                  (expand-pattern "dev/dotfiles" ".bash")
                   )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "crli"
@@ -303,7 +304,7 @@ Example:
                  #:files (list "lisp/racket")
                  #:other-files
                  (append
-                  (expand-pattern "/home/bost/der/search-notes" "rkt")
+                  (expand-pattern "der/search-notes" "rkt")
                   )
                  #:scheme-file-name "search-notes")
 ;;; TODO create crct - search in category-theory notes
@@ -312,7 +313,7 @@ Example:
                  #:files (list "cli/shells")
                  ;; #:other-files
                  ;; (append
-                 ;;  (expand-pattern "/home/bost/dev/dotfiles" ".bash")
+                 ;;  (expand-pattern "dev/dotfiles" ".bash")
                  ;;  )
                  #:scheme-file-name "search-notes")
    (service-file #:program-name "cru"
