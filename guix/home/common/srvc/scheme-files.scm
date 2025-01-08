@@ -45,8 +45,8 @@
 (expand-pattern relative-dir \"cvs\")
 "
   (let* [(absolute-dir (str "/home/bost/" relative-dir))]
-    ((comp
-      (partial remove (lambda (f) (ends-with? (dirname f) "compiled"))))
+    (remove
+     (lambda (file) (ends-with? (dirname file) "compiled"))
      (if (string= ".*" pattern)
          (list-all-files absolute-dir)
          (let* [(re (let* [(b (basename pattern))]
