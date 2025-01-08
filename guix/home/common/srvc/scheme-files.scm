@@ -39,35 +39,33 @@
 
 (define (expand-pattern relative-dir pattern)
   "Examples:
-(expand-pattern notes-dir \".*\")  ;; crep
-(expand-pattern notes-dir \"cli/git\")
-(expand-pattern notes-dir \"cli/\")
-(expand-pattern notes-dir \"cvs\")
+(expand-pattern relative-dir \".*\")  ;; crep
+(expand-pattern relative-dir \"cli/git\")
+(expand-pattern relative-dir \"cli/\")
+(expand-pattern relative-dir \"cvs\")
 "
-  (let* [(notes-dir (str "/home/bost/" relative-dir))
-         (files
-          (if (string= ".*" pattern)
-              (list-all-files notes-dir)
-              (let* [(re (let* [(b (basename pattern))]
-                           (str (if (string-suffix? "/" b) "" ".*") b ".*")))
-                     (dir (str notes-dir "/"
-                               (let* [(d (dirname pattern))]
-                                 (if (string= "." d)   "" (str d "/")))
-                               (let* [(dre (dirname re))]
-                                 (if (string= "." dre) "" (str dre "/")))))
-                     (rem-fn (if (string= pattern ".*")
-                                 (lambda _ #f)
-                                 file-is-directory?))]
-                ((comp
-                  (partial remove rem-fn)
-                  (partial map (partial str dir))
-                  (partial remove (lambda (f) (member f (list "." ".."))))
-                  (lambda (p) (or p (list))) ;; the notes-dir may not exist
-                  (partial scandir dir))
-                 (lambda (s) (string-match (basename re) s))))))]
+  (let* [(absolute-dir (str "/home/bost/" relative-dir))]
     ((comp
       (partial remove (lambda (f) (ends-with? (dirname f) "compiled"))))
-     files)))
+     (if (string= ".*" pattern)
+         (list-all-files absolute-dir)
+         (let* [(re (let* [(b (basename pattern))]
+                      (str (if (string-suffix? "/" b) "" ".*") b ".*")))
+                (dir (str absolute-dir "/"
+                          (let* [(d (dirname pattern))]
+                            (if (string= "." d)   "" (str d "/")))
+                          (let* [(dre (dirname re))]
+                            (if (string= "." dre) "" (str dre "/")))))
+                (rem-fn (if (string= pattern ".*")
+                            (lambda _ #f)
+                            file-is-directory?))]
+           ((comp
+             (partial remove rem-fn)
+             (partial map (partial str dir))
+             (partial remove (lambda (f) (member f (list "." ".."))))
+             (lambda (p) (or p (list))) ;; the dir may not exist
+             (partial scandir dir))
+            (lambda (s) (string-match (basename re) s))))))))
 
 (define launcher-spacemacs (str "emacs-launcher-" spacemacs))
 (define launcher-spguimacs (str "emacs-launcher-" spguimacs))
