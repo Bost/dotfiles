@@ -39,13 +39,15 @@
 (evaluating-module)
 
 (define (bash-config-file name content)
-  (plain-file name
-              (str
-               "\n" "#### home-bash-configuration -> " name ": beg"
-               "\n"
-               content
-               "\n"
-               "\n" "#### home-bash-configuration -> " name ": end")))
+  (plain-file
+   name
+   (str
+    "\n" "### echo \"home-bash-configuration -> " name ": beg $EMACSLOADPATH\""
+    "\n"
+    content
+    "\n"
+    "\n" "### echo \"home-bash-configuration -> " name ": end $EMACSLOADPATH\""
+    )))
 (testsymb 'bash-config-file)
 
 ;; TODO check if GPG keys are present and show commands how to transfer them:
@@ -95,7 +97,7 @@
 ;;; 160
 ;;; 2. `guix install` may require:
 ;;;      GUIX_PROFILE=$HOME/.guix-profile
-;;;       . "$GUIX_PROFILE/etc/profile"
+;;;      source "$GUIX_PROFILE/etc/profile"
 ;;;    i.e. `. ~/.guix-profile/etc/profile`
 
             ;; see `info "(gnupg) Invoking GPG-AGENT"`
@@ -126,7 +128,7 @@
             ;; %H:%M:%S can be abbreviated by %T
             "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
             "\n" "GUIX_PROFILE=$HOME/.guix-profile"
-            "\n" " . \"$GUIX_PROFILE/etc/profile\""
+            "\n" "source \"$GUIX_PROFILE/etc/profile\""
 
             ;; enable all profiles on login
             "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
@@ -134,7 +136,9 @@
             "\n" "  profile=$i/$(basename \"$i\")"
             "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
             "\n" "    GUIX_PROFILE=\"$profile\""
-            "\n" "    . \"$GUIX_PROFILE\"/etc/profile"
+            "\n" "    set -x"
+            "\n" "    source \"$GUIX_PROFILE\"/etc/profile"
+            "\n" "    { retval=\"$?\"; set +x; } 2>/dev/null"
             "\n" "  fi"
             "\n" "  unset profile"
             "\n" "done"
