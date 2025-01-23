@@ -22,6 +22,7 @@
  ;; lightdm  ; for lightdm-service-type
  ;; vnc      ; for xvnc-service-type
  sddm     ; for sddm-service-type
+ ;; security-token ; usb card reader
  xorg     ; for gdm-service-type
  )
 
@@ -116,6 +117,7 @@
      (append
       (base:services)
       (list
+       ;; (service pcscd-service-type) ;; usb card reader
        (service nvidia-service-type)
 
        ;; Configure desktop environment, GNOME for example.
