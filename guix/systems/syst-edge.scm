@@ -49,6 +49,8 @@
  ;; Wayland
  sddm
 
+ ;; security-token ; usb card reader
+
  ;; for gdm-service-type - Run the GNOME Desktop Manager (GDM), which allows you
  ;; to log in in a graphical session, whether or not you use GNOME.
  xorg
@@ -105,7 +107,7 @@
                     ;; problem
                     ;; (x11-forwarding? #t)
                     )))
-      
+
       (list
        ;; TODO lightdm doesn't work properly. The login fails
        ;; (service lightdm-service-type
@@ -128,6 +130,8 @@
        ;;           ;;         (name "*")
        ;;           ;;         (user-session "ratpoison"))))
        ;;           ))
+
+       ;; (service pcscd-service-type)
 
        (service cups-service-type
                 (cups-configuration
