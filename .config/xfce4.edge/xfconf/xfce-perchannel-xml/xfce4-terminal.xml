@@ -20,4 +20,5 @@
   <property name="dropdown-position" type="uint" value="100"/>
   <property name="dropdown-height" type="uint" value="63"/>
   <property name="scrolling-lines" type="uint" value="1000000"/>
+  <property name="command-login-shell" type="bool" value="false"/>
 </channel>

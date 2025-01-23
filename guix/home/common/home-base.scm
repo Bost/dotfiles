@@ -127,9 +127,9 @@
             "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
             ;; %H:%M:%S can be abbreviated by %T
             "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
-            "\n" "GUIX_PROFILE=$HOME/.guix-profile"
-            "\n" "source \"$GUIX_PROFILE/etc/profile\""
-
+            ;; "\n" "GUIX_PROFILE=$HOME/.guix-profile"
+            ;; "\n" "source \"$GUIX_PROFILE/etc/profile\""
+            "\n"
             ;; enable all profiles on login
             "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
             "\n" "for i in $GUIX_EXTRA_PROFILES/*; do"
