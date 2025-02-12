@@ -9,6 +9,7 @@
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   ;; provides: specification->package
   #:use-module (gnu packages)
+  #:use-module (bost gnu packages guake)
 
   ;; for inferior-package-in-channel : beg
   #:use-module (guix packages)
@@ -702,7 +703,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; https://issues.guix.gnu.org/59825
    ;; guix shell -NC flatpak-xdg-utils --preserve='^DBUS_SESSION_BUS_ADDRESS$' -- xdg-open "<https://guix.gnu.org>"
 
-   ;; $ time exa -abghHliS --color=always --time-style=full-iso /gnu/store
+   ;; $ time eza -abghHliS --color=always --time-style=full-iso /gnu/store
    ;;
    ;; GPU-based terminal emulator:
    ;; * Offloads rendering to the GPU for lower system load and buttery smooth scrolling.  Uses threaded rendering to minimize input latency.
@@ -720,11 +721,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Library libxkbcommon-x11.so could not be loaded.
    ;; note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
    alacritty          ;;  4.393s; no drop-down; no splits; no tabs; e.g.: alacritty -o font.size=8
-   ;; xfce4-terminal  ;;  9.905s; has --drop-down; has context menu; already present, no splits
+   ;; xfce4-terminal  ;;  9,998s; has --drop-down; has context menu; already present, no splits
    ;; yakuake         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
-   ;; guake           ;;        ; not packaged for Guix
+   guake              ;; 10,176s; has --drop-down; has context menu; already present, has splits
    ;; tilda           ;;  9.256s; drop down with F1 by default; has tabs; no splits
-   qterminal          ;;  6.147s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
+   qterminal          ;;  8,720s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
    ;; tilix           ;;        ; can't see a shit, the text (foreground color) is too dark
    ;; xterm           ;; 17.341s; has nothing, too basic
    ;; lxterminal      ;;  9.022s; has context-menu; no drop-down; no splits; has tabs
