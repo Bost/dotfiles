@@ -88,8 +88,6 @@
     (packages
      (append
       (list
-       ;; lpinfo
-       cups
        ;; backlight and LED brightness control
        brightnessctl)
       (packages-to-install)
