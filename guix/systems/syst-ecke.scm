@@ -95,9 +95,7 @@
     (packages
      (append
       (map specification->package (sway-package-specifications))
-      (list
-       ;; lpinfo
-       cups)
+      (list)
       (packages-to-install)
       %base-packages))
 
