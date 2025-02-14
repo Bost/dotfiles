@@ -20,7 +20,19 @@
 
 (define-public (keyb-layout)
   (keyboard-layout
-   "us,de,sk,fr" "altgr-intl,,qwerty,"
+   ;; EurKEY: The European Keyboard Layout https://eurkey.steffen.bruentjen.eu/
+   ;; "eu" ""
+
+   ;; ',,' means that "" ie no modifier is used
+   "eu,us,de,sk,fr" ",altgr-intl,,qwerty,"
+
+   ;; 1. Keep compose key (the small menu icon (☰) or the text "Menu") option if
+   ;; needed:
+   ;; Compose → a → e → æ
+   ;; Compose → s → s → ß
+   ;; Compose → ^ → e → ê
+   ;;
+   ;; 2. Switch layouts by pressing both Ctrl-keys
    #:options '("compose:menu,grp:ctrls_toggle")))
 (testsymb 'keyb-layout)
 
