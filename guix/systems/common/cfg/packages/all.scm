@@ -5,6 +5,7 @@
   )
 
 (use-package-modules
+ cups            ;; cups
  disk            ;; gparted
  gnupg           ;; gpg
  linux           ;; iptables (IP packet filtering rules)
@@ -14,6 +15,7 @@
  version-control ;; git
  vim
  wget            ;; wget
+ xorg            ;; setxkbmap
  )
 
 (define m (module-name-for-logging))
@@ -21,6 +23,15 @@
 
 (define-public (packages-to-install)
   (list
+
+   ;; Set the keyboard using the X Keyboard Extension
+   ;; setxkbmap is probably not needed. Anyway,execute `loadkeys us` if
+   ;; something goes wrong.
+   setxkbmap
+
+   ;; The Common Unix Printing System
+   cups ;; provides lpinfo
+
 ;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
    ;; From the comment in gnu/packages/version-control.scm
    ;; The size of the closure of 'git-minimal' is two thirds that of 'git'.
