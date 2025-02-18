@@ -69,6 +69,7 @@
 
 (define bst-packages
   (list
+   bst:emacs-live-py-mode
    bst:emacs-drupal-mode
 
    bst:emacs-vim-colors
