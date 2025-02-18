@@ -868,6 +868,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-hledger-mode"
    "emacs-hlint-refactor"
    "emacs-hlint-refactor-mode"
+   "emacs-holy-mode"
    "emacs-howm"
    "emacs-hsluv"
    "emacs-ht"
