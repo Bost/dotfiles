@@ -20,36 +20,7 @@
 (testsymb 'general-packages)
 
 (define (excluded-packages)
-  ;; (ya)snippet-relates packages cause adding various paths to `yas-snippet-dirs',
-  ;; among others the <current-dir>/snippets which cannot be opened.
-  ;; The error is, e.g.:
-  ;;     Error (use-package): cider/:catch: Opening directory: No such file or directory, <current-dir>/snippets
-  ;;     Opening directory: No such file or directory, <current-dir>/snippets
-  ;;
-  ;; `yas-snippet-dirs' value is, e.g.:
-  ;;   ("/home/bost/.spacemacs-guix.d/snippets"
-  ;;    "/home/bost/.spacemacs-guix.d/private/snippets/"
-  ;;    "/home/bost/.spacemacs-guix.d/layers/+completion/auto-completion/local/snippets"
-  ;;    "/gnu/store/lm1pa3z1aafp62fw6vf5fwfbic7wf6yw-emacs-clojure-snippets-1.0.1-0.6068dca/share/emacs/site-lisp/clojure-snippets-1.0.1-0.6068dca/snippets"
-  ;;    "/home/bost/snippets")
-  ;; The original value was:
-  ;;   ("/home/bost/.emacs.d.spacemacs/snippets")
-
   (list
-   ;; beg: Temporarily exclude following packages. They are added in the home-<hostname>.scm
-   ;; end: Temporarily exclude following packages. They are added in the home-<hostname>.scm
-
-   ;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
-   ;; https://github.com/kidd/erc-image.el
-   "emacs-erc-image"
-
-   ;; Preview candidates when using Evil registers and marks.
-   ;; https://github.com/mamapanda/evil-owl
-   "emacs-evil-owl" ;; seems not to be used
-
-   ;; Display small plots and graphics and lets users write shell commands in
-   ;; Emacs Lisp. https://github.com/riscy/shx-for-emacs
-   "emacs-shx"
    ))
 (testsymb 'excluded-packages)
 
