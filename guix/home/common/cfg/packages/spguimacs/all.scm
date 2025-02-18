@@ -39,10 +39,6 @@
    ;; beg: Temporarily exclude following packages. They are added in the home-<hostname>.scm
    ;; end: Temporarily exclude following packages. They are added in the home-<hostname>.scm
 
-   ;; Show inlined images (png/jpg/gif/svg) in ERC buffers.
-   ;; https://github.com/kidd/erc-image.el
-   "emacs-erc-image"
-
    ;; Preview candidates when using Evil registers and marks.
    ;; https://github.com/mamapanda/evil-owl
    "emacs-evil-owl" ;; seems not to be used
