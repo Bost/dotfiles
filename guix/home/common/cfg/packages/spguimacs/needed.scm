@@ -9,14 +9,6 @@
 ;; doesn't work
 (define-public (needed-packages)
   (list
-   ;; :beg: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
-   ;; "emacs-flycheck-joker"
-   ;; "emacs-kaocha-runner"
-   ;; :end: not really needed although listed in the $dev/.spguimacs.d/layers/+lang/clojure/packages.el
-
-   ;; "emacs-edbi-sqlite"
-
-   "emacs-molokai-theme"
    "emacs-ac-ispell"
    "emacs-ac-php"
    "emacs-ac-php-core"
@@ -56,10 +48,6 @@
    "emacs-bubbleberry-theme"
    "emacs-bui"
    "emacs-busybee-theme"
-
-   ;; the dired mode doesn't work if emacs-cc-mode is in the profile
-   ;; "emacs-cc-mode"
-
    "emacs-centered-cursor-mode"
    "emacs-cfrs"
    "emacs-chatgpt"
@@ -102,8 +90,6 @@
    "emacs-company-web"
    "emacs-compat"
    "emacs-composer"
-   ;; "emacs-consult"
-   ;; "emacs-copilot"
    "emacs-copy-sexp"
    "emacs-core-load-paths"
    "emacs-crux"
@@ -115,7 +101,7 @@
    "emacs-dakrone-theme"
    "emacs-dall-e"
    "emacs-dante"
-   "emacs-dap-mode"         ;; uses emacs-lsp-treemacs
+   "emacs-dap-mode"
    "emacs-darkmine-theme"
    "emacs-darkokai-theme"
    "emacs-darktooth-theme"
@@ -148,7 +134,6 @@
    "emacs-ellama"
    "emacs-elm-mode"
    "emacs-emacsql"
-   ;; "emacs-emacsql-sqlite3" ;; only in bste:emacs-emacsql-sqlite3; build fails
    "emacs-emmet-mode"
    "emacs-emojify"
    "emacs-emr"
@@ -163,10 +148,6 @@
    "emacs-erc-yt"
    "emacs-erlang"
    "emacs-eros"
-   "emacs-pydoc"
-   "emacs-pyenv-mode"
-   "emacs-pytest"
-   "emacs-pyvenv"      ;; may not be needed
    "emacs-esh-help"
    "emacs-eshell-prompt-extras"
    "emacs-eshell-z"
@@ -244,13 +225,6 @@
    "emacs-flyspell-correct"
    "emacs-flyspell-correct-helm"
    "emacs-font-lock+"
-
-   ;; deactivated due to
-   ;;    Unable to activate package ‘font-utils’.
-   ;;    Required package ‘persistent-soft-0.8.8’ is unavailable
-   ;; otherwise the emacsclient doesn't start
-   ;; "emacs-font-utils"
-
    "emacs-forge"
    "emacs-frame-cmds"
    "emacs-frame-fns"
@@ -276,7 +250,7 @@
    "emacs-grandshell-theme"
    "emacs-graphviz-dot-mode"
    "emacs-groovy-imports"
-   "emacs-groovy-mode"     ;; TODO may need to create emacs-groovy-modes-mode
+   "emacs-groovy-mode"
    "emacs-gruber-darker"
    "emacs-gruber-darker-theme"
    "emacs-gruvbox-theme"
@@ -366,8 +340,8 @@
    "emacs-light-soap-theme"
    "emacs-link-hint"
    "emacs-list-utils"
-   "emacs-livid-mode"
    "emacs-live-py-mode"
+   "emacs-livid-mode"
    "emacs-llm"
    "emacs-log4e"
    "emacs-loop"
@@ -375,7 +349,7 @@
    "emacs-lsp-haskell"
    "emacs-lsp-java"
    "emacs-lsp-latex"
-   "emacs-lsp-metals"    ;; uses emacs-dap-mode
+   "emacs-lsp-metals"
    "emacs-lsp-mode"
    "emacs-lsp-origami"
    "emacs-lsp-pyright"
@@ -383,9 +357,9 @@
    "emacs-lsp-treemacs"
    "emacs-lsp-ui"
    "emacs-lsp-volar"
-   "emacs-lv"
    "emacs-lua-mode"
    "emacs-lush-theme"
+   "emacs-lv"
    "emacs-macrostep"
    "emacs-madhat2r-theme"
    "emacs-magit"
@@ -408,6 +382,7 @@
    "emacs-mmm-mode"
    "emacs-modus-themes"
    "emacs-moe-theme"
+   "emacs-molokai-theme"
    "emacs-monochrome-theme"
    "emacs-monokai-theme"
    "emacs-multi-line"
@@ -429,7 +404,7 @@
    "emacs-occidental"
    "emacs-occidental-theme"
    "emacs-oldlace-theme"
-   "emacs-omtose-phellack-theme" ;; defines emacs-omtose-darker-theme emacs-omtose-softer-theme
+   "emacs-omtose-phellack-theme"
    "emacs-open-junk-file"
    "emacs-openai"
    "emacs-org"
@@ -492,7 +467,11 @@
    "emacs-pug-mode"
    "emacs-purple-haze-theme"
    "emacs-py-isort"
+   "emacs-pydoc"
+   "emacs-pyenv-mode"
    "emacs-pylookup"
+   "emacs-pytest"
+   "emacs-pyvenv"      ;; may not be needed
    "emacs-queue"
    "emacs-quickrun"
    "emacs-racket-mode"
@@ -602,13 +581,6 @@
    "emacs-underwater-theme"
    "emacs-undo-tree"
    "emacs-unfill"
-
-   ;; deactivated due to
-   ;;   Unable to activate package ‘unicode-fonts’.
-   ;;   Required package ‘font-utils-0.7.8’ is unavailable
-   ;; otherwise the emacsclient doesn't start
-   ;; "emacs-unicode-fonts"
-
    "emacs-use-package"
    "emacs-use-package-chords"
    "emacs-uuidgen"
@@ -650,9 +622,6 @@
    "emacs-zonokai-emacs"
    "emacs-zoom-frm"
    "emacs-zop-to-char"
-   ;; "emacs-guix"
-   ;; "emacs-paradox"
-   ;; Overridden by pkg:... in the $dotf/guix/home/cfg/packages/all.scm
    ))
 (testsymb 'needed-packages)
 
