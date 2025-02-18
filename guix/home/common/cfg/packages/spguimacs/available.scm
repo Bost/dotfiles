@@ -1012,6 +1012,7 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-litable"
    "emacs-literate-calc-mode"
    "emacs-literate-elisp"
+   "emacs-live-py-mode"
    "emacs-livid-mode"
    "emacs-llama"
    "emacs-llm"
