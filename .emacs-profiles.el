@@ -24,7 +24,7 @@
    ))
 
  ("spguimacs" .
-  ((user-emacs-directory . "~/.emacs.d.distros/spguimacs")
+  ((user-emacs-directory . "~/.emacs.d.distros/spguimacs-merge")
    (server-name . "spguimacs")
    ;; mv /path/to/.spguimacs $SPGUIMACSDIR/init.el
    (env . (
