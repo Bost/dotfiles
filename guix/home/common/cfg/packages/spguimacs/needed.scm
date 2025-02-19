@@ -579,6 +579,8 @@
    "emacs-typescript-mode"
    "emacs-ujelly-theme"
    "emacs-underwater-theme"
+   "emacs-undo-fu"
+   "emacs-undo-fu-session"
    "emacs-undo-tree"
    "emacs-unfill"
    "emacs-use-package"
