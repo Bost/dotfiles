@@ -40,6 +40,7 @@
 
 (define bst-packages
   (list
+   bst:emacs-erc-image
    bst:emacs-holy-mode
    bst:emacs-live-py-mode
    bst:emacs-drupal-mode
@@ -213,7 +214,6 @@
    bst:emacs-gruber-darker-theme
    bst:emacs-hc-zenburn-theme
    bst:emacs-helm-cider-history
-   bst:emacs-helm-core
    bst:emacs-helm-files
    bst:emacs-hemisu-theme
    bst:emacs-heroku-theme
