@@ -2,6 +2,7 @@
   ;; #:use-module (cfg packages-new)
   #:use-module (memo)
   #:use-module (utils)
+  #:use-module (settings)
   #:use-module (fs-utils)
   ;; See service-file -> with-imported-modules
   #:use-module (scm-bin gcl)
@@ -231,7 +232,9 @@ Example:
                           (partial apply append)
                           (partial map (partial apply expand-pattern)))
                          (list
-                          (list ".emacs.d.distros/spguimacs" "core/el")
+                          (list (substring (get-src #:spguimacs)
+                                           (string-length (str home "/")))
+                                "core/el")
                           (list "dev/kill-buffers" "el")
                           (list "dev/dotfiles" ".sp.*macs")
                           (list "dev/jump-last" "el")
