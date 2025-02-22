@@ -15,7 +15,7 @@
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/spag.scm 
+./guix/home/common/scm-bin/spag.scm
 
 |#
 
@@ -32,9 +32,11 @@ cd $dotf
 (define (main args)
   (map exec
        (list
-        (git-spacemacs "fetch" "--tags" "origin" "develop")
-        (git-spacemacs "rebase" "origin/develop" "develop")
-        (git-spacemacs "rebase" "develop" "cycle"))))
+        (git-spacemacs "fetch" "--tags" origin develop)
+        (git-spacemacs "rebase" (str origin "/" develop) develop)
+        (git-spacemacs "rebase" develop cycle)
+        (git-spacemacs "rebase" cycle keyseq)
+        )))
 (testsymb 'main)
 
 (module-evaluated)

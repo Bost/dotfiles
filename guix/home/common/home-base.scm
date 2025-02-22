@@ -53,15 +53,17 @@
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
 (define-public (services)
-  ((comp
-    ;; (lambda (v) (format #t "~a 7\n" m) v)
-    (partial
-     append
-     ;; (service home-xsettingsd-service-type)
-     (list
-      (service
-       home-bash-service-type
-       (home-bash-configuration
+  (let* [(m (format #f "~a [services]" m))]
+    ;; (format #t "~a starting...\n" m)
+    ((comp
+      ;; (lambda (v) (format #t "~a 7 done.\n" m) v)
+      (partial
+       append
+       ;; (service home-xsettingsd-service-type)
+       (list
+        (service
+         home-bash-service-type
+         (home-bash-configuration
 ;;; (guix-defaults? #t) ;; Add sane defaults to the top of the .bashrc
 
 ;;; Aliases will be defined after the contents of the bashrc field has been
@@ -79,14 +81,14 @@
 
 ;;; aliases for "l" "ll" "ls" come from the .bashrc template and will be
 ;;; overridden because see above
-        ;; (aliases '())
+          ;; (aliases '())
 
-        ;; List of file-like objects, which will be ADDED(!) to .bashrc.
-        (bashrc
-         (list
-          (bash-config-file
-           "bashrc"
-           (str
+          ;; List of file-like objects, which will be ADDED(!) to .bashrc.
+          (bashrc
+           (list
+            (bash-config-file
+             "bashrc"
+             (str
 ;;; Also https://github.com/oh-my-fish/plugin-foreign-env
 ;;; 1. ~/.guix-home/setup-environment does:
 ;;;     source ~/.guix-home/profile/etc/profile"
@@ -100,105 +102,105 @@
 ;;;      source "$GUIX_PROFILE/etc/profile"
 ;;;    i.e. `. ~/.guix-profile/etc/profile`
 
-            ;; see `info "(gnupg) Invoking GPG-AGENT"`
-            "\n" "export GPG_TTY=$(tty)"
+              ;; see `info "(gnupg) Invoking GPG-AGENT"`
+              "\n" "export GPG_TTY=$(tty)"
 
-            ;; Export empty DIRENV_LOG_FORMAT so that e.g. while desktop
-            ;; sharing, it's not obvious what variables are encrypted.
-            ;; (Redirect to /dev/null doesn't work.)
-            ;; See https://github.com/direnv/direnv/issues/68
-            "\n" "export DIRENV_LOG_FORMAT="
-            "\n" "eval \"$(direnv hook bash)\""
-            ))
+              ;; Export empty DIRENV_LOG_FORMAT so that e.g. while desktop
+              ;; sharing, it's not obvious what variables are encrypted.
+              ;; (Redirect to /dev/null doesn't work.)
+              ;; See https://github.com/direnv/direnv/issues/68
+              "\n" "export DIRENV_LOG_FORMAT="
+              "\n" "eval \"$(direnv hook bash)\""
+              ))
 
-          (let* [(filename ".bashrc_additions")]
-            ;; this should work too:
-            ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
-            (local-file
-             (user-dotf "/guix/home/" filename)
-             (fix-leading-dot filename)))))
+            (let* [(filename ".bashrc_additions")]
+              ;; this should work too:
+              ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
+              (local-file
+               (user-dotf "/guix/home/" filename)
+               (fix-leading-dot filename)))))
 
-        ;; List of file-like objects, which will be ADDED(!) to .bash_profile
-        (bash-profile
-         (list
-          (bash-config-file
-           "bash-profile"
-           (str
-            "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
-            ;; %H:%M:%S can be abbreviated by %T
-            "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
-            ;; "\n" "GUIX_PROFILE=$HOME/.guix-profile"
-            ;; "\n" "source \"$GUIX_PROFILE/etc/profile\""
-            "\n"
-            ;; enable all profiles on login
-            "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
-            "\n" "for i in $GUIX_EXTRA_PROFILES/*; do"
-            "\n" "  profile=$i/$(basename \"$i\")"
-            "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
-            "\n" "    GUIX_PROFILE=\"$profile\""
-            "\n" "    set -x"
-            "\n" "    source \"$GUIX_PROFILE\"/etc/profile"
-            "\n" "    { retval=\"$?\"; set +x; } 2>/dev/null"
-            "\n" "  fi"
-            "\n" "  unset profile"
-            "\n" "done"
-            ))
-          ;; (local-file ".bashrc" "bash_profile") should work too
-          ;; (local-file
-          ;;  (user-dotf "/.bash_profile_additions")
-          ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
-          ;;  "bash_profile_additions")
-          ))))))
+          ;; List of file-like objects, which will be ADDED(!) to .bash_profile
+          (bash-profile
+           (list
+            (bash-config-file
+             "bash-profile"
+             (str
+              "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
+              ;; %H:%M:%S can be abbreviated by %T
+              "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
+              ;; "\n" "GUIX_PROFILE=$HOME/.guix-profile"
+              ;; "\n" "source \"$GUIX_PROFILE/etc/profile\""
+              "\n"
+              ;; enable all profiles on login
+              "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
+              "\n" "for i in $GUIX_EXTRA_PROFILES/*; do"
+              "\n" "  profile=$i/$(basename \"$i\")"
+              "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
+              "\n" "    GUIX_PROFILE=\"$profile\""
+              "\n" "    set -x"
+              "\n" "    source \"$GUIX_PROFILE\"/etc/profile"
+              "\n" "    { retval=\"$?\"; set +x; } 2>/dev/null"
+              "\n" "  fi"
+              "\n" "  unset profile"
+              "\n" "done"
+              ))
+            ;; (local-file ".bashrc" "bash_profile") should work too
+            ;; (local-file
+            ;;  (user-dotf "/.bash_profile_additions")
+            ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
+            ;;  "bash_profile_additions")
+            ))))))
 
 ;;; fails with:
 ;;;   In procedure open-file: No such file or directory:
 ;;;   "eval \"$(direnv hook bash)\""
-    ;; (simple-service
-    ;;  'direnv-bash-hook
-    ;;  home-bash-service-type
-    ;;  (home-bash-extension
-    ;;   (bashrc (list "eval \"$(direnv hook bash)\""))))
+      ;; (simple-service
+      ;;  'direnv-bash-hook
+      ;;  home-bash-service-type
+      ;;  (home-bash-extension
+      ;;   (bashrc (list "eval \"$(direnv hook bash)\""))))
 
-    ;; emacs-with-native-comp - ? native compilation ?
-    ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
+      ;; emacs-with-native-comp - ? native compilation ?
+      ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
 
-    ;; https://github.com/search?q=home-fish-service-type&type=code
-    ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
+      ;; https://github.com/search?q=home-fish-service-type&type=code
+      ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
 
-    ;; (lambda (v) (format #t "~a 6\n" m) v)
-    (partial append (list (service dirs-service-type)))
-    ;; (lambda (v) (format #t "~a 5\n" m) v)
-    (partial append (list (fish-service)))
-    ;; (lambda (v) (format #t "~a 3\n" m) v)
-    (partial append (list (srvc:home-dir-cfg-srvc)))
-    ;; (lambda (v) (format #t "~a 2\n" m) v)
-    (partial append (list (scheme-files-service)))
-    ;; (lambda (v) (format #t "~a 1\n" m) v)
-    ;; (partial append mcron-service)
+      ;; (lambda (v) (format #t "~a 6\n" m) v)
+      (partial append (list (service dirs-service-type)))
+      ;; (lambda (v) (format #t "~a 5\n" m) v)
+      (partial append (list (fish-service)))
+      ;; (lambda (v) (format #t "~a 3\n" m) v)
+      (partial append (list (srvc:home-dir-cfg-srvc)))
+      ;; (lambda (v) (format #t "~a 2\n" m) v)
+      (partial append (list (scheme-files-service)))
+      ;; (lambda (v) (format #t "~a 1\n" m) v)
+      ;; (partial append mcron-service)
 
 ;;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
 ;;; https://github.com/babariviere/dotfiles/blob/guix/baba/home/gaia.scm
 ;;; [WIP] home: Add home-git-service-type https://issues.guix.gnu.org/54293 is
 ;;; not pulled yed
 
-    ;; (partial
-    ;;  append
-    ;;  (service home-git-service-type
-    ;;           (home-git-configuration
-    ;;            (config
-    ;;             `((user
-    ;;                ((name . ,user-full-name)
-    ;;                 (email . ,user-mail-address)
-    ;;                 #;(signingKey . "...")))
-    ;;               (github
-    ;;                ((user . "Bost")))
-    ;;               (remote
-    ;;                ((pushDefault . "origin")))
-    ;;               #;(commit ((gpgSign . #t)))
-    ;;               #;(tag ((gpgSign . #t))))))))
-    ;; (lambda (v) (format #t "~a 0\n" m) v)
-    )
-   (list)))
+      ;; (partial
+      ;;  append
+      ;;  (service home-git-service-type
+      ;;           (home-git-confqiguration
+      ;;            (config
+      ;;             `((user
+      ;;                ((name . ,user-full-name)
+      ;;                 (email . ,user-mail-address)
+      ;;                 #;(signingKey . "...")))
+      ;;               (github
+      ;;                ((user . "Bost")))
+      ;;               (remote
+      ;;                ((pushDefault . "origin")))
+      ;;               #;(commit ((gpgSign . #t)))
+      ;;               #;(tag ((gpgSign . #t))))))))
+      ;; (lambda (v) (format #t "~a 0\n" m) v)
+      )
+     (list))))
 (testsymb 'services)
 
 (define (gcc-filepath)
@@ -355,31 +357,31 @@
                  "/search-notes"
                  ;; "/vesmir" ;; is in the projects-heroku list
                  ))
-   (cons "/dev" (append
+   (cons
+    "/dev"
+    (append
 ;;;   cp -r <repo-local-checkout> $dev
 ;;;   cd $dev/<repo-name>
 ;;;   git remote add origin <repo-url>
 ;;; The repo-url can be obtained from `guix describe --format=channels`
 ;;;   git fetch --tags origin master
-                 (list
-                  (list "/guix" "https://git.savannah.gnu.org/git/guix.git")
-                  (list "/nonguix" "https://gitlab.com/nonguix/nonguix")
-                  )
-                 (list
-                  (list "/elpa-mirror.d12frosted" "https://github.com/d12frosted/elpa-mirror")
-                  "/blog"
-                  "/copy-sexp"
-                  "/dotfiles"
-                  "/guix-packages"
-                  "/jump-last"
-                  "/kill-buffers"
-                  "/tweaks"
-                  "/notes"
-                  "/farmhouse-light-mod-theme"
-                  (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
-                  (list "/guile-git" "https://gitlab.com/guile-git/guile-git.git")
-                  )))
-   ))
+     (list
+      (list "/guix" "https://git.savannah.gnu.org/git/guix.git")
+      (list "/nonguix" "https://gitlab.com/nonguix/nonguix"))
+     (list
+      (list "/elpa-mirror.d12frosted"
+            "https://github.com/d12frosted/elpa-mirror")
+      "/blog"
+      "/copy-sexp"
+      "/dotfiles"
+      "/guix-packages"
+      "/jump-last"
+      "/kill-buffers"
+      "/tweaks"
+      "/notes"
+      "/farmhouse-light-mod-theme"
+      (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
+      (list "/guile-git" "https://gitlab.com/guile-git/guile-git.git"))))))
 (testsymb 'projects)
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
