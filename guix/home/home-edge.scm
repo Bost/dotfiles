@@ -27,8 +27,8 @@ guix home --allow-downgrades --cores=$cores \
 ;; enough to handle the differences just a few branching statements, e.g.
 ;; if, cond, etc.
 (define-module (home-edge)
-  #:use-module (settings)
   #:use-module (utils)
+  #:use-module (settings)
   #:use-module (memo)
   #:use-module (fs-utils)
   #:use-module (srvc fish)

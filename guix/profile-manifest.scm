@@ -57,6 +57,7 @@
    pkgs)
   (format #t "I ~a Packages to install: ~a\n" m (length pkgs))
   pkgs)
+(testsymb 'dbg-packages-to-install)
 
 (define-public (to-manifest-entry package)
   (cond
@@ -69,6 +70,7 @@
     (my-package->manifest-entry package)]
    [else
     (my-package->manifest-entry package)]))
+(testsymb 'to-manifest-entry)
 
 (define-public (manifest-content)
   "Leads to creation of a rather large file:

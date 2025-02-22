@@ -1,6 +1,6 @@
 (define-module (cfg packages all)
-  #:use-module (settings)
   #:use-module (utils)
+  #:use-module (settings)
   #:use-module (memo)
   ;; provides: use-package-modules
   #:use-module (gnu)

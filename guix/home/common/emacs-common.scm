@@ -1,9 +1,10 @@
 (define-module (emacs-common)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (utils) ;; partial
-  #:use-module (settings)
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
+  #:use-module (ice-9 regex)             #| string-match |#
+  #:use-module (utils)                   #| partial      |#
+  #:use-module (settings)                #| user         |#
   #:export (
             create-emacs-launcher
             handle-cli
@@ -73,7 +74,7 @@ Usage:
 (testsymb 'pkill-server)
 
 (define* (create-emacs-launcher #:key utility-name gx-dry-run profile #:rest args)
-  "
+  "Uses `user' from settings
 (create-emacs-launcher #:profile \"spacemacs\" \"rest\" \"args\")
 "
   (let* [(f "[create-emacs-launcher]")
@@ -97,7 +98,7 @@ Usage:
 ;;; Search for the full command line:
 ;;; $ pgrep --full --euid bost "/home/bost/.guix-home/profile/bin/emacs --with-profile=spacemacs --daemon"
       (lambda (client-cmd)
-        (if (string=? (compute-cmd init-cmd client-cmd init-cmd)
+        (if (string=? (compute-cmd user init-cmd client-cmd init-cmd)
                       client-cmd)
             (exec-background client-cmd)
             (when (zero? (car (exec init-cmd)))
@@ -136,11 +137,9 @@ Usage:
         (begin
           (format #t "~a ~m monad: ~a\n" m f monad)
           (format #t "~a ~m TODO implement --gx-dry-run\n" m f))
-        (let* [(profile-kw (cond
-                            [(string= profile spguimacs) #:spguimacs]
-                            [(string= profile spacemacs) #:spacemacs]))
-               (dst (get-cfg profile-kw))
-               (src (get-src profile-kw))]
+        (let* [(dst (get-cfg profile))
+               (src (str (getenv "dotf") "/"
+                         (substring dst (string-length (str home "/")))))]
           (with-monad monad
             (>>=
              (return (list dst))
@@ -151,8 +150,8 @@ Usage:
 (testsymb 'set-config-editable)
 
 (define* (handle-cli #:key (dbg #f) utility-name fun profile #:rest args)
-  "All the options, except rest-args, must be specified for the option-spec so that
-the options-parser doesn't complain about e.g. 'no such option: -p'."
+  "All the options, except rest-args, must be specified for the option-spec so
+ that the options-parser doesn't complain about e.g. 'no such option: -p'."
   ;; (format #t "~a args: ~a\n" m args)
   (let* [(f "[handle-cli]")
          (args (remove-kw-from-args #:dbg args))
@@ -195,7 +194,10 @@ the options-parser doesn't complain about e.g. 'no such option: -p'."
       (apply (partial fun
                       #:utility-name utility-name
                       #:gx-dry-run val-gx-dry-run
-                      #:profile profile)
+                      #:profile
+                      (let* [(branch-kw (cdr (assoc profile
+                                                    profile->branch-kw)))]
+                        (keyword->string branch-kw)))
              val-rest-args)])))
 (testsymb 'handle-cli)
 

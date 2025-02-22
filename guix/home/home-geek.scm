@@ -22,8 +22,8 @@ guix home --allow-downgrades --cores=$cores \
 |#
 
 (define-module (home-geek)
-  #:use-module (settings)
   #:use-module (utils)
+  #:use-module (settings)
   #:use-module (memo)
   #:use-module (scm-bin gcl)
   #:use-module (fs-utils)
