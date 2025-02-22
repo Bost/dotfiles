@@ -44,7 +44,7 @@
 (expand-pattern relative-dir \"cli/\")
 (expand-pattern relative-dir \"cvs\")
 "
-  (let* [(absolute-dir (str "/home/bost/" relative-dir))]
+  (let* [(absolute-dir (str home "/" relative-dir))]
     (remove
      (lambda (file) (ends-with? (dirname file) "compiled"))
      (if (string= ".*" pattern)
@@ -282,6 +282,7 @@ Example:
           #:scheme-file "search-notes")
     (list #:program-name "cru" #:files (list "utf8")
           #:scheme-file "search-notes"))))
+(testsymb 'search-notes-service-files)
 
 (define-public (scheme-files-service)
   ((comp
