@@ -239,7 +239,7 @@ Example:
                           (list "dev/farmhouse-light-mod-theme" "el")))
           #:scheme-file "search-notes")
     (list #:program-name "crep"
-          #:files (list ".*")
+          #:files (list ".*") ;; TODO exclude /home/bost/org-roam/notes.scrbl
           #:scheme-file "search-notes")
     (list #:program-name "cra"
           #:files (list "ai")
