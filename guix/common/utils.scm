@@ -943,6 +943,46 @@ Requires:
 (define-public spacemacs "spacemacs")
 (define-public spguimacs "spguimacs")
 (define-public crafted "crafted")
+
+(define-public emacs-profiles-new
+  '(
+    (#:develop . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/develop/src")
+                  (#:server-name . "develop")
+                  (#:env .  "/home/bost/.emacs.d.distros/spacemacs/develop/cfg")))
+
+    (#:guix    . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/guix/src")
+                  (#:server-name . "guix")
+                  (#:env . "/home/bost/.emacs.d.distros/spacemacs/guix/cfg")))
+
+    (#:keyseq  . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/keyseq/src")
+                  (#:server-name . "keyseq")
+                  (#:env . "/home/bost/.emacs.d.distros/spacemacs/keyseq/cfg")))
+
+    (#:doom    . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/doom-emacs")
+                  (#:server-name . "doom")
+                  (#:env . "/home/bost/.config/doom")))
+
+    (#:crafted . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/crafted-emacs")
+                  (#:server-name . "crafted")
+                  (#:env . "/home/bost/.emacs.d.distros/crafted-emacs/personal")))))
+
+(define-public emacs-profiles
+  '(
+    (#:spacemacs . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs")
+                    (#:server-name . "spacemacs")
+                    (#:env . "/home/bost/.emacs.d.distros/spacemacs-config")))
+    (#:spguimacs . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spguimacs")
+                    (#:server-name . "spguimacs")
+                    (#:env . "/home/bost/.emacs.d.distros/spguimacs-config")))))
+
+
+(define-public (get-val profile keyword)
+  (cdr (assoc keyword (cdr (assoc profile emacs-profiles)))))
+
+(define-public (get-src profile)    (get-val profile #:user-emacs-directory))
+(define-public (get-cfg profile)    (get-val profile #:env))
+(define-public (get-server profile) (get-val profile #:server-name))
+
 (define-public is-valid-profile?
   (partial string-in? (list spacemacs spguimacs crafted)))
 
