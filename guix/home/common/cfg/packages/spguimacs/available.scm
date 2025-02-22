@@ -795,7 +795,6 @@ guix package --list-available='^emacs-' | awk '{print \"   \\\"\"$1\"\\\"\"}' | 
    "emacs-helm-clojuredocs"
    "emacs-helm-comint"
    "emacs-helm-company"
-   "emacs-helm-core"
    "emacs-helm-css-scss"
    "emacs-helm-dash"
    "emacs-helm-descbinds"
