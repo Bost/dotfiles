@@ -40,27 +40,43 @@
 
 (define bst-packages
   (list
+   bst:emacs-flyspell-correct-helm
+   bst:emacs-company-php
+   bst:emacs-company-phpactor
+   bst:emacs-git-commit
+   bst:emacs-lv
+   bst:emacs-magit-section
+   bst:emacs-org-category-capture
+   bst:emacs-org-project-capture
+   bst:emacs-treemacs-evil
+   bst:emacs-treemacs-icons-dired
+   bst:emacs-treemacs-magit
+   bst:emacs-treemacs-persp
+   bst:emacs-treemacs-projectile
+   bst:emacs-use-package-chords
+
+   ;;; bst:emacs-omtose-phellack-theme produces:
+;;;    Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/...-emacs-omtose-phellack-theme-0.2.0-0.66f9963/share/emacs/site-lisp/omtose-phellack-theme-0.2.0-0.66f9963/omtose-phellack-theme-autoloads)
+;;; but this doesn't stop spacemacs from running.
+   bst:emacs-omtose-phellack-theme
+
+
    bst:emacs-erc-image
    bst:emacs-holy-mode
    bst:emacs-live-py-mode
    bst:emacs-drupal-mode
-
    bst:emacs-vim-colors
    bst:emacs-vim-powerline
-
    bst:emacs-molokai-theme
-
    bst:emacs-helm-git-grep
    bst:emacs-hide-comnt
    bst:emacs-hybrid-mode
    bst:emacs-vimish-fold
    bst:emacs-evil-vimish-fold
-
    bst:emacs-livid-mode
    bst:emacs-helm-purpose
    bst:emacs-helm-comint
    bst:emacs-gitignore-templates
-   bst:emacs-flyspell-correct-helm
    bst:emacs-flycheck-pos-tip
    bst:emacs-flycheck-elsa
    bst:emacs-flycheck-credo
@@ -77,60 +93,44 @@
    bst:emacs-evil-tutor
    bst:emacs-evil-easymotion
    bst:emacs-company-shell
-
    bst:emacs-define-word
    bst:emacs-flx-ido
    bst:emacs-gh-md
    bst:emacs-dall-e
    bst:emacs-elisp-def
-
    bst:emacs-erc-view-log
    bst:emacs-erc-yt
    bst:emacs-erc-tweet
    bst:emacs-emr
    bst:emacs-php-extras
-
    bst:emacs-overseer
    bst:emacs-haml-mode
-   bst:emacs-treemacs-persp
-   bst:emacs-treemacs-projectile
-   bst:emacs-treemacs-icons-dired
-   bst:emacs-treemacs-evil
    bst:emacs-string-edit-at-point
    bst:emacs-shfmt
    bst:emacs-sass-mode
-
    bst:emacs-reveal-in-folder
    bst:emacs-poetry
    bst:emacs-pipenv
    bst:emacs-clean-aindent-mode
    bst:emacs-pdf-view-restore
-
    bst:emacs-maven-test-mode
    bst:emacs-kbd-mode
    bst:emacs-journalctl-mode
    bst:emacs-importmagic
    bst:emacs-impatient-mode
-
    bst:emacs-pytest
    bst:emacs-hungry-delete
-
    bst:emacs-highlight-parentheses
-   bst:emacs-org-category-capture
-   bst:emacs-org-project-capture
-
    bst:emacs-omtose-phellack-themes
    bst:emacs-open-junk-file
    bst:emacs-ob-elixir
    bst:emacs-orgit-forge
    bst:emacs-load-env-vars
-
    bst:emacs-groovy-mode
    bst:emacs-pyenv-mode
    bst:emacs-eval-sexp-fu
    bst:emacs-cython-mode
    bst:emacs-geben
-
    bst:emacs-lsp-latex
    bst:emacs-prettier-js
    bst:emacs-systemd
@@ -138,7 +138,6 @@
    bst:emacs-mvn
    bst:emacs-smeargle
    bst:emacs-pcsv
-
    bst:emacs-core-load-paths
    bst:emacs-pylookup
    bst:emacs-wfnames
@@ -147,17 +146,14 @@
    bst:emacs-xhair
    bst:emacs-vline
    bst:emacs-uuidgen
-
    bst:emacs-scss-mode
    bst:emacs-helm-pydoc
    bst:emacs-php-auto-yasnippets
    bst:emacs-js-doc
    bst:emacs-multi-line
-
    bst:emacs-helm-dictionary
    bst:emacs-pcache
    bst:emacs-groovy-imports
-
    bst:emacs-ac-php-core
    bst:emacs-ample-zen-theme
    bst:emacs-anti-zenburn-theme
@@ -176,8 +172,6 @@
    bst:emacs-color-theme
    bst:emacs-color-theme-sanityinc-solarized
    bst:emacs-company-anaconda
-   bst:emacs-company-php
-   bst:emacs-company-phpactor
    bst:emacs-company-statistics
    bst:emacs-company-web
    bst:emacs-copilot
@@ -207,14 +201,12 @@
    bst:emacs-frame-cmds
    bst:emacs-frame-fns
    bst:emacs-gandalf-theme
-   bst:emacs-git-commit
    bst:emacs-gotham-theme
    bst:emacs-grandshell-theme
    bst:emacs-gruber-darker
    bst:emacs-gruber-darker-theme
    bst:emacs-hc-zenburn-theme
    bst:emacs-helm-cider-history
-   bst:emacs-helm-files
    bst:emacs-hemisu-theme
    bst:emacs-heroku-theme
    bst:emacs-hlint-refactor
@@ -240,9 +232,7 @@
    bst:emacs-lsp-python-ms
    bst:emacs-lsp-volar
    bst:emacs-lush-theme
-   bst:emacs-lv
    bst:emacs-madhat2r-theme
-   bst:emacs-magit-section
    bst:emacs-majapahit-themes
    bst:emacs-markdown-toc
    bst:emacs-material-theme
@@ -255,12 +245,6 @@
    bst:emacs-obsidian-theme
    bst:emacs-occidental-theme
    bst:emacs-oldlace-theme
-
-;;; bst:emacs-omtose-phellack-theme produces:
-;;;    Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/...-emacs-omtose-phellack-theme-0.2.0-0.66f9963/share/emacs/site-lisp/omtose-phellack-theme-0.2.0-0.66f9963/omtose-phellack-theme-autoloads)
-;;; but this doesn't stop spacemacs from running.
-   bst:emacs-omtose-phellack-theme
-
    bst:emacs-openai
    bst:emacs-organic-green-theme
    bst:emacs-origami
@@ -290,7 +274,6 @@
    bst:emacs-tblui
    bst:emacs-term-cursor
    bst:emacs-toxi-theme
-   bst:emacs-treemacs-magit
    bst:emacs-treemacs-treelib
    bst:emacs-tweaks
    bst:emacs-twilight-anti-bright-theme
@@ -300,7 +283,6 @@
    bst:emacs-underwater-theme
    bst:emacs-unicode-fonts
    bst:emacs-use-package
-   bst:emacs-use-package-chords
    bst:emacs-vi-tilde-fringe
    bst:emacs-web-completion-data
    bst:emacs-white-sand-theme
