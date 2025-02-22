@@ -159,11 +159,14 @@ See also:
     (partial append
              ((comp
                (partial
-                append (map
+                append
+                (map
                  (comp
                   (partial local-dotfile "/")
-                  (partial format #f ".emacs.d.distros/~a-config/init.el"))
-                 (list "spacemacs" "spguimacs" "spguimacs-default")))
+                  (lambda (substr) (str substr "/init.el"))
+                  (lambda (cfg) (substring cfg (string-length (str home "/"))))
+                  get-cfg)
+                 (list #:spguimacs #:spacemacs)))
                (partial remove unspecified-or-empty-or-false?)
                (partial map (partial local-dotfile "/")))
               (list
