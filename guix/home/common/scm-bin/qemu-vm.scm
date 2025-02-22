@@ -3,6 +3,7 @@
 ;;;   service-file -> with-imported-modules
   ;; #:use-module (memo) ;; is-system-ecke is-system-edge
   #:use-module (utils) ;; partial
+  #:use-module (settings) ;; user
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 getopt-long) ;; see also `info "guile-config"'

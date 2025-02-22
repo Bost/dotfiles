@@ -1,7 +1,7 @@
 (define-module (srvc home-dir-cfg)
   ;; See service-file -> with-imported-modules
-  #:use-module (settings)
   #:use-module (utils)
+  #:use-module (settings)
   #:use-module (memo)
   #:use-module (fs-utils)
   #:use-module (gnu services)
@@ -142,34 +142,41 @@ See also:
 (testsymb 'host-specific-config)
 
 (define (home-dir-cfg-srvc-files)
-  ((comp
-    ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)
-    (partial
-     append
-     ((comp
-       (partial append (list (local-dotfile
-                              "/"
-                              (str (basename xdg-config-home)
-                                   "/guix-gaming-channels/games.scm"))))
-       list)
-      (create-file-channels-scm (hostname-memoized))))
-    ;; (lambda (p) (format #t "###### 3.\n~a\n" p) p)
-    (partial append (host-specific-config))
-    ;; (lambda (p) (format #t "###### 2.\n~a\n" p) p)
-    (partial append
-             ((comp
-               (partial
-                append
-                (map
-                 (comp
-                  (partial local-dotfile "/")
-                  (lambda (substr) (str substr "/init.el"))
-                  (lambda (cfg) (substring cfg (string-length (str home "/"))))
-                  get-cfg)
-                 (list #:spguimacs #:spacemacs)))
-               (partial remove unspecified-or-empty-or-false?)
-               (partial map (partial local-dotfile "/")))
-              (list
+  (let* [(m (format #f "~a [home-dir-cfg-srvc-files]" m))]
+    ;; (format #t "~a starting...\n" m)
+    ((comp
+      ;; (lambda (p) (format #t "~a done.\n" m) p)
+      ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)
+      (partial
+       append
+       ((comp
+         (partial append (list (local-dotfile
+                                "/"
+                                (str (basename xdg-config-home)
+                                     "/guix-gaming-channels/games.scm"))))
+         list)
+        (create-file-channels-scm (hostname-memoized))))
+      ;; (lambda (p) (format #t "###### 3.\n~a\n" p) p)
+      (partial append (host-specific-config))
+      ;; (lambda (p) (format #t "###### 2.\n~a\n" p) p)
+      (partial append
+               ((comp
+                 ;; (lambda (p) (format #t "###### 1.2.\n") p)
+                 (partial
+                  append
+                  (map
+                   (comp
+                    ;; (lambda (p) (format #t "###### 1.1.\n") p)
+                    (partial local-dotfile "/")
+                    (lambda (substr) (str substr "/init.el"))
+                    (lambda (cfg)
+                      (substring cfg (string-length (str home "/"))))
+                    get-cfg)
+                   ;; TODO the crafted configuration is not managed by guix home
+                   (list spguimacs spacemacs)))
+                 (partial remove unspecified-or-empty-or-false?)
+                 (partial map (partial local-dotfile "/")))
+                (list
 ;;; TODO make sure that .gnupg and its content have the right ownership and
 ;;; permissions:
 ;;; chown -R $(whoami) ~/.gnupg
@@ -177,20 +184,20 @@ See also:
 ;;; find ~/.gnupg -type f -exec chmod u=rwx,g=---,o=--- {} \;
 ;;; # i.e. 700 for directories:
 ;;; find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \;
-               ".config/sway/config"
-               ".config/tmux/tmux.conf"
-               ".gnupg/gpg.conf"
-               ".gnupg/gpg-agent.conf"
-               ".guile" ;; used by `guix repl'
-               ".gitconfig"
-               ".envrc"
-               ".env-secrets.gpg"
-               ".emacs-profiles.el"
-               ".lein/profiles.clj"
-               )))
+                 ".config/sway/config"
+                 ".config/tmux/tmux.conf"
+                 ".gnupg/gpg.conf"
+                 ".gnupg/gpg-agent.conf"
+                 ".guile" ;; used by `guix repl'
+                 ".gitconfig"
+                 ".envrc"
+                 ".env-secrets.gpg"
+                 ".emacs-profiles.el"
+                 ".lein/profiles.clj"
+                 )))
 
-    ;; (lambda (p) (format #t "###### 1.\n") p)
-    (partial append
+      ;; (lambda (p) (format #t "###### 1.\n") p)
+      (partial append
 ;;; This can't be used:
 ;;;           `((".emacs.d.spacemacs/private" ;; destination
 ;;;              ,(local-file (user-dotf "/.emacs.d.spacemacs/private")
@@ -203,16 +210,16 @@ See also:
 ;;; 2. Can't store the ".emacs.d.spacemacs/private" w/o the README.md files and
 ;;; restore them after `guix home ...`, since `git restore ...` overwrites the
 ;;; symlink (to the /gnu/store/).
-             ((comp
-               (partial map user-dotf-to-dir)
-               ;; (lambda (p) (format #t "###### 0.:\n~a\n" p) p)
-               )
-              (list
-               "bin"
-               )))
-    ;; (lambda (p) (format #t "###### 0.\n") p)
-    )
-   (list)))
+               ((comp
+                 (partial map user-dotf-to-dir)
+                 ;; (lambda (p) (format #t "###### 0.:\n~a\n" p) p)
+                 )
+                (list
+                 "bin"
+                 )))
+      ;; (lambda (p) (format #t "###### 0.\n") p)
+      )
+     (list))))
 (testsymb 'home-dir-cfg-srvc-files)
 
 (define-public (home-dir-cfg-srvc)

@@ -1,6 +1,6 @@
 (define-module (fs-utils)
-  #:use-module (settings)
   #:use-module (utils)
+  #:use-module (settings)
   ;; program-file local-file
   #:use-module (guix gexp)
   ;; take remove delete-duplicates append-map etc.

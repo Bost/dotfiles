@@ -2,6 +2,7 @@
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
+  #:use-module (settings)      #| spguimacs |#
   #:use-module (emacs-common)
   #:export (main))
 
