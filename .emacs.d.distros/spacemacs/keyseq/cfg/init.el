@@ -47,11 +47,9 @@ differences were encountered."
 
 (let ((emacs-default-dir "~/.emacs.d")
       (emacs-distros-dir "~/.emacs.d.distros/"))
-  (if (file-directory-p emacs-distros-dir)
-      (setq sp-dir      "spguimacs"
-            sp-home-dir (concat emacs-distros-dir sp-dir))
-    (setq sp-dir      emacs-default-dir
-          sp-home-dir emacs-default-dir)))
+  (setq sp-profile  "keyseq"
+        sp-dir      (format "spacemacs/%s/src" sp-profile)
+        sp-home-dir (concat emacs-distros-dir sp-dir)))
 
 (setq hostname (system-name))
 
@@ -120,10 +118,10 @@ This function should only modify configuration layer settings."
      ;; (setq gui-elements 1) ; because of CIDER menu
      ;; (define-key cider-repl-mode-map "s-<delete>" nil)
      ;; (unbind-key "s-<delete>" cider-repl-mode-map)
-     ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
-     ;; cider package location configured by
-     ;; ~/.emacs.d.distros/spguimacs/layers/+lang/clojure/packages.el
-     ;; in its 'use-package'
+
+     ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html cider
+     ;; package location configured by +lang/clojure/packages.el in its
+     ;; 'use-package'
      (clojure
       :variables
       ;; (Default '(macro core deprecated))
@@ -231,7 +229,7 @@ This function should only modify configuration layer settings."
 
      ;; Try some of the following commands:
      ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
-     ;;                     ~/.emacs.d.distros/spguimacs/layers/fennel
+     ;;       ~/.emacs.d.distros/spacemacs/keyseq/src/layers/fennel
      ;;   git submodule update --init
      ;; fennel ;; fennel = lua in lisp
 
@@ -773,9 +771,8 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=$HOME/.emacs.d.distros/spguimacs/.cache/dumps/spguimacs-27.1.pdmp
-   ;; (default (format "spguimacs-%s.pdmp" emacs-version))
-   dotspacemacs-emacs-dumper-dump-file (format "spguimacs-%s.pdmp" emacs-version)
+   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
+   dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" sp-profile)
 
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
@@ -905,7 +902,7 @@ It should only modify the values of Spacemacs settings."
    ;;
    ;; '(<theme-name> :location local)' on a:
    ;; - non-Guix machine:
-   ;;     ~/.emacs.d.distros/spguimacs/private/local/<theme-name>-theme/
+   ;;     ~/.emacs.d.distros/spacemacs/keyseq/src/private/local/<theme-name>-theme/
    ;; - Guix machine:
    ;;     /gnu/store/*-spacemacs-rolling-release-*/private/local
    ;; TODO check the
@@ -914,15 +911,15 @@ It should only modify the values of Spacemacs settings."
    ;; `custom-theme-load-path' and/or `custom-theme-directory'.
    dotspacemacs-themes
    `(
+     spacemacs-light
      ;; WTF? The quoting works only if farmhouse-light-mod is the first item in
      ;; the list
      ,(if (string= hostname "martin")
           '(farmhouse-light-mod :location local)
         'farmhouse-light-mod)
-     spacemacs-dark
      material
      misterioso
-     spacemacs-light
+     spacemacs-dark
      twilight-anti-bright
      underwater
      solarized-dark-high-contrast
@@ -953,15 +950,13 @@ It should only modify the values of Spacemacs settings."
    `("Source Code Pro"
      :size
      ,(let* ((default 10.0)
-             ;; The `text-scale-mode-step' is not accessible at this moment.
-             (text-scale-mode-step 1.2)
              (point-size (cond
                           ((string= hostname "edge") 19.0)
                           ((or (string= hostname "ecke")
                                (string= hostname "tuxedo"))
-                           ;; (+ default (* 6 text-scale-mode-step)) ; 17.2
-                           ;; (+ default (* 7 text-scale-mode-step)) ; 18.4
-                           default)
+                           (+ default (* 5 1.2))) ; 1.2 is
+                                        ; `text-scale-mode-step'
+                                        ; (undefined for some reason)
                           ;; TODO this is a pixel-size not point-size
                           ((string= hostname "geek") 17)
                           (t default))))
@@ -1191,7 +1186,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
-   ;; like \"~/.emacs.d.distros/spacemacs/server\". It has no effect if
+   ;; like \"~/.emacs.d/server\". It has no effect if
    ;; `dotspacemacs-enable-server' is nil.
    ;; (default nil)
    dotspacemacs-server-socket-dir (concat sp-home-dir "/" "server")
@@ -1282,7 +1277,7 @@ It should only modify the values of Spacemacs settings."
   "Environment variables setup.
 This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
-variables declared in `~/.spguimacs.env' or `~/.spguimacs.d/.spacemacs.env'.
+variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (my=beg #'dotspacemacs/user-env)
   (spacemacs/load-spacemacs-env)
@@ -1304,21 +1299,20 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; appears there too. (Default nil)
   ;; (setq init-file-debug t)
 
-  ;; prepend
-  (add-to-list 'package-directory-list
-               "~/.guix-profile/share/emacs/site-lisp")
+  ;; When:
+  ;;   Failed to verify signature archive-contents.sig
+  ;; (setq package-check-signature nil)
+  ;; Then
+  ;;  M-x package-list-packages
 
-  ;; Don't download archive-contents of the gnu, melpa, nongnu
-  ;; (setq my=retrieve-package-archives nil)
-  (setq my=retrieve-package-archives t)
   (setq yas--default-user-snippets-dir (concat
                                         sp-home-dir "/"
                                         "snippets"))
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
-  ;; ~/.emacs.d.distros/spguimacs/.cache/.custom-settings
-  ;; See also ~/.emacs.d.distros/spguimacs/core/core-custom-settings.el
+  ;; .cache/.custom-settings
+  ;; See core/core-custom-settings.el
   (setq custom-file (concat
                      sp-home-dir "/"
                      ".cache/.custom-settings"))
@@ -1349,8 +1343,6 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (my=beg #'dotspacemacs/user-config)
-
-  ;; (spacemacs/toggle-display-fill-column-indicator) ;; toggle with ~SCP t f~
 
   ;; (debug) ;; stops the execution. What I need is the stack frame as a string
 
@@ -1505,8 +1497,15 @@ before packages are loaded."
                            #'tw-shell-which)
                           "plantuml")
 
-   ;; chatgpt-shell-openai-key (getenv "OPENAI_KEY") ;; (getenv "OPENAI_API_KEY")
-   gptel-api-key (getenv "OPENAI_KEY") ;; (getenv "OPENAI_API_KEY")
+   ;; Costs money https://platform.openai.com/account/usage
+   ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
+   ;; Change it using `(chatgpt-shell-swap-model-version)'
+   ;; chatgpt-shell-model-version "gpt-4" ;; (Default 0; i.e. "gpt-3.5-turbo")
+   chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")
+
+   ;; gptel-api-key (getenv "OPENAI_API_KEY")
+   ;; ;; Costs money https://platform.openai.com/account/usage
+   ;; ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
    ;; ;; gptel-model "gpt-4" ;; (Default "gpt-3.5-turbo")
 
    ;; The program of term.
@@ -1659,7 +1658,7 @@ before packages are loaded."
     "docstring"
     (interactive)
     (persp-load-state-from-file (concat
-                                 spacemacs-data-directory
+                                 sp-home-dir "/"
                                  ".cache/layouts/persp-auto-save")))
 
   (defun my=delete-other-windows ()
@@ -1779,59 +1778,6 @@ before packages are loaded."
   (defun my=H-4 () (interactive) (message "H-4"))
 
   ;; (setq text-quoting-style 'straight)
-
-  ;; (defun my=restart-emacs--daemon-using-sh (&optional args)
-  ;;   (let ((cmd (format "%s --daemon=%s %s &"
-  ;;                      (shell-quote-argument (restart-emacs--get-emacs-binary))
-  ;;                      server-name
-  ;;                      (restart-emacs--string-join
-  ;;                       (mapcar #'shell-quote-argument args) " "))))
-  ;;     (f-write-text cmd 'utf-8 "/tmp/my=spguimacs-daemon.el")))
-
-  ;; (defun my=restart-emacs--start-gui-using-sh (&optional args)
-  ;;   (let ((cmd (format "%s %s &"
-  ;;                      (shell-quote-argument (restart-emacs--get-emacs-binary))
-  ;;                      (restart-emacs--string-join
-  ;;                       (mapcar #'shell-quote-argument args) " "))))
-  ;;     (f-write-text cmd 'utf-8 "/tmp/my=spguimacs-gui.el")))
-
-  ;; (defun my=restart-emacs--start-emacs-in-terminal (&optional args)
-  ;;   (let ((cmd (format "fg ; %s %s -nw"
-  ;;                      (shell-quote-argument (restart-emacs--get-emacs-binary))
-  ;;                      (restart-emacs--string-join
-  ;;                       (mapcar #'shell-quote-argument args) " "))))
-  ;;     (f-write-text cmd 'utf-8 "/tmp/my=spguimacs-terminal.el")))
-
-  ;; (advice-add #'restart-emacs--daemon-using-sh
-  ;;             :before #'my=restart-emacs--daemon-using-sh)
-  ;; (advice-add #'restart-emacs--start-gui-using-sh
-  ;;             :before #'my=restart-emacs--start-gui-using-sh)
-  ;; (advice-add #'restart-emacs--start-emacs-in-terminal
-  ;;             :before #'my=restart-emacs--start-emacs-in-terminal)
-
-  (defun my=restart-spacemacs-guix--start-gui-using-sh (&optional args)
-    "Start GUI version of Emacs using sh.
-
-ARGS is the list arguments with which Emacs should be started"
-    (let ((command
-;;;; The command arguments returned by `ps' are munched together. Whitespace
-;;;; chars are not escaped, that means the emacs invocation arguments can't be
-;;;; reliably separated from each other. E.g. when started with
-;;;;     `emacs --eval '(setq variable "value")'`
-;;;; the `ps`returns the string: "emacs --eval (setq variable \"value\")".
-;;;;
-;;;; However a bit of heuristic approach may be applied here. I.e. one may try
-;;;; to apply `read-string` or `read-from-string` at anything what comes after
-;;;; '--eval', assuming it is a valid sexp,i.e. surrounded by parens or alike.
-           ;; (format "%s" (shell-command-to-string
-           ;;               (format "ps -ho command -p %s" (emacs-pid))))
-           (format "%s/scm-bin/g & disown" (getenv "HOME"))))
-      (call-process "sh" nil 0 nil "-c" command)))
-
-  (advice-add #'restart-emacs--start-gui-using-sh
-              :override #'my=restart-spacemacs-guix--start-gui-using-sh)
-  ;; (advice-remove #'restart-emacs--start-gui-using-sh
-  ;;                #'my=restart-emacs--start-gui-using-sh)
 
   (defun my=eval-bind-keys-and-chords ()
     "To activate changes, do:
@@ -2306,7 +2252,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
 ;;;; `with-eval-after-load' can't be inside a lambda or function. The delayed
 ;;;; evaluation won't work. `term-raw-map' is defined only after loading
 ;;;; `multi-term'
-;;;   (lambda (body) (with-eval-after-load 'multi-term body)))
+;;;   (lambda (body) (with-eval-after-load 'multi-term body))))
 ;;;
   (with-eval-after-load 'multi-term
     ;; term-mode-map is apparently not needed

@@ -1,82 +1,31 @@
-;; mkdir -p ~/.emacs.d.distros
-;; mv ~/.emacs.d ~/.emacs.d.distros/spacemacs
-;; git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
-;; ln -s $dotf/.emacs-profiles.el ~/.emacs-profiles.el
-;; ln -s $dotf/.emacs.d.distros/spacemacs-config ~/.emacs.d.distros/spacemacs-config
-
-;; Can't use constructs like (concat dir "spacemacs"), since the
+;; Can't use constructs like (concat dir "spacemacs", since the
 ;; .emacs-profiles.el is not evaluated
-(
- ("default" .
-  ;; ((user-emacs-directory . "~/.emacs.d.distros/default")
-  ;;  (server-name . "gnu")
-  ;;  )
-  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs")
-   (server-name . "spacemacs")
-   ;; mv /path/to/.spguimacs $SPACEMACSDIR/init.el
+(("develop" .
+  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/develop/src")
+   (server-name . "develop")
    (env . (("SPACEMACSDIR" .
-            "~/.emacs.d.distros/spacemacs-config")))
-   ))
+            "~/.emacs.d.distros/spacemacs/develop/cfg")))))
 
- ("prelude" .
-  ((user-emacs-directory . "~/.emacs.d.distros/prelude")
-   (server-name . "prelude")
-   ))
+ ("guix" .
+  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/guix/src")
+   (server-name . "guix")
+   (env . (("SPACEMACSDIR" .
+            "~/.emacs.d.distros/spacemacs/guix/cfg")))))
 
- ("spguimacs" .
-  ((user-emacs-directory . "~/.emacs.d.distros/spguimacs")
-   (server-name . "spguimacs")
-   ;; mv /path/to/.spguimacs $SPGUIMACSDIR/init.el
-   (env . (
-           ;; ("EMACSLOADPATH" .
-           ;;  '())
-           ("SPACEMACSDIR" .
-            "~/.emacs.d.distros/spguimacs-config"
-            ;; "~/.emacs.d.distros/spguimacs-default-config"
-;;; Following leads to:
-;;; Error loading .spacemacs: (error "Recursive load" ... )
-            ;; "~/.emacs.d.distros/spguimacs"
-            )))
-   ))
+ ("guix-merge" .
+  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/guix-merge/src")
+   (server-name . "guix-merge")
+   (env . (("SPACEMACSDIR" .
+            "~/.emacs.d.distros/spacemacs/guix-merge/cfg")))))
 
- ("spacemacs" .
-  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs")
-   (server-name . "spacemacs")
-   ;; mv /path/to/.spguimacs $SPACEMACSDIR/init.el
-   (env . (
-           ;; ("EMACSLOADPATH" .
-           ;;  ;; parse-colon-path
-           ;;  '(
-           ;;   "~/.guix-profile/share/emacs/site-lisp"
-           ;;   "/gnu/store/2aai9453k47w0ar821bhqhpv2k69v064-emacs-29.4/share/emacs/29.4/lisp"
-           ;;   ))
-           ("SPACEMACSDIR" .
-            "~/.emacs.d.distros/spacemacs-config")))
-   ))
-
- ("practicalli" .
-  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs-practicalli")
-   (server-name . "practicalli")
-   ;; location of .spacemacs and init.el
-   ;; (env . (("SPACEMACSDIR" . "~/.spacemacs.d")))
-   ))
-
- ;; cd <user-emacs-directory>
- ;; ./bin/doom install --doomdir=<DOOMDIR>
- ;; # i.e.
- ;; mkdir ~/.config/doom
- ;; cd ~/.emacs.d.distros/doom-emacs
- ;; ./bin/doom install --doomdir ~/.config/doom
- ("doom" .
-  ((user-emacs-directory . "~/.emacs.d.distros/doom-emacs")
-   (server-name . "doom")
-   (env . (("DOOMDIR" .
-            ;; "~/.config/doom-emacs" ; doesn't work
-            "~/.config/doom")))))
+ ("keyseq" .
+  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/keyseq/src")
+   (server-name . "keyseq")
+   (env . (("SPACEMACSDIR" .
+            "~/.emacs.d.distros/spacemacs/keyse/cfg")))))
 
  ("crafted" .
   ((user-emacs-directory . "~/.emacs.d.distros/crafted-emacs")
    (server-name . "crafted")
    (env . (("CRAFTED_EMACS_HOME" .
-            "~/.emacs.d.distros/crafted-emacs/personal")))))
- )
+            "~/.emacs.d.distros/crafted-emacs/personal"))))))
