@@ -136,9 +136,11 @@ Usage:
         (begin
           (format #t "~a ~m monad: ~a\n" m f monad)
           (format #t "~a ~m TODO implement --gx-dry-run\n" m f))
-        (let* [(dst (format #f "~a/.emacs.d.distros/~a-config/init.el"
-                            (getenv "HOME") profile))
-               (src (format #f "~a/.~a" (getenv "dotf") profile))]
+        (let* [(profile-kw (cond
+                            [(string= profile spguimacs) #:spguimacs]
+                            [(string= profile spacemacs) #:spacemacs]))
+               (dst (get-cfg profile-kw))
+               (src (get-src profile-kw))]
           (with-monad monad
             (>>=
              (return (list dst))
