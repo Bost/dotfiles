@@ -1350,6 +1350,8 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (my=beg #'dotspacemacs/user-config)
 
+  ;; (spacemacs/toggle-display-fill-column-indicator) ;; toggle with ~SCP t f~
+
   ;; (debug) ;; stops the execution. What I need is the stack frame as a string
 
   ;; https://gist.github.com/synic/5c1a494eaad1406c5519
