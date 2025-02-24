@@ -1,6 +1,6 @@
 (define-module (memo)
-  #:use-module (settings)
   #:use-module (utils)
+  #:use-module (settings)
 
   #:use-module (guix memoization)
   ;; open-input-pipe

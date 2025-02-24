@@ -1,8 +1,8 @@
 (define-module (srvc scheme-files)
   ;; #:use-module (cfg packages-new)
-  #:use-module (memo)
   #:use-module (utils)
   #:use-module (settings)
+  #:use-module (memo)
   #:use-module (fs-utils)
   ;; See service-file -> with-imported-modules
   #:use-module (scm-bin gcl)

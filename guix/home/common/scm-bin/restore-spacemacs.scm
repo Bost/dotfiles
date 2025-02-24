@@ -1,13 +1,13 @@
 (define-module (scm-bin restore-spacemacs)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (scm-bin spag)            #| git-spacemacs |#
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 r5rs)
-  #:use-module (utils)
-  #:use-module (settings)
+  #:use-module (utils)                   #| exec          |#
+  #:use-module (settings)                #| spacemacs-dir |#
+  #:use-module (scm-bin spag)            #| git-spacemacs |#
   #:export (main restore-spacemacs))
 
 #|
@@ -17,7 +17,7 @@
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/restore-spacemacs.scm 
+./guix/home/common/scm-bin/restore-spacemacs.scm
 
 |#
 
@@ -31,7 +31,7 @@ cd $dotf
   (primitive-eval `(1+ ,(append `(+ 1 2) (list 3 4))))
   ((comp
     (lambda (files)
-      (let ((dir (str home "/" spacemacs-dir "/private")))
+      (let ((dir (str spacemacs-dir "/private")))
         (if (null? files)
             (format #t "Nothing to restore in ~a.\n" dir)
             ((comp

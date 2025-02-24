@@ -6,7 +6,6 @@
 ;; https://github.com/isamert/jaro/blob/master/jaro
 ;; See `guile-build-system'
 (define-module (utils)
-  #:use-module (settings)
   #:use-module (guix build utils)
   #:use-module (ice-9 match) ;; match
   ;; open-input-pipe
@@ -63,7 +62,7 @@
             ))
 
 (define m "[utils]")
-;; (format #t "~a evaluating module ...\n" m)
+(format #t "~a evaluating module ...\n" m)
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
 ;; Also (examples)
@@ -584,7 +583,7 @@ Usage:
     cmd->string)
    command))
 
-(define-public (analyze-pids-flag-variable init-cmd client-cmd pids)
+(define-public (analyze-pids-flag-variable user init-cmd client-cmd pids)
   "Breakout implementation using a flag variable"
   (let [(ret-cmd init-cmd)]
     ((comp
@@ -612,7 +611,7 @@ Usage:
          ret-cmd)))
      pids)))
 
-(define-public (analyze-pids-call/cc init-cmd client-cmd pids)
+(define-public (analyze-pids-call/cc user init-cmd client-cmd pids)
   "For a process ID from the list of PIDS, return the INIT-CMD if no process ID was
 found or the CLIENT-CMD if some process ID was found."
   (call/cc
@@ -636,14 +635,14 @@ found or the CLIENT-CMD if some process ID was found."
      ;; The pids-list is empty. No such binary has been started yet.
      init-cmd)))
 
-(define-public (compute-cmd init-cmd client-cmd pattern)
+(define-public (compute-cmd user init-cmd client-cmd pattern)
   "pgrep for a user and PATTERN and return the INIT-CMD if no process ID was found
 or the CLIENT-CMD if some process ID was found."
   ((comp
     (partial
      analyze-pids-call/cc
      ;; analyze-pids-flag-variable
-     init-cmd client-cmd)
+     user init-cmd client-cmd)
     cdr
     exec
     ;; --euid effective ID
@@ -946,53 +945,6 @@ Requires:
 (keyword->string #:example) ; => \"example\"
 "
   (symbol->string (keyword->symbol kw)))
-
-(define-public spacemacs "spacemacs")
-(define-public spguimacs "spguimacs")
-(define-public crafted   "crafted")
-
-(define-public emacs-profiles ;; branch-kw_to_settings-map
-  '((#:develop    . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/develop/src")
-                     (#:server-name . "develop")
-                     (#:env .  "/home/bost/.emacs.d.distros/spacemacs/develop/cfg")))
-
-    (#:guix       . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/guix/src")
-                     (#:server-name . "guix")
-                     (#:env . "/home/bost/.emacs.d.distros/spacemacs/guix/cfg")))
-
-    (#:guix-merge . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/guix-merge/src")
-                     (#:server-name . "guix-merge")
-                     (#:env . "/home/bost/.emacs.d.distros/spacemacs/guix-merge/cfg")))
-
-    (#:keyseq     . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/keyseq/src")
-                     (#:server-name . "keyseq")
-                     (#:env . "/home/bost/.emacs.d.distros/spacemacs/keyseq/cfg")))
-
-    (#:crafted    . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/crafted-emacs")
-                     (#:server-name . "crafted")
-                     (#:env . "/home/bost/.emacs.d.distros/crafted-emacs/personal")))))
-
-(define-public profile->branch-kw
-  (list (cons spacemacs #:keyseq)
-        (cons spguimacs #:guix-merge)
-        (cons crafted   #:crafted)))
-
-(define (get-val profile setting)
-  ;; (format #t "profile ~a; setting ~a\n" profile setting)
-  (let* [(branch-kw (cdr (assoc profile profile->branch-kw)))]
-    ;; (format #t "branch-kw ~a\n" branch-kw)
-    (let* [(settings-map (cdr (assoc branch-kw emacs-profiles)))]
-      ;; (format #t "settings-map ~a\n" settings-map)
-      (let* [(val (cdr (assoc setting settings-map)))]
-        ;; (format #t "profile ~a; setting ~a; val: ~a\n" profile setting val)
-        val))))
-
-(define-public (get-src    profile) (get-val profile #:user-emacs-directory))
-(define-public (get-cfg    profile) (get-val profile #:env))
-(define-public (get-server profile) (get-val profile #:server-name))
-
-(define-public is-valid-profile?
-  (partial string-in? (list spacemacs spguimacs crafted)))
 
 ;; (define-public (inferior-package-in-guix-channel package commit)
 ;;   "Returns an inferior representing the `commit' (predecessor-sha1) revision.
