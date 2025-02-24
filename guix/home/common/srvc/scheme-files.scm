@@ -238,6 +238,7 @@ Example:
                             ;; (lambda (v) (format #t "~a 1\n" m) v)
                             )
                            (list
+                            ;; `spguimacs' points to a spacemacs-distros
                             (list (substring (get-src spguimacs)
                                              (string-length (str home "/")))
                                   "core/el")
