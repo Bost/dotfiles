@@ -28,8 +28,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; enough to handle the differences just a few branching statements, e.g.
 ;; if, cond, etc.
 (define-module (home-ecke)
-  #:use-module (settings)
   #:use-module (utils)
+  #:use-module (settings)
   #:use-module (memo)
   ;; fix the 'error: leiningen: unknown package', but it doesn't work
   #:use-module (nongnu packages clojure)
