@@ -953,15 +953,13 @@ It should only modify the values of Spacemacs settings."
    `("Source Code Pro"
      :size
      ,(let* ((default 10.0)
-             ;; The `text-scale-mode-step' is not accessible at this moment.
-             (text-scale-mode-step 1.2)
              (point-size (cond
                           ((string= hostname "edge") 19.0)
                           ((or (string= hostname "ecke")
                                (string= hostname "tuxedo"))
-                           ;; (+ default (* 6 text-scale-mode-step)) ; 17.2
-                           ;; (+ default (* 7 text-scale-mode-step)) ; 18.4
-                           default)
+                           (+ default (* 5 1.2))) ; 1.2 is
+                                        ; `text-scale-mode-step'
+                                        ; (undefined for some reason)
                           ;; TODO this is a pixel-size not point-size
                           ((string= hostname "geek") 17)
                           (t default))))
