@@ -24,7 +24,7 @@
    ;; "eu" ""
 
    ;; ',,' means that "" ie no modifier is used
-   "eu,us,de,sk,fr" ",altgr-intl,,qwerty,"
+   "us,de,sk,fr" "altgr-intl,,qwerty,"
 
    ;; 1. Keep compose key (the small menu icon (☰) or the text "Menu") option if
    ;; needed:
