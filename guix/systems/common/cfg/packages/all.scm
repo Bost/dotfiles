@@ -5,6 +5,7 @@
   )
 
 (use-package-modules
+ base            ;; glibc
  cups            ;; cups
  disk            ;; gparted
  gnupg           ;; gpg
@@ -20,6 +21,12 @@
 
 (define m (module-name-for-logging))
 (evaluating-module)
+
+;; (define my-glibc-locales
+;;   (make-glibc-utf8-locales
+;;    glibc
+;;    #:locales (list "en_US" "de_DE" "sk_SK" "fr_FR")
+;;    #:name "glibc-my-utf8-locales"))
 
 (define-public (packages-to-install)
   (list
