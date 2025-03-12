@@ -95,10 +95,8 @@
           chmod-params files
           (other-files (list)))
   "The priority is 1. module-name, 2. scheme-file, 3. program-name
-
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through.
-
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
@@ -111,10 +109,8 @@ Example:
     ;; (format #t "~a chmod-params : ~s\n" m chmod-params)
     ;; (format #t "~a files        : ~s\n" m files)
     ;; (format #t "~a other-files  : ~s\n" m other-files)
-
     (list
      (str scm-bin-dirname "/" program-name)
-
      (program-file
       ;; 1st param: name
       (cond
@@ -124,7 +120,6 @@ Example:
         (str "search-notes-" program-name)]
        [#t
         desc])
-
       ;; 2nd param: exp
       ;; TODO clarify if source-module-closure is needed only for imports of
       ;; guix modules?
@@ -140,33 +135,55 @@ Example:
                                (append (list (car cmd-line)
                                              ,chmod-params)
                                        (cdr cmd-line)))]
-
                            [(equal? scheme-file "search-notes")
                             `(append
                               (command-line)
                               (list ,@(append other-files
                                               (full-filepaths files))))]
-
                            [#t `(command-line)]))))]
         (with-imported-modules
             ((comp
               (partial remove unspecified?)
               (lambda (lst)
-                (if (equal? scheme-file "search-notes")
-                    (append lst `(
-                                  (guix profiling)
-                                  (guix memoization)
-                                  (guix colors)
-                                  ;; (ice-9 getopt-long)
-                                  ))
-                    lst)))
+                (cond
+                 [(equal? scheme-file "search-notes")
+                  (append lst `(
+                                (guix profiling)
+                                (guix memoization)
+                                (guix colors)
+                                ;; (ice-9 getopt-long)
+                                ))]
+;;; Having '#:use-module (fs-utils)' in the (scm-bin git-authenticate) module
+;;; implies importing a number of additional (guix ...) modules. Alternative
+;;; solution: use '(getenv "dgx")' instead of 'dgx' from fs-utils.
+                 [(equal? program-name "git-authenticate")
+                  (append lst `(
+                                (fs-utils)
+                                (guix gexp)
+                                (guix store)
+                                (guix utils)
+                                (guix config)
+                                (guix memoization)
+                                (guix profiling)
+                                (guix diagnostics)
+                                (guix colors)
+                                (guix i18n)
+                                (guix deprecation)
+                                (guix serialization)
+                                (guix records)
+                                (guix base16)
+                                (guix base32)
+                                (guix derivations)
+                                (guix combinators)
+                                (guix sets)
+                                ))]
+                 [#t lst])))
              `((guix monads)
                (utils)
                (settings)
                ;; following three modules don't need to be everywhere
                (scm-bin gre)
                (scm-bin gps)
-
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
                ,(cond
@@ -174,7 +191,6 @@ Example:
                  [(equal? scheme-file "chmod")        `(scm-bin ,symb)]
                  [(equal? scheme-file "search-notes") `(scm-bin ,symb)]
                  [#t                                  `(scm-bin ,symb)])))
-
           #~(begin
               (use-modules (scm-bin #$symb))
               #$main-call)))))))
@@ -381,6 +397,7 @@ Example:
             #:scheme-file "extract")
       (list #:program-name "c"    #:desc "batcat" #:scheme-file "bat")
       (list #:program-name "f"    #:desc "find-alternative")
+      (list #:program-name "git-authenticate" #:desc "git-authenticate")
       (list #:program-name "gcl"  #:desc "git-clone")
       (list #:program-name "gre"  #:desc "git-remote")
       (list #:program-name "grev" #:desc "git-remote--verbose")
