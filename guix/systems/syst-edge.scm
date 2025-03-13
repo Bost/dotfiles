@@ -131,6 +131,8 @@
 
        ;; (service pcscd-service-type)
 
+       (service bluetooth-service-type)
+
        (service cups-service-type
                 (cups-configuration
                  (web-interface? #t)
