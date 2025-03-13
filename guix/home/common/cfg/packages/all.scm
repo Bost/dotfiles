@@ -938,6 +938,11 @@ FIXME the inferior-pkgs get installed on every machine"
            ;; TODO check ‘all-the-icons’ in the /home/bost/.local/share/fonts/
            ;; and call (all-the-icons-install-fonts) when installing emacs
            (remote-desktop-packages #:is-server #t)
+           ;; bluez (linux Bluetooth protocol stack) is installed via
+           ;; bluetooth-service-type
+           (list
+            ;; GTK+ Bluetooth manager
+            blueman)
            pkgs)
           pkgs))
     ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
