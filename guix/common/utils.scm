@@ -970,4 +970,63 @@ Requires:
     (and s
          (eq? 'directory (stat:type s)))))
 
+;;; take and drop are in (use-modules (srfi srfi-1))
+(define-public (take-smart a b)
+  "Accepts either (number list) or (list number)"
+  (cond ((and (number? a) (list? b)) (take b a))
+        ((and (list? a) (number? b)) (take a b))
+        (else (error "take-smart: expected one number and one list" a b))))
+
+(define-public (drop-smart a b)
+  "Accepts either (number list) or (list number)"
+  (cond ((and (number? a) (list? b)) (drop b a))
+        ((and (list? a) (number? b)) (drop a b))
+        (else (error "drop-smart: expected one number and one list" a b))))
+
+(define-public (take-last n lst)
+  "Returns the last n elements of lst."
+  (let ((len (length lst)))
+    (if (>= n len)
+        lst
+        (drop lst (- len n)))))
+
+(define-public (take-last-smart a b)
+  "Accepts either (number list) or (list number)"
+  (cond ((and (number? a) (list? b)) (take-last a b))
+        ((and (list? a) (number? b)) (take-last b a))
+        (else (error "take-last-smart: expected one number and one list" a b))))
+
+(define-public (drop-last n lst)
+  "Returns lst without its last n elements."
+  (take lst (- (length lst) n)))
+
+(define-public (drop-last-smart a b)
+  "Accepts either (number list) or (list number)"
+  (cond ((and (number? a) (list? b)) (drop-last a b))
+        ((and (list? a) (number? b)) (drop-last b a))
+        (else (error "drop-last-smart: expected one number and one list" a b))))
+
+(define-public (butlast lst)
+  "Returns lst without its last element."
+  (drop-last 1 lst))
+
+(define-public (butlast-smart . args)
+  "With one argument, it behaves like butlast.\n
+
+With two arguments, it accepts either (number list) or (list number) and drops
+that many from the end."
+  (cond ((null? args)
+         (error "butlast-smart: no arguments provided"))
+        ((= (length args) 1)
+         (let ((arg (car args)))
+           (if (list? arg)
+               (butlast arg)
+               (error "butlast-smart: single argument must be a list" arg))))
+        ((= (length args) 2)
+         (let ((a (car args)) (b (cadr args)))
+           (cond ((and (number? a) (list? b)) (drop-last a b))
+                 ((and (list? a) (number? b)) (drop-last b a))
+                 (else (error "butlast-smart: expected one number and one list" a b)))))
+        (else (error "butlast-smart: expected 1 or 2 arguments"))))
+
 (module-evaluated)
