@@ -1503,11 +1503,11 @@ before packages are loaded."
    ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
    ;; Change it using `(chatgpt-shell-swap-model-version)'
    ;; chatgpt-shell-model-version "gpt-4" ;; (Default 0; i.e. "gpt-3.5-turbo")
-   chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")
+   chatgpt-shell-openai-key (getenv "OPENAI_KEY")
 
-   ;; gptel-api-key (getenv "OPENAI_API_KEY")
-   ;; ;; Costs money https://platform.openai.com/account/usage
-   ;; ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
+   ;; Costs money https://platform.openai.com/account/usage
+   ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
+   gptel-api-key (getenv "OPENAI_KEY")
    ;; ;; gptel-model "gpt-4" ;; (Default "gpt-3.5-turbo")
 
    ;; The program of term.
