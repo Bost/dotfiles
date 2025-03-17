@@ -11,21 +11,20 @@
   #:use-module (gnu packages)
   #:use-module (bost gnu packages guake)
 
-  ;; for inferior-package-in-channel : beg
+  ;; for inferior-pkg-in-channel : beg
   #:use-module (guix packages)
   #:use-module (guix inferior)
   #:use-module (guix channels)
   ;; #:use-module (guix profiles) ;; probably not needed
-  ;; for inferior-package-in-channel : end
+  ;; for inferior-pkg-in-channel : end
 
   ;; Following is needed b/c an inferior version of signal-desktop is used
   #:use-module (nongnu packages messaging)
 
-  ;; provides: first take remove delete-duplicates append-map etc.
+  ;; provides: first take drop remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  #:export (
-            inferior-package-in-channel
-            ))
+  ;; provides: cut
+  #:use-module (srfi srfi-26))
 
 (define m (module-name-for-logging))
 (evaluating-module)
@@ -734,7 +733,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    neovim
 
    ;; control webcam, capture videos and images
-   guvcview 
+   guvcview
 
    ;; Port of Facebook's LLaMA model in C/C++
    llama-cpp
@@ -801,66 +800,71 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'xfce-packages)
 
-(define* (inferior-package-in-channel package commit #:key (channel-name 'guix))
-  "Returns an inferior representing the `commit' (predecessor-sha1) revision for
-a given channel.
-Can't be in the guix/common/utils.scm. Therefore duplicated.
-See guix/manifest-emacs-29.1.scm, guix/home/common/cfg/packages/all.scm"
-  (first
-   (lookup-inferior-packages
-    (inferior-for-channels
-     (cond
-      [(eq? channel-name 'nonguix)
-       (cons*
-        (channel
-         (name 'nonguix)
-         (url "https://gitlab.com/nonguix/nonguix")
-         (commit commit)
-         (introduction
-          (make-channel-introduction
-           "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
-           (openpgp-fingerprint
-            "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
-        %default-channels)]
-
-      [#t
-       (list
-        (channel
-         (name 'guix)
-         (url "https://git.savannah.gnu.org/git/guix.git")
-         (commit commit)))]))
-    package)))
-(testsymb 'inferior-package-in-channel)
-
-(define (inferior-pkgs pkgs)
+(define (inferior-packages)
   "The original, i.e. non-inferior packages must not be present in the
 home-profile. Comment them out.
 
-FIXME the inferior-pkgs get installed on every machine"
+FIXME the inferior-packages are installed on every machine"
+
+  ;; TODO `guix describe --format=channels', exclude (branch "master"),
+  ;; replace commit
+  (define (default-channels commit)
+    (list
+     ;; TODO see %default-guix-channel
+     (channel
+      (name 'guix)
+      (url "https://git.savannah.gnu.org/git/guix.git")
+      (commit commit)
+      (introduction
+       (make-channel-introduction
+        "9edb3f66fd807b096b48283debdcddccfea34bad"
+        (openpgp-fingerprint
+         "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))))
+
+  (define (nonguix-channels commit)
+    (cons*
+     (channel
+      (name 'nonguix)
+      (url "https://gitlab.com/nonguix/nonguix")
+      (commit commit)
+      (introduction
+       (make-channel-introduction
+        "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
+        (openpgp-fingerprint
+         "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
+     %default-channels))
+
+  (define* (inferior-packages-in-channel #:key channels-fun inferior-packages)
+    (map (lambda (pkg-commit)
+           (let [(package (car pkg-commit))
+                 (commit (cadr pkg-commit))]
+             ((comp
+               first
+               (cut lookup-inferior-packages <> package)
+               inferior-for-channels
+               channels-fun)
+              commit)))
+         inferior-packages))
+
   ((comp
-    ;; (lambda (pkgs) (format #t "~a\ninferior-pkgs: ~a\n" m pkgs) pkgs)
-    (partial
-     append
-     (map (lambda (package-commit)
-            (inferior-package-in-channel
-             (car package-commit)
-             (cadr package-commit)
-             #:channel-name 'guix))
-          (list
-           ;; (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
-           )))
-    (partial
-     append
-     (map (lambda (package-commit)
-            (inferior-package-in-channel
-             (car package-commit)
-             (cadr package-commit)
-             #:channel-name 'nonguix))
-          (list
-           ;; (list "signal-desktop" "b6bb6276310de10d591f1738492b94e04e33ff1f")
-           ))))
-   pkgs))
-(testsymb 'inferior-pkgs)
+    (partial remove unspecified?)
+    flatten
+    (partial map (partial apply inferior-packages-in-channel)))
+   (list
+    (list
+     #:channels-fun default-channels
+     #:inferior-packages
+     (list
+      ;; (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
+      ;; (list "virglrenderer" "fec2fb89bb5dacc14ec619cd569278af34867e3d")
+      ))
+    (list
+     #:channels-fun nonguix-channels
+     #:inferior-packages
+     (list
+      ;; (list "signal-desktop" "b6bb6276310de10d591f1738492b94e04e33ff1f")
+      )))))
+(testsymb 'inferior-packages)
 
 (define (devel-guile-ide-arei-packages)
   (list
@@ -928,7 +932,7 @@ FIXME the inferior-pkgs get installed on every machine"
 
 (define-public (packages-to-install)
   ((comp
-    inferior-pkgs
+    (partial append (inferior-packages))
     ;; (lambda (p) (format #t "~a 5.\n~a\n" p) p))
     ;; (lambda (p) (format #t "~a 4. (length p): ~a\n" m (length p)) p)
     (lambda (pkgs)
