@@ -203,6 +203,10 @@ Works also for functions returning and accepting multiple values."
 
 ;;;;;; end: testsymb, testsymb-trace
 
+(define-public (true? x) (eq? x #t))
+
+(define-public (false? x) (eq? x #f))
+
 ;;; testsymb doesn't work in the let-syntax
 ;; (let [(ff 42)] (testsymb 'ff))
 
