@@ -20,12 +20,12 @@
      ((comp
        (lambda (function)
          (when (guard (ex (else #f)) (function arg ...))
-           symbol))
+           (cond
+            [(list? symbol) (caddr symbol)]
+            [#t symbol])
+           ))
        #;(lambda (p) (format #t "p: ~a\n" p) p))
       (eval symbol (interaction-environment))))))
-
-(define-public (true? x) (eq? x #t))
-(define-public (false? x) (eq? x #f))
 
 (define-public (test-type o)
   "Type Testing Predicates.
@@ -46,8 +46,8 @@
    (list
     'unspecified?
     'boolean?
-    'true?
-    'false?
+    '(@(utils) true?)
+    '(@(utils) false?)
     'port?
     'string?
     'symbol?
@@ -65,8 +65,8 @@
     'even?
     'zero?
 
-    '(@@(system syntax internal) syntax?)
-    '(@@(guix gexp) gexp?)
+    '(@(system syntax internal) syntax?)
+    '(@(guix gexp) gexp?)
     'pair?
     'char?
     'null?
@@ -75,6 +75,10 @@
     'char-alphabetic?
     'char-numeric?
     'char-whitespace?
+
+    '(@(gnu services) service?)
+    '(@(gnu services) service-type?)
+    '(@(gnu services) service-extension?)
     )))
 
 (define (test-equality a b)
@@ -96,6 +100,7 @@
   "From $der/racket/pkgs/racket-benchmarks/tests/racket/benchmarks/common/psyntax-input.txt
 
 (syntax->list (call-with-input-string \"  (+ 1 2)\" read-syntax))
+=> (#<syntax:unknown file:1:3 +> #<syntax:unknown file:1:5 1> #<syntax:unknown file:1:7 2>)
 "
   (let f ((ls orig-ls))
     (syntax-case ls ()
