@@ -88,6 +88,9 @@
    ;; ntp-service-type for system clock sync is in the
    ;; %desktop-services by default
 
+   ;; Enables `ssh <host>` without requiring a direct login to the <host>.
+   ;; (service dhcp-client-service-type)
+
    ;; To configure OpenSSH, pass an 'openssh-configuration'
    ;; record as a second argument to 'service' below.
    (service
