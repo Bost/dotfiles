@@ -88,6 +88,33 @@
    ;; ntp-service-type for system clock sync is in the
    ;; %desktop-services by default
 
+;;; On systems using %desktop-services (including edge), NetworkManager manages
+;;; networking. If removing %desktop-services, explicitly add
+;;; network-manager-service-type or another networking service instead. Do not add
+;;; a separate DHCP client (like e.g. dhcp-client-service-type).
+;;;
+;;; If SSH works only after local login, check the profiles on that host:
+;;;   nmcli -f NAME,UUID,TYPE,DEVICE connection show --active
+;;;   set wifiUUID "..."; set lanUUID "..."
+;;;   for UUID in $lanUUID $wifiUUID
+;;;     nmcli -f connection.id,connection.autoconnect,connection.permissions \
+;;;       connection show uuid "$UUID"
+;;;   end
+;;;
+;;; For connectivity before login, expect:
+;;;    autoconnect: yes
+;;;    permissions: -- (empty)
+;;;
+;;; A user:<username> permission requires an active session for that user:
+;;;   sudo nmcli connection modify uuid "$UUID" \
+;;;     connection.autoconnect yes connection.permissions ""
+;;;
+;;; Wi-Fi secrets must also be available before login. Check PSK storage:
+;;;   nmcli -f 802-11-wireless-security.psk-flags connection show uuid "$wifiUUID"
+;;; 0 (none) means NetworkManager owns the secret, not a user-session agent.
+;;;
+;;; These profile changes persist without a Guix system reconfiguration.
+
    ;; To configure OpenSSH, pass an 'openssh-configuration'
    ;; record as a second argument to 'service' below.
    (service
