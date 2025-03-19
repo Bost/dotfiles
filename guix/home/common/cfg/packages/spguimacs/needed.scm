@@ -188,6 +188,7 @@
    "emacs-evil-matchit"
    "emacs-evil-mc"
    "emacs-evil-nerd-commenter"
+   "emacs-evil-nerd-icons"
    "emacs-evil-numbers"
    "emacs-evil-org"
    "emacs-evil-surround"
