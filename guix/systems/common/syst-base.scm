@@ -8,14 +8,21 @@
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
   #:use-module (guix)                  ; for package-version
+  #:use-module (ice-9 match)
+  #:use-module (tests)
+  #:use-module (gnu services)
 )
 
 (use-service-modules
- cups desktop networking ssh
+ cups
+ desktop
+ networking ; for dhcp-client-service-type
+ ssh
  xorg     ; for gdm-service-type
  sddm     ; for sddm-service-type
  )
 
+(define m (module-name-for-logging))
 (evaluating-module #t)
 
 (define-public (keyb-layout)
@@ -83,27 +90,43 @@
    %base-user-accounts))
 (testsymb-trace 'users-config)
 
+(define-public (get-service-type svc)
+  (service-kind svc)
+  #;
+  (match svc
+    [(_ type value) type]
+    [(_ type) type]
+    [else (error (format #f "service? ~a; service-kind ~a" (service? svc) (service-kind svc)))]))
+
 (define-public (services)
-  (list
-   ;; ntp-service-type for system clock sync is in the
-   ;; %desktop-services by default
+  ((comp
+    (lambda (lst)
+      (format #t "\n")
+      (format #t "base ~a (length lst) ~a\n" m (length lst))
+      (map (partial format #t "base ~a ~a\n" m) (map get-service-type lst))
+      ;; (for-each pretty-print (map service-type lst))
+      (format #t "\n")
+      lst))
+   (list
+    ;; ntp-service-type for system clock sync is in the
+    ;; %desktop-services by default
 
-   ;; Enables `ssh <host>` without requiring a direct login to the <host>.
-   (service dhcp-client-service-type)
+    ;; Enables `ssh <host>` without requiring a direct login to the <host>.
+    ;; (service dhcp-client-service-type)
 
-   ;; To configure OpenSSH, pass an 'openssh-configuration'
-   ;; record as a second argument to 'service' below.
-   (service
-    openssh-service-type
-    (openssh-configuration
-     ;; (permit-root-login 'prohibit-password)
-     (password-authentication? #f) ;; default: #t
-     (authorized-keys
-      ;; Assuming the id_rsa.pub exists under given path, e.g. it was
-      ;; transferred by `ssh-copy-id` at some point in the past.
-      `((,user ,(local-file (string-append home "/.ssh/id_rsa.pub")))))))
+    ;; To configure OpenSSH, pass an 'openssh-configuration'
+    ;; record as a second argument to 'service' below.
+    (service
+     openssh-service-type
+     (openssh-configuration
+      ;; (permit-root-login 'prohibit-password)
+      (password-authentication? #f) ;; default: #t
+      (authorized-keys
+       ;; Assuming the id_rsa.pub exists under given path, e.g. it was
+       ;; transferred by `ssh-copy-id` at some point in the past.
+       `((,user ,(local-file (string-append home "/.ssh/id_rsa.pub")))))))
 
-   (service xfce-desktop-service-type)))
+    (service xfce-desktop-service-type))))
 (testsymb-trace 'services)
 
 (define-public (syst-config)

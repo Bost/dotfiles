@@ -69,6 +69,98 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(define (service-list)
+  "TODO create macros pappend, premove, etc. - parallel processing"
+  ((comp
+    (lambda (lst)
+      (format #t "edge ~a (length lst) ~a\n" m (length lst))
+      (map (partial format #t "edge ~a ~a\n" m) lst)
+      lst))
+   (append
+    (modify-services (base:services)
+      (openssh-service-type
+       config => (openssh-configuration
+                  (inherit config)
+                  ;; enable forwarding of X11 graphical client connections, so that ssh
+                  ;; options -X and -Y work. However this doesn't fix the remote-desktop
+                  ;; problem
+                  ;; (x11-forwarding? #t)
+                  )))
+
+    (list
+     ;; TODO lightdm doesn't work properly. The login fails
+     ;; (service lightdm-service-type
+     ;;          (lightdm-configuration
+     ;;           (xorg-configuration
+     ;;            (xorg-configuration (keyboard-layout (base:keyb-layout))))
+     ;;           ;; (allow-empty-passwords? #t)
+
+     ;;           ;; Not encrypted. More modern alternatives are VNC, RDP
+     ;;           ;; (xdmcp? #t)
+
+     ;;           ;; should be the TigerVNC for remote desktop access
+     ;;           (vnc-server? #t)
+
+     ;;           ;; (vnc-server-command
+     ;;           ;;  (file-append tigervnc-server "/bin/Xvnc"
+     ;;           ;;               "  -SecurityTypes None"))
+     ;;           ;; (seats
+     ;;           ;;  (list (lightdm-seat-configuration
+     ;;           ;;         (name "*")
+     ;;           ;;         (user-session "ratpoison"))))
+     ;;           ))
+
+     ;; (service pcscd-service-type)
+
+     (service bluetooth-service-type)
+
+     (service cups-service-type
+              (cups-configuration
+               (web-interface? #t)
+               (extensions
+                (list cups-filters hplip-minimal))))
+
+     (service xvnc-service-type
+              (xvnc-configuration
+               (display-number 5)
+               (geometry    ;; default: "1024x768"
+                "1920x1080"
+                ;; "2880x1620"
+                ;; "2880x1800"
+                ;; "2880x1800*"
+                )
+               ;; enable users to log in a desktop session from the login
+               ;; manager screen
+               (xdmcp? #t)  ;; default: #f
+               (inetd? #t)  ;; default: #f
+               ))
+
+     (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
+     (udev-rules-service 'android android-udev-rules
+                         #:groups '("adbusers"))
+
+     ;; Configure the Guix service and ensure we use Nonguix substitutes
+     (simple-service 'add-nonguix-substitutes
+                     guix-service-type
+                     (guix-extension
+                      (substitute-urls
+                       (append (list "https://substitutes.nonguix.org")
+                               %default-substitute-urls))
+                      (authorized-keys
+;;; The signing-key.pub should be obtained by
+;;;   wget https://substitutes.nonguix.org/signing-key.pub
+                       (append (list (local-file "./signing-key.pub"))
+                               %default-authorized-guix-keys)))))
+
+    ;; %desktop-services is the default list of services we are appending to.
+    (modify-services %desktop-services
+      (gdm-service-type config => (gdm-configuration
+                                   (inherit config)
+                                   (auto-suspend? #f)
+;;; See the Warning above in the xvnc-configuration
+                                   (xdmcp? #t)))
+      #;(delete gdm-service-type)))))
+
 (define-public syst-config
   (operating-system
     (inherit (base:syst-config-linux))
@@ -93,92 +185,7 @@
       (packages-to-install)
       %base-packages))
 
-    (services
-     ;; TODO create macros pappend, premove, etc. - parallel processing
-     (append
-      (modify-services (base:services)
-        (openssh-service-type
-         config => (openssh-configuration
-                    (inherit config)
-                    ;; enable forwarding of X11 graphical client connections, so that ssh
-                    ;; options -X and -Y work. However this doesn't fix the remote-desktop
-                    ;; problem
-                    ;; (x11-forwarding? #t)
-                    )))
-
-      (list
-       ;; TODO lightdm doesn't work properly. The login fails
-       ;; (service lightdm-service-type
-       ;;          (lightdm-configuration
-       ;;           (xorg-configuration
-       ;;            (xorg-configuration (keyboard-layout (base:keyb-layout))))
-       ;;           ;; (allow-empty-passwords? #t)
-
-       ;;           ;; Not encrypted. More modern alternatives are VNC, RDP
-       ;;           ;; (xdmcp? #t)
-
-       ;;           ;; should be the TigerVNC for remote desktop access
-       ;;           (vnc-server? #t)
-
-       ;;           ;; (vnc-server-command
-       ;;           ;;  (file-append tigervnc-server "/bin/Xvnc"
-       ;;           ;;               "  -SecurityTypes None"))
-       ;;           ;; (seats
-       ;;           ;;  (list (lightdm-seat-configuration
-       ;;           ;;         (name "*")
-       ;;           ;;         (user-session "ratpoison"))))
-       ;;           ))
-
-       ;; (service pcscd-service-type)
-
-       (service bluetooth-service-type)
-
-       (service cups-service-type
-                (cups-configuration
-                 (web-interface? #t)
-                 (extensions
-                  (list cups-filters hplip-minimal))))
-
-       (service xvnc-service-type
-                (xvnc-configuration
-                 (display-number 5)
-                 (geometry    ;; default: "1024x768"
-                  "1920x1080"
-                  ;; "2880x1620"
-                  ;; "2880x1800"
-                  ;; "2880x1800*"
-                  )
-                 ;; enable users to log in a desktop session from the login
-                 ;; manager screen
-                 (xdmcp? #t)  ;; default: #f
-                 (inetd? #t)  ;; default: #f
-                 ))
-
-       (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
-       (udev-rules-service 'android android-udev-rules
-                           #:groups '("adbusers"))
-
-       ;; Configure the Guix service and ensure we use Nonguix substitutes
-       (simple-service 'add-nonguix-substitutes
-                       guix-service-type
-                       (guix-extension
-                        (substitute-urls
-                         (append (list "https://substitutes.nonguix.org")
-                                 %default-substitute-urls))
-                        (authorized-keys
-;;; The signing-key.pub should be obtained by
-;;;   wget https://substitutes.nonguix.org/signing-key.pub
-                         (append (list (local-file "./signing-key.pub"))
-                                 %default-authorized-guix-keys)))))
-
-      ;; %desktop-services is the default list of services we are appending to.
-      (modify-services %desktop-services
-        (gdm-service-type config => (gdm-configuration
-                                     (inherit config)
-                                     (auto-suspend? #f)
-;;; See the Warning above in the xvnc-configuration
-                                     (xdmcp? #t)))
-        #;(delete gdm-service-type))))
+    (services (service-list))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html

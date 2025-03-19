@@ -3,6 +3,7 @@
   #:use-module (settings)
   #:use-module (utils)                  ; partial
   #:use-module (memo)
+  #:use-module (ice-9 pretty-print)
   #:use-module (cfg packages all)       ; packages-to-install
   #:use-module (gnu)
   #:use-module (gnu system shadow)      ; user-group user-account-shell
@@ -76,6 +77,148 @@
    "termite"  ;; Minimal terminal emulator for use with tiling window managers
    ))
 
+(define (service-list)
+  "TODO create macros pappend, premove, etc. - parallel processing"
+  ((comp
+    (lambda (lst)
+      (format #t "\n")
+      (format #t "ecke ~a (length lst) ~a\n" m (length lst))
+      (map (partial format #t "ecke ~a ~a\n" m) (map base:get-service-type lst))
+      ;; (pretty-print lst)
+      ;; (for-each pretty-print (map service-type lst))
+      (format #t "\n")
+      lst))
+   (append
+    (base:services)
+    (list
+     ;; (service pcscd-service-type) ;; usb card reader
+     (service nvidia-service-type)
+
+     ;; Configure desktop environment, GNOME for example.
+     (service gnome-desktop-service-type
+              ;; Enable NVIDIA support, only do this when the card is
+              ;; used for displaying.
+              ;; Adding the following leads to
+              ;;   profile contains conflicting entries for packagekit
+              #;
+              (gnome-desktop-configuration
+              (gnome (replace-mesa gnome))))
+
+     ;; Configure Xorg server, only do this when the card is used for
+     ;; displaying.
+     (set-xorg-configuration
+      (xorg-configuration
+       (modules (cons nvda %default-xorg-modules))
+       (drivers '("nvidia"))
+       (keyboard-layout keyboard-layout))
+      sddm-service-type)
+
+     ;; (service mate-desktop-service-type)
+
+     (service cups-service-type
+              (cups-configuration
+               (web-interface? #t)
+               (extensions
+                (list cups-filters hplip-minimal))))
+;;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
+;;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
+;;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
+;;; see https://issues.guix.gnu.org/40454
+     ;; (modify-services (base:services)
+     ;;                  (udev-service-type
+     ;;                   config =>
+     ;;                   (udev-configuration
+     ;;                    (inherit config)
+     ;;                    (rules (cons*
+     ;;                            light
+     ;;                            pipewire-0.3
+     ;;                            android-udev-rules
+     ;;                            libu2f-host
+     ;;                            (udev-configuration-rules config))))))
+
+     (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
+     (udev-rules-service 'android android-udev-rules
+                         #:groups '("adbusers"))
+     (udev-rules-service 'steam-devices steam-devices-udev-rules)
+
+     ;; Configure the Guix service and ensure we use Nonguix substitutes
+     (simple-service 'add-nonguix-substitutes
+                     guix-service-type
+                     (guix-extension
+                      (substitute-urls
+                       (append (list "https://substitutes.nonguix.org")
+                               %default-substitute-urls))
+                      (authorized-keys
+;;; The signing-key.pub should be obtained by
+;;;   wget https://substitutes.nonguix.org/signing-key.pub
+                       (append (list (local-file "./signing-key.pub"))
+                               %default-authorized-guix-keys))))
+
+     ;; ;; Configure TTYs and graphical greeter
+     ;; (service
+     ;;  console-font-service-type
+     ;;  `(("tty1" . "LatGrkCyr-8x16")
+     ;;    ("tty2" . ,(file-append
+     ;;                font-tamzen
+     ;;                "/share/kbd/consolefonts/TamzenForPowerline10x20.psf"))
+     ;;    ("tty3" . ,(file-append
+     ;;                font-terminus
+     ;;                "/share/consolefonts/ter-132n")))
+
+     ;;  ;; Larger font for HIDPI screens, however this is too large
+     ;;  ;; (map (lambda (tty)
+     ;;  ;;        (cons tty (file-append
+     ;;  ;;                   font-terminus
+     ;;  ;;                   "/share/consolefonts/ter-132n")))
+     ;;  ;;      '("tty1" "tty2" "tty3"))
+     ;;  )
+
+     ;; (service greetd-service-type
+     ;;          (greetd-configuration
+     ;;           (greeter-supplementary-groups (list "video" "input"))
+     ;;           (terminals
+     ;;            (list
+     ;;             ;; TTY1 is the graphical login screen for Sway
+     ;;             (greetd-terminal-configuration
+     ;;              (terminal-vt "1")
+     ;;              (terminal-switch #t))
+
+     ;;             ;; Set up remaining TTYs for terminal use
+     ;;             (greetd-terminal-configuration (terminal-vt "2"))
+     ;;             (greetd-terminal-configuration (terminal-vt "3"))))))
+
+     (simple-service
+      'custom-udev-rules udev-service-type
+      (list nvidia-driver))
+
+     ;; load loadable kernel modules at boot with modprobe
+     (service kernel-module-loader-service-type
+              '("ipmi_devintf"
+                "nvidia"
+                "nvidia_modeset"
+                "nvidia_uvm"))
+
+     ;; Configure swaylock as a setuid program
+     ;; (service screen-locker-service-type
+     ;;          (screen-locker-configuration
+     ;;           (name "swaylock")
+     ;;           (program (file-append swaylock "/bin/swaylock"))
+     ;;           (using-pam? #t)
+     ;;           (using-setuid? #f)))
+     )
+
+    ;; %desktop-services is the default list of services we are appending to.
+    (modify-services %desktop-services
+      ;; (delete login-service-type)
+      ;; (delete mingetty-service-type)
+      ;; (delete console-font-service-type)
+      ;; for sway - see the patch:
+      ;;   Add a guide to the guix cookbook about setting up sway.
+      ;;   https://issues.guix.gnu.org/issue/39271
+
+      ;; service "xorg-server" must be defined only once (see above)
+      (delete gdm-service-type)))))
+
 (define-public syst-config
   (operating-system
     (inherit (base:syst-config-linux))
@@ -110,138 +253,7 @@
     ;;               "guile"
     ;;               "(use-modules (ice-9 readline)) (activate-readline)"))))
 
-    (services
-     ;; TODO create macros pappend, premove, etc. - parallel processing
-     (append
-      (base:services)
-      (list
-       ;; (service pcscd-service-type) ;; usb card reader
-       (service nvidia-service-type)
-
-       ;; Configure desktop environment, GNOME for example.
-       (service gnome-desktop-service-type
-                ;; Enable NVIDIA support, only do this when the card is
-                ;; used for displaying.
-                ;; Adding the following leads to
-                ;;   profile contains conflicting entries for packagekit
-                #;
-                (gnome-desktop-configuration
-                 (gnome (replace-mesa gnome))))
-
-       ;; Configure Xorg server, only do this when the card is used for
-       ;; displaying.
-       (set-xorg-configuration
-        (xorg-configuration
-         (modules (cons nvda %default-xorg-modules))
-         (drivers '("nvidia"))
-         (keyboard-layout keyboard-layout))
-        sddm-service-type)
-
-       ;; (service mate-desktop-service-type)
-
-       (service cups-service-type
-                (cups-configuration
-                 (web-interface? #t)
-                 (extensions
-                  (list cups-filters hplip-minimal))))
-;;; See https://git.sr.ht/~krevedkokun/dotfiles/tree/master/item/system/desktop.scm and/or
-;;; https://github.com/nicolas-graves/dotfiles/blob/c91d5a0e29b631a1fa9720c18a827a71ffb66033/System.org
-;;; `udev-rules-service' is more convenient than using ‘modify-services’ & co.
-;;; see https://issues.guix.gnu.org/40454
-       ;; (modify-services (base:services)
-       ;;                  (udev-service-type
-       ;;                   config =>
-       ;;                   (udev-configuration
-       ;;                    (inherit config)
-       ;;                    (rules (cons*
-       ;;                            light
-       ;;                            pipewire-0.3
-       ;;                            android-udev-rules
-       ;;                            libu2f-host
-       ;;                            (udev-configuration-rules config))))))
-
-       (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
-       (udev-rules-service 'android android-udev-rules
-                           #:groups '("adbusers"))
-       (udev-rules-service 'steam-devices steam-devices-udev-rules)
-
-       ;; Configure the Guix service and ensure we use Nonguix substitutes
-       (simple-service 'add-nonguix-substitutes
-                       guix-service-type
-                       (guix-extension
-                        (substitute-urls
-                         (append (list "https://substitutes.nonguix.org")
-                                 %default-substitute-urls))
-                        (authorized-keys
-;;; The signing-key.pub should be obtained by
-;;;   wget https://substitutes.nonguix.org/signing-key.pub
-                         (append (list (local-file "./signing-key.pub"))
-                                 %default-authorized-guix-keys))))
-
-       ;; ;; Configure TTYs and graphical greeter
-       ;; (service
-       ;;  console-font-service-type
-       ;;  `(("tty1" . "LatGrkCyr-8x16")
-       ;;    ("tty2" . ,(file-append
-       ;;                font-tamzen
-       ;;                "/share/kbd/consolefonts/TamzenForPowerline10x20.psf"))
-       ;;    ("tty3" . ,(file-append
-       ;;                font-terminus
-       ;;                "/share/consolefonts/ter-132n")))
-
-       ;;  ;; Larger font for HIDPI screens, however this is too large
-       ;;  ;; (map (lambda (tty)
-       ;;  ;;        (cons tty (file-append
-       ;;  ;;                   font-terminus
-       ;;  ;;                   "/share/consolefonts/ter-132n")))
-       ;;  ;;      '("tty1" "tty2" "tty3"))
-       ;;  )
-
-       ;; (service greetd-service-type
-       ;;          (greetd-configuration
-       ;;           (greeter-supplementary-groups (list "video" "input"))
-       ;;           (terminals
-       ;;            (list
-       ;;             ;; TTY1 is the graphical login screen for Sway
-       ;;             (greetd-terminal-configuration
-       ;;              (terminal-vt "1")
-       ;;              (terminal-switch #t))
-
-       ;;             ;; Set up remaining TTYs for terminal use
-       ;;             (greetd-terminal-configuration (terminal-vt "2"))
-       ;;             (greetd-terminal-configuration (terminal-vt "3"))))))
-
-       (simple-service
-        'custom-udev-rules udev-service-type
-        (list nvidia-driver))
-
-       ;; load loadable kernel modules at boot with modprobe
-       (service kernel-module-loader-service-type
-                '("ipmi_devintf"
-                  "nvidia"
-                  "nvidia_modeset"
-                  "nvidia_uvm"))
-
-       ;; Configure swaylock as a setuid program
-       ;; (service screen-locker-service-type
-       ;;          (screen-locker-configuration
-       ;;           (name "swaylock")
-       ;;           (program (file-append swaylock "/bin/swaylock"))
-       ;;           (using-pam? #t)
-       ;;           (using-setuid? #f)))
-       )
-
-      ;; %desktop-services is the default list of services we are appending to.
-      (modify-services %desktop-services
-        ;; (delete login-service-type)
-        ;; (delete mingetty-service-type)
-        ;; (delete console-font-service-type)
-        ;; for sway - see the patch:
-        ;;   Add a guide to the guix cookbook about setting up sway.
-        ;;   https://issues.guix.gnu.org/issue/39271
-
-        ;; service "xorg-server" must be defined only once (see above)
-        (delete gdm-service-type))))
+    (services (service-list))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
