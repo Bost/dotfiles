@@ -3,6 +3,7 @@
 ;;;   service-file -> with-imported-modules
   #:use-module (ice-9 getopt-long) ;; command-line arguments handling
   #:use-module (ice-9 regex)             #| string-match |#
+  #:use-module (guix monads)             #| with-monad   |#
   #:use-module (utils)                   #| partial      |#
   #:use-module (settings)                #| user         |#
   #:export (
@@ -118,7 +119,7 @@ Usage:
      args)))
 (testsymb 'create-emacs-launcher)
 
-(define* (set-config-editable #:key utility-name gx-dry-run profile #:rest args)
+(define* (set-config-editable #:key (verbose #f) utility-name gx-dry-run profile #:rest args)
   "
 Usage:
 (set-config-editable #:gx-dry-run #t #:profile \"spacemacs\" \"rest\" \"args\")
@@ -126,30 +127,32 @@ Usage:
 (set-config-editable                 #:profile \"spacemacs\" \"rest\" \"args\")
 (set-config-editable                 #:profile \"spguimacs\" \"rest\" \"args\")
 "
-  (let* [(f "[set-config-editable]")
-         (args (remove-kw-from-args #:utility-name args))
-         (args (remove-kw-from-args #:gx-dry-run args))
-         (args (remove-kw-from-args #:profile args))
-         (monad (if gx-dry-run
-                    compose-commands-guix-shell-dry-run
-                    compose-commands-guix-shell))]
-    (if gx-dry-run
-        (begin
-          (format #t "~a ~a monad: ~a\n" m f monad)
-          (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
-        (let* [(dst (get-cfg profile))
-               (src (str (getenv "dotf") "/"
-                         (substring dst (string-length (str home "/")))))]
-          (with-monad monad
-            (>>=
-             (return (list dst))
-             mdelete-file
-             `(override-mv ,src ,dst)
-             mcopy-file))
-          (copy-file src dst)))))
+  (let* [(f "[set-config-editable]")]
+    (format #t "~a ~a TODO implement set-config-editable\n" m f)
+    ;; (let* [(args (remove-kw-from-args #:utility-name args))
+    ;;        (args (remove-kw-from-args #:gx-dry-run args))
+    ;;        (args (remove-kw-from-args #:profile args))
+    ;;        (monad (if gx-dry-run
+    ;;                   compose-commands-guix-shell-dry-run
+    ;;                   compose-commands-guix-shell))]
+    ;;   (if gx-dry-run
+    ;;       (begin
+    ;;         (format #t "~a ~a monad: ~a\n" m f monad)
+    ;;         (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
+    ;;       (let* [(dst (get-cfg profile))
+    ;;              (src (str (getenv "dotf") "/"
+    ;;                        (substring dst (string-length (str home "/")))))]
+    ;;         (with-monad monad
+    ;;           (>>=
+    ;;            (return (list dst))
+    ;;            mdelete-file
+    ;;            `(override-mv ,src ,dst)
+    ;;            mcopy-file))
+    ;;         (copy-file src dst))))
+    ))
 (testsymb 'set-config-editable)
 
-(define* (handle-cli #:key (dbg #f) utility-name fun profile #:rest args)
+(define* (handle-cli #:key (verbose #f) utility-name fun profile #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'."
   ;; (format #t "~a args: ~a\n" m args)
@@ -175,7 +178,7 @@ Usage:
          (val-gx-dry-run (option-ref options 'gx-dry-run #f))
          (val-rest-args  (option-ref options '()         #f))
          ]
-    (when dbg
+    (when verbose
       (format #t "~a ~a option-spec    : ~a\n" m f option-spec)
       (format #t "~a ~a options        : ~a\n" m f options)
       (format #t "~a ~a val-help       : ~a\n" m f val-help)
