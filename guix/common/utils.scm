@@ -1029,4 +1029,11 @@ that many from the end."
                  (else (error "butlast-smart: expected one number and one list" a b)))))
         (else (error "butlast-smart: expected 1 or 2 arguments"))))
 
+(define-public (cartesian xs ys)
+  "(cartesian '(a b) '(1 2)) => ((a 1) (a 2) (b 1) (b 2))"
+  (apply append
+         (map (lambda (x)
+                (map (lambda (y) (list x y)) ys))
+              xs)))
+
 (module-evaluated)
