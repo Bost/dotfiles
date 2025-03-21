@@ -1,10 +1,12 @@
 (define-module (srvc scheme-files)
   ;; #:use-module (cfg packages-new)
   #:use-module (utils)
+  #:use-module (tests)
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (fs-utils)
-  ;; See service-file -> with-imported-modules
+  #:use-module (emacs-common)  ;; handle-cli, create-emacs-launcher, etc.
+  ;; See service-file-general -> with-imported-modules
   #:use-module (scm-bin gcl)
   #:use-module (gnu home)
   #:use-module (gnu packages)
@@ -71,99 +73,6 @@
               (lambda (s) (string-match (basename re) s)))))))))
 (testsymb 'expand-pattern)
 
-;; ;; (define-syntax define-emacs-utils
-;; ;;   (syntax-rules ()
-;; ;;     ((_ name ...)
-;; ;;      ((comp
-;; ;;        #;(lambda (p) (format #t "p: ~a\n" p) p))
-;; ;;       (list
-;; ;;        (define launcher-<util-name> (str "emacs-launcher-" util-name))
-;; ;;        (define editable-<util-name> (str "emacs-editable-" util-name))
-;; ;;        (define pkill-<util-name> (str "emacs-pkill-" util-name))
-;; ;;        )))))
-
-;; (define* (create type name)
-;;   "(create 'launcher 'spacemacs)"
-;;   ;; (format #t "util-type: ~a; util-name: ~a\n" type name)
-;;   ;; (format #t "(test-type type): ~a\n" (test-type type))
-;;   ;; (format #t "util-type: ~a\n" type)
-;;   ;; (format #t "(test-type name): ~a\n" (test-type name))
-;;   ;; (format #t "util-name: ~a\n" name)
-;;   (let* [(stype (symbol->string type))
-;;          (sname (symbol->string name))
-;;          (name (string->symbol (format #f "~a-~a" stype sname)))
-;;          (body (format #f "emacs-~a-~a" stype sname))]
-;;     (let [(result `(define ,name ,body))]
-;;       ;; (format #t "Creating ~a\n" result)
-;;       result)))
-
-;; ;; " (define-util-names 'spacemacs) "
-;; (define (define-utils)
-;;   (begin
-;;     (let* [
-;;            ;; (util-types (list 'ylauncher 'editable 'pkill))
-;;            ;; (util-names (list 'spacemacs))
-
-;;            (util-types (list 't1 't2))
-;;            (util-names (list 'n1 'n2))
-;;            (params (cartesian util-types util-names))
-;;            ]
-;;       ;; params
-;;       (map (partial apply create) params))
-;;     ))
-
-;; ;; (list
-;; ;;  '(define t1-n1 "emacs-t1-n1")
-;; ;;  '(define t1-n2 "emacs-t1-n2")
-;; ;;  '(define t2-n1 "emacs-t2-n1")
-;; ;;  '(define t2-n2 "emacs-t2-n2"))
-
-;; (define-syntax define-emacs-utils
-;;   "(define-emacs-utils spacemacs)"
-;;   (lambda (stx)
-;;     (syntax-case stx ()
-;;       [(_ util)
-;;        (let* ((symbol (syntax->datum #'util))
-;;               (util-str (symbol->string symbol))
-;;               (launcher-id (datum->syntax #'util (symbol-append 'launcher- symbol)))
-;;               (editable-id (datum->syntax #'util (symbol-append 'editable- symbol)))
-;;               (pkill-id    (datum->syntax #'util (symbol-append 'pkill-    symbol))))
-;;          #`(begin
-;;              (define #,launcher-id (string-append "emacs-launcher-" #,util-str))
-;;              (define #,editable-id (string-append "emacs-editable-" #,util-str))
-;;              (define #,pkill-id    (string-append "emacs-pkill-"    #,util-str))))])))
-
-(define launcher-develop   (str "emacs-launcher-" develop))
-(define launcher-spguimacs (str "emacs-launcher-" spguimacs))
-(define launcher-crafted   (str "emacs-launcher-" crafted))
-(define launcher-lst       (list
-                            launcher-develop
-                            launcher-spguimacs
-                            launcher-crafted
-                            ))
-
-(define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
-
-(define editable-develop   (str "emacs-editable-" develop))
-(define editable-spguimacs (str "emacs-editable-" spguimacs))
-(define editable-crafted   (str "emacs-editable-" crafted))
-(define editable-lst       (list
-                            editable-profiles
-                            editable-develop
-                            editable-spguimacs
-                            editable-crafted
-                            ))
-
-(define pkill-develop   (str "emacs-pkill-" develop))
-(define pkill-spguimacs (str "emacs-pkill-" spguimacs))
-(define pkill-crafted   (str "emacs-pkill-" crafted))
-(define pkill-lst       (list
-                         pkill-develop
-                         pkill-spguimacs
-                         pkill-crafted
-                         ))
-(testsymb 'pkill-lst)
-
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
 (full-filepaths (list \"ai\")) =>
@@ -180,10 +89,11 @@
    patterns))
 (testsymb 'full-filepaths)
 
-(define* (service-file #:key
-                       program-name desc scheme-file module-name
-                       chmod-params files
-                       (other-files (list)))
+(define* (service-file-general
+          #:key
+          program-name desc scheme-file module-name
+          chmod-params files
+          (other-files (list)))
   "The priority is 1. module-name, 2. scheme-file, 3. program-name
 
 TODO The `search-notes' program should read a `search-space-file' containing
@@ -192,38 +102,52 @@ a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  `(,(str scm-bin-dirname "/" program-name)
-    ,(program-file
+  (let* [(m (format #f "~a [service-file-general]" m))]
+    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a program-name : ~s\n" m program-name)
+    ;; (format #t "~a desc         : ~s\n" m desc)
+    ;; (format #t "~a scheme-file  : ~s\n" m scheme-file)
+    ;; (format #t "~a module-name  : ~s\n" m module-name)
+    ;; (format #t "~a chmod-params : ~s\n" m chmod-params)
+    ;; (format #t "~a files        : ~s\n" m files)
+    ;; (format #t "~a other-files  : ~s\n" m other-files)
+
+    (list
+     (str scm-bin-dirname "/" program-name)
+
+     (program-file
+      ;; 1st param: name
       (cond
        [(equal? scheme-file "chmod")
         (str "chmod-plus-" chmod-params)]
        [(equal? scheme-file "search-notes")
         (str "search-notes-" program-name)]
-       [(member scheme-file (append launcher-lst editable-lst pkill-lst))
-        scheme-file]
        [#t
         desc])
+
+      ;; 2nd param: exp
       ;; TODO clarify if source-module-closure is needed only for imports of
       ;; guix modules?
-      (let* ((symb-string (or scheme-file program-name))
+      (let* [(symb-string (or scheme-file program-name))
              (symb (or module-name
                        (string->symbol symb-string)))
-             (main-call
-              (remove unspecified?
-                      `(main ,(cond
-                               [(equal? scheme-file "chmod")
-                                `(let [(cmd-line (command-line))]
-                                   (append (list (car cmd-line)
-                                                 ,chmod-params)
-                                           (cdr cmd-line)))]
+             (main-call ((comp (partial remove unspecified?))
+                         (list
+                          'main
+                          (cond
+                           [(equal? scheme-file "chmod")
+                            `(let [(cmd-line (command-line))]
+                               (append (list (car cmd-line)
+                                             ,chmod-params)
+                                       (cdr cmd-line)))]
 
-                               [(equal? scheme-file "search-notes")
-                                `(append
-                                  (command-line)
-                                  (list ,@(append other-files
-                                                  (full-filepaths files))))]
+                           [(equal? scheme-file "search-notes")
+                            `(append
+                              (command-line)
+                              (list ,@(append other-files
+                                              (full-filepaths files))))]
 
-                               [#t `(command-line)])))))
+                           [#t `(command-line)]))))]
         (with-imported-modules
             ((comp
               (partial remove unspecified?)
@@ -243,12 +167,6 @@ Example:
                (scm-bin gre)
                (scm-bin gps)
 
-               ,(begin
-                  (cond
-                   [(member scheme-file
-                            (append launcher-lst editable-lst pkill-lst))
-                    `(emacs-common)]))
-
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
                ,(cond
@@ -256,16 +174,63 @@ Example:
                  [(equal? scheme-file "chmod")        `(scm-bin ,symb)]
                  [(equal? scheme-file "search-notes") `(scm-bin ,symb)]
                  [#t                                  `(scm-bin ,symb)])))
+
           #~(begin
               (use-modules (scm-bin #$symb))
-              #$main-call))))))
-(testsymb 'service-file)
+              #$main-call)))))))
+(testsymb 'service-file-general)
+
+(define* (service-file-emacs-utils
+          #:key program-name (verbose #f) utility-name fun profile)
+  " TODO The `search-notes' program should read a `search-space-file' containing
+a list of files to search through.
+
+Example:
+    chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
+"
+  (let* [(m (format #f "~a [service-file-emacs-utils]" m))]
+    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a program-name : ~s\n" m program-name)
+    ;; (format #t "~a fun          : ~s\n" m fun)
+    ;; (format #t "~a profile      : ~s\n" m profile)
+
+    (list
+     (str scm-bin-dirname "/" program-name)
+     ((comp
+       ;; (lambda (v) (format #t "~a :\n~s\n\n" m v) v)
+       )
+      (program-file
+       program-name
+       (let* [(symb-string scheme-file)
+              (symb (or module-name
+                        (string->symbol symb-string)))
+              (sexp `(handle-cli
+                      #:verbose ,verbose
+                      #:fun ,fun
+                      #:profile ,profile
+                      (command-line)))
+              ]
+         ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
+         (with-imported-modules
+             `((guix monads)
+               (utils)
+               (settings)
+               (emacs-common))
+           #~(begin
+               (use-modules (ice-9 getopt-long)
+                            (ice-9 regex)
+                            (guix monads)
+                            (utils)
+                            (settings)
+                            (emacs-common))
+               #$sexp))))))))
+(testsymb 'service-file-emacs-utils)
 
 (define search-notes-service-files
   (let* [(m (format #f "~a [search-notes-service-files]" m))]
-    ;; (lambda (v) (format #t "~a starting...\n" m) v)
+    ;; (format #t "~a Starting ...\n" m)
     (map
-     (partial apply service-file)
+     (partial apply service-file-general)
      (list
       (list #:program-name "crc"
             #:files (list "lisp/clojure")
@@ -314,8 +279,8 @@ Example:
                             ;; (lambda (v) (format #t "~a 1\n" m) v)
                             )
                            (list
-                            ;; (get-src spguimacs) points to a spacemacs-distros
-                            (list (substring (get-src spguimacs)
+                            ;; (get-src guix) points to a spacemacs-distros
+                            (list (substring (get-src guix)
                                              (string-length (str home "/")))
                                   "core/el")
                             (list "dev/kill-buffers" "el")
@@ -361,7 +326,7 @@ Example:
       (list #:program-name "crr" #:files (list "lisp/racket")
             #:other-files (append (expand-pattern "der/search-notes" "rkt"))
             #:scheme-file "search-notes")
-;;; TODO create crct - search in category-theory notes
+;;; TODO create-def--emacs-<type>-<profile> crct - search in category-theory notes
 ;;; TODO crs should be like crl
       (list #:program-name "crs" #:files (list "cli/shells")
             ;; #:other-files (append (expand-pattern "dev/dotfiles" ".bash"))
@@ -370,36 +335,36 @@ Example:
             #:scheme-file "search-notes")))))
 (testsymb 'search-notes-service-files)
 
+(define (emacs-cli-utils)
+  ((comp
+    (partial append search-notes-service-files)
+    (partial map (partial apply service-file-emacs-utils)))
+   (list
+    (list #:program-name "ep" #:fun 'set-editable          #:profile #f)
+    (list #:program-name  "d" #:fun 'create-emacs-launcher #:profile develop)
+    (list #:program-name "ed" #:fun 'set-editable          #:profile develop)
+    (list #:program-name "kd" #:fun 'pkill-server          #:profile develop)
+    (list #:program-name  "g" #:fun 'create-emacs-launcher #:profile guix)
+    (list #:program-name "eg" #:fun 'set-editable          #:profile guix)
+    (list #:program-name "kg" #:fun 'pkill-server          #:profile guix)
+    (list #:program-name  "r" #:fun 'create-emacs-launcher #:profile crafted)
+    ;; TODO Move crafted-emacs user config from the project repo to the dotfiles
+    ;; (list #:program-name "er" #:fun 'set-editable          #:profile crafted)
+    (list #:program-name "kr" #:fun 'pkill-server          #:profile crafted)
+    )))
+
 (define-public (scheme-files-service)
   (let* [(m (format #f "~a [scheme-files-service]" m))]
-    ;; (lambda (v) (format #t "~a 0 starting...\n" m) v)
+    ;; (format #t "~a Starting ...\n" m)
     ((comp
       ;; (lambda (v) (format #t "~a done\n" m) v)
+      ;; 'simple-service name target value'. E.g.:
+      ;; (simple-service 'my-mcron-job mcron-service-type #~(job '(next-hour (3)) "guix gc -F 2G"))
       (partial simple-service 'scheme-files-service home-files-service-type)
-      (partial
-       append
-       (if (or (is-system-ecke) (is-system-edge))
-           ((comp
-             (partial append search-notes-service-files)
-             (partial map (partial apply service-file))
-             )
-            (list
-             (list #:program-name "ep" #:scheme-file editable-profiles)
-
-             (list #:program-name  "d" #:scheme-file launcher-develop)
-             (list #:program-name "ed" #:scheme-file editable-develop)
-             (list #:program-name "kd" #:scheme-file pkill-develop)
-
-             (list #:program-name  "g" #:scheme-file launcher-spguimacs)
-             (list #:program-name "eg" #:scheme-file editable-spguimacs)
-             (list #:program-name "kg" #:scheme-file pkill-spguimacs)
-
-             (list #:program-name  "r" #:scheme-file launcher-crafted)
-             (list #:program-name "er" #:scheme-file editable-crafted)
-             (list #:program-name "kr" #:scheme-file pkill-crafted)
-             ))
-           (list)))
-      (partial map (partial apply service-file)))
+      (partial append (if (or (is-system-ecke) (is-system-edge))
+                          (emacs-cli-utils)
+                          (list)))
+      (partial map (partial apply service-file-general)))
      (list
       ;; pwr and prw do the same
       (list #:program-name "pwr" #:chmod-params "rw" #:scheme-file "chmod")
@@ -432,6 +397,6 @@ Example:
             #:scheme-file "lT")
       (list #:program-name "qemu-vm" #:desc "qemu-vm")
       (list #:program-name "susp" #:desc "suspend-to-ram")))))
-(testsymb 'scheme-files-service)
+(testsymb-trace 'scheme-files-service)
 
 (module-evaluated)

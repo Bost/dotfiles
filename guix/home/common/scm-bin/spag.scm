@@ -35,7 +35,7 @@ cd $dotf
         (git-spacemacs "fetch" "--tags" origin develop)
         (git-spacemacs "rebase" (str origin "/" develop) develop)
         (git-spacemacs "rebase" develop cycle)
-        (git-spacemacs "rebase" cycle guix-merge)
+        (git-spacemacs "rebase" cycle guix)
         )))
 (testsymb 'main)
 
