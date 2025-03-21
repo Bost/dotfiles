@@ -38,25 +38,48 @@
 ;;   guix/home/common/scm-bin/spag.scm
 ;;   guix/home/common/scm-bin/restore-spacemacs.scm
 (define-public emacs-profiles ;; branch-kw_to_settings-map
-  '((#:develop    . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/develop/src")
-                     (#:server-name . "develop")
-                     (#:env .  "/home/bost/.emacs.d.distros/spacemacs/develop/cfg")))
+  (list
+   (cons #:develop
+         (list (cons #:user-emacs-directory
+                     "/home/bost/.emacs.d.distros/spacemacs/develop/src")
+               (cons #:server-name "develop")
+               (cons #:env
+                     "/home/bost/.emacs.d.distros/spacemacs/develop/cfg")))
 
-    (#:guix       . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/guix/src")
-                     (#:server-name . "guix")
-                     (#:env . "/home/bost/.emacs.d.distros/spacemacs/guix/cfg")))
+   (cons #:guix
+         (list (cons #:user-emacs-directory
+                     "/home/bost/.emacs.d.distros/spacemacs/guix/src")
+               (cons #:server-name "guix")
+               (cons #:env
+                     "/home/bost/.emacs.d.distros/spacemacs/guix/cfg")))
 
-    (#:guix-merge . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/guix-merge/src")
-                     (#:server-name . "guix-merge")
-                     (#:env . "/home/bost/.emacs.d.distros/spacemacs/guix-merge/cfg")))
+   (cons #:guix-merge
+         (list (cons #:user-emacs-directory
+                     "/home/bost/.emacs.d.distros/spacemacs/guix-merge/src")
+               (cons #:server-name "guix-merge")
+               (cons #:env
+                     "/home/bost/.emacs.d.distros/spacemacs/guix-merge/cfg")))
 
-    (#:keyseq     . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/spacemacs/keyseq/src")
-                     (#:server-name . "keyseq")
-                     (#:env . "/home/bost/.emacs.d.distros/spacemacs/keyseq/cfg")))
+   (cons #:shorten-name
+         (list (cons #:user-emacs-directory
+                     "/home/bost/.emacs.d.distros/spacemacs/shorten-name/src")
+               (cons #:server-name "shorten-name")
+               (cons #:env
+                     "/home/bost/.emacs.d.distros/spacemacs/shorten-name/cfg")))
 
-    (#:crafted    . ((#:user-emacs-directory . "/home/bost/.emacs.d.distros/crafted-emacs")
-                     (#:server-name . "crafted")
-                     (#:env . "/home/bost/.emacs.d.distros/crafted-emacs/personal")))))
+   (cons #:keyseq
+         (list (cons #:user-emacs-directory
+                     "/home/bost/.emacs.d.distros/spacemacs/keyseq/src")
+               (cons #:server-name "keyseq")
+               (cons #:env
+                     "/home/bost/.emacs.d.distros/spacemacs/keyseq/cfg")))
+
+   (cons #:crafted
+         (list (cons #:user-emacs-directory
+                     "/home/bost/.emacs.d.distros/crafted-emacs")
+               (cons #:server-name "crafted")
+               (cons #:env
+                     "/home/bost/.emacs.d.distros/crafted-emacs/personal")))))
 (testsymb 'emacs-profiles)
 
 ;;; Branches in the spguimacs
@@ -64,13 +87,21 @@
 (define-public develop "develop")
 (define-public cycle   "cycle")
 (define-public keyseq  "keyseq")
+(define-public shorten-name "shorten-name")
 
 (define-public profile->branch-kw
-  (list (cons spacemacs #:keyseq)
-        (cons spguimacs #:guix-merge)
-        (cons crafted   #:crafted)))
+  (list
+   ;; (cons spacemacs #:keyseq)
+   (cons spacemacs #:shorten-name)
+   (cons spguimacs #:guix-merge)
+   (cons crafted   #:crafted)))
 
 (define (get-val profile setting)
+  "
+(get-val profile #:user-emacs-directory)
+(get-val profile #:env)
+(get-val profile #:server-name)
+"
   ;; (format #t "profile ~a; setting ~a\n" profile setting)
   (let* [(branch-kw (cdr (assoc profile profile->branch-kw)))]
     ;; (format #t "branch-kw ~a\n" branch-kw)
