@@ -135,8 +135,8 @@ Usage:
                     compose-commands-guix-shell))]
     (if gx-dry-run
         (begin
-          (format #t "~a ~m monad: ~a\n" m f monad)
-          (format #t "~a ~m TODO implement --gx-dry-run\n" m f))
+          (format #t "~a ~a monad: ~a\n" m f monad)
+          (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
         (let* [(dst (get-cfg profile))
                (src (str (getenv "dotf") "/"
                          (substring dst (string-length (str home "/")))))]
