@@ -112,9 +112,19 @@
         val))))
 (testsymb 'get-val)
 
-(define-public (get-src    profile) (get-val profile #:user-emacs-directory))
-(define-public (get-cfg    profile) (get-val profile #:env))
-(define-public (get-server profile) (get-val profile #:server-name))
+(define-public (get-src profile)
+  "(get-src spacemacs)
+;; => \"/home/bost/.emacs.d.distros/spacemacs/shorten-name/src\""
+  (get-val profile #:user-emacs-directory))
+
+(define-public (get-cfg profile)
+  "(get-cfg spacemacs)
+;; => \"/home/bost/.emacs.d.distros/spacemacs/shorten-name/cfg\""
+  (get-val profile #:env))
+
+(define-public (get-server profile)
+  "(get-server spacemacs) ;; => \"shorten-name\""
+  (get-val profile #:server-name))
 
 (define-public spacemacs-dir (get-src spacemacs))
 
