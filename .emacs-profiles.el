@@ -18,6 +18,12 @@
    (env . (("SPACEMACSDIR" .
             "~/.emacs.d.distros/spacemacs/guix-merge/cfg")))))
 
+ ("shorten-name" .
+  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/shorten-name/src")
+   (server-name . "shorten-name")
+   (env . (("SPACEMACSDIR" .
+            "~/.emacs.d.distros/spacemacs/shorten-name/cfg")))))
+
  ("keyseq" .
   ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/keyseq/src")
    (server-name . "keyseq")
