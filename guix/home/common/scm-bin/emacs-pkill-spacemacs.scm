@@ -4,6 +4,7 @@
   #:use-module (utils)
   #:use-module (settings)      #| spacemacs |#
   #:use-module (emacs-common)
+  ;; #:use-module (srvc emacs-cli-utils)
   #:export (main))
 
 #|

@@ -301,13 +301,6 @@
      ("glp"  . ,((comp
                   (lambda (lst) (string-join lst list-separator)))
                  (append
-                  (list dgx)
-                  (map user-dev
-                       (list
-                        "/guile"
-                        "/guile-git"
-                        "/nonguix"
-                        "/andrew-rde/src"))
                   (map user-dotf
                        (list
                         "/guix/common"
@@ -316,7 +309,16 @@
                         "/guix/home"
                         "/guix/systems"
                         ))
-                  (list (str dgxp "/src"))))))))
+                  (map user-dev
+                       (list
+                        "/guile"
+                        "/guile-git"
+                        "/nonguix"
+                        ;; "/andrew-rde/src"
+                        ))
+                  (list (str dgxp "/src"))
+                  (list dgx)
+                  ))))))
 (testsymb 'environment-vars-edge-ecke)
 
 (define-public (environment-variables-service environment-vars)

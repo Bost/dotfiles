@@ -6,6 +6,7 @@
   #:use-module (guix monads)             #| with-monad   |#
   #:use-module (utils)                   #| partial      |#
   #:use-module (settings)                #| user         |#
+  ;; #:use-module (srvc emacs-cli-utils)
   #:export (main))
 
 #|

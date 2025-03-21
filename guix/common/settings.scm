@@ -33,6 +33,8 @@
 ;;   guix/home/common/scm-bin/restore-spacemacs.scm
 (define-public emacs-profiles ;; branch-kw_to_settings-map
   (list
+   ;; ~/dev/dotfiles/.emacs-profiles.el
+   ;; (const <profile-name> <profile-configuration>)
    (cons #:develop
          (list (cons #:user-emacs-directory
                      "/home/bost/.emacs.d.distros/spacemacs/develop/src")

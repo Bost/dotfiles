@@ -1,3 +1,7 @@
+;; See https://github.com/plexus/chemacs2
+;; association list:
+;; keys/cars - profile names, values/cdrs - profile configurations
+;;
 ;; Can't use constructs like (concat dir "spacemacs", since the
 ;; .emacs-profiles.el is not evaluated
 (("develop" .

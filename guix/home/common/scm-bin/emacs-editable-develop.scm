@@ -3,6 +3,7 @@
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (settings)
+  ;; #:use-module (srvc emacs-cli-utils)
   #:use-module (emacs-common)
   #:export (main))
 

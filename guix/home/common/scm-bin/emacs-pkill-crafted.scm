@@ -4,6 +4,7 @@
   #:use-module (utils)
   #:use-module (settings)      #| crafted |#
   #:use-module (emacs-common)
+  ;; #:use-module (srvc emacs-cli-utils)
   #:export (main))
 
 #|
