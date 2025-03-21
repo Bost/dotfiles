@@ -31,20 +31,22 @@
 ;; files:
 ;;   guix/home/common/scm-bin/spag.scm
 ;;   guix/home/common/scm-bin/restore-spacemacs.scm
-(define-public emacs-profiles ;; branch-kw_to_settings-map
+(define-public emacs-profiles-config ;; branch-kw_to_settings-map
   (list
+   ;; ~/dev/dotfiles/.emacs-profiles.el
+   ;; (const <profile-name> <profile-configuration>)
    (cons #:develop
          (list (cons #:user-emacs-directory
                      "/home/bost/.emacs.d.distros/spacemacs/develop/src")
                (cons #:server-name "develop")
                (cons #:env
                      "/home/bost/.emacs.d.distros/spacemacs/develop/cfg")))
-   (cons #:guix-merge
+   (cons #:guix
          (list (cons #:user-emacs-directory
-                     "/home/bost/.emacs.d.distros/spacemacs/guix-merge/src")
-               (cons #:server-name "guix-merge")
+                     "/home/bost/.emacs.d.distros/spacemacs/guix/src")
+               (cons #:server-name "guix")
                (cons #:env
-                     "/home/bost/.emacs.d.distros/spacemacs/guix-merge/cfg")))
+                     "/home/bost/.emacs.d.distros/spacemacs/guix/cfg")))
 
    (cons #:crafted
          (list (cons #:user-emacs-directory
@@ -52,21 +54,21 @@
                (cons #:server-name "crafted")
                (cons #:env
                      "/home/bost/.emacs.d.distros/crafted-emacs/personal")))))
-(testsymb 'emacs-profiles)
+(testsymb 'emacs-profiles-config)
 
 ;;; Branches in the spguimacs
 (define-public develop    "develop")
-(define-public guix-merge "guix-merge")
+(define-public guix "guix")
 
-;; emacs-profiles
+;; emacs-profiles-config
 (define-public develop   "develop")
-(define-public spguimacs "spguimacs")
+(define-public guix "guix")
 (define-public crafted   "crafted")
 
 (define-public profile->branch-kw
   (list
    (cons develop   #:develop)
-   (cons spguimacs #:guix-merge)
+   (cons guix #:guix)
    (cons crafted   #:crafted)))
 
 ;; TODO the crafted configuration is not managed by guix home
@@ -88,7 +90,7 @@
   ;; (format #t "profile ~a; setting ~a\n" profile setting)
   (let* [(branch-kw (cdr (assoc profile profile->branch-kw)))]
     ;; (format #t "branch-kw ~a\n" branch-kw)
-    (let* [(settings-map (cdr (assoc branch-kw emacs-profiles)))]
+    (let* [(settings-map (cdr (assoc branch-kw emacs-profiles-config)))]
       ;; (format #t "settings-map ~a\n" settings-map)
       (let* [(val (cdr (assoc setting settings-map)))]
         ;; (format #t "profile ~a; setting ~a; val: ~a\n" profile setting val)
@@ -109,6 +111,6 @@
   "(get-server spacemacs) ;; => \"develop\""
   (get-val profile #:server-name))
 
-(define-public spacemacs-dir (get-src spguimacs))
+(define-public spacemacs-dir (get-src guix))
 
 (module-evaluated)

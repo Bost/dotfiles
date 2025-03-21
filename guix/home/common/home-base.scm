@@ -1,5 +1,6 @@
 (define-module (home-base)
   #:use-module (settings)
+  #:use-module (tests)
   #:use-module (utils)
   #:use-module (store-utils)
   #:use-module (memo)
@@ -52,11 +53,14 @@
 
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
-(define-public (services)
-  (let* [(m (format #f "~a [services]" m))]
-    ;; (format #t "~a starting...\n" m)
+(define-public (non-env-var-services)
+  (let* [(m (format #f "~a [non-env-var-services]" m))]
+    ;; (format #t "~a Starting ...\n" m)
     ((comp
-      ;; (lambda (v) (format #t "~a 7 done.\n" m) v)
+      ;; (lambda (v) (format #t "~a done.\n" m) v)
+      ;; (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
+      ;;                     m (test-type v) (length v))
+      ;;         v)
       (partial
        append
        ;; (service home-xsettingsd-service-type)
@@ -171,11 +175,11 @@
       (partial append (list (service dirs-service-type)))
       ;; (lambda (v) (format #t "~a 5\n" m) v)
       (partial append (list (fish-service)))
-      ;; (lambda (v) (format #t "~a 3\n" m) v)
+      ;; (lambda (v) (format #t "~a 3 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
       (partial append (list (srvc:home-dir-cfg-srvc)))
-      ;; (lambda (v) (format #t "~a 2\n" m) v)
+      ;; (lambda (v) (format #t "~a 2 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
       (partial append (list (scheme-files-service)))
-      ;; (lambda (v) (format #t "~a 1\n" m) v)
+      ;; (lambda (v) (format #t "~a 1 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
       ;; (partial append mcron-service)
 
 ;;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
@@ -201,7 +205,7 @@
       ;; (lambda (v) (format #t "~a 0\n" m) v)
       )
      (list))))
-(testsymb 'services)
+(testsymb 'non-env-var-services)
 
 (define (gcc-filepath)
   ;; (user-home "/.guix-home/profile/bin/gcc")
@@ -242,7 +246,7 @@
                                 list-separator))
 
      ;; `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
-     ("EDITOR" . "g") ;; spguimacs; $ which "g": /home/bost/scm-bin/g
+     ("EDITOR" . "g") ;; The 'guix' branch of Spacemacs
 
      ;; My own scripts and guix-home profile take precedence over $PATH.
      ("PATH" . ,((comp
@@ -301,13 +305,6 @@
      ("glp"  . ,((comp
                   (lambda (lst) (string-join lst list-separator)))
                  (append
-                  (list dgx)
-                  (map user-dev
-                       (list
-                        "/guile"
-                        "/guile-git"
-                        "/nonguix"
-                        "/andrew-rde/src"))
                   (map user-dotf
                        (list
                         "/guix/common"
@@ -316,7 +313,16 @@
                         "/guix/home"
                         "/guix/systems"
                         ))
-                  (list (str dgxp "/src"))))))))
+                  (map user-dev
+                       (list
+                        "/guile"
+                        "/guile-git"
+                        "/nonguix"
+                        ;; "/andrew-rde/src"
+                        ))
+                  (list (str dgxp "/src"))
+                  (list dgx)
+                  ))))))
 (testsymb 'environment-vars-edge-ecke)
 
 (define-public (environment-variables-service environment-vars)
@@ -438,21 +444,33 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
        (projects-heroku)))
 (testsymb 'install-all-projects)
 
-(define-public (home-env-edge-ecke list-separator)
-  (home-environment
-   ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
-   ;; (packages (packages-to-install))
+(define (home-env-services list-separator)
+  ((comp
+    (partial append (non-env-var-services))
+    ;; (lambda (v)
+    ;;   ;; (map (partial format #t "~a 1:\n~a\n" m) v)
+    ;;   ;; (format #t "~a 1 (length v) : ~a\n" m (length v))
+    ;;   v)
+    list
+    environment-variables-service
+    (partial append (environment-vars-edge-ecke list-separator))
+    (partial append (environment-vars           list-separator))
+    ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
+    )
+   (list)))
+(testsymb 'home-env-services)
 
-   (services
-    ((comp
-      (partial append (services))
-      list
-      environment-variables-service
-      (partial append (environment-vars-edge-ecke list-separator))
-      (partial append (environment-vars           list-separator))
-      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
-      )
-     (list)))))
+(define-public (home-env-edge-ecke list-separator)
+  (let* [(m (format #f "~a [home-env-edge-ecke]" m))]
+    ;; (format #t "~a Starting ...\n" m)
+    (let* [(home-env-record
+            (home-environment
+              ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
+              ;; (packages (packages-to-install))
+              (services
+               (home-env-services list-separator))))]
+      ;; (format #t "~a done. type: ~a\n" m (test-type home-env-record))
+      home-env-record)))
 (testsymb 'home-env-edge-ecke)
 
 (module-evaluated)
