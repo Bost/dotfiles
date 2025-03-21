@@ -75,12 +75,15 @@
                                  launcher-spguimacs
                                  launcher-crafted))
 
+(define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
 (define editable-spacemacs (str "emacs-editable-" spacemacs))
 (define editable-spguimacs (str "emacs-editable-" spguimacs))
 (define editable-crafted   (str "emacs-editable-" crafted))
-(define editable-lst       (list editable-spacemacs
-                                 editable-spguimacs
-                                 editable-crafted))
+(define editable-lst       (list
+                            editable-profiles
+                            editable-spacemacs
+                            editable-spguimacs
+                            editable-crafted))
 
 (define pkill-spacemacs (str "emacs-pkill-" spacemacs))
 (define pkill-spguimacs (str "emacs-pkill-" spguimacs))
@@ -308,6 +311,8 @@ Example:
              (partial map (partial apply service-file))
              )
             (list
+             (list #:program-name "ep" #:scheme-file editable-profiles)
+
              (list #:program-name "s"  #:scheme-file launcher-spacemacs)
              (list #:program-name "es" #:scheme-file editable-spacemacs)
              (list #:program-name "ks" #:scheme-file pkill-spacemacs)
