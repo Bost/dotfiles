@@ -918,7 +918,7 @@ FIXME the inferior-packages are installed on every machine"
     (list git "send-email")
     pinentry ;; needed to sign commits
     pwclient ;; CLI client for Patchwork patch tracking tool (*.patch files)
-    octave
+    ;; octave
 
     ;; Static analysis for shell scripts
     shellcheck ;; prevent "shellcheck not available ..." in *bash-ls::stderr*
