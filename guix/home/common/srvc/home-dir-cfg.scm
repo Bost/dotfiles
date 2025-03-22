@@ -36,7 +36,8 @@
 ;; sessions using the xsettingsd daemon.")))
 
 (define (create-file-channels-scm hostname)
-  (let* [(channels-scm-fullpath
+  (let* [(m (format #f "~a [create-file-channels-scm]" m))
+         (channels-scm-fullpath
           (user-dotf "/"
                      (str ".config/guix/channels-home-" hostname ".scm")))
          (lst-channels-scm
@@ -143,7 +144,7 @@ See also:
 
 (define (home-dir-cfg-srvc-files)
   (let* [(m (format #f "~a [home-dir-cfg-srvc-files]" m))]
-    ;; (format #t "~a starting...\n" m)
+    ;; (format #t "~a Starting ...\n" m)
     ((comp
       ;; (lambda (p) (format #t "~a done.\n" m) p)
       ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)
@@ -168,12 +169,11 @@ See also:
                    (comp
                     ;; (lambda (p) (format #t "###### 1.1.\n") p)
                     (partial local-dotfile "/")
-                    (lambda (substr) (str substr "/init.el"))
+                    (lambda (substr) (str substr "/" emacs-init-file))
                     (lambda (cfg)
                       (substring cfg (string-length (str home "/"))))
                     get-cfg)
-                   ;; TODO the crafted configuration is not managed by guix home
-                   (list spguimacs spacemacs)))
+                   spacemacs-profiles))
                  (partial remove unspecified-or-empty-or-false?)
                  (partial map (partial local-dotfile "/")))
                 (list

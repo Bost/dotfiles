@@ -47,7 +47,9 @@ defined.
   "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
   ((@(guix build utils) which) "emacsclient"))
 
-(define* (pkill-server #:key utility-name gx-dry-run profile #:rest args)
+(define* (pkill-server
+          #:key (verbose #f) utility-name gx-dry-run profile socket
+          #:rest args)
   "
 Usage:
 (pkill-server #:gx-dry-run #t #:profile \"spacemacs\" \"rest\" \"args\")
@@ -55,18 +57,24 @@ Usage:
 (pkill-server                 #:profile \"spacemacs\" \"rest\" \"args\")
 (pkill-server                 #:profile \"spguimacs\" \"rest\" \"args\")
 "
-  (let* [
+  (let* [(f "[pkill-server]")]
+    (when verbose
+      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
+      (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
+      (format #t "~a ~a profile      : ~a\n" m f profile)
+      (format #t "~a ~a socket       : ~a\n" m f socket)
+      (format #t "~a ~a args         : ~a\n" m f args)
+      ))
+  (let* [(args (remove-kw-from-args #:verbose args))
          (args (remove-kw-from-args #:utility-name args))
          (args (remove-kw-from-args #:gx-dry-run args))
          (args (remove-kw-from-args #:profile args))
+         (args (remove-kw-from-args #:socket args))
          ]
-    ;; (format #t "~a gx-dry-run : ~a\n" m gx-dry-run)
-    ;; (format #t "~a profile : ~a\n" m profile)
-    ;; (format #t "~a args : ~a\n" m args)
     ;; pkill-pattern must NOT be eclosed by \"\"
     (let* [(pkill-pattern
             (format #f "~a --with-profile=~a --daemon"
-                    (which-emacs) profile))]
+                    (which-emacs) socket))]
       ;; TODO use with-monad
       (apply exec-system*-new
              #:split-whitespace #f
@@ -74,52 +82,66 @@ Usage:
              "pkill" "--full" pkill-pattern args))))
 (testsymb 'pkill-server)
 
-(define* (create-emacs-launcher #:key utility-name gx-dry-run profile #:rest args)
+(define* (create-emacs-launcher
+          #:key (verbose #f) utility-name gx-dry-run profile socket
+          #:rest args)
   "Uses `user' from settings
 (create-emacs-launcher #:profile \"spacemacs\" \"rest\" \"args\")
 "
-  (let* [(f "[create-emacs-launcher]")
-         (args (remove-kw-from-args #:utility-name args))
-         (args (remove-kw-from-args #:gx-dry-run args))
-         (args (remove-kw-from-args #:profile args))
-         (emacs-bin (which-emacs))
-         (init-cmd
-          (cmd->string
-           (append
-            (list emacs-bin
-                  (str "--with-profile=" profile)
-                  ;; (str "--init-directory=$HOME/.emacs.d.distros/" profile)
-                  "--daemon")
-            ;; the init-cmd must not contain the args otherwise the `pgrep
-            ;; ...` detection won't work
-            #;args)))
-         ]
-    ((comp
-      ;; (lambda (p) (format #t "4:\n~a\n" p) p)
+  (let* [(f "[create-emacs-launcher]")]
+    (when verbose
+      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
+      (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
+      (format #t "~a ~a profile      : ~a\n" m f profile)
+      (format #t "~a ~a socket       : ~a\n" m f socket)
+      (format #t "~a ~a args         : ~a\n" m f args)
+      )
+    (let* [(args (remove-kw-from-args #:verbose args))
+           (args (remove-kw-from-args #:utility-name args))
+           (args (remove-kw-from-args #:gx-dry-run args))
+           (args (remove-kw-from-args #:profile args))
+           (args (remove-kw-from-args #:socket args))
+
+           (emacs-bin (which-emacs))
+           (init-cmd
+            (cmd->string
+             (append
+              (list emacs-bin
+                    (str "--with-profile=" socket)
+                    ;; (str "--init-directory=$HOME/.emacs.d.distros/" socket)
+                    "--daemon")
+              ;; the init-cmd must not contain the args otherwise the `pgrep
+              ;; ...` detection won't work
+              #;args)))
+           ]
+      ((comp
+        ;; (lambda (p) (format #t "4:\n~a\n" p) p)
 ;;; Search for the full command line:
 ;;; $ pgrep --full --euid bost "/home/bost/.guix-home/profile/bin/emacs --with-profile=spacemacs --daemon"
-      (lambda (client-cmd)
-        (if (string=? (compute-cmd user init-cmd client-cmd init-cmd)
-                      client-cmd)
-            (exec-background client-cmd)
-            (when (zero? (car (exec init-cmd)))
-              ;; Calling (exec-background cmd) makes sense only if the emacs
-              ;; server has been started successfully.
-              (exec-background client-cmd))))
-      ;; (lambda (p) (format #t "3:\n~a\n" p) p)
-      cmd->string
-      ;; (lambda (p) (format #t "2:\n~a\n" p) p)
-      (partial append (list (which-emacsclient) "--create-frame"
-                            (str "--socket-name=" profile)))
-      ;; (lambda (p) (format #t "1:\n~a\n" p) p)
-      (lambda (prms) (if (null? prms) '("./") prms))
-      ;; (lambda (p) (format #t "0:\n~a\n" p) p)
-      ;; cdr
-      )
-     args)))
+        (lambda (client-cmd)
+          (if (string=? (compute-cmd user init-cmd client-cmd init-cmd)
+                        client-cmd)
+              (exec-background client-cmd)
+              (when (zero? (car (exec init-cmd)))
+                ;; Calling (exec-background cmd) makes sense only if the emacs
+                ;; server has been started successfully.
+                (exec-background client-cmd))))
+        ;; (lambda (p) (format #t "3:\n~a\n" p) p)
+        cmd->string
+        ;; (lambda (p) (format #t "2:\n~a\n" p) p)
+        (partial append (list (which-emacsclient) "--create-frame"
+                              (str "--socket-name=" socket)))
+        ;; (lambda (p) (format #t "1:\n~a\n" p) p)
+        (lambda (prms) (if (null? prms) '("./") prms))
+        ;; (lambda (p) (format #t "0:\n~a\n" p) p)
+        ;; cdr
+        )
+       args))))
 (testsymb 'create-emacs-launcher)
 
-(define* (set-config-editable #:key (verbose #f) utility-name gx-dry-run profile #:rest args)
+(define* (set-config-editable
+          #:key (verbose #f) utility-name gx-dry-run profile socket
+          #:rest args)
   "
 Usage:
 (set-config-editable #:gx-dry-run #t #:profile \"spacemacs\" \"rest\" \"args\")
@@ -128,80 +150,96 @@ Usage:
 (set-config-editable                 #:profile \"spguimacs\" \"rest\" \"args\")
 "
   (let* [(f "[set-config-editable]")]
-    (format #t "~a ~a TODO implement set-config-editable\n" m f)
-    ;; (let* [(args (remove-kw-from-args #:utility-name args))
-    ;;        (args (remove-kw-from-args #:gx-dry-run args))
-    ;;        (args (remove-kw-from-args #:profile args))
-    ;;        (monad (if gx-dry-run
-    ;;                   compose-commands-guix-shell-dry-run
-    ;;                   compose-commands-guix-shell))]
-    ;;   (if gx-dry-run
-    ;;       (begin
-    ;;         (format #t "~a ~a monad: ~a\n" m f monad)
-    ;;         (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
-    ;;       (let* [(dst (get-cfg profile))
-    ;;              (src (str (getenv "dotf") "/"
-    ;;                        (substring dst (string-length (str home "/")))))]
-    ;;         (with-monad monad
-    ;;           (>>=
-    ;;            (return (list dst))
-    ;;            mdelete-file
-    ;;            `(override-mv ,src ,dst)
-    ;;            mcopy-file))
-    ;;         (copy-file src dst))))
+    (when verbose
+      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
+      (format #t "~a ~a fun          : ~a\n" m f fun)
+      (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
+      (format #t "~a ~a profile      : ~a\n" m f profile)
+      (format #t "~a ~a socket       : ~a\n" m f socket)
+      (format #t "~a ~a args         : ~a\n" m f args)
+      )
+    (let* [(args (remove-kw-from-args #:verbose args))
+           (args (remove-kw-from-args #:utility-name args))
+           (args (remove-kw-from-args #:gx-dry-run args))
+           (args (remove-kw-from-args #:profile args))
+           (args (remove-kw-from-args #:socket args))
+
+           (monad (if gx-dry-run
+                      compose-commands-guix-shell-dry-run
+                      compose-commands-guix-shell))]
+      (if gx-dry-run
+          (begin
+            (format #t "~a ~a monad: ~a\n" m f monad)
+            (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
+          (let* [(dst (str (get-cfg profile) "/" emacs-init-file))
+                 (src (str (getenv "dotf") "/.emacs.d.distros/spacemacs/"
+                           socket "/cfg/" emacs-init-file))]
+            (with-monad monad
+              (>>=
+               (return (list dst))
+               mdelete-file
+               `(override-mv ,src ,dst)
+               mcopy-file))
+            (copy-file src dst))))
     ))
 (testsymb 'set-config-editable)
 
 (define* (handle-cli #:key (verbose #f) utility-name fun profile #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'."
-  ;; (format #t "~a args: ~a\n" m args)
-  (let* [(f "[handle-cli]")
-         (args (remove-kw-from-args #:dbg args))
-         (args (remove-kw-from-args #:utility-name args))
-         (args (remove-kw-from-args #:fun args))
-         (args (remove-kw-from-args #:profile args))
-         (args (car args))
-
-          ;; (value #t): a given option expects accept a value
-         (option-spec `[
-                        (help       (single-char #\h) (value #f))
-                        (version    (single-char #\v) (value #f))
-                        (gx-dry-run (single-char #\d) (value #f))
-                        (rest-args                    (value #f))])
-
-         ;; TODO isn't the #:stop-at-first-non-option swapped?
-         (options (getopt-long args option-spec #:stop-at-first-non-option #t))
-         ;; #f means that the expected value wasn't specified
-         (val-help       (option-ref options 'help       #f))
-         (val-version    (option-ref options 'version    #f))
-         (val-gx-dry-run (option-ref options 'gx-dry-run #f))
-         (val-rest-args  (option-ref options '()         #f))
-         ]
+  (let* [(f "[handle-cli]")]
     (when verbose
-      (format #t "~a ~a option-spec    : ~a\n" m f option-spec)
-      (format #t "~a ~a options        : ~a\n" m f options)
-      (format #t "~a ~a val-help       : ~a\n" m f val-help)
-      (format #t "~a ~a val-version    : ~a\n" m f val-version)
-      (format #t "~a ~a val-gx-dry-run : ~a\n" m f val-gx-dry-run)
-      (format #t "~a ~a val-rest-args  : ~a\n" m f val-rest-args))
-    (cond
-     [val-help
-      (format #t "~a [options]\n~a\n~a\n\n"
-              utility-name
-              "    -v, --version    Display version"
-              "    -h, --help       Display this help")]
-     [val-version
-      (format #t "~a version <...>\n" utility-name)]
-     [#t
-      (apply (partial fun
-                      #:utility-name utility-name
-                      #:gx-dry-run val-gx-dry-run
-                      #:profile
-                      (let* [(branch-kw (cdr (assoc profile
-                                                    profile->branch-kw)))]
-                        (keyword->string branch-kw)))
-             val-rest-args)])))
+      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
+      (format #t "~a ~a fun          : ~a\n" m f fun)
+      (format #t "~a ~a profile      : ~a\n" m f profile)
+      (format #t "~a ~a args         : ~a\n" m f args)
+      )
+    (let* [(args (remove-kw-from-args #:verbose args))
+           (args (remove-kw-from-args #:utility-name args))
+           (args (remove-kw-from-args #:fun args))
+           (args (remove-kw-from-args #:profile args))
+           (args (car args))
+
+           ;; (value #t): a given option expects accept a value
+           (option-spec `[
+                          (help       (single-char #\h) (value #f))
+                          (version    (single-char #\v) (value #f))
+                          (gx-dry-run (single-char #\d) (value #f))
+                          (rest-args                    (value #f))])
+
+           ;; TODO isn't the #:stop-at-first-non-option swapped?
+           (options (getopt-long args option-spec #:stop-at-first-non-option #t))
+           ;; #f means that the expected value wasn't specified
+           (val-help       (option-ref options 'help       #f))
+           (val-version    (option-ref options 'version    #f))
+           (val-gx-dry-run (option-ref options 'gx-dry-run #f))
+           (val-rest-args  (option-ref options '()         #f))
+           ]
+      (when verbose
+        (format #t "~a ~a option-spec    : ~a\n" m f option-spec)
+        (format #t "~a ~a options        : ~a\n" m f options)
+        (format #t "~a ~a val-help       : ~a\n" m f val-help)
+        (format #t "~a ~a val-version    : ~a\n" m f val-version)
+        (format #t "~a ~a val-gx-dry-run : ~a\n" m f val-gx-dry-run)
+        (format #t "~a ~a val-rest-args  : ~a\n" m f val-rest-args))
+      (cond
+       [val-help
+        (format #t "~a [options]\n~a\n~a\n\n"
+                utility-name
+                "    -v, --version    Display version"
+                "    -h, --help       Display this help")]
+       [val-version
+        (format #t "~a version <...>\n" utility-name)]
+       [#t
+        (apply (partial fun
+                        #:utility-name utility-name
+                        #:gx-dry-run val-gx-dry-run
+                        #:profile profile
+                        #:socket
+                        (let* [(branch-kw (cdr (assoc profile
+                                                      profile->branch-kw)))]
+                          (keyword->string branch-kw)))
+               val-rest-args)]))))
 (testsymb 'handle-cli)
 
 (module-evaluated)

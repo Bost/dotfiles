@@ -68,29 +68,103 @@
              (partial scandir dir))
             (lambda (s) (string-match (basename re) s))))))))
 
+;; ;; (define-syntax define-emacs-utils
+;; ;;   (syntax-rules ()
+;; ;;     ((_ name ...)
+;; ;;      ((comp
+;; ;;        #;(lambda (p) (format #t "p: ~a\n" p) p))
+;; ;;       (list
+;; ;;        (define launcher-<util-name> (str "emacs-launcher-" util-name))
+;; ;;        (define editable-<util-name> (str "emacs-editable-" util-name))
+;; ;;        (define pkill-<util-name> (str "emacs-pkill-" util-name))
+;; ;;        )))))
+
+;; (define* (create type name)
+;;   "(create 'launcher 'spacemacs)"
+;;   ;; (format #t "util-type: ~a; util-name: ~a\n" type name)
+;;   ;; (format #t "(test-type type): ~a\n" (test-type type))
+;;   ;; (format #t "util-type: ~a\n" type)
+;;   ;; (format #t "(test-type name): ~a\n" (test-type name))
+;;   ;; (format #t "util-name: ~a\n" name)
+;;   (let* [(stype (symbol->string type))
+;;          (sname (symbol->string name))
+;;          (name (string->symbol (format #f "~a-~a" stype sname)))
+;;          (body (format #f "emacs-~a-~a" stype sname))]
+;;     (let [(result `(define ,name ,body))]
+;;       ;; (format #t "Creating ~a\n" result)
+;;       result)))
+
+;; ;; " (define-util-names 'spacemacs) "
+;; (define (define-utils)
+;;   (begin
+;;     (let* [
+;;            ;; (util-types (list 'ylauncher 'editable 'pkill))
+;;            ;; (util-names (list 'spacemacs))
+
+;;            (util-types (list 't1 't2))
+;;            (util-names (list 'n1 'n2))
+;;            (params (cartesian util-types util-names))
+;;            ]
+;;       ;; params
+;;       (map (partial apply create) params))
+;;     ))
+
+;; ;; (list
+;; ;;  '(define t1-n1 "emacs-t1-n1")
+;; ;;  '(define t1-n2 "emacs-t1-n2")
+;; ;;  '(define t2-n1 "emacs-t2-n1")
+;; ;;  '(define t2-n2 "emacs-t2-n2"))
+
+;; (define-syntax define-emacs-utils
+;;   "(define-emacs-utils spacemacs)"
+;;   (lambda (stx)
+;;     (syntax-case stx ()
+;;       [(_ util)
+;;        (let* ((symbol (syntax->datum #'util))
+;;               (util-str (symbol->string symbol))
+;;               (launcher-id (datum->syntax #'util (symbol-append 'launcher- symbol)))
+;;               (editable-id (datum->syntax #'util (symbol-append 'editable- symbol)))
+;;               (pkill-id    (datum->syntax #'util (symbol-append 'pkill-    symbol))))
+;;          #`(begin
+;;              (define #,launcher-id (string-append "emacs-launcher-" #,util-str))
+;;              (define #,editable-id (string-append "emacs-editable-" #,util-str))
+;;              (define #,pkill-id    (string-append "emacs-pkill-"    #,util-str))))])))
+
+(define launcher-develop   (str "emacs-launcher-" develop))
 (define launcher-spacemacs (str "emacs-launcher-" spacemacs))
 (define launcher-spguimacs (str "emacs-launcher-" spguimacs))
 (define launcher-crafted   (str "emacs-launcher-" crafted))
-(define launcher-lst       (list launcher-spacemacs
-                                 launcher-spguimacs
-                                 launcher-crafted))
+(define launcher-lst       (list
+                            launcher-develop
+                            launcher-spacemacs
+                            launcher-spguimacs
+                            launcher-crafted
+                            ))
 
 (define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
+
+(define editable-develop   (str "emacs-editable-" develop))
 (define editable-spacemacs (str "emacs-editable-" spacemacs))
 (define editable-spguimacs (str "emacs-editable-" spguimacs))
 (define editable-crafted   (str "emacs-editable-" crafted))
 (define editable-lst       (list
                             editable-profiles
+                            editable-develop
                             editable-spacemacs
                             editable-spguimacs
-                            editable-crafted))
+                            editable-crafted
+                            ))
 
+(define pkill-develop   (str "emacs-pkill-" develop))
 (define pkill-spacemacs (str "emacs-pkill-" spacemacs))
 (define pkill-spguimacs (str "emacs-pkill-" spguimacs))
 (define pkill-crafted   (str "emacs-pkill-" crafted))
-(define pkill-lst       (list pkill-spacemacs
-                              pkill-spguimacs
-                              pkill-crafted))
+(define pkill-lst       (list
+                         pkill-develop
+                         pkill-spacemacs
+                         pkill-spguimacs
+                         pkill-crafted
+                         ))
 
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
@@ -312,6 +386,10 @@ Example:
              )
             (list
              (list #:program-name "ep" #:scheme-file editable-profiles)
+
+             (list #:program-name "d"  #:scheme-file launcher-develop)
+             (list #:program-name "ed" #:scheme-file editable-develop)
+             (list #:program-name "kd" #:scheme-file pkill-develop)
 
              (list #:program-name "s"  #:scheme-file launcher-spacemacs)
              (list #:program-name "es" #:scheme-file editable-spacemacs)

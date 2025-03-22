@@ -1,8 +1,8 @@
-(define-module (scm-bin emacs-pkill-spacemacs)
+(define-module (scm-bin emacs-pkill-develop)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
-  #:use-module (settings)      #| spacemacs |#
+  #:use-module (settings)      #| develop |#
   #:use-module (emacs-common)
   #:export (main))
 
@@ -10,12 +10,12 @@
 ;; -e calls the `main` function
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-pkill-spacemacs) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ emacs-pkill-develop) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/emacs-pkill-spacemacs.scm --gx-dry-run
-./guix/home/common/scm-bin/emacs-pkill-spacemacs.scm
+./guix/home/common/scm-bin/emacs-pkill-develop.scm --gx-dry-run
+./guix/home/common/scm-bin/emacs-pkill-develop.scm
 
 |#
 
@@ -33,7 +33,7 @@ cd $dotf
 "
   (handle-cli #:utility-name utility-name
               #:fun pkill-server
-              #:profile spacemacs
+              #:profile develop
               args))
 (testsymb 'main)
 
