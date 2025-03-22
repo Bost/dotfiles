@@ -28,6 +28,7 @@ set f $dotf/guix/home/common/scm-bin/emacs-launcher-spguimacs.scm
 
 (define (main args)
   "Usage:
+(main (list \"<ignored>\"))
 (main (list \"<ignored>\" \"--help\" \"args\"))
 (main (list \"<ignored>\" \"rest\" \"args\"))
 (main (list \"<ignored>\" \"--gx-dry-run\" \"rest\" \"args\"))

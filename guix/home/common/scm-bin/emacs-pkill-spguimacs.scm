@@ -26,6 +26,7 @@ cd $dotf
 
 (define (main args)
   "Usage:
+(main (list \"<ignored>\"))
 (main (list \"<ignored>\" \"--help\" \"args\"))
 (main (list \"<ignored>\" \"rest\" \"args\"))
 (main (list \"<ignored>\" \"--gx-dry-run\" \"rest\" \"args\"))
