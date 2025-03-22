@@ -168,12 +168,11 @@ See also:
                    (comp
                     ;; (lambda (p) (format #t "###### 1.1.\n") p)
                     (partial local-dotfile "/")
-                    (lambda (substr) (str substr "/init.el"))
+                    (lambda (substr) (str substr "/" emacs-init-file))
                     (lambda (cfg)
                       (substring cfg (string-length (str home "/"))))
                     get-cfg)
-                   ;; TODO the crafted configuration is not managed by guix home
-                   (list spguimacs spacemacs)))
+                   spacemacs-profiles))
                  (partial remove unspecified-or-empty-or-false?)
                  (partial map (partial local-dotfile "/")))
                 (list

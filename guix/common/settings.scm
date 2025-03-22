@@ -11,12 +11,22 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
+;; emacs-profiles
+(define-public develop "develop")
 (define-public spacemacs "spacemacs")
 (define-public spguimacs "spguimacs")
 (define-public crafted   "crafted")
 
+;; TODO the crafted configuration is not managed by guix home
+(define-public spacemacs-profiles
+  (list
+   develop
+   spacemacs
+   spguimacs
+   ))
+
 (define-public is-valid-profile?
-  (partial string-in? (list spacemacs spguimacs crafted)))
+  (partial string-in? (append spacemacs-profiles (list crafted))))
 
 
 (define-public gitlab "git@gitlab.com:rostislav.svoboda")
@@ -30,6 +40,8 @@
 (define-public host-geek "geek")
 (define-public host-edge "edge")
 (define-public hostnames (list host-lukas host-ecke host-geek host-edge))
+
+(define-public emacs-init-file "init.el")
 
 ;; See also:
 ;;   git-spacemacs
@@ -92,6 +104,7 @@
 (define-public profile->branch-kw
   (list
    ;; (cons spacemacs #:keyseq)
+   (cons develop   #:develop)
    (cons spacemacs #:shorten-name)
    (cons spguimacs #:guix-merge)
    (cons crafted   #:crafted)))

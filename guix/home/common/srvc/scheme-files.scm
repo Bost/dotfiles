@@ -131,29 +131,41 @@
 ;;              (define #,editable-id (string-append "emacs-editable-" #,util-str))
 ;;              (define #,pkill-id    (string-append "emacs-pkill-"    #,util-str))))])))
 
+(define launcher-develop   (str "emacs-launcher-" develop))
 (define launcher-spacemacs (str "emacs-launcher-" spacemacs))
 (define launcher-spguimacs (str "emacs-launcher-" spguimacs))
 (define launcher-crafted   (str "emacs-launcher-" crafted))
-(define launcher-lst       (list launcher-spacemacs
-                                 launcher-spguimacs
-                                 launcher-crafted))
+(define launcher-lst       (list
+                            launcher-develop
+                            launcher-spacemacs
+                            launcher-spguimacs
+                            launcher-crafted
+                            ))
 
 (define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
+
+(define editable-develop   (str "emacs-editable-" develop))
 (define editable-spacemacs (str "emacs-editable-" spacemacs))
 (define editable-spguimacs (str "emacs-editable-" spguimacs))
 (define editable-crafted   (str "emacs-editable-" crafted))
 (define editable-lst       (list
                             editable-profiles
+                            editable-develop
                             editable-spacemacs
                             editable-spguimacs
-                            editable-crafted))
+                            editable-crafted
+                            ))
 
+(define pkill-develop   (str "emacs-pkill-" develop))
 (define pkill-spacemacs (str "emacs-pkill-" spacemacs))
 (define pkill-spguimacs (str "emacs-pkill-" spguimacs))
 (define pkill-crafted   (str "emacs-pkill-" crafted))
-(define pkill-lst       (list pkill-spacemacs
-                              pkill-spguimacs
-                              pkill-crafted))
+(define pkill-lst       (list
+                         pkill-develop
+                         pkill-spacemacs
+                         pkill-spguimacs
+                         pkill-crafted
+                         ))
 
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
@@ -375,6 +387,10 @@ Example:
              )
             (list
              (list #:program-name "ep" #:scheme-file editable-profiles)
+
+             (list #:program-name "d"  #:scheme-file launcher-develop)
+             (list #:program-name "ed" #:scheme-file editable-develop)
+             (list #:program-name "kd" #:scheme-file pkill-develop)
 
              (list #:program-name "s"  #:scheme-file launcher-spacemacs)
              (list #:program-name "es" #:scheme-file editable-spacemacs)
