@@ -32,8 +32,8 @@
       <property name="&lt;Alt&gt;&lt;Super&gt;s" type="empty"/>
     </property>
     <property name="custom" type="empty">
-      <property name="F1" type="string" value="guake"/>
-      <property name="&lt;Alt&gt;F5" type="string" value="xfce4-terminal --zoom=3 --drop-down"/>
+      <property name="&lt;Alt&gt;F5" type="string" value="guake"/>
+      <property name="F1" type="string" value="xfce4-terminal --zoom=3 --drop-down"/>
       <!-- xfce4-appfinder -\-collapsed   start in collapsed mode -->
       <property name="&lt;Alt&gt;F2" type="string" value="xfce4-appfinder --collapsed">
         <property name="startup-notify" type="bool" value="true"/>
