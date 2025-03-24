@@ -595,6 +595,12 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  (progn
+    ;; Max time delay between two key presses to be considered a key chord.
+    ;; (Default 0.1)
+    (setq key-chord-two-keys-delay 0.01)
+    (key-chord-mode 1))
   )
 
 
