@@ -37,6 +37,7 @@
       #t)         ; continue traversing
     (nftw path file-collector)
     files))
+(testsymb 'list-all-files)
 
 (define (expand-pattern relative-dir pattern)
   "Examples:
@@ -45,28 +46,30 @@
 (expand-pattern relative-dir \"cli/\")
 (expand-pattern relative-dir \"cvs\")
 "
-  (let* [(absolute-dir (str home "/" relative-dir))]
-    (remove
-     (lambda (file) (ends-with? (dirname file) "compiled"))
-     (if (string= ".*" pattern)
-         (list-all-files absolute-dir)
-         (let* [(re (let* [(b (basename pattern))]
-                      (str (if (string-suffix? "/" b) "" ".*") b ".*")))
-                (dir (str absolute-dir "/"
-                          (let* [(d (dirname pattern))]
-                            (if (string= "." d)   "" (str d "/")))
-                          (let* [(dre (dirname re))]
-                            (if (string= "." dre) "" (str dre "/")))))
-                (rem-fn (if (string= pattern ".*")
-                            (lambda _ #f)
-                            file-is-directory?))]
-           ((comp
-             (partial remove rem-fn)
-             (partial map (partial str dir))
-             (partial remove (lambda (f) (member f (list "." ".."))))
-             (lambda (p) (or p (list))) ;; the dir may not exist
-             (partial scandir dir))
-            (lambda (s) (string-match (basename re) s))))))))
+  (let* [(m (format #f "~a [expand-pattern]" m))]
+    (let* [(absolute-dir (str home "/" relative-dir))]
+      (remove
+       (lambda (file) (ends-with? (dirname file) "compiled"))
+       (if (string= ".*" pattern)
+           (list-all-files absolute-dir)
+           (let* [(re (let* [(b (basename pattern))]
+                        (str (if (string-suffix? "/" b) "" ".*") b ".*")))
+                  (dir (str absolute-dir "/"
+                            (let* [(d (dirname pattern))]
+                              (if (string= "." d)   "" (str d "/")))
+                            (let* [(dre (dirname re))]
+                              (if (string= "." dre) "" (str dre "/")))))
+                  (rem-fn (if (string= pattern ".*")
+                              (lambda _ #f)
+                              file-is-directory?))]
+             ((comp
+               (partial remove rem-fn)
+               (partial map (partial str dir))
+               (partial remove (lambda (f) (member f (list "." ".."))))
+               (lambda (p) (or p (list))) ;; the dir may not exist
+               (partial scandir dir))
+              (lambda (s) (string-match (basename re) s)))))))))
+(testsymb 'expand-pattern)
 
 ;; ;; (define-syntax define-emacs-utils
 ;; ;;   (syntax-rules ()
@@ -130,47 +133,36 @@
 ;;              (define #,editable-id (string-append "emacs-editable-" #,util-str))
 ;;              (define #,pkill-id    (string-append "emacs-pkill-"    #,util-str))))])))
 
-(define launcher-keyseq    (str "emacs-launcher-" keyseq))
 (define launcher-develop   (str "emacs-launcher-" develop))
-(define launcher-spacemacs (str "emacs-launcher-" spacemacs))
 (define launcher-spguimacs (str "emacs-launcher-" spguimacs))
 (define launcher-crafted   (str "emacs-launcher-" crafted))
 (define launcher-lst       (list
-                            launcher-keyseq
                             launcher-develop
-                            launcher-spacemacs
                             launcher-spguimacs
                             launcher-crafted
                             ))
 
 (define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
 
-(define editable-keyseq    (str "emacs-editable-" keyseq))
 (define editable-develop   (str "emacs-editable-" develop))
-(define editable-spacemacs (str "emacs-editable-" spacemacs))
 (define editable-spguimacs (str "emacs-editable-" spguimacs))
 (define editable-crafted   (str "emacs-editable-" crafted))
 (define editable-lst       (list
                             editable-profiles
-                            editable-keyseq
                             editable-develop
-                            editable-spacemacs
                             editable-spguimacs
                             editable-crafted
                             ))
 
-(define pkill-keyseq    (str "emacs-pkill-" keyseq))
 (define pkill-develop   (str "emacs-pkill-" develop))
-(define pkill-spacemacs (str "emacs-pkill-" spacemacs))
 (define pkill-spguimacs (str "emacs-pkill-" spguimacs))
 (define pkill-crafted   (str "emacs-pkill-" crafted))
 (define pkill-lst       (list
-                         pkill-keyseq
                          pkill-develop
-                         pkill-spacemacs
                          pkill-spguimacs
                          pkill-crafted
                          ))
+(testsymb 'pkill-lst)
 
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
@@ -186,6 +178,7 @@
     flatten
     (partial map (partial expand-pattern notes-dir)))
    patterns))
+(testsymb 'full-filepaths)
 
 (define* (service-file #:key
                        program-name desc scheme-file module-name
@@ -393,17 +386,9 @@ Example:
             (list
              (list #:program-name "ep" #:scheme-file editable-profiles)
 
-             (list #:program-name  "k" #:scheme-file launcher-keyseq)
-             (list #:program-name "ek" #:scheme-file editable-keyseq)
-             (list #:program-name "kk" #:scheme-file pkill-keyseq)
-
              (list #:program-name  "d" #:scheme-file launcher-develop)
              (list #:program-name "ed" #:scheme-file editable-develop)
              (list #:program-name "kd" #:scheme-file pkill-develop)
-
-             (list #:program-name  "s" #:scheme-file launcher-spacemacs)
-             (list #:program-name "es" #:scheme-file editable-spacemacs)
-             (list #:program-name "ks" #:scheme-file pkill-spacemacs)
 
              (list #:program-name  "g" #:scheme-file launcher-spguimacs)
              (list #:program-name "eg" #:scheme-file editable-spguimacs)

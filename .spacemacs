@@ -1,1 +1,0 @@
-.emacs.d.distros/spacemacs/keyseq/cfg/init.el
