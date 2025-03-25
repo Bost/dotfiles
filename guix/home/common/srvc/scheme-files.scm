@@ -130,11 +130,13 @@
 ;;              (define #,editable-id (string-append "emacs-editable-" #,util-str))
 ;;              (define #,pkill-id    (string-append "emacs-pkill-"    #,util-str))))])))
 
+(define launcher-keyseq    (str "emacs-launcher-" keyseq))
 (define launcher-develop   (str "emacs-launcher-" develop))
 (define launcher-spacemacs (str "emacs-launcher-" spacemacs))
 (define launcher-spguimacs (str "emacs-launcher-" spguimacs))
 (define launcher-crafted   (str "emacs-launcher-" crafted))
 (define launcher-lst       (list
+                            launcher-keyseq
                             launcher-develop
                             launcher-spacemacs
                             launcher-spguimacs
@@ -143,23 +145,27 @@
 
 (define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
 
+(define editable-keyseq    (str "emacs-editable-" keyseq))
 (define editable-develop   (str "emacs-editable-" develop))
 (define editable-spacemacs (str "emacs-editable-" spacemacs))
 (define editable-spguimacs (str "emacs-editable-" spguimacs))
 (define editable-crafted   (str "emacs-editable-" crafted))
 (define editable-lst       (list
                             editable-profiles
+                            editable-keyseq
                             editable-develop
                             editable-spacemacs
                             editable-spguimacs
                             editable-crafted
                             ))
 
+(define pkill-keyseq    (str "emacs-pkill-" keyseq))
 (define pkill-develop   (str "emacs-pkill-" develop))
 (define pkill-spacemacs (str "emacs-pkill-" spacemacs))
 (define pkill-spguimacs (str "emacs-pkill-" spguimacs))
 (define pkill-crafted   (str "emacs-pkill-" crafted))
 (define pkill-lst       (list
+                         pkill-keyseq
                          pkill-develop
                          pkill-spacemacs
                          pkill-spguimacs
@@ -387,19 +393,23 @@ Example:
             (list
              (list #:program-name "ep" #:scheme-file editable-profiles)
 
-             (list #:program-name "d"  #:scheme-file launcher-develop)
+             (list #:program-name  "k" #:scheme-file launcher-keyseq)
+             (list #:program-name "ek" #:scheme-file editable-keyseq)
+             (list #:program-name "kk" #:scheme-file pkill-keyseq)
+
+             (list #:program-name  "d" #:scheme-file launcher-develop)
              (list #:program-name "ed" #:scheme-file editable-develop)
              (list #:program-name "kd" #:scheme-file pkill-develop)
 
-             (list #:program-name "s"  #:scheme-file launcher-spacemacs)
+             (list #:program-name  "s" #:scheme-file launcher-spacemacs)
              (list #:program-name "es" #:scheme-file editable-spacemacs)
              (list #:program-name "ks" #:scheme-file pkill-spacemacs)
 
-             (list #:program-name "g"  #:scheme-file launcher-spguimacs)
+             (list #:program-name  "g" #:scheme-file launcher-spguimacs)
              (list #:program-name "eg" #:scheme-file editable-spguimacs)
              (list #:program-name "kg" #:scheme-file pkill-spguimacs)
 
-             (list #:program-name "r"  #:scheme-file launcher-crafted)
+             (list #:program-name  "r" #:scheme-file launcher-crafted)
              (list #:program-name "er" #:scheme-file editable-crafted)
              (list #:program-name "kr" #:scheme-file pkill-crafted)
              ))
