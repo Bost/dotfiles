@@ -5,29 +5,11 @@
 (define-module (settings)
   #:use-module (utils)
   ;; #:use-module (ice-9 r5rs)
-  ;; #:use-module (srfi srfi-1)    #| delete-duplicates |#
+  #:use-module (srfi srfi-1)    #| remove delete-duplicates |#
 )
 
 (define m (module-name-for-logging))
 (evaluating-module)
-
-;; emacs-profiles
-(define-public develop "develop")
-(define-public spacemacs "spacemacs")
-(define-public spguimacs "spguimacs")
-(define-public crafted   "crafted")
-
-;; TODO the crafted configuration is not managed by guix home
-(define-public spacemacs-profiles
-  (list
-   develop
-   spacemacs
-   spguimacs
-   ))
-
-(define-public is-valid-profile?
-  (partial string-in? (append spacemacs-profiles (list crafted))))
-
 
 (define-public gitlab "git@gitlab.com:rostislav.svoboda")
 (define-public github "git@github.com:Bost")
@@ -101,13 +83,30 @@
 (define-public keyseq  "keyseq")
 (define-public shorten-name "shorten-name")
 
+;; emacs-profiles
+(define-public keyseq    "keyseq")
+(define-public develop   "develop")
+(define-public spacemacs "spacemacs")
+(define-public spguimacs "spguimacs")
+(define-public crafted   "crafted")
+
 (define-public profile->branch-kw
   (list
-   ;; (cons spacemacs #:keyseq)
+   (cons keyseq    #:keyseq)
    (cons develop   #:develop)
    (cons spacemacs #:shorten-name)
    (cons spguimacs #:guix-merge)
    (cons crafted   #:crafted)))
+
+;; TODO the crafted configuration is not managed by guix home
+(define-public spacemacs-profiles
+  ((comp
+    (partial remove (partial eq? crafted))
+    (partial map car))
+   profile->branch-kw))
+
+(define-public is-valid-profile?
+  (partial string-in? (map car profile->branch-kw)))
 
 (define (get-val profile setting)
   "
