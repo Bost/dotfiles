@@ -2599,24 +2599,23 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; (unbind-key "<f11>" scheme-mode-map)
   ;; (unbind-key "<f12>" scheme-mode-map)
 
-  (advice-add #'spacemacs/hsearch-project
-              :after (defun my=note--spacemacs/helm-project-smart-do-search-region-or-symbol (_)
-                       (message
-                        "[advice spacemacs/hsearch-project] %s"
-                        (concat
-                         "Try ~SPC *~ for "
-                         "M-x spacemacs/helm-project-smart-do-search-region-or-symbol"))))
+  (advice-add #'spacemacs/helm-project-smart-do-search-region-or-symbol
+              :after
+              (defun my=search-project-with-input (_)
+                (message
+                 "[advice search-project-with-input] %s"
+                 "Try ~SPC *~ for 'search project w/ input'")))
 
   (advice-add #'helm-swoop
               :after
-              (defun my=note--helm-swoop (&optional _)
-                (let ((p "[advice my=note--helm-swoop] %s"))
+              (defun my=helm-swoop (&optional _)
+                (let ((p "[advice my=helm-swoop] %s"))
                   (message
                    p "Try ~SPC s C-s~ for M-x helm-multi-swoop-all"))))
 
   (advice-add #'tw-search-region-or-symbol
               :after
-              (defun my=note--my=search-region-or-symbol (&optional _)
+              (defun my=tw-search-region-or-symbol (&optional _)
                 (let ((p "[advice tw-search-region-or-symbol] "))
                   (message
                    (concat
@@ -2634,13 +2633,13 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               :after (defun my=whitespace-cleanup ()
                        (message "[advice whitespace-cleanup] done")))
   (advice-add #'evil-avy-goto-char-timer
-              :after (defun my=note--evil-avy-goto-char-timer (_)
+              :after (defun my=evil-avy-goto-char-timer (_)
                        (message
                         "[advice evil-avy-goto-char-timer] %s"
                         "Also ~SPC j j~, ~<f2>~")))
   (advice-add #'evil-avy-goto-line
               :after
-              (defun my=note--evil-avy-goto-line (&optional _)
+              (defun my=evil-avy-goto-line (&optional _)
                 (message
                  "[advice evil-avy-goto-line] %s"
                  "Also ~SPC j l~, ~M-m j l~, ~<C-f2>~, ~C-s-/~")))
@@ -2691,20 +2690,20 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               :before #'tw-helm-mini)
   (advice-add #'helm-mini
               :after
-              (defun my=note--evil-avy-goto-char-timer ()
+              (defun my=evil-avy-goto-char-timer ()
                 (message
                  "[advice helm-mini] %s"
                  "Toggle mark / unmark all buffers: ~M-m~")))
   (advice-add #'spacemacs/helm-persp-switch-project
               :after
-              (defun my=note--spacemacs/helm-persp-switch-project (_)
+              (defun my=spacemacs/helm-persp-switch-project (_)
                 (message
                  "[advice spacemacs/helm-persp-switch-project] %s"
                  "Try: ~SPC p p~ for M-x helm-projectile-switch-project")))
 
   (advice-add #'spacemacs/toggle-menu-bar
               :after
-              (defun my=note--spacemacs/toggle-menu-bar ()
+              (defun my=spacemacs/toggle-menu-bar ()
                 (message
                  "[advice spacemacs/toggle-menu-bar] %s"
                  "Try also: ~M-`~ for M-x tmm-menubar")))
