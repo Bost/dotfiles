@@ -1915,7 +1915,8 @@ Some binding snippets / examples:
      ("s-w"         . tw-whitespace-mode-toggle)
      ("s-m"         . tw-magit-status)
      ("<f3>"   . tw-search-region-or-symbol) ; advice-d
-     ("M-<f3>" . spacemacs/hsearch-project)  ; advice-d
+     ;; advice-d
+     ("M-<f3>" . spacemacs/helm-project-smart-do-search-region-or-symbol)
 
      ("s-a"    . helm-mini) ;; advice-d
      ("s-]"    . helm-mini)
@@ -2599,12 +2600,12 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; (unbind-key "<f12>" scheme-mode-map)
 
   (advice-add #'spacemacs/hsearch-project
-              :after (defun my=note--spacemacs/hsearch-project (_)
+              :after (defun my=note--spacemacs/helm-project-smart-do-search-region-or-symbol (_)
                        (message
                         "[advice spacemacs/hsearch-project] %s"
                         (concat
                          "Try ~SPC *~ for "
-                         "M-x spacemacs/hsearch-project-region-or-symbol"))))
+                         "M-x spacemacs/helm-project-smart-do-search-region-or-symbol"))))
 
   (advice-add #'helm-swoop
               :after
