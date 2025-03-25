@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <symlink>" >&2
+    exit 1
+fi
+
+symlink="$1"
+
+if [ -L "$symlink" ]; then
+    rm "$symlink"
+    : # echo "[INF] Symlink $symlink removed."
+else
+    echo "[ERROR] $symlink is not a symlink. Refusing to remove." >&2
+    exit 1
+fi
