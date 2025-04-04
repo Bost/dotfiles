@@ -15,6 +15,16 @@
   lg-all-20 = log --graph -20                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
   lg-30     = log         -30                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
   lg-all-30 = log --graph -30                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-40     = log         -40                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-all-40 = log --graph -40                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-50     = log         -50                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-all-50 = log --graph -50                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-60     = log         -60                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-all-60 = log --graph -60                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-70     = log         -70                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-all-70 = log --graph -70                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-80     = log         -80                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+  lg-all-80 = log --graph -80                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
   # lg-20   = log --graph -20 --color --oneline --graph --pickaxe-all --decorate --stat -G 'master' # see https://zwischenzugs.com/2018/03/26/git-log-the-good-parts/
   lg        = log                                    --color               --pretty=format:'%Cred%h%Creset%C(white) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --date=short
   lg-all    = log --graph --full-history             --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
