@@ -27,6 +27,18 @@
        #;(lambda (p) (format #t "p: ~a\n" p) p))
       (eval symbol (interaction-environment))))))
 
+;;; ### BEG: from ~/dev/guile/module/ice-9/boot-9.scm
+(define (valid-import? x)
+  (list? x))
+
+(define (valid-export? x)
+  (or (symbol? x) (and (pair? x) (symbol? (car x)) (symbol? (cdr x)))))
+
+(define (valid-autoload? x)
+  (and (pair? x) (list-of symbol? (car x)) (list-of symbol? (cdr x))))
+
+;;; ### END: from ~/dev/guile/module/ice-9/boot-9.scm
+
 (define-public (test-type o)
   "Type Testing Predicates.
 (test-type (call-with-input-string \"  (+ x y)\" read-syntax)) ; => (syntax?)
@@ -66,6 +78,7 @@
     'zero?
 
     '(@(system syntax internal) syntax?)
+    'identifier?   ;; #t if syntax-object is an identifier, or #f otherwise. 
     '(@(guix gexp) gexp?)
     'pair?
     'char?
