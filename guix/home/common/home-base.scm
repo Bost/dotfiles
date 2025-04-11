@@ -58,9 +58,9 @@
     ;; (format #t "~a Starting ...\n" m)
     ((comp
       ;; (lambda (v) (format #t "~a done.\n" m) v)
-      (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
-                          m (test-type v) (length v))
-              v)
+      ;; (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
+      ;;                     m (test-type v) (length v))
+      ;;         v)
       (partial
        append
        ;; (service home-xsettingsd-service-type)
