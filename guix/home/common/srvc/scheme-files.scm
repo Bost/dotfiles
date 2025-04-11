@@ -5,7 +5,7 @@
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (fs-utils)
-  ;; #:use-module (srvc emacs-cli-utils)
+  #:use-module (srvc emacs-cli-utils)
   ;; See service-file -> with-imported-modules
   #:use-module (scm-bin gcl)
   #:use-module (gnu home)
@@ -73,36 +73,37 @@
               (lambda (s) (string-match (basename re) s)))))))))
 (testsymb 'expand-pattern)
 
-(define launcher-develop   (str "emacs-launcher-" develop))
-(define launcher-spguimacs (str "emacs-launcher-" spguimacs))
-(define launcher-crafted   (str "emacs-launcher-" crafted))
-(define launcher-lst       (list
-                            launcher-develop
-                            launcher-spguimacs
-                            launcher-crafted
-                            ))
+;; (define launcher-develop   (str "emacs-launcher-" develop))
+;; (define launcher-spguimacs (str "emacs-launcher-" spguimacs))
+;; (define launcher-crafted   (str "emacs-launcher-" crafted))
+;; (define launcher-lst       (list
+;;                             launcher-develop
+;;                             launcher-spguimacs
+;;                             launcher-crafted
+;;                             ))
 
-(define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
+;; (define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
 
-(define editable-develop   (str "emacs-editable-" develop))
-(define editable-spguimacs (str "emacs-editable-" spguimacs))
-(define editable-crafted   (str "emacs-editable-" crafted))
-(define editable-lst       (list
-                            editable-profiles
-                            editable-develop
-                            editable-spguimacs
-                            editable-crafted
-                            ))
+;; (define editable-develop   (str "emacs-editable-" develop))
+;; (define editable-spguimacs (str "emacs-editable-" spguimacs))
+;; (define editable-crafted   (str "emacs-editable-" crafted))
+;; (define editable-lst       (list
+;;                             editable-profiles
+;;                             editable-develop
+;;                             editable-spguimacs
+;;                             editable-crafted
+;;                             ))
 
-(define pkill-develop   (str "emacs-pkill-" develop))
-(define pkill-spguimacs (str "emacs-pkill-" spguimacs))
-(define pkill-crafted   (str "emacs-pkill-" crafted))
-(define pkill-lst       (list
-                         pkill-develop
-                         pkill-spguimacs
-                         pkill-crafted
-                         ))
+;; (define pkill-develop   (str "emacs-pkill-" develop))
+;; (define pkill-spguimacs (str "emacs-pkill-" spguimacs))
+;; (define pkill-crafted   (str "emacs-pkill-" crafted))
+;; (define pkill-lst       (list
+;;                          pkill-develop
+;;                          pkill-spguimacs
+;;                          pkill-crafted
+;;                          ))
 (testsymb 'pkill-lst)
+;; (testsymb-trace 'xpkill-lst)
 
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
@@ -120,6 +121,8 @@
    patterns))
 (testsymb 'full-filepaths)
 
+(define emacs-utils-lst (append launcher-lst editable-lst pkill-lst))
+
 (define* (service-file #:key
                        program-name desc scheme-file module-name
                        chmod-params files
@@ -135,21 +138,29 @@ Example:
   (let* [(m (format #f "~a [service-file]" m))]
     ;; (format #t "~a Starting ...\n" m)
 
-    ;; (testsymb-trace 'launcher-lst)
-    ;; (testsymb-trace 'editable-lst)
-    ;; (testsymb-trace 'pkill-lst)
+    ;; TODO for emacs-utils I must return a pair
+    ;;   (<...> (gexp->file <name> <exp>))
+    ;; instead of
+    ;;   (<...> (program-file <name> <exp>))
+    (when (equal? scheme-file pkill-crafted)
+      (format #t "$$$$ ~a (str scm-bin-dirname \"/\" program-name): ~s\n" m (str scm-bin-dirname "/" program-name))
+      )
 
     `(,(str scm-bin-dirname "/" program-name)
       ,(program-file
+
+        ;; 1st param: name
         (cond
          [(equal? scheme-file "chmod")
           (str "chmod-plus-" chmod-params)]
          [(equal? scheme-file "search-notes")
           (str "search-notes-" program-name)]
-         [(member scheme-file (append launcher-lst editable-lst pkill-lst))
+         [(member scheme-file emacs-utils-lst)
           scheme-file]
          [#t
           desc])
+
+        ;; 2nd param: exp
         ;; TODO clarify if source-module-closure is needed only for imports of
         ;; guix modules?
         (let* ((symb-string (or scheme-file program-name))
@@ -192,8 +203,7 @@ Example:
 
                  ,(begin
                     (cond
-                     [(member scheme-file
-                              (append launcher-lst editable-lst pkill-lst))
+                     [(member scheme-file emacs-utils-lst)
                       ;; `((srvc emacs-cli-utils) emacs-common)
                       `(emacs-common)]))
 
@@ -204,9 +214,38 @@ Example:
                    [(equal? scheme-file "chmod")        `(scm-bin ,symb)]
                    [(equal? scheme-file "search-notes") `(scm-bin ,symb)]
                    [#t                                  `(scm-bin ,symb)])))
-            #~(begin
-                (use-modules (scm-bin #$symb))
-                #$main-call)))))))
+
+            (if (and #f (equal? scheme-file pkill-crafted))
+                (begin
+                  (format #t "$$$$ ~a scheme-file: ~s; symb ~s\n" m pkill-crafted symb)
+                  ;; (format #t "$$$$ ~a main-call      : ~s\n" m main-call)
+                  ;; (format #t "$$$$ ~a gexp main-call : ~s\n" m #~#$main-call)
+                  #~(begin
+                      (define-module (scm-bin emacs-pkill-crafted)
+                        #:use-module (utils)
+                        #:use-module (settings)
+                        #:use-module (emacs-common)
+                        #:export (main))
+
+                      ;; (use-modules
+                      ;;  (utils)
+                      ;;  (settings)
+                      ;;  (emacs-common))
+
+                      (define (main args)
+                        (handle-cli #:utility-name scheme-file
+                                    #:fun pkill-server
+                                    #:profile crafted
+                                    args))
+
+                      #$main-call
+                      ))
+
+                (begin
+                  ;; (format #t "#### ~a other; symb: ~s\n" m symb)
+                  #~(begin
+                      (use-modules (scm-bin #$symb))
+                      #$main-call)))))))))
 (testsymb 'service-file)
 
 (define search-notes-service-files
@@ -321,23 +360,10 @@ Example:
 (define-public (scheme-files-service)
   (let* [(m (format #f "~a [scheme-files-service]" m))]
     ;; (format #t "~a Starting ...\n" m)
-
-    ;; (testsymb-trace 'editable-profiles)
-
-    ;; (testsymb-trace 'launcher-develop)
-    ;; (testsymb-trace 'editable-develop)
-    ;; (testsymb-trace 'pkill-develop)
-
-    ;; (testsymb-trace 'launcher-spguimacs)
-    ;; (testsymb-trace 'editable-spguimacs)
-    ;; (testsymb-trace 'pkill-spguimacs)
-
-    ;; (testsymb-trace 'launcher-crafted)
-    ;; (testsymb-trace 'editable-crafted)
-    ;; (testsymb-trace 'pkill-crafted)
-
     ((comp
       ;; (lambda (v) (format #t "~a done\n" m) v)
+      ;; 'simple-service name target value'. E.g.:
+      ;; (simple-service 'my-mcron-job mcron-service-type #~(job '(next-hour (3)) "guix gc -F 2G"))
       (partial simple-service 'scheme-files-service home-files-service-type)
       (partial
        append

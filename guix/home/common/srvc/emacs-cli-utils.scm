@@ -81,10 +81,4 @@
 (define-public editable-lst (append editable-lst (list editable-profiles)))
 (testsymb-trace 'editable-lst)
 
-(define-syntax create-emacs-editable-<util>
-  (syntax-rules ()
-    ((_ util)
-     ;; TODO create-emacs-editable-<util>
-     )))
-
 (module-evaluated #t)
