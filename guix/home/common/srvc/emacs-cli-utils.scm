@@ -12,11 +12,14 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define-public utils (list 'launcher 'editable 'pkill))
-
-(define-public profiles
+(define-public emacs-utils (list 'launcher 'editable 'pkill))
+#|
+(define-public emacs-profiles
   (append (map (comp string->symbol car) profile->branch-kw)
           (list 'guix 'install-packages)))
+|#
+
+(define-public emacs-profiles (list 'crafted 'develop 'spguimacs))
 
 ;;; (create-def--emacs-<util>-<profile> 'my-util 'my-profile)
 ;;;   => my-util-my-profile => "emacs-my-util-my-profile"
@@ -35,6 +38,7 @@
        ;; Scheme Procedure: define! sym value Define SYM to be VALUE in the
        ;; current module. Returns the variable itself. Note that this is a
        ;; procedure, not a macro.
+       ;; (format #t "~s\n" `(define! ,sym-def-name ,str-def-body))
        (define! sym-def-name str-def-body)
 
        ;; module-export! is a procedure
@@ -48,7 +52,7 @@
                            (create-def--emacs-<util>-<profile> u t)))
           (cartesian utils profiles)))))
 
-(define-utils utils profiles)
+(define-utils emacs-utils emacs-profiles)
 
 (define-syntax create-util-lists
   (syntax-rules ()
@@ -60,9 +64,10 @@
             (let [(m (format #f "~a [create-util-lst]" m))
                   (sym-def-name (string->symbol (format #f "~a-lst" util)))
                   (str-def-body (map (comp
-                                 (partial format #f "~a-~a" util)
+                                 (partial format #f "emacs-~a-~a" util)
                                  symbol->string)
                                 profiles))]
+              ;; (format #t "~s\n" `(define! ,sym-def-name ,str-def-body))
               (define! sym-def-name str-def-body)
               (module-export! (current-module) (list sym-def-name))))))
 
@@ -70,14 +75,16 @@
               (create-util-lst util profiles))
             utils)))))
 
-(create-util-lists utils profiles)
+(create-util-lists emacs-utils emacs-profiles)
 
 (define-public editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
 (define-public editable-lst (append editable-lst (list editable-profiles)))
 (testsymb-trace 'editable-lst)
 
-;; (format #t "launcher-lst: ~a\n" launcher-lst)
-;; (format #t "editable-lst: ~a\n" editable-lst)
-;; (format #t "pkill-lst: ~a\n" pkill-lst)
+(define-syntax create-emacs-editable-<util>
+  (syntax-rules ()
+    ((_ util)
+     ;; TODO create-emacs-editable-<util>
+     )))
 
 (module-evaluated #t)
