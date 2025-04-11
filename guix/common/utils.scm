@@ -277,7 +277,7 @@ Corresponds to `drop' in Clojure"
   ;; ~a - outputs an argument like display
   ;; ~s - outputs an argument like write (i.e. print to string)
   ;; ~% is newline \n
-  (format #t "\n~a\n" prm)
+  (format #t "~s\n" prm)
   prm)
 
 (define* (dbg-exec prm #:key (verbose #t))
