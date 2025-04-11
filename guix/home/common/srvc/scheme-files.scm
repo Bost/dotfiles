@@ -124,92 +124,98 @@ Example:
     (if (member scheme-file emacs-utils-lst)
         (begin
           ;; (format #t "$$$$ ~a (str scm-bin-dirname \"/\" program-name): ~s\n" m (str scm-bin-dirname "/" program-name))
-          `(,(str scm-bin-dirname "/" program-name)
-            ,(program-file
-              scheme-file ;; 1st param: name
+          (let* [(prg-file
+                  (program-file
+                   scheme-file ;; 1st param: name
 
-              ;; 2nd param: exp
-              ;; TODO clarify if source-module-closure is needed only for imports of
-              ;; guix modules?
-              (let* [(symb-string (or scheme-file program-name))
-                     (symb (or module-name
-                               (string->symbol symb-string)))]
-                (with-imported-modules
-                  `((guix monads)
-                    (utils)
-                    (settings)
-                    (emacs-common)
-                    (scm-bin ,symb))
+                   ;; 2nd param: exp
+                   ;; TODO clarify if source-module-closure is needed only for imports of
+                   ;; guix modules?
+                   (let* [(symb-string (or scheme-file program-name))
+                          (symb (or module-name
+                                    (string->symbol symb-string)))]
+                     (with-imported-modules
+                         `((guix monads)
+                           (utils)
+                           (settings)
+                           (emacs-common)
+                           (scm-bin ,symb))
 
-                  #~(begin
-                      (use-modules (scm-bin #$symb))
-                      (main (command-line))))))))
+                       #~(begin
+                           (use-modules (scm-bin #$symb))
+                           (main (command-line)))
+
+                       ))))]
+            ;; (format #t "$$$$ ~a prg-file : ~s\n" m prg-file)
+            (list (str scm-bin-dirname "/" program-name) prg-file)))
         (begin
           ;; (format #t "%%%% ~a (str scm-bin-dirname \"/\" program-name): ~s\n" m (str scm-bin-dirname "/" program-name))
-          `(,(str scm-bin-dirname "/" program-name)
-            ,(program-file
+          (list
+           (str scm-bin-dirname "/" program-name)
+           (program-file
 
-              ;; 1st param: name
-              (cond
-               [(equal? scheme-file "chmod")
-                (str "chmod-plus-" chmod-params)]
-               [(equal? scheme-file "search-notes")
-                (str "search-notes-" program-name)]
-               [#t
-                desc])
+            ;; 1st param: name
+            (cond
+             [(equal? scheme-file "chmod")
+              (str "chmod-plus-" chmod-params)]
+             [(equal? scheme-file "search-notes")
+              (str "search-notes-" program-name)]
+             [#t
+              desc])
 
-              ;; 2nd param: exp
-              ;; TODO clarify if source-module-closure is needed only for imports of
-              ;; guix modules?
-              (let* [(symb-string (or scheme-file program-name))
-                     (symb (or module-name
-                               (string->symbol symb-string)))
-                     (main-call
-                      (remove unspecified?
-                              `(main ,(cond
-                                       [(equal? scheme-file "chmod")
-                                        `(let [(cmd-line (command-line))]
-                                           (append (list (car cmd-line)
-                                                         ,chmod-params)
-                                                   (cdr cmd-line)))]
+            ;; 2nd param: exp
+            ;; TODO clarify if source-module-closure is needed only for imports of
+            ;; guix modules?
+            (let* [(symb-string (or scheme-file program-name))
+                   (symb (or module-name
+                             (string->symbol symb-string)))
+                   (main-call ((comp (partial remove unspecified?))
+                               (list
+                                'main
+                                (cond
+                                 [(equal? scheme-file "chmod")
+                                  `(let [(cmd-line (command-line))]
+                                     (append (list (car cmd-line)
+                                                   ,chmod-params)
+                                             (cdr cmd-line)))]
 
-                                       [(equal? scheme-file "search-notes")
-                                        `(append
-                                          (command-line)
-                                          (list ,@(append other-files
-                                                          (full-filepaths files))))]
+                                 [(equal? scheme-file "search-notes")
+                                  `(append
+                                    (command-line)
+                                    (list ,@(append other-files
+                                                    (full-filepaths files))))]
 
-                                       [#t `(command-line)]))))]
-                (with-imported-modules
-                    ((comp
-                      (partial remove unspecified?)
-                      (lambda (lst)
-                        (if (equal? scheme-file "search-notes")
-                            (append lst `(
-                                          (guix profiling)
-                                          (guix memoization)
-                                          (guix colors)
-                                          ;; (ice-9 getopt-long)
-                                          ))
-                            lst)))
-                     `((guix monads)
-                       (utils)
-                       (settings)
-                       ;; following three modules don't need to be everywhere
-                       (scm-bin gre)
-                       (scm-bin gps)
+                                 [#t `(command-line)]))))]
+              (with-imported-modules
+                  ((comp
+                    (partial remove unspecified?)
+                    (lambda (lst)
+                      (if (equal? scheme-file "search-notes")
+                          (append lst `(
+                                        (guix profiling)
+                                        (guix memoization)
+                                        (guix colors)
+                                        ;; (ice-9 getopt-long)
+                                        ))
+                          lst)))
+                   `((guix monads)
+                     (utils)
+                     (settings)
+                     ;; following three modules don't need to be everywhere
+                     (scm-bin gre)
+                     (scm-bin gps)
 
-                       ;; module-search-notes
-                       ;; 'ls' is needed only for 'lf.scm'
-                       ,(cond
-                         [(equal? symb-string "lf")           `(scm-bin ls)]
-                         [(equal? scheme-file "chmod")        `(scm-bin ,symb)]
-                         [(equal? scheme-file "search-notes") `(scm-bin ,symb)]
-                         [#t                                  `(scm-bin ,symb)])))
+                     ;; module-search-notes
+                     ;; 'ls' is needed only for 'lf.scm'
+                     ,(cond
+                       [(equal? symb-string "lf")           `(scm-bin ls)]
+                       [(equal? scheme-file "chmod")        `(scm-bin ,symb)]
+                       [(equal? scheme-file "search-notes") `(scm-bin ,symb)]
+                       [#t                                  `(scm-bin ,symb)])))
 
-                  #~(begin
-                      (use-modules (scm-bin #$symb))
-                      #$main-call)))))))))
+                #~(begin
+                    (use-modules (scm-bin #$symb))
+                    #$main-call)))))))))
 (testsymb 'service-file)
 
 (define search-notes-service-files
