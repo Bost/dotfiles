@@ -40,7 +40,9 @@
 ;;; ### END: from ~/dev/guile/module/ice-9/boot-9.scm
 
 (define-public (test-type o)
-  "Type Testing Predicates.
+  "See predicates https://en.wikipedia.org/wiki/Scheme_(programming_language)
+
+Type Testing Predicates.
 (test-type (call-with-input-string \"  (+ x y)\" read-syntax)) ; => (syntax?)
 (test-type '())     ; => (list? null?)
 (test-type \"a\")   ; => (string?)
@@ -66,11 +68,13 @@
     'list?
     'vector?
     'procedure?
+    'record?
 
     'number?
     'complex?
     'real?
     'integer?
+    'rational?
     'positive?
     'negative?
     'odd?
@@ -105,6 +109,10 @@
     (partial map (lambda (symbol) (do-test symbol a b))))
    (list
     'string=? ;; returns #t only if both parameters are strings
+    'string-ci=?
+    'char=?
+    'char-ci=?
+
     'eq?
     'eqv?
     'equal?)))
