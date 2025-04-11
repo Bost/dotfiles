@@ -73,37 +73,6 @@
               (lambda (s) (string-match (basename re) s)))))))))
 (testsymb 'expand-pattern)
 
-;; (define launcher-develop   (str "emacs-launcher-" develop))
-;; (define launcher-spguimacs (str "emacs-launcher-" spguimacs))
-;; (define launcher-crafted   (str "emacs-launcher-" crafted))
-;; (define launcher-lst       (list
-;;                             launcher-develop
-;;                             launcher-spguimacs
-;;                             launcher-crafted
-;;                             ))
-
-;; (define editable-profiles "emacs-editable-profiles") ;; ~/.emacs-profiles.el
-
-;; (define editable-develop   (str "emacs-editable-" develop))
-;; (define editable-spguimacs (str "emacs-editable-" spguimacs))
-;; (define editable-crafted   (str "emacs-editable-" crafted))
-;; (define editable-lst       (list
-;;                             editable-profiles
-;;                             editable-develop
-;;                             editable-spguimacs
-;;                             editable-crafted
-;;                             ))
-
-;; (define pkill-develop   (str "emacs-pkill-" develop))
-;; (define pkill-spguimacs (str "emacs-pkill-" spguimacs))
-;; (define pkill-crafted   (str "emacs-pkill-" crafted))
-;; (define pkill-lst       (list
-;;                          pkill-develop
-;;                          pkill-spguimacs
-;;                          pkill-crafted
-;;                          ))
-(testsymb 'pkill-lst)
-;; (testsymb-trace 'xpkill-lst)
 
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
@@ -122,6 +91,7 @@
 (testsymb 'full-filepaths)
 
 (define emacs-utils-lst (append launcher-lst editable-lst pkill-lst))
+(testsymb 'emacs-utils-lst)
 
 (define* (service-file #:key
                        program-name desc scheme-file module-name
@@ -137,112 +107,106 @@ Example:
 "
   (let* [(m (format #f "~a [service-file]" m))]
     ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a program-name : ~s\n" m program-name)
+    ;; (format #t "~a desc         : ~s\n" m desc)
+    ;; (format #t "~a scheme-file  : ~s\n" m scheme-file)
+    ;; (format #t "~a module-name  : ~s\n" m module-name)
+    ;; (format #t "~a chmod-params : ~s\n" m chmod-params)
+    ;; (format #t "~a files        : ~s\n" m files)
+    ;; (format #t "~a other-files  : ~s\n" m other-files)
+    ;; (format #t "\n")
+    ;; (format #t "~a member : ~s\n" m (member scheme-file emacs-utils-lst))
 
     ;; TODO for emacs-utils I must return a pair
     ;;   (<...> (gexp->file <name> <exp>))
     ;; instead of
     ;;   (<...> (program-file <name> <exp>))
-    (when (equal? scheme-file pkill-crafted)
-      (format #t "$$$$ ~a (str scm-bin-dirname \"/\" program-name): ~s\n" m (str scm-bin-dirname "/" program-name))
-      )
+    (if (member scheme-file emacs-utils-lst)
+        (begin
+          ;; (format #t "$$$$ ~a (str scm-bin-dirname \"/\" program-name): ~s\n" m (str scm-bin-dirname "/" program-name))
+          `(,(str scm-bin-dirname "/" program-name)
+            ,(program-file
+              scheme-file ;; 1st param: name
 
-    `(,(str scm-bin-dirname "/" program-name)
-      ,(program-file
+              ;; 2nd param: exp
+              ;; TODO clarify if source-module-closure is needed only for imports of
+              ;; guix modules?
+              (let* [(symb-string (or scheme-file program-name))
+                     (symb (or module-name
+                               (string->symbol symb-string)))]
+                (with-imported-modules
+                  `((guix monads)
+                    (utils)
+                    (settings)
+                    (emacs-common)
+                    (scm-bin ,symb))
 
-        ;; 1st param: name
-        (cond
-         [(equal? scheme-file "chmod")
-          (str "chmod-plus-" chmod-params)]
-         [(equal? scheme-file "search-notes")
-          (str "search-notes-" program-name)]
-         [(member scheme-file emacs-utils-lst)
-          scheme-file]
-         [#t
-          desc])
-
-        ;; 2nd param: exp
-        ;; TODO clarify if source-module-closure is needed only for imports of
-        ;; guix modules?
-        (let* ((symb-string (or scheme-file program-name))
-               (symb (or module-name
-                         (string->symbol symb-string)))
-               (main-call
-                (remove unspecified?
-                        `(main ,(cond
-                                 [(equal? scheme-file "chmod")
-                                  `(let [(cmd-line (command-line))]
-                                     (append (list (car cmd-line)
-                                                   ,chmod-params)
-                                             (cdr cmd-line)))]
-
-                                 [(equal? scheme-file "search-notes")
-                                  `(append
-                                    (command-line)
-                                    (list ,@(append other-files
-                                                    (full-filepaths files))))]
-
-                                 [#t `(command-line)])))))
-          (with-imported-modules
-              ((comp
-                (partial remove unspecified?)
-                (lambda (lst)
-                  (if (equal? scheme-file "search-notes")
-                      (append lst `(
-                                    (guix profiling)
-                                    (guix memoization)
-                                    (guix colors)
-                                    ;; (ice-9 getopt-long)
-                                    ))
-                      lst)))
-               `((guix monads)
-                 (utils)
-                 (settings)
-                 ;; following three modules don't need to be everywhere
-                 (scm-bin gre)
-                 (scm-bin gps)
-
-                 ,(begin
-                    (cond
-                     [(member scheme-file emacs-utils-lst)
-                      ;; `((srvc emacs-cli-utils) emacs-common)
-                      `(emacs-common)]))
-
-                 ;; module-search-notes
-                 ;; 'ls' is needed only for 'lf.scm'
-                 ,(cond
-                   [(equal? symb-string "lf")           `(scm-bin ls)]
-                   [(equal? scheme-file "chmod")        `(scm-bin ,symb)]
-                   [(equal? scheme-file "search-notes") `(scm-bin ,symb)]
-                   [#t                                  `(scm-bin ,symb)])))
-
-            (if (and #f (equal? scheme-file pkill-crafted))
-                (begin
-                  (format #t "$$$$ ~a scheme-file: ~s; symb ~s\n" m pkill-crafted symb)
-                  ;; (format #t "$$$$ ~a main-call      : ~s\n" m main-call)
-                  ;; (format #t "$$$$ ~a gexp main-call : ~s\n" m #~#$main-call)
                   #~(begin
-                      (define-module (scm-bin emacs-pkill-crafted)
-                        #:use-module (utils)
-                        #:use-module (settings)
-                        #:use-module (emacs-common)
-                        #:export (main))
+                      (use-modules (scm-bin #$symb))
+                      (main (command-line))))))))
+        (begin
+          ;; (format #t "%%%% ~a (str scm-bin-dirname \"/\" program-name): ~s\n" m (str scm-bin-dirname "/" program-name))
+          `(,(str scm-bin-dirname "/" program-name)
+            ,(program-file
 
-                      ;; (use-modules
-                      ;;  (utils)
-                      ;;  (settings)
-                      ;;  (emacs-common))
+              ;; 1st param: name
+              (cond
+               [(equal? scheme-file "chmod")
+                (str "chmod-plus-" chmod-params)]
+               [(equal? scheme-file "search-notes")
+                (str "search-notes-" program-name)]
+               [#t
+                desc])
 
-                      (define (main args)
-                        (handle-cli #:utility-name scheme-file
-                                    #:fun pkill-server
-                                    #:profile crafted
-                                    args))
+              ;; 2nd param: exp
+              ;; TODO clarify if source-module-closure is needed only for imports of
+              ;; guix modules?
+              (let* [(symb-string (or scheme-file program-name))
+                     (symb (or module-name
+                               (string->symbol symb-string)))
+                     (main-call
+                      (remove unspecified?
+                              `(main ,(cond
+                                       [(equal? scheme-file "chmod")
+                                        `(let [(cmd-line (command-line))]
+                                           (append (list (car cmd-line)
+                                                         ,chmod-params)
+                                                   (cdr cmd-line)))]
 
-                      #$main-call
-                      ))
+                                       [(equal? scheme-file "search-notes")
+                                        `(append
+                                          (command-line)
+                                          (list ,@(append other-files
+                                                          (full-filepaths files))))]
 
-                (begin
-                  ;; (format #t "#### ~a other; symb: ~s\n" m symb)
+                                       [#t `(command-line)]))))]
+                (with-imported-modules
+                    ((comp
+                      (partial remove unspecified?)
+                      (lambda (lst)
+                        (if (equal? scheme-file "search-notes")
+                            (append lst `(
+                                          (guix profiling)
+                                          (guix memoization)
+                                          (guix colors)
+                                          ;; (ice-9 getopt-long)
+                                          ))
+                            lst)))
+                     `((guix monads)
+                       (utils)
+                       (settings)
+                       ;; following three modules don't need to be everywhere
+                       (scm-bin gre)
+                       (scm-bin gps)
+
+                       ;; module-search-notes
+                       ;; 'ls' is needed only for 'lf.scm'
+                       ,(cond
+                         [(equal? symb-string "lf")           `(scm-bin ls)]
+                         [(equal? scheme-file "chmod")        `(scm-bin ,symb)]
+                         [(equal? scheme-file "search-notes") `(scm-bin ,symb)]
+                         [#t                                  `(scm-bin ,symb)])))
+
                   #~(begin
                       (use-modules (scm-bin #$symb))
                       #$main-call)))))))))
@@ -421,6 +385,6 @@ Example:
             #:scheme-file "lT")
       (list #:program-name "qemu-vm" #:desc "qemu-vm")
       (list #:program-name "susp" #:desc "suspend-to-ram")))))
-(testsymb 'scheme-files-service)
+(testsymb-trace 'scheme-files-service)
 
 (module-evaluated)
