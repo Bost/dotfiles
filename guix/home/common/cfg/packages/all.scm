@@ -7,6 +7,7 @@
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
+  #:use-module ((bost gnu packages package-management) #:prefix bst:)
   ;; provides: specification->package
   #:use-module (gnu packages)
   #:use-module (bost gnu packages guake)
@@ -519,7 +520,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    drawing ;; basic image editor
    ffmpeg
    file    ;; File type guesser
-   flatpak
+   bst:flatpak
    font-adobe-source-code-pro
    font-gnu-freefont
    font-gnu-unifont
