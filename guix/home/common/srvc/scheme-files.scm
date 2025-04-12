@@ -211,14 +211,11 @@ Example:
               (let* [(symb-string (or scheme-file program-name))
                      (symb (or module-name
                                (string->symbol symb-string)))
-                     (sexp (if (equal? fun 'set-editable-profiles)
-                               `(handle-cli-profiles
-                                 #:fun ,fun
-                                 (command-line))
-                               `(handle-cli
-                                 #:fun ,fun
-                                 #:profile ,profile
-                                 (command-line))))
+                     (sexp `(handle-cli
+                             #:verbose ,verbose
+                             #:fun ,fun
+                             #:profile ,profile
+                             (command-line)))
                      ]
                 ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
                 (with-imported-modules
@@ -349,7 +346,6 @@ Example:
             #:scheme-file "search-notes")))))
 (testsymb 'search-notes-service-files)
 
-
 (define-public (scheme-files-service)
   (let* [(m (format #f "~a [scheme-files-service]" m))]
     ;; (format #t "~a Starting ...\n" m)
@@ -366,16 +362,15 @@ Example:
              (partial map (partial apply service-file-emacs-utils))
              )
             (list
-             ;; TODO editable-profiles
-             (list #:program-name "ep" #:scheme-file editable-profiles  #:fun 'set-editable-profiles)
+             (list #:program-name "ep" #:scheme-file editable-profiles  #:fun 'set-editable          #:profile #f)
              (list #:program-name  "d" #:scheme-file launcher-develop   #:fun 'create-emacs-launcher #:profile develop)
-             (list #:program-name "ed" #:scheme-file editable-develop   #:fun 'set-config-editable   #:profile develop)
+             (list #:program-name "ed" #:scheme-file editable-develop   #:fun 'set-editable          #:profile develop)
              (list #:program-name "kd" #:scheme-file pkill-develop      #:fun 'pkill-server          #:profile develop)
              (list #:program-name  "g" #:scheme-file launcher-spguimacs #:fun 'create-emacs-launcher #:profile spguimacs)
-             (list #:program-name "eg" #:scheme-file editable-spguimacs #:fun 'set-config-editable   #:profile spguimacs)
+             (list #:program-name "eg" #:scheme-file editable-spguimacs #:fun 'set-editable          #:profile spguimacs)
              (list #:program-name "kg" #:scheme-file pkill-spguimacs    #:fun 'pkill-server          #:profile spguimacs)
              (list #:program-name  "r" #:scheme-file launcher-crafted   #:fun 'create-emacs-launcher #:profile crafted)
-             (list #:program-name "er" #:scheme-file editable-crafted   #:fun 'set-config-editable   #:profile crafted)
+             (list #:program-name "er" #:scheme-file editable-crafted   #:fun 'set-editable          #:profile crafted)
              (list #:program-name "kr" #:scheme-file pkill-crafted      #:fun 'pkill-server          #:profile crafted)
              ))
            (list)))
