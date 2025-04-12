@@ -12,7 +12,20 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define-public emacs-utils (list 'launcher 'editable 'pkill))
+;; <util> is the name of the procedure from (emacs-common)
+(define fun->util--mapping
+  (list
+   ;; set-editable
+   (cons 'launcher 'create-emacs-launcher)
+   (cons 'pkill    'pkill-server)
+   (cons 'editable 'set-config-editable)
+   ))
+
+(define-public emacs-utils
+  ((comp
+    (partial map car))
+   fun->util--mapping))
+
 #|
 (define-public emacs-profiles
   (append (map (comp string->symbol car) profile->branch-kw)

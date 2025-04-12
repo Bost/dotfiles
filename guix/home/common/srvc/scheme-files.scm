@@ -128,10 +128,6 @@ Example:
         (let* [(prg-file
                 (program-file
                  scheme-file ;; 1st param: name
-
-                 ;; 2nd param: exp
-                 ;; TODO clarify if source-module-closure is needed only for imports of
-                 ;; guix modules?
                  (let* [(symb-string (or scheme-file program-name))
                         (symb (or module-name
                                   (string->symbol symb-string)))]
@@ -140,7 +136,6 @@ Example:
                          (utils)
                          (settings)
                          (emacs-common))
-
                      #~(begin
                          (use-modules (ice-9 getopt-long)
                                       (ice-9 regex)
@@ -150,8 +145,8 @@ Example:
                                       (emacs-common))
 
                          (handle-cli #:utility-name #$scheme-file
-                                     #:fun pkill-server
-                                     #:profile crafted
+                                     #:fun pkill-server ;; see emacs-utils
+                                     #:profile crafted ;; see emacs-profiles
                                      (command-line)))
 
                      ))))]
