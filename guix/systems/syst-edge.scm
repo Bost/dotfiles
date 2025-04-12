@@ -139,6 +139,9 @@
                  (extensions
                   (list cups-filters hplip-minimal))))
 
+       ;; Use this when testing '[PATCH] doc: Improve VNC Services section.'
+       ;; https://issues.guix.gnu.org/68453
+       ;; (service xvnc-service-type (xvnc-configuration (display-number 5)))
        (service xvnc-service-type
                 (xvnc-configuration
                  (display-number 5)
