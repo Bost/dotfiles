@@ -63,14 +63,12 @@ Usage:
       (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
       (format #t "~a ~a profile      : ~a\n" m f profile)
       (format #t "~a ~a socket       : ~a\n" m f socket)
-      (format #t "~a ~a args         : ~a\n" m f args)
-      ))
+      (format #t "~a ~a args         : ~a\n" m f args)))
   (let* [(args (remove-kw-from-args #:verbose args))
          (args (remove-kw-from-args #:utility-name args))
          (args (remove-kw-from-args #:gx-dry-run args))
          (args (remove-kw-from-args #:profile args))
-         (args (remove-kw-from-args #:socket args))
-         ]
+         (args (remove-kw-from-args #:socket args))]
     ;; pkill-pattern must NOT be eclosed by \"\"
     (let* [(pkill-pattern
             (format #f "~a --with-profile=~a --daemon"
@@ -94,8 +92,7 @@ Usage:
       (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
       (format #t "~a ~a profile      : ~a\n" m f profile)
       (format #t "~a ~a socket       : ~a\n" m f socket)
-      (format #t "~a ~a args         : ~a\n" m f args)
-      )
+      (format #t "~a ~a args         : ~a\n" m f args))
     (let* [(args (remove-kw-from-args #:verbose args))
            (args (remove-kw-from-args #:utility-name args))
            (args (remove-kw-from-args #:gx-dry-run args))
@@ -139,6 +136,14 @@ Usage:
        args))))
 (testsymb 'create-emacs-launcher)
 
+;; ### BEG: from (fs-utils)
+(define* (user-home #:rest args) (apply str home args))
+(define dev (user-home "/dev"))
+(define* (user-dev #:rest args)  (apply str dev args))
+(define dotf (user-dev "/dotfiles"))
+(define* (user-dotf #:rest args) (apply str dotf args))
+;; ### END: from (fs-utils)
+
 (define* (set-editable
           #:key (verbose #f) utility-name gx-dry-run profile socket
           #:rest args)
@@ -155,8 +160,7 @@ Usage:
       (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
       (format #t "~a ~a profile      : ~a\n" m f profile)
       (format #t "~a ~a socket       : ~a\n" m f socket)
-      (format #t "~a ~a args         : ~a\n" m f args)
-      )
+      (format #t "~a ~a args         : ~a\n" m f args))
     (let* [(args (remove-kw-from-args #:verbose args))
            (args (remove-kw-from-args #:utility-name args))
            (args (remove-kw-from-args #:gx-dry-run args))
@@ -172,11 +176,15 @@ Usage:
             (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
           (let* [(dst-src (if profile
                               (cons (str (get-cfg profile) "/" emacs-init-file)
-                                    (str (getenv "dotf") "/.emacs.d.distros/spacemacs/"
-                                         socket "/cfg/" emacs-init-file))
+                                    (let* [(distros-path "/.emacs.d.distros")]
+                                      ((comp
+                                        (lambda (path) (user-dotf distros-path path "/" emacs-init-file))
+                                        (lambda (p) (format #t "1 ~a\n" p) p)
+                                        (partial substring (get-src profile)))
+                                       (string-length (user-home distros-path)))))
                               (let* [(file ".emacs-profiles.el")]
-                                (cons (str home "/" file)
-                                      (str (getenv "dotf") "/" file)))))
+                                (cons (user-home "/" file)
+                                      (user-dotf "/" file)))))
                  (dst (car dst-src))
                  (src (cdr dst-src))]
             (with-monad monad
@@ -185,8 +193,7 @@ Usage:
                mdelete-file
                `(override-mv ,src ,dst)
                mcopy-file))
-            (copy-file src dst))))
-    ))
+            (copy-file src dst))))))
 (testsymb 'set-editable)
 
 (define* (handle-cli #:key (verbose #f) utility-name fun profile #:rest args)
@@ -197,8 +204,7 @@ Usage:
       (format #t "~a ~a utility-name : ~a\n" m f utility-name)
       (format #t "~a ~a fun          : ~a\n" m f fun)
       (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a args         : ~a\n" m f args)
-      )
+      (format #t "~a ~a args         : ~a\n" m f args))
     (let* [(args (remove-kw-from-args #:verbose args))
            (args (remove-kw-from-args #:utility-name args))
            (args (remove-kw-from-args #:fun args))
@@ -206,8 +212,7 @@ Usage:
            (args (car args))
 
            ;; (value #t): a given option expects accept a value
-           (option-spec `[
-                          (help       (single-char #\h) (value #f))
+           (option-spec `[(help       (single-char #\h) (value #f))
                           (version    (single-char #\v) (value #f))
                           (gx-dry-run (single-char #\d) (value #f))
                           (rest-args                    (value #f))])
@@ -218,8 +223,7 @@ Usage:
            (val-help       (option-ref options 'help       #f))
            (val-version    (option-ref options 'version    #f))
            (val-gx-dry-run (option-ref options 'gx-dry-run #f))
-           (val-rest-args  (option-ref options '()         #f))
-           ]
+           (val-rest-args  (option-ref options '()         #f))]
       (when verbose
         (format #t "~a ~a option-spec    : ~a\n" m f option-spec)
         (format #t "~a ~a options        : ~a\n" m f options)
