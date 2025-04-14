@@ -31,7 +31,7 @@
 ;; files:
 ;;   guix/home/common/scm-bin/spag.scm
 ;;   guix/home/common/scm-bin/restore-spacemacs.scm
-(define-public emacs-profiles ;; branch-kw_to_settings-map
+(define-public emacs-profiles-config ;; branch-kw_to_settings-map
   (list
    ;; ~/dev/dotfiles/.emacs-profiles.el
    ;; (const <profile-name> <profile-configuration>)
@@ -54,13 +54,13 @@
                (cons #:server-name "crafted")
                (cons #:env
                      "/home/bost/.emacs.d.distros/crafted-emacs/personal")))))
-(testsymb 'emacs-profiles)
+(testsymb 'emacs-profiles-config)
 
 ;;; Branches in the spguimacs
 (define-public develop    "develop")
 (define-public guix-merge "guix-merge")
 
-;; emacs-profiles
+;; emacs-profiles-config
 (define-public develop   "develop")
 (define-public spguimacs "spguimacs")
 (define-public crafted   "crafted")
@@ -90,7 +90,7 @@
   ;; (format #t "profile ~a; setting ~a\n" profile setting)
   (let* [(branch-kw (cdr (assoc profile profile->branch-kw)))]
     ;; (format #t "branch-kw ~a\n" branch-kw)
-    (let* [(settings-map (cdr (assoc branch-kw emacs-profiles)))]
+    (let* [(settings-map (cdr (assoc branch-kw emacs-profiles-config)))]
       ;; (format #t "settings-map ~a\n" settings-map)
       (let* [(val (cdr (assoc setting settings-map)))]
         ;; (format #t "profile ~a; setting ~a; val: ~a\n" profile setting val)

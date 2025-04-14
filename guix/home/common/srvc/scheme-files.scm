@@ -5,7 +5,6 @@
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (fs-utils)
-  #:use-module (srvc emacs-cli-utils)
   #:use-module (emacs-common)  ;; handle-cli, create-emacs-launcher, etc.
   ;; See service-file-general -> with-imported-modules
   #:use-module (scm-bin gcl)
@@ -91,9 +90,6 @@
    patterns))
 (testsymb 'full-filepaths)
 
-(define emacs-utils-lst (append launcher-lst editable-lst pkill-lst))
-(testsymb 'emacs-utils-lst)
-
 (define* (service-file-general
           #:key
           program-name desc scheme-file module-name
@@ -116,8 +112,7 @@ Example:
     ;; (format #t "~a chmod-params : ~s\n" m chmod-params)
     ;; (format #t "~a files        : ~s\n" m files)
     ;; (format #t "~a other-files  : ~s\n" m other-files)
-    ;; (format #t "\n")
-    ;; (format #t "~a member : ~s\n" m (member scheme-file emacs-utils-lst))
+
     (list
      (str scm-bin-dirname "/" program-name)
 
@@ -187,7 +182,7 @@ Example:
 (testsymb 'service-file-general)
 
 (define* (service-file-emacs-utils
-          #:key program-name scheme-file (verbose #f) utility-name fun profile)
+          #:key program-name (verbose #f) utility-name fun profile)
   " TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through.
 
@@ -197,44 +192,39 @@ Example:
   (let* [(m (format #f "~a [service-file-emacs-utils]" m))]
     ;; (format #t "~a Starting ...\n" m)
     ;; (format #t "~a program-name : ~s\n" m program-name)
-    ;; (format #t "~a scheme-file  : ~s\n" m scheme-file)
     ;; (format #t "~a fun          : ~s\n" m fun)
     ;; (format #t "~a profile      : ~s\n" m profile)
-    ;; (format #t "\n")
-    ;; (format #t "~a member : ~s\n" m (member scheme-file emacs-utils-lst))
 
     (list
      (str scm-bin-dirname "/" program-name)
-     (let* [(prg-file
-             (program-file
-              scheme-file ;; 1st param: name
-              (let* [(symb-string (or scheme-file program-name))
-                     (symb (or module-name
-                               (string->symbol symb-string)))
-                     (sexp `(handle-cli
-                             #:verbose ,verbose
-                             #:fun ,fun
-                             #:profile ,profile
-                             (command-line)))
-                     ]
-                ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
-                (with-imported-modules
-                    `((guix monads)
-                      (utils)
-                      (settings)
-                      (emacs-common))
-                  #~(begin
-                      (use-modules (ice-9 getopt-long)
-                                   (ice-9 regex)
-                                   (guix monads)
-                                   (utils)
-                                   (settings)
-                                   (emacs-common))
-
-                      #$sexp)
-                  ))))]
-       ;; (format #t "$$$$ ~a prg-file :\n~s\n\n" m prg-file)
-       prg-file))))
+     ((comp
+       ;; (lambda (v) (format #t "~a :\n~s\n\n" m v) v)
+       )
+      (program-file
+       program-name
+       (let* [(symb-string scheme-file)
+              (symb (or module-name
+                        (string->symbol symb-string)))
+              (sexp `(handle-cli
+                      #:verbose ,verbose
+                      #:fun ,fun
+                      #:profile ,profile
+                      (command-line)))
+              ]
+         ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
+         (with-imported-modules
+             `((guix monads)
+               (utils)
+               (settings)
+               (emacs-common))
+           #~(begin
+               (use-modules (ice-9 getopt-long)
+                            (ice-9 regex)
+                            (guix monads)
+                            (utils)
+                            (settings)
+                            (emacs-common))
+               #$sexp))))))))
 (testsymb 'service-file-emacs-utils)
 
 (define search-notes-service-files
@@ -346,6 +336,24 @@ Example:
             #:scheme-file "search-notes")))))
 (testsymb 'search-notes-service-files)
 
+(define (emacs-cli-utils)
+  ((comp
+    (partial append search-notes-service-files)
+    (partial map (partial apply service-file-emacs-utils)))
+   (list
+    (list #:program-name "ep" #:fun 'set-editable          #:profile #f)
+    (list #:program-name  "d" #:fun 'create-emacs-launcher #:profile develop)
+    (list #:program-name "ed" #:fun 'set-editable          #:profile develop)
+    (list #:program-name "kd" #:fun 'pkill-server          #:profile develop)
+    (list #:program-name  "g" #:fun 'create-emacs-launcher #:profile spguimacs)
+    (list #:program-name "eg" #:fun 'set-editable          #:profile spguimacs)
+    (list #:program-name "kg" #:fun 'pkill-server          #:profile spguimacs)
+    (list #:program-name  "r" #:fun 'create-emacs-launcher #:profile crafted)
+    ;; TODO Move crafted-emacs user config from the project repo to the dotfiles
+    ;; (list #:program-name "er" #:fun 'set-editable          #:profile crafted)
+    (list #:program-name "kr" #:fun 'pkill-server          #:profile crafted)
+    )))
+
 (define-public (scheme-files-service)
   (let* [(m (format #f "~a [scheme-files-service]" m))]
     ;; (format #t "~a Starting ...\n" m)
@@ -354,26 +362,9 @@ Example:
       ;; 'simple-service name target value'. E.g.:
       ;; (simple-service 'my-mcron-job mcron-service-type #~(job '(next-hour (3)) "guix gc -F 2G"))
       (partial simple-service 'scheme-files-service home-files-service-type)
-      (partial
-       append
-       (if (or (is-system-ecke) (is-system-edge))
-           ((comp
-             (partial append search-notes-service-files)
-             (partial map (partial apply service-file-emacs-utils))
-             )
-            (list
-             (list #:program-name "ep" #:scheme-file editable-profiles  #:fun 'set-editable          #:profile #f)
-             (list #:program-name  "d" #:scheme-file launcher-develop   #:fun 'create-emacs-launcher #:profile develop)
-             (list #:program-name "ed" #:scheme-file editable-develop   #:fun 'set-editable          #:profile develop)
-             (list #:program-name "kd" #:scheme-file pkill-develop      #:fun 'pkill-server          #:profile develop)
-             (list #:program-name  "g" #:scheme-file launcher-spguimacs #:fun 'create-emacs-launcher #:profile spguimacs)
-             (list #:program-name "eg" #:scheme-file editable-spguimacs #:fun 'set-editable          #:profile spguimacs)
-             (list #:program-name "kg" #:scheme-file pkill-spguimacs    #:fun 'pkill-server          #:profile spguimacs)
-             (list #:program-name  "r" #:scheme-file launcher-crafted   #:fun 'create-emacs-launcher #:profile crafted)
-             (list #:program-name "er" #:scheme-file editable-crafted   #:fun 'set-editable          #:profile crafted)
-             (list #:program-name "kr" #:scheme-file pkill-crafted      #:fun 'pkill-server          #:profile crafted)
-             ))
-           (list)))
+      (partial append (if (or (is-system-ecke) (is-system-edge))
+                          (emacs-cli-utils)
+                          (list)))
       (partial map (partial apply service-file-general)))
      (list
       ;; pwr and prw do the same

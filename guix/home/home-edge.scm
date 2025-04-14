@@ -34,7 +34,6 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
-  ;; #:use-module (srvc emacs-cli-utils)
   #:use-module ((home-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
