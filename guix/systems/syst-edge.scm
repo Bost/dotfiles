@@ -195,7 +195,7 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let [(linux-version "6.8.0-49")]
+        (let [(linux-version "6.11.0-21")]
           (menu-entry
            (label "Ubuntu 24.04.1")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
@@ -208,7 +208,7 @@
               ))
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))
 
-        (let [(linux-version "6.8.0-51")]
+        (let [(linux-version "6.8.0-57")]
           (menu-entry
            (label "Linux Mint 22 Cinnamon")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))

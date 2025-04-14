@@ -255,7 +255,7 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "6.11.0-13"))
+        (let ((linux-version "6.11.0-21"))
           (menu-entry
            (label "Ubuntu 24.10")
            ;; vmlinuz - compressed linux kernel
