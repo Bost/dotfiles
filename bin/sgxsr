@@ -27,6 +27,9 @@ set -x # Print commands and their arguments as they are executed.
 #      -L $baseLP/common \
 #      $baseLP/systems/common/kernel-version.scm
 
+# TODO implement parameter: -n --no-guix-pull which skips the `guix pull ...` command
+# TODO implement auto-update of linux-version in the bootloader of syst-ecke and syst-edge
+
 guix pull --cores=$cores \
      --channels=$dotf/.config/guix/channels-syst-$hostname.scm
 
