@@ -41,12 +41,12 @@
                (cons #:server-name "develop")
                (cons #:env
                      "/home/bost/.emacs.d.distros/spacemacs/develop/cfg")))
-   (cons #:guix-merge
+   (cons #:guix
          (list (cons #:user-emacs-directory
-                     "/home/bost/.emacs.d.distros/spacemacs/guix-merge/src")
-               (cons #:server-name "guix-merge")
+                     "/home/bost/.emacs.d.distros/spacemacs/guix/src")
+               (cons #:server-name "guix")
                (cons #:env
-                     "/home/bost/.emacs.d.distros/spacemacs/guix-merge/cfg")))
+                     "/home/bost/.emacs.d.distros/spacemacs/guix/cfg")))
 
    (cons #:crafted
          (list (cons #:user-emacs-directory
@@ -58,17 +58,17 @@
 
 ;;; Branches in the spguimacs
 (define-public develop    "develop")
-(define-public guix-merge "guix-merge")
+(define-public guix "guix")
 
 ;; emacs-profiles-config
 (define-public develop   "develop")
-(define-public spguimacs "spguimacs")
+(define-public guix "guix")
 (define-public crafted   "crafted")
 
 (define-public profile->branch-kw
   (list
    (cons develop   #:develop)
-   (cons spguimacs #:guix-merge)
+   (cons guix #:guix)
    (cons crafted   #:crafted)))
 
 ;; TODO the crafted configuration is not managed by guix home
@@ -111,6 +111,6 @@
   "(get-server spacemacs) ;; => \"develop\""
   (get-val profile #:server-name))
 
-(define-public spacemacs-dir (get-src spguimacs))
+(define-public spacemacs-dir (get-src guix))
 
 (module-evaluated)

@@ -30,10 +30,10 @@ cd $dotf
         (lf \"lf.scm ls.scm\"))
 ;; > #t
 
-(lf \".spguimacs\" \".spacemacs\")
-(lf \".spguimacs\" \".spacemacs\")
-(equal? (lf \".spguimacs\" \".spacemacs\")
-        (lf \".spguimacs\" \".spacemacs\"))
+(lf \".bashrc.tuxedo\" \".bashrc.martin\")
+(lf \".bashrc.tuxedo\" \".bashrc.martin\")
+(equal? (lf \".bashrc.tuxedo\" \".bashrc.martin\")
+        (lf \".bashrc.tuxedo\" \".bashrc.martin\"))
 ;; > #t
 "
   (let* [(pwd (getenv "PWD"))]

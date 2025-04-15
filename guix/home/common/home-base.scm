@@ -246,7 +246,7 @@
                                 list-separator))
 
      ;; `guix edit ...' reads $VISUAL and/or $EDITOR environment variables
-     ("EDITOR" . "g") ;; spguimacs; $ which "g": /home/bost/scm-bin/g
+     ("EDITOR" . "g") ;; The 'guix' branch of Spacemacs
 
      ;; My own scripts and guix-home profile take precedence over $PATH.
      ("PATH" . ,((comp

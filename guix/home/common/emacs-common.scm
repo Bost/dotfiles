@@ -52,10 +52,10 @@ defined.
           #:rest args)
   "
 Usage:
-(pkill-server #:gx-dry-run #t #:profile \"spacemacs\" \"rest\" \"args\")
-(pkill-server #:gx-dry-run #t #:profile \"spguimacs\" \"rest\" \"args\")
-(pkill-server                 #:profile \"spacemacs\" \"rest\" \"args\")
-(pkill-server                 #:profile \"spguimacs\" \"rest\" \"args\")
+(pkill-server #:gx-dry-run #t #:profile \"develop\" \"rest\" \"args\")
+(pkill-server #:gx-dry-run #t #:profile \"guix\" \"rest\" \"args\")
+(pkill-server                 #:profile \"develop\" \"rest\" \"args\")
+(pkill-server                 #:profile \"guix\" \"rest\" \"args\")
 "
   (let* [(f "[pkill-server]")]
     (when verbose
@@ -84,7 +84,7 @@ Usage:
           #:key (verbose #f) utility-name gx-dry-run profile socket
           #:rest args)
   "Uses `user' from settings
-(create-emacs-launcher #:profile \"spacemacs\" \"rest\" \"args\")
+(create-emacs-launcher #:profile \"develop\" \"rest\" \"args\")
 "
   (let* [(f "[create-emacs-launcher]")]
     (when verbose
@@ -114,7 +114,7 @@ Usage:
       ((comp
         ;; (lambda (p) (format #t "4:\n~a\n" p) p)
 ;;; Search for the full command line:
-;;; $ pgrep --full --euid bost "/home/bost/.guix-home/profile/bin/emacs --with-profile=spacemacs --daemon"
+;;; $ pgrep --full --euid bost "/home/bost/.guix-home/profile/bin/emacs --with-profile=develop --daemon"
         (lambda (client-cmd)
           (if (string=? (compute-cmd user init-cmd client-cmd init-cmd)
                         client-cmd)
@@ -149,10 +149,10 @@ Usage:
           #:rest args)
   "
 Usage:
-(set-editable #:gx-dry-run #t #:profile \"spacemacs\" \"rest\" \"args\")
-(set-editable #:gx-dry-run #t #:profile \"spguimacs\" \"rest\" \"args\")
-(set-editable                 #:profile \"spacemacs\" \"rest\" \"args\")
-(set-editable                 #:profile \"spguimacs\" \"rest\" \"args\")
+(set-editable #:gx-dry-run #t #:profile \"develop\" \"rest\" \"args\")
+(set-editable #:gx-dry-run #t #:profile \"guix\" \"rest\" \"args\")
+(set-editable                 #:profile \"develop\" \"rest\" \"args\")
+(set-editable                 #:profile \"guix\" \"rest\" \"args\")
 "
   (let* [(f "[set-editable]")]
     (when verbose
@@ -176,12 +176,12 @@ Usage:
             (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
           (let* [(dst-src (if profile
                               (cons (str (get-cfg profile) "/" emacs-init-file)
-                                    (let* [(distros-path "/.emacs.d.distros")]
-                                      ((comp
-                                        (lambda (path) (user-dotf distros-path path "/" emacs-init-file))
-                                        (lambda (p) (format #t "1 ~a\n" p) p)
-                                        (partial substring (get-src profile)))
-                                       (string-length (user-home distros-path)))))
+                                    (let* [(distros-path "/.emacs.d.distros")])
+                                    ((comp
+                                      (lambda (path) (user-dotf distros-path path "/" emacs-init-file))
+                                      (lambda (p) (format #t "1 ~a\n" p) p)
+                                      (partial substring (get-src profile)))
+                                     (string-length (user-home distros-path))))
                               (let* [(file ".emacs-profiles.el")]
                                 (cons (user-home "/" file)
                                       (user-dotf "/" file)))))

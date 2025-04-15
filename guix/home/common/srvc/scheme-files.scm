@@ -280,8 +280,8 @@ Example:
                             ;; (lambda (v) (format #t "~a 1\n" m) v)
                             )
                            (list
-                            ;; (get-src spguimacs) points to a spacemacs-distros
-                            (list (substring (get-src spguimacs)
+                            ;; (get-src guix) points to a spacemacs-distros
+                            (list (substring (get-src guix)
                                              (string-length (str home "/")))
                                   "core/el")
                             (list "dev/kill-buffers" "el")
@@ -345,9 +345,9 @@ Example:
     (list #:program-name  "d" #:fun 'create-emacs-launcher #:profile develop)
     (list #:program-name "ed" #:fun 'set-editable          #:profile develop)
     (list #:program-name "kd" #:fun 'pkill-server          #:profile develop)
-    (list #:program-name  "g" #:fun 'create-emacs-launcher #:profile spguimacs)
-    (list #:program-name "eg" #:fun 'set-editable          #:profile spguimacs)
-    (list #:program-name "kg" #:fun 'pkill-server          #:profile spguimacs)
+    (list #:program-name  "g" #:fun 'create-emacs-launcher #:profile guix)
+    (list #:program-name "eg" #:fun 'set-editable          #:profile guix)
+    (list #:program-name "kg" #:fun 'pkill-server          #:profile guix)
     (list #:program-name  "r" #:fun 'create-emacs-launcher #:profile crafted)
     ;; TODO Move crafted-emacs user config from the project repo to the dotfiles
     ;; (list #:program-name "er" #:fun 'set-editable          #:profile crafted)
