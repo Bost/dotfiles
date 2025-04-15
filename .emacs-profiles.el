@@ -10,11 +10,11 @@
    (env . (("SPACEMACSDIR" .
             "~/.emacs.d.distros/spacemacs/develop/cfg")))))
 
- ("guix-merge" .
-  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/guix-merge/src")
-   (server-name . "guix-merge")
+ ("guix" .
+  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/guix/src")
+   (server-name . "guix")
    (env . (("SPACEMACSDIR" .
-            "~/.emacs.d.distros/spacemacs/guix-merge/cfg")))))
+            "~/.emacs.d.distros/spacemacs/guix/cfg")))))
 
  ("crafted" .
   ((user-emacs-directory . "~/.emacs.d.distros/crafted-emacs")

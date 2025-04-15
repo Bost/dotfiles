@@ -144,6 +144,20 @@ Usage:
 (define* (user-dotf #:rest args) (apply str dotf args))
 ;; ### END: from (fs-utils)
 
+(define (make-pair-dst-src profile)
+  (if profile
+      (cons (str (get-cfg profile) "/" emacs-init-file)
+            (let* [(distros-path "/.emacs.d.distros")]
+              ((comp
+                (lambda (path)
+                  (user-dotf distros-path path "/" emacs-init-file))
+                (lambda (p) (format #t "1 ~a\n" p) p)
+                (partial substring (get-src profile)))
+               (string-length (user-home distros-path)))))
+      (let* [(file ".emacs-profiles.el")]
+        (cons (user-home "/" file)
+              (user-dotf "/" file)))))
+
 (define* (set-editable
           #:key (verbose #f) utility-name gx-dry-run profile socket
           #:rest args)
@@ -174,17 +188,7 @@ Usage:
           (begin
             (format #t "~a ~a monad: ~a\n" m f monad)
             (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
-          (let* [(dst-src (if profile
-                              (cons (str (get-cfg profile) "/" emacs-init-file)
-                                    (let* [(distros-path "/.emacs.d.distros")])
-                                    ((comp
-                                      (lambda (path) (user-dotf distros-path path "/" emacs-init-file))
-                                      (lambda (p) (format #t "1 ~a\n" p) p)
-                                      (partial substring (get-src profile)))
-                                     (string-length (user-home distros-path))))
-                              (let* [(file ".emacs-profiles.el")]
-                                (cons (user-home "/" file)
-                                      (user-dotf "/" file)))))
+          (let* [(dst-src (make-pair-dst-src profile))
                  (dst (car dst-src))
                  (src (cdr dst-src))]
             (with-monad monad
