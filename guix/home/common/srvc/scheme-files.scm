@@ -73,7 +73,6 @@
               (lambda (s) (string-match (basename re) s)))))))))
 (testsymb 'expand-pattern)
 
-
 (define (full-filepaths patterns)
   "Returns a string containing paths. E.g.:
 (full-filepaths (list \"ai\")) =>

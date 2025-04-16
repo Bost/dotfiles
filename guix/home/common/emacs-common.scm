@@ -152,7 +152,7 @@ Usage:
                 (lambda (path)
                   (user-dotf distros-path path "/" emacs-init-file))
                 (lambda (p) (format #t "1 ~a\n" p) p)
-                (partial substring (get-src profile)))
+                (partial substring (get-cfg profile)))
                (string-length (user-home distros-path)))))
       (let* [(file ".emacs-profiles.el")]
         (cons (user-home "/" file)
