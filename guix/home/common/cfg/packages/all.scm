@@ -177,7 +177,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (testsymb 'kde-dependent-packages)
 
 (define (large-packages-ecke)
-  "Large packages, slow to build, graft, download, etc."
+  "Large packages, slow to build, graft, download, etc. See `guix size <package>`"
   (append
    (list
     ;; 35.8MiB
@@ -208,7 +208,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
   "Large packages, slow to build, graft, download, etc."
   (list
    ;; Default browser. GNU version of the Firefox.
-   icecat ;; 68.9MiB
+   icecat ;; 1839.7 MiB
 
    qemu ;; 688 MiB
 
@@ -234,6 +234,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; icedtea ; ~240MiB
    ))
 (testsymb 'large-packages-edge-ecke)
+
+#|
+,use (guix scripts size)
+(guix-size "firefox")
+|#
 
 (define (basic-packages)
   (list
