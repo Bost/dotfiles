@@ -2426,40 +2426,45 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;;
   ;; `parse-colon-path' returns a list with items containing trailing slash '/',
   ;; geiser-guile-load-path doesn't like it.
-  (when-let ((glp-env (getenv "glp")))
-    (let ((glp (split-string glp-env ":"))
-          (dgx (getenv "dgx")))
-      ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
-      (add-hook 'scheme-mode-hook #'guix-devel-mode)
+  (when-let ((glp-env (getenv "glp"))) ; when the environment variable is defined
+    ;; `glp' and `dgx' are referenced in (with-eval-after-load ...)
+    ;; macros. Can't bind them using (let ...). The bindings won't exist
+    ;; when the bodies of the macros are evaluated.
+    (setq glp (split-string glp-env ":"))
+    (setq dgx (getenv "dgx"))
 
-      ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
-      ;; TODO move this to project's .dir-locals.el
-      (with-eval-after-load #'geiser-guile
-        (mapcar
-         ;; Add ELEMENT to the value of LIST-VAR if it isn't there yet.
-         (-partial #'add-to-list 'geiser-guile-load-path)
-         glp))
-      (with-eval-after-load 'yasnippet
-        (add-to-list #'yas-snippet-dirs (concat dgx "/etc/snippets/yas")))
+    ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
+    (add-hook 'scheme-mode-hook #'guix-devel-mode)
 
-      ;; TODO extend the GuixOS with a service providing user full-name and email
-      ;; or parse (one of):
-      ;;   /run/current-system/configuration.scm
-      ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
+    ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
+    ;; TODO move this to project's .dir-locals.el
+    (with-eval-after-load 'geiser-guile
+      (mapcar
+       ;; Add ELEMENT to the value of LIST-VAR if it isn't there yet.
+       (-partial #'add-to-list 'geiser-guile-load-path)
+       glp))
 
-      (setq
-       ;; Location for geiser-history.guile and geiser-history.racket. (Default
-       ;; "~/.geiser_history")
-       ;; geiser-repl-history-filename "..."
-       user-full-name         (getenv "user_full_name")
-       user-mail-address      (getenv "user_mail_address")
-       copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
+    (with-eval-after-load 'yasnippet
+      (add-to-list 'yas-snippet-dirs (concat dgx "/etc/snippets/yas")))
 
-      (load-file (concat dgx "/etc/copyright.el"))
-      ;; check if the copyright is up to date M-x copyright-update.
-      ;; automatically add copyright after each buffer save
-      ;; (add-hook 'after-save-hook 'copyright-update)
-      ))
+    ;; TODO extend the GuixOS with a service providing user full-name and email
+    ;; or parse (one of):
+    ;;   /run/current-system/configuration.scm
+    ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
+
+    (setq
+     ;; Location for geiser-history.guile and geiser-history.racket. (Default
+     ;; "~/.geiser_history")
+     ;; geiser-repl-history-filename "..."
+     user-full-name         (getenv "user_full_name")
+     user-mail-address      (getenv "user_mail_address")
+     copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
+
+    (load-file (concat dgx "/etc/copyright.el"))
+    ;; check if the copyright is up to date M-x copyright-update.
+    ;; automatically add copyright after each buffer save
+    ;; (add-hook 'after-save-hook #'copyright-update)
+    )
 
   (add-hook 'python-mode-hook
             (lambda ()
