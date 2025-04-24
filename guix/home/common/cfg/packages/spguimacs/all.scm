@@ -40,6 +40,7 @@
 
 (define bst-packages
   (list
+   bst:emacs-nerd-icons
    bst:emacs-flyspell-correct-helm
    bst:emacs-company-php
    bst:emacs-company-phpactor
