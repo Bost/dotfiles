@@ -1755,6 +1755,26 @@ before packages are loaded."
               "l" #'helm-cider-repl-history))
           '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
 
+  (spacemacs|add-cycle
+      defun-narrow-modes
+    '(#'narrow-to-defun narrow-to-page #'narrow-to-region #'widen)
+    ;; :evil-leader "tnn"
+    :documentation "Cycle through the narrow ? modes ?")
+
+  (spacemacs|add-cycle
+      narrow-widen
+    '(#'narrow-to-defun #'widen)
+    ;; :evil-leader "tnn"
+    :documentation "Toggle between `narrow-to-defun' and `widen'")
+
+  ;; TODO spacemacs/cycle-large-file-settings doesn't work
+  (spacemacs|add-cycle
+      large-file-settings
+    '(#'tw-shenanigans-on #'tw-shenanigans-off)
+    my=last-large-file-settings
+    :start-func 'my=last-large-file-settings
+    :documentation "Cycle between `tw-shenanigans-on' and `tw-shenanigans-off'")
+
   (defun my=racket-repl-clear ()
     (interactive)
     (let ((inhibit-read-only t))
@@ -1848,6 +1868,8 @@ Some binding snippets / examples:
      ("s-1"       . my=delete-other-windows)
      ("S-s-<f8>"    . ace-swap-window)
      ;; ("S-s-<f8>" . transpose-frame)
+     ("s-N"       . spacemacs/cycle-defun-narrow-modes)
+     ("s-n"       . spacemacs/cycle-narrow-widen)
      ;; ("s-2"    . tw-split-other-window-below)
      ("s-2"       . split-window-below) ; ~SPC w -~
      ;; see ~SPC w /~ and ~SPC w 2~
@@ -2000,6 +2022,9 @@ Some binding snippets / examples:
 
      ;; TODO what's the difference between insert and insertchar?
      ("S-s-<insert>" . tw-yank-and-select)
+
+     ("s-L"   . spacemacs/cycle-line-number-types)
+     ("C-s-l" . spacemacs/cycle-large-file-settings)
 
      ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
      ;; zop-up-to-char works as zop-to-char but stop just before target
@@ -2182,11 +2207,13 @@ Some binding snippets / examples:
   ;; TODO This doesn't work:
   ;; (with-eval-after-load 'magit-status-mode
   ;;   (bind-keys :map magit-status-mode-map
+  ;;              ;; TODO use my cycle functionality
   ;;              ("s-\\" . magit-diff-toggle-refine-hunk)))
 
   ;; TODO This doesn't work:
   ;; (with-eval-after-load 'magit-revision-mode
   ;;   (bind-keys :map magit-revision-mode-map
+  ;;              ;; TODO use my cycle functionality
   ;;              ("s-\\" . magit-diff-toggle-refine-hunk)))
 
   (with-eval-after-load 'magit-mode
