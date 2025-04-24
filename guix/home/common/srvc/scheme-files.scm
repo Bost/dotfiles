@@ -341,12 +341,19 @@ Example:
     (partial map (partial apply service-file-emacs-utils)))
    (list
     (list #:program-name "ep" #:fun 'set-editable          #:profile #f)
+
     (list #:program-name  "d" #:fun 'create-emacs-launcher #:profile develop)
     (list #:program-name "ed" #:fun 'set-editable          #:profile develop)
     (list #:program-name "kd" #:fun 'pkill-server          #:profile develop)
+    
+    (list #:program-name  "cy" #:fun 'create-emacs-launcher #:profile cycle)
+    (list #:program-name "ecy" #:fun 'set-editable          #:profile cycle)
+    (list #:program-name "kcy" #:fun 'pkill-server          #:profile cycle)
+
     (list #:program-name  "g" #:fun 'create-emacs-launcher #:profile guix)
     (list #:program-name "eg" #:fun 'set-editable          #:profile guix)
     (list #:program-name "kg" #:fun 'pkill-server          #:profile guix)
+
     (list #:program-name  "r" #:fun 'create-emacs-launcher #:profile crafted)
     ;; TODO Move crafted-emacs user config from the project repo to the dotfiles
     ;; (list #:program-name "er" #:fun 'set-editable          #:profile crafted)
