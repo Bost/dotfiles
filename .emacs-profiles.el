@@ -10,6 +10,12 @@
    (env . (("SPACEMACSDIR" .
             "~/.emacs.d.distros/spacemacs/develop/cfg")))))
 
+ ("cycle" .
+  ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/cycle/src")
+   (server-name . "cycle")
+   (env . (("SPACEMACSDIR" .
+            "~/.emacs.d.distros/spacemacs/cycle/cfg")))))
+
  ("guix" .
   ((user-emacs-directory . "~/.emacs.d.distros/spacemacs/guix/src")
    (server-name . "guix")

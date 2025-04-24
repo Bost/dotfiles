@@ -41,6 +41,13 @@
                (cons #:server-name "develop")
                (cons #:env
                      "/home/bost/.emacs.d.distros/spacemacs/develop/cfg")))
+   (cons #:cycle
+         (list (cons #:user-emacs-directory
+                     "/home/bost/.emacs.d.distros/spacemacs/cycle/src")
+               (cons #:server-name "cycle")
+               (cons #:env
+                     "/home/bost/.emacs.d.distros/spacemacs/cycle/cfg")))
+
    (cons #:guix
          (list (cons #:user-emacs-directory
                      "/home/bost/.emacs.d.distros/spacemacs/guix/src")
@@ -56,20 +63,17 @@
                      "/home/bost/.emacs.d.distros/crafted-emacs/personal")))))
 (testsymb 'emacs-profiles-config)
 
-;;; Branches in the spguimacs
-(define-public develop    "develop")
-(define-public guix "guix")
-
-;; emacs-profiles-config
-(define-public develop   "develop")
-(define-public guix "guix")
-(define-public crafted   "crafted")
+(define-public develop "develop")
+(define-public cycle   "cycle")
+(define-public guix    "guix")
+(define-public crafted "crafted")
 
 (define-public profile->branch-kw
   (list
-   (cons develop   #:develop)
-   (cons guix #:guix)
-   (cons crafted   #:crafted)))
+   (cons develop #:develop)
+   (cons cycle   #:cycle)
+   (cons guix    #:guix)
+   (cons crafted #:crafted)))
 
 ;; TODO the crafted configuration is not managed by guix home
 (define-public spacemacs-profiles
