@@ -4,6 +4,7 @@
   #:use-module (srfi srfi-1)
   #:use-module (gnu packages) ;; specification->package+output
   #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
+  #:use-module ((bost gnu packages emacs-xyz-my) #:prefix bst-my:)
   #:use-module ((gnu packages emacs-xyz) #:prefix gnu:)
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
@@ -40,121 +41,11 @@
 
 (define bst-packages
   (list
-   bst:emacs-nerd-icons
-   bst:emacs-flyspell-correct-helm
-   bst:emacs-company-php
-   bst:emacs-company-phpactor
-   bst:emacs-git-commit
-   bst:emacs-lv
-   bst:emacs-magit-section
-   bst:emacs-org-category-capture
-   bst:emacs-org-project-capture
-   bst:emacs-treemacs-evil
-   bst:emacs-treemacs-icons-dired
-   bst:emacs-treemacs-magit
-   bst:emacs-treemacs-persp
-   bst:emacs-treemacs-projectile
-   bst:emacs-use-package-chords
+   bst-my:emacs-helm
+   bst-my:emacs-magit-section
+   bst-my:emacs-pdf-tools
+   bst-my:emacs-pdf-view-restore
 
-   ;;; bst:emacs-omtose-phellack-theme produces:
-;;;    Error loading autoloads: (file-missing Cannot open load file No such file or directory /gnu/store/...-emacs-omtose-phellack-theme-0.2.0-0.66f9963/share/emacs/site-lisp/omtose-phellack-theme-0.2.0-0.66f9963/omtose-phellack-theme-autoloads)
-;;; but this doesn't stop spacemacs from running.
-   bst:emacs-omtose-phellack-theme
-
-
-   bst:emacs-erc-image
-   bst:emacs-holy-mode
-   bst:emacs-live-py-mode
-   bst:emacs-drupal-mode
-   bst:emacs-vim-colors
-   bst:emacs-vim-powerline
-   bst:emacs-molokai-theme
-   bst:emacs-helm-git-grep
-   bst:emacs-hide-comnt
-   bst:emacs-hybrid-mode
-   bst:emacs-vimish-fold
-   bst:emacs-evil-vimish-fold
-   bst:emacs-livid-mode
-   bst:emacs-helm-purpose
-   bst:emacs-helm-comint
-   bst:emacs-gitignore-templates
-   bst:emacs-flycheck-pos-tip
-   bst:emacs-flycheck-elsa
-   bst:emacs-flycheck-credo
-   bst:emacs-flycheck-bashate
-   bst:emacs-pip-requirements
-   bst:emacs-phpunit
-   bst:emacs-org-projectile
-   bst:emacs-evil-visual-mark-mode
-   bst:emacs-evil-textobj-line
-   bst:emacs-evil-lisp-state
-   bst:emacs-dired-quick-sort
-   bst:emacs-codegpt
-   bst:emacs-code-review
-   bst:emacs-evil-tutor
-   bst:emacs-evil-easymotion
-   bst:emacs-company-shell
-   bst:emacs-define-word
-   bst:emacs-flx-ido
-   bst:emacs-gh-md
-   bst:emacs-dall-e
-   bst:emacs-elisp-def
-   bst:emacs-erc-view-log
-   bst:emacs-erc-yt
-   bst:emacs-erc-tweet
-   bst:emacs-emr
-   bst:emacs-php-extras
-   bst:emacs-overseer
-   bst:emacs-haml-mode
-   bst:emacs-string-edit-at-point
-   bst:emacs-shfmt
-   bst:emacs-sass-mode
-   bst:emacs-reveal-in-folder
-   bst:emacs-poetry
-   bst:emacs-pipenv
-   bst:emacs-clean-aindent-mode
-   bst:emacs-pdf-view-restore
-   bst:emacs-maven-test-mode
-   bst:emacs-kbd-mode
-   bst:emacs-journalctl-mode
-   bst:emacs-importmagic
-   bst:emacs-impatient-mode
-   bst:emacs-pytest
-   bst:emacs-hungry-delete
-   bst:emacs-highlight-parentheses
-   bst:emacs-omtose-phellack-themes
-   bst:emacs-open-junk-file
-   bst:emacs-ob-elixir
-   bst:emacs-orgit-forge
-   bst:emacs-load-env-vars
-   bst:emacs-groovy-mode
-   bst:emacs-pyenv-mode
-   bst:emacs-eval-sexp-fu
-   bst:emacs-cython-mode
-   bst:emacs-geben
-   bst:emacs-lsp-latex
-   bst:emacs-prettier-js
-   bst:emacs-systemd
-   bst:emacs-sqlite3
-   bst:emacs-mvn
-   bst:emacs-smeargle
-   bst:emacs-pcsv
-   bst:emacs-core-load-paths
-   bst:emacs-pylookup
-   bst:emacs-wfnames
-   bst:emacs-indent-guide
-   bst:emacs-insert-shebang
-   bst:emacs-xhair
-   bst:emacs-vline
-   bst:emacs-uuidgen
-   bst:emacs-scss-mode
-   bst:emacs-helm-pydoc
-   bst:emacs-php-auto-yasnippets
-   bst:emacs-js-doc
-   bst:emacs-multi-line
-   bst:emacs-helm-dictionary
-   bst:emacs-pcache
-   bst:emacs-groovy-imports
    bst:emacs-ac-php-core
    bst:emacs-ample-zen-theme
    bst:emacs-anti-zenburn-theme
@@ -169,15 +60,24 @@
    bst:emacs-cherry-blossom-theme
    bst:emacs-chocolate
    bst:emacs-cider-hydra
+   bst:emacs-clean-aindent-mode
    bst:emacs-clues-theme
+   bst:emacs-code-review
+   bst:emacs-codegpt
    bst:emacs-color-theme
    bst:emacs-color-theme-sanityinc-solarized
    bst:emacs-company-anaconda
+   bst:emacs-company-php
+   bst:emacs-company-phpactor
+   bst:emacs-company-shell
    bst:emacs-company-statistics
    bst:emacs-company-web
    bst:emacs-copilot
    bst:emacs-copy-sexp
+   bst:emacs-core-load-paths
+   bst:emacs-cython-mode
    bst:emacs-dakrone-theme
+   bst:emacs-dall-e
    bst:emacs-dap-chrome
    bst:emacs-dap-launch
    bst:emacs-dap-overlays
@@ -186,43 +86,93 @@
    bst:emacs-darkmine-theme
    bst:emacs-darkokai-theme
    bst:emacs-darktooth-theme
+   bst:emacs-define-word
+   bst:emacs-dired-quick-sort
    bst:emacs-django-theme
+   bst:emacs-drupal-mode
+   bst:emacs-elisp-def
    bst:emacs-emacsql-sqlite3
+   bst:emacs-emr
+   bst:emacs-erc-image
    bst:emacs-erc-social-graph
+   bst:emacs-erc-tweet
+   bst:emacs-erc-view-log
+   bst:emacs-erc-yt
    bst:emacs-espresso-theme
+   bst:emacs-eval-sexp-fu
+   bst:emacs-evil-easymotion
    bst:emacs-evil-iedit-state
+   bst:emacs-evil-lisp-state
+   bst:emacs-evil-textobj-line
+   bst:emacs-evil-tutor
+   bst:emacs-evil-vimish-fold
+   bst:emacs-evil-visual-mark-mode
    bst:emacs-eziam-themes
    bst:emacs-farmhouse-light-mod-theme
    bst:emacs-farmhouse-themes
    bst:emacs-flatland-theme
    bst:emacs-flatui-theme
    bst:emacs-flx
+   bst:emacs-flx-ido
+   bst:emacs-flycheck-bashate
+   bst:emacs-flycheck-credo
+   bst:emacs-flycheck-elsa
    bst:emacs-flycheck-joker
+   bst:emacs-flycheck-pos-tip
+   bst:emacs-flyspell-correct-helm
    bst:emacs-font-utils
    bst:emacs-frame-cmds
    bst:emacs-frame-fns
    bst:emacs-gandalf-theme
+   bst:emacs-geben
+   bst:emacs-gh-md
+   bst:emacs-git-commit
+   bst:emacs-gitignore-templates
    bst:emacs-gotham-theme
    bst:emacs-grandshell-theme
+   bst:emacs-groovy-imports
+   bst:emacs-groovy-mode
    bst:emacs-gruber-darker
    bst:emacs-gruber-darker-theme
+   bst:emacs-haml-mode
    bst:emacs-hc-zenburn-theme
    bst:emacs-helm-cider-history
+   bst:emacs-helm-comint
+   bst:emacs-helm-dictionary
+   bst:emacs-helm-git-grep
+   bst:emacs-helm-purpose
+   bst:emacs-helm-pydoc
    bst:emacs-hemisu-theme
    bst:emacs-heroku-theme
+   bst:emacs-hide-comnt
+   bst:emacs-highlight-parentheses
    bst:emacs-hlint-refactor
+   bst:emacs-holy-mode
+   bst:emacs-hungry-delete
+   bst:emacs-hybrid-mode
+   bst:emacs-impatient-mode
+   bst:emacs-importmagic
+   bst:emacs-indent-guide
    bst:emacs-inkpot-theme
+   bst:emacs-insert-shebang
    bst:emacs-ir-black-theme
    bst:emacs-jazz-theme
    bst:emacs-jbeans-theme
+   bst:emacs-journalctl-mode
+   bst:emacs-js-doc
    bst:emacs-js2-refactor
    bst:emacs-json-navigator
    bst:emacs-jump-last
    bst:emacs-kaocha-runner
    bst:emacs-kaolin-themes
+   bst:emacs-kbd-mode
    bst:emacs-kill-buffers
    bst:emacs-light-soap-theme
+   bst:emacs-live-py-mode
+   bst:emacs-livid-mode
+   bst:emacs-load-env-vars
    bst:emacs-lsp-haskell
+   bst:emacs-lsp-latex
    bst:emacs-lsp-lens
    bst:emacs-lsp-metals
    bst:emacs-lsp-metals-protocol
@@ -233,48 +183,88 @@
    bst:emacs-lsp-python-ms
    bst:emacs-lsp-volar
    bst:emacs-lush-theme
+   bst:emacs-lv
    bst:emacs-madhat2r-theme
    bst:emacs-majapahit-themes
    bst:emacs-markdown-toc
    bst:emacs-material-theme
+   bst:emacs-maven-test-mode
    bst:emacs-minimal-theme
    bst:emacs-moe-theme
+   bst:emacs-molokai-theme
    bst:emacs-monochrome-theme
+   bst:emacs-multi-line
    bst:emacs-mustang-theme
+   bst:emacs-mvn
    bst:emacs-naquadah-theme
+   bst:emacs-nerd-icons
    bst:emacs-noctilux-theme
+   bst:emacs-ob-elixir
    bst:emacs-obsidian-theme
    bst:emacs-occidental-theme
    bst:emacs-oldlace-theme
+   bst:emacs-omtose-phellack-theme
+   bst:emacs-omtose-phellack-themes
+   bst:emacs-open-junk-file
    bst:emacs-openai
+   bst:emacs-org-category-capture
+   bst:emacs-org-project-capture
+   bst:emacs-org-projectile
    bst:emacs-organic-green-theme
+   bst:emacs-orgit-forge
    bst:emacs-origami
+   bst:emacs-overseer
+   bst:emacs-pcache
+   bst:emacs-pcsv
    bst:emacs-phoenix-dark-mono-theme
    bst:emacs-phoenix-dark-pink-theme
+   bst:emacs-php-auto-yasnippets
+   bst:emacs-php-extras
    bst:emacs-php-runtime
    bst:emacs-phpactor
+   bst:emacs-phpunit
+   bst:emacs-pip-requirements
+   bst:emacs-pipenv
    bst:emacs-planet-theme
+   bst:emacs-poetry
    bst:emacs-popwin
+   bst:emacs-prettier-js
    bst:emacs-professional-theme
    bst:emacs-purple-haze-theme
+   bst:emacs-pyenv-mode
+   bst:emacs-pylookup
+   bst:emacs-pytest
+   bst:emacs-reveal-in-folder
    bst:emacs-reverse-theme
+   bst:emacs-sass-mode
    bst:emacs-sayid
+   bst:emacs-scss-mode
    bst:emacs-seti-theme
+   bst:emacs-shfmt
    bst:emacs-slim-mode
+   bst:emacs-smeargle
    bst:emacs-smyx-theme
    bst:emacs-soft-charcoal-theme
    bst:emacs-soft-morning-theme
    bst:emacs-soft-stone-theme
+   bst:emacs-sqlite3
+   bst:emacs-string-edit-at-point
    bst:emacs-subatomic-theme
    bst:emacs-subatomic256-theme
    bst:emacs-sublime-themes
    bst:emacs-sunny-day-theme
+   bst:emacs-systemd
    bst:emacs-tango-2-theme
    bst:emacs-tango-plus-theme
    bst:emacs-tangotango-theme
    bst:emacs-tblui
    bst:emacs-term-cursor
    bst:emacs-toxi-theme
+   bst:emacs-treemacs-evil
+   bst:emacs-treemacs-icons-dired
+   bst:emacs-treemacs-magit
+   bst:emacs-treemacs-persp
+   bst:emacs-treemacs-projectile
    bst:emacs-treemacs-treelib
    bst:emacs-tweaks
    bst:emacs-twilight-anti-bright-theme
@@ -284,16 +274,24 @@
    bst:emacs-underwater-theme
    bst:emacs-unicode-fonts
    bst:emacs-use-package
+   bst:emacs-use-package-chords
+   bst:emacs-uuidgen
    bst:emacs-vi-tilde-fringe
+   bst:emacs-vim-colors
+   bst:emacs-vim-powerline
+   bst:emacs-vimish-fold
+   bst:emacs-vline
    bst:emacs-web-completion-data
+   bst:emacs-wfnames
    bst:emacs-white-sand-theme
    bst:emacs-winum
    bst:emacs-writeroom-mode
+   bst:emacs-xhair
    bst:emacs-zen-and-art-theme
    bst:emacs-zonokai-emacs
    bst:emacs-zoom-frm
    ))
-(testsymb-trace 'bst-packages)
+(testsymb 'bst-packages)
 
 #|
 (define G (general-packages))
