@@ -4,7 +4,6 @@
   #:use-module (srfi srfi-1)
   #:use-module (gnu packages) ;; specification->package+output
   #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
-  #:use-module ((bost gnu packages emacs-xyz-my) #:prefix bst-my:)
   #:use-module ((gnu packages emacs-xyz) #:prefix gnu:)
   #:use-module (cfg packages spguimacs needed)
   #:use-module (cfg packages spguimacs available)
@@ -41,11 +40,6 @@
 
 (define bst-packages
   (list
-   bst-my:emacs-helm
-   bst-my:emacs-magit-section
-   bst-my:emacs-pdf-tools
-   bst-my:emacs-pdf-view-restore
-
    bst:emacs-ac-php-core
    bst:emacs-ample-zen-theme
    bst:emacs-anti-zenburn-theme
@@ -136,6 +130,7 @@
    bst:emacs-gruber-darker-theme
    bst:emacs-haml-mode
    bst:emacs-hc-zenburn-theme
+   bst:emacs-helm
    bst:emacs-helm-cider-history
    bst:emacs-helm-comint
    bst:emacs-helm-dictionary
@@ -185,6 +180,8 @@
    bst:emacs-lush-theme
    bst:emacs-lv
    bst:emacs-madhat2r-theme
+   bst:emacs-magit
+   bst:emacs-magit-section
    bst:emacs-majapahit-themes
    bst:emacs-markdown-toc
    bst:emacs-material-theme
@@ -216,6 +213,8 @@
    bst:emacs-overseer
    bst:emacs-pcache
    bst:emacs-pcsv
+   bst:emacs-pdf-tools
+   bst:emacs-pdf-view-restore
    bst:emacs-phoenix-dark-mono-theme
    bst:emacs-phoenix-dark-pink-theme
    bst:emacs-php-auto-yasnippets
