@@ -1755,24 +1755,24 @@ before packages are loaded."
           '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
 
   (spacemacs|add-cycle
-      defun-narrow-modes
-    '(#'narrow-to-defun narrow-to-page #'narrow-to-region #'widen)
-    ;; :evil-leader "tnn"
-    :documentation "Cycle through the narrow ? modes ?")
+   defun-narrow-modes
+   '(#'narrow-to-defun narrow-to-page #'narrow-to-region #'widen)
+   ;; :evil-leader "tnn"
+   :documentation "Cycle through the narrow ? modes ?")
 
   (spacemacs|add-cycle
-      narrow-widen
-    '(#'narrow-to-defun #'widen)
-    ;; :evil-leader "tnn"
-    :documentation "Toggle between `narrow-to-defun' and `widen'")
+   narrow-widen
+   '(#'narrow-to-defun #'widen)
+   ;; :evil-leader "tnn"
+   :documentation "Toggle between `narrow-to-defun' and `widen'")
 
   ;; TODO spacemacs/cycle-large-file-settings doesn't work
   (spacemacs|add-cycle
-      large-file-settings
-    '(#'tw-shenanigans-on #'tw-shenanigans-off)
-    my=last-large-file-settings
-    :start-func 'my=last-large-file-settings
-    :documentation "Cycle between `tw-shenanigans-on' and `tw-shenanigans-off'")
+   large-file-settings
+   '(#'tw-shenanigans-on #'tw-shenanigans-off)
+   my=last-large-file-settings
+   :start-func 'my=last-large-file-settings
+   :documentation "Cycle between `tw-shenanigans-on' and `tw-shenanigans-off'")
 
   (defun my=racket-repl-clear ()
     (interactive)
