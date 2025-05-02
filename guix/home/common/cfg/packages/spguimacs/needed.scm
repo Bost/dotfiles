@@ -561,7 +561,8 @@
    "emacs-transient"
    "emacs-transpose-frame"
    "emacs-treemacs"
-   "emacs-treemacs-extra"
+   "emacs-treemacs-projectile"
+   ;; "emacs-treemacs-extra" ;; bst:emacs-treemacs contains what was before in this package
    "emacs-treepy"
    "emacs-tweaks"
    "emacs-twilight-anti-bright-theme"
