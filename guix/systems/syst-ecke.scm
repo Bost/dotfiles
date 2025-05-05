@@ -255,12 +255,13 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "6.11.0-21"))
+        (let ((linux-version "6.11.0-25"))
           (menu-entry
            (label "Ubuntu 24.10")
            ;; vmlinuz - compressed linux kernel
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
+            ;; See /run/media/bost/fs-ubu-22.04.3/boot/grub/grub.cfg
             '("root=UUID=fe7ecf10-c42e-4bbf-b377-3a9346088e63"
               "ro"     ; mount the root filesystem as read only
               "quiet"  ; don't display console messages

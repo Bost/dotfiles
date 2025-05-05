@@ -195,12 +195,12 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let [(linux-version "6.11.0-21")]
+        (let [(linux-version "6.11.0-25")]
           (menu-entry
-           (label "Ubuntu 24.04.1")
+           (label "Ubuntu 24.04.2 LTS")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
-            ;; See /media/bost/c99384b9-.../boot/grub/grub.cfg
+            ;; See /run/media/bost/c99384b9-.../boot/grub/grub.cfg
             '("root=UUID=c99384b9-1611-4318-a2d0-705e9b0c9007"
               "ro"     ; mount the root disk read only
               "quiet"  ; don't display console messages
@@ -208,9 +208,9 @@
               ))
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))
 
-        (let [(linux-version "6.8.0-57")]
+        (let [(linux-version "6.8.0-59")]
           (menu-entry
-           (label "Linux Mint 22 Cinnamon")
+           (label "Linux Mint 22.1 Xia")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
             ;; See /media/bost/c99384b9-.../boot/grub/grub.cfg
