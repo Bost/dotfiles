@@ -178,7 +178,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
   ((comp
     (lambda (lst)
       (if (or (is-system-edge) (is-system-ecke))
-          (append 
+          (append
            (list
             (channel-hask-clj)
             (channel-games)

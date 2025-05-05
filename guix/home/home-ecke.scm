@@ -164,6 +164,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;;     )
   ;;    (list))))
   )
+(testsymb 'home-env)
 
 (module-evaluated)
 home-env
