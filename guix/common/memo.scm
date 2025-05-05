@@ -37,6 +37,8 @@
 (define-public hostname-memoized (memoize hostname))
 (testsymb 'hostname-memoized)
 
+;; TODO rename 'is-system-...' to 'is-host-...'
+
 (define-public (is-system-lukas) (equal? (hostname-memoized) host-lukas))
 (testsymb 'is-system-lukas)
 ;; (format #t "D ~a is-system-lukas: ~a\n" m (is-system-lukas))
