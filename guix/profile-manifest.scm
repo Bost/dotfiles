@@ -65,9 +65,8 @@
     (apply my-package->manifest-entry #;to-manifest-entry package)]
    [(my-inferior-package? package)
     (my-inferior-package->manifest-entry package)]
-   #;
-   [(my-package? package)
-    (my-package->manifest-entry package)]
+   ;; [(my-package? package)
+   ;;  (my-package->manifest-entry package)]
    [else
     (my-package->manifest-entry package)]))
 (testsymb 'to-manifest-entry)
