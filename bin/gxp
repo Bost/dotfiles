@@ -1,6 +1,6 @@
 #!/bin/sh
 
-hostname=$(hostname)
+baseLP=$dotf/guix # base-load-path
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since 'set -e' is used.
@@ -8,7 +8,8 @@ set -e
 
 set -x # Print commands and their arguments as they are executed.
 guix pull --cores=$cores \
-     --channels=$dotf/.config/guix/channels-home-$hostname.scm \
+     --load-path=$baseLP/common \
+     --channels=$baseLP/common/config/channels/home-channels.scm \
      "$@"
 
 # No need to chain the commands using '&&', since 'set -e' is used.
