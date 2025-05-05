@@ -118,6 +118,7 @@
                  (targets (list "/boot/efi"))
                  (keyboard-layout keyboard-layout)))
     (file-systems %base-file-systems)))
+(testsymb 'syst-config)
 
 (define-public (syst-config-linux)
   (operating-system
