@@ -35,37 +35,6 @@
 ;;                 (description "Configures UI appearance settings for Xorg
 ;; sessions using the xsettingsd daemon.")))
 
-(define (create-file-channels-scm hostname)
-  (let* [(m (format #f "~a [create-file-channels-scm]" m))
-         (channels-scm-fullpath
-          (user-dotf "/"
-                     (str ".config/guix/channels-home-" hostname ".scm")))
-         (lst-channels-scm
-          ((comp
-            car
-            syntax->datum
-            (partial call-with-input-file channels-scm-fullpath))
-           (read-all read-syntax)))]
-    ((comp
-      (lambda (s) (format #t "done\n") s)
-      ;; (lambda (sexp) (scheme-file channels-scm (sexp->gexp sexp)))
-      (lambda (sexp)
-        (list
-         channels-scm-relpath
-         #;(scheme-file "channels.scm" (sexp->gexp sexp))
-         (local-file
-          (let* [(tmpfile (mktmpfile))
-                 (port (open-output-file tmpfile))]
-            ;; save the channel configuration to a temporary file
-            (pretty-print sexp port)
-            (close-port port)
-            tmpfile)
-          channels-scm)))
-      (lambda (s)
-        (format #t "I ~a Creating ~a ... " m channels-scm-fullpath) s))
-     lst-channels-scm)))
-(testsymb 'create-file-channels-scm)
-
 (define (user-dotf-to-dir dir)
   ;; TODO (user-dotf-to-dir ".tmux") doesn't work
   (list dir ;; destination
@@ -148,15 +117,11 @@ See also:
     ((comp
       ;; (lambda (p) (format #t "~a done.\n" m) p)
       ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)
-      (partial
-       append
-       ((comp
-         (partial append (list (local-dotfile
-                                "/"
-                                (str (basename xdg-config-home)
-                                     "/guix-gaming-channels/games.scm"))))
-         list)
-        (create-file-channels-scm (hostname-memoized))))
+      (partial append
+               (list (local-dotfile
+                      "/"
+                      (str (basename xdg-config-home)
+                           "/guix-gaming-channels/games.scm"))))
       ;; (lambda (p) (format #t "###### 3.\n~a\n" p) p)
       (partial append (host-specific-config))
       ;; (lambda (p) (format #t "###### 2.\n~a\n" p) p)

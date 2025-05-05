@@ -7,10 +7,6 @@
 ;; ## 2. From the edge machine:
 ;; dotf=/tmp/dotf
 ;; mkdir -p ~/.config/guix
-;; cp $dotf/.config/guix/channels.scm ~/.config/guix
-;; # Make sure the ~/.config/guix/channels.scm contains only 'nonguix' and %default-channels
-;; guix pull
-;; sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common reconfigure $dotf/guix/systems/syst-$(hostname).scm
 ;;
 ;; ## Run this file by (the `~' doesn't work as a value of --load-path):
 ;; # --fallback         fall back to building when the substituter fails
