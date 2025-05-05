@@ -12,7 +12,7 @@
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/grev.scm 
+./guix/home/common/scm-bin/grev.scm
 
 |#
 

@@ -13,7 +13,7 @@
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/extract.scm 
+./guix/home/common/scm-bin/extract.scm
 
 |#
 

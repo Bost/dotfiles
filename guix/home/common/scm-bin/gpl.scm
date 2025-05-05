@@ -25,10 +25,31 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define origin-remotes (list "origin" "github" "gitlab"))
+(define remote-repo-names (list "origin" "github" "gitlab" "codeberg"))
 
-;; TODO if remote/origin is not present then try to use remote/upstream, then
-;; remote/gitlab, then remote/github
+;; TODO define constants & look at modules (git) (guix git) (guix tests git)
+;; "git"
+;; "rebase"
+;; "remote"
+;; "fetch"
+;; "--tags"
+;; "heroku"
+;; "origin"
+;; "github"
+;; "gitlab"
+;; "codeberg"
+;; "status"
+;; "--short"
+;; "--branch"
+;; "--verbose"
+;; "--force"
+;; "checkout"
+;; "master"
+;; "clone"
+;; "chmod"
+
+;; TODO unless remote/origin present, try to use remote/upstream or else
+;; remote/gitlab or else remote/github
 
 #|
 (define (test values)
@@ -54,7 +75,7 @@ cd $dotf
   (call/cc
    (lambda (continuation-fun)
      (map (lambda (remote)
-            (if-let [(r (string-in? origin-remotes remote))]
+            (if-let [(r (string-in? remote-repo-names remote))]
               (let* ((cmd (list "git" "fetch" "--tags" r))
                      (ret (exec cmd)))
                 (if (= 0 (car ret))
@@ -84,7 +105,7 @@ cd $dotf
              (format #t "# is-found: ~a; Do nothing.\n" is-found)
              (begin
                (format #t "# is-found: ~a; Calling OS command ...\n" is-found)
-               (if-let [(r (string-in? origin-remotes remote))]
+               (if-let [(r (string-in? remote-repo-names remote))]
                  (let* ((cmd (list "git" "fetch" "--tags" r))
                         (ret (exec cmd)))
                    (if (= 0 (car ret))

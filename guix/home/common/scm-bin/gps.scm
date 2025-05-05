@@ -26,12 +26,12 @@ cd $dotf
   "Usage: "
   ;; (format #t "remote : ~a\n" remote)
   ;; (format #t "init-args : ~a\n" init-args)
-  (let* ((args (remove-kw-from-args #:remote init-args))
+  (let* [(args (remove-kw-from-args #:remote init-args))
          (ret (exec (append
                      (list "git" "push")
                      args
                      (list remote)
-                     ))))
+                     )))]
     ;; (format #t "args : ~a\n" args)
     (if (= 0 (car ret))
         (let* ((output (cdr ret)))

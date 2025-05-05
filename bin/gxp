@@ -17,4 +17,5 @@ guix pull --cores=$cores \
 guix describe
 
 { retval="$?"; set +x; } 2>/dev/null
+
 exit $retval
