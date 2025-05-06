@@ -13,8 +13,7 @@ guix pull --cores=$cores \
      "$@"
 
 # No need to chain the commands using '&&', since 'set -e' is used.
-
-guix describe
+# guix describe
 
 { retval="$?"; set +x; } 2>/dev/null
 
