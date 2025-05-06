@@ -34,7 +34,7 @@ guix pull --cores=$cores \
      --channels=$baseLP/common/config/channels/syst-channels.scm \
      "$@"
 
-guix system describe
+# guix system describe
 
 sudo guix system --cores=$cores --verbosity=3 --fallback \
      --load-path=$baseLP/common \
