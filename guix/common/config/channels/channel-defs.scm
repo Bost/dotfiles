@@ -153,7 +153,6 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
    ;; Probably either 'branch' or 'commit' can be used.
    ;; Default branch is (probably) "master"
    ;; (branch "master")
-   ;; (commit "e0fa68c7718fffd33d81af415279d6ddb518f727")
    (url
     ;; (format #f "file://~a/dev/guix" home)
     "https://codeberg.org/guix/guix-mirror.git"
@@ -165,6 +164,21 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
      (openpgp-fingerprint
       "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
 (testsymb 'channel-guix)
+
+(define (channel-guix-past)
+  (channel
+   (name 'guix-past)
+   (url "https://codeberg.org/guix-science/guix-past")
+
+   ;; The following lines allow 'guix pull' to authenticate
+   ;; this channel.  It requires a recent Guix (July 2020)
+   ;; and can be omitted with older versions.
+   (introduction
+    (make-channel-introduction
+     "0c119db2ea86a389769f4d2b9c6f5c41c027e336"
+     (openpgp-fingerprint
+      "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5")))))
+(testsymb 'channel-guix-past)
 
 (define-public (syst-channels)
   "Channels needed for the Guix-system configuration"
@@ -180,12 +194,14 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
       (if (or (is-system-edge) (is-system-ecke))
           (append
            (list
+            ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
             (channel-hask-clj)
-            (channel-games)
+            ;; (channel-games)
             ;; (channel-home-service-dwl-guile)
             ;; (channel-flat)
             ;; (channel-rde)
-            (channel-bost))
+            (channel-bost)
+            )
            lst)
           lst)))
    (syst-channels)))
