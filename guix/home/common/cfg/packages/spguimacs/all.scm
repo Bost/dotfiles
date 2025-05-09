@@ -40,7 +40,8 @@
 
 (define bst-packages
   (list
-   bst:emacs-ac-php-core
+   bst:emacs-ac-php
+   bst:emacs-ace-jump-helm-line
    bst:emacs-ample-zen-theme
    bst:emacs-anti-zenburn-theme
    bst:emacs-apropospriate-theme
@@ -61,7 +62,6 @@
    bst:emacs-color-theme
    bst:emacs-color-theme-sanityinc-solarized
    bst:emacs-company-anaconda
-   bst:emacs-company-php
    bst:emacs-company-phpactor
    bst:emacs-company-shell
    bst:emacs-company-statistics
@@ -113,14 +113,14 @@
    bst:emacs-flycheck-elsa
    bst:emacs-flycheck-joker
    bst:emacs-flycheck-pos-tip
-   bst:emacs-flyspell-correct-helm
+   bst:emacs-flyspell-correct
    bst:emacs-font-utils
+   bst:emacs-forge
    bst:emacs-frame-cmds
    bst:emacs-frame-fns
    bst:emacs-gandalf-theme
    bst:emacs-geben
    bst:emacs-gh-md
-   bst:emacs-git-commit
    bst:emacs-gitignore-templates
    bst:emacs-gotham-theme
    bst:emacs-grandshell-theme
@@ -131,12 +131,30 @@
    bst:emacs-haml-mode
    bst:emacs-hc-zenburn-theme
    bst:emacs-helm
+   bst:emacs-helm-ag
+   bst:emacs-helm-c-yasnippet
+   bst:emacs-helm-cider
    bst:emacs-helm-cider-history
    bst:emacs-helm-comint
+   bst:emacs-helm-company
+   bst:emacs-helm-css-scss
    bst:emacs-helm-dictionary
    bst:emacs-helm-git-grep
+   bst:emacs-helm-ls-git
+   bst:emacs-helm-lsp
+   bst:emacs-helm-make
+   bst:emacs-helm-mode-manager
+   bst:emacs-helm-org
+   bst:emacs-helm-org-rifle
+   bst:emacs-helm-projectile
    bst:emacs-helm-purpose
    bst:emacs-helm-pydoc
+   bst:emacs-helm-slime
+   bst:emacs-helm-sly
+   bst:emacs-helm-swoop
+   bst:emacs-helm-system-packages
+   bst:emacs-helm-themes
+   bst:emacs-helm-xref
    bst:emacs-hemisu-theme
    bst:emacs-heroku-theme
    bst:emacs-hide-comnt
@@ -167,11 +185,10 @@
    bst:emacs-livid-mode
    bst:emacs-load-env-vars
    bst:emacs-lsp-haskell
+   bst:emacs-lsp-java
    bst:emacs-lsp-latex
    bst:emacs-lsp-lens
    bst:emacs-lsp-metals
-   bst:emacs-lsp-metals-protocol
-   bst:emacs-lsp-metals-treeview
    bst:emacs-lsp-origami
    bst:emacs-lsp-protocol
    bst:emacs-lsp-pyright
@@ -181,7 +198,11 @@
    bst:emacs-lv
    bst:emacs-madhat2r-theme
    bst:emacs-magit
+   bst:emacs-magit-annex
+   bst:emacs-magit-gerrit
+   bst:emacs-magit-org-todos-el
    bst:emacs-magit-section
+   bst:emacs-magit-tbdiff
    bst:emacs-majapahit-themes
    bst:emacs-markdown-toc
    bst:emacs-material-theme
@@ -195,6 +216,7 @@
    bst:emacs-mvn
    bst:emacs-naquadah-theme
    bst:emacs-nerd-icons
+   bst:emacs-nix-mode
    bst:emacs-noctilux-theme
    bst:emacs-ob-elixir
    bst:emacs-obsidian-theme
@@ -204,10 +226,9 @@
    bst:emacs-omtose-phellack-themes
    bst:emacs-open-junk-file
    bst:emacs-openai
-   bst:emacs-org-category-capture
    bst:emacs-org-project-capture
-   bst:emacs-org-projectile
    bst:emacs-organic-green-theme
+   bst:emacs-orgit
    bst:emacs-orgit-forge
    bst:emacs-origami
    bst:emacs-overseer
@@ -256,15 +277,13 @@
    bst:emacs-tango-2-theme
    bst:emacs-tango-plus-theme
    bst:emacs-tangotango-theme
+   bst:emacs-taxy
+   bst:emacs-taxy-magit-section
    bst:emacs-tblui
    bst:emacs-term-cursor
    bst:emacs-toxi-theme
-   bst:emacs-treemacs-evil
-   bst:emacs-treemacs-icons-dired
-   bst:emacs-treemacs-magit
-   bst:emacs-treemacs-persp
-   bst:emacs-treemacs-projectile
-   bst:emacs-treemacs-treelib
+   bst:emacs-treemacs
+   bst:emacs-treemacs-extra
    bst:emacs-tweaks
    bst:emacs-twilight-anti-bright-theme
    bst:emacs-twilight-bright-theme
@@ -275,6 +294,7 @@
    bst:emacs-use-package
    bst:emacs-use-package-chords
    bst:emacs-uuidgen
+   bst:emacs-vdiff-magit
    bst:emacs-vi-tilde-fringe
    bst:emacs-vim-colors
    bst:emacs-vim-powerline
