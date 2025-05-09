@@ -2,8 +2,5 @@
 ;; `~/.config/guix/current/manifest`. See
 ;; guile -c '(use-modules (guix channels)) (format #t "~a\n" %default-channels)'
 
-(define-module (config channels syst-channels)
-#:use-module (config channels channel-defs))
-
-(syst-channels)
-
+(define-module (config channels syst-channels))
+((@(config channels channel-defs) syst-channels))
