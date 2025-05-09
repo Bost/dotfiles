@@ -2,12 +2,11 @@
   #:use-module (settings)
   #:use-module (utils)                 ; for partial
   #:use-module (memo)
-  #:use-module (cfg packages all)      ; for packages-to-install
   #:use-module (gnu)
-  #:use-module (gnu system shadow)     ; for user-group; user-account-shell
+  #:use-module (gnu system shadow)     ; user-group user-account-shell
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd)
-  #:use-module (guix)                  ; for package-version
+  #:use-module (guix)                  ; package-version
 )
 
 (use-service-modules
@@ -132,7 +131,6 @@
     (initrd microcode-initrd)
 
     (firmware (list linux-firmware))))
-
-(testsymb 'syst-config)
+(testsymb 'syst-config-linux)
 
 (module-evaluated #t)

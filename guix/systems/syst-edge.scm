@@ -16,13 +16,13 @@
 (define-module (syst-edge)
   #:use-module ((syst-base) #:prefix base:)
   #:use-module (settings)
-  #:use-module (utils)                 ; for partial
+  #:use-module (utils)                 ; partial
   #:use-module (memo)
-  #:use-module (cfg packages all)      ; for packages-to-install
+  #:use-module (cfg packages all)      ; syst-packages-to-install
   #:use-module (gnu)
-  #:use-module (gnu system shadow)     ; for user-group; user-account-shell
-  #:use-module (guix)                  ; for package-version
-  ;; #:use-module (gnu packages games)    ; for steam-devices-udev-rules
+  #:use-module (gnu system shadow)     ; user-group; user-account-shell
+  #:use-module (guix)                  ; package-version
+  ;; #:use-module (gnu packages games)    ; steam-devices-udev-rules
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
@@ -86,7 +86,7 @@
       (list
        ;; backlight and LED brightness control
        brightnessctl)
-      (packages-to-install)
+      (syst-packages-to-install)
       %base-packages))
 
     (services
