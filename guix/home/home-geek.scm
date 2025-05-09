@@ -194,7 +194,7 @@ guix home --allow-downgrades --cores=$cores \
 (define home-env
   (home-environment
    ;; Replaced by $dotf/guix/profile-manifest.scm
-   ;; (packages (packages-to-install))
+   ;; (packages ((@(cfg packages all) home-packages-to-install)))
    (services
     ((comp
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)

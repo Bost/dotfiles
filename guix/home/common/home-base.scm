@@ -9,7 +9,7 @@
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
-  #:use-module (cfg packages all) ;; packages-to-install
+  #:use-module (cfg packages all) ;; home-packages-to-install
   #:use-module (srvc fish)
   #:use-module (srvc dirs)
   #:use-module (srvc scheme-files)
@@ -466,7 +466,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
     (let* [(home-env-record
             (home-environment
               ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
-              ;; (packages (packages-to-install))
+              ;; (packages (home-packages-to-install))
               (services
                (home-env-services list-separator))))]
       ;; (format #t "~a done. type: ~a\n" m (test-type home-env-record))

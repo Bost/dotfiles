@@ -3,7 +3,7 @@
   #:use-module (settings)
   #:use-module (utils)                  ; partial
   #:use-module (memo)
-  #:use-module (cfg packages all)       ; packages-to-install
+  #:use-module (cfg packages all)       ; syst-packages-to-install
   #:use-module (gnu)
   #:use-module (gnu system shadow)      ; user-group user-account-shell
   #:use-module (guix)                   ; package-version
@@ -96,7 +96,7 @@
      (append
       (map specification->package (sway-package-specifications))
       (list)
-      (packages-to-install)
+      (syst-packages-to-install)
       %base-packages))
 
     ;; Tweaks for nvidia drivers to work
