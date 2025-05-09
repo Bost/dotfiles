@@ -129,8 +129,8 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
 - clojure, babashka, postgres 13.3, openjdk18"
  (channel (name 'bost)
           (url
-           "https://github.com/Bost/guix-packages"
-           #;,(format #f "file://~a/dev/guix-packages" home))))
+           ;; "https://github.com/Bost/guix-packages"
+           (format #f "file://~a/dev/guix-packages" home))))
 
 (define (channel-nonguix)
   "Provides firefox, linux-kernel with non-free proprietary drivers, etc."
