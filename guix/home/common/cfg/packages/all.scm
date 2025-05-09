@@ -7,6 +7,7 @@
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
+  #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
   ;; provides: specification->package
   #:use-module (gnu packages)
   #:use-module (bost gnu packages guake)
@@ -141,15 +142,15 @@
   (list
    mu    ;; mu generates autoloads for "mu4e", which is for treemacs-mu4e
    isync ;; isync/mbsync is a command-line tool for two-way synchronization of mailboxes
-   emacs-mbsync
-   emacs-mu4e-alert
-   emacs-helm-mu
+   pkg:emacs-mbsync
+   pkg:emacs-mu4e-alert
+   bst:emacs-helm-mu
    ))
 (testsymb 'email-in-emacs-packages)
 
 (define (packages-from-additional-channels)
   "Packages from additional channels?
-Including these packages in the `packages-to-install' causes:
+Including these packages in the `home-packages-to-install' causes:
    error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
   (list
@@ -241,20 +242,25 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 |#
 
 (define (basic-packages)
-  (list
-   bash
-   bat
+  (let* [(m (format #f "~a [basic-packages]" m))]
+    ;; (format #t "~a Starting ...\n" m)
+    ((comp
+      ;; (lambda (p) (format #t "~a done.\n" m) p)
+      )
+     (list
+      bash
+      bat
 
-   direnv
-   ;; read hardware information from the BIOS
-   dmidecode
+      direnv
+      ;; read hardware information from the BIOS
+      dmidecode
 
-   ;; exa deprecated by eza in the daaedc9ab3; TODO the package is aliased but the binary is not
-   eza
+      ;; exa deprecated by eza in the daaedc9ab3; TODO the package is aliased but the binary is not
+      eza
 
-   fd
-   fish
-   git
+      fd
+      fish
+      git
 
 ;;; glibc and glibc-locales are needed to prevent:
 ;;;     guile: warning: failed to install locale
@@ -267,63 +273,63 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; Here the `guix archive ...' reports:
 ;;; guix archive: warning: replacing symbolic link /etc/guix/acl with a regular file
 ;;; hint: On Guix System, add all `authorized-keys' to the `guix-service-type' service of your `operating-system' instead.
-   glibc
-   glibc-locales
+      glibc
+      glibc-locales
 
-   gnupg
+      gnupg
 
-   ;; transport layer security library, implements SSL, TLS, DTLS
-   gnutls
+      ;; transport layer security library, implements SSL, TLS, DTLS
+      gnutls
 
-   ;; Command-line JSON processor
-   jq
+      ;; Command-line JSON processor
+      jq
 
-   ;; Read-write access to NTFS file systems
-   ntfs-3g
+      ;; Read-write access to NTFS file systems
+      ntfs-3g
 
-   ;; Workaround for:
-   ;;   SPC * not working with ripgrep 14
-   ;;   https://github.com/syl20bnr/spacemacs/issues/16200
-   ;; ripgrep 13.0.0 is needed. However when pulled-in via the
-   ;; inferior-mechanism the `gxhre` compilation takes too long. This problem
-   ;; doesn't come up when the ripgrep 13.0.0. is pulled from a separate
-   ;; channel.
-   (@(bost gnu packages rust-apps) ripgrep)
+      ;; Workaround for:
+      ;;   SPC * not working with ripgrep 14
+      ;;   https://github.com/syl20bnr/spacemacs/issues/16200
+      ;; ripgrep 13.0.0 is needed. However when pulled-in via the
+      ;; inferior-mechanism the `gxhre` compilation takes too long. This problem
+      ;; doesn't come up when the ripgrep 13.0.0. is pulled from a separate
+      ;; channel.
+      (@(bost gnu packages rust-apps) ripgrep)
 
-   rsync
+      rsync
 
-   ;; S.M.A.R.T.  harddisk control and monitoring tools
-   smartmontools
+      ;; S.M.A.R.T.  harddisk control and monitoring tools
+      smartmontools
 
-   ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
-   ;; sysstat
+      ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
+      ;; sysstat
 
-   ;; terminal multiplexer, more popular and modern than 'screen'
-   tmux
+      ;; terminal multiplexer, more popular and modern than 'screen'
+      tmux
 
-   ;; tmux-based terminal divider
-   ;; * Split tmux window into multiple panes.
-   ;; * Build command lines & execute them on the panes.
-   ;; * Runnable from outside of tmux session.
-   ;; * Runnable from inside of tmux session.
-   ;; * Record operation log.
-   ;; * Flexible layout arrangement for panes.
-   ;; * Display pane title on each pane.
-   ;; * Generate command lines from standard input (Pipe mode).
-   tmux-xpanes
+      ;; tmux-based terminal divider
+      ;; * Split tmux window into multiple panes.
+      ;; * Build command lines & execute them on the panes.
+      ;; * Runnable from outside of tmux session.
+      ;; * Runnable from inside of tmux session.
+      ;; * Record operation log.
+      ;; * Flexible layout arrangement for panes.
+      ;; * Display pane title on each pane.
+      ;; * Generate command lines from standard input (Pipe mode).
+      tmux-xpanes
 
-   ;; udisksctl
-   udisks
+      ;; udisksctl
+      udisks
 
-   unzip
+      unzip
 
-   ;; Tools for working with USB devices
-   usbutils
+      ;; Tools for working with USB devices
+      usbutils
 
-   vim
-   zip
-   zstd ;; Zstandard real-time compression algorithm
-   ))
+      vim
+      zip
+      zstd ;; Zstandard real-time compression algorithm
+      ))))
 (testsymb 'basic-packages)
 
 (define (agda-devel-packages)
@@ -934,66 +940,69 @@ FIXME the inferior-packages are installed on every machine"
     )))
 (testsymb 'devel-packages)
 
-(define-public (packages-to-install)
-  ((comp
-    (partial append (inferior-packages))
-    ;; (lambda (p) (format #t "~a 5.\n~a\n" p) p))
-    ;; (lambda (p) (format #t "~a 4. (length p): ~a\n" m (length p)) p)
-    (lambda (pkgs)
-      (if (or (is-system-edge))
-          (append
-           ;; (map (comp list specification->package) (video-packages))
-           ;; TODO check ‘all-the-icons’ in the /home/bost/.local/share/fonts/
-           ;; and call (all-the-icons-install-fonts) when installing emacs
-           (remote-desktop-packages #:is-server #t)
-           ;; bluez (linux Bluetooth protocol stack) is installed via
-           ;; bluetooth-service-type
-           (list
-            ;; GTK+ Bluetooth manager
-            blueman)
-           pkgs)
-          pkgs))
-    ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
-    (lambda (pkgs)
-      (if (or (is-system-ecke))
-          (append
-           ;; (map (comp list specification->package) (video-packages))
-           (large-packages-ecke)
-           (remote-desktop-packages #:is-server #f)
-           pkgs)
-          pkgs))
-    ;; (lambda (p) (format #t "~a 2. (length p): ~a\n" m (length p)) p)
-    (lambda (pkgs)
-      (if (or (is-system-edge) (is-system-ecke))
-          (append
-           (large-packages-edge-ecke)
-           (spguimacs-packages) ;; pulls-in ~430 additional packages
-           pkgs)
-          pkgs))
-    ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" m (length p)) p)
-    (lambda (pkgs)
-      (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
-          (append
-           (packages-from-additional-channels)
-           (devel-packages)
-           (kde-dependent-packages)
-           (other-gui-packages)
-           (irc-packages)
-           (rest-packages)
-           (xfce-packages)
-           (xorg-packages)
-           (list
-            (list git "gui"))
-           pkgs)
-          pkgs))
-    (lambda (pkgs)
-      (append
-       ;; Arbitrary precision numeric processing language
-       (list bc)
-       pkgs))
-    ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
-    )
-   (basic-packages)))
-(testsymb 'packages-to-install)
+(define-public (home-packages-to-install)
+  (let* [(m (format #f "~a [home-packages-to-install]" m))]
+    ;; (format #t "~a Starting ...\n" m)
+    ((comp
+      ;; (lambda (p) (format #t "~a done.\n" m) p)
+      (partial append (inferior-packages))
+      ;; (lambda (p) (format #t "~a 5.\n~a\n" m p) p)
+      ;; (lambda (p) (format #t "~a 4. (length p): ~a\n" m (length p)) p)
+      (lambda (lst)
+        (if (or (is-system-edge))
+            (append
+             ;; (map (comp list specification->package) (video-packages))
+             ;; TODO check ‘all-the-icons’ in the /home/bost/.local/share/fonts/
+             ;; and call (all-the-icons-install-fonts) when installing emacs
+             (remote-desktop-packages #:is-server #t)
+             ;; bluez (linux Bluetooth protocol stack) is installed via
+             ;; bluetooth-service-type
+             (list
+              ;; GTK+ Bluetooth manager
+              blueman)
+             lst)
+            lst))
+      ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
+      (lambda (lst)
+        (if (or (is-system-ecke))
+            (append
+             ;; (map (comp list specification->package) (video-packages))
+             ;; (large-packages-ecke)
+             (remote-desktop-packages #:is-server #f)
+             lst)
+            lst))
+      ;; (lambda (p) (format #t "~a 2. (length p): ~a\n" m (length p)) p)
+      (lambda (lst)
+        (if (or (is-system-edge) (is-system-ecke))
+            (append
+             (large-packages-edge-ecke)
+             (spguimacs-packages) ;; pulls-in ~430 additional packages
+             lst)
+            lst))
+      ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" m (length p)) p)
+      (lambda (lst)
+        (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
+            (append
+             (packages-from-additional-channels)
+             (devel-packages)
+             (kde-dependent-packages)
+             (other-gui-packages)
+             (irc-packages)
+             (rest-packages)
+             (xfce-packages)
+             (xorg-packages)
+             (list
+              (list git "gui"))
+             lst)
+            lst))
+      (lambda (lst)
+        (append
+         ;; Arbitrary precision numeric processing language
+         (list bc)
+         lst))
+      ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
+      )
+     (basic-packages))))
+(testsymb 'home-packages-to-install)
 
 (module-evaluated)
