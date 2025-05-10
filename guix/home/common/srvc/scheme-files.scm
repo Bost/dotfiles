@@ -32,7 +32,7 @@
 
 (define (list-all-files path)
   "(list-all-files notes-dir)"
-  (let ((files '()))
+  (let [(files '())]
     (define (file-collector filename statinfo flag base level)
       (when (equal? 'regular flag) ; it's a regular file
         (set! files (cons filename files)))
@@ -187,10 +187,8 @@ Example:
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
                ,(cond
-                 [(equal? symb-string "lf")           `(scm-bin ls)]
-                 [(equal? scheme-file "chmod")        `(scm-bin ,symb)]
-                 [(equal? scheme-file "search-notes") `(scm-bin ,symb)]
-                 [#t                                  `(scm-bin ,symb)])))
+                 [(equal? symb-string "lf") `(scm-bin ls)]
+                 [#t                        `(scm-bin ,symb)])))
           #~(begin
               (use-modules (scm-bin #$symb))
               #$main-call)))))))
@@ -221,9 +219,7 @@ Example:
               (symb (or module-name
                         (string->symbol symb-string)))
               (sexp `(handle-cli
-                      #:verbose ,verbose
-                      #:fun ,fun
-                      #:profile ,profile
+                      #:verbose ,verbose #:fun ,fun #:profile ,profile
                       (command-line)))
               ]
          ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
@@ -242,6 +238,60 @@ Example:
                #$sexp))))))))
 (testsymb 'service-file-emacs-utils)
 
+(define crc-other-files
+  (flatten
+   (append
+    (map (partial expand-pattern "dec/corona_cases")
+         (list
+          "end"
+          "clj"
+          "src/corona/"
+          "src/corona/api/"
+          "src/corona/models/"
+          "src/corona/msg/graph/"
+          "src/corona/msg/text/"
+          "src/corona/web/"
+          "test/corona/"))
+    (map (partial expand-pattern "dec/fdk")
+         (list
+          "end"
+          "clj"
+          "data/src/fdk/datasrc/"
+          "data/src/fdk/"
+          "data/test/fdk/"
+          "env/dev/clj/fdk/cmap/"
+          "env/dev/clj/"
+          "env/prod/clj/"
+          "env/prod/clj/fdk/cmap/"
+          "src/clj/fdk/cmap/"
+          "src/clj/fdk/cmap/web/controllers/"
+          "src/clj/fdk/cmap/web/"
+          "src/clj/fdk/cmap/web/middleware/"
+          "src/clj/fdk/cmap/web/pages/"
+          "src/clj/fdk/cmap/web/routes/"
+          "src/clj/fdk/data/"
+          "test/clj/fdk/cmap/"
+          "src/cljs/fdk/cmap/")))))
+
+(define cre-other-files
+  ((comp
+    ;; (lambda (v) (format #t "~a 3\n" m) v)
+    (partial apply append)
+    ;; (lambda (v) (format #t "~a 2\n" m) v)
+    (partial map (partial apply expand-pattern))
+    ;; (lambda (v) (format #t "~a 1\n" m) v)
+    )
+   (list
+    ;; (get-src guix) points to a spacemacs-distros
+    (list (substring (get-src guix)
+                     (string-length (str home "/")))
+          "core/el")
+    (list "dev/kill-buffers" "el")
+    (list "dev/dotfiles" ".sp.*macs")
+    (list "dev/jump-last" "el")
+    (list "dev/tweaks" "el")
+    (list "dev/farmhouse-light-mod-theme" "el"))))
+
 (define search-notes-service-files
   (let* [(m (format #f "~a [search-notes-service-files]" m))]
     ;; (format #t "~a Starting ...\n" m)
@@ -250,60 +300,12 @@ Example:
      (list
       (list #:program-name "crc"
             #:files (list "lisp/clojure")
-            #:other-files (flatten
-                           (append
-                            (map (partial expand-pattern "dec/corona_cases")
-                                 (list
-                                  "end"
-                                  "clj"
-                                  "src/corona/"
-                                  "src/corona/api/"
-                                  "src/corona/models/"
-                                  "src/corona/msg/graph/"
-                                  "src/corona/msg/text/"
-                                  "src/corona/web/"
-                                  "test/corona/"))
-                            (map (partial expand-pattern "dec/fdk")
-                                 (list
-                                  "end"
-                                  "clj"
-                                  "data/src/fdk/datasrc/"
-                                  "data/src/fdk/"
-                                  "data/test/fdk/"
-                                  "env/dev/clj/fdk/cmap/"
-                                  "env/dev/clj/"
-                                  "env/prod/clj/"
-                                  "env/prod/clj/fdk/cmap/"
-                                  "src/clj/fdk/cmap/"
-                                  "src/clj/fdk/cmap/web/controllers/"
-                                  "src/clj/fdk/cmap/web/"
-                                  "src/clj/fdk/cmap/web/middleware/"
-                                  "src/clj/fdk/cmap/web/pages/"
-                                  "src/clj/fdk/cmap/web/routes/"
-                                  "src/clj/fdk/data/"
-                                  "test/clj/fdk/cmap/"
-                                  "src/cljs/fdk/cmap/"))))
+            #:other-files crc-other-files
             #:scheme-file "search-notes")
 
       (list #:program-name "cre"
             #:files (list "editors/")
-            #:other-files ((comp
-                            ;; (lambda (v) (format #t "~a 3\n" m) v)
-                            (partial apply append)
-                            ;; (lambda (v) (format #t "~a 2\n" m) v)
-                            (partial map (partial apply expand-pattern))
-                            ;; (lambda (v) (format #t "~a 1\n" m) v)
-                            )
-                           (list
-                            ;; (get-src guix) points to a spacemacs-distros
-                            (list (substring (get-src guix)
-                                             (string-length (str home "/")))
-                                  "core/el")
-                            (list "dev/kill-buffers" "el")
-                            (list "dev/dotfiles" ".sp.*macs")
-                            (list "dev/jump-last" "el")
-                            (list "dev/tweaks" "el")
-                            (list "dev/farmhouse-light-mod-theme" "el")))
+            #:other-files cre-other-files
             #:scheme-file "search-notes")
       (list #:program-name "crep"
             #:files (list ".*") ;; TODO exclude /home/bost/org-roam/notes.scrbl
