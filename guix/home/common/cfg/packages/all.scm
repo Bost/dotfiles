@@ -638,6 +638,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    python-wrapper
    ;; specifying only 'python2' leads to "error: python2: unbound variable"
    python-2.7
+   python-docx ; ODT documents
 
    racket
    readline
