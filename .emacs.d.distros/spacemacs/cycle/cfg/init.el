@@ -1954,8 +1954,8 @@ Some binding snippets / examples:
 
      ;; TODO xah-backward-block xah-forward-block were removed (by a mistake)
      ;; in cf18cf842d4097934f58977665925eff004702e2
-     ("<C-up>"            . xah-backward-block)
-     ("<C-down>"          . xah-forward-block)
+     ("C-<up>"            . xah-backward-block)
+     ("C-<down>"          . xah-forward-block)
      ;; TODO make pg-up / pg-down major-mode specific
      ;; ("C-<prior>"      . hs-hide-block)    ; pg-up
      ;; ("C-<next>"       . hs-show-block)    ; pg-down
@@ -2049,8 +2049,8 @@ Some binding snippets / examples:
      ;; C-o; evil-jump-backward
      ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
 
-     ;; M-x tw-what-face; <C-M-print> on edge doesn't work
-     ("<C-print>" . describe-text-properties)
+     ;; M-x tw-what-face; C-M-<print> on edge doesn't work
+     ("C-<print>" . describe-text-properties)
 
      ("s-<return>"   . jl-jump-last-edited-place)
      ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
@@ -2059,7 +2059,7 @@ Some binding snippets / examples:
 
      ("s-J"          . evil-join)
 
-     ("<s-print>" . tw-ediff-buffers-left-right) ; see advice-add
+     ("s-<print>" . tw-ediff-buffers-left-right) ; see advice-add
      ("s-A"       . align-regexp)
      ("s-:" . tw-fabricate-subst-cmd) ;; see evil-ex-completion-map bindings
 
