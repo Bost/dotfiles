@@ -909,7 +909,7 @@ FIXME the inferior-packages are installed on every machine"
     emacs-gptel
     ;; emacs-next       ;; 29.0.92
     ;; emacs-next-pgtk  ;; 29.0.92
-    emacs-with-editor ;; for using Emacsclient as EDITOR
+    bst:emacs-with-editor ;; for using Emacsclient as EDITOR
 
     emacs-geiser
     emacs-geiser-guile
