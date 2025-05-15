@@ -62,6 +62,7 @@
    bst:emacs-color-theme
    bst:emacs-color-theme-sanityinc-solarized
    bst:emacs-company-anaconda
+   bst:emacs-company-php
    bst:emacs-company-phpactor
    bst:emacs-company-shell
    bst:emacs-company-statistics
@@ -114,6 +115,7 @@
    bst:emacs-flycheck-joker
    bst:emacs-flycheck-pos-tip
    bst:emacs-flyspell-correct
+   bst:emacs-flyspell-correct-helm
    bst:emacs-font-utils
    bst:emacs-forge
    bst:emacs-frame-cmds
@@ -137,6 +139,7 @@
    bst:emacs-helm-cider-history
    bst:emacs-helm-comint
    bst:emacs-helm-company
+   bst:emacs-helm-core
    bst:emacs-helm-css-scss
    bst:emacs-helm-dictionary
    bst:emacs-helm-git-grep
@@ -226,20 +229,25 @@
    bst:emacs-omtose-phellack-themes
    bst:emacs-open-junk-file
    bst:emacs-openai
+   bst:emacs-org-category-capture
    bst:emacs-org-project-capture
+   bst:emacs-org-projectile
    bst:emacs-organic-green-theme
    bst:emacs-orgit
    bst:emacs-orgit-forge
    bst:emacs-origami
    bst:emacs-overseer
+   bst:emacs-page-break-lines
    bst:emacs-pcache
    bst:emacs-pcsv
    bst:emacs-pdf-tools
    bst:emacs-pdf-view-restore
+   bst:emacs-pet
    bst:emacs-phoenix-dark-mono-theme
    bst:emacs-phoenix-dark-pink-theme
    bst:emacs-php-auto-yasnippets
    bst:emacs-php-extras
+   bst:emacs-php-mode
    bst:emacs-php-runtime
    bst:emacs-phpactor
    bst:emacs-phpunit
@@ -273,6 +281,7 @@
    bst:emacs-subatomic256-theme
    bst:emacs-sublime-themes
    bst:emacs-sunny-day-theme
+   bst:emacs-system-packages
    bst:emacs-systemd
    bst:emacs-tango-2-theme
    bst:emacs-tango-plus-theme
@@ -283,7 +292,12 @@
    bst:emacs-term-cursor
    bst:emacs-toxi-theme
    bst:emacs-treemacs
+   bst:emacs-treemacs-evil
    bst:emacs-treemacs-extra
+   bst:emacs-treemacs-icons-dired
+   bst:emacs-treemacs-magit
+   bst:emacs-treemacs-persp
+   bst:emacs-treemacs-projectile
    bst:emacs-tweaks
    bst:emacs-twilight-anti-bright-theme
    bst:emacs-twilight-bright-theme
@@ -304,6 +318,7 @@
    bst:emacs-wfnames
    bst:emacs-white-sand-theme
    bst:emacs-winum
+   bst:emacs-with-editor
    bst:emacs-writeroom-mode
    bst:emacs-xhair
    bst:emacs-zen-and-art-theme
