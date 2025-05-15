@@ -21,10 +21,12 @@ differences were encountered."
 
 (let ((emacs-default-dir "~/.emacs.d")
       (emacs-distros-dir "~/.emacs.d.distros/"))
-  (setq sp-profile  "guix"
-        sp-dir      (format "spacemacs/%s/src" sp-profile)
-        sp-home-dir (concat emacs-distros-dir sp-dir)
-        elpa-mirror (concat dev "/elpa-mirror.d12frosted")))
+  (setq sp-profile           "guix"
+        sp-dir               (format "spacemacs/%s/src" sp-profile)
+        sp-home-dir          (concat emacs-distros-dir sp-dir)
+        sp-elpa-mirror       (concat dev "/elpa-mirror.d12frosted")
+        sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
+        ))
 
 (setq hostname (system-name))
 
@@ -54,10 +56,7 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
-   ;; Direct jump with ~g f~ to $dotf/.emacs.d.sp---macs/
-   ;; The path is the same for all sp*macs.
-   dotspacemacs-configuration-layer-path
-   `(,(concat dotf "/.emacs.d.sp---macs/"))
+   dotspacemacs-configuration-layer-path `(,sp-config-layer-path)
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -512,7 +511,7 @@ This function should only modify configuration layer settings."
 
      yaml
 
-     ) ;; End of dotspacemacs-configuration-layers
+     )
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -675,7 +674,7 @@ This function should only modify configuration layer settings."
      ;; https://github.com/Boruch-Baum/emacs-xhair
      (xhair :location (recipe :fetcher github :repo "Boruch-Baum/emacs-xhair"))
 
-     ) ;; End of dotspacemacs-additional-packages
+     )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -690,12 +689,8 @@ This function should only modify configuration layer settings."
    ;; installs only the used packages but won't delete unused ones. `all'
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
-   ;; `used-but-keep-unused' is handy for debugging, when often restarting emacs
-   dotspacemacs-install-packages
-   'used-but-keep-unused
-   ;; 'used-only
-   )
-  )
+   ;; dotspacemacs-install-packages 'used-only
+   dotspacemacs-install-packages 'used-but-keep-unused))
 
 (defun dotspacemacs/init ()
   "Initialization:
@@ -717,39 +712,9 @@ It should only modify the values of Spacemacs settings."
    ;; Update by running (fish-shell):
    ;;   set mirror $dev/elpa-mirror.d12frosted
    ;;   git --git-dir=$mirror/.git --work-tree=$mirror pull --rebase
-   `(("melpa"  . ,(concat elpa-mirror "/melpa/"))
-     ("gnu"    . ,(concat elpa-mirror "/gnu/"))
-     ("nongnu" . ,(concat elpa-mirror "/nongnu/")))
-
-   ;; If non-nil then enable support for the portable dumper. You'll need to
-   ;; compile Emacs 27 from source following the instructions in file
-   ;; EXPERIMENTAL.org at to root of the git repository.
-   ;;
-   ;; WARNING: pdumper does not work with Native Compilation, so it's disabled
-   ;; regardless of the following setting when native compilation is in effect.
-   ;;
-   ;; (default nil)
-   dotspacemacs-enable-emacs-pdumper nil
-
-   ;; Name of executable file pointing to emacs 27+. This executable must be
-   ;; in your PATH.
-   ;; (default "emacs")
-   dotspacemacs-emacs-pdumper-executable-file "emacs"
-
-   ;; Name of the Spacemacs dump file. This is the file will be created by the
-   ;; portable dumper in the cache directory under dumps sub-directory.
-   ;; To load it when starting Emacs add the parameter `--dump-file'
-   ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
-   dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" sp-profile)
-
-   ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
-   ;; possible. Set it to nil if you have no way to use HTTPS in your
-   ;; environment, otherwise it is strongly recommended to let it set to t.
-   ;; This variable has no effect if Emacs is launched with the parameter
-   ;; `--insecure' which forces the value of this variable to nil.
-   ;; (default t)
-   dotspacemacs-elpa-https t
+   `(("melpa"  . ,(concat sp-elpa-mirror "/melpa/"))
+     ("gnu"    . ,(concat sp-elpa-mirror "/gnu/"))
+     ("nongnu" . ,(concat sp-elpa-mirror "/nongnu/")))
 
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    ;; (default 5)
@@ -867,7 +832,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
-   ;; with 2 themes variants, one dark and one light)
+   ;; with 2 themes variants, one dark and one light). A theme from external
+   ;; package can be defined with `:package', or a theme can be defined with
+   ;; `:location' to download the theme package, refer the themes section in
+   ;; DOCUMENTATION.org for the full theme specifications.
    ;;
    ;; '(<theme-name> :location local)' on a:
    ;; - non-Guix machine:
@@ -913,6 +881,7 @@ It should only modify the values of Spacemacs settings."
    ;; fixed-pitch faces. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
+   ;;
    ;; See functions and keybindings for `text-scale-...' and `zoom-...'
    ;; Reset by (spacemacs/set-default-font dotspacemacs-default-font)
    dotspacemacs-default-font
@@ -1126,12 +1095,7 @@ It should only modify the values of Spacemacs settings."
    ;; <description> {{{
    ;;     <some content>
    ;; }}}
-   ;; TODO use spacemacs|toggle for dotspacemacs-folding-method
-   ;; (setq
    dotspacemacs-folding-method 'evil
-   ;; dotspacemacs-folding-method 'origami
-   ;; dotspacemacs-folding-method 'vimish
-   ;; )
 
    ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
    ;; `smartparens-strict-mode' will be enabled in programming modes.
@@ -1267,8 +1231,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil) ;; dotspacemacs/init -> setq-default
-  )
+   dotspacemacs-byte-compile nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -1323,14 +1286,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
-  )
-
-
-(defun dotspacemacs/user-load ()
-  "Library to load while dumping.
-This function is called only while dumping Spacemacs configuration. You can
-`require' or `load' the libraries of your choice that will be included in the
-dump."
   )
 
 (defun dotspacemacs/user-config ()
@@ -1485,7 +1440,7 @@ before packages are loaded."
       (-partial #'list "readlink"))
      file))
 
-  (setq                                 ; of dotspacemacs/user-config
+  (setq
    org-plantuml-jar-path (funcall
                           (-compose
                            (-partial #'format "%s/share/java/plantuml.jar")
