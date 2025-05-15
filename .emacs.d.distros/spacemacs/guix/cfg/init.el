@@ -2,32 +2,6 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-;; Set `init-file-debug' to t in the dotspacemacs/user-init to obtain timestamps
-(defun my=dbg=tstp ()
-  0
-  ;; (if (functionp #'dbg=tstp) (dbg=tstp) (car (time-convert nil t)))
-  )
-(setq my=dbg=init-time
-      0
-      ;; (if (boundp #'dbg=init-time) dbg=init-time (my=dbg=tstp))
-      )
-(setq my=dbg=fmt (if (boundp #'dbg=fmt) dbg=fmt "%012d"))
-
-(defun my=log (fun-point)
-  (format "%s %s [%%s] (length load-path) %s"
-          (format my=dbg=fmt (- (my=dbg=tstp) my=dbg=init-time))
-          (if (eq fun-point #'beg) "{{{{{{{{" "}}}}}}}}")
-          (length load-path)))
-
-(defun my=beg (f)
-  "TODO my=beg could / should be done using (advice-add :before ...)"
-  ;; (message (my=log #'beg) f)
-  )
-(defun my=end (f)
-  "TODO my=end could / should be done using (advice-add :after ...)"
-  ;; (message (my=log #'end) f)
-  )
-
 ;; When running from bash on a non-Guix system, some environment variables may
 ;; not be defined.
 
@@ -49,14 +23,14 @@ differences were encountered."
       (emacs-distros-dir "~/.emacs.d.distros/"))
   (setq sp-profile  "guix"
         sp-dir      (format "spacemacs/%s/src" sp-profile)
-        sp-home-dir (concat emacs-distros-dir sp-dir)))
+        sp-home-dir (concat emacs-distros-dir sp-dir)
+        elpa-mirror (concat dev "/elpa-mirror.d12frosted")))
 
 (setq hostname (system-name))
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
-  (my=beg #'dotspacemacs/layers)
   (setq-default ; of dotspacemacs/layers
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -721,7 +695,6 @@ This function should only modify configuration layer settings."
    'used-but-keep-unused
    ;; 'used-only
    )
-  (my=end #'dotspacemacs/layers)
   )
 
 (defun dotspacemacs/init ()
@@ -729,7 +702,6 @@ This function should only modify configuration layer settings."
 This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
 It should only modify the values of Spacemacs settings."
-  (my=beg #'dotspacemacs/init)
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -745,10 +717,9 @@ It should only modify the values of Spacemacs settings."
    ;; Update by running (fish-shell):
    ;;   set mirror $dev/elpa-mirror.d12frosted
    ;;   git --git-dir=$mirror/.git --work-tree=$mirror pull --rebase
-   (let ((mirror (concat dev "/elpa-mirror.d12frosted")))
-     `(("melpa"  . ,(concat mirror "/melpa/"))
-       ("gnu"    . ,(concat mirror "/gnu/"))
-       ("nongnu" . ,(concat mirror "/nongnu/"))))
+   `(("melpa"  . ,(concat elpa-mirror "/melpa/"))
+     ("gnu"    . ,(concat elpa-mirror "/gnu/"))
+     ("nongnu" . ,(concat elpa-mirror "/nongnu/")))
 
    ;; If non-nil then enable support for the portable dumper. You'll need to
    ;; compile Emacs 27 from source following the instructions in file
@@ -1297,7 +1268,6 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then byte-compile some of Spacemacs files.
    dotspacemacs-byte-compile nil) ;; dotspacemacs/init -> setq-default
-  (my=end #'dotspacemacs/init)
   )
 
 (defun dotspacemacs/user-env ()
@@ -1306,9 +1276,7 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (my=beg #'dotspacemacs/user-env)
   (spacemacs/load-spacemacs-env)
-  (my=end #'dotspacemacs/user-env)
   )
 
 (defun dotspacemacs/user-init ()
@@ -1317,7 +1285,6 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (my=beg #'dotspacemacs/user-init)
 
   ;; If non-nil then the `spacemacs-buffer/message'-messages appear in the
   ;; *Messages* buffer. Setting this variable in the `dotspacemacs/user-init'
@@ -1356,7 +1323,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
-  (my=end #'dotspacemacs/user-init)
   )
 
 
@@ -1365,8 +1331,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-  (my=beg #'dotspacemacs/user-load)
-  (my=end #'dotspacemacs/user-load)
   )
 
 (defun dotspacemacs/user-config ()
@@ -1375,7 +1339,6 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (my=beg #'dotspacemacs/user-config)
 
   ;; (spacemacs/toggle-display-fill-column-indicator) ;; toggle with ~SCP t f~
 
@@ -2782,7 +2745,6 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
   ;;; github copilot config end
 
-  (my=end #'dotspacemacs/user-config)
   )
 
 ;;; `package-directory-list' is list of directories containing packages intended
