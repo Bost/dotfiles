@@ -24,6 +24,8 @@
 (define-public hostnames (list host-lukas host-ecke host-geek host-edge))
 
 (define-public emacs-init-file "init.el")
+(define-public emacs-distros "/.emacs.d.distros")
+(define-public home-emacs-distros (str home emacs-distros))
 
 ;; See also:
 ;;   git-spacemacs
@@ -33,34 +35,29 @@
 ;;   guix/home/common/scm-bin/restore-spacemacs.scm
 (define-public emacs-profiles-config ;; branch-kw_to_settings-map
   (list
-   ;; ~/dev/dotfiles/.emacs-profiles.el
    ;; (const <profile-name> <profile-configuration>)
    (cons #:develop
          (list (cons #:user-emacs-directory
-                     "/home/bost/.emacs.d.distros/spacemacs/develop/src")
-               (cons #:server-name "develop")
+                     (str home-emacs-distros "/spacemacs/develop/src"))
                (cons #:env
-                     "/home/bost/.emacs.d.distros/spacemacs/develop/cfg")))
+                     (str home-emacs-distros "/spacemacs/develop/cfg"))))
    (cons #:cycle
          (list (cons #:user-emacs-directory
-                     "/home/bost/.emacs.d.distros/spacemacs/cycle/src")
-               (cons #:server-name "cycle")
+                     (str home-emacs-distros "/spacemacs/cycle/src"))
                (cons #:env
-                     "/home/bost/.emacs.d.distros/spacemacs/cycle/cfg")))
+                     (str home-emacs-distros "/spacemacs/cycle/cfg"))))
 
    (cons #:guix
          (list (cons #:user-emacs-directory
-                     "/home/bost/.emacs.d.distros/spacemacs/guix/src")
-               (cons #:server-name "guix")
+                     (str home-emacs-distros "/spacemacs/guix/src"))
                (cons #:env
-                     "/home/bost/.emacs.d.distros/spacemacs/guix/cfg")))
+                     (str home-emacs-distros "/spacemacs/guix/cfg"))))
 
    (cons #:crafted
          (list (cons #:user-emacs-directory
-                     "/home/bost/.emacs.d.distros/crafted-emacs")
-               (cons #:server-name "crafted")
+                     (str home-emacs-distros "/crafted-emacs"))
                (cons #:env
-                     "/home/bost/.emacs.d.distros/crafted-emacs/personal")))))
+                     (str home-emacs-distros "/crafted-emacs/personal"))))))
 (testsymb 'emacs-profiles-config)
 
 (define-public develop "develop")
@@ -89,7 +86,6 @@
   "
 (get-val profile #:user-emacs-directory)
 (get-val profile #:env)
-(get-val profile #:server-name)
 "
   ;; (format #t "profile ~a; setting ~a\n" profile setting)
   (let* [(branch-kw (cdr (assoc profile profile->branch-kw)))]
@@ -110,10 +106,6 @@
   "(get-cfg spacemacs)
 ;; => \"/home/bost/.emacs.d.distros/spacemacs/develop/cfg\""
   (get-val profile #:env))
-
-(define-public (get-server profile)
-  "(get-server spacemacs) ;; => \"develop\""
-  (get-val profile #:server-name))
 
 (define-public spacemacs-dir (get-src guix))
 
