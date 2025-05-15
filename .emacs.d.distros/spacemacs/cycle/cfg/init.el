@@ -21,7 +21,7 @@ differences were encountered."
 
 (let ((emacs-default-dir "~/.emacs.d")
       (emacs-distros-dir "~/.emacs.d.distros/"))
-  (setq sp-profile  "guix"
+  (setq sp-profile  "cycle"
         sp-dir      (format "spacemacs/%s/src" sp-profile)
         sp-home-dir (concat emacs-distros-dir sp-dir)
         elpa-mirror (concat dev "/elpa-mirror.d12frosted")))
