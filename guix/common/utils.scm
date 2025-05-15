@@ -43,6 +43,7 @@
             compose-commands-guix-shell
             compose-commands-guix-shell-dry-run
             compose-shell-commands
+            compute-cmd
             contains--gx-dry-run?
             dbg-exec
             dbg-packages-to-install
@@ -639,8 +640,8 @@ found or the CLIENT-CMD if some process ID was found."
      ;; The pids-list is empty. No such binary has been started yet.
      init-cmd)))
 
-(define-public (compute-cmd user init-cmd client-cmd pattern)
-  "pgrep for a user and PATTERN and return the INIT-CMD if no process ID was found
+(define* (compute-cmd #:key user init-cmd client-cmd pgrep-pattern)
+  "pgrep for a USER and PATTERN and return the INIT-CMD if no process ID was found
 or the CLIENT-CMD if some process ID was found."
   ((comp
     (partial
@@ -651,8 +652,12 @@ or the CLIENT-CMD if some process ID was found."
     exec
     ;; --euid effective ID
     (partial format #f "pgrep --full --euid ~a ~a" user)
-    (lambda (s) (str "\"" s "\"")))
-   pattern))
+    (lambda (s)
+      ;; TODO either:
+      ;; (A) remove single quotes, escape double quotes, or
+      ;; (B) escape backslashes and spaces
+      (str "\"" s "\"")))
+   pgrep-pattern))
 
 (define-syntax def*
   (lambda (x)

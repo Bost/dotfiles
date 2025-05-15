@@ -47,10 +47,20 @@ defined.
   "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
   ((@(guix build utils) which) "emacsclient"))
 
+(define (create-init-cmd profile socket)
+  (cmd->string
+   (list
+    (which-emacs)
+    (if (string= profile crafted)
+        (format #f "--init-directory=~a/crafted-emacs" home-emacs-distros)
+        (format #f "--init-directory=~a/spacemacs/~a/src" home-emacs-distros profile))
+    (str "--bg-daemon=" socket))))
+
 (define* (pkill-server
           #:key (verbose #f) utility-name gx-dry-run profile socket
           #:rest args)
-  "
+  "The ARGS are being ignored.
+
 Usage:
 (pkill-server #:gx-dry-run #t #:profile \"develop\" \"rest\" \"args\")
 (pkill-server #:gx-dry-run #t #:profile \"guix\" \"rest\" \"args\")
@@ -69,21 +79,26 @@ Usage:
          (args (remove-kw-from-args #:gx-dry-run args))
          (args (remove-kw-from-args #:profile args))
          (args (remove-kw-from-args #:socket args))]
-    ;; pkill-pattern must NOT be eclosed by \"\"
-    (let* [(pkill-pattern
-            (format #f "~a --with-profile=~a --daemon"
-                    (which-emacs) socket))]
-      ;; TODO use with-monad
-      (apply exec-system*-new
-             #:split-whitespace #f
-             #:gx-dry-run gx-dry-run
-             "pkill" "--full" pkill-pattern args))))
+    ;; pkill-pattern must NOT be enclosed by \"\"
+;; TODO use with-monad
+    (apply exec-system*-new
+           #:split-whitespace #f
+           #:gx-dry-run gx-dry-run
+           (list "pkill" "--full" (create-init-cmd profile socket)))))
 (testsymb 'pkill-server)
+
+(define (init-cmd-env-vars home-emacs-distros profile)
+  (if (string= profile crafted)
+      (format #f "CRAFTED_EMACS_HOME=~a/crafted-emacs/personal" home-emacs-distros)
+      (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg" home-emacs-distros profile)))
 
 (define* (create-emacs-launcher
           #:key (verbose #f) utility-name gx-dry-run profile socket
           #:rest args)
-  "Uses `user' from settings
+  "Uses `user' from settings. The ARGS are used only when `emacsclient' command
+ is executed. The server, called by `emacs' ignores them.
+
+Example:
 (create-emacs-launcher #:profile \"develop\" \"rest\" \"args\")
 "
   (let* [(f "[create-emacs-launcher]")]
@@ -98,42 +113,35 @@ Usage:
            (args (remove-kw-from-args #:gx-dry-run args))
            (args (remove-kw-from-args #:profile args))
            (args (remove-kw-from-args #:socket args))
-
-           (emacs-bin (which-emacs))
-           (init-cmd
-            (cmd->string
-             (append
-              (list emacs-bin
-                    (str "--with-profile=" socket)
-                    ;; (str "--init-directory=$HOME/.emacs.d.distros/" socket)
-                    "--daemon")
-              ;; the init-cmd must not contain the args otherwise the `pgrep
-              ;; ...` detection won't work
-              #;args)))
-           ]
+           (init-cmd (create-init-cmd profile socket))]
       ((comp
-        ;; (lambda (p) (format #t "4:\n~a\n" p) p)
 ;;; Search for the full command line:
-;;; $ pgrep --full --euid bost "/home/bost/.guix-home/profile/bin/emacs --with-profile=develop --daemon"
+;;; $ pkill --full /home/bost/.guix-profile/bin/emacs --init-directory=/home/bost/.emacs.d.distros/crafted-emacs --bg-daemon=crafted
         (lambda (client-cmd)
-          (if (string=? (compute-cmd user init-cmd client-cmd init-cmd)
-                        client-cmd)
-              (exec-background client-cmd)
-              (when (zero? (car (exec init-cmd)))
-                ;; Calling (exec-background cmd) makes sense only if the emacs
-                ;; server has been started successfully.
-                (exec-background client-cmd))))
-        ;; (lambda (p) (format #t "3:\n~a\n" p) p)
-        cmd->string
-        ;; (lambda (p) (format #t "2:\n~a\n" p) p)
-        (partial append (list (which-emacsclient) "--create-frame"
-                              (str "--socket-name=" socket)))
-        ;; (lambda (p) (format #t "1:\n~a\n" p) p)
-        (lambda (prms) (if (null? prms) '("./") prms))
-        ;; (lambda (p) (format #t "0:\n~a\n" p) p)
-        ;; cdr
-        )
-       args))))
+          (let* [(client-cmd-with-args (append
+                                        (list client-cmd)
+                                        (if (null? args) '("./") args)))]
+            (if (string=? client-cmd
+                          (compute-cmd
+                           #:user user
+                           #:init-cmd init-cmd
+                           #:client-cmd client-cmd
+                           #:pgrep-pattern init-cmd))
+                (exec-background client-cmd-with-args)
+                (when ((comp zero? car exec)
+                       ;; Only the initial command needs to be executed in a
+                       ;; modified environment
+                       (list (init-cmd-env-vars home-emacs-distros profile) init-cmd
+                             ;; (if (string= profile crafted)
+                             ;;     (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'")
+                             ;;     (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'"))
+                             ))
+                  ;; Calling (exec-background client-cmd-with-args) makes sense
+                  ;; only if the Emacs server has been started successfully.
+                  (exec-background client-cmd-with-args)))))
+        cmd->string)
+       (list (which-emacsclient) "--create-frame"
+             (str "--socket-name=" socket))))))
 (testsymb 'create-emacs-launcher)
 
 ;; ### BEG: from (fs-utils)
@@ -145,24 +153,19 @@ Usage:
 ;; ### END: from (fs-utils)
 
 (define (make-pair-dst-src profile)
-  (if profile
-      (cons (str (get-cfg profile) "/" emacs-init-file)
-            (let* [(distros-path "/.emacs.d.distros")]
-              ((comp
-                (lambda (path)
-                  (user-dotf distros-path path "/" emacs-init-file))
-                (lambda (p) (format #t "1 ~a\n" p) p)
-                (partial substring (get-cfg profile)))
-               (string-length (user-home distros-path)))))
-      (let* [(file ".emacs-profiles.el")]
-        (cons (user-home "/" file)
-              (user-dotf "/" file)))))
+  (cons (str (get-cfg profile) "/" emacs-init-file)
+        ((comp
+          (lambda (path)
+            (user-dotf emacs-distros path "/" emacs-init-file))
+          (partial substring (get-cfg profile)))
+         (string-length (user-home emacs-distros)))))
 
 (define* (set-editable
           #:key (verbose #f) utility-name gx-dry-run profile socket
           #:rest args)
-  "
-Usage:
+  "The ARGS are being ignored.
+
+Examples:
 (set-editable #:gx-dry-run #t #:profile \"develop\" \"rest\" \"args\")
 (set-editable #:gx-dry-run #t #:profile \"guix\" \"rest\" \"args\")
 (set-editable                 #:profile \"develop\" \"rest\" \"args\")
@@ -249,7 +252,7 @@ Usage:
                         #:utility-name utility-name
                         #:gx-dry-run val-gx-dry-run
                         #:profile profile
-                        #:socket
+                        #:socket ;; i.e. daemon / server name
                         (when profile
                           (let* [(branch-kw (cdr (assoc profile
                                                         profile->branch-kw)))]

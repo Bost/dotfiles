@@ -157,7 +157,6 @@ See also:
                  ".gitconfig"
                  ".envrc"
                  ".env-secrets.gpg"
-                 ".emacs-profiles.el"
                  ".lein/profiles.clj"
                  )))
 
