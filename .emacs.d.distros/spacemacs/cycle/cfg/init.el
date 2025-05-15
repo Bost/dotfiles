@@ -21,10 +21,12 @@ differences were encountered."
 
 (let ((emacs-default-dir "~/.emacs.d")
       (emacs-distros-dir "~/.emacs.d.distros/"))
-  (setq sp-profile  "cycle"
-        sp-dir      (format "spacemacs/%s/src" sp-profile)
-        sp-home-dir (concat emacs-distros-dir sp-dir)
-        elpa-mirror (concat dev "/elpa-mirror.d12frosted")))
+  (setq sp-profile           "cycle"
+        sp-dir               (format "spacemacs/%s/src" sp-profile)
+        sp-home-dir          (concat emacs-distros-dir sp-dir)
+        sp-elpa-mirror       (concat dev "/elpa-mirror.d12frosted")
+        sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
+        ))
 
 (setq hostname (system-name))
 
@@ -54,10 +56,7 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
-   ;; Direct jump with ~g f~ to $dotf/.emacs.d.sp---macs/
-   ;; The path is the same for all sp*macs.
-   dotspacemacs-configuration-layer-path
-   `(,(concat dotf "/.emacs.d.sp---macs/"))
+   dotspacemacs-configuration-layer-path `(,sp-config-layer-path)
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -390,7 +389,6 @@ This function should only modify configuration layer settings."
           )
 
      pdf
-
      php
 
      ;; Breaks the ~C-h k command~
@@ -513,7 +511,7 @@ This function should only modify configuration layer settings."
 
      yaml
 
-     ) ;; End of dotspacemacs-configuration-layers
+     )
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -676,7 +674,7 @@ This function should only modify configuration layer settings."
      ;; https://github.com/Boruch-Baum/emacs-xhair
      (xhair :location (recipe :fetcher github :repo "Boruch-Baum/emacs-xhair"))
 
-     ) ;; End of dotspacemacs-additional-packages
+     )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -691,12 +689,8 @@ This function should only modify configuration layer settings."
    ;; installs only the used packages but won't delete unused ones. `all'
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
-   ;; `used-but-keep-unused' is handy for debugging, when often restarting emacs
-   dotspacemacs-install-packages
-   'used-but-keep-unused
-   ;; 'used-only
-   )
-  )
+   ;; dotspacemacs-install-packages 'used-only
+   dotspacemacs-install-packages 'used-but-keep-unused))
 
 (defun dotspacemacs/init ()
   "Initialization:
@@ -718,39 +712,9 @@ It should only modify the values of Spacemacs settings."
    ;; Update by running (fish-shell):
    ;;   set mirror $dev/elpa-mirror.d12frosted
    ;;   git --git-dir=$mirror/.git --work-tree=$mirror pull --rebase
-   `(("melpa"  . ,(concat elpa-mirror "/melpa/"))
-     ("gnu"    . ,(concat elpa-mirror "/gnu/"))
-     ("nongnu" . ,(concat elpa-mirror "/nongnu/")))
-
-   ;; If non-nil then enable support for the portable dumper. You'll need to
-   ;; compile Emacs 27 from source following the instructions in file
-   ;; EXPERIMENTAL.org at to root of the git repository.
-   ;;
-   ;; WARNING: pdumper does not work with Native Compilation, so it's disabled
-   ;; regardless of the following setting when native compilation is in effect.
-   ;;
-   ;; (default nil)
-   dotspacemacs-enable-emacs-pdumper nil
-
-   ;; Name of executable file pointing to emacs 27+. This executable must be
-   ;; in your PATH.
-   ;; (default "emacs")
-   dotspacemacs-emacs-pdumper-executable-file "emacs"
-
-   ;; Name of the Spacemacs dump file. This is the file will be created by the
-   ;; portable dumper in the cache directory under dumps sub-directory.
-   ;; To load it when starting Emacs add the parameter `--dump-file'
-   ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
-   dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" sp-profile)
-
-   ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
-   ;; possible. Set it to nil if you have no way to use HTTPS in your
-   ;; environment, otherwise it is strongly recommended to let it set to t.
-   ;; This variable has no effect if Emacs is launched with the parameter
-   ;; `--insecure' which forces the value of this variable to nil.
-   ;; (default t)
-   dotspacemacs-elpa-https t
+   `(("melpa"  . ,(concat sp-elpa-mirror "/melpa/"))
+     ("gnu"    . ,(concat sp-elpa-mirror "/gnu/"))
+     ("nongnu" . ,(concat sp-elpa-mirror "/nongnu/")))
 
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    ;; (default 5)
@@ -842,7 +806,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-startup-buffer-multi-digit-delay 0.4
 
    ;; If non-nil, show file icons for entries and headings on Spacemacs home buffer.
-   ;; This has no effect in terminal or if "all-the-icons" package or the font
+   ;; This has no effect in terminal or if "nerd-icons" package or the font
    ;; is not installed. (default nil)
    dotspacemacs-startup-buffer-show-icons t
 
@@ -868,7 +832,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
-   ;; with 2 themes variants, one dark and one light)
+   ;; with 2 themes variants, one dark and one light). A theme from external
+   ;; package can be defined with `:package', or a theme can be defined with
+   ;; `:location' to download the theme package, refer the themes section in
+   ;; DOCUMENTATION.org for the full theme specifications.
    ;;
    ;; '(<theme-name> :location local)' on a:
    ;; - non-Guix machine:
@@ -914,6 +881,7 @@ It should only modify the values of Spacemacs settings."
    ;; fixed-pitch faces. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
+   ;;
    ;; See functions and keybindings for `text-scale-...' and `zoom-...'
    ;; Reset by (spacemacs/set-default-font dotspacemacs-default-font)
    dotspacemacs-default-font
@@ -936,6 +904,9 @@ It should only modify the values of Spacemacs settings."
      :weight normal
      :width normal)
 
+   ;; Default icons font, it can be `all-the-icons' or `nerd-icons'.
+   dotspacemacs-default-icons-font 'all-the-icons
+
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
 
@@ -955,10 +926,10 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-major-mode-leader-key ","
 
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
-   ;; (default "C-M-m" for terminal mode, "<M-return>" for GUI mode).
+   ;; (default "C-M-m" for terminal mode, "M-<return>" for GUI mode).
    ;; Thus M-RET should work as leader key in both GUI and terminal modes.
    ;; C-M-m also should work in terminal mode, but not in GUI mode.
-   dotspacemacs-major-mode-emacs-leader-key (if window-system "<M-return>" "C-M-m")
+   dotspacemacs-major-mode-emacs-leader-key (if window-system "M-<return>" "C-M-m")
 
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
@@ -1022,6 +993,22 @@ It should only modify the values of Spacemacs settings."
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
+
+   ;; Whether side windows (such as those created by treemacs or neotree)
+   ;; are kept or minimized by `spacemacs/toggle-maximize-window' (SPC w m).
+   ;; (default t)
+   dotspacemacs-maximize-window-keep-side-windows t
+
+   ;; If nil, no load-hints enabled. If t, enable the `load-hints' which will
+   ;; put the most likely path on the top of `load-path' to reduce walking
+   ;; through the whole `load-path'. It's an experimental feature to speedup
+   ;; Spacemacs on Windows. Refer the FAQ.org "load-hints" session for details.
+   dotspacemacs-enable-load-hints nil
+
+   ;; If t, enable the `package-quickstart' feature to avoid full package
+   ;; loading, otherwise no `package-quickstart' attemption (default nil).
+   ;; Refer the FAQ.org "package-quickstart" section for details.
+   dotspacemacs-enable-package-quickstart nil
 
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
@@ -1108,12 +1095,7 @@ It should only modify the values of Spacemacs settings."
    ;; <description> {{{
    ;;     <some content>
    ;; }}}
-   ;; TODO use spacemacs|toggle for dotspacemacs-folding-method
-   ;; (setq
    dotspacemacs-folding-method 'evil
-   ;; dotspacemacs-folding-method 'origami
-   ;; dotspacemacs-folding-method 'vimish
-   ;; )
 
    ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
    ;; `smartparens-strict-mode' will be enabled in programming modes.
@@ -1170,6 +1152,13 @@ It should only modify the values of Spacemacs settings."
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
    dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
 
+   ;; The backend used for undo/redo functionality. Possible values are
+   ;; `undo-fu', `undo-redo' and `undo-tree' see also `evil-undo-system'.
+   ;; Note that saved undo history does not get transferred when changing
+   ;; your undo system. The default is currently `undo-fu' as `undo-tree'
+   ;; is not maintained anymore and `undo-redo' is very basic."
+   dotspacemacs-undo-system 'undo-fu
+
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
    ;; %t - `projectile-project-name'
@@ -1205,6 +1194,9 @@ It should only modify the values of Spacemacs settings."
    ;; to aggressively delete empty line and long sequences of whitespace,
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; The variable `global-spacemacs-whitespace-cleanup-modes' controls
+   ;; which major modes have whitespace cleanup enabled or disabled
+   ;; by default.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
 
@@ -1239,8 +1231,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil) ;; dotspacemacs/init -> setq-default
-  )
+   dotspacemacs-byte-compile nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -1296,15 +1287,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
   )
-
-
-(defun dotspacemacs/user-load ()
-  "Library to load while dumping.
-This function is called only while dumping Spacemacs configuration. You can
-`require' or `load' the libraries of your choice that will be included in the
-dump."
-  )
-
 
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
@@ -1458,7 +1440,7 @@ before packages are loaded."
       (-partial #'list "readlink"))
      file))
 
-  (setq                                 ; of dotspacemacs/user-config
+  (setq
    org-plantuml-jar-path (funcall
                           (-compose
                            (-partial #'format "%s/share/java/plantuml.jar")
@@ -2415,40 +2397,45 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;;
   ;; `parse-colon-path' returns a list with items containing trailing slash '/',
   ;; geiser-guile-load-path doesn't like it.
-  (when-let ((glp-env (getenv "glp")))
-    (let ((glp (split-string glp-env ":"))
-          (dgx (getenv "dgx")))
-      ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
-      (add-hook 'scheme-mode-hook #'guix-devel-mode)
+  (when-let ((glp-env (getenv "glp"))) ; when the environment variable is defined
+    ;; `glp' and `dgx' are referenced in (with-eval-after-load ...)
+    ;; macros. Can't bind them using (let ...). The bindings won't exist
+    ;; when the bodies of the macros are evaluated.
+    (setq glp (split-string glp-env ":"))
+    (setq dgx (getenv "dgx"))
 
-      ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
-      ;; TODO move this to project's .dir-locals.el
-      (with-eval-after-load #'geiser-guile
-        (mapcar
-         ;; Add ELEMENT to the value of LIST-VAR if it isn't there yet.
-         (-partial #'add-to-list 'geiser-guile-load-path)
-         glp))
-      (with-eval-after-load 'yasnippet
-        (add-to-list #'yas-snippet-dirs (concat dgx "/etc/snippets/yas")))
+    ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
+    (add-hook 'scheme-mode-hook #'guix-devel-mode)
 
-      ;; TODO extend the GuixOS with a service providing user full-name and email
-      ;; or parse (one of):
-      ;;   /run/current-system/configuration.scm
-      ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
+    ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
+    ;; TODO move this to project's .dir-locals.el
+    (with-eval-after-load 'geiser-guile
+      (mapcar
+       ;; Add ELEMENT to the value of LIST-VAR if it isn't there yet.
+       (-partial #'add-to-list 'geiser-guile-load-path)
+       glp))
 
-      (setq
-       ;; Location for geiser-history.guile and geiser-history.racket. (Default
-       ;; "~/.geiser_history")
-       ;; geiser-repl-history-filename "..."
-       user-full-name         (getenv "user_full_name")
-       user-mail-address      (getenv "user_mail_address")
-       copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
+    (with-eval-after-load 'yasnippet
+      (add-to-list 'yas-snippet-dirs (concat dgx "/etc/snippets/yas")))
 
-      (load-file (concat dgx "/etc/copyright.el"))
-      ;; check if the copyright is up to date M-x copyright-update.
-      ;; automatically add copyright after each buffer save
-      ;; (add-hook 'after-save-hook 'copyright-update)
-      ))
+    ;; TODO extend the GuixOS with a service providing user full-name and email
+    ;; or parse (one of):
+    ;;   /run/current-system/configuration.scm
+    ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
+
+    (setq
+     ;; Location for geiser-history.guile and geiser-history.racket. (Default
+     ;; "~/.geiser_history")
+     ;; geiser-repl-history-filename "..."
+     user-full-name         (getenv "user_full_name")
+     user-mail-address      (getenv "user_mail_address")
+     copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
+
+    (load-file (concat dgx "/etc/copyright.el"))
+    ;; check if the copyright is up to date M-x copyright-update.
+    ;; automatically add copyright after each buffer save
+    ;; (add-hook 'after-save-hook #'copyright-update)
+    )
 
   (add-hook 'python-mode-hook
             (lambda ()
@@ -2746,16 +2733,6 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 ;;; for system-wide use. Original value of `package-directory-list' contains
 ;;; duplicates.
 (delq nil (delete-dups package-directory-list))
-
-;;; Value of `package-directory-list' is:
-;;;   "/home/bost/.guix-home/profile/share/emacs/site-lisp/elpa"
-;;;   "/home/bost/.guix-profile/share/emacs/site-lisp/elpa"
-;;;   "/run/current-system/profile/share/emacs/site-lisp/elpa"
-;;; However none of these directories exit under Guix.
-
-;;; `package-user-dir' - directory containing packages for personal use.
-;;; Value of `package-user-dir' is:
-;;;   "/home/bost/.local/share/spacemacs/elpa/28.2/develop/"
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
