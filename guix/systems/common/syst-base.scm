@@ -15,7 +15,7 @@
  sddm     ; for sddm-service-type
  )
 
-(evaluating-module #t)
+(evaluating-module)
 
 (define-public (keyb-layout)
   (keyboard-layout
@@ -133,4 +133,4 @@
     (firmware (list linux-firmware))))
 (testsymb 'syst-config-linux)
 
-(module-evaluated #t)
+(module-evaluated)
