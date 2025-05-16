@@ -956,11 +956,16 @@ FIXME the inferior-packages are installed on every machine"
              ;; TODO check ‘all-the-icons’ in the /home/bost/.local/share/fonts/
              ;; and call (all-the-icons-install-fonts) when installing emacs
              (remote-desktop-packages #:is-server #t)
-             ;; bluez (linux Bluetooth protocol stack) is installed via
-             ;; bluetooth-service-type
              (list
               ;; GTK+ Bluetooth manager
-              blueman)
+              blueman
+
+              ;; Linux Bluetooth protocol stack. It provides bluetootctl. It is
+              ;; is NOT(!) installed via bluetooth-service-type
+              bluez
+
+              bluez-alsa ; Bluetooth ALSA backend
+              )
              lst)
             lst))
       ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" m (length p)) p)
