@@ -29,9 +29,10 @@
 
 (define-public (syst-packages-to-install)
   (let* [(m (format #f "~a [syst-packages-to-install]" m))]
-    (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a Starting ...\n" m)
     ((comp
-      (lambda (p) (format #t "~a done.\n" m) p))
+      ;; (lambda (p) (format #t "~a done.\n" m) p)
+      )
      (list
 
       ;; Set the keyboard using the X Keyboard Extension
