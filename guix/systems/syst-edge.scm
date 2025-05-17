@@ -153,6 +153,7 @@
                  (inetd? #t)  ;; default: #f
                  ))
 
+       ;; udev - Userspace Device
        (udev-rules-service 'mtp libmtp) ;; mtp - Media Transfer Protocol
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers"))
@@ -172,6 +173,7 @@
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
+        ;; GDM - GNOME Desktop Manager (login screen)
         (gdm-service-type config => (gdm-configuration
                                      (inherit config)
                                      (auto-suspend? #f)

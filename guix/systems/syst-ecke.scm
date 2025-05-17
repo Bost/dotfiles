@@ -135,6 +135,9 @@
          (modules (cons nvda %default-xorg-modules))
          (drivers '("nvidia"))
          (keyboard-layout keyboard-layout))
+
+        ;; SDDM Simple Desktop Display Manager (for login screen)
+        ;; Recommended for KDE Plasma, LXQt desktop environments
         sddm-service-type)
 
        ;; (service mate-desktop-service-type)
@@ -241,6 +244,8 @@
         ;;   https://issues.guix.gnu.org/issue/39271
 
         ;; service "xorg-server" must be defined only once (see above)
+
+        ;; GDM - GNOME Desktop Manager (login screen)
         (delete gdm-service-type))))
 
 ;;; See
