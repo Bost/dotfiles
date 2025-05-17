@@ -40,25 +40,25 @@
   ;; for inferior-package-in-guix-channel : end
 
   #:export (
-            compose-commands-guix-shell-dry-run
             compose-commands-guix-shell
+            compose-commands-guix-shell-dry-run
             compose-shell-commands
             contains--gx-dry-run?
+            dbg-exec
+            dbg-packages-to-install
             def*
             error-command-failed
             evaluating-module
+            exec
+            exec-background
             exec-system*
             exec-system*-new
             exec-with-error-to-string
-            dbg-packages-to-install
+            exec-with-error-to-string
             if-let
             module-evaluated
             testsymb
             testsymb-trace
-            exec
-            dbg-exec
-            exec-background
-            exec-with-error-to-string
             ))
 
 (define m "[utils]")
