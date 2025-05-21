@@ -146,6 +146,20 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
              (openpgp-fingerprint
               "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5")))))
 
+(define (channel-guixrus)
+  "This channel provides packages and services that are:
+* Yet to be merged upstream.
+* In alpha or beta stage of development.
+* Customized to certain use-cases.
+* Nightly releases."
+  (channel (name 'guixrus)
+   (url "https://git.sr.ht/~whereiseveryone/guixrus")
+   (introduction
+    (make-channel-introduction
+     "7c67c3a9f299517bfc4ce8235628657898dd26b2"
+     (openpgp-fingerprint
+      "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551")))))
+
 (define (channel-guix)
   ;; %default-guix-channel
   (channel
