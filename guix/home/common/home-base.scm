@@ -444,7 +444,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
        (projects-heroku)))
 (testsymb 'install-all-projects)
 
-(define (home-env-services list-separator)
+(define-public (home-env-services list-separator)
   ((comp
     (partial append (non-env-var-services))
     ;; (lambda (v)
