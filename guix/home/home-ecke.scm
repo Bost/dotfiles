@@ -44,10 +44,13 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; program-file local-file
   #:use-module (guix gexp)
   #:use-module (gnu home services shells)
+  #:use-module (gnu home services guix) ;; home-channels-service-type
   ;; simple-service
   #:use-module (gnu home services)
   ;; first take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
+  #:use-module (config channels channel-defs)
+  #:use-module (config channels home-channels)
   ;; #:use-module (ice-9 pretty-print)
 
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
@@ -138,7 +141,14 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;; TODO home-git-configuration
 
 (define home-env
-  (base:home-env-edge-ecke list-separator-bash)
+  (home-environment
+   ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
+   ;; (packages (home-packages-to-install))
+   (services
+    (append
+     (home-channels-services)
+     (base:home-env-services list-separator-bash))))
+
   ;; TODO Wayland-specific settings
   ;; (home-environment
   ;;  (services

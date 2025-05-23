@@ -68,7 +68,7 @@
      (openpgp-fingerprint
       "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C")))))
 
-(define (channel-games)
+(define-public (channel-games)
   "https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 Use:
     guix package --load-path=./ --install=factorio
@@ -91,7 +91,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
       ;; ... as it was made by some with OpenPGP fingerprint:
       "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))
 
-(define (channel-hask-clj)
+(define-public (channel-hask-clj)
   (channel
    (name 'hask-clj)
    (url
@@ -99,7 +99,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
     "https://github.com/Bost/haskell-guix"
     #;,(format #f "file://~a/dev/haskell-guix" home))))
 
-(define (channel-flat)
+(define-public (channel-flat)
   "flatwhatson contains emacs-native-comp, however it doesn't compile"
   (channel
    (name 'flat)
@@ -110,7 +110,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
      (openpgp-fingerprint
       "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490")))))
 
-(define (channel-rde)
+(define-public (channel-rde)
   "Andrew Tropin's tools for managing reproducible development environments"
   (channel
    (name 'rde)
@@ -123,7 +123,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
      (openpgp-fingerprint
       "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0")))))
 
-(define (channel-bost)
+(define-public (channel-bost)
   "Provides a.o.:
 - (bost gnu packages emacs-xyz) module
 - clojure, babashka, postgres 13.3, openjdk18"
@@ -132,7 +132,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
            ;; "https://github.com/Bost/guix-packages"
            (format #f "file://~a/dev/guix-packages" home))))
 
-(define (channel-nonguix)
+(define-public (channel-nonguix)
   "Provides firefox, linux-kernel with non-free proprietary drivers, etc."
   (channel (name 'nonguix)
            (url "https://gitlab.com/nonguix/nonguix")
@@ -146,7 +146,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
              (openpgp-fingerprint
               "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5")))))
 
-(define (channel-guixrus)
+(define-public (channel-guixrus)
   "This channel provides packages and services that are:
 * Yet to be merged upstream.
 * In alpha or beta stage of development.
@@ -160,7 +160,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
      (openpgp-fingerprint
       "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551")))))
 
-(define (channel-guix)
+(define-public (channel-guix)
   ;; %default-guix-channel
   (channel
    (name 'guix)
@@ -200,25 +200,5 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
    (channel-nonguix)
    (channel-guix)))
 (testsymb 'syst-channels)
-
-(define-public (home-channels)
-  "Channels needed for the Guix-home configuration"
-  ((comp
-    (lambda (lst)
-      (if (or (is-system-edge) (is-system-ecke))
-          (append
-           (list
-            ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
-            (channel-hask-clj)
-            ;; (channel-games)
-            ;; (channel-home-service-dwl-guile)
-            ;; (channel-flat)
-            ;; (channel-rde)
-            (channel-bost)
-            )
-           lst)
-          lst)))
-   (syst-channels)))
-(testsymb 'home-channels)
 
 (module-evaluated)
