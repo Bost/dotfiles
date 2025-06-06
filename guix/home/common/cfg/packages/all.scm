@@ -494,9 +494,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (irc-packages)
   "See https://www.slant.co/topics/1323/~best-irc-clients-for-linux"
   (list
-   hexchat ;; Graphical IRC client
-   ;; weechat ;; Extensible chat client
-   ;; irssi   ;; Extensible terminal-based IRC client
+   hexchat     ; Graphical IRC client
+   ;; weechat  ; Extensible chat client
+   ;; irssi    ; Extensible terminal-based IRC client
    ))
 
 (define (rest-packages)
@@ -512,7 +512,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    aspell-dict-en
    aspell-dict-fr
    autoconf
-   automake ;; for `make doc/guix.info`
+   automake    ; for `make doc/guix.info`
 
    ;; specifying only 'bind' leads to "Wrong type argument in position 1 ..."
    (list isc-bind "utils")
@@ -527,9 +527,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    cmake
    curl
    dos2unix
-   drawing ;; basic image editor
+   drawing     ; basic image editor
    ffmpeg
-   file    ;; File type guesser
+   file        ; File type guesser
    flatpak
    font-adobe-source-code-pro
    font-gnu-freefont
@@ -567,10 +567,10 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; specifying only 'guile' leads to "error: guile: unbound variable"
    guile-3.0
 
-   guile-hall ;; to build guile projects
+   guile-hall   ; to build guile projects
    guile-studio
    gv
-   gvfs #| user mounts |#
+   gvfs         ; GIO virtual file system; user mounts
    gwl
    htop
    hwinfo
@@ -595,8 +595,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    lolcat
    lshw
    lsof
-   lynx ; Text Web Browser
-   gnu-make ;; former (specification->package "make@4.3")
+   lynx      ; Text Web Browser
+   gnu-make  ; former (specification->package "make@4.3")
    maven
    mcron
    mlt
@@ -638,29 +638,25 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    python-wrapper
    ;; specifying only 'python2' leads to "error: python2: unbound variable"
    python-2.7
-   python-docx ; ODT documents
+   python-docx   ; ODT documents
 
    racket
    readline
-
-   ;; Manipulate plain text files as databases
-   recutils
-
+   recutils      ; Manipulate plain text files as databases
    rlwrap
-
-   scsh ;; Unix shell embedded in Scheme
+   scsh          ; Unix shell embedded in Scheme
    strace
    taglib
-   tealdeer ;; Rust implementation of the tldr "Too Long Didn't Read"
+   tealdeer      ; tldr "Too Long Didn't Read" written in Rust
    texinfo
    tig
    tree
    tzdata
    udiskie
-   uniutils ; Find out what is in a Unicode file
+   uniutils      ; Find out what is in a Unicode file
 
    ;; Viewer for graphviz dot files; display package dependency graph.
-   xdot ;; guix graph coreutils | xdot -
+   xdot          ; guix graph coreutils | xdot -
 
    ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
    xorriso
@@ -669,17 +665,18 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; No API key required.
    mps-youtube
 
+   netcat        ; networking tool. Provides nc
    youtube-dl
-   yt-dlp ;; fork of youtube-dl with a focus on adding new features
-   ;; youtube-viewer ;; search & play YT videos in a native player
+   yt-dlp        ; youtube-dl fork focused on adding new features
+   ;; youtube-viewer              ; search & play YT videos in a native player
 
-   ;; tesseract-ocr               ;; OCR Optical character recognition engine
-   ;; tesseract-ocr-tessdata-fast ;; Fast versions of trained LSTM models
-   ;; gimagereader                ;; Qt front-end to tesseract-ocr
+   ;; tesseract-ocr               ; OCR Optical character recognition engine
+   ;; tesseract-ocr-tessdata-fast ; Fast versions of trained LSTM models
+   ;; gimagereader                ; Qt front-end to tesseract-ocr
 
-   surfraw ;; Unix command line interface to the www
-   w3m     ;; Text-mode web browser
-   wol     ;; wakeonlan
+   surfraw       ; Unix command line interface to the www
+   w3m           ; Text-mode web browser
+   wol           ; wakeonlan
    ))
 (testsymb 'rest-packages)
 
