@@ -7,7 +7,8 @@
   #:export (main search-notes))
 
 #|
-;; -e calls the `main` function
+;; `-e (module)` calls the `main` from a given module or `-e my-procedure` calls
+;; `my-procedure` from current module
 
 #!/usr/bin/env -S guile \\
 -L ./guix/common -L ./guix/home/common -e (scm-bin\ search-notes) -s
