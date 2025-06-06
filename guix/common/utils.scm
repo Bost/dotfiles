@@ -48,6 +48,7 @@
             dbg-exec
             dbg-packages-to-install
             def*
+            empty?
             error-command-failed
             evaluating-module
             exec
@@ -1039,5 +1040,7 @@ that many from the end."
          (map (lambda (x)
                 (map (lambda (y) (list x y)) ys))
               xs)))
+
+(define-public empty? null?)
 
 (module-evaluated)
