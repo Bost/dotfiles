@@ -238,7 +238,21 @@ Works also for functions returning and accepting multiple values."
 (define-public path
   (delete-duplicates (parse-path (getenv "PATH"))))
 
-(define-public str string-append)
+(define-public (str . args)
+  "Convert all arguments to strings and concatenate them, like Clojure's `str`."
+  (string-concatenate
+   (map (lambda (x)
+          (cond
+           ((string? x) x)
+           ((symbol? x) (symbol->string x))
+           ((number? x) (number->string x))
+           ((char? x) (string x))
+           ((boolean? x) (if x "#t" "#f"))
+           ((null? x) "()")
+           ;; (use-modules (ice-9 format))  ; For `format` with ~A specifier
+           ((pair? x) (format #f "~A" x))   ; Handle lists and pairs
+           (else (format #f "~A" x))))      ; Fallback for other types
+        args)))
 
 (define-public (has-suffix? string suffix)
   "Does STRING end with the SUFFIX? As `string-suffix?' but the parameters are
