@@ -1,13 +1,13 @@
 (define-module (emacs-common)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (ice-9 getopt-long) ;; command-line arguments handling
-  #:use-module (ice-9 regex)             #| string-match |#
-  #:use-module (guix monads)             #| with-monad   |#
-  #:use-module (utils)                   #| partial      |#
-  #:use-module (settings)                #| user         |#
+  #:use-module (ice-9 getopt-long) ; command-line arguments handling
+  #:use-module (ice-9 regex)       ; string-match
+  #:use-module (guix monads)       ; with-monad
+  #:use-module (utils)             ; partial
+  #:use-module (settings)          ; user
   #:export (
-            create-emacs-launcher
+            create-launcher
             handle-cli
             pkill-server
             set-editable
@@ -93,16 +93,16 @@ Usage:
       (format #f "CRAFTED_EMACS_HOME=~a/crafted-emacs/personal" home-emacs-distros)
       (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg" home-emacs-distros profile)))
 
-(define* (create-emacs-launcher
+(define* (create-launcher
           #:key (verbose #f) utility-name gx-dry-run profile socket
           #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
 
 Example:
-(create-emacs-launcher #:profile \"develop\" \"rest\" \"args\")
+(create-launcher #:profile \"develop\" \"rest\" \"args\")
 "
-  (let* [(f "[create-emacs-launcher]")]
+  (let* [(f "[create-launcher]")]
     (when verbose
       (format #t "~a ~a utility-name : ~a\n" m f utility-name)
       (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
@@ -143,7 +143,7 @@ Example:
         cmd->string)
        (list (which-emacsclient) "--create-frame"
              (str "--socket-name=" socket))))))
-(testsymb 'create-emacs-launcher)
+(testsymb 'create-launcher)
 
 ;; ### BEG: from (fs-utils)
 (define* (user-home #:rest args) (apply str home args))

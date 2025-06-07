@@ -5,7 +5,8 @@
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (fs-utils)
-  #:use-module (emacs-common)  ;; handle-cli, create-emacs-launcher, etc.
+  #:use-module (emacs-common)  ; handle-cli
+  #:use-module (mount-common)  ; handle-cli
   ;; See service-file-general -> with-imported-modules
   #:use-module (scm-bin gcl)
   #:use-module (gnu home)
@@ -194,14 +195,54 @@ Example:
               #$main-call)))))))
 (testsymb 'service-file-general)
 
+(define* (service-file-mount-utils
+          #:key program-name (verbose #f) utility-name fun device-label)
+  "Create pair like for emacs-cli utils (\"scm-bin/mount-axa\" \"/gnu/store/...\")
+
+TODO The `search-notes' program should read a `search-space-file' containing
+a list of files to search through."
+  (let* [(m (format #f "~a [service-file-mount-utils]" m))]
+    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a program-name : ~s\n" m program-name)
+    ;; (format #t "~a fun          : ~s\n" m fun)
+    ;; (format #t "~a profile      : ~s\n" m profile)
+
+    (list
+     (str scm-bin-dirname "/" program-name)
+     ((comp
+       ;; (lambda (v) (format #t "~a :\n~s\n\n" m v) v)
+       )
+      (program-file
+       program-name
+       (let* [(symb-string scheme-file)
+              (symb (or module-name
+                        (string->symbol symb-string)))
+              (sexp `(handle-cli
+                      #:verbose ,verbose #:fun ,fun #:device-label ,device-label
+                      (command-line)))
+              ]
+         ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
+         (with-imported-modules
+             `((guix monads)
+               (utils)
+               (settings)
+               (mount-common))
+           #~(begin
+               (use-modules (ice-9 getopt-long)
+                            (ice-9 regex)
+                            (guix monads)
+                            (utils)
+                            (settings)
+                            (mount-common))
+               #$sexp))))))))
+(testsymb 'service-file-mount-utils)
+
 (define* (service-file-emacs-utils
           #:key program-name (verbose #f) utility-name fun profile)
-  " TODO The `search-notes' program should read a `search-space-file' containing
-a list of files to search through.
+  "Create pair like for emacs-cli utils (\"scm-bin/g\" \"/gnu/store/...\")
 
-Example:
-    chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
-"
+TODO The `search-notes' program should read a `search-space-file' containing
+a list of files to search through."
   (let* [(m (format #f "~a [service-file-emacs-utils]" m))]
     ;; (format #t "~a Starting ...\n" m)
     ;; (format #t "~a program-name : ~s\n" m program-name)
@@ -292,7 +333,7 @@ Example:
     (list "dev/tweaks" "el")
     (list "dev/farmhouse-light-mod-theme" "el"))))
 
-(define search-notes-service-files
+(define (search-notes-service-files)
   (let* [(m (format #f "~a [search-notes-service-files]" m))]
     ;; (format #t "~a Starting ...\n" m)
     (map
@@ -353,29 +394,41 @@ Example:
             #:scheme-file "search-notes")))))
 (testsymb 'search-notes-service-files)
 
+(define (mount-utils)
+  ((comp
+    (partial map (partial apply service-file-mount-utils))
+    (partial map (lambda (fun-label)
+                   (let [(fun (car fun-label))
+                         (lbl (cadr fun-label))]
+                     (list #:program-name (str fun "-" lbl)
+                           #:fun fun #:device-label lbl)))))
+   (cartesian
+    (list 'mount 'unmount 'eject)
+    (list "axa" "toshiba" "new"))))
+(testsymb 'mount-utils)
+
 (define (emacs-cli-utils)
   ((comp
-    (partial append search-notes-service-files)
     (partial map (partial apply service-file-emacs-utils)))
    (list
-    (list #:program-name "ep" #:fun 'set-editable          #:profile #f)
+    (list #:program-name "ep" #:fun 'set-editable     #:profile #f)
 
-    (list #:program-name  "d" #:fun 'create-emacs-launcher #:profile develop)
-    (list #:program-name "ed" #:fun 'set-editable          #:profile develop)
-    (list #:program-name "kd" #:fun 'pkill-server          #:profile develop)
-    
-    (list #:program-name  "cy" #:fun 'create-emacs-launcher #:profile cycle)
-    (list #:program-name "ecy" #:fun 'set-editable          #:profile cycle)
-    (list #:program-name "kcy" #:fun 'pkill-server          #:profile cycle)
+    (list #:program-name  "d" #:fun 'create-launcher  #:profile develop)
+    (list #:program-name "ed" #:fun 'set-editable     #:profile develop)
+    (list #:program-name "kd" #:fun 'pkill-server     #:profile develop)
 
-    (list #:program-name  "g" #:fun 'create-emacs-launcher #:profile guix)
-    (list #:program-name "eg" #:fun 'set-editable          #:profile guix)
-    (list #:program-name "kg" #:fun 'pkill-server          #:profile guix)
+    (list #:program-name  "cy" #:fun 'create-launcher #:profile cycle)
+    (list #:program-name "ecy" #:fun 'set-editable    #:profile cycle)
+    (list #:program-name "kcy" #:fun 'pkill-server    #:profile cycle)
 
-    (list #:program-name  "r" #:fun 'create-emacs-launcher #:profile crafted)
+    (list #:program-name  "g" #:fun 'create-launcher  #:profile guix)
+    (list #:program-name "eg" #:fun 'set-editable     #:profile guix)
+    (list #:program-name "kg" #:fun 'pkill-server     #:profile guix)
+
+    (list #:program-name  "r" #:fun 'create-launcher  #:profile crafted)
     ;; TODO Move crafted-emacs user config from the project repo to the dotfiles
-    ;; (list #:program-name "er" #:fun 'set-editable          #:profile crafted)
-    (list #:program-name "kr" #:fun 'pkill-server          #:profile crafted)
+    ;; (list #:program-name "er" #:fun 'set-editable  #:profile crafted)
+    (list #:program-name "kr" #:fun 'pkill-server     #:profile crafted)
     )))
 
 (define-public (scheme-files-service)
@@ -387,7 +440,10 @@ Example:
       ;; (simple-service 'my-mcron-job mcron-service-type #~(job '(next-hour (3)) "guix gc -F 2G"))
       (partial simple-service 'scheme-files-service home-files-service-type)
       (partial append (if (or (is-system-ecke) (is-system-edge))
-                          (emacs-cli-utils)
+                          (append
+                           (search-notes-service-files)
+                           (mount-utils)
+                           (emacs-cli-utils))
                           (list)))
       (partial map (partial apply service-file-general)))
      (list
