@@ -2,8 +2,7 @@
   #:use-module (utils)
   #:use-module (settings)
   #:use-module (memo)
-  ;; provides: use-package-modules
-  #:use-module (gnu)
+  #:use-module (gnu)     ; provides use-package-modules
   #:use-module (cfg packages spguimacs all)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
@@ -22,10 +21,11 @@
   ;; Following is needed b/c an inferior version of signal-desktop is used
   #:use-module (nongnu packages messaging)
 
-  ;; provides: first take drop remove delete-duplicates append-map etc.
-  #:use-module (srfi srfi-1)
-  ;; provides: cut
-  #:use-module (srfi srfi-26))
+  #:use-module (srfi srfi-1)  ; list-processing procedures
+  ;; simple & compact notation for specializing any subset of the parameters of
+  ;; a procedure. e.g. cut
+  #:use-module (srfi srfi-26)
+  )
 
 (define m (module-name-for-logging))
 (evaluating-module)
@@ -513,6 +513,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    aspell-dict-fr
    autoconf
    automake    ; for `make doc/guix.info`
+   bc          ; Arbitrary precision numeric processing language
 
    ;; specifying only 'bind' leads to "Wrong type argument in position 1 ..."
    (list isc-bind "utils")
@@ -559,6 +560,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    gcc-toolchain
    libgccjit
 
+   (list git "gui")
    ghc
    (list glib "bin")
    graphviz
@@ -994,15 +996,8 @@ FIXME the inferior-packages are installed on every machine"
              (rest-packages)
              (xfce-packages)
              (xorg-packages)
-             (list
-              (list git "gui"))
              lst)
             lst))
-      (lambda (lst)
-        (append
-         ;; Arbitrary precision numeric processing language
-         (list bc)
-         lst))
       ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
       )
      (basic-packages))))
