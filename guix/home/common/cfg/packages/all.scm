@@ -7,6 +7,7 @@
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
+  #:use-module ((bost gnu packages gnome) #:prefix bst:)
   ;; provides: specification->package
   #:use-module (gnu packages)
   #:use-module (bost gnu packages guake)
@@ -136,6 +137,8 @@
  gcc
  clojure
  machine-learning
+ cups
+ scanner
  )
 
 (define (email-in-emacs-packages)
@@ -750,6 +753,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'other-gui-packages)
 
+(define (printer-scanner-packages)
+  (list
+   bst:simple-scan   ; Document and image scanner
+   hplip-minimal ; Hewlett-Packard printer drivers
+   ))
+(testsymb 'printer-scanner-packages)
+
 (define (xorg-packages)
   (list
    ;; Xorg XKB configuration files - probably not needed in Xfce
@@ -982,6 +992,7 @@ FIXME the inferior-packages are installed on every machine"
             (append
              (large-packages-edge-ecke)
              (spguimacs-packages) ;; pulls-in ~430 additional packages
+             (printer-scanner-packages)
              lst)
             lst))
       ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" m (length p)) p)
