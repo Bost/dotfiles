@@ -34,6 +34,7 @@
  fonts    ; font-terminus font-tamzen
  gnome    ; for (gnome-desktop-configuration (gnome (replace-mesa gnome)))
  libusb   ; libmtp
+ scanner  ; sane-backends
  shells   ; login shell
 
  ;; vim
@@ -236,6 +237,8 @@
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
+        ;; (sane-service-type _ => sane-backends)
+
         ;; (delete login-service-type)
         ;; (delete mingetty-service-type)
         ;; (delete console-font-service-type)
