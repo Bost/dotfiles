@@ -566,17 +566,17 @@ TODO have a look if a delimited continuation can be used to break out of `exec',
 i.e. skip the `read-all-strings' and thus make `exec-background' out of it.
 
 Usage:
-(define (process retvat output)
+(define (process retval output)
   (format #t \"(test-type output): ~a\\n\" (test-type output))
   ...
-  retvat)
+  retval)
 
 (let* ((command (list \"echo\" \"foo\"))
        (ret (exec command))
-       (retvat (car ret)))
-    (if (= 0 retvat)
+       (retval (car ret)))
+    (if (= 0 retval)
         (let* ((output (cdr ret)))
-          (process retvat output))
+          (process retval output))
       (begin
         ;; (error-command-failed \"[module]\" \"extra_info\")
         ;; or return `retval' instead of `*unspecified*'
