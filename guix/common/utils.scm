@@ -774,16 +774,16 @@ or the CLIENT-CMD if some process ID was found."
    ((equal? (car plist) key) (cadr plist))
    (else (plist-get (cddr plist) key))))
 
-(define-public (remove-kw-from-args kw init-args)
-  "init-args must be a list containing a sequence key-val pairs. E.g.:
+(define-public (remove-kw-from-args keyword init-args)
+  "init-args must be a list containing a sequence keyword-value pairs. E.g.:
 (#:x 'x #:y 'y)"
   (let loop ((args init-args)
              (result '()))
-    ;; (format #t "kw: ~a; args: ~a; result: ~a\n" kw args result)
+    ;; (format #t "kw: ~a; args: ~a; result: ~a\n" keyword args result)
     (cond ((null? args) (reverse result))
           (
            (and
-            (equal? kw (car args))
+            (equal? keyword (car args))
             (>= (length args) 2)
             )
            (begin
@@ -962,12 +962,12 @@ Requires:
              ((@(guix store) open-connection))))
    package))
 
-(define-public (keyword->string kw)
+(define-public (keyword->string keyword)
   "
 (use-modules (srfi srfi-88))
 (keyword->string #:example) ; => \"example\"
 "
-  (symbol->string (keyword->symbol kw)))
+  (symbol->string (keyword->symbol keyword)))
 
 ;; (define-public (inferior-package-in-guix-channel package commit)
 ;;   "Returns an inferior representing the `commit' (predecessor-sha1) revision.
