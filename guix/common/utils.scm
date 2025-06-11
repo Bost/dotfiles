@@ -774,28 +774,28 @@ or the CLIENT-CMD if some process ID was found."
    ((equal? (car plist) key) (cadr plist))
    (else (plist-get (cddr plist) key))))
 
-(define-public (remove-kw-from-args keyword init-args)
-  "init-args must be a list containing a sequence keyword-value pairs. E.g.:
+(define-public (remove-kw-from-args keyword lst)
+  "lst must be a list containing a sequence of keyword-value pairs. E.g.:
 (#:x 'x #:y 'y)"
-  (let loop ((args init-args)
+  (let loop ((rest-args lst)
              (result '()))
-    ;; (format #t "kw: ~a; args: ~a; result: ~a\n" keyword args result)
-    (cond ((null? args) (reverse result))
+    ;; (format #t "kw: ~a; args: ~a; result: ~a\n" keyword rest-args result)
+    (cond ((null? rest-args) (reverse result))
           (
            (and
-            (equal? keyword (car args))
-            (>= (length args) 2)
+            (equal? keyword (car rest-args))
+            (>= (length rest-args) 2)
             )
            (begin
-             ;; (format #t "Skipping over: ~a\n" (list (car args) (cadr args)))
+             ;; (format #t "Skipping over: ~a\n" (list (car rest-args) (cadr rest-args)))
              (loop
-              (cddr args) ;; skip first 2
+              (cddr rest-args) ;; skip first 2
               result)))
 
           (else
            (loop
-            (cdr args)
-            (append (list (car args)) result))))))
+            (cdr rest-args)
+            (append (list (car rest-args)) result))))))
 
 ;; (define* (fox #:key x y #:rest args)
 ;;   (format #t "input : args: ~a\n" args)
