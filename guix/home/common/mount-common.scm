@@ -3,7 +3,7 @@
 ;;;   service-file -> with-imported-modules
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
-  #:use-module (utils)             ; 
+  #:use-module (utils)
   #:export (
             mount unmount eject
             handle-cli)
@@ -33,22 +33,7 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
 
 (define utility-name (last (module-name (current-module))))
 
-(define* (mount #:key device #:allow-other-keys)
-  (let* [(cmd (str "udisksctl mount --block-device=" device))]
-    ;; (format #t "cmd:\n~a\n" cmd)
-    (exec-system* cmd)))
-
-(define* (unmount #:key device #:allow-other-keys)
-  (let* [(cmd (str "udisksctl unmount --block-device=" device))]
-    ;; (format #t "cmd:\n~a\n" cmd)
-    (exec-system* cmd)))
-
-(define* (eject #:key device #:allow-other-keys)
-  (let* [(cmd (str "udisksctl power-off --block-device=" device))]
-    ;; (format #t "cmd:\n~a\n" cmd)
-    (exec-system* cmd)))
-
-(define* (get-block-device #:key device-label)
+(define* (get-block-device device-label)
   ;; (format #t "args: ~a\n" args)
   ;; (format #t "device-label: ~a\n" device-label)
   (let* ((command (list
@@ -69,6 +54,24 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
           ;; (error-command-failed "[module]" "extra_info")
           ;; or return `retval' instead of `*unspecified*'
           *unspecified*))))
+
+(define* (mount #:key device-label #:allow-other-keys)
+  (let* [(cmd (str "udisksctl mount --block-device="
+                   (get-block-device device-label)))]
+    ;; (format #t "cmd:\n~a\n" cmd)
+    (exec-system* cmd)))
+
+(define* (unmount #:key device-label #:allow-other-keys)
+  (let* [(cmd (str "udisksctl unmount --block-device="
+                   (get-block-device device-label)))]
+    ;; (format #t "cmd:\n~a\n" cmd)
+    (exec-system* cmd)))
+
+(define* (eject #:key device-label #:allow-other-keys)
+  (let* [(cmd (str "udisksctl power-off --block-device="
+                   (get-block-device device-label)))]
+    ;; (format #t "cmd:\n~a\n" cmd)
+    (exec-system* cmd)))
 
 (define* (handle-cli #:key (verbose #f) utility-name fun device-label #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
@@ -116,8 +119,7 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
                         #:verbose verbose
                         #:utility-name utility-name
                         #:gx-dry-run val-gx-dry-run
-                        #:device (get-block-device #:device-label
-                                                   device-label))
+                        #:device-label device-label)
                val-rest-args)]))))
 
 (module-evaluated)

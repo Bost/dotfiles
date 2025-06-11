@@ -48,17 +48,22 @@ defined.
   "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
   ((@(guix build utils) which) "emacsclient"))
 
-(define (create-init-cmd profile socket)
+(define (calculate-socket profile)
+  (when profile
+    ((comp keyword->string cdr)
+     (assoc profile profile->branch-kw))))
+
+(define (create-init-cmd profile)
   (cmd->string
    (list
     (which-emacs)
     (if (string= profile crafted)
         (format #f "--init-directory=~a/crafted-emacs" home-emacs-distros)
         (format #f "--init-directory=~a/spacemacs/~a/src" home-emacs-distros profile))
-    (str "--bg-daemon=" socket))))
+    (str "--bg-daemon=" (calculate-socket profile)))))
 
 (define* (pkill-server
-          #:key (verbose #f) utility-name gx-dry-run profile socket
+          #:key (verbose #f) utility-name gx-dry-run profile
           #:rest args)
   "The ARGS are being ignored.
 
@@ -73,17 +78,15 @@ Usage:
       (format #t "~a ~a utility-name : ~a\n" m f utility-name)
       (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
       (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a socket       : ~a\n" m f socket)
       (format #t "~a ~a args         : ~a\n" m f args)))
-  (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile
-                         #:socket))
+  (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
          (args (remove-all-elements args elements))]
     ;; pkill-pattern must NOT be enclosed by \"\"
 ;; TODO use with-monad
     (apply exec-system*-new
            #:split-whitespace #f
            #:gx-dry-run gx-dry-run
-           (list "pkill" "--full" (create-init-cmd profile socket)))))
+           (list "pkill" "--full" (create-init-cmd profile)))))
 (testsymb 'pkill-server)
 
 (define (init-cmd-env-vars home-emacs-distros profile)
@@ -92,7 +95,7 @@ Usage:
       (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg" home-emacs-distros profile)))
 
 (define* (create-launcher
-          #:key (verbose #f) utility-name gx-dry-run profile socket
+          #:key (verbose #f) utility-name gx-dry-run profile
           #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
@@ -105,12 +108,10 @@ Example:
       (format #t "~a ~a utility-name : ~a\n" m f utility-name)
       (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
       (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a socket       : ~a\n" m f socket)
       (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile
-                      #:socket))
+    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
            (args (remove-all-elements args elements))
-           (init-cmd (create-init-cmd profile socket))]
+           (init-cmd (create-init-cmd profile))]
       ((comp
 ;;; Search for the full command line:
 ;;; $ pkill --full /home/bost/.guix-profile/bin/emacs --init-directory=/home/bost/.emacs.d.distros/crafted-emacs --bg-daemon=crafted
@@ -138,7 +139,7 @@ Example:
                   (exec-background client-cmd-with-args)))))
         cmd->string)
        (list (which-emacsclient) "--create-frame"
-             (str "--socket-name=" socket))))))
+             (str "--socket-name=" (calculate-socket profile)))))))
 (testsymb 'create-launcher)
 
 ;; ### BEG: from (fs-utils)
@@ -158,7 +159,7 @@ Example:
          (string-length (user-home emacs-distros)))))
 
 (define* (set-editable
-          #:key (verbose #f) utility-name gx-dry-run profile socket
+          #:key (verbose #f) utility-name gx-dry-run profile
           #:rest args)
   "The ARGS are being ignored.
 
@@ -173,10 +174,8 @@ Examples:
       (format #t "~a ~a utility-name : ~a\n" m f utility-name)
       (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
       (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a socket       : ~a\n" m f socket)
       (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile
-                           #:socket))
+    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
            (args (remove-all-elements args elements))
 
            (monad (if gx-dry-run
@@ -207,7 +206,7 @@ Examples:
       (format #t "~a ~a fun          : ~a\n" m f fun)
       (format #t "~a ~a profile      : ~a\n" m f profile)
       (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
+    (let* [(elements (list #:verbose #:utility-name #:fun #:profile))
            (args (remove-all-elements args elements))
            (args (car args))
            ;; (value #t): a given option expects accept a value
@@ -243,12 +242,7 @@ Examples:
                         #:verbose verbose
                         #:utility-name utility-name
                         #:gx-dry-run val-gx-dry-run
-                        #:profile profile
-                        #:socket ;; i.e. daemon / server name
-                        (when profile
-                          (let* [(branch-kw (cdr (assoc profile
-                                                        profile->branch-kw)))]
-                            (keyword->string branch-kw))))
+                        #:profile profile)
                val-rest-args)]))))
 (testsymb 'handle-cli)
 
