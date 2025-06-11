@@ -5,8 +5,7 @@
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (fs-utils)
-  #:use-module (emacs-common)  ; handle-cli
-  #:use-module (mount-common)  ; handle-cli
+  #:use-module (command-line)
   ;; See service-file-general -> with-imported-modules
   #:use-module (scm-bin gcl)
   #:use-module (gnu home)
@@ -203,9 +202,10 @@ TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."
   (let* [(m (format #f "~a [service-file-mount-utils]" m))]
     ;; (format #t "~a Starting ...\n" m)
-    ;; (format #t "~a program-name : ~s\n" m program-name)
-    ;; (format #t "~a fun          : ~s\n" m fun)
-    ;; (format #t "~a profile      : ~s\n" m profile)
+    ;; (format #t "~a program-name    : ~s\n" m program-name)
+    ;; (format #t "~a fun             : ~s\n" m fun)
+    ;; (format #t "~a (test-type fun) : ~s\n" m (test-type fun))
+    ;; (format #t "~a profile         : ~s\n" m profile)
 
     (list
      (str scm-bin-dirname "/" program-name)
@@ -217,15 +217,15 @@ a list of files to search through."
        (let* [(symb-string scheme-file)
               (symb (or module-name
                         (string->symbol symb-string)))
-              (sexp `(handle-cli
-                      #:verbose ,verbose #:fun ,fun #:device-label ,device-label
-                      (command-line)))
-              ]
+              (sexp `(handle-cli #:verbose ,verbose #:fun (quote ,fun)
+                                 #:device-label ,device-label
+                                 (command-line)))]
          ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
          (with-imported-modules
              `((guix monads)
                (utils)
                (settings)
+               (command-line)
                (mount-common))
            #~(begin
                (use-modules (ice-9 getopt-long)
@@ -233,6 +233,7 @@ a list of files to search through."
                             (guix monads)
                             (utils)
                             (settings)
+                            (command-line)
                             (mount-common))
                #$sexp))))))))
 (testsymb 'service-file-mount-utils)
@@ -259,15 +260,15 @@ a list of files to search through."
        (let* [(symb-string scheme-file)
               (symb (or module-name
                         (string->symbol symb-string)))
-              (sexp `(handle-cli
-                      #:verbose ,verbose #:fun ,fun #:profile ,profile
-                      (command-line)))
-              ]
+              (sexp `(handle-cli #:verbose ,verbose #:fun (quote ,fun)
+                                 #:profile ,profile
+                      (command-line)))]
          ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
          (with-imported-modules
              `((guix monads)
                (utils)
                (settings)
+               (command-line)
                (emacs-common))
            #~(begin
                (use-modules (ice-9 getopt-long)
@@ -275,6 +276,7 @@ a list of files to search through."
                             (guix monads)
                             (utils)
                             (settings)
+                            (command-line)
                             (emacs-common))
                #$sexp))))))))
 (testsymb 'service-file-emacs-utils)
@@ -397,9 +399,9 @@ a list of files to search through."
 (define (mount-utils)
   ((comp
     (partial map (partial apply service-file-mount-utils))
-    (partial map (lambda (fun-label)
-                   (let [(fun (car fun-label))
-                         (lbl (cadr fun-label))]
+    (partial map (lambda (fun-label-pair)
+                   (let [(fun (car fun-label-pair))
+                         (lbl (cadr fun-label-pair))]
                      (list #:program-name (str fun "-" lbl)
                            #:fun fun #:device-label lbl)))))
    (cartesian

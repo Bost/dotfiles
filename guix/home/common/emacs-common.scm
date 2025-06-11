@@ -6,12 +6,7 @@
   #:use-module (guix monads)       ; with-monad
   #:use-module (utils)             ; partial
   #:use-module (settings)          ; user
-  #:export (
-            create-launcher
-            handle-cli
-            pkill-server
-            set-editable
-            ))
+  #:export (create-launcher pkill-server set-editable))
 
 #|
 ;; `-e (module)` calls the `main` from a given module or `-e my-procedure` calls
