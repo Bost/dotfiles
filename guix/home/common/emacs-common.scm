@@ -198,6 +198,25 @@ Examples:
             (copy-file src dst))))))
 (testsymb 'set-editable)
 
+;; TODO dbgfmt should be smart to detect if symbols f and/or m are defined and if so then use them
+(define-syntax dbgfmt
+  (syntax-rules ()
+    [(_ msg val)
+     (let [
+           ;; (module (module-name-for-logging))
+           (msgstr (format #f msg val))
+           ]
+       (cond
+        [(and (defined? 'f) (defined? 'm))
+         (format #t "1. ~a ~a ~a\n" m f msgstr)]
+
+        [(and (defined? 'f))
+         (format #t "2. ~a ~a\n" f msgstr)]
+
+        [#t
+         (format #t "3. ~a\n" msgstr)]
+        ))]))
+
 (define* (handle-cli #:key (verbose #f) utility-name fun profile #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'."
