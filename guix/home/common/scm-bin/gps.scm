@@ -22,11 +22,10 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (gps #:key remote #:allow-other-keys #:rest init-args)
-  "Usage: "
-  ;; (format #t "remote : ~a\n" remote)
-  ;; (format #t "init-args : ~a\n" init-args)
-  (let* [(args (remove-kw-from-args #:remote init-args))
+(define* (gps #:key remote #:allow-other-keys #:rest args)
+  "git-push"
+  (let* [(elements (list #:remote))
+         (args (remove-all-elements args elements))
          (ret (exec (append
                      (list "git" "push")
                      args

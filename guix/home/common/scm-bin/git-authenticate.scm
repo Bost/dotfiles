@@ -66,7 +66,7 @@ cd $dotf
 (testsymb 'authenticate-commit)
 
 ;; TODO pass the repo and beg (first commit to authenticate) arguments from CLI
-(define* (git-authenticate #:rest init-args)
+(define* (git-authenticate #:rest args)
   "Examples:
 (git-authenticate \"-f\" \"arg0\")
 (git-authenticate \"-f arg0\")
@@ -74,7 +74,8 @@ cd $dotf
         (git-authenticate \"-f arg0\"))
 ;; > #t
 "
-  (let* [(args (remove-kw-from-args #:remote init-args))
+  (let* [(elements (list #:remote))
+         (args (remove-all-elements args elements))
          (commits (get-commits
                    #:repo repo
                    #:beg "2e1ead7c8b"
