@@ -79,10 +79,8 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
       (format #t "~a ~a fun          : ~a\n" m f fun)
       (format #t "~a ~a device-label : ~a\n" m f device-label)
       (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(args (remove-kw-from-args #:verbose args))
-           (args (remove-kw-from-args #:utility-name args))
-           (args (remove-kw-from-args #:fun args))
-           (args (remove-kw-from-args #:device-label args))
+    (let* [(elements (list #:verbose #:utility-name #:fun #:device-label))
+           (args (remove-all-elements args elements))
            (args (car args))
 
            ;; (value #t): a given option expects accept a value

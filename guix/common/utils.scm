@@ -374,44 +374,45 @@ E Command failed."
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
-  (let* [(f "[exec-system*]")]
-    ;; (format #t "~a ~a orig-args : ~a\n" m f args)
-    (let* [(args (remove-kw-from-args #:verbose args))]
-      ;; (format #t "~a ~a args : ~a\n" m f args)
-      ((comp
-        (partial exec-or-dry-run system*)
-        (lambda (prm) (dbg-exec prm #:verbose verbose))
-        string-split-whitespace)
-       args))))
+  (let* [(f "[exec-system*]")
+         (elements (list #:verbose))
+         (args (remove-all-elements args elements))]
+    ;; (format #t "~a ~a args : ~a\n" m f args)
+    ((comp
+      (partial exec-or-dry-run system*)
+      (lambda (prm) (dbg-exec prm #:verbose verbose))
+      string-split-whitespace)
+     args)))
 
-(define* (exec-or-dry-run-new #:key exec-function (gx-dry-run #f) (verbose #f) #:rest args)
-  ;; (format #t "~a ~a args          : ~a\n" m "[exec-or-dry-run-new]" args)
-  (let* [(f "[exec-or-dry-run-new]")]
-    ;; (format #t "~a ~a orig-args : ~a\n" m f args)
-   (let* [(args (remove-kw-from-args #:exec-function args))
-          (args (remove-kw-from-args #:gx-dry-run    args))
-          (args (remove-kw-from-args #:verbose       args))
-          (args (car args))]
-     ;; (format #t "~a ~a exec-function : ~a\n" m f exec-function)
-     ;; (format #t "~a ~a dry-run       : ~a\n" m f
-     ;;         (or (contains--gx-dry-run? args) gx-dry-run))
-     ;; (format #t "~a ~a args          : ~a\n" m f args)
-     (if (or (contains--gx-dry-run? args) gx-dry-run)
-         0 ;; the exit status OK
-         (if (list? args)
-             (apply exec-function args) ;; TODO add #:verbose
-             (exec-function args))))))
+(define* (exec-or-dry-run-new
+          #:key exec-function (gx-dry-run #f) (verbose #f)
+          #:rest args)
+  (let* [(f "[exec-or-dry-run-new]")
+         (elements (list #:exec-function #:gx-dry-run #:verbose))
+         (args (remove-all-elements args elements))
 
-(define* (exec-system*-new #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t) #:rest args)
+         (args (car args))]
+    ;; (format #t "~a ~a exec-function : ~a\n" m f exec-function)
+    ;; (format #t "~a ~a dry-run       : ~a\n" m f
+    ;;         (or (contains--gx-dry-run? args) gx-dry-run))
+    ;; (format #t "~a ~a args          : ~a\n" m f args)
+    (if (or (contains--gx-dry-run? args) gx-dry-run)
+        0 ;; the exit status OK
+        (if (list? args)
+            (apply exec-function args) ;; TODO add #:verbose
+            (exec-function args)))))
+
+(define* (exec-system*-new
+          #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t)
+          #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
   (let* [(f "[exec-system*-new]")
-         (args (remove-kw-from-args #:split-whitespace args))
-         (args (remove-kw-from-args #:gx-dry-run       args))
-         (args (remove-kw-from-args #:verbose          args))]
+         (elements (list #:split-whitespace #:gx-dry-run #:verbose))
+         (args (remove-all-elements args elements))]
     ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
     ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)
     ;; (format #t "~a ~a args             : ~a\n" m f args)
@@ -774,39 +775,45 @@ or the CLIENT-CMD if some process ID was found."
    ((equal? (car plist) key) (cadr plist))
    (else (plist-get (cddr plist) key))))
 
-(define-public (remove-kw-from-args keyword lst)
-  "lst must be a list containing a sequence of keyword-value pairs. E.g.:
-(#:x 'x #:y 'y)"
-  (let loop ((rest-args lst)
-             (result '()))
-    ;; (format #t "kw: ~a; args: ~a; result: ~a\n" keyword rest-args result)
-    (cond ((null? rest-args) (reverse result))
-          (
-           (and
-            (equal? keyword (car rest-args))
-            (>= (length rest-args) 2)
-            )
-           (begin
-             ;; (format #t "Skipping over: ~a\n" (list (car rest-args) (cadr rest-args)))
-             (loop
-              (cddr rest-args) ;; skip first 2
-              result)))
+(define (remove-element lst element)
+  "Remove all occurrences of a given element from a list.
+If the element is a keyword (e.g., #:x), it also removes the next element (its
+value).
 
-          (else
-           (loop
-            (cdr rest-args)
-            (append (list (car rest-args)) result))))))
+(remove-element '(x #:a 1 x #:b 2 #:c 3 x b z #:d 1 #:d) #:d)
+; => (x #:a 1 x #:b 2 #:c 3 x b z)"
+  (define (recur xs)
+    (cond
+     ((null? xs) '())
+     ((and (keyword? element)      ; If element is a keyword and matches...
+           (eq? (car xs) element))
+      (if (null? (cdr xs))
+          '() ; no value after keyword; remove only keyword
+          (recur (cddr xs))))   ; ...then skip the keyword and its value
 
-;; (define* (fox #:key x y #:rest args)
-;;   (format #t "input : args: ~a\n" args)
-;;   (let* ((args (remove-kw-from-args #:x args))
-;;          (args (remove-kw-from-args #:y args))
-;;          )
-;;     (format #t "output: args: ~a\n" args)))
+     ((equal? (car xs) element) ; If element matches...
+      (recur (cdr xs)))         ; ...then skip it
 
-;; (fox #:x "x" #:y "y" 'bla)
-;; ;; => input : args: (#:x x #:y y bla)
-;; ;; => output: args: (bla)
+     (else
+      (cons (car xs) (recur (cdr xs))))))
+
+  (recur lst))
+
+(define-public (remove-all-elements lst elements)
+  "Remove all elements from a list.
+If an element is a keyword (e.g., #:x), also remove the following element (its
+value).
+
+Example:
+(remove-all-elements '(x #:a 1 y #:b 2 #:c 3 x z #:d 1 #:d) '(x #:d))
+=> (#:a 1 y #:b 2 #:c 3 z)"
+  (let ((uniq-elements (delete-duplicates elements)))
+    (let loop ((lst lst)
+               (els uniq-elements))
+      (if (null? els)
+          lst
+          (loop (remove-element lst (car els))
+                (cdr els))))))
 
 (define-inlinable (pipe-return params)
   (list

@@ -26,12 +26,12 @@ cd $dotf
         (gcl \"-f arg0\"))
 ;; > #t
 "
-  (let* [(f "[gcl]")]
-    ;; (format #t "~a ~a orig-args : ~a\n" m f args)
-    (let* [(args (remove-kw-from-args #:verbose args))]
-      ;; git-command implementation see $dev/guix/tests/git.scm
-      ;; (format #t "~a ~a args : ~a\n" m f args)
-      (apply exec-system* #:verbose verbose "git" "clone" args))))
+  (let* [(f "[gcl]")
+         (elements (list #:verbose))
+         (args (remove-all-elements args elements))]
+    ;; git-command implementation see $dev/guix/tests/git.scm
+    ;; (format #t "~a ~a args : ~a\n" m f args)
+    (apply exec-system* #:verbose verbose "git" "clone" args)))
 
 (define (show-help)
   (format #t "Usage: ~a [OPTION] NAME [ARGS ...]
