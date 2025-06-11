@@ -75,11 +75,9 @@ Usage:
       (format #t "~a ~a profile      : ~a\n" m f profile)
       (format #t "~a ~a socket       : ~a\n" m f socket)
       (format #t "~a ~a args         : ~a\n" m f args)))
-  (let* [(args (remove-kw-from-args #:verbose args))
-         (args (remove-kw-from-args #:utility-name args))
-         (args (remove-kw-from-args #:gx-dry-run args))
-         (args (remove-kw-from-args #:profile args))
-         (args (remove-kw-from-args #:socket args))]
+  (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile
+                         #:socket))
+         (args (remove-all-elements args elements))]
     ;; pkill-pattern must NOT be enclosed by \"\"
 ;; TODO use with-monad
     (apply exec-system*-new
@@ -109,11 +107,9 @@ Example:
       (format #t "~a ~a profile      : ~a\n" m f profile)
       (format #t "~a ~a socket       : ~a\n" m f socket)
       (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(args (remove-kw-from-args #:verbose args))
-           (args (remove-kw-from-args #:utility-name args))
-           (args (remove-kw-from-args #:gx-dry-run args))
-           (args (remove-kw-from-args #:profile args))
-           (args (remove-kw-from-args #:socket args))
+    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile
+                      #:socket))
+           (args (remove-all-elements args elements))
            (init-cmd (create-init-cmd profile socket))]
       ((comp
 ;;; Search for the full command line:
@@ -179,11 +175,9 @@ Examples:
       (format #t "~a ~a profile      : ~a\n" m f profile)
       (format #t "~a ~a socket       : ~a\n" m f socket)
       (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(args (remove-kw-from-args #:verbose args))
-           (args (remove-kw-from-args #:utility-name args))
-           (args (remove-kw-from-args #:gx-dry-run args))
-           (args (remove-kw-from-args #:profile args))
-           (args (remove-kw-from-args #:socket args))
+    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile
+                           #:socket))
+           (args (remove-all-elements args elements))
 
            (monad (if gx-dry-run
                       compose-commands-guix-shell-dry-run
@@ -213,12 +207,9 @@ Examples:
       (format #t "~a ~a fun          : ~a\n" m f fun)
       (format #t "~a ~a profile      : ~a\n" m f profile)
       (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(args (remove-kw-from-args #:verbose args))
-           (args (remove-kw-from-args #:utility-name args))
-           (args (remove-kw-from-args #:fun args))
-           (args (remove-kw-from-args #:profile args))
+    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
+           (args (remove-all-elements args elements))
            (args (car args))
-
            ;; (value #t): a given option expects accept a value
            (option-spec `[(help       (single-char #\h) (value #f))
                           (version    (single-char #\v) (value #f))
