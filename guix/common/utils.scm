@@ -1057,4 +1057,7 @@ that many from the end."
 
 (define-public empty? null?)
 
+(define-public (member? x lst)
+  (if (member x lst) #t #f))
+
 (module-evaluated)
