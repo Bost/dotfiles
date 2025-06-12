@@ -169,7 +169,7 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
    ;; (branch "master")
    (url
     ;; (format #f "file://~a/dev/guix" home)
-    "https://codeberg.org/guix/guix-mirror.git"
+    "https://codeberg.org/guix/guix.git"
     ;; "https://git.savannah.gnu.org/git/guix.git"
     )
    (introduction
