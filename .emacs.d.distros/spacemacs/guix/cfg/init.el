@@ -2379,6 +2379,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
     ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
     (add-hook 'scheme-mode-hook #'guix-devel-mode)
+    (add-hook 'scheme-mode-hook #'tw-scheme-additional-keywords)
 
     ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
     ;; TODO move this to project's .dir-locals.el
