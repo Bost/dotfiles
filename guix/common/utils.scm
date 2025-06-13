@@ -58,6 +58,7 @@
             exec-with-error-to-string
             exec-with-error-to-string
             if-let
+            if-not
             module-evaluated
             testsymb
             testsymb-trace
@@ -1062,9 +1063,20 @@ that many from the end."
                 (map (lambda (y) (list x y)) ys))
               xs)))
 
-(define-public empty? null?)
+(define-public empty? null?) ;; no runtime cost. null? is a primitive procedure
 
-(define-public (member? x lst)
-  (if (member x lst) #t #f))
+(define-public (boolean x) (not (not x)))
+
+(define-public (member? x lst) (boolean (member x lst)))
+
+;; Both implementations of `if-not` are equivalent. The one done with
+;; `define-syntax` is here for future extensibility
+;; (define-syntax-rule (if-not condition then else)
+;;   (if (not condition) then else))
+
+(define-syntax if-not
+  (syntax-rules ()
+    ((_ test then else)
+     (if (not test) then else))))
 
 (module-evaluated)
