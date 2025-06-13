@@ -31,115 +31,17 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(use-package-modules
- maths
- base
- file
- web-browsers
- haskell-apps
- uml
- vnc
- rdesktop
- w3m
- dns
- bash
- rust-apps
- shellutils
- admin
- shells
- version-control
- rsync
- tmux
- compression
- vim
- audio
- gnuzilla
- inkscape
- rust
- graphviz
- texlive
- chromium
- kde-systemtools
- kde-utils
- gnome
- gtk
- libreoffice
- spice
- terminals
- lxqt
- xorg
- xdisorg
- xfce
-
- android
- linux
- aspell
- autotools
- algebra
- llvm
- cmake
- curl
- textutils
- video
- package-management
- fonts
- haskell
- gnupg
- tls
- bootloaders
- guile-xyz
- guile
- gv
- hardware
- samba
- web
- image
- cpp
- libusb
- toys
- lsof
- networking
- ncurses
- node
- disk
- pulseaudio
- perl
- php
- pkg-config
- search
- databases
- pv
- python-xyz
- python
- virtualization
- racket
- readline
- mp3
- texinfo
- freedesktop
- cdrom
- lua
- emacs-xyz
- elixir
- tree-sitter
- agda
- idris
- emacs
- text-editors
- patchutils
- java
- glib
- maven
- mail
- messaging
- irc
- commencement
- gcc
- clojure
- machine-learning
- cups
- scanner
- )
+(use-package-modules maths base file web-browsers haskell-apps uml vnc rdesktop
+ w3m dns bash rust-apps shellutils admin shells version-control rsync tmux
+ compression vim audio gnuzilla inkscape rust graphviz texlive chromium
+ kde-systemtools kde-utils gnome gtk libreoffice spice terminals lxqt xorg
+ xdisorg xfce android linux aspell autotools algebra llvm cmake curl textutils
+ video package-management fonts haskell gnupg tls bootloaders guile-xyz guile gv
+ hardware samba web image cpp libusb toys lsof networking ncurses node disk
+ pulseaudio perl php pkg-config search databases pv python-xyz python
+ virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
+ elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
+ mail messaging irc commencement gcc clojure machine-learning cups scanner)
 
 (define (email-in-emacs-packages)
   (list
@@ -787,6 +689,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (testsymb 'xorg-packages)
 
 (define* (remote-desktop-packages #:key is-server)
+  "Client packages for remote desktop access"
   (if is-server
       (list
        xrdp ;; Remote Desktop Protocol server; access to the entire desktop
@@ -796,7 +699,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; rdpClientCon.c: In function ‘rdpClientConProcessMsgClientInfo’:
 ;;; rdpClientCon.c:981:31: error: ‘struct xrdp_client_info’ has no member named ‘monitorCount’
        )
-      (list ;; the clients
+      (list
        rdesktop
        remmina
 
@@ -808,14 +711,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (xfce-packages)
   (list
    xfce4-clipman-plugin
-   xfce4-netload-plugin ;; traffic indicator
+   xfce4-netload-plugin ; traffic indicator
    xfce4-notifyd
    xfce4-screensaver
    xfce4-screenshooter
    xfce4-settings
-   thunar-volman ;; in gnu/packages/xfce.scm
 
-   ;; xfce4-volumed-pulse ;;  XFCE volume keys daemon
+   ;; in gnu/packages/xfce.scm
+   thunar-volman        ; Removable media manager for Thunar; USB disks etc.
+
+   ;; xfce4-volumed-pulse ;  XFCE volume keys daemon
    xfce4-pulseaudio-plugin
    ))
 (testsymb 'xfce-packages)
@@ -856,6 +761,10 @@ FIXME the inferior-packages are installed on every machine"
 
   (define* (inferior-packages-in-channel #:key channels-fun inferior-packages)
     (map (lambda (pkg-commit)
+;;; pattern matching doesn't work for: list cons. It works for (values ... ...)
+;;; somehow ???
+;;; (let* [(a b (list 1 2))] (+ a b))  ; => Syntax error
+;;; (let* [(a b (cons 1 2))] (+ a b))  ; => Syntax error
            (let [(package (car pkg-commit))
                  (commit (cadr pkg-commit))]
              ((comp
@@ -888,11 +797,11 @@ FIXME the inferior-packages are installed on every machine"
 
 (define (devel-guile-ide-arei-packages)
   (list
-   emacs-arei    ;; Guile IDE
-   emacs-plantuml-mode ;; Edit and preview PlantUML diagrams
-   plantuml ;; Draw UML diagrams from simple textual description
+   emacs-arei          ; Guile IDE
+   emacs-plantuml-mode ; Edit and preview PlantUML diagrams
+   plantuml            ; Draw UML diagrams from simple textual description
    guile-next
-   guile-ares-rs ;; Asyncronous Reliable Extensible Sleek RPC Server for Guile
+   guile-ares-rs       ; Asyncronous Reliable Extensible Sleek RPC Server
    ))
 (testsymb 'devel-guile-ide-arei-packages)
 
