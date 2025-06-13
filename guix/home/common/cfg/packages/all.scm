@@ -545,7 +545,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    python-wrapper
    ;; specifying only 'python2' leads to "error: python2: unbound variable"
    python-2.7
-   python-docx   ; ODT documents
+   python-docx   ; Edit Microsoft Word documents in Python
 
    racket
    readline
@@ -572,10 +572,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; No API key required.
    mps-youtube
 
-   netcat        ; networking tool. Provides nc
+   netcat          ; Networking tool. Provides nc
    youtube-dl
-   yt-dlp        ; youtube-dl fork focused on adding new features
-   ;; youtube-viewer              ; search & play YT videos in a native player
+   yt-dlp          ; youtube-dl fork focused on adding new features
+   youtube-viewer  ; Search & play YT videos in a native player
+   vlc             ; Audio and video player and framework
 
    ;; tesseract-ocr               ; OCR Optical character recognition engine
    ;; tesseract-ocr-tessdata-fast ; Fast versions of trained LSTM models
