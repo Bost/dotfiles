@@ -11,6 +11,7 @@
   ;; provides: specification->package
   #:use-module (gnu packages)
   #:use-module (bost gnu packages guake)
+  #:use-module (config channels channel-defs)
 
   ;; for inferior-pkg-in-channel : beg
   #:use-module (guix packages)
@@ -731,35 +732,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 home-profile. Comment them out.
 
 FIXME the inferior-packages are installed on every machine"
-
-  ;; TODO `guix describe --format=channels', exclude (branch "master"),
-  ;; replace commit
-  (define (default-channels commit)
-    (list
-     ;; TODO see %default-guix-channel
-     (channel
-      (name 'guix)
-      (url "https://git.savannah.gnu.org/git/guix.git")
-      (commit commit)
-      (introduction
-       (make-channel-introduction
-        "9edb3f66fd807b096b48283debdcddccfea34bad"
-        (openpgp-fingerprint
-         "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))))
-
-  (define (nonguix-channels commit)
-    (cons*
-     (channel
-      (name 'nonguix)
-      (url "https://gitlab.com/nonguix/nonguix")
-      (commit commit)
-      (introduction
-       (make-channel-introduction
-        "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
-        (openpgp-fingerprint
-         "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
-     %default-channels))
-
   (define* (inferior-packages-in-channel #:key channels-fun inferior-packages)
     (map (lambda (pkg-commit)
 ;;; pattern matching doesn't work for: list cons. It works for (values ... ...)
@@ -782,17 +754,20 @@ FIXME the inferior-packages are installed on every machine"
     (partial map (partial apply inferior-packages-in-channel)))
    (list
     (list
-     #:channels-fun default-channels
+     #:channels-fun (comp list (partial channel-guix #:commit))
      #:inferior-packages
      (list
       ;; (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
       ;; (list "virglrenderer" "fec2fb89bb5dacc14ec619cd569278af34867e3d")
       ))
     (list
-     #:channels-fun nonguix-channels
+     #:channels-fun (comp (partial cons* (channel-guix))
+                          list
+                          (partial channel-nonguix #:commit))
      #:inferior-packages
      (list
-      ;; (list "signal-desktop" "b6bb6276310de10d591f1738492b94e04e33ff1f")
+      ;; (list "signal-desktop" "65d23d2579b54bb5d52609bf6c34d2faafc8a6cf")
+      ;; (list "firefox" "24f10c70518ae0eeaf77332bf15f70790e981d84")
       )))))
 (testsymb 'inferior-packages)
 
