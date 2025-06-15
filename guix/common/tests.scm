@@ -82,7 +82,7 @@ Type Testing Predicates.
     'zero?
 
     '(@(system syntax internal) syntax?)
-    'identifier?   ;; #t if syntax-object is an identifier, or #f otherwise. 
+    'identifier?   ;; #t if syntax-object is an identifier, or #f otherwise.
     '(@(guix gexp) gexp?)
     'pair?
     'char?
@@ -116,16 +116,4 @@ Type Testing Predicates.
     'eq?
     'eqv?
     'equal?)))
-
-(define-public (syntax->list orig-ls)
-  "From $der/racket/pkgs/racket-benchmarks/tests/racket/benchmarks/common/psyntax-input.txt
-
-(syntax->list (call-with-input-string \"  (+ 1 2)\" read-syntax))
-=> (#<syntax:unknown file:1:3 +> #<syntax:unknown file:1:5 1> #<syntax:unknown file:1:7 2>)
-"
-  (let f ((ls orig-ls))
-    (syntax-case ls ()
-      (() '())
-      ((x . r) (cons (syntax x) (f (syntax r))))
-      (_ (error 'syntax->list "invalid argument ~s" orig-ls)))))
 
