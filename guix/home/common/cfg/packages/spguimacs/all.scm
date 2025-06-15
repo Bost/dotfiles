@@ -1,8 +1,8 @@
 (define-module (cfg packages spguimacs all)
-  #:use-module (utils) ;; partial m s+ s- sx
-  ;; first take remove delete-duplicates append-map etc.
-  #:use-module (srfi srfi-1)
-  #:use-module (gnu packages) ;; specification->package+output
+  #:use-module (utils)        ; partial m s+ s- sx
+  #:use-module (srfi srfi-1)  ; list-processing: first take remove append-map
+  #:use-module (ice-9 pretty-print)
+  #:use-module (gnu packages) ; specification->package+output
   #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
   #:use-module ((gnu packages emacs-xyz) #:prefix gnu:)
   #:use-module (cfg packages spguimacs needed)
@@ -10,6 +10,7 @@
   #:use-module (guix) ;; package-name
   )
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define (general-packages)
@@ -141,12 +142,14 @@
    bst:emacs-helm-company
    bst:emacs-helm-core
    bst:emacs-helm-css-scss
+   bst:emacs-helm-descbinds
    bst:emacs-helm-dictionary
    bst:emacs-helm-git-grep
    bst:emacs-helm-ls-git
    bst:emacs-helm-lsp
    bst:emacs-helm-make
    bst:emacs-helm-mode-manager
+   bst:emacs-helm-mu
    bst:emacs-helm-org
    bst:emacs-helm-org-rifle
    bst:emacs-helm-projectile
@@ -336,30 +339,35 @@
 (load "/home/bost/dev/dotfiles/guix/home/cfg/packages/spguimacs/all.scm")
 |#
 (define-public (spguimacs-packages)
-  (let [
-        (G (general-packages))
-        (N (needed-packages))
-        (O (orphan-packages))
-        (A (available-packages))
-        (E (excluded-packages))
+  (define m (format #f "~a [spguimacs-packages]" m))
+  ((comp
+    ;; (lambda (lst) (format #t "~a 3. length: ~a\n" m (length lst)) #;(pretty-print lst) lst)
+    (partial append bst-packages)
+    ;; (lambda (lst) (format #t "~a 2. length: ~a\n" m (length lst)) #;(pretty-print lst) lst)
+    (partial map (comp list specification->package+output))
+    ;; (lambda (lst) (format #t "~a 1. length: ~a\n" m (length lst)) #;(pretty-print lst) lst)
+    (lambda (lst) (s- lst (map package-name bst-packages)))
+    ;; (lambda (lst) (format #t "~a 0. length: ~a\n" m (length lst)) #;(pretty-print lst) lst)
+    )
+   (let* [(G (general-packages))
+          (N (needed-packages))
+          (O (orphan-packages))
+          (A (available-packages))
+          (E (excluded-packages))
 
 ;;; The 'specification->package+output' can be reliably called only over
 ;;; available-packages since e.g. needed-packages may contain a non-existing
 ;;; package, i.e. a package which hasn't been ported to Guix yet.
-        ;; (G (map (comp list specification->package+output) (general-packages)))
-        ;; (N (map (comp list specification->package+output) (needed-packages)))
-        ;; (O (map (comp list specification->package+output) (orphan-packages)))
-        ;; (A (map (comp list specification->package+output) (available-packages)))
-        ;; (E (map (comp list specification->package+output) (excluded-packages)))
-        ]
-    ((comp
-      (partial append bst-packages)
-      (partial map (comp list specification->package+output))
-      (lambda (lst) (s- lst (map package-name bst-packages))))
-     (s+ G
-         (s- (sx (s+ N O)
-                 A)
-             E)))))
+          ;; (G (map (comp list specification->package+output) (general-packages)))
+          ;; (N (map (comp list specification->package+output) (needed-packages)))
+          ;; (O (map (comp list specification->package+output) (orphan-packages)))
+          ;; (A (map (comp list specification->package+output) (available-packages)))
+          ;; (E (map (comp list specification->package+output) (excluded-packages)))
+          ]
+       (s+ G
+           (s- (sx (s+ N O)
+                   A)
+               E)))))
 (testsymb 'spguimacs-packages)
 
 (module-evaluated)
