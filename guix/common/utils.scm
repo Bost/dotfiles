@@ -678,32 +678,104 @@ or the CLIENT-CMD if some process ID was found."
       (str "\"" s "\"")))
    pgrep-pattern))
 
+;; Like `define*' but it prints what's being defined / evaluated
+;; See /home/bost/dev/guile/module/ice-9/psyntax.scm line 3377
 (define-syntax def*
   (lambda (x)
     (syntax-case x ()
-      ((_ (id . args) b0 b1 ...)
+      ((_ (id . args) b0)
        #'(begin
-           (format #t "(def* (~a ...) ...) ... " `id)
-           (define id (lambda* args b0 b1 ...))
-           (format #t "done\n")
+           ;; (format #t "(def* (~a ...) ...) ... " `id)
+           (define id
+             (cond
+              [#t                    ;; fa
+               (lambda* args
+                 (format #t "[~a] Starting ...\n" `id)
+                 (let [(result b0)]
+                   (format #t "[~a] done.\n" `id)
+                   result))]))
+           ;; (format #t "(def* ~a ...) ... done" `id)
            id))
 
-      ((_ id val) (identifier? #'id)
+      ((_ (id . args) b0 b1)
+       #`(begin
+           (define id
+             (cond
+              [(string? `b0)         ;; fb
+               (lambda* args
+                 b0
+                 (format #t "[~a] Starting ...\n" `id)
+                 (let [(result b1)]
+                   (format #t "[~a] done.\n" `id)
+                   result))]
+
+              [#t                    ;; fc
+               (lambda* args
+                 (format #t "[~a] Starting ...\n" `id)
+                 b0
+                 (let [(result b1)]
+                   (format #t "[~a] done.\n" `id)
+                   result))]))
+           ;; (format #t "(def* ~a ...) ... done" `id)
+           id))
+
+      ((_ (id . args) b0 b1 ... bN)
        #'(begin
-           (format #t "(def* ~a ...) ... " `id)
+           (define id
+             (cond
+              [(string? `b0)         ;; fd
+               (lambda* args
+                 b0
+                 (format #t "[~a] Starting ...\n" `id)
+                 b1 ...
+                 (let [(result bN)]
+                   (format #t "[~a] done.\n" `id)
+                   result))]
+
+              [#t                    ;; fe
+               (lambda* args
+                 (format #t "[~a] Starting ...\n" `id)
+                 b0
+                 b1 ...
+                 (let [(result bN)]
+                   (format #t "[~a] done.\n" `id)
+                   result))]))
+           ;; (format #t "(def* ~a ...) ... done" `id)
+           id))
+
+      ((_ id val) (identifier? #'id) ;; ff
+       #'(begin
+           ;; (format #t "(def* ~a ...) ... " `id)
            (define id val)
-           (format #t "done\n")
+           ;; (format #t "(def* ~a ...) ... done" `id)
            id)))))
 
-;; from /home/bost/dev/guile/module/ice-9/psyntax.scm
-;; (define-syntax define*
-;;   (lambda (x)
-;;     (syntax-case x ()
-;;       ((_ (id . args) b0 b1 ...)
-;;        #'(define id (lambda* args b0 b1 ...)))
-;;       ((_ id val) (identifier? #'id)
-;;        #'(define id val)))))
+;; Test cases:
+;; (def* (fa a b)
+;;   "fa: some output string")
 
+;; (def* (fb a b)
+;;   "fb: docstring"
+;;   42)
+
+;; (def* (fc a b)
+;;   (format #t "fc: output 1\n")
+;;   (format #t "fc: output 2\n"))
+
+;; (def* (fd a b)
+;;   "fd: docstring"
+;;   (format #t "output 1\n")
+;;   (format #t "output 2\n"))
+
+;; (def* (fe a b)
+;;   (format #t "output 1\n")
+;;   (format #t "output 2\n")
+;;   (format #t "output 3\n"))
+
+;; (def* ff 42)
+
+
+;; Like `define-public' but it prints what's being defines
 (define-syntax def-public
   (syntax-rules ()
     ((_ (name . args) . body)
@@ -837,7 +909,6 @@ Example:
 (define-monad compose-shell-commands
   (bind pipe-bind)
   (return pipe-return))
-
 
 (define-inlinable (guix-shell-return lst-params)
   (list
@@ -1076,5 +1147,17 @@ that many from the end."
   (syntax-rules ()
     ((_ test then else)
      (if (not test) then else))))
+
+(define-public (syntax->list orig-ls)
+  "From $der/racket/pkgs/racket-benchmarks/tests/racket/benchmarks/common/psyntax-input.txt
+
+(syntax->list (call-with-input-string \"  (+ 1 2)\" read-syntax))
+=> (#<syntax:unknown file:1:3 +> #<syntax:unknown file:1:5 1> #<syntax:unknown file:1:7 2>)
+"
+  (let f ((ls orig-ls))
+    (syntax-case ls ()
+      (() '())
+      ((x . r) (cons (syntax x) (f (syntax r))))
+      (_ (error 'syntax->list "invalid argument ~s" orig-ls)))))
 
 (module-evaluated)
