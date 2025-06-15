@@ -239,6 +239,10 @@ Works also for functions returning and accepting multiple values."
 (define-public path
   (delete-duplicates (parse-path (getenv "PATH"))))
 
+(define-public empty? null?) ;; no runtime cost. null? is a primitive procedure
+
+(define-public (boolean x) (not (not x)))
+
 (define-public (str . args)
   "Convert all arguments to strings and concatenate them, like Clojure's `str`."
   (string-concatenate
@@ -249,7 +253,7 @@ Works also for functions returning and accepting multiple values."
            ((number? x) (number->string x))
            ((char? x) (string x))
            ((boolean? x) (if x "#t" "#f"))
-           ((null? x) "()")
+           ((empty? x) "()")
            ;; (use-modules (ice-9 format))  ; For `format` with ~A specifier
            ((pair? x) (format #f "~A" x))   ; Handle lists and pairs
            (else (format #f "~A" x))))      ; Fallback for other types
@@ -265,7 +269,7 @@ reversed. See also:
 (define-public ends-with? has-suffix?)
 
 (define-public (has-substring? str subs)
-  (not (not (string-match subs str))))
+  (boolean (string-match subs str)))
 
 (define-public (drop-right xs n)
   "(drop-right (list 1 2 3 4 5) 2) ;; => (1 2 3)
@@ -300,9 +304,7 @@ Corresponds to `drop' in Clojure"
 (define* (dbg-exec prm #:key (verbose #t))
   "`pk', i.e. `peek' can be used instead of this function"
   (when verbose
-    (if (list? prm)
-        (format #t "$ ~a\n" (string-join prm))
-        (format #t "$ ~a\n" prm)))
+    (format #t "$ ~a\n" (if (list? prm) (string-join prm) prm)))
   prm)
 
 (define* (error-command-failed #:rest args)
@@ -1062,10 +1064,6 @@ that many from the end."
          (map (lambda (x)
                 (map (lambda (y) (list x y)) ys))
               xs)))
-
-(define-public empty? null?) ;; no runtime cost. null? is a primitive procedure
-
-(define-public (boolean x) (not (not x)))
 
 (define-public (member? x lst) (boolean (member x lst)))
 
