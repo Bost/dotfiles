@@ -384,6 +384,8 @@ $9 = 0 ;; return code"
     ((comp
       (partial exec-or-dry-run system*)
       (lambda (prm) (dbg-exec prm #:verbose verbose))
+      ;; TODO fix exec-system*: string-split-whitespace also splits:
+      ;;   "(@(bost gnu packages emacs-xyz) ~a)"
       string-split-whitespace)
      args)))
 
