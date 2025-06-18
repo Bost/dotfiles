@@ -75,18 +75,19 @@
   "Leads to creation of a rather large file:
 $ ls --human-readable --size /home/bost/.guix-profile/manifest
 540K /home/bost/.guix-profile/manifest"
-  (let* [(m (format #f "~a [manifest-content]" m))]
-    ;; (format #t "~a Starting ...\n" m)
-    ((comp
-      ;; (lambda (p) (format #t "~a done.\n" m) p)
-      manifest
-      (partial map to-manifest-entry)
-      ;; (lambda (p) (format #t "~a\n" ((@(ice-9 pretty-print) pretty-print) p)) p)
-      ;; (lambda (p) ((@(srfi srfi-1) take) p 2))
-      (partial dbg-packages-to-install #:search-space '() #:pkgs)
-      ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" m (length p)) p)
-      )
-     (home-packages-to-install))))
+  (define f (format #f "~a [manifest-content]" m))
+  ;; (format #t "~a Starting ...\n" f)
+  ((comp
+    ;; (lambda (p) (format #t "~a done.\n" f) p)
+    manifest
+    (partial map to-manifest-entry)
+    ;; (lambda (p) (format #t "~a\n" ((@(ice-9 pretty-print) pretty-print) p)) p)
+    ;; (lambda (p) ((@(srfi srfi-1) take) p 2))
+    (partial dbg-packages-to-install #:search-space '() #:pkgs)
+    ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
+    )
+   (home-packages-to-install))
+  )
 (testsymb 'manifest-content)
 
 (module-evaluated)
