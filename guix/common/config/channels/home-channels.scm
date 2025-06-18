@@ -13,7 +13,7 @@
 
 (define-public (home-channels-services)
   (list
-   (simple-service 'guixrus-service  home-channels-service-type (list (channel-guixrus)))
+   ;; (simple-service 'guixrus-service  home-channels-service-type (list (channel-guixrus)))
    (simple-service 'hask-clj-service home-channels-service-type (list (channel-hask-clj)))
    (simple-service 'bost-service     home-channels-service-type (list (channel-bost))))
   )
@@ -26,7 +26,7 @@
           (append
            (list
             ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
-            (channel-guixrus)
+            ;; (channel-guixrus)
             (channel-hask-clj)
             ;; (channel-games)
             ;; (channel-home-service-dwl-guile)
