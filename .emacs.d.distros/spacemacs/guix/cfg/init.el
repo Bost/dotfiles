@@ -1758,6 +1758,60 @@ Some binding snippets / examples:
                  ("fj" . (tw-insert-str "()" 1)))
 
     ;; the comment is here just to get a better listing in `helm-swoop'
+
+    (defun tw-setup-lisp-comments ()
+      "Set up multi-line comment style for Lisp code."
+      (setq-local comment-style 'multi-line)
+      (setq-local comment-continue ";;"))
+
+    ;; Wrapper function for automatic mode detection
+    (defun tw-setup-lisp-comments-maybe ()
+      "Set up Lisp comments if in a Lisp-like mode."
+      (when (derived-mode-p 'lisp-mode 'emacs-lisp-mode 'scheme-mode 'clojure-mode 'racket-mode)
+        (tw-setup-lisp-comments)))
+
+    ;; Choose one approach:
+    ;; (A) Automatic detection (may miss some modes)
+    (add-hook 'prog-mode-hook 'tw-setup-lisp-comments-maybe)
+
+    ;; (B) Explicit mode list (more reliable)
+    ;; (dolist (mode '(lisp-mode-hook
+    ;;                 emacs-lisp-mode-hook
+    ;;                 lisp-interaction-mode-hook
+    ;;                 scheme-mode-hook
+    ;;                 clojure-mode-hook
+    ;;                 racket-mode-hook))
+    ;;   (add-hook mode 'tw-setup-lisp-comments))
+
+    ;; (list 1  (list 2
+    ;;                3))
+    ;; (list 1 (list 2 3))
+    (defun tw-comment-sexp-lines ()
+      "Comment the current sexp with multi-line comment style.
+See also
+https://github.com/abo-abo/lispy
+https://github.com/remyferre/comment-dwim-2
+
+TODO if only-whitespaces-until-point
+     then (spacemacs/comment-or-uncomment-lines)
+     else (tw-comment-sexp-lines)"
+      (interactive)
+      (save-excursion
+        (sp-backward-sexp)  ;; ~SPC k H~
+        (sp-forward-sexp)   ;; ~SPC k L~
+        (sp-newline)        ;; ~SPC j n~
+        ;; (let ((start (point))
+        ;;       (end (progn (forward-sexp) (point))))
+        ;;   ;; C-M-\
+        ;;   ;; (indent-region start end)
+        ;;   )
+        )
+      ;; (indent-sexp)       ;; ~C-M-q~
+      (mark-sexp)            ;; ~C-M-SPC~ / ~C-M-@~
+      (paredit-comment-dwim) ;; like `comment-dwim', but specialized for Lisp editing
+      ;; (crux-move-beginning-of-line 1)
+      )
+
     (bind-keys ; :map global-map
      :map global-map
      ("<f5>" . tw-revert-buffer-no-confirm)
@@ -1766,8 +1820,6 @@ Some binding snippets / examples:
      ;; TODO The <escape> keybinding seems not to work.
      ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
      ;; TODO notmuch
-
-     ;; TODO tw-emacs-comment-sexp: mark-sexp C-M-@ comment-dwim M-;
 
      ;; the funny keys can be seen
      ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
