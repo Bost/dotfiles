@@ -1774,6 +1774,23 @@ Some binding snippets / examples:
                  ;; don't need to switch keyboards just because of parenthesis
                  ("fj" . (tw-insert-str "()" 1)))
 
+    (progn
+      ;; "Set up multi-line comment style for Lisp code. Possible approaches:
+      ;; A. Automatic detection. It may miss some modes.
+      (add-hook 'prog-mode-hook 'tw-setup-lisp-comments-maybe)
+
+      ;; B. Explicit mode list (more reliable)
+      ;; (dolist (mode '(
+      ;;                 lisp-mode-hook
+      ;;                 emacs-lisp-mode-hook
+      ;;                 lisp-interaction-mode-hook
+      ;;                 scheme-mode-hook
+      ;;                 clojure-mode-hook
+      ;;                 racket-mode-hook
+      ;;                 ))
+      ;;   (add-hook mode 'tw-setup-lisp-comments))
+      )
+
     ;; the comment is here just to get a better listing in `helm-swoop'
     (bind-keys ; :map global-map
      :map global-map
@@ -1783,8 +1800,6 @@ Some binding snippets / examples:
      ;; TODO The <escape> keybinding seems not to work.
      ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
      ;; TODO notmuch
-
-     ;; TODO tw-emacs-comment-sexp: mark-sexp C-M-@ comment-dwim M-;
 
      ;; the funny keys can be seen
      ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
@@ -1835,6 +1850,8 @@ Some binding snippets / examples:
      ("C-s-<left>"  . sp-backward-slurp-sexp)
      ("C-s-<right>" . sp-backward-barf-sexp)
      ("s-;"         . spacemacs/comment-or-uncomment-lines)
+     ("C-s-;"       . tw-toggle-comment-sexp-lines)
+     ;; ("M-;"         . tw-toggle-comment-sexp-lines) ; was comment-dwim
      ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
      ("s-<f1>"      . tw-toggle-shell-pop-multiterm) ;; tw-toggle-shell-pop-term
      ("s-<f2>"      . projectile-multi-term-in-root)
