@@ -1775,6 +1775,71 @@ Some binding snippets / examples:
                  ("fj" . (tw-insert-str "()" 1)))
 
     ;; the comment is here just to get a better listing in `helm-swoop'
+
+    (defun tw-setup-lisp-comments ()
+      "Set up multi-line comment style for Lisp code."
+      (setq-local comment-style 'multi-line)
+      (setq-local comment-continue ";;"))
+
+    ;; Wrapper function for automatic mode detection
+    (defun tw-setup-lisp-comments-maybe ()
+      "Set up Lisp comments if in a Lisp-like mode."
+      (when (derived-mode-p 'lisp-mode 'emacs-lisp-mode 'scheme-mode
+                            'clojure-mode 'racket-mode)
+        (tw-setup-lisp-comments)))
+
+    ;; Choose one approach:
+    ;; (A) Automatic detection (may miss some modes)
+    (add-hook 'prog-mode-hook 'tw-setup-lisp-comments-maybe)
+
+    ;; (B) Explicit mode list (more reliable)
+    ;; (dolist (mode '(lisp-mode-hook
+    ;;                 emacs-lisp-mode-hook
+    ;;                 lisp-interaction-mode-hook
+    ;;                 scheme-mode-hook
+    ;;                 clojure-mode-hook
+    ;;                 racket-mode-hook))
+    ;;   (add-hook mode 'tw-setup-lisp-comments))
+
+    (defun tw-non-ws-before-point-p ()
+      "Return non-nil if there are non-whitespace chars before point on the
+same line."
+      (save-excursion
+        (re-search-backward "\\S-" (line-beginning-position) t)))
+
+    (defun tw-non-ws-after-point-p ()
+      "Return non-nil if there are non-whitespace chars after point on the same
+line."
+      (save-excursion
+        (re-search-forward "\\S-" (line-end-position) t)))
+
+    ;; (list 1  (list 2
+    ;;                3))
+    ;; (list 1 (list 2 3))
+    (defun tw-toggle-comment-sexp-lines ()
+      "Comment or uncomment the current sexp with multi-line comment style.
+See also:
+https://github.com/abo-abo/lispy
+https://github.com/remyferre/comment-dwim-2
+https://github.com/noctuid/lispyville
+lisp/newcomment.el in the Emacs source code"
+      (interactive)
+      (let ((bounds (sp-get-comment-bounds)))
+        (if bounds
+            (progn
+              ;; (message "bounds: %s" bounds)
+              (let ((beg (car bounds))
+                    (end (cdr bounds)))
+                (uncomment-region beg end)))
+          (progn
+            (when (tw-non-ws-before-point-p)
+              (save-excursion
+                (sp-backward-sexp)
+                (sp-forward-sexp)
+                (sp-newline)))
+            (mark-sexp)
+            (paredit-comment-dwim)))))
+
     (bind-keys ; :map global-map
      :map global-map
      ("<f5>" . tw-revert-buffer-no-confirm)
@@ -1783,8 +1848,6 @@ Some binding snippets / examples:
      ;; TODO The <escape> keybinding seems not to work.
      ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
      ;; TODO notmuch
-
-     ;; TODO tw-emacs-comment-sexp: mark-sexp C-M-@ comment-dwim M-;
 
      ;; the funny keys can be seen
      ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
@@ -1835,6 +1898,8 @@ Some binding snippets / examples:
      ("C-s-<left>"  . sp-backward-slurp-sexp)
      ("C-s-<right>" . sp-backward-barf-sexp)
      ("s-;"         . spacemacs/comment-or-uncomment-lines)
+     ("C-s-;"       . tw-toggle-comment-sexp-lines)
+     ;; ("M-;"         . tw-toggle-comment-sexp-lines) ; was comment-dwim
      ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
      ("s-<f1>"      . tw-toggle-shell-pop-multiterm) ;; tw-toggle-shell-pop-term
      ("s-<f2>"      . projectile-multi-term-in-root)
@@ -2025,7 +2090,7 @@ Some binding snippets / examples:
      )
     (message "%s   Note: %s"
              "(my=eval-bind-keys-and-chords) evaluated"
-             "~SPC k $~ sp-end-of-sexp"))
+             "~SPC-k-$~ sp-end-of-sexp"))
 
   ;; Thanx to
   ;; https://github.com/fanhongtao/_emacs.d/blob/master/conf/my-key-modifiers.el
