@@ -76,6 +76,7 @@
    bst:emacs-dall-e
    bst:emacs-dap-chrome
    bst:emacs-dap-launch
+   bst:emacs-dap-mode
    bst:emacs-dap-overlays
    bst:emacs-dap-tasks
    bst:emacs-dap-utils
@@ -190,15 +191,19 @@
    bst:emacs-live-py-mode
    bst:emacs-livid-mode
    bst:emacs-load-env-vars
+   bst:emacs-lsp-docker
    bst:emacs-lsp-haskell
    bst:emacs-lsp-java
    bst:emacs-lsp-latex
    bst:emacs-lsp-lens
    bst:emacs-lsp-metals
+   bst:emacs-lsp-mode
    bst:emacs-lsp-origami
    bst:emacs-lsp-protocol
    bst:emacs-lsp-pyright
    bst:emacs-lsp-python-ms
+   bst:emacs-lsp-treemacs
+   bst:emacs-lsp-ui
    bst:emacs-lsp-volar
    bst:emacs-lush-theme
    bst:emacs-lv
