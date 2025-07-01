@@ -1576,33 +1576,33 @@ before packages are loaded."
     (setq key-chord-two-keys-delay 0.02)
     (key-chord-mode 1))
 
-  (setq org-src-lang-modes-orig org-src-lang-modes)
-  (setq org-src-lang-modes (cons '("fish" . fish) org-src-lang-modes))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '(
-     (R . t)
-     (latex . t)
-     (emacs-lisp . t)
-     (C . t)
-     (scheme . t)
-     ;; racket ;; (racket . t)
-     ;; Although adviced by https://github.com/hasu/emacs-ob-racket this leads
-     ;; to 'ob-scribble not found' when activated:
-     ;; (scribble . t)
-     (python . t)
-     ;; (ditaa . t)
-     (clojure . t)
-     (java . t)
-     (shell . t)
-     ;; (plantuml . t)
-     (js . t)
-     ;; (kotlin . t)
-     (lisp . t)
-     (ruby . t)     ;; also needed for plantuml - UML diagrams
-     (plantuml . t) ;; UML diagrams
-     (haskell . t)
-     ))
+  (with-eval-after-load 'org
+    (setq org-src-lang-modes-orig org-src-lang-modes)
+    (setq org-src-lang-modes (cons '("fish" . fish) org-src-lang-modes))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '(
+       (R . t)
+       (latex . t)
+       (emacs-lisp . t)
+       (C . t)
+       (scheme . t)
+       ;; racket ;; (racket . t)
+       ;; Although adviced by https://github.com/hasu/emacs-ob-racket this leads
+       ;; to 'ob-scribble not found' when activated:
+       ;; (scribble . t)
+       (python . t)
+       ;; (ditaa . t)
+       (clojure . t)
+       (java . t)
+       (shell . t)
+       ;; (plantuml . t)
+       (js . t)
+       ;; (kotlin . t)
+       (lisp . t)
+       (ruby . t)     ;; also needed for plantuml - UML diagrams
+       (plantuml . t) ;; UML diagrams
+       (haskell . t))))
 
   (defalias #'save-selected-text #'write-region)
   ;; TODO (define-obsolete-function-alias)
