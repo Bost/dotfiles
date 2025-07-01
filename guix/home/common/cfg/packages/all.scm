@@ -3,7 +3,7 @@
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (gnu)     ; provides use-package-modules
-  #:use-module (cfg packages spguimacs all)
+  #:use-module ((bost gnu packages space-all) #:prefix bst:)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
@@ -876,7 +876,7 @@ FIXME the inferior-packages are installed on every machine"
         (if (or (is-system-edge) (is-system-ecke))
             (append
              (large-packages-edge-ecke)
-             (spguimacs-packages) ;; pulls-in ~430 additional packages
+             (bst:spguimacs-packages) ;; pulls-in ~430 additional packages
              (printer-scanner-packages)
              lst)
             lst))
