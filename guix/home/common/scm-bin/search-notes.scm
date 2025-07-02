@@ -1,9 +1,10 @@
 (define-module (scm-bin search-notes)
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (utils)
+  #:use-module (srfi srfi-1)       ; last
   #:use-module (guix colors)
-  ;; #:use-module (guix build utils) #| invoke |#
+  #:use-module (utils)
+  ;; #:use-module (guix build utils) ; invoke
   #:export (main search-notes))
 
 #|

@@ -202,7 +202,8 @@ Example:
 
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."
-  (define common-modules '((guix monads)
+  (define common-modules '((srfi srfi-1)
+                           (guix monads)
                            (utils)
                            (settings)
                            (command-line)))
@@ -235,8 +236,7 @@ a list of files to search through."
 
 (define* (service-file-emacs-utils #:rest args)
   (apply service-file-utils
-         (append args (list #:verbose #f #:extra-modules '((srfi srfi-1)
-                                                           (emacs-common))))))
+         (append args (list #:verbose #f #:extra-modules '((emacs-common))))))
 
 (define* (service-file-mount-utils #:rest args)
   (apply service-file-utils

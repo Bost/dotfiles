@@ -3,10 +3,11 @@
 ;;;   service-file -> with-imported-modules
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
+  #:use-module (ice-9 exceptions)
+  #:use-module (srfi srfi-1)       ; last
   #:use-module (guix monads)       ; with-monad
   #:use-module (utils)             ; partial
   #:use-module (settings)          ; user
-  #:use-module (ice-9 exceptions)
   #:export (handle-cli))
 
 #|

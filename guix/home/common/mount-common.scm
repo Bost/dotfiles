@@ -3,6 +3,7 @@
 ;;;   service-file -> with-imported-modules
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
+  #:use-module (srfi srfi-1)       ; last
   #:use-module (utils)
   #:export (mount unmount eject))
 
