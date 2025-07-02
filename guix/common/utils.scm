@@ -25,7 +25,7 @@
 
   ;; string-replace-substring
   #:use-module (ice-9 string-fun)
-  ;; first take remove delete-duplicates append-map etc.
+  ;; first take remove delete-duplicates append-map last etc.
   #:use-module (srfi srfi-1)
   ;; return, bind
   #:use-module (guix monads)
@@ -212,8 +212,6 @@ Works also for functions returning and accepting multiple values."
 
 ;;; testsymb doesn't work in the let-syntax
 ;; (let [(ff 42)] (testsymb 'ff))
-
-(define-public (last lst) (car (reverse lst)))
 
 (define-public (pretty-print->string sexp)
   (let [(port (open-output-string))]
