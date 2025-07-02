@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Exit immediately if a command exits with a non-zero status, ie. no need to
+# chain the commands using '&&', since 'set -e' is used.
+set -e
+
+# set -x # Print commands and their arguments as they are executed.
+
+msg=$(git log --max-count=1 --oneline --pretty=format:'%s')
+
+commit=$(git log --max-count=1 --oneline --pretty=format:'%H')
+hash=$(guix hash -x --serializer=nar .)
+
+text=$(printf "\"%s\" ;; %s\n\"%s\" ;; %s\n" "${commit}" "${msg}" "${hash}" "${msg}") 
+
+echo "${text}" | xsel -bi
+
+printf "%s\n\n# Text above saved to clipboard\n" "${text}"
+
+{ retval="$?"; set +x; } 2>/dev/null
+
+exit $retval
