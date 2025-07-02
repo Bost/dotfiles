@@ -6,6 +6,7 @@
   #:use-module (guix monads)       ; with-monad
   #:use-module (utils)             ; partial
   #:use-module (settings)          ; user
+  #:use-module (srfi srfi-1)       ; remove
   #:export (create-launcher pkill-server set-editable))
 
 #|
@@ -68,16 +69,16 @@ Usage:
 (pkill-server                 #:profile \"develop\" \"rest\" \"args\")
 (pkill-server                 #:profile \"guix\" \"rest\" \"args\")
 "
-  (let* [(f "[pkill-server]")]
-    (when verbose
-      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
-      (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
-      (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a args         : ~a\n" m f args)))
+  (define f (format #f "~a [pkill-server]" m))
+  (when verbose
+    (format #t "~a utility-name : ~a\n" f utility-name)
+    (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
+    (format #t "~a profile      : ~a\n" f profile)
+    (format #t "~a args         : ~a\n" f args))
   (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
          (args (remove-all-elements args elements))]
     ;; pkill-pattern must NOT be enclosed by \"\"
-;; TODO use with-monad
+    ;; TODO use with-monad
     (apply exec-system*-new
            #:split-whitespace #f
            #:gx-dry-run gx-dry-run
@@ -90,7 +91,8 @@ Usage:
       (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg" home-emacs-distros profile)))
 
 (define* (create-launcher
-          #:key (verbose #f) utility-name gx-dry-run profile
+          #:key (verbose #t) (create-frame #f) utility-name gx-dry-run profile
+          ;; #:allow-other-keys
           #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
@@ -98,43 +100,52 @@ Usage:
 Example:
 (create-launcher #:profile \"develop\" \"rest\" \"args\")
 "
-  (let* [(f "[create-launcher]")]
-    (when verbose
-      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
-      (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
-      (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
-           (args (remove-all-elements args elements))
-           (init-cmd (create-init-cmd profile))]
-      ((comp
+  (define f (format #f "~a [create-launcher]" m))
+  (when verbose
+    (format #t "~a utility-name : ~a\n" f utility-name)
+    (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
+    (format #t "~a create-frame : ~a\n" f create-frame)
+    (format #t "~a profile      : ~a\n" f profile)
+    (format #t "~a args         : ~a\n" f args))
+  (let* [(elements (list #:verbose #:create-frame #:utility-name #:gx-dry-run #:profile))
+         (args (remove-all-elements args elements))
+         (init-cmd (create-init-cmd profile))]
+    ((comp
 ;;; Search for the full command line:
 ;;; $ pkill --full /home/bost/.guix-profile/bin/emacs --init-directory=/home/bost/.emacs.d.distros/crafted-emacs --bg-daemon=crafted
-        (lambda (client-cmd)
-          (let* [(client-cmd-with-args (append
-                                        (list client-cmd)
-                                        (if (null? args) '("./") args)))]
-            (if (string=? client-cmd
-                          (compute-cmd
-                           #:user user
-                           #:init-cmd init-cmd
-                           #:client-cmd client-cmd
-                           #:pgrep-pattern init-cmd))
-                (exec-background client-cmd-with-args)
-                (when ((comp zero? car exec)
-                       ;; Only the initial command needs to be executed in a
-                       ;; modified environment
-                       (list (init-cmd-env-vars home-emacs-distros profile) init-cmd
-                             ;; (if (string= profile crafted)
-                             ;;     (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'")
-                             ;;     (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'"))
-                             ))
-                  ;; Calling (exec-background client-cmd-with-args) makes sense
-                  ;; only if the Emacs server has been started successfully.
-                  (exec-background client-cmd-with-args)))))
-        cmd->string)
-       (list (which-emacsclient) "--create-frame"
-             (str "--socket-name=" (calculate-socket profile)))))))
+      (lambda (client-cmd)
+        (let* [(client-cmd? (equal? client-cmd
+                                    (compute-cmd
+                                     #:user user
+                                     #:init-cmd init-cmd
+                                     #:client-cmd client-cmd
+                                     #:pgrep-pattern init-cmd)))
+
+               (client-cmd-with-args
+                (remove unspecified-or-empty-or-false?
+                        (append
+                         (list (car client-cmd)
+;;; --create-frame must be present if no frame exists, e.g. right after emacs-server starts
+                               (when (or create-frame (not client-cmd?))
+                                 ;; also "-c"
+                                 "--create-frame"))
+                         (cdr client-cmd)
+                         (if (null? args) '("./") args))))]
+          (if client-cmd?
+              (exec-background client-cmd-with-args)
+              (when ((comp zero? car exec)
+                     ;; Only the initial command needs to be executed in a
+                     ;; modified environment
+                     (list (init-cmd-env-vars home-emacs-distros profile) init-cmd
+                           ;; (if (string= profile crafted)
+                           ;;     (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'")
+                           ;;     (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'"))
+                           ))
+                ;; Calling (exec-background client-cmd-with-args) makes sense
+                ;; only if the Emacs server has been started successfully.
+                (exec-background client-cmd-with-args))))))
+     (list (which-emacsclient)
+           (str "--socket-name=" (calculate-socket profile))))))
 (testsymb 'create-launcher)
 
 ;; ### BEG: from (fs-utils)
@@ -164,32 +175,32 @@ Examples:
 (set-editable                 #:profile \"develop\" \"rest\" \"args\")
 (set-editable                 #:profile \"guix\" \"rest\" \"args\")
 "
-  (let* [(f "[set-editable]")]
-    (when verbose
-      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
-      (format #t "~a ~a gx-dry-run   : ~a\n" m f gx-dry-run)
-      (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
-           (args (remove-all-elements args elements))
+  (define f (format #f "~a [set-editable]" m))
+  (when verbose
+    (format #t "~a utility-name : ~a\n" f utility-name)
+    (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
+    (format #t "~a profile      : ~a\n" f profile)
+    (format #t "~a args         : ~a\n" f args))
+  (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
+         (args (remove-all-elements args elements))
 
-           (monad (if gx-dry-run
-                      compose-commands-guix-shell-dry-run
-                      compose-commands-guix-shell))]
-      (if gx-dry-run
-          (begin
-            (format #t "~a ~a monad: ~a\n" m f monad)
-            (format #t "~a ~a TODO implement --gx-dry-run\n" m f))
-          (let* [(dst-src (make-pair-dst-src profile))
-                 (dst (car dst-src))
-                 (src (cdr dst-src))]
-            (with-monad monad
-              (>>=
-               (return (list dst))
-               mdelete-file
-               `(override-mv ,src ,dst)
-               mcopy-file))
-            (copy-file src dst))))))
+         (monad (if gx-dry-run
+                    compose-commands-guix-shell-dry-run
+                    compose-commands-guix-shell))]
+    (if gx-dry-run
+        (begin
+          (format #t "~~a monad: ~a\n" f monad)
+          (format #t "~~a TODO implement --gx-dry-run\n" f))
+        (let* [(dst-src (make-pair-dst-src profile))
+               (dst (car dst-src))
+               (src (cdr dst-src))]
+          (with-monad monad
+            (>>=
+             (return (list dst))
+             mdelete-file
+             `(override-mv ,src ,dst)
+             mcopy-file))
+          (copy-file src dst)))))
 (testsymb 'set-editable)
 
 (define* (handle-cli #:key (verbose #f) utility-name fun profile #:rest args)
@@ -242,3 +253,12 @@ Examples:
 (testsymb 'handle-cli)
 
 (module-evaluated)
+
+;; In Guile Scheme, I'd like to list all the keys in a procedure:
+;; 
+;; ```
+;; (define* (foo #:key (a #f) b #:rest args)
+;;   (format #t "The keys are: ~a\n" ...))
+;; ```
+;; 
+;; Is it possible?

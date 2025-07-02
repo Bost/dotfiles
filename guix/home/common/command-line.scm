@@ -27,8 +27,8 @@ defined.
 
 (define utility-name (last (module-name (current-module))))
 
-(define mount-procedures '(pkill-server create-launcher set-editable))
-(define emacs-procedures '(mount unmount eject))
+(define emacs-procedures '(pkill-server create-launcher set-editable))
+(define mount-procedures '(mount unmount eject))
 
 (define-exception-type &handle-cli-exception &exception make-handle-cli-exception handle-cli-exception?
   ;; (field-name field-accessor) ...
@@ -40,67 +40,77 @@ defined.
           #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'."
-  (let* [(f "[handle-cli]")]
+  (define f (format #f "~a [handle-cli]" m))
+  (when verbose
+    (format #t "~a utility-name : ~a\n" f utility-name)
+    (format #t "~a fun          : ~a\n" f fun)
+    (format #t "~a profile      : ~a\n" f profile)
+    (format #t "~a device-label : ~a\n" f device-label)
+    (format #t "~a args         : ~a\n" f args))
+  (let* [(elements (list #:verbose #:utility-name #:fun
+                         #:profile #:device-label))
+         (args (remove-all-elements args elements))
+         (args (car args))
+
+         ;; (value #t): a given option expects accept a value
+         (option-spec `[(help       (single-char #\h) (value #f))
+                        (version    (single-char #\v) (value #f))
+                        (gx-dry-run (single-char #\d) (value #f))
+                        (create-frame (single-char #\c) (value #f))
+                        (rest-args                    (value #f))])
+
+         ;; TODO isn't the #:stop-at-first-non-option swapped?
+         (options (getopt-long args option-spec #:stop-at-first-non-option #t))
+         ;; #f means that the expected value wasn't specified
+         (val-help       (option-ref options 'help       #f))
+         (val-version    (option-ref options 'version    #f))
+         (val-gx-dry-run (option-ref options 'gx-dry-run #f))
+         (val-create-frame (option-ref options 'create-frame #f))
+         (val-rest-args  (option-ref options '()         #f))]
     (when verbose
-      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
-      (format #t "~a ~a fun          : ~a\n" m f fun)
-      (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a device-label : ~a\n" m f device-label)
-      (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(elements (list #:verbose #:utility-name #:fun
-                           #:profile #:device-label))
-           (args (remove-all-elements args elements))
-           (args (car args))
-
-           ;; (value #t): a given option expects accept a value
-           (option-spec `[(help       (single-char #\h) (value #f))
-                          (version    (single-char #\v) (value #f))
-                          (gx-dry-run (single-char #\d) (value #f))
-                          (rest-args                    (value #f))])
-
-           ;; TODO isn't the #:stop-at-first-non-option swapped?
-           (options (getopt-long args option-spec #:stop-at-first-non-option #t))
-           ;; #f means that the expected value wasn't specified
-           (val-help       (option-ref options 'help       #f))
-           (val-version    (option-ref options 'version    #f))
-           (val-gx-dry-run (option-ref options 'gx-dry-run #f))
-           (val-rest-args  (option-ref options '()         #f))]
-      (when verbose
-        (format #t "~a ~a option-spec    : ~a\n" m f option-spec)
-        (format #t "~a ~a options        : ~a\n" m f options)
-        (format #t "~a ~a val-help       : ~a\n" m f val-help)
-        (format #t "~a ~a val-version    : ~a\n" m f val-version)
-        (format #t "~a ~a val-gx-dry-run : ~a\n" m f val-gx-dry-run)
-        (format #t "~a ~a val-rest-args  : ~a\n" m f val-rest-args))
-      (cond
-       [val-help
-        (format #t "~a [options]\n~a\n~a\n\n"
-                utility-name
-                "    -v, --version    Display version"
-                "    -h, --help       Display this help")]
-       [val-version
-        (format #t "~a version <...>\n" utility-name)]
-       [#t
-        (let* [(prms
-                (cond
-                 [(member? fun emacs-procedures)
-                  (list #:device-label device-label)]
-                 [(member? fun mount-procedures)
-                  (list #:profile profile)]
-                 [#t
-                  (raise-exception
-                   (make-exception
-                    (make-handle-cli-exception fun)
-                    (make-exception-with-message
-                     (format #t "The procedure must be one of:\n  ~a\n\n"
-                             (append emacs-procedures mount-procedures)))))]))]
-
-          (apply (eval fun (current-module)) ;; resolve symbol to the procedure
-                 (append (list #:utility-name utility-name
-                               #:gx-dry-run   val-gx-dry-run
-                               #:verbose      verbose)
-                         prms val-rest-args)))]))))
+      (format #t "~a option-spec    : ~a\n" f option-spec)
+      (format #t "~a options        : ~a\n" f options)
+      (format #t "~a val-help       : ~a\n" f val-help)
+      (format #t "~a val-version    : ~a\n" f val-version)
+      (format #t "~a val-gx-dry-run : ~a\n" f val-gx-dry-run)
+      (format #t "~a val-create-frame : ~a\n" f val-create-frame)
+      (format #t "~a val-rest-args  : ~a\n" f val-rest-args))
+    (cond
+     [val-help
+      (format #t "~a [options]\n~a\n~a\n\n"
+              utility-name
+              "    -v, --version    Display version"
+              "    -h, --help       Display this help")]
+     [val-version
+      (format #t "~a version <...>\n" utility-name)]
+     [#t
+      (let* [(prms
+              (cond
+               [(member? fun emacs-procedures)
+                (list #:profile profile)]
+               [(member? fun mount-procedures)
+                (list #:device-label device-label)]
+               [#t
+                (raise-exception
+                 (make-exception
+                  (make-handle-cli-exception fun)
+                  (make-exception-with-message
+                   (format #t "The procedure must be one of:\n  ~a\n\n"
+                           (append emacs-procedures mount-procedures)))))]))]
+        (apply (eval fun (current-module)) ;; resolve symbol to the procedure
+               (append
+                (list #:utility-name utility-name
+                      #:gx-dry-run   val-gx-dry-run
+                      #:verbose      verbose)
+                (if (equal? fun 'create-launcher)
+                    (list #:create-frame val-create-frame)
+                    (list))
+                prms val-rest-args)))])))
 (testsymb 'handle-cli)
 
 (module-evaluated)
 
+;; (begin (use-modules (ice-9 getopt-long) (ice-9 regex) (guix monads) (utils) (settings) (command-line) (emacs-common))
+;;        (handle-cli #:verbose #f #:fun (quote create-launcher)
+;;                    #:profile "guix"
+;;                    (command-line)))

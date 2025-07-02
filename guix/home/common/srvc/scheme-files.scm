@@ -235,7 +235,8 @@ a list of files to search through."
 
 (define* (service-file-emacs-utils #:rest args)
   (apply service-file-utils
-         (append args (list #:verbose #t #:extra-modules '((emacs-common))))))
+         (append args (list #:verbose #f #:extra-modules '((srfi srfi-1)
+                                                           (emacs-common))))))
 
 (define* (service-file-mount-utils #:rest args)
   (apply service-file-utils
