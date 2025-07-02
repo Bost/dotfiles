@@ -124,12 +124,11 @@ Example:
                (client-cmd-with-args
                 (remove unspecified-or-empty-or-false?
                         (append
-                         (list (car client-cmd)
-;;; --create-frame must be present if no frame exists, e.g. right after emacs-server starts
-                               (when (or create-frame (not client-cmd?))
+                         client-cmd
+;; --create-frame must be present if no frame exists, e.g. right after emacs-server starts
+                         (list (when (or create-frame (not client-cmd?))
                                  ;; also "-c"
                                  "--create-frame"))
-                         (cdr client-cmd)
                          (if (null? args) '("./") args))))]
           (if client-cmd?
               (exec-background client-cmd-with-args)
