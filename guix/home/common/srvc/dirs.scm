@@ -13,7 +13,7 @@
   ;; Not strictly needed. Can be imported by: ,use (gnu home services utils)
   #:use-module (gnu home services utils)
 
-  ;; take remove delete-duplicates append-map etc.
+  ;; take remove delete-duplicates append-map last etc.
   #:use-module (srfi srfi-1)
   ;; $fish-foreign-env
   ;; #:use-module (gnu packages shells)
