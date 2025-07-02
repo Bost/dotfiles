@@ -194,50 +194,6 @@ Example:
               #$main-call)))))))
 (testsymb 'service-file-general)
 
-(define* (service-file-mount-utils
-          #:key program-name (verbose #f) utility-name fun device-label)
-  "Create pair like for emacs-cli utils (\"scm-bin/mount-axa\" \"/gnu/store/...\")
-
-TODO The `search-notes' program should read a `search-space-file' containing
-a list of files to search through."
-  (let* [(m (format #f "~a [service-file-mount-utils]" m))]
-    ;; (format #t "~a Starting ...\n" m)
-    ;; (format #t "~a program-name    : ~s\n" m program-name)
-    ;; (format #t "~a fun             : ~s\n" m fun)
-    ;; (format #t "~a (test-type fun) : ~s\n" m (test-type fun))
-    ;; (format #t "~a profile         : ~s\n" m profile)
-
-    (list
-     (str scm-bin-dirname "/" program-name)
-     ((comp
-       ;; (lambda (v) (format #t "~a :\n~s\n\n" m v) v)
-       )
-      (program-file
-       program-name
-       (let* [(symb-string scheme-file)
-              (symb (or module-name
-                        (string->symbol symb-string)))
-              (sexp `(handle-cli #:verbose ,verbose #:fun (quote ,fun)
-                                 #:device-label ,device-label
-                                 (command-line)))]
-         ;; (format #t "$$$$ ~a sexp :\n~s\n\n" m sexp)
-         (with-imported-modules
-             `((guix monads)
-               (utils)
-               (settings)
-               (command-line)
-               (mount-common))
-           #~(begin
-               (use-modules (ice-9 getopt-long)
-                            (ice-9 regex)
-                            (guix monads)
-                            (utils)
-                            (settings)
-                            (command-line)
-                            (mount-common))
-               #$sexp))))))))
-(testsymb 'service-file-mount-utils)
-
 (define* (service-file-utils
           #:key program-name (verbose #f) fun profile device-label extra-modules)
   "Create pairs like
@@ -250,37 +206,36 @@ a list of files to search through."
                            (utils)
                            (settings)
                            (command-line)))
-
-  (let* [(m (format #f "~a [service-file-utils]" m))]
-    ;; (format #t "~a Starting ...\n" m)
-    ;; (format #t "~a program-name : ~s\n" m program-name)
-    ;; (format #t "~a fun          : ~s\n" m fun)
-    ;; (format #t "~a profile      : ~s\n" m profile)
-    (list
-     (str scm-bin-dirname "/" program-name)
-     ((comp) ;; logger stub
-      (program-file
-       program-name
-       (let* [(symb-string scheme-file)
-              (symb (or module-name
-                        (string->symbol symb-string)))
-              (sexp `(handle-cli #:verbose ,verbose
-                                 #:fun (quote ,fun)
-                                 ,@(if profile `(#:profile ,profile) '())
-                                 ,@(if device-label `(#:device-label ,device-label) '())
-                                 (command-line)))]
-         (with-imported-modules (append common-modules extra-modules)
-           #~(begin
-               (use-modules (ice-9 getopt-long)
-                            (ice-9 regex)
-                            #$@common-modules
-                            #$@extra-modules)
-               #$sexp))))))))
+  (define f (format #f "~a [service-file-utils]" m))
+  ;; (format #t "~a Starting ...\n" f)
+  ;; (format #t "~a program-name : ~s\n" f program-name)
+  ;; (format #t "~a fun          : ~s\n" f fun)
+  ;; (format #t "~a profile      : ~s\n" f profile)
+  (list
+   (str scm-bin-dirname "/" program-name)
+   ((comp) ;; logger stub
+    (program-file
+     program-name
+     (let* [(symb-string scheme-file)
+            (symb (or module-name
+                      (string->symbol symb-string)))
+            (sexp `(handle-cli #:verbose ,verbose
+                               #:fun (quote ,fun)
+                               ,@(if profile `(#:profile ,profile) '())
+                               ,@(if device-label `(#:device-label ,device-label) '())
+                               (command-line)))]
+       (with-imported-modules (append common-modules extra-modules)
+         #~(begin
+             (use-modules (ice-9 getopt-long)
+                          (ice-9 regex)
+                          #$@common-modules
+                          #$@extra-modules)
+             #$sexp)))))))
 (testsymb 'service-file-utils)
 
 (define* (service-file-emacs-utils #:rest args)
   (apply service-file-utils
-         (append args (list #:extra-modules '((emacs-common))))))
+         (append args (list #:verbose #t #:extra-modules '((emacs-common))))))
 
 (define* (service-file-mount-utils #:rest args)
   (apply service-file-utils
