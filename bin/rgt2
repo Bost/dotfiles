@@ -1,0 +1,5 @@
+#!/bin/sh
+# -A, --after-context NUM
+# -B, --before-context NUM
+num=2
+rg -t lisp -B $num -A $num "$@"
