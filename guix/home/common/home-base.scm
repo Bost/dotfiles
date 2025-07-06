@@ -234,6 +234,8 @@
      ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
      ("cores" . ,(number->string ((@(ice-9 threads) current-processor-count))))
      ("dotf"  . ,(user-dev "/dotfiles"))
+     ("dtf"   . ,(user-dev "/dotfiles"))
+     ("dtfg"  . ,(user-dev "/dotfiles/guix"))
      ("dgx"   . ,(user-dev "/guix"))
      ("dgxp"  . ,(user-dev "/guix-packages"))
      ("dgl"   . ,(user-dev "/guile"))

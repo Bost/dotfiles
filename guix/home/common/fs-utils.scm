@@ -16,9 +16,16 @@
 
 (define* (user-home #:rest args) (apply str home args))
 (define-public dev (user-home "/dev"))
+
 (define* (user-dev #:rest args)  (apply str dev args))
 (define-public dotf (user-dev "/dotfiles"))
 (define* (user-dotf #:rest args) (apply str dotf args))
+
+(define-public dtf (user-dev "/dotfiles"))
+(define* (user-dtf #:rest args) (apply str dtf args))
+
+(define-public dtfg (user-dev "/dotfiles/guix"))
+(define* (user-dtfg #:rest args) (apply str dtfg args))
 
 (define-public dgx  (user-dev "/guix"))
 (define-public dgxp (user-dev "/guix-packages"))
