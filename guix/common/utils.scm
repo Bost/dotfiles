@@ -1046,6 +1046,16 @@ Requires:
              one-or-many-packages
              (list one-or-many-packages)))))
 
+(define-public (interleave . lists)
+  "Take elements alternately from each list, stopping at the shortest."
+  (apply append
+         (apply map list lists)))
+
+(define-public (combine . lists)
+  (let ((len (length (car lists))))
+    (unless (every (λ (l) (= (length l) len)) lists)
+      (error "combine: lists must all be the same length" lists))
+    (apply map list lists)))
 
 (define-public (keyword->string keyword)
   "
@@ -1163,5 +1173,81 @@ that many from the end."
       (() '())
       ((x . r) (cons (syntax x) (f (syntax r))))
       (_ (error 'syntax->list "invalid argument ~s" orig-ls)))))
+
+(define-public (juxt . fns)
+  (lambda args
+    (map (lambda (f) (apply f args)) fns)))
+
+;; ;; Example usage:
+;; (define add1 (lambda (x) (+ x 1)))
+;; (define square (lambda (x) (* x x)))
+;; (define negate (lambda (x) (- x)))
+
+;; ;; Create a juxtaposition of functions
+;; (define combined (juxt add1 square negate))
+
+;; ;; Apply to arguments
+;; (combined 5)  ; => (6 25 -5)
+
+;; ;; With multiple arguments
+;; (define add (lambda (x y) (+ x y)))
+;; (define mult (lambda (x y) (* x y)))
+;; (define sub (lambda (x y) (- x y)))
+
+;; (define math-ops (juxt add mult sub))
+;; (math-ops 10 3)  ; => (13 30 7)
+
+;; ;; Using with built-in functions
+;; (define string-ops (juxt string-length string-upcase string-downcase))
+;; (string-ops "Hello")  ; => (5 "HELLO" "hello")
+
+(define (build one-or-many-packages)
+  "Usage
+(build <package-name>)"
+  (let [(daemon ((@ (guix store) open-connection)))]
+    (define (partial fun . args) (lambda x (apply fun (append args x))))
+    (map (compose
+          ;; (lambda (p) (format #t "3 p: ~a\n" p) p)
+          (partial (@ (guix derivations) build-derivations) daemon)
+          ;; (lambda (p) (format #t "2 p: ~a\n" p) p)
+          list
+          ;; (lambda (p) (format #t "1 p: ~a\n" p) p)
+          (partial (@ (guix packages) package-derivation) daemon)
+          ;; (lambda (p)
+          ;;   (format #t "0 p: ~a\n" p)
+          ;;   (format #t "(record? p): ~a\n" (record? p))
+          ;;   (format #t "(package? p) p: ~a\n" (package? p))
+          ;;   p)
+          )
+         (if (list? one-or-many-packages) one-or-many-packages
+             (list one-or-many-packages)))
+
+    ;; ((compose
+    ;;   (lambda (p) (format #t "3 p: ~a\n" p) p)
+    ;;   (partial (@ (guix derivations) build-derivations) daemon)
+    ;;   (lambda (p) (format #t "2 p: ~a\n" p) p)
+    ;;   list
+    ;;   (lambda (p) (format #t "1 p: ~a\n" p) p)
+    ;;   (partial (@ (guix packages) package-derivation) daemon)
+    ;;   (lambda (p)
+    ;;     (format #t "0 p: ~a\n" p)
+    ;;     (format #t "(record? p: ~a\n" (record? p))
+    ;;     (format #t "(package? p) p: ~a\n" (package? p))
+    ;;     p)
+    ;;   )
+    ;;  (specification->package
+    ;;   (format #f "(@ (bost packages emacs-xyz) ~a)" (symbol->string one-or-many-packages))
+    ;;   ))
+    ))
+
+(define (directory-exists? path)
+  "Check if path exists and is a directory"
+  (and (file-exists? path)
+       (eq? (stat:type (stat path)) 'directory)))
+
+(define (symbolic-link? path)
+  "Check if path is a symbolic link"
+  (and (file-exists? path)
+       (eq? (stat:type (lstat path)) 'symlink)))
 
 (module-evaluated)
