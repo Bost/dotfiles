@@ -1441,6 +1441,8 @@ before packages are loaded."
      file))
 
   (setq
+   large-file-warning-threshold nil ;; don't ask before visiting big files
+
    org-plantuml-jar-path (funcall
                           (-compose
                            (-partial #'format "%s/share/java/plantuml.jar")
@@ -1570,6 +1572,8 @@ before packages are loaded."
 
   (beacon-mode 1)
 
+  ;; TODO show how long was the delay + history, so that I can adjust the key-chord-two-keys-delay then ~l e~ are pressed.
+  ;; TODO implement per-keybinding-specific delay
   (progn
     ;; Max time delay between two key presses to be considered a key chord.
     ;; (Default 0.1)
