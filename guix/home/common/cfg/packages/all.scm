@@ -42,7 +42,8 @@
  pulseaudio perl php pkg-config search databases pv python-xyz python
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
- mail messaging irc commencement gcc clojure machine-learning cups scanner)
+ mail messaging irc commencement gcc clojure machine-learning cups scanner
+ file-systems)
 
 (define (email-in-emacs-packages)
   (list
@@ -407,6 +408,16 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    hexchat     ; Graphical IRC client
    ;; weechat  ; Extensible chat client
    ;; irssi    ; Extensible terminal-based IRC client
+   ))
+
+(define (encryption-packages)
+  (list
+   ;; file-based encryption implemented as a mountable FUSE overlay filesystem
+   gocryptfs
+
+   ;; Qt/C++ GUI front end to sshfs, +ecryptfs, cryfs, gocryptfs, encfs,
+   ;; fscrypt, securefs +based encrypted folders
+   sirikali
    ))
 
 (define (rest-packages)
@@ -900,6 +911,7 @@ FIXME the inferior-packages are installed on every machine"
              (other-gui-packages)
              (irc-packages)
              (rest-packages)
+             (encryption-packages)
              (xfce-packages)
              (xorg-packages)
              lst)
