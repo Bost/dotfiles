@@ -46,8 +46,12 @@
 
 (define (email-in-emacs-packages)
   (list
+   ;; find & view emails in Maildir format, extract attachments etc.
    mu    ;; mu generates autoloads for "mu4e", which is for treemacs-mu4e
-   isync ;; isync/mbsync is a command-line tool for two-way synchronization of mailboxes
+
+   ;; isync/mbsync: command-line tool for two-way synchronization of mailboxes
+   isync
+
    pkg:emacs-mbsync
    pkg:emacs-mu4e-alert
    bst:emacs-helm-mu
@@ -592,8 +596,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (other-gui-packages)
   (list
    gdm
+
+   ;; Low-level GNOME configuration system. Backend to GSettings
    dconf
    dconf-editor
+
+   ;; GNOME's document viewer: PDF, PostScript, DjVu, TIFF and DVI
    evince
    ;; gksudo ;; not available in the Guix package repository
 
@@ -604,9 +612,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    gsettings-desktop-schemas
    gtk
    libreoffice
+
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
 
+   ;; Graphical console client for virtual machines using SPICE or VNC
    virt-viewer
 
    ;; share the clipboard and guest display resolution scaling on graphical
@@ -653,7 +663,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    guvcview
 
    ;; Port of Facebook's LLaMA model in C/C++
-   llama-cpp
+   ;; llama-cpp
    ))
 (testsymb 'other-gui-packages)
 
