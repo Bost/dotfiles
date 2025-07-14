@@ -57,6 +57,7 @@
  android  ; android-udev-rules - access smartphone via mtp://
  bash
  cups     ; lpinfo (printer)
+ gnome    ; gnome-desktop-service
  libusb   ; libmtp
  shells   ; login shell
  linux    ; brightnessctl
@@ -124,6 +125,8 @@
        ;;           ;;         (name "*")
        ;;           ;;         (user-session "ratpoison"))))
        ;;           ))
+
+       (service gnome-desktop-service-type)
 
        ;; (service pcscd-service-type)
 
