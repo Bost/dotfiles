@@ -32,7 +32,7 @@
  cups     ; lpinfo (printer)
  bash
  fonts    ; font-terminus font-tamzen
- gnome    ; for (gnome-desktop-configuration (gnome (replace-mesa gnome)))
+ gnome    ; gnome-desktop-service
  libusb   ; libmtp
  scanner  ; sane-backends
  shells   ; login shell
