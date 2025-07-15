@@ -1580,6 +1580,25 @@ before packages are loaded."
     (setq key-chord-two-keys-delay 0.02)
     (key-chord-mode 1))
 
+  (with-eval-after-load 'ffap
+    "Ensure all FFAP modes treat spaces, '(' and ')' as part of filenames."
+
+    ;; Ensure ffap will use spaces when guessing filenames
+    (setq ffap-file-name-with-spaces t)
+
+    ;; Walk every (MODE CHARS BEG END) entry and patch CHARS
+    (dolist (entry ffap-string-at-point-mode-alist)
+      (let* ((chars      (nth 1 entry))
+             ;; determine missing characters
+             (need-paren (not (string-match-p "[()]" chars)))
+             (need-space (not (string-match-p " "   chars)))
+             (to-add     (concat
+                          (when need-paren "()")
+                          (when need-space " "))))
+        (when (not (string-empty-p to-add))
+          (message "Entry %s: chars '%s' to-add '%s'" (car entry) chars to-add)
+          (setf (nth 1 entry) (concat chars to-add))))))
+
   (with-eval-after-load 'org
     (setq org-src-lang-modes-orig org-src-lang-modes)
     (setq org-src-lang-modes (cons '("fish" . fish) org-src-lang-modes))
