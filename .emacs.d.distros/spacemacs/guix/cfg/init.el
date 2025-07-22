@@ -1688,7 +1688,7 @@ before packages are loaded."
     ;; "oc"  #'org-roam-capture
     ;; "of"  #'tw-switch-to-repl-start-figwheel
     "oed" #'tw-find-dotf-spacemacs
-    "oeg" #'tw-find-dotf-spguimacs
+    "oeg" #'tw-find-dotf-spacemacs-guix
     "ogg" #'google-this
     "ogr" #'google-this-region
     "oh"  #'tw-find-home-config.scm
