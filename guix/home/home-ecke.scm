@@ -108,7 +108,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;              (dstdir (dirname dst))]
 ;;         (unless (file-exists? dstdir)
 ;;           (let [(indent (str indent indent-inc))]
-;;             (format #t "~a(mkdir ~a) ... " indent src dstdir)
+;;             (format #t "~a(mkdir ~a)… " indent src dstdir)
 ;;             (let ((retval (mkdir dstdir)))
 ;;               (format #t "retval: ~a\n" retval)
 ;;               ;; The value of 'retval' is '#<unspecified>'
@@ -116,7 +116,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;               retval)))
 ;; ;;; TODO is this sexp is not executed because of lazy-evaluation?
 ;;         (let [(indent (str indent indent-inc))]
-;;           (format #t "~a(copy-file ~a ~a) ... " indent src dst)
+;;           (format #t "~a(copy-file ~a ~a)… " indent src dst)
 ;;           (let ((retval (copy-file src dst)))
 ;;             (format #t "retval: ~a\n" retval)
 ;;             ;; The value of 'retval' is '#<unspecified>'
