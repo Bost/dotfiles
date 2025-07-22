@@ -235,14 +235,6 @@ a list of files to search through."
              #$sexp)))))))
 (testsymb 'service-file-utils)
 
-(define* (service-file-emacs-utils #:rest args)
-  (apply service-file-utils
-         (append args (list #:verbose #f #:extra-modules '((emacs-common))))))
-
-(define* (service-file-mount-utils #:rest args)
-  (apply service-file-utils
-         (append args (list #:extra-modules '((mount-common))))))
-
 (define crc-other-files
   (flatten
    (append
@@ -360,12 +352,13 @@ a list of files to search through."
 
 (define (mount-utils)
   ((comp
-    (partial map (partial apply service-file-mount-utils))
     (partial map (lambda (fun-label-pair)
                    (let [(fun (car fun-label-pair))
                          (lbl (cadr fun-label-pair))]
-                     (list #:program-name (str fun "-" lbl)
-                           #:fun fun #:device-label lbl)))))
+                     (service-file-utils
+                      #:program-name (str fun "-" lbl)
+                      #:verbose #f #:fun fun #:device-label lbl
+                      #:extra-modules '((mount-common)))))))
    (cartesian
     (list 'mount 'unmount 'eject)
     (list "axa" "toshiba" "new"))))
@@ -373,7 +366,10 @@ a list of files to search through."
 
 (define (emacs-cli-utils)
   ((comp
-    (partial map (partial apply service-file-emacs-utils)))
+    (partial map (comp
+                  (partial apply service-file-utils)
+                  (partial append (list #:verbose #f
+                                        #:extra-modules '((emacs-common)))))))
    (list
     (list #:program-name "ep" #:fun 'set-editable     #:profile #f)
 
