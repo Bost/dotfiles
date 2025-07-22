@@ -101,7 +101,7 @@ Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
   (let* [(m (format #f "~a [service-file-general]" m))]
-    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a Starting…\n" m)
     ;; (format #t "~a program-name : ~s\n" m program-name)
     ;; (format #t "~a desc         : ~s\n" m desc)
     ;; (format #t "~a scheme-file  : ~s\n" m scheme-file)
@@ -208,7 +208,7 @@ a list of files to search through."
                            (settings)
                            (command-line)))
   (define f (format #f "~a [service-file-utils]" m))
-  ;; (format #t "~a Starting ...\n" f)
+  ;; (format #t "~a Starting…\n" f)
   ;; (format #t "~a program-name : ~s\n" f program-name)
   ;; (format #t "~a fun          : ~s\n" f fun)
   ;; (format #t "~a profile      : ~s\n" f profile)
@@ -291,7 +291,7 @@ a list of files to search through."
 
 (define (search-notes-service-files)
   (let* [(m (format #f "~a [search-notes-service-files]" m))]
-    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a Starting…\n" m)
     (map
      (partial apply service-file-general)
      (list
@@ -393,7 +393,7 @@ a list of files to search through."
 
 (define-public (scheme-files-service)
   (let* [(m (format #f "~a [scheme-files-service]" m))]
-    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a Starting…\n" m)
     ((comp
       ;; (lambda (v) (format #t "~a done\n" m) v)
       ;; 'simple-service name target value'. E.g.:
