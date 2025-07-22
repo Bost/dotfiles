@@ -113,7 +113,7 @@ See also:
 
 (define (home-dir-cfg-srvc-files)
   (let* [(m (format #f "~a [home-dir-cfg-srvc-files]" m))]
-    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a Starting…\n" m)
     ((comp
       ;; (lambda (p) (format #t "~a done.\n" m) p)
       ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)

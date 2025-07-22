@@ -65,7 +65,7 @@
             ))
 
 (define m "[utils]")
-;; (format #t "~a evaluating module ...\n" m)
+;; (format #t "~a evaluating module…\n" m)
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix
 ;; Also (examples)
@@ -161,12 +161,12 @@ Works also for functions returning and accepting multiple values."
      (begin
        (let [(m (module-name-for-logging))]
          (when show
-           (format #t "~a Evaluating module ...\n" m))))]
+           (format #t "~a Evaluating module…\n" m))))]
     [(_)
      (begin
        (let [(m (module-name-for-logging))]
          (when show-evaluating-module
-           (format #t "~a Evaluating module ...\n" m))))]))
+           (format #t "~a Evaluating module…\n" m))))]))
 
 (define-syntax module-evaluated
   (syntax-rules ()
@@ -174,12 +174,12 @@ Works also for functions returning and accepting multiple values."
      (begin
        (let [(m (module-name-for-logging))]
          (when show
-           (format #t "~a Evaluating module ... done.\n" m))))]
+           (format #t "~a Evaluating module… done.\n" m))))]
     [(_)
      (begin
        (let [(m (module-name-for-logging))]
          (when show-module-evaluated
-           (format #t "~a Evaluating module ... done.\n" m))))]))
+           (format #t "~a Evaluating module… done.\n" m))))]))
 
 (define-syntax testsymb
   (syntax-rules ()
@@ -685,16 +685,16 @@ or the CLIENT-CMD if some process ID was found."
     (syntax-case x ()
       ((_ (id . args) b0)
        #'(begin
-           ;; (format #t "(def* (~a ...) ...) ... " `id)
+           ;; (format #t "(def* (~a…)…)… " `id)
            (define id
              (cond
               [#t                    ;; fa
                (lambda* args
-                 (format #t "[~a] Starting ...\n" `id)
+                 (format #t "[~a] Starting…\n" `id)
                  (let [(result b0)]
                    (format #t "[~a] done.\n" `id)
                    result))]))
-           ;; (format #t "(def* ~a ...) ... done" `id)
+           ;; (format #t "(def* ~a…)… done" `id)
            id))
 
       ((_ (id . args) b0 b1)
@@ -704,19 +704,19 @@ or the CLIENT-CMD if some process ID was found."
               [(string? `b0)         ;; fb
                (lambda* args
                  b0
-                 (format #t "[~a] Starting ...\n" `id)
+                 (format #t "[~a] Starting…\n" `id)
                  (let [(result b1)]
                    (format #t "[~a] done.\n" `id)
                    result))]
 
               [#t                    ;; fc
                (lambda* args
-                 (format #t "[~a] Starting ...\n" `id)
+                 (format #t "[~a] Starting…\n" `id)
                  b0
                  (let [(result b1)]
                    (format #t "[~a] done.\n" `id)
                    result))]))
-           ;; (format #t "(def* ~a ...) ... done" `id)
+           ;; (format #t "(def* ~a…)… done" `id)
            id))
 
       ((_ (id . args) b0 b1 ... bN)
@@ -726,7 +726,7 @@ or the CLIENT-CMD if some process ID was found."
               [(string? `b0)         ;; fd
                (lambda* args
                  b0
-                 (format #t "[~a] Starting ...\n" `id)
+                 (format #t "[~a] Starting…\n" `id)
                  b1 ...
                  (let [(result bN)]
                    (format #t "[~a] done.\n" `id)
@@ -734,20 +734,20 @@ or the CLIENT-CMD if some process ID was found."
 
               [#t                    ;; fe
                (lambda* args
-                 (format #t "[~a] Starting ...\n" `id)
+                 (format #t "[~a] Starting…\n" `id)
                  b0
                  b1 ...
                  (let [(result bN)]
                    (format #t "[~a] done.\n" `id)
                    result))]))
-           ;; (format #t "(def* ~a ...) ... done" `id)
+           ;; (format #t "(def* ~a…)… done" `id)
            id))
 
       ((_ id val) (identifier? #'id) ;; ff
        #'(begin
-           ;; (format #t "(def* ~a ...) ... " `id)
+           ;; (format #t "(def* ~a…)… " `id)
            (define id val)
-           ;; (format #t "(def* ~a ...) ... done" `id)
+           ;; (format #t "(def* ~a…)… done" `id)
            id)))))
 
 ;; Test cases:
@@ -780,7 +780,7 @@ or the CLIENT-CMD if some process ID was found."
   (syntax-rules ()
     ((_ (name . args) . body)
      (begin
-       (format #t "(def-public (~a ...) ...) ... " `name)
+       (format #t "(def-public (~a…)…)… " `name)
        (define (name . args) . body)
        (format #t "done\n")
        (export name)))
@@ -932,10 +932,10 @@ Example:
              (lst-params (cadr mv))]
         (if (equal? lst-output-of-previous-cmd lst-params)
             (begin
-              (format #t "~s ... " `(,mf ,lst-params))
-              ;; (format #t "~s ...\n" `(,mf ,lst-params))
+              (format #t "~s… " `(,mf ,lst-params))
+              ;; (format #t "~s…\n" `(,mf ,lst-params))
               (mf lst-params)
-              ;; (format #t "~s ... done\n" `(,mf ,lst-params))
+              ;; (format #t "~s… done\n" `(,mf ,lst-params))
               (format #t "done\n")
               ;; enforce manual command params specification by returning an
               ;; empty list
@@ -957,10 +957,10 @@ Example:
              (lst-params (cadr mv))]
         (if (equal? lst-output-of-previous-cmd lst-params)
             (begin
-              (format #t "~s ... " `(,mf ,lst-params))
-              ;; (format #t "~s ...\n" `(,mf ,lst-params))
+              (format #t "~s… " `(,mf ,lst-params))
+              ;; (format #t "~s…\n" `(,mf ,lst-params))
               ;; (mf lst-params)
-              ;; (format #t "~s ... done\n" `(,mf ,lst-params))
+              ;; (format #t "~s… done\n" `(,mf ,lst-params))
               (format #t "done\n")
               ;; enforce manual command params specification by returning an
               ;; empty list
