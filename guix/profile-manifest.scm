@@ -76,7 +76,7 @@
 $ ls --human-readable --size /home/bost/.guix-profile/manifest
 540K /home/bost/.guix-profile/manifest"
   (define f (format #f "~a [manifest-content]" m))
-  ;; (format #t "~a Starting ...\n" f)
+  ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done.\n" f) p)
     manifest

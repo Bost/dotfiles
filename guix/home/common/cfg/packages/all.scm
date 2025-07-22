@@ -154,7 +154,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 (define (basic-packages)
   (define f (format #f "~a [basic-packages]" m))
-  ;; (format #t "~a Starting ...\n" f)
+  ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done.\n" f) p)
     )
@@ -858,7 +858,7 @@ FIXME the inferior-packages are installed on every machine"
 
 (define-public (home-packages-to-install)
   (define f (format #f "~a [home-packages-to-install]" m))
-  ;; (format #t "~a Starting ...\n" f)
+  ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done.\n" f) p)
     ;; (lambda (p) (format #t "~a 6. (length p): ~a\n" f (length p)) p)

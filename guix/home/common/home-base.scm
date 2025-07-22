@@ -55,7 +55,7 @@
 ;; See `crep 'copy\ \/\ transfer'`
 (define-public (non-env-var-services)
   (let* [(m (format #f "~a [non-env-var-services]" m))]
-    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a Starting…\n" m)
     ((comp
       ;; (lambda (v) (format #t "~a done.\n" m) v)
       ;; (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
@@ -464,7 +464,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
 
 (define-public (home-env-edge-ecke list-separator)
   (let* [(m (format #f "~a [home-env-edge-ecke]" m))]
-    ;; (format #t "~a Starting ...\n" m)
+    ;; (format #t "~a Starting…\n" m)
     (let* [(home-env-record
             (home-environment
               ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
