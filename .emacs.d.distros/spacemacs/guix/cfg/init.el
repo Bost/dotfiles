@@ -1586,7 +1586,7 @@ before packages are loaded."
                           (when need-paren "()")
                           (when need-space " "))))
         (when (not (string-empty-p to-add))
-          (message "Entry %s: chars '%s' to-add '%s'" (car entry) chars to-add)
+          ;; (message "Entry %s: chars '%s' to-add '%s'" (car entry) chars to-add)
           (setf (nth 1 entry) (concat chars to-add))))))
 
   (with-eval-after-load 'org
