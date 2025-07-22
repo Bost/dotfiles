@@ -221,6 +221,7 @@ a list of files to search through."
             (symb (or module-name
                       (string->symbol symb-string)))
             (sexp `(handle-cli #:verbose ,verbose
+                               #:program-name ,program-name
                                #:fun (quote ,fun)
                                ,@(if profile `(#:profile ,profile) '())
                                ,@(if device-label `(#:device-label ,device-label) '())
