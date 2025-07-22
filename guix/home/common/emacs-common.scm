@@ -87,7 +87,7 @@ Usage:
     (apply exec-system*-new
            #:split-whitespace #f
            #:gx-dry-run gx-dry-run
-           (list "pkill" "--full" (create-init-cmd profile)))))
+           (list "pkill" "--echo" "--full" (create-init-cmd profile)))))
 (testsymb 'pkill-server)
 
 (define (init-cmd-env-vars home-emacs-distros profile)
