@@ -1426,19 +1426,9 @@ before packages are loaded."
   ;;; hello
   ;;; #+end_src
 
-  (defun shell-path () (getenv "SHELL"))
-  ;; (defun shell-path () (tw-shell-which "fish"))
-
-  (defun my=shell-readlink (file)
-    "Execute the `readlink FILE` command in the current shell."
-    (funcall
-     (-compose
-      ;; TODO implement fallback to bash if fish not found
-      #'string-trim-right
-      #'shell-command-to-string
-      (lambda (strings) (string-join strings " "))
-      (-partial #'list "readlink"))
-     file))
+  (defun tw-shell-path ()
+    ;; (tw-shell-which "fish")
+    (getenv "SHELL"))
 
   (setq
    large-file-warning-threshold nil ;; don't ask before visiting big files
@@ -1448,7 +1438,7 @@ before packages are loaded."
                            (-partial #'format "%s/share/java/plantuml.jar")
                            #'directory-file-name
                            #'directory-file-name
-                           #'my=shell-readlink
+                           #'tw-shell-readlink
                            #'tw-shell-which)
                           "plantuml")
 
@@ -1467,10 +1457,10 @@ before packages are loaded."
    ;; If this is nil, setup to environment variable of `SHELL'.
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
    ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
-   multi-term-program (shell-path)
+   multi-term-program (tw-shell-path)
 
    ;; Shell used in `term' and `ansi-term'.
-   shell-pop-term-shell (shell-path)
+   shell-pop-term-shell (tw-shell-path)
 
    ;; Position of the popped buffer. (default "bottom")
    shell-pop-window-position "right"
@@ -1630,24 +1620,12 @@ before packages are loaded."
   (defalias #'save-selected-text #'write-region)
   ;; TODO (define-obsolete-function-alias)
 
-  (defun my=load-layout ()
-    "docstring"
+  (defun tw-load-layout ()
     (interactive)
     (persp-load-state-from-file (concat
                                  sp-home-dir "/"
                                  ".cache/layouts/persp-auto-save")))
 
-  (defun my=delete-other-windows ()
-    "docstring"
-    (interactive)
-    ;; See definitions of `treemacs'
-    (pcase (treemacs-current-visibility)
-      ('visible (delete-window (treemacs-get-local-window)))
-      ;; ('exists  (treemacs-select-window))
-      ;; ('none    (treemacs--init))
-      )
-    (delete-other-windows)
-    )
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   ;; (xterm-mouse-mode -1)
   (super-save-mode +1) ;; better auto-save-mode
@@ -1816,8 +1794,8 @@ Some binding snippets / examples:
      ("s-k"       . kb-close-buffer)
      ("s-s"       . save-buffer)
      ("s-0"       . tw-delete-window)
-     ("s-1"       . my=delete-other-windows)
-     ("S-s-<f8>"    . ace-swap-window)
+     ("s-1"       . tw-delete-other-windows)
+     ("S-s-<f8>"    . ace-swap-window) ; ~SPC w M~
      ;; ("S-s-<f8>" . transpose-frame)
      ;; ("s-2"    . tw-split-other-window-below)
      ("s-2"       . split-window-below) ; ~SPC w -~
@@ -1825,7 +1803,7 @@ Some binding snippets / examples:
      ;; ("s-3"    . spacemacs/window-split-double-columns)
      ;; see ~SPC w /~ and ~SPC w 2~
      ("s-3"       . split-window-right-and-focus)
-     ("s-9"       . my=load-layout)
+     ("s-9"       . tw-load-layout)
      ("s-+"       . my=eval-bind-keys-and-chords)
      ("s-<kp-add>". my=eval-bind-keys-and-chords)
      ("s-z"       . tw-buffer-selection-show)
