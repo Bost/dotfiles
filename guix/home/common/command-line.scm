@@ -26,8 +26,6 @@ defined.
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define utility-name (last (module-name (current-module))))
-
 (define emacs-procedures '(pkill-server create-launcher set-editable))
 (define mount-procedures '(mount unmount eject))
 
@@ -36,19 +34,19 @@ defined.
   (handle-cli-procedure handle-cli-exception-procedure))
 
 (define* (handle-cli
-          #:key (verbose #t) utility-name fun profile device-label
+          #:key (verbose #t) program-name fun profile device-label
           ;; #:allow-other-keys
           #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'."
   (define f (format #f "~a [handle-cli]" m))
   (when verbose
-    (format #t "~a utility-name : ~a\n" f utility-name)
+    (format #t "~a program-name : ~a\n" f program-name)
     (format #t "~a fun          : ~a\n" f fun)
     (format #t "~a profile      : ~a\n" f profile)
     (format #t "~a device-label : ~a\n" f device-label)
     (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:utility-name #:fun
+  (let* [(elements (list #:verbose #:program-name #:fun
                          #:profile #:device-label))
          (args (remove-all-elements args elements))
          (args (car args))
@@ -79,11 +77,11 @@ defined.
     (cond
      [val-help
       (format #t "~a [options]\n~a\n~a\n\n"
-              utility-name
+              program-name
               "    -v, --version    Display version"
               "    -h, --help       Display this help")]
      [val-version
-      (format #t "~a version <...>\n" utility-name)]
+      (format #t "~a version <...>\n" program-name)]
      [#t
       (let* [(prms
               (cond
@@ -100,7 +98,7 @@ defined.
                            (append emacs-procedures mount-procedures)))))]))]
         (apply (eval fun (current-module)) ;; resolve symbol to the procedure
                (append
-                (list #:utility-name utility-name
+                (list #:utility-name program-name
                       #:gx-dry-run   val-gx-dry-run
                       #:verbose      verbose)
                 (if (equal? fun 'create-launcher)
