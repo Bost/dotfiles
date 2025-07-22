@@ -1709,6 +1709,10 @@ before packages are loaded."
     ;; Toggle workspaces forward/backwards
     "ow"  #'eyebrowse-next-window-config
     "oW"  #'eyebrowse-last-window-config
+
+    ;; (global-set-key (kbd "C-c C-v")
+    ;;                 #'tw-evil-find-file-at-point-with-line-other-window)
+    "gF"  #'tw-evil-find-file-at-point-with-line-other-window
     )
 
   ;; accessible from:
