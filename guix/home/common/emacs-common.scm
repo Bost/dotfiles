@@ -36,13 +36,18 @@ defined.
    (@(gnu packages emacs) emacs)))
 
 (define-public (which-emacs)
-  "(which-emacs) => \"/home/bost/.guix-home/profile/bin/emacs\""
   ;; (emacs-binary-path)
-  ((@(guix build utils) which) "emacs"))
+
+  ;; \"/home/bost/.guix-home/profile/bin/emacs\"
+  ;; ((@(guix build utils) which) "emacs")
+
+  "emacs")
 
 (define (which-emacsclient)
-  "(which-emacsclient) => \"/home/bost/.guix-home/profile/bin/emacsclient\""
-  ((@(guix build utils) which) "emacsclient"))
+  ;; "/home/bost/.guix-home/profile/bin/emacs"
+  ;; ((@(guix build utils) which) "emacsclient")
+
+  "emacsclient")
 
 (define (calculate-socket profile)
   (when profile
