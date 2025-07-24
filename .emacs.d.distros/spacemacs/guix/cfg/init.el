@@ -1896,7 +1896,8 @@ TODO if only-whitespaces-until-point
      ("s-w"         . tw-whitespace-mode-toggle)
      ("s-m"         . tw-magit-status)
      ("<f3>"   . tw-search-region-or-symbol) ; advice-d
-     ("M-<f3>" . spacemacs/hsearch-project)  ; advice-d
+     ;; advice-d
+     ("M-<f3>" . spacemacs/helm-project-smart-do-search-region-or-symbol)
 
      ("s-a"    . helm-mini) ;; advice-d
      ("s-]"    . helm-mini)
@@ -2580,14 +2581,6 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; (unbind-key "<f11>" scheme-mode-map)
   ;; (unbind-key "<f12>" scheme-mode-map)
 
-  (advice-add #'spacemacs/hsearch-project
-              :after (defun my=note--spacemacs/hsearch-project (_)
-                       (message
-                        "[advice spacemacs/hsearch-project] %s"
-                        (concat
-                         "Try ~SPC *~ for "
-                         "M-x spacemacs/hsearch-project-region-or-symbol"))))
-
   (advice-add #'helm-swoop
               :after
               (defun my=note--helm-swoop (&optional _)
@@ -2604,7 +2597,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                     p "Try:\n"
                     p "1. ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode)"
                     " mark something and press ~SPC s e~\n"
-                    p "2. ~M-<f3>~ for M-x spacemacs/hsearch-project")))))
+                    p "2. ~M-<f3>~ for M-x spacemacs/helm-project-smart-do-search-region-or-symbol")))))
 
   (advice-add #'split-window-right-and-focus
               :after (defun my=recenter-top-bottom ()
