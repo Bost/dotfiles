@@ -141,7 +141,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;;     rustc-1.60.0-src.tar.xz  63.6MiB
    rust ;; the 1.60 has to be build
 
-   ungoogled-chromium ; 285MiB
+   ;; ungoogled-chromium ; 285MiB
 
    ;; openjdk-17.0.3  199.5MiB
    ;; openjdk-17.0.3-doc  9.6MiB
@@ -578,7 +578,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    readline
    recutils      ; Manipulate plain text files as databases
    rlwrap
-   scsh          ; Unix shell embedded in Scheme
+   ;; scsh          ; Unix shell embedded in Scheme
    strace
    taglib
    tealdeer      ; tldr "Too Long Didn't Read" written in Rust
@@ -734,7 +734,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 ;;; rdpClientCon.c:981:31: error: ‘struct xrdp_client_info’ has no member named ‘monitorCount’
        )
       (list
-       rdesktop
+       ;; rdesktop
        remmina
 
        ;; tigervnc-client also provides extensions for advanced authentication
