@@ -28,8 +28,6 @@ differences were encountered."
         sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
         ))
 
-(setq hostname (system-name))
-
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -850,7 +848,7 @@ It should only modify the values of Spacemacs settings."
    `(
      ;; WTF? The quoting works only if farmhouse-light-mod is the first item in
      ;; the list
-     ;; ,(if (string= hostname "martin")
+     ;; ,(if (string= system-name "martin")
      ;;      '(farmhouse-light-mod :location local)
      ;;    'farmhouse-light-mod)
      modus-operandi
@@ -893,17 +891,17 @@ It should only modify the values of Spacemacs settings."
      :size
      ,(let* ((default 10.0)
              (point-size (cond
-                          ((string= hostname "edge") 19.0)
-                          ((or (string= hostname "ecke")
-                               (string= hostname "tuxedo"))
+                          ((string= system-name "edge") 19.0)
+                          ((or (string= system-name "ecke")
+                               (string= system-name "tuxedo"))
                            (+ default (* 5 1.2))) ; 1.2 is
                                         ; `text-scale-mode-step'
                                         ; (undefined for some reason)
                           ;; TODO this is a pixel-size not point-size
-                          ((string= hostname "geek") 17)
+                          ((string= system-name "geek") 17)
                           (t default))))
-        ;; (message "### dotspacemacs-default-font hostname: %s; point-size: %s"
-        ;;          hostname point-size)
+        ;; (message "### dotspacemacs-default-font system-name: %s; point-size: %s"
+        ;;          system-name point-size)
         point-size)
      :weight normal
      :width normal)
