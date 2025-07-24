@@ -850,9 +850,13 @@ It should only modify the values of Spacemacs settings."
    `(
      ;; WTF? The quoting works only if farmhouse-light-mod is the first item in
      ;; the list
-     ,(if (string= hostname "martin")
-          '(farmhouse-light-mod :location local)
-        'farmhouse-light-mod)
+     ;; ,(if (string= hostname "martin")
+     ;;      '(farmhouse-light-mod :location local)
+     ;;    'farmhouse-light-mod)
+     modus-operandi
+     farmhouse-light-mod-a
+     ;; farmhouse-light-mod-b
+     ;; farmhouse-light-mod-c
      spacemacs-dark
      material
      misterioso
