@@ -64,21 +64,32 @@
 Including these packages in the `home-packages-to-install' causes:
    error: <package-name>: unknown package
 when called from the Emacs Geiser REPL by ,use or ,load"
-  (list
-   (@(nongnu packages clojure) babashka)
-   (@(nongnu packages clojure) clojure-lsp)
-   ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
-   (@(nongnu packages messaging) signal-desktop)
-   (@(nongnu packages clojure) leiningen)
-   (@(nongnu packages mozilla) firefox)
-   (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
-   #|
-   (@(games packages factorio) factorio) ;; temporarily disabled, install it using:
-   guix package --load-path=$dev/games --install=factorio
-   set experimentalVersion @1.1.78 # set --erase experimentalVersion
-   guix package --load-path=$dev/games --install=factorio$experimentalVersion
-   |#
-   ))
+  (append
+   (list
+    ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
+    (@(nongnu packages messaging) signal-desktop)
+    ;; Program launcher for idle X sessions
+    xautolock
+    ;; Fake keyboard/mouse input, window management, and more
+    xdotool
+
+    ;; Display graphical dialog boxes from shell scripts
+    zenity)
+
+   (list
+    (@(nongnu packages clojure) babashka)
+    (@(nongnu packages clojure) clojure-lsp)
+
+    (@(nongnu packages clojure) leiningen)
+    (@(nongnu packages mozilla) firefox)
+    (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
+    #|
+    (@(games packages factorio) factorio) ;; temporarily disabled, install it using:
+    guix package --load-path=$dev/games --install=factorio
+    set experimentalVersion @1.1.78 # set --erase experimentalVersion
+    guix package --load-path=$dev/games --install=factorio$experimentalVersion
+    |#
+    )))
 (testsymb 'packages-from-additional-channels)
 
 (define (kde-dependent-packages)
