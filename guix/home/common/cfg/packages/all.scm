@@ -832,7 +832,7 @@ FIXME the inferior-packages are installed on every machine"
     ;; emacs-native-comp doesn't compile. Ups
     ;; (@(flat packages emacs) emacs-native-comp) ;; version: 28.2.50-205.ae9bfed
 
-    emacs-gptel
+    bst:emacs-gptel
     ;; emacs-next       ;; 29.0.92
     ;; emacs-next-pgtk  ;; 29.0.92
     bst:emacs-with-editor ;; for using Emacsclient as EDITOR
