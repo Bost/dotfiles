@@ -65,160 +65,229 @@
          additional-channels)))))
 (testsymb 'create-file-channels-scm)
 
-(define* (channel-home-service-dwl-guile #:key (commit #f))
+(define* (channel-home-service-dwl-guile #:key
+                                         (commit
+                                          #f
+                                          ))
   "Dynamic tiling Wayland compositor configurable in Guile Scheme"
-  (channel
-   (name 'home-service-dwl-guile)
-   (url
-    "https://github.com/engstrand-config/home-service-dwl-guile")
-   (branch "main")
-   (commit commit)
-   (introduction
-    (make-channel-introduction
-     "314453a87634d67e914cfdf51d357638902dd9fe"
-     (openpgp-fingerprint
-      "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C")))))
+  (let* [(channel-name 'home-service-dwl-guile)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      (url
+       "https://github.com/engstrand-config/home-service-dwl-guile")
+      (branch "main")
+      (commit commit)
+      (introduction
+       (make-channel-introduction
+        "314453a87634d67e914cfdf51d357638902dd9fe"
+        (openpgp-fingerprint
+         "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))))
 
-(define* (channel-games #:key (commit #f))
+(define* (channel-games #:key (commit
+                               #f ;; #f means: use latest commit
+                               ))
   "https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 Use:
     guix package --load-path=./ --install=factorio
 '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
-wrong
-
+wrong.
 The games channel requires the guix-gaming-channels/games.scm - see above"
-  (channel
-   (name 'games)
-   (url
-    #;"https://gitlab.com/rostislav.svoboda/games"
-    #;,(format #f "file://%s/dev/games" home)
-    "https://gitlab.com/guix-gaming-channels/games.git")
-   (commit commit)
-   ;; Enable signature verification:
-   (introduction
-    (make-channel-introduction
-     ;; 1st commit from this repository which can be trusted is:
-     "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
-     (openpgp-fingerprint
-      ;; ... as it was made by some with OpenPGP fingerprint:
-      "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F")))))
+  (let* [(channel-name 'games)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      (url
+       #;"https://gitlab.com/rostislav.svoboda/games"
+       #;,(format #f "file://%s/dev/games" home)
+       "https://gitlab.com/guix-gaming-channels/games.git")
+      (commit commit)
+      ;; Enable signature verification:
+      (introduction
+       (make-channel-introduction
+        ;; 1st commit from this repository which can be trusted is:
+        "c23d64f1b8cc086659f8781b27ab6c7314c5cca5"
+        (openpgp-fingerprint
+         ;; ... as it was made by some with OpenPGP fingerprint:
+         "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))))
 
-(define* (channel-hask-clj #:key (commit #f))
-  (channel
-   (name 'hask-clj)
-   (url
-    #;"https://github.com/Tass0sm/guix-develop"
-    "https://github.com/Bost/haskell-guix"
-    #;,(format #f "file://~a/dev/haskell-guix" home))
-   (commit commit)))
+(define* (channel-hask-clj #:key (commit
+                                  #f ;; #f means: use latest commit
+                                  ))
+  (let* [(channel-name 'hask-clj)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      (url
+       #;"https://github.com/Tass0sm/guix-develop"
+       "https://github.com/Bost/haskell-guix"
+       #;,(format #f "file://~a/dev/haskell-guix" home))
+      (commit commit))))
 
-(define* (channel-flat #:key (commit #f))
+(define* (channel-flat #:key (commit
+                              #f ;; #f means: use latest commit
+                              ))
   "flatwhatson contains emacs-native-comp, however it doesn't compile"
-  (channel
-   (name 'flat)
-   (url "https://github.com/flatwhatson/guix-channel.git")
-   (commit commit)
-   (introduction
-    (make-channel-introduction
-     "33f86a4b48205c0dc19d7c036c85393f0766f806"
-     (openpgp-fingerprint
-      "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490")))))
+  (let* [(channel-name 'flat)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      (url "https://github.com/flatwhatson/guix-channel.git")
+      (commit commit)
+      (introduction
+       (make-channel-introduction
+        "33f86a4b48205c0dc19d7c036c85393f0766f806"
+        (openpgp-fingerprint
+         "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))))
 
-(define* (channel-rde #:key (commit #f))
+(define* (channel-rde #:key (commit
+                             #f ;; #f means: use latest commit
+                             ))
   "Andrew Tropin's tools for managing reproducible development environments"
-  (channel
-   (name 'rde)
-   (url
-    "https://git.sr.ht/~abcdw/rde"
-    #;,(format #f "file://~a/dev/andrew-rde" home))
-   (commit commit)
-   (introduction
-    (make-channel-introduction
-     "257cebd587b66e4d865b3537a9a88cccd7107c95"
-     (openpgp-fingerprint
-      "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0")))))
+  (let* [(channel-name 'rde)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      (url
+       "https://git.sr.ht/~abcdw/rde"
+       #;,(format #f "file://~a/dev/andrew-rde" home))
+      (commit commit)
+      (introduction
+       (make-channel-introduction
+        "257cebd587b66e4d865b3537a9a88cccd7107c95"
+        (openpgp-fingerprint
+         "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))))
 
-(define* (channel-bost #:key (commit #f))
+(define* (channel-bost #:key (commit
+                              #f ;; #f means: use latest commit
+                              ))
   "Provides a.o.:
 - (bost gnu packages emacs-xyz) module
 - clojure, babashka, postgres 13.3, openjdk18"
- (channel (name 'bost)
-          (url
-           ;; "https://github.com/Bost/guix-packages"
-           (format #f "file://~a/dev/guix-packages" home))
-          (commit commit)))
+  (let* [(channel-name 'bost)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel (name channel-name)
+             (url
+              ;; "https://github.com/Bost/guix-packages"
+              (format #f "file://~a/dev/guix-packages" home))
+             (commit commit))))
 
-(define* (channel-nonguix #:key (commit #f))
-  "Provides firefox, linux-kernel with non-free proprietary drivers, etc."
-  (channel (name 'nonguix)
-           (url "https://gitlab.com/nonguix/nonguix")
-           (commit commit)
+(define* (channel-nonguix #:key (commit
+                                 #f ;; #f means: use latest commit
+                                 ;; "5ed7546593dd205f1dd4473b58afa855c07e033d"
+                                 ))
+  "Provides firefox, linux-kernel with non-free proprietary drivers, etc.
+Pick some commit instead of defaulting to #f to ensure this channel doesn't get
+rebuild everytime `guix pull ...` is executed."
+  (let* [(channel-name 'nonguix)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel (name channel-name)
+             (url "https://gitlab.com/nonguix/nonguix")
+             (commit commit)
 ;;; Enable signature verification, i.e. declare that in the nonguix repository,
 ;;; the first commit which can be trusted is the 897c1a470d and it was created
 ;;; by someone who's GnuPG fingerprint is the "2A39 3FFF ..."
-           (introduction
-            (make-channel-introduction
-             "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
-             (openpgp-fingerprint
-              "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5")))))
+             (introduction
+              (make-channel-introduction
+               "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
+               (openpgp-fingerprint
+                "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))))
 
-(define* (channel-guixrus #:key (commit #f))
+(define* (channel-guixrus #:key (commit
+                                 #f ;; #f means: use latest commit
+                                 ))
   "This channel provides packages and services that are:
 * Yet to be merged upstream.
 * In alpha or beta stage of development.
 * Customized to certain use-cases.
-* Nightly releases."
-  (channel
-   (name 'guixrus)
-   (url "https://git.sr.ht/~whereiseveryone/guixrus")
-   (commit commit)
-   (introduction
-    (make-channel-introduction
-     "7c67c3a9f299517bfc4ce8235628657898dd26b2"
-     (openpgp-fingerprint
-      "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551")))))
+* Nightly releases.
+Pick some commit instead of defaulting to #f to ensure this channel doesn't get
+rebuild everytime `guix pull ...` is executed."
+  (let* [(channel-name 'guixrus)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      (url "https://git.sr.ht/~whereiseveryone/guixrus")
+      (commit commit)
+      (introduction
+       (make-channel-introduction
+        "7c67c3a9f299517bfc4ce8235628657898dd26b2"
+        (openpgp-fingerprint
+         "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551"))))))
 
-(define* (channel-guix #:key (commit #f))
+(define* (channel-guix #:key (commit
+                              #f ;; #f means: use latest commit
+                              ;; "ed8288a53da9951ed66a6b725246971585e9fac5"
+                              ))
+  "Pick some commit instead of defaulting to #f to ensure this channel doesn't
+ get rebuild everytime `guix pull ...` is executed."
   ;; %default-guix-channel
-  (channel
-   (name 'guix)
-   ;; Probably either 'branch' or 'commit' can be used.
-   ;; branch defaults to "master". See `define-record-type* <channel> ...` in
-   ;; guix/channels.scm
-   ;; (branch "master")
-   (url
-    ;; (format #f "file://~a/dev/guix" home)
-    ;; "https://git.guix.gnu.org/guix.git" is redirected to codeberg
-    "https://codeberg.org/guix/guix.git"
-    ;; "https://git.savannah.gnu.org/git/guix.git"
-    )
-   (commit commit)
-   (introduction
-    (make-channel-introduction
-     "9edb3f66fd807b096b48283debdcddccfea34bad"
-     (openpgp-fingerprint
-      "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA")))))
+  (let* [(channel-name 'guix)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      ;; Probably either 'branch' or 'commit' can be used.
+      ;; branch defaults to "master". See `define-record-type* <channel> ...` in
+      ;; guix/channels.scm
+      ;; (branch "master")
+      (url
+       ;; (format #f "file://~a/dev/guix" home)
+       ;; "https://git.guix.gnu.org/guix.git" is redirected to codeberg
+       "https://codeberg.org/guix/guix.git"
+       ;; "https://git.savannah.gnu.org/git/guix.git"
+       )
+      (commit commit)
+      (introduction
+       (make-channel-introduction
+        "9edb3f66fd807b096b48283debdcddccfea34bad"
+        (openpgp-fingerprint
+         "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))))
 (testsymb 'channel-guix)
 
-(define* (channel-guix-past #:key (commit #f))
-  (channel
-   (name 'guix-past)
-   (url "https://codeberg.org/guix-science/guix-past")
-   (commit commit)
+(define* (channel-guix-past #:key (commit
+                                   #f ;; #f means: use latest commit
+                                   ))
+  (let* [(channel-name 'guix-past)]
+    (when commit
+      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      (url "https://codeberg.org/guix-science/guix-past")
+      (commit commit)
 ;;; The following lines allow 'guix pull' to authenticate this channel. It
 ;;; requires a recent Guix (July 2020) and can be omitted with older versions.
-   (introduction
-    (make-channel-introduction
-     "0c119db2ea86a389769f4d2b9c6f5c41c027e336"
-     (openpgp-fingerprint
-      "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5")))))
+      (introduction
+       (make-channel-introduction
+        "0c119db2ea86a389769f4d2b9c6f5c41c027e336"
+        (openpgp-fingerprint
+         "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5"))))))
 (testsymb 'channel-guix-past)
 
-(define* (syst-channels #:key (commit-guix-channel #f) (commit-nonguix-channel #f))
+(define* (syst-channels #:key
+                        (commit-guix-channel
+                         #f ;; #f means: use latest commit
+                         )
+                        (commit-nonguix-channel
+                         #f ;; #f means: use latest commit
+                         ))
   "Channels needed for the Guix-system configuration"
   (list
-   (channel-nonguix #:commit commit-nonguix-channel)
-   (channel-guix    #:commit commit-guix-channel)))
+   (if commit-guix-channel
+       (channel-guix    #:commit commit-guix-channel)
+       (channel-guix))
+   (if commit-nonguix-channel
+       (channel-nonguix #:commit commit-nonguix-channel)
+       (channel-nonguix))
+   ))
 (testsymb 'syst-channels)
 
 (module-evaluated)
