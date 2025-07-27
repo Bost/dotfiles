@@ -54,7 +54,7 @@
    isync
 
    pkg:emacs-mbsync
-   pkg:emacs-mu4e-alert
+   bst:emacs-mu4e-alert
    bst:emacs-helm-mu
    ))
 (testsymb 'email-in-emacs-packages)
@@ -806,7 +806,7 @@ FIXME the inferior-packages are installed on every machine"
 (define (devel-guile-ide-arei-packages)
   (list
    emacs-arei          ; Guile IDE
-   emacs-plantuml-mode ; Edit and preview PlantUML diagrams
+   bst:emacs-plantuml-mode ; Edit and preview PlantUML diagrams
    plantuml            ; Draw UML diagrams from simple textual description
    guile-next
    guile-ares-rs       ; Asyncronous Reliable Extensible Sleek RPC Server
@@ -839,7 +839,7 @@ FIXME the inferior-packages are installed on every machine"
 
     emacs-geiser
     emacs-geiser-guile
-    emacs-guix
+    bst:emacs-guix
     ;; Launch and manage detached processes
     emacs-detached
     ;; Real-time collaborative editing environment
@@ -847,7 +847,7 @@ FIXME the inferior-packages are installed on every machine"
 
     ;; crafted emacs
     emacs-elisp-demos
-    emacs-helpful
+    bst:emacs-helpful
     emacs-keycast
 
     meld              ;; Compare files, directories and working copies
