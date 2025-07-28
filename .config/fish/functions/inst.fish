@@ -1,4 +1,4 @@
-function inst
+function inst --description "Install Debian package"
     set prm (string escape -- $argv)
     if test -f $prm; and test (string match --regex "\.deb\$" $prm)
         set cmd sudo dpkg --install $prm

@@ -1,5 +1,3 @@
-function owid
-  set cmd cd $dec/owid
-  echo $cmd
-  eval $cmd
+function owid --description "cd $dec/owid"
+    cd $dec/owid
 end

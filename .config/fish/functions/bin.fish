@@ -1,3 +1,3 @@
-function bin
-  cd ~/bin
+function bin --description "cd ~/bin"
+    cd ~/bin
 end

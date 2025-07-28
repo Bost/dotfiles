@@ -1,5 +1,5 @@
-function tf
-  set cmd tail -f (string escape -- $argv)
-  echo $cmd
-  eval $cmd
+function tf --description "tail --follow …"
+    set cmd tail --follow (string escape -- $argv)
+    echo $cmd
+    eval $cmd
 end

@@ -1,5 +1,3 @@
-function trackle
-  set cmd cd $dev/trackle
-  echo $cmd
-  eval $cmd
+function trackle --description "cd $dev/trackle"
+    cd $dev/trackle
 end

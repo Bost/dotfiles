@@ -1,5 +1,3 @@
-function music
-  set cmd cd ~/music
-  echo $cmd
-  eval $cmd
+function music --description "cd ~/music"
+    cd ~/music
 end

@@ -1,7 +1,7 @@
-function lT --description "ls content, oldest on top"
+function lT --description "Listing w/ oldest on top"
     # set escArgv (string escape -- $argv)
     set escArgv $argv
-    set cmd ~/scm-bin/lT $escArgv
+    set cmd lT $escArgv
     echo $cmd
     eval $cmd
 end

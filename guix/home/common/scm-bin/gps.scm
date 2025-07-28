@@ -5,7 +5,7 @@
   #:use-module (ice-9 regex)             #| string-match |#
   #:use-module (ice-9 popen)
   #:use-module (utils)
-  #:use-module (scm-bin gre)
+  #:use-module (scm-bin git-remote)
   #:export (main gps gps-all))
 
 #|
@@ -72,12 +72,12 @@ cd $dotf
                                 (lambda (url)
                                   (string-match "git@" url)))
                        cdr
-                       (partial gre "get-url"))
+                       (partial git-remote "get-url"))
                       remote))))
     (partial filter (lambda (remote)
                       (not (string-match "heroku" remote))))
     cdr)
-   (gre)))
+   (git-remote)))
 (testsymb 'gps-all)
 
 (define* (main #:rest args)

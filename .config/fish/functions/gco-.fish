@@ -1,3 +1,0 @@
-function gco-
-  gcod
-end

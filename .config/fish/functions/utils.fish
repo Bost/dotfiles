@@ -1,5 +1,3 @@
-function utils
-  set cmd cd $dec/utils
-  echo $cmd
-  eval $cmd
+function utils --description "cd $dec/utils"
+    cd $dec/utils
 end
