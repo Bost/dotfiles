@@ -1,5 +1,3 @@
-function cd-
-  set cmd cd -
-  echo $cmd
-  eval $cmd
+function cd- --description "cd $OLDPWD"
+    cd -
 end

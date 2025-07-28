@@ -1,5 +1,3 @@
-function notes
-  set cmd cd $dev/notes/notes
-  echo $cmd
-  eval $cmd
+function notes --description "cd $dev/notes/notes"
+    cd $dev/notes/notes
 end

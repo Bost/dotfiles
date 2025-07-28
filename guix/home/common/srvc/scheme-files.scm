@@ -7,7 +7,7 @@
   #:use-module (fs-utils)
   #:use-module (command-line)
   ;; See service-file-general -> with-imported-modules
-  #:use-module (scm-bin gcl)
+  #:use-module (scm-bin git-clone)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -184,7 +184,7 @@ Example:
                (utils)
                (settings)
                ;; following three modules don't need to be everywhere
-               (scm-bin gre)
+               (scm-bin git-remote)
                (scm-bin gps)
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
@@ -418,12 +418,15 @@ a list of files to search through."
       (list #:program-name "c"    #:desc "batcat" #:scheme-file "bat")
       (list #:program-name "f"    #:desc "find-alternative")
       (list #:program-name "git-authenticate" #:desc "git-authenticate")
-      (list #:program-name "gcl"  #:desc "git-clone")
-      (list #:program-name "gre"  #:desc "git-remote")
+;;; In bash a script is executes in a subshell, so the cd command only changes
+;;; the directory within that subshell. So `gicl` for bash it it implemented as
+;;; a function in .bashrc. See home-base.scm
+      (list #:program-name "git-clone"  #:desc "git-clone")
+      (list #:program-name "git-remote" #:desc "git-remote")
       (list #:program-name "grev" #:desc "git-remote--verbose")
       (list #:program-name "gfe"  #:desc "git-fetch")
       (list #:program-name "gco"  #:desc "git-checkout")
-      (list #:program-name "gcod" #:desc "git-checkout-prev-branch")
+      (list #:program-name "git-checkout-prev-branch" #:desc "git-checkout-prev-branch")
       (list #:program-name "gcom" #:desc "git-checkout-master")
       (list #:program-name "gg"   #:desc "git-gui")
       (list #:program-name "gps"  #:desc "git-push")

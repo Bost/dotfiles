@@ -1,5 +1,3 @@
-function kill-buffers
-  set cmd cd $dev/kill-buffers
-  echo $cmd
-  eval $cmd
+function kill-buffers --description "cd $dev/kill-buffers"
+    cd $dev/kill-buffers
 end

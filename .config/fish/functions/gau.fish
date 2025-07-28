@@ -1,3 +1,0 @@
-function gau
-  gap
-end

@@ -1,4 +1,4 @@
-function rmv
+function rmv --description "Remove snap/deb package"
     set cmd snap list (string escape -- $argv)
     echo $cmd
     eval $cmd

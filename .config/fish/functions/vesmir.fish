@@ -1,5 +1,3 @@
-function vesmir
-  set cmd cd $der/vesmir
-  echo $cmd
-  eval $cmd
+function vesmir --description "cd $der/vesmir"
+    cd $der/vesmir
 end

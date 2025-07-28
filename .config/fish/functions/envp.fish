@@ -1,6 +1,3 @@
-function envp
-  # string delims needed because of the '|'
-  set cmd "env | grep '^PATH=.*'"
-  echo $cmd
-  eval $cmd
+function envp --description "Show PATH variable"
+    env | grep '^PATH=.*'
 end

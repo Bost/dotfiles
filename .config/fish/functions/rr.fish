@@ -1,5 +1,3 @@
-function rr
-  set cmd cd ~/.config/rash
-  echo $cmd
-  eval $cmd
+function rr --description "cd ~/.config/rash"
+    cd ~/.config/rash
 end

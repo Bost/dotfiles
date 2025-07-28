@@ -1,3 +1,3 @@
-function cls
-  clear
+function cls --description "clear"
+    clear
 end

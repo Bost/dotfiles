@@ -1,5 +1,5 @@
 # https://github.com/kisaragi-hiu/fish-launch.git
-function launch
+function launch --description "Run a command and forget about it"
     nohup $argv >/dev/null ^/dev/null &
     disown (jobs --last --pid)
 end
