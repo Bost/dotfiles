@@ -162,6 +162,8 @@ Example:
                                 (guix gexp)
                                 (guix store)
                                 (guix utils)
+;;; Having (guix config) probably causes:
+;;;     warning: importing module (guix config) from the host
                                 (guix config)
                                 (guix memoization)
                                 (guix profiling)
