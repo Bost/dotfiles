@@ -99,6 +99,22 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    krusader))
 (testsymb 'kde-dependent-packages)
 
+(define (webkitgtk-based-browsers)
+  "Simple browsers based on WebKit/GTK+"
+  (list
+   ;; Micro-browser framework extensible by Lua using the WebKit web content
+   ;; engine and the GTK+ toolkit
+   luakit
+
+   ;; Mostly keyboard driven and modal like the Vim, easily configurable during
+   ;; runtime
+   vimb
+
+   ;; Supports the XEmbed protocol which makes embedable it in another
+   ;; application. Can be pointed to another URI by setting its XProperties
+   surf
+   ))
+
 (define (large-packages-ecke)
   "Large packages, slow to build, graft, download, etc. See `guix size <package>`"
   (append
@@ -130,7 +146,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 (define (large-packages-edge-ecke)
   "Large packages, slow to build, graft, download, etc."
   (list
-   ;; Default browser. GNU version of the Firefox.
+   ;; Default browser. GNU version of the Firefox. Includes the `geckodriver'
+   ;; command, which can be useful for automated web testing.
+   ;; See also icecat-minimal
    icecat ;; 1839.7 MiB
 
    ;; Custom version of Firefox, focused on privacy, security and freedom
@@ -929,6 +947,7 @@ FIXME the inferior-packages are installed on every machine"
            (rest-packages)
            (xfce-packages)
            (xorg-packages)
+           ;; (webkitgtk-based-browsers)
            lst)
           lst))
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
