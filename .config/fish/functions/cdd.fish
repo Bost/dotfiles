@@ -1,3 +1,3 @@
-function cdd
-  cd-
+function cdd --description "cd $OLDPWD"
+    cd-
 end

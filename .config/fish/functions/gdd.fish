@@ -1,3 +1,0 @@
-function gdd
-  gad
-end

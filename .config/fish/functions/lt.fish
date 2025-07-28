@@ -1,7 +1,7 @@
-function lt --description "ls content, youngest on top"
+function lt --description "Listing w/ youngest on top"
     # set escArgv (string escape -- $argv)
     set escArgv $argv
-    set cmd ~/scm-bin/lt $escArgv
+    set cmd lt $escArgv
     echo $cmd
     eval $cmd
 end

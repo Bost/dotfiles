@@ -1,5 +1,3 @@
-function tmp
-  set cmd cd /tmp
-  echo $cmd
-  eval $cmd
+function tmp --description "cd /tmp"
+    cd /tmp
 end

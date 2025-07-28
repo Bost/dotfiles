@@ -1,5 +1,3 @@
-function yas
-  set cmd cd $dev/yasnippet
-  echo $cmd
-  eval $cmd
+function yas --description "cd $dev/yasnippet"
+    cd $dev/yasnippet
 end

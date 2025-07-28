@@ -51,6 +51,171 @@
     )))
 (testsymb 'bash-config-file)
 
+(define (bashrc-str)
+  (str
+;;; Also https://github.com/oh-my-fish/plugin-foreign-env
+;;; 1. ~/.guix-home/setup-environment does:
+;;;     source ~/.guix-home/profile/etc/profile"
+;;; $ guix package --search-paths --profile=~/.guix-home/profile -I | wc -l
+;;; 147
+;;;
+;;; $ guix package --search-paths --profile=~/.guix-profile -I | wc -l
+;;; 160
+;;; 2. `guix install` may require:
+;;;      GUIX_PROFILE=$HOME/.guix-profile
+;;;      source "$GUIX_PROFILE/etc/profile"
+;;;    i.e. `. ~/.guix-profile/etc/profile`
+
+   ;; see `info "(gnupg) Invoking GPG-AGENT"`
+   "\n" "export GPG_TTY=$(tty)"
+
+   ;; Export empty DIRENV_LOG_FORMAT so that e.g. while desktop
+   ;; sharing, it's not obvious what variables are encrypted.
+   ;; (Redirect to /dev/null doesn't work.)
+   ;; See https://github.com/direnv/direnv/issues/68
+   "\n" "export DIRENV_LOG_FORMAT="
+   "\n" "eval \"$(direnv hook bash)\""
+   "\n"
+;;; In bash a script is executes in a subshell, so the cd command only changes
+;;; the directory within that subshell. So `gicl` and `mkcd` are implemented as
+;;; functions in .bashrc.
+   "\n" "# $* vs. $@"
+   "\n" "#   \"$*\" concatenates all args into a single string,"
+   "\n" "#         separated by the first character of $IFS (normally a space)"
+   "\n" "#   \"$@\" treats each arg as its own word."
+   "\n" ""
+   "\n" "# -- is a POSIX‑style \"end of options\" marker"
+   "\n" "gicl() {"
+   "\n" "  git-clone -- \"$@\" || return"
+   "\n" ""
+   "\n" "  # last arg is the URL; strip any trailing slash"
+   "\n" "  local url=${!#}"
+   "\n" "  url=${url%/}"
+   "\n" ""
+   "\n" "  # repo name = basename without .git"
+   "\n" "  local repo=${url##*/}"
+   "\n" "  repo=${repo%.git}"
+   "\n" ""
+   "\n" "  cd -- \"$repo\" || return"
+   "\n" "}"
+   "\n"
+   "\n" "mkcd() {"
+   "\n" "    mkdir -p -- \"$*\" || return"
+   "\n" "    cd -- \"$*\" || return"
+   "\n" "}"
+   "\n"
+   "\n" "take() {"
+   "\n" "    mkcd \"$@\""
+   "\n" "}"
+   "\n"
+   ;; cd $dotf/.config/fish/functions/
+   ;; rg -N -g '*.{fish}' '^[[:blank:]]+cd ' | xsel -bi
+   ;; %s#\(.*\).fish:[[:blank:]]+\(.*\)#\1() {\n    \2\n}#g
+   ;; %s#\(.*\)#"\\n" "\1"#
+   "\n" "..() {"
+   "\n" "    cd .."
+   "\n" "}"
+   "\n" "...() {"
+   "\n" "    cd ../.."
+   "\n" "}"
+   "\n" "....() {"
+   "\n" "    cd ../../.."
+   "\n" "}"
+   "\n" "bin() {"
+   "\n" "    cd ~/bin"
+   "\n" "}"
+   "\n" "cd-() {"
+   "\n" "    cd -"
+   "\n" "}"
+   "\n" "cheat() {"
+   "\n" "    cd $cheat"
+   "\n" "}"
+   "\n" "corona() {"
+   "\n" "    cd $dec/corona_cases"
+   "\n" "}"
+   "\n" "dec() {"
+   "\n" "    cd $dec"
+   "\n" "}"
+   "\n" "dema() {"
+   "\n" "    cd $dev/emacs"
+   "\n" "}"
+   "\n" "der() {"
+   "\n" "    cd $der"
+   "\n" "}"
+   "\n" "desk() {"
+   "\n" "    cd ~/Desktop"
+   "\n" "}"
+   "\n" "dev() {"
+   "\n" "    cd $dev"
+   "\n" "}"
+   "\n" "dgl() {"
+   "\n" "    cd $dgl"
+   "\n" "}"
+   "\n" "dgx() {"
+   "\n" "    cd $dgx"
+   "\n" "}"
+   "\n" "dgxp() {"
+   "\n" "    cd $dgxp"
+   "\n" "}"
+   "\n" "dotf() {"
+   "\n" "    cd $dotf"
+   "\n" "}"
+   "\n" "down() {"
+   "\n" "    cd ~/Downloads"
+   "\n" "}"
+   "\n" "dspc() {"
+   "\n" "    cd ~/.emacs.d.distros/spacemacs/cycle/src"
+   "\n" "}"
+   "\n" "dspd() {"
+   "\n" "    cd ~/.emacs.d.distros/spacemacs/develop/src"
+   "\n" "}"
+   "\n" "dspg() {"
+   "\n" "    cd ~/.emacs.d.distros/spacemacs/guix/src"
+   "\n" "}"
+   "\n" "dtf() {"
+   "\n" "    cd $dtf"
+   "\n" "}"
+   "\n" "dtfg() {"
+   "\n" "    cd $dtfg"
+   "\n" "}"
+   "\n" "latest() {"
+   "\n" "    cd ~/.cache/guix/checkouts/$latestRepo"
+   "\n" "}"
+   "\n" "music() {"
+   "\n" "    cd ~/music"
+   "\n" "}"
+   "\n" "notes() {"
+   "\n" "    cd $dev/notes/notes"
+   "\n" "}"
+   "\n" "owid() {"
+   "\n" "    cd $dec/owid"
+   "\n" "}"
+   "\n" "rr() {"
+   "\n" "    cd ~/.config/rash"
+   "\n" "}"
+   "\n" "tmp() {"
+   "\n" "    cd /tmp"
+   "\n" "}"
+   "\n" "trackle() {"
+   "\n" "    cd $dev/trackle"
+   "\n" "}"
+   "\n" "ufo() {"
+   "\n" "    cd $dec/ufo"
+   "\n" "}"
+   "\n" "utils() {"
+   "\n" "    cd $dec/utils"
+   "\n" "}"
+   "\n" "vesmir() {"
+   "\n" "    cd $der/vesmir"
+   "\n" "}"
+   "\n" "yas() {"
+   "\n" "    cd $dev/yasnippet"
+   "\n" "}"
+   "\n" "zark() {"
+   "\n" "    cd $dec/zark"
+   "\n" "}"
+   ))
+
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
 (define-public (non-env-var-services)
@@ -90,33 +255,7 @@
           ;; List of file-like objects, which will be ADDED(!) to .bashrc.
           (bashrc
            (list
-            (bash-config-file
-             "bashrc"
-             (str
-;;; Also https://github.com/oh-my-fish/plugin-foreign-env
-;;; 1. ~/.guix-home/setup-environment does:
-;;;     source ~/.guix-home/profile/etc/profile"
-;;; $ guix package --search-paths --profile=~/.guix-home/profile -I | wc -l
-;;; 147
-;;;
-;;; $ guix package --search-paths --profile=~/.guix-profile -I | wc -l
-;;; 160
-;;; 2. `guix install` may require:
-;;;      GUIX_PROFILE=$HOME/.guix-profile
-;;;      source "$GUIX_PROFILE/etc/profile"
-;;;    i.e. `. ~/.guix-profile/etc/profile`
-
-              ;; see `info "(gnupg) Invoking GPG-AGENT"`
-              "\n" "export GPG_TTY=$(tty)"
-
-              ;; Export empty DIRENV_LOG_FORMAT so that e.g. while desktop
-              ;; sharing, it's not obvious what variables are encrypted.
-              ;; (Redirect to /dev/null doesn't work.)
-              ;; See https://github.com/direnv/direnv/issues/68
-              "\n" "export DIRENV_LOG_FORMAT="
-              "\n" "eval \"$(direnv hook bash)\""
-              ))
-
+            (bash-config-file "bashrc" (bashrc-str))
             (let* [(filename ".bashrc_additions")]
               ;; this should work too:
               ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
@@ -430,7 +569,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
                           (str "https://git.heroku.com/" repo ".git")))]
         (format #t "~a TODO clone ~a to ~a\n" m repo-url dest-dir-repo)
         #;
-        (gcl "--origin=vojto" repo-url dest-dir-repo)))))
+        (git-clone "--origin=vojto" repo-url dest-dir-repo)))))
 
 (define-public (install-all-projects)
   ;; (format #t "~a projects to install: ~a\n" m (length (projects)))

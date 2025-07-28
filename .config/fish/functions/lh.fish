@@ -1,4 +1,4 @@
-function lh
+function lh --description "Listing with headers …"
   # l -h (string escape -- $argv)
-  l -h $argv
+  l --header $argv
 end

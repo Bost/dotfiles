@@ -25,7 +25,7 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (utils)
   #:use-module (settings)
   #:use-module (memo)
-  #:use-module (scm-bin gcl)
+  #:use-module (scm-bin git-clone)
   #:use-module (fs-utils)
   #:use-module (cfg packages all)
   #:use-module (srvc fish)
@@ -105,7 +105,7 @@ guix home --allow-downgrades --cores=$cores \
          (repo-url (if #f ; (url? repo)
                        repo
                        (str gitlab repo)))]
-    (gcl "--origin=gitlab" repo-url dest-dir-repo)
+    (git-clone "--origin=gitlab" repo-url dest-dir-repo)
     (exec-system*
      "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
      (str github repo))))
@@ -133,7 +133,7 @@ guix home --allow-downgrades --cores=$cores \
          (repo-url (if #f ; (url? repo)
                        repo
                        (str heroku repo ".git"))))
-    (gcl "--origin=vojto" repo-url dest-dir-repo)))
+    (git-clone "--origin=vojto" repo-url dest-dir-repo)))
 
 ;; Existing projects won't be overridden
 ;; (map (lambda (project)
