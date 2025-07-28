@@ -1,3 +1,0 @@
-function gcoo
-   gcod
-end

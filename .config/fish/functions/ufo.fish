@@ -1,5 +1,3 @@
-function ufo
-  set cmd cd $dec/ufo
-  echo $cmd
-  eval $cmd
+function ufo --description "cd $dec/ufo"
+    cd $dec/ufo
 end

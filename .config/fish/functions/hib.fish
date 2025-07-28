@@ -1,3 +1,0 @@
-function hib
-  hibernate
-end

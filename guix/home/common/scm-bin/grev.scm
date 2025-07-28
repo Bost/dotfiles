@@ -2,7 +2,7 @@
 ;;; All used modules must be present in the module (srvc scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
-  #:use-module (scm-bin gre)
+  #:use-module (scm-bin git-remote)
   #:export (main grev))
 
 #|
@@ -22,7 +22,7 @@ cd $dotf
 (define* (grev #:rest args)
   "Usage:
 "
-  (let* ((ret (gre (cmd->string (append (list "--verbose") args)))))
+  (let* ((ret (git-remote (cmd->string (append (list "--verbose") args)))))
     (if (= 0 (car ret))
         (let* ((output (cdr ret)))
           ;; process output
