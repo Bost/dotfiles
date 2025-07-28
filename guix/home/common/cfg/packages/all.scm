@@ -43,7 +43,7 @@
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
- file-systems)
+ file-systems librewolf)
 
 (define (email-in-emacs-packages)
   (list
@@ -132,6 +132,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
   (list
    ;; Default browser. GNU version of the Firefox.
    icecat ;; 1839.7 MiB
+
+   ;; Custom version of Firefox, focused on privacy, security and freedom
+   librewolf
 
    qemu ;; 688 MiB
 
