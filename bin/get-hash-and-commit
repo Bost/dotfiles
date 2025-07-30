@@ -11,7 +11,10 @@ msg=$(git log --max-count=1 --oneline --pretty=format:'%s')
 commit=$(git log --max-count=1 --oneline --pretty=format:'%H')
 hash=$(guix hash -x --serializer=nar .)
 
-text=$(printf "\"%s\" ;; %s\n\"%s\" ;; %s\n" "${commit}" "${msg}" "${hash}" "${msg}") 
+# Include ';; <commit-message header>'
+# text=$(printf "\"%s\" ;; %s\n\"%s\" ;; %s\n" "${commit}" "${msg}" "${hash}" "${msg}")
+
+text=$(printf "\"%s\"\n\"%s\"\n" "${commit}" "${hash}")
 
 echo "${text}" | xsel -bi
 
