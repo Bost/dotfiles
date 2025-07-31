@@ -1,5 +1,6 @@
 (define-module (srvc scheme-files)
   ;; #:use-module (cfg packages-new)
+  #:use-module (srfi-1-smart)
   #:use-module (utils)
   #:use-module (tests)
   #:use-module (settings)
@@ -181,6 +182,7 @@ Example:
                                 ))]
                  [#t lst])))
              `((guix monads)
+               (srfi-1-smart)
                (utils)
                (settings)
                ;; following three modules don't need to be everywhere
@@ -206,6 +208,7 @@ TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."
   (define common-modules '((srfi srfi-1)
                            (guix monads)
+                           (srfi-1-smart)
                            (utils)
                            (settings)
                            (command-line)))
