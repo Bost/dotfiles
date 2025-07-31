@@ -69,7 +69,7 @@
   "Dynamic tiling Wayland compositor configurable in Guile Scheme"
   (let* [(channel-name 'home-service-dwl-guile)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
       (url
@@ -93,7 +93,7 @@ Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'games)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
       (url
@@ -115,7 +115,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'hask-clj)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
       (url
@@ -130,7 +130,7 @@ Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'flat)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
       (url "https://github.com/flatwhatson/guix-channel.git")
@@ -147,7 +147,7 @@ Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'rde)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
       (url
@@ -168,7 +168,7 @@ Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'bost)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel (name channel-name)
              (url
               ;; "https://github.com/Bost/guix-packages"
@@ -181,7 +181,7 @@ Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'nonguix)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel (name channel-name)
              (url "https://gitlab.com/nonguix/nonguix")
              (commit commit)
@@ -204,7 +204,7 @@ Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guixrus)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
       (url "https://git.sr.ht/~whereiseveryone/guixrus")
@@ -221,7 +221,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
   ;; %default-guix-channel
   (let* [(channel-name 'guix)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
       ;; Probably either 'branch' or 'commit' can be used.
@@ -247,7 +247,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guix-past)]
     (when commit
-      (format #t "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
       (url "https://codeberg.org/guix-science/guix-past")
