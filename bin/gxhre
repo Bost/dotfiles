@@ -1,6 +1,8 @@
 #!/bin/sh
 
-set -e   # stop the script after any error
+# Exit immediately if a command exits with a non-zero status, ie. no need to
+# chain the commands using '&&', since 'set -e' is used.
+set -e
 
 baseLP=$dotf/guix # base-load-path
 hostname=$(hostname)
@@ -14,7 +16,9 @@ guix home --cores=$cores --allow-downgrades \
      --load-path=$baseLP/home/common \
      reconfigure \
      $configFile "$@"
+{ retval="$?"; set +x; } 2>/dev/null
 
+set -x  # Print commands and their arguments as they are executed.
 # Remove `guix home` backup directories older than 10 days
 find ~ \
      -maxdepth 1 -name "*-guix-home-legacy-configs-backup" \

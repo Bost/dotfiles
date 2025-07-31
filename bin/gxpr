@@ -2,6 +2,10 @@
 
 # load manifest from dotfiles-guix-home to the default profile
 
+# Exit immediately if a command exits with a non-zero status, ie. no need to
+# chain the commands using '&&', since 'set -e' is used.
+set -e
+
 baseLP=$dotf/guix # base-load-path
 
 # both variants work:
