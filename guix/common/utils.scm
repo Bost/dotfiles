@@ -146,7 +146,7 @@ Works also for functions returning and accepting multiple values."
 (define-public (my=warn . args)
   ;; (error s)
   (let* [(orig-fmt (car args))
-         (fmt (if (string= "\n" orig-fmt)
+         (fmt (if (string= "\n" (smart-last orig-fmt))
                   orig-fmt
                   (str orig-fmt "\n")))]
     (apply (partial format #t (str "W " fmt))
