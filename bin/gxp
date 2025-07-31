@@ -1,10 +1,10 @@
 #!/bin/sh
 
-baseLP=$dotf/guix # base-load-path
-
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since 'set -e' is used.
 set -e
+
+baseLP=$dotf/guix # base-load-path
 
 set -x # Print commands and their arguments as they are executed.
 guix pull --cores=$cores \
