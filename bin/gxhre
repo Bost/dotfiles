@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e   # stop the script after any error
+
 baseLP=$dotf/guix # base-load-path
 hostname=$(hostname)
 
@@ -12,6 +14,11 @@ guix home --cores=$cores --allow-downgrades \
      --load-path=$baseLP/home/common \
      reconfigure \
      $configFile "$@"
+
+# Remove `guix home` backup directories older than 10 days
+find ~ \
+     -maxdepth 1 -name "*-guix-home-legacy-configs-backup" \
+     -type d -mtime +10 -exec rm -rf {} \;
 { retval="$?"; set +x; } 2>/dev/null
 
 exit $retval
