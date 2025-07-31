@@ -65,10 +65,7 @@
          additional-channels)))))
 (testsymb 'create-file-channels-scm)
 
-(define* (channel-home-service-dwl-guile #:key
-                                         (commit
-                                          #f
-                                          ))
+(define* (channel-home-service-dwl-guile #:key (commit #f))
   "Dynamic tiling Wayland compositor configurable in Guile Scheme"
   (let* [(channel-name 'home-service-dwl-guile)]
     (when commit
@@ -85,15 +82,15 @@
         (openpgp-fingerprint
          "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))))
 
-(define* (channel-games #:key (commit
-                               #f ;; #f means: use latest commit
-                               ))
+(define* (channel-games #:key (commit #f))
   "https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 Use:
     guix package --load-path=./ --install=factorio
 '--keep-failed' doesn't keep the binary in the /gnu/store when the sha256 is
 wrong.
-The games channel requires the guix-gaming-channels/games.scm - see above"
+The games channel requires the guix-gaming-channels/games.scm - see above.
+Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'games)]
     (when commit
       (format #t "Channel ~a pinned to ~a\n" channel-name commit))
@@ -113,9 +110,9 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
          ;; ... as it was made by some with OpenPGP fingerprint:
          "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))))
 
-(define* (channel-hask-clj #:key (commit
-                                  #f ;; #f means: use latest commit
-                                  ))
+(define* (channel-hask-clj #:key (commit #f))
+  "Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'hask-clj)]
     (when commit
       (format #t "Channel ~a pinned to ~a\n" channel-name commit))
@@ -127,10 +124,10 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
        #;,(format #f "file://~a/dev/haskell-guix" home))
       (commit commit))))
 
-(define* (channel-flat #:key (commit
-                              #f ;; #f means: use latest commit
-                              ))
-  "flatwhatson contains emacs-native-comp, however it doesn't compile"
+(define* (channel-flat #:key (commit #f))
+  "flatwhatson contains emacs-native-comp, however it doesn't compile.
+Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'flat)]
     (when commit
       (format #t "Channel ~a pinned to ~a\n" channel-name commit))
@@ -144,10 +141,10 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
         (openpgp-fingerprint
          "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))))
 
-(define* (channel-rde #:key (commit
-                             #f ;; #f means: use latest commit
-                             ))
-  "Andrew Tropin's tools for managing reproducible development environments"
+(define* (channel-rde #:key (commit #f))
+  "Andrew Tropin's tools for managing reproducible development environments.
+Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'rde)]
     (when commit
       (format #t "Channel ~a pinned to ~a\n" channel-name commit))
@@ -163,12 +160,12 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
         (openpgp-fingerprint
          "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))))
 
-(define* (channel-bost #:key (commit
-                              #f ;; #f means: use latest commit
-                              ))
+(define* (channel-bost #:key (commit #f))
   "Provides a.o.:
 - (bost gnu packages emacs-xyz) module
-- clojure, babashka, postgres 13.3, openjdk18"
+- clojure, babashka, postgres 13.3, openjdk18
+Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'bost)]
     (when commit
       (format #t "Channel ~a pinned to ~a\n" channel-name commit))
@@ -178,13 +175,10 @@ The games channel requires the guix-gaming-channels/games.scm - see above"
               (format #f "file://~a/dev/guix-packages" home))
              (commit commit))))
 
-(define* (channel-nonguix #:key (commit
-                                 #f ;; #f means: use latest commit
-                                 ;; "5ed7546593dd205f1dd4473b58afa855c07e033d"
-                                 ))
+(define* (channel-nonguix #:key (commit #f))
   "Provides firefox, linux-kernel with non-free proprietary drivers, etc.
-Pick some commit instead of defaulting to #f to ensure this channel doesn't get
-rebuild everytime `guix pull ...` is executed."
+Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'nonguix)]
     (when commit
       (format #t "Channel ~a pinned to ~a\n" channel-name commit))
@@ -200,16 +194,14 @@ rebuild everytime `guix pull ...` is executed."
                (openpgp-fingerprint
                 "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))))
 
-(define* (channel-guixrus #:key (commit
-                                 #f ;; #f means: use latest commit
-                                 ))
+(define* (channel-guixrus #:key (commit #f))
   "This channel provides packages and services that are:
 * Yet to be merged upstream.
 * In alpha or beta stage of development.
 * Customized to certain use-cases.
 * Nightly releases.
-Pick some commit instead of defaulting to #f to ensure this channel doesn't get
-rebuild everytime `guix pull ...` is executed."
+Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guixrus)]
     (when commit
       (format #t "Channel ~a pinned to ~a\n" channel-name commit))
@@ -223,12 +215,9 @@ rebuild everytime `guix pull ...` is executed."
         (openpgp-fingerprint
          "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551"))))))
 
-(define* (channel-guix #:key (commit
-                              #f ;; #f means: use latest commit
-                              ;; "ed8288a53da9951ed66a6b725246971585e9fac5"
-                              ))
-  "Pick some commit instead of defaulting to #f to ensure this channel doesn't
- get rebuild everytime `guix pull ...` is executed."
+(define* (channel-guix #:key (commit #f))
+  "Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   ;; %default-guix-channel
   (let* [(channel-name 'guix)]
     (when commit
@@ -253,9 +242,9 @@ rebuild everytime `guix pull ...` is executed."
          "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))))
 (testsymb 'channel-guix)
 
-(define* (channel-guix-past #:key (commit
-                                   #f ;; #f means: use latest commit
-                                   ))
+(define* (channel-guix-past #:key (commit #f))
+  "Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guix-past)]
     (when commit
       (format #t "Channel ~a pinned to ~a\n" channel-name commit))
@@ -272,22 +261,13 @@ rebuild everytime `guix pull ...` is executed."
          "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5"))))))
 (testsymb 'channel-guix-past)
 
-(define* (syst-channels #:key
-                        (commit-guix-channel
-                         #f ;; #f means: use latest commit
-                         )
-                        (commit-nonguix-channel
-                         #f ;; #f means: use latest commit
-                         ))
-  "Channels needed for the Guix-system configuration"
+(define* (syst-channels #:key (guix-commit #f) (nonguix-commit #f))
+  "Channels needed for the Guix-system configuration
+If `guix-commit' and/or `nonguix-commit' are unspecified of #f it means 'use latest
+commit(s)'."
   (list
-   (if commit-guix-channel
-       (channel-guix    #:commit commit-guix-channel)
-       (channel-guix))
-   (if commit-nonguix-channel
-       (channel-nonguix #:commit commit-nonguix-channel)
-       (channel-nonguix))
-   ))
+   (channel-guix    #:commit guix-commit)
+   (channel-nonguix #:commit nonguix-commit)))
 (testsymb 'syst-channels)
 
 (module-evaluated)
