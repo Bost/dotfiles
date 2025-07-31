@@ -6,6 +6,10 @@
 ;; https://github.com/isamert/jaro/blob/master/jaro
 ;; See `guile-build-system'
 (define-module (utils)
+;;; All used modules must be present in the module (srvc scheme-files) under:
+;;;   1. service-file -> with-imported-modules
+;;;   2. common-modules
+  #:use-module (srfi-1-smart)
   #:use-module (guix build utils)
   #:use-module (ice-9 match) ;; match
   ;; open-input-pipe
@@ -62,7 +66,17 @@
             module-evaluated
             testsymb
             testsymb-trace
-            ))
+            )
+  #:re-export (
+               smart-first
+               smart-last
+               smart-second
+               smart-third
+               smart-fourth
+               smart-fifth
+               smart-take
+               smart-drop
+               ))
 
 (define m "[utils]")
 ;; (format #t "~a evaluating module…\n" m)
@@ -108,10 +122,35 @@ Works also for functions returning and accepting multiple values."
 (define-public (s- . rest) (apply (partial lset-difference eq-op?) rest))
 (define-public (sx . rest) (apply (partial lset-intersection eq-op?) rest))
 
+(define-public empty? null?) ;; no runtime cost. null? is a primitive procedure
+
+(define-public (boolean x) (not (not x)))
+
+(define-public (str . args)
+  "Convert all arguments to strings and concatenate them, like Clojure's `str`."
+  (string-concatenate
+   (map (lambda (x)
+          (cond
+           ((string? x) x)
+           ((symbol? x) (symbol->string x))
+           ((number? x) (number->string x))
+           ((char? x) (string x))
+           ((boolean? x) (if x "#t" "#f"))
+           ((empty? x) "()")
+           ;; (use-modules (ice-9 format))  ; For `format` with ~A specifier
+           ((pair? x) (format #f "~A" x))   ; Handle lists and pairs
+           (else (format #f "~A" x))))      ; Fallback for other types
+        args)))
+
 ;; (warn ...) doesn't print anything
-(define (my=warn s)
+(define-public (my=warn . args)
   ;; (error s)
-  (format #t "W ~a\n" s))
+  (let* [(orig-fmt (car args))
+         (fmt (if (string= "\n" orig-fmt)
+                  orig-fmt
+                  (str orig-fmt "\n")))]
+    (apply (partial format #t (str "W " fmt))
+           (cdr args))))
 
 (define-public (module-name-for-logging)
   ((comp
@@ -122,8 +161,8 @@ Works also for functions returning and accepting multiple values."
    (current-module)))
 
 (unless (equal? (module-name-for-logging) m)
-  (format #t "W ~a (equal? (module-name-for-logging) m): ~a\n"
-          m (equal? (module-name-for-logging) m)))
+  (my=warn "~a (equal? (module-name-for-logging) m): ~a"
+           m (equal? (module-name-for-logging) m)))
 
 (define-syntax if-let
   (syntax-rules ()
@@ -147,7 +186,7 @@ Works also for functions returning and accepting multiple values."
         (format #t "Truthy Test Passed: ~a\n" (number->string result))
         (format #t "Truthy Test Failed: Should not reach here\n"))
 
-(if-let (result (and #f (some-computation)))
+(if-let (result (and #f (+ 2 2)))
         (format #t "Falsey Test Failed: Should not reach here\n")
         (format #t "Falsey Test Passed: Correctly reached else clause\n"))
 |#
@@ -236,26 +275,6 @@ Works also for functions returning and accepting multiple values."
 ;; return the resulting list with tail appended
 (define-public path
   (delete-duplicates (parse-path (getenv "PATH"))))
-
-(define-public empty? null?) ;; no runtime cost. null? is a primitive procedure
-
-(define-public (boolean x) (not (not x)))
-
-(define-public (str . args)
-  "Convert all arguments to strings and concatenate them, like Clojure's `str`."
-  (string-concatenate
-   (map (lambda (x)
-          (cond
-           ((string? x) x)
-           ((symbol? x) (symbol->string x))
-           ((number? x) (number->string x))
-           ((char? x) (string x))
-           ((boolean? x) (if x "#t" "#f"))
-           ((empty? x) "()")
-           ;; (use-modules (ice-9 format))  ; For `format` with ~A specifier
-           ((pair? x) (format #f "~A" x))   ; Handle lists and pairs
-           (else (format #f "~A" x))))      ; Fallback for other types
-        args)))
 
 (define-public (has-suffix? string suffix)
   "Does STRING end with the SUFFIX? As `string-suffix?' but the parameters are
