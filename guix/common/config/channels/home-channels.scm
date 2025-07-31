@@ -36,7 +36,10 @@
             )
            lst)
           lst)))
-   (syst-channels)))
+   (syst-channels
+    #:guix-commit    "0b05ca10d77756ae948e79f4a9333b570c6927e5"
+    #:nonguix-commit "b5f43404ef9c79220b355e835481749587751512"
+    )))
 (testsymb 'home-channels)
 
 (home-channels)
