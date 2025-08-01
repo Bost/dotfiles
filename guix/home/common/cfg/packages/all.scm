@@ -930,7 +930,7 @@ FIXME the inferior-packages are installed on every machine"
       (if (or (is-system-edge) (is-system-ecke))
           (append
            (large-packages-edge-ecke)
-           (bst:spguimacs-packages) ;; pulls-in ~430 additional packages
+           (bst:spacemacs-packages) ;; pulls-in ~430 additional packages
            (printer-scanner-packages)
            lst)
           lst))
