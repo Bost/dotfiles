@@ -81,7 +81,7 @@ $ ls --human-readable --size /home/bost/.guix-profile/manifest
     ;; (lambda (p) (format #t "~a done.\n" f) p)
     manifest
     (partial map to-manifest-entry)
-    ;; (lambda (p) (format #t "~a\n" ((@(ice-9 pretty-print) pretty-print) p)) p)
+    ;; (lambda (p) (format #t "~a 1. ~a\n" f ((@(ice-9 pretty-print) pretty-print) p)) p)
     ;; (lambda (p) ((@(srfi srfi-1) take) p 2))
     (partial dbg-packages-to-install #:search-space '() #:pkgs)
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)

@@ -3,7 +3,6 @@
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (gnu)     ; provides use-package-modules
-  #:use-module ((bost gnu packages space-all) #:prefix bst:)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
@@ -81,6 +80,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     (@(nongnu packages clojure) clojure-lsp)
 
     (@(nongnu packages clojure) leiningen)
+    ;; guix weather --system=x86_64-linux --substitute-urls='https://substitutes.nonguix.org' firefox
+    ;; /var/guix/profiles/per-user/bost/guix-profile-266-link/bin/firefox
+    ;; See also module (bost manifest-set-operations)
     (@(nongnu packages mozilla) firefox)
     (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
     #|
@@ -930,8 +932,17 @@ FIXME the inferior-packages are installed on every machine"
       (if (or (is-system-edge) (is-system-ecke))
           (append
            (large-packages-edge-ecke)
-           (bst:spacemacs-packages) ;; pulls-in ~430 additional packages
-           (printer-scanner-packages)
+           ((comp
+             ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)
+             ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
+             )
+            (bst:spacemacs-packages) ;; pulls-in ~430 additional packages
+            )
+           ((comp
+             ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)
+             ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
+             )
+            (printer-scanner-packages))
            lst)
           lst))
     ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" f (length p)) p)
