@@ -3,7 +3,6 @@
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (gnu)     ; provides use-package-modules
-  #:use-module ((bost gnu packages space-all) #:prefix bst:)
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
