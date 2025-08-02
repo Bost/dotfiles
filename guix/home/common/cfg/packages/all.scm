@@ -907,14 +907,14 @@ FIXME the inferior-packages are installed on every machine"
            ;; and call (all-the-icons-install-fonts) when installing emacs
            (remote-desktop-packages #:is-server #t)
            (list
-            ;; GTK+ Bluetooth manager
-            blueman
+            acpi    ; Information on ACPI devices: battery & temperature
+            blueman ; GTK+ Bluetooth manager
 
-            ;; Linux Bluetooth protocol stack. It provides bluetootctl. It is
-            ;; is NOT(!) installed via bluetooth-service-type
+            ;; Linux Bluetooth protocol stack, provides bluetootctl, NOT(!)
+            ;; installed via bluetooth-service-type
             bluez
-
             bluez-alsa ; Bluetooth ALSA backend
+            tlp        ; Power management / battery life
             )
            lst)
           lst))
