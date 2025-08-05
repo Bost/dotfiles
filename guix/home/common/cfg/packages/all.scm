@@ -42,7 +42,7 @@
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
- file-systems librewolf)
+ file-systems librewolf libcanberra)
 
 (define (email-in-emacs-packages)
   (list
@@ -583,6 +583,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    portaudio
    postgresql
    pulseaudio
+   inotify-tools ; for $dotf/bin/battery-notifier
+   libnotify     ; for $dotf/bin/battery-notifier
    pv
    pybind11
 
