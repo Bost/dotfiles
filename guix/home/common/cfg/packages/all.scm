@@ -709,6 +709,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ;; Port of Facebook's LLaMA model in C/C++
    ;; llama-cpp
+
+   sound-theme-freedesktop ; Audio samples for use as a desktop sound theme
    ))
 (testsymb 'other-gui-packages)
 
