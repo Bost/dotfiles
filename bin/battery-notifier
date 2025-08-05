@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Battery notification script
+# Battery notification script (continuous, using inotify)
 #
 # Notes:
 # - Battery status values from /sys/class/power_supply are standardized by the
@@ -18,14 +18,13 @@ set -eu
 # -u: Treat unset variables as errors (fail fast instead of using empty values).
 
 # === Configurable thresholds ===
-# Can be overridden with environment variables
 minCapa=${MIN_BAT_CAPA:-30}   # Notify when discharging drops to this %
 maxCapa=${MAX_BAT_CAPA:-80}   # Notify when charging reaches this %
 
 # === Paths ===
 batPath="/sys/class/power_supply/BAT0"
-batCapa=$(cat "$batPath/capacity")
-batStat=$(cat "$batPath/status")
+capacityFile="$batPath/capacity"
+statusFile="$batPath/status"
 stateFile="/tmp/.battery-notify-state"
 
 # Sound directories (fallback order)
@@ -34,15 +33,12 @@ soundDir2="/usr/share/sounds/freedesktop/stereo"
 soundFileCharge="complete.oga"
 soundFileDischarge="dialog-warning.oga"
 
-# Determine current state (capacity+status)
-currState="$batStat-$batCapa"
-lastState=$(cat "$stateFile" 2>/dev/null || echo "none")
-
 # === Functions ===
 notifySendBattery() {
+    local capa="$1" pos="$2" action="$3"
     local msg
     msg=$(printf "Battery at %s%% (%s recommended %s–%s%%). Consider %s." \
-        "$batCapa" "$1" "$minCapa" "$maxCapa" "$2")
+        "$capa" "$pos" "$minCapa" "$maxCapa" "$action")
     notify-send "Battery Alert" "$msg"
 }
 
@@ -55,21 +51,33 @@ playSound() {
     fi
 }
 
-# === Main logic ===
-if [ "$currState" != "$lastState" ]; then
-    echo "$currState" > "$stateFile"
+checkAndNotify() {
+    local batCapa batStat currState lastState
+    batCapa=$(cat "$capacityFile")
+    batStat=$(cat "$statusFile")
+    currState="$batStat-$batCapa"
+    lastState=$(cat "$stateFile" 2>/dev/null || echo "none")
 
-    if { [ "$batStat" = "Charging" ] && [ "$batCapa" -ge "$maxCapa" ]; } \
-        || [ "$batStat" = "Full" ]; then
-        notifySendBattery "above" "unplugging"
-        playSound "$soundFileCharge"
-
-    elif [ "$batStat" = "Discharging" ] && [ "$batCapa" -le "$minCapa" ]; then
-        notifySendBattery "below" "plugging in"
-        playSound "$soundFileDischarge"
-
-    else
-        printf "Battery at %s%%. Status: %s. Recommended: %s%%–%s%%\n" \
-               "$batCapa" "$batStat" "$minCapa" "$maxCapa"
+    if [ "$currState" != "$lastState" ]; then
+        echo "$currState" > "$stateFile"
+        if { [ "$batStat" = "Charging" ] && [ "$batCapa" -ge "$maxCapa" ]; } \
+            || [ "$batStat" = "Full" ]; then
+            notifySendBattery "$batCapa" "above" "unplugging"
+            playSound "$soundFileCharge"
+        elif [ "$batStat" = "Discharging" ] && [ "$batCapa" -le "$minCapa" ]; then
+            notifySendBattery "$batCapa" "below" "plugging in"
+            playSound "$soundFileDischarge"
+        else
+            printf "Battery at %s%%. Status: %s. Recommended: %s%%–%s%%\n" \
+                   "$batCapa" "$batStat" "$minCapa" "$maxCapa"
+        fi
     fi
-fi
+}
+
+# === Main loop: watch for changes ===
+echo "Starting battery monitor (thresholds: $minCapa–$maxCapa%)..."
+checkAndNotify  # Check immediately on start
+inotifywait -m -e modify "$capacityFile" "$statusFile" | \
+while read -r _; do
+    checkAndNotify
+done
