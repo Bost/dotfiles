@@ -418,7 +418,7 @@ This function should only modify configuration layer settings."
      ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4") ; )
      ;;         )
 
-     ;; rust
+     rust
 
      ;; see https://github.com/syl20bnr/spacemacs/issues/12462
      ;; try also:
