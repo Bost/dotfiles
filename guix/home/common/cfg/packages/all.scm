@@ -581,7 +581,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    pkg-config
    plocate
    portaudio
-   postgresql
+   ;; postgresql ; object-relational database
    pulseaudio
    inotify-tools ; for $dotf/bin/battery-notifier
    libnotify     ; for $dotf/bin/battery-notifier
