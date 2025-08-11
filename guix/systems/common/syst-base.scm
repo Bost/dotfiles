@@ -13,6 +13,7 @@
  cups desktop networking ssh
  xorg     ; for gdm-service-type
  sddm     ; for sddm-service-type
+ security-token ; for pcscd-service-type
  )
 
 (evaluating-module)
@@ -84,6 +85,11 @@
 
 (define-public (services)
   (list
+
+   ;; PC/SC - Personal Computer/Smart Card: specification for smart-card
+   ;; integration into computing environments.
+   (service pcscd-service-type)
+
    ;; ntp-service-type for system clock sync is in the
    ;; %desktop-services by default
 
