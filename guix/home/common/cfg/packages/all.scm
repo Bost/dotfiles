@@ -31,7 +31,8 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(use-package-modules maths base file web-browsers haskell-apps uml vnc rdesktop
+(use-package-modules
+ maths base file web-browsers haskell-apps uml vnc rdesktop
  w3m dns bash rust-apps shellutils admin shells version-control rsync tmux
  compression vim audio gnuzilla inkscape rust graphviz texlive chromium
  kde-systemtools kde-utils gnome gtk libreoffice spice terminals lxqt xorg
@@ -42,7 +43,7 @@
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
- file-systems librewolf libcanberra)
+ file-systems librewolf libcanberra crates-io security-token)
 
 (define (email-in-emacs-packages)
   (list
@@ -145,6 +146,23 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 (testsymb 'large-packages-ecke)
 
+(define (rust-development-packages)
+  (list
+   ccid                 ; PC/SC driver for USB smart card devices, driver for Minilector Evo
+   opensc               ; (Some other) Tools and libraries related to smart cards
+   pcsc-lite            ; Middleware to access a smart card using PC/SC
+   pcsc-tools           ; Smart cards and PC/SC tools; pcsc_scan for debugging
+   pkg-config           ; Helper tool used when compiling applications and libraries
+   rust                 ; Compiler for the Rust programming language
+   rust-cargo           ; Package manager for Rust
+   rust-pcsc-sys-1      ; Low-level bindings to the PC/SC C API. rust-pcsc-sys not available
+   rust-pkg-config-0.3  ; Library to run the pkg-config system tool. rust-pkg-config not available
+   rust-pcsc-2          ; Bindings to the PC/SC API for smart card communication. rust-pcsc not available
+
+   emacs-flymake-clippy ; Flymake backend for Clippy
+   bst:emacs-rustic     ; Rust development environment for Emacs
+   ))
+
 (define (large-packages-edge-ecke)
   "Large packages, slow to build, graft, download, etc."
   (list
@@ -157,12 +175,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    librewolf
 
    qemu ;; 688 MiB
-
-   ;; rust downloads (see below) and then it needs to be build:
-   ;;     rust-1.59.0  121.1MiB
-   ;;     rust-1.59.0-cargo  3.2MiB
-   ;;     rustc-1.60.0-src.tar.xz  63.6MiB
-   rust ;; the 1.60 has to be build
 
    ;; ungoogled-chromium ; 285MiB
 
@@ -935,6 +947,7 @@ FIXME the inferior-packages are installed on every machine"
     (lambda (lst)
       (if (or (is-system-edge) (is-system-ecke))
           (append
+           (rust-development-packages)
            (large-packages-edge-ecke)
            ((comp
              ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)
