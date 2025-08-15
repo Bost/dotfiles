@@ -632,12 +632,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
    xorriso
 
-   ;; yewtube forked from mps-youtube. Terminal based YT player and downloader.
-   ;; No API key required.
-   mps-youtube
-
+   python-yewtube  ; Terminal based YouTube player and downloader
    netcat          ; Networking tool. Provides nc
-   youtube-dl
    yt-dlp          ; youtube-dl fork focused on adding new features
    youtube-viewer  ; Search & play YT videos in a native player
    vlc             ; Audio and video player and framework
