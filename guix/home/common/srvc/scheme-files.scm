@@ -390,6 +390,10 @@ a list of files to search through."
     (list #:program-name "eg" #:fun 'set-editable     #:profile guix)
     (list #:program-name "kg" #:fun 'pkill-server     #:profile guix)
 
+    (list #:program-name  "s" #:fun 'create-launcher  #:profile spguix)
+    (list #:program-name "es" #:fun 'set-editable     #:profile spguix)
+    (list #:program-name "ks" #:fun 'pkill-server     #:profile spguix)
+
     (list #:program-name  "r" #:fun 'create-launcher  #:profile crafted)
     ;; TODO Move crafted-emacs user config from the project repo to the dotfiles
     ;; (list #:program-name "er" #:fun 'set-editable  #:profile crafted)
