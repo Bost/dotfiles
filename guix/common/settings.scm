@@ -47,6 +47,12 @@
                (cons #:env
                      (str home-emacs-distros "/spacemacs/cycle/cfg"))))
 
+   (cons #:spguix
+         (list (cons #:user-emacs-directory
+                     "/gnu/store/san8x8wivjyigg5h52hmri6hxhhqmwcq-emacs-spacemacs-1.0-0.8a19733/share/emacs/site-lisp/spacemacs-1.0-0.8a19733")
+               (cons #:env
+                     (str home-emacs-distros "/spacemacs/spguix/cfg"))))
+
    (cons #:guix
          (list (cons #:user-emacs-directory
                      (str home-emacs-distros "/spacemacs/guix/src"))
@@ -62,11 +68,13 @@
 
 (define-public develop "develop")
 (define-public cycle   "cycle")
+(define-public spguix  "spguix")
 (define-public guix    "guix")
 (define-public crafted "crafted")
 
 (define-public profile->branch-kw
   (list
+   (cons spguix  #:spguix)
    (cons develop #:develop)
    (cons cycle   #:cycle)
    (cons guix    #:guix)
