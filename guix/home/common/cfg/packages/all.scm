@@ -632,7 +632,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Create, manipulate, burn ISO-9660 file systems; see also cdrtools
    xorriso
 
-   python-yewtube  ; Terminal based YouTube player and downloader
    netcat          ; Networking tool. Provides nc
    yt-dlp          ; youtube-dl fork focused on adding new features
    youtube-viewer  ; Search & play YT videos in a native player
