@@ -171,10 +171,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; See also icecat-minimal
    icecat ;; 1839.7 MiB
 
-   ;; Custom version of Firefox, focused on privacy, security and freedom
-   librewolf
-
-   qemu ;; 688 MiB
+   librewolf ; Custom version of Firefox. Better privacy, security and freedom
+   qemu      ; Machine emulator and virtualizer ;; 688 MiB
 
    ;; ungoogled-chromium ; 285MiB
 
@@ -446,9 +444,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
 (define (nix-packages)
   (list
-   nix    ;; The Nix package manager
-   nixfmt ;; Opinionated formatter for Nix
-   emacs-nix-mode ;; Emacs major mode for editing Nix expressions
+   nix                ; The Nix package manager
+   nixfmt             ; Opinionated formatter for Nix
+   bst:emacs-nix-mode ; Emacs major mode for editing Nix expressions
    ))
 (testsymb 'nix-packages)
 
@@ -541,10 +539,20 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    guile-3.0
 
    guile-hall   ; to build guile projects
+
+   ;; Emacs with CUA mode, Geiser, tool bar icons to evaluate Guile buffers,
+   ;; support for Guile's picture language, code completion, a simple mode line,
+   ;; etc.
    guile-studio
+
    gv
    gvfs         ; GIO virtual file system; user mounts
+
+   ;; Guix Workflow Language: Workflow management extension for Guix's language
+   ;; for package management.
+   ;; "Automate the execution of programs in scientific workflows"
    gwl
+
    htop
    hwinfo
    iniparser
@@ -572,8 +580,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    gnu-make  ; former (specification->package "make@4.3")
    maven
    mcron
-   mlt
-   mtr
+   mlt    ; Author, manage, and run multitrack audio/video compositions
+   mtr       ; My TraceRoute: Network diagnostic tool combine traceroute + ping
    ncurses
    network-manager
    nmap
@@ -585,7 +593,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    openssl
    parted
-   pavucontrol
+   pavucontrol ; PulseAudio volume control
    perl
    php
 
@@ -614,7 +622,6 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; specifying only 'python2' leads to "error: python2: unbound variable"
    python-2.7
    python-docx   ; Edit Microsoft Word documents in Python
-
    racket
    readline
    recutils      ; Manipulate plain text files as databases
@@ -715,13 +722,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; lxterminal      ;;  9.022s; has context-menu; no drop-down; no splits; has tabs
    ;; cool-retro-term ;; 25.256s; is cool!
 
+   ;; wezterm ; not available in Guix yet 2025-08; sudo flatpak install org.wezfurlong.wezterm
+   ;; ghostty ; not available in Guix yet 2025-08
+
    neovim
+   guvcview ; control webcam, capture videos and images
 
-   ;; control webcam, capture videos and images
-   guvcview
-
-   ;; Port of Facebook's LLaMA model in C/C++
-   ;; llama-cpp
+   ;; llama-cpp ; Port of Facebook's LLaMA model in C/C++
 
    sound-theme-freedesktop ; Audio samples for use as a desktop sound theme
    ))
@@ -877,26 +884,22 @@ FIXME the inferior-packages are installed on every machine"
     bst:emacs-gptel
     ;; emacs-next       ;; 29.0.92
     ;; emacs-next-pgtk  ;; 29.0.92
-    bst:emacs-with-editor ;; for using Emacsclient as EDITOR
+    bst:emacs-with-editor ; for using Emacsclient as EDITOR
 
     emacs-geiser
     emacs-geiser-guile
     bst:emacs-guix
-    ;; Launch and manage detached processes
-    emacs-detached
-    ;; Real-time collaborative editing environment
-    emacs-crdt
-
-    ;; crafted emacs
-    emacs-elisp-demos
+    emacs-detached    ; Launch and manage detached processes
+    emacs-crdt        ; Real-time collaborative editing environment
+    ;; Used in ? crafted emacs ?
+    emacs-elisp-demos ; add Elisp function examples into `*Help*' buffers
     bst:emacs-helpful
     emacs-keycast
-
-    meld              ;; Compare files, directories and working copies
-    leafpad           ;; simple editor to use when emacs doesn't work
+    meld              ; compare files, directories and working copies
+    leafpad           ; simple editor to use when emacs doesn't work
     (list git "send-email")
-    pinentry ;; needed to sign commits
-    pwclient ;; CLI client for Patchwork patch tracking tool (*.patch files)
+    pinentry          ; needed to sign commits
+    pwclient          ; CLI client for Patchwork patch tracking tool (*.patch files)
     ;; octave
 
     ;; Static analysis for shell scripts
