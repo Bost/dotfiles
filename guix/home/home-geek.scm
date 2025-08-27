@@ -27,7 +27,7 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (memo)
   #:use-module (scm-bin git-clone)
   #:use-module (fs-utils)
-  #:use-module (cfg packages all)
+  #:use-module (config packages all)
   #:use-module (services fish)
   #:use-module (services dirs)
   #:use-module (services scheme-files)
@@ -194,7 +194,7 @@ guix home --allow-downgrades --cores=$cores \
 (define home-env
   (home-environment
    ;; Replaced by $dotf/guix/profile-manifest.scm
-   ;; (packages ((@(cfg packages all) home-packages-to-install)))
+   ;; (packages ((@(config packages all) home-packages-to-install)))
    (services
     ((comp
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)

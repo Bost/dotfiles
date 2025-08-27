@@ -8,7 +8,7 @@ guix shell --development guix help2man git strace --pure
 
 |#
 
-(define-module (cfg mcron)
+(define-module (config mcron)
   #:use-module (gnu home services mcron) #| home-mcron-service-type |#
   #:use-module (gnu services)            #| service                 |#
   #:use-module (guix gexp)               #| #~ #$ etc. |#

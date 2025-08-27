@@ -1085,7 +1085,7 @@ Requires:
 ;; (define-public (inferior-package-in-guix-channel package commit)
 ;;   "Returns an inferior representing the `commit' (predecessor-sha1) revision.
 ;; Can't be in the guix/common/utils.scm. Therefore duplicated.
-;; See guix/manifest-emacs-29.1.scm, guix/home/common/cfg/packages/all.scm"
+;; See guix/manifest-emacs-29.1.scm, guix/home/common/config/packages/all.scm"
 ;;   (first
 ;;    (lookup-inferior-packages
 ;;     (inferior-for-channels

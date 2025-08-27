@@ -1,4 +1,4 @@
-(define-module (services home-dir-cfg)
+(define-module (services home-dir-config)
   ;; See service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (settings)
@@ -111,8 +111,8 @@ See also:
       [else (list)]))))
 (testsymb 'host-specific-config)
 
-(define (home-dir-cfg-services-files)
-  (let* [(m (format #f "~a [home-dir-cfg-services-files]" m))]
+(define (home-dir-config-services-files)
+  (let* [(m (format #f "~a [home-dir-config-services-files]" m))]
     ;; (format #t "~a Starting…\n" m)
     ((comp
       ;; (lambda (p) (format #t "~a done.\n" m) p)
@@ -135,8 +135,8 @@ See also:
                     ;; (lambda (p) (format #t "###### 1.1.\n") p)
                     (partial local-dotfile "/")
                     (lambda (substr) (str substr "/" emacs-init-file))
-                    (lambda (cfg)
-                      (substring cfg (string-length (str home "/"))))
+                    (lambda (config)
+                      (substring config (string-length (str home "/"))))
                     get-cfg)
                    spacemacs-profiles))
                  (partial remove unspecified-or-empty-or-false?)
@@ -184,12 +184,12 @@ See also:
       ;; (lambda (p) (format #t "###### 0.\n") p)
       )
      (list))))
-(testsymb 'home-dir-cfg-services-files)
+(testsymb 'home-dir-config-services-files)
 
-(define-public (home-dir-cfg-services)
+(define-public (home-dir-config-services)
   ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d.spacemacs directory
   (simple-service
-   'home-dir-cfg-services home-files-service-type (home-dir-cfg-services-files)))
-(testsymb 'home-dir-cfg-services)
+   'home-dir-config-services home-files-service-type (home-dir-config-services-files)))
+(testsymb 'home-dir-config-services)
 
 (module-evaluated)
