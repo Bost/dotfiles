@@ -1432,6 +1432,13 @@ before packages are loaded."
     ;; (tw-shell-which "fish")
     (getenv "SHELL"))
 
+  ;; Set back to its default value to avoid
+  ;;   SPC * not working with ripgrep 14
+  ;;   https://github.com/syl20bnr/spacemacs/issues/16200
+  ;; See also
+  ;; https://github.com/syl20bnr/spacemacs/issues/16200
+  (setq helm-ag-use-grep-ignore-list nil)
+
   (setq
    large-file-warning-threshold nil ;; don't ask before visiting big files
 
