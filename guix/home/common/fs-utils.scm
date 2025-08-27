@@ -42,7 +42,7 @@
   (string-replace filename "dot-" 0 1))
 
 (define-public (local-dotfile path filename)
-  "See also (@(services home-dir-cfg) host-specific-config).
+  "See also (@(services home-dir-config) host-specific-config).
 
 (local-dotfile \"/guix/home/\" \".dir-locals.el\") ; with '.' before file-name
 ;; =>

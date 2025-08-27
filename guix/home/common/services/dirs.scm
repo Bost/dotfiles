@@ -93,11 +93,11 @@
         (display " done\n"))))
 (testsymb 'dirs-activation-service)
 
-(define (last-extension-or-cfg config extensions)
+(define (last-extension-or-config config extensions)
   "Picks configuration value from last provided extension.  If there
 are no extensions use configuration instead."
   (or (and (not (null? extensions)) (last extensions)) config))
-(testsymb 'last-extension-or-cfg)
+(testsymb 'last-extension-or-config)
 
 (define-public dirs-service-type
   (service-type (name 'dirs)
@@ -119,7 +119,7 @@ are no extensions use configuration instead."
                 ;; service-type is a macro, `comp` doesn't work
                 (compose identity)
 
-                (extend last-extension-or-cfg)
+                (extend last-extension-or-config)
                 (description "Configure user directories. To disable a
 directory, point it to the $HOME.")))
 (testsymb 'dirs-service-type)

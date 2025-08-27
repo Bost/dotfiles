@@ -9,11 +9,11 @@
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
-  #:use-module (cfg packages all) ;; home-packages-to-install
+  #:use-module (config packages all) ;; home-packages-to-install
   #:use-module (services fish)
   #:use-module (services dirs)
   #:use-module (services scheme-files)
-  #:use-module ((services home-dir-cfg) #:prefix services:)
+  #:use-module ((services home-dir-config) #:prefix services:)
 
   #:use-module (gnu home)
   #:use-module (gnu packages)
@@ -315,7 +315,7 @@
       ;; (lambda (v) (format #t "~a 5\n" m) v)
       (partial append (list (fish-service)))
       ;; (lambda (v) (format #t "~a 3 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
-      (partial append (list (services:home-dir-cfg-services)))
+      (partial append (list (services:home-dir-config-services)))
       ;; (lambda (v) (format #t "~a 2 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
       (partial append (list (scheme-files-service)))
       ;; (lambda (v) (format #t "~a 1 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
