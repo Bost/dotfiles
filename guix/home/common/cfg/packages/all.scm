@@ -244,14 +244,18 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; Read-write access to NTFS file systems
     ntfs-3g
 
-    ;; Workaround for:
+    ;; ripgrep@13.0.0 can be used a workaround for:
     ;;   SPC * not working with ripgrep 14
     ;;   https://github.com/syl20bnr/spacemacs/issues/16200
-    ;; ripgrep 13.0.0 is needed. However when pulled-in via the
-    ;; inferior-mechanism the `gxhre` compilation takes too long. This problem
-    ;; doesn't come up when the ripgrep 13.0.0. is pulled from a separate
-    ;; channel.
-    (@(bost gnu packages rust-apps) ripgrep)
+    ;; When using the inferior mechanism to pull in the ripgrep@13.0.0 the build
+    ;; process (triggered via `guix pull`'), takes too long.
+    ;; To avoid lengthy build times, the bst:ripgrep can be used instead.
+    ;; However, the bst:ripgrep doesn't build since the upstream introduced a
+    ;; new Rust packaging model.
+    ;; https://guix.gnu.org/blog/2025/a-new-rust-packaging-model/
+    ;; See also `(setq helm-ag-use-grep-ignore-list nil)' in the Emacs init.el
+    ;; bst:ripgrep
+    ripgrep
 
     rsync
 
@@ -825,6 +829,10 @@ FIXME the inferior-packages are installed on every machine"
      (list
       ;; (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
       ;; (list "virglrenderer" "fec2fb89bb5dacc14ec619cd569278af34867e3d")
+
+      ;; last commit fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df containing ripgrep@13.0.0;
+      ;; next commit 33313d57b97d3f2567037313133c1b9d565ba042; gnu: ripgrep: Update to 14.0.3.
+      ;; (list "ripgrep" "fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df")
       ))
     (list
      #:channels-fun (comp (partial cons* (channel-guix))
