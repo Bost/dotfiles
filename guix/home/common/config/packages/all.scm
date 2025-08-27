@@ -26,6 +26,9 @@
   ;; simple & compact notation for specializing any subset of the parameters of
   ;; a procedure. e.g. cut
   #:use-module (srfi srfi-26)
+
+  ;; Needed when `guix pull` uses 4c43dde9bf2d10e012ce8f468f30b4814c296fc6 or latter
+  #:use-module (past-crates packages crates-io) ; rust-cargo
   )
 
 (define m (module-name-for-logging))
