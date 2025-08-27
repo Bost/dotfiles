@@ -1,7 +1,7 @@
 (define-module (profile-manifest)
   #:use-module (utils)            ; partial
   #:use-module (guix profiles)
-  #:use-module (cfg packages all) ; home-packages-to-install
+  #:use-module (config packages all) ; home-packages-to-install
   )
 
 (define m (module-name-for-logging))

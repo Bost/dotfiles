@@ -1,4 +1,4 @@
-(define-module (cfg packages all)
+(define-module (config packages all)
   #:use-module (utils)
   #:use-module (gnu)   ; use-package-modules
   )

@@ -1,5 +1,5 @@
 (define-module (services scheme-files)
-  ;; #:use-module (cfg packages-new)
+  ;; #:use-module (config packages-new)
   #:use-module (srfi-1-smart)
   #:use-module (utils)
   #:use-module (tests)
