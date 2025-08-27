@@ -37,8 +37,9 @@
            lst)
           lst)))
    (syst-channels
-    ;; #:guix-commit    "64ef6db09b1e14a12fc0d97a5a0615394d6d6c7a"
-    ;; #:nonguix-commit "9bf3d1394f595413c51d621e61f231789c74891e"
+    ;; ;; Generation 1654	Jul 29 2025 12:07:10
+    ;; #:guix-commit "806ac0cc045d9b3ea87898bd9343634ee90d2c39"
+    ;; #:nonguix-commit "5ed7546593dd205f1dd4473b58afa855c07e033d"
     )))
 (testsymb 'home-channels)
 
