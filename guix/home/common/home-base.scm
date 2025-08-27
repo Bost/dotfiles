@@ -312,6 +312,7 @@
       ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
 
       ;; (lambda (v) (format #t "~a 7 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
+      ;; See also /gnu/store/wcmicv1yy1jqgc816wizk48ij15asn27-telegram-desktop-5.12.4
       (partial append (list (telegram-from-flatpak-service)))
       ;; (lambda (v) (format #t "~a 6\n" m) v)
       (partial append (list (development-dirs-service)))
