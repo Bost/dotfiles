@@ -1,5 +1,5 @@
 (define-module (scm-bin gps)
-;;; All used modules must be present in the module (srvc scheme-files) under:
+;;; All used modules must be present in the module (services scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex)             #| string-match |#

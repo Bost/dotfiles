@@ -1,5 +1,5 @@
 (define-module (scm-bin echo)
-;;; All used modules must be present in the module (srvc scheme-files) under:
+;;; All used modules must be present in the module (services scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
   #:export (main echo))
