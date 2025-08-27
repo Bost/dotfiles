@@ -953,6 +953,7 @@ FIXME the inferior-packages are installed on every machine"
     (lambda (lst)
       (if (or (is-system-edge) (is-system-ecke))
           (append
+           (nix-packages)
            (rust-development-packages)
            (large-packages-edge-ecke)
            ((comp
