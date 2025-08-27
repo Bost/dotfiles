@@ -1,5 +1,5 @@
 (define-module (scm-bin search-notes)
-;;; All used modules must be present in the module (services scheme-files) under:
+;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (srfi srfi-1)       ; last
   #:use-module (guix colors)
