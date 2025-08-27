@@ -111,8 +111,8 @@ See also:
       [else (list)]))))
 (testsymb 'host-specific-config)
 
-(define (home-dir-config-services-files)
-  (let* [(m (format #f "~a [home-dir-config-services-files]" m))]
+(define (home-files-config)
+  (let* [(m (format #f "~a [home-files-config]" m))]
     ;; (format #t "~a Starting…\n" m)
     ((comp
       ;; (lambda (p) (format #t "~a done.\n" m) p)
@@ -184,12 +184,14 @@ See also:
       ;; (lambda (p) (format #t "###### 0.\n") p)
       )
      (list))))
-(testsymb 'home-dir-config-services-files)
+(testsymb 'home-files-config)
 
-(define-public (home-dir-config-services)
+(define-public (home-config-service)
   ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d.spacemacs directory
   (simple-service
-   'home-dir-config-services home-files-service-type (home-dir-config-services-files)))
-(testsymb 'home-dir-config-services)
+   'home-config-service
+   home-files-service-type ; from upstream, defined in gnu/home/services.scm
+   (home-files-config)))
+(testsymb 'home-config-service)
 
 (module-evaluated)

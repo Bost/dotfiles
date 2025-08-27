@@ -1,5 +1,4 @@
-(define-module (services scheme-files)
-  ;; #:use-module (config packages-new)
+(define-module (services cli-utils)
   #:use-module (srfi-1-smart)
   #:use-module (utils)
   #:use-module (tests)
@@ -400,14 +399,14 @@ a list of files to search through."
     (list #:program-name "kr" #:fun 'pkill-server     #:profile crafted)
     )))
 
-(define-public (scheme-files-service)
-  (let* [(m (format #f "~a [scheme-files-service]" m))]
+(define-public (cli-utils-service)
+  (let* [(m (format #f "~a [cli-utils-service]" m))]
     ;; (format #t "~a Starting…\n" m)
     ((comp
       ;; (lambda (v) (format #t "~a done\n" m) v)
       ;; 'simple-service name target value'. E.g.:
       ;; (simple-service 'my-mcron-job mcron-service-type #~(job '(next-hour (3)) "guix gc -F 2G"))
-      (partial simple-service 'scheme-files-service home-files-service-type)
+      (partial simple-service 'cli-utils-service home-files-service-type)
       (partial append (if (or (is-system-ecke) (is-system-edge))
                           (append
                            (search-notes-service-files)
@@ -451,6 +450,6 @@ a list of files to search through."
             #:scheme-file "lT")
       (list #:program-name "qemu-vm" #:desc "qemu-vm")
       (list #:program-name "susp" #:desc "suspend-to-ram")))))
-(testsymb-trace 'scheme-files-service)
+(testsymb-trace 'cli-utils-service)
 
 (module-evaluated)
