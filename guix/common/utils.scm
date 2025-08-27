@@ -6,7 +6,7 @@
 ;; https://github.com/isamert/jaro/blob/master/jaro
 ;; See `guile-build-system'
 (define-module (utils)
-;;; All used modules must be present in the module (srvc scheme-files) under:
+;;; All used modules must be present in the module (services scheme-files) under:
 ;;;   1. service-file -> with-imported-modules
 ;;;   2. common-modules
   #:use-module (srfi-1-smart)

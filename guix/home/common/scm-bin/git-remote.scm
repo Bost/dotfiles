@@ -1,5 +1,5 @@
 (define-module (scm-bin git-remote)
-;;; All used modules must be present in the module (srvc scheme-files) under:
+;;; All used modules must be present in the module (services scheme-files) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
   #:export (main git-remote))

@@ -1,4 +1,4 @@
-(define-module (srvc scheme-files)
+(define-module (services scheme-files)
   ;; #:use-module (cfg packages-new)
   #:use-module (srfi-1-smart)
   #:use-module (utils)
