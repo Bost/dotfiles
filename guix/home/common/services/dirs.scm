@@ -1,4 +1,4 @@
-(define-module (srvc dirs)
+(define-module (services dirs)
   ;; See service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (fs-utils)

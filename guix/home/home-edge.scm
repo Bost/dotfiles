@@ -31,9 +31,9 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (settings)
   #:use-module (memo)
   #:use-module (fs-utils)
-  #:use-module (srvc fish)
-  #:use-module (srvc dirs)
-  #:use-module (srvc scheme-files)
+  #:use-module (services fish)
+  #:use-module (services dirs)
+  #:use-module (services scheme-files)
   #:use-module ((home-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
@@ -79,7 +79,7 @@ guix home --allow-downgrades --cores=$cores \
 (base:install-all-projects)
 
 ;;     (begin
-;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (srvc fish)
+;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (services fish)
 ;;       (define* (fish-config-base #:rest args)
 ;;         "(fish-config-base) ; => \".config/fish\""
 ;;         (apply str (basename xdg-config-home) "/fish" args))
