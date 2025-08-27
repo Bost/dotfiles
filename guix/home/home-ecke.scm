@@ -34,9 +34,9 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; fix the 'error: leiningen: unknown package', but it doesn't work
   #:use-module (nongnu packages clojure)
   #:use-module (fs-utils)
-  #:use-module (srvc fish)
-  #:use-module (srvc dirs)
-  #:use-module (srvc scheme-files)
+  #:use-module (services fish)
+  #:use-module (services dirs)
+  #:use-module (services scheme-files)
   #:use-module ((home-base) #:prefix base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
@@ -85,7 +85,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 (base:install-all-projects)
 
 ;;     (begin
-;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (srvc fish)
+;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (services fish)
 ;;       (define* (fish-config-base #:rest args)
 ;;         "(fish-config-base) ; => \".config/fish\""
 ;;         (apply str (basename xdg-config-home) "/fish" args))

@@ -1,5 +1,5 @@
 (define-module (scm-bin qemu-vm)
-;;; All used modules must be present in the module (srvc scheme-files) under:
+;;; All used modules must be present in the module (services scheme-files) under:
 ;;;   service-file -> with-imported-modules
   ;; #:use-module (memo) ;; is-system-ecke is-system-edge
   #:use-module (utils) ;; partial

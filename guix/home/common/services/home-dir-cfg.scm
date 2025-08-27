@@ -1,4 +1,4 @@
-(define-module (srvc home-dir-cfg)
+(define-module (services home-dir-cfg)
   ;; See service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (settings)
@@ -111,8 +111,8 @@ See also:
       [else (list)]))))
 (testsymb 'host-specific-config)
 
-(define (home-dir-cfg-srvc-files)
-  (let* [(m (format #f "~a [home-dir-cfg-srvc-files]" m))]
+(define (home-dir-cfg-services-files)
+  (let* [(m (format #f "~a [home-dir-cfg-services-files]" m))]
     ;; (format #t "~a Starting…\n" m)
     ((comp
       ;; (lambda (p) (format #t "~a done.\n" m) p)
@@ -184,12 +184,12 @@ See also:
       ;; (lambda (p) (format #t "###### 0.\n") p)
       )
      (list))))
-(testsymb 'home-dir-cfg-srvc-files)
+(testsymb 'home-dir-cfg-services-files)
 
-(define-public (home-dir-cfg-srvc)
+(define-public (home-dir-cfg-services)
   ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d.spacemacs directory
   (simple-service
-   'home-dir-cfg-srvc home-files-service-type (home-dir-cfg-srvc-files)))
-(testsymb 'home-dir-cfg-srvc)
+   'home-dir-cfg-services home-files-service-type (home-dir-cfg-services-files)))
+(testsymb 'home-dir-cfg-services)
 
 (module-evaluated)
