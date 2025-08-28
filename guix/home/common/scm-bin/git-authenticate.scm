@@ -3,6 +3,7 @@
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (fs-utils)  ; dgx (repository location)
+  #:use-module (settings)  ; home
   #:export (main git-authenticate)
   )
 
@@ -20,8 +21,18 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define repo dgx)
-(define signer "\"5D02 7CEF 97C8 FE6D E393  70BD 9403 F3A0 D4BA FE08\"")
+;; (define repo dgx)
+;; (define signer "\"5D02 7CEF 97C8 FE6D E393  70BD 9403 F3A0 D4BA FE08\"")
+;; (define cache-key "channels/guix")
+;; (define first-commit "2e1ead7c8b")
+;; (define last-commit "master") ; i.e. branch-name
+
+(define repo (str home "/dev/guix-rust-past-crates"))
+(define signer (getenv "gpgPubKey"))
+(define cache-key "channels/guix-rust-past-crates")
+;; last previously authenticated commit
+(define first-commit "6fdba3fbf3a62aa53b3e5d1c57a7bde5727f986c")
+(define last-commit "trunk") ; commit or branch-name
 
 (define* (get-commits #:key repo beg end)
   "Examples:
@@ -36,8 +47,10 @@ cd $dotf
     (if (= 0 (car ret))
         (let* [(output (cdr ret))]
           ;; Process output:
-          (let* [(commits output)]
-            (format #t "~a commits to authenticate\n" (length commits))
+          (let* [(commits (reverse output))]
+            (format #t "~a commits to authenticate:\n" (length commits))
+            (map (partial format #t "~a\n") commits)
+            (format #t "\n")
             commits))
         (begin
           (error-command-failed m)
@@ -48,11 +61,15 @@ cd $dotf
   "Examples:
 (authenticate-commit #:repo repo #:signer signer #:commit)
 "
-  (let* [(ret (exec (append
-                     (list "guix" "git" "authenticate"
-                           "--cache-key=channels/guix --stats"
-                           (format #f "--repository=~a ~a ~a"
-                                   repo commit signer)))))]
+  (let* [(cmd
+          (list
+           "guix" "git" "authenticate"
+           ;; --cache-key=path/to/KEY reads ~/.cache/guix/authentication/path/to/KEY
+           (format #f "--cache-key=~a" cache-key)
+           "--stats"
+           (format #f "--repository=~a ~a ~a"
+                   repo commit signer)))
+         (ret (exec cmd))]
     (if (= 0 (car ret))
         (let* [(output (cdr ret))]
           ;; Process output:
@@ -76,10 +93,12 @@ cd $dotf
 "
   (let* [(elements (list #:remote))
          (args (remove-all-elements args elements))
-         (commits (get-commits
-                   #:repo repo
-                   #:beg "2e1ead7c8b"
-                   #:end "master"))]
+         (commits (list first-commit)
+          ;; (get-commits
+          ;;  #:repo repo
+          ;;  #:beg first-commit
+          ;;  #:end last-commit)
+          )]
     (map (partial authenticate-commit #:repo repo #:signer signer #:commit)
                   commits)))
 (testsymb 'git-authenticate)
