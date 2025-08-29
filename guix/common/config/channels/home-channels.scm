@@ -33,15 +33,15 @@
             ;; (channel-flat)
             ;; (channel-rde)
             (channel-bost
-             #:commit "6ddbd879a9d6e61cbc58721d00a7b1f380bda57a"
+             ;; #:commit "6ddbd879a9d6e61cbc58721d00a7b1f380bda57a"
              )
             )
            lst)
           lst)))
    (syst-channels
     ;; Jul 29 2025 12:07:10
-    #:guix-commit "806ac0cc045d9b3ea87898bd9343634ee90d2c39"
-    #:nonguix-commit "5ed7546593dd205f1dd4473b58afa855c07e033d"
+    ;; #:guix-commit "806ac0cc045d9b3ea87898bd9343634ee90d2c39"
+    ;; #:nonguix-commit "5ed7546593dd205f1dd4473b58afa855c07e033d"
 
     ;; Aug 23 2025 23:24:30 - doesn't work at the moment
     ;; #:nonguix-commit "9bf3d1394f595413c51d621e61f231789c74891e"
