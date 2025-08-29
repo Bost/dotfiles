@@ -964,7 +964,7 @@ FIXME the inferior-packages are installed on every machine"
       (if (or (is-system-edge) (is-system-ecke))
           (append
            (nix-packages)
-           (rust-development-packages)
+           ;; (rust-development-packages)
            (large-packages-edge-ecke)
            ((comp
              ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)
