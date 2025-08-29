@@ -679,7 +679,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    gsettings-desktop-schemas
    gtk
-   libreoffice
+
+   ;; On ecke in generation 1661
+   ;; /gnu/store/znrni9c6mjx45ps4j0jkrbgl6rvc6s2p-libreoffice-25.2.3.2
+   ;; https://ci.guix.gnu.org/search?query=spec%3Amaster+system%3Ax86_64-linux+libreoffice
+   ;; doesn't build due to failing build of the firebird-3.0.13 dependency - see https://ci.guix.gnu.org/build/13148158/details
+   ;; libreoffice
 
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
