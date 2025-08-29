@@ -6,6 +6,8 @@
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
+  ;; provides: spacemacs-packages
+  #:use-module ((bost gnu packages space-needed) #:prefix bst:)
   #:use-module ((bost gnu packages gnome) #:prefix bst:)
   ;; provides: specification->package
   #:use-module (gnu packages)
