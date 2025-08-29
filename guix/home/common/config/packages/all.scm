@@ -554,7 +554,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ;; Guix Workflow Language: Workflow management extension for Guix's language
    ;; for package management.
    ;; "Automate the execution of programs in scientific workflows"
-   gwl
+   ;; gwl
 
    htop
    hwinfo
@@ -583,7 +583,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    gnu-make  ; former (specification->package "make@4.3")
    maven
    mcron
-   mlt    ; Author, manage, and run multitrack audio/video compositions
+   ;; mlt    ; Author, manage, and run multitrack audio/video compositions
    mtr       ; My TraceRoute: Network diagnostic tool combine traceroute + ping
    ncurses
    network-manager
