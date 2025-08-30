@@ -446,7 +446,9 @@
 
      ("dec"   . ,(user-home "/dec"))
      ("der"   . ,(user-home "/der"))
-     ;; guile / guix load-path
+     ;; The glp variable contains a list paths to the source code of Guile, Guix
+     ;; and related projects. It is used (among others) by the
+     ;; `geiser-guile-load-path' variable in Emacs
      ("glp"  . ,((comp
                   (lambda (lst) (string-join lst list-separator)))
                  (append
@@ -460,9 +462,11 @@
                         ))
                   (map user-dev
                        (list
-                        "/guile"
-                        "/guile-git"
+                        ;; "/guile" ; this doesn't work
+                        "/guile/module/srfi"
+                        "/guile/libguile"
                         "/nonguix"
+                        "/guile-git" ; guile bindings of libgit2
                         ;; "/andrew-rde/src"
                         ))
                   (list (str dgxp "/src"))
@@ -532,6 +536,7 @@
       "/notes"
       "/farmhouse-light-mod-theme"
       (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
+      ;; guile bindings of libgit2
       (list "/guile-git" "https://gitlab.com/guile-git/guile-git.git"))))))
 (testsymb 'projects)
 
