@@ -542,6 +542,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
 
    ;; specifying only 'guile' leads to "error: guile: unbound variable"
    guile-3.0
+   (list guile-3.0 "debug")
 
    guile-hall   ; to build guile projects
 
