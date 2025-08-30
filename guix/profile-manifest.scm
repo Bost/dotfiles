@@ -47,7 +47,7 @@
          (when (member (my-package-name (car p)) search-space)
            (format #t "D ~a Object is a list: ~a\n" m p))]
         [(string? p)
-         (when (member (my-package-name p) search-space)
+         (when (member p search-space)
            (format #t "D ~a Object is a string: ~a\n" m p))]
         [(my-package? p)
          (when (member (my-package-name p) search-space)
@@ -96,7 +96,7 @@
                     [(list? p)
                      (my-package-name (car p))]
                     [(string? p)
-                     (my-package-name p)]
+                     p]
                     [(my-package? p)
                      (my-package-name p)]
                     [(record? p)
