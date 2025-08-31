@@ -1,5 +1,154 @@
 #### home-bash-configuration -> .bashrc_additions: begin
 
+# See `info "(gnupg) Invoking GPG-AGENT"`
+export GPG_TTY=$(tty)
+# Export empty DIRENV_LOG_FORMAT so that e.g. while desktop sharing, it's
+# not obvious what variables are encrypted. (Redirect to /dev/null doesn't
+# work.) See https://github.com/direnv/direnv/issues/68
+export DIRENV_LOG_FORMAT=
+eval "$(direnv hook bash)"
+
+# In Bash, a script runs in a subshell, so `cd` only changes the directory
+# within that subshell. To change the state of the current shell (such as
+# the working directory with `cd`), the logic must be implemented as a shell
+# function.
+
+# $* vs. $@
+#   "$*" concatenates all args into a single string,
+#         separated by the first character of $IFS (normally a space)
+#   "$@" treats each arg as its own word.
+# -- is a POSIX‑style "end of options" marker
+
+gicl() {
+  git-clone -- "$@" || return
+
+  # Last argument (repo URL)
+  local url=${!#}
+
+  # Remove a possible trailing slash
+  url=${url%/}
+
+  # repo name = basename without .git
+  local repo=${url##*/}
+
+  # Remove trailing .git suffix
+  repo=${repo%.git}
+
+  cd -- "$repo" || return
+}
+
+mkcd() {
+    mkdir -p -- "$*" || return
+    cd -- "$*" || return
+}
+
+take() {
+    mkcd "$@"
+}
+
+..() {
+    cd ..
+}
+...() {
+    cd ../..
+}
+....() {
+    cd ../../..
+}
+bin() {
+    cd ~/bin
+}
+cd-() {
+    cd -
+}
+cheat() {
+    cd $cheat
+}
+corona() {
+    cd $dec/corona_cases
+}
+dec() {
+    cd $dec
+}
+dema() {
+    cd $dev/emacs
+}
+der() {
+    cd $der
+}
+desk() {
+    cd ~/Desktop
+}
+dev() {
+    cd $dev
+}
+dgl() {
+    cd $dgl
+}
+dgx() {
+    cd $dgx
+}
+dgxp() {
+    cd $dgxp
+}
+dotf() {
+    cd $dotf
+}
+down() {
+    cd ~/Downloads
+}
+dspc() {
+    cd ~/.emacs.d.distros/spacemacs/cycle/src
+}
+dspd() {
+    cd ~/.emacs.d.distros/spacemacs/develop/src
+}
+dspg() {
+    cd ~/.emacs.d.distros/spacemacs/guix/src
+}
+dtf() {
+    cd $dtf
+}
+dtfg() {
+    cd $dtfg
+}
+latest() {
+    cd ~/.cache/guix/checkouts/$latestRepo
+}
+music() {
+    cd ~/music
+}
+notes() {
+    cd $dev/notes/notes
+}
+owid() {
+    cd $dec/owid
+}
+rr() {
+    cd ~/.config/rash
+}
+tmp() {
+    cd /tmp
+}
+trackle() {
+    cd $dev/trackle
+}
+ufo() {
+    cd $dec/ufo
+}
+utils() {
+    cd $dec/utils
+}
+vesmir() {
+    cd $der/vesmir
+}
+yas() {
+    cd $dev/yasnippet
+}
+zark() {
+    cd $dec/zark
+}
+
 create_test_repo () {
     mkdir foo && cd foo
     git init
