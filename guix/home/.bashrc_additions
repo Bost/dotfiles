@@ -1,163 +1,158 @@
 #### home-bash-configuration -> .bashrc_additions: begin
 
+# --- GnuPG / direnv setup ---
 # See `info "(gnupg) Invoking GPG-AGENT"`
 export GPG_TTY=$(tty)
-# Export empty DIRENV_LOG_FORMAT so that e.g. while desktop sharing, it's
-# not obvious what variables are encrypted. (Redirect to /dev/null doesn't
-# work.) See https://github.com/direnv/direnv/issues/68
+
+# Export empty DIRENV_LOG_FORMAT to silence direnv log output. See
+# https://github.com/direnv/direnv/issues/68
 export DIRENV_LOG_FORMAT=
 eval "$(direnv hook bash)"
 
+# --- History & shell options for convenience ---
+shopt -s autocd                  # Type just a directory name to cd into it
+shopt -s cdspell                 # Fixe small typos in cd paths
+shopt -s checkwinsize            # Update $LINES/$COLUMNS when resizing terminal
+HISTCONTROL=ignoredups:erasedups # Avoid clutter in history
+
+# Enlarge history beyond defaults
+HISTSIZE=100000
+HISTFILESIZE=200000
+
+# --- Functions ---
+
 # In Bash, a script runs in a subshell, so `cd` only changes the directory
-# within that subshell. To change the state of the current shell (such as
-# the working directory with `cd`), the logic must be implemented as a shell
+# within that subshell. To change the state of the current shell (such as the
+# working directory with `cd`), the logic must be implemented as a shell
 # function.
 
 # $* vs. $@
-#   "$*" concatenates all args into a single string,
-#         separated by the first character of $IFS (normally a space)
-#   "$@" treats each arg as its own word.
+# "$*" concatenates all args into a single string, separated by the first
+#      character of $IFS (normally a space)
+# "$@" treats each arg as its own word.
 # -- is a POSIX‑style "end of options" marker
 
+# Clone with git-clone (Scheme procedure) and cd into repo
 gicl() {
-  git-clone -- "$@" || return
+    git-clone -- "$@" || return
 
-  # Last argument (repo URL)
-  local url=${!#}
+    # Last argument = repo URL
+    local url=${!#}
 
-  # Remove a possible trailing slash
-  url=${url%/}
+    # Remove a possible trailing slash
+    url=${url%/}
 
-  # repo name = basename without .git
-  local repo=${url##*/}
+    # Strip path and optional .git suffix
+    local repo=${url##*/}
 
-  # Remove trailing .git suffix
-  repo=${repo%.git}
+    # Remove trailing .git suffix
+    repo=${repo%.git}
 
-  cd -- "$repo" || return
+    cd -- "$repo" || return
 }
 
+# mkdir + cd
 mkcd() {
     mkdir -p -- "$*" || return
-    cd -- "$*" || return
+    cd --       "$*" || return
 }
 
-take() {
-    mkcd "$@"
+# alias for mkcd
+take() { mkcd "$@"; }
+
+# Shortcuts for moving up dirs
+..()   { cd ..; }
+...()  { cd ../..; }
+....() { cd ../../..; }
+
+# Directory shortcuts. ${VARNAME:?} guards against unset VARNAME
+bin()     { cd ~/bin; }
+cheat()   { cd "${cheat:?}"; }
+corona()  { cd "${dec:?}/corona_cases"; }
+dec()     { cd "${dec:?}"; }
+dema()    { cd "${dev:?}/emacs"; }
+der()     { cd "${der:?}"; }
+desk()    { cd ~/Desktop; }
+dev()     { cd "${dev:?}"; }
+dgl()     { cd "${dgl:?}"; }
+dgx()     { cd "${dgx:?}"; }
+dgxp()    { cd "${dgxp:?}"; }
+dotf()    { cd "${dotf:?}"; }
+down()    { cd ~/Downloads; }
+dspc()    { cd ~/.emacs.d.distros/spacemacs/cycle/src; }
+dspd()    { cd ~/.emacs.d.distros/spacemacs/develop/src; }
+dspg()    { cd ~/.emacs.d.distros/spacemacs/guix/src; }
+dtf()     { cd "${dtf:?}"; }
+dtfg()    { cd "${dtfg:?}"; }
+notes()   { cd "${dev:?}/notes/notes"; }
+rr()      { cd ~/.config/rash; }
+tmp()     { cd /tmp; }
+utils()   { cd "${dec:?}/utils"; }
+vesmir()  { cd "${der:?}/vesmir"; }
+yas()     { cd "${dev:?}/yasnippet"; }
+
+# Quick jump back
+cd-() { cd -; }
+cdd() { cd -; }
+
+# --- Centralized project directory shortcuts ---
+declare -A CDMAP=(
+    # variable-based dirs (fail fast if unset)
+    # [latest]="$HOME/.cache/guix/checkouts/${latestRepo:?}"
+    [owid]="${dec:?}/owid"
+    [trackle]="${dev:?}/trackle"
+    [ufo]="${dec:?}/ufo"
+    [utils]="${dec:?}/utils"
+    [zark]="${dec:?}/zark"
+)
+
+cdx() {
+    local key=$1
+    if [[ -z $key ]]; then
+        printf 'Usage: cdx <shortcut>\nAvailable: %s\n' "${!CDMAP[@]}" | sort
+        return 1
+    fi
+    local target=${CDMAP[$key]}
+    if [[ -z $target ]]; then
+        printf 'cdx: unknown shortcut "%s"\n' "$key" >&2
+        return 1
+    fi
+    cd -- "$target" || return
 }
 
-..() {
-    cd ..
-}
-...() {
-    cd ../..
-}
-....() {
-    cd ../../..
-}
-bin() {
-    cd ~/bin
-}
-cd-() {
-    cd -
-}
-cheat() {
-    cd $cheat
-}
-corona() {
-    cd $dec/corona_cases
-}
-dec() {
-    cd $dec
-}
-dema() {
-    cd $dev/emacs
-}
-der() {
-    cd $der
-}
-desk() {
-    cd ~/Desktop
-}
-dev() {
-    cd $dev
-}
-dgl() {
-    cd $dgl
-}
-dgx() {
-    cd $dgx
-}
-dgxp() {
-    cd $dgxp
-}
-dotf() {
-    cd $dotf
-}
-down() {
-    cd ~/Downloads
-}
-dspc() {
-    cd ~/.emacs.d.distros/spacemacs/cycle/src
-}
-dspd() {
-    cd ~/.emacs.d.distros/spacemacs/develop/src
-}
-dspg() {
-    cd ~/.emacs.d.distros/spacemacs/guix/src
-}
-dtf() {
-    cd $dtf
-}
-dtfg() {
-    cd $dtfg
-}
-latest() {
-    cd ~/.cache/guix/checkouts/$latestRepo
-}
-music() {
-    cd ~/music
-}
-notes() {
-    cd $dev/notes/notes
-}
-owid() {
-    cd $dec/owid
-}
-rr() {
-    cd ~/.config/rash
-}
-tmp() {
-    cd /tmp
-}
-trackle() {
-    cd $dev/trackle
-}
-ufo() {
-    cd $dec/ufo
-}
-utils() {
-    cd $dec/utils
-}
-vesmir() {
-    cd $der/vesmir
-}
-yas() {
-    cd $dev/yasnippet
-}
-zark() {
-    cd $dec/zark
-}
+# Usage
+# $ cdx corona   # goes to $dec/corona_cases
+# $ cdx rr       # goes to ~/.config/rash
+# $ cdx latest   # goes to ~/.cache/guix/checkouts/$latestRepo
 
-create_test_repo () {
-    mkdir foo && cd foo
+# Benefits
+#     Single function (cdx) instead of dozens of small ones.
+#     Associative array keeps shortcuts centralized and easy to extend.
+#     Usage hint if you run cdx with no args.
+#     Error message if you mistype a key.
+
+# --- Bash completion for cdx ---
+_cdx_completions() {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=( $(compgen -W "${!CDMAP[@]}" -- "$cur") )
+}
+complete -F _cdx_completions cdx
+
+# Usage
+# $ cdx <TAB>
+# latest  owid  trackle  ufo  utils  zark  rr
+
+
+# Create a quick test repo
+create_test_repo() {
+    mkdir foo && cd foo || return
     git init
-    git config user.email "x@y.com"
-    git config user.name "Jim Beam"
+    git config user.email "${GIT_AUTHOR_EMAIL:-x@y.com}"
+    git config user.name  "${GIT_AUTHOR_NAME:-Jim Beam}"
     echo "some content" > foo.txt
-    git add .
+    git add foo.txt
     git commit -m "1st commit"
-    emacs -nw foo.txt
+    "${EDITOR:-emacs -nw}" foo.txt
 }
 
 #### home-bash-configuration -> .bashrc_additions: end
