@@ -1,20 +1,24 @@
 # In bash a script is executes in a subshell, so the cd command only changes the
 # directory within that subshell. So `gicl` for bash it it implemented as a
 # function in .bashrc. See home-base.scm
-function gicl --description "git clone … & cd <checkoutDir>"
-    # 'string escape' doesn't work for https://git.sr.ht/~krevedkokun/dotfiles
-    # set escArgv (string escape -- $argv)
+function gicl --description "git-clone -- … & cd <checkoutDir>"
+    git-clone -- $argv
+    or return
 
-    git-clone $argv # git-clone is implemented in Guile Scheme
-    if test $status = 0
-        # get the last parameter, remove .git suffix and call `basename` on it.
-        set urlWithoutGit (string replace --regex "\.git\$" "" $argv[(count $argv)])
-        set checkoutDir (basename $urlWithoutGit)
+    # Last argument (repo URL)
+    set url $argv[-1]
 
-        set cmd cd $checkoutDir
-        echo $cmd
-        eval $cmd
-    end
+    # Remove a possible trailing slash
+    set url (string replace --regex '/$' '' -- $url)
+
+    # Take the last path component
+    set repo (basename $url)
+
+    # Remove trailing .git suffix
+    set repo (string replace --regex '\.git$' '' -- $repo)
+
+    cd $repo
+    or return
 end
 
 ## Test:
