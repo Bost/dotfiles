@@ -209,6 +209,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     )
    (list
     bash
+    bash-completion ; Bash completions for common commands
     bat
 
     direnv
@@ -889,6 +890,7 @@ FIXME the inferior-packages are installed on every machine"
 ;;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
 ;;; gets triggered. See https://issues.guix.gnu.org/issue/52002
     emacs
+    emacs-bash-completion ; Bash completion for the shell buffer
     ;; emacs-native-comp doesn't compile. Ups
     ;; (@(flat packages emacs) emacs-native-comp) ;; version: 28.2.50-205.ae9bfed
 
