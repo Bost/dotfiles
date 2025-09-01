@@ -526,6 +526,9 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     ;; Integrating Evil with lispy
+     ;; lispyville
+
      ;; {{{ Guile IDE
      arei          ;; Guile IDE
      plantuml-mode ;; Edit and preview PlantUML diagrams
