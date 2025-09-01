@@ -111,7 +111,7 @@
               ;; this should work too:
               ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
               (local-file
-               (user-dotf "/guix/home/" filename)
+               (user-dotf "/" filename)
                (fix-leading-dot filename)))))
 
           ;; List of file-like objects, which will be ADDED(!) to .bash_profile
