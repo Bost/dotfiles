@@ -124,7 +124,8 @@ when called from the Emacs Geiser REPL by ,use or ,load"
    ))
 
 (define (large-packages-ecke)
-  "Large packages, slow to build, graft, download, etc. See `guix size <package>`"
+  "Large packages, slow to build, graft, download, etc. See `guix size <package>`.
+TODO implement: Show warning & don't compile if substitutes are not present."
   (append
    (list
     ;; 35.8MiB
