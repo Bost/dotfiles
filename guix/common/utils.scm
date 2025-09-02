@@ -212,12 +212,12 @@ Works also for functions returning and accepting multiple values."
      (begin
        (let [(m (module-name-for-logging))]
          (when show
-           (format #t "~a Evaluating module… done.\n" m))))]
+           (format #t "~a Evaluating module… done\n" m))))]
     [(_)
      (begin
        (let [(m (module-name-for-logging))]
          (when show-module-evaluated
-           (format #t "~a Evaluating module… done.\n" m))))]))
+           (format #t "~a Evaluating module… done\n" m))))]))
 
 (define-syntax testsymb
   (syntax-rules ()
