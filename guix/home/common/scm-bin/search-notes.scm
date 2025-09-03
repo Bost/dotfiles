@@ -89,9 +89,9 @@ cd $dotf
 ;;     ;; (printf "[regexp-normalize-split] normalized-target: ~a\n" normalized-target)
 ;;     (regexp-split regex normalized-target)))
 
-(define (search-file pattern file)
+(define (search-file search-pattern file)
   "
-(search-file \"pattern\"
+(search-file \"search-pattern\"
              \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\")
 "
   ;; Red: \033[31m
@@ -110,27 +110,27 @@ cd $dotf
          (cmd1
           (format #f
                   "awk '
-/^[[:space:]]*$/ {
-    print; next
-}
-{
-    printf \"\\033[32m%d\\033[0m:  %s\\n\", NR, $0
-}
+/^[[:space:]]*$/ { print; next }
+{ printf \"\\033[32m%d\\033[0m:  %s\\n\", NR, $0 }
 ' '~a'" file))
+
+         ;; Filter blocks containing the search-pattern
          (cmd2 "sed 's/^\\s*$//'")
 
+         ;; Color the search-pattern
          (cmd3
           (format
            #f
            ;; -v var=val		--assign=var=val
            "awk -v RS='' '/~a/ {gsub(/~a/, \"\\033[1;31m&\\033[0m\"); print $0 \"\\n\"}'"
-           pattern pattern))
+           search-pattern search-pattern))
          (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
          (ret (exec cmd #:verbose #f))]
     (if (= 0 (car ret))
         (let* [(output (cdr ret))]
           (unless (null? output)
-            (format #t "~a\n" (colorize-string file (color MAGENTA))) ; file in magenta
+            ;; file in magenta
+            (format #t "~a\n" (colorize-string file (color MAGENTA)))
             (map (partial format #t "~a\n") output)))
         (error-command-failed m))))
 (testsymb 'search-file)
@@ -144,12 +144,12 @@ cd $dotf
 "
   ;; (format #t "args: '~a'\n" args)
   (let* [(arg-lst (car args))
-         (pattern ((comp car cdr) arg-lst))]
+         (search-pattern ((comp car cdr) arg-lst))]
     ;; (format #t "arg-lst: '~a'\n" arg-lst)
-    ;; (format #t "ptrn: '~a'\n" pattern)
+    ;; (format #t "ptrn: '~a'\n" search-pattern)
     (let* [(files ((comp cdr cdr) arg-lst))]
       ;; (format #t "files: '~a'\n" files)
-      (map (partial search-file pattern) files))))
+      (map (partial search-file search-pattern) files))))
 
 (define main search-notes)
 
