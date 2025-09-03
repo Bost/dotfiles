@@ -32,8 +32,9 @@
 (evaluating-module)
 
 (define (create-file-channels-scm additional-channels)
-  (let* [(m (format #f "~a [create-file-channels-scm]" m))
-         (channels-scm-fullpath (user-dotf "/" channels-scm-relpath))]
+  (define f (format #f "~a [create-file-channels-scm]" m))
+  ;; (format #t "~a Starting…\n" f)
+  (let* [(channels-scm-fullpath (user-dotf "/" channels-scm-relpath))]
     (call-with-values
         (lambda ()
           (let* [(lst-channels-scm
@@ -50,7 +51,7 @@
           (lambda (sexp)
             (list
              channels-scm-relpath
-             #;(scheme-file "channels.scm" (sexp->gexp sexp))
+             ;; (scheme-file "channels.scm" (sexp->gexp sexp))
              (local-file
               (let* [(tmpfile (mktmpfile))
                      (port (open-output-file tmpfile))]
@@ -60,7 +61,7 @@
                 tmpfile)
               channels-scm)))
           (lambda (s)
-            (format #t "I ~a Creating ~a ... " m channels-scm-fullpath) s)
+            (format #t "I ~a Creating ~a ... " f channels-scm-fullpath) s)
           (lambda (sexp) (append prm-fst sexp (list (car prm-snd)))))
          additional-channels)))))
 (testsymb 'create-file-channels-scm)

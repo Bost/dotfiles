@@ -32,7 +32,6 @@ cd $dotf
 (evaluating-module)
 
 (define dbg #f)
-(define utility-name (last (module-name (current-module))))
 
 ;; (define diacritic-map
 ;;   (hash "a" "[aáäàâæ]"

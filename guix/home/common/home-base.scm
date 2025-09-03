@@ -74,7 +74,7 @@
   (let* [(m (format #f "~a [non-env-var-services]" m))]
     ;; (format #t "~a Starting…\n" m)
     ((comp
-      ;; (lambda (v) (format #t "~a done.\n" m) v)
+      ;; (lambda (v) (format #t "~a done\n" m) v)
       ;; (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
       ;;                     m (test-type v) (length v))
       ;;         v)
