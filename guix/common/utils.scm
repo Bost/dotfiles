@@ -713,7 +713,7 @@ or the CLIENT-CMD if some process ID was found."
                (lambda* args
                  (format #t "[~a] Starting…\n" `id)
                  (let [(result b0)]
-                   (format #t "[~a] done.\n" `id)
+                   (format #t "[~a] done\n" `id)
                    result))]))
            ;; (format #t "(def* ~a…)… done" `id)
            id))
@@ -727,7 +727,7 @@ or the CLIENT-CMD if some process ID was found."
                  b0
                  (format #t "[~a] Starting…\n" `id)
                  (let [(result b1)]
-                   (format #t "[~a] done.\n" `id)
+                   (format #t "[~a] done\n" `id)
                    result))]
 
               [#t                    ;; fc
@@ -735,7 +735,7 @@ or the CLIENT-CMD if some process ID was found."
                  (format #t "[~a] Starting…\n" `id)
                  b0
                  (let [(result b1)]
-                   (format #t "[~a] done.\n" `id)
+                   (format #t "[~a] done\n" `id)
                    result))]))
            ;; (format #t "(def* ~a…)… done" `id)
            id))
@@ -750,7 +750,7 @@ or the CLIENT-CMD if some process ID was found."
                  (format #t "[~a] Starting…\n" `id)
                  b1 ...
                  (let [(result bN)]
-                   (format #t "[~a] done.\n" `id)
+                   (format #t "[~a] done\n" `id)
                    result))]
 
               [#t                    ;; fe
@@ -759,7 +759,7 @@ or the CLIENT-CMD if some process ID was found."
                  b0
                  b1 ...
                  (let [(result bN)]
-                   (format #t "[~a] done.\n" `id)
+                   (format #t "[~a] done\n" `id)
                    result))]))
            ;; (format #t "(def* ~a…)… done" `id)
            id))

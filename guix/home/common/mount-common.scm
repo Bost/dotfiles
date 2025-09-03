@@ -5,7 +5,7 @@
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (srfi srfi-1)       ; last
   #:use-module (utils)
-  #:export (mount unmount eject))
+  #:export (udisksctl mount unmount eject))
 
 #|
 udisksctl mount --block-device=(lsblk --output PATH,LABEL | rg axagon | awk '{print $1}')
@@ -29,46 +29,42 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define utility-name (last (module-name (current-module))))
+(define* (udisksctl command device-name-pattern)
+  ;; (format #t "device-name-pattern : ~a\n" device-name-pattern)
+  (call/cc
+   (lambda (exit)
+     ((comp
+       exec-system*
+       ;; udisksctl executed w/o specified device-lable reports
+       ;;   Error looking up object for device
+       ;; and returns the retcode 1
+       (partial format #t "udisksctl ~a --block-device=~a")
+       (lambda (ret)
+         (let* [(retval (car ret))]
+           (if (= 0 retval)
+               (let* [(output (cdr ret))]
+                 (if (empty? output)
+                     ((comp
+                       exit
+                       ;; (error-command-failed "[module]" "extra_info")
+                       (partial error-command-failed m)
+                       (partial format #f "No matching device found: ~a"))
+                      device-name-pattern)
+                     (car output)))
+               ;; return `retval' or `*unspecified*'
+               (exit retval))))
+       exec
+       (partial format #f
+                "lsblk --output PATH,LABEL | rg ~a | awk '{print $1}'"))
+      device-name-pattern))))
 
-(define* (get-block-device device-label)
-  ;; (format #t "args: ~a\n" args)
-  ;; (format #t "device-label: ~a\n" device-label)
-  (let* ((command (list
-                   "lsblk --output PATH,LABEL | rg" device-label "| awk '{print $1}'"))
-         (ret (exec command))
-         (retval (car ret)))
-    (if (= 0 retval)
-        (let* [(output (cdr ret))]
-          (if (empty? output)
-              (begin
-                ;; udisksctl executed w/o specified block-device reports
-                ;;   Error looking up object for device
-                ;; and returns the retcode 1
-                (format #t "No matching device-label found: ~a\n" device-label)
-                *unspecified*)
-              (car output)))
-        (begin
-          ;; (error-command-failed "[module]" "extra_info")
-          ;; or return `retval' instead of `*unspecified*'
-          *unspecified*))))
+(define* (mount #:key params #:allow-other-keys)
+  (udisksctl "mount" params))
 
-(define* (mount #:key device-label #:allow-other-keys)
-  (let* [(cmd (str "udisksctl mount --block-device="
-                   (get-block-device device-label)))]
-    ;; (format #t "cmd:\n~a\n" cmd)
-    (exec-system* cmd)))
+(define* (unmount #:key params #:allow-other-keys)
+  (udisksctl "unmount" params))
 
-(define* (unmount #:key device-label #:allow-other-keys)
-  (let* [(cmd (str "udisksctl unmount --block-device="
-                   (get-block-device device-label)))]
-    ;; (format #t "cmd:\n~a\n" cmd)
-    (exec-system* cmd)))
-
-(define* (eject #:key device-label #:allow-other-keys)
-  (let* [(cmd (str "udisksctl power-off --block-device="
-                   (get-block-device device-label)))]
-    ;; (format #t "cmd:\n~a\n" cmd)
-    (exec-system* cmd)))
+(define* (eject #:key params #:allow-other-keys)
+  (udisksctl "power-off" params))
 
 (module-evaluated)

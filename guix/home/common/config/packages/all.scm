@@ -207,7 +207,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
   (define f (format #f "~a [basic-packages]" m))
   ;; (format #t "~a Starting…\n" f)
   ((comp
-    ;; (lambda (p) (format #t "~a done.\n" f) p)
+    ;; (lambda (p) (format #t "~a done\n" f) p)
     )
    (list
     bash
@@ -934,7 +934,7 @@ FIXME the inferior-packages are installed on every machine"
   (define f (format #f "~a [home-packages-to-install]" m))
   ;; (format #t "~a Starting…\n" f)
   ((comp
-    ;; (lambda (p) (format #t "~a done.\n" f) p)
+    ;; (lambda (p) (format #t "~a done\n" f) p)
     ;; (lambda (p) (format #t "~a 6. (length p): ~a\n" f (length p)) p)
     (partial append (inferior-packages))
     ;; (lambda (p) (format #t "~a 5.\n~a\n" f p) p)

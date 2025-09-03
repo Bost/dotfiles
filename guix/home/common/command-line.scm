@@ -26,28 +26,23 @@ defined.
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define emacs-procedures '(pkill-server create-launcher set-editable))
-(define mount-procedures '(mount unmount eject))
-
 (define-exception-type &handle-cli-exception &exception make-handle-cli-exception handle-cli-exception?
   ;; (field-name field-accessor) ...
   (handle-cli-procedure handle-cli-exception-procedure))
 
 (define* (handle-cli
-          #:key (verbose #t) program-name fun profile device-label
+          #:key (verbose #t) utility fun params
           ;; #:allow-other-keys
           #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'."
   (define f (format #f "~a [handle-cli]" m))
   (when verbose
-    (format #t "~a program-name : ~a\n" f program-name)
-    (format #t "~a fun          : ~a\n" f fun)
-    (format #t "~a profile      : ~a\n" f profile)
-    (format #t "~a device-label : ~a\n" f device-label)
-    (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:program-name #:fun
-                         #:profile #:device-label))
+    (format #t "~a utility : ~a\n" f utility)
+    (format #t "~a fun     : ~a\n" f fun)
+    (format #t "~a params  : ~a\n" f params)
+    (format #t "~a args    : ~a\n" f args))
+  (let* [(elements (list #:verbose #:utility #:fun #:params))
          (args (remove-all-elements args elements))
          (args (car args))
 
@@ -77,39 +72,32 @@ defined.
     (cond
      [val-help
       (format #t "~a [options]\n~a\n~a\n\n"
-              program-name
+              utility
               "    -v, --version    Display version"
               "    -h, --help       Display this help")]
      [val-version
-      (format #t "~a version <...>\n" program-name)]
+      (format #t "~a version <...>\n" utility)]
      [#t
-      (let* [(prms
-              (cond
-               [(member? fun emacs-procedures)
-                (list #:profile profile)]
-               [(member? fun mount-procedures)
-                (list #:device-label device-label)]
-               [#t
-                (raise-exception
-                 (make-exception
-                  (make-handle-cli-exception fun)
-                  (make-exception-with-message
-                   (format #t "The procedure must be one of:\n  ~a\n\n"
-                           (append emacs-procedures mount-procedures)))))]))]
-        (apply (eval fun (current-module)) ;; resolve symbol to the procedure
-               (append
-                (list #:utility-name program-name
-                      #:gx-dry-run   val-gx-dry-run
-                      #:verbose      verbose)
-                (if (equal? fun 'create-launcher)
-                    (list #:create-frame val-create-frame)
-                    (list))
-                prms val-rest-args)))])))
+      (let* [(procedures '(cli-command
+                           pkill-server create-launcher set-editable
+                           mount unmount eject))]
+        (if (member? fun procedures)
+            (apply (eval fun (current-module)) ;; resolve symbol to the procedure
+                   (append
+                    (list #:utility utility
+                          #:gx-dry-run   val-gx-dry-run
+                          #:verbose      verbose
+                          #:params       params)
+                    (if (equal? fun 'create-launcher)
+                        (list #:create-frame val-create-frame)
+                        (list))
+                    val-rest-args))
+            (raise-exception
+             (make-exception
+              (make-handle-cli-exception fun)
+              (make-exception-with-message
+               (format #t "The procedure must be one of:\n  ~a\n\n"
+                       procedures))))))])))
 (testsymb 'handle-cli)
 
 (module-evaluated)
-
-;; (begin (use-modules (ice-9 getopt-long) (ice-9 regex) (guix monads) (utils) (settings) (command-line) (emacs-common))
-;;        (handle-cli #:verbose #f #:fun (quote create-launcher)
-;;                    #:profile "guix"
-;;                    (command-line)))

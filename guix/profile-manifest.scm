@@ -114,7 +114,7 @@ $ ls --human-readable --size /home/bost/.guix-profile/manifest
 
   ;; (format #t "~a Starting…\n" f)
   ((comp
-    ;; (lambda (p) (format #t "~a done.\n" f) p)
+    ;; (lambda (p) (format #t "~a done\n" f) p)
     manifest
     ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" f (length p)) p)
     (partial map to-manifest-entry)
