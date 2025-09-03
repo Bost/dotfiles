@@ -89,9 +89,63 @@ cd $dotf
 ;;     ;; (printf "[regexp-normalize-split] normalized-target: ~a\n" normalized-target)
 ;;     (regexp-split regex normalized-target)))
 
-(define (search-file search-pattern file)
+(define (search-file-ripgrep search-pattern file)
   "
-(search-file \"search-pattern\"
+(search-file-ripgrep \"search-pattern\"
+             \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\")
+"
+  ;; Red: \033[31m
+  ;; Bright Red: \033[1;31m
+  ;; Green: \033[32m
+  ;; Yellow: \033[33m
+  ;; Blue: \033[34m
+  ;; Magenta: \033[35m
+  ;; Cyan: \033[36m
+  ;; White: \033[37m
+  ;; Reset: \033[0m
+  (let* [
+         ;; If the line is empty or contains only whitespace chars then don't
+         ;; prefix it. Else prefix it with '<the-line-number>:' and
+         ;; <the-line-number> is displayed Green
+         (cmd1
+          (format #f
+                  "awk '
+/^[[:space:]]*$/ { print; next }
+{ printf \"\\033[32m%d\\033[0m:  %s\\n\", NR, $0 }
+' '~a'" file))
+
+         ;; Filter blocks containing the search-pattern
+         (cmd2 "sed 's/^\\s*$//'")
+
+         ;; Color the search-pattern
+         (cmd3
+          (format
+           #f
+           ;; "rg -IN --colors 'match:bg:0,128,255' ~a"
+
+           ;; -U / --multiline allows . to match newlines.
+           ;; Capture everything from SEARCH-PATTERN up to the next empty line.
+           "rg -iN --color=always -B 3 -U '~a(.|\n)*?\n\n'"
+           search-pattern))
+         (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
+         (ret (exec cmd #:verbose #f))]
+    (if (= 0 (car ret))
+        (let* [(output (cdr ret))]
+          (unless (null? output)
+            ;; file in magenta
+            (format #t "~a\n" (colorize-string file (color MAGENTA)))
+            (map (partial format #t "~a\n") output)))
+        ;; An error is returned by rg if nothing it passed to it. We need to
+        ;; ignore the error. This can be achieved as well by defining cmd as:
+        ;;     "~a | ~a | ~a || :"
+        ;; where ':' is meant to be noop (no operation)
+        ;; (error-command-failed m)
+        )))
+(testsymb 'search-file-ripgrep)
+
+(define (search-file-awk search-pattern file)
+  "
+(search-file-awk \"search-pattern\"
              \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\")
 "
   ;; Red: \033[31m
@@ -122,18 +176,18 @@ cd $dotf
           (format
            #f
            ;; -v var=val		--assign=var=val
-           "awk -v RS='' '/~a/ {gsub(/~a/, \"\\033[1;31m&\\033[0m\"); print $0 \"\\n\"}'"
+           ;; The variable assignment feature is most useful for assigning to
+           ;; variables such as ‘RS’, ‘OFS’, and ‘ORS’,
+           "awk -v RS='' 'BEGIN {IGNORECASE=1} /~a/ {gsub(/~a/, \"\\033[1;31m&\\033[0m\"); print $0 \"\\n\"}'"
            search-pattern search-pattern))
          (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
          (ret (exec cmd #:verbose #f))]
     (if (= 0 (car ret))
         (let* [(output (cdr ret))]
           (unless (null? output)
-            ;; file in magenta
-            (format #t "~a\n" (colorize-string file (color MAGENTA)))
+            (format #t "~a\n" (colorize-string file (color MAGENTA))) ; file in magenta
             (map (partial format #t "~a\n") output)))
         (error-command-failed m))))
-(testsymb 'search-file)
 
 (define* (search-notes #:rest args)
   "Usage:
@@ -149,7 +203,9 @@ cd $dotf
     ;; (format #t "ptrn: '~a'\n" search-pattern)
     (let* [(files ((comp cdr cdr) arg-lst))]
       ;; (format #t "files: '~a'\n" files)
-      (map (partial search-file search-pattern) files))))
+      ;; (map (partial search-file-ripgrep search-pattern) files)
+      (map (partial search-file-awk search-pattern) files)
+      )))
 
 (define main search-notes)
 
