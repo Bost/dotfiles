@@ -185,8 +185,7 @@ Example:
                (utils)
                (settings)
                ;; following three modules don't need to be everywhere
-               (scm-bin git-remote)
-               (scm-bin gps)
+               (scm-bin git-command)
                ;; module-search-notes
                ;; 'ls' is needed only for 'lf.scm'
                ,(cond
@@ -427,16 +426,21 @@ a list of files to search through."
 ;;; In bash a script is executes in a subshell, so the cd command only changes
 ;;; the directory within that subshell. So `gicl` for bash it it implemented as
 ;;; a function in .bashrc. See home-base.scm
-      (list #:program-name "git-clone"  #:desc "git-clone")
-      (list #:program-name "git-remote" #:desc "git-remote")
-      (list #:program-name "grev" #:desc "git-remote--verbose")
-      (list #:program-name "gfe"  #:desc "git-fetch")
-      (list #:program-name "gco"  #:desc "git-checkout")
-      (list #:program-name "git-checkout-prev-branch" #:desc "git-checkout-prev-branch")
-      (list #:program-name "gcom" #:desc "git-checkout-master")
+      ;; (list #:program-name "gicl" #:scheme-file "git-clone" #:desc "git clone …")
+      ;; (list #:program-name "girt" #:scheme-file "git-remote" #:desc "git remote …")
+
+      ;; TODO
+      ;; (list #:program-name "gire" #:call (partial git-command "remote" "--verbose"))
+      ;; (list #:program-name "girev" #:call (partial git-command "remote"))
+      ;; (list #:program-name "gife" #:call (partial git-command "fetch"))
+
+      ;; (list #:program-name "gico" #:scheme-file "git-checkout" #:desc "git checkout …")
+      ;; (list #:program-name "gicd" #:scheme-file "git-switch-previous" #:desc "git switch - …")
+      ;; (list #:program-name "gicm" #:scheme-file "git-checkout-master" #:desc "git checkout master …")
+
       (list #:program-name "gg"   #:desc "git-gui")
-      (list #:program-name "gps"  #:desc "git-push")
-      (list #:program-name "gpsf" #:desc "git-push--force")
+      ;; (list #:program-name "gps"  #:desc "git-push")
+      ;; (list #:program-name "gpsf" #:call (partial git-command "push" "--force"))
       (list #:program-name "gk"   #:desc "git-repo-browser")
       (list #:program-name "gpl"  #:desc "git-pull--rebase")
       (list #:program-name "gs"   #:desc "git-status")

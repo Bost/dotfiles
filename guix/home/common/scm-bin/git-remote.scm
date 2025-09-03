@@ -2,6 +2,7 @@
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
+  #:use-module (scm-bin git-command)
   #:export (main git-remote))
 
 #|
@@ -19,19 +20,7 @@ cd $dotf
 (evaluating-module)
 
 (define* (git-remote #:rest args)
-  "Usage: "
-  (let* ((ret (exec (append
-                     (list "git" "remote")
-                     args))))
-    (if (= 0 (car ret))
-        (let* ((output (cdr ret)))
-          ;; process output
-          (map (partial format #t "~a\n") output)
-          ret)
-        (begin
-          (error-command-failed m)
-          *unspecified*))))
-(testsymb 'git-remote)
+  (apply (partial git-command "remote") args))
 
 (define* (main #:rest args)
   "Usage: "
