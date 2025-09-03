@@ -211,7 +211,7 @@
 
         (let [(linux-version "6.8.0-79")]
           (menu-entry
-           (label "Linux Mint 22.1 Xia")
+           (label "Linux Mint 22.2 Zara")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
             ;; See /media/bost/9025de3c-.../boot/grub/grub.cfg
