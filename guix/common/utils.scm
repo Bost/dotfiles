@@ -579,7 +579,7 @@ Usage:
     cmd->string)
    commad))
 
-(define* (exec command #:key (verbose #t))
+(define* (exec command #:key (verbose #t) (return-alist #f))
   "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return a string
 containing its output.
@@ -608,6 +608,8 @@ Usage:
   ;; program to finish, The command is executed using fork and execlp.
 
   ;; TODO write a scheme procedure: chdir str
+  ;; There may be a chdir procedure in guix source code somewhere.
+
   ;; Change the current working directory to str. The return value is
   ;; unspecified.
   (define (exec-function command)
@@ -615,10 +617,13 @@ Usage:
     (let* [(port (open-input-pipe command)) ; from (ice-9 rdelim)
            ;; the `read-all-strings' must be called before `close-pipe'.
            (results (read-all-strings port))]
-      (cons
-       (status:exit-val (close-pipe port))
-       results)))
-
+      (if return-alist
+          (list
+           #:retcode (status:exit-val (close-pipe port))
+           #:results results)
+          (cons
+           (status:exit-val (close-pipe port))
+           results))))
   ((comp
     (partial exec-or-dry-run exec-function)
     (lambda (prm) (dbg-exec prm #:verbose verbose))
