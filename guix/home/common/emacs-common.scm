@@ -25,8 +25,6 @@ defined.
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define utility-name (last (module-name (current-module))))
-
 (define (emacs-binary-path)
   "(emacs-binary-path)
 => \"/gnu/store/09a50cl6ndln4nmp56nsdvn61jgz2m07-emacs-29.1/bin/emacs\""
@@ -64,30 +62,30 @@ defined.
     (str "--bg-daemon=" (calculate-socket profile)))))
 
 (define* (pkill-server
-          #:key (verbose #f) utility-name gx-dry-run profile
+          #:key (verbose #f) utility gx-dry-run params
           #:rest args)
   "The ARGS are being ignored.
 
 Usage:
-(pkill-server #:gx-dry-run #t #:profile \"develop\" \"rest\" \"args\")
-(pkill-server #:gx-dry-run #t #:profile \"guix\" \"rest\" \"args\")
-(pkill-server                 #:profile \"develop\" \"rest\" \"args\")
-(pkill-server                 #:profile \"guix\" \"rest\" \"args\")
+(pkill-server #:gx-dry-run #t #:params \"develop\" \"rest\" \"args\")
+(pkill-server #:gx-dry-run #t #:params \"guix\"    \"rest\" \"args\")
+(pkill-server                 #:params \"develop\" \"rest\" \"args\")
+(pkill-server                 #:params \"guix\"    \"rest\" \"args\")
 "
   (define f (format #f "~a [pkill-server]" m))
   (when verbose
-    (format #t "~a utility-name : ~a\n" f utility-name)
+    (format #t "~a utility : ~a\n" f utility)
     (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
-    (format #t "~a profile      : ~a\n" f profile)
+    (format #t "~a params       : ~a\n" f params)
     (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
+  (let* [(elements (list #:verbose #:utility #:gx-dry-run #:params))
          (args (remove-all-elements args elements))]
     ;; pkill-pattern must NOT be enclosed by \"\"
     ;; TODO use with-monad
     (apply exec-system*-new
            #:split-whitespace #f
            #:gx-dry-run gx-dry-run
-           (list "pkill" "--echo" "--full" (create-init-cmd profile)))))
+           (list "pkill" "--echo" "--full" (create-init-cmd params)))))
 (testsymb 'pkill-server)
 
 (define (init-cmd-env-vars home-emacs-distros profile)
@@ -96,25 +94,25 @@ Usage:
       (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg" home-emacs-distros profile)))
 
 (define* (create-launcher
-          #:key (verbose #t) (create-frame #f) utility-name gx-dry-run profile
+          #:key (verbose #t) (create-frame #f) utility gx-dry-run params
           ;; #:allow-other-keys
           #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
 
 Example:
-(create-launcher #:profile \"develop\" \"rest\" \"args\")
+(create-launcher #:params \"develop\" \"rest\" \"args\")
 "
   (define f (format #f "~a [create-launcher]" m))
   (when verbose
-    (format #t "~a utility-name : ~a\n" f utility-name)
+    (format #t "~a utility : ~a\n" f utility)
     (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
     (format #t "~a create-frame : ~a\n" f create-frame)
-    (format #t "~a profile      : ~a\n" f profile)
+    (format #t "~a params       : ~a\n" f params)
     (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:create-frame #:utility-name #:gx-dry-run #:profile))
+  (let* [(elements (list #:verbose #:create-frame #:utility #:gx-dry-run #:params))
          (args (remove-all-elements args elements))
-         (init-cmd (create-init-cmd profile))]
+         (init-cmd (create-init-cmd params))]
     ((comp
 ;;; Search for the full command line:
 ;;; $ pkill --full /home/bost/.guix-profile/bin/emacs --init-directory=/home/bost/.emacs.d.distros/crafted-emacs --bg-daemon=crafted
@@ -140,8 +138,8 @@ Example:
               (when ((comp zero? car exec)
                      ;; Only the initial command needs to be executed in a
                      ;; modified environment
-                     (list (init-cmd-env-vars home-emacs-distros profile) init-cmd
-                           ;; (if (string= profile crafted)
+                     (list (init-cmd-env-vars home-emacs-distros params) init-cmd
+                           ;; (if (string= params crafted)
                            ;;     (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'")
                            ;;     (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'"))
                            ))
@@ -149,7 +147,7 @@ Example:
                 ;; only if the Emacs server has been started successfully.
                 (exec-background client-cmd-with-args))))))
      (list (which-emacsclient)
-           (str "--socket-name=" (calculate-socket profile))))))
+           (str "--socket-name=" (calculate-socket params))))))
 (testsymb 'create-launcher)
 
 ;; ### BEG: from (fs-utils)
@@ -169,23 +167,23 @@ Example:
          (string-length (user-home emacs-distros)))))
 
 (define* (set-editable
-          #:key (verbose #f) utility-name gx-dry-run profile
+          #:key (verbose #f) utility gx-dry-run params
           #:rest args)
   "The ARGS are being ignored.
 
 Examples:
-(set-editable #:gx-dry-run #t #:profile \"develop\" \"rest\" \"args\")
-(set-editable #:gx-dry-run #t #:profile \"guix\" \"rest\" \"args\")
-(set-editable                 #:profile \"develop\" \"rest\" \"args\")
-(set-editable                 #:profile \"guix\" \"rest\" \"args\")
+(set-editable #:gx-dry-run #t #:params \"develop\" \"rest\" \"args\")
+(set-editable #:gx-dry-run #t #:params \"guix\"    \"rest\" \"args\")
+(set-editable                 #:params \"develop\" \"rest\" \"args\")
+(set-editable                 #:params \"guix\"    \"rest\" \"args\")
 "
   (define f (format #f "~a [set-editable]" m))
   (when verbose
-    (format #t "~a utility-name : ~a\n" f utility-name)
+    (format #t "~a utility : ~a\n" f utility)
     (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
-    (format #t "~a profile      : ~a\n" f profile)
+    (format #t "~a params       : ~a\n" f params)
     (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:utility-name #:gx-dry-run #:profile))
+  (let* [(elements (list #:verbose #:utility #:gx-dry-run #:params))
          (args (remove-all-elements args elements))
 
          (monad (if gx-dry-run
@@ -195,7 +193,7 @@ Examples:
         (begin
           (format #t "~~a monad: ~a\n" f monad)
           (format #t "~~a TODO implement --gx-dry-run\n" f))
-        (let* [(dst-src (make-pair-dst-src profile))
+        (let* [(dst-src (make-pair-dst-src params))
                (dst (car dst-src))
                (src (cdr dst-src))]
           (with-monad monad
@@ -257,12 +255,3 @@ Examples:
 (testsymb 'handle-cli)
 
 (module-evaluated)
-
-;; In Guile Scheme, I'd like to list all the keys in a procedure:
-;; 
-;; ```
-;; (define* (foo #:key (a #f) b #:rest args)
-;;   (format #t "The keys are: ~a\n" ...))
-;; ```
-;; 
-;; Is it possible?

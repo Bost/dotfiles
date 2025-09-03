@@ -1,16 +1,16 @@
-(define-module (scm-bin git-authenticate)
+(define-module (scm-bin guix-git-authenticate)
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
   #:use-module (fs-utils)  ; dgx (repository location)
   #:use-module (settings)  ; home
-  #:export (main git-authenticate)
+  #:export (main guix-git-authenticate)
   )
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ git-authenticate) -s
+-L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-git-authenticate) -s
 !#
 
 cd $dotf
@@ -83,12 +83,12 @@ cd $dotf
 (testsymb 'authenticate-commit)
 
 ;; TODO pass the repo and beg (first commit to authenticate) arguments from CLI
-(define* (git-authenticate #:rest args)
+(define* (guix-git-authenticate #:rest args)
   "Examples:
-(git-authenticate \"-f\" \"arg0\")
-(git-authenticate \"-f arg0\")
-(equal? (git-authenticate \"-f\" \"arg0\")
-        (git-authenticate \"-f arg0\"))
+(guix-git-authenticate \"-f\" \"arg0\")
+(guix-git-authenticate \"-f arg0\")
+(equal? (guix-git-authenticate \"-f\" \"arg0\")
+        (guix-git-authenticate \"-f arg0\"))
 ;; > #t
 "
   (let* [(elements (list #:remote))
@@ -101,13 +101,13 @@ cd $dotf
           )]
     (map (partial authenticate-commit #:repo repo #:signer signer #:commit)
                   commits)))
-(testsymb 'git-authenticate)
+(testsymb 'guix-git-authenticate)
 
 (define* (main #:rest args)
   "Examples:
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((comp
-    (partial apply git-authenticate)
+    (partial apply guix-git-authenticate)
     (partial apply cdr)
     dbg)
    args))
