@@ -80,7 +80,7 @@ Note:
       ;; .rw-r--r-- fish_variables
       (format #t "(chmod ~a ~a)\n" dst #o644)
       (chmod dst #o644)))
-    ;; (format #t "~a done.\n" m)
+    ;; (format #t "~a done\n" m)
     ))
 
 (define* (append-fish-config-dir dir lst)

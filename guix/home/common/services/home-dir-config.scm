@@ -115,7 +115,7 @@ See also:
   (let* [(m (format #f "~a [home-files-config]" m))]
     ;; (format #t "~a Starting…\n" m)
     ((comp
-      ;; (lambda (p) (format #t "~a done.\n" m) p)
+      ;; (lambda (p) (format #t "~a done\n" m) p)
       ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)
       (partial append
                (list (local-dotfile

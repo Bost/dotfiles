@@ -1,2 +1,0 @@
-#!/bin/sh
-rg -t lisp "$@"

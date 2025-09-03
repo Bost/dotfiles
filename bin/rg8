@@ -1,5 +1,0 @@
-#!/bin/sh
-# -A, --after-context NUM
-# -B, --before-context NUM
-num=8
-rg -B $num -A $num "$@"
