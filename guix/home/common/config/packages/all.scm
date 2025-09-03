@@ -48,7 +48,8 @@
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
- file-systems librewolf libcanberra crates-io security-token)
+ file-systems librewolf libcanberra security-token
+ )
 
 (define (email-in-emacs-packages)
   (list
@@ -160,7 +161,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    pcsc-tools           ; Smart cards and PC/SC tools; pcsc_scan for debugging
    pkg-config           ; Helper tool used when compiling applications and libraries
    rust                 ; Compiler for the Rust programming language
-   rust-cargo           ; Package manager for Rust
+   (@(past-crates packages crates-io) rust-cargo) ; Package manager for Rust
    rust-pcsc-sys-1      ; Low-level bindings to the PC/SC C API. rust-pcsc-sys not available
    rust-pkg-config-0.3  ; Library to run the pkg-config system tool. rust-pkg-config not available
    rust-pcsc-2          ; Bindings to the PC/SC API for smart card communication. rust-pcsc not available
