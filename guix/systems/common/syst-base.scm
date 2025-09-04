@@ -16,6 +16,7 @@
  security-token ; for pcscd-service-type
  )
 
+(define m (module-name-for-logging))
 (evaluating-module)
 
 (define-public (keyb-layout)
@@ -117,7 +118,19 @@
     (timezone "Europe/Berlin")
      ;; keyboard-layout for the console
     (keyboard-layout (keyb-layout))
-    (host-name "dummy")
+    (host-name "dummy") ; host-name is mandatory
+    (services
+     (append
+      (list
+;;; Enable SysRq (PRT SC / Drucken) "magic keys" by putting 'kernel.sysrq=1' in
+;;; /etc/sysctl.conf
+;;; Alt+SysRq+f       OOM killer immediately kills something big
+;;; Test by simulated pressing Alt+SysRq+h (help).
+;;; echo h | sudo tee /proc/sysrq-trigger && sudo dmesg --ctime | tail -n10
+       (service sysctl-service-type
+                (sysctl-configuration
+                 (settings '(("kernel.sysrq" . "1"))))))
+      %base-services))
     (bootloader (bootloader-configuration
                  (bootloader grub-efi-bootloader)
                  (targets (list "/boot/efi"))
