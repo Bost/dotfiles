@@ -34,27 +34,25 @@
             ;; (channel-rde)
             (channel-bost
              ;; #:commit "6ddbd879a9d6e61cbc58721d00a7b1f380bda57a"
+
+             ;; 04 sept. 2025 15:21:12
+             ;; #:commit "5c7b61177d0c71c628687c6e0aa9bf29bbb2f836"
              )
             )
            lst)
           lst)))
    (syst-channels
-    ;; Jul 29 2025 12:07:10
-    ;; #:guix-commit "806ac0cc045d9b3ea87898bd9343634ee90d2c39"
-    ;; #:nonguix-commit "5ed7546593dd205f1dd4473b58afa855c07e033d"
-
-
-    ;; Aug 23 2025 23:24:30 - doesn't work at the moment
-    ;; #:nonguix-commit "9bf3d1394f595413c51d621e61f231789c74891e"
-    ;; #:guix-commit "64ef6db09b1e14a12fc0d97a5a0615394d6d6c7a"
-
     ;; Aug 31 2025 14:48:46
     ;; #:nonguix-commit "60ffd0353e70d5e371c4bfe2201c9d08c1c05e18"
     ;; #:guix-commit "d431f4620a4c077383e1168f932e86c99ae33834"
 
     ;; 03 sept. 2025 14:06:29
+    ;; #:nonguix-commit "477f283914ca771a8622e16b73d845b87c63335d"
+    ;; #:guix-commit "b377ec079d9ffe8f0f372c43735ad012ea889b6f"
+
+    ;; 05 sept. 2025 15:53:28
     #:nonguix-commit "477f283914ca771a8622e16b73d845b87c63335d"
-    #:guix-commit "b377ec079d9ffe8f0f372c43735ad012ea889b6f"
+    #:guix-commit "6bffc03be9dcf4711b5d1e9c95aba340403b35df"
     )))
 (testsymb 'home-channels)
 
