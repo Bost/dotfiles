@@ -30,7 +30,7 @@ cd $dotf
   (call/cc
    (lambda (exit)
      ((comp
-       ;; (lambda (p) (format #t "~a done.\n" f) p)
+       ;; (lambda (p) (format #t "~a done\n" f) p)
        ;; (lambda (p) (format #t "~a 3. ~a\n" f p) p)
        (lambda (ret-vals) ;; the reducer
          ;; ret-vals is a list consisting of sublists:

@@ -30,7 +30,7 @@ cd $dotf
 
   ;; (format #t "~a Starting…\n" f)
   ((comp
-    ;; (lambda (p) (format #t "~a done.\n" f) p)
+    ;; (lambda (p) (format #t "~a done\n" f) p)
     (lambda* (full-command)
       ;; (apply exec-system* full-command)
       (let* [(ret (exec full-command))]

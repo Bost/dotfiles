@@ -91,109 +91,109 @@
 
 (define* (service-file-general
           #:key
-          program-name desc scheme-file module-name
+          program-name desc scm-file module-name
           chmod-params files
           (other-files (list)))
-  "The priority is 1. module-name, 2. scheme-file, 3. program-name
+  "The priority is 1. module-name, 2. scm-file, 3. program-name
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  (let* [(m (format #f "~a [service-file-general]" m))]
-    ;; (format #t "~a Starting…\n" m)
-    ;; (format #t "~a program-name : ~s\n" m program-name)
-    ;; (format #t "~a desc         : ~s\n" m desc)
-    ;; (format #t "~a scheme-file  : ~s\n" m scheme-file)
-    ;; (format #t "~a module-name  : ~s\n" m module-name)
-    ;; (format #t "~a chmod-params : ~s\n" m chmod-params)
-    ;; (format #t "~a files        : ~s\n" m files)
-    ;; (format #t "~a other-files  : ~s\n" m other-files)
-    (list
-     (str scm-bin-dirname "/" program-name)
-     (program-file
-      ;; 1st param: name
-      (cond
-       [(equal? scheme-file "chmod")
-        (str "chmod-plus-" chmod-params)]
-       [(equal? scheme-file "search-notes")
-        (str "search-notes-" program-name)]
-       [#t
-        desc])
-      ;; 2nd param: exp
-      ;; TODO clarify if source-module-closure is needed only for imports of
-      ;; guix modules?
-      (let* [(symb-string (or scheme-file program-name))
-             (symb (or module-name
-                       (string->symbol symb-string)))
-             (main-call ((comp (partial remove unspecified?))
-                         (list
-                          'main
-                          (cond
-                           [(equal? scheme-file "chmod")
-                            `(let [(cmd-line (command-line))]
-                               (append (list (car cmd-line)
-                                             ,chmod-params)
-                                       (cdr cmd-line)))]
-                           [(equal? scheme-file "search-notes")
-                            `(append
-                              (command-line)
-                              (list ,@(append other-files
-                                              (full-filepaths files))))]
-                           [#t `(command-line)]))))]
-        (with-imported-modules
-            ((comp
-              (partial remove unspecified?)
-              (lambda (lst)
-                (cond
-                 [(equal? scheme-file "search-notes")
-                  (append lst `(
-                                (guix profiling)
-                                (guix memoization)
-                                (guix colors)
-                                ;; (ice-9 getopt-long)
-                                ))]
+  (define f (format #f "~a [service-file-general]" m))
+  ;; (format #t "~a Starting…\n" f)
+  ;; (format #t "~a program-name : ~s\n" f program-name)
+  ;; (format #t "~a desc         : ~s\n" f desc)
+  ;; (format #t "~a scm-file     : ~s\n" f scm-file)
+  ;; (format #t "~a module-name  : ~s\n" f module-name)
+  ;; (format #t "~a chmod-params : ~s\n" f chmod-params)
+  ;; (format #t "~a files        : ~s\n" f files)
+  ;; (format #t "~a other-files  : ~s\n" f other-files)
+  (list
+   (str scm-bin-dirname "/" program-name)
+   (program-file
+    ;; 1st param: name
+    (cond
+     [(equal? scm-file "chmod")
+      (str "chmod-plus-" chmod-params)]
+     [(equal? scm-file "search-notes")
+      (str "search-notes-" program-name)]
+     [#t
+      desc])
+    ;; 2nd param: exp
+    ;; TODO clarify if source-module-closure is needed only for imports of
+    ;; guix modules?
+    (let* [(symb-string (or scm-file program-name))
+           (symb (or module-name
+                     (string->symbol symb-string)))
+           (main-call ((comp (partial remove unspecified?))
+                       (list
+                        'main
+                        (cond
+                         [(equal? scm-file "chmod")
+                          `(let [(cmd-line (command-line))]
+                             (append (list (car cmd-line)
+                                           ,chmod-params)
+                                     (cdr cmd-line)))]
+                         [(equal? scm-file "search-notes")
+                          `(append
+                            (command-line)
+                            (list ,@(append other-files
+                                            (full-filepaths files))))]
+                         [#t `(command-line)]))))]
+      (with-imported-modules
+          ((comp
+            (partial remove unspecified?)
+            (lambda (lst)
+              (cond
+               [(equal? scm-file "search-notes")
+                (append lst `(
+                              (guix profiling)
+                              (guix memoization)
+                              (guix colors)
+                              ;; (ice-9 getopt-long)
+                              ))]
 ;;; Having '#:use-module (fs-utils)' in the (scm-bin git-authenticate) module
 ;;; implies importing a number of additional (guix ...) modules. Alternative
 ;;; solution: use '(getenv "dgx")' instead of 'dgx' from fs-utils.
-                 [(equal? program-name "git-authenticate")
-                  (append lst `(
-                                (fs-utils)
-                                (guix gexp)
-                                (guix store)
-                                (guix utils)
+               [(equal? program-name "git-authenticate")
+                (append lst `(
+                              (fs-utils)
+                              (guix gexp)
+                              (guix store)
+                              (guix utils)
 ;;; Having (guix config) probably causes:
 ;;;     warning: importing module (guix config) from the host
-                                (guix config)
-                                (guix memoization)
-                                (guix profiling)
-                                (guix diagnostics)
-                                (guix colors)
-                                (guix i18n)
-                                (guix deprecation)
-                                (guix serialization)
-                                (guix records)
-                                (guix base16)
-                                (guix base32)
-                                (guix derivations)
-                                (guix combinators)
-                                (guix sets)
-                                ))]
-                 [#t lst])))
-             `((guix monads)
-               (srfi-1-smart)
-               (utils)
-               (settings)
-               ;; following three modules don't need to be everywhere
-               (scm-bin git-command)
-               ;; module-search-notes
-               ;; 'ls' is needed only for 'lf.scm'
-               ,(cond
-                 [(equal? symb-string "lf") `(scm-bin ls)]
-                 [#t                        `(scm-bin ,symb)])))
-          #~(begin
-              (use-modules (scm-bin #$symb))
-              #$main-call)))))))
+                              (guix config)
+                              (guix memoization)
+                              (guix profiling)
+                              (guix diagnostics)
+                              (guix colors)
+                              (guix i18n)
+                              (guix deprecation)
+                              (guix serialization)
+                              (guix records)
+                              (guix base16)
+                              (guix base32)
+                              (guix derivations)
+                              (guix combinators)
+                              (guix sets)
+                              ))]
+               [#t lst])))
+           `((guix monads)
+             (srfi-1-smart)
+             (utils)
+             (settings)
+             ;; following three modules don't need to be everywhere
+             (scm-bin git-command)
+             ;; module-search-notes
+             ;; 'ls' is needed only for 'lf.scm'
+             ,(cond
+               [(equal? symb-string "lf") `(scm-bin ls)]
+               [#t                        `(scm-bin ,symb)])))
+        #~(begin
+            (use-modules (scm-bin #$symb))
+            #$main-call))))))
 (testsymb 'service-file-general)
 
 (define* (service-file-utils
@@ -204,22 +204,26 @@ Example:
 
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."
+  (define f (format #f "~a [service-file-utils]" m))
+  ;; (format #t "~a Starting…\n" f)
+  ;; (format #t "~a program-name : ~s\n" f program-name)
+  ;; (format #t "~a fun          : ~s\n" f fun)
+  ;; (format #t "~a profile      : ~s\n" f profile)
   (define common-modules '((srfi srfi-1)
                            (guix monads)
                            (srfi-1-smart)
                            (utils)
                            (settings)
                            (command-line)))
-  (define f (format #f "~a [service-file-utils]" m))
-  ;; (format #t "~a Starting…\n" f)
-  ;; (format #t "~a program-name : ~s\n" f program-name)
-  ;; (format #t "~a fun          : ~s\n" f fun)
-  ;; (format #t "~a profile      : ~s\n" f profile)
   (list
    (str scm-bin-dirname "/" program-name)
    ((comp) ;; logger stub
     (program-file
      program-name
+;;; (scheme-file name gexp (#:splice?) (#:guile) (#:set-load-path?))
+;;; A procedure in module (guix gexp).
+;;; Return an object representing the Scheme file NAME that contains GEXP.
+;;; This is the declarative counterpart of 'gexp->file'.
      (let* [(symb-string scheme-file)
             (symb (or module-name
                       (string->symbol symb-string)))
@@ -301,21 +305,21 @@ a list of files to search through."
       (list #:program-name "crc"
             #:files (list "lisp/clojure")
             #:other-files crc-other-files
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
 
       (list #:program-name "cre"
             #:files (list "editors/")
             #:other-files cre-other-files
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
       (list #:program-name "crep"
             #:files (list ".*") ;; TODO exclude /home/bost/org-roam/notes.scrbl
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
       (list #:program-name "cra"
             #:files (list "ai")
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
       (list #:program-name "crf"
             #:files (list "cli/find_and_grep")
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
 ;;; XXX Bug: 'Replicating' is on the line 137, not on 118
 ;;; $ cd ~ && crg Replicating
@@ -328,29 +332,29 @@ a list of files to search through."
 ;;; 120	}
       (list #:program-name "crg" #:files (list "guix-guile-nix/")
             #:other-files (append (expand-pattern "dev/guix" "scm"))
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
 ;;; TODO crgi should also search in the output of `git config --get' etc.
       (list #:program-name "crgi" #:files (list "cli/git")
             #:other-files (append (expand-pattern "dev/dotfiles" ".gitconfig"))
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
 ;;; TODO crl should search in the $dotf/.config/fish and other profile files
       (list #:program-name "crl" #:files (list "guix-guile-nix/" "cli/"
                                                ;; simple files
                                                "network" "cvs" "gui")
             #:other-files (append (expand-pattern "dev/dotfiles" ".bash"))
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
       (list #:program-name "crli" #:files (list "cli/listing")
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
       (list #:program-name "crr" #:files (list "lisp/racket")
             #:other-files (append (expand-pattern "der/search-notes" "rkt"))
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
 ;;; TODO create-def--emacs-<type>-<profile> crct - search in category-theory notes
 ;;; TODO crs should be like crl
       (list #:program-name "crs" #:files (list "cli/shells")
             ;; #:other-files (append (expand-pattern "dev/dotfiles" ".bash"))
-            #:scheme-file "search-notes")
+            #:scm-file "search-notes")
       (list #:program-name "cru" #:files (list "utf8")
-            #:scheme-file "search-notes")))))
+            #:scm-file "search-notes")))))
 (testsymb 'search-notes-service-files)
 
 (define (mount-utils)
@@ -415,28 +419,28 @@ a list of files to search through."
       (partial map (partial apply service-file-general)))
      (list
       ;; pwr and prw do the same
-      (list #:program-name "pwr" #:chmod-params "rw" #:scheme-file "chmod")
-      (list #:program-name "prw" #:chmod-params "rw" #:scheme-file "chmod")
-      (list #:program-name "px"  #:chmod-params "x"  #:scheme-file "chmod")
+      (list #:program-name "pwr" #:chmod-params "rw" #:scm-file "chmod")
+      (list #:program-name "prw" #:chmod-params "rw" #:scm-file "chmod")
+      (list #:program-name "px"  #:chmod-params "x"  #:scm-file "chmod")
       (list #:program-name "ext"  #:desc "extract-uncompress"
-            #:scheme-file "extract")
-      (list #:program-name "c"    #:desc "batcat" #:scheme-file "bat")
+            #:scm-file "extract")
+      (list #:program-name "c"    #:desc "batcat" #:scm-file "bat")
       (list #:program-name "f"    #:desc "find-alternative")
       (list #:program-name "git-authenticate" #:desc "git-authenticate")
 ;;; In bash a script is executes in a subshell, so the cd command only changes
 ;;; the directory within that subshell. So `gicl` for bash it it implemented as
 ;;; a function in .bashrc. See home-base.scm
-      ;; (list #:program-name "gicl" #:scheme-file "git-clone" #:desc "git clone …")
-      ;; (list #:program-name "girt" #:scheme-file "git-remote" #:desc "git remote …")
+      ;; (list #:program-name "gicl" #:scm-file "git-clone" #:desc "git clone …")
+      ;; (list #:program-name "girt" #:scm-file "git-remote" #:desc "git remote …")
 
       ;; TODO
       ;; (list #:program-name "gire" #:call (partial git-command "remote" "--verbose"))
       ;; (list #:program-name "girev" #:call (partial git-command "remote"))
       ;; (list #:program-name "gife" #:call (partial git-command "fetch"))
 
-      ;; (list #:program-name "gico" #:scheme-file "git-checkout" #:desc "git checkout …")
-      ;; (list #:program-name "gicd" #:scheme-file "git-switch-previous" #:desc "git switch - …")
-      ;; (list #:program-name "gicm" #:scheme-file "git-checkout-master" #:desc "git checkout master …")
+      ;; (list #:program-name "gico" #:scm-file "git-checkout" #:desc "git checkout …")
+      ;; (list #:program-name "gicd" #:scm-file "git-switch-previous" #:desc "git switch - …")
+      ;; (list #:program-name "gicm" #:scm-file "git-checkout-master" #:desc "git checkout master …")
 
       (list #:program-name "gg"   #:desc "git-gui")
       ;; (list #:program-name "gps"  #:desc "git-push")
@@ -446,12 +450,12 @@ a list of files to search through."
       (list #:program-name "gs"   #:desc "git-status")
       (list #:program-name "gtg"  #:desc "git-tag")
       (list #:program-name "gpg-pinentry-setup" #:desc "gpg-pinentry-setup")
-      (list #:program-name "l"    #:desc "list-dir-contents" #:scheme-file "ls")
+      (list #:program-name "l"    #:desc "list-dir-contents" #:scm-file "ls")
       (list #:program-name "lf"   #:desc "list-dir-contents-with-full-paths")
       (list #:program-name "lt"   #:desc "list-dir-sorted-by-time-descending"
-            #:scheme-file "lt")
+            #:scm-file "lt")
       (list #:program-name "lT"   #:desc "list-dir-sorted-by-time-ascending"
-            #:scheme-file "lT")
+            #:scm-file "lT")
       (list #:program-name "qemu-vm" #:desc "qemu-vm")
       (list #:program-name "susp" #:desc "suspend-to-ram")))))
 (testsymb-trace 'cli-utils-service)
