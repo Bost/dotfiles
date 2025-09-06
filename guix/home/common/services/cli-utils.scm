@@ -91,6 +91,7 @@
 
 (define* (service-file-general
           #:key
+          git?
           program-name desc scm-file module-name
           chmod-params files
           (other-files (list)))
@@ -102,13 +103,15 @@ Example:
 "
   (define f (format #f "~a [service-file-general]" m))
   ;; (format #t "~a Starting…\n" f)
-  ;; (format #t "~a program-name : ~s\n" f program-name)
-  ;; (format #t "~a desc         : ~s\n" f desc)
-  ;; (format #t "~a scm-file     : ~s\n" f scm-file)
-  ;; (format #t "~a module-name  : ~s\n" f module-name)
-  ;; (format #t "~a chmod-params : ~s\n" f chmod-params)
-  ;; (format #t "~a files        : ~s\n" f files)
-  ;; (format #t "~a other-files  : ~s\n" f other-files)
+  (when (string=? program-name "gicl")
+    (format #t "~a git?         : ~s\n" f git?)
+    (format #t "~a program-name : ~s\n" f program-name)
+    (format #t "~a desc         : ~s\n" f desc)
+    (format #t "~a scm-file     : ~s\n" f scm-file)
+    (format #t "~a module-name  : ~s\n" f module-name)
+    (format #t "~a chmod-params : ~s\n" f chmod-params)
+    (format #t "~a files        : ~s\n" f files)
+    (format #t "~a other-files  : ~s\n" f other-files))
   (list
    (str scm-bin-dirname "/" program-name)
    (program-file
@@ -119,7 +122,9 @@ Example:
      [(equal? scm-file "search-notes")
       (str "search-notes-" program-name)]
      [#t
-      desc])
+      (if git?
+          scm-file
+          desc)])
     ;; 2nd param: exp
     ;; TODO clarify if source-module-closure is needed only for imports of
     ;; guix modules?
@@ -418,7 +423,7 @@ a list of files to search through."
                           (list)))
       (partial map (partial apply service-file-general)))
      (list
-      ;; pwr and prw do the same
+      ;; pwr and prw do the same (w and r are swapped)
       (list #:program-name "pwr" #:chmod-params "rw" #:scm-file "chmod")
       (list #:program-name "prw" #:chmod-params "rw" #:scm-file "chmod")
       (list #:program-name "px"  #:chmod-params "x"  #:scm-file "chmod")
@@ -430,17 +435,18 @@ a list of files to search through."
 ;;; In bash a script is executes in a subshell, so the cd command only changes
 ;;; the directory within that subshell. So `gicl` for bash it it implemented as
 ;;; a function in .bashrc. See home-base.scm
-      ;; (list #:program-name "gicl" #:scm-file "git-clone" #:desc "git clone …")
-      ;; (list #:program-name "girt" #:scm-file "git-remote" #:desc "git remote …")
-
-      ;; TODO
-      ;; (list #:program-name "gire" #:call (partial git-command "remote" "--verbose"))
-      ;; (list #:program-name "girev" #:call (partial git-command "remote"))
-      ;; (list #:program-name "gife" #:call (partial git-command "fetch"))
-
-      ;; (list #:program-name "gico" #:scm-file "git-checkout" #:desc "git checkout …")
-      ;; (list #:program-name "gicd" #:scm-file "git-switch-previous" #:desc "git switch - …")
-      ;; (list #:program-name "gicm" #:scm-file "git-checkout-master" #:desc "git checkout master …")
+      ;; (list #:git? #t #:program-name "gicl"  #:scm-file "git-clone"  #:desc "git clone …")
+      ;; (list #:git? #t #:program-name "girt"  #:scm-file "git-remote" #:desc "git remote …")
+      ;; (list #:git? #t #:program-name "girtv" #:scm-file "git-remote" #:desc "git remote --verbose …")
+      ;; (list #:git? #t #:program-name "gire"  #:scm-file "git-rebase" #:desc "git rebase …")
+      ;; (list #:git? #t #:program-name "girea" #:scm-file "git-rebase" #:desc "git rebase --abort …")
+      ;; (list #:git? #t #:program-name "girec" #:scm-file "git-rebase" #:desc "git rebase --continue …")
+      ;; (list #:git? #t #:program-name "girei" #:scm-file "git-rebase" #:desc "git rebase --interactive …")
+      ;; (list #:git? #t #:program-name "gires" #:scm-file "git-rebase" #:desc "git rebase --skip …")
+      ;; (list #:git? #t #:program-name "gife"  #:scm-file "git-fetch"  #:desc "git fetch …")
+      ;; (list #:git? #t #:program-name "gico"  #:scm-file "git-checkout" #:desc "git checkout …")
+      ;; (list #:git? #t #:program-name "gicd"  #:scm-file "git-switch-previous" #:desc "git switch - …")
+      ;; (list #:git? #t #:program-name "gicm"  #:scm-file "git-checkout-master" #:desc "git checkout master …")
 
       (list #:program-name "gg"   #:desc "git-gui")
       ;; (list #:program-name "gps"  #:desc "git-push")

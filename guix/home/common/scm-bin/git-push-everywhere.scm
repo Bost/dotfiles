@@ -61,7 +61,6 @@ cd $dotf
 (main \"<ignored>\" \"arg0\")"
   ((comp
     (partial apply git-push-everywhere)
-    ;; (partial apply git-push-everywhere #:remote "github")
     (partial apply cdr)
     #;dbg)
    args))

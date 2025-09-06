@@ -2,6 +2,7 @@
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
+  #:use-module (scm-bin git-command)
   #:export (main git-clone))
 
 #|
@@ -19,35 +20,7 @@ cd $dotf
 (evaluating-module)
 
 (define* (git-clone #:key (verbose #t) #:rest args)
-  "Usage:
-(git-clone \"-f\" \"arg0\")
-(git-clone \"-f arg0\")
-(equal? (git-clone \"-f\" \"arg0\")
-        (git-clone \"-f arg0\"))
-;; > #t
-"
-  (let* [(f "[git-clone]")
-         (elements (list #:verbose))
-         (args (remove-all-elements args elements))]
-    ;; git-command implementation see $dev/guix/tests/git.scm
-    ;; (format #t "~a ~a args : ~a\n" m f args)
-    (apply exec-system* #:verbose verbose "git" "clone" args)))
-
-(define (show-help)
-  (format #t "Usage: ~a [OPTION] NAME [ARGS ...]
-Clone git repository using the following command:
-
-  git clone [TODO ...]"
-          (car (command-line)))
-  (display "
-
-Usage:
-(main \"<ignored>\" \"-f\" \"arg0\")
-
-Options:
-  -h, --help        display this help and exit")
-  (newline))
-
+  (apply (partial git-command "clone") args))
 
 ;; (use-modules (guix gexp))
 ;; (define remote "http://example.org/foo.git")
@@ -101,17 +74,6 @@ Options:
 (define* (main #:rest args)
   ((comp
     (partial apply git-clone)
-    (partial apply cdr)
-    #;dbg)
-   #;
-   (comp
-    (lambda (cdr-args)
-      (match (cdr-args)
-        (((or "-h" "--help" "help"))
-         (show-help))
-
-        (#t (git-clone cdr-args))
-        ))
     (partial apply cdr)
     #;dbg)
    args))
