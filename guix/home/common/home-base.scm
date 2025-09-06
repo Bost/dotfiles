@@ -447,20 +447,43 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
        (projects-heroku)))
 (testsymb 'install-all-projects)
 
+;; (define-public (home-env-services list-separator)
+;;   (let* [(f (format #f "~a [home-env-services]" m))]
+;;     (format #t "~a Starting…\n" f)
+;;     ((comp
+;;       (lambda (v) (format #t "~a done\n" f) v)
+;;       (partial append (non-env-var-services))
+;;       ;; (lambda (v)
+;;       ;;   ;; (map (partial format #t "~a 1:\n~a\n" f) v)
+;;       ;;   ;; (format #t "~a 1 (length v) : ~a\n" f (length v))
+;;       ;;   v)
+;;       list
+;;       environment-variables-service
+;;       (partial apply append)
+;;       (partial map (lambda (fun-symb)
+;;                      ((eval fun-symb (resolve-module (list 'home-base)))
+;;                       list-separator)))
+;;       ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
+;;       )
+;;      (list 'environment-vars-edge-ecke 'environment-vars))))
+
 (define-public (home-env-services list-separator)
-  ((comp
-    (partial append (non-env-var-services))
-    ;; (lambda (v)
-    ;;   ;; (map (partial format #t "~a 1:\n~a\n" m) v)
-    ;;   ;; (format #t "~a 1 (length v) : ~a\n" m (length v))
-    ;;   v)
-    list
-    environment-variables-service
-    (partial append (environment-vars-edge-ecke list-separator))
-    (partial append (environment-vars           list-separator))
-    ;; (lambda (v) (format #t "~a 0:\n~a\n" m v) v)
-    )
-   (list)))
+  (let* [(f (format #f "~a [home-env-services]" m))]
+    ;; (format #t "~a Starting…\n" f)
+    ((comp
+      (lambda (v) (format #t "~a done\n" f) v)
+      (partial append (non-env-var-services))
+      ;; (lambda (v)
+      ;;   ;; (map (partial format #t "~a 1:\n~a\n" f) v)
+      ;;   ;; (format #t "~a 1 (length v) : ~a\n" f (length v))
+      ;;   v)
+      list
+      environment-variables-service
+      (partial append (environment-vars-edge-ecke list-separator))
+      (partial append (environment-vars           list-separator))
+      ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
+      )
+     (list))))
 (testsymb 'home-env-services)
 
 (define-public (home-env-edge-ecke list-separator)
