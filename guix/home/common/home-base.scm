@@ -14,6 +14,7 @@
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
   #:use-module (services flatpak) ; telegram-from-flatpak-service
+  #:use-module (services guake)   ; home-guake-service
   #:use-module (services home-dir-config) ; home-config-service
 
   #:use-module (gnu home)
@@ -161,6 +162,8 @@
       ;; https://github.com/search?q=home-fish-service-type&type=code
       ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
 
+      ;; (lambda (v) (format #t "~a 8 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
+      (partial append (list (home-guake-service)))
       ;; (lambda (v) (format #t "~a 7 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
       ;; See also /gnu/store/wcmicv1yy1jqgc816wizk48ij15asn27-telegram-desktop-5.12.4
       (partial append (list (telegram-from-flatpak-service)))
