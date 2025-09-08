@@ -778,6 +778,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
    ;; Manipulate X selection, i.e. the clipboard from the command line.
    xsel
+
+   ;; Set various user preference options of the X server display.
+   ;; xset
    ))
 (testsymb 'xorg-packages)
 
