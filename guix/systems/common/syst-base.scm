@@ -27,11 +27,12 @@
    ;; ',,' means that "" ie no modifier is used
    "us,de,sk,fr" "altgr-intl,,qwerty,"
 
-   ;; 1. Keep compose key (the small menu icon (☰) or the text "Menu") option if
-   ;; needed:
-   ;; Compose → a → e → æ
-   ;; Compose → s → s → ß
-   ;; Compose → ^ → e → ê
+   ;; 1. Use compose key, small menu icon (☰) or the text "Menu":
+   ;; While holding ☰,  press 'a', release 'a' and then press 'e'):
+   ;; Compose → a → e → æ   ; A-E entrelacé, ash
+   ;; Compose → s → s → ß   ; scharfes s
+   ;; Compose → ^ → e → ê   ; accent circonflexe
+   ;; Compose → , → c → ç   ; cedille
    ;;
    ;; 2. Switch layouts by pressing both Ctrl-keys
    #:options '("compose:menu,grp:ctrls_toggle")))
