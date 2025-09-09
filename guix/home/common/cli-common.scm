@@ -5,10 +5,22 @@
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (utils)
-  #:export (cli-command))
+  #:export (exec-full-command cli-command))
 
 (define m (module-name-for-logging))
 (evaluating-module)
+
+(define* (exec-full-command full-command)
+  ;; (apply exec-system* full-command)
+  (let* [(ret (exec full-command))]
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          ;; process output
+          (map (partial format #t "~a\n") output)
+          ret)
+        (begin
+          (error-command-failed m)
+          *unspecified*))))
 
 (define* (cli-command
           #:key (verbose #f) utility gx-dry-run params
@@ -31,17 +43,7 @@ Examples:
           (format #t "~a TODO implement --gx-dry-run\n" f))
         ((comp
           ;; (lambda (p) (format #t "~a done\n" f) p)
-          (lambda* (full-command)
-            ;; (apply exec-system* full-command)
-            (let* [(ret (exec full-command))]
-              (if (= 0 (car ret))
-                  (let* ((output (cdr ret)))
-                    ;; process output
-                    (map (partial format #t "~a\n") output)
-                    ret)
-                  (begin
-                    (error-command-failed m)
-                    *unspecified*))))
+          exec-full-command
           ;; (lambda (p) (format #t "~a 0. ~a\n" f p) p)
           )
          (append (list params) args)))))
