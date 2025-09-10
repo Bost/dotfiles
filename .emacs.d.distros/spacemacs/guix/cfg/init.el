@@ -2435,9 +2435,9 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               (bind-keys :map debugger-mode-map
                          ("C-g" . debugger-quit))))
 
-  (defun my=fn-kbind-scheme (map)
+  (defun my=fn-kbind-scheme (keymap)
     (lambda ()
-      (bind-keys :map map
+      (bind-keys :map keymap
                  ("C-s-\\" . tw-racket-toggle-reader-comment-current-sexp)
                  ("C-s-m"  . tw-scheme-insert-log)
                  ("C-s-p"  . tw-scheme-insert-log)
@@ -2445,15 +2445,25 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ;; ("s-;"    . tw-racket-toggle-reader-comment-current-sexp)
                  ("s-\\"   . tw-racket-toggle-reader-comment-fst-sexp-on-line)
                  ("s-d"    . geiser-eval-definition)
-                 ("s-e"    . geiser-eval-last-sexp)
-                 ("s-x"    . geiser-mode-switch-to-repl))
-      (bind-chords :map map
+                 ("s-e"    . geiser-eval-last-sexp))
+      ;; ~s-x~ Switch back and forth between the REPL and code buffer
+      (cond
+       ((equal keymap geiser-mode-map)
+        (bind-keys :map keymap ("s-x" . geiser-mode-switch-to-repl)))
+       ((equal keymap geiser-repl-mode-map)
+        (bind-keys :map keymap ("s-x" . geiser-guile-switch)))
+       (t
+        (error "Unrecognized keymap: %s" keymap)))
+      (bind-chords :map keymap
                    ("le" . tw-scheme-insert-let*)
                    ("pr" . tw-scheme-insert-log))))
 
-  (defun my=fn-kbind-racket (map)
+  (defun my=fn-kbind-racket (keymap)
     (lambda ()
-      (bind-keys :map map
+      (message "[my=fn-kbind-racket] mode %s; repl-mode %s"
+               (equal keymap racket-mode-map)
+               (equal keymap racket-repl-mode-map))
+      (bind-keys :map keymap
                  ("<C-s-delete>" . my=racket-repl-clear)
                  ("C-s-\\" . tw-racket-toggle-reader-comment-current-sexp)
                  ("C-s-p"  . tw-racket-insert-log)
@@ -2463,7 +2473,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ("s-e"    . racket-eval-last-sexp)
                  ("s-o"    . racket-run-and-switch-to-repl)
                  ("s-x"    . racket-repl))
-      (bind-chords :map map
+      (bind-chords :map keymap
                    ("pr" . tw-racket-insert-log))))
 
   ;; (defun set-frame-theme (theme)
