@@ -9,6 +9,10 @@
             smart-fifth
             smart-take
             smart-drop
+;;; TODO Consider moving smart-length and smart-append to a different module,
+;;; since they don't have equivalents in (srfi srfi-1).
+            smart-length
+            smart-append
             ))
 
 (define (smart-first obj)
@@ -126,6 +130,33 @@
      (drop obj n))
     (else
      (error "not a list or string" obj))))
+
+(define (smart-length obj)
+  (cond
+   ((string? obj)
+    (string-length obj))
+   ((list? obj)
+    (length obj))
+   ((pair? obj)
+    2)
+   (else
+    (error "not a list or string or pair" obj))))
+
+(define (smart-append . args)
+"(apply smart-append (list \"1\" \"2\" \"3\"))           ; => \"123\"
+(apply smart-append (list (list 1 2) (list 3 4))) ; => (1 2 3 4)
+(apply symbol-append (list 'a 'b))                ; => ab
+
+(apply smart-append (list (cons 1 2) (cons 3 4))) ; => exception"
+  (cond
+   ((list? (car args))
+    (apply append args))
+   ((string? (car args))
+    (apply string-append args))
+   ((symbol? (car args))
+    (apply symbol-append args))
+   (else
+    (error "First object not a list or string" args))))
 
 #|
 ;; Example usage:
