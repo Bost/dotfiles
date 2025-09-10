@@ -16,11 +16,9 @@
   #:use-module (ice-9 popen)
 ;;; (ice-9 readline) requires `guix install guile-readline'.
   ;; #:use-module (ice-9 readline)
-  #:use-module (ice-9 rdelim) ;; read-line
-  ;; string-match
-  #:use-module (ice-9 regex)
-  ;; delete-duplicates
-  #:use-module (srfi srfi-1)
+  #:use-module (ice-9 rdelim) ; read-line
+  #:use-module (ice-9 regex)  ; regexp and string matching
+  #:use-module (srfi srfi-1)  ; list-processing procedures
   ;; #:use-module (guix build utils) ;; invoke - not needed
   #:use-module (ice-9 pretty-print)
 
@@ -1272,5 +1270,8 @@ that many from the end."
   "Check if path is a symbolic link"
   (and (file-exists? path)
        (eq? (stat:type (lstat path)) 'symlink)))
+
+(define-public split-on-whitespace string-tokenize)
+;; (split-on-whitespace "a b\tc\nd") => ("a" "b" "c" "d")
 
 (module-evaluated)
