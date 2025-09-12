@@ -1,4 +1,4 @@
-;;; packages.el --- my=tweaks layer packages file for Spacemacs.
+;;; packages.el --- my-tweaks layer packages file for Spacemacs.
 ;;
 ;; Copyright (c) 2012-2022 Sylvain Benner & Contributors
 ;;
@@ -29,18 +29,18 @@
 ;;
 ;;
 ;; Briefly, each package to be installed or configured by this layer should be
-;; added to `my=tweaks-packages'. Then, for each package PACKAGE:
+;; added to `my-tweaks-packages'. Then, for each package PACKAGE:
 ;;
 ;; - If PACKAGE is not referenced by any other Spacemacs layer, define a
-;;   function `my=tweaks/init-PACKAGE' to load and initialize the package.
+;;   function `my-tweaks/init-PACKAGE' to load and initialize the package.
 
 ;; - Otherwise, PACKAGE is already referenced by another Spacemacs layer, so
-;;   define the functions `my=tweaks/pre-init-PACKAGE' and/or
-;;   `my=tweaks/post-init-PACKAGE' to customize the package as it is loaded.
+;;   define the functions `my-tweaks/pre-init-PACKAGE' and/or
+;;   `my-tweaks/post-init-PACKAGE' to customize the package as it is loaded.
 
 ;;; Code:
 
-(defconst my=tweaks-packages
+(defconst my-tweaks-packages
   '(
     ;; (equake :variables equake-default-shell 'term)
     (copy-sexp
@@ -63,7 +63,7 @@
      (recipe :fetcher github :repo "Bost/tweaks")
      )
     )
-  "The list of Lisp packages required by the my=tweaks layer.
+  "The list of Lisp packages required by the my-tweaks layer.
 
 Each entry is either:
 
@@ -91,18 +91,18 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
 
-(defun my=tweaks/post-init-equake ()
+(defun my-tweaks/post-init-equake ()
   ;; Under xfce4-keyboard-settings -> Application shortcuts
   ;; set: emacsclient -n -e '(equake-invoke)'
   (equake-mode))
 
-(defun my=tweaks/init-jump-last ()
+(defun my-tweaks/init-jump-last ()
   (use-package jump-last))
 
-(defun my=tweaks/init-kill-buffers ()
+(defun my-tweaks/init-kill-buffers ()
   (use-package kill-buffers))
 
-(defun my=tweaks/post-init-drag-stuff ()
+(defun my-tweaks/post-init-drag-stuff ()
   (use-package drag-stuff
     ;; :diminish drag-stuff-mode
     ;; hack to stop drag-stuff setting key mappings over ones our existing
@@ -112,10 +112,10 @@ Each entry is either:
     ;; activate key-bindings <M-up> <M-down> <M-right> <M-left>
     (drag-stuff-define-keys)))
 
-(defun my=tweaks/init-copy-sexp ()
+(defun my-tweaks/init-copy-sexp ()
   ;; :config (cs/initialize-smartparens) is not needed, since there's
   ;; `eval-after-load' in the package
   (use-package copy-sexp))
 
-(defun my=tweaks/init-tweaks ()
+(defun my-tweaks/init-tweaks ()
   (use-package tweaks))
