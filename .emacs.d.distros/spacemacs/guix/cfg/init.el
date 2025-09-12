@@ -368,9 +368,9 @@ This function should only modify configuration layer settings."
      ;; `g r' menu in Emacs normal state
      multiple-cursors
 
-     ;; Direct jump with ~g f~ $dotf/.emacs.d.spacemacs/my=tweaks/funcs.el doesn't work.
+     ;; Direct jump with ~g f~ $dotf/.emacs.d.spacemacs/my-tweaks/funcs.el doesn't work.
      ;; The '=' in the file-path makes problems.
-     my=tweaks ;; See `dotspacemacs-configuration-layer-path'.
+     my-tweaks ;; See `dotspacemacs-configuration-layer-path'.
 
      octave
 
