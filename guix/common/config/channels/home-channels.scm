@@ -26,8 +26,15 @@
           (append
            (list
             ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
-            ;; (channel-guixrus)
-            (channel-hask-clj)
+            (channel-guixrus ;; whereiseveryone
+             ;; 16 sept. 2025 12:33:23
+             ;; #:commit "83321ce5d23109f143413490aa5acf04361c8076"
+             )
+            (channel-hask-clj
+             ;; 16 sept. 2025 12:33:23
+             ;; #:commit "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+
+             )
             ;; (channel-games)
             ;; (channel-home-service-dwl-guile)
             ;; (channel-flat)
@@ -37,6 +44,9 @@
 
              ;; 04 sept. 2025 15:21:12
              ;; #:commit "5c7b61177d0c71c628687c6e0aa9bf29bbb2f836"
+
+             ;; 16 sept. 2025 12:33:23
+             ;; #:commit "8eacfc4fece97e9fbff4ecaf7bb3cb181b0c12ca"
              )
             )
            lst)
@@ -55,8 +65,12 @@
     ;; #:guix-commit "6bffc03be9dcf4711b5d1e9c95aba340403b35df"
 
     ;; 11 sept. 2025 16:14:49
-    #:guix-commit "fe2ed12e66097ee2befc55d7ae88e2a7c19f9e72"
-    #:nonguix-commit "d096df03564783372b315fe6c179655c2c337d5a"
+    ;; #:guix-commit "fe2ed12e66097ee2befc55d7ae88e2a7c19f9e72"
+    ;; #:nonguix-commit "d096df03564783372b315fe6c179655c2c337d5a"
+
+    ;; 16 sept. 2025 12:33:23
+    #:guix-commit "de41613d273106b88eeed4af72c23a57cfd18442"
+    #:nonguix-commit "df4e6ed9fe917f004357d931e210e328e348bb38"
     )))
 (testsymb 'home-channels)
 
