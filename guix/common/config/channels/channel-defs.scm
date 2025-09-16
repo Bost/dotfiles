@@ -26,6 +26,7 @@
             channel-guixrus
             channel-guix
             channel-guix-past
+            channel-guix-android
             syst-channels))
 
 (define m (module-name-for-logging))
@@ -261,6 +262,21 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
         (openpgp-fingerprint
          "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5"))))))
 (testsymb 'channel-guix-past)
+
+(define* (channel-guix-android #:key (commit #f))
+  (let* [(channel-name 'guix-android)]
+    (when commit
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
+   (channel
+    (name channel-name)
+    (url "https://framagit.org/tyreunom/guix-android.git")
+    (commit commit)
+    (introduction
+     (make-channel-introduction
+      "d031d039b1e5473b030fa0f272f693b469d0ac0e"
+      (openpgp-fingerprint
+       "1EFB 0909 1F17 D28C CBF9  B13A 53D4 57B2 D636 EE82"))))))
+(testsymb 'channel-guix-android)
 
 (define* (syst-channels #:key (guix-commit #f) (nonguix-commit #f))
   "Channels needed for the Guix-system configuration
