@@ -25,6 +25,10 @@
       (if (or (is-system-edge) (is-system-ecke))
           (append
            (list
+            (channel-guix-android
+             ;; 16 sept. 2025 13:50 (roughly)
+             ;; #:commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+             )
             ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
             (channel-guixrus ;; whereiseveryone
              ;; 16 sept. 2025 12:33:23
