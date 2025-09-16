@@ -191,8 +191,8 @@ Examples:
                     compose-commands-guix-shell))]
     (if gx-dry-run
         (begin
-          (format #t "~~a monad: ~a\n" f monad)
-          (format #t "~~a TODO implement --gx-dry-run\n" f))
+          (format #t "~a monad: ~a\n" f monad)
+          (format #t "~a TODO implement --gx-dry-run\n" f))
         (let* [(dst-src (make-pair-dst-src params))
                (dst (car dst-src))
                (src (cdr dst-src))]
