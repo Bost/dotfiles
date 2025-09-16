@@ -506,6 +506,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    curl
    dos2unix
    drawing     ; basic image editor
+   fastboot    ; Android image flasher: upload file system images
    ffmpeg
    file        ; File type guesser
    flatpak
