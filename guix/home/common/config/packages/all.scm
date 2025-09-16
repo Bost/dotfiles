@@ -181,7 +181,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    librewolf ; Custom version of Firefox. Better privacy, security and freedom
    qemu      ; Machine emulator and virtualizer ;; 688 MiB
 
-   ;; ungoogled-chromium ; 285MiB
+   ;; ungoogled-chromium ; 285MiB; supports WebUSB; doesn't start
 
    ;; openjdk-17.0.3  199.5MiB
    ;; openjdk-17.0.3-doc  9.6MiB
@@ -192,9 +192,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; jdk.javadoc.doclet.Doclet
    (list openjdk "jdk")
 
-   ;; Java development kit. Provides OpenJDK built with the IcedTea build
-   ;; harness
-   ;; icedtea ; ~240MiB
+   ;; Java development kit. OpenJDK built with IcedTea build harness
+   ;; icedtea
+   ;; ; ~240MiB
    ))
 (testsymb 'large-packages-edge-ecke)
 
