@@ -23,6 +23,7 @@
 
   ;; Following is needed b/c an inferior version of signal-desktop is used
   #:use-module (nongnu packages messaging)
+  #:use-module (nongnu packages firmware) ; fwupd-nonfree
 
   #:use-module (srfi srfi-1)  ; list-processing procedures
   ;; simple & compact notation for specializing any subset of the parameters of
@@ -48,7 +49,7 @@
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
- file-systems librewolf libcanberra security-token
+ file-systems librewolf libcanberra security-token firmware
  )
 
 (define (email-in-emacs-packages)
@@ -514,6 +515,15 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    font-gnu-freefont
    font-gnu-unifont
    fuse
+
+   ;; See
+   ;; https://forum.systemcrafters.net/t/updating-firmware-with-fwupdmgr/1766
+   ;; https://issues.guix.gnu.org/60065
+   ;; https://www.reddit.com/r/GUIX/comments/xjjmtr/fwupd_gives_another_service_has_claimed_the_dbus/
+   fwupd ; Daemon to allow session software to update firmware
+   fwupd-nonfree
+   fwupd-efi ; EFI executable used by uefi-capsule plugin in fwupd
+   ;; dfu-util ; download / upload firmware to / from device
 
 ;;; In Emacs the "native-compiler-error (libgccjit.so: error invoking
 ;;; gcc driver)":
