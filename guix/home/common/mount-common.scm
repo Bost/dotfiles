@@ -15,7 +15,7 @@ udisksctl mount --block-device=(lsblk --output PATH,LABEL | rg toshiba | awk '{p
 ;; `my-procedure` from current module
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (emacs-common) -s
+-L ./guix/common -L ./guix/home/common -e (mount-common) -s
 !#
 
 This file is not meant to be executed directly, thus no main functions is
@@ -38,7 +38,7 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
        ;; udisksctl executed w/o specified device-lable reports
        ;;   Error looking up object for device
        ;; and returns the retcode 1
-       (partial format #t "udisksctl ~a --block-device=~a")
+       (partial format #f "udisksctl ~a --block-device=~a" command)
        (lambda (ret)
          (let* [(retval (car ret))]
            (if (= 0 retval)

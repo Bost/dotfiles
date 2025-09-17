@@ -16,9 +16,12 @@
   #:use-module (ice-9 regex)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-26)
-  #:export (guix-package
+  #:export (
+            guix-package
             guix-list-installed
             guix-install
+            guix-remove
+            guix-search
             ))
 
 #|
@@ -51,10 +54,10 @@ cd $dotf
         ((comp
           (partial filter-map
                    (lambda (entry)
-                     (let ((profile-path (string-append extra-dir "/" entry "/" entry)))
-                       (if (file-exists-and-readable?
-                            (string-append profile-path "/etc/profile"))
-                           (string-append profile-path "/etc/profile")
+                     (let* [(profile-path (str extra-dir "/" entry "/" entry))
+                            (profile (str profile-path "/etc/profile"))]
+                       (if (file-exists-and-readable? profile)
+                           profile
                            #f))))
           (lambda (dir) (scandir dir (lambda (entry)
                                        (not (member entry '("." ".."))))))
@@ -93,12 +96,12 @@ cd $dotf
     (partial map string-tokenize))
    output))
 
-(define (string-pad-right str width)
+(define (string-pad-right str-to-pad width)
   "Helper function to pad strings for alignment"
-  (let ((padding (- width (string-length str))))
+  (let ((padding (- width (string-length str-to-pad))))
     (if (> padding 0)
-        (string-append str (make-string padding #\space))
-        str)))
+        (str str-to-pad (make-string padding #\space))
+        str-to-pad)))
 
 (define (print-package-table packages)
   (map
@@ -156,6 +159,28 @@ Usage:
         )))
 (testsymb 'guix-list-installed)
 
+;; Options
+(define --search "--search")
+(define --install "--install")
+(define --remove "--remove")
+
+(define* (guix-package-alias alias options packages)
+  "Wrapper around `guix package --package-alias ...'
+Usage:
+(guix-package-alias \"--install\" \"--dry-run\" \"emacs\")
+(guix-package-alias \"--remove\" \"--dry-run\" \"emacs\")
+(guix-package-alias \"--dry-run\" (list \"emacs\" \"coreutils\"))
+(guix-package-alias (list \"--dry-run\" \"--fallback\") \"coreutils\")
+"
+  (define f (format #f "~a [guix-package-alias]" m))
+  ;; (format #t "~a Starting…\n" f)
+  (let* [(packages (if (pair? packages) (string-join packages) packages))
+         (options (if (pair? options) (string-join options) options))]
+    (guix-package options
+                  (if (string= alias --search)
+                      (format #f "~a=~a" alias packages)
+                      (format #f "~a ~a" alias packages)))))
+
 (define* (guix-install options packages)
   "Wrapper around `guix package --install ...'
 Usage:
@@ -165,13 +190,37 @@ Usage:
 "
   (define f (format #f "~a [guix-install]" m))
   ;; (format #t "~a Starting…\n" f)
-  (let* [(packages (if (pair? packages) (string-join packages) packages))
-         (options (if (pair? options) (string-join options) options))]
-    (guix-package options (format #f "--install ~a" packages))))
+  (guix-package-alias --install options packages))
 (testsymb 'guix-install)
+
+(define* (guix-remove options packages)
+  "Wrapper around `guix package --remove ...'
+Usage:
+(guix-remove \"--dry-run\" \"emacs\")
+(guix-remove \"--dry-run\" (list \"emacs\" \"coreutils\"))
+(guix-remove (list \"--dry-run\" \"--fallback\") \"coreutils\")
+"
+  (define f (format #f "~a [guix-remove]" m))
+  ;; (format #t "~a Starting…\n" f)
+  (guix-package-alias --remove options packages))
+(testsymb 'guix-remove)
+
+(define* (guix-search options packages)
+  "Wrapper around `guix package --search ...'
+Usage:
+(guix-search \"--dry-run\" \"emacs-helm-org-contacts\")
+(guix-search \"--dry-run\" (list \"emacs-helm-org-contacts \"coreutils\"))
+(guix-search (list \"--dry-run\" \"--fallback\") \"coreutils\")
+"
+  (define f (format #f "~a [guix-search]" m))
+  ;; (format #t "~a Starting…\n" f)
+  (guix-package-alias --search options packages))
+(testsymb 'guix-search)
 
 (define-public (main args) (guix-package (cdr args)))
 
 (module-evaluated)
 
 ;; In Emacs, see input history using: (comint-dynamic-list-input-ring)
+
+

@@ -379,31 +379,36 @@ a list of files to search through."
 (define (git-command . args) (apply (partial format #f "git -c color.ui=always ~a") args))
 
 (define (basic-cli-utils-service)
+  (define f (format #f "~a [basic-cli-utils-service]" m))
+  ;; (call/cc (lambda (exit)))
   ((comp
     (partial map (comp
                   (partial apply service-file-utils)
                   (partial append (list #:verbose #f
                                         #:fun 'cli-command
-                                        #:extra-modules '((cli-common)))))))
-
+                                        #:extra-modules '((cli-common))))))
+    (partial append
+             ((comp
+               ;; (lambda (v) (format #t "~a 2 ~a\n" f v) v)
+               (partial fold append (list))
+               ;; (lambda (v) (format #t "~a 1 ~a\n" f v) v)
+               (partial map (lambda (n)
+                              (list
+                               (list #:utility (str "rg" n)
+                                     #:params (str "rg --ignore-case --pretty --context=" n))
+                               (list #:utility (str "rgt" n)
+                                     #:params (str "rg --ignore-case --pretty --type=lisp --context=" n))))))
+              (list "2" "4" "6" "8"))))
    (list
     (list #:utility "gu"      #:params "guix")
 
-    ((comp
-      flatten
-      (partial map (lambda (n)
-                     (list
-                      (list #:utility (str "rg" n)
-                            #:params (str "rg --pretty -C" n))
-                      (list #:utility (str "rgt" n)
-                            #:params (str "rg --pretty -t lisp -C" n))))))
-     (list "2" "4" "6" "8"))
-
-    (list #:utility "rgt"      #:params "rg --pretty -t lisp"                 #:desc "Rigprep LISP files")
+    (list #:utility "rgt"      #:params "rg --ignore-case --pretty --type=lisp" #:desc "Rigprep LISP files")
     (list #:utility "f"        #:params "fd --color=always"                   #:desc "Find entries in the filesystem")
 
     ;; always lists to the end of file. I guess I need to use something else than `exec'
     (list #:utility "c"        #:params "bat --force-colorization"            #:desc "Better cat")
+    (list #:utility "b"        #:params "bat --force-colorization"            #:desc "Better cat")
+    (list #:utility "cl"       #:params "xsel --clipboard"                    #:desc "Show clipboard content")
 
     (list #:utility "l"        #:params (eza-command "")                      #:desc "List")
     (list #:utility "lh"       #:params (eza-command "--header")              #:desc "List with headers")
