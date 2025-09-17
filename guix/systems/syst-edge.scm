@@ -209,7 +209,7 @@
               ))
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))
 
-        (let [(linux-version "6.8.0-79")]
+        (let [(linux-version "6.8.0-83")]
           (menu-entry
            (label "Linux Mint 22.2 Zara")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
