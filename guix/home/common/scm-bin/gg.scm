@@ -11,7 +11,7 @@
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/gg.scm 
+./guix/home/common/scm-bin/gg.scm
 
 |#
 
