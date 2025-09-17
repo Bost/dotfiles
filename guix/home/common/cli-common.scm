@@ -7,6 +7,17 @@
   #:use-module (utils)
   #:export (exec-full-command cli-command))
 
+#|
+
+#!/usr/bin/env -S guile \\
+-L ./guix/common -L ./guix/home/common -e (cli-common) -s
+!#
+
+cd $dotf
+./guix/home/common/cli-common.scm 'define\* \(exec'
+|#
+
+
 (define m (module-name-for-logging))
 (evaluating-module)
 
@@ -28,8 +39,12 @@
   "The ARGS are being ignored.
 Examples:
 (cli-command #:gx-dry-run #t #:params \"ls -la\" \"rest\" \"args\")
-(cli-command                 #:params \"ls -la\" \"rest\" \"args\")"
-  (define f (format #f "~a [git-command]" m))
+(cli-command                 #:params \"ls -la\" \"rest\" \"args\")
+
+(cli-command #:verbose #t #:params \"rg --pretty -t lisp\" \"define\\\\* \\\\(exec\")
+(cli-command              #:params \"rg --pretty -t lisp\" \"define\\\\* \\\\(exec\")
+"
+  (define f (format #f "~a [cli-command]" m))
   (when verbose
     (format #t "~a utility    : ~a\n" f utility)
     (format #t "~a gx-dry-run : ~a\n" f gx-dry-run)
@@ -39,13 +54,28 @@ Examples:
          (args (remove-all-elements args elements))]
     (if gx-dry-run
         (begin
-          (format #t "~a monad: ~a\n" f monad)
+          ;; <stdin>:1494:40: warning: possibly unbound variable `monad'
+          ;; (format #t "~a monad: ~a\n" f monad)
           (format #t "~a TODO implement --gx-dry-run\n" f))
         ((comp
           ;; (lambda (p) (format #t "~a done\n" f) p)
           exec-full-command
+          ;; (lambda (p) (format #t "~a 2. ~a\n" f p) p)
+          (partial append (list params))
+          ;; (lambda (p) (format #t "~a 1. ~a\n" f p) p)
+          (partial map (partial format #f "~s"))
           ;; (lambda (p) (format #t "~a 0. ~a\n" f p) p)
           )
-         (append (list params) args)))))
+         args))))
+
+(define-public (main . args)
+  (format #t "~a\n" args)
+  (format #t "car: ~a\n" (car args))
+  (format #t "cdr: ~a\n" (cdr args))
+  ;; (format #t "cadr: ~a\n" (cadr args)) ;; doesn't work
+  (format #t "caar: ~a\n" (caar args))
+  (format #t "cdar: ~a\n" (cdar args))
+  (format #t "cadar: ~a\n" (cadar args))
+  (cli-command #:verbose #t #:params "rg --pretty -t lisp" (cadar args)))
 
 (module-evaluated)

@@ -2,7 +2,7 @@
 # directory within that subshell. So `gicl` for bash it it implemented as a
 # function in .bashrc. See home-base.scm
 function gicl --description "git clone … & cd <checkoutDir>"
-    gicl $argv
+    $HOME/scm-bin/gicl $argv
     or return
 
     # Last argument (repo URL)
@@ -25,8 +25,8 @@ end
 # rm -rf /tmp/foo/ /tmp/bar/
 # mkcd /tmp/foo
 ## the '.io' is cut off from the 'ambrevar.gitlab.io':
-# gcl https://gitlab.com/ambrevar/ambrevar.gitlab.io
+# gicl https://gitlab.com/ambrevar/ambrevar.gitlab.io
 #
 # mkcd /tmp/bar
 ## clone to the correct directory works; 'cd ambrevar.gitlab.io' fails:
-# gcl /tmp/foo/ambrevar.gitlab.io
+# gicl /tmp/foo/ambrevar.gitlab.io
