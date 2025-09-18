@@ -481,9 +481,11 @@ a list of files to search through."
     ;; override values from configuration files. The <name> is expected in the
     ;; same format as listed by git config (subkeys separated by dots).
     (list #:utility "gs"       #:params (git-command "status"))
+    (list #:utility "reboot"   #:params "sudo reboot")
+    ;; WTF? a newline appears on top of the terminal before the prompt.
+    (list #:utility "wp"       #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
     )))
 (testsymb 'basic-cli-utils-service)
-
 
 (define (mount-utils-service)
   ((comp
