@@ -27,12 +27,14 @@
            (list
             (channel-guix-android
              ;; 16 sept. 2025 13:50 (roughly)
-             ;; #:commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+             ;; 18 sept. 2025 10:11:24
+             #:commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
              )
             ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
             (channel-guixrus ;; whereiseveryone
              ;; 16 sept. 2025 12:33:23
-             ;; #:commit "83321ce5d23109f143413490aa5acf04361c8076"
+             ;; 18 sept. 2025 10:11:24
+             #:commit "83321ce5d23109f143413490aa5acf04361c8076"
              )
             (channel-hask-clj
              ;; 16 sept. 2025 12:33:23
@@ -51,6 +53,9 @@
 
              ;; 16 sept. 2025 12:33:23
              ;; #:commit "8eacfc4fece97e9fbff4ecaf7bb3cb181b0c12ca"
+
+             ;; 18 sept. 2025 10:11:24
+             ;; #:commit "96d8f9cbc39780a90935d0f49edb372b77702875"
              )
             )
            lst)
@@ -73,7 +78,11 @@
     ;; #:nonguix-commit "d096df03564783372b315fe6c179655c2c337d5a"
 
     ;; 16 sept. 2025 12:33:23
-    #:guix-commit "de41613d273106b88eeed4af72c23a57cfd18442"
+    ;; #:guix-commit "de41613d273106b88eeed4af72c23a57cfd18442"
+    ;; #:nonguix-commit "df4e6ed9fe917f004357d931e210e328e348bb38"
+
+    ;; 18 sept. 2025 10:11:24
+    #:guix-commit "f62206ecd8605538b1fb18d038d3db33707a8535"
     #:nonguix-commit "df4e6ed9fe917f004357d931e210e328e348bb38"
     )))
 (testsymb 'home-channels)
