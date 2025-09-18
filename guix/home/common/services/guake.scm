@@ -72,7 +72,8 @@
       ;; /gnu/store/n85nrx9pphiw4wljc27rincdlrgzvg1q-guake-3.10
       (use-modules (utils) (fs-utils))
       ((comp
-        (partial invoke guake-bin)
+        (partial exec)
+        (partial list guake-bin)
         (partial str "--restore-preferences=")
         user-dotf)
        "/.config/guake.cfg")))
