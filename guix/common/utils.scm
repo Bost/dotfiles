@@ -318,7 +318,7 @@ Corresponds to `drop' in Clojure"
 (define* (dbg-exec prm #:key (verbose #t))
   "`pk', i.e. `peek' can be used instead of this function"
   (when verbose
-    (format #t "$ ~a\n" (if (list? prm) (string-join prm) prm)))
+    (format #t "§ ~a\n" (if (list? prm) (string-join prm) prm)))
   prm)
 
 (define* (error-command-failed #:rest args)
