@@ -21,7 +21,6 @@ cd $dotf
 (define (main args)
   ((comp
     exec-background
-    dbg
     (lambda (p) (append '("gitk") (if (null? p) '("--all") p)))
     cdr)
    args))
