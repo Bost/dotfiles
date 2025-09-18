@@ -21,8 +21,7 @@ cd $dotf
 (define (main args)
   ((comp
     exec-background
-    dbg
-    (lambda (p) (append '("git" "gui") p '("&")))
+    (partial append (list "git" "gui"))
     cdr)
    args))
 (testsymb 'main)
