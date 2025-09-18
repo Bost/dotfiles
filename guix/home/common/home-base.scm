@@ -413,6 +413,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
               (list "git" "clone" "--origin=gitlab" repo-url dest-dir-repo)
               (list "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
                     (str github repo))))))))
+(testsymb 'obtain-and-setup-heroku)
 
 (define (projects-heroku)
   (list
@@ -432,11 +433,16 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
         (format #t "~a TODO clone ~a to ~a\n" m repo-url dest-dir-repo)
         #;
         (git-clone "--origin=vojto" repo-url dest-dir-repo)))))
+(testsymb 'obtain-and-setup-heroku)
 
 (define-public (install-all-projects)
-  ;; (format #t "~a projects to install: ~a\n" m (length (projects)))
+  "The `sgxr' pulls only from syst-channels, so make sure after the `sgxr' the
+`gxp' is executed so that all channels become available again. Otherwise the
+`gxhre' fails to execute."
+  (define f (format #f "~a [install-all-projects]" m))
+  ;; (format #t "~a projects to install: ~a\n" f (length (projects)))
   (map (lambda (project)
-         ;; (format #t "~a project: ~a\n" m project)
+         ;; (format #t "~a project: ~a\n" f project)
          (let [(dest-dir (car project))]
            (map (partial obtain-and-setup dest-dir) (cdr project))))
        (projects))
@@ -468,35 +474,35 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
 ;;      (list 'environment-vars-edge-ecke 'environment-vars))))
 
 (define-public (home-env-services list-separator)
-  (let* [(f (format #f "~a [home-env-services]" m))]
-    ;; (format #t "~a Starting…\n" f)
-    ((comp
-      (lambda (v) (format #t "~a done\n" f) v)
-      (partial append (non-env-var-services))
-      ;; (lambda (v)
-      ;;   ;; (map (partial format #t "~a 1:\n~a\n" f) v)
-      ;;   ;; (format #t "~a 1 (length v) : ~a\n" f (length v))
-      ;;   v)
-      list
-      environment-variables-service
-      (partial append (environment-vars-edge-ecke list-separator))
-      (partial append (environment-vars           list-separator))
-      ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
-      )
-     (list))))
+  (define f (format #f "~a [home-env-services]" m))
+  ;; (format #t "~a Starting…\n" f)
+  ((comp
+    (lambda (v) (format #t "~a done\n" f) v)
+    (partial append (non-env-var-services))
+    ;; (lambda (v)
+    ;;   ;; (map (partial format #t "~a 1:\n~a\n" f) v)
+    ;;   ;; (format #t "~a 1 (length v) : ~a\n" f (length v))
+    ;;   v)
+    list
+    environment-variables-service
+    (partial append (environment-vars-edge-ecke list-separator))
+    (partial append (environment-vars           list-separator))
+    ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
+    )
+   (list)))
 (testsymb 'home-env-services)
 
 (define-public (home-env-edge-ecke list-separator)
-  (let* [(m (format #f "~a [home-env-edge-ecke]" m))]
-    ;; (format #t "~a Starting…\n" m)
-    (let* [(home-env-record
-            (home-environment
-              ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
-              ;; (packages (home-packages-to-install))
-              (services
-               (home-env-services list-separator))))]
-      ;; (format #t "~a done. type: ~a\n" m (test-type home-env-record))
-      home-env-record)))
+  (define f (format #f "~a [home-env-edge-ecke]" m))
+  ;; (format #t "~a Starting…\n" f)
+  (let* [(home-env-record
+          (home-environment
+            ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
+            ;; (packages (home-packages-to-install))
+            (services
+             (home-env-services list-separator))))]
+    ;; (format #t "~a done. type: ~a\n" f (test-type home-env-record))
+    home-env-record))
 (testsymb 'home-env-edge-ecke)
 
 (module-evaluated)
