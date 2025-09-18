@@ -417,7 +417,6 @@ a list of files to search through."
                                          (getcwd))                            #:desc "List with full paths")
 
     (list #:utility "susp"     #:params "xfce4-session-logout --suspend" #:desc "Suspend to RAM")
-    (list #:utility "ext"      #:params "extract"                        #:desc "Extract / uncompress")
 
     ;; pwr and prw do the same (w and r are swapped)
     (list #:utility "pwr"      #:params "chmod +rw")
@@ -538,6 +537,7 @@ a list of files to search through."
 (define (direct-utils-service)
   (map (partial apply service-file-general)
        (list
+        (list #:utility "extract"               #:desc "extract-uncompress")
         ;; gg and gk call exec-background
         (list #:utility "gg"                    #:desc "git-gui")
         (list #:utility "gk"                    #:desc "git-repo-browser")
