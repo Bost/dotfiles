@@ -510,8 +510,6 @@ a list of files to search through."
                   (partial append (list #:verbose #f
                                         #:extra-modules '((emacs-common)))))))
    (list
-    (list #:utility "ep" #:fun 'set-editable     #:params #f)
-
     (list #:utility  "d" #:fun 'create-launcher  #:params develop)
     (list #:utility "ed" #:fun 'set-editable     #:params develop)
     (list #:utility "kd" #:fun 'pkill-server     #:params develop)
