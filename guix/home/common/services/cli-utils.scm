@@ -483,6 +483,7 @@ a list of files to search through."
     (list #:utility "reboot"   #:params "sudo reboot")
     ;; WTF? a newline appears on top of the terminal before the prompt.
     (list #:utility "wp"       #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
+    (list #:utility "loff"     #:params "xfce4-session-logout --logout --fast")
     )))
 (testsymb 'basic-cli-utils-service)
 
