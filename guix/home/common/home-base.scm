@@ -234,6 +234,9 @@
      ("dtfg"  . ,(user-dev "/dotfiles/guix"))
      ("dgx"   . ,(user-dev "/guix"))
      ("dgxp"  . ,(user-dev "/guix-packages"))
+     ("dspd"  . ,dspd)
+     ("dspg"  . ,dspg)
+     ("dspc"  . ,dspc)
      ("dgl"   . ,(user-dev "/guile"))
 
      ("user_full_name"    . ,user-full-name)
