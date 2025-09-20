@@ -475,6 +475,10 @@ a list of files to search through."
     (list #:utility "gist"     #:params (git-command "status"))
     (list #:utility "gists"    #:params (git-command "status --short"))
     (list #:utility "gita"     #:params (git-command "tag --sort version:refname"))
+    ;; #:desc "Show last 20 git logs: git lg-20 …'"
+    (list #:utility "lg"       #:params (git-command "lg-20"))
+    (list #:utility "lga"      #:params (git-command "lg"))
+
     ;;  -c <name>=<value>
     ;; Pass a configuration parameter to the command. The value given will
     ;; override values from configuration files. The <name> is expected in the
