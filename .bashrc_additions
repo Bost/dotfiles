@@ -79,9 +79,9 @@ dgx()     { cd "${dgx:?}"; }
 dgxp()    { cd "${dgxp:?}"; }
 dotf()    { cd "${dotf:?}"; }
 down()    { cd ~/Downloads; }
-dspc()    { cd ~/.emacs.d.distros/spacemacs/cycle/src; }
-dspd()    { cd ~/.emacs.d.distros/spacemacs/develop/src; }
-dspg()    { cd ~/.emacs.d.distros/spacemacs/guix/src; }
+dspd()    { cd "${dspd:?}"; }
+dspg()    { cd "${dspg:?}"; }
+dspc()    { cd "${dspc:?}"; }
 dtf()     { cd "${dtf:?}"; }
 dtfg()    { cd "${dtfg:?}"; }
 notes()   { cd "${dev:?}/notes/notes"; }
