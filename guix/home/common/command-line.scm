@@ -78,7 +78,7 @@ defined.
      [val-version
       (format #t "~a version <...>\n" utility)]
      [#t
-      (let* [(procedures '(cli-command
+      (let* [(procedures '(cli-command cli-background-command
                            pkill-server create-launcher set-editable
                            mount unmount eject))]
         (if (member? fun procedures)
