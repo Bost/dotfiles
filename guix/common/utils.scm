@@ -10,7 +10,6 @@
 ;;;   1. service-file -> with-imported-modules
 ;;;   2. common-modules
   #:use-module (srfi-1-smart)
-  #:use-module (guix build utils)
   #:use-module (ice-9 match) ;; match
   ;; open-input-pipe
   #:use-module (ice-9 popen)
@@ -824,6 +823,7 @@ or the CLIENT-CMD if some process ID was found."
 ;;        (export name)))))
 
 (define-public (mktmpfile)
+  "Create / Make temporary file under /tmp"
   ;; (tmpnam) could be used instead of all of this, however I get deprecation
   ;; warning sometimes
   ((comp
@@ -841,15 +841,16 @@ or the CLIENT-CMD if some process ID was found."
                               (copy-file copy-file)
                               keep-mtime? keep-permissions?)
   "Recursive version of install-file."
-  (mkdir-p destination)
-  (copy-recursively source
-                    (string-append destination "/" (basename destination))
-                    #:log log
-                    #:follow-symlinks? follow-symlinks?
-                    #:copy-file copy-file
-                    #:keep-mtime? keep-mtime?
-                    #:keep-permissions? keep-permissions?
-                    ))
+  ((@(guix build utils) mkdir-p) destination)
+  ((@(guix build utils) copy-recursively)
+   source
+   (string-append destination "/" (basename destination))
+   #:log log
+   #:follow-symlinks? follow-symlinks?
+   #:copy-file copy-file
+   #:keep-mtime? keep-mtime?
+   #:keep-permissions? keep-permissions?
+   ))
 
 (define-public (url? url)
   "Is URL a valid url?"
@@ -1055,7 +1056,8 @@ Requires:
 |#
 
 (define-public (package-output-paths one-or-many-packages)
-  "(package-output-paths (@(gnu packages emacs) emacs))
+  "Usage example:
+(package-output-paths (@(gnu packages emacs) emacs))
 => (\"/gnu/store/09a50cl6ndln4nmp56nsdvn61jgz2m07-emacs-29.1\")"
   (let [(connection ((@(guix store) open-connection)))]
     (map (comp
@@ -1223,8 +1225,8 @@ that many from the end."
 ;; (string-ops "Hello")  ; => (5 "HELLO" "hello")
 
 (define (build one-or-many-packages)
-  "Usage
-(build <package-name>)"
+  "Usage example:
+(build (@(bost gnu packages emacs-xyz) emacs-tweaks))"
   (let [(daemon ((@ (guix store) open-connection)))]
     (define (partial fun . args) (lambda x (apply fun (append args x))))
     (map (compose
