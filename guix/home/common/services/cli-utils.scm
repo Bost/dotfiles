@@ -489,12 +489,28 @@ a list of files to search through."
     ;; override values from configuration files. The <name> is expected in the
     ;; same format as listed by git config (subkeys separated by dots).
     (list #:utility "gs"       #:params (git-command "status"))
-    (list #:utility "reboot"   #:params "sudo reboot")
-    ;; WTF? a newline appears on top of the terminal before the prompt.
     (list #:utility "wp"       #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
-    (list #:utility "loff"     #:params "xfce4-session-logout --logout --fast")
     )))
 (testsymb 'basic-cli-utils-service)
+
+(define (basic-cli-utils-background-service)
+  (define f (format #f "~a [basic-cli-utils-background-service]" m))
+  ;; (call/cc (lambda (exit)))
+  ((comp
+    (partial map (comp
+                  (partial apply service-file-utils)
+                  (partial append (list #:verbose #f
+                                        #:fun 'cli-background-command
+                                        #:extra-modules '((cli-common)))))))
+   (list
+    ;; TODO must wait until sudo is entered. Only then the background command or
+    ;; disown can be executed
+    ;; (list #:utility "shut"     #:params "sudo shutdown")
+    ;; (list #:utility "reboot"   #:params "sudo reboot")
+    ;; WTF? a newline appears on top of the terminal before the prompt.
+    (list #:utility "loff"     #:params "xfce4-session-logout --logout --fast")
+    )))
+(testsymb 'basic-cli-utils-background-service)
 
 (define (mount-utils-service)
   ((comp
@@ -566,6 +582,7 @@ a list of files to search through."
        (append
         (search-notes-service)
         (basic-cli-utils-service)
+        (basic-cli-utils-background-service)
         (mount-utils-service)
         (emacs-cli-utils-service)
         (direct-utils-service)
