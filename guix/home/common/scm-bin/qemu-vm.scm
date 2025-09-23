@@ -27,6 +27,23 @@ environment variable is not available for the root user."
    ((@(ice-9 threads) current-processor-count))))
 
 #|
+TODO add to Guix Manual how to 'Enable SSH access to the Virtual Machine'
+
+From within the VM:
+```
+cd $HOME
+cp $(guix system describe | grep -oP 'configuration file: \K(.*)') config.scm
+chmod +w config.scm
+
+# Preview the edit:
+sed 's/;;(service openssh-service-type)/(service openssh-service-type)/' config.scm | grep openssh
+
+# Edit for real:
+sed --in-place 's/;;(service openssh-service-type)/(service openssh-service-type)/' config.scm | grep openssh
+```
+|#
+
+#|
 See https://www.qemu.org/docs/master/system/qemu-cpu-models.html
 How do I get AVX support in QEMU?
 https://superuser.com/a/454814
