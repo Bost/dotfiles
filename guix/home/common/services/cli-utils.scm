@@ -191,7 +191,7 @@ Example:
 (testsymb 'service-file-general)
 
 (define* (service-file-utils
-          #:key utility (verbose #f) fun params extra-modules
+          #:key utility (verbose #f) fun exec-fun params extra-modules
           #:allow-other-keys)
   "Create pairs like
   (\"scm-bin/g\" \"/gnu/store/...\")         ; for emacs CLI utils
@@ -225,6 +225,7 @@ a list of files to search through."
             (sexp `(handle-cli #:verbose ,verbose
                                #:utility ,utility
                                #:fun (quote ,fun)
+                               #:exec-fun (quote ,exec-fun)
                                ,@(if params `(#:params ,params) '())
                                (command-line)))]
        (with-imported-modules (append common-modules extra-modules)
@@ -498,6 +499,7 @@ a list of files to search through."
                   (partial apply service-file-utils)
                   (partial append (list #:verbose #f
                                         #:fun 'cli-command
+                                        #:exec-fun 'exec-foreground
                                         #:extra-modules '((cli-common))))))
     (partial
      append
@@ -518,14 +520,28 @@ a list of files to search through."
                   (partial apply service-file-utils)
                   (partial append (list #:verbose #f
                                         #:fun 'cli-background-command
+                                        #:exec-fun 'exec-background
                                         #:extra-modules '((cli-common)))))))
    (list
-    ;; TODO must wait until sudo is entered. Only then the background command or
-    ;; disown can be executed
-    ;; (list #:utility "shut"     #:params "sudo shutdown")
-    ;; (list #:utility "reboot"   #:params "sudo reboot")
     ;; WTF? a newline appears on top of the terminal before the prompt.
-    (list #:utility "loff"     #:params "xfce4-session-logout --logout --fast")
+    (list #:utility "loff"   #:params "xfce4-session-logout --logout --fast")
+    )))
+(testsymb 'basic-cli-utils-background-service)
+
+(define (sudo-cli-utils-service)
+  (define f (format #f "~a [sudo-cli-utils-service]" m))
+  ;; (call/cc (lambda (exit)))
+  ((comp
+    (partial map (comp
+                  (partial apply service-file-utils)
+                  (partial append (list #:verbose #f
+                                        #:fun 'cli-system-command
+                                        #:exec-fun 'exec-system
+                                        #:extra-modules '((cli-common)))))))
+   (list
+    (list #:utility "shut"   #:params "sudo shutdown")
+    ;; scm-bin/reboot overshadows the real reboot in the $PATH
+    (list #:utility "reboot" #:params "sudo /run/current-system/profile/sbin/reboot")
     )))
 (testsymb 'basic-cli-utils-background-service)
 
@@ -538,6 +554,7 @@ a list of files to search through."
                           (lbl (cadr fun-label-pair))]
                       (list #:verbose #f
                             #:fun fun
+                            #:exec-fun 'exec-foreground
                             #:params lbl
                             #:utility (str fun "-" lbl)
                             #:extra-modules '((mount-common))))))))
@@ -551,6 +568,7 @@ a list of files to search through."
     (partial map (comp
                   (partial apply service-file-utils)
                   (partial append (list #:verbose #f
+                                        #:exec-fun 'exec-foreground
                                         #:extra-modules '((emacs-common)))))))
    (list
     (list #:utility  "d" #:fun 'create-launcher  #:params develop)
@@ -600,6 +618,7 @@ a list of files to search through."
         (search-notes-service)
         (basic-cli-utils-service)
         (basic-cli-utils-background-service)
+        (sudo-cli-utils-service)
         (mount-utils-service)
         (emacs-cli-utils-service)
         (direct-utils-service)

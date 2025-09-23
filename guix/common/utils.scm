@@ -54,7 +54,9 @@
             evaluating-module
             exec
             exec-background
+            exec-foreground
             exec-system*
+            exec-system
             exec-system*-new
             exec-with-error-to-string
             if-let
@@ -427,9 +429,7 @@ $9 = 0 ;; return code"
       string-split-whitespace)
      args)))
 
-(define* (exec-or-dry-run-new
-          #:key exec-function (gx-dry-run #f) (verbose #f)
-          #:rest args)
+(define* (exec-or-dry-run-new #:key exec-function (gx-dry-run #f) (verbose #f) #:rest args)
   (let* [(f "[exec-or-dry-run-new]")
          (elements (list #:exec-function #:gx-dry-run #:verbose))
          (args (remove-all-elements args elements))
@@ -445,9 +445,7 @@ $9 = 0 ;; return code"
             (apply exec-function args) ;; TODO add #:verbose
             (exec-function args)))))
 
-(define* (exec-system*-new
-          #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t)
-          #:rest args)
+(define* (exec-system*-new #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t) #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
@@ -515,8 +513,11 @@ READER-FUNCTION on them. "
 #;(import (language wisp spec)) ;; whitespace lisp
 
 (define* (exec-background command #:key (verbose #t))
-  "Execute the COMMAND in background, i.e. in a detached process.
-COMMAND can be a string or a list of strings."
+  "Execute COMMAND in background, i.e. in a detached process.
+COMMAND can be a string or a list of strings.
+§ echo bar baz & disown
+bar baz
+$9 = 0 ;; <return-code>"
   ((comp
     (partial exec-or-dry-run system)
     (lambda (prm) (dbg-exec prm #:verbose verbose))
@@ -528,27 +529,56 @@ COMMAND can be a string or a list of strings."
     cmd->string)
    command))
 
-#;
-(define (background-system command)
-  " https://sourceware.org/legacy-ml/guile/1998-09/msg00228.html "
-  (let ((child-pid (primitive-fork)))
-    (if (zero? child-pid)
-        ;; Okay, we're the child process.  We need to catch any and
-        ;; all errors and exit, or else we'll end up with two Guile
-        ;; repls trying to read from the same terminal.
+(define* (exec-foreground command #:key (verbose #f))
+  "Execute COMMAND and returns its ret-code.
+E.g.:
+(exec-foreground \"echo bar baz\") ;; =>
+§ echo bar baz
+bar baz
+$9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
+  (let* [(ret (exec command #:verbose verbose))]
+    (if (= 0 (car ret))
+        (let* ((output (cdr ret)))
+          ;; process output
+          (map (partial format #t "~a\n") output)
+          ret)
         (begin
-          (catch #t
-            (lambda ()
-              ;; Put ourselves in our own process group.
-              (setpgid (getpid) (getpid))
-              ;; Try to execute the user's command.
-              (execl "/bin/sh" "sh" "-c" command))
-            (lambda args #f))
-          ;; If we return from the exec for any reason, it means it failed.
-          (quit 1))
-        ;; Okay, we're the parent process.  Return the child pid, in
-        ;; case we want to wait for it at some point in the future.
-        child-pid)))
+          (error-command-failed m)
+          *unspecified*))))
+
+(define* (exec-system command #:key (verbose #t))
+  "Execute COMMAND using `system' from the (guile) module and returns its ret-code.
+E.g.:
+(exec-system \"echo bar baz\") ;; =>
+§ echo bar baz
+bar baz
+$9 = 0 ;; <return-code>"
+  (let* [(f "[exec-system]")]
+    ((comp
+      (partial exec-or-dry-run system)
+      (lambda (prm) (dbg-exec prm #:verbose verbose)))
+     command)))
+
+;; (define (background-system command)
+;;   " https://sourceware.org/legacy-ml/guile/1998-09/msg00228.html "
+;;   (let ((child-pid (primitive-fork)))
+;;     (if (zero? child-pid)
+;;         ;; Okay, we're the child process.  We need to catch any and
+;;         ;; all errors and exit, or else we'll end up with two Guile
+;;         ;; repls trying to read from the same terminal.
+;;         (begin
+;;           (catch #t
+;;             (lambda ()
+;;               ;; Put ourselves in our own process group.
+;;               (setpgid (getpid) (getpid))
+;;               ;; Try to execute the user's command.
+;;               (execl "/bin/sh" "sh" "-c" command))
+;;             (lambda args #f))
+;;           ;; If we return from the exec for any reason, it means it failed.
+;;           (quit 1))
+;;         ;; Okay, we're the parent process.  Return the child pid, in
+;;         ;; case we want to wait for it at some point in the future.
+;;         child-pid)))
 
 ;;; See https://www.draketo.de/software/guile-capture-stdout-stderr.html
 ;; (format #t "current-error-port:\n~a\n"
@@ -728,72 +758,72 @@ or the CLIENT-CMD if some process ID was found."
 (define-syntax def*
   (lambda (x)
     (syntax-case x ()
-      ((_ (id . args) b0)
+      ((_ (identifier . args) b0)
        #'(begin
-           ;; (format #t "(def* (~a…)…)… " `id)
-           (define id
+           ;; (format #t "(def* (~a…)…)… " `identifier)
+           (define identifier
              (cond
               [#t                    ;; fa
                (lambda* args
-                 (format #t "[~a] Starting…\n" `id)
+                 (format #t "[~a] Starting…\n" `identifier)
                  (let [(result b0)]
-                   (format #t "[~a] done\n" `id)
+                   (format #t "[~a] done\n" `identifier)
                    result))]))
-           ;; (format #t "(def* ~a…)… done" `id)
-           id))
+           ;; (format #t "(def* ~a…)… done" `identifier)
+           identifier))
 
-      ((_ (id . args) b0 b1)
+      ((_ (identifier . args) b0 b1)
        #`(begin
-           (define id
+           (define identifier
              (cond
               [(string? `b0)         ;; fb
                (lambda* args
                  b0
-                 (format #t "[~a] Starting…\n" `id)
+                 (format #t "[~a] Starting…\n" `identifier)
                  (let [(result b1)]
-                   (format #t "[~a] done\n" `id)
+                   (format #t "[~a] done\n" `identifier)
                    result))]
 
               [#t                    ;; fc
                (lambda* args
-                 (format #t "[~a] Starting…\n" `id)
+                 (format #t "[~a] Starting…\n" `identifier)
                  b0
                  (let [(result b1)]
-                   (format #t "[~a] done\n" `id)
+                   (format #t "[~a] done\n" `identifier)
                    result))]))
-           ;; (format #t "(def* ~a…)… done" `id)
-           id))
+           ;; (format #t "(def* ~a…)… done" `identifier)
+           identifier))
 
-      ((_ (id . args) b0 b1 ... bN)
+      ((_ (identifier . args) b0 b1 ... bN)
        #'(begin
-           (define id
+           (define identifier
              (cond
               [(string? `b0)         ;; fd
                (lambda* args
                  b0
-                 (format #t "[~a] Starting…\n" `id)
+                 (format #t "[~a] Starting…\n" `identifier)
                  b1 ...
                  (let [(result bN)]
-                   (format #t "[~a] done\n" `id)
+                   (format #t "[~a] done\n" `identifier)
                    result))]
 
               [#t                    ;; fe
                (lambda* args
-                 (format #t "[~a] Starting…\n" `id)
+                 (format #t "[~a] Starting…\n" `identifier)
                  b0
                  b1 ...
                  (let [(result bN)]
-                   (format #t "[~a] done\n" `id)
+                   (format #t "[~a] done\n" `identifier)
                    result))]))
-           ;; (format #t "(def* ~a…)… done" `id)
-           id))
+           ;; (format #t "(def* ~a…)… done" `identifier)
+           identifier))
 
-      ((_ id val) (identifier? #'id) ;; ff
+      ((_ identifier val) (identifier? #'identifier) ;; ff
        #'(begin
-           ;; (format #t "(def* ~a…)… " `id)
-           (define id val)
-           ;; (format #t "(def* ~a…)… done" `id)
-           id)))))
+           ;; (format #t "(def* ~a…)… " `identifier)
+           (define identifier val)
+           ;; (format #t "(def* ~a…)… done" `identifier)
+           identifier)))))
 
 ;; Test cases:
 ;; (def* (fa a b)
