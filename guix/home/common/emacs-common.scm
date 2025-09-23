@@ -100,6 +100,8 @@ Usage:
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
 
+TODO create-launcher ignores servers with '--debug-init' in the init-cmd.
+
 Example:
 (create-launcher #:params \"develop\" \"rest\" \"args\")
 "

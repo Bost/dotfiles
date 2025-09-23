@@ -416,7 +416,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
               (list "git" "clone" "--origin=gitlab" repo-url dest-dir-repo)
               (list "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
                     (str github repo))))))))
-(testsymb 'obtain-and-setup-heroku)
+(testsymb 'obtain-and-setup)
 
 (define (projects-heroku)
   (list

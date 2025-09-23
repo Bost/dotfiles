@@ -377,6 +377,118 @@ a list of files to search through."
    args))
 
 (define (git-command . args) (apply (partial format #f "git -c color.ui=always ~a") args))
+;; TODO implement git-command without colors
+;; (define (git-command . args) (apply (partial format #f "git -c color.interactive=always ~a") args))
+;; (define-public (git-command-no-color . args)
+;;   (define f (format #f "~a [git-command-no-color]" m))
+;;   (format #t "~a args: ~a\n" f args)
+;;   (apply (partial format #f "git ~a") args))
+
+(define (ripgrep-utils context-lines)
+  (list
+   (list
+    #:utility (str "rg" context-lines)
+    #:params
+    (str "rg --ignore-case --pretty --context=" context-lines))
+   (list
+    #:utility (str "rgt" context-lines)
+    #:params
+    (str "rg --ignore-case --pretty --type=lisp --context=" context-lines))))
+
+(define utils-definitions
+  (list
+   (list #:utility "gx"  #:params "guix")
+
+   (list #:utility "rgt" #:params "rg --ignore-case --pretty --type=lisp" #:desc "Rigprep LISP files")
+   (list #:utility "f"   #:params "fd --color=always"                   #:desc "Find entries in the filesystem")
+
+   ;; always lists to the end of file. I guess I need to use something else than `exec'
+   (list #:utility "c"   #:params "bat --force-colorization"            #:desc "Better cat")
+   (list #:utility "b"   #:params "bat --force-colorization"            #:desc "Better cat")
+   (list #:utility "cl"  #:params "xsel --clipboard"                    #:desc "Show clipboard content")
+
+   (list #:utility "l"   #:params (eza-command "")                      #:desc "List")
+   (list #:utility "lh"  #:params (eza-command "--header")              #:desc "List with headers")
+   (list #:utility "lT"  #:params (eza-command "--sort=time")           #:desc "List sorted by time, oldest on top")
+   (list #:utility "lt"  #:params (eza-command "--sort=time --reverse") #:desc "List sorted by time, youngest on top")
+;;; TODO lf: get the content of the current working directory, i.e emulate the
+;;; globing expansion of "{*,.*}"
+   (list #:utility "lf"  #:params ((comp
+                                    eza-command
+                                    (partial format #f "~a --list-dirs --oneline"))
+                                   (getcwd))                            #:desc "List with full paths")
+
+
+   ;; pwr and prw do the same (w and r are swapped)
+   (list #:utility "pwr" #:params "chmod +rw")
+   (list #:utility "prw" #:params "chmod +rw")
+   (list #:utility "px"  #:params "chmod +x")
+
+   (list #:utility "susp" #:params "xfce4-session-logout --suspend" #:desc "Suspend to RAM")
+   ;; gifetare.fish:git fetch --tags … && git rebase …
+
+;;; In bash a script is executes in a subshell, so the cd command only changes
+;;; the directory within that subshell. So `gicl` for bash it it implemented as
+;;; a function in .bashrc. See home-base.scm
+   ;; TODO gicl needs special treatment
+   (list #:utility "gicl"  #:params (git-command "clone"))
+   (list #:utility "girt"  #:params (git-command "remote"))
+   (list #:utility "girtv" #:params (git-command "remote --verbose"))
+   (list #:utility "gire"  #:params (git-command "rebase"))
+   (list #:utility "girea" #:params (git-command "rebase --abort"))
+   (list #:utility "girec" #:params (git-command "rebase --continue"))
+   (list #:utility "girei" #:params (git-command "rebase --interactive"))
+   (list #:utility "gires" #:params (git-command "rebase --skip"))
+   (list #:utility "gife"  #:params (git-command "fetch"))
+   (list #:utility "gico"  #:params (git-command "checkout"))
+   (list #:utility "gico-" #:params (git-command "switch -"))
+   (list #:utility "gicm"  #:params (git-command "checkout master"))
+   (list #:utility "gips"  #:params (git-command "push --verbose"))
+   (list #:utility "gipsf" #:params (git-command "push --verbose --force"))
+   (list #:utility "giad"  #:params (git-command "add"))
+   (list #:utility "giad." #:params (git-command "add ."))
+   (list #:utility "giap"  #:params (git-command "add --patch"))
+   (list #:utility "gibib" #:params (git-command "bisect bad"))
+   (list #:utility "gibig" #:params (git-command "bisect good"))
+   (list #:utility "gibir" #:params (git-command "bisect reset"))
+   (list #:utility "gibr"  #:params (git-command "branch"))
+   (list #:utility "gibrD" #:params (git-command "branch --force --delete"))
+   (list #:utility "gibra" #:params (git-command "branch --all"))
+   (list #:utility "gibrd" #:params (git-command "branch --delete"))
+   (list #:utility "gibrm" #:params (git-command "branch --move"))
+   (list #:utility "gici"  #:params (git-command "commit"))
+   (list #:utility "gicia" #:params (git-command "commit --amend"))
+   (list #:utility "gicmanoe" #:params (git-command "commit --amend --no-edit"))
+   (list #:utility "gicob"  #:params (git-command "checkout -b"))
+   (list #:utility "gicp"   #:params (git-command "cherry-pick"))
+   (list #:utility "gidf"   #:params (git-command "diff --word-diff delete"))
+   (list #:utility "gifeo"  #:params (git-command "fetch origin"))
+   (list #:utility "gifeu"  #:params (git-command "fetch upstream"))
+   (list #:utility "gila"   #:params (git-command "lg-all"))
+   (list #:utility "gilh"   #:params (git-command "lg-head"))
+   (list #:utility "gilo"   #:params (git-command "log"))
+   (list #:utility "gimv"   #:params (git-command "mv"))
+   (list #:utility "gipS"   #:params (git-command "push --force --verbose"))
+   (list #:utility "gipl"   #:params (git-command "pull"))
+   (list #:utility "giplr"  #:params (git-command "pull --rebase"))
+   (list #:utility "girm"   #:params (git-command "rm"))
+   (list #:utility "girsth" #:params (git-command "reset --hard"))
+   (list #:utility "gishp"  #:params (git-command "stash pop"))
+   (list #:utility "gishs"  #:params (git-command "stash save"))
+   (list #:utility "gist"   #:params (git-command "status"))
+   (list #:utility "gists"  #:params (git-command "status --short"))
+   (list #:utility "gita"   #:params (git-command "tag --sort version:refname"))
+   ;; #:desc "Show last 20 git logs: git lg-20 …'"
+   (list #:utility "lg"     #:params (git-command "lg-20"))
+   (list #:utility "lga"    #:params (git-command "lg"))
+
+   ;;  -c <name>=<value>
+   ;; Pass a configuration parameter to the command. The value given will
+   ;; override values from configuration files. The <name> is expected in the
+   ;; same format as listed by git config (subkeys separated by dots).
+   (list #:utility "gs"       #:params (git-command "status"))
+   (list #:utility "wp"       #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
+   ))
 
 (define (basic-cli-utils-service)
   (define f (format #f "~a [basic-cli-utils-service]" m))
@@ -387,110 +499,15 @@ a list of files to search through."
                   (partial append (list #:verbose #f
                                         #:fun 'cli-command
                                         #:extra-modules '((cli-common))))))
-    (partial append
-             ((comp
-               ;; (lambda (v) (format #t "~a 2 ~a\n" f v) v)
-               (partial fold append (list))
-               ;; (lambda (v) (format #t "~a 1 ~a\n" f v) v)
-               (partial map (lambda (n)
-                              (list
-                               (list #:utility (str "rg" n)
-                                     #:params (str "rg --ignore-case --pretty --context=" n))
-                               (list #:utility (str "rgt" n)
-                                     #:params (str "rg --ignore-case --pretty --type=lisp --context=" n))))))
-              (list "2" "4" "6" "8"))))
-   (list
-    (list #:utility "gu"      #:params "guix")
-
-    (list #:utility "rgt"      #:params "rg --ignore-case --pretty --type=lisp" #:desc "Rigprep LISP files")
-    (list #:utility "f"        #:params "fd --color=always"                   #:desc "Find entries in the filesystem")
-
-    ;; always lists to the end of file. I guess I need to use something else than `exec'
-    (list #:utility "c"        #:params "bat --force-colorization"            #:desc "Better cat")
-    (list #:utility "b"        #:params "bat --force-colorization"            #:desc "Better cat")
-    (list #:utility "cl"       #:params "xsel --clipboard"                    #:desc "Show clipboard content")
-
-    (list #:utility "l"        #:params (eza-command "")                      #:desc "List")
-    (list #:utility "lh"       #:params (eza-command "--header")              #:desc "List with headers")
-    (list #:utility "lT"       #:params (eza-command "--sort=time")           #:desc "List sorted by time, oldest on top")
-    (list #:utility "lt"       #:params (eza-command "--sort=time --reverse") #:desc "List sorted by time, youngest on top")
-;;; TODO lf: get the content of the current working directory, i.e emulate the
-;;; globing expansion of "{*,.*}"
-    (list #:utility "lf"       #:params ((comp
-                                          eza-command
-                                          (partial format #f "~a --list-dirs --oneline"))
-                                         (getcwd))                            #:desc "List with full paths")
-
-    (list #:utility "susp"     #:params "xfce4-session-logout --suspend" #:desc "Suspend to RAM")
-
-    ;; pwr and prw do the same (w and r are swapped)
-    (list #:utility "pwr"      #:params "chmod +rw")
-    (list #:utility "prw"      #:params "chmod +rw")
-    (list #:utility "px"       #:params "chmod +x")
-
-    ;; gifetare.fish:git fetch --tags … && git rebase …
-
-;;; In bash a script is executes in a subshell, so the cd command only changes
-;;; the directory within that subshell. So `gicl` for bash it it implemented as
-;;; a function in .bashrc. See home-base.scm
-    (list #:utility "gicl"     #:params (git-command "clone"))  ;; TODO gicl needs special treatment
-    (list #:utility "girt"     #:params (git-command "remote"))
-    (list #:utility "girtv"    #:params (git-command "remote --verbose"))
-    (list #:utility "gire"     #:params (git-command "rebase"))
-    (list #:utility "girea"    #:params (git-command "rebase --abort"))
-    (list #:utility "girec"    #:params (git-command "rebase --continue"))
-    (list #:utility "girei"    #:params (git-command "rebase --interactive"))
-    (list #:utility "gires"    #:params (git-command "rebase --skip"))
-    (list #:utility "gife"     #:params (git-command "fetch"))
-    (list #:utility "gico"     #:params (git-command "checkout"))
-    (list #:utility "gico-"    #:params (git-command "switch -"))
-    (list #:utility "gicm"     #:params (git-command "checkout master"))
-    (list #:utility "gips"     #:params (git-command "push --verbose"))
-    (list #:utility "gipsf"    #:params (git-command "push --verbose --force"))
-    (list #:utility "giad"     #:params (git-command "add"))
-    (list #:utility "giad."    #:params (git-command "add ."))
-    (list #:utility "giap"     #:params (git-command "add --patch"))
-    (list #:utility "gibib"    #:params (git-command "bisect bad"))
-    (list #:utility "gibig"    #:params (git-command "bisect good"))
-    (list #:utility "gibir"    #:params (git-command "bisect reset"))
-    (list #:utility "gibr"     #:params (git-command "branch"))
-    (list #:utility "gibrD"    #:params (git-command "branch --force --delete"))
-    (list #:utility "gibra"    #:params (git-command "branch --all"))
-    (list #:utility "gibrd"    #:params (git-command "branch --delete"))
-    (list #:utility "gibrm"    #:params (git-command "branch --move"))
-    (list #:utility "gici"     #:params (git-command "commit"))
-    (list #:utility "gicia"    #:params (git-command "commit --amend"))
-    (list #:utility "gicmanoe" #:params (git-command "commit --amend --no-edit"))
-    (list #:utility "gicob"    #:params (git-command "checkout -b"))
-    (list #:utility "gicp"     #:params (git-command "cherry-pick"))
-    (list #:utility "gidf"     #:params (git-command "diff --word-diff delete"))
-    (list #:utility "gifeo"    #:params (git-command "fetch origin"))
-    (list #:utility "gifeu"    #:params (git-command "fetch upstream"))
-    (list #:utility "gila"     #:params (git-command "lg-all"))
-    (list #:utility "gilh"     #:params (git-command "lg-head"))
-    (list #:utility "gilo"     #:params (git-command "log"))
-    (list #:utility "gimv"     #:params (git-command "mv"))
-    (list #:utility "gipS"     #:params (git-command "push --force --verbose"))
-    (list #:utility "gipl"     #:params (git-command "pull"))
-    (list #:utility "giplr"    #:params (git-command "pull --rebase"))
-    (list #:utility "girm"     #:params (git-command "rm"))
-    (list #:utility "girsth"   #:params (git-command "reset --hard"))
-    (list #:utility "gishp"    #:params (git-command "stash pop"))
-    (list #:utility "gishs"    #:params (git-command "stash save"))
-    (list #:utility "gist"     #:params (git-command "status"))
-    (list #:utility "gists"    #:params (git-command "status --short"))
-    (list #:utility "gita"     #:params (git-command "tag --sort version:refname"))
-    ;; #:desc "Show last 20 git logs: git lg-20 …'"
-    (list #:utility "lg"       #:params (git-command "lg-20"))
-    (list #:utility "lga"      #:params (git-command "lg"))
-
-    ;;  -c <name>=<value>
-    ;; Pass a configuration parameter to the command. The value given will
-    ;; override values from configuration files. The <name> is expected in the
-    ;; same format as listed by git config (subkeys separated by dots).
-    (list #:utility "gs"       #:params (git-command "status"))
-    (list #:utility "wp"       #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
-    )))
+    (partial
+     append
+     ((comp
+       ;; (lambda (v) (format #t "~a 1 ~a\n" f v) v)
+       (partial fold append (list))
+       ;; (lambda (v) (format #t "~a 0 ~a\n" f v) v)
+       (partial map ripgrep-utils))
+      (list "2" "4" "6" "8"))))
+   utils-definitions))
 (testsymb 'basic-cli-utils-service)
 
 (define (basic-cli-utils-background-service)
