@@ -69,7 +69,7 @@ Type Testing Predicates.
     'vector?
     'procedure?
     'record?
-
+    ;;
     'number?
     'complex?
     'real?
@@ -80,7 +80,7 @@ Type Testing Predicates.
     'odd?
     'even?
     'zero?
-
+    ;;
     '(@(system syntax internal) syntax?)
     'identifier?   ;; #t if syntax-object is an identifier, or #f otherwise.
     '(@(guix gexp) gexp?)
@@ -92,7 +92,7 @@ Type Testing Predicates.
     'char-alphabetic?
     'char-numeric?
     'char-whitespace?
-
+    ;;
     '(@(gnu services) service?)
     '(@(gnu services) service-type?)
     '(@(gnu services) service-extension?)

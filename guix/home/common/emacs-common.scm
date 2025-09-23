@@ -95,16 +95,18 @@ Usage:
 
 (define* (create-launcher
           #:key (verbose #t) (create-frame #f) utility gx-dry-run params
-          ;; #:allow-other-keys
+          ;; By not allowing other keys I don't have to remove them later on
+          #:allow-other-keys
           #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
 
 TODO create-launcher ignores servers with '--debug-init' in the init-cmd.
 
-Example:
+Examples:
 (create-launcher #:params \"develop\" \"rest\" \"args\")
-"
+(create-launcher #:params \"guix\"
+\"guix/home/common/cli-common.scm\" \"--create-frame\")"
   (define f (format #f "~a [create-launcher]" m))
   (when verbose
     (format #t "~a utility : ~a\n" f utility)
@@ -112,42 +114,58 @@ Example:
     (format #t "~a create-frame : ~a\n" f create-frame)
     (format #t "~a params       : ~a\n" f params)
     (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:create-frame #:utility #:gx-dry-run #:params))
+  (let* [(elements (list #:verbose #:create-frame #:utility #:gx-dry-run
+                         #:params))
          (args (remove-all-elements args elements))
          (init-cmd (create-init-cmd params))]
     ((comp
 ;;; Search for the full command line:
 ;;; $ pkill --full /home/bost/.guix-profile/bin/emacs --init-directory=/home/bost/.emacs.d.distros/crafted-emacs --bg-daemon=crafted
       (lambda (client-cmd)
-        (let* [(client-cmd? (equal? client-cmd
-                                    (compute-cmd
-                                     #:user user
-                                     #:init-cmd init-cmd
-                                     #:client-cmd client-cmd
-                                     #:pgrep-pattern init-cmd)))
+        (let* [(results
+                ((comp
+                  ;; (lambda (v) (format #t "~a 3. ~a\n" f v) v)
+                  (lambda (client-cmd?)
+                    ;; Put the values in a property list for debugging purposes
+                    (list
+                     #:client-cmd? client-cmd?
+                     #:cmd-with-args
+                     (remove unspecified-or-empty-or-false?
+                             (append
+                              client-cmd
+;;; --create-frame must be present if no frame exists, e.g. right after
+;;; emacs-server starts
+                              (list (when (or create-frame (not client-cmd?))
+                                      ;; also "-c"
+                                      "--create-frame"))
+                              (if (null? args) '("./") args)))))
+                  ;; (lambda (v) (format #t "~a 1. ~a\n" f v) v)
+                  (partial equal? client-cmd)
+                  ;; (lambda (v) (format #t "~a 0. ~a\n" f v) v)
+                  )
+                 (compute-cmd
+                  #:user user
+                  #:init-cmd init-cmd
+                  #:client-cmd client-cmd
+                  #:pgrep-pattern init-cmd)))
+               (client-cmd?   (plist-get results #:client-cmd?))
+               (cmd-with-args (plist-get results #:cmd-with-args))]
+          ;; (format #t "~a client-cmd?   : ~a\n" f client-cmd?)
+          ;; (format #t "~a cmd-with-args : ~a\n" f cmd-with-args)
 
-               (client-cmd-with-args
-                (remove unspecified-or-empty-or-false?
-                        (append
-                         client-cmd
-;; --create-frame must be present if no frame exists, e.g. right after emacs-server starts
-                         (list (when (or create-frame (not client-cmd?))
-                                 ;; also "-c"
-                                 "--create-frame"))
-                         (if (null? args) '("./") args))))]
           (if client-cmd?
-              (exec-background client-cmd-with-args)
+              (exec-background cmd-with-args)
               (when ((comp zero? car exec)
                      ;; Only the initial command needs to be executed in a
                      ;; modified environment
                      (list (init-cmd-env-vars home-emacs-distros params) init-cmd
-                           ;; (if (string= params crafted)
-                           ;;     (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'")
-                           ;;     (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'"))
+;;; (if (string= params crafted)
+;;;     (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'")
+;;;     (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'"))
                            ))
-                ;; Calling (exec-background client-cmd-with-args) makes sense
+                ;; Calling (exec-background cmd-with-args) makes sense
                 ;; only if the Emacs server has been started successfully.
-                (exec-background client-cmd-with-args))))))
+                (exec-background cmd-with-args))))))
      (list (which-emacsclient)
            (str "--socket-name=" (calculate-socket params))))))
 (testsymb 'create-launcher)
