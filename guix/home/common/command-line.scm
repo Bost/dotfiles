@@ -82,7 +82,7 @@ defined.
                            pkill-server create-launcher set-editable
                            mount unmount eject))]
         (if (member? fun procedures)
-            (apply (eval fun (current-module)) ;; resolve symbol to the procedure
+            (apply (eval fun (current-module)) ; resolve symbol to the procedure
                    (append
                     (list #:utility utility
                           #:gx-dry-run   val-gx-dry-run

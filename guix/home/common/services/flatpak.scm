@@ -41,7 +41,9 @@
              '((flathub-remote "org.telegram.desktop")))
             )))
 (testsymb 'telegram-from-flatpak-service)
-
+;;; TODO do not try to run flatpak update when no internet available
+;;; TODO XDG_DATA_DIRS contains flatpak relevant information e.g. /var/lib/flatpak/exports/share, etc.
+;;; This should be a part of the flatpak service
 #|
 #<
   <service>
