@@ -30,19 +30,21 @@ defined.
   ;; (field-name field-accessor) ...
   (handle-cli-procedure handle-cli-exception-procedure))
 
+;; TODO rename fun, exec-fun to symb-fun symb-exec-fun
 (define* (handle-cli
-          #:key (verbose #t) utility fun params
+          #:key (verbose #t) utility fun exec-fun params
           ;; #:allow-other-keys
           #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'."
   (define f (format #f "~a [handle-cli]" m))
   (when verbose
-    (format #t "~a utility : ~a\n" f utility)
-    (format #t "~a fun     : ~a\n" f fun)
-    (format #t "~a params  : ~a\n" f params)
-    (format #t "~a args    : ~a\n" f args))
-  (let* [(elements (list #:verbose #:utility #:fun #:params))
+    (format #t "~a utility  : ~a\n" f utility)
+    (format #t "~a fun      : ~a\n" f fun)
+    (format #t "~a exec-fun : ~a\n" f exec-fun)
+    (format #t "~a params   : ~a\n" f params)
+    (format #t "~a args     : ~a\n" f args))
+  (let* [(elements (list #:verbose #:utility #:fun #:exec-fun #:params))
          (args (remove-all-elements args elements))
          (args (car args))
 
@@ -78,20 +80,54 @@ defined.
      [val-version
       (format #t "~a version <...>\n" utility)]
      [#t
-      (let* [(procedures '(cli-command cli-background-command
-                           pkill-server create-launcher set-editable
-                           mount unmount eject))]
+      (let* [(emacs-procedures '(
+                                 pkill-server
+                                 create-launcher
+                                 set-editable
+                                 ))
+             (procedures (append
+                          emacs-procedures
+                          '(
+                           cli-command
+                           cli-background-command
+                           cli-system-command
+                           mount unmount eject
+                           )))]
         (if (member? fun procedures)
-            (apply (eval fun (current-module)) ; resolve symbol to the procedure
-                   (append
-                    (list #:utility utility
-                          #:gx-dry-run   val-gx-dry-run
-                          #:verbose      verbose
-                          #:params       params)
-                    (if (equal? fun 'create-launcher)
-                        (list #:create-frame val-create-frame)
-                        (list))
-                    val-rest-args))
+            (let* [(fun-symbol
+                    (if (member? fun
+                                 '(
+                                   cli-command
+                                   cli-background-command
+                                   cli-system-command)
+                                 )
+                        'cli-general-command
+                        fun))
+
+                   ;; resolve fun-symbol to a procedure
+                   (procedure-fun (eval fun-symbol (current-module)))
+                   (procedure-exec-fun (eval exec-fun (current-module)))
+                   ]
+              ;; (format #t "~a procedure-fun      : ~a\n" f procedure-fun)
+              ;; (format #t "~a procedure-exec-fun : ~a\n" f procedure-exec-fun)
+              (apply procedure-fun
+                     (append
+                      (list
+                       #:utility    utility ; probably not needed
+                       #:gx-dry-run val-gx-dry-run
+                       #:verbose    verbose
+                       #:params     params
+                       )
+                      (if (not (member? fun emacs-procedures))
+                          (list
+                           #:fun      fun
+                           #:exec-fun procedure-exec-fun)
+                          (list))
+                      (if (equal? fun 'create-launcher)
+                          (list #:create-frame val-create-frame)
+                          (list))
+                      val-rest-args)))
+
             (raise-exception
              (make-exception
               (make-handle-cli-exception fun)
