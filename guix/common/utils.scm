@@ -10,9 +10,8 @@
 ;;;   1. service-file -> with-imported-modules
 ;;;   2. common-modules
   #:use-module (srfi-1-smart)
-  #:use-module (ice-9 match) ;; match
-  ;; open-input-pipe
-  #:use-module (ice-9 popen)
+  #:use-module (ice-9 match)  ; match
+  #:use-module (ice-9 popen)  ; open-input-pipe
 ;;; (ice-9 readline) requires `guix install guile-readline'.
   ;; #:use-module (ice-9 readline)
   #:use-module (ice-9 rdelim) ; read-line
@@ -39,6 +38,7 @@
   ;; #:use-module (guix packages)
   ;; #:use-module (guix profiles) ;; probably not needed
   ;; for inferior-package-in-guix-channel : end
+  #:use-module (ice-9 exceptions)
 
   #:export (
             compose-commands-guix-shell
@@ -362,14 +362,39 @@ E Command failed."
     (partial map (lambda (s) (string-split s ch))))
    s-list))
 
-(define-public (string-split-whitespace arg)
+(define-public (ensure-list x)
+  "Wrap X in a list if it is not already a list. Think \"monadic container\"."
+  (match x
+    ((? list?) x)
+    (else (list x))))
+
+;; ;; TODO consider testing for proper-list?
+;; ;; See also (scm-error 'wrong-type-arg #f "Expected a proper list or non-pair value" #f #f)
+;; (define-public (ensure-list x)
+;;   "Wrap X in a list if it is not already a list. Think \"monadic container\".
+;; Raise an error if it's neither a list nor a single value."
+;;   (guard (exception ((not (or (list? exception)
+;;                               (not (pair? exception))))
+;;                      => (lambda (x) (error "Expected a list or single value" x))))
+;;     ;; Alternative implementations:
+;;     ;;   (or (and (list? x) x)
+;;     ;;       (list x))
+;;     ;; or
+;;     ;;   (match args
+;;     ;;     ((_ ...) args)
+;;     ;;     (x (list x)))
+;;     (match x
+;;       ((? list?) x)
+;;       (else (list x)))))
+
+(define-public (string-split-whitespace one-or-more-args)
   ((comp
     ;; (partial string-sff #\space)
     flatten (partial map split-space-escaped)
     (partial string-sff #\newline)
     (partial string-sff #\tab)
-    (lambda (arg) (if (list? arg) arg (list arg))))
-   arg))
+    ensure-list)
+   one-or-more-args))
 
 (define dry-run-prm "--gx-dry-run")
 
@@ -859,7 +884,7 @@ or the CLIENT-CMD if some process ID was found."
   #;
   (let ((url-regex (rx (and string-start
                             (or "http" "https" "ftp") "://"
-                            (one-or-more (not (any " ")))
+                            (ensure-list (not (any " ")))
                             string-end))))
     (regexp-match url-regex url)))
 
@@ -1077,9 +1102,7 @@ Requires:
           (@(guix derivations) derivation->output-path)
           (partial (@(guix packages) package-derivation)
                    connection))
-         (if (list? one-or-more-packages)
-             one-or-more-packages
-             (list one-or-more-packages)))))
+         (ensure-list one-or-more-packages))))
 
 (define-public (interleave . lists)
   "Take elements alternately from each list, stopping at the shortest."
@@ -1240,7 +1263,9 @@ that many from the end."
   "Usage example:
 (build (@(bost gnu packages emacs-xyz) emacs-tweaks))"
   (let [(daemon ((@ (guix store) open-connection)))]
+    ;; Define `partial' locally so that this procedure is self-sustained
     (define (partial fun . args) (lambda x (apply fun (append args x))))
+    (define (ensure-list args) (if (list? args) args (list args)))
     (map (compose
           ;; (lambda (p) (format #t "3 p: ~a\n" p) p)
           (partial (@ (guix derivations) build-derivations) daemon)
@@ -1254,8 +1279,7 @@ that many from the end."
           ;;   (format #t "(package? p) p: ~a\n" (package? p))
           ;;   p)
           )
-         (if (list? one-or-more-packages) one-or-more-packages
-             (list one-or-more-packages)))
+         (ensure-list one-or-more-packages))
 
     ;; ((compose
     ;;   (lambda (p) (format #t "3 p: ~a\n" p) p)
