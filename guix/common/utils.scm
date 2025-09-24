@@ -1067,7 +1067,7 @@ Requires:
       (format #t "writing ~a\n" file-size))))
 |#
 
-(define-public (package-output-paths one-or-many-packages)
+(define-public (package-output-paths one-or-more-packages)
   "Usage example:
 (package-output-paths (@(gnu packages emacs) emacs))
 => (\"/gnu/store/09a50cl6ndln4nmp56nsdvn61jgz2m07-emacs-29.1\")"
@@ -1077,9 +1077,9 @@ Requires:
           (@(guix derivations) derivation->output-path)
           (partial (@(guix packages) package-derivation)
                    connection))
-         (if (list? one-or-many-packages)
-             one-or-many-packages
-             (list one-or-many-packages)))))
+         (if (list? one-or-more-packages)
+             one-or-more-packages
+             (list one-or-more-packages)))))
 
 (define-public (interleave . lists)
   "Take elements alternately from each list, stopping at the shortest."
@@ -1236,7 +1236,7 @@ that many from the end."
 ;; (define string-ops (juxt string-length string-upcase string-downcase))
 ;; (string-ops "Hello")  ; => (5 "HELLO" "hello")
 
-(define (build one-or-many-packages)
+(define (build one-or-more-packages)
   "Usage example:
 (build (@(bost gnu packages emacs-xyz) emacs-tweaks))"
   (let [(daemon ((@ (guix store) open-connection)))]
@@ -1254,8 +1254,8 @@ that many from the end."
           ;;   (format #t "(package? p) p: ~a\n" (package? p))
           ;;   p)
           )
-         (if (list? one-or-many-packages) one-or-many-packages
-             (list one-or-many-packages)))
+         (if (list? one-or-more-packages) one-or-more-packages
+             (list one-or-more-packages)))
 
     ;; ((compose
     ;;   (lambda (p) (format #t "3 p: ~a\n" p) p)
@@ -1271,7 +1271,7 @@ that many from the end."
     ;;     p)
     ;;   )
     ;;  (specification->package
-    ;;   (format #f "(@ (bost packages emacs-xyz) ~a)" (symbol->string one-or-many-packages))
+    ;;   (format #f "(@ (bost packages emacs-xyz) ~a)" (symbol->string one-or-more-packages))
     ;;   ))
     ))
 
