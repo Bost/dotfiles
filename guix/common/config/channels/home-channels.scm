@@ -86,8 +86,12 @@
     ;; #:nonguix-commit "df4e6ed9fe917f004357d931e210e328e348bb38"
 
     ;; 20 sept. 2025 17:50:37
-    #:guix-commit "f5b3b375e5d8cae24b02d00f213d09659e60358d"
-    #:nonguix-commit "de297a2a28577651cbe27ba58f8b9ea8912392b0"
+    ;; #:guix-commit "f5b3b375e5d8cae24b02d00f213d09659e60358d"
+    ;; #:nonguix-commit "de297a2a28577651cbe27ba58f8b9ea8912392b0"
+
+    ;; 24 2025 22:07:31
+    #:guix-commit "aabe0d2c30a2c8143ff70e3f5be1189ff6d494cd"
+    #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
     )))
 (testsymb 'home-channels)
 
