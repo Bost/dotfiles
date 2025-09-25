@@ -863,14 +863,26 @@ or the CLIENT-CMD if some process ID was found."
                             string-end))))
     (regexp-match url-regex url)))
 
-(define-public (plist-get plist key)
-  "
-(plist-get (list :y 2 #:x 1) #:y)   ; => 2
-(plist-get (list :y 2 #:x 1) #:z)   ; => #f"
+(define (plist-get-original plist key)
+  "Original plist-get implementation."
   (cond
    ((null? plist) #f)
    ((equal? (car plist) key) (cadr plist))
-   (else (plist-get (cddr plist) key))))
+   (else (plist-get-original (cddr plist) key))))
+
+(define-public (plist-get . args)
+  "Smart plist-get that works with arguments in either order.
+Examples:
+(plist-get (list :y 2 #:x 1) #:x)   ; => 1
+(plist-get #:x (list :y 2 #:x 1))   ; => 1
+(plist-get (list :y 2 #:x 1) #:z)   ; => #f"
+  ((comp
+    (lambda (params) (apply plist-get-original params))
+    (lambda (args)
+      (if (list? (car args))
+          args
+          (reverse args))))
+   args))
 
 (define (remove-element lst element)
   "Remove all occurrences of a given element from a list.
