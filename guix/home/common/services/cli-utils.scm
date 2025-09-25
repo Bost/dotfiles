@@ -208,6 +208,7 @@ a list of files to search through."
                            (guix monads)
                            (srfi-1-smart)
                            (utils)
+                           (tests)
                            (settings)
                            (command-line)))
   (list
