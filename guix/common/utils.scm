@@ -1346,4 +1346,30 @@ that many from the end."
 (define-public split-on-whitespace string-tokenize)
 ;; (split-on-whitespace "a b\tc\nd") => ("a" "b" "c" "d")
 
+(define-public (pr-str . xs)
+  "Return a string containing the printed representation of all arguments,
+separated by spaces.
+
+Example:
+(pr-str 1 '(2 3) 'x \"foo\") ; => \"1 (2 3) x \\\"foo\\\"\"
+"
+  (string-join (map (lambda (x) (object->string x)) xs) " "))
+
+(define-public (pr-str-with-quote . xs)
+  "See `pr-str'.
+
+Example:
+(pr-str-with-quote 1 2 '(3 4) \"foo\") ; => \"1 '(2 3) 'x \\\"foo\\\"\"
+"
+  ((comp
+    (lambda (lst) (string-join lst " "))
+    (partial map (lambda (x)
+                   (str
+                    (cond
+                     [(symbol? x) "'"]
+                     [(or (list? x) (pair? x)) "'"]
+                     [#t ""])
+                    (object->string x)))))
+   xs))
+
 (module-evaluated)
