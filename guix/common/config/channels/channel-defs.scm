@@ -27,7 +27,7 @@
             channel-guix
             channel-guix-past
             channel-guix-android
-            syst-channels))
+            common-channels))
 
 (define m (module-name-for-logging))
 (evaluating-module)
@@ -181,9 +181,10 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
   "Provides firefox, linux-kernel with non-free proprietary drivers, etc.
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
+  (define f (format #f "~a [channel-nonguix]" m))
   (let* [(channel-name 'nonguix)]
     (when commit
-      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel (name channel-name)
              (url "https://gitlab.com/nonguix/nonguix")
              (commit commit)
@@ -221,9 +222,10 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
   "Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   ;; %default-guix-channel
+  (define f (format #f "~a [channel-guix]" m))
   (let* [(channel-name 'guix)]
     (when commit
-      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
+      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
       (name channel-name)
       ;; Probably either 'branch' or 'commit' can be used.
@@ -278,13 +280,13 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
        "1EFB 0909 1F17 D28C CBF9  B13A 53D4 57B2 D636 EE82"))))))
 (testsymb 'channel-guix-android)
 
-(define* (syst-channels #:key (guix-commit #f) (nonguix-commit #f))
+(define* (common-channels #:key (guix-commit #f) (nonguix-commit #f))
   "Channels needed for the Guix-system configuration
 If `guix-commit' and/or `nonguix-commit' are unspecified of #f it means 'use latest
 commit(s)'."
   (list
    (channel-guix    #:commit guix-commit)
    (channel-nonguix #:commit nonguix-commit)))
-(testsymb 'syst-channels)
+(testsymb 'common-channels)
 
 (module-evaluated)

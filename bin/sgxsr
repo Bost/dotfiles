@@ -41,7 +41,7 @@ set -x # Print commands and their arguments as they are executed.
 
 guix pull --cores=$cores \
      --load-path=$baseLP/common \
-     --channels=$baseLP/common/config/channels/syst-channels.scm \
+     --channels=$baseLP/systems/common/syst-channels.scm \
      "$@"
 
 notify "Done" "\`guix pull\` finished"
