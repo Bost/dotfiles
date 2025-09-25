@@ -490,6 +490,7 @@ a list of files to search through."
    (list #:utility "gs"       #:params (git-command "status"))
    (list #:utility "wp"       #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
    ))
+(testsymb 'utils-definitions)
 
 (define (basic-cli-utils-service)
   (define f (format #f "~a [basic-cli-utils-service]" m))
