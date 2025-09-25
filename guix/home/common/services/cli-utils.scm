@@ -210,6 +210,7 @@ a list of files to search through."
                            (utils)
                            (tests)
                            (settings)
+                           (cli-common)
                            (command-line)))
   (list
    (str scm-bin-dirname "/" utility)
@@ -472,7 +473,7 @@ a list of files to search through."
    (list #:utility "gimv"   #:params (git-command "mv"))
    (list #:utility "gipS"   #:params (git-command "push --force --verbose"))
    (list #:utility "gipl"   #:params (git-command "pull"))
-   (list #:utility "giplr"  #:params (git-command "pull --rebase"))
+   (list #:utility "giplr"  #:params (git-command "pull --rebase --verbose"))
    (list #:utility "girm"   #:params (git-command "rm"))
    (list #:utility "girsth" #:params (git-command "reset --hard"))
    (list #:utility "gishp"  #:params (git-command "stash pop"))
@@ -502,7 +503,7 @@ a list of files to search through."
                   (partial append (list #:verbose #f
                                         #:fun 'cli-command
                                         #:exec-fun 'exec-foreground
-                                        #:extra-modules '((cli-common))))))
+                                        #:extra-modules '()))))
     (partial
      append
      ((comp
@@ -523,7 +524,7 @@ a list of files to search through."
                   (partial append (list #:verbose #f
                                         #:fun 'cli-background-command
                                         #:exec-fun 'exec-background
-                                        #:extra-modules '((cli-common)))))))
+                                        #:extra-modules '())))))
    (list
     ;; WTF? a newline appears on top of the terminal before the prompt.
     (list #:utility "loff"   #:params "xfce4-session-logout --logout --fast")
@@ -539,7 +540,7 @@ a list of files to search through."
                   (partial append (list #:verbose #f
                                         #:fun 'cli-system-command
                                         #:exec-fun 'exec-system
-                                        #:extra-modules '((cli-common)))))))
+                                        #:extra-modules '())))))
    (list
     (list #:utility "shut"   #:params "sudo shutdown")
     ;; scm-bin/reboot overshadows the real reboot in the $PATH

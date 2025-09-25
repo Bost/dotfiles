@@ -9,6 +9,8 @@
   #:use-module (utils)             ; partial
   #:use-module (tests)             ; test-type
   #:use-module (settings)          ; user
+  ;; for (eval ...) of cli-*command procedures
+  #:use-module (cli-common)
   #:export (handle-cli))
 
 #|
@@ -27,7 +29,11 @@ defined.
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define-exception-type &handle-cli-exception &exception make-handle-cli-exception handle-cli-exception?
+(define-exception-type
+  &handle-cli-exception
+  &exception
+  make-handle-cli-exception
+  handle-cli-exception?
   ;; (field-name field-accessor) ...
   (handle-cli-procedure handle-cli-exception-procedure))
 
@@ -92,11 +98,7 @@ Example:
      [val-version
       (format #t "~a version <...>\n" utility)]
      [#t
-      (let* [(emacs-procedures '(
-                                 pkill-server
-                                 create-launcher
-                                 set-editable
-                                 ))
+      (let* [(emacs-procedures '(pkill-server create-launcher set-editable))
              (procedures (append emacs-procedures
                                  '(
                                    cli-command
@@ -113,17 +115,12 @@ Example:
                                    cli-system-command)
                                  )
                         'cli-general-command
-                        fun))
-                   ;; resolve fun-symbol to a procedure
-                   (procedure-fun (eval fun-symbol (current-module)))
-                   (procedure-exec-fun (eval exec-fun (current-module)))
-                   ]
-              ;; (format #t "~a procedure-fun      : ~a\n" f procedure-fun)
-              ;; (format #t "~a procedure-exec-fun : ~a\n" f procedure-exec-fun)
-              (apply procedure-fun
+                        fun))]
+              (define (eval-here exp) (eval exp (current-module)))
+              ;; (define (eval-here exp) (eval exp (interaction-environment)))
+              (apply (eval-here fun-symbol)
                      (append
                       (list
-                       #:utility    utility ; probably not needed
                        #:gx-dry-run val-gx-dry-run
                        #:verbose    verbose
                        #:params     params
@@ -131,44 +128,12 @@ Example:
                       (if (not (member? fun emacs-procedures))
                           (list
                            #:fun      fun
-                           #:exec-fun procedure-exec-fun)
+                           #:exec-fun (eval-here exec-fun))
                           (list))
                       (if (equal? fun 'create-launcher)
                           (list #:create-frame val-create-frame)
                           (list))
                       val-rest-args)))
-            ;; (let* [(fun-symbol
-            ;;         (if (member? fun
-            ;;                      '(
-            ;;                        cli-command
-            ;;                        cli-background-command
-            ;;                        cli-system-command
-            ;;                        ))
-            ;;             'cli-general-command
-            ;;             fun))
-            ;;        ;; resolve fun-symbol to a procedure
-            ;;        (procedure-fun (eval fun-symbol (current-module)))
-            ;;        (procedure-exec-fun (eval exec-fun (current-module)))
-            ;;        ]
-            ;;   ;; (format #t "~a procedure-fun      : ~a\n" f procedure-fun)
-            ;;   ;; (format #t "~a procedure-exec-fun : ~a\n" f procedure-exec-fun)
-            ;;   ((comp
-            ;;     (partial apply procedure-fun)
-            ;;     (lambda (v) (format #t "~a 1. ~a\n" m v) v)
-            ;;     (partial remove unspecified-or-empty-or-false?)
-            ;;     (lambda (v) (format #t "~a 0. ~a\n" m v) v)
-            ;;     )
-            ;;    (append
-            ;;     (when #t
-            ;;       (list #:gx-dry-run   val-gx-dry-run
-            ;;             #:verbose      verbose
-            ;;             #:params       params))
-            ;;     (when (not (member? fun emacs-procedures))
-            ;;       (list #:fun          fun
-            ;;             #:exec-fun     procedure-exec-fun))
-            ;;     (when (equal? fun 'create-launcher)
-            ;;       (list #:create-frame val-create-frame))
-            ;;     val-rest-args)))
 
             (raise-exception
              (make-exception
