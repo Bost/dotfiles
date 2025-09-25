@@ -7,6 +7,7 @@
   #:use-module (srfi srfi-1)       ; last
   #:use-module (guix monads)       ; with-monad
   #:use-module (utils)             ; partial
+  #:use-module (tests)             ; test-type
   #:use-module (settings)          ; user
   #:export (handle-cli))
 
@@ -36,14 +37,25 @@ defined.
           ;; #:allow-other-keys
           #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
- that the options-parser doesn't complain about e.g. 'no such option: -p'."
+ that the options-parser doesn't complain about e.g. 'no such option: -p'.
+
+Example:
+(handle-cli
+ #:verbose  #f
+ #:utility  \"rgt4\"
+ #:fun      'cli-command
+ #:exec-fun 'exec-foreground
+ #:params   \"rg --ignore-case --pretty --type=lisp --context=4\"
+  '((\"/home/bost/scm-bin/rgt4\" \"flatpakxxx\")))
+"
   (define f (format #f "~a [handle-cli]" m))
   (when verbose
-    (format #t "~a utility  : ~a\n" f utility)
-    (format #t "~a fun      : ~a\n" f fun)
-    (format #t "~a exec-fun : ~a\n" f exec-fun)
-    (format #t "~a params   : ~a\n" f params)
-    (format #t "~a args     : ~a\n" f args))
+    (format #t "~a #:verbose  ~a ; ~a\n" f (pr-str-with-quote verbose)  (test-type verbose))
+    (format #t "~a #:utility  ~a ; ~a\n" f (pr-str-with-quote utility)  (test-type utility))
+    (format #t "~a #:fun      ~a ; ~a\n" f (pr-str-with-quote fun)      (test-type fun))
+    (format #t "~a #:exec-fun ~a ; ~a\n" f (pr-str-with-quote exec-fun) (test-type exec-fun))
+    (format #t "~a #:params   ~a ; ~a\n" f (pr-str-with-quote params)   (test-type params))
+    (format #t "~a   args     ~a ; ~a\n" f (pr-str-with-quote args)     (test-type args)))
   (let* [(elements (list #:verbose #:utility #:fun #:exec-fun #:params))
          (args (remove-all-elements args elements))
          (args (car args))
