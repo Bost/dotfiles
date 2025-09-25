@@ -269,8 +269,9 @@ Works also for functions returning and accepting multiple values."
       (and (string? obj) (string-null? obj))
       (eq? #f obj)))
 
-;; Turn the colon-separated PATH-string, into a list and
-;; return the resulting list with tail appended
+;; TODO turn `path' to a procedure named `env-path' or `pathenv'
+;; Turn the colon-separated PATH-string, into a list and return the resulting
+;; list with tail appended
 (define-public path
   (delete-duplicates (parse-path (getenv "PATH"))))
 
