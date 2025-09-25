@@ -837,6 +837,8 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 home-profile. Comment them out.
 
 FIXME the inferior-packages are installed on every machine"
+  (define f (format #f "~a [inferior-packages]" m))
+
   (define* (inferior-packages-in-channel #:key channels-fun inferior-packages)
     (map (lambda (pkg-commit)
 ;;; pattern matching doesn't work for: list cons. It works for (values ... ...)
@@ -859,7 +861,8 @@ FIXME the inferior-packages are installed on every machine"
     (partial map (partial apply inferior-packages-in-channel)))
    (list
     (list
-     #:channels-fun (comp list (partial channel-guix #:commit))
+     #:channels-fun (comp list (partial channel-guix #:commit)
+                          (lambda (p) (format #t "~a 0. ~a\n" f p) p))
      #:inferior-packages
      (list
       ;; (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
