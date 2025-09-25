@@ -2,7 +2,10 @@
 ;; `~/.config/guix/current/manifest`. See
 ;; guile -c '(use-modules (guix channels)) (format #t "~a\n" %default-channels)'
 
-(define-module (config channels home-channels)
+;; This module is loaded via
+;;     --load-path=/home/bost/dev/dotfiles/guix/home/common
+;; so the module-name is not (home common home-channels)
+(define-module (home-channels)
   #:use-module (gnu services)           ; simple-service
   #:use-module (gnu home services guix) ; home-channels-service-type
 
@@ -60,7 +63,7 @@
             )
            lst)
           lst)))
-   (syst-channels
+   (common-channels
     ;; Aug 31 2025 14:48:46
     ;; #:nonguix-commit "60ffd0353e70d5e371c4bfe2201c9d08c1c05e18"
     ;; #:guix-commit "d431f4620a4c077383e1168f932e86c99ae33834"
@@ -94,8 +97,8 @@
     ;; #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
 
     ;; 25 sept. 2025 18:59:29
-    #:guix-commit "ace78713a9ee7abfdd19e2f009c3fb606b797160"
-    #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
+    ;; #:guix-commit "ace78713a9ee7abfdd19e2f009c3fb606b797160"
+    ;; #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
     )))
 (testsymb 'home-channels)
 

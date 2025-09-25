@@ -9,7 +9,7 @@ baseLP=$dotf/guix # base-load-path
 set -x # Print commands and their arguments as they are executed.
 guix pull --cores=$cores \
      --load-path=$baseLP/common \
-     --channels=$baseLP/common/config/channels/home-channels.scm \
+     --channels=$baseLP/home/common/home-channels.scm \
      "$@"
 
 # No need to chain the commands using '&&', since 'set -e' is used.
