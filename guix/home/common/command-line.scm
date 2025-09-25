@@ -85,14 +85,13 @@ defined.
                                  create-launcher
                                  set-editable
                                  ))
-             (procedures (append
-                          emacs-procedures
-                          '(
-                           cli-command
-                           cli-background-command
-                           cli-system-command
-                           mount unmount eject
-                           )))]
+             (procedures (append emacs-procedures
+                                 '(
+                                   cli-command
+                                   cli-background-command
+                                   cli-system-command
+                                   mount unmount eject
+                                   )))]
         (if (member? fun procedures)
             (let* [(fun-symbol
                     (if (member? fun
@@ -103,7 +102,6 @@ defined.
                                  )
                         'cli-general-command
                         fun))
-
                    ;; resolve fun-symbol to a procedure
                    (procedure-fun (eval fun-symbol (current-module)))
                    (procedure-exec-fun (eval exec-fun (current-module)))
@@ -127,6 +125,38 @@ defined.
                           (list #:create-frame val-create-frame)
                           (list))
                       val-rest-args)))
+            ;; (let* [(fun-symbol
+            ;;         (if (member? fun
+            ;;                      '(
+            ;;                        cli-command
+            ;;                        cli-background-command
+            ;;                        cli-system-command
+            ;;                        ))
+            ;;             'cli-general-command
+            ;;             fun))
+            ;;        ;; resolve fun-symbol to a procedure
+            ;;        (procedure-fun (eval fun-symbol (current-module)))
+            ;;        (procedure-exec-fun (eval exec-fun (current-module)))
+            ;;        ]
+            ;;   ;; (format #t "~a procedure-fun      : ~a\n" f procedure-fun)
+            ;;   ;; (format #t "~a procedure-exec-fun : ~a\n" f procedure-exec-fun)
+            ;;   ((comp
+            ;;     (partial apply procedure-fun)
+            ;;     (lambda (v) (format #t "~a 1. ~a\n" m v) v)
+            ;;     (partial remove unspecified-or-empty-or-false?)
+            ;;     (lambda (v) (format #t "~a 0. ~a\n" m v) v)
+            ;;     )
+            ;;    (append
+            ;;     (when #t
+            ;;       (list #:gx-dry-run   val-gx-dry-run
+            ;;             #:verbose      verbose
+            ;;             #:params       params))
+            ;;     (when (not (member? fun emacs-procedures))
+            ;;       (list #:fun          fun
+            ;;             #:exec-fun     procedure-exec-fun))
+            ;;     (when (equal? fun 'create-launcher)
+            ;;       (list #:create-frame val-create-frame))
+            ;;     val-rest-args)))
 
             (raise-exception
              (make-exception
