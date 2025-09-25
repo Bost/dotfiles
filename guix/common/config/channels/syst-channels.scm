@@ -18,6 +18,10 @@
  ;; #:nonguix-commit "d096df03564783372b315fe6c179655c2c337d5a"
 
  ;; 22 sept. 2025 17:56:58
- #:guix-commit "f662d534068736d0770f9988a29e268db2db2a51"
- #:nonguix-commit "bc2a73d7a8252b14a2a3705f8df791ab314f5a5c"
+ ;; #:guix-commit "f662d534068736d0770f9988a29e268db2db2a51"
+ ;; #:nonguix-commit "bc2a73d7a8252b14a2a3705f8df791ab314f5a5c"
+
+ ;; 25 sept. 2025 19:54:02
+ #:guix-commit "ace78713a9ee7abfdd19e2f009c3fb606b797160"
+ #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
  )
