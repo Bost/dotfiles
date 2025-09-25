@@ -512,7 +512,7 @@ READER-FUNCTION on them. "
 ;; resulting in clean, easy to read non-blocking code.
 #;(import (language wisp spec)) ;; whitespace lisp
 
-(define* (exec-background command #:key (verbose #t))
+(define* (exec-background command #:key (verbose #f))
   "Execute COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings.
 § echo bar baz & disown
@@ -520,7 +520,8 @@ bar baz
 $9 = 0 ;; <return-code>"
   ((comp
     (partial exec-or-dry-run system)
-    (lambda (prm) (dbg-exec prm #:verbose verbose))
+    ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
+    (lambda (prm) (dbg-exec prm #:verbose #t))
     cmd->string
     ;; disown belongs to shells. See `help disown`. The semicolon, as indicated
     ;; by `help disown` ivoked from the fish-shell, in eg. `echo foo &; disown`,
@@ -536,7 +537,9 @@ E.g.:
 § echo bar baz
 bar baz
 $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
-  (let* [(ret (exec command #:verbose verbose))]
+  (let* [(ret
+          ;; (exec command #:verbose verbose)
+          (exec command #:verbose #t))]
     (if (= 0 (car ret))
         (let* ((output (cdr ret)))
           ;; process output
@@ -546,7 +549,7 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
           (error-command-failed m)
           *unspecified*))))
 
-(define* (exec-system command #:key (verbose #t))
+(define* (exec-system command #:key (verbose #f))
   "Execute COMMAND using `system' from the (guile) module and returns its ret-code.
 E.g.:
 (exec-system \"echo bar baz\") ;; =>
@@ -556,7 +559,8 @@ $9 = 0 ;; <return-code>"
   (let* [(f "[exec-system]")]
     ((comp
       (partial exec-or-dry-run system)
-      (lambda (prm) (dbg-exec prm #:verbose verbose)))
+      ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
+      (lambda (prm) (dbg-exec prm #:verbose #t)))
      command)))
 
 ;; (define (background-system command)
