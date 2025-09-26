@@ -179,7 +179,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; See also icecat-minimal
    icecat ;; 1839.7 MiB
 
-   librewolf ; Custom version of Firefox. Better privacy, security and freedom
+   ;; librewolf ; Custom version of Firefox. Better privacy, security and freedom
    qemu      ; Machine emulator and virtualizer ;; 688 MiB
 
    ;; ungoogled-chromium ; 285MiB; supports WebUSB; doesn't start
