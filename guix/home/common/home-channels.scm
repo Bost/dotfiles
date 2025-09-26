@@ -99,6 +99,12 @@
     ;; 25 sept. 2025 18:59:29
     ;; #:guix-commit "ace78713a9ee7abfdd19e2f009c3fb606b797160"
     ;; #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
+
+    ;; 26 sept. 2025 13:03:02
+    ;; librewolf not present on substitutes yet
+    #:guix-commit "3c96d9fb1e1ee8fe4efd44ba6e8f3886b43668be"
+    #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
+
     )))
 (testsymb 'home-channels)
 
