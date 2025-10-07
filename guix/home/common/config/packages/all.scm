@@ -751,7 +751,10 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; ghostty ; not available in Guix yet 2025-08
 
    neovim
-   guvcview ; control webcam, capture videos and images
+
+   ;; guvcview doesn't compile:
+   ;;   uvc_h264.c:1035:17: error: implicit declaration of function ‘avcodec_close’
+   ;; guvcview ; control webcam, capture videos and images
 
    ;; llama-cpp ; Port of Facebook's LLaMA model in C/C++
 
