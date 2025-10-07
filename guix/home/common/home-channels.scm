@@ -32,11 +32,17 @@
              ;; 16 sept. 2025 13:50 (roughly)
              ;; 18 sept. 2025 10:11:24
              ;; #:commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+
+             ;; 07 oct. 2025 15:33:59
+             ;; #:commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
              )
             ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
             (channel-guixrus ;; whereiseveryone
              ;; 16 sept. 2025 12:33:23
              ;; 18 sept. 2025 10:11:24
+             ;; #:commit "83321ce5d23109f143413490aa5acf04361c8076"
+
+             ;; 07 oct. 2025 15:33:59
              ;; #:commit "83321ce5d23109f143413490aa5acf04361c8076"
              )
             (channel-hask-clj
@@ -49,41 +55,19 @@
             ;; (channel-flat)
             ;; (channel-rde)
             (channel-bost
-             ;; #:commit "6ddbd879a9d6e61cbc58721d00a7b1f380bda57a"
-
-             ;; 04 sept. 2025 15:21:12
-             ;; #:commit "5c7b61177d0c71c628687c6e0aa9bf29bbb2f836"
-
              ;; 16 sept. 2025 12:33:23
              ;; #:commit "8eacfc4fece97e9fbff4ecaf7bb3cb181b0c12ca"
 
              ;; 18 sept. 2025 10:11:24
              ;; #:commit "96d8f9cbc39780a90935d0f49edb372b77702875"
+
+             ;; 07 oct. 2025 15:33:59
+             ;; #:commit "ead5b77819456c577d162e047f8ec6eed9252520"
              )
             )
            lst)
           lst)))
    (common-channels
-    ;; Aug 31 2025 14:48:46
-    ;; #:nonguix-commit "60ffd0353e70d5e371c4bfe2201c9d08c1c05e18"
-    ;; #:guix-commit "d431f4620a4c077383e1168f932e86c99ae33834"
-
-    ;; 03 sept. 2025 14:06:29
-    ;; #:nonguix-commit "477f283914ca771a8622e16b73d845b87c63335d"
-    ;; #:guix-commit "b377ec079d9ffe8f0f372c43735ad012ea889b6f"
-
-    ;; 05 sept. 2025 15:53:28
-    ;; #:nonguix-commit "477f283914ca771a8622e16b73d845b87c63335d"
-    ;; #:guix-commit "6bffc03be9dcf4711b5d1e9c95aba340403b35df"
-
-    ;; 11 sept. 2025 16:14:49
-    ;; #:guix-commit "fe2ed12e66097ee2befc55d7ae88e2a7c19f9e72"
-    ;; #:nonguix-commit "d096df03564783372b315fe6c179655c2c337d5a"
-
-    ;; 16 sept. 2025 12:33:23
-    ;; #:guix-commit "de41613d273106b88eeed4af72c23a57cfd18442"
-    ;; #:nonguix-commit "df4e6ed9fe917f004357d931e210e328e348bb38"
-
     ;; 18 sept. 2025 10:11:24
     ;; #:guix-commit "f62206ecd8605538b1fb18d038d3db33707a8535"
     ;; #:nonguix-commit "df4e6ed9fe917f004357d931e210e328e348bb38"
@@ -102,9 +86,12 @@
 
     ;; 26 sept. 2025 13:03:02
     ;; librewolf not present on substitutes yet
-    #:guix-commit "3c96d9fb1e1ee8fe4efd44ba6e8f3886b43668be"
-    #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
+    ;; #:guix-commit "3c96d9fb1e1ee8fe4efd44ba6e8f3886b43668be"
+    ;; #:nonguix-commit "25d7a8091c2c9678a8694f073d846a7001165169"
 
+    ;; 07 oct. 2025 15:33:59
+    #:guix-commit "11ab410217fa094f040128917e90ea89ee586ffc"
+    #:nonguix-commit "a5d216cd7c2d67eb95e58871bb805f22c160c57b"
     )))
 (testsymb 'home-channels)
 
