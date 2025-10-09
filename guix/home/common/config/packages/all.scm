@@ -176,7 +176,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; See also icecat-minimal
    icecat ;; 1839.7 MiB
 
-   ;; librewolf ; Custom version of Firefox. Better privacy, security and freedom
+   librewolf ; Custom version of Firefox. Better privacy, security and freedom
    qemu      ; Machine emulator and virtualizer ;; 688 MiB
 
    ;; ungoogled-chromium ; 285MiB; supports WebUSB; doesn't start
@@ -698,7 +698,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; /gnu/store/znrni9c6mjx45ps4j0jkrbgl6rvc6s2p-libreoffice-25.2.3.2
    ;; https://ci.guix.gnu.org/search?query=spec%3Amaster+system%3Ax86_64-linux+libreoffice
    ;; doesn't build due to failing build of the firebird-3.0.13 dependency - see https://ci.guix.gnu.org/build/13148158/details
-   ;; libreoffice
+   libreoffice
 
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
