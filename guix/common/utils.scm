@@ -196,45 +196,38 @@ Works also for functions returning and accepting multiple values."
 (define-syntax evaluating-module
   (syntax-rules ()
     [(_ show)
-     (begin
-       (let [(m (module-name-for-logging))]
-         (when show
-           (format #t "~a Evaluating module…\n" m))))]
+     (when show
+       (format #t "~a Evaluating module…\n" (module-name-for-logging)))]
     [(_)
-     (begin
-       (let [(m (module-name-for-logging))]
-         (when show-evaluating-module
-           (format #t "~a Evaluating module…\n" m))))]))
+     (when show-evaluating-module
+       (format #t "~a Evaluating module…\n" (module-name-for-logging)))]))
 
 (define-syntax module-evaluated
   (syntax-rules ()
     [(_ show)
-     (begin
-       (let [(m (module-name-for-logging))]
-         (when show
-           (format #t "~a Evaluating module… done\n" m))))]
+     (when show
+       (format #t "~a Evaluating module… done\n" (module-name-for-logging)))]
     [(_)
-     (begin
-       (let [(m (module-name-for-logging))]
-         (when show-module-evaluated
-           (format #t "~a Evaluating module… done\n" m))))]))
+     (when show-module-evaluated
+       (format #t "~a Evaluating module… done\n" (module-name-for-logging)))]))
+
+(define (warn-undefined symbol)
+  (my=warn (format #f "~a Symbol undefined: ~a"
+                   (module-name-for-logging) symbol)))
 
 (define-syntax testsymb
   (syntax-rules ()
     [(_ symbol)
-     (begin
-       (let [(module (module-name-for-logging))]
-         (unless (defined? symbol)
-           (my=warn (format #f "~a Symbol undefined: ~a" module symbol)))))]))
+     (unless (defined? symbol)
+       (warn-undefined symbol))]))
 
 (define-syntax testsymb-trace
   (syntax-rules ()
     [(_ symbol)
-     (begin
-       (let [(module (module-name-for-logging))]
-         (if (defined? symbol)
-             (format #t "~a Symbol defined: ~a\n" module symbol)
-             (my=warn (format #f "~a Symbol undefined: ~a" module symbol)))))]))
+     (if (defined? symbol)
+         (format #t "~a Symbol defined: ~a\n"
+                 (module-name-for-logging) symbol)
+         (warn-undefined symbol))]))
 
 (define (test-testsymb)
   (define f 42)
