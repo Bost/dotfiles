@@ -104,7 +104,7 @@ Example:
                                    cli-command
                                    cli-background-command
                                    cli-system-command
-                                   mount unmount eject
+                                   mount unmount eject info
                                    )))]
         (if (member? fun procedures)
             (let* [(fun-symbol
