@@ -193,23 +193,21 @@ Works also for functions returning and accepting multiple values."
 (define show-evaluating-module #f) ; placed at the beginning of a module
 (define show-module-evaluated  #f) ; placed at the end of a module
 
+(define (inf-evaluating-module)
+  (format #t "~a Evaluating module…\n" (module-name-for-logging)))
+
 (define-syntax evaluating-module
   (syntax-rules ()
-    [(_ show)
-     (when show
-       (format #t "~a Evaluating module…\n" (module-name-for-logging)))]
-    [(_)
-     (when show-evaluating-module
-       (format #t "~a Evaluating module…\n" (module-name-for-logging)))]))
+    [(_ show) (when show                   (inf-evaluating-module))]
+    [(_)      (when show-evaluating-module (inf-evaluating-module))]))
+
+(define (inf-evaluating-module-done)
+  (format #t "~a Evaluating module… done\n" (module-name-for-logging)))
 
 (define-syntax module-evaluated
   (syntax-rules ()
-    [(_ show)
-     (when show
-       (format #t "~a Evaluating module… done\n" (module-name-for-logging)))]
-    [(_)
-     (when show-module-evaluated
-       (format #t "~a Evaluating module… done\n" (module-name-for-logging)))]))
+    [(_ show) (when show                  (inf-evaluating-module-done))]
+    [(_)      (when show-module-evaluated (inf-evaluating-module-done))]))
 
 (define (warn-undefined symbol)
   (my=warn (format #f "~a Symbol undefined: ~a"
@@ -217,16 +215,13 @@ Works also for functions returning and accepting multiple values."
 
 (define-syntax testsymb
   (syntax-rules ()
-    [(_ symbol)
-     (unless (defined? symbol)
-       (warn-undefined symbol))]))
+    [(_ symbol) (unless (defined? symbol) (warn-undefined symbol))]))
 
 (define-syntax testsymb-trace
   (syntax-rules ()
     [(_ symbol)
      (if (defined? symbol)
-         (format #t "~a Symbol defined: ~a\n"
-                 (module-name-for-logging) symbol)
+         (format #t "~a Symbol defined: ~a\n" (module-name-for-logging) symbol)
          (warn-undefined symbol))]))
 
 (define (test-testsymb)
