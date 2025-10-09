@@ -64,6 +64,7 @@
             module-evaluated
             testsymb
             testsymb-trace
+            dbgfmt
             )
   #:re-export (
                smart-first
@@ -307,6 +308,26 @@ Corresponds to `drop' in Clojure"
   (cond ((null? x) '())
         ((pair? x) (append (flatten (car x)) (flatten (cdr x))))
         (else (list x))))
+
+(define (fmt-rest rest)
+  (if (empty? rest)
+      ""
+      (format #f "~a" (string-join (map str rest)))))
+
+;; TODO dbgfmt should be smart to detect if the symbols `f' and/or `m' are defined and if so then use them
+(define-syntax dbgfmt
+  ;; match specific datums `m' and `f' in an expression
+  (syntax-rules (m f)
+    [(_ m f e ...)
+     (format #t "~a ~a ~a\n" m f (fmt-rest (list e ...)))]
+    [(_ f m e ...) ;; in case we have reversed order: `f m'
+     (format #t "~a ~a ~a\n" m f (fmt-rest (list e ...)))]
+    [(_ f e ...)
+     (format #t "~a ~a\n" f (fmt-rest (list e ...)))]
+    [(_ m e ...)
+     (format #t "~a ~a\n" m (fmt-rest (list e ...)))]
+    [(_ e ...)
+     (format #f "~a\n" (fmt-rest (list e ...)))]))
 
 ;; TODO implement pretty-print for bash commands
 (define-public (dbg prm)
