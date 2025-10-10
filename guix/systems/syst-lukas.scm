@@ -79,7 +79,6 @@
       (service elogind-service-type)
 
       (service network-manager-service-type)
-      (service wpa-supplicant-service-type)
       (service
        openssh-service-type
        (openssh-configuration
