@@ -665,9 +665,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    youtube-viewer  ; Search & play YT videos in a native player
    vlc             ; Audio and video player and framework
 
-   ;; tesseract-ocr               ; OCR Optical character recognition engine
-   ;; tesseract-ocr-tessdata-fast ; Fast versions of trained LSTM models
-   ;; gimagereader                ; Qt front-end to tesseract-ocr
+   tesseract-ocr               ; OCR Optical character recognition engine
+   tesseract-ocr-tessdata-fast ; Fast versions of trained LSTM models
+   gimagereader                ; Qt front-end to tesseract-ocr
 
    surfraw       ; Unix command line interface to the www
    w3m           ; Text-mode web browser
