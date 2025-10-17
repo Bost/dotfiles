@@ -46,13 +46,20 @@ Type Testing Predicates.
 (test-type (call-with-input-string \"  (+ x y)\" read-syntax)) ; => (syntax?)
 (test-type '())     ; => (list? null?)
 (test-type \"a\")   ; => (string?)
-(test-type 1)       ; => (complex? real? integer? number?)
-(test-type (+ 1 2)) ; => (complex? real? integer? number?)
+(test-type 1)       ; => (number? complex? real? integer? rational? positive? odd?)
+(test-type (+ 1 2)) ; => (number? complex? real? integer? rational? positive? odd?)
 (test-type (* 3-8i 2.3+0.3i)) ; => (complex? number?)
 (test-type #\\space)           ; => (char-whitespace?)
 (test-type #\\a)               ; => (char-alphabetic?)
 (test-type #\\1)               ; => (char-numeric?)
 (test-type (gexp 42))          ; => (gexp?)
+(test-type (make-error))       ; => (record? exception? error?)
+(test-type (make-exception))   ; => (record? exception?)
+(test-type (/ 0.0 0.0))        ; => (number? complex? real? nan?)
+(test-type (sqrt -1.0))        ; => (number? complex?)
+
+(nan? (sqrt -1.0)) ; => Wrong type argument in position 1: 0.0+1.0i
+
 "
   ((comp
     (partial remove unspecified?)
@@ -80,6 +87,9 @@ Type Testing Predicates.
     'odd?
     'even?
     'zero?
+    ;; NaN - symbol to indicate that a mathematical operation could not produce
+    ;; a meaningful result
+    'nan?
     ;;
     '(@(system syntax internal) syntax?)
     'identifier?   ;; #t if syntax-object is an identifier, or #f otherwise.
@@ -96,6 +106,11 @@ Type Testing Predicates.
     '(@(gnu services) service?)
     '(@(gnu services) service-type?)
     '(@(gnu services) service-extension?)
+    ;;
+    'exception?
+    'error?
+    'condition? ;; might be in (rnrs conditions)
+    'violation? ;; might be in (rnrs conditions)
     )))
 
 (define (test-equality a b)
