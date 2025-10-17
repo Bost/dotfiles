@@ -23,14 +23,9 @@
   ;; WTF? following line leads to 'no code for module (guix read-print)'
   ;; #:use-module (guix read-print)
 
-  ;; string-replace-substring
-  #:use-module (ice-9 string-fun)
-  ;; first take remove delete-duplicates append-map last etc.
-  #:use-module (srfi srfi-1)
-  ;; return, bind
-  #:use-module (guix monads)
-  ;; for the exec-with-error-to-string
-  #:use-module (rnrs io ports)
+  #:use-module (ice-9 string-fun) ; string-replace-substring
+  #:use-module (guix monads)      ; return, bind
+  #:use-module (rnrs io ports)    ; exec-with-error-to-string
 
   ;; for inferior-package-in-guix-channel : beg
   ;; #:use-module (guix channels)  ;; WTF? not found by `guix home ...`
@@ -38,7 +33,7 @@
   ;; #:use-module (guix packages)
   ;; #:use-module (guix profiles) ;; probably not needed
   ;; for inferior-package-in-guix-channel : end
-  #:use-module (ice-9 exceptions)
+  #:use-module (ice-9 exceptions) ; guard
 
   #:export (
             compose-commands-guix-shell
@@ -65,6 +60,11 @@
             testsymb
             testsymb-trace
             dbgfmt
+            sha1-file
+            str-join
+            timestamp
+            pretty-print-with-comments->string
+            map-indexed
             )
   #:re-export (
                smart-first
@@ -112,7 +112,30 @@ Works also for functions returning and accepting multiple values."
 
 (define-public (juxt . fns)
   "Naive implementation. Inspired by Clojure's juxt.
-((juxt a b c) x) => (list (a x) (b x) (c x))"
+((juxt a b c) x) => (list (a x) (b x) (c x))
+
+;; Example usage:
+(define add1 (lambda (x) (+ x 1)))
+(define square (lambda (x) (* x x)))
+(define negate (lambda (x) (- x)))
+
+;; Create a juxtaposition of functions
+(define combined (juxt add1 square negate))
+
+;; Apply to arguments
+(combined 5)  ; => (6 25 -5)
+
+;; With multiple arguments
+(define add (lambda (x y) (+ x y)))
+(define mult (lambda (x y) (* x y)))
+(define sub (lambda (x y) (- x y)))
+
+(define math-ops (juxt add mult sub))
+(math-ops 10 3)  ; => (13 30 7)
+
+;; Using with built-in functions
+(define string-ops (juxt string-length string-upcase string-downcase))
+(string-ops \"Hello\")  ; => (5 \"HELLO\" \"hello\")"
   (lambda args
     (map (lambda (fn) (apply fn args)) fns)))
 
@@ -246,11 +269,12 @@ Works also for functions returning and accepting multiple values."
       (close-output-port port)
       ret)))
 
-(define-public (pretty-print-with-comments->string sexp)
+(define* (pretty-print-with-comments->string sexp #:key (max-width 78))
   (call-with-output-string
     (lambda (port)
       ;; can't use '#:use-module (guix read-print)'. See above module definition
-      ((@(guix read-print) pretty-print-with-comments) port sexp))))
+      ((@(guix read-print) pretty-print-with-comments) port sexp
+       #:max-width max-width))))
 
 (define-public (unspecified-or-empty-or-false? obj)
   (or (unspecified? obj)
@@ -333,28 +357,100 @@ Corresponds to `drop' in Clojure"
   prm)
 
 (define* (error-command-failed #:rest args)
-  "Returns #t and prints \"Command failed.\" with some extra text.
-
-(error-command-failed \"[module]\" \"extra_text\")
-;; =>
-E [module] Command failed: extra_text
-
-(error-command-failed \"[module]\")
-;; =>
-E [module] Command failed.
-
-(error-command-failed)
-;; =>
-E Command failed."
+  "Returns #t and prints \"Command failed.\" with some extra text. Does NOT
+error-out!"
+  (define f "[error-command-failed]")
+  ;; (format #t "~a ~a Starting ...\n" f m)
+  (define (error-fun . args)
+    ;; (error (apply (partial format #f (car args))
+    ;;               (cdr args)))
+    (apply (partial format (current-error-port))
+           (cons (str "E " (car args) "\n") (cdr args)))
+    )
   (match args
     ['()
-     (format #t
-             #;error
-             "E Command failed.\n")]
+     (error-fun "Command failed.")]
     [(module)
-     (format #t "E ~a Command failed.\n" module)]
+     (error-fun "~a Command failed." module)]
     [(module extra-text)
-     (format #t "E ~a Command failed: ~a\n" module extra-text)]))
+     (error-fun "~a Command failed: ~a" module extra-text)]))
+
+(define-public (split-string s n)
+  "Split a string S into substrings of length N.
+Examples:
+;; Valid cases
+(split-string \"hello\" 2)          ; => (\"he\" \"ll\" \"o\")
+(split-string \"hello\" 5)          ; => (\"hello\")
+(split-string \"hello\" 10)         ; => (\"hello\") - n >= length
+(split-string \"\" 3)               ; => (\"\") or maybe should be '()?
+(split-string \"ab\" 1)             ; => (\"a\" \"b\")
+(split-string \"hello\" 0)          ; => (\"hello\")
+
+;; Invalid n: not a number
+(split-string \"hello\" \"2\")        ; => error
+(split-string \"hello\" #f)         ; => error
+(split-string \"hello\" '())        ; => error
+(split-string \"hello\" #\\c)        ; => error
+
+;; Invalid n: negative number
+(split-string \"hello\" -1)         ; => error
+(split-string \"hello\" -5)         ; => error
+
+;; Invalid n: non-integer number
+(split-string \"hello\" 2.5)        ; => error
+(split-string \"hello\" 1.0)        ; => error (even though mathematically = 1)
+(split-string \"hello\" +inf.0)     ; => error
+(split-string \"hello\" +nan.0)     ; => error
+
+;; Invalid s: not a string
+(split-string 123 2)              ; => error
+(split-string #f 2)               ; => error
+(split-string '() 2)              ; => error
+(split-string #\\h 2)              ; => error
+
+;; Both invalid
+(split-string 123 \"2\")            ; => error
+(split-string #f -1)              ; => error
+
+;; Edge cases
+(split-string \"\" 0)               ; => (\"\")
+(split-string \"a\" 1)              ; => (\"a\")
+"
+  (define (error-out s n)
+    (define f "[split-string]")
+    (let* [(s1 (if (not (and (number? n)
+                             (or (zero? n) (positive? n))
+                             (integer? n)))
+                   (format #f "`n' '~a' must be a positive integer or zero" n)
+                   ""))
+           (s2 (if (not (string? s))
+                   (format #f "`s' must be a string") ""))
+           (s ((comp
+                (partial str-join ", ")
+                (partial remove unspecified-or-empty-or-false?))
+               (list s1 s2)))]
+      (error (format #f "~a ~a" f s))))
+
+  (if  (and (string? s) (number? n))
+       (cond
+        [(and (positive? n) (integer? n))
+         (if (<= (string-length s) n)
+             (list s)
+             (cons (substring s 0 n)
+                   (split-string (substring s n) n)))]
+        [(zero? n) (list s)]
+        [else (error-out s n)])
+       (error-out s n)))
+
+(define-public (smart-split-string s n)
+  "Smart split a string S into substrings of length N.
+Example:
+(smart-split-string \"12345\" 2) ; => (\"12\" \"34\" \"5\")
+(smart-split-string 2 \"12345\") ; => (\"12\" \"34\" \"5\")
+"
+  (if (and (string? s) (number? n))
+      (split-string s n)
+      (split-string n s)))
 
 (define (split-space-escaped input)
   "(split-space-escaped \"a b\\ c\") ;; => (\"a\" \"b c\")"
@@ -556,7 +652,7 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
           (map (partial format #t "~a\n") output)
           ret)
         (begin
-          (error-command-failed m)
+          (error-command-failed m (format #f "retcode: ~a" (car ret)))
           *unspecified*))))
 
 (define* (exec-system command #:key (verbose #f))
@@ -645,10 +741,13 @@ Usage:
     cmd->string)
    commad))
 
-(define* (exec command #:key (verbose #t) (return-alist #f))
+(define* (exec command #:key (verbose #t) (return-plist #f))
   "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return a string
 containing its output.
+
+RETURN-PLIST - return property list which can be accessed by:
+(plist-get (exec \"echo 'foo'\" #:return-plist #t #:verbose #f) #:retcode)
 
 TODO have a look if a delimited continuation can be used to break out of `exec',
 i.e. skip the `read-all-strings' and thus make `exec-background' out of it.
@@ -666,7 +765,7 @@ Usage:
         (let* ((output (cdr ret)))
           (process retval output))
       (begin
-        ;; (error-command-failed \"[module]\" \"extra_info\")
+        ;; (error-command-failed m \"extra_info\")
         ;; or return `retval' instead of `*unspecified*'
         *unspecified*)))"
   ;; ,use (guix build utils) ;; contains `invoke'
@@ -683,7 +782,7 @@ Usage:
     (let* [(port (open-input-pipe command)) ; from (ice-9 rdelim)
            ;; the `read-all-strings' must be called before `close-pipe'.
            (results (read-all-strings port))]
-      (if return-alist
+      (if return-plist
           (list
            #:retcode (status:exit-val (close-pipe port))
            #:results results)
@@ -1006,7 +1105,7 @@ Example:
     (if (= 0 mv-retcode)
         (mf (cadr mv))
         (begin
-          (error-command-failed m)
+          (error-command-failed m (format #f "mv-retcode: ~a" mv-retcode))
           mv))))
 
 (define-monad compose-shell-commands
@@ -1154,6 +1253,7 @@ Requires:
          (apply map list lists)))
 
 (define-public (combine . lists)
+  "(combine (list 1 2 3) (list 4 5 6)) ;=> ((1 4) (2 5) (3 6))"
   (let ((len (length (car lists))))
     (unless (every (λ (l) (= (length l) len)) lists)
       (error "combine: lists must all be the same length" lists))
@@ -1185,6 +1285,11 @@ Requires:
   (let ((s (stat dir #f)))
     (and s
          (eq? 'directory (stat:type s)))))
+
+;; (define-public (directory-exists? path)
+;;   "Check if path exists and is a directory. (Alternative definition)"
+;;   (and (file-exists? path)
+;;        (eq? (stat:type (stat path)) 'directory)))
 
 ;;; take and drop are in (use-modules (srfi srfi-1))
 (define-public (take-smart a b)
@@ -1276,33 +1381,6 @@ that many from the end."
       ((x . r) (cons (syntax x) (f (syntax r))))
       (_ (error 'syntax->list "invalid argument ~s" orig-ls)))))
 
-(define-public (juxt . fns)
-  (lambda args
-    (map (lambda (f) (apply f args)) fns)))
-
-;; ;; Example usage:
-;; (define add1 (lambda (x) (+ x 1)))
-;; (define square (lambda (x) (* x x)))
-;; (define negate (lambda (x) (- x)))
-
-;; ;; Create a juxtaposition of functions
-;; (define combined (juxt add1 square negate))
-
-;; ;; Apply to arguments
-;; (combined 5)  ; => (6 25 -5)
-
-;; ;; With multiple arguments
-;; (define add (lambda (x y) (+ x y)))
-;; (define mult (lambda (x y) (* x y)))
-;; (define sub (lambda (x y) (- x y)))
-
-;; (define math-ops (juxt add mult sub))
-;; (math-ops 10 3)  ; => (13 30 7)
-
-;; ;; Using with built-in functions
-;; (define string-ops (juxt string-length string-upcase string-downcase))
-;; (string-ops "Hello")  ; => (5 "HELLO" "hello")
-
 (define (build one-or-more-packages)
   "Usage example:
 (build (@(bost gnu packages emacs-xyz) emacs-tweaks))"
@@ -1343,11 +1421,6 @@ that many from the end."
     ;;   ))
     ))
 
-(define (directory-exists? path)
-  "Check if path exists and is a directory"
-  (and (file-exists? path)
-       (eq? (stat:type (stat path)) 'directory)))
-
 (define (symbolic-link? path)
   "Check if path is a symbolic link"
   (and (file-exists? path)
@@ -1381,5 +1454,278 @@ Example:
                      [#t ""])
                     (object->string x)))))
    xs))
+
+(define (safe-write-to-file mode filename text)
+  "Append TEXT to FILENAME. Create FILENAME if it doesn't exist."
+  (guard
+      (condition
+       (else
+        (let [(errmsg
+               (format #f "~a: ~a"
+                       (exception-origin condition)
+                       (apply (partial format #f (exception-message condition))
+                              (exception-irritants condition))))]
+          (error errmsg))))
+    (let [(port (open-file filename mode))]
+      (display text port)
+      (close-port port)
+      #t)))
+
+(define-public (safe-write-append filename text)
+  (safe-write-to-file "a" filename text))
+(testsymb 'safe-write-append)
+
+(define-public (safe-overwrite filename text)
+  (safe-write-to-file "w" filename text))
+(testsymb 'safe-overwrite)
+
+(define (read-mounts)
+  (call-with-input-file "/proc/mounts"
+    (lambda (port)
+      (let loop ((lines '()))
+        (let ((line (get-line port)))
+          (if (eof-object? line)
+              (reverse lines)
+              (loop (cons line lines))))))))
+
+(define (usb-device? dev)
+  "Return #t if DEV (like /dev/sdb1) is backed by a USB device."
+  (let* ((basename (basename dev))
+         ;; Resolve symlink in /sys/class/block to see where it points
+         (sys-path (string-append "/sys/class/block/" basename)))
+    (and (file-exists? sys-path)
+         (let ((target (false-if-exception (readlink sys-path))))
+           (and target (string-contains target "usb"))))))
+
+(define (mounted-usb-devices)
+  "Return a list of mounted USB block devices (e.g. /dev/sdb1)."
+  ;; (define f (format #f "~a [mounted-usb-devices]" m))
+  ;; (format #t "~a Starting…\n" f)
+  (let* [(cmd-result-struct
+          ((comp
+            (lambda (cmd) (exec cmd #:return-plist #t))
+            cmd->string)
+           (list "findmnt --real --raw --noheadings --output SOURCE")))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        ((comp
+          ;; (lambda (p) (format #t "~a done\n" f) p)
+          (partial filter usb-device?)
+          ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
+          )
+         (plist-get cmd-result-struct #:results))
+        (begin
+          ;; error-out
+          (error (format #f "~a retcode: ~a\n" m retcode))
+          ))))
+
+(define-public (get-ethernet-interfaces)
+  ;; (define f (format #f "~a [get-ethernet-interfaces]" m))
+  ;; (format #t "~a Starting…\n" f)
+  (let* [(cmd-result-struct
+          ((comp
+            (lambda (cmd) (exec cmd #:return-plist #t))
+            cmd->string)
+           (list "grep -l '1' /sys/class/net/*/type | cut -d'/' -f5")))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        ((comp
+          ;; (lambda (p) (format #t "~a done\n" f) p)
+          ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
+          )
+         (plist-get cmd-result-struct #:results))
+        (begin
+          ;; error-out
+          (error (format #f "~a retcode: ~a\n" m retcode))))))
+
+(define-public (ethernet-cable-plugged? iface)
+  "Returns #t or #f"
+  (catch #t
+    (lambda ()
+      (call-with-input-file
+          (string-append "/sys/class/net/" iface "/carrier")
+        (lambda (port)
+          (string=? "1\n" (get-string-all port)))))
+    (lambda (key . args)
+      #f)))
+
+(define (mounted-with-option? option device-or-mountpoint)
+  "Return #t if the given DEVICE-OR-MOUNTPOINT is mounted with specified OPTION.
+Example usage:
+(mounted-with-option? \"rw\" \"/run/media/bost/lbl-fsys-axagon\")
+(mounted-with-option? \"ro\" \"/dev/sdc1\")
+"
+  (define f (format #f "~a [mounted-with-option?]" m))
+
+  ;; (format #t "~a Starting…\n" f)
+  (let* [(cmd-result-struct
+          ((comp
+            (lambda (cmd) (exec cmd #:return-plist #t))
+            cmd->string)
+           (list "findmnt --real --noheadings --output OPTIONS"
+
+                 ;; Explicitly define the mount source. Supported specifications are:
+                 ;; device
+                 ;; maj:min
+                 ;; LABEL=label
+                 ;; UUID=uuid
+                 ;; PARTLABEL=label
+                 ;; PARTUUID=uuid
+                 ;; "--source"
+
+                 device-or-mountpoint)))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        ((comp
+          ;; (lambda (p) (format #t "~a done\n" f) p)
+          (partial member option)
+          (lambda (the-str) (string-split the-str #\,))
+          string-trim-both
+          car
+          ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
+          )
+         (plist-get cmd-result-struct #:results))
+        (begin
+          ;; error-out
+          (error (format #f "~a retcode: ~a\n" m retcode))))))
+
+(define-public (writeable-usb-mounted?)
+  ((comp
+    (partial find true?)
+    (partial map boolean)
+    (partial map (partial mounted-with-option? "rw")))
+   (mounted-usb-devices)))
+
+(define-public (sha1-string s)
+  "Example:
+  (sha1-string \"0200000000010171\")
+;; => \"e2462d5e457858930952c8b7b80f49f3307234ec\"
+
+See also:
+  (string-hash \"0200000000010171\")     ; => 1902129584164781890
+  (hash \"0200090000010170\" 2147483647) ; => 626328076"
+  (let* [(cmd-result-struct
+          ((comp
+            (lambda (cmd) (exec cmd #:return-plist #t #:verbose #f))
+            cmd->string)
+           (list (string-append "echo -n '" s "' | sha1sum"))))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        ((comp
+          car
+          (lambda (s) (string-split s #\space))
+          car
+          ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
+          )
+         (plist-get cmd-result-struct #:results))
+        (begin
+          ;; error-out
+          (error (format #f "~a retcode: ~a\n" m retcode))
+          ;; (error-command-failed m (format #f "retcode: ~a" retcode))
+          ;; *unspecified*
+          ))))
+
+(define-public (string-checksum s)
+  "(string-checksum \"0200000000010171\") ; => 683979683"
+  ;; simple polynomial hash: sum over chars of (char-code * weight^i) mod some
+  ;; modulus
+  (let* ((modulus 1000000007)   ; a large prime
+         (base 257)
+         (len (string-length s)))
+    (let loop ((i 0) (acc 0))
+      (if (= i len)
+          acc
+          (let* ((c (char->integer (string-ref s i)))
+                 (acc2 (modulo (+ (modulo (* acc base) modulus)
+                                  c)
+                               modulus)))
+            (loop (+ i 1) acc2))))))
+
+(define* (timestamp #:key (verbose #f))
+  "(timestamp) ;; => \"2025-10-14_20-14-16\""
+  (let* [(cmd-result-struct
+          ((comp
+            (lambda (cmd) (exec cmd #:return-plist #t #:verbose verbose))
+            cmd->string)
+           (list
+            ;; same as "+%Y-%m-%d_%H-%M-%S"
+            "date" "\"+%F_%H-%M-%S\"")))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        ((comp
+          ;; car
+          ;; (lambda (s) (string-split s #\space))
+          car
+          ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
+          )
+         (plist-get cmd-result-struct #:results))
+        (begin
+          ;; error-out
+          (error (format #f "~a retcode: ~a\n" m retcode))
+          ;; (error-command-failed m (format #f "retcode: ~a" retcode))
+          ;; *unspecified*
+          ))))
+
+(define* (sha1-file filename #:key (verbose #f))
+  "Example:
+  (sha1-file \"/etc/hosts\") ;; => \"...\""
+  (let* [(cmd-result-struct
+          ((comp
+            (lambda (cmd) (exec cmd #:return-plist #t #:verbose verbose))
+            cmd->string)
+           (list "sha1sum" filename)))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        ((comp
+          car
+          (lambda (s) (string-split s #\space))
+          car
+          ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
+          )
+         (plist-get cmd-result-struct #:results))
+        (begin
+          ;; error-out
+          (error (format #f "~a retcode: ~a\n" m retcode))
+          ;; (error-command-failed m (format #f "retcode: ~a" retcode))
+          ;; *unspecified*
+          ))))
+
+(define-public inc 1+)
+
+(define* (str-join ls #:optional (delimiter " ") (grammar 'infix))
+  "
+(str-join (map str (list 1 2 3)))         ;=> \"1 2 3\"
+(str-join (map str (list 1 2 3)) \"\\n\") ;=> \"1\\n2\\n3\"
+(str-join \"_\" (map str (list 1 2)))     ;=> \"1_2\"
+(str-join (map str (list 1 2)) \"_\")     ;=> \"1_2\""
+  (cond
+   [(and (list? ls) (string? delimiter) (symbol? grammar))
+    (string-join (map str ls) delimiter grammar)]
+   [(and (string? ls) (list? delimiter) (symbol? grammar))
+    (string-join (map str delimiter) ls grammar)]
+   [else
+    (string-join ls delimiter grammar)]))
+
+(define* (map-indexed f seq)
+  "(map-indexed (lambda (i x) (list i x)) '(a b c)) ;=> ((0 a) (1 b) (2 c))"
+  (cond
+   [(list? seq)
+    ;; Use the list version
+    (let loop ((idx 0) (xs seq) (acc '()))
+      (if (null? xs)
+          ;; Reverse the accumulator because we built it backwards
+          (reverse acc)
+          (loop (+ idx 1) (cdr xs)
+                (cons (f idx (car xs)) acc))))]
+   [(vector? seq)
+    ;; For vectors: build a list or build a new vector
+    (let* ((n (vector-length seq))
+           (out (make-vector n)))
+      (do ((i 0 (+ i 1)))
+          ((= i n) out)
+        (vector-set! out i (f i (vector-ref seq i)))))
+    ]
+   [else
+    (error "map-indexed: unsupported sequence type" seq)]))
 
 (module-evaluated)
