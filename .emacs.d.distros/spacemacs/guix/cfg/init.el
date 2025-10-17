@@ -1946,9 +1946,10 @@ Some binding snippets / examples:
      ("C-s-/"   . avy-goto-line)
 
      ;; fd - evil-escape from insert state and everything else
-     ;; occurences - function scope
+     ;; occurrences - function scope
+     ;; ~n~ / ~N~ next / prev occurrence; ~TAB~ toggle occurrence
      ("s-I"           . tw-iedit-mode-toggle)
-     ("s-i"           . iedit-mode)     ; all occurences in the buffer
+     ("s-i"           . iedit-mode)     ; all occurrences in the buffer
      ;; ("s-i"        . spacemacs/enter-ahs-forward)
      ("<f12>"         . undo-tree-visualize)
      ;; ("S-<delete>" . kill-region)
