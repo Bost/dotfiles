@@ -4,7 +4,6 @@
   ;; #:use-module (ice-9 popen)
   ;; #:use-module (ice-9 regex)
   #:use-module (srfi srfi-1) ;; fold remove
-  #:use-module (ice-9 exceptions) ;; guard
 
   ;; The syntax? and gexp? may not be defined when resolved by '#:use-module'.
   ;; Use module scoping '@@' instead.
@@ -19,9 +18,16 @@
     ((_ symbol arg ...)
      ((comp
        (lambda (function)
-         (when (guard (ex (else #f)) (function arg ...))
+         ;; need to specify (ice-9 exceptions) for `guard' to avoid warnings
+         ;; because of `error?' being defined in both (ice-9 exceptions) and
+         ;; (rnrs conditions)
+         (when ((@(ice-9 exceptions) guard)
+                (ex (else #f)) (function arg ...))
            (cond
-            [(list? symbol) (caddr symbol)]
+            [(and (list? symbol)
+                  ;; error? can be from (ice-9 exceptions) or (rnrs conditions)
+                  (not (equal? 'error? (last symbol))))
+             (caddr symbol)]
             [#t symbol])
            ))
        #;(lambda (p) (format #t "p: ~a\n" p) p))
@@ -60,6 +66,11 @@ Type Testing Predicates.
 
 (nan? (sqrt -1.0)) ; => Wrong type argument in position 1: 0.0+1.0i
 
+(test-type (make-exception ((@(ice-9 exceptions) make-error))))
+; => (record? exception? (@ (ice-9 exceptions) error?) condition?)
+
+(test-type (make-exception ((@(rnrs conditions) make-error))))
+; => (record? exception? (@ (rnrs conditions) error?) (@ (ice-9 exceptions) error?) condition?)
 "
   ((comp
     (partial remove unspecified?)
@@ -108,9 +119,13 @@ Type Testing Predicates.
     '(@(gnu services) service-extension?)
     ;;
     'exception?
-    'error?
-    'condition? ;; might be in (rnrs conditions)
-    'violation? ;; might be in (rnrs conditions)
+    '(@(rnrs conditions) error?)
+    '(@(ice-9 exceptions) error?)
+
+    ;; Conditions are records of a subtype of the &condition record type, which
+    ;; is neither sealed nor opaque. See R6RS Records.
+    '(@(rnrs conditions) condition?)
+    '(@(rnrs conditions) violation?)
     )))
 
 (define (test-equality a b)
@@ -131,4 +146,3 @@ Type Testing Predicates.
     'eq?
     'eqv?
     'equal?)))
-
