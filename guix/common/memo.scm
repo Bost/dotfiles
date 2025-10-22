@@ -24,7 +24,7 @@
 ;;; time some of the scm-bin CLI utility requiring this module is executed.
 (define (hostname)
   (let* ((ret (exec "hostname")))
-    (if (= 0 (car ret))
+    (if (zero? (car ret))
         (let* [(output (cdr ret))
                (hostname (car output))]
           hostname)

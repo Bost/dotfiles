@@ -128,7 +128,7 @@ cd $dotf
            search-pattern))
          (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
          (ret (exec cmd #:verbose #f))]
-    (if (= 0 (car ret))
+    (if (zero? (car ret))
         (let* [(output (cdr ret))]
           (unless (null? output)
             ;; file in magenta
@@ -181,7 +181,7 @@ cd $dotf
            search-pattern search-pattern))
          (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
          (ret (exec cmd #:verbose #f))]
-    (if (= 0 (car ret))
+    (if (zero? (car ret))
         (let* [(output (cdr ret))]
           (unless (null? output)
             (format #t "~a\n" (colorize-string file (color MAGENTA))) ; file in magenta
