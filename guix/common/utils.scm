@@ -650,7 +650,7 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
           (exec command #:verbose verbose)
           ;; (exec command #:verbose #t)
           )]
-    (if (= 0 (car ret))
+    (if (zero? (car ret))
         (let* ((output (cdr ret)))
           ;; process output
           (map (partial format #t "~a\n") output)
@@ -1105,13 +1105,14 @@ Example:
    params))
 
 (define-inlinable (pipe-bind mv mf)
-  (let* ((mv-retcode (car mv)))
-    (if (= 0 mv-retcode)
-        (mf (cadr mv))
+  (let* [(mv-retcode (plist-get mv #:retcode))]
+    (if (zero? mv-retcode)
+        (mf (plist-get mv #:results))
         (begin
           (error-command-failed m (format #f "mv-retcode: ~a" mv-retcode))
           mv))))
 
+;; See guix/common/utils.scm
 (define-monad compose-shell-commands
   (bind pipe-bind)
   (return pipe-return))

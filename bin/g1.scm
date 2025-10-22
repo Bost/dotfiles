@@ -90,7 +90,7 @@ described by the line and column information. Is it possible? e.g.
     #;(exec (format #f "git --git-dir=~a --work-tree=~a checkout ~a" gd wd hash))
 
     (let ((ret (exec (format #f "guix hash --serializer=nar -x ~a" wd))))
-      (if (= 0 (car ret))
+      (if (zero? (car ret))
           (let* ((output (cdr ret))
                  (base32 (car output)))
             (let* (
