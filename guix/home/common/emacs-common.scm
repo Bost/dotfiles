@@ -62,7 +62,7 @@ defined.
     (str "--bg-daemon=" (calculate-socket profile)))))
 
 (define* (pkill-server
-          #:key (verbose #f) utility gx-dry-run params
+          #:key (trace #f) verbose utility gx-dry-run params
           #:rest args)
   "The ARGS are being ignored.
 
@@ -73,12 +73,14 @@ Usage:
 (pkill-server                 #:params \"guix\"    \"rest\" \"args\")
 "
   (define f (format #f "~a [pkill-server]" m))
-  (when verbose
-    (format #t "~a utility : ~a\n" f utility)
-    (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
-    (format #t "~a params       : ~a\n" f params)
-    (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:utility #:gx-dry-run #:params))
+  (when trace
+    (format #t "~a trace      : ~s\n" f trace)
+    (format #t "~a verbose    : ~s\n" f verbose)
+    (format #t "~a utility    : ~a\n" f utility)
+    (format #t "~a gx-dry-run : ~a\n" f gx-dry-run)
+    (format #t "~a params     : ~a\n" f params)
+    (format #t "~a args       : ~a\n" f args))
+  (let* [(elements (list #:trace #:verbose #:utility #:gx-dry-run #:params))
          (args (remove-all-elements args elements))]
     ;; pkill-pattern must NOT be enclosed by \"\"
     ;; TODO use with-monad
@@ -90,16 +92,21 @@ Usage:
 
 (define (init-cmd-env-vars home-emacs-distros profile)
   (if (string= profile crafted)
-      (format #f "CRAFTED_EMACS_HOME=~a/crafted-emacs/personal" home-emacs-distros)
-      (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg" home-emacs-distros profile)))
+      (format #f "CRAFTED_EMACS_HOME=~a/crafted-emacs/personal"
+              home-emacs-distros)
+      (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg"
+              home-emacs-distros profile)))
 
 (define* (create-launcher
-          #:key (verbose #t) (create-frame #f) utility gx-dry-run params
+          #:key (trace #f) verbose (create-frame #f)
+          utility gx-dry-run params
           ;; By not allowing other keys I don't have to remove them later on
           #:allow-other-keys
           #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
+TRACE - trace procedure parameters
+VERBOSE - print command line of the command being executed on the CLI
 
 TODO create-launcher ignores servers with '--debug-init' in the init-cmd.
 
@@ -108,14 +115,16 @@ Examples:
 (create-launcher #:params \"guix\"
 \"guix/home/common/cli-common.scm\" \"--create-frame\")"
   (define f (format #f "~a [create-launcher]" m))
-  (when verbose
-    (format #t "~a utility : ~a\n" f utility)
+  (when trace
+    (format #t "~a trace      : ~s\n" f trace)
+    (format #t "~a verbose    : ~s\n" f verbose)
+    (format #t "~a utility    : ~a\n" f utility)
     (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
     (format #t "~a create-frame : ~a\n" f create-frame)
     (format #t "~a params       : ~a\n" f params)
     (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:create-frame #:utility #:gx-dry-run
-                         #:params))
+  (let* [(elements (list #:trace #:verbose
+                         #:create-frame #:utility #:gx-dry-run #:params))
          (args (remove-all-elements args elements))
          (init-cmd (create-init-cmd params))]
     ((comp
@@ -187,9 +196,11 @@ Examples:
          (string-length (user-home emacs-distros)))))
 
 (define* (set-editable
-          #:key (verbose #f) utility gx-dry-run params
+          #:key (trace #f) verbose utility gx-dry-run params
           #:rest args)
   "The ARGS are being ignored.
+TRACE - trace procedure parameters
+VERBOSE - print command line of the command being executed on the CLI
 
 Examples:
 (set-editable #:gx-dry-run #t #:params \"develop\" \"rest\" \"args\")
@@ -198,12 +209,14 @@ Examples:
 (set-editable                 #:params \"guix\"    \"rest\" \"args\")
 "
   (define f (format #f "~a [set-editable]" m))
-  (when verbose
-    (format #t "~a utility : ~a\n" f utility)
-    (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
-    (format #t "~a params       : ~a\n" f params)
-    (format #t "~a args         : ~a\n" f args))
-  (let* [(elements (list #:verbose #:utility #:gx-dry-run #:params))
+  (when trace
+    (format #t "~a trace      : ~s\n" f trace)
+    (format #t "~a verbose    : ~s\n" f verbose)
+    (format #t "~a utility    : ~a\n" f utility)
+    (format #t "~a gx-dry-run : ~a\n" f gx-dry-run)
+    (format #t "~a params     : ~a\n" f params)
+    (format #t "~a args       : ~a\n" f args))
+  (let* [(elements (list #:trace #:verbose #:utility #:gx-dry-run #:params))
          (args (remove-all-elements args elements))
 
          (monad (if gx-dry-run
@@ -225,53 +238,60 @@ Examples:
           (copy-file src dst)))))
 (testsymb 'set-editable)
 
-(define* (handle-cli #:key (verbose #f) utility-name fun profile #:rest args)
+(define* (handle-cli #:key (trace #f) verbose utility fun profile #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
- that the options-parser doesn't complain about e.g. 'no such option: -p'."
-  (let* [(f "[handle-cli]")]
-    (when verbose
-      (format #t "~a ~a utility-name : ~a\n" m f utility-name)
-      (format #t "~a ~a fun          : ~a\n" m f fun)
-      (format #t "~a ~a profile      : ~a\n" m f profile)
-      (format #t "~a ~a args         : ~a\n" m f args))
-    (let* [(elements (list #:verbose #:utility-name #:fun #:profile))
-           (args (remove-all-elements args elements))
-           (args (car args))
-           ;; (value #t): a given option expects accept a value
-           (option-spec `[(help       (single-char #\h) (value #f))
-                          (version    (single-char #\v) (value #f))
-                          (gx-dry-run (single-char #\d) (value #f))
-                          (rest-args                    (value #f))])
+ that the options-parser doesn't complain about e.g. 'no such option: -p'.
+TRACE - trace procedure parameters
+VERBOSE - print command line of the command being executed on the CLI
 
-           ;; TODO isn't the #:stop-at-first-non-option swapped?
-           (options (getopt-long args option-spec #:stop-at-first-non-option #t))
-           ;; #f means that the expected value wasn't specified
-           (val-help       (option-ref options 'help       #f))
-           (val-version    (option-ref options 'version    #f))
-           (val-gx-dry-run (option-ref options 'gx-dry-run #f))
-           (val-rest-args  (option-ref options '()         #f))]
-      (when verbose
-        (format #t "~a ~a option-spec    : ~a\n" m f option-spec)
-        (format #t "~a ~a options        : ~a\n" m f options)
-        (format #t "~a ~a val-help       : ~a\n" m f val-help)
-        (format #t "~a ~a val-version    : ~a\n" m f val-version)
-        (format #t "~a ~a val-gx-dry-run : ~a\n" m f val-gx-dry-run)
-        (format #t "~a ~a val-rest-args  : ~a\n" m f val-rest-args))
-      (cond
-       [val-help
-        (format #t "~a [options]\n~a\n~a\n\n"
-                utility-name
-                "    -v, --version    Display version"
-                "    -h, --help       Display this help")]
-       [val-version
-        (format #t "~a version <...>\n" utility-name)]
-       [#t
-        (apply (partial fun
-                        #:verbose verbose
-                        #:utility-name utility-name
-                        #:gx-dry-run val-gx-dry-run
-                        #:profile profile)
-               val-rest-args)]))))
+"
+  (define f (format #f "~a [handle-cli]" m))
+  (when trace
+    (format #t "~a trace   : ~a\n" f trace)
+    (format #t "~a verbose : ~a\n" f verbose)
+    (format #t "~a utility : ~a\n" f utility)
+    (format #t "~a fun     : ~a\n" f fun)
+    (format #t "~a profile : ~a\n" f profile)
+    (format #t "~a args    : ~a\n" f args))
+  (let* [(elements (list #:trace #:verbose #:utility #:fun #:profile))
+         (args (remove-all-elements args elements))
+         (args (car args))
+         ;; (value #t): a given option expects accept a value
+         (option-spec `[(help       (single-char #\h) (value #f))
+                        (version    (single-char #\v) (value #f))
+                        (gx-dry-run (single-char #\d) (value #f))
+                        (rest-args                    (value #f))])
+
+         ;; TODO isn't the #:stop-at-first-non-option swapped?
+         (options (getopt-long args option-spec #:stop-at-first-non-option #t))
+         ;; #f means that the expected value wasn't specified
+         (val-help       (option-ref options 'help       #f))
+         (val-version    (option-ref options 'version    #f))
+         (val-gx-dry-run (option-ref options 'gx-dry-run #f))
+         (val-rest-args  (option-ref options '()         #f))]
+    (when trace
+      (format #t "~a option-spec    : ~a\n" f option-spec)
+      (format #t "~a options        : ~a\n" f options)
+      (format #t "~a val-help       : ~a\n" f val-help)
+      (format #t "~a val-version    : ~a\n" f val-version)
+      (format #t "~a val-gx-dry-run : ~a\n" f val-gx-dry-run)
+      (format #t "~a val-rest-args  : ~a\n" f val-rest-args))
+    (cond
+     [val-help
+      (format #t "~a [options]\n~a\n~a\n\n"
+              utility
+              "    -v, --version    Display version"
+              "    -h, --help       Display this help")]
+     [val-version
+      (format #t "~a version <...>\n" utility)]
+     [#t
+      (apply (partial fun
+                      #:trace trace
+                      #:verbose verbose
+                      #:utility utility
+                      #:gx-dry-run val-gx-dry-run
+                      #:profile profile)
+             val-rest-args)])))
 (testsymb 'handle-cli)
 
 (module-evaluated)

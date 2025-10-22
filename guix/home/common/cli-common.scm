@@ -7,7 +7,6 @@
   #:use-module (utils)
   #:export (
             cli-general-command
-
             cli-command
             cli-background-command
             cli-system-command
@@ -23,12 +22,16 @@ cd $dotf
 ./guix/home/common/cli-common.scm 'define\* \(exec'
 |#
 
-
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (cli-general-command    #:key (verbose #f) gx-dry-run params fun exec-fun #:allow-other-keys #:rest args)
+(define* (cli-general-command
+          #:key (trace #f) verbose gx-dry-run params fun exec-fun
+          #:allow-other-keys #:rest args)
   "The ARGS are being ignored.
+TRACE - trace procedure parameters
+VERBOSE - print command line of the command being executed on the CLI
+
 Examples:
 (cli-general-command
   #:gx-dry-run #t
@@ -58,13 +61,16 @@ Examples:
                      #:params \"echo foo\")
 "
   (define f (format #f "~a [cli-general-command]" m))
-  (when verbose
+  (when trace
+    (format #t "~a trace      : ~s\n" f trace)
+    (format #t "~a verbose    : ~s\n" f verbose)
     (format #t "~a gx-dry-run : ~s\n" f gx-dry-run)
     (format #t "~a params     : ~s\n" f params)
     (format #t "~a fun        : ~s\n" f fun)
     (format #t "~a exec-fun   : ~s\n" f exec-fun)
     (format #t "~a args       : ~s\n" f args))
-  (let* [(elements (list #:verbose #:gx-dry-run #:params #:fun #:exec-fun))
+  (let* [(elements (list #:trace #:verbose
+                         #:gx-dry-run #:params #:fun #:exec-fun))
          (args (remove-all-elements args elements))]
     (if gx-dry-run
         (begin
@@ -74,8 +80,8 @@ Examples:
         (begin
           ((comp
             ;; (lambda (p) (format #t "~a done\n" f) p)
-            ;; (partial apply (partial exec-fun params))
-            exec-fun
+            ;; (partial apply (partial exec-fun #:verbose verbose params))
+            (lambda (command) (exec-fun command #:verbose verbose))
             ;; (lambda (p) (format #t "~a 3. ~a\n" f p) p)
 
             ;; (lambda (lst) (when (equal? fun 'cli-system-command)
@@ -90,25 +96,52 @@ Examples:
             )
            args)))))
 
-(define* (cli-command            #:key (verbose #f) utility gx-dry-run params #:allow-other-keys #:rest args)
+(define* (cli-command
+          #:key (trace #f) verbose gx-dry-run params fun exec-fun
+          #:allow-other-keys #:rest args)
   (define f (format #f "~a [cli-command]" m))
   ((comp
-    (partial apply cli-general-command)
+    (partial apply
+             (partial cli-general-command
+                      #:trace trace
+                      #:verbose verbose
+                      #:gx-dry-run gx-dry-run
+                      #:params params
+                      #:fun fun
+                      ))
     ;; (lambda (v) (format #t "~a 1 ~a\n" f v) v)
     (partial append (list #:exec-fun exec-foreground))
     ;; (lambda (v) (format #t "~a 0 ~a\n" f v) v)
     )
    args))
 
-(define* (cli-background-command #:key (verbose #f) utility gx-dry-run params exec-fun #:allow-other-keys #:rest args)
+(define* (cli-background-command
+          #:key (trace #f) verbose gx-dry-run params fun exec-fun
+          #:allow-other-keys #:rest args)
   ((comp
-    (partial apply cli-general-command)
+    (partial apply
+             (partial cli-general-command
+                      #:trace trace
+                      #:verbose verbose
+                      #:gx-dry-run gx-dry-run
+                      #:params params
+                      #:fun fun
+                      ))
     (partial append (list #:exec-fun exec-background)))
    args))
 
-(define* (cli-system-command     #:key (verbose #f) utility gx-dry-run params #:allow-other-keys #:rest args)
+(define* (cli-system-command
+          #:key (trace #f) verbose gx-dry-run params fun exec-fun
+          #:allow-other-keys #:rest args)
   ((comp
-    (partial apply cli-general-command)
+    (partial apply
+             (partial cli-general-command
+                      #:trace trace
+                      #:verbose verbose
+                      #:gx-dry-run gx-dry-run
+                      #:params params
+                      #:fun fun
+                      ))
     (partial append (list #:exec-fun (partial apply system))))
    args))
 

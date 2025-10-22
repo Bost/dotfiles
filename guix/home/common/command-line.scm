@@ -37,9 +37,10 @@ defined.
   ;; (field-name field-accessor) ...
   (handle-cli-procedure handle-cli-exception-procedure))
 
-;; TODO rename fun, exec-fun to symb-fun symb-exec-fun
+;; TODO rename fun, exec-fun -> symb-fun symb-exec-fun
+;; TODO rename verbose -> verbose-exec-fun
 (define* (handle-cli
-          #:key (verbose #t) utility fun exec-fun params
+          #:key (trace #f) verbose utility fun exec-fun params
           ;; #:allow-other-keys
           #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
@@ -55,14 +56,16 @@ Example:
   '((\"/home/bost/scm-bin/rgt4\" \"flatpakxxx\")))
 "
   (define f (format #f "~a [handle-cli]" m))
-  (when verbose
+  (when trace
+    (format #t "~a #:trace    ~a ; ~a\n" f (pr-str-with-quote trace)    (test-type trace))
     (format #t "~a #:verbose  ~a ; ~a\n" f (pr-str-with-quote verbose)  (test-type verbose))
     (format #t "~a #:utility  ~a ; ~a\n" f (pr-str-with-quote utility)  (test-type utility))
     (format #t "~a #:fun      ~a ; ~a\n" f (pr-str-with-quote fun)      (test-type fun))
     (format #t "~a #:exec-fun ~a ; ~a\n" f (pr-str-with-quote exec-fun) (test-type exec-fun))
     (format #t "~a #:params   ~a ; ~a\n" f (pr-str-with-quote params)   (test-type params))
     (format #t "~a   args     ~a ; ~a\n" f (pr-str-with-quote args)     (test-type args)))
-  (let* [(elements (list #:verbose #:utility #:fun #:exec-fun #:params))
+  (let* [(elements (list #:trace #:verbose
+                         #:utility #:fun #:exec-fun #:params))
          (args (remove-all-elements args elements))
          (args (car args))
 
@@ -81,7 +84,7 @@ Example:
          (val-gx-dry-run (option-ref options 'gx-dry-run #f))
          (val-create-frame (option-ref options 'create-frame #f))
          (val-rest-args  (option-ref options '()         #f))]
-    (when verbose
+    (when trace
       (format #t "~a option-spec    : ~a\n" f option-spec)
       (format #t "~a options        : ~a\n" f options)
       (format #t "~a val-help       : ~a\n" f val-help)
@@ -121,8 +124,9 @@ Example:
               (apply (eval-here fun-symbol)
                      (append
                       (list
-                       #:gx-dry-run val-gx-dry-run
+                       #:trace      trace
                        #:verbose    verbose
+                       #:gx-dry-run val-gx-dry-run
                        #:params     params
                        )
                       (if (not (member? fun emacs-procedures))
