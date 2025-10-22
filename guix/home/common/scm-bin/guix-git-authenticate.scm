@@ -44,7 +44,7 @@ cd $dotf
                       (format #f "--git-dir=~a/.git" repo)
                       "log" "--pretty=format:%H"
                       (format #f "~a..~a" beg end)))))]
-    (if (= 0 (car ret))
+    (if (zero? (car ret))
         (let* [(output (cdr ret))]
           ;; Process output:
           (let* [(commits (reverse output))]
@@ -70,7 +70,7 @@ cd $dotf
            (format #f "--repository=~a ~a ~a"
                    repo commit signer)))
          (ret (exec cmd))]
-    (if (= 0 (car ret))
+    (if (zero? (car ret))
         (let* [(output (cdr ret))]
           ;; Process output:
           ;; if `git push ...` needs to return anything more except just a

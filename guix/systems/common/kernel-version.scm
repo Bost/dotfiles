@@ -19,7 +19,7 @@
  ;;; In the default Guix installation the ripgrep `rg` is not available and grep
  ;;; is build with --disable-perl-regexp, i.e. no -P --perl-regexp can be used.
                 "uname -r | grep -o '\\([0-9]\\{1,\\}\\.\\)\\+[0-9]\\{1,\\}'")))
-         (if (= 0 (car ret))
+         (if (zero? (car ret))
              (let* ((output (cdr ret)))
                (car output))
              (begin
