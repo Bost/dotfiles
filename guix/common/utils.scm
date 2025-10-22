@@ -5,6 +5,8 @@
 ;; See: jaro the resource opener - an alternative to xdg-open
 ;; https://github.com/isamert/jaro/blob/master/jaro
 ;; See `guile-build-system'
+
+;; TODO rename (utils) to (dotf utils)
 (define-module (utils)
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   1. service-file -> with-imported-modules
@@ -643,9 +645,11 @@ E.g.:
 § echo bar baz
 bar baz
 $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
+  (define f (format #f "~a [exec-foreground]" m))
   (let* [(ret
-          ;; (exec command #:verbose verbose)
-          (exec command #:verbose #t))]
+          (exec command #:verbose verbose)
+          ;; (exec command #:verbose #t)
+          )]
     (if (= 0 (car ret))
         (let* ((output (cdr ret)))
           ;; process output

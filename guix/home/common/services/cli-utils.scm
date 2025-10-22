@@ -191,7 +191,7 @@ Example:
 (testsymb 'service-file-general)
 
 (define* (service-file-utils
-          #:key utility (verbose #f) fun exec-fun params extra-modules
+          #:key (trace #f) (verbose #t) utility fun exec-fun params extra-modules
           #:allow-other-keys)
   "Create pairs like
   (\"scm-bin/g\" \"/gnu/store/...\")         ; for emacs CLI utils
@@ -201,9 +201,15 @@ TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."
   (define f (format #f "~a [service-file-utils]" m))
   ;; (format #t "~a Starting…\n" f)
-  ;; (format #t "~a utility : ~s\n" f utility)
-  ;; (format #t "~a fun     : ~s\n" f fun)
-  ;; (format #t "~a profile : ~s\n" f profile)
+  (when trace
+    (format #t "~a trace         : ~s\n" f trace)
+    (format #t "~a verbose       : ~s\n" f verbose)
+    (format #t "~a utility       : ~s\n" f utility)
+    (format #t "~a fun           : ~s\n" f fun)
+    (format #t "~a exec-fun      : ~s\n" f exec-fun)
+    (format #t "~a params        : ~s\n" f params)
+    (format #t "~a extra-modules : ~s\n" f extra-modules)
+    (format #t "\n"))
   (define common-modules '((srfi srfi-1)
                            (guix monads)
                            (srfi-1-smart)
@@ -224,12 +230,14 @@ a list of files to search through."
      (let* [(symb-string scheme-file)
             (symb (or module-name
                       (string->symbol symb-string)))
-            (sexp `(handle-cli #:verbose ,verbose
-                               #:utility ,utility
-                               #:fun (quote ,fun)
-                               #:exec-fun (quote ,exec-fun)
-                               ,@(if params `(#:params ,params) '())
-                               (command-line)))]
+            (sexp `(handle-cli
+                    #:trace ,trace
+                    #:verbose ,verbose
+                    #:utility ,utility
+                    #:fun (quote ,fun)
+                    #:exec-fun (quote ,exec-fun)
+                    ,@(if params `(#:params ,params) '())
+                    (command-line)))]
        (with-imported-modules (append common-modules extra-modules)
          #~(begin
              (use-modules (ice-9 getopt-long)
@@ -403,7 +411,12 @@ a list of files to search through."
    (list #:utility "gx"  #:params "guix")
 
    (list #:utility "rgt" #:params "rg --ignore-case --pretty --type=lisp" #:desc "Rigprep LISP files")
-   (list #:utility "f"   #:params "fd --color=always"                   #:desc "Find entries in the filesystem")
+
+   ;; '#:verbose #f' is needed because `f home-channels.scm` prints:
+   ;;     § fd --color=always "home-channels.scm"
+   ;;     guix/home/common/home-channels.scm
+   ;; which hinders using `g (f home-channels.scm)`
+   (list #:utility "f"   #:params "fd --color=always"  #:verbose #f     #:desc "Find entries in the filesystem")
 
    ;; always lists to the end of file. I guess I need to use something else than `exec'
    (list #:utility "c"   #:params "bat --force-colorization"            #:desc "Better cat")
@@ -498,12 +511,13 @@ a list of files to search through."
   (define f (format #f "~a [basic-cli-utils-service]" m))
   ;; (call/cc (lambda (exit)))
   ((comp
-    (partial map (comp
-                  (partial apply service-file-utils)
-                  (partial append (list #:verbose #f
-                                        #:fun 'cli-command
-                                        #:exec-fun 'exec-foreground
-                                        #:extra-modules '()))))
+    (partial
+     map
+     (comp
+      (partial apply service-file-utils)
+      (partial append (list #:fun 'cli-command
+                            #:exec-fun 'exec-foreground
+                            #:extra-modules '()))))
     (partial
      append
      ((comp
@@ -521,10 +535,10 @@ a list of files to search through."
   ((comp
     (partial map (comp
                   (partial apply service-file-utils)
-                  (partial append (list #:verbose #f
-                                        #:fun 'cli-background-command
-                                        #:exec-fun 'exec-background
-                                        #:extra-modules '())))))
+                  (partial append (list
+                                   #:fun 'cli-background-command
+                                   #:exec-fun 'exec-background
+                                   #:extra-modules '())))))
    (list
     ;; WTF? a newline appears on top of the terminal before the prompt.
     (list #:utility "loff"   #:params "xfce4-session-logout --logout --fast")
@@ -537,10 +551,10 @@ a list of files to search through."
   ((comp
     (partial map (comp
                   (partial apply service-file-utils)
-                  (partial append (list #:verbose #f
-                                        #:fun 'cli-system-command
-                                        #:exec-fun 'exec-system
-                                        #:extra-modules '())))))
+                  (partial append (list
+                                   #:fun 'cli-system-command
+                                   #:exec-fun 'exec-system
+                                   #:extra-modules '())))))
    (list
     (list #:utility "shut"   #:params "sudo shutdown")
     ;; scm-bin/reboot overshadows the real reboot in the $PATH
@@ -555,12 +569,12 @@ a list of files to search through."
                   (lambda (fun-label-pair)
                     (let [(fun (car fun-label-pair))
                           (lbl (cadr fun-label-pair))]
-                      (list #:verbose #f
-                            #:fun fun
-                            #:exec-fun 'exec-foreground
-                            #:params lbl
-                            #:utility (str fun "-" lbl)
-                            #:extra-modules '((mount-common))))))))
+                      (list
+                       #:fun fun
+                       #:exec-fun 'exec-foreground
+                       #:params lbl
+                       #:utility (str fun "-" lbl)
+                       #:extra-modules '((mount-common))))))))
    (cartesian
     (list 'mount 'unmount 'eject 'info)
     (list "axa" "toshiba" "new" "t7"))))
@@ -570,9 +584,9 @@ a list of files to search through."
   ((comp
     (partial map (comp
                   (partial apply service-file-utils)
-                  (partial append (list #:verbose #f
-                                        #:exec-fun 'exec-foreground
-                                        #:extra-modules '((emacs-common)))))))
+                  (partial append (list
+                                   #:exec-fun 'exec-foreground
+                                   #:extra-modules '((emacs-common)))))))
    (list
     (list #:utility  "d" #:fun 'create-launcher  #:params develop)
     (list #:utility "ed" #:fun 'set-editable     #:params develop)
