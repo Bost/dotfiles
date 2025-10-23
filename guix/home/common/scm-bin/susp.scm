@@ -1,5 +1,5 @@
 (define-module (scm-bin susp)
-;;; All used modules must be present in the module (services scheme-files) under:
+;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
   #:export (main susp))

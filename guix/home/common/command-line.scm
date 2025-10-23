@@ -1,5 +1,5 @@
 (define-module (command-line)
-;;; All used modules must be present in the module (services scheme-files) under:
+;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
