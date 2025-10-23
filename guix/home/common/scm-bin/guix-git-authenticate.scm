@@ -4,6 +4,7 @@
   #:use-module (utils)
   #:use-module (fs-utils)  ; dgx (repository location)
   #:use-module (settings)  ; home
+  #:use-module (srfi srfi-26) ; special selected function parameters
   #:export (main guix-git-authenticate)
   )
 
@@ -38,48 +39,51 @@ cd $dotf
   "Examples:
 (get-commits #:beg \"90f0f8713d\" #:end \"master\")
 "
-  (let* [(ret (exec
-               (append
-                (list "git"
-                      (format #f "--git-dir=~a/.git" repo)
-                      "log" "--pretty=format:%H"
-                      (format #f "~a..~a" beg end)))))]
-    (if (zero? (car ret))
-        (let* [(output (cdr ret))]
-          ;; Process output:
-          (let* [(commits (reverse output))]
-            (format #t "~a commits to authenticate:\n" (length commits))
-            (map (partial format #t "~a\n") commits)
-            (format #t "\n")
-            commits))
+  (let* [(cmd-result-struct
+          ((comp (exec <> #:return-plist #t))
+           (list "git" (format #f "--git-dir=~a/.git" repo)
+                 "log" "--pretty=format:%H" (format #f "~a..~a" beg end))))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        (let* [(commits (reverse (plist-get cmd-result-struct #:results)))]
+          (format #t "~a commits to authenticate:\n" (length commits))
+          (map (partial format #t "~a\n") commits)
+          (format #t "\n")
+          commits)
         (begin
-          (error-command-failed m)
-          *unspecified*))))
+          (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
+          ;; (error-command-failed f)
+          ;; or return `retcode' instead of `*unspecified*'
+          ;; *unspecified*
+          ))))
 (testsymb 'get-commits)
 
 (define* (authenticate-commit #:key repo commit signer)
   "Examples:
 (authenticate-commit #:repo repo #:signer signer #:commit)
 "
-  (let* [(cmd
-          (list
-           "guix" "git" "authenticate"
-           ;; --cache-key=path/to/KEY reads ~/.cache/guix/authentication/path/to/KEY
-           (format #f "--cache-key=~a" cache-key)
-           "--stats"
-           (format #f "--repository=~a ~a ~a"
-                   repo commit signer)))
-         (ret (exec cmd))]
-    (if (zero? (car ret))
-        (let* [(output (cdr ret))]
+  (let* [(cmd-result-struct
+          ((comp (exec <> #:return-plist #t))
+           (list "guix" "git" "authenticate"
+                 ;; --cache-key=path/to/KEY reads
+                 ;; ~/.cache/guix/authentication/path/to/KEY
+                 (format #f "--cache-key=~a" cache-key)
+                 "--stats"
+                 (format #f "--repository=~a ~a ~a" repo commit signer))))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        (let* [(results (plist-get cmd-result-struct #:results))]
           ;; Process output:
           ;; if `git push ...` needs to return anything more except just a
           ;; retcode - implement it here
-          (map (partial format #t "~a\n") output)
+          (map (partial format #t "~a\n") results)
           ret)
         (begin
-          (error-command-failed m)
-          *unspecified*))))
+          (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
+          ;; (error-command-failed f)
+          ;; or return `retcode' instead of `*unspecified*'
+          ;; *unspecified*
+          ))))
 (testsymb 'authenticate-commit)
 
 ;; TODO pass the repo and beg (first commit to authenticate) arguments from CLI
