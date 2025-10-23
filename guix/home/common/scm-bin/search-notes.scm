@@ -127,13 +127,14 @@ cd $dotf
            "rg -iN --color=always -B 3 -U '~a(.|\n)*?\n\n'"
            search-pattern))
          (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
-         (ret (exec cmd #:verbose #f))]
-    (if (zero? (car ret))
-        (let* [(output (cdr ret))]
-          (unless (null? output)
+         (cmd-result-struct (exec cmd #:verbose #f #:return-plist #t))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        (let* [(results (plist-get cmd-result-struct #:results))]
+          (unless (null? results)
             ;; file in magenta
             (format #t "~a\n" (colorize-string file (color MAGENTA)))
-            (map (partial format #t "~a\n") output)))
+            (map (partial format #t "~a\n") results)))
         ;; An error is returned by rg if nothing it passed to it. We need to
         ;; ignore the error. This can be achieved as well by defining cmd as:
         ;;     "~a | ~a | ~a || :"
@@ -147,6 +148,7 @@ cd $dotf
 (search-file-awk \"search-pattern\"
              \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\")
 "
+  (define f (format #f "~a [search-file-awk]" m))
   ;; Red: \033[31m
   ;; Bright Red: \033[1;31m
   ;; Green: \033[32m
@@ -180,13 +182,14 @@ cd $dotf
            "awk -v RS='' 'BEGIN {IGNORECASE=1} /~a/ {gsub(/~a/, \"\\033[1;31m&\\033[0m\"); print $0 \"\\n\"}'"
            search-pattern search-pattern))
          (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
-         (ret (exec cmd #:verbose #f))]
+         (cmd-result-struct (exec cmd #:verbose #f #:return-plist #t))
+         (retcode (plist-get cmd-result-struct #:retcode))]
     (if (zero? (car ret))
-        (let* [(output (cdr ret))]
-          (unless (null? output)
+        (let* [(results (plist-get cmd-result-struct #:results))]
+          (unless (null? results)
             (format #t "~a\n" (colorize-string file (color MAGENTA))) ; file in magenta
-            (map (partial format #t "~a\n") output)))
-        (error-command-failed m))))
+            (map (partial format #t "~a\n") results)))
+        (error (format #f "~a retcode: ~a\n" f retcode)))))
 
 (define* (search-notes #:rest args)
   "Usage:

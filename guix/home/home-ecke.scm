@@ -37,7 +37,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
-  #:use-module ((home-base) #:prefix base:)
+  #:use-module ((home-base) #:prefix home-base::)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -59,7 +59,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   )
 
 (define m (module-name-for-logging))
-(evaluating-module)
+(evaluating-module #t)
 
 ;; "copying files"
 ;; there should be a service type to place particular files (or file-like
@@ -82,7 +82,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;                        ;; #t to copy directory
 ;;                        #:recursive? #t))))))
 
-(base:install-all-projects)
+(home-base::install-all-projects)
 
 ;;     (begin
 ;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (services fish)
@@ -147,15 +147,15 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
    (services
     (append
      (home-channels-services)
-     (base:home-env-services list-separator-bash))))
+     (home-base::home-env-services list-separator-bash))))
 
   ;; TODO Wayland-specific settings
   ;; (home-environment
   ;;  (services
   ;;   ((comp
-  ;;     (partial append (base:services))
+  ;;     (partial append (home-base::services))
   ;;     list
-  ;;     base:environment-variables-service
+  ;;     home-base::environment-variables-service
   ;;     (partial append
   ;;              `(
   ;;                ;; Set Wayland-specific environment variables (taken from RDE)
@@ -168,8 +168,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;;                ("ELM_ENGINE" . "wayland_egl")
   ;;                ("ECORE_EVAS_ENGINE" . "wayland-egl")
   ;;                ("QT_QPA_PLATFORM" . "wayland-egl")))
-  ;;     (partial append (base:environment-vars-edge-ecke list-separator-bash))
-  ;;     (partial append (base:environment-vars           list-separator-bash))
+  ;;     (partial append (home-base::environment-vars-edge-ecke list-separator-bash))
+  ;;     (partial append (home-base::environment-vars           list-separator-bash))
   ;;     #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
   ;;     )
   ;;    (list))))
