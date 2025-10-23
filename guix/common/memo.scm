@@ -3,16 +3,14 @@
   #:use-module (settings)
 
   #:use-module (guix memoization)
-  ;; open-input-pipe
-  #:use-module (ice-9 popen)
+  #:use-module (ice-9 popen) ; open-input-pipe
+
 ;;; (ice-9 readline) requires `guix install guile-readline'. However read-line
 ;;; might be already in the (ice-9 popen)
   ;; #:use-module (ice-9 readline)
   #:use-module (ice-9 rdelim)
-  ;; string-match
-  #:use-module (ice-9 regex)
-  ;; delete-duplicates
-  #:use-module (srfi srfi-1)
+  #:use-module (ice-9 regex) ; string-match
+  #:use-module (srfi srfi-1) ; delete-duplicates
   ;; #:use-module (guix build utils) ;; invoke - not needed
   #:use-module (ice-9 pretty-print)
 )
@@ -23,14 +21,17 @@
 ;;; Use function-implementations so that the code below is not evaluated every
 ;;; time some of the scm-bin CLI utility requiring this module is executed.
 (define (hostname)
-  (let* ((ret (exec "hostname")))
-    (if (zero? (car ret))
-        (let* [(output (cdr ret))
-               (hostname (car output))]
-          hostname)
+  (define f (format #f "~a [hostname]" m))
+  (let* [(cmd-result-struct (exec "hostname" #:return-plist #t))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
+        (car (plist-get cmd-result-struct #:results))
         (begin
-          (error-command-failed m)
-          *unspecified*))))
+          (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
+          ;; (error-command-failed f)
+          ;; or return `retcode' instead of `*unspecified*'
+          ;; *unspecified*
+          ))))
 (testsymb 'hostname)
 ;; (format #t "D ~a hostname: ~a\n" m hostname)
 

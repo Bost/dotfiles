@@ -11,27 +11,30 @@
 (evaluating-module)
 
 ((comp
-  (partial apply (partial format #t
-                          (str "Kernel used: ~a. "
-                               "Latest available: ~a\n"))))
- (list (let* ((ret
-               (exec
- ;;; In the default Guix installation the ripgrep `rg` is not available and grep
- ;;; is build with --disable-perl-regexp, i.e. no -P --perl-regexp can be used.
-                "uname -r | grep -o '\\([0-9]\\{1,\\}\\.\\)\\+[0-9]\\{1,\\}'")))
-         (if (zero? (car ret))
-             (let* ((output (cdr ret)))
-               (car output))
-             (begin
-               (error-command-failed m)
-               *unspecified*)))
-       (package-version
-        (car (find-packages-by-name "linux-libre"))
-        #;(operating-system-kernel %simple-os)
-        #;
-        (operating-system-kernel
-        (load
-         (format #f "~a/guix/systems/syst-~a.scm"
-                 (getenv "dotf") (hostname-memoized)))))))
+  (partial apply (partial format #t "Kernel used: ~a. Latest available: ~a\n"))
+  (lambda (kernel-version)
+    (list kernel-version
+          (package-version
+           (car (find-packages-by-name "linux-libre"))
+           ;; (operating-system-kernel %simple-os)
+           ;; (operating-system-kernel
+           ;;  (load
+           ;;   (format #f "~a/guix/systems/syst-~a.scm"
+           ;;           (getenv "dotf") (hostname-memoized))))
+           ))))
+;;; In the default Guix installation the ripgrep `rg` is not available and grep
+;;; is build with --disable-perl-regexp, i.e. no -P --perl-regexp can be used.
+ (let* [(cmd-result-struct
+         (exec "uname -r | grep -o '\\([0-9]\\{1,\\}\\.\\)\\+[0-9]\\{1,\\}'"
+               #:return-plist #t))
+        (retcode (plist-get cmd-result-struct #:retcode))]
+   (if (zero? retcode)
+       (car (plist-get cmd-result-struct #:results))
+       (begin
+         (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
+         ;; (error-command-failed f)
+         ;; or return `retcode' instead of `*unspecified*'
+         ;; *unspecified*
+         ))))
 
 (module-evaluated)

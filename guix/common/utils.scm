@@ -240,7 +240,12 @@ Works also for functions returning and accepting multiple values."
 
 (define-syntax testsymb
   (syntax-rules ()
-    [(_ symbol) (unless (defined? symbol) (warn-undefined symbol))]))
+    [(_ symbol)
+     (unless (defined? symbol) (warn-undefined symbol))
+     ;; (if (defined? symbol)
+     ;;     (format #t "~a Symbol defined: ~a\n" (module-name-for-logging) symbol)
+     ;;     (warn-undefined symbol))
+     ]))
 
 (define-syntax testsymb-trace
   (syntax-rules ()
@@ -538,8 +543,8 @@ $9 = 0 ;; return code"
      args)))
 
 (define* (exec-or-dry-run-new #:key exec-function (gx-dry-run #f) (verbose #f) #:rest args)
-  (let* [(f "[exec-or-dry-run-new]")
-         (elements (list #:exec-function #:gx-dry-run #:verbose))
+  (define f (format #f "~a [exec-or-dry-run-new]" m))
+  (let* [(elements (list #:exec-function #:gx-dry-run #:verbose))
          (args (remove-all-elements args elements))
 
          (args (car args))]
@@ -553,14 +558,16 @@ $9 = 0 ;; return code"
             (apply exec-function args) ;; TODO add #:verbose
             (exec-function args)))))
 
-(define* (exec-system*-new #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t) #:rest args)
+(define* (exec-system*-new
+          #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t)
+          #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
-  (let* [(f "[exec-system*-new]")
-         (elements (list #:split-whitespace #:gx-dry-run #:verbose))
+  (define f (format #f "~a [exec-system*-new]" m))
+  (let* [(elements (list #:split-whitespace #:gx-dry-run #:verbose))
          (args (remove-all-elements args elements))]
     ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
     ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)
@@ -626,6 +633,7 @@ COMMAND can be a string or a list of strings.
 § echo bar baz & disown
 bar baz
 $9 = 0 ;; <return-code>"
+  (define f (format #f "~a [exec-background]" m))
   ((comp
     (partial exec-or-dry-run system)
     ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
@@ -646,18 +654,19 @@ E.g.:
 bar baz
 $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
   (define f (format #f "~a [exec-foreground]" m))
-  (let* [(ret
-          (exec command #:verbose verbose)
-          ;; (exec command #:verbose #t)
-          )]
-    (if (zero? (car ret))
-        (let* ((output (cdr ret)))
-          ;; process output
-          (map (partial format #t "~a\n") output)
-          ret)
+  (let* [(cmd-result-struct (exec command #:return-plist #t))
+         (retcode (plist-get cmd-result-struct #:retcode))]
+    (if (zero? retcode)
         (begin
-          (error-command-failed m (format #f "retcode: ~a" (car ret)))
-          *unspecified*))))
+          (map (partial format #t "~a\n")
+               (plist-get cmd-result-struct #:results))
+          cmd-result-struct)
+        (begin
+          (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
+          ;; (error-command-failed f)
+          ;; or return `retcode' instead of `*unspecified*'
+          ;; *unspecified*
+          ))))
 
 (define* (exec-system command #:key (verbose #f))
   "Execute COMMAND using `system' from the (guile) module and returns its ret-code.
@@ -666,12 +675,12 @@ E.g.:
 § echo bar baz
 bar baz
 $9 = 0 ;; <return-code>"
-  (let* [(f "[exec-system]")]
-    ((comp
-      (partial exec-or-dry-run system)
-      ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
-      (lambda (prm) (dbg-exec prm #:verbose #t)))
-     command)))
+  (define f (format #f "~a [exec-system]" m))
+  ((comp
+    (partial exec-or-dry-run system)
+    ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
+    (lambda (prm) (dbg-exec prm #:verbose #t)))
+   command))
 
 ;; (define (background-system command)
 ;;   " https://sourceware.org/legacy-ml/guile/1998-09/msg00228.html "
@@ -751,27 +760,40 @@ from the subprocess. Wait for the command to terminate and return a string
 containing its output.
 
 RETURN-PLIST - return property list which can be accessed by:
-(plist-get (exec \"echo 'foo'\" #:return-plist #t #:verbose #f) #:retcode)
+(plist-get (exec \"echo 'foo'\" #:return-plist #t) #:retcode)
 
 TODO have a look if a delimited continuation can be used to break out of `exec',
 i.e. skip the `read-all-strings' and thus make `exec-background' out of it.
 
 Usage:
-(define (process retval output)
+(define (process retcode output)
   (format #t \"(test-type output): ~a\\n\" (test-type output))
   ...
-  retval)
+  retcode)
 
-(let* ((command (list \"echo\" \"foo\"))
-       (ret (exec command))
-       (retval (car ret)))
-    (if (= 0 retval)
-        (let* ((output (cdr ret)))
-          (process retval output))
+(let* [(cmd-result-struct (exec \"echo foo\" #:return-plist #t))
+       (retcode (plist-get cmd-result-struct #:retcode))]
+  (if (zero? retcode)
+      (process retcode (plist-get cmd-result-struct #:results))
       (begin
-        ;; (error-command-failed m \"extra_info\")
-        ;; or return `retval' instead of `*unspecified*'
-        *unspecified*)))"
+        ;; (error (format #f \"~a retcode: ~a\n\" f retcode)) ; error-out
+        ;; (error-command-failed f \"extra_info\")
+        ;; or return `retcode' instead of `*unspecified*'
+        *unspecified*)))
+
+Or:
+
+(let* [(ret (exec (list \"echo\" \"foo\")))
+       (retcode (car ret))]
+    (if (= 0 retcode)
+        (let* ((output (cdr ret)))
+          (process retcode output))
+      (begin
+        ;; (error (format #f \"~a retcode: ~a\n\" f retcode)) ; error-out
+        ;; (error-command-failed f \"extra_info\")
+        ;; or return `retcode' instead of `*unspecified*'
+        *unspecified*)))
+"
   ;; ,use (guix build utils) ;; contains `invoke'
   ;; `invoke' does `(apply system* program args)'; `system*' waits for the
   ;; program to finish, The command is executed using fork and execlp.
