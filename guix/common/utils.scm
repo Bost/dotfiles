@@ -240,7 +240,12 @@ Works also for functions returning and accepting multiple values."
 
 (define-syntax testsymb
   (syntax-rules ()
-    [(_ symbol) (unless (defined? symbol) (warn-undefined symbol))]))
+    [(_ symbol)
+     (unless (defined? symbol) (warn-undefined symbol))
+     ;; (if (defined? symbol)
+     ;;     (format #t "~a Symbol defined: ~a\n" (module-name-for-logging) symbol)
+     ;;     (warn-undefined symbol))
+     ]))
 
 (define-syntax testsymb-trace
   (syntax-rules ()
@@ -538,8 +543,8 @@ $9 = 0 ;; return code"
      args)))
 
 (define* (exec-or-dry-run-new #:key exec-function (gx-dry-run #f) (verbose #f) #:rest args)
-  (let* [(f "[exec-or-dry-run-new]")
-         (elements (list #:exec-function #:gx-dry-run #:verbose))
+  (define f (format #f "~a [exec-or-dry-run-new]" m))
+  (let* [(elements (list #:exec-function #:gx-dry-run #:verbose))
          (args (remove-all-elements args elements))
 
          (args (car args))]
@@ -553,14 +558,16 @@ $9 = 0 ;; return code"
             (apply exec-function args) ;; TODO add #:verbose
             (exec-function args)))))
 
-(define* (exec-system*-new #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t) #:rest args)
+(define* (exec-system*-new
+          #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t)
+          #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
-  (let* [(f "[exec-system*-new]")
-         (elements (list #:split-whitespace #:gx-dry-run #:verbose))
+  (define f (format #f "~a [exec-system*-new]" m))
+  (let* [(elements (list #:split-whitespace #:gx-dry-run #:verbose))
          (args (remove-all-elements args elements))]
     ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
     ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)
@@ -626,6 +633,7 @@ COMMAND can be a string or a list of strings.
 § echo bar baz & disown
 bar baz
 $9 = 0 ;; <return-code>"
+  (define f (format #f "~a [exec-background]" m))
   ((comp
     (partial exec-or-dry-run system)
     ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
@@ -667,12 +675,12 @@ E.g.:
 § echo bar baz
 bar baz
 $9 = 0 ;; <return-code>"
-  (let* [(f "[exec-system]")]
-    ((comp
-      (partial exec-or-dry-run system)
-      ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
-      (lambda (prm) (dbg-exec prm #:verbose #t)))
-     command)))
+  (define f (format #f "~a [exec-system]" m))
+  ((comp
+    (partial exec-or-dry-run system)
+    ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
+    (lambda (prm) (dbg-exec prm #:verbose #t)))
+   command))
 
 ;; (define (background-system command)
 ;;   " https://sourceware.org/legacy-ml/guile/1998-09/msg00228.html "
