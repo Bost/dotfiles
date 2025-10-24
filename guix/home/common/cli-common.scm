@@ -101,16 +101,10 @@ Examples:
           #:allow-other-keys #:rest args)
   (define f (format #f "~a [cli-command]" m))
   ((comp
-    (partial apply
-             (partial cli-general-command
-                      #:trace trace
-                      #:verbose verbose
-                      #:gx-dry-run gx-dry-run
-                      #:params params
-                      #:fun fun
-                      ))
+    (partial apply cli-general-command)
     ;; (lambda (v) (format #t "~a 1 ~a\n" f v) v)
-    (partial append (list #:exec-fun exec-foreground))
+    ;; Need to append '#:trace trace' so that it's not redefined later on
+    (partial append (list #:trace trace #:exec-fun exec-foreground))
     ;; (lambda (v) (format #t "~a 0 ~a\n" f v) v)
     )
    args))
@@ -119,30 +113,18 @@ Examples:
           #:key (trace #f) verbose gx-dry-run params fun exec-fun
           #:allow-other-keys #:rest args)
   ((comp
-    (partial apply
-             (partial cli-general-command
-                      #:trace trace
-                      #:verbose verbose
-                      #:gx-dry-run gx-dry-run
-                      #:params params
-                      #:fun fun
-                      ))
-    (partial append (list #:exec-fun exec-background)))
+    (partial apply cli-general-command)
+    ;; Need to append '#:trace trace' so that it's not redefined later on
+    (partial append (list #:trace trace #:exec-fun exec-background)))
    args))
 
 (define* (cli-system-command
           #:key (trace #f) verbose gx-dry-run params fun exec-fun
           #:allow-other-keys #:rest args)
   ((comp
-    (partial apply
-             (partial cli-general-command
-                      #:trace trace
-                      #:verbose verbose
-                      #:gx-dry-run gx-dry-run
-                      #:params params
-                      #:fun fun
-                      ))
-    (partial append (list #:exec-fun (partial apply system))))
+    (partial apply cli-general-command)
+    ;; Need to append '#:trace trace' so that it's not redefined later on
+    (partial append (list #:trace trace #:exec-fun (partial apply system))))
    args))
 
 (define-public (main . args)
