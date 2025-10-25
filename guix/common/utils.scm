@@ -1755,4 +1755,23 @@ See also:
    [else
     (error "map-indexed: unsupported sequence type" seq)]))
 
+(define-public (padding-string max-length a-string)
+  (cond
+   [(and (number? a-string) (string? max-length))
+    (padding-string a-string max-length)]
+   [else
+    (cond
+     [(= max-length (string-length a-string)) a-string]
+     [(< max-length (string-length a-string))
+      (error (format #f "(< max-length (string-length a-string)). ~a, ~a"
+                     (format #f "max-length : ~a" max-length)
+                     (format #f "a-string : ~s" a-string)))]
+     [else
+      ((comp
+        (lambda (lst) (string-join lst ""))
+        (lambda (len) (make-list len " "))
+        (partial - max-length)
+        string-length)
+       a-string)])]))
+
 (module-evaluated)
