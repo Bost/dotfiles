@@ -11,17 +11,19 @@
   ;; #:use-module (guix gexp) ;; gexp?, and extended reader for #~ #$ #+ #$@
 
   #:use-module (guix build utils) ;; find-files
-  #| #:use-module (language cps intmap) |#)
+  )
 
 (define-syntax do-test
   (syntax-rules ()
-    ((_ symbol arg ...)
+    [(_ symbol arg ...)
      ((comp
        (lambda (function)
          ;; need to specify (ice-9 exceptions) for `guard' to avoid warnings
          ;; because of `error?' being defined in both (ice-9 exceptions) and
          ;; (rnrs conditions)
          (when ((@(ice-9 exceptions) guard)
+                ;; Break out in case of an error occured during the execution of
+                ;; `(apply function arg ...)' or `(function arg ...)'.
                 (condition [else #f])
                 ;; (format #t "function        : ~a\n" function)
                 ;; (format #t "symbol          : ~a\n" symbol)
@@ -30,6 +32,9 @@
                 (if (list? arg ...)
                     (apply function arg ...)
                     (function arg ...)))
+           ;; The following `cond' is executed only if no guarded condition was
+           ;; triggered during the execution of `(function arg ...)', or if a
+           ;; guarded condition returned some true-value
            (cond
             [(and (list? symbol)
                   ;; error? can be from (ice-9 exceptions) or (rnrs conditions)
@@ -38,7 +43,7 @@
             [#t symbol])
            ))
        #;(lambda (p) (format #t "p: ~a\n" p) p))
-      (eval symbol (interaction-environment))))))
+      (eval symbol (interaction-environment)))]))
 
 ;;; ### BEG: from ~/dev/guile/module/ice-9/boot-9.scm
 (define (valid-import? x)
@@ -52,7 +57,7 @@
 
 ;;; ### END: from ~/dev/guile/module/ice-9/boot-9.scm
 
-(define-public (test-type o)
+(define-public (test-type single-argument)
   "See predicates https://en.wikipedia.org/wiki/Scheme_(programming_language)
 
 Type Testing Predicates.
@@ -81,7 +86,7 @@ Type Testing Predicates.
 "
   ((comp
     (partial remove unspecified?)
-    (partial map (lambda (symbol) (do-test symbol o))))
+    (partial map (lambda (symbol) (do-test symbol single-argument))))
    (list
     'unspecified?
     'boolean?
