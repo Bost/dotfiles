@@ -83,6 +83,8 @@ Type Testing Predicates.
 
 (test-type (make-exception ((@(rnrs conditions) make-error))))
 ; => (record? exception? (@ (rnrs conditions) error?) (@ (ice-9 exceptions) error?) condition?)
+
+(test-type (macroexpand '(define f 42))) ; => (struct?)
 "
   ((comp
     (partial remove unspecified?)
@@ -99,6 +101,7 @@ Type Testing Predicates.
     'vector?
     'procedure?
     'record?
+    'struct?
     ;;
     'number?
     'complex?
@@ -138,6 +141,28 @@ Type Testing Predicates.
     ;; is neither sealed nor opaque. See R6RS Records.
     '(@(rnrs conditions) condition?)
     '(@(rnrs conditions) violation?)
+
+    ;; '(@(language tree-il) void?)
+    ;; '(@(language tree-il) const?)
+    ;; '(@(language tree-il) lexical-ref?)
+    ;; '(@(language tree-il) lexical-set?)
+    ;; '(@(language tree-il) module-ref?)
+    ;; '(@(language tree-il) module-set?)
+    ;; '(@(language tree-il) toplevel-ref?)
+    ;; '(@(language tree-il) toplevel-set?)
+    ;; '(@(language tree-il) toplevel-define?)
+    ;; '(@(language tree-il) conditional?)
+    ;; '(@(language tree-il) call?)
+    ;; '(@(language tree-il) primcall?)
+    ;; '(@(language tree-il) seq?)
+    ;; '(@(language tree-il) lambda?)
+    ;; '(@(language tree-il) lambda-case?)
+    ;; '(@(language tree-il) let?)
+    ;; '(@(language tree-il) letrec?)
+    ;; '(@(language tree-il) fix?)
+    ;; '(@(language tree-il) let-values?)
+    ;; '(@(language tree-il) prompt?)
+    ;; '(@(language tree-il) abort?)
     )))
 
 (define-public (test-equality . args)
@@ -151,6 +176,7 @@ Type Testing Predicates.
     (partial remove unspecified?)
     (partial map (lambda (symbol) (do-test symbol args))))
    (list
+    '=
     'string=? ;; returns #t only if both parameters are strings
     'string-ci=?
     'char=?
@@ -158,4 +184,7 @@ Type Testing Predicates.
 
     'eq?
     'eqv?
-    'equal?)))
+    'equal?
+
+    ;; '(@(language tree-il) tree-il=?)
+    )))
