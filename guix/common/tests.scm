@@ -22,7 +22,14 @@
          ;; because of `error?' being defined in both (ice-9 exceptions) and
          ;; (rnrs conditions)
          (when ((@(ice-9 exceptions) guard)
-                (ex (else #f)) (function arg ...))
+                (condition [else #f])
+                ;; (format #t "function        : ~a\n" function)
+                ;; (format #t "symbol          : ~a\n" symbol)
+                ;; (format #t "arg ...         : ~a\n" arg ...)
+                ;; (format #t "(list? arg ...) : ~a\n" (list? arg ...))
+                (if (list? arg ...)
+                    (apply function arg ...)
+                    (function arg ...)))
            (cond
             [(and (list? symbol)
                   ;; error? can be from (ice-9 exceptions) or (rnrs conditions)
@@ -128,15 +135,16 @@ Type Testing Predicates.
     '(@(rnrs conditions) violation?)
     )))
 
-(define (test-equality a b)
-  "Equality and Comparison Predicates.
+(define-public (test-equality . args)
+  "Equality and Comparison Predicates. Variadic (i.e. infinite arity)
 (test-equality 1 2)       ; => ()
-(test-equality 1 1)       ; => (eq? eqv? equal?)
-(test-equality \"1\" \"1\")   ; => (eq? eqv? equal?)
+(test-equality 1 1)       ; => (= eq? eqv? equal?)
+(test-equality \"1\" \"1\")   ; => (string=? string-ci=? eq? eqv? equal?)
+(test-equality 1 1 1)     ; => (= eq? eqv? equal?)
 "
   ((comp
     (partial remove unspecified?)
-    (partial map (lambda (symbol) (do-test symbol a b))))
+    (partial map (lambda (symbol) (do-test symbol args))))
    (list
     'string=? ;; returns #t only if both parameters are strings
     'string-ci=?
