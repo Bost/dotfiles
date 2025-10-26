@@ -894,77 +894,86 @@ or the CLIENT-CMD if some process ID was found."
 
 ;; Like `define*' but it prints what's being defined / evaluated
 ;; See /home/bost/dev/guile/module/ice-9/psyntax.scm line 3377
+;; Introduces unhygienic `f'!!!
 (define-syntax def*
   (lambda (x)
     (syntax-case x ()
-      ((_ (identifier . args) b0)
+      [(_ (identifier . args) b0)
+       (with-syntax ((f (datum->syntax #'identifier 'f)))
+        #'(begin
+            ;; (format #t "[fa] (def* (~a…)…)…\n" `identifier)
+            (define identifier
+              (let [(f (format #f "~a [~a]" m `identifier))]
+                (cond
+                 [#t                    ;; fa
+                  (lambda* args
+                    ;; (format #t "~a Starting…\n" f)
+                    (let [(result b0)]
+                      ;; (format #t "~a done\n" f)
+                      result))])))
+            ;; (format #t "[fa] (def* ~a…)… done\n" `identifier)
+            identifier))]
+
+      [(_ (identifier . args) b0 b1)
+       (with-syntax ((f (datum->syntax #'identifier 'f)))
+        #'(begin
+            ;; (format #t "[fb fc] (def* (~a…)…)…\n" `identifier)
+            (define identifier
+              (let [(f (format #f "~a [~a]" m `identifier))]
+               (cond
+                [(string? `b0)         ;; fb
+                 (lambda* args
+                   b0
+                   ;; (format #t "~a Starting…\n" f)
+                   (let [(result b1)]
+                     ;; (format #t "~a done\n" f)
+                     result))]
+
+                [#t                    ;; fc
+                 (lambda* args
+                   ;; (format #t "~a Starting…\n" f)
+                   b0
+                   (let [(result b1)]
+                     ;; (format #t "~a done\n" f)
+                     result))])))
+            ;; (format #t "[fb fc] (def* ~a…)… done\n" `identifier)
+            identifier))]
+
+      [(_ (identifier . args) b0 b1 ... bN)
+       (with-syntax ((f (datum->syntax #'identifier 'f)))
+        #'(begin
+            ;; (format #t "[fd fe] (def* (~a…)…)…\n" `identifier)
+            (define identifier
+              (let [(f (format #f "~a [~a]" m `identifier))]
+               (cond
+                [(string? `b0)         ;; fd
+                 (lambda* args
+                   b0
+                   ;; (format #t "~a Starting…\n" f)
+                   b1 ...
+                   (let [(result bN)]
+                     ;; (format #t "~a done\n" f)
+                     result))]
+
+                [#t                    ;; fe
+                 (lambda* args
+                   ;; (format #t "~a Starting…\n" f)
+                   b0
+                   b1 ...
+                   (let [(result bN)]
+                     ;; (format #t "~a done\n" f)
+                     result))])))
+            ;; (format #t "[fd fe] (def* ~a…)… done\n" `identifier)
+            identifier))]
+
+      [(_ identifier val) (identifier? #'identifier) ;; ff
        #'(begin
-           ;; (format #t "(def* (~a…)…)… " `identifier)
-           (define identifier
-             (cond
-              [#t                    ;; fa
-               (lambda* args
-                 (format #t "[~a] Starting…\n" `identifier)
-                 (let [(result b0)]
-                   (format #t "[~a] done\n" `identifier)
-                   result))]))
-           ;; (format #t "(def* ~a…)… done" `identifier)
-           identifier))
-
-      ((_ (identifier . args) b0 b1)
-       #`(begin
-           (define identifier
-             (cond
-              [(string? `b0)         ;; fb
-               (lambda* args
-                 b0
-                 (format #t "[~a] Starting…\n" `identifier)
-                 (let [(result b1)]
-                   (format #t "[~a] done\n" `identifier)
-                   result))]
-
-              [#t                    ;; fc
-               (lambda* args
-                 (format #t "[~a] Starting…\n" `identifier)
-                 b0
-                 (let [(result b1)]
-                   (format #t "[~a] done\n" `identifier)
-                   result))]))
-           ;; (format #t "(def* ~a…)… done" `identifier)
-           identifier))
-
-      ((_ (identifier . args) b0 b1 ... bN)
-       #'(begin
-           (define identifier
-             (cond
-              [(string? `b0)         ;; fd
-               (lambda* args
-                 b0
-                 (format #t "[~a] Starting…\n" `identifier)
-                 b1 ...
-                 (let [(result bN)]
-                   (format #t "[~a] done\n" `identifier)
-                   result))]
-
-              [#t                    ;; fe
-               (lambda* args
-                 (format #t "[~a] Starting…\n" `identifier)
-                 b0
-                 b1 ...
-                 (let [(result bN)]
-                   (format #t "[~a] done\n" `identifier)
-                   result))]))
-           ;; (format #t "(def* ~a…)… done" `identifier)
-           identifier))
-
-      ((_ identifier val) (identifier? #'identifier) ;; ff
-       #'(begin
-           ;; (format #t "(def* ~a…)… " `identifier)
+           ;; (format #t "[ff] (def* ~a…)…\n" `identifier)
            (define identifier val)
-           ;; (format #t "(def* ~a…)… done" `identifier)
-           identifier)))))
+           ;; (format #t "[ff] (def* ~a…)… done\n" `identifier)
+           identifier)])))
 
-;; Test cases:
+;; ;;; Test cases:
 ;; (def* (fa a b)
 ;;   "fa: some output string")
 
@@ -986,8 +995,13 @@ or the CLIENT-CMD if some process ID was found."
 ;;   (format #t "output 2\n")
 ;;   (format #t "output 3\n"))
 
-;; (def* ff 42)
+;; (def* (fe a b)
+;;   "fe: docstring"
+;;   (format #t "~a a ~a\n" f a)
+;;   (format #t "~a b ~a\n" f b)
+;;   42)
 
+;; (def* ff 42)
 
 ;; Like `define-public' but it prints what's being defines
 (define-syntax def-public
