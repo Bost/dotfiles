@@ -895,83 +895,161 @@ or the CLIENT-CMD if some process ID was found."
 ;; Like `define*' but it prints what's being defined / evaluated
 ;; See /home/bost/dev/guile/module/ice-9/psyntax.scm line 3377
 ;; Introduces unhygienic `f'!!!
+;; (define-syntax def*
+;;   (lambda (stx)
+;;     (syntax-case stx ()
+;;       [(_ (name . args) body0)
+;;        (with-syntax ((f (datum->syntax #'name 'f)))
+;;         #'(begin
+;;             ;; (format #t "[fa] (def* (~a…)…)…\n" `name)
+;;             (define name
+;;               (let [(f (format #f "~a [~a]" m `name))]
+;;                 (cond
+;;                  [#t                    ;; fa
+;;                   (lambda* args
+;;                     ;; (format #t "~a Starting…\n" f)
+;;                     (let [(result body0)]
+;;                       ;; (format #t "~a done\n" f)
+;;                       result))])))
+;;             ;; (format #t "[fa] (def* ~a…)… done\n" `name)
+;;             name))]
+
+;;       [(_ (name . args) body0 body1)
+;;        (with-syntax ((f (datum->syntax #'name 'f)))
+;;         #'(begin
+;;             ;; (format #t "[fb fc] (def* (~a…)…)…\n" `name)
+;;             (define name
+;;               (let [(f (format #f "~a [~a]" m `name))]
+;;                (cond
+;;                 [(string? `body0)         ;; fb
+;;                  (lambda* args
+;;                    body0
+;;                    ;; (format #t "~a Starting…\n" f)
+;;                    (let [(result body1)]
+;;                      ;; (format #t "~a done\n" f)
+;;                      result))]
+
+;;                 [#t                    ;; fc
+;;                  (lambda* args
+;;                    ;; (format #t "~a Starting…\n" f)
+;;                    body0
+;;                    (let [(result body1)]
+;;                      ;; (format #t "~a done\n" f)
+;;                      result))])))
+;;             ;; (format #t "[fb fc] (def* ~a…)… done\n" `name)
+;;             name))]
+
+;;       [(_ (name . args) body0 body1 ... bodyN)
+;;        (with-syntax ((f (datum->syntax #'name 'f)))
+;;         #'(begin
+;;             ;; (format #t "[fd fe] (def* (~a…)…)…\n" `name)
+;;             (define name
+;;               (let [(f (format #f "~a [~a]" m `name))]
+;;                (cond
+;;                 [(string? `body0)         ;; fd
+;;                  (lambda* args
+;;                    body0
+;;                    ;; (format #t "~a Starting…\n" f)
+;;                    body1 ...
+;;                    (let [(result bodyN)]
+;;                      ;; (format #t "~a done\n" f)
+;;                      result))]
+
+;;                 [#t                    ;; fe
+;;                  (lambda* args
+;;                    ;; (format #t "~a Starting…\n" f)
+;;                    body0
+;;                    body1 ...
+;;                    (let [(result bodyN)]
+;;                      ;; (format #t "~a done\n" f)
+;;                      result))])))
+;;             ;; (format #t "[fd fe] (def* ~a…)… done\n" `name)
+;;             name))]
+
+;;       [(_ name val) (identifier? #'name) ;; ff
+;;        #'(begin
+;;            ;; (format #t "[ff] (def* ~a…)…\n" `name)
+;;            (define name val)
+;;            ;; (format #t "[ff] (def* ~a…)… done\n" `name)
+;;            name)]
+;;       [else (syntax-violation 'def* "invalid syntax" stx)])))
+
 (define-syntax def*
-  (lambda (x)
-    (syntax-case x ()
-      [(_ (identifier . args) b0)
-       (with-syntax ((f (datum->syntax #'identifier 'f)))
-        #'(begin
-            ;; (format #t "[fa] (def* (~a…)…)…\n" `identifier)
-            (define identifier
-              (let [(f (format #f "~a [~a]" m `identifier))]
-                (cond
-                 [#t                    ;; fa
-                  (lambda* args
-                    ;; (format #t "~a Starting…\n" f)
-                    (let [(result b0)]
-                      ;; (format #t "~a done\n" f)
-                      result))])))
-            ;; (format #t "[fa] (def* ~a…)… done\n" `identifier)
-            identifier))]
-
-      [(_ (identifier . args) b0 b1)
-       (with-syntax ((f (datum->syntax #'identifier 'f)))
-        #'(begin
-            ;; (format #t "[fb fc] (def* (~a…)…)…\n" `identifier)
-            (define identifier
-              (let [(f (format #f "~a [~a]" m `identifier))]
-               (cond
-                [(string? `b0)         ;; fb
-                 (lambda* args
-                   b0
-                   ;; (format #t "~a Starting…\n" f)
-                   (let [(result b1)]
-                     ;; (format #t "~a done\n" f)
-                     result))]
-
-                [#t                    ;; fc
-                 (lambda* args
-                   ;; (format #t "~a Starting…\n" f)
-                   b0
-                   (let [(result b1)]
-                     ;; (format #t "~a done\n" f)
-                     result))])))
-            ;; (format #t "[fb fc] (def* ~a…)… done\n" `identifier)
-            identifier))]
-
-      [(_ (identifier . args) b0 b1 ... bN)
-       (with-syntax ((f (datum->syntax #'identifier 'f)))
-        #'(begin
-            ;; (format #t "[fd fe] (def* (~a…)…)…\n" `identifier)
-            (define identifier
-              (let [(f (format #f "~a [~a]" m `identifier))]
-               (cond
-                [(string? `b0)         ;; fd
-                 (lambda* args
-                   b0
-                   ;; (format #t "~a Starting…\n" f)
-                   b1 ...
-                   (let [(result bN)]
-                     ;; (format #t "~a done\n" f)
-                     result))]
-
-                [#t                    ;; fe
-                 (lambda* args
-                   ;; (format #t "~a Starting…\n" f)
-                   b0
-                   b1 ...
-                   (let [(result bN)]
-                     ;; (format #t "~a done\n" f)
-                     result))])))
-            ;; (format #t "[fd fe] (def* ~a…)… done\n" `identifier)
-            identifier))]
-
-      [(_ identifier val) (identifier? #'identifier) ;; ff
-       #'(begin
-           ;; (format #t "[ff] (def* ~a…)…\n" `identifier)
-           (define identifier val)
-           ;; (format #t "[ff] (def* ~a…)… done\n" `identifier)
-           identifier)])))
+  (lambda (stx)
+    (syntax-case stx ()
+      [(_ (name . args) body0 body1 ... bodyN)
+       (string? (syntax->datum #'body0))
+       ;;;
+       (with-syntax [(f (datum->syntax #'name 'f))
+                     (fprefix (datum->syntax #'name
+                                             ""
+                                             ;; "[=> 2 w/-docstr] "
+                                             ))]
+         #`(begin
+             ;; (format #t "~a #'body0 ...   : ~s\n" fprefix (syntax->datum #'body0))
+             ;; (format #t "~a #'(body1 ...) : ~s\n" fprefix (syntax->datum #'(body1 ...)))
+             ;; (format #t "~a #'bodyN       : ~s\n" fprefix (syntax->datum #'bodyN))
+             (define (name . args)
+               body0
+               (let [(f (format #f "~a~a [~a]" fprefix m `name))]
+                 ;; (format #t "~a Docstring defined : ~s\n" f body0)
+                 ;; (format #t "~a Starting…\n" f)
+                 body1 ...
+                 (let [(result bodyN)]
+                   ;; (format #t "~a done. result : ~s\n" f result)
+                   result)))))]
+      [(_ (name . args) body0 body1 ... bodyN)
+       (not (string? (syntax->datum #'body0)))
+       ;;;
+       (with-syntax [(f (datum->syntax #'name 'f))
+                     (fprefix (datum->syntax #'name
+                                             ""
+                                             ;; "[=> 2 no-docstr] "
+                                             ))]
+         #`(begin
+             ;; (format #t "~a#'body0 ...   : ~s\n" fprefix (syntax->datum #'body0))
+             ;; (format #t "~a#'(body1 ...) : ~s\n" fprefix (syntax->datum #'(body1 ...)))
+             ;; (format #t "~a#'bodyN       : ~s\n" fprefix (syntax->datum #'bodyN))
+             (define (name . args)
+               (let [(f (format #f "~a~a [~a]" fprefix m `name))]
+                 ;; (format #t "~a Docstring undefined.\n" f)
+                 ;; (format #t "~a Starting…\n" f)
+                 body0
+                 body1 ...
+                 (let [(result bodyN)]
+                   ;; (format #t "~a done. result : ~s\n" f result)
+                   result)))))]
+      [(_ (name . args) body0)
+       (with-syntax [(f (datum->syntax #'name 'f))
+                     (fprefix (datum->syntax #'name
+                                             ""
+                                             ;; "[1] "
+                                             ))]
+         #`(begin
+             ;; (format #t "~a#'body0 : ~s\n" fprefix (syntax->datum #'body0))
+             (define (name . args)
+               (let [(f (format #f "~a~a [~a]" fprefix m `name))]
+                 ;; (format #t "~a Docstring undefined.\n" f)
+                 ;; (format #t "~a Starting…\n" f)
+                 (let [(result body0)]
+                   ;; (format #t "~a done. result : ~s\n" f result)
+                   result)))))]
+      [(_ name val) (identifier? #'name)
+       (with-syntax [(f (datum->syntax #'name 'f))
+                     (fprefix (datum->syntax #'name
+                                             ""
+                                             ;; "[0] "
+                                             ))]
+         #`(begin
+             ;; (format #t "~a#'val : ~s\n" fprefix (syntax->datum #'val))
+             (define name
+               (let [(f (format #f "~a~a [~a]" fprefix m `name))]
+                 ;; (format #t "~a Docstring undefined.\n" f)
+                 ;; (format #t "~a Starting…\n" f)
+                 (let [(result val)]
+                   ;; (format #t "~a done. result : ~s\n" f result)
+                   result)))))]
+      [else (syntax-violation 'ds "invalid syntax" stx)])))
 
 ;; ;;; Test cases:
 ;; (def* (fa a b)
