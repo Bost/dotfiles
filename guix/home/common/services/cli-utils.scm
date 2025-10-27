@@ -220,7 +220,9 @@ a list of files to search through."
                            (command-line)))
   (list
    (str scm-bin-dirname "/" utility)
-   ((comp) ;; logger stub
+   ((comp
+     ;; (lambda (v) (format #t "~a 0 test-type : ~a\n" f (test-type v)) v)
+     )
     (program-file
      utility
 ;;; (scheme-file name gexp (#:splice?) (#:guile) (#:set-load-path?))
@@ -609,6 +611,7 @@ a list of files to search through."
     ;; (list #:utility "er" #:fun 'set-editable  #:params crafted)
     (list #:utility "kr" #:fun 'pkill-server     #:params crafted)
     )))
+(testsymb 'emacs-cli-utils-service)
 
 (define (direct-utils-service)
   (map (partial apply service-file-general)
@@ -621,6 +624,7 @@ a list of files to search through."
         (list #:utility "gpg-pinentry-setup"    #:desc "gpg-pinentry-setup")
         (list #:utility "qemu-vm"               #:desc "qemu-vm")
         )))
+(testsymb 'direct-utils-service)
 
 (define-public (cli-utils-service)
   (define f (format #f "~a [cli-utils-service]" m))
