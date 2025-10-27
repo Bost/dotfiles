@@ -49,7 +49,7 @@
     content
     "\n" "### echo \"home-bash-configuration -> " name ": end $EMACSLOADPATH\""
     )))
-(testsymb-trace 'bash-config-file)
+(testsymb 'bash-config-file)
 
 (define (bashrc-str)
   (str
@@ -67,6 +67,7 @@
 ;;;    i.e. `. ~/.guix-profile/etc/profile`
    "\n"
    ))
+(testsymb 'bashrc-str)
 
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
@@ -201,13 +202,13 @@
       ;; (lambda (v) (format #t "~a 0\n" m) v)
       )
      (list))))
-(testsymb-trace 'non-env-var-services)
+(testsymb 'non-env-var-services)
 
 (define (gcc-filepath)
   ;; (user-home "/.guix-home/profile/bin/gcc")
   (format #f "~a/bin/gcc" (package-derivation-output!
                            (@(gnu packages commencement) gcc-toolchain))))
-(testsymb-trace 'gcc-filepath)
+(testsymb 'gcc-filepath)
 
 ;; See also $dotf/.bashrc.martin
 (define-public (environment-vars list-separator)
@@ -260,7 +261,7 @@
                        ;; See https://github.com/phiresky/ripgrep-all
                        ;; "user-home-relative/path/to/ripgrep_all"
                        ))))))
-(testsymb-trace 'environment-vars)
+(testsymb 'environment-vars)
 
 (define-public (environment-vars-edge-ecke list-separator)
   ((comp
@@ -328,14 +329,14 @@
                   (list (str dgxp "/src"))
                   (list dgx)
                   ))))))
-(testsymb-trace 'environment-vars-edge-ecke)
+(testsymb 'environment-vars-edge-ecke)
 
 (define-public (environment-variables-service environment-vars)
   (simple-service
    'environment-variables-service
    home-environment-variables-service-type
    environment-vars))
-(testsymb-trace 'environment-variables-service)
+(testsymb 'environment-variables-service)
 
 ;;; TODO add:
 ;;;   'Practicalli Clojure CLI Config'
@@ -394,7 +395,7 @@
       (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
       ;; guile bindings of libgit2
       (list "/guile-git" "https://gitlab.com/guile-git/guile-git.git"))))))
-(testsymb-trace 'projects)
+(testsymb 'projects)
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
@@ -416,7 +417,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
               (list "git" "clone" "--origin=gitlab" repo-url dest-dir-repo)
               (list "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
                     (str github repo))))))))
-(testsymb-trace 'obtain-and-setup)
+(testsymb 'obtain-and-setup)
 
 (define (projects-heroku)
   (list
@@ -436,7 +437,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
         (format #t "~a TODO clone ~a to ~a\n" m repo-url dest-dir-repo)
         #;
         (git-clone "--origin=vojto" repo-url dest-dir-repo)))))
-(testsymb-trace 'obtain-and-setup-heroku)
+(testsymb 'obtain-and-setup-heroku)
 
 (define-public (install-all-projects)
   "The `sgxr' pulls only from syst-channels, so make sure after the `sgxr' the
@@ -457,7 +458,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
          (let ((dest-dir (car project)))
            (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
        (projects-heroku)))
-(testsymb-trace 'install-all-projects)
+(testsymb 'install-all-projects)
 
 ;; (define-public (home-env-services list-separator)
 ;;   (let* [(f (format #f "~a [home-env-services]" m))]
@@ -496,7 +497,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
     ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
     )
    (list)))
-(testsymb-trace 'home-env-services)
+(testsymb 'home-env-services)
 
 (define-public (home-env-edge-ecke list-separator)
   (define f (format #f "~a [home-env-edge-ecke]" m))
@@ -509,6 +510,6 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
              (home-env-services list-separator))))]
     ;; (format #t "~a done. type: ~a\n" f (test-type home-env-record))
     home-env-record))
-(testsymb-trace 'home-env-edge-ecke)
+(testsymb 'home-env-edge-ecke)
 
 (module-evaluated #t)
