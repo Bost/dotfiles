@@ -3,7 +3,7 @@
   ;; #:use-module (ice-9 rdelim)
   ;; #:use-module (ice-9 popen)
   ;; #:use-module (ice-9 regex)
-  #:use-module (srfi srfi-1) ;; fold remove
+  #:use-module (srfi srfi-1) ; List Library
 
   ;; The syntax? and gexp? may not be defined when resolved by '#:use-module'.
   ;; Use module scoping '@@' instead.
@@ -25,13 +25,16 @@
                 ;; Break out in case of an error occured during the execution of
                 ;; `(apply function arg ...)' or `(function arg ...)'.
                 (condition [else #f])
-                ;; (format #t "function        : ~a\n" function)
-                ;; (format #t "symbol          : ~a\n" symbol)
-                ;; (format #t "arg ...         : ~a\n" arg ...)
-                ;; (format #t "(list? arg ...) : ~a\n" (list? arg ...))
-                (if (list? arg ...)
-                    (apply function arg ...)
-                    (function arg ...)))
+                ;; (when (or #t (equal? symbol 'list?))
+                ;;   (format #t "function        : ~a\n" function)
+                ;;   (format #t "symbol          : ~a\n" symbol)
+                ;;   (format #t "arg ...         : ~a\n" arg ...)
+                ;;   (format #t "(list? arg ...) : ~a\n" (list? arg ...)))
+                (function arg ...)
+                ;; (if (list? arg ...)
+                ;;     (apply function arg ...)
+                ;;     (function arg ...))
+                )
            ;; The following `cond' is executed only if no guarded condition was
            ;; triggered during the execution of `(function arg ...)', or if a
            ;; guarded condition returned some true-value
@@ -39,13 +42,19 @@
             [(and (list? symbol)
                   ;; error? can be from (ice-9 exceptions) or (rnrs conditions)
                   (not (equal? 'error? (last symbol))))
+             ;; (format #t "cond->(caddr symbol) : #t\n")
              (caddr symbol)]
             [#t symbol])
            ))
-       #;(lambda (p) (format #t "p: ~a\n" p) p))
+       ;; (lambda (p) (format #t "p: ~a\n" p) p)
+       )
       (eval symbol (interaction-environment)))]))
 
-;;; ### BEG: from ~/dev/guile/module/ice-9/boot-9.scm
+;;; ### BEG: from /home/bost/dev/guile/module/ice-9/boot-9.scm
+(define (list-of pred l)
+  (or (null? l)
+      (and (pair? l) (pred (car l)) (list-of pred (cdr l)))))
+
 (define (valid-import? x)
   (list? x))
 
@@ -55,7 +64,7 @@
 (define (valid-autoload? x)
   (and (pair? x) (list-of symbol? (car x)) (list-of symbol? (cdr x))))
 
-;;; ### END: from ~/dev/guile/module/ice-9/boot-9.scm
+;;; ### END: from /home/bost/dev/guile/module/ice-9/boot-9.scm
 
 (define-public (test-type single-argument)
   "See predicates https://en.wikipedia.org/wiki/Scheme_(programming_language)
@@ -67,16 +76,22 @@ Type Testing Predicates.
 (test-type 1)       ; => (number? complex? real? integer? rational? positive? odd?)
 (test-type (+ 1 2)) ; => (number? complex? real? integer? rational? positive? odd?)
 (test-type (* 3-8i 2.3+0.3i)) ; => (complex? number?)
-(test-type #\\space)           ; => (char-whitespace?)
-(test-type #\\a)               ; => (char-alphabetic?)
-(test-type #\\1)               ; => (char-numeric?)
-(test-type (gexp 42))          ; => (gexp?)
-(test-type (make-error))       ; => (record? exception? error?)
-(test-type (make-exception))   ; => (record? exception?)
-(test-type (/ 0.0 0.0))        ; => (number? complex? real? nan?)
-(test-type (sqrt -1.0))        ; => (number? complex?)
+(test-type #\\space)          ; => (char-whitespace?)
+(test-type #\\a)              ; => (char-alphabetic?)
+(test-type #\\1)              ; => (char-numeric?)
+(test-type (gexp 42))         ; => (gexp?)
+(test-type (make-error))      ; => (record? exception? error?)
+(test-type (make-exception))  ; => (record? exception?)
+(test-type (/ 0.0 0.0))       ; => (number? complex? real? nan?)
+(test-type '(a b . c))        ; => (pair? nonempty-dotted-list?)
+(test-type '(a b c))          ; => (list? pair? proper-list?)
+(test-type '())               ; => (list? proper-list? null-list? not-pair? null?)
 
-(nan? (sqrt -1.0)) ; => Wrong type argument in position 1: 0.0+1.0i
+(test-type (let ((x '(1 2 3))) (set-cdr! (cddr x) x) x))
+; => (pair? circular-list?)
+
+(test-type (sqrt -1.0))       ; => (number? complex?)
+(nan? (sqrt -1.0))            ; => Wrong type argument in position 1: 0.0+1.0i
 
 (test-type (make-exception ((@(ice-9 exceptions) make-error))))
 ; => (record? exception? (@ (ice-9 exceptions) error?) condition?)
@@ -98,6 +113,20 @@ Type Testing Predicates.
     'string?
     'symbol?
     'list?
+    'plist?
+    'pair?
+
+    'proper-list?   ; from srfi-1
+    'circular-list? ; from srfi-1
+    ;; SRFI-1's dotted-list? treats any finite list whose final cdr is not '()
+    ;; as a dotted (improper) list — and it allows the degenerate case with zero
+    ;; pairs.
+    ;; 'dotted-list?
+    'nonempty-dotted-list?
+
+    'null-list?     ; from srfi-1
+    'not-pair?      ; from srfi-1
+
     'vector?
     'procedure?
     'record?
@@ -120,7 +149,6 @@ Type Testing Predicates.
     '(@(system syntax internal) syntax?)
     'identifier?   ;; #t if syntax-object is an identifier, or #f otherwise.
     '(@(guix gexp) gexp?)
-    'pair?
     'char?
     'null?
     'parameter? ;; ? is this for macros ?
@@ -163,7 +191,9 @@ Type Testing Predicates.
     ;; '(@(language tree-il) let-values?)
     ;; '(@(language tree-il) prompt?)
     ;; '(@(language tree-il) abort?)
-    )))
+    )
+   ))
+(define-public tt test-type)
 
 (define-public (test-equality . args)
   "Equality and Comparison Predicates. Variadic (i.e. infinite arity)
@@ -177,14 +207,30 @@ Type Testing Predicates.
     (partial map (lambda (symbol) (do-test symbol args))))
    (list
     '=
+    '<=
+    '>=
     'string=? ;; returns #t only if both parameters are strings
     'string-ci=?
     'char=?
     'char-ci=?
 
+    ;; 'list=  ; from srfi-1
+    ;; first paramter of `list=' is an equality predicate
+    ;; TODO (define (lset=eq? (partial list= eq?)))
+    ;; TODO (define (lset=eqv? (partial list= eqv?)))
+    ;; TODO (define (lset=equal? (partial list= equal?)))
+
+    'lset=  ; from srfi-1
+    'lset<= ; from srfi-1
+
     'eq?
     'eqv?
     'equal?
+
+    'some-true?
+    'every-true?
+    ;; '(partial not-every? true?)
+    ;; '(partial not-any? true?)
 
     ;; '(@(language tree-il) tree-il=?)
     )))

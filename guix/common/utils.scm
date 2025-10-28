@@ -1149,17 +1149,32 @@ or the CLIENT-CMD if some process ID was found."
                             string-end))))
     (regexp-match url-regex url)))
 
+;; `any', `every' are from (srfi srfi-1)
+(define-public some any)
+;; (some even? '(1 2 3))       ; => 2
+(define-public every? every)
+;; (every? even? '(2 4 6))     ; => #t
+(define-public not-any? (compose not any))
+;; (not-every? even? '(2 4 6)) ; => #f
+(define-public not-every? (compose not every))
+;; (not-any? even? '(1 3 5))   ; => #t
+
+(define-public some-true? (partial some true?))
+(define-public every-true? (partial every? true?))
+
 (define-public (plist-get . args)
   "Smart plist-get that works with arguments in either order.
 Examples:
-(plist-get (list :y 2 #:x 1) #:x)   ; => 1
-(plist-get #:x (list :y 2 #:x 1))   ; => 1
-(plist-get (list :y 2 #:x 1) #:z)   ; => *unspecified*
-(plist-get (list)            #:x)   ; => *unspecified*
+(plist-get '(#:y 2 #:x 1) #:x)      ; => 1
+(plist-get #:x (list #:y 2 #:x 1))  ; => 1
+(plist-get '(#:y 2 #:x 1) #:z)      ; => *unspecified*
+(plist-get '() #:x)                 ; => *unspecified*
 
 (plist-get '(1 11 2 22) 1)          ; => 11
-(plist-get '((1 2) 11 2 22) '(1 2)) ; => 11"
+(plist-get '((1 2) 11 2 22) '(1 2)) ; => 11
 
+(plist-get '(42 #:y 2 #:x 1) #:x)   ; => expecting pair: ()
+"
   (define (loop plist key)
     "Original plist-get implementation."
     (cond
@@ -1174,12 +1189,29 @@ Examples:
                        (reverse args))))
    args))
 
+(define-public (plist-set plist key val)
+  "(plist-set (list) #:key 'val) ; => (#:key val)"
+  (if (plist? plist)
+      (let rec [(lst plist) (acc '())]
+        (cond [(null? lst)
+               (reverse (cons val (cons key acc)))]
+              [(eq? (car lst) key)
+               ;; skip the old key+value, replace
+               (reverse acc)   ; rinsed part
+               (let ((rest (cddr lst)))
+                 (append (reverse acc) (list key val) rest))]
+              [else
+               (rec (cddr lst) (cons (cadr lst) (cons (car lst) acc)))]))
+      (error (format #f "~a `~s' is not a plist\n" m plist))))
+
 (define (remove-element . args)
   "Remove all occurrences of a given element from a list.
 If the element is a keyword (e.g., #:x), it also removes the next element (its
 value).
 Example:
 (remove-element '(x #:a 1 x #:b 2 #:c 3 x b z #:d 1 #:d) #:d)
+; => (x #:a 1 x #:b 2 #:c 3 x b z)
+(remove-element #:d '(x #:a 1 x #:b 2 #:c 3 x b z #:d 1 #:d))
 ; => (x #:a 1 x #:b 2 #:c 3 x b z)"
 
   (define (loop lst element)
@@ -1206,6 +1238,94 @@ Example:
                        (reverse args))))
    args))
 
+(define (get-from-list pred lst)
+  (if (list? lst)
+      ((comp
+        (partial remove unspecified-or-empty-or-false?)
+        (partial map (lambda (elem) (when (pred elem) elem))))
+       lst)
+      (error (format #f "~a `~s' is not a list\n" m lst))))
+
+(define-public (get-keywords lst)
+  "Return a list of all keys in the list LST, which may or may not be a plist.
+(get-keywords '(#:a 1 b 2))   ; => (#:a)
+(get-keywords '(a 1 b 2))     ; => ()
+(get-keywords '())            ; => ()
+(get-keywords '(#:a 1 #:a 3)) ; => (#:a #:a) ; not checking for duplicate keys
+(get-keywords 1)              ; => not a list"
+  (get-from-list keyword? lst))
+
+(define (has-duplicates? lst)
+  "
+(has-duplicates? '())        ; => #f
+(has-duplicates? '(1 2 3 4)) ; => #f
+(has-duplicates? '(1 2 3 2)) ; => #t"
+  (cond
+   ((null? lst) #f)
+   ((member (car lst) (cdr lst)) #t)
+   (else (has-duplicates? (cdr lst)))))
+
+(define-public (plist? lst)
+  "Empty list is also a plist. Plist must not contain duplicate keys.
+(plist? '(a 1 b 2)) ; => #t
+(plist? '())        ; => #t
+(plist? '(1))       ; => #f
+(plist? 1)          ; => #f
+(plist? '(a 1 a 2)) ; => #f ; duplicate"
+  (and (list? lst) (even? (length lst))
+       (not (has-duplicates? (get-from-list keyword? lst)))))
+
+(define-public (plist-keys plist)
+  "Return a list of all keys in the plist.
+(plist-keys '(a 1 b 2)) ; => (a b)
+(plist-keys '())        ; => ()
+(plist-keys '(1))       ; => not a plist"
+  (if (plist? plist)
+      (let loop ((lst plist) (keys '()))
+        (if (null? lst)
+            (reverse keys)
+            (loop (cddr lst) (cons (car lst) keys))))
+      (error (format #f "~a `~s' is not a plist\n" m plist))))
+
+(define-public (plist-vals plist)
+  "Return a list of all values in the plist.
+(plist-vals '(a 1 b 2)) ; => (1 2)
+(plist-vals '())        ; => ()
+(plist-vals '(1))       ; => not a plist"
+  (if (plist? plist)
+      (let loop ((lst plist) (vals '()))
+        (if (null? lst)
+            (reverse vals)
+            (loop (cddr lst) (cons (cadr lst) vals))))
+      (error (format #f "~a `~s' is not a plist\n" m plist))))
+
+(define-public (get-keyworded-vals lst)
+  "Return a list of all keys in the plist.
+(get-keyworded-vals '(#:a 1 b 2))   ; => (1)
+(get-keyworded-vals '(a 1 b 2))     ; => ()
+(get-keyworded-vals '())            ; => ()
+(get-keyworded-vals '(a 1 a 3))     ; => ()
+(get-keyworded-vals '(#:a 1 a 3))   ; => (1) ; the second `a' is not a keyword
+(get-keyworded-vals '(#:a 1 #:a 3)) ; => not a plist - has duplicate keys
+(get-keyworded-vals 1)              ; => not a plist"
+  (if (plist? lst)
+      (map (partial plist-get lst) (get-keywords lst))
+      (error (format #f "~a `~s' is not a plist\n" m lst))))
+
+(define-public (get-non-keyworded-vals lst)
+  "Return a list of all keys in the plist.
+(get-non-keyworded-vals '(#:a 1 b 2)) ; => (b 2)
+(get-non-keyworded-vals '(a 1 b 2))   ; => (1 2)
+(get-non-keyworded-vals '())          ; => ()
+(get-non-keyworded-vals 1)            ; => not a list"
+  (remove-all-elements lst (get-keywords lst)))
+
+(define-public (kv-list? lst)
+  "(kv-list? '(#:a 1 #:b 2)) ; => #t
+(kv-list? '(#:a 1 b 2))   ; => #f
+(kv-list? '())            ; => #t
+(kv-list? '(1))           ; => not a plist"
+  (every? true? (map keyword? (plist-keys lst))))
 
 (define-public (remove-all-elements lst elements)
   "Remove all elements from a list.
@@ -1878,5 +1998,15 @@ See also:
         (partial - max-length)
         string-length)
        a-string)])]))
+
+(define-public (nonempty-dotted-list? x)
+  "SRFI-1's dotted-list? treats any finite list whose final cdr is not '() as a
+dotted (improper) list — and it allows the degenerate case with zero pairs.
+
+(nonempty-dotted-list? '(a b c))    ; => #f
+(nonempty-dotted-list? '(a b . c))  ; => #t
+(nonempty-dotted-list? '())         ; => #f
+(nonempty-dotted-list? 42)          ; => #f"
+  (and (pair? x) (dotted-list? x)))
 
 (module-evaluated)
