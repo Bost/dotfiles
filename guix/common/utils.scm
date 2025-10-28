@@ -1174,29 +1174,38 @@ Examples:
                        (reverse args))))
    args))
 
-(define (remove-element lst element)
+(define (remove-element . args)
   "Remove all occurrences of a given element from a list.
 If the element is a keyword (e.g., #:x), it also removes the next element (its
 value).
-
+Example:
 (remove-element '(x #:a 1 x #:b 2 #:c 3 x b z #:d 1 #:d) #:d)
 ; => (x #:a 1 x #:b 2 #:c 3 x b z)"
-  (define (recur xs)
-    (cond
-     ((null? xs) '())
-     ((and (keyword? element)      ; If element is a keyword and matches...
-           (eq? (car xs) element))
-      (if (null? (cdr xs))
-          '() ; no value after keyword; remove only keyword
-          (recur (cddr xs))))   ; ...then skip the keyword and its value
 
-     ((equal? (car xs) element) ; If element matches...
-      (recur (cdr xs)))         ; ...then skip it
+  (define (loop lst element)
+    "Original remove-element implementation."
+    (define (recur xs)
+      (cond
+       [(null? xs) '()]
+       [(and (keyword? element)      ; If element is a keyword and matches...
+             (eq? (car xs) element))
+        (if (null? (cdr xs))
+            '() ; no value after keyword; remove only keyword
+            (recur (cddr xs)))]   ; ...then skip the keyword and its value
+       [(equal? (car xs) element) ; If element matches...
+        (recur (cdr xs))]         ; ...then skip it
+       [else
+        (cons (car xs) (recur (cdr xs)))]))
 
-     (else
-      (cons (car xs) (recur (cdr xs))))))
+    (recur lst))
 
-  (recur lst))
+  ((comp
+    (partial apply loop)
+    (lambda (args) (if (list? (car args))
+                       args
+                       (reverse args))))
+   args))
+
 
 (define-public (remove-all-elements lst elements)
   "Remove all elements from a list.
