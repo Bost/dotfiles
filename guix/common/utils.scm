@@ -1149,25 +1149,29 @@ or the CLIENT-CMD if some process ID was found."
                             string-end))))
     (regexp-match url-regex url)))
 
-(define (plist-get-original plist key)
-  "Original plist-get implementation."
-  (cond
-   ((null? plist) #f)
-   ((equal? (car plist) key) (cadr plist))
-   (else (plist-get-original (cddr plist) key))))
-
 (define-public (plist-get . args)
   "Smart plist-get that works with arguments in either order.
 Examples:
 (plist-get (list :y 2 #:x 1) #:x)   ; => 1
 (plist-get #:x (list :y 2 #:x 1))   ; => 1
-(plist-get (list :y 2 #:x 1) #:z)   ; => #f"
+(plist-get (list :y 2 #:x 1) #:z)   ; => *unspecified*
+(plist-get (list)            #:x)   ; => *unspecified*
+
+(plist-get '(1 11 2 22) 1)          ; => 11
+(plist-get '((1 2) 11 2 22) '(1 2)) ; => 11"
+
+  (define (loop plist key)
+    "Original plist-get implementation."
+    (cond
+     [(null? plist) *unspecified*]
+     [(eq? (car plist) key) (cadr plist)]
+     [else (loop (cddr plist) key)]))
+
   ((comp
-    (lambda (params) (apply plist-get-original params))
-    (lambda (args)
-      (if (list? (car args))
-          args
-          (reverse args))))
+    (partial apply loop)
+    (lambda (args) (if (list? (car args))
+                       args
+                       (reverse args))))
    args))
 
 (define (remove-element lst element)
