@@ -39,7 +39,7 @@
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
 (define m (module-name-for-logging))
-(evaluating-module #t)
+(evaluating-module)
 
 (define (bash-config-file name content)
   (plain-file
@@ -72,20 +72,20 @@
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
 (define-public (non-env-var-services)
-  (let* [(m (format #f "~a [non-env-var-services]" m))]
-    ;; (format #t "~a Starting…\n" m)
-    ((comp
-      ;; (lambda (v) (format #t "~a done\n" m) v)
-      ;; (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
-      ;;                     m (test-type v) (length v))
-      ;;         v)
-      (partial
-       append
-       ;; (service home-xsettingsd-service-type)
-       (list
-        (service
-         home-bash-service-type
-         (home-bash-configuration
+  (define f (format #f "~a [non-env-var-services]" m))
+  ;; (format #t "~a Starting…\n" f)
+  ((comp
+    ;; (lambda (v) (format #t "~a done\n" f) v)
+    ;; (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
+    ;;                     f (test-type v) (length v))
+    ;;         v)
+    (partial
+     append
+     ;; (service home-xsettingsd-service-type)
+     (list
+      (service
+       home-bash-service-type
+       (home-bash-configuration
 ;;; (guix-defaults? #t) ;; Add sane defaults to the top of the .bashrc
 
 ;;; Aliases will be defined after the contents of the bashrc field has been
@@ -103,105 +103,105 @@
 
 ;;; aliases for "l" "ll" "ls" come from the .bashrc template and will be
 ;;; overridden because see above
-          ;; (aliases '())
+         ;; (aliases '())
 
-          ;; List of file-like objects, which will be ADDED(!) to .bashrc.
-          (bashrc
-           (list
-            (bash-config-file "bashrc" (bashrc-str))
-            (let* [(filename ".bashrc_additions")]
-              ;; this should work too:
-              ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
-              (local-file
-               (user-dotf "/" filename)
-               (fix-leading-dot filename)))))
+         ;; List of file-like objects, which will be ADDED(!) to .bashrc.
+         (bashrc
+          (list
+           (bash-config-file "bashrc" (bashrc-str))
+           (let* [(filename ".bashrc_additions")]
+             ;; this should work too:
+             ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
+             (local-file
+              (user-dotf "/" filename)
+              (fix-leading-dot filename)))))
 
-          ;; List of file-like objects, which will be ADDED(!) to .bash_profile
-          (bash-profile
-           (list
-            (bash-config-file
-             "bash-profile"
-             (str
-              "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
-              ;; %H:%M:%S can be abbreviated by %T
-              "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
-              ;; "\n" "GUIX_PROFILE=$HOME/.guix-profile"
-              ;; "\n" "source \"$GUIX_PROFILE/etc/profile\""
-              "\n"
-              ;; enable all profiles on login
-              "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
-              "\n" "for i in $GUIX_EXTRA_PROFILES/*; do"
-              "\n" "  profile=$i/$(basename \"$i\")"
-              "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
-              "\n" "    GUIX_PROFILE=\"$profile\""
-              "\n" "    set -x"
-              "\n" "    source \"$GUIX_PROFILE\"/etc/profile"
-              "\n" "    { retval=\"$?\"; set +x; } 2>/dev/null"
-              "\n" "  fi"
-              "\n" "  unset profile"
-              "\n" "done"
-              ))
-            ;; (local-file ".bashrc" "bash_profile") should work too
-            ;; (local-file
-            ;;  (user-dotf "/.bash_profile_additions")
-            ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
-            ;;  "bash_profile_additions")
-            ))))))
+         ;; List of file-like objects, which will be ADDED(!) to .bash_profile
+         (bash-profile
+          (list
+           (bash-config-file
+            "bash-profile"
+            (str
+             "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
+             ;; %H:%M:%S can be abbreviated by %T
+             "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
+             ;; "\n" "GUIX_PROFILE=$HOME/.guix-profile"
+             ;; "\n" "source \"$GUIX_PROFILE/etc/profile\""
+             "\n"
+             ;; enable all profiles on login
+             "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
+             "\n" "for i in $GUIX_EXTRA_PROFILES/*; do"
+             "\n" "  profile=$i/$(basename \"$i\")"
+             "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
+             "\n" "    GUIX_PROFILE=\"$profile\""
+             "\n" "    set -x"
+             "\n" "    source \"$GUIX_PROFILE\"/etc/profile"
+             "\n" "    { retval=\"$?\"; set +x; } 2>/dev/null"
+             "\n" "  fi"
+             "\n" "  unset profile"
+             "\n" "done"
+             ))
+           ;; (local-file ".bashrc" "bash_profile") should work too
+           ;; (local-file
+           ;;  (user-dotf "/.bash_profile_additions")
+           ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
+           ;;  "bash_profile_additions")
+           ))))))
 
 ;;; fails with:
 ;;;   In procedure open-file: No such file or directory:
 ;;;   "eval \"$(direnv hook bash)\""
-      ;; (simple-service
-      ;;  'direnv-bash-hook
-      ;;  home-bash-service-type
-      ;;  (home-bash-extension
-      ;;   (bashrc (list "eval \"$(direnv hook bash)\""))))
+    ;; (simple-service
+    ;;  'direnv-bash-hook
+    ;;  home-bash-service-type
+    ;;  (home-bash-extension
+    ;;   (bashrc (list "eval \"$(direnv hook bash)\""))))
 
-      ;; emacs-with-native-comp - ? native compilation ?
-      ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
+    ;; emacs-with-native-comp - ? native compilation ?
+    ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
 
-      ;; https://github.com/search?q=home-fish-service-type&type=code
-      ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
+    ;; https://github.com/search?q=home-fish-service-type&type=code
+    ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
 
-      ;; (lambda (v) (format #t "~a 8 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
-      (partial append (list (home-guake-service)))
-      ;; (lambda (v) (format #t "~a 7 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
-      ;; See also /gnu/store/wcmicv1yy1jqgc816wizk48ij15asn27-telegram-desktop-5.12.4
-      (partial append (list (telegram-from-flatpak-service)))
-      ;; (lambda (v) (format #t "~a 6\n" m) v)
-      (partial append (list (development-dirs-service)))
-      ;; (lambda (v) (format #t "~a 5\n" m) v)
-      (partial append (list (fish-service)))
-      ;; (lambda (v) (format #t "~a 3 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
-      (partial append (list (home-config-service)))
-      ;; (lambda (v) (format #t "~a 2 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
-      (partial append (list (cli-utils-service)))
-      ;; (lambda (v) (format #t "~a 1 type: ~a; length: ~a\n" m (test-type v) (length v)) v)
-      ;; (partial append mcron-service)
+    ;; (lambda (v) (format #t "~a 8 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
+    (partial append (list (home-guake-service)))
+    ;; (lambda (v) (format #t "~a 7 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
+    ;; See also /gnu/store/wcmicv1yy1jqgc816wizk48ij15asn27-telegram-desktop-5.12.4
+    (partial append (list (telegram-from-flatpak-service)))
+    ;; (lambda (v) (format #t "~a 6\n" f) v)
+    (partial append (list (development-dirs-service)))
+    ;; (lambda (v) (format #t "~a 5\n" f) v)
+    (partial append (list (fish-service)))
+    ;; (lambda (v) (format #t "~a 3 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
+    (partial append (list (home-config-service)))
+    ;; (lambda (v) (format #t "~a 2 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
+    (partial append (list (cli-utils-service)))
+    ;; (lambda (v) (format #t "~a 1 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
+    ;; (partial append mcron-service)
 
 ;;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
 ;;; https://github.com/babariviere/dotfiles/blob/guix/baba/home/gaia.scm
 ;;; [WIP] home: Add home-git-service-type https://issues.guix.gnu.org/54293 is
 ;;; not pulled yed
 
-      ;; (partial
-      ;;  append
-      ;;  (service home-git-service-type
-      ;;           (home-git-confqiguration
-      ;;            (config
-      ;;             `((user
-      ;;                ((name . ,user-full-name)
-      ;;                 (email . ,user-mail-address)
-      ;;                 #;(signingKey . "...")))
-      ;;               (github
-      ;;                ((user . "Bost")))
-      ;;               (remote
-      ;;                ((pushDefault . "origin")))
-      ;;               #;(commit ((gpgSign . #t)))
-      ;;               #;(tag ((gpgSign . #t))))))))
-      ;; (lambda (v) (format #t "~a 0\n" m) v)
-      )
-     (list))))
+    ;; (partial
+    ;;  append
+    ;;  (service home-git-service-type
+    ;;           (home-git-confqiguration
+    ;;            (config
+    ;;             `((user
+    ;;                ((name . ,user-full-name)
+    ;;                 (email . ,user-mail-address)
+    ;;                 #;(signingKey . "...")))
+    ;;               (github
+    ;;                ((user . "Bost")))
+    ;;               (remote
+    ;;                ((pushDefault . "origin")))
+    ;;               #;(commit ((gpgSign . #t)))
+    ;;               #;(tag ((gpgSign . #t))))))))
+    ;; (lambda (v) (format #t "~a 0\n" f) v)
+    )
+   (list)))
 (testsymb 'non-env-var-services)
 
 (define (gcc-filepath)
@@ -484,7 +484,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
   (define f (format #f "~a [home-env-services]" m))
   ;; (format #t "~a Starting…\n" f)
   ((comp
-    (lambda (v) (format #t "~a done\n" f) v)
+    ;; (lambda (v) (format #t "~a done\n" f) v)
     (partial append (non-env-var-services))
     ;; (lambda (v)
     ;;   ;; (map (partial format #t "~a 1:\n~a\n" f) v)
@@ -512,4 +512,4 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
     home-env-record))
 (testsymb 'home-env-edge-ecke)
 
-(module-evaluated #t)
+(module-evaluated)
