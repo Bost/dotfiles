@@ -39,10 +39,9 @@ defined.
 
 ;; TODO rename fun, exec-fun -> symb-fun symb-exec-fun
 ;; TODO rename verbose -> verbose-exec-fun
-(define* (handle-cli
-          #:key (trace #f) verbose utility fun exec-fun params
-          ;; #:allow-other-keys
-          #:rest args)
+(define* (handle-cli #:key (trace #f) verbose utility fun exec-fun params
+                     #:allow-other-keys
+                     #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'.
 
@@ -56,6 +55,20 @@ Example:
   '((\"/home/bost/scm-bin/rgt4\" \"flatpakxxx\")))
 "
   (define f (format #f "~a [handle-cli]" m))
+  ;; (define (trace-params param-lst) ;; TODO write trace-params
+  ;;   (let [(max-length
+  ;;          ((comp
+  ;;            max
+  ;;            (partial map (lambda (param)
+  ;;                           (if (equal? 'args param)
+  ;;                               (string-length (str params))
+  ;;                               (+ 2 (string-length (str params)))))))
+  ;;           param-lst))]
+  ;;     max-length))
+  ;; `args' the list, contains all parameters; see also ;; `padding-string'
+  ;; Show the trace-infor only when the `trace' parameter is explicitly set
+  ;; (when (true? (plist-get args #:trace) (trace-params args)))
+
   (when trace
     (format #t "~a #:trace    ~a ; ~a\n" f (pr-str-with-quote trace)    (test-type trace))
     (format #t "~a #:verbose  ~a ; ~a\n" f (pr-str-with-quote verbose)  (test-type verbose))
@@ -64,26 +77,27 @@ Example:
     (format #t "~a #:exec-fun ~a ; ~a\n" f (pr-str-with-quote exec-fun) (test-type exec-fun))
     (format #t "~a #:params   ~a ; ~a\n" f (pr-str-with-quote params)   (test-type params))
     (format #t "~a   args     ~a ; ~a\n" f (pr-str-with-quote args)     (test-type args)))
-  (let* [(elements (list #:trace #:verbose
-                         #:utility #:fun #:exec-fun #:params))
-         (args (remove-all-elements args elements))
-         (args (car args))
+  (let* [
+         ;; Needed is e.g. '("/home/bost/scm-bin/f" "<file-name-pattern>")
+         (command-line (last args))
 
          ;; (value #t): a given option expects accept a value
-         (option-spec `[(help       (single-char #\h) (value #f))
-                        (version    (single-char #\v) (value #f))
-                        (gx-dry-run (single-char #\d) (value #f))
+         (option-spec `[(help         (single-char #\h) (value #f))
+                        (version      (single-char #\v) (value #f))
+                        (gx-dry-run   (single-char #\d) (value #f))
                         (create-frame (single-char #\c) (value #f))
-                        (rest-args                    (value #f))])
+                        (rest-args                      (value #f))])
 
-         ;; TODO isn't the #:stop-at-first-non-option swapped?
-         (options (getopt-long args option-spec #:stop-at-first-non-option #t))
+         (options (getopt-long command-line option-spec
+                               ;; Use in conjunction with #:allow-other-keys
+                               ;; #:stop-at-first-non-option #t
+                               ))
          ;; #f means that the expected value wasn't specified
-         (val-help       (option-ref options 'help       #f))
-         (val-version    (option-ref options 'version    #f))
-         (val-gx-dry-run (option-ref options 'gx-dry-run #f))
+         (val-help         (option-ref options 'help       #f))
+         (val-version      (option-ref options 'version    #f))
+         (val-gx-dry-run   (option-ref options 'gx-dry-run #f))
          (val-create-frame (option-ref options 'create-frame #f))
-         (val-rest-args  (option-ref options '()         #f))]
+         (val-rest-args    (option-ref options '()         #f))]
     (when trace
       (format #t "~a option-spec    : ~a\n" f option-spec)
       (format #t "~a options        : ~a\n" f options)
