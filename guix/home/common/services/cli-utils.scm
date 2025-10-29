@@ -192,7 +192,7 @@ Example:
 
 (define* (service-file-utils
           #:key (trace #f) (verbose #t) utility fun exec-fun params extra-modules
-          #:allow-other-keys)
+          #:allow-other-keys #:rest args)
   "Create pairs like
   (\"scm-bin/g\" \"/gnu/store/...\")         ; for emacs CLI utils
   (\"scm-bin/mount-axa\" \"/gnu/store/...\") ; for mount utils
@@ -232,14 +232,17 @@ a list of files to search through."
      (let* [(symb-string scheme-file)
             (symb (or module-name
                       (string->symbol symb-string)))
-            (sexp `(handle-cli
-                    #:trace ,trace
-                    #:verbose ,verbose
-                    #:utility ,utility
-                    #:fun (quote ,fun)
-                    #:exec-fun (quote ,exec-fun)
-                    ,@(if params `(#:params ,params) '())
-                    (command-line)))]
+            (new-args (remove-all-elements
+                       args
+                       (list
+                        #:extra-modules ;; consumed by this procedure
+                        )))
+            (sexp
+             `(handle-cli
+               ,@(if (member? #:trace new-args)   `() `(#:trace ,trace))
+               ,@(if (member? #:verbose new-args) `() `(#:verbose ,verbose))
+               ,@new-args
+               (command-line)))]
        (with-imported-modules (append common-modules extra-modules)
          #~(begin
              (use-modules (ice-9 getopt-long)
@@ -509,16 +512,21 @@ a list of files to search through."
    ))
 (testsymb 'utils-definitions)
 
-(define (basic-cli-utils-service)
-  (define f (format #f "~a [basic-cli-utils-service]" m))
+(def* (basic-cli-utils-service)
   ;; (call/cc (lambda (exit)))
+  ;; (format #t "~a Starting…\n" f)
   ((comp
+    ;; (lambda (v) (format #t "~a done\n" f) v)
     (partial
      map
      (comp
       (partial apply service-file-utils)
-      (partial append (list #:fun 'cli-command
-                            #:exec-fun 'exec-foreground
+      ;; (lambda (v)
+      ;;   (when (string=? (plist-get v #:utility) "f")
+      ;;     (format #t "~a ~s\n" f v))
+      ;;   v)
+      (partial append (list #:fun (quote 'cli-command)
+                            #:exec-fun (quote 'exec-foreground)
                             #:extra-modules '()))))
     (partial
      append

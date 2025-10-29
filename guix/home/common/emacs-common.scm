@@ -238,7 +238,9 @@ Examples:
           (copy-file src dst)))))
 (testsymb 'set-editable)
 
-(define* (handle-cli #:key (trace #f) verbose utility fun profile #:rest args)
+(define* (handle-cli #:key (trace #f) verbose utility fun profile
+                     #:allow-other-keys
+                     #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'.
 TRACE - trace procedure parameters
@@ -253,17 +255,20 @@ VERBOSE - print command line of the command being executed on the CLI
     (format #t "~a fun     : ~a\n" f fun)
     (format #t "~a profile : ~a\n" f profile)
     (format #t "~a args    : ~a\n" f args))
-  (let* [(elements (list #:trace #:verbose #:utility #:fun #:profile))
-         (args (remove-all-elements args elements))
-         (args (car args))
+  (let* [
+         ;; Needed is e.g. '("/home/bost/scm-bin/g" "/path/to/file.ext")
+         (command-line (last args))
+
          ;; (value #t): a given option expects accept a value
          (option-spec `[(help       (single-char #\h) (value #f))
                         (version    (single-char #\v) (value #f))
                         (gx-dry-run (single-char #\d) (value #f))
                         (rest-args                    (value #f))])
 
-         ;; TODO isn't the #:stop-at-first-non-option swapped?
-         (options (getopt-long args option-spec #:stop-at-first-non-option #t))
+         (options (getopt-long command-line option-spec
+                               ;; Use in conjunction with #:allow-other-keys
+                               ;; #:stop-at-first-non-option #t
+                               ))
          ;; #f means that the expected value wasn't specified
          (val-help       (option-ref options 'help       #f))
          (val-version    (option-ref options 'version    #f))
