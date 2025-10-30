@@ -478,7 +478,14 @@ Example:
    s-list))
 
 (define-public (ensure-list x)
-  "Wrap X in a list if it is not already a list. Think \"monadic container\"."
+  "Wrap X in a list if it is not already a list. Think \"monadic container\".
+Example:
+(ensure-list '(a b c))   ; => (a b c)
+(ensure-list 'a)         ; => (a)
+(ensure-list 1)          ; => (1)
+
+Note: Variadic definition `(define (ensure-list . xs) xs)' produces nested list:
+(ensure-list '(a b c)) ; => ((a b c))"
   (match x
     ((? list?) x)
     (else (list x))))
