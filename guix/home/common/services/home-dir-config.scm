@@ -76,10 +76,8 @@ See also:
       (partial map (partial make-config-xfce4-local-file hostname))
       ;; (lambda (p) (format #t "###### 1.:\n~a\n" (pretty-print->string p)) p)
       #;(lambda (lst) (take lst 2))
-      (partial remove unspecified-or-empty-or-false?)
-      (partial append
-               (cond
-                [(or (is-system-edge) (is-system-ecke))
+      (partial flat-list-cond
+               (when (or (is-system-edge) (is-system-ecke))
                  (list
                   "xfconf/xfce-perchannel-xml/displays.xml"
                   "xfconf/xfce-perchannel-xml/keyboards.xml"
@@ -92,8 +90,7 @@ See also:
                   "xfconf/xfce-perchannel-xml/xfce4-screensaver.xml"
                   "xfconf/xfce-perchannel-xml/xfce4-session.xml"
                   "xfconf/xfce-perchannel-xml/xfce4-terminal.xml"
-                  "xfconf/xfce-perchannel-xml/xfwm4.xml")]
-                [else (list)]))
+                  "xfconf/xfce-perchannel-xml/xfwm4.xml")))
       ;; (lambda (p) (format #t "###### 0:\n~a\n" (pretty-print->string p)) p)
       )
      (cond
@@ -107,8 +104,7 @@ See also:
         "xfconf/xfce-perchannel-xml/xfce4-appfinder.xml")]
       [(is-system-edge)
        (list
-        "xfce4-screenshooter")]
-      [else (list)]))))
+        "xfce4-screenshooter")]))))
 (testsymb 'host-specific-config)
 
 (define (home-files-config)

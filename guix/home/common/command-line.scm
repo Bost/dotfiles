@@ -136,21 +136,16 @@ Example:
               (define (eval-here exp) (eval exp (current-module)))
               ;; (define (eval-here exp) (eval exp (interaction-environment)))
               (apply (eval-here fun-symbol)
-                     (append
-                      (list
-                       #:trace      trace
-                       #:verbose    verbose
-                       #:gx-dry-run val-gx-dry-run
-                       #:params     params
-                       )
-                      (if (not (member? fun emacs-procedures))
-                          (list
-                           #:fun      fun
-                           #:exec-fun (eval-here exec-fun))
-                          (list))
-                      (if (equal? fun 'create-launcher)
-                          (list #:create-frame val-create-frame)
-                          (list))
+                     (flat-list-cond
+                      #:trace      trace
+                      #:verbose    verbose
+                      #:gx-dry-run val-gx-dry-run
+                      #:params     params
+                      (unless (member? fun emacs-procedures)
+                        (list #:fun      fun
+                              #:exec-fun (eval-here exec-fun)))
+                      (when (equal? fun 'create-launcher)
+                        (list #:create-frame val-create-frame))
                       val-rest-args)))
 
             (raise-exception

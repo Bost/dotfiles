@@ -109,18 +109,17 @@ which is not supported by the CPU on the host B
   ((comp
     exec
     (lambda (args)
-      (append
-       (list
-        ;; This works, however without shared clipboard:
-        ;; qemu-system-x86_64 \
-        ;;     -nic user,model=virtio-net-pci \
-        ;;     -enable-kvm -m $vmRAM \
-        ;;     -device virtio-blk,drive=myhd \
-        ;;     -drive if=none,file=$qcow2File,id=myhd \
-        ;;     & disown
-        ;;
-        ;; With shared clipboard and SSH access:
-        "qemu-system-x86_64"
+      (flat-list-cond
+       ;; This works, however without shared clipboard:
+       ;; qemu-system-x86_64 \
+       ;;     -nic user,model=virtio-net-pci \
+       ;;     -enable-kvm -m $vmRAM \
+       ;;     -device virtio-blk,drive=myhd \
+       ;;     -drive if=none,file=$qcow2File,id=myhd \
+       ;;     & disown
+       ;;
+       ;; With shared clipboard and SSH access:
+       "qemu-system-x86_64"
 
 ;;; The 'addr' values for '-audiodev' and '-device virtio-serial-pci' must be
 ;;; different. See also:
@@ -133,40 +132,37 @@ which is not supported by the CPU on the host B
 ;;;   hwinfo --sound
 ;;;   speaker-test -c2 -l5 -twav
 ;;; The 'speaker-test ...' works only after(!) connected with remote-viewer
-        "-audiodev spice,id=snd0"
-        "-device intel-hda,addr=0x6"
-        "-device hda-duplex,audiodev=snd0"
+       "-audiodev spice,id=snd0"
+       "-device intel-hda,addr=0x6"
+       "-device hda-duplex,audiodev=snd0"
 
 ;;; No need to use remote-viewer spice://localhost:5930 if '-display gtk' is
 ;;; added, however with '-display gtk' the sound doesn't work. Hmm.
-        ;; "-display" "gtk"
+       ;; "-display" "gtk"
 
-        "-vga" "virtio"  ;; video card type
-        "-smp" (vmCPUCores user))
-       (if isoFile (list "-cdrom" isoFile) (list))
-       (list
-        "-nic"
-        (format
-         #f
-         "user,model=virtio-net-pci,hostfwd=tcp::~a-:22,hostfwd=tcp::~a-:80"
-         vmSSHPort vmApache2Port)
-        "-enable-kvm" "-m" vmRAM
-        "-device" "virtio-blk,drive=myhd"
-        "-cpu" vmCPUModel
-        "-drive" (string-append "if=none,file=" qcow2File ",id=myhd")
+       "-vga" "virtio"  ;; video card type
+       "-smp" (vmCPUCores user)
+       (when isoFile (list "-cdrom" isoFile))
+       "-nic"
+       (format
+        #f
+        "user,model=virtio-net-pci,hostfwd=tcp::~a-:22,hostfwd=tcp::~a-:80"
+        vmSSHPort vmApache2Port)
+       "-enable-kvm" "-m" vmRAM
+       "-device" "virtio-blk,drive=myhd"
+       "-cpu" vmCPUModel
+       "-drive" (string-append "if=none,file=" qcow2File ",id=myhd")
 ;;; Access the VM with spice remote-viewer. With clipboard sharing. See `usage'
-        ;;  remote-viewer spice://localhost:5930 & disown
-        (string-join
-         (list
-          "-device"
-          "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
-          "-chardev" "spicevmc,name=vdagent,id=vdagent"
-          "-device"
-          (string-append
-           "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
-           ",name=com.redhat.spice.0")
-          "-spice" (str "port=" vmRemoteViewPort ",disable-ticketing=on")
-          ) " "))))
+       ;;  remote-viewer spice://localhost:5930 & disown
+       (string-join
+        (list
+         "-device"
+         "virtio-serial-pci,id=virtio-serial0,max_ports=16,bus=pci.0,addr=0x5"
+         "-chardev" "spicevmc,name=vdagent,id=vdagent"
+         "-device" (str "virtserialport,nr=1,bus=virtio-serial0.0,chardev=vdagent"
+                        ",name=com.redhat.spice.0")
+         "-spice" (str "port=" vmRemoteViewPort ",disable-ticketing=on")
+         ))))
     exec
     (lambda ()
       (if (access? qcow2File W_OK)
@@ -174,7 +170,7 @@ which is not supported by the CPU on the host B
             (format #t "DBG: qcow2File ~a exists and is writable\n" qcow2File)
             (list))
           (list
-           "sudo" (string-append "--user=" user)
+           "sudo" (str "--user=" user)
            "qemu-img" "create" "-f" "qcow2" qcow2File vmHDDSize))))))
 
 (define (main args)
