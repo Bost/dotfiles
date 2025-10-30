@@ -2009,4 +2009,34 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
 (nonempty-dotted-list? 42)          ; => #f"
   (and (pair? x) (dotted-list? x)))
 
+(define-public (flat-list-cond . xs)
+  "Conditionally create a one level flattened list.
+
+(flat-list-cond 5 (list 4) 3 (when #f (list 2)) #f (list 1) 0)
+;; => (list 5 4 3 2 #f 1 0)
+(flat-list-cond 5 (list 4) 3 (if #f (list 2)) #f (list 1) 0)
+;; => (list 5 4 3 2 #f 1 0)
+
+(flat-list-cond 5 (list 4) 3 (when #t (list 2)) #f (list 1) 0)
+;; => (list 5 4 3 2 #f 1 0)
+(flat-list-cond 5 (list 4) 3 (if #t (list 2)) #f (list 1) 0)
+;; => (list 5 4 3 2 #f 1 0)
+
+(flat-list-cond 5 (list 4) 3 (if #t 2) #f (list 1) 0)
+;; => (list 5 4 3 2 #f 1 0)
+
+~SPC k E~ (evil-lisp-state-sp-splice-sexp-killing-backward)
+turns:
+   (list 1 2 3)
+into:
+   1 2 3"
+  (append-map                ; or (apply append (map ... xs))
+   (lambda (x)
+     (cond
+      ((unspecified? x) '()) ; skip *unspecified*
+      ;; ((not x) '())       ; activate to this to skip #f
+      ((list? x) x)          ; flatten lists one level
+      (else (list x))))      ; keep atoms
+   xs))
+
 (module-evaluated)
