@@ -1,8 +1,8 @@
 (define-module (services flatpak)
   #:use-module (aurtzy home services package-management)
-  #:use-module (utils)
-  ;; #:use-module (settings)
-  ;; #:use-module (memo)
+  #:use-module (dotf utils)
+  ;; #:use-module (dotf settings)
+  ;; #:use-module (dotf memo)
   ;; #:use-module (fs-utils)
   #:use-module (gnu services)
   #:use-module (guix gexp)         ; program-file local-file

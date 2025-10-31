@@ -1,8 +1,8 @@
 (define-module (services home-dir-config)
   ;; See service-file -> with-imported-modules
-  #:use-module (utils)
-  #:use-module (settings)
-  #:use-module (memo)
+  #:use-module (dotf utils)
+  #:use-module (dotf settings)
+  #:use-module (dotf memo)
   #:use-module (fs-utils)
   #:use-module (gnu services)
   ;; program-file local-file

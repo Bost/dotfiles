@@ -1,5 +1,5 @@
-(define-module (tests)
-  #:use-module (utils)
+(define-module (dotf tests)
+  #:use-module (dotf utils)
   ;; #:use-module (ice-9 rdelim)
   ;; #:use-module (ice-9 popen)
   ;; #:use-module (ice-9 regex)
@@ -107,8 +107,8 @@ Type Testing Predicates.
    (list
     'unspecified?
     'boolean?
-    '(@(utils) true?)
-    '(@(utils) false?)
+    '(@(dotf utils) true?)
+    '(@(dotf utils) false?)
     'port?
     'string?
     'symbol?

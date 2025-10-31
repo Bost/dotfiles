@@ -1,9 +1,9 @@
 ;;; See https://guix.gnu.org/manual/devel/en/html_node/Channels-with-Substitutes.html
-(define-module (config channels channel-defs)
+(define-module (dotf config channels channel-defs)
   ;; See service-file -> with-imported-modules
-  #:use-module (utils)
-  #:use-module (settings)
-  #:use-module (memo)
+  #:use-module (dotf utils)
+  #:use-module (dotf settings)
+  #:use-module (dotf memo)
   #:use-module (guix channels)
   #:use-module (gnu services)
   ;; program-file local-file

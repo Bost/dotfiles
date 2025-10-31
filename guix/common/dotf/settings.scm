@@ -2,8 +2,8 @@
 ;;; utilities. The `(format ...)' output will also appear in the console when
 ;;; such a utility is executed.
 
-(define-module (settings)
-  #:use-module (utils)
+(define-module (dotf settings)
+  #:use-module (dotf utils)
   ;; #:use-module (ice-9 r5rs)
   #:use-module (srfi srfi-1)    #| remove delete-duplicates |#
 )

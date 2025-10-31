@@ -3,11 +3,11 @@
 !#
 
 (define-module (services guix-package)
-  #:use-module (utils)
-  #:use-module (srfi-1-smart)
-  #:use-module (tests)
+  #:use-module (dotf utils)
+  #:use-module (dotf srfi-1-smart)
+  #:use-module (dotf tests)
   #:use-module (fs-utils)
-  #:use-module (settings)
+  #:use-module (dotf settings)
   #:use-module (cli-common)
   #:use-module (ice-9 pretty-print)
   #:use-module (ice-9 popen)

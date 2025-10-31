@@ -7,7 +7,7 @@
 ;; so the module-name is not (systems common home-channels)
 
 (define-module (syst-channels)
-  #:use-module (config channels channel-defs)
+  #:use-module (dotf config channels channel-defs)
   )
 
 (define (syst-channels)

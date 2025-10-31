@@ -1,6 +1,6 @@
 (define-module (services development-dirs)
   ;; See service-file -> with-imported-modules
-  #:use-module (utils)
+  #:use-module (dotf utils)
   #:use-module (fs-utils)
 
   #:use-module (gnu services)

@@ -1,7 +1,7 @@
 (define-module (scm-bin tst)
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (utils)
+  #:use-module (dotf utils)
   #:use-module (guix monads)
   #:use-module (scm-bin echo)
   #:use-module (ice-9 optargs)     ; define*-public

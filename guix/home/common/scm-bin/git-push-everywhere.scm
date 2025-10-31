@@ -3,7 +3,7 @@
 ;;;   service-file -> with-imported-modules
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
-  #:use-module (utils)
+  #:use-module (dotf utils)
   #:use-module (scm-bin git-remote)
   #:use-module (scm-bin git-command)
   #:use-module (ice-9 optargs)     ; define*-public

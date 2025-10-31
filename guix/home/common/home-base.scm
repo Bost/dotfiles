@@ -1,9 +1,9 @@
 (define-module (home-base)
-  #:use-module (settings)
-  #:use-module (tests)
-  #:use-module (utils)
-  #:use-module (store-utils)
-  #:use-module (memo)
+  #:use-module (dotf settings)
+  #:use-module (dotf tests)
+  #:use-module (dotf utils)
+  #:use-module (dotf store-utils)
+  #:use-module (dotf memo)
 
   ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)

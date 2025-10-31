@@ -30,7 +30,7 @@
   #:use-module (guix records)
   ;; #:use-module (ice-9 pretty-print)
   ;; #:use-module (srfi srfi-1)
-  #:use-module (utils)
+  #:use-module (dotf utils)
 
   #:export (<home-guake-configuration>
             home-guake-configuration
@@ -70,7 +70,7 @@
       ;; (format #t "### ~a [gexp] guake-package: ~a\n" #$f #$guake-package)
       ;; Here guake-package has value:
       ;; /gnu/store/n85nrx9pphiw4wljc27rincdlrgzvg1q-guake-3.10
-      (use-modules (utils) (fs-utils))
+      (use-modules (dotf utils) (fs-utils))
       ((comp
         (partial exec)
         (partial list guake-bin)
