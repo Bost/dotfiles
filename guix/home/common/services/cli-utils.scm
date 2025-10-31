@@ -197,19 +197,31 @@ Example:
   (\"scm-bin/g\" \"/gnu/store/...\")         ; for emacs CLI utils
   (\"scm-bin/mount-axa\" \"/gnu/store/...\") ; for mount utils
 
+Example:
+(service-file-utils
+ #:trace #t
+ #:fun           'cli-background-command
+ #:exec-fun      'exec-background
+ #:extra-modules '()
+ #:utility       \"techo\"
+ #:params        \"echo \\\"foo\\\"\")
+
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."
   (define f (format #f "~a [service-file-utils]" m))
   ;; (format #t "~a Starting…\n" f)
+
   (when trace
-    (format #t "~a trace         : ~s\n" f trace)
-    (format #t "~a verbose       : ~s\n" f verbose)
-    (format #t "~a utility       : ~s\n" f utility)
-    (format #t "~a fun           : ~s\n" f fun)
-    (format #t "~a exec-fun      : ~s\n" f exec-fun)
-    (format #t "~a params        : ~s\n" f params)
-    (format #t "~a extra-modules : ~s\n" f extra-modules)
+    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
+    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
+    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
+    (format #t "~a #:fun           ~a ; ~a\n" f (pr-str-with-quote fun)           (test-type fun))
+    (format #t "~a #:exec-fun      ~a ; ~a\n" f (pr-str-with-quote exec-fun)      (test-type exec-fun))
+    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
+    (format #t "~a #:extra-modules ~a ; ~a\n" f (pr-str-with-quote extra-modules) (test-type extra-modules))
+    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
     (format #t "\n"))
+
   (define common-modules '((srfi srfi-1)
                            (guix monads)
                            (srfi-1-smart)
@@ -237,19 +249,29 @@ a list of files to search through."
                        (list
                         #:extra-modules ;; consumed by this procedure
                         )))
+            (fixed-new-args (append-map
+                             (lambda (k v)
+                               (list k (if (symbol? v) `(quote ,v) v)))
+                             (plist-keys new-args)
+                             (plist-vals new-args)))
             (sexp
-             `(handle-cli
-               ,@(if (member? #:trace new-args)   `() `(#:trace ,trace))
-               ,@(if (member? #:verbose new-args) `() `(#:verbose ,verbose))
-               ,@new-args
-               (command-line)))]
+             `(begin
+                (use-modules (ice-9 getopt-long)
+                             (ice-9 regex)
+                             ,@common-modules
+                             ,@extra-modules)
+                (handle-cli
+                 ,@(if (member? #:trace   new-args) `() `(#:trace   ,trace))
+                 ,@(if (member? #:verbose new-args) `() `(#:verbose ,verbose))
+                 ,@fixed-new-args
+                 (command-line))))]
+       (when trace ;; (string=? "rgt" utility)
+         (format #t "common-modules : ~a\n" common-modules)
+         (format #t "extra-modules  : ~a\n" extra-modules)
+         (format #t "sexp :\n~a\n" (pretty-print->string sexp))
+         (format #t "\n"))
        (with-imported-modules (append common-modules extra-modules)
-         #~(begin
-             (use-modules (ice-9 getopt-long)
-                          (ice-9 regex)
-                          #$@common-modules
-                          #$@extra-modules)
-             #$sexp)))))))
+         #~#$sexp))))))
 (testsymb 'service-file-utils)
 
 (define crc-other-files
@@ -521,12 +543,8 @@ a list of files to search through."
      map
      (comp
       (partial apply service-file-utils)
-      ;; (lambda (v)
-      ;;   (when (string=? (plist-get v #:utility) "f")
-      ;;     (format #t "~a ~s\n" f v))
-      ;;   v)
-      (partial append (list #:fun (quote 'cli-command)
-                            #:exec-fun (quote 'exec-foreground)
+      (partial append (list #:fun 'cli-command
+                            #:exec-fun 'exec-foreground
                             #:extra-modules '()))))
     (partial
      append
