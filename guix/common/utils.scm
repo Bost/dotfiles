@@ -643,8 +643,8 @@ $9 = 0 ;; <return-code>"
   (define f (format #f "~a [exec-background]" m))
   ((comp
     (partial exec-or-dry-run system)
-    ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
-    (lambda (prm) (dbg-exec prm #:verbose #t))
+    (lambda (prm) (dbg-exec prm #:verbose verbose))
+    ;; (lambda (prm) (dbg-exec prm #:verbose #t))
     cmd->string
     ;; disown belongs to shells. See `help disown`. The semicolon, as indicated
     ;; by `help disown` ivoked from the fish-shell, in eg. `echo foo &; disown`,
@@ -661,7 +661,7 @@ E.g.:
 bar baz
 $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
   (define f (format #f "~a [exec-foreground]" m))
-  (let* [(cmd-result-struct (exec command #:return-plist #t))
+  (let* [(cmd-result-struct (exec command #:verbose verbose #:return-plist #t))
          (retcode (plist-get cmd-result-struct #:retcode))]
     (if (zero? retcode)
         (begin
@@ -685,8 +685,9 @@ $9 = 0 ;; <return-code>"
   (define f (format #f "~a [exec-system]" m))
   ((comp
     (partial exec-or-dry-run system)
-    ;; (lambda (prm) (dbg-exec prm #:verbose verbose))
-    (lambda (prm) (dbg-exec prm #:verbose #t)))
+    (lambda (prm) (dbg-exec prm #:verbose verbose))
+    ;; (lambda (prm) (dbg-exec prm #:verbose #t))
+    )
    command))
 
 ;; (define (background-system command)
