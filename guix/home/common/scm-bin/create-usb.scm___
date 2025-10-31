@@ -5,7 +5,8 @@
 (define-module (scm-bin create-usb)
   #:use-module (ice-9 regex)
   #:use-module (utils)
-  #:export (main))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 lsblk --paths
@@ -34,7 +35,7 @@ sudo dd bs=4M if=$isoFile of=$usbDevice status=progress oflag=sync && sync
           output)
         (error-command-failed))))
 
-(define (main args)
+(define-public (main args)
   ((comp
     #;(partial map car)
     dbg

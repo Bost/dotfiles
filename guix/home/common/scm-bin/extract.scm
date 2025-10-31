@@ -4,7 +4,8 @@
   #:use-module (utils)
   ;; the (ice-9 regex) might need to be added in the home-configuration.scm in the macro
   #:use-module (ice-9 regex)
-  #:export (main extract))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -20,7 +21,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (extract #:rest args)
+(define*-public (extract #:rest args)
   "Usage:
 (extract ...)
 "
@@ -62,7 +63,7 @@ cd $dotf
        )
       args))))
 
-(define* (main #:rest args)
+(define*-public (main #:rest args)
   "Usage:
 (main \"<ignored>\" ...)"
   ((comp

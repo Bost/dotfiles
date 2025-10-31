@@ -6,7 +6,8 @@
   #:use-module (ice-9 popen)
   #:use-module (utils)
   #:use-module (settings)
-  #:export (main git-spacemacs))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -22,14 +23,14 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (git-spacemacs #:rest args)
+(define*-public (git-spacemacs #:rest args)
   (let ((sp-path (str home "/" spacemacs-dir)))
     (cons* "git"
            (str "--git-dir=" sp-path "/.git")
            (str "--work-tree=" sp-path)
            args)))
 
-(define (main args)
+(define-public (main args)
   (map exec
        (list
         (git-spacemacs "fetch" "--tags" origin develop)

@@ -5,7 +5,8 @@
   #:use-module (guix colors)
   #:use-module (utils)
   ;; #:use-module (guix build utils) ; invoke
-  #:export (main search-notes))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 ;; `-e (module)` calls the `main` from a given module or `-e my-procedure` calls
@@ -191,7 +192,7 @@ cd $dotf
             (map (partial format #t "~a\n") results)))
         (error (format #f "~a retcode: ~a\n" f retcode)))))
 
-(define* (search-notes #:rest args)
+(define*-public (search-notes #:rest args)
   "Usage:
 (search-notes (list \"<ignored>\"
   \"rest \"
@@ -209,7 +210,7 @@ cd $dotf
       (map (partial search-file-awk search-pattern) files)
       )))
 
-(define main search-notes)
+(define-public main search-notes)
 
 (testsymb 'main)
 

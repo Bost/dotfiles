@@ -2,7 +2,8 @@
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
-  #:export (main gpg-pinentry-setup))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -18,7 +19,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (gpg-pinentry-setup #:rest args)
+(define*-public (gpg-pinentry-setup #:rest args)
   (let [(pinentry-binary "pinentry-gtk-2" #;"pinentry-tty")]
     (when ((comp
             exec-system*
@@ -34,7 +35,7 @@ cd $dotf
       (partial format #f "which ~a"))
      pinentry-binary)))
 
-(define* (main #:rest args)
+(define*-public (main #:rest args)
   "Usage:
 (main (list \"<ignored>\"))"
   ((comp

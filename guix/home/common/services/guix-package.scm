@@ -16,13 +16,8 @@
   #:use-module (ice-9 regex)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-26)
-  #:export (
-            guix-package
-            guix-list-installed
-            guix-install
-            guix-remove
-            guix-search
-            ))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 ;; `-e (module)` calls the `main` from a given module or `-e my-procedure` calls
@@ -118,11 +113,11 @@ cd $dotf
 ;; (define p 'undef)
 ;; (define a 'undef)
 
-(define* (guix-package options
+(define*-public (guix-package options
 ;;; PROFILES being a list containing a single(!) empty(!) string means '... with
 ;;; default profile'. N empty strings would cause N (repeated) executions
-                       #:key (profiles (list ""))
-                       #:rest args)
+                              #:key (profiles (list ""))
+                              #:rest args)
   "Wrapper around `guix package ...'
 Usage:
 (guix-package \"--list-installed=emacs-helm-org\")"
@@ -146,7 +141,7 @@ Usage:
      profiles)))
 (testsymb 'guix-package)
 
-(define* (guix-list-installed regexp)
+(define*-public (guix-list-installed regexp)
   "Wrapper around `guix package --list-installed=...'
 Usage:
 (guix-list-installed \"emacs-helm-org\")"
@@ -181,7 +176,7 @@ Usage:
                       (format #f "~a=~a" alias packages)
                       (format #f "~a ~a" alias packages)))))
 
-(define* (guix-install options packages)
+(define*-public (guix-install options packages)
   "Wrapper around `guix package --install ...'
 Usage:
 (guix-install \"--dry-run\" \"emacs\")
@@ -193,7 +188,7 @@ Usage:
   (guix-package-alias --install options packages))
 (testsymb 'guix-install)
 
-(define* (guix-remove options packages)
+(define*-public (guix-remove options packages)
   "Wrapper around `guix package --remove ...'
 Usage:
 (guix-remove \"--dry-run\" \"emacs\")
@@ -205,7 +200,7 @@ Usage:
   (guix-package-alias --remove options packages))
 (testsymb 'guix-remove)
 
-(define* (guix-search options packages)
+(define*-public (guix-search options packages)
   "Wrapper around `guix package --search ...'
 Usage:
 (guix-search \"--dry-run\" \"emacs-helm-org-contacts\")

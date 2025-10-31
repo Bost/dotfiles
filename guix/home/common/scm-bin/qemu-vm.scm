@@ -7,7 +7,7 @@
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 getopt-long) ;; see also `info "guile-config"'
-  #:export (main))
+  )
 
 (define m (module-name-for-logging))
 (evaluating-module)
@@ -177,7 +177,7 @@ which is not supported by the CPU on the host B
            "sudo" (string-append "--user=" user)
            "qemu-img" "create" "-f" "qcow2" qcow2File vmHDDSize))))))
 
-(define (main args)
+(define-public (main args)
   (let* [
          (option-spec
           '(

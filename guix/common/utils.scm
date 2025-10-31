@@ -36,37 +36,19 @@
   ;; #:use-module (guix profiles) ;; probably not needed
   ;; for inferior-package-in-guix-channel : end
   #:use-module (ice-9 exceptions) ; guard
-
+  #:use-module (ice-9 optargs)    ; define*-public
   #:export (
             compose-commands-guix-shell
             compose-commands-guix-shell-dry-run
             compose-shell-commands
-            compute-cmd
-            contains--gx-dry-run?
-            dbg-exec
-            dbg-packages-to-install
             def*
-            empty?
-            error-command-failed
             evaluating-module
-            exec
-            exec-background
-            exec-foreground
-            exec-system*
-            exec-system
-            exec-system*-new
-            exec-with-error-to-string
             if-let
             if-not
             module-evaluated
             testsymb
             testsymb-trace
             dbgfmt
-            sha1-file
-            str-join
-            timestamp
-            pretty-print-with-comments->string
-            map-indexed
             )
   #:re-export (
                smart-first
@@ -276,7 +258,7 @@ Works also for functions returning and accepting multiple values."
       (close-output-port port)
       ret)))
 
-(define* (pretty-print-with-comments->string sexp #:key (max-width 78))
+(define*-public (pretty-print-with-comments->string sexp #:key (max-width 78))
   (call-with-output-string
     (lambda (port)
       ;; can't use '#:use-module (guix read-print)'. See above module definition
@@ -333,7 +315,8 @@ Corresponds to `drop' in Clojure"
       ""
       (format #f "~a" (string-join (map str rest)))))
 
-;; TODO dbgfmt should be smart to detect if the symbols `f' and/or `m' are defined and if so then use them
+;; TODO dbgfmt should be smart to detect if the symbols `f' and/or `m' are
+;; defined and if so then use them
 (define-syntax dbgfmt
   ;; match specific datums `m' and `f' in an expression
   (syntax-rules (m f)
@@ -357,13 +340,13 @@ Corresponds to `drop' in Clojure"
   (format #t "~s\n" prm)
   prm)
 
-(define* (dbg-exec prm #:key (verbose #t))
+(define*-public (dbg-exec prm #:key (verbose #t))
   "`pk', i.e. `peek' can be used instead of this function"
   (when verbose
     (format #t "§ ~a\n" (if (list? prm) (string-join prm) prm)))
   prm)
 
-(define* (error-command-failed #:rest args)
+(define*-public (error-command-failed #:rest args)
   "Returns #t and prints \"Command failed.\" with some extra text. Does NOT
 error-out!"
   (define f "[error-command-failed]")
@@ -490,14 +473,15 @@ Note: Variadic definition `(define (ensure-list . xs) xs)' produces nested list:
     ((? list?) x)
     (else (list x))))
 
-;; ;; TODO consider testing for proper-list?
-;; ;; See also (scm-error 'wrong-type-arg #f "Expected a proper list or non-pair value" #f #f)
+;; TODO consider testing for proper-list?
+;; See also (scm-error 'wrong-type-arg #f "Expected a proper list or non-pair value" #f #f)
 ;; (define-public (ensure-list x)
 ;;   "Wrap X in a list if it is not already a list. Think \"monadic container\".
 ;; Raise an error if it's neither a list nor a single value."
 ;;   (guard (exception ((not (or (list? exception)
 ;;                               (not (pair? exception))))
-;;                      => (lambda (x) (error "Expected a list or single value" x))))
+;;                      => (lambda (x)
+;;                           (error "Expected a list or single value" x))))
 ;;     ;; Alternative implementations:
 ;;     ;;   (or (and (list? x) x)
 ;;     ;;       (list x))
@@ -520,18 +504,18 @@ Note: Variadic definition `(define (ensure-list . xs) xs)' produces nested list:
 
 (define dry-run-prm "--gx-dry-run")
 
-(define* (contains--gx-dry-run? args)
+(define*-public (contains--gx-dry-run? args)
   (or (and (list? args) (member dry-run-prm args))
       (and (string? args) (string-contains args dry-run-prm))))
 
-(define* (exec-or-dry-run exec-function args)
+(define*-public (exec-or-dry-run exec-function args)
   (if (contains--gx-dry-run? args)
       args
       (if (list? args)
           (apply exec-function args)
           (exec-function args))))
 
-(define* (exec-system* #:key (verbose #t) #:rest args)
+(define*-public (exec-system* #:key (verbose #t) #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
@@ -549,7 +533,8 @@ $9 = 0 ;; return code"
       string-split-whitespace)
      args)))
 
-(define* (exec-or-dry-run-new #:key exec-function (gx-dry-run #f) (verbose #f) #:rest args)
+(define*-public (exec-or-dry-run-new
+                 #:key exec-function (gx-dry-run #f) (verbose #f) #:rest args)
   (define f (format #f "~a [exec-or-dry-run-new]" m))
   (let* [(elements (list #:exec-function #:gx-dry-run #:verbose))
          (args (remove-all-elements args elements))
@@ -565,7 +550,7 @@ $9 = 0 ;; return code"
             (apply exec-function args) ;; TODO add #:verbose
             (exec-function args)))))
 
-(define* (exec-system*-new
+(define*-public (exec-system*-new
           #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t)
           #:rest args)
   "Execute system command and returns its ret-code. E.g.:
@@ -591,7 +576,8 @@ $9 = 0 ;; return code"
                #:verbose verbose
                #:exec-function system*)
       (lambda (prm) (dbg-exec prm #:verbose verbose))
-      (partial map (lambda (s) (if split-whitespace (string-split-whitespace s) s))))
+      (partial map (lambda (s) (if split-whitespace
+                                   (string-split-whitespace s) s))))
      args)))
 
 (define-public (read-all reader-function)
@@ -634,7 +620,7 @@ READER-FUNCTION on them. "
 ;; resulting in clean, easy to read non-blocking code.
 #;(import (language wisp spec)) ;; whitespace lisp
 
-(define* (exec-background command #:key (verbose #f))
+(define*-public (exec-background command #:key (verbose #f))
   "Execute COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings.
 § echo bar baz & disown
@@ -653,7 +639,7 @@ $9 = 0 ;; <return-code>"
     cmd->string)
    command))
 
-(define* (exec-foreground command #:key (verbose #f))
+(define*-public (exec-foreground command #:key (verbose #f))
   "Execute COMMAND and returns its ret-code.
 E.g.:
 (exec-foreground \"echo bar baz\") ;; =>
@@ -675,8 +661,9 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
           ;; *unspecified*
           ))))
 
-(define* (exec-system command #:key (verbose #f))
-  "Execute COMMAND using `system' from the (guile) module and returns its ret-code.
+(define*-public (exec-system command #:key (verbose #f))
+  "Execute COMMAND using `system' from the (guile) module and returns its
+ret-code.
 E.g.:
 (exec-system \"echo bar baz\") ;; =>
 § echo bar baz
@@ -723,7 +710,7 @@ $9 = 0 ;; <return-code>"
 ;;         (let* ((error-port (open-output-string)))
 ;;           (output-port? error-port)))
 
-(define* (exec-with-error-to-string commad #:key (verbose #t))
+(define*-public (exec-with-error-to-string commad #:key (verbose #t))
   "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return 3 values:
 - `#t' if the port was successfully closed or `#f' if it was already closed.
@@ -762,7 +749,7 @@ Usage:
     cmd->string)
    commad))
 
-(define* (exec command #:key (verbose #t) (return-plist #f))
+(define*-public (exec command #:key (verbose #t) (return-plist #f))
   "Run the shell COMMAND using '/bin/sh -c' with 'OPEN_READ' mode, ie. to read
 from the subprocess. Wait for the command to terminate and return a string
 containing its output.
@@ -858,8 +845,8 @@ Or:
      pids)))
 
 (define-public (analyze-pids-call/cc user init-cmd client-cmd pids)
-  "For a process ID from the list of PIDS, return the INIT-CMD if no process ID was
-found or the CLIENT-CMD if some process ID was found."
+  "For a process ID from the list of PIDS, return the INIT-CMD if no process ID
+was found or the CLIENT-CMD if some process ID was found."
   (call/cc
    (lambda (continuation)
      (map
@@ -881,9 +868,9 @@ found or the CLIENT-CMD if some process ID was found."
      ;; The pids-list is empty. No such binary has been started yet.
      init-cmd)))
 
-(define* (compute-cmd #:key user init-cmd client-cmd pgrep-pattern)
-  "pgrep for a USER and PATTERN and return the INIT-CMD if no process ID was found
-or the CLIENT-CMD if some process ID was found."
+(define*-public (compute-cmd #:key user init-cmd client-cmd pgrep-pattern)
+  "pgrep for a USER and PATTERN and return the INIT-CMD if no process ID was
+found or the CLIENT-CMD if some process ID was found."
   ((comp
     (partial
      analyze-pids-call/cc
@@ -1128,7 +1115,7 @@ or the CLIENT-CMD if some process ID was found."
    "/tmp/myfile-XXXXXX"))
 
 ;; TODO add install-recursively to (guix build utils) and send it to upstream
-(define* (install-recursively source destination
+(define*-public (install-recursively source destination
                               #:key
                               (log (current-output-port))
                               (follow-symlinks? #f)
@@ -1215,9 +1202,9 @@ Examples:
              (rec (cddr lst) (cons (cadr lst) (cons (car lst) acc)))]))]))
 
 (define-public (plist-set! plist key val)
-  "Destructively modifies PLIST by setting KEY to VAL. Note: Cannot mutate an empty
-list into a non-empty one.
-Example:
+  "Destructively modifies PLIST by setting KEY to VAL. Note: Cannot mutate an
+empty list into a non-empty one.
+E.g.:
 (define lst (list #:k1 1 #:k2 2 #:k3 3))
 (plist-set! lst #:k2 22) ; => (#:k1 1 #:k2 22 #:k3 3)
 lst ; => (#:k1 1 #:k2 22 #:k3 3)"
@@ -1365,21 +1352,6 @@ Example:
       (map (partial plist-get lst) (get-keywords lst))
       (error (format #f "~a `~s' is not a plist\n" m lst))))
 
-(define-public (get-non-keyworded-vals lst)
-  "Return a list of all keys in the plist.
-(get-non-keyworded-vals '(#:a 1 b 2)) ; => (b 2)
-(get-non-keyworded-vals '(a 1 b 2))   ; => (1 2)
-(get-non-keyworded-vals '())          ; => ()
-(get-non-keyworded-vals 1)            ; => not a list"
-  (remove-all-elements lst (get-keywords lst)))
-
-(define-public (kv-list? lst)
-  "(kv-list? '(#:a 1 #:b 2)) ; => #t
-(kv-list? '(#:a 1 b 2))   ; => #f
-(kv-list? '())            ; => #t
-(kv-list? '(1))           ; => not a plist"
-  (every? true? (map keyword? (plist-keys lst))))
-
 (define-public (remove-all-elements lst elements)
   "Remove all elements from a list.
 If an element is a keyword (e.g., #:x), also remove the following element (its
@@ -1395,6 +1367,21 @@ Example:
           lst
           (loop (remove-element lst (car els))
                 (cdr els))))))
+
+(define-public (get-non-keyworded-vals lst)
+  "Return a list of all keys in the plist.
+(get-non-keyworded-vals '(#:a 1 b 2)) ; => (b 2)
+(get-non-keyworded-vals '(a 1 b 2))   ; => (1 2)
+(get-non-keyworded-vals '())          ; => ()
+(get-non-keyworded-vals 1)            ; => not a list"
+  (remove-all-elements lst (get-keywords lst)))
+
+(define-public (keyworded-plist? lst)
+  "(keyworded-plist? '(#:a 1 #:b 2)) ; => #t
+(keyworded-plist? '(#:a 1 b 2))   ; => #f
+(keyworded-plist? '())            ; => #t
+(keyworded-plist? '(1))           ; => not a plist"
+  (every? true? (map keyword? (plist-keys lst))))
 
 (define-inlinable (pipe-return params)
   (list
@@ -1514,8 +1501,9 @@ Requires:
 (define (disk-space-amount) 1000)
 (define (disk-space-left? query) (< query (disk-space-amount)))
 ;;;
-(define-exception-type &read-exception &exception make-read-exception read-exception?
-                                        ; (field-name field-accessor) ...
+(define-exception-type
+  &read-exception &exception make-read-exception read-exception?
+  ;; (field-name field-accessor) ...
   (read-reason read-exception-reason)
   (read-severity read-exception-severity))
 ;;;
@@ -1541,7 +1529,7 @@ Requires:
 |#
 
 (define-public (package-output-paths one-or-more-packages)
-  "Usage example:
+  "E.g.:
 (package-output-paths (@(gnu packages emacs) emacs))
 => (\"/gnu/store/09a50cl6ndln4nmp56nsdvn61jgz2m07-emacs-29.1\")"
   (let [(connection ((@(guix store) open-connection)))]
@@ -1652,7 +1640,9 @@ that many from the end."
          (let ((a (car args)) (b (cadr args)))
            (cond ((and (number? a) (list? b)) (drop-last a b))
                  ((and (list? a) (number? b)) (drop-last b a))
-                 (else (error "butlast-smart: expected one number and one list" a b)))))
+                 (else
+                  (error
+                   "butlast-smart: expected one number and one list" a b)))))
         (else (error "butlast-smart: expected 1 or 2 arguments"))))
 
 (define-public (cartesian xs ys)
@@ -1722,7 +1712,8 @@ that many from the end."
     ;;     p)
     ;;   )
     ;;  (specification->package
-    ;;   (format #f "(@ (bost packages emacs-xyz) ~a)" (symbol->string one-or-more-packages))
+    ;;   (format #f "(@ (bost packages emacs-xyz) ~a)"
+    ;;           (symbol->string one-or-more-packages))
     ;;   ))
     ))
 
@@ -1869,7 +1860,7 @@ Example usage:
             cmd->string)
            (list "findmnt --real --noheadings --output OPTIONS"
 
-                 ;; Explicitly define the mount source. Supported specifications are:
+                 ;; Explicitly define mount source. Supported specifications:
                  ;; device
                  ;; maj:min
                  ;; LABEL=label
@@ -1946,7 +1937,7 @@ See also:
                                modulus)))
             (loop (+ i 1) acc2))))))
 
-(define* (timestamp #:key (verbose #f))
+(define*-public (timestamp #:key (verbose #f))
   "(timestamp) ;; => \"2025-10-14_20-14-16\""
   (let* [(cmd-result-struct
           ((comp
@@ -1971,7 +1962,7 @@ See also:
           ;; *unspecified*
           ))))
 
-(define* (sha1-file filename #:key (verbose #f))
+(define*-public (sha1-file filename #:key (verbose #f))
   "Example:
   (sha1-file \"/etc/hosts\") ;; => \"...\""
   (let* [(cmd-result-struct
@@ -1997,7 +1988,7 @@ See also:
 
 (define-public inc 1+)
 
-(define* (str-join ls #:optional (delimiter " ") (grammar 'infix))
+(define*-public (str-join ls #:optional (delimiter " ") (grammar 'infix))
   "
 (str-join (map str (list 1 2 3)))         ;=> \"1 2 3\"
 (str-join (map str (list 1 2 3)) \"\\n\") ;=> \"1\\n2\\n3\"
@@ -2011,7 +2002,7 @@ See also:
    [else
     (string-join ls delimiter grammar)]))
 
-(define* (map-indexed f seq)
+(define*-public (map-indexed f seq)
   "(map-indexed (lambda (i x) (list i x)) '(a b c)) ;=> ((0 a) (1 b) (2 c))"
   (cond
    [(list? seq)

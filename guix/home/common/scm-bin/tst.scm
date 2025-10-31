@@ -4,7 +4,8 @@
   #:use-module (utils)
   #:use-module (guix monads)
   #:use-module (scm-bin echo)
-  #:export (main))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -20,7 +21,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (main #:rest args)
+(define*-public (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"arg0\")
 (main \"<ignored>\" \"--gx-dry-run\" \"arg0\")

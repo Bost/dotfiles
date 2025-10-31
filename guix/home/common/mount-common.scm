@@ -5,7 +5,8 @@
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (srfi srfi-1)       ; last
   #:use-module (utils)
-  #:export (udisksctl mount unmount eject info))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 udisksctl mount --block-device=(lsblk --output PATH,LABEL | rg axagon | awk '{print $1}')
@@ -29,7 +30,7 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (udisksctl command device-name-pattern)
+(define*-public (udisksctl command device-name-pattern)
   "Example:
 (udisksctl \"info\" \"axa\")"
   ;; (format #t "device-name-pattern : ~a\n" device-name-pattern)
@@ -60,22 +61,22 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
                 "lsblk --output PATH,LABEL | rg ~a | awk '{print $1}'"))
       device-name-pattern))))
 
-(define* (mount #:key params #:allow-other-keys)
+(define*-public (mount #:key params #:allow-other-keys)
   "Example:
 (mount #:params \"axa\")"
   (udisksctl "mount" params))
 
-(define* (unmount #:key params #:allow-other-keys)
+(define*-public (unmount #:key params #:allow-other-keys)
   "Example:
 (unmount #:params \"axa\")"
   (udisksctl "unmount" params))
 
-(define* (eject #:key params #:allow-other-keys)
+(define*-public (eject #:key params #:allow-other-keys)
   "Example:
 (eject #:params \"axa\")"
   (udisksctl "power-off" params))
 
-(define* (info #:key params #:allow-other-keys)
+(define*-public (info #:key params #:allow-other-keys)
   "Example:
 (info #:params \"axa\")"
   (udisksctl "info" params))

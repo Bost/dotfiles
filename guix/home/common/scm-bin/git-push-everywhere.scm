@@ -6,7 +6,8 @@
   #:use-module (utils)
   #:use-module (scm-bin git-remote)
   #:use-module (scm-bin git-command)
-  #:export (main git-push-everywhere))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -22,7 +23,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (git-push-everywhere #:rest args)
+(define*-public (git-push-everywhere #:rest args)
   "Push commits to all remote repositories."
   (define f (format #f "~a [git-push-everywhere]" m))
 
@@ -56,7 +57,7 @@ cd $dotf
   )
 (testsymb 'git-push-everywhere)
 
-(define* (main #:rest args)
+(define*-public (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"arg0\")"
   ((comp

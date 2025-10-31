@@ -5,12 +5,8 @@
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (utils)
-  #:export (
-            cli-general-command
-            cli-command
-            cli-background-command
-            cli-system-command
-            ))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -25,7 +21,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (cli-general-command
+(define*-public (cli-general-command
           #:key (trace #f) verbose gx-dry-run params fun exec-fun
           #:allow-other-keys #:rest args)
   "The ARGS are being ignored.
@@ -96,7 +92,7 @@ Examples:
             )
            args)))))
 
-(define* (cli-command
+(define*-public (cli-command
           #:key (trace #f) verbose gx-dry-run params fun exec-fun
           #:allow-other-keys #:rest args)
   (define f (format #f "~a [cli-command]" m))
@@ -109,7 +105,7 @@ Examples:
     )
    args))
 
-(define* (cli-background-command
+(define*-public (cli-background-command
           #:key (trace #f) verbose gx-dry-run params fun exec-fun
           #:allow-other-keys #:rest args)
   ((comp
@@ -118,7 +114,7 @@ Examples:
     (partial append (list #:trace trace #:exec-fun exec-background)))
    args))
 
-(define* (cli-system-command
+(define*-public (cli-system-command
           #:key (trace #f) verbose gx-dry-run params fun exec-fun
           #:allow-other-keys #:rest args)
   ((comp
