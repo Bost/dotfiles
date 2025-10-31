@@ -1330,29 +1330,27 @@ Example:
   (and (list? lst) (even? (length lst))
        (not (has-duplicates? (get-from-list keyword? lst)))))
 
+(define (plist-keys-or-vals proc plist)
+  (if (plist? plist)
+      (let loop ((lst plist) (keys '()))
+        (if (null? lst)
+            (reverse keys)
+            (loop (cddr lst) (cons (proc lst) keys))))
+      (error (format #f "~a `~s' is not a plist\n" m plist))))
+
 (define-public (plist-keys plist)
   "Return a list of all keys in the plist.
 (plist-keys '(a 1 b 2)) ; => (a b)
 (plist-keys '())        ; => ()
 (plist-keys '(1))       ; => not a plist"
-  (if (plist? plist)
-      (let loop ((lst plist) (keys '()))
-        (if (null? lst)
-            (reverse keys)
-            (loop (cddr lst) (cons (car lst) keys))))
-      (error (format #f "~a `~s' is not a plist\n" m plist))))
+  (plist-keys-or-vals car plist))
 
 (define-public (plist-vals plist)
   "Return a list of all values in the plist.
 (plist-vals '(a 1 b 2)) ; => (1 2)
 (plist-vals '())        ; => ()
 (plist-vals '(1))       ; => not a plist"
-  (if (plist? plist)
-      (let loop ((lst plist) (vals '()))
-        (if (null? lst)
-            (reverse vals)
-            (loop (cddr lst) (cons (cadr lst) vals))))
-      (error (format #f "~a `~s' is not a plist\n" m plist))))
+  (plist-keys-or-vals cadr plist))
 
 (define-public (get-keyworded-vals lst)
   "Return a list of all keys in the plist.
