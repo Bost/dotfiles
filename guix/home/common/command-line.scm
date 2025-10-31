@@ -9,7 +9,7 @@
   #:use-module (utils)             ; partial
   #:use-module (tests)             ; test-type
   #:use-module (settings)          ; user
-  ;; for (eval ...) of cli-*command procedures
+  ;; for (eval ...) of cli-*command utility-funs
   #:use-module (cli-common)
   #:export (handle-cli))
 
@@ -45,7 +45,7 @@ defined.
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'.
 
-Example:
+Examples:
 (handle-cli
  #:verbose  #f
  #:utility  \"rgt4\"
@@ -53,6 +53,13 @@ Example:
  #:exec-fun 'exec-foreground
  #:params   \"rg --ignore-case --pretty --type=lisp --context=4\"
   '((\"/home/bost/scm-bin/rgt4\" \"flatpakxxx\")))
+
+(handle-cli
+ #:trace #t
+ #:utility  \"techo\"
+ #:fun      'cli-background-command
+ #:exec-fun 'exec-background
+ #:params   \"echo \\\"foo\\\"\")
 "
   (define f (format #f "~a [handle-cli]" m))
   ;; (define (trace-params param-lst) ;; TODO write trace-params
@@ -99,13 +106,13 @@ Example:
          (val-create-frame (option-ref options 'create-frame #f))
          (val-rest-args    (option-ref options '()         #f))]
     (when trace
-      (format #t "~a option-spec    : ~a\n" f option-spec)
-      (format #t "~a options        : ~a\n" f options)
-      (format #t "~a val-help       : ~a\n" f val-help)
-      (format #t "~a val-version    : ~a\n" f val-version)
-      (format #t "~a val-gx-dry-run : ~a\n" f val-gx-dry-run)
+      (format #t "~a option-spec      : ~a\n" f option-spec)
+      (format #t "~a options          : ~a\n" f options)
+      (format #t "~a val-help         : ~a\n" f val-help)
+      (format #t "~a val-version      : ~a\n" f val-version)
+      (format #t "~a val-gx-dry-run   : ~a\n" f val-gx-dry-run)
       (format #t "~a val-create-frame : ~a\n" f val-create-frame)
-      (format #t "~a val-rest-args  : ~a\n" f val-rest-args))
+      (format #t "~a val-rest-args    : ~a\n" f val-rest-args))
     (cond
      [val-help
       (format #t "~a [options]\n~a\n~a\n\n"
@@ -116,14 +123,14 @@ Example:
       (format #t "~a version <...>\n" utility)]
      [#t
       (let* [(emacs-procedures '(pkill-server create-launcher set-editable))
-             (procedures (append emacs-procedures
+             (utility-funs (append emacs-procedures
                                  '(
                                    cli-command
                                    cli-background-command
                                    cli-system-command
                                    mount unmount eject info
                                    )))]
-        (if (member? fun procedures)
+        (if (member? fun utility-funs)
             (let* [(fun-symbol
                     (if (member? fun
                                  '(
@@ -157,8 +164,8 @@ Example:
              (make-exception
               (make-handle-cli-exception fun)
               (make-exception-with-message
-               (format #t "The procedure must be one of:\n  ~a\n\n"
-                       procedures))))))])))
+               (format #t "The value of ~a is ~s. Expecting one of:\n  ~a\n\n"
+                       #:fun fun utility-funs))))))])))
 (testsymb 'handle-cli)
 
 (module-evaluated)
