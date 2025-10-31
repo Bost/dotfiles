@@ -5,8 +5,8 @@
   #:use-module (ice-9 regex)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 r5rs)
-  #:use-module (utils)                   #| exec          |#
-  #:use-module (settings)                #| spacemacs-dir |#
+  #:use-module (dotf utils)                   #| exec          |#
+  #:use-module (dotf settings)                #| spacemacs-dir |#
   #:use-module (scm-bin spag)            #| git-spacemacs |#
   #:use-module (ice-9 optargs)     ; define*-public
   )

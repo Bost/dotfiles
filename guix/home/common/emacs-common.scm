@@ -4,8 +4,8 @@
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (guix monads)       ; with-monad
-  #:use-module (utils)             ; partial
-  #:use-module (settings)          ; user
+  #:use-module (dotf utils)             ; partial
+  #:use-module (dotf settings)          ; user
   #:use-module (srfi srfi-1)       ; remove
   #:use-module (ice-9 optargs)     ; define*-public
   )

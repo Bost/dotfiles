@@ -1,7 +1,7 @@
 (define-module (syst-base)
-  #:use-module (settings)
-  #:use-module (utils)                 ; for partial
-  #:use-module (memo)
+  #:use-module (dotf settings)
+  #:use-module (dotf utils)                 ; for partial
+  #:use-module (dotf memo)
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; user-group user-account-shell
   #:use-module (nongnu packages linux)

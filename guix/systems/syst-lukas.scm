@@ -1,8 +1,8 @@
 (define-module (syst-lukas)
   #:use-module ((syst-base) #:prefix base:)
-  #:use-module (settings)
-  #:use-module (utils)                 ; partial, module-name-for-logging
-  #:use-module (memo)
+  #:use-module (dotf settings)
+  #:use-module (dotf utils)                 ; partial, module-name-for-logging
+  #:use-module (dotf memo)
   #:use-module (gnu)
   #:use-module (guix modules)
   #:use-module (guix)                  ; package-version

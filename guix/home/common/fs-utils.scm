@@ -1,6 +1,6 @@
 (define-module (fs-utils)
-  #:use-module (utils)
-  #:use-module (settings)
+  #:use-module (dotf utils)
+  #:use-module (dotf settings)
   ;; program-file local-file
   #:use-module (guix gexp)
   ;; take remove delete-duplicates append-map etc.

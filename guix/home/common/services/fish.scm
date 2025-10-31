@@ -1,8 +1,8 @@
 ;; TODO fish+starship https://starship.rs/
 (define-module (services fish)
   ;; See service-file -> with-imported-modules
-  #:use-module (settings)
-  #:use-module (utils)
+  #:use-module (dotf settings)
+  #:use-module (dotf utils)
   #:use-module (fs-utils)
   #:use-module (gnu services)
   #:use-module (guix gexp)               #| program-file local-file |#

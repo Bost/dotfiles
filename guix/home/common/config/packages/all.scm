@@ -1,7 +1,7 @@
 (define-module (config packages all)
-  #:use-module (utils)
-  #:use-module (settings)
-  #:use-module (memo)
+  #:use-module (dotf utils)
+  #:use-module (dotf settings)
+  #:use-module (dotf memo)
   #:use-module (gnu)     ; provides use-package-modules
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
@@ -12,7 +12,7 @@
   ;; provides: specification->package
   #:use-module (gnu packages)
   #:use-module (bost gnu packages guake)
-  #:use-module (config channels channel-defs)
+  #:use-module (dotf config channels channel-defs)
 
   ;; for inferior-pkg-in-channel : beg
   #:use-module (guix packages)

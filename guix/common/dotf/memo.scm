@@ -1,6 +1,6 @@
-(define-module (memo)
-  #:use-module (utils)
-  #:use-module (settings)
+(define-module (dotf memo)
+  #:use-module (dotf utils)
+  #:use-module (dotf settings)
 
   #:use-module (guix memoization)
   #:use-module (ice-9 popen) ; open-input-pipe

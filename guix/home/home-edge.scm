@@ -9,9 +9,10 @@
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
 
-source /etc/profile && dx=$HOME/dev/dotfiles/guix
+source /etc/profile && baseLP=$HOME/dev/dotfiles/guix
 guix home --allow-downgrades --cores=$cores \
-     -L $dx/common -L $dx/home/common reconfigure $dx/home/home-$(hostname).scm
+     -L $baseLP/common -L $baseLP/home/common \
+     reconfigure $baseLP/home/home-$(hostname).scm
 # -L --load-path
 
 # The tilda `~' is only expanded by shells when it's the first character of a
@@ -27,9 +28,9 @@ guix home --allow-downgrades --cores=$cores \
 ;; enough to handle the differences just a few branching statements, e.g.
 ;; if, cond, etc.
 (define-module (home-edge)
-  #:use-module (utils)
-  #:use-module (settings)
-  #:use-module (memo)
+  #:use-module (dotf utils)
+  #:use-module (dotf settings)
+  #:use-module (dotf memo)
   #:use-module (fs-utils)
   #:use-module (services fish)
   #:use-module (services development-dirs)

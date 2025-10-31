@@ -1,5 +1,5 @@
 (define-module (config packages all)
-  #:use-module (utils)
+  #:use-module (dotf utils)
   #:use-module (gnu)   ; use-package-modules
   )
 

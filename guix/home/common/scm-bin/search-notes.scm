@@ -3,7 +3,7 @@
 ;;;   service-file -> with-imported-modules
   #:use-module (srfi srfi-1)       ; last
   #:use-module (guix colors)
-  #:use-module (utils)
+  #:use-module (dotf utils)
   ;; #:use-module (guix build utils) ; invoke
   #:use-module (ice-9 optargs)     ; define*-public
   )

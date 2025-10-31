@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# '--preserve-env=GUILE_LOAD_COMPILED_PATH' makes the (utils) scheme module
+# '--preserve-env=GUILE_LOAD_COMPILED_PATH' makes the (dotf utils) scheme module
 # accessible to the super-user
 set -x  # Print commands and their arguments as they are executed.
 sudo --preserve-env=GUILE_LOAD_COMPILED_PATH \

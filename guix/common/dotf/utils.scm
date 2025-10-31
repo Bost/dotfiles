@@ -6,12 +6,11 @@
 ;; https://github.com/isamert/jaro/blob/master/jaro
 ;; See `guile-build-system'
 
-;; TODO rename (utils) to (dotf utils)
-(define-module (utils)
+(define-module (dotf utils)
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   1. service-file -> with-imported-modules
 ;;;   2. common-modules
-  #:use-module (srfi-1-smart)
+  #:use-module (dotf srfi-1-smart)
   #:use-module (ice-9 match)  ; match
   #:use-module (ice-9 popen)  ; open-input-pipe
 ;;; (ice-9 readline) requires `guix install guile-readline'.
@@ -61,7 +60,7 @@
                smart-drop
                ))
 
-(define m "[utils]")
+(define m "[dotf utils]")
 ;; (format #t "~a evaluating module…\n" m)
 
 ;; https://github.com/daviwil/dotfiles/tree/master/.config/guix

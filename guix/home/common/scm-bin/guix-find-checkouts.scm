@@ -5,7 +5,7 @@
 (define-module (scm-bin guix-find-checkouts)
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (utils)
+  #:use-module (dotf utils)
   #:use-module (ice-9 ftw)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)

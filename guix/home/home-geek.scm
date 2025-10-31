@@ -8,9 +8,11 @@
 # To prevent incorrect values in the ~/.guix-home/setup-environment (e.g.
 # XDG_DATA_DIRS), reset environment variables to their default values by
 # sourcing the default bash profile and run `guix home ...` command from bash:
-source /etc/profile && dx=$HOME/dev/dotfiles/guix
+
+source /etc/profile && baseLP=$HOME/dev/dotfiles/guix
 guix home --allow-downgrades --cores=$cores \
-     -L $dx/common -L $dx/home reconfigure $dx/home/home-geek.scm
+     -L $baseLP/common -L $baseLP/home
+     reconfigure $baseLP/home/home-geek.scm
 # -L --load-path
 
 # The tilda `~' is only expanded by shells when it's the first character of a
@@ -22,9 +24,9 @@ guix home --allow-downgrades --cores=$cores \
 |#
 
 (define-module (home-geek)
-  #:use-module (utils)
-  #:use-module (settings)
-  #:use-module (memo)
+  #:use-module (dotf utils)
+  #:use-module (dotf settings)
+  #:use-module (dotf memo)
   #:use-module (scm-bin git-clone)
   #:use-module (fs-utils)
   #:use-module (config packages all)

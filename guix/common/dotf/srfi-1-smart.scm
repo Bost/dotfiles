@@ -1,4 +1,4 @@
-(define-module (srfi-1-smart)
+(define-module (dotf srfi-1-smart)
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 optargs)  ; define*-public
  )

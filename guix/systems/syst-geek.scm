@@ -16,9 +16,9 @@
 
 (define-module (syst-geek)
   #:use-module ((syst-base) #:prefix base:)
-  #:use-module (settings)
-  #:use-module (utils)                 ; partial
-  #:use-module (memo)
+  #:use-module (dotf settings)
+  #:use-module (dotf utils)                 ; partial
+  #:use-module (dotf memo)
   #:use-module (config packages all)   ; syst-packages-to-install
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; user-group; user-account-shell

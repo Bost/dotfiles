@@ -9,9 +9,9 @@
   #:use-module (gnu services)           ; simple-service
   #:use-module (gnu home services guix) ; home-channels-service-type
 
-  #:use-module (config channels channel-defs)
-  #:use-module (utils)
-  #:use-module (memo)
+  #:use-module (dotf config channels channel-defs)
+  #:use-module (dotf utils)
+  #:use-module (dotf memo)
   )
 
 (define-public (home-channels-services)

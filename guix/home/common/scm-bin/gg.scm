@@ -1,7 +1,7 @@
 (define-module (scm-bin gg)
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (utils)
+  #:use-module (dotf utils)
   #:use-module (ice-9 optargs)     ; define*-public
   )
 
