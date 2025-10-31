@@ -7,7 +7,8 @@
   #:use-module (utils)             ; partial
   #:use-module (settings)          ; user
   #:use-module (srfi srfi-1)       ; remove
-  #:export (create-launcher pkill-server set-editable))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 ;; `-e (module)` calls the `main` from a given module or `-e my-procedure` calls
@@ -61,9 +62,9 @@ defined.
         (format #f "--init-directory=~a/spacemacs/~a/src" home-emacs-distros profile))
     (str "--bg-daemon=" (calculate-socket profile)))))
 
-(define* (pkill-server
-          #:key (trace #f) verbose utility gx-dry-run params
-          #:rest args)
+(define*-public (pkill-server
+                 #:key (trace #f) verbose utility gx-dry-run params
+                 #:rest args)
   "The ARGS are being ignored.
 
 Usage:
@@ -97,12 +98,12 @@ Usage:
       (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg"
               home-emacs-distros profile)))
 
-(define* (create-launcher
-          #:key (trace #f) verbose (create-frame #f)
-          utility gx-dry-run params
-          ;; By not allowing other keys I don't have to remove them later on
-          #:allow-other-keys
-          #:rest args)
+(define*-public (create-launcher
+                 #:key (trace #f) verbose (create-frame #f)
+                 utility gx-dry-run params
+;;; By not allowing other keys I don't have to remove them later on
+                 #:allow-other-keys
+                 #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
 TRACE - trace procedure parameters
@@ -195,9 +196,9 @@ Examples:
           (partial substring (get-cfg profile)))
          (string-length (user-home emacs-distros)))))
 
-(define* (set-editable
-          #:key (trace #f) verbose utility gx-dry-run params
-          #:rest args)
+(define*-public (set-editable
+                 #:key (trace #f) verbose utility gx-dry-run params
+                 #:rest args)
   "The ARGS are being ignored.
 TRACE - trace procedure parameters
 VERBOSE - print command line of the command being executed on the CLI

@@ -2,7 +2,8 @@
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (utils)
-  #:export (main echo))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -18,7 +19,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (echo #:key (options "") (string ""))
+(define*-public (echo #:key (options "") (string ""))
   "
 (echo #:options \"-e\" #:string \"Top\\\\nBottom\")
 $ echo -e Top\\nBottom
@@ -35,7 +36,7 @@ Bottom
     ret))
 (testsymb 'echo)
 
-(define* (main #:rest args)
+(define*-public (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"arg0\")"
   ((comp

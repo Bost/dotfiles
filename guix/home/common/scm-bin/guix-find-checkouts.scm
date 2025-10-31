@@ -11,7 +11,8 @@
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 regex)
   #:use-module (srfi srfi-1)
-  #:export (main guix-find-checkouts))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -27,7 +28,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (guix-find-checkouts #:rest args)
+(define*-public (guix-find-checkouts #:rest args)
   "Find Guix and NonGuix checkout directories
 Usage:
 
@@ -93,7 +94,7 @@ Usage:
           (format #t "NonGuix checkout directory: ~a~%" co-non-gx-dir))
         result))))
 
-(define* (main #:rest args)
+(define*-public (main #:rest args)
   "Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((comp

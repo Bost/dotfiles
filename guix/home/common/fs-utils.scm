@@ -5,21 +5,18 @@
   #:use-module (guix gexp)
   ;; take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  #:export (
-            user-home
-            user-dev
-            user-dotf
-            ))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (user-home #:rest args) (apply str home args))
+(define*-public (user-home #:rest args) (apply str home args))
 (define-public dev (user-home "/dev"))
 
-(define* (user-dev #:rest args)  (apply str dev args))
+(define*-public (user-dev #:rest args)  (apply str dev args))
 (define-public dotf (user-dev "/dotfiles"))
-(define* (user-dotf #:rest args) (apply str dotf args))
+(define*-public (user-dotf #:rest args) (apply str dotf args))
 
 (define-public dtf (user-dev "/dotfiles"))
 (define* (user-dtf #:rest args) (apply str dtf args))

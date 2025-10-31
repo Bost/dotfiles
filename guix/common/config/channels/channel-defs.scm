@@ -16,18 +16,8 @@
   ;; #:use-module (gnu packages shells)
   ;; pretty-print
   #:use-module (ice-9 pretty-print)
-  #:export (channel-home-service-dwl-guile
-            channel-games
-            channel-hask-clj
-            channel-flat
-            channel-rde
-            channel-bost
-            channel-nonguix
-            channel-guixrus
-            channel-guix
-            channel-guix-past
-            channel-guix-android
-            common-channels))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 (define m (module-name-for-logging))
 (evaluating-module)
@@ -67,7 +57,7 @@
          additional-channels)))))
 (testsymb 'create-file-channels-scm)
 
-(define* (channel-home-service-dwl-guile #:key (commit #f))
+(define*-public (channel-home-service-dwl-guile #:key (commit #f))
   "Dynamic tiling Wayland compositor configurable in Guile Scheme"
   (let* [(channel-name 'home-service-dwl-guile)]
     (when commit
@@ -84,7 +74,7 @@
         (openpgp-fingerprint
          "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))))
 
-(define* (channel-games #:key (commit #f))
+(define*-public (channel-games #:key (commit #f))
   "https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 Use:
     guix package --load-path=./ --install=factorio
@@ -112,7 +102,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          ;; ... as it was made by some with OpenPGP fingerprint:
          "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))))
 
-(define* (channel-hask-clj #:key (commit #f))
+(define*-public (channel-hask-clj #:key (commit #f))
   "Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'hask-clj)]
@@ -126,7 +116,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
        #;,(format #f "file://~a/dev/haskell-guix" home))
       (commit commit))))
 
-(define* (channel-flat #:key (commit #f))
+(define*-public (channel-flat #:key (commit #f))
   "flatwhatson contains emacs-native-comp, however it doesn't compile.
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
@@ -143,7 +133,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
         (openpgp-fingerprint
          "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))))
 
-(define* (channel-rde #:key (commit #f))
+(define*-public (channel-rde #:key (commit #f))
   "Andrew Tropin's tools for managing reproducible development environments.
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
@@ -162,7 +152,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
         (openpgp-fingerprint
          "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))))
 
-(define* (channel-bost #:key (commit #f))
+(define*-public (channel-bost #:key (commit #f))
   "Provides a.o.:
 - (bost gnu packages emacs-xyz) module
 - clojure, babashka, postgres 13.3, openjdk18
@@ -177,7 +167,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
               (format #f "file://~a/dev/guix-packages" home))
              (commit commit))))
 
-(define* (channel-nonguix #:key (commit #f))
+(define*-public (channel-nonguix #:key (commit #f))
   "Provides firefox, linux-kernel with non-free proprietary drivers, etc.
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
@@ -197,7 +187,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
                (openpgp-fingerprint
                 "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))))
 
-(define* (channel-guixrus #:key (commit #f))
+(define*-public (channel-guixrus #:key (commit #f))
   "This channel provides packages and services that are:
 * Yet to be merged upstream.
 * In alpha or beta stage of development.
@@ -218,7 +208,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
         (openpgp-fingerprint
          "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551"))))))
 
-(define* (channel-guix #:key (commit #f))
+(define*-public (channel-guix #:key (commit #f))
   "Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   ;; %default-guix-channel
@@ -246,7 +236,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))))
 (testsymb 'channel-guix)
 
-(define* (channel-guix-past #:key (commit #f))
+(define*-public (channel-guix-past #:key (commit #f))
   "Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guix-past)]
@@ -265,7 +255,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5"))))))
 (testsymb 'channel-guix-past)
 
-(define* (channel-guix-android #:key (commit #f))
+(define*-public (channel-guix-android #:key (commit #f))
   (let* [(channel-name 'guix-android)]
     (when commit
       (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
@@ -280,10 +270,9 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
        "1EFB 0909 1F17 D28C CBF9  B13A 53D4 57B2 D636 EE82"))))))
 (testsymb 'channel-guix-android)
 
-(define* (common-channels #:key (guix-commit #f) (nonguix-commit #f))
-  "Channels needed for the Guix-system configuration
-If `guix-commit' and/or `nonguix-commit' are unspecified of #f it means 'use latest
-commit(s)'."
+(define*-public (common-channels #:key (guix-commit #f) (nonguix-commit #f))
+  "Channels needed for the Guix-system configuration. If `guix-commit' and/or
+`nonguix-commit' are unspecified of #f it means 'use latest commit(s)'."
   (list
    (channel-guix    #:commit guix-commit)
    (channel-nonguix #:commit nonguix-commit)))

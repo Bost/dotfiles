@@ -9,9 +9,9 @@
   #:use-module (utils)             ; partial
   #:use-module (tests)             ; test-type
   #:use-module (settings)          ; user
-  ;; for (eval ...) of cli-*command utility-funs
-  #:use-module (cli-common)
-  #:export (handle-cli))
+  #:use-module (cli-common)        ; for (eval ...) of cli-*command utility-funs
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 ;; `-e (module)` calls the `main` from a given module or `-e my-procedure` calls
@@ -39,9 +39,9 @@ defined.
 
 ;; TODO rename fun, exec-fun -> symb-fun symb-exec-fun
 ;; TODO rename verbose -> verbose-exec-fun
-(define* (handle-cli #:key (trace #f) verbose utility fun exec-fun params
-                     #:allow-other-keys
-                     #:rest args)
+(define*-public (handle-cli #:key (trace #f) verbose utility fun exec-fun params
+                            #:allow-other-keys
+                            #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'.
 

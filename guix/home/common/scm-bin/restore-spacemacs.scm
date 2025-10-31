@@ -8,7 +8,8 @@
   #:use-module (utils)                   #| exec          |#
   #:use-module (settings)                #| spacemacs-dir |#
   #:use-module (scm-bin spag)            #| git-spacemacs |#
-  #:export (main restore-spacemacs))
+  #:use-module (ice-9 optargs)     ; define*-public
+  )
 
 #|
 
@@ -24,7 +25,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define* (restore-spacemacs #:rest args)
+(define*-public (restore-spacemacs #:rest args)
   #;
   (eval `(1+ ,(append `(+ 1 2) (list 3 4))) (interaction-environment))
   #;
@@ -46,7 +47,7 @@ cd $dotf
     exec)
    (git-spacemacs "ls-files --deleted")))
 
-(define (main args)
+(define-public (main args)
   (restore-spacemacs))
 (testsymb 'main)
 

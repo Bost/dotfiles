@@ -5,7 +5,7 @@
   #:use-module (fs-utils)  ; dgx (repository location)
   #:use-module (settings)  ; home
   #:use-module (srfi srfi-26) ; special selected function parameters
-  #:export (main guix-git-authenticate)
+  #:use-module (ice-9 optargs)     ; define*-public
   )
 
 #|
@@ -58,7 +58,7 @@ cd $dotf
           ))))
 (testsymb 'get-commits)
 
-(define* (authenticate-commit #:key repo commit signer)
+(define*-public (authenticate-commit #:key repo commit signer)
   "Examples:
 (authenticate-commit #:repo repo #:signer signer #:commit)
 "
@@ -107,7 +107,7 @@ cd $dotf
                   commits)))
 (testsymb 'guix-git-authenticate)
 
-(define* (main #:rest args)
+(define*-public (main #:rest args)
   "Examples:
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((comp
