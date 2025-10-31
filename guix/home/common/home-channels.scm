@@ -25,7 +25,7 @@
   "Channels needed for the Guix-home configuration"
   ((comp
     (lambda (lst)
-      (if (or (is-system-edge) (is-system-ecke))
+      (if (or (host-edge?) (host-ecke?))
           (append
            (list
             (channel-guix-android

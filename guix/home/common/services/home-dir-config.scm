@@ -79,7 +79,7 @@ See also:
       (partial remove unspecified-or-empty-or-false?)
       (partial append
                (cond
-                [(or (is-system-edge) (is-system-ecke))
+                [(or (host-edge?) (host-ecke?))
                  (list
                   "xfconf/xfce-perchannel-xml/displays.xml"
                   "xfconf/xfce-perchannel-xml/keyboards.xml"
@@ -97,7 +97,7 @@ See also:
       ;; (lambda (p) (format #t "###### 0:\n~a\n" (pretty-print->string p)) p)
       )
      (cond
-      [(is-system-ecke)
+      [(host-ecke?)
        (list
         "panel/launcher-17/17100751821.desktop"
         "panel/launcher-18/17100751822.desktop"
@@ -105,7 +105,7 @@ See also:
         "panel/launcher-20/17100751824.desktop"
         "panel/xfce4-clipman-actions.xml"
         "xfconf/xfce-perchannel-xml/xfce4-appfinder.xml")]
-      [(is-system-edge)
+      [(host-edge?)
        (list
         "xfce4-screenshooter")]
       [else (list)]))))
