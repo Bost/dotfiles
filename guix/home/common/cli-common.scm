@@ -21,9 +21,9 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define*-public (cli-general-command
-          #:key (trace #f) verbose gx-dry-run params fun exec-fun
-          #:allow-other-keys #:rest args)
+(def*-public (cli-general-command
+              #:key (trace #f) verbose gx-dry-run params fun exec-fun
+              #:allow-other-keys #:rest args)
   "The ARGS are being ignored.
 TRACE - trace procedure parameters
 VERBOSE - print command line of the command being executed on the CLI
@@ -56,7 +56,6 @@ Examples:
                      #:exec-fun exec-foreground
                      #:params \"echo foo\")
 "
-  (define f (format #f "~a [cli-general-command]" m))
   (when trace
     (format #t "~a trace      : ~s\n" f trace)
     (format #t "~a verbose    : ~s\n" f verbose)
@@ -92,10 +91,9 @@ Examples:
             )
            args)))))
 
-(define*-public (cli-command
-          #:key (trace #f) verbose gx-dry-run params fun exec-fun
-          #:allow-other-keys #:rest args)
-  (define f (format #f "~a [cli-command]" m))
+(def*-public (cli-command
+              #:key (trace #f) verbose gx-dry-run params fun exec-fun
+              #:allow-other-keys #:rest args)
   ((comp
     (partial apply cli-general-command)
     ;; (lambda (v) (format #t "~a 1 ~a\n" f v) v)

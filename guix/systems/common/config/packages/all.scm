@@ -27,8 +27,7 @@
 ;;    #:locales (list "en_US" "de_DE" "sk_SK" "fr_FR")
 ;;    #:name "glibc-my-utf8-locales"))
 
-(define-public (syst-packages-to-install)
-  (define f (format #f "~a [syst-packages-to-install]" m))
+(def-public (syst-packages-to-install)
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)

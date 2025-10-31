@@ -62,9 +62,9 @@ defined.
         (format #f "--init-directory=~a/spacemacs/~a/src" home-emacs-distros profile))
     (str "--bg-daemon=" (calculate-socket profile)))))
 
-(define*-public (pkill-server
-                 #:key (trace #f) verbose utility gx-dry-run params
-                 #:rest args)
+(def*-public (pkill-server
+              #:key (trace #f) verbose utility gx-dry-run params
+              #:rest args)
   "The ARGS are being ignored.
 
 Usage:
@@ -73,7 +73,6 @@ Usage:
 (pkill-server                 #:params \"develop\" \"rest\" \"args\")
 (pkill-server                 #:params \"guix\"    \"rest\" \"args\")
 "
-  (define f (format #f "~a [pkill-server]" m))
   (when trace
     (format #t "~a trace      : ~s\n" f trace)
     (format #t "~a verbose    : ~s\n" f verbose)
@@ -98,7 +97,7 @@ Usage:
       (format #f "SPACEMACSDIR=~a/spacemacs/~a/cfg"
               home-emacs-distros profile)))
 
-(define*-public (create-launcher
+(def*-public (create-launcher
                  #:key (trace #f) verbose (create-frame #f)
                  utility gx-dry-run params
 ;;; By not allowing other keys I don't have to remove them later on
@@ -115,7 +114,6 @@ Examples:
 (create-launcher #:params \"develop\" \"rest\" \"args\")
 (create-launcher #:params \"guix\"
 \"guix/home/common/cli-common.scm\" \"--create-frame\")"
-  (define f (format #f "~a [create-launcher]" m))
   (when trace
     (format #t "~a trace      : ~s\n" f trace)
     (format #t "~a verbose    : ~s\n" f verbose)
@@ -196,7 +194,7 @@ Examples:
           (partial substring (get-cfg profile)))
          (string-length (user-home emacs-distros)))))
 
-(define*-public (set-editable
+(def*-public (set-editable
                  #:key (trace #f) verbose utility gx-dry-run params
                  #:rest args)
   "The ARGS are being ignored.
@@ -209,7 +207,6 @@ Examples:
 (set-editable                 #:params \"develop\" \"rest\" \"args\")
 (set-editable                 #:params \"guix\"    \"rest\" \"args\")
 "
-  (define f (format #f "~a [set-editable]" m))
   (when trace
     (format #t "~a trace      : ~s\n" f trace)
     (format #t "~a verbose    : ~s\n" f verbose)
@@ -239,7 +236,7 @@ Examples:
           (copy-file src dst)))))
 (testsymb 'set-editable)
 
-(define* (handle-cli #:key (trace #f) verbose utility fun profile
+(def* (handle-cli #:key (trace #f) verbose utility fun profile
                      #:allow-other-keys
                      #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
@@ -248,7 +245,6 @@ TRACE - trace procedure parameters
 VERBOSE - print command line of the command being executed on the CLI
 
 "
-  (define f (format #f "~a [handle-cli]" m))
   (when trace
     (format #t "~a trace   : ~a\n" f trace)
     (format #t "~a verbose : ~a\n" f verbose)

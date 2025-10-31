@@ -41,9 +41,8 @@ cd $dotf
   "Check if file exists and is readable"
   (access? path R_OK))
 
-(define (get-extra-profiles)
+(def (get-extra-profiles)
   "Get extra profiles from GUIX_EXTRA_PROFILES directory"
-  (define f (format #f "~a [get-extra-profiles]" m))
   (let [(extra-dir (getenv "GUIX_EXTRA_PROFILES"))]
     (if (and extra-dir (file-exists? extra-dir))
         ((comp
@@ -60,9 +59,8 @@ cd $dotf
          extra-dir)
         '())))
 
-(define (get-all-profiles)
+(def (get-all-profiles)
   "Collect all profiles from various sources"
-  (define f (format #f "~a [get-all-profiles]" m))
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (v) (format #t "~a done\n" f) v)
@@ -78,9 +76,8 @@ cd $dotf
 
 (define (profile-param profile) (format #f "--profile=~a" profile))
 
-(define (parse-package-output output)
+(def (parse-package-output output)
   "Parse guix package output into structured data"
-  (define f (format #f "~a [parse-package-output]" m))
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (v) (format #t "~a done\n" f) v)
@@ -113,7 +110,7 @@ cd $dotf
 ;; (define p 'undef)
 ;; (define a 'undef)
 
-(define*-public (guix-package options
+(def*-public (guix-package options
 ;;; PROFILES being a list containing a single(!) empty(!) string means '... with
 ;;; default profile'. N empty strings would cause N (repeated) executions
                               #:key (profiles (list ""))
@@ -121,7 +118,6 @@ cd $dotf
   "Wrapper around `guix package ...'
 Usage:
 (guix-package \"--list-installed=emacs-helm-org\")"
-  (define f (format #f "~a [guix-package]" m))
   ;; (format #t "~a Starting…\n" f)
   ;; (format #t "profiles : ~a\n" profiles)
   ;; (format #t "args : ~a\n" args)
@@ -159,7 +155,7 @@ Usage:
 (define --install "--install")
 (define --remove "--remove")
 
-(define* (guix-package-alias alias options packages)
+(def* (guix-package-alias alias options packages)
   "Wrapper around `guix package --package-alias ...'
 Usage:
 (guix-package-alias \"--install\" \"--dry-run\" \"emacs\")
@@ -167,7 +163,6 @@ Usage:
 (guix-package-alias \"--dry-run\" (list \"emacs\" \"coreutils\"))
 (guix-package-alias (list \"--dry-run\" \"--fallback\") \"coreutils\")
 "
-  (define f (format #f "~a [guix-package-alias]" m))
   ;; (format #t "~a Starting…\n" f)
   (let* [(packages (if (pair? packages) (string-join packages) packages))
          (options (if (pair? options) (string-join options) options))]
@@ -176,38 +171,35 @@ Usage:
                       (format #f "~a=~a" alias packages)
                       (format #f "~a ~a" alias packages)))))
 
-(define*-public (guix-install options packages)
+(def*-public (guix-install options packages)
   "Wrapper around `guix package --install ...'
 Usage:
 (guix-install \"--dry-run\" \"emacs\")
 (guix-install \"--dry-run\" (list \"emacs\" \"coreutils\"))
 (guix-install (list \"--dry-run\" \"--fallback\") \"coreutils\")
 "
-  (define f (format #f "~a [guix-install]" m))
   ;; (format #t "~a Starting…\n" f)
   (guix-package-alias --install options packages))
 (testsymb 'guix-install)
 
-(define*-public (guix-remove options packages)
+(def*-public (guix-remove options packages)
   "Wrapper around `guix package --remove ...'
 Usage:
 (guix-remove \"--dry-run\" \"emacs\")
 (guix-remove \"--dry-run\" (list \"emacs\" \"coreutils\"))
 (guix-remove (list \"--dry-run\" \"--fallback\") \"coreutils\")
 "
-  (define f (format #f "~a [guix-remove]" m))
   ;; (format #t "~a Starting…\n" f)
   (guix-package-alias --remove options packages))
 (testsymb 'guix-remove)
 
-(define*-public (guix-search options packages)
+(def*-public (guix-search options packages)
   "Wrapper around `guix package --search ...'
 Usage:
 (guix-search \"--dry-run\" \"emacs-helm-org-contacts\")
 (guix-search \"--dry-run\" (list \"emacs-helm-org-contacts \"coreutils\"))
 (guix-search (list \"--dry-run\" \"--fallback\") \"coreutils\")
 "
-  (define f (format #f "~a [guix-search]" m))
   ;; (format #t "~a Starting…\n" f)
   (guix-package-alias --search options packages))
 (testsymb 'guix-search)
@@ -217,5 +209,3 @@ Usage:
 (module-evaluated)
 
 ;; In Emacs, see input history using: (comint-dynamic-list-input-ring)
-
-

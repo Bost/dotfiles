@@ -39,14 +39,13 @@
     files))
 (testsymb 'list-all-files)
 
-(define (expand-pattern relative-dir pattern)
+(def (expand-pattern relative-dir pattern)
   "Examples:
 (expand-pattern relative-dir \".*\")  ;; crep
 (expand-pattern relative-dir \"cli/git\")
 (expand-pattern relative-dir \"cli/\")
 (expand-pattern relative-dir \"cvs\")
 "
-  (define f (format #f "~a [expand-pattern]" m))
   (let* [(absolute-dir (str home "/" relative-dir))]
     (remove
      (lambda (file) (ends-with? (dirname file) "compiled"))
@@ -87,18 +86,15 @@
    patterns))
 (testsymb 'full-filepaths)
 
-(define* (service-file-general
-          #:key
-          utility desc scm-file module-name
-          chmod-params files
-          (other-files (list)))
+(def* (service-file-general
+       #:key utility desc scm-file module-name chmod-params files
+       (other-files (list)))
   "The priority is 1. module-name, 2. scm-file, 3. utility
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  (define f (format #f "~a [service-file-general]" m))
   ;; (format #t "~a Starting…\n" f)
   ;; (when (string=? utility "gicl")
   ;;   (format #t "~a git?         : ~s\n" f git?)
@@ -190,9 +186,9 @@ Example:
             #$main-call))))))
 (testsymb 'service-file-general)
 
-(define* (service-file-utils
-          #:key (trace #f) (verbose #t) utility fun exec-fun params extra-modules
-          #:allow-other-keys #:rest args)
+(def* (service-file-utils
+       #:key (trace #f) (verbose #t) utility fun exec-fun params extra-modules
+       #:allow-other-keys #:rest args)
   "Create pairs like
   (\"scm-bin/g\" \"/gnu/store/...\")         ; for emacs CLI utils
   (\"scm-bin/mount-axa\" \"/gnu/store/...\") ; for mount utils
@@ -208,7 +204,6 @@ Example:
 
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."
-  (define f (format #f "~a [service-file-utils]" m))
   ;; (format #t "~a Starting…\n" f)
 
   (when trace
@@ -328,8 +323,7 @@ a list of files to search through."
     (list "dev/tweaks" "el")
     (list "dev/farmhouse-light-mod-theme" "el"))))
 
-(define (search-notes-service)
-  (define f (format #f "~a [search-notes-service]" m))
+(def (search-notes-service)
   ;; (format #t "~a Starting…\n" f)
   (map
    (partial apply service-file-general)
@@ -417,8 +411,7 @@ a list of files to search through."
 (define (git-command . args) (apply (partial format #f "git -c color.ui=always ~a") args))
 ;; TODO implement git-command without colors
 ;; (define (git-command . args) (apply (partial format #f "git -c color.interactive=always ~a") args))
-;; (define-public (git-command-no-color . args)
-;;   (define f (format #f "~a [git-command-no-color]" m))
+;; (def-public (git-command-no-color . args)
 ;;   (format #t "~a args: ~a\n" f args)
 ;;   (apply (partial format #f "git ~a") args))
 
@@ -557,8 +550,7 @@ a list of files to search through."
    utils-definitions))
 (testsymb 'basic-cli-utils-service)
 
-(define (basic-cli-utils-background-service)
-  (define f (format #f "~a [basic-cli-utils-background-service]" m))
+(def (basic-cli-utils-background-service)
   ;; (call/cc (lambda (exit)))
   ((comp
     (partial map (comp
@@ -573,8 +565,7 @@ a list of files to search through."
     )))
 (testsymb 'basic-cli-utils-background-service)
 
-(define (sudo-cli-utils-service)
-  (define f (format #f "~a [sudo-cli-utils-service]" m))
+(def (sudo-cli-utils-service)
   ;; (call/cc (lambda (exit)))
   ((comp
     (partial map (comp
@@ -652,8 +643,7 @@ a list of files to search through."
         )))
 (testsymb 'direct-utils-service)
 
-(define-public (cli-utils-service)
-  (define f (format #f "~a [cli-utils-service]" m))
+(def-public (cli-utils-service)
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (v) (format #t "~a done\n" f) v)

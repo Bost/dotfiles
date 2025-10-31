@@ -144,12 +144,11 @@ cd $dotf
         )))
 (testsymb 'search-file-ripgrep)
 
-(define (search-file-awk search-pattern file)
+(def (search-file-awk search-pattern file)
   "
 (search-file-awk \"search-pattern\"
              \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\")
 "
-  (define f (format #f "~a [search-file-awk]" m))
   ;; Red: \033[31m
   ;; Bright Red: \033[1;31m
   ;; Green: \033[32m
