@@ -1198,18 +1198,65 @@ Examples:
 
 (define-public (plist-set plist key val)
   "(plist-set (list) #:key 'val) ; => (#:key val)"
-  (if (plist? plist)
-      (let rec [(lst plist) (acc '())]
-        (cond [(null? lst)
-               (reverse (cons val (cons key acc)))]
-              [(eq? (car lst) key)
-               ;; skip the old key+value, replace
-               (reverse acc)   ; rinsed part
-               (let ((rest (cddr lst)))
-                 (append (reverse acc) (list key val) rest))]
-              [else
-               (rec (cddr lst) (cons (cadr lst) (cons (car lst) acc)))]))
-      (error (format #f "~a `~s' is not a plist\n" m plist))))
+  (cond
+   [(not (plist? plist))
+    (error (format #f "~a `~s' is not a plist\n" m plist))]
+   [else
+    (let rec [(lst plist) (acc '())]
+      (cond [(null? lst)
+             (reverse (cons val (cons key acc)))]
+            [(eq? (car lst) key)
+             ;; skip the old key+value, replace
+             (reverse acc)   ; rinsed part
+             (let ((rest (cddr lst)))
+               (append (reverse acc) (list key val) rest))]
+            [else
+             (rec (cddr lst) (cons (cadr lst) (cons (car lst) acc)))]))]))
+
+(define-public (plist-set! plist key val)
+  "Destructively modifies PLIST by setting KEY to VAL. Note: Cannot mutate an empty
+list into a non-empty one.
+Example:
+(define lst (list #:k1 1 #:k2 2 #:k3 3))
+(plist-set! lst #:k2 22) ; => (#:k1 1 #:k2 22 #:k3 3)
+lst ; => (#:k1 1 #:k2 22 #:k3 3)"
+  (cond
+   [(not (plist? plist))
+    (error (format #f "~a `~s' is not a plist.\n" m plist))]
+   [(null? plist)
+    (error
+     (format
+      #f
+      "~a Cannot mutate empty list. Use `set!' with plist-set instead." m))]
+   [else
+    ;; The following works as well, but it allocates a whole new tail (the pure
+    ;; plist-set) and then replaces the old one—still O(n) but with extra
+    ;; consing.
+    ;; (set-cdr! plist (cdr (plist-set plist key val)))
+    ;;
+    ;; This implementation doesn't rebuild the whole tail:
+    (let loop [(p plist)]
+      (cond
+       [(eq? (car p) key)
+        (if (pair? (cdr p))
+            (begin (set-car! (cdr p) val) plist)
+            ;; The following error message should never appear. The test
+            ;; `(plist? plist)' should catch it.
+            (error "~a Malformed plist: key without value" m plist))]
+       [(null? (cddr p))         ; reached last value cell
+        (set-cdr! (cdr p) (list key val))
+        plist]
+       [else (loop (cddr p))]))]))
+
+;; A procedure can't change the caller's binding of plist, so it can't handle
+;; the empty-list case "in place". I.e. this works in REPL and in doesn't work
+;; in a procedure:
+;;   (define lst (list))
+;;   (set! lst (list #:key 'val)))
+;;   lst ; => '(#:key val)
+;; A workaround is to use a macro:
+;; (define-syntax-rule (plist-set! place key val)
+;;   (set! place (plist-set place key val)))
 
 (define (remove-element . args)
   "Remove all occurrences of a given element from a list.
