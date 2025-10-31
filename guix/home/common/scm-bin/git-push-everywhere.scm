@@ -23,10 +23,8 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define*-public (git-push-everywhere #:rest args)
+(def*-public (git-push-everywhere #:rest args)
   "Push commits to all remote repositories."
-  (define f (format #f "~a [git-push-everywhere]" m))
-
   ;; (format #t "~a Starting…\n" f)
   (call/cc
    (lambda (exit)

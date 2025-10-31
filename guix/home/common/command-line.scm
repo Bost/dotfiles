@@ -39,9 +39,9 @@ defined.
 
 ;; TODO rename fun, exec-fun -> symb-fun symb-exec-fun
 ;; TODO rename verbose -> verbose-exec-fun
-(define*-public (handle-cli #:key (trace #f) verbose utility fun exec-fun params
-                            #:allow-other-keys
-                            #:rest args)
+(def*-public (handle-cli #:key (trace #f) verbose utility fun exec-fun params
+                         #:allow-other-keys
+                         #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'.
 
@@ -61,7 +61,6 @@ Examples:
  #:exec-fun 'exec-background
  #:params   \"echo \\\"foo\\\"\")
 "
-  (define f (format #f "~a [handle-cli]" m))
   ;; (define (trace-params param-lst) ;; TODO write trace-params
   ;;   (let [(max-length
   ;;          ((comp

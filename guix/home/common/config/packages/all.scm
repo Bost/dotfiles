@@ -201,8 +201,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 (guix-size "firefox")
 |#
 
-(define (basic-packages)
-  (define f (format #f "~a [basic-packages]" m))
+(def (basic-packages)
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)
@@ -832,12 +831,11 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ))
 (testsymb 'xfce-packages)
 
-(define (inferior-packages)
+(def (inferior-packages)
   "The original, i.e. non-inferior packages must not be present in the
 home-profile. Comment them out.
 
 FIXME the inferior-packages are installed on every machine"
-  (define f (format #f "~a [inferior-packages]" m))
 
   (define* (inferior-packages-in-channel #:key channels-fun inferior-packages)
     (map (lambda (pkg-commit)
@@ -944,8 +942,7 @@ FIXME the inferior-packages are installed on every machine"
     )))
 (testsymb 'devel-packages)
 
-(define-public (home-packages-to-install)
-  (define f (format #f "~a [home-packages-to-install]" m))
+(def-public (home-packages-to-install)
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)

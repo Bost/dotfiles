@@ -20,8 +20,7 @@
 
 ;;; Use function-implementations so that the code below is not evaluated every
 ;;; time some of the scm-bin CLI utility requiring this module is executed.
-(define (hostname)
-  (define f (format #f "~a [hostname]" m))
+(def (hostname)
   (let* [(cmd-result-struct (exec "hostname" #:return-plist #t))
          (retcode (plist-get cmd-result-struct #:retcode))]
     (if (zero? retcode)

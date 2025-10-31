@@ -99,7 +99,7 @@ Type Testing Predicates.
 (test-type (make-exception ((@(rnrs conditions) make-error))))
 ; => (record? exception? (@ (rnrs conditions) error?) (@ (ice-9 exceptions) error?) condition?)
 
-(test-type (macroexpand '(define f 42))) ; => (struct?)
+(test-type (macroexpand '(define foo 42))) ; => (struct?)
 "
   ((comp
     (partial remove unspecified?)

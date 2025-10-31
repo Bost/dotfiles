@@ -50,17 +50,14 @@
   (guake home-guake-configuration-guake
          (default guake)))
 
-(define (home-guake-packages config)
+(def (home-guake-packages config)
   "Add guake package to profile."
-  (define f (format #f "~a [home-guake-packages]" m))
   (let [(guake (home-guake-configuration-guake config))]
     (list guake)))
 (testsymb 'home-guake-packages)
 
-(define (home-guake-config-installer config)
+(def (home-guake-config-installer config)
   "Gexp to restore Guake preferences."
-
-  (define f (format #f "~a [home-guake-config-installer]" m))
   (define guake-package (home-guake-configuration-guake config))
   ;; Here guake-package has value:
   ;; #<package guake@3.10 bost/gnu/packages/guake.scm:75 7f1c56228790>
@@ -96,8 +93,7 @@
   )
 (testsymb 'home-guake-service-type)
 
-(define (home-guake-service)
-  (define f (format #f "~a [home-guake-service]" m))
+(def (home-guake-service)
   (service home-guake-service-type (home-guake-configuration)))
 (testsymb 'home-guake-service)
 

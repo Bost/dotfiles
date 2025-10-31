@@ -71,8 +71,7 @@
 
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
-(define-public (non-env-var-services)
-  (define f (format #f "~a [non-env-var-services]" m))
+(def-public (non-env-var-services)
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (v) (format #t "~a done\n" f) v)
@@ -439,11 +438,10 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
         (git-clone "--origin=vojto" repo-url dest-dir-repo)))))
 (testsymb 'obtain-and-setup-heroku)
 
-(define-public (install-all-projects)
+(def-public (install-all-projects)
   "The `sgxr' pulls only from syst-channels, so make sure after the `sgxr' the
 `gxp' is executed so that all channels become available again. Otherwise the
 `gxhre' fails to execute."
-  (define f (format #f "~a [install-all-projects]" m))
   ;; (format #t "~a projects to install: ~a\n" f (length (projects)))
   (map (lambda (project)
          ;; (format #t "~a project: ~a\n" f project)
@@ -480,8 +478,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
 ;;       )
 ;;      (list 'environment-vars-edge-ecke 'environment-vars))))
 
-(define-public (home-env-services list-separator)
-  (define f (format #f "~a [home-env-services]" m))
+(def-public (home-env-services list-separator)
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (v) (format #t "~a done\n" f) v)
@@ -499,8 +496,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
    (list)))
 (testsymb 'home-env-services)
 
-(define-public (home-env-edge-ecke list-separator)
-  (define f (format #f "~a [home-env-edge-ecke]" m))
+(def-public (home-env-edge-ecke list-separator)
   ;; (format #t "~a Starting…\n" f)
   (let* [(home-env-record
           (home-environment
