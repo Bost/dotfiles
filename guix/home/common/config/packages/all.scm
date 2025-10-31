@@ -954,7 +954,7 @@ FIXME the inferior-packages are installed on every machine"
     ;; (lambda (p) (format #t "~a 5.\n~a\n" f p) p)
     ;; (lambda (p) (format #t "~a 4. (length p): ~a\n" f (length p)) p)
     (lambda (lst)
-      (if (or (is-system-edge))
+      (if (or (host-edge?))
           (append
            ;; (map (comp list specification->package) (video-packages))
            ;; TODO check ‘all-the-icons’ in the /home/bost/.local/share/fonts/
@@ -974,7 +974,7 @@ FIXME the inferior-packages are installed on every machine"
           lst))
     ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" f (length p)) p)
     (lambda (lst)
-      (if (or (is-system-ecke))
+      (if (or (host-ecke?))
           (append
            ;; (map (comp list specification->package) (video-packages))
            ;; (large-packages-ecke)
@@ -983,7 +983,7 @@ FIXME the inferior-packages are installed on every machine"
           lst))
     ;; (lambda (p) (format #t "~a 2. (length p): ~a\n" f (length p)) p)
     (lambda (lst)
-      (if (or (is-system-edge) (is-system-ecke))
+      (if (or (host-edge?) (host-ecke?))
           (append
            (nix-packages)
            ;; (rust-development-packages)
@@ -1003,7 +1003,7 @@ FIXME the inferior-packages are installed on every machine"
           lst))
     ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" f (length p)) p)
     (lambda (lst)
-      (if (or (is-system-edge) (is-system-ecke) (is-system-geek))
+      (if (or (host-edge?) (host-ecke?) (host-geek?))
           (append
            (packages-from-additional-channels)
            (devel-packages)

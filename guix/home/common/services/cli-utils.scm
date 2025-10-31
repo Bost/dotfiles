@@ -660,7 +660,7 @@ a list of files to search through."
     ;; 'simple-service name target value'. E.g.:
     ;; (simple-service 'my-mcron-job mcron-service-type #~(job '(next-hour (3)) "guix gc -F 2G"))
     (partial simple-service 'basic-cli-utils-service home-files-service-type))
-   (if (or (is-system-ecke) (is-system-edge))
+   (if (or (host-ecke?) (host-edge?))
        (append
         (search-notes-service)
         (basic-cli-utils-service)

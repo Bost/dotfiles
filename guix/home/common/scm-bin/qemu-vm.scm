@@ -1,7 +1,7 @@
 (define-module (scm-bin qemu-vm)
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
-  ;; #:use-module (dotf memo) ;; is-system-ecke is-system-edge
+  ;; #:use-module (dotf memo) ;; host-ecke? host-edge?
   #:use-module (dotf utils) ;; partial
   #:use-module (dotf settings) ;; user
   #:use-module (ice-9 rdelim)
@@ -48,7 +48,7 @@ See https://www.qemu.org/docs/master/system/qemu-cpu-models.html
 How do I get AVX support in QEMU?
 https://superuser.com/a/454814
 
-(is-system-ecke):
+(host-ecke?):
 EPYC-v1  AMD EPYC Processor              ;; works
 EPYC-v2  AMD EPYC Processor (with IBPB)  ;; works
 EPYC-v3  AMD EPYC Processor              ;; doesn't work
@@ -65,8 +65,8 @@ which is not supported by the CPU on the host B
 |#
 (define vmCPUModel
   (cond
-   #;((is-system-ecke) "EPYC-v1,+avx,enforce")
-   #;((is-system-edge) "SapphireRapids" #;"SapphireRapids,+avx") ;; both work
+   #;((host-ecke?) "EPYC-v1,+avx,enforce")
+   #;((host-edge?) "SapphireRapids" #;"SapphireRapids,+avx") ;; both work
    (#t "host")))
 
 (define ssh
