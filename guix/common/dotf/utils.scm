@@ -1892,8 +1892,9 @@ See also:
     ;; For vectors: build a list or build a new vector
     (let* [(n (vector-length seq))
            (out (make-vector n))]
-      (do ((i 0 (+ i 1)))
-          ((= i n) out)
+      (do ((i 0         ; initialize i to 0
+              (+ i 1))) ; on each iteration, i is incremented by 1
+          ((= i n) out) ; stop when (= i n) and return the out
         (vector-set! out i (proc i (vector-ref seq i)))))]
    [else
     (error (format #f "~a Sequence must be a vector or list: ~s" f seq))]))
