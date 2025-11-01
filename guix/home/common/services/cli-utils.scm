@@ -347,19 +347,9 @@ a list of files to search through."
           #:files (list "cli/find_and_grep")
           #:scm-file "search-notes")
 ;;; TODO crg should also search in the $dotf/guix/
-;;; XXX Bug: 'Replicating' is on the line 137, not on 118
-;;; $ cd ~ && crg Replicating
-;;; /home/bost/org-roam/guix-guile-nix/nix.scrbl
-;;; 115	@block{@block-name{NixOS Flakes}
-;;; 116    - like guix time-machine with channels
-;;; 117    https://logs.guix.gnu.org/guix/2023-01-31.log#094922
-;;; 118    See 7.3 Replicating Guix in manual
-;;; 119    https://guix.gnu.org/manual/devel/en/html_node/Replicating-Guix.html
-;;; 120	}
     (list #:utility "crg" #:files (list "guix-guile-nix/")
           #:other-files (append (expand-pattern "dev/guix" "scm"))
           #:scm-file "search-notes")
-;;; TODO crgi should also search in the output of `git config --get' etc.
     (list #:utility "crgi" #:files (list "cli/git")
           #:other-files (append (expand-pattern "dev/dotfiles" ".gitconfig"))
           #:scm-file "search-notes")
