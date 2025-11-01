@@ -88,6 +88,7 @@
 
 (def* (service-file-general
        #:key utility desc scm-file module-name chmod-params files
+       (excluded-files (list))
        (other-files (list)))
   "The priority is 1. module-name, 2. scm-file, 3. utility
 TODO The `search-notes' program should read a `search-space-file' containing
@@ -134,8 +135,11 @@ Example:
                          [(equal? scm-file "search-notes")
                           `(append
                             (command-line)
-                            (list ,@(append other-files
-                                            (full-filepaths files))))]
+                            (list
+                             ;; set-difference of lists containing strings
+                             ,@(s-
+                                (append other-files (full-filepaths files))
+                                (full-filepaths excluded-files))))]
                          [#t `(command-line)]))))]
       (with-imported-modules
           ((comp
@@ -338,7 +342,8 @@ a list of files to search through."
           #:other-files cre-other-files
           #:scm-file "search-notes")
     (list #:utility "crep"
-          #:files (list ".*") ;; TODO exclude /home/bost/org-roam/notes.scrbl
+          #:excluded-files (list "notes.scrbl")
+          #:files (list ".*")
           #:scm-file "search-notes")
     (list #:utility "cra"
           #:files (list "ai")
