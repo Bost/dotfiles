@@ -200,7 +200,7 @@ Example:
 Example:
 (service-file-utils
  #:trace #t
- #:fun           'cli-background-command
+ #:fun           'cli-general-command
  #:exec-fun      'exec-background
  #:extra-modules '()
  #:utility       \"techo\"
@@ -414,10 +414,16 @@ a list of files to search through."
   (list
    (list
     #:utility (str "rg" context-lines)
+    ;; ripgrep returns 1 when nothing is found. Do not error out!
+    #:ignore-errors #t
+    #:verbose #f ; no verbosity allows using it in a CLI pipeline
     #:params
     (str "rg --ignore-case --pretty --context=" context-lines))
    (list
     #:utility (str "rgt" context-lines)
+    ;; ripgrep returns 1 when nothing is found. Do not error out!
+    #:ignore-errors #t
+    #:verbose #f ; no verbosity allows using it in a CLI pipeline
     #:params
     (str "rg --ignore-case --pretty --type=lisp --context=" context-lines))))
 
@@ -425,13 +431,17 @@ a list of files to search through."
   (list
    (list #:utility "gx"  #:params "guix")
 
-   (list #:utility "rgt" #:params "rg --ignore-case --pretty --type=lisp" #:desc "Rigprep LISP files")
+   (list #:utility "rgt"
+         ;; #:trace #t
+         ;; ripgrep returns 1 when nothing is found. Do not error out!
+         #:ignore-errors #t
+         #:verbose #f ; no verbosity allows using it in a CLI pipeline
+         #:params "rg --ignore-case --pretty --type=lisp"
+         #:desc "Rigprep LISP files")
 
-   ;; '#:verbose #f' is needed because `f home-channels.scm` prints:
-   ;;     § fd --color=always "home-channels.scm"
-   ;;     guix/home/common/home-channels.scm
-   ;; which hinders using `g (f home-channels.scm)`
-   (list #:utility "f"   #:params "fd --color=always"  #:verbose #f     #:desc "Find entries in the filesystem")
+   (list #:utility "f"   #:params "fd --color=always"
+         #:verbose #f ; no verbosity allows using it in a CLI pipeline
+         #:desc "Find entries in the filesystem")
 
    ;; always lists to the end of file. I guess I need to use something else than `exec'
    (list #:utility "c"   #:params "bat --force-colorization"            #:desc "Better cat")
@@ -531,7 +541,7 @@ a list of files to search through."
      map
      (comp
       (partial apply service-file-utils)
-      (partial append (list #:fun 'cli-command
+      (partial append (list #:fun 'cli-general-command
                             #:exec-fun 'exec-foreground
                             #:extra-modules '()))))
     (partial
@@ -551,7 +561,7 @@ a list of files to search through."
     (partial map (comp
                   (partial apply service-file-utils)
                   (partial append (list
-                                   #:fun 'cli-background-command
+                                   #:fun 'cli-general-command
                                    #:exec-fun 'exec-background
                                    #:extra-modules '())))))
    (list
@@ -566,7 +576,7 @@ a list of files to search through."
     (partial map (comp
                   (partial apply service-file-utils)
                   (partial append (list
-                                   #:fun 'cli-system-command
+                                   #:fun 'cli-general-command
                                    #:exec-fun 'exec-system
                                    #:extra-modules '())))))
    (list

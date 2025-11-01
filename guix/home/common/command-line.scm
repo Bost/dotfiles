@@ -39,7 +39,7 @@ defined.
 
 ;; TODO rename fun, exec-fun -> symb-fun symb-exec-fun
 ;; TODO rename verbose -> verbose-exec-fun
-(def*-public (handle-cli #:key (trace #f) verbose utility fun exec-fun params
+(def*-public (handle-cli #:key (trace #f) verbose utility fun exec-fun params ignore-errors
                          #:allow-other-keys
                          #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
@@ -49,7 +49,7 @@ Examples:
 (handle-cli
  #:verbose  #f
  #:utility  \"rgt4\"
- #:fun      'cli-command
+ #:fun      'cli-general-command
  #:exec-fun 'exec-foreground
  #:params   \"rg --ignore-case --pretty --type=lisp --context=4\"
   '((\"/home/bost/scm-bin/rgt4\" \"flatpakxxx\")))
@@ -57,7 +57,7 @@ Examples:
 (handle-cli
  #:trace #t
  #:utility  \"techo\"
- #:fun      'cli-background-command
+ #:fun      'cli-general-command
  #:exec-fun 'exec-background
  #:params   \"echo \\\"foo\\\"\")
 "
@@ -76,13 +76,14 @@ Examples:
   ;; (when (true? (plist-get args #:trace) (trace-params args)))
 
   (when trace
-    (format #t "~a #:trace    ~a ; ~a\n" f (pr-str-with-quote trace)    (test-type trace))
-    (format #t "~a #:verbose  ~a ; ~a\n" f (pr-str-with-quote verbose)  (test-type verbose))
-    (format #t "~a #:utility  ~a ; ~a\n" f (pr-str-with-quote utility)  (test-type utility))
-    (format #t "~a #:fun      ~a ; ~a\n" f (pr-str-with-quote fun)      (test-type fun))
-    (format #t "~a #:exec-fun ~a ; ~a\n" f (pr-str-with-quote exec-fun) (test-type exec-fun))
-    (format #t "~a #:params   ~a ; ~a\n" f (pr-str-with-quote params)   (test-type params))
-    (format #t "~a   args     ~a ; ~a\n" f (pr-str-with-quote args)     (test-type args)))
+    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
+    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
+    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
+    (format #t "~a #:fun           ~a ; ~a\n" f (pr-str-with-quote fun)           (test-type fun))
+    (format #t "~a #:exec-fun      ~a ; ~a\n" f (pr-str-with-quote exec-fun)      (test-type exec-fun))
+    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
+    (format #t "~a #:ignore-errors ~a ; ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
+    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args)))
   (let* [
          ;; Needed is e.g. '("/home/bost/scm-bin/f" "<file-name-pattern>")
          (command-line (last args))
@@ -124,30 +125,20 @@ Examples:
       (let* [(emacs-procedures '(pkill-server create-launcher set-editable))
              (utility-funs (append emacs-procedures
                                  '(
-                                   cli-command
-                                   cli-background-command
-                                   cli-system-command
-                                   mount unmount eject info
+                                   cli-general-command mount unmount eject info
                                    )))]
         (if (member? fun utility-funs)
-            (let* [(fun-symbol
-                    (if (member? fun
-                                 '(
-                                   cli-command
-                                   cli-background-command
-                                   cli-system-command)
-                                 )
-                        'cli-general-command
-                        fun))]
-              (define (eval-here exp) (eval exp (current-module)))
-              ;; (define (eval-here exp) (eval exp (interaction-environment)))
-              (apply (eval-here fun-symbol)
+            (let [(eval-here (lambda (exp) (eval exp
+                                                 ;; (interaction-environment)
+                                                 (current-module))))]
+              (apply (eval-here fun)
                      (append
                       (list
-                       #:trace      trace
-                       #:verbose    verbose
-                       #:gx-dry-run val-gx-dry-run
-                       #:params     params
+                       #:trace         trace
+                       #:verbose       verbose
+                       #:gx-dry-run    val-gx-dry-run
+                       #:params        params
+                       #:ignore-errors ignore-errors
                        )
                       (if (not (member? fun emacs-procedures))
                           (list

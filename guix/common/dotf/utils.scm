@@ -756,12 +756,20 @@ $9 = 0 ;; <return-code>"
     cmd->string)
    command))
 
-(def*-public (exec-foreground command #:key (verbose #f))
+(def*-public (exec-foreground command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND and returns its ret-code.
 (exec-foreground \"echo bar baz\") ;; =>
 § echo bar baz
 bar baz
-$9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
+$9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
+
+(exec-foreground (str \"rg \" (timestamp)) #:ignore-errors #t)
+;; => *unspecified*"
+  (when trace
+    (format #t "~a #:trace         ~a\n" f (pr-str-with-quote trace))
+    (format #t "~a #:verbose       ~a\n" f (pr-str-with-quote verbose))
+    (format #t "~a #:ignore-errors ~a\n" f (pr-str-with-quote ignore-errors)))
+
   (let* [(cmd-result-struct (exec command #:verbose verbose #:return-plist #t))
          (retcode (plist-get cmd-result-struct #:retcode))]
     (if (zero? retcode)
@@ -770,7 +778,8 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)"
                (plist-get cmd-result-struct #:results))
           cmd-result-struct)
         (begin
-          (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
+          (unless ignore-errors
+            (error (format #f "~a retcode: ~a\n" f retcode))) ; error-out
           ;; (error-command-failed f)
           ;; or return `retcode' instead of `*unspecified*'
           ;; *unspecified*
