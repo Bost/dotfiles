@@ -194,33 +194,38 @@ Example:
        #:key (trace #f) (verbose #t) utility fun exec-fun params extra-modules
        #:allow-other-keys #:rest args)
   "Create pairs like
-  (\"scm-bin/g\" \"/gnu/store/...\")         ; for emacs CLI utils
+  (\"scm-bin/g\"         \"/gnu/store/...\") ; for emacs CLI utils
   (\"scm-bin/mount-axa\" \"/gnu/store/...\") ; for mount utils
 
 Example:
-(service-file-utils
- #:trace         #t
- #:fun           'cli-general-command
- #:exec-fun      'exec-background
- #:extra-modules '()
- #:utility       \"techo\"
- #:params        \"echo \\\"foo\\\"\")
+(service-file-utils #:trace         #t
+                    #:fun           'cli-general-command
+                    #:exec-fun      'exec-background
+                    #:extra-modules '()
+                    #:utility       \"techo\"
+                    #:params        \"echo \\\"foo\\\"\")
 
-(service-file-utils
- #:trace         #t
- #:fun           'cli-general-command
- #:exec-fun      'exec-foreground
- #:extra-modules '()
- #:utility       \"techo\"
- #:params        \"echo \\\"foo\\\"\")
+(service-file-utils #:trace         #t
+                    #:fun           'cli-general-command
+                    #:exec-fun      'exec-foreground
+                    #:extra-modules '()
+                    #:utility       \"techo\"
+                    #:params        \"echo \\\"foo\\\"\")
 
-(service-file-utils
- #:trace         #t
- #:fun           'cli-general-command
- #:exec-fun      'exec-system
- #:extra-modules '()
- #:utility       \"techo\"
- #:params        \"echo \\\"foo\\\"\")
+(service-file-utils #:trace         #t
+                    #:fun           'cli-general-command
+                    #:exec-fun      'exec-system
+                    #:extra-modules '()
+                    #:utility       \"techo\"
+                    #:params        \"echo \\\"foo\\\"\")
+
+(service-file-utils #:trace         #t
+                    #:exec-fun      'exec-foreground
+                    #:extra-modules '((emacs-common))
+                    #:utility       \"r\" #:fun 'create-launcher
+                    ;; #:utility       \"er\" #:fun 'set-editable
+                    ;; #:utility       \"kr\" #:fun 'pkill-server
+                    #:params develop)
 
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."

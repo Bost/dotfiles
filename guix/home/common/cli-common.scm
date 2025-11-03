@@ -22,6 +22,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
+;; TODO rename params -> cli-command
 (def*-public (cli-general-command
               #:key (trace #f) verbose gx-dry-run params exec-fun ignore-errors
               #:allow-other-keys #:rest args)
@@ -48,13 +49,14 @@ Examples:
 (cli-general-command #:exec-fun exec-foreground #:params \"echo foo\")
 "
   (when trace
+    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
     (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
     (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
     (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)    (test-type gx-dry-run))
     (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
     (format #t "~a #:exec-fun      ~a ; ~a\n" f (pr-str-with-quote exec-fun)      (test-type exec-fun))
     (format #t "~a #:ignore-errors ~a ; ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
-    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args)))
+    )
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)
     (lambda (command)
@@ -69,13 +71,18 @@ Examples:
                     #:verbose verbose
                     #:ignore-errors ignore-errors
                     )))
-    ;; (lambda (p) (format #t "~a 2. ~a\n" f p) p)
+    ;; (lambda (p) (format #t "~a 3. ~a\n" f p) p)
     (partial append (list params))
-    ;; (lambda (p) (format #t "~a 1. ~a\n" f p) p)
+    ;; (lambda (p) (format #t "~a 2. ~a\n" f p) p)
     (partial map (partial format #f "~s"))
+    ;; (lambda (p) (format #t "~a 1. ~a\n" f p) p)
+    ;; Extract the string typed on the command line
+    (lambda (lst) (remove-all-elements
+                   lst (list #:trace #:verbose #:gx-dry-run
+                             #:params #:exec-fun #:ignore-errors)))
     ;; (lambda (p) (format #t "~a 0. ~a\n" f p) p)
     )
-   (list (last args))))
+   args))
 
 (define-public (main . args)
   (format #t "~a\n" args)
