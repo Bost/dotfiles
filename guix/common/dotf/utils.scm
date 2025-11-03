@@ -738,12 +738,23 @@ READER-FUNCTION on them. "
 ;; resulting in clean, easy to read non-blocking code.
 #;(import (language wisp spec)) ;; whitespace lisp
 
-(def*-public (exec-background command #:key (verbose #f))
+;; exec-foreground, exec-background and exec-system have the same signature (,
+;; otherwise a (cond ...) in the cli-general-command is needed). I want them all
+;; to have the same capabilities like 'ignore errors' etc.
+(def*-public (exec-background
+              command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings.
 § echo bar baz & disown
 bar baz
 $9 = 0 ;; <return-code>"
+
+  ;; TODO implement (trace f args) which does the same as this (when trace ...)
+  (when trace
+    (format #t "~a #:trace         ~a\n" f (pr-str-with-quote trace))
+    (format #t "~a #:verbose       ~a\n" f (pr-str-with-quote verbose))
+    (format #t "~a #:ignore-errors ~a\n" f (pr-str-with-quote ignore-errors)))
+
   ((comp
     (partial exec-or-dry-run system)
     (lambda (prm) (dbg-exec prm #:verbose verbose))
@@ -756,7 +767,8 @@ $9 = 0 ;; <return-code>"
     cmd->string)
    command))
 
-(def*-public (exec-foreground command #:key (trace #f) (verbose #f) (ignore-errors #f))
+(def*-public (exec-foreground
+              command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND and returns its ret-code.
 (exec-foreground \"echo bar baz\") ;; =>
 § echo bar baz
@@ -765,6 +777,7 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
 
 (exec-foreground (str \"rg \" (timestamp)) #:ignore-errors #t)
 ;; => *unspecified*"
+
   (when trace
     (format #t "~a #:trace         ~a\n" f (pr-str-with-quote trace))
     (format #t "~a #:verbose       ~a\n" f (pr-str-with-quote verbose))
@@ -785,13 +798,19 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
           ;; *unspecified*
           ))))
 
-(def*-public (exec-system command #:key (verbose #f))
+(def*-public (exec-system
+              command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND using `system' from the (guile) module and returns its
 ret-code.
 (exec-system \"echo bar baz\") ;; =>
 § echo bar baz
 bar baz
 $9 = 0 ;; <return-code>"
+  (when trace
+    (format #t "~a #:trace         ~a\n" f (pr-str-with-quote trace))
+    (format #t "~a #:verbose       ~a\n" f (pr-str-with-quote verbose))
+    (format #t "~a #:ignore-errors ~a\n" f (pr-str-with-quote ignore-errors)))
+
   ((comp
     (partial exec-or-dry-run system)
     (lambda (prm) (dbg-exec prm #:verbose verbose))
