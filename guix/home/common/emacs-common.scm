@@ -4,8 +4,9 @@
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (guix monads)       ; with-monad
-  #:use-module (dotf utils)             ; partial
-  #:use-module (dotf settings)          ; user
+  #:use-module (dotf utils)        ; partial
+  #:use-module (dotf tests)        ; test-type
+  #:use-module (dotf settings)     ; user
   #:use-module (srfi srfi-1)       ; remove
   #:use-module (ice-9 optargs)     ; define*-public
   )
@@ -98,11 +99,10 @@ Usage:
               home-emacs-distros profile)))
 
 (def*-public (create-launcher
-                 #:key (trace #f) verbose (create-frame #f)
-                 utility gx-dry-run params
+              #:key (trace #f) verbose (create-frame #f) utility gx-dry-run params
 ;;; By not allowing other keys I don't have to remove them later on
-                 #:allow-other-keys
-                 #:rest args)
+              #:allow-other-keys
+              #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
 TRACE - trace procedure parameters
@@ -115,13 +115,16 @@ Examples:
 (create-launcher #:params \"guix\"
 \"guix/home/common/cli-common.scm\" \"--create-frame\")"
   (when trace
-    (format #t "~a trace      : ~s\n" f trace)
-    (format #t "~a verbose    : ~s\n" f verbose)
-    (format #t "~a utility    : ~a\n" f utility)
-    (format #t "~a gx-dry-run   : ~a\n" f gx-dry-run)
-    (format #t "~a create-frame : ~a\n" f create-frame)
-    (format #t "~a params       : ~a\n" f params)
-    (format #t "~a args         : ~a\n" f args))
+    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
+    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
+    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
+    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)    (test-type gx-dry-run))
+    (format #t "~a #:create-frame  ~a ; ~a\n" f (pr-str-with-quote create-frame)  (test-type create-frame))
+    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
+    ;; (format #t "~a #:exec-fun      ~a ; ~a\n" f (pr-str-with-quote exec-fun)      (test-type exec-fun))
+    ;; (format #t "~a #:ignore-errors ~a ; ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
+    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args)))
+
   (let* [(elements (list #:trace #:verbose
                          #:create-frame #:utility #:gx-dry-run #:params))
          (args (remove-all-elements args elements))
@@ -195,8 +198,8 @@ Examples:
          (string-length (user-home emacs-distros)))))
 
 (def*-public (set-editable
-                 #:key (trace #f) verbose utility gx-dry-run params
-                 #:rest args)
+              #:key (trace #f) verbose utility gx-dry-run params
+              #:rest args)
   "The ARGS are being ignored.
 TRACE - trace procedure parameters
 VERBOSE - print command line of the command being executed on the CLI
