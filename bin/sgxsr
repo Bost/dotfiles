@@ -51,6 +51,18 @@ sudo guix system --cores=$cores --verbosity=3 --fallback \
      --load-path=$baseLP/systems/common \
      reconfigure $baseLP/systems/syst-$(hostname).scm
 
+# The channels for the system and home configurations may differ. Roll back the
+# `guix pull` above, to effectivelly reactivate the home-channels. This won't
+# behave correctly if `guix pull ... system-channels` was consecutivelly called
+# more than once, but it's faster that pulling the home-channels.
+#
+# Need to include --allow-downgrades, since the system-channels may be newer.
+#   guix pull --cores=$cores --allow-downgrades \
+#        --load-path=$baseLP/common \
+#        --channels=$baseLP/systems/common/home-channels.scm \
+#        "$@"
+guix pull --cores=$cores --roll-back "$@"
+
 { retval="$?"; set +x; } 2>/dev/null
 
 exit $retval
