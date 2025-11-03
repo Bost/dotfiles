@@ -1137,8 +1137,9 @@ lst ; => (#:k1 1 #:k2 22 #:k3 3)"
     (error (format #f "~a `~s' is not a plist.\n" f plist))]
    [(null? plist)
     (error
-     (format #f (str "~a Cannot mutate empty list. "
-                     "Use `set!' with plist-set instead.") f))]
+     (format #f
+             "~a Cannot mutate empty list. Use `set!' with plist-set instead."
+             f))]
    [else
     ;; The following works as well, but it allocates a whole new tail (the pure
     ;; plist-set) and then replaces the old one—still O(n) but with extra
