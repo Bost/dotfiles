@@ -16,7 +16,7 @@
   #:use-module (gnu home services)
   ;; take remove delete-duplicates append-map etc.
   #:use-module (srfi srfi-1)
-  ;; #:use-module (ice-9 pretty-print)
+  #:use-module (ice-9 pretty-print)
   ;; scandir nftw
   #:use-module (ice-9 ftw)
   ;; string-match
@@ -199,9 +199,25 @@ Example:
 
 Example:
 (service-file-utils
- #:trace #t
+ #:trace         #t
  #:fun           'cli-general-command
  #:exec-fun      'exec-background
+ #:extra-modules '()
+ #:utility       \"techo\"
+ #:params        \"echo \\\"foo\\\"\")
+
+(service-file-utils
+ #:trace         #t
+ #:fun           'cli-general-command
+ #:exec-fun      'exec-foreground
+ #:extra-modules '()
+ #:utility       \"techo\"
+ #:params        \"echo \\\"foo\\\"\")
+
+(service-file-utils
+ #:trace         #t
+ #:fun           'cli-general-command
+ #:exec-fun      'exec-system
  #:extra-modules '()
  #:utility       \"techo\"
  #:params        \"echo \\\"foo\\\"\")
@@ -590,14 +606,14 @@ a list of files to search through."
   ((comp
     (partial map (comp
                   (partial apply service-file-utils)
-                  (lambda (fun-label-pair)
-                    (let [(fun (car fun-label-pair))
-                          (lbl (cadr fun-label-pair))]
+                  (lambda (disk-pair)
+                    (let [(disk-operation (car disk-pair))
+                          (disk-label     (cadr disk-pair))]
                       (list
-                       #:fun fun
+                       #:fun disk-operation
                        #:exec-fun 'exec-foreground
-                       #:params lbl
-                       #:utility (str fun "-" lbl)
+                       #:params disk-label
+                       #:utility (str disk-operation "-" disk-label)
                        #:extra-modules '((mount-common))))))))
    (cartesian
     (list 'mount 'unmount 'eject 'info)
