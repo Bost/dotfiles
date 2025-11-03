@@ -64,7 +64,8 @@ defined.
     (str "--bg-daemon=" (calculate-socket profile)))))
 
 (def*-public (pkill-server
-              #:key (trace #f) verbose utility gx-dry-run params
+              #:key (trace #f) (verbose #f) (ignore-errors #f)
+              utility gx-dry-run params
               #:rest args)
   "The ARGS are being ignored.
 
@@ -75,14 +76,18 @@ Usage:
 (pkill-server                 #:params \"guix\"    \"rest\" \"args\")
 "
   (when trace
-    (format #t "~a trace      : ~s\n" f trace)
-    (format #t "~a verbose    : ~s\n" f verbose)
-    (format #t "~a utility    : ~a\n" f utility)
-    (format #t "~a gx-dry-run : ~a\n" f gx-dry-run)
-    (format #t "~a params     : ~a\n" f params)
-    (format #t "~a args       : ~a\n" f args))
-  (let* [(elements (list #:trace #:verbose #:utility #:gx-dry-run #:params))
-         (args (remove-all-elements args elements))]
+    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
+    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
+    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
+    (format #t "~a #:ignore-errors ~a : ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
+    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
+    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)    (test-type gx-dry-run))
+    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
+    )
+
+  (let* [(elements (list #:trace #:verbose #:ignore-errors
+                         #:utility #:gx-dry-run #:params))
+         (filtered-args (remove-all-elements args elements))]
     ;; pkill-pattern must NOT be enclosed by \"\"
     ;; TODO use with-monad
     (apply exec-system*-new
@@ -99,7 +104,8 @@ Usage:
               home-emacs-distros profile)))
 
 (def*-public (create-launcher
-              #:key (trace #f) verbose (create-frame #f) utility gx-dry-run params
+              #:key (trace #f) (verbose #f) (ignore-errors #f)
+              utility gx-dry-run params (create-frame #f)
 ;;; By not allowing other keys I don't have to remove them later on
               #:allow-other-keys
               #:rest args)
@@ -115,19 +121,19 @@ Examples:
 (create-launcher #:params \"guix\"
 \"guix/home/common/cli-common.scm\" \"--create-frame\")"
   (when trace
-    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
-    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
-    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
-    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)    (test-type gx-dry-run))
-    (format #t "~a #:create-frame  ~a ; ~a\n" f (pr-str-with-quote create-frame)  (test-type create-frame))
-    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
-    ;; (format #t "~a #:exec-fun      ~a ; ~a\n" f (pr-str-with-quote exec-fun)      (test-type exec-fun))
-    ;; (format #t "~a #:ignore-errors ~a ; ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
-    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args)))
+    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)           (test-type args))
+    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)          (test-type trace))
+    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)        (test-type verbose))
+    (format #t "~a #:ignore-errors ~a : ~a\n" f (pr-str-with-quote ignore-errors)  (test-type ignore-errors))
+    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)        (test-type utility))
+    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)     (test-type gx-dry-run))
+    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)         (test-type params))
+    (format #t "~a #:create-frame  ~a ; ~a\n" f (pr-str-with-quote create-frame)   (test-type create-frame))
+    )
 
-  (let* [(elements (list #:trace #:verbose
-                         #:create-frame #:utility #:gx-dry-run #:params))
-         (args (remove-all-elements args elements))
+  (let* [(elements (list #:trace #:verbose #:ignore-errors
+                         #:utility #:gx-dry-run #:params #:create-frame))
+         (filtered-args (remove-all-elements args elements))
          (init-cmd (create-init-cmd params))]
     ((comp
 ;;; Search for the full command line:
@@ -149,7 +155,7 @@ Examples:
                               (list (when (or create-frame (not client-cmd?))
                                       ;; also "-c"
                                       "--create-frame"))
-                              (if (null? args) '("./") args)))))
+                              (if (null? filtered-args) '("./") filtered-args)))))
                   ;; (lambda (v) (format #t "~a 1. ~a\n" f v) v)
                   (partial equal? client-cmd)
                   ;; (lambda (v) (format #t "~a 0. ~a\n" f v) v)
@@ -198,7 +204,8 @@ Examples:
          (string-length (user-home emacs-distros)))))
 
 (def*-public (set-editable
-              #:key (trace #f) verbose utility gx-dry-run params
+              #:key (trace #f) (verbose #f) (ignore-errors #f)
+              utility gx-dry-run params
               #:rest args)
   "The ARGS are being ignored.
 TRACE - trace procedure parameters
@@ -211,13 +218,17 @@ Examples:
 (set-editable                 #:params \"guix\"    \"rest\" \"args\")
 "
   (when trace
-    (format #t "~a trace      : ~s\n" f trace)
-    (format #t "~a verbose    : ~s\n" f verbose)
-    (format #t "~a utility    : ~a\n" f utility)
-    (format #t "~a gx-dry-run : ~a\n" f gx-dry-run)
-    (format #t "~a params     : ~a\n" f params)
-    (format #t "~a args       : ~a\n" f args))
-  (let* [(elements (list #:trace #:verbose #:utility #:gx-dry-run #:params))
+    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
+    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
+    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
+    (format #t "~a #:ignore-errors ~a : ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
+    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
+    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)    (test-type gx-dry-run))
+    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
+    )
+
+  (let* [(elements (list #:trace #:verbose #:ignore-errors
+                         #:utility #:gx-dry-run #:params))
          (args (remove-all-elements args elements))
 
          (monad (if gx-dry-run

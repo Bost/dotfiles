@@ -636,7 +636,9 @@ Note: Variadic definition `(define (ensure-list . xs) xs)' produces nested list:
           (apply exec-function args)
           (exec-function args))))
 
-(def*-public (exec-system* #:key (verbose #t) #:rest args)
+(def*-public (exec-system*
+              #:key (trace #f) (verbose #f) (ignore-errors #f)
+              #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
@@ -670,14 +672,16 @@ $9 = 0 ;; return code"
             (exec-function args)))))
 
 (def*-public (exec-system*-new
-              #:key (split-whitespace #t) (gx-dry-run #f) (verbose #t)
+              #:key (trace #f) (verbose #f) (ignore-errors #f)
+              (split-whitespace #t) (gx-dry-run #f)
               #:rest args)
   "Execute system command and returns its ret-code. E.g.:
 (exec-system* \"echo\" \"bar\" \"baz\") ;; =>
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
-  (let* [(elements (list #:split-whitespace #:gx-dry-run #:verbose))
+  (let* [(elements (list #:trace #:verbose #:ignore-errors
+                         #:split-whitespace #:gx-dry-run))
          (args (remove-all-elements args elements))]
     ;; (format #t "~a ~a split-whitespace : ~a\n" m f split-whitespace)
     ;; (format #t "~a ~a gx-dry-run       : ~a\n" m f gx-dry-run)

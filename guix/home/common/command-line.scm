@@ -142,7 +142,6 @@ Examples:
                        )
                       (if (not (member? fun emacs-procedures))
                           (list
-                           #:fun      fun
                            #:exec-fun (eval-here exec-fun))
                           (list))
                       (if (equal? fun 'create-launcher)
