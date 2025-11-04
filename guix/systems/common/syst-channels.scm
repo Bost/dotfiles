@@ -38,3 +38,8 @@
    ))
 
 (syst-channels)
+
+;; TODO fix deprecations
+;; 'keybinder-3.0' is deprecated, use 'keybinder' instead
+;; 'rofi-wayland' is deprecated, use 'rofi' instead
+;; 'ruby-concurrent' is deprecated, use 'ruby-concurrent-ruby' instead
