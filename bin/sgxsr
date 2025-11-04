@@ -39,7 +39,8 @@ set -x # Print commands and their arguments as they are executed.
 # TODO implement parameter: -n --no-guix-pull which skips the `guix pull ...` command
 # TODO implement auto-update of linux-version in the bootloader of syst-ecke and syst-edge
 
-guix pull --cores=$cores \
+# TODO add 'Do you agree with the following downgrades? [y/N]'
+guix pull --cores=$cores --allow-downgrades \
      --load-path=$baseLP/common \
      --channels=$baseLP/systems/common/syst-channels.scm \
      "$@"
