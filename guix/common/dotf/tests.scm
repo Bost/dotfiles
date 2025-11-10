@@ -7,48 +7,86 @@
 
   ;; The syntax? and gexp? may not be defined when resolved by '#:use-module'.
   ;; Use module scoping '@@' instead.
-  ;; #:use-module (system syntax internal) ;; syntax?
-  ;; #:use-module (guix gexp) ;; gexp?, and extended reader for #~ #$ #+ #$@
+  ;; #:use-module (system syntax internal) ; syntax?
+  ;; #:use-module (guix gexp)      ; gexp? and extended reader for #~ #$ #+ #$@
 
-  #:use-module (guix build utils) ;; find-files
+  #:use-module (guix build utils) ; find-files
   )
 
 (define-syntax do-test
-  (syntax-rules ()
-    [(_ symbol arg ...)
-     ((comp
-       (lambda (function)
-         ;; need to specify (ice-9 exceptions) for `guard' to avoid warnings
-         ;; because of `error?' being defined in both (ice-9 exceptions) and
-         ;; (rnrs conditions)
-         (when ((@(ice-9 exceptions) guard)
-                ;; Break out in case of an error occured during the execution of
-                ;; `(apply function arg ...)' or `(function arg ...)'.
-                (condition [else #f])
-                ;; (when (or #t (equal? symbol 'list?))
-                ;;   (format #t "function        : ~a\n" function)
-                ;;   (format #t "symbol          : ~a\n" symbol)
-                ;;   (format #t "arg ...         : ~a\n" arg ...)
-                ;;   (format #t "(list? arg ...) : ~a\n" (list? arg ...)))
-                (function arg ...)
-                ;; (if (list? arg ...)
-                ;;     (apply function arg ...)
-                ;;     (function arg ...))
-                )
-           ;; The following `cond' is executed only if no guarded condition was
-           ;; triggered during the execution of `(function arg ...)', or if a
-           ;; guarded condition returned some true-value
-           (cond
-            [(and (list? symbol)
-                  ;; error? can be from (ice-9 exceptions) or (rnrs conditions)
-                  (not (equal? 'error? (last symbol))))
-             ;; (format #t "cond->(caddr symbol) : #t\n")
-             (caddr symbol)]
-            [#t symbol])
-           ))
-       ;; (lambda (p) (format #t "p: ~a\n" p) p)
-       )
-      (eval symbol (interaction-environment)))]))
+  (lambda (stx)
+    (syntax-case stx ()
+      [(do-test macro-name symbol arg ...)
+       (begin
+         ;; (when #t
+         ;;   (format #t "[stx-c1] #'do-test    : ~a\n" #'do-test)
+         ;;   (format #t "[stx-c1] #'macro-name : ~a\n" #'macro-name)
+         ;;   (format #t "[stx-c1] #'symbol     : ~a\n" #'symbol)
+         ;;   (format #t "[stx-c1] #'(arg ...)  : ~a\n" #'(arg ...)))
+
+         #`((comp
+             (lambda (function)
+               ;; need to specify (ice-9 exceptions) for `guard' to avoid warnings
+               ;; because of `error?' being defined in both (ice-9 exceptions) and
+               ;; (rnrs conditions)
+               (when ((@(ice-9 exceptions) guard)
+                      ;; Break out in case of an error occured during the execution of
+                      ;; `(apply function arg ...)' or `(function arg ...)'.
+                      (condition [else
+                                  (begin
+                                    (format #t "[stx-c1 guard-else] condition :\n~a\n" condition)
+                                    #f)
+                                  ])
+                      (begin
+                        (when #t
+                          ;; (format #t "[stx-c1 guard-body] macro-name      : ~a\n" macro-name)
+                          (format #t "[stx-c1 guard-body] function        : ~a\n" function)
+                          (format #t "[stx-c1 guard-body] symbol          : ~a\n" symbol))
+
+                        (cond
+                         [(eq? macro-name 'show-type-of-expression)
+                          (begin
+                            ;; (format #t "[stx-c1 guard-body c1]\n")
+                            (function arg ...))]
+                         [(eq? macro-name 'show-type-of-equality)
+                          (begin
+                            (format #t "[stx-c1 guard-body c2]\n")
+                            (apply function arg ...))]
+
+                         [else
+                          (begin
+                            ;; (format #t "[stx-c1 guard-body else] Invalid syntax\n")
+                            (syntax-violation
+                             'macro-name
+                             "[stx-c1 guard-body cond-else] Invalid syntax"
+                             #'stx))])
+                        ))
+                 ;; The following `cond' is executed only if no guarded condition was
+                 ;; triggered during the execution of `(function arg ...)', or if a
+                 ;; guarded condition returned some true-value
+                 (cond
+                  [(and (list? symbol)
+                        ;; error? can be from (ice-9 exceptions) or (rnrs conditions)
+                        (not (equal? 'error? (last symbol))))
+                   (begin
+                     ;; (format #t "cond->(caddr symbol) : #t\n")
+                     (format #t "[stx-c1 cond-1] symbol : ~a\n" symbol)
+                     (caddr symbol))]
+                  [else
+                   (begin
+                     (format #t "[stx-c1 else] symbol : ~a\n" symbol)
+                     symbol)])
+                 ))
+             ;; (lambda (p) (format #t "1: ~a\n" p) p)
+             (lambda (symb) (eval symb (interaction-environment)))
+             ;; (lambda (p) (format #t "0: ~a\n" p) p)
+             )
+            symbol))]
+      [else
+       (begin
+         ;; (format #t "[stx-else]\n")
+         (syntax-violation 'do-test "[stx-celse] Invalid syntax" stx))]
+      )))
 
 ;;; ### BEG: from /home/bost/dev/guile/module/ice-9/boot-9.scm
 (define (list-of pred l)
@@ -70,40 +108,41 @@
   "See predicates https://en.wikipedia.org/wiki/Scheme_(programming_language)
 
 Type Testing Predicates.
-(test-type (call-with-input-string \"  (+ x y)\" read-syntax)) ; => (syntax?)
-(test-type '())     ; => (list? null?)
-(test-type \"a\")   ; => (string?)
-(test-type 1)       ; => (number? complex? real? integer? rational? positive? odd?)
-(test-type (+ 1 2)) ; => (number? complex? real? integer? rational? positive? odd?)
-(test-type (* 3-8i 2.3+0.3i)) ; => (complex? number?)
-(test-type #\\space)          ; => (char-whitespace?)
-(test-type #\\a)              ; => (char-alphabetic?)
-(test-type #\\1)              ; => (char-numeric?)
-(test-type (gexp 42))         ; => (gexp?)
-(test-type (make-error))      ; => (record? exception? error?)
-(test-type (make-exception))  ; => (record? exception?)
-(test-type (/ 0.0 0.0))       ; => (number? complex? real? nan?)
-(test-type '(a b . c))        ; => (pair? nonempty-dotted-list?)
-(test-type '(a b c))          ; => (list? pair? proper-list?)
-(test-type '())               ; => (list? proper-list? null-list? not-pair? null?)
+(tt (call-with-input-string \"  (+ x y)\" read-syntax)) ; => (syntax?)
+(tt '())     ; => (list? null?)
+(tt \"a\")   ; => (string?)
+(tt 1)       ; => (number? complex? real? integer? rational? positive? odd?)
+(tt (+ 1 2)) ; => (number? complex? real? integer? rational? positive? odd?)
+(tt (* 3-8i 2.3+0.3i)) ; => (complex? number?)
+(tt #\\space)          ; => (char-whitespace?)
+(tt #\\a)              ; => (char-alphabetic?)
+(tt #\\1)              ; => (char-numeric?)
+(tt (gexp 42))         ; => (gexp?)
+(tt (make-error))      ; => (record? exception? error?)
+(tt (make-exception))  ; => (record? exception?)
+(tt (/ 0.0 0.0))       ; => (number? complex? real? nan?)
+(tt '(a b . c))        ; => (pair? nonempty-dotted-list?)
+(tt '(a b c))          ; => (list? pair? proper-list?)
+(tt '())               ; => (list? proper-list? null-list? not-pair? null?)
 
-(test-type (let ((x '(1 2 3))) (set-cdr! (cddr x) x) x))
+(tt (let ((x '(1 2 3))) (set-cdr! (cddr x) x) x))
 ; => (pair? circular-list?)
 
-(test-type (sqrt -1.0))       ; => (number? complex?)
+(tt (sqrt -1.0))       ; => (number? complex?)
 (nan? (sqrt -1.0))            ; => Wrong type argument in position 1: 0.0+1.0i
 
-(test-type (make-exception ((@(ice-9 exceptions) make-error))))
+(tt (make-exception ((@(ice-9 exceptions) make-error))))
 ; => (record? exception? (@ (ice-9 exceptions) error?) condition?)
 
-(test-type (make-exception ((@(rnrs conditions) make-error))))
+(tt (make-exception ((@(rnrs conditions) make-error))))
 ; => (record? exception? (@ (rnrs conditions) error?) (@ (ice-9 exceptions) error?) condition?)
 
-(test-type (macroexpand '(define foo 42))) ; => (struct?)
+(tt (macroexpand '(define foo 42))) ; => (struct?)
 "
   ((comp
     (partial remove unspecified?)
-    (partial map (lambda (symbol) (do-test symbol single-argument))))
+    (partial map (lambda (symbol) (do-test 'show-type-of-expression
+                                           symbol single-argument))))
    (list
     'unspecified?
     'boolean?
@@ -191,20 +230,29 @@ Type Testing Predicates.
     ;; '(@(language tree-il) let-values?)
     ;; '(@(language tree-il) prompt?)
     ;; '(@(language tree-il) abort?)
-    )
-   ))
+    )))
 (define-public tt test-type)
 
 (define-public (test-equality . args)
   "Equality and Comparison Predicates. Variadic (i.e. infinite arity)
-(test-equality 1 2)       ; => ()
-(test-equality 1 1)       ; => (= eq? eqv? equal?)
-(test-equality \"1\" \"1\")   ; => (string=? string-ci=? eq? eqv? equal?)
-(test-equality 1 1 1)     ; => (= eq? eqv? equal?)
+(te)           ; => <all predicates>
+(te 1)         ; =>
+(te 1 2)       ; => ()
+(te 1 1)       ; => (= eq? eqv? equal?)
+(te 1 1 'x)    ; => ()
+(te \"1\" \"1\")   ; => (string=? string-ci=? eq? eqv? equal?)
+(te 1 1 1)     ; => (= eq? eqv? equal?)
+
+(te (list 1) (list 1))      ; => (list=eq? list=eqv? list=equal? equal?)
+(te (list 1) (list 1) '(1)) ; => (list=eq? list=eqv? list=equal? equal?)
+
+(te (list 1) (list 2))    ; =>
+(te (list 1) (list 2) 'x) ; => ()
+(te (list 1) (list 1) 'x) ; => ()
 "
   ((comp
     (partial remove unspecified?)
-    (partial map (lambda (symbol) (do-test symbol args))))
+    (partial map (lambda (symbol) (do-test 'show-type-of-equality symbol args))))
    (list
     '=
     '<=
@@ -214,11 +262,9 @@ Type Testing Predicates.
     'char=?
     'char-ci=?
 
-    ;; 'list=  ; from srfi-1
-    ;; first paramter of `list=' is an equality predicate
-    ;; TODO (define (lset=eq? (partial list= eq?)))
-    ;; TODO (define (lset=eqv? (partial list= eqv?)))
-    ;; TODO (define (lset=equal? (partial list= equal?)))
+    'list=eq?
+    'list=eqv?
+    'list=equal?
 
     'lset=  ; from srfi-1
     'lset<= ; from srfi-1
@@ -229,8 +275,9 @@ Type Testing Predicates.
 
     'some-true?
     'every-true?
-    ;; '(partial not-every? true?)
-    ;; '(partial not-any? true?)
+    '(partial not-every? true?)
+    '(partial not-any? true?)
 
-    ;; '(@(language tree-il) tree-il=?)
+    '(@(language tree-il) tree-il=?)
     )))
+(define-public te test-equality)
