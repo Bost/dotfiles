@@ -1985,4 +1985,20 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
       (else (list x))))      ; keep atoms
    xs))
 
+;; 'list=  ; from srfi-1
+;; first paramter of `list=' is an equality predicate
+(define-public (list=eq?    . rest)
+"
+(list=eq?)           ; => #t
+(list=eq? 2 1)       ; => (expecting pair): 2
+(list=eq? 1 1)       ; => (expecting pair): 1
+(list=eq? '(2) '(1)) ; => #f
+(list=eq? '(1) '(1)) ; => #f
+"
+  (apply (partial list= eq?) rest))
+
+(define-public (list=eqv?   . rest) (apply (partial list= eqv?) rest))
+
+(define-public (list=equal? . rest) (apply (partial list= equal?) rest))
+
 (module-evaluated)
