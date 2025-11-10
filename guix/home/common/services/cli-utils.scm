@@ -460,9 +460,15 @@ a list of files to search through."
          #:params "rg --ignore-case --pretty --type=lisp"
          #:desc "Rigprep LISP files")
 
+   ;; verbose with colors
    (list #:utility "f"   #:params "fd --color=always"
-         #:verbose #f ; no verbosity allows using it in a CLI pipeline
+         #:verbose #t
          #:desc "Find entries in the filesystem")
+
+   ;; no verbosity, no colors for further processing by rigprep etc.
+   (list #:utility "fc"  #:params "fd --color=never"
+         #:verbose #f
+         #:desc "Find entries in the filesystem. Suitable for CLI pipeline")
 
    ;; always lists to the end of file. I guess I need to use something else than `exec'
    (list #:utility "c"   #:params "bat --force-colorization"            #:desc "Better cat")
