@@ -431,41 +431,50 @@ a list of files to search through."
 ;;   (format #t "~a args: ~a\n" f args)
 ;;   (apply (partial format #f "git ~a") args))
 
-(define (ripgrep-utils context-lines)
-  (list
-   (list
-    #:utility (str "rg" context-lines)
-    ;; ripgrep returns 1 when nothing is found. Do not error out!
-    #:ignore-errors #t
-    #:verbose #f ; no verbosity allows using it in a CLI pipeline
-    #:params
-    (str "rg --ignore-case --pretty --context=" context-lines))
-   (list
-    #:utility (str "rgt" context-lines)
-    ;; ripgrep returns 1 when nothing is found. Do not error out!
-    #:ignore-errors #t
-    #:verbose #f ; no verbosity allows using it in a CLI pipeline
-    #:params
-    (str "rg --ignore-case --pretty --type=lisp --context=" context-lines))))
+(define ripgrep-utils-definition
+  ((comp
+    (partial map (partial
+                  append
+                  (list
+                   ;; #:trace #t
+                   ;; ripgrep returns 1 when nothing is found. Do not error out!
+                   #:ignore-errors #t
+                   ;; no verbosity for processing in the CLI pipeline
+                   #:verbose #f
+                   )))
 
-(define utils-definitions
+    (partial
+     append
+     ((comp
+       ;; (lambda (v) (format #t "~a 1 ~a\n" f v) v)
+       (partial fold append (list))
+       ;; (lambda (v) (format #t "~a 0 ~a\n" f v) v)
+       (partial
+        map
+        (lambda (context-lines)
+          (list
+           (list #:utility (str "rg" context-lines)
+                 #:params (str "rg --ignore-case --pretty"
+                               " --context=" context-lines))
+           (list #:utility (str "rgt" context-lines)
+                 #:params (str "rg --ignore-case --pretty --type=lisp"
+                               " --context=" context-lines))))))
+      (list "2" "4" "6" "8"))))
+   (list
+    (list #:utility "rgt"
+          #:params "rg --ignore-case --pretty --type=lisp"
+          #:desc "Rigprep LISP files"))))
+
+(define rest-utils-definitions
   (list
    (list #:utility "gx"  #:params "guix")
-
-   (list #:utility "rgt"
-         ;; #:trace #t
-         ;; ripgrep returns 1 when nothing is found. Do not error out!
-         #:ignore-errors #t
-         #:verbose #f ; no verbosity allows using it in a CLI pipeline
-         #:params "rg --ignore-case --pretty --type=lisp"
-         #:desc "Rigprep LISP files")
 
    ;; verbose with colors
    (list #:utility "f"   #:params "fd --color=always"
          #:verbose #t
          #:desc "Find entries in the filesystem")
 
-   ;; no verbosity, no colors for further processing by rigprep etc.
+   ;; no verbosity, no colors for processing in CLI pipeline by rigprep etc.
    (list #:utility "fc"  #:params "fd --color=never"
          #:verbose #f
          #:desc "Find entries in the filesystem. Suitable for CLI pipeline")
@@ -557,7 +566,7 @@ a list of files to search through."
    (list #:utility "gs"       #:params (git-command "status"))
    (list #:utility "wp"       #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
    ))
-(testsymb 'utils-definitions)
+(testsymb 'rest-utils-definitions)
 
 (def* (basic-cli-utils-service)
   ;; (call/cc (lambda (exit)))
@@ -570,16 +579,10 @@ a list of files to search through."
       (partial apply service-file-utils)
       (partial append (list #:fun 'cli-general-command
                             #:exec-fun 'exec-foreground
-                            #:extra-modules '()))))
-    (partial
-     append
-     ((comp
-       ;; (lambda (v) (format #t "~a 1 ~a\n" f v) v)
-       (partial fold append (list))
-       ;; (lambda (v) (format #t "~a 0 ~a\n" f v) v)
-       (partial map ripgrep-utils))
-      (list "2" "4" "6" "8"))))
-   utils-definitions))
+                            #:extra-modules '())))))
+   (append
+    ripgrep-utils-definition
+    rest-utils-definitions)))
 (testsymb 'basic-cli-utils-service)
 
 (def (basic-cli-utils-background-service)
