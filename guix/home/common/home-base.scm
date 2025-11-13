@@ -165,8 +165,11 @@
     ;; (lambda (v) (format #t "~a 8 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
     (partial append (list (home-guake-service)))
     ;; (lambda (v) (format #t "~a 7 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
+
     ;; See also /gnu/store/wcmicv1yy1jqgc816wizk48ij15asn27-telegram-desktop-5.12.4
-    (partial append (list (telegram-from-flatpak-service)))
+    ;; flatpak doesn't terminate for some reasons. Ugh!
+    ;; (partial append (list (telegram-from-flatpak-service)))
+
     ;; (lambda (v) (format #t "~a 6\n" f) v)
     (partial append (list (development-dirs-service)))
     ;; (lambda (v) (format #t "~a 5\n" f) v)
