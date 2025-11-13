@@ -509,6 +509,20 @@ This function should only modify configuration layer settings."
 
      yaml
 
+     ;; Minimalist presentation minor-mode for Emacs Org mode
+     org-present
+
+     ;; Build HTML presentations with reveal.js from Org source files
+     org-re-reveal
+
+     ;; Org and Reveal.js powered HTML presentation tool
+     ;; org-reveal ; part of emacs-org-reveal and also Emacs itself???
+
+     ;; Progressively reveal individual subtrees of the document
+     org-tree-slide
+
+     ;; Org export engine reveal.js Presentation Back-End
+     ox-reveal
      )
 
 
@@ -1441,6 +1455,27 @@ before packages are loaded."
   ;; See also
   ;; https://github.com/syl20bnr/spacemacs/issues/16200
   (setq helm-ag-use-grep-ignore-list nil)
+
+  ;; org-tree-slide
+  (setq org-image-actual-width nil)
+
+  ;; Configure fill width
+  (setq visual-fill-column-width 110
+        visual-fill-column-center-text t)
+
+  (defun my/org-present-start ()
+    ;; Center the presentation and wrap lines
+    (visual-fill-column-mode 1)
+    (visual-line-mode 1))
+
+  (defun my/org-present-end ()
+    ;; Stop centering the document
+    (visual-fill-column-mode 0)
+    (visual-line-mode 0))
+
+  ;; Register hooks with org-present
+  (add-hook 'org-present-mode-hook 'my/org-present-start)
+  (add-hook 'org-present-mode-quit-hook 'my/org-present-end)
 
   (setq
    large-file-warning-threshold nil ;; don't ask before visiting big files

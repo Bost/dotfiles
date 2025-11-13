@@ -942,6 +942,25 @@ FIXME the inferior-packages are installed on every machine"
     )))
 (testsymb 'devel-packages)
 
+(define (emacs-slide-creation-packages)
+  (list
+   ;; Minimalist presentation minor-mode for Emacs Org mode
+   emacs-org-present
+
+   ;; Build HTML presentations with reveal.js from Org source files
+   emacs-org-re-reveal
+
+   ;; Org and Reveal.js powered HTML presentation tool
+   ;; emacs-org-reveal ; part of emacs-org-reveal and also Emacs itself???
+
+   ;; Progressively reveal individual subtrees of the document
+   emacs-org-tree-slide
+
+   ;; Org export engine reveal.js Presentation Back-End
+   emacs-ox-reveal
+   ))
+(testsymb 'emacs-slide-creation-packages)
+
 (def-public (home-packages-to-install)
   ;; (format #t "~a Starting…\n" f)
   ((comp
@@ -1002,6 +1021,7 @@ FIXME the inferior-packages are installed on every machine"
     (lambda (lst)
       (if (or (host-edge?) (host-ecke?) (host-geek?))
           (append
+           (emacs-slide-creation-packages)
            (packages-from-additional-channels)
            (devel-packages)
            (kde-dependent-packages)
