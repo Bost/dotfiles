@@ -200,13 +200,19 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
       (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
-      (url "https://git.sr.ht/~whereiseveryone/guixrus")
-      (commit commit)
-      (introduction
-       (make-channel-introduction
-        "7c67c3a9f299517bfc4ce8235628657898dd26b2"
-        (openpgp-fingerprint
-         "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551"))))))
+      (url (format #f "file://~a/dev/guixrus" home))
+      (commit commit))
+
+    ;; (channel
+    ;;   (name channel-name)
+    ;;   (url "https://git.sr.ht/~whereiseveryone/guixrus")
+    ;;   (commit commit)
+    ;;   (introduction
+    ;;    (make-channel-introduction
+    ;;     "7c67c3a9f299517bfc4ce8235628657898dd26b2"
+    ;;     (openpgp-fingerprint
+    ;;      "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551"))))
+    ))
 
 (define*-public (channel-guix #:key (commit #f))
   "Pin to a specific commit instead of pulling-in the lastest so that this
