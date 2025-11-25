@@ -46,7 +46,7 @@
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
- file-systems librewolf libcanberra security-token firmware ocr
+ file-systems librewolf libcanberra security-token firmware ocr tex
  )
 
 (define (email-in-emacs-packages)
@@ -139,16 +139,23 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Vector graphics editor. ~93MiB
     inkscape
     )
-   ;; (list
-   ;;  ;; Embeddable TeX/LaTeX engine
-   ;;  tectonic
 
-   ;;  ;; Graphviz to LaTeX converter
-   ;;  dot2tex
+   (list
+    ;; Embeddable TeX/LaTeX engine
+    tectonic
 
-   ;;  ;; Complete TeX Live distribution. May take too long to graft
-   ;;  texlive)
-   ))
+    ;; Graphviz to LaTeX converter
+    dot2tex
+
+    ;; Complete TeX Live distribution. May take too long to graft
+    texlive
+
+    ;; Integrated environment for TeX in Emacs
+    emacs-auctex
+
+    ;; Completion for `AUCTeX'
+    bst:emacs-company-auctex
+    )))
 (testsymb 'large-packages-ecke)
 
 (define (rust-development-packages)
@@ -993,7 +1000,7 @@ FIXME the inferior-packages are installed on every machine"
       (if (or (host-ecke?))
           (append
            ;; (map (comp list specification->package) (video-packages))
-           ;; (large-packages-ecke)
+           (large-packages-ecke)
            (remote-desktop-packages #:is-server #f)
            lst)
           lst))
