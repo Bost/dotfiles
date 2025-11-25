@@ -2,20 +2,20 @@
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (dotf utils)
-  #:use-module (fs-utils)  ; dgx (repository location)
-  #:use-module (dotf settings)  ; home
-  #:use-module (srfi srfi-26) ; special selected function parameters
-  #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (fs-utils)      ; dgx (repository location)
+  #:use-module (dotf settings) ; home
+  #:use-module (srfi srfi-26)  ; special selected function parameters
+  #:use-module (ice-9 optargs) ; define*-public
   )
 
 #|
 
 #!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-git-authenticate) -s
+--use-srfi=26 -L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-git-authenticate) -s
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/git-authenticate.scm
+./guix/home/common/scm-bin/guix-git-authenticate.scm
 
 |#
 
@@ -35,7 +35,7 @@ cd $dotf
 (define first-commit "6fdba3fbf3a62aa53b3e5d1c57a7bde5727f986c")
 (define last-commit "trunk") ; commit or branch-name
 
-(define* (get-commits #:key repo beg end)
+(def*-public (get-commits #:key repo beg end)
   "Examples:
 (get-commits #:beg \"90f0f8713d\" #:end \"master\")
 "
@@ -58,12 +58,17 @@ cd $dotf
           ))))
 (testsymb 'get-commits)
 
-(define*-public (authenticate-commit #:key repo commit signer)
+(def*-public (authenticate-commit #:key repo commit signer)
   "Examples:
 (authenticate-commit #:repo repo #:signer signer #:commit)
 "
   (let* [(cmd-result-struct
-          ((comp (exec <> #:return-plist #t))
+          ((comp
+            ;; When called from the CLI this leads to 'Unbound variable: <>'
+            ;; even when having '--use-srfi=26' on the CLI and '#:use-module
+            ;; (srfi srfi-26)'
+            ;; (exec <> #:return-plist #t)
+            (lambda (command) (exec command #:return-plist #t)))
            (list "guix" "git" "authenticate"
                  ;; --cache-key=path/to/KEY reads
                  ;; ~/.cache/guix/authentication/path/to/KEY
@@ -77,7 +82,7 @@ cd $dotf
           ;; if `git push ...` needs to return anything more except just a
           ;; retcode - implement it here
           (map (partial format #t "~a\n") results)
-          ret)
+          retcode)
         (begin
           (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
           ;; (error-command-failed f)
