@@ -119,7 +119,10 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
 (define*-public (channel-flat #:key (commit #f))
   "flatwhatson contains emacs-native-comp, however it doesn't compile.
 Pin to a specific commit instead of pulling-in the lastest so that this
-channel doesn't get rebuild everytime `guix pull ...` is executed."
+channel doesn't get rebuild everytime `guix pull ...` is executed.
+
+TODO make-dist script contains Guile code for package-export. See
+https://github.com/flatwhatson/guix-channel/blob/master/scripts/make-dist"
   (let* [(channel-name 'flat)]
     (when commit
       (my=warn "Channel ~a pinned to ~a\n" channel-name commit))

@@ -219,8 +219,8 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     bat
 
     direnv
-    ;; read hardware information from the BIOS
-    dmidecode
+
+    dmidecode ; Read hardware information from the BIOS
 
     ;; exa deprecated by eza in the daaedc9ab3; TODO the package is aliased but the binary is not
     eza
@@ -597,7 +597,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    libxaw3d
    libxpm
    lolcat
-   lshw
+   lshw      ; List hardware information
    lsof
    lynx      ; Text Web Browser
    gnu-make  ; former (specification->package "make@4.3")
@@ -653,7 +653,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    strace
    taglib
    tealdeer      ; tldr "Too Long Didn't Read" written in Rust
-   texinfo
+   texinfo       ; official documentation format of the GNU project
    tig
    tree
    tzdata
@@ -721,6 +721,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
    ;; https://issues.guix.gnu.org/59825
    ;; guix shell -NC flatpak-xdg-utils --preserve='^DBUS_SESSION_BUS_ADDRESS$' -- xdg-open "<https://guix.gnu.org>"
+
+   ;; See projects providing
+   ;; terminal user interfaces https://github.com/rothgar/awesome-tuis/
 
    ;; $ time eza -abghHliS --color=always --time-style=full-iso /gnu/store
    ;;

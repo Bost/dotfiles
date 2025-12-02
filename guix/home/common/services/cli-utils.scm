@@ -563,8 +563,8 @@ a list of files to search through."
    ;; Pass a configuration parameter to the command. The value given will
    ;; override values from configuration files. The <name> is expected in the
    ;; same format as listed by git config (subkeys separated by dots).
-   (list #:utility "gs"       #:params (git-command "status"))
-   (list #:utility "wp"       #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
+   (list #:utility "gs"     #:params (git-command "status"))
+   (list #:utility "wp"     #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
    ))
 (testsymb 'rest-utils-definitions)
 
