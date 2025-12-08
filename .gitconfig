@@ -74,6 +74,7 @@
   ui = auto
 [push]
   default = simple
+	autoSetupRemote = true
 [github]
   user = Bost
 [diff]
