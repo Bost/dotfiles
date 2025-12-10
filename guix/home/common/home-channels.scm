@@ -34,7 +34,8 @@
              ;; 14 nov. 2025 14:28:09
              ;; 25 nov. 2025 16:03:05
              ;; 02 déc. 2025 19:12:22
-             ;; #:commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+	           ;; 10 déc. 2025 21:45:14
+             #:commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
              )
             ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
             (channel-guixrus ;; whereiseveryone
@@ -48,6 +49,9 @@
              ;; 25 nov. 2025 16:03:05 - from file:///home/bost/dev/guixrus
              ;; 02 déc. 2025 19:12:22
              ;; #:commit "0a070f3655c32e1aa429d3849dacfaad4fb5b2fa"
+
+             ;; 10 déc. 2025 21:45:14 - from file:///home/bost/dev/guixrus
+             #:commit "29573922e8c749a4a3b52d0a9fc0b71e13b4a12c"
              )
             (channel-hask-clj
              ;; 04 nov. 2025 13:20:55
@@ -55,6 +59,7 @@
              ;; 14 nov. 2025 14:28:09
              ;; 25 nov. 2025 16:03:05
              ;; 02 déc. 2025 19:12:22
+	           ;; 10 déc. 2025 21:45:14
              ;; #:commit "a8b30a606f91caabec3cc8dc4b1255a69836554e"
              )
             ;; (channel-games)
@@ -71,7 +76,8 @@
              ;; #:commit "65b4c76a92577493a64a651e20e3c3b4120c9310"
 
              ;; 02 déc. 2025 19:12:22
-             #:commit "2d6098abb21cbae397d548ced46878bcf07cade9"
+	           ;; 10 déc. 2025 21:45:14
+             ;; #:commit "2d6098abb21cbae397d548ced46878bcf07cade9"
              ))
            lst)
           lst)))
@@ -93,8 +99,12 @@
     ;; #:nonguix-commit "0f68c1684169cbef8824fb246dfefa3e6832225b"
 
     ;; 02 déc. 2025 19:12:22
-    #:guix-commit "5f7cc5c2c6497ebaf7039cdb30ceba025602d698"
-    #:nonguix-commit "82be0b7adaaaa7a98d47382d7f72dd2e31d8e6d8"
+    ;; #:guix-commit "5f7cc5c2c6497ebaf7039cdb30ceba025602d698"
+    ;; #:nonguix-commit "82be0b7adaaaa7a98d47382d7f72dd2e31d8e6d8"
+
+	  ;; 10 déc. 2025 21:45:14
+    #:guix-commit "ec959892550ecbfcd4be47e8464df953af6529b3"
+    #:nonguix-commit "cb35c71a028eb4a7c950c6a9637c0efad413ef35"
     )))
 (testsymb 'home-channels)
 
