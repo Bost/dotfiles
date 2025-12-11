@@ -508,21 +508,6 @@ This function should only modify configuration layer settings."
      ;; windows-scripts
 
      yaml
-
-     ;; Minimalist presentation minor-mode for Emacs Org mode
-     org-present
-
-     ;; Build HTML presentations with reveal.js from Org source files
-     org-re-reveal
-
-     ;; Org and Reveal.js powered HTML presentation tool
-     ;; org-reveal ; part of emacs-org-reveal and also Emacs itself???
-
-     ;; Progressively reveal individual subtrees of the document
-     org-tree-slide
-
-     ;; Org export engine reveal.js Presentation Back-End
-     ox-reveal
      )
 
 
@@ -689,6 +674,20 @@ This function should only modify configuration layer settings."
      ;; https://github.com/Boruch-Baum/emacs-xhair
      (xhair :location (recipe :fetcher github :repo "Boruch-Baum/emacs-xhair"))
 
+     ;; ;; Minimalist presentation minor-mode for Emacs Org mode
+     ;; org-present   ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Build HTML presentations with reveal.js from Org source files
+     ;; org-re-reveal  ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Org and Reveal.js powered HTML presentation tool
+     ;; ;; org-reveal  ; part of emacs-org-reveal and also Emacs itself???
+
+     ;; ;; Progressively reveal individual subtrees of the document
+     ;; org-tree-slide ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Org export engine reveal.js Presentation Back-End
+     ;; ox-reveal      ; (Spacemacs) Warning: Unknown layer declared in dotfile
      )
 
    ;; A list of packages that cannot be updated.
