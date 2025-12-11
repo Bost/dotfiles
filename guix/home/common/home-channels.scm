@@ -62,7 +62,7 @@
 	           ;; 10 déc. 2025 21:45:14
              ;; #:commit "a8b30a606f91caabec3cc8dc4b1255a69836554e"
              )
-            ;; (channel-games)
+            (channel-games) ; For factorio
             ;; (channel-home-service-dwl-guile)
             ;; (channel-flat)
             ;; (channel-rde)
