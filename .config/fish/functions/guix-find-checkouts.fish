@@ -1,7 +1,7 @@
 function guix-find-checkouts --description "Find Guix and NonGuix checkout dirs"
     # set guixRepo https://git.savannah.gnu.org/git/guix.git
     # set guixRepo file:///home/bost/dev/guix
-    set guixRepo https://codeberg.org/guix/guix-mirror.git
+    set guixRepo https://codeberg.org/guix/guix.git
 
     set nonguixRepo https://gitlab.com/nonguix/nonguix
 
