@@ -202,7 +202,7 @@ This function should only modify configuration layer settings."
      ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
      ;;       ~/.emacs.d.distros/spacemacs/guix/src/layers/fennel
      ;;   git submodule update --init
-     ;; fennel ;; fennel = lua in lisp
+     fennel ; fennel = lua in lisp
 
      ;; gnus
      ;; go
@@ -359,10 +359,9 @@ This function should only modify configuration layer settings."
       lsp-lens-enable t ; )
       )
 
-     (lua
-      :variables
-      lua-backend 'lua-mode ;; 'lsp is better, but requires more setup
-      )
+     (lua :variables
+          lua-backend 'lua-mode ;; 'lsp is better, but requires more setup
+          )
 
      ;; Editing multiple lines of text concurrently
      ;; `g r' menu in Emacs normal state
