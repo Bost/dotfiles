@@ -90,12 +90,12 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; See also module (bost manifest-set-operations)
     (@(nongnu packages mozilla) firefox)
     (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
-    #|
-    (@(games packages factorio) factorio) ;; temporarily disabled, install it using:
-    guix package --load-path=$dev/games --install=factorio
-    set experimentalVersion @1.1.78 # set --erase experimentalVersion
-    guix package --load-path=$dev/games --install=factorio$experimentalVersion
-    |#
+
+    ;; Factorio can be also installed by (in the fish-shell):
+    ;; guix package --load-path=$dev/games --install=factorio
+    ;; set factVersion @2.0.72 # set --erase experimentalVersion
+    ;; guix package --load-path=$dev/games --install=factorio$factVersion
+    (@(games packages factorio) factorio)
     )))
 (testsymb 'packages-from-additional-channels)
 
@@ -315,12 +315,11 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 (define (fennel-devel-packages)
   "Fennel: Lua + Lisp. For e.g. Factorio modding."
   (list
-   lua
-   fennel
+   antifennel ; Turn Lua code into Fennel code (opposite of fennel)
    emacs-fennel-mode
-
-   ;; Automatic formatting of Fennel code
-   ;; fnlfmt ; doesn't compile
+   fennel     ; Lisp that compiles to Lua
+   fnlfmt     ; Automatic formatting of Fennel code
+   lua        ; Embeddable scripting language
    ))
 (testsymb 'fennel-devel-packages)
 
@@ -903,7 +902,7 @@ FIXME the inferior-packages are installed on every machine"
 
 (define (devel-packages)
   (append
-   ;; (fennel-devel-packages)
+   (fennel-devel-packages)
    ;; (chez-scheme-devel-packages)
    ;; (elixir-devel-packages)
    ;; (agda-devel-packages)
