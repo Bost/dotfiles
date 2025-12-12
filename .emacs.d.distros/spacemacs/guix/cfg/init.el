@@ -1319,7 +1319,8 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  (global-undo-tree-mode)
+  ;; undo-tree is unmaintained. Last commit in March 2021
+  ;; (global-undo-tree-mode)
 
   ;; (spacemacs/toggle-display-fill-column-indicator) ;; toggle with ~SCP t f~
 
@@ -1519,10 +1520,11 @@ before packages are loaded."
    ;; Position of the popped buffer. (default "bottom")
    shell-pop-window-position "right"
 
-   ;; See also undo-tree-auto-save-history
-   undo-tree-history-directory-alist `(("." . ,(concat
-                                                sp-home-dir "/"
-                                                "undo")))
+   ;; undo-tree is unmaintained. Last commit in March 2021
+   ;; ;; See also undo-tree-auto-save-history
+   ;; undo-tree-history-directory-alist `(("." . ,(concat
+   ;;                                              sp-home-dir "/"
+   ;;                                              "undo")))
 
    ;; TODO If the "Search failed. ... unmatched expression ... " persists, try:
    ;; ;; Original value 160000 ;; Global value 800000
@@ -2013,7 +2015,10 @@ Some binding snippets / examples:
      ("s-I"           . tw-iedit-mode-toggle)
      ("s-i"           . iedit-mode)     ; all occurrences in the buffer
      ;; ("s-i"        . spacemacs/enter-ahs-forward)
-     ("<f12>"         . undo-tree-visualize)
+
+     ;; undo-tree is unmaintained. Last commit in March 2021
+     ;; ("<f12>"         . undo-tree-visualize)
+
      ;; ("S-<delete>" . kill-region)
      ("C-s-<delete>"  . kill-line)      ; C-super-key
      ("C-S-<delete>"  . kill-line)      ; C-shift-key
