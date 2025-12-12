@@ -4,7 +4,6 @@
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
   #:use-module (dotf utils)
-  #:use-module (scm-bin git-command)
   #:use-module (ice-9 optargs)     ; define*-public
   )
 
@@ -21,6 +20,9 @@ cd $dotf
 
 (define m (module-name-for-logging))
 (evaluating-module)
+
+(define (git-command . args)
+  (apply (partial format #f "git -c color.ui=always ~a") args))
 
 (def*-public (git-push-everywhere #:rest args)
   "Push commits to all remote repositories."
