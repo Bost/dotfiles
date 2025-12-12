@@ -21,7 +21,7 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define (git-command . args)
+(define (git-cmdstr . args)
   (apply (partial format #f "git -c color.ui=always ~a") args))
 
 (def*-public (git-push-everywhere #:rest args)
@@ -43,7 +43,7 @@ cd $dotf
        ;; (lambda (p) (format #t "~a 2. ~a\n" f p) p)
        (partial map
                 (lambda (remote)
-                  (apply (partial git-command "push"
+                  (apply (partial git-cmdstr "push"
                                   "--follow-tags"
                                   "--verbose"
                                   remote)
