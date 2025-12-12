@@ -1,3 +1,6 @@
-[submodule ".emacs.d/fennel-layer"]
+[submodule "spacemacs-fennel-layer"]
 	path = .emacs.d.sp---macs/fennel
 	url = https://github.com/mitchellw/fennel-layer.git
+[submodule "tmux-plugins"]
+	path = .tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
