@@ -895,7 +895,7 @@ FIXME the inferior-packages are installed on every machine"
    emacs-arei          ; Guile IDE
    bst:emacs-plantuml-mode ; Edit and preview PlantUML diagrams
    plantuml            ; Draw UML diagrams from simple textual description
-   guile-next
+   ;; guile-next       ; Version 3.0.10-1.402e0df
    guile-ares-rs       ; Asyncronous Reliable Extensible Sleek RPC Server
    ))
 (testsymb 'devel-guile-ide-arei-packages)
