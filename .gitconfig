@@ -59,7 +59,7 @@
 
 [user]
   name = Rostislav Svoboda
-  email = Rostislav.Svoboda@gmail.com
+  email = Rostislav.Svoboda@posteo.net
   # The secret key is not in git's configs but in the GnuPG's "keyring".
   # The signingkey value only instructs gpg which secret key to select.
   # https://stackoverflow.com/a/48067999
@@ -84,10 +84,12 @@
 [core]
   editor = vim
 [sendemail]
-  smtpserver = smtp.googlemail.com
+  smtpserver = posteo.de
+# smtpserver = smtp.googlemail.com
   smtpencryption = tls
   smtpserverport = 587
-  smtpuser = Rostislav.Svoboda@gmail.com
+  smtpuser = Rostislav.Svoboda@posteo.net
+# smtpuser = Rostislav.Svoboda@gmail.com
 [commit]
   gpgsign = true
 [merge]
