@@ -32,24 +32,23 @@
  networking
  ssh
 
- ;; for lightdm-service-type - Run `lightdm', the LightDM graphical login
- ;; manager.
- lightdm
+ ;; Run `lightdm', the LightDM graphical login manager.
+ lightdm  ; for lightdm-service-type
 
  ;; for xvnc-service-type - Run the Xvnc server, which creates a virtual X11
  ;; session and allow remote clients connecting to it via the remote framebuffer
  ;; (RFB) protocol.
  vnc
 
- ;; for sddm-service-type - SDDM, a display and log-in manager for X11 and
- ;; Wayland
- sddm
+ ;; Run SDDM, a display and log-in manager for X11 and Wayland.
+ sddm     ; for sddm-service-type
 
- ;; security-token ; usb card reader
+ ;; Run `pcscd', the PC/SC smart card daemon. (USB card reader)
+ ;; security-token ; for pcscd-service-type
 
- ;; for gdm-service-type - Run the GNOME Desktop Manager (GDM), which allows you
- ;; to log in in a graphical session, whether or not you use GNOME.
- xorg
+ ;; Run the GNOME Desktop Manager (GDM), which allows you to log in in a
+ ;; graphical session, whether or not you use GNOME.
+ xorg     ; for gdm-service-type
  )
 
 ;; no need to write: #:use-module (gnu packages <module>)

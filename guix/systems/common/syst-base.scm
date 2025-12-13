@@ -11,8 +11,13 @@
 
 (use-service-modules
  cups desktop networking ssh
+ ;; Run GNOME Desktop Manager (GDM); for log in in a graphical session
  xorg     ; for gdm-service-type
+
+ ;; Run SDDM, a display and log-in manager for X11 and Wayland.
  sddm     ; for sddm-service-type
+
+ ;; Run `pcscd', the PC/SC smart card daemon.
  security-token ; for pcscd-service-type
  )
 
