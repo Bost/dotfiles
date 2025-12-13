@@ -682,6 +682,8 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
 (define (other-gui-packages)
   (list
+   ;; GNOME Display Manager: system service graphical log-ins and managing local
+   ;; and remote displays
    gdm
 
    ;; Low-level GNOME configuration system. Backend to GSettings
@@ -696,8 +698,8 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    #;gparted    #| disk partition |#
    #;mtools     #| used by gparted |#
 
-   gsettings-desktop-schemas
-   gtk
+   gsettings-desktop-schemas ; GNOME
+   gtk ; multi-platform toolkit for creating GUIs
 
    ;; On ecke in generation 1661
    ;; /gnu/store/znrni9c6mjx45ps4j0jkrbgl6rvc6s2p-libreoffice-25.2.3.2
@@ -764,6 +766,8 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; llama-cpp ; Port of Facebook's LLaMA model in C/C++
 
    sound-theme-freedesktop ; Audio samples for use as a desktop sound theme
+
+   wmctrl ; Control X window managers (Mutter, KWin, Xfwm, i3, Openbox) from CLI
    ))
 (testsymb 'other-gui-packages)
 
