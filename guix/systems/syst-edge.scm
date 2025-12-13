@@ -125,7 +125,7 @@
        ;;           ;;         (user-session "ratpoison"))))
        ;;           ))
 
-       (service gnome-desktop-service-type)
+       (service gnome-desktop-service-type) ; Run the GNOME desktop environment
 
        ;; (service pcscd-service-type)
 
@@ -175,7 +175,7 @@
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
-        ;; GDM - GNOME Desktop Manager (login screen)
+        ;; GDM - GNOME Desktop Manager: graphical user login, display servers
         (gdm-service-type config => (gdm-configuration
                                      (inherit config)
                                      (auto-suspend? #f)
