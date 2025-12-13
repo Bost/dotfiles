@@ -116,33 +116,6 @@
      (append
       (base:services)
       (list
-       ;; (service pcscd-service-type) ;; usb card reader
-       (service nvidia-service-type)
-
-       ;; Configure desktop environment, GNOME for example.
-       (service gnome-desktop-service-type
-                ;; Enable NVIDIA support, only do this when the card is
-                ;; used for displaying.
-                ;; Adding the following leads to
-                ;;   profile contains conflicting entries for packagekit
-                #;
-                (gnome-desktop-configuration
-                 (gnome (replace-mesa gnome))))
-
-       ;; Configure Xorg server, only do this when the card is used for
-       ;; displaying.
-       (set-xorg-configuration
-        (xorg-configuration
-         (modules (cons nvda %default-xorg-modules))
-         (drivers '("nvidia"))
-         (keyboard-layout keyboard-layout))
-
-        ;; SDDM Simple Desktop Display Manager (for login screen)
-        ;; Recommended for KDE Plasma, LXQt desktop environments
-        sddm-service-type)
-
-       ;; (service mate-desktop-service-type)
-
        (service cups-service-type
                 (cups-configuration
                  (web-interface? #t)
@@ -181,6 +154,38 @@
 ;;;   wget https://substitutes.nonguix.org/signing-key.pub
                          (append (list (local-file "./signing-key.pub"))
                                  %default-authorized-guix-keys))))
+
+       ;; (service pcscd-service-type) ;; usb card reader
+
+
+;;; GUI stuff ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+       ;; Prepare system environment for NVIDIA driver
+       (service nvidia-service-type)
+
+       ;; Configure GNOME desktop environment
+       (service gnome-desktop-service-type
+                ;; Enable NVIDIA support, only do this when the card is
+                ;; used for displaying.
+                ;; Adding the following leads to
+                ;;   profile contains conflicting entries for packagekit
+                ;; (gnome-desktop-configuration
+                ;;  (gnome (replace-mesa gnome)))
+                )
+
+       ;; Configure Xorg display server. Only do this when the card is used for
+       ;; displaying.
+       (set-xorg-configuration
+        (xorg-configuration
+         (modules (cons nvda %default-xorg-modules))
+         (drivers '("nvidia"))
+         (keyboard-layout keyboard-layout))
+
+        ;; SDDM - Simple Desktop Display Manager (for login screen)
+        ;; Recommended for KDE Plasma, LXQt desktop environments
+        sddm-service-type)
+
+       ;; (service mate-desktop-service-type)
 
        ;; ;; Configure TTYs and graphical greeter
        ;; (service
@@ -248,7 +253,7 @@
 
         ;; service "xorg-server" must be defined only once (see above)
 
-        ;; GDM - GNOME Desktop Manager (login screen)
+        ;; GDM - GNOME Desktop Manager: graphical user login, display servers
         (delete gdm-service-type))))
 
 ;;; See
