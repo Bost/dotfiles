@@ -70,6 +70,11 @@
   # gpg --keyid-format=short
   # signingkey = 8877DC81
 
+# [user.bad]
+#   name = Bad Guy
+#   email = attacker@domain.com
+#   signingkey = A74061D56CFE8E89
+
 [color]
   ui = auto
 [push]
