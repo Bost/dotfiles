@@ -65,6 +65,25 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(define (gui-services)
+  (list
+   ;; GNOME desktop environment. It adds the gnome package to the system
+   ;; profile, and extends polkit with the actions from gnome-settings-daemon
+   (service gnome-desktop-service-type)
+
+   ;; %desktop-services is the default list of services we are appending to.
+   (modify-services %desktop-services
+     ;; GDM - GNOME Desktop Manager: graphical user login, display servers
+     (gdm-service-type
+      config
+      => (gdm-configuration
+           (inherit config)
+           (auto-suspend? #f)
+           ;; See also the warning in the xvnc-configuration
+           (xdmcp? #t)))
+     ;; (delete gdm-service-type)
+     )))
+
 (define-public syst-config
   (operating-system
     (inherit (base:syst-config-linux))
@@ -101,7 +120,7 @@
                     ;; problem
                     ;; (x11-forwarding? #t)
                     )))
-
+      (gui-services)
       (list
        ;; TODO lightdm doesn't work properly. The login fails
        ;; (service lightdm-service-type
@@ -124,8 +143,6 @@
        ;;           ;;         (name "*")
        ;;           ;;         (user-session "ratpoison"))))
        ;;           ))
-
-       (service gnome-desktop-service-type) ; Run the GNOME desktop environment
 
        ;; (service pcscd-service-type)
 
@@ -171,17 +188,7 @@
 ;;; The signing-key.pub should be obtained by
 ;;;   wget https://substitutes.nonguix.org/signing-key.pub
                          (append (list (local-file "./signing-key.pub"))
-                                 %default-authorized-guix-keys)))))
-
-      ;; %desktop-services is the default list of services we are appending to.
-      (modify-services %desktop-services
-        ;; GDM - GNOME Desktop Manager: graphical user login, display servers
-        (gdm-service-type config => (gdm-configuration
-                                     (inherit config)
-                                     (auto-suspend? #f)
-;;; See the Warning above in the xvnc-configuration
-                                     (xdmcp? #t)))
-        #;(delete gdm-service-type))))
+                                 %default-authorized-guix-keys)))))))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html

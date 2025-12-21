@@ -60,22 +60,134 @@
 (evaluating-module)
 
 (define (sway-package-specifications)
-;;; # Get the sway configuration file:
-;;; mkdir -p $dotf/.config/sway
-;;; # -O/--output-document works only if the given output file does not exist.
-;;; wget https://raw.githubusercontent.com/swaywm/sway/master/config.in \
-;;;      --output-document=$dotf/.config/sway/config
+  "
+# Get the sway configuration file:
+$ mkdir -p $dotf/.config/sway
+# -O/--output-document works only if the given output file does not exist.
+$ wget https://raw.githubusercontent.com/swaywm/sway/master/config.in \
+       --output-document=$dotf/.config/sway/config
 
-;;; Crafting a Minimal Sway Environment with Guix - System Crafters Live!
-;;; https://www.youtube.com/live/OYbenLOm3Js?feature=share&t=5122
+Crafting a Minimal Sway Environment with Guix - System Crafters Live!
+https://www.youtube.com/live/OYbenLOm3Js?feature=share&t=5122"
   (list
    "sway" "swaybg" "swayidle" "swaylock"
    "bemenu"   ;; Dynamic menu library and client program inspired by dmenu
    "ranger"   ;; Minimalistic console file manager with Vi key bindings
-   #;"luakit" ;; Simple browser extensible by Lua based on WebKit & GTK+ toolkit
-   #;"mpv"    ;; Audio and video player
+   ;; "luakit" ;; Simple browser extensible by Lua based on WebKit & GTK+ toolkit
+   ;; "mpv"    ;; Audio and video player
    "termite"  ;; Minimal terminal emulator for use with tiling window managers
    ))
+
+(define (gui-services)
+  (list
+   ;; Prepare system environment for NVIDIA driver
+   (service nvidia-service-type)
+
+   ;; Configure GNOME desktop environment
+   (service gnome-desktop-service-type
+            ;; Enable NVIDIA support, only do this when the card is
+            ;; used for displaying.
+            ;; Adding the following leads to
+            ;;   profile contains conflicting entries for packagekit
+            ;; (gnome-desktop-configuration
+            ;;  (gnome (replace-mesa gnome)))
+            )
+
+
+   ;; Tell the log-in manager to use an <xorg-configuration> record as its
+   ;; configuration.
+   ;; The Xorg configuration is embedded in the log-in manager's
+   ;; configuration—e.g., gdm-configuration—this procedure provides a shorthand
+   ;; to set the Xorg configuration.
+   (set-xorg-configuration
+    ;; Do this only when an nvidia card is used for displaying.
+    (xorg-configuration
+      (modules (cons nvda %default-xorg-modules))
+      (drivers '("nvidia"))
+      (keyboard-layout keyboard-layout))
+
+    ;; SDDM - Simple Desktop Display Manager (for login screen)
+    ;; Recommended for KDE Plasma, LXQt desktop environments
+    sddm-service-type)
+
+   (sddm-configuration
+     (auto-login-user "alice")
+     (auto-login-session "xfce.desktop"))
+
+   ;; (service mate-desktop-service-type)
+
+   ;; ;; Configure TTYs and graphical greeter
+   ;; (service
+   ;;  console-font-service-type
+   ;;  `(("tty1" . "LatGrkCyr-8x16")
+   ;;    ("tty2" . ,(file-append
+   ;;                font-tamzen
+   ;;                "/share/kbd/consolefonts/TamzenForPowerline10x20.psf"))
+   ;;    ("tty3" . ,(file-append
+   ;;                font-terminus
+   ;;                "/share/consolefonts/ter-132n")))
+
+   ;;  ;; Larger font for HIDPI screens, however this is too large
+   ;;  ;; (map (lambda (tty)
+   ;;  ;;        (cons tty (file-append
+   ;;  ;;                   font-terminus
+   ;;  ;;                   "/share/consolefonts/ter-132n")))
+   ;;  ;;      '("tty1" "tty2" "tty3"))
+   ;;  )
+
+   ;; Infrastructure for logging into the system including `greetd' PAM service,
+   ;; `pam-mount' module to mount/unmount /run/user/<uid> directory for user and
+   ;; `greetd' login manager daemon.
+   ;; (service greetd-service-type
+   ;;          (greetd-configuration
+   ;;           (greeter-supplementary-groups (list "video" "input"))
+   ;;           (terminals
+   ;;            (list
+   ;;             ;; TTY1 is the graphical login screen for Sway
+   ;;             (greetd-terminal-configuration
+   ;;              (terminal-vt "1")
+   ;;              (terminal-switch #t))
+
+   ;;             ;; Set up remaining TTYs for terminal use
+   ;;             (greetd-terminal-configuration (terminal-vt "2"))
+   ;;             (greetd-terminal-configuration (terminal-vt "3"))))))
+
+   (simple-service
+    'custom-udev-rules udev-service-type
+    (list nvidia-driver))
+
+   ;; load loadable kernel modules at boot with modprobe
+   (service kernel-module-loader-service-type
+            '("ipmi_devintf"
+              "nvidia"
+              "nvidia_modeset"
+              "nvidia_uvm"))
+
+   ;; Configure swaylock as a setuid program
+   ;; (service screen-locker-service-type
+   ;;          (screen-locker-configuration
+   ;;           (name "swaylock")
+   ;;           (program (file-append swaylock "/bin/swaylock"))
+   ;;           (using-pam? #t)
+   ;;           (using-setuid? #f)))
+   )
+
+  ;; %desktop-services is the default list of services we are appending to.
+  (modify-services %desktop-services
+    ;; (sane-service-type _ => sane-backends)
+
+    ;; (delete login-service-type)
+    ;; (delete mingetty-service-type)
+    ;; (delete console-font-service-type)
+    ;; for sway - see the patch:
+    ;;   Add a guide to the guix cookbook about setting up sway.
+    ;;   https://issues.guix.gnu.org/issue/39271
+
+    ;; service "xorg-server" must be defined only once (see above)
+
+    ;; GDM - GNOME Desktop Manager: graphical user login, display servers
+    (delete gdm-service-type))
+  )
 
 (define-public syst-config
   (operating-system
@@ -115,6 +227,7 @@
      ;; TODO create macros pappend, premove, etc. - parallel processing
      (append
       (base:services)
+      (gui-services)
       (list
        (service cups-service-type
                 (cups-configuration
@@ -157,104 +270,7 @@
 
        ;; (service pcscd-service-type) ;; usb card reader
 
-
-;;; GUI stuff ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-       ;; Prepare system environment for NVIDIA driver
-       (service nvidia-service-type)
-
-       ;; Configure GNOME desktop environment
-       (service gnome-desktop-service-type
-                ;; Enable NVIDIA support, only do this when the card is
-                ;; used for displaying.
-                ;; Adding the following leads to
-                ;;   profile contains conflicting entries for packagekit
-                ;; (gnome-desktop-configuration
-                ;;  (gnome (replace-mesa gnome)))
-                )
-
-       ;; Configure Xorg display server. Only do this when the card is used for
-       ;; displaying.
-       (set-xorg-configuration
-        (xorg-configuration
-         (modules (cons nvda %default-xorg-modules))
-         (drivers '("nvidia"))
-         (keyboard-layout keyboard-layout))
-
-        ;; SDDM - Simple Desktop Display Manager (for login screen)
-        ;; Recommended for KDE Plasma, LXQt desktop environments
-        sddm-service-type)
-
-       ;; (service mate-desktop-service-type)
-
-       ;; ;; Configure TTYs and graphical greeter
-       ;; (service
-       ;;  console-font-service-type
-       ;;  `(("tty1" . "LatGrkCyr-8x16")
-       ;;    ("tty2" . ,(file-append
-       ;;                font-tamzen
-       ;;                "/share/kbd/consolefonts/TamzenForPowerline10x20.psf"))
-       ;;    ("tty3" . ,(file-append
-       ;;                font-terminus
-       ;;                "/share/consolefonts/ter-132n")))
-
-       ;;  ;; Larger font for HIDPI screens, however this is too large
-       ;;  ;; (map (lambda (tty)
-       ;;  ;;        (cons tty (file-append
-       ;;  ;;                   font-terminus
-       ;;  ;;                   "/share/consolefonts/ter-132n")))
-       ;;  ;;      '("tty1" "tty2" "tty3"))
-       ;;  )
-
-       ;; (service greetd-service-type
-       ;;          (greetd-configuration
-       ;;           (greeter-supplementary-groups (list "video" "input"))
-       ;;           (terminals
-       ;;            (list
-       ;;             ;; TTY1 is the graphical login screen for Sway
-       ;;             (greetd-terminal-configuration
-       ;;              (terminal-vt "1")
-       ;;              (terminal-switch #t))
-
-       ;;             ;; Set up remaining TTYs for terminal use
-       ;;             (greetd-terminal-configuration (terminal-vt "2"))
-       ;;             (greetd-terminal-configuration (terminal-vt "3"))))))
-
-       (simple-service
-        'custom-udev-rules udev-service-type
-        (list nvidia-driver))
-
-       ;; load loadable kernel modules at boot with modprobe
-       (service kernel-module-loader-service-type
-                '("ipmi_devintf"
-                  "nvidia"
-                  "nvidia_modeset"
-                  "nvidia_uvm"))
-
-       ;; Configure swaylock as a setuid program
-       ;; (service screen-locker-service-type
-       ;;          (screen-locker-configuration
-       ;;           (name "swaylock")
-       ;;           (program (file-append swaylock "/bin/swaylock"))
-       ;;           (using-pam? #t)
-       ;;           (using-setuid? #f)))
-       )
-
-      ;; %desktop-services is the default list of services we are appending to.
-      (modify-services %desktop-services
-        ;; (sane-service-type _ => sane-backends)
-
-        ;; (delete login-service-type)
-        ;; (delete mingetty-service-type)
-        ;; (delete console-font-service-type)
-        ;; for sway - see the patch:
-        ;;   Add a guide to the guix cookbook about setting up sway.
-        ;;   https://issues.guix.gnu.org/issue/39271
-
-        ;; service "xorg-server" must be defined only once (see above)
-
-        ;; GDM - GNOME Desktop Manager: graphical user login, display servers
-        (delete gdm-service-type))))
+       )))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html
@@ -268,7 +284,7 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "6.17.0-6"))
+        (let ((linux-version "6.17.0-8"))
           (menu-entry
            (label "Ubuntu 25.10")
            ;; vmlinuz - compressed linux kernel
