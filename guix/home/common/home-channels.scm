@@ -34,7 +34,8 @@
     ;; 14 nov. 2025 14:28:09
     ;; 25 nov. 2025 16:03:05
     ;; 02 déc. 2025 19:12:22
-	  ;; 10 déc. 2025 21:45:14
+    ;; 10 déc. 2025 21:45:14
+    ;; 29 déc. 2025 16:13:48
     #:commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
     )
    ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
@@ -51,7 +52,10 @@
     ;; #:commit "0a070f3655c32e1aa429d3849dacfaad4fb5b2fa"
 
     ;; 10 déc. 2025 21:45:14 - from file:///home/bost/dev/guixrus
-    #:commit "29573922e8c749a4a3b52d0a9fc0b71e13b4a12c"
+    ;; #:commit "29573922e8c749a4a3b52d0a9fc0b71e13b4a12c"
+
+    ;; 29 déc. 2025 16:13:48 - from file:///home/bost/dev/guixrus
+    #:commit "9f5a0a357ffafbe9b31fcdc3916dfee57baf5859"
     )
    (channel-hask-clj
     ;; 04 nov. 2025 13:20:55
@@ -59,14 +63,19 @@
     ;; 14 nov. 2025 14:28:09
     ;; 25 nov. 2025 16:03:05
     ;; 02 déc. 2025 19:12:22
-	  ;; 10 déc. 2025 21:45:14
+    ;; 10 déc. 2025 21:45:14
+    ;; 29 déc. 2025 16:13:48
     ;; #:commit "a8b30a606f91caabec3cc8dc4b1255a69836554e"
     )
-   (channel-games) ; For factorio
+   (channel-games ; For factorio; pulls-in nonguix guix-past
+    ;; 29 déc. 2025 16:13:48
+    #:commit "acc252d2f7fed939ace5a5a98d7750197696dac3"
+    )
+
    ;; (channel-home-service-dwl-guile)
    ;; (channel-flat)
    ;; (channel-rde)
-   (channel-bost
+   (channel-bost ; pulls-in guix nonguix guix-rust-past-crates
     ;; 04 nov. 2025 13:20:55
     ;; 05 nov. 2025 12:48:06
     ;; 14 nov. 2025 14:28:09
@@ -76,8 +85,9 @@
     ;; #:commit "65b4c76a92577493a64a651e20e3c3b4120c9310"
 
     ;; 02 déc. 2025 19:12:22
-	  ;; 10 déc. 2025 21:45:14
-    ;; #:commit "2d6098abb21cbae397d548ced46878bcf07cade9"
+    ;; 10 déc. 2025 21:45:14
+    ;; 29 déc. 2025 16:13:48
+    #:commit "2d6098abb21cbae397d548ced46878bcf07cade9"
     )))
 
 (define (home-channels)
@@ -108,9 +118,13 @@
     ;; #:guix-commit "5f7cc5c2c6497ebaf7039cdb30ceba025602d698"
     ;; #:nonguix-commit "82be0b7adaaaa7a98d47382d7f72dd2e31d8e6d8"
 
-	  ;; 10 déc. 2025 21:45:14
-    #:guix-commit "ec959892550ecbfcd4be47e8464df953af6529b3"
-    #:nonguix-commit "cb35c71a028eb4a7c950c6a9637c0efad413ef35"
+    ;; 10 déc. 2025 21:45:14
+    ;; #:guix-commit "ec959892550ecbfcd4be47e8464df953af6529b3"
+    ;; #:nonguix-commit "cb35c71a028eb4a7c950c6a9637c0efad413ef35"
+
+    ;; 29 déc. 2025 16:13:48
+    #:guix-commit "d88ecb34b4ec6ce43e34def8e54b2f2522706721"
+    #:nonguix-commit "ba91bc437dba367f98608658bb4a19fb0880ad24"
     )))
 (testsymb 'home-channels)
 
