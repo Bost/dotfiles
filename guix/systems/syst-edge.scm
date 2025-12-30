@@ -195,12 +195,12 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let [(linux-version "6.14.0-35")]
+        ;; sudo rg vmlinuz /run/media/bost/c99384b9-*/boot/grub/grub.cfg | head
+        (let [(linux-version "6.17.0-8")]
           (menu-entry
-           (label "Ubuntu 25.04")
+           (label "Ubuntu 25.10")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
-            ;; See /run/media/bost/c99384b9-.../boot/grub/grub.cfg
             '("root=UUID=c99384b9-1611-4318-a2d0-705e9b0c9007"
               "ro"     ; mount the root disk read only
               "quiet"  ; don't display console messages
@@ -208,12 +208,12 @@
               ))
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))
 
-        (let [(linux-version "6.8.0-87")]
+        ;; sudo rg vmlinuz /run/media/bost/9025de3c-*/boot/grub/grub.cfg | head
+        (let [(linux-version "6.8.0-90")]
           (menu-entry
            (label "Linux Mint 22.2 Zara")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
-            ;; See /media/bost/9025de3c-.../boot/grub/grub.cfg
             '("root=UUID=9025de3c-129b-46fe-bcde-4917d304e4ab"
               "ro"     ; mount the root disk read only
               "quiet"  ; don't display console messages
