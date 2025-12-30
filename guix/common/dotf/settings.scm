@@ -14,7 +14,7 @@
 (define-public gitlab "git@gitlab.com:rostislav.svoboda")
 (define-public github "git@github.com:Bost")
 (define-public user-full-name "Rostislav Svoboda")
-(define-public user-mail-address "Rostislav.Svoboda@gmail.com")
+(define-public user-mail-address "Rostislav.Svoboda@posteo.net")
 (define-public user "bost")
 (define-public home (str "/home/" user))
 (define-public host-lukas "lukas")
