@@ -49,12 +49,13 @@
    ;; #:nonguix-commit "82be0b7adaaaa7a98d47382d7f72dd2e31d8e6d8"
 
    ;; 10 déc. 2025 22:25:49
-   ;; #:guix-commit "ec959892550ecbfcd4be47e8464df953af6529b3"
-   ;; #:nonguix-commit "cb35c71a028eb4a7c950c6a9637c0efad413ef35"
+   #:guix-commit "ec959892550ecbfcd4be47e8464df953af6529b3"
+   #:nonguix-commit "cb35c71a028eb4a7c950c6a9637c0efad413ef35"
 
    ;; 29 déc. 2025 17:05:40
-   #:guix-commit "d88ecb34b4ec6ce43e34def8e54b2f2522706721"
-   #:nonguix-commit "ba91bc437dba367f98608658bb4a19fb0880ad24"
+   ;; xfce is broken
+   ;; #:guix-commit "d88ecb34b4ec6ce43e34def8e54b2f2522706721"
+   ;; #:nonguix-commit "ba91bc437dba367f98608658bb4a19fb0880ad24"
    ))
 
 (syst-channels)
