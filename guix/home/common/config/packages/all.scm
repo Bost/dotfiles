@@ -95,7 +95,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; guix package --load-path=$dev/games --install=factorio
     ;; set factVersion @2.0.72 # set --erase experimentalVersion
     ;; guix package --load-path=$dev/games --install=factorio$factVersion
-    (@(games packages factorio) factorio)
+    ;; (@(games packages factorio) factorio)
     )))
 (testsymb 'packages-from-additional-channels)
 
@@ -482,7 +482,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 (define (rest-packages)
   (list
    adb
-   alsa-utils
+   alsa-utils  ; Advanced Linux Sound Architecture; contains speaker-test
    android-ext4-utils
    android-file-transfer
    android-udev-rules
@@ -494,6 +494,11 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    autoconf
    automake    ; for `make doc/guix.info`
    bc          ; Arbitrary precision numeric processing language
+
+   ;; beep: Error: Could not open any device
+   ;; Solution could be to edit /etc/modprobe.d/blacklist.conf but that's a bit
+   ;; too much of a hassle. See https://askubuntu.com/q/1488365
+   ;; beep        ; command-line utility to control the PC speaker
 
    ;; specifying only 'bind' leads to "Wrong type argument in position 1 ..."
    (list isc-bind "utils")
