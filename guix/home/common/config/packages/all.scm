@@ -140,22 +140,23 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     inkscape
     )
 
-   (list
-    ;; Embeddable TeX/LaTeX engine
-    tectonic
+   ;; (list
+   ;;  ;; Embeddable TeX/LaTeX engine
+   ;;  tectonic
 
-    ;; Graphviz to LaTeX converter
-    dot2tex
+   ;;  ;; Graphviz to LaTeX converter
+   ;;  dot2tex
 
-    ;; Complete TeX Live distribution. May take too long to graft
-    texlive
+   ;;  ;; Complete TeX Live distribution. May take too long to graft
+   ;;  texlive
 
-    ;; Integrated environment for TeX in Emacs
-    emacs-auctex
+   ;;  ;; Integrated environment for TeX in Emacs
+   ;;  emacs-auctex
 
-    ;; Completion for `AUCTeX'
-    bst:emacs-company-auctex
-    )))
+   ;;  ;; Completion for `AUCTeX'
+   ;;  bst:emacs-company-auctex
+   ;;  )
+   ))
 (testsymb 'large-packages-ecke)
 
 (define (rust-development-packages)
