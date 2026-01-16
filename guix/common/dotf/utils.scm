@@ -1235,6 +1235,7 @@ value).
 (plist? '(a 1 b 2)) ; => #t
 (plist? '())        ; => #t
 (plist? '(1))       ; => #f
+(plist? '(1 2 3))   ; => #f
 (plist? 1)          ; => #f
 (plist? '(a 1 a 2)) ; => #f ; duplicate"
   (and (list? lst) (even? (length lst))
