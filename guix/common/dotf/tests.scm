@@ -34,14 +34,14 @@
                       ;; `(apply function arg ...)' or `(function arg ...)'.
                       (condition [else
                                   (begin
-                                    (format #t "[stx-c1 guard-else] condition :\n~a\n" condition)
+                                    ;; (format #t "[stx-c1 guard-else] condition :\n~a\n" condition)
                                     #f)
                                   ])
                       (begin
-                        (when #t
-                          ;; (format #t "[stx-c1 guard-body] macro-name      : ~a\n" macro-name)
-                          (format #t "[stx-c1 guard-body] function        : ~a\n" function)
-                          (format #t "[stx-c1 guard-body] symbol          : ~a\n" symbol))
+                        ;; (when #t
+                        ;;   ;; (format #t "[stx-c1 guard-body] macro-name      : ~a\n" macro-name)
+                        ;;   (format #t "[stx-c1 guard-body] function        : ~a\n" function)
+                        ;;   (format #t "[stx-c1 guard-body] symbol          : ~a\n" symbol))
 
                         (cond
                          [(eq? macro-name 'show-type-of-expression)
@@ -70,11 +70,11 @@
                         (not (equal? 'error? (last symbol))))
                    (begin
                      ;; (format #t "cond->(caddr symbol) : #t\n")
-                     (format #t "[stx-c1 cond-1] symbol : ~a\n" symbol)
+                     ;; (format #t "[stx-c1 cond-1] symbol : ~a\n" symbol)
                      (caddr symbol))]
                   [else
                    (begin
-                     (format #t "[stx-c1 else] symbol : ~a\n" symbol)
+                     ;; (format #t "[stx-c1 else] symbol : ~a\n" symbol)
                      symbol)])
                  ))
              ;; (lambda (p) (format #t "1: ~a\n" p) p)
@@ -155,21 +155,22 @@ Type Testing Predicates.
     'plist?
     'pair?
 
-    'proper-list?   ; from srfi-1
-    'circular-list? ; from srfi-1
+    '(@(srfi srfi-1) proper-list?)
+    '(@(srfi srfi-1) circular-list?)
     ;; SRFI-1's dotted-list? treats any finite list whose final cdr is not '()
     ;; as a dotted (improper) list — and it allows the degenerate case with zero
     ;; pairs.
-    ;; 'dotted-list?
+    ;; '(@(srfi srfi-1) dotted-list?)
     'nonempty-dotted-list?
 
-    'null-list?     ; from srfi-1
-    'not-pair?      ; from srfi-1
+    '(@(srfi srfi-1) null-list?)
+    '(@(srfi srfi-1) not-pair?)
 
     'vector?
     'procedure?
     'record?
     'struct?
+    'hash-table?
     ;;
     'number?
     'complex?
