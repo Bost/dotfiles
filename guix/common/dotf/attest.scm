@@ -35,6 +35,7 @@ Example:
 
 ;; TODO add #:owner to every fork and consider increasing the commit score when
 ;; author, commiter and fork owner differ
+;; A single owner can have multiple forks
 
 ;; New commits are typically comming-in from the official upstream, this may
 ;; change however, when the community splits for some reason
@@ -56,36 +57,36 @@ Example:
 
 (define fork1
   (list
-   (append (list-ref orig 0) (list #:attested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref orig 1) (list #:attested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref orig 2) (list #:attested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref orig 3) (list #:attested "2026-01-02_19-00-23" #| more keys & vals |#))
-   (append (list-ref orig 4) (list #:attested "2026-01-02_19-00-23" #| more keys & vals |#))
-   (append (list-ref orig 5) (list #:attested "2026-01-06_12-38-01" #| more keys & vals |#))
-   (append (list-ref orig 6) (list #:attested "2026-01-07_12-40-24" #| more keys & vals |#))
+   (append (list-ref new-commits 0) (list #:attested "2026-01-01_13-00-20" #| more keys & vals |#))
+   (append (list-ref new-commits 1) (list #:attested "2026-01-01_13-00-20" #| more keys & vals |#))
+   (append (list-ref new-commits 2) (list #:attested "2026-01-01_13-00-20" #| more keys & vals |#))
+   (append (list-ref new-commits 3) (list #:attested "2026-01-02_19-00-23" #| more keys & vals |#))
+   (append (list-ref new-commits 4) (list #:attested "2026-01-02_19-00-23" #| more keys & vals |#))
+   (append (list-ref new-commits 5) (list #:attested "2026-01-06_12-38-01" #| more keys & vals |#))
+   (append (list-ref new-commits 6) (list #:attested "2026-01-07_12-40-24" #| more keys & vals |#))
    ))
 
 (define fork2
   (list
-   (append (list-ref orig 0) (list #:attested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref orig 1) (list #:attested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref orig 2) (list #:attested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref orig 3) (list #:attested "2026-01-04_09-11-00" #| more keys & vals |#))
-   (append (list-ref orig 4) (list #:attested "2026-01-04_09-11-00" #| more keys & vals |#))
-   (append (list-ref orig 5) (list #:attested "2026-01-10_09-15-33" #| more keys & vals |#))
-   (append (list-ref orig 6) (list #:attested "2026-01-10_09-15-33" #| more keys & vals |#))
-   (append (list-ref orig 7) (list #:attested "2026-01-10_09-15-33" #| more keys & vals |#))
+   (append (list-ref new-commits 0) (list #:attested "2026-01-01_23-40-00" #| more keys & vals |#))
+   (append (list-ref new-commits 1) (list #:attested "2026-01-01_23-40-00" #| more keys & vals |#))
+   (append (list-ref new-commits 2) (list #:attested "2026-01-01_23-40-00" #| more keys & vals |#))
+   (append (list-ref new-commits 3) (list #:attested "2026-01-04_09-11-00" #| more keys & vals |#))
+   (append (list-ref new-commits 4) (list #:attested "2026-01-04_09-11-00" #| more keys & vals |#))
+   (append (list-ref new-commits 5) (list #:attested "2026-01-10_09-15-33" #| more keys & vals |#))
+   (append (list-ref new-commits 6) (list #:attested "2026-01-10_09-15-33" #| more keys & vals |#))
+   (append (list-ref new-commits 7) (list #:attested "2026-01-10_09-15-33" #| more keys & vals |#))
    ))
 
 (define fork3
   (list
-   (append (list-ref orig 0) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref orig 1) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref orig 2) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref orig 3) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref orig 4) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref orig 5) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref orig 6) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 0) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 1) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 2) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 3) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 4) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 5) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 6) (list #:attested "2026-01-10_09-58-07" #| more keys & vals |#))
    ))
 
 ;; Define a scoring function over incomming commits, computed from observable
@@ -128,28 +129,6 @@ It turns an unbounded score into something that behaves like a probability."
      ;; [else] ;; TODO raise an exception
      )))
 
-;; try-catch guard
-;; (with-exception-handler
-;;     (lambda (exception)
-;;       (cond
-;;        [(and (read-exception? exception)
-;;              (eq? (read-exception-reason exception) 'almost-full))
-;;         (format #t "[catch] The disk is almost full, only has ~a left.\n"
-;;                 (disk-space-amount))
-;;         (format #t "[catch] Please provide a different file size: ")
-;;         (let ((new-file-size (read)))
-;;           (if (disk-space-left? new-file-size)
-;;               new-file-size
-;;               (raise-exception exception)))]
-;;        [else (raise-exception exception)]))
-;;   (lambda ()
-;;     (let [(file-size (if (disk-space-left? 1028)
-;;                          1028
-;;                          (raise-continuable
-;;                           (make-read-exception 'almost-full 'medium))))]
-;;       (format #t "Writing ~a\n" file-size))))
-
-
 ;; You will likely want a 'mirror?' classifier later; for now treat all
 ;; attesters as human.
 (define (fork-human? fork) #t)
@@ -188,13 +167,13 @@ at least MIN-DAYS since the SINCE-DATE."
          (loop (cdr attestation-repos)
                (if (and (fork-human? attestation-repo)
                         attested-commit ;; does an attested-commit even exist?
-                        (>= (attest-age-since date attested-commit) min-days))
+                        (>= (attest-age-since since-date attested-commit) min-days))
                    (1+ cnt-sha-occurencies)
                    cnt-sha-occurencies)))))))
 
 ;; Distance/behind computation needs commit graph; for now approximate by list index.
 (define (sha-index commits sha)
-  "(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'b) => 2"
+  "(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'b) => 1"
   (let loop ((loop-commits commits) (idx 0))
     (cond ((null? loop-commits) #f)
           ((eq? (shasum (car loop-commits)) sha) idx)
@@ -362,3 +341,7 @@ calculated using ATTESTATION-REPOS."
          (if (>= (logistic cand-score) min-profitability)
              cand-commit
              (loop (cdr candidate-commits))))))))
+
+;; 2) The biggest conceptual issue: maturity should use fork timestamp, not upstream commit timestamp
+;; You got this right (you use #:attested). Good.
+;; But your candidate selection currently does not require “commit exists in all forks”. That’s OK if your profitability model treats “not present” as “not mature” (it currently does). Just be sure that’s what you want: a commit with 0 attestations can still pass if weight-behind is large. If that’s not desired, add a hard gate or a penalty.
