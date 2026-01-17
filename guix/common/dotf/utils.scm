@@ -1086,8 +1086,8 @@ found or the CLIENT-CMD if some process ID was found."
   "Smart plist-get that works with arguments in either order.
 (plist-get '(#:y 2 #:x 1) #:x)      ; => 1
 (plist-get #:x (list #:y 2 #:x 1))  ; => 1
-(plist-get '(#:y 2 #:x 1) #:z)      ; => *unspecified*
-(plist-get '() #:x)                 ; => *unspecified*
+(plist-get '(#:y 2 #:x 1) #:z)      ; => #f
+(plist-get '() #:x)                 ; => #f
 
 (plist-get '(1 11 2 22) 1)          ; => 11
 (plist-get '((1 2) 11 2 22) '(1 2)) ; => 11
@@ -1096,7 +1096,7 @@ found or the CLIENT-CMD if some process ID was found."
   (define (loop plist key)
     "Original plist-get implementation."
     (cond
-     [(null? plist) *unspecified*]
+     [(null? plist) #f]
      [(eq? (car plist) key) (cadr plist)]
      [else (loop (cddr plist) key)]))
 
