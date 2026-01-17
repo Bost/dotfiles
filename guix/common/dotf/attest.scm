@@ -83,10 +83,10 @@ Example:
 
 (define (days-between begin end)
   "Return number of whole days between BEGIN and END (both SRFI-19 dates).
-Example:
+Examples:
 (days-between (parse-tstp \"2026-01-01_00-00-00\")
-              (parse-tstp \"2026-01-10_00-00-00\"))
-;; => 9"
+              (parse-tstp \"2026-01-10_00-00-00\")) ; => 9
+"
   (let* ((beg-time     (date->time-utc begin))
          (end-time     (date->time-utc end))
          (delta-time (- (time-second end-time) (time-second beg-time))))
@@ -101,7 +101,8 @@ Example:
   "Force X to stay between LO and HI. (Clamp - wood working tool.)
 Examples:
 (clamp 1 2 3) => 2
-(clamp 5 1 9) => 5"
+(clamp 5 1 9) => 5
+"
   (max lo (min hi x)))
 
 (define (logistic x)
@@ -119,7 +120,8 @@ It turns an unbounded score into something that behaves like a probability."
   "Return the first commit plist in COMMITS whose #:sha matches SHA, else #f.
 Examples:
 (find-by-sha fork1 '3b200x) ; => #f
-(find-by-sha fork1 '3b200)  ; => (#:sha #{3b200}# ...)"
+(find-by-sha fork1 '3b200)  ; => (#:sha #{3b200}# ...)
+"
   (let loop ((xs commits))
     (cond ((null? xs) #f)
           ((eq? sha (shasum (car xs))) (car xs))
@@ -135,17 +137,21 @@ Examples:
 
 (define (commit-age until-date commit)
   "Number of days between a COMMIT and a UNTIL-DATE (SRFI-19). Age of COMMIT.
-Example:
+Examples:
 (define commit '(#:commited \"2026-01-01_00-00-00\"))
-(commit-age (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1"
+(commit-age (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1
+(commit-age (parse-tstp \"2025-12-31_00-00-00\") commit) ; => -1
+"
   (days-between (parse-tstp (plist-get commit #:commited)) until-date))
 
-(define (attest-age until-date attest)
-  "Number of days between an ATTEST and a UNTIL-DATE (SRFI-19). Age of ATTEST.
-Example:
-(define attest '(#:attested \"2026-01-01_00-00-00\"))
-(attest-age (parse-tstp \"2026-01-02_00-00-00\") attest) ; => 1"
-  (days-between (parse-tstp (plist-get attest #:attested)) until-date))
+(define (attest-age until-date commit)
+  "Number of days between an COMMIT and a UNTIL-DATE (SRFI-19). Age of ATTEST.
+Examples:
+(define commit '(#:attested \"2026-01-01_00-00-00\"))
+(attest-age (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1
+(attest-age (parse-tstp \"2025-12-31_00-00-00\") commit) ; => -1
+"
+  (days-between (parse-tstp (plist-get commit #:attested)) until-date))
 
 (define (count-mature-attesters date min-days attestation-repos sha)
   "Count human-made repositories where SHA exists and is attested at least
@@ -175,7 +181,8 @@ Examples:
   "0-based index of SHA in COMMITS, or #f.
 Examples:
 (sha-index '((#:sha a) (#:sha b) (#:sha c)) 'x) ; => #f
-(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'b) ; => 1"
+(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'b) ; => 1
+"
   (let loop ((xs commits) (idx 0))
     (cond ((null? xs) #f)
           ((eq? (shasum (car xs)) sha) idx)
@@ -188,7 +195,11 @@ oldest->newest.
 Examples:
 (distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'a) ; => 0
 (distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'b) ; => 1
-(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'c) ; => 2"
+(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'c) ; => 2
+(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'x) ; => #f
+(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'x 'y) ; => #f
+(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'x 'c) ; => #f
+"
   (let ((ix (sha-index commits sha-x))
         (iy (sha-index commits sha-y)))
     (and ix iy (max 0 (- iy ix)))))
@@ -295,7 +306,7 @@ churn_rate(L,C)= --------------------------------	​
           attestation-repos
           #:key
           (until-date (current-date)) ; SRFI-19 date
-          (min-maturity-days 5)
+          (min-maturity-days 5) ; minimal maturity for the adoption candidate
           (weight-age 1.0)
           (weight-adopt 1.0)
           (weight-behind 1.0))
@@ -306,7 +317,8 @@ High WEIGHT-AGE and high WEIGHT-ADOPT values:
 High WEIGHT-BEHIND value:
   Avoid being too far behind the upstream (security fixes)
 Low WEIGHT-BEHIND value:
-  Almost ignore how far behind the upstream you are."
+  Almost ignore how far behind the upstream you are.
+"
   (let* ((curr-sha (shasum curr-commit))
          (cand-sha (shasum cand-commit))
          (cand-age (commit-age until-date cand-commit))
@@ -341,6 +353,17 @@ calculated using ATTESTATION-REPOS."
              cand-commit
              (loop (cdr candidate-commits))))))))
 
-;; 2) The biggest conceptual issue: maturity should use fork timestamp, not upstream commit timestamp
-;; You got this right (you use #:attested). Good.
-;; But your candidate selection currently does not require “commit exists in all forks”. That’s OK if your profitability model treats “not present” as “not mature” (it currently does). Just be sure that’s what you want: a commit with 0 attestations can still pass if weight-behind is large. If that’s not desired, add a hard gate or a penalty.
+#|
+
+2) The biggest conceptual issue: maturity should use fork timestamp, not
+upstream commit timestamp
+
+You got this right (you use #:attested). Good.
+
+But your candidate selection currently does not require “commit exists in all
+forks”. That’s OK if your profitability model treats “not present” as “not
+mature” (it currently does). Just be sure that’s what you want: a commit with 0
+attestations can still pass if weight-behind is large. If that’s not desired,
+add a hard gate or a penalty (TODO).
+
+|#
