@@ -7,30 +7,6 @@
   #:use-module (ice-9 match)
   )
 
-(define (parse-tstp tstp-string)
-  "Parse \"YYYY-MM-DD_HH-MM-SS\" into an SRFI-19 date.
-Example:
-(parse-tstp \"2026-01-12_19-07-32\") ; =>
-#<date nanosecond: 0 second: 32 minute: 7 hour: 19 day: 12 month: 1 year: 2026 zone-offset: 3600>
-"
-  (string->date tstp-string "~Y-~m-~d_~H-~M-~S"))
-
-(define (days-between date-x date-y)
-  "Return number of whole days between DATE-X and DATE-Y (both SRFI-19 dates).
-Example:
-(days-between (parse-tstp \"2026-01-02_00-00-00\")
-              (parse-tstp \"2026-01-01_00-00-00\"))
-;; => 1"
-  (let* ((x-time     (date->time-utc date-x))
-         (y-time     (date->time-utc date-y))
-         (delta-time (- (time-second x-time) (time-second y-time))))
-    ;; (* 24 #| hours |# 60 #| minutes |# 60 #| seconds |#) ; => 86400
-    ;; (let ((delta-time 172799)) ;; 1 day, 23 hours, 59 minutes, 59 seconds
-    ;;   (format #t "(/ delta-time 86400.0)    : ~a\n(inexact->exact ...) : ~a\n"
-    ;;           (/ delta-time 86400.0)
-    ;;           (inexact->exact (floor (/ delta-time 86400)))))
-    (inexact->exact (floor (/ delta-time 86400)))))
-
 ;; --- Example -------------------------------------------------------------
 
 ;; TODO add #:owner to every fork and consider increasing the commit score when
@@ -97,6 +73,30 @@ Example:
 
 ;; --- small utils ---------------------------------------------------------
 
+(define (parse-tstp tstp-string)
+  "Parse \"YYYY-MM-DD_HH-MM-SS\" into an SRFI-19 date.
+Example:
+(parse-tstp \"2026-01-12_19-07-32\") ; =>
+#<date nanosecond: 0 second: 32 minute: 7 hour: 19 day: 12 month: 1 year: 2026 zone-offset: 3600>
+"
+  (string->date tstp-string "~Y-~m-~d_~H-~M-~S"))
+
+(define (days-between begin end)
+  "Return number of whole days between BEGIN and END (both SRFI-19 dates).
+Example:
+(days-between (parse-tstp \"2026-01-01_00-00-00\")
+              (parse-tstp \"2026-01-10_00-00-00\"))
+;; => 9"
+  (let* ((beg-time     (date->time-utc begin))
+         (end-time     (date->time-utc end))
+         (delta-time (- (time-second end-time) (time-second beg-time))))
+    ;; (* 24 #| hours |# 60 #| minutes |# 60 #| seconds |#) ; => 86400
+    ;; (let ((delta-time 172799)) ;; 1 day, 23 hours, 59 minutes, 59 seconds
+    ;;   (format #t "(/ delta-time 86400.0)    : ~a\n(inexact->exact ...) : ~a\n"
+    ;;           (/ delta-time 86400.0)
+    ;;           (inexact->exact (floor (/ delta-time 86400)))))
+    (inexact->exact (floor (/ delta-time 86400)))))
+
 (define (clamp x lo hi)
   "Force X to stay between LO and HI. (Clamp - wood working tool.)
 Examples:
@@ -133,23 +133,32 @@ Examples:
 
 (define (shasum commit) (plist-get commit #:sha))
 
-(define (commit-age-since date commit)
-  "Number of days between a COMMIT and a DATE. (Age of COMMIT.)
+(define (commit-age until-date commit)
+  "Number of days between a COMMIT and a UNTIL-DATE (SRFI-19). Age of COMMIT.
 Example:
 (define commit '(#:commited \"2026-01-01_00-00-00\"))
-(commit-age-since (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1"
-  (days-between date (parse-tstp (plist-get commit #:commited))))
+(commit-age (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1"
+  (days-between (parse-tstp (plist-get commit #:commited)) until-date))
 
-(define (attest-age-since date attest)
-  "Number of days between an ATTEST and a DATE. (Age of ATTEST.)
+(define (attest-age until-date attest)
+  "Number of days between an ATTEST and a UNTIL-DATE (SRFI-19). Age of ATTEST.
 Example:
 (define attest '(#:attested \"2026-01-01_00-00-00\"))
-(attest-age-since (parse-tstp \"2026-01-02_00-00-00\") attest) ; => 1"
-  (days-between date (parse-tstp (plist-get attest #:attested))))
+(attest-age (parse-tstp \"2026-01-02_00-00-00\") attest) ; => 1"
+  (days-between (parse-tstp (plist-get attest #:attested)) until-date))
 
 (define (count-mature-attesters date min-days attestation-repos sha)
   "Count human-made repositories where SHA exists and is attested at least
- MIN-DAYS since DATE."
+ MIN-DAYS until DATE (SRFI-19).
+Examples:
+(define date (parse-tstp \"2026-01-11_00-00-00\"))
+(define attestation-repo
+ '((#:sha a #:attested \"2026-01-02_00-00-00\")
+   (#:sha b #:attested \"2026-01-02_00-00-00\")
+   (#:sha c #:attested \"2026-01-02_00-00-00\")))
+(count-mature-attesters date 5 (list attestation-repo) 'b) ; => 1
+(count-mature-attesters date 5 (list attestation-repo) 'x) ; => 0
+"
   (let loop ((repos attestation-repos)
              (count 0))
     (if (null? repos)
@@ -157,8 +166,8 @@ Example:
         (let* ((repo (car repos))
                (commit (find-by-sha repo sha)))
           (loop (cdr repos)
-                (if (and (fork-human? repo) commit
-                         (>= (attest-age-since date commit) min-days))
+                (if (and commit (fork-human? repo)
+                         (>= (attest-age date commit) min-days))
                     (+ count 1)
                     count))))))
 
@@ -285,7 +294,7 @@ churn_rate(L,C)= --------------------------------	​
           new-commits  ; incomming commits from the upstream
           attestation-repos
           #:key
-          (date (current-date))
+          (until-date (current-date)) ; SRFI-19 date
           (min-maturity-days 5)
           (weight-age 1.0)
           (weight-adopt 1.0)
@@ -298,12 +307,11 @@ High WEIGHT-BEHIND value:
   Avoid being too far behind the upstream (security fixes)
 Low WEIGHT-BEHIND value:
   Almost ignore how far behind the upstream you are."
-
   (let* ((curr-sha (shasum curr-commit))
          (cand-sha (shasum cand-commit))
-         (cand-age (commit-age-since date cand-commit))
+         (cand-age (commit-age until-date cand-commit))
          (mature-attesters (count-mature-attesters
-                            date
+                            until-date
                             min-maturity-days
                             attestation-repos
                             cand-sha))
@@ -328,8 +336,7 @@ calculated using ATTESTATION-REPOS."
                                    curr-commit
                                    cand-commit
                                    new-commits
-                                   attestation-repos
-                                   )))
+                                   attestation-repos)))
          (if (>= (logistic cand-score) min-profitability)
              cand-commit
              (loop (cdr candidate-commits))))))))
