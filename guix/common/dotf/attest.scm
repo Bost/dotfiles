@@ -114,26 +114,24 @@ It turns an unbounded score into something that behaves like a probability."
   (/ 1.0 (+ 1.0 (exp (- x)))))
 
 ;; --- indexing attesters ------------------------------------------------------
+
 (define (find-by-sha commits sha)
-  "Return the first alist in COMMITS whose #:sha key matches SHA.
-(find-by-sha fork1 '3b200)
-;; =>
-(#:sha #{3b200}# #:commited \"2026-01-01_11-00-00\" #:attested \"2026-01-01_13-00-20\")
-"
-  (let ((results
-         (filter (lambda (commit) (eq? sha (plist-get commit #:sha)))
-                 commits)))
-    (cond
-     [(= 1 (length results)) (car results)]
-     [(= 0 (length results)) #f]
-     ;; [else] ;; TODO raise an exception
-     )))
+  "Return the first commit plist in COMMITS whose #:sha matches SHA, else #f.
+Examples:
+(find-by-sha fork1 '3b200x) ; => #f
+(find-by-sha fork1 '3b200)  ; => (#:sha #{3b200}# ...)"
+  (let loop ((xs commits))
+    (cond ((null? xs) #f)
+          ((eq? sha (shasum (car xs))) (car xs))
+          (else (loop (cdr xs))))))
 
 ;; You will likely want a 'mirror?' classifier later; for now treat all
 ;; attesters as human.
 (define (fork-human? fork) #t)
 
 ;; --- feature extraction --------------------------------------------------
+
+(define (shasum commit) (plist-get commit #:sha))
 
 (define (commit-age-since date commit)
   "Number of days between a COMMIT and a DATE. (Age of COMMIT.)
@@ -149,48 +147,42 @@ Example:
 (attest-age-since (parse-tstp \"2026-01-02_00-00-00\") attest) ; => 1"
   (days-between date (parse-tstp (plist-get attest #:attested))))
 
-(define (count-mature-attesters
-         since-date
-         min-days
-         attestation-repos
-         sha
-         )
-  "Count of human-made attestation-repositories in which the SHA is present for
-at least MIN-DAYS since the SINCE-DATE."
-  (let loop ((attestation-repos attestation-repos)
-             (cnt-sha-occurencies 0))
-    (cond
-      ((null? attestation-repos) cnt-sha-occurencies)
-      (else
-       (let* ((attestation-repo (car attestation-repos))
-              (attested-commit (find-by-sha attestation-repo sha)))
-         (loop (cdr attestation-repos)
-               (if (and (fork-human? attestation-repo)
-                        attested-commit ;; does an attested-commit even exist?
-                        (>= (attest-age-since since-date attested-commit) min-days))
-                   (1+ cnt-sha-occurencies)
-                   cnt-sha-occurencies)))))))
+(define (count-mature-attesters date min-days attestation-repos sha)
+  "Count human-made repositories where SHA exists and is attested at least
+ MIN-DAYS since DATE."
+  (let loop ((repos attestation-repos)
+             (count 0))
+    (if (null? repos)
+        count
+        (let* ((repo (car repos))
+               (commit (find-by-sha repo sha)))
+          (loop (cdr repos)
+                (if (and (fork-human? repo) commit
+                         (>= (attest-age-since date commit) min-days))
+                    (+ count 1)
+                    count))))))
+
+(define (sha-index commits sha)
+  "0-based index of SHA in COMMITS, or #f.
+Examples:
+(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'x) ; => #f
+(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'b) ; => 1"
+  (let loop ((xs commits) (idx 0))
+    (cond ((null? xs) #f)
+          ((eq? (shasum (car xs)) sha) idx)
+          (else (loop (cdr xs) (+ idx 1))))))
 
 ;; Distance/behind computation needs commit graph; for now approximate by list index.
-(define (sha-index commits sha)
-  "(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'b) => 1"
-  (let loop ((loop-commits commits) (idx 0))
-    (cond ((null? loop-commits) #f)
-          ((eq? (shasum (car loop-commits)) sha) idx)
-          (else (loop (cdr loop-commits) (1+ idx))))))
-
-(define (shasum commit) (plist-get commit #:sha))
-
 (define (distance-between commits sha-x sha-y)
-  "Distance (i.e. number of commits) between the SHA-X and SHA-Y.
-Example:
-(define commits '((#:sha a) (#:sha b) (#:sha c)))
-(distance-between commits 'a 'a) ; => 0
-(distance-between commits 'a 'b) ; => 1
-(distance-between commits 'a 'c) ; => 2"
-  (let ((idx-x (sha-index commits sha-x))
-        (idx-y (sha-index commits sha-y)))
-    (and idx-x idx-y (max 0 (- idx-y idx-x)))))
+  "Distance in number-of-commits from SHA-X to SHA-Y, assuming COMMITS is
+oldest->newest.
+Examples:
+(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'a) ; => 0
+(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'b) ; => 1
+(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'c) ; => 2"
+  (let ((ix (sha-index commits sha-x))
+        (iy (sha-index commits sha-y)))
+    (and ix iy (max 0 (- iy ix)))))
 
 ;; --- scoring -------------------------------------------------------------
 
@@ -293,7 +285,7 @@ churn_rate(L,C)= --------------------------------	​
           new-commits  ; incomming commits from the upstream
           attestation-repos
           #:key
-          (since-date (current-date))
+          (date (current-date))
           (min-maturity-days 5)
           (weight-age 1.0)
           (weight-adopt 1.0)
@@ -309,9 +301,9 @@ Low WEIGHT-BEHIND value:
 
   (let* ((curr-sha (shasum curr-commit))
          (cand-sha (shasum cand-commit))
-         (cand-age (commit-age-since since-date cand-commit))
+         (cand-age (commit-age-since date cand-commit))
          (mature-attesters (count-mature-attesters
-                            since-date
+                            date
                             min-maturity-days
                             attestation-repos
                             cand-sha))
