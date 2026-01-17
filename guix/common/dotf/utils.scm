@@ -460,13 +460,7 @@ reversed. See also:
      (format #f "~a\n" (fmt-rest (list e ...)))]))
 
 ;; TODO implement pretty-print for bash commands
-(define-public (dbg prm)
-  "`pk', i.e. `peek' can be used instead of this procedure."
-  ;; ~a - outputs an argument like display
-  ;; ~s - outputs an argument like write (i.e. print to string)
-  ;; ~% is newline \n
-  (format #t "~s\n" prm)
-  prm)
+(define-public dbg peek)
 
 (define*-public (dbg-exec prm #:key (verbose #t))
   "`pk', i.e. `peek' can be used instead of this procedure."
