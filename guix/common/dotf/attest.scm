@@ -1,9 +1,10 @@
 (define-module (dotf attest)
   #:use-module (dotf utils)
   #:use-module (dotf tests)
+  #:use-module (srfi srfi-1)   ; list-processing procedures
+  #:use-module (srfi srfi-19)  ; string->date
   #:use-module (srfi srfi-88)  ; provides keyword objects
   #:use-module (guix channels) ; %default-channels
-  #:use-module (srfi srfi-19)  ; string->date
   #:use-module (ice-9 match)
   )
 
@@ -72,6 +73,107 @@
 ;;
 
 ;; --- small utils ---------------------------------------------------------
+
+(define (partial fun . args)
+  "Alternative implementation:
+(use-modules (srfi srfi-26))
+(map (cut * 2 <>) '(1 2 3 4)) ;; => (2 4 6 8)"
+  (lambda x (apply fun (append args x))))
+
+(define (comp . fns)
+  "Like `compose'. Can be called with zero arguments. I.e. (thunk? comp) => #t
+Works also for functions returning and accepting multiple values."
+  (lambda args
+    (if (null? fns)
+        (apply values args)
+        (let [(proc (car fns)) (rest (cdr fns))]
+          (if (null? rest)
+              (apply proc args)
+              (let ((g (apply comp rest)))
+                (call-with-values (lambda () (apply g args)) proc)))))))
+
+(define (unspecified-or-empty-or-false? obj)
+  (or (unspecified? obj)
+      (null? obj)
+      (and (string? obj) (string-null? obj))
+      (eq? #f obj)))
+
+(define (get-keys lst)
+  "Return a list of all keys in the list LST, which may or may not be a plist.
+(get-keys '(#:a 1 b 2))   ; => (#:a b)
+(get-keys '(a 1 b 2))     ; => (a b)
+(get-keys '())            ; => ()
+(get-keys '(#:a 1 #:a 3)) ; => (#:a #:a) ; not checking for duplicate keys
+(get-keys '(#:a 1 b))     ; => (#:a)
+(get-keys 1)              ; => not a list"
+  (unless (list? lst)
+    (error (format #f "get-keys: `~s' is not a list\n" lst)))
+
+  (let loop ((xs lst) (acc '()))
+    (cond
+     ((or (null? xs) (null? (cdr xs)))
+      (reverse acc))
+     (else
+      (loop (cddr xs) (cons (car xs) acc))))))
+
+(define (has-duplicates? lst)
+  "Used in `plist?'
+(has-duplicates? '())        ; => #f
+(has-duplicates? '(1 2 3 4)) ; => #f
+(has-duplicates? '(1 2 3 2)) ; => #t
+(has-duplicates? '(a 1 a 2)) ; => #t
+"
+  (cond
+   ((null? lst) #f)
+   ((member (car lst) (cdr lst)) #t)
+   (else (has-duplicates? (cdr lst)))))
+
+(define (plist? lst)
+  "Empty list is also a plist. Plist must not contain duplicate keys.
+(plist? '(a 1 b 2)) ; => #t
+(plist? '())        ; => #t
+(plist? '(1))       ; => #f
+(plist? '(1 2 3))   ; => #f
+(plist? 1)          ; => #f
+(plist? '(a 1 a 2)) ; => #f ; duplicate"
+  (and (list? lst) (even? (length lst))
+       (not (has-duplicates? (get-keys lst)))))
+
+(define (plist-get . args)
+  "Smart plist-get that works with arguments in either order.
+(plist-get '(#:y 2 #:x 1) #:x)      ; => 1
+(plist-get #:x (list #:y 2 #:x 1))  ; => 1
+(plist-get '(#:x 1 #:x 2) #:x)      ; plist-get: expected even-length ...
+(plist-get '(#:y 2 #:x 1) #:z)      ; => #f
+(plist-get '() #:x)                 ; => #f
+
+(plist-get '(1 11 2 22) 1)          ; => 11
+(plist-get '((1 2) 11 2 22) '(1 2)) ; => 11
+
+(plist-get '(42 #:y 2 #:x 1) #:x)   ; plist-get: expected even-length ...
+
+(plist-get)                         ; plist-get: expected exactly ...
+(plist-get 1)                       ; plist-get: expected exactly ...
+(plist-get '())                     ; plist-get: expected exactly ...
+"
+  (define (loop plist key)
+    (cond [(null? plist) #f]
+          [(eq? (car plist) key) (cadr plist)]
+          [else (loop (cddr plist) key)]))
+
+  (unless (= 2 (length args))
+    (error "plist-get: expected exactly 2 arguments (plist key) or (key plist)"
+           args))
+
+  (let* ((loop-args (if (list? (car args))
+                        args
+                        (reverse args)))
+         (plist (car loop-args)))
+    (if (plist? plist)
+        (apply loop loop-args)
+        (error
+         "plist-get: expected even-length list of unique key/value pairs"
+         plist))))
 
 (define (parse-tstp tstp-string)
   "Parse \"YYYY-MM-DD_HH-MM-SS\" into an SRFI-19 date.
@@ -299,6 +401,19 @@ churn_rate(L,C)= --------------------------------	​
   (clamp (/ nr-of-commits-over-nr-of-days 30.0)
          0.0 1.0))
 
+(define (feature-adopter-gate n min-n)
+  "Returns 0 when n >= min-n, negative otherwise, saturating at -1.
+Examples:
+(feature-adopter-gate 0 3) ; => -1.0
+(feature-adopter-gate 1 3) ; => -0.6666
+(feature-adopter-gate 2 3) ; => -0.3333
+(feature-adopter-gate 3 3) ; =>  0.0
+(feature-adopter-gate 4 3) ; =>  0.0
+(feature-adopter-gate 5 3) ; =>  0.0
+"
+  (clamp (/ (- n min-n) (max 1.0 min-n))
+         -1.0 0.0))
+
 (define* (profitability-score
           curr-commit  ; current local commit
           cand-commit  ; adoption candidate
@@ -307,6 +422,9 @@ churn_rate(L,C)= --------------------------------	​
           #:key
           (until-date (current-date)) ; SRFI-19 date
           (min-maturity-days 5) ; minimal maturity for the adoption candidate
+          (min-adopters-count 3)
+          ;; returning gate-penalty ensures `(logistic ...)` approaches 0
+          (gate-penalty -100.0)
           (weight-age 1.0)
           (weight-adopt 1.0)
           (weight-behind 1.0))
@@ -328,9 +446,18 @@ Low WEIGHT-BEHIND value:
                             attestation-repos
                             cand-sha))
          (commit-distance (distance-between new-commits curr-sha cand-sha)))
-    (+ (* weight-age    (feature-age cand-age))
-       (* weight-adopt  (feature-adopt mature-attesters))
-       (* weight-behind (feature-behind (or commit-distance 0))))))
+    ;; Rule of thumb:
+    ;; - For a policy constraint ("never update unless ≥ N attestations"), use
+    ;;   some form of an if-then-else hard gate.
+    ;; - For a heuristic ("prefer N, but sometimes accept fewer if I'm far
+    ;;   behind"), use a soft gate (e.g. `feature-adopter-gate`) together with
+    ;;   a big `weight-gate` in:
+    ;;      (+ ... (* weight-gate (feature-adopter-gate ...)))
+    (if (< mature-attesters min-adopters-count)
+        gate-penalty
+        (+ (* weight-age    (feature-age cand-age))
+           (* weight-adopt  (feature-adopt mature-attesters))
+           (* weight-behind (feature-behind (or commit-distance 0)))))))
 
 ;; --- decision ------------------------------------------------------------
 
@@ -341,29 +468,14 @@ Low WEIGHT-BEHIND value:
 calculated using ATTESTATION-REPOS."
   (let loop ((candidate-commits (reverse new-commits)))
     (cond
-      ((null? candidate-commits) #f)
-      (else
-       (let* ((cand-commit (car candidate-commits))
-              (cand-score (profitability-score
-                                   curr-commit
-                                   cand-commit
-                                   new-commits
-                                   attestation-repos)))
-         (if (>= (logistic cand-score) min-profitability)
-             cand-commit
-             (loop (cdr candidate-commits))))))))
-
-#|
-
-2) The biggest conceptual issue: maturity should use fork timestamp, not
-upstream commit timestamp
-
-You got this right (you use #:attested). Good.
-
-But your candidate selection currently does not require “commit exists in all
-forks”. That’s OK if your profitability model treats “not present” as “not
-mature” (it currently does). Just be sure that’s what you want: a commit with 0
-attestations can still pass if weight-behind is large. If that’s not desired,
-add a hard gate or a penalty (TODO).
-
-|#
+     ((null? candidate-commits) #f)
+     (else
+      (let* ((cand-commit (car candidate-commits))
+             (cand-score (profitability-score
+                          curr-commit
+                          cand-commit
+                          new-commits
+                          attestation-repos)))
+        (if (>= (logistic cand-score) min-profitability)
+            cand-commit
+            (loop (cdr candidate-commits))))))))
