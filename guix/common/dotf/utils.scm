@@ -1082,30 +1082,71 @@ found or the CLIENT-CMD if some process ID was found."
 (define-public some-true? (partial some true?))
 (define-public every-true? (partial every? true?))
 
+(define (get-keys lst)
+  "Return a list of all keys in the list LST, which may or may not be a plist.
+(get-keys '(#:a 1 b 2))   ; => (#:a b)
+(get-keys '(a 1 b 2))     ; => (a b)
+(get-keys '())            ; => ()
+(get-keys '(#:a 1 #:a 3)) ; => (#:a #:a) ; not checking for duplicate keys
+(get-keys '(#:a 1 b))     ; => (#:a)
+(get-keys 1)              ; => not a list"
+  (unless (list? lst)
+    (error (format #f "get-keys: `~s' is not a list\n" lst)))
+
+  (let loop ((xs lst) (acc '()))
+    (cond
+     ((or (null? xs) (null? (cdr xs)))
+      (reverse acc))
+     (else
+      (loop (cddr xs) (cons (car xs) acc))))))
+
+(define (has-duplicates? lst)
+  "Used in `plist?'
+(has-duplicates? '())        ; => #f
+(has-duplicates? '(1 2 3 4)) ; => #f
+(has-duplicates? '(1 2 3 2)) ; => #t
+(has-duplicates? '(a 1 a 2)) ; => #t
+"
+  (cond
+   ((null? lst) #f)
+   ((member (car lst) (cdr lst)) #t)
+   (else (has-duplicates? (cdr lst)))))
+
 (define-public (plist-get . args)
   "Smart plist-get that works with arguments in either order.
 (plist-get '(#:y 2 #:x 1) #:x)      ; => 1
 (plist-get #:x (list #:y 2 #:x 1))  ; => 1
+(plist-get '(#:x 1 #:x 2) #:x)      ; plist-get: expected even-length ...
 (plist-get '(#:y 2 #:x 1) #:z)      ; => #f
 (plist-get '() #:x)                 ; => #f
 
 (plist-get '(1 11 2 22) 1)          ; => 11
 (plist-get '((1 2) 11 2 22) '(1 2)) ; => 11
 
-(plist-get '(42 #:y 2 #:x 1) #:x)   ; => expecting pair: ()"
-  (define (loop plist key)
-    "Original plist-get implementation."
-    (cond
-     [(null? plist) #f]
-     [(eq? (car plist) key) (cadr plist)]
-     [else (loop (cddr plist) key)]))
+(plist-get '(42 #:y 2 #:x 1) #:x)   ; plist-get: expected even-length ...
 
-  ((comp
-    (partial apply loop)
-    (lambda (args) (if (list? (car args))
-                       args
-                       (reverse args))))
-   args))
+(plist-get)                         ; plist-get: expected exactly ...
+(plist-get 1)                       ; plist-get: expected exactly ...
+(plist-get '())                     ; plist-get: expected exactly ...
+"
+  (define (loop plist key)
+    (cond [(null? plist) #f]
+          [(eq? (car plist) key) (cadr plist)]
+          [else (loop (cddr plist) key)]))
+
+  (unless (= 2 (length args))
+    (error "plist-get: expected exactly 2 arguments (plist key) or (key plist)"
+           args))
+
+  (let* ((loop-args (if (list? (car args))
+                        args
+                        (reverse args)))
+         (plist (car loop-args)))
+    (if (plist? plist)
+        (apply loop loop-args)
+        (error
+         "plist-get: expected even-length list of unique key/value pairs"
+         plist))))
 
 (def-public (plist-set plist key val)
   "(plist-set (list) #:key 'val) ; => (#:key val)"
@@ -1224,7 +1265,9 @@ value).
   "Used in `plist?'
 (has-duplicates? '())        ; => #f
 (has-duplicates? '(1 2 3 4)) ; => #f
-(has-duplicates? '(1 2 3 2)) ; => #t"
+(has-duplicates? '(1 2 3 2)) ; => #t
+(has-duplicates? '(a 1 a 2)) ; => #t
+"
   (cond
    ((null? lst) #f)
    ((member (car lst) (cdr lst)) #t)
@@ -1239,7 +1282,7 @@ value).
 (plist? 1)          ; => #f
 (plist? '(a 1 a 2)) ; => #f ; duplicate"
   (and (list? lst) (even? (length lst))
-       (not (has-duplicates? (get-from-list keyword? lst)))))
+       (not (has-duplicates? (get-keys lst)))))
 
 (def (plist-keys-or-vals proc plist)
   "Used in `plist-keys', `plist-vals'"
