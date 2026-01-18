@@ -109,7 +109,7 @@ Works also for functions returning and accepting multiple values."
       (loop (cddr xs) (cons (car xs) acc))))))
 
 (define (has-duplicates? lst)
-  "Used in `plist?'
+  "Used in `plist-unique?'
 (has-duplicates? '())        ; => #f
 (has-duplicates? '(1 2 3 4)) ; => #f
 (has-duplicates? '(1 2 3 2)) ; => #t
@@ -120,16 +120,34 @@ Works also for functions returning and accepting multiple values."
    ((member (car lst) (cdr lst)) #t)
    (else (has-duplicates? (cdr lst)))))
 
-(define (plist? lst)
+(define (plist-unique? lst)
   "Empty list is also a plist. Plist must not contain duplicate keys.
-(plist? '(a 1 b 2)) ; => #t
-(plist? '())        ; => #t
-(plist? '(1))       ; => #f
-(plist? '(1 2 3))   ; => #f
-(plist? 1)          ; => #f
-(plist? '(a 1 a 2)) ; => #f ; duplicate"
+
+TODO Git-commit-like metadata may repeat keys (trailers, parents, etc.); in that
+case use a different representation or a non-unique plist predicate. When
+addressing this, use `plist?' instead of this procedure in the `plist-get'.
+
+(plist-unique? '(a 1 b 2)) ; => #t
+(plist-unique? '())        ; => #t
+(plist-unique? '(1))       ; => #f ; odd number of elements
+(plist-unique? '(1 2 3))   ; => #f ; odd number of elements
+(plist-unique? 1)          ; => #f ; not a list
+(plist-unique? '(a 1 a 2)) ; => #f ; 'a is a duplicate key
+"
   (and (list? lst) (even? (length lst))
        (not (has-duplicates? (get-keys lst)))))
+
+(define (plist? lst)
+  "Shape check only: proper list of even length.
+
+(plist? '(a 1 b 2)) ; => #t
+(plist? '())        ; => #t
+(plist? '(1))       ; => #f ; odd number of elements
+(plist? '(1 2 3))   ; => #f ; odd number of elements
+(plist? 1)          ; => #f ; not a list
+(plist? '(a 1 a 2)) ; => #t
+"
+  (and (list? lst) (even? (length lst))))
 
 (define (plist-get . args)
   "Smart plist-get that works with arguments in either order.
@@ -161,7 +179,7 @@ Works also for functions returning and accepting multiple values."
                         args
                         (reverse args)))
          (plist (car loop-args)))
-    (if (plist? plist)
+    (if (plist-unique? plist)
         (apply loop loop-args)
         (error
          "plist-get: expected even-length list of unique key/value pairs"
