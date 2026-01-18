@@ -10,52 +10,61 @@
 ;; author, commiter and fork owner differ. Also a single owner can have multiple
 ;; forks
 
+(read-set! keywords 'prefix) ; Use clojure-stype :keyword, instead of #:keyword
+(define ksha :s)
+(define kcommitted :tc)
+(define kauthor :a)
+(define kattested :ta)
+(define kname :n)
+(define kcommitter :c)
+(define kfinger-print #:f)
+
 ;; New commits are typically comming from the official upstream.
 (define new-commits
   '(
-    (#:sha 3b100 #:commited "2026-01-01_10-00-00" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 0
-    (#:sha 3b200 #:commited "2026-01-01_11-00-00" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 1
-    (#:sha 3b300 #:commited "2026-01-01_12-00-00" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 2
-    (#:sha 3b400 #:commited "2026-01-02_10-00-00" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 3
-    (#:sha 3b4b1 #:commited "2026-01-02_10-00-00" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 4
-    (#:sha 3b4b2 #:commited "2026-01-05_08-00-00" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 5
-    (#:sha 3b4b3 #:commited "2026-01-05_16-00-00" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 6
-    (#:sha 3b4b4 #:commited "2026-01-08_12-23-00" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 7
-    (#:sha 3b4b5 #:commited "2026-01-12_00-44-55" #:author (#:name "..." #:finger-print "...") #:commiter (:#name "..." #:finger-print "...")  #| more keys & vals |#) ; 8
+    (ksha 3b100 kcommitted "2026-01-01_10-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 0
+    (ksha 3b200 kcommitted "2026-01-01_11-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 1
+    (ksha 3b300 kcommitted "2026-01-01_12-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 2
+    (ksha 3b400 kcommitted "2026-01-02_10-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 3
+    (ksha 3b4b1 kcommitted "2026-01-02_10-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 4
+    (ksha 3b4b2 kcommitted "2026-01-05_08-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 5
+    (ksha 3b4b3 kcommitted "2026-01-05_16-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 6
+    (ksha 3b4b4 kcommitted "2026-01-08_12-23-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 7
+    (ksha 3b4b5 kcommitted "2026-01-12_00-44-55" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 8
     ))
 
 (define fork1
   (list
-   (append (list-ref new-commits 0) '(#:attested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref new-commits 1) '(#:attested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref new-commits 2) '(#:attested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref new-commits 3) '(#:attested "2026-01-02_19-00-23" #| more keys & vals |#))
-   (append (list-ref new-commits 4) '(#:attested "2026-01-02_19-00-23" #| more keys & vals |#))
-   (append (list-ref new-commits 5) '(#:attested "2026-01-06_12-38-01" #| more keys & vals |#))
-   (append (list-ref new-commits 6) '(#:attested "2026-01-07_12-40-24" #| more keys & vals |#))
+   (append (list-ref new-commits 0) '(kattested "2026-01-01_13-00-20" #| more keys & vals |#))
+   (append (list-ref new-commits 1) '(kattested "2026-01-01_13-00-20" #| more keys & vals |#))
+   (append (list-ref new-commits 2) '(kattested "2026-01-01_13-00-20" #| more keys & vals |#))
+   (append (list-ref new-commits 3) '(kattested "2026-01-02_19-00-23" #| more keys & vals |#))
+   (append (list-ref new-commits 4) '(kattested "2026-01-02_19-00-23" #| more keys & vals |#))
+   (append (list-ref new-commits 5) '(kattested "2026-01-06_12-38-01" #| more keys & vals |#))
+   (append (list-ref new-commits 6) '(kattested "2026-01-07_12-40-24" #| more keys & vals |#))
    ))
 
 (define fork2
   (list
-   (append (list-ref new-commits 0) '(#:attested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref new-commits 1) '(#:attested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref new-commits 2) '(#:attested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref new-commits 3) '(#:attested "2026-01-04_09-11-00" #| more keys & vals |#))
-   (append (list-ref new-commits 4) '(#:attested "2026-01-04_09-11-00" #| more keys & vals |#))
-   (append (list-ref new-commits 5) '(#:attested "2026-01-10_09-15-33" #| more keys & vals |#))
-   (append (list-ref new-commits 6) '(#:attested "2026-01-10_09-15-33" #| more keys & vals |#))
-   (append (list-ref new-commits 7) '(#:attested "2026-01-10_09-15-33" #| more keys & vals |#))
+   (append (list-ref new-commits 0) '(kattested "2026-01-01_23-40-00" #| more keys & vals |#))
+   (append (list-ref new-commits 1) '(kattested "2026-01-01_23-40-00" #| more keys & vals |#))
+   (append (list-ref new-commits 2) '(kattested "2026-01-01_23-40-00" #| more keys & vals |#))
+   (append (list-ref new-commits 3) '(kattested "2026-01-04_09-11-00" #| more keys & vals |#))
+   (append (list-ref new-commits 4) '(kattested "2026-01-04_09-11-00" #| more keys & vals |#))
+   (append (list-ref new-commits 5) '(kattested "2026-01-10_09-15-33" #| more keys & vals |#))
+   (append (list-ref new-commits 6) '(kattested "2026-01-10_09-15-33" #| more keys & vals |#))
+   (append (list-ref new-commits 7) '(kattested "2026-01-10_09-15-33" #| more keys & vals |#))
    ))
 
 (define fork3
   (list
-   (append (list-ref new-commits 0) '(#:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 1) '(#:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 2) '(#:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 3) '(#:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 4) '(#:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 5) '(#:attested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 6) '(#:attested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 0) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 1) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 2) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 3) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 4) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 5) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (append (list-ref new-commits 6) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
    ))
 
 ;; Define a scoring function over incomming commits, computed from observable
@@ -229,10 +238,10 @@ It turns an unbounded score into something that behaves like a probability."
 ;; --- indexing attesters ------------------------------------------------------
 
 (define (find-by-sha commits sha)
-  "Return the first commit plist in COMMITS whose #:sha matches SHA, else #f.
+  "Return the first commit plist in COMMITS whose shasum matches SHA, else #f.
 Examples:
 (find-by-sha fork1 '3b200x) ; => #f
-(find-by-sha fork1 '3b200)  ; => (#:sha #{3b200}# ...)
+(find-by-sha fork1 '3b200)  ; => (ksha #{3b200}# ...)
 "
   (let loop ((xs commits))
     (cond ((null? xs) #f)
@@ -245,25 +254,25 @@ Examples:
 
 ;; --- feature extraction --------------------------------------------------
 
-(define (shasum commit) (plist-get commit #:sha))
+(define (shasum commit) (plist-get commit ksha))
 
 (define (commit-age until-date commit)
   "Number of days between a COMMIT and a UNTIL-DATE (SRFI-19). Age of COMMIT.
 Examples:
-(define commit '(#:commited \"2026-01-01_00-00-00\"))
+(define commit '(kcommitted \"2026-01-01_00-00-00\"))
 (commit-age (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1
 (commit-age (parse-tstp \"2025-12-31_00-00-00\") commit) ; => -1
 "
-  (days-between (parse-tstp (plist-get commit #:commited)) until-date))
+  (days-between (parse-tstp (plist-get commit kcommitted)) until-date))
 
 (define (attest-age until-date commit)
   "Number of days between an COMMIT and a UNTIL-DATE (SRFI-19). Age of ATTEST.
 Examples:
-(define commit '(#:attested \"2026-01-01_00-00-00\"))
+(define commit '(kattested \"2026-01-01_00-00-00\"))
 (attest-age (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1
 (attest-age (parse-tstp \"2025-12-31_00-00-00\") commit) ; => -1
 "
-  (days-between (parse-tstp (plist-get commit #:attested)) until-date))
+  (days-between (parse-tstp (plist-get commit kattested)) until-date))
 
 (define (count-mature-attesters date min-days attestation-repos sha)
   "Count human-made repositories where SHA exists and is attested at least
@@ -271,9 +280,9 @@ Examples:
 Examples:
 (define date (parse-tstp \"2026-01-11_00-00-00\"))
 (define attestation-repo
- '((#:sha a #:attested \"2026-01-02_00-00-00\")
-   (#:sha b #:attested \"2026-01-02_00-00-00\")
-   (#:sha c #:attested \"2026-01-02_00-00-00\")))
+ '((ksha a kattested \"2026-01-02_00-00-00\")
+   (ksha b kattested \"2026-01-02_00-00-00\")
+   (ksha c kattested \"2026-01-02_00-00-00\")))
 (count-mature-attesters date 5 (list attestation-repo) 'b) ; => 1
 (count-mature-attesters date 5 (list attestation-repo) 'x) ; => 0
 "
@@ -292,8 +301,8 @@ Examples:
 (define (sha-index commits sha)
   "0-based index of SHA in COMMITS, or #f.
 Examples:
-(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'x) ; => #f
-(sha-index '((#:sha a) (#:sha b) (#:sha c)) 'b) ; => 1
+(sha-index '((ksha a) (ksha b) (ksha c)) 'x) ; => #f
+(sha-index '((ksha a) (ksha b) (ksha c)) 'b) ; => 1
 "
   (let loop ((xs commits) (idx 0))
     (cond ((null? xs) #f)
@@ -305,12 +314,12 @@ Examples:
   "Distance in number-of-commits from SHA-X to SHA-Y, assuming COMMITS is
 oldest->newest.
 Examples:
-(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'a) ; => 0
-(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'b) ; => 1
-(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'c) ; => 2
-(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'a 'x) ; => #f
-(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'x 'y) ; => #f
-(distance-between '((#:sha a) (#:sha b) (#:sha c)) 'x 'c) ; => #f
+(distance-between '((ksha a) (ksha b) (ksha c)) 'a 'a) ; => 0
+(distance-between '((ksha a) (ksha b) (ksha c)) 'a 'b) ; => 1
+(distance-between '((ksha a) (ksha b) (ksha c)) 'a 'c) ; => 2
+(distance-between '((ksha a) (ksha b) (ksha c)) 'a 'x) ; => #f
+(distance-between '((ksha a) (ksha b) (ksha c)) 'x 'y) ; => #f
+(distance-between '((ksha a) (ksha b) (ksha c)) 'x 'c) ; => #f
 "
   (let ((ix (sha-index commits sha-x))
         (iy (sha-index commits sha-y)))
@@ -477,10 +486,10 @@ Low WEIGHT-BEHIND value:
   "Return the newest COMMIT whose profitability is at least MIN-PROFITABILITY,
 calculated using ATTESTATION-REPOS.
 Examples:
-(define curr-commit '(#:sha 3b000 #:commited \"2026-01-01_9-00-00\"))
+(define curr-commit '(ksha 3b000 kcommitted \"2026-01-01_9-00-00\"))
 (define attestation-repos (list fork1 fork2 fork3))
 (find-newest-profitable-commit curr-commit new-commits attestation-repos)
-;; => (#:sha #{3b4b3}# #:commited "2026-01-05_16-00-00" ...)
+;; => (ksha #{3b4b3}# kcommitted "2026-01-05_16-00-00" ...)
 "
   (let loop ((candidate-commits (reverse new-commits)))
     (cond
