@@ -3,71 +3,76 @@
   #:use-module (srfi srfi-19)  ; string->date
   #:use-module (srfi srfi-88)  ; provides keyword objects
   )
+(read-set! keywords 'prefix) ; Use clojure-stype :keyword, instead of #:keyword
 
 ;; --- Example -------------------------------------------------------------
 
-;; TODO add #:owner to every fork and consider increasing the commit score when
-;; author, commiter and fork owner differ. Also a single owner can have multiple
-;; forks
+;; TODO add :owner to every fork and consider increasing the commit score when
+;; author, committer and fork owner differ. Also a single owner can have
+;; multiple forks
 
-(read-set! keywords 'prefix) ; Use clojure-stype :keyword, instead of #:keyword
 (define ksha :s)
 (define kcommitted :tc)
 (define kauthor :a)
 (define kattested :ta)
 (define kname :n)
 (define kcommitter :c)
-(define kfinger-print #:f)
+(define kfinger-print :f)
 
-;; New commits are typically comming from the official upstream.
+(define (person name fp) (list kname name kfinger-print fp))
+
+;; New commits are typically coming from the official upstream.
 (define new-commits
-  '(
-    (ksha 3b100 kcommitted "2026-01-01_10-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 0
-    (ksha 3b200 kcommitted "2026-01-01_11-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 1
-    (ksha 3b300 kcommitted "2026-01-01_12-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 2
-    (ksha 3b400 kcommitted "2026-01-02_10-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 3
-    (ksha 3b4b1 kcommitted "2026-01-02_10-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 4
-    (ksha 3b4b2 kcommitted "2026-01-05_08-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 5
-    (ksha 3b4b3 kcommitted "2026-01-05_16-00-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 6
-    (ksha 3b4b4 kcommitted "2026-01-08_12-23-00" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 7
-    (ksha 3b4b5 kcommitted "2026-01-12_00-44-55" kauthor (kname "..." kfinger-print "...") kcommitter (kname "..." kfinger-print "...")  #| more keys & vals |#) ; 8
-    ))
+  (list
+   (list ksha '3b100 kcommitted "2026-01-01_10-00-00" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 0
+   (list ksha '3b200 kcommitted "2026-01-01_11-00-00" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 1
+   (list ksha '3b300 kcommitted "2026-01-01_12-00-00" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 2
+   (list ksha '3b400 kcommitted "2026-01-02_10-00-00" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 3
+   (list ksha '3b4b1 kcommitted "2026-01-02_10-00-00" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 4
+   (list ksha '3b4b2 kcommitted "2026-01-05_08-00-00" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 5
+   (list ksha '3b4b3 kcommitted "2026-01-05_16-00-00" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 6
+   (list ksha '3b4b4 kcommitted "2026-01-08_12-23-00" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 7
+   (list ksha '3b4b5 kcommitted "2026-01-12_00-44-55" kauthor (person "name" "fp") kcommitter (person "name" "fp") #| more k&v |#) ; 8
+   ))
+
+;; (append base (list ...)) creates a fresh list by copying base. Use cons* for
+;; better performance
 
 (define fork1
   (list
-   (append (list-ref new-commits 0) '(kattested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref new-commits 1) '(kattested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref new-commits 2) '(kattested "2026-01-01_13-00-20" #| more keys & vals |#))
-   (append (list-ref new-commits 3) '(kattested "2026-01-02_19-00-23" #| more keys & vals |#))
-   (append (list-ref new-commits 4) '(kattested "2026-01-02_19-00-23" #| more keys & vals |#))
-   (append (list-ref new-commits 5) '(kattested "2026-01-06_12-38-01" #| more keys & vals |#))
-   (append (list-ref new-commits 6) '(kattested "2026-01-07_12-40-24" #| more keys & vals |#))
+   (cons* kattested "2026-01-01_13-00-20" (list-ref new-commits 0))
+   (cons* kattested "2026-01-01_13-00-20" (list-ref new-commits 1))
+   (cons* kattested "2026-01-01_13-00-20" (list-ref new-commits 2))
+   (cons* kattested "2026-01-02_19-00-23" (list-ref new-commits 3))
+   (cons* kattested "2026-01-02_19-00-23" (list-ref new-commits 4))
+   (cons* kattested "2026-01-06_12-38-01" (list-ref new-commits 5))
+   (cons* kattested "2026-01-07_12-40-24" (list-ref new-commits 6))
    ))
 
 (define fork2
   (list
-   (append (list-ref new-commits 0) '(kattested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref new-commits 1) '(kattested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref new-commits 2) '(kattested "2026-01-01_23-40-00" #| more keys & vals |#))
-   (append (list-ref new-commits 3) '(kattested "2026-01-04_09-11-00" #| more keys & vals |#))
-   (append (list-ref new-commits 4) '(kattested "2026-01-04_09-11-00" #| more keys & vals |#))
-   (append (list-ref new-commits 5) '(kattested "2026-01-10_09-15-33" #| more keys & vals |#))
-   (append (list-ref new-commits 6) '(kattested "2026-01-10_09-15-33" #| more keys & vals |#))
-   (append (list-ref new-commits 7) '(kattested "2026-01-10_09-15-33" #| more keys & vals |#))
+   (cons* kattested "2026-01-01_23-40-00" (list-ref new-commits 0))
+   (cons* kattested "2026-01-01_23-40-00" (list-ref new-commits 1))
+   (cons* kattested "2026-01-01_23-40-00" (list-ref new-commits 2))
+   (cons* kattested "2026-01-04_09-11-00" (list-ref new-commits 3))
+   (cons* kattested "2026-01-04_09-11-00" (list-ref new-commits 4))
+   (cons* kattested "2026-01-10_09-15-33" (list-ref new-commits 5))
+   (cons* kattested "2026-01-10_09-15-33" (list-ref new-commits 6))
+   (cons* kattested "2026-01-10_09-15-33" (list-ref new-commits 7))
    ))
 
 (define fork3
   (list
-   (append (list-ref new-commits 0) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 1) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 2) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 3) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 4) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 5) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
-   (append (list-ref new-commits 6) '(kattested "2026-01-10_09-58-07" #| more keys & vals |#))
+   (cons* kattested "2026-01-10_09-58-07" (list-ref new-commits 0))
+   (cons* kattested "2026-01-10_09-58-07" (list-ref new-commits 1))
+   (cons* kattested "2026-01-10_09-58-07" (list-ref new-commits 2))
+   (cons* kattested "2026-01-10_09-58-07" (list-ref new-commits 3))
+   (cons* kattested "2026-01-10_09-58-07" (list-ref new-commits 4))
+   (cons* kattested "2026-01-10_09-58-07" (list-ref new-commits 5))
+   (cons* kattested "2026-01-10_09-58-07" (list-ref new-commits 6))
    ))
 
-;; Define a scoring function over incomming commits, computed from observable
+;; Define a scoring function over incoming commits, computed from observable
 ;; signals (commit-age, adoption, stability, divergence, etc.), then map that
 ;; score to a probability-like number in [0,1]. Then pick the newest upstream
 ;; commit whose probability ≥ 0.5.
@@ -75,40 +80,19 @@
 
 ;; --- small utils ---------------------------------------------------------
 
-(define (partial fun . args)
-  "Alternative implementation:
-(use-modules (srfi srfi-26))
-(map (cut * 2 <>) '(1 2 3 4)) ;; => (2 4 6 8)"
-  (lambda x (apply fun (append args x))))
-
-(define (comp . fns)
-  "Like `compose'. Can be called with zero arguments. I.e. (thunk? comp) => #t
-Works also for functions returning and accepting multiple values."
-  (lambda args
-    (if (null? fns)
-        (apply values args)
-        (let [(proc (car fns)) (rest (cdr fns))]
-          (if (null? rest)
-              (apply proc args)
-              (let ((g (apply comp rest)))
-                (call-with-values (lambda () (apply g args)) proc)))))))
-
-(define (unspecified-or-empty-or-false? obj)
-  (or (unspecified? obj)
-      (null? obj)
-      (and (string? obj) (string-null? obj))
-      (eq? #f obj)))
-
 (define (get-keys lst)
   "Return a list of all keys in the list LST, which may or may not be a plist.
-(get-keys '(#:a 1 b 2))   ; => (#:a b)
-(get-keys '(a 1 b 2))     ; => (a b)
-(get-keys '())            ; => ()
-(get-keys '(#:a 1 #:a 3)) ; => (#:a #:a) ; not checking for duplicate keys
-(get-keys '(#:a 1 b))     ; => (#:a)
-(get-keys 1)              ; => not a list"
+It stops at last complete pair.
+
+(get-keys '(:a 1 b 2))  ; => (:a b)
+(get-keys '(a 1 b 2))   ; => (a b)
+(get-keys '())          ; => ()
+(get-keys '(:a 1 :a 3)) ; => (:a :a) ; not checking for duplicate keys
+(get-keys '(:a 1 :b))   ; => (:a)    ; :b is silently dropped
+(get-keys 1)            ; => not a list
+"
   (unless (list? lst)
-    (error (format #f "get-keys: `~s' is not a list\n" lst)))
+    (error "get-keys: not a list" lst))
 
   (let loop ((xs lst) (acc '()))
     (cond
@@ -118,7 +102,7 @@ Works also for functions returning and accepting multiple values."
       (loop (cddr xs) (cons (car xs) acc))))))
 
 (define (has-duplicates? lst)
-  "Used in `plist-unique?'
+  "Used in `unique-plist?'
 (has-duplicates? '())        ; => #f
 (has-duplicates? '(1 2 3 4)) ; => #f
 (has-duplicates? '(1 2 3 2)) ; => #t
@@ -129,19 +113,22 @@ Works also for functions returning and accepting multiple values."
    ((member (car lst) (cdr lst)) #t)
    (else (has-duplicates? (cdr lst)))))
 
-(define (plist-unique? lst)
+(define (unique-plist? lst)
   "Empty list is also a plist. Plist must not contain duplicate keys.
 
 TODO Git-commit-like metadata may repeat keys (trailers, parents, etc.); in that
 case use a different representation or a non-unique plist predicate. When
-addressing this, use `plist?' instead of this procedure in the `plist-get'.
+addressing this, use `plist?' instead of this procedure in the `unique-plist-get'.
 
-(plist-unique? '(a 1 b 2)) ; => #t
-(plist-unique? '())        ; => #t
-(plist-unique? '(1))       ; => #f ; odd number of elements
-(plist-unique? '(1 2 3))   ; => #f ; odd number of elements
-(plist-unique? 1)          ; => #f ; not a list
-(plist-unique? '(a 1 a 2)) ; => #f ; 'a is a duplicate key
+It has complexity O(n) from `length' + O(n^2) from `member'.
+TODO Reimplement using hash-table/set-based when running at scale.
+
+(unique-plist? '(a 1 b 2)) ; => #t
+(unique-plist? '())        ; => #t
+(unique-plist? '(1))       ; => #f ; odd number of elements
+(unique-plist? '(1 2 3))   ; => #f ; odd number of elements
+(unique-plist? 1)          ; => #f ; not a list
+(unique-plist? '(a 1 a 2)) ; => #f ; 'a is a duplicate key
 "
   (and (list? lst) (even? (length lst))
        (not (has-duplicates? (get-keys lst)))))
@@ -158,47 +145,58 @@ addressing this, use `plist?' instead of this procedure in the `plist-get'.
 "
   (and (list? lst) (even? (length lst))))
 
-(define (plist-get . args)
-  "Smart plist-get that works with arguments in either order.
-(plist-get '(#:y 2 #:x 1) #:x)      ; => 1
-(plist-get #:x (list #:y 2 #:x 1))  ; => 1
-(plist-get '(#:x 1 #:x 2) #:x)      ; plist-get: expected even-length ...
-(plist-get '(#:y 2 #:x 1) #:z)      ; => #f
-(plist-get '() #:x)                 ; => #f
+(define (unique-plist-get . args)
+  "Works with arguments in either order.
+TODO error-out when a dangling key is encountered. E.g. :b in in '(:a 1 :b)
 
-(plist-get '(1 11 2 22) 1)          ; => 11
-(plist-get '((1 2) 11 2 22) '(1 2)) ; => 11
-
-(plist-get '(42 #:y 2 #:x 1) #:x)   ; plist-get: expected even-length ...
-
-(plist-get)                         ; plist-get: expected exactly ...
-(plist-get 1)                       ; plist-get: expected exactly ...
-(plist-get '())                     ; plist-get: expected exactly ...
+(unique-plist-get '(:y 2 :x 1) :x)         ; => 1
+(unique-plist-get :x (list :y 2 :x 1))     ; => 1
+(unique-plist-get '(:x 1 :x 2) :x)         ; unique key/value pairs
+(unique-plist-get '(:y 2 :x 1) :z)         ; => #f
+(unique-plist-get '() :x)                  ; => #f
+(unique-plist-get '(1 11 2 22) 1)          ; => 11
+(unique-plist-get '((1 2) 11 2 22) '(1 2)) ; => 11
+(unique-plist-get '(42 :y 2 :x 1) :x)      ; length is not even
+(unique-plist-get)                         ; expected exactly 2 arguments
+(unique-plist-get 1)                       ; expected exactly 2 arguments
+(unique-plist-get '())                     ; expected exactly 2 arguments
 "
-  (define (loop plist key)
-    (cond [(null? plist) #f]
-          [(eq? (car plist) key) (cadr plist)]
-          [else (loop (cddr plist) key)]))
+  (define (loop lst key)
+    (cond [(null? lst) #f]
+          [(eq? (car lst) key) (cadr lst)]
+          [else (loop (cddr lst) key)]))
 
   (unless (= 2 (length args))
-    (error "plist-get: expected exactly 2 arguments (plist key) or (key plist)"
-           args))
+    (error
+     "unique-plist-get: expected exactly 2 arguments (lst key) or (key lst)"
+     args))
 
   (let* ((loop-args (if (list? (car args))
                         args
                         (reverse args)))
-         (plist (car loop-args)))
-    (if (plist-unique? plist)
+         (lst (car loop-args)))
+    (if (unique-plist? lst)
         (apply loop loop-args)
-        (error
-         "plist-get: expected even-length list of unique key/value pairs"
-         plist))))
+        (let ((explanation
+               ;; Just copy-paste the and-clauses from the unique-plist? into
+               ;; '(not )'. Don't overthink it.
+               (cond
+                ((not (list? lst))
+                 "not a list")
+                ((not (even? (length lst)))
+                 "list length is not even")
+                ;; invariant: predicate here is exactly (not C) where C is the
+                ;; last conjunct
+                ((not (not (has-duplicates? (get-keys lst))))
+                 "list must contain unique keys")
+                (else "invalid unique-plist"))))
+          (error (string-append "unique-plist-get: " explanation) lst)))))
 
 (define (parse-tstp tstp-string)
   "Parse \"YYYY-MM-DD_HH-MM-SS\" into an SRFI-19 date.
 Example:
 (parse-tstp \"2026-01-12_19-07-32\") ; =>
-#<date nanosecond: 0 second: 32 minute: 7 hour: 19 day: 12 month: 1 year: 2026 zone-offset: 3600>
+#<date nanosecond: 0 second: 32 minute: 7 hour: 19 day: 12 ... >
 "
   (string->date tstp-string "~Y-~m-~d_~H-~M-~S"))
 
@@ -213,7 +211,8 @@ Examples:
          (delta-time (- (time-second end-time) (time-second beg-time))))
     ;; (* 24 #| hours |# 60 #| minutes |# 60 #| seconds |#) ; => 86400
     ;; (let ((delta-time 172799)) ;; 1 day, 23 hours, 59 minutes, 59 seconds
-    ;;   (format #t "(/ delta-time 86400.0)    : ~a\n(inexact->exact ...) : ~a\n"
+    ;;   (format #t
+    ;;           "(/ delta-time 86400.0)    : ~a\n(inexact->exact ...) : ~a\n"
     ;;           (/ delta-time 86400.0)
     ;;           (inexact->exact (floor (/ delta-time 86400)))))
     (inexact->exact (floor (/ delta-time 86400)))))
@@ -241,7 +240,7 @@ It turns an unbounded score into something that behaves like a probability."
   "Return the first commit plist in COMMITS whose shasum matches SHA, else #f.
 Examples:
 (find-by-sha fork1 '3b200x) ; => #f
-(find-by-sha fork1 '3b200)  ; => (ksha #{3b200}# ...)
+(find-by-sha fork1 '3b200)  ; => (list ksha '3b200 kcommitted \"...\" ...)
 "
   (let loop ((xs commits))
     (cond ((null? xs) #f)
@@ -254,37 +253,45 @@ Examples:
 
 ;; --- feature extraction --------------------------------------------------
 
-(define (shasum commit) (plist-get commit ksha))
+(define (shasum commit) (unique-plist-get commit ksha))
 
 (define (commit-age until-date commit)
   "Number of days between a COMMIT and a UNTIL-DATE (SRFI-19). Age of COMMIT.
 Examples:
-(define commit '(kcommitted \"2026-01-01_00-00-00\"))
+(define commit (list kcommitted \"2026-01-01_00-00-00\"))
+(commit-age \"2025-12-31_00-00-00\" commit)    ; => (forgot to use parse-tstp)
 (commit-age (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1
 (commit-age (parse-tstp \"2025-12-31_00-00-00\") commit) ; => -1
+(commit-age (parse-tstp \"2026-01-02_00-00-00\") (list)) ; => #f
+(commit-age (parse-tstp \"2026-01-02_00-00-00\") (list kcommitted)) ; => error
 "
-  (days-between (parse-tstp (plist-get commit kcommitted)) until-date))
+  (let ((ts (unique-plist-get commit kcommitted)))
+    (and ts (days-between (parse-tstp ts) until-date))))
 
 (define (attest-age until-date commit)
   "Number of days between an COMMIT and a UNTIL-DATE (SRFI-19). Age of ATTEST.
 Examples:
-(define commit '(kattested \"2026-01-01_00-00-00\"))
+(define commit (list kattested \"2026-01-01_00-00-00\"))
+(attest-age \"2025-12-31_00-00-00\" commit)    ; => (forgot to use parse-tstp)
 (attest-age (parse-tstp \"2026-01-02_00-00-00\") commit) ; => 1
 (attest-age (parse-tstp \"2025-12-31_00-00-00\") commit) ; => -1
+(attest-age (parse-tstp \"2026-01-02_00-00-00\") (list)) ; => #f
+(attest-age (parse-tstp \"2026-01-02_00-00-00\") (list kattested)) ; => error
 "
-  (days-between (parse-tstp (plist-get commit kattested)) until-date))
+  (let ((ts (unique-plist-get commit kattested)))
+    (and ts (days-between (parse-tstp ts) until-date))))
 
-(define (count-mature-attesters date min-days attestation-repos sha)
+(define (count-mature-attesters until-date min-days attestation-repos sha)
   "Count human-made repositories where SHA exists and is attested at least
- MIN-DAYS until DATE (SRFI-19).
+ MIN-DAYS as of UNTIL-DATE (SRFI-19).
 Examples:
-(define date (parse-tstp \"2026-01-11_00-00-00\"))
+(define until-date (parse-tstp \"2026-01-11_00-00-00\"))
 (define attestation-repo
  '((ksha a kattested \"2026-01-02_00-00-00\")
    (ksha b kattested \"2026-01-02_00-00-00\")
    (ksha c kattested \"2026-01-02_00-00-00\")))
-(count-mature-attesters date 5 (list attestation-repo) 'b) ; => 1
-(count-mature-attesters date 5 (list attestation-repo) 'x) ; => 0
+(count-mature-attesters until-date 5 (list attestation-repo) 'b) ; => 1
+(count-mature-attesters until-date 5 (list attestation-repo) 'x) ; => 0
 "
   (let loop ((repos attestation-repos)
              (count 0))
@@ -294,8 +301,9 @@ Examples:
                (commit (find-by-sha repo sha)))
           (loop (cdr repos)
                 (if (and commit (fork-human? repo)
-                         (>= (attest-age date commit) min-days))
-                    (+ count 1)
+                         (let ((age (attest-age until-date commit)))
+                           (and age (>= age min-days))))
+                    (1+ count)
                     count))))))
 
 (define (sha-index commits sha)
@@ -307,9 +315,10 @@ Examples:
   (let loop ((xs commits) (idx 0))
     (cond ((null? xs) #f)
           ((eq? (shasum (car xs)) sha) idx)
-          (else (loop (cdr xs) (+ idx 1))))))
+          (else (loop (cdr xs) (1+ idx))))))
 
-;; Distance/behind computation needs commit graph; for now approximate by list index.
+;; Distance/behind computation needs commit graph; for now approximate by list
+;; index.
 (define (distance-between commits sha-x sha-y)
   "Distance in number-of-commits from SHA-X to SHA-Y, assuming COMMITS is
 oldest->newest.
@@ -436,7 +445,7 @@ Examples:
 (define* (profitability-score
           curr-commit  ; current local commit
           cand-commit  ; adoption candidate
-          new-commits  ; incomming commits from the upstream
+          new-commits  ; incoming commits from the upstream
           attestation-repos
           #:key
           (until-date (current-date)) ; SRFI-19 date
@@ -486,10 +495,10 @@ Low WEIGHT-BEHIND value:
   "Return the newest COMMIT whose profitability is at least MIN-PROFITABILITY,
 calculated using ATTESTATION-REPOS.
 Examples:
-(define curr-commit '(ksha 3b000 kcommitted \"2026-01-01_9-00-00\"))
+(define curr-commit (list ksha 3b000 kcommitted \"2026-01-01_9-00-00\"))
 (define attestation-repos (list fork1 fork2 fork3))
 (find-newest-profitable-commit curr-commit new-commits attestation-repos)
-;; => (ksha #{3b4b3}# kcommitted "2026-01-05_16-00-00" ...)
+;; => (...) ; returns a valid result
 "
   (let loop ((candidate-commits (reverse new-commits)))
     (cond
