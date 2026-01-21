@@ -50,7 +50,7 @@
                             (function arg ...))]
                          [(eq? macro-name 'show-type-of-equality)
                           (begin
-                            (format #t "[stx-c1 guard-body c2]\n")
+                            ;; (format #t "[stx-c1 guard-body c2]\n")
                             (apply function arg ...))]
 
                          [else
@@ -152,7 +152,7 @@ Type Testing Predicates.
     'string?
     'symbol?
     'list?
-    'plist?
+    '(@(dotf utils) plist?)
     'pair?
 
     '(@(srfi srfi-1) proper-list?)
@@ -161,7 +161,7 @@ Type Testing Predicates.
     ;; as a dotted (improper) list — and it allows the degenerate case with zero
     ;; pairs.
     ;; '(@(srfi srfi-1) dotted-list?)
-    'nonempty-dotted-list?
+    '(@(dotf utils) nonempty-dotted-list?)
 
     '(@(srfi srfi-1) null-list?)
     '(@(srfi srfi-1) not-pair?)
@@ -263,9 +263,9 @@ Type Testing Predicates.
     'char=?
     'char-ci=?
 
-    'list=eq?
-    'list=eqv?
-    'list=equal?
+    '(@(dotf utils) list=eq?)
+    '(@(dotf utils) list=eqv?)
+    '(@(dotf utils) list=equal?)
 
     'lset=  ; from srfi-1
     'lset<= ; from srfi-1
@@ -274,11 +274,12 @@ Type Testing Predicates.
     'eqv?
     'equal?
 
-    'some-true?
-    'every-true?
-    '(partial not-every? true?)
-    '(partial not-any? true?)
+    '(@(dotf utils) some-true?)
+    '(@(dotf utils) every-true?)
+    '((@(dotf utils) partial) (@(dotf utils) not-every?) (@(dotf utils) true?))
+    '((@(dotf utils) partial) (@(dotf utils) not-any?) (@(dotf utils) true?))
 
+    ;; Tree Intermediate Language
     '(@(language tree-il) tree-il=?)
     )))
 (define-public te test-equality)
