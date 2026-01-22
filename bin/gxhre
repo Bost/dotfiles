@@ -4,6 +4,7 @@
 # chain the commands using '&&', since 'set -e' is used.
 set -e
 
+tstp=$(date +%F_%H-%M-%S)
 baseLP=$dotf/guix # base-load-path
 hostname=$(hostname)
 
@@ -15,7 +16,10 @@ guix home --cores=$cores --allow-downgrades \
      --load-path=$baseLP/common \
      --load-path=$baseLP/home/common \
      reconfigure \
-     $configFile "$@"
+     $configFile \
+     "$@" \
+     2>&1 | tee "/tmp/${tstp}.guix-home-reconfigure.log"
+
 { retval="$?"; set +x; } 2>/dev/null
 
 set -x  # Print commands and their arguments as they are executed.
