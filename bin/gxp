@@ -4,6 +4,7 @@
 # chain the commands using '&&', since 'set -e' is used.
 set -e
 
+tstp=$(date +%F_%H-%M-%S)
 baseLP=$dotf/guix # base-load-path
 
 set -x # Print commands and their arguments as they are executed.
@@ -11,7 +12,8 @@ GUIX_STATE_DIRECTORY=/var/guix \
     guix pull --cores=$cores \
      --load-path=$baseLP/common \
      --channels=$baseLP/home/common/home-channels.scm \
-     "$@"
+     "$@" \
+     2>&1 | tee "/tmp/${tstp}.guix-pull.log"
 
 # No need to chain the commands using '&&', since 'set -e' is used.
 # guix describe
