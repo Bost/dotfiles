@@ -9,7 +9,7 @@ baseLP=$dotf/guix # base-load-path
 
 set -x # Print commands and their arguments as they are executed.
 GUIX_STATE_DIRECTORY=/var/guix \
-    guix pull --cores=$cores \
+    guix pull --cores=$cores --allow-downgrades \
      --load-path=$baseLP/common \
      --channels=$baseLP/home/common/home-channels.scm \
      "$@" \
