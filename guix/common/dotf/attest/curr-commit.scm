@@ -6,9 +6,14 @@
   #:use-module (ice-9 rdelim)
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 pretty-print)
+  #:use-module (guix channels) ; profile-channels
+
   #:export
   (
    curr-commit
+   guix-channel-url
+   guix-channel-commit
+   current-channels
    ))
 
 (define (read-all port)
@@ -23,6 +28,11 @@
     (close-pipe p)
     ;; typically exactly one top-level expr, but keep it robust:
     (if (= (length xs) 1) (car xs) `(begin ,@xs))))
+
+(define (current-channels-new)
+  (let* ((profile (string-append (getenv "HOME") "/.config/guix/current"))
+         (channels (profile-channels profile)))
+    `(list ,@(map channel->code channels))))
 
 (define* (guix-channel-commit #:key
                               (name 'guix)
