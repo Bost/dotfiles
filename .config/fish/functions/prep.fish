@@ -23,8 +23,14 @@ function prep --description "See glances, cputool"
         echo $cmd
         eval $cmd
     end
+
     echo ""
-    echo "######## See also: glances, cputool"
+    pgrep --full (string escape -- $argv) | \
+        xargs ps -o %cpu,%mem --no-headers --pid | \
+        awk -v cores=$(nproc) '{cpu+=$1; mem+=$2}
+END {
+printf "### CPU: %.1f%% of %d all cores, ", cpu/cores, cores
+printf "MEM: %.1f%%\n", mem
+}'
+    echo "### See also: glances, cputool"
 end
-
-
