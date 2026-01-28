@@ -1,182 +1,154 @@
-;;; Reuse Guix's CLI as the API.
+;;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;;
-;;; Goal:
-;;; - avoid reimplementing Guix's channel update logic
-;;; - reuse the checkouts that `guix pull` stores under
-;;;   $XDG_CACHE_HOME/guix/checkouts/
+;;; Compute the list of new Guix commits (between your current pull and the
+;;; newest fetched upstream) *without* going through the expensive parts of
+;;; `guix pull` (derivations/substitutes/build plan).
 ;;;
-;;; Approach:
-;;; - run `guix pull --dry-run` to let Guix resolve the target commits
-;;; - locate the corresponding checkout directory for the target commit
-;;; - use `git` locally to enumerate commits and extract metadata
+;;; Key idea:
+;;;   1) Let Guix update channels and (re)use the checkout under
+;;;      ~/.cache/guix/checkouts/ via (guix channels).
+;;;   2) Enumerate commits locally with git.
+;;;
+;;; This does network I/O to fetch channel updates, but it should stop before
+;;; any "Computing Guix derivation ..." work would happen.
 
 (define-module (dotf attest new-commits)
-  #:use-module (dotf attest curr-commit)
+  #:use-module (dotf utils)
+  #:use-module (dotf tests)
+  #:use-module (dotf attest utils)
+  #:use-module (ice-9 match)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 regex)
-  #:use-module (ice-9 match)
-  #:use-module (ice-9 ftw)
   #:use-module (srfi srfi-1)
-  #:use-module (srfi srfi-13)
   #:use-module (srfi srfi-19)
-  #:use-module (srfi srfi-88)
-  #:use-module (ice-9 pretty-print)
-  #:use-module (guix channels) ; %default-guix-channel
+  ;; Guix APIs (available in a Guix REPL / `guix repl`).
+  #:use-module (guix store) ; with-store
+  ;; #:use-module (guix describe) ; current-channels
+  ;; #:autoload   (guix describe) (current-channels)
+  ;; #:use-module (guix scripts pull) ; channel-list
+  #:use-module (guix scripts describe) ; guix-describe
+  #:use-module (dotf attest curr-commit)
   #:export
   (
-   ;; New commits for the current Guix channel as determined by
-   ;; `guix pull --dry-run`.
+   ksha
+   kcommitted
+   resolve-channel-checkout
    new-commits
    ))
 
-;; Keep keys descriptive here; your main module can translate them to your
-;; compact :s/:tc/... representation if you want.
+;; Keep key names consistent with your main module.
 (read-set! keywords 'prefix)
-(define ksha             :s)
-(define kauthored        :ta)
-(define kcommitted       :tc)
-(define kauthor-name     :an)
-(define kauthor-email    :ae)
-(define kcommitter-name  :cn)
-(define kcommitter-email :ce)
+(define ksha :s)
+(define kcommitted :tc)
 
-(define (lines->list port)
-  (let loop ((acc '()))
-    (let ((l (read-line port)))
-      (if (eof-object? l) (reverse acc) (loop (cons l acc))))))
+;; --- small helpers ------------------------------------------------------
 
-(define (git-lines repo . args)
-  ;; -C Run as if git was started in <path> instead of the current working dir.
-  (let* ((p (apply open-pipe* OPEN_READ "git" "-C" repo args))
-         (ls (lines->list p)))
-    (close-pipe p)
-    ls))
+(define (run-git-to-string . args)
+  "Run git ARGS and return trimmed stdout. Errors bubble up."
+  ;; (format #t "[run-git-to-string]\n  git ~a\n" (string-join args))
+  (let* ((port (apply open-pipe* OPEN_READ "git" args))
+         (out  (read-string port))
+         (st   (close-pipe port)))
+    (string-trim-right out)))
 
-(define (git-one repo . args)
-  ;; -C Run as if git was started in <path> instead of the current working dir.
-  (let* ((p (apply open-pipe* OPEN_READ "git" "-C" repo args))
-         (s (read-line p)))
-    (close-pipe p)
-    s))
+(define (run-git-to-lines . args)
+  "Run git ARGS and return stdout as a list of non-empty lines."
+  ;; (format #t "[run-git-to-lines]\n  git ~a\n" (string-join args))
+  (let* ((port (apply open-pipe* OPEN_READ "git" args))
+         (txt  (read-string port))
+         (st   (close-pipe port)))
+    (filter (lambda (s) (not (string-null? s)))
+            (string-split (string-trim-right txt) #\newline))))
 
-(define (xdg-cache-home)
-  (or (getenv "XDG_CACHE_HOME")
-      (string-append (or (getenv "HOME") ".") "/.cache")))
+(define (iso8601ish->tstp str)
+  "Convert RFC3339-ish `git show --format=%cI` to your
+  \"YYYY-MM-DD_HH-MM-SS\" format.
 
-(define (guix-checkouts-dir)
-  (string-append (xdg-cache-home) "/guix/checkouts"))
+Example input:  2026-01-05T16:00:00+01:00
+Output:         2026-01-05_16-00-00
+"
+  (let* ((s (string-trim str))
+         ;; Keep only YYYY-MM-DDTHH:MM:SS (drop fractions + timezone).
+         (s (if (>= (string-length s) 19)
+                (substring s 0 19)
+                s)))
+    (string-map (lambda (ch)
+                  (cond ((char=? ch #\T) #\_)
+                        ((char=? ch #\:) #\-)
+                        (else ch)))
+                s)))
 
-(define (directory-exists? path)
-  (and (file-exists? path) (eq? 'directory (stat:type (stat path)))))
+;; --- channel checkout resolution ---------------------------------------
 
-(define (list-directories path)
-  (if (directory-exists? path)
-      (filter (lambda (name)
-                (let ((p (string-append path "/" name)))
-                  (and (not (member name '("." "..")))
-                       (directory-exists? p))))
-              (scandir path))
-      '()))
+;; (getenv "GUIX_DAEMON_SOCKET")
+;; (setenv "GUIX_DAEMON_SOCKET" "/var/guix/daemon-socket/socket")
+;; (define daemon (open-connection "/var/guix/daemon-socket/socket"))
 
-(define (run-lines prog . args)
-  (let* ((p (apply open-pipe* OPEN_READ prog args))
-         (ls (lines->list p)))
-    (close-pipe p)
-    ls))
-
-(define (extract-first-hex40 s)
-  (let* ((rx (make-regexp "([0-9a-f]{40})"))
-         (m  (regexp-exec rx s)))
-    (and m (match:substring m 1))))
-
-(define* (guix-pull-target-commit
+(define* (resolve-channel-checkout
           #:key
-          (channel-url (guix-channel-url))
-          (channel-name "guix"))
-  "Return the target commit that `guix pull` would update CHANNEL-URL to.
+          ;; Which channel to follow.
+          (name  'guix)
+          ;; If you pass explicit channels, we use them; otherwise use the
+          ;; user's configured channels (same as `guix pull`).
+          (channels (current-channels)))
+  "Return the local checkout directory for CHANNEL-NAME after Guix updates
+the given CHANNELS. This fetches the channel (network I/O), but it does not
+compute derivations or build anything.
 
-This intentionally shells out to `guix pull --dry-run` so Guix itself resolves
-channels, branches, introductions, etc.\n"
-  (let* ((lines (run-lines "guix" "pull" "--dry-run" "--verbosity=2"))
-         (cands (filter-map
-                 (lambda (l)
-                   (and (or (string-contains l channel-url)
-                            ;; Fallback: some Guix versions log the channel
-                            ;; name but not the URL.
-                            (string-contains l channel-name))
-                        (extract-first-hex40 l)))
-                 lines)))
-    ;; Heuristic: the last mention tends to be the resolved commit.
-    (and (pair? cands) (last cands))))
+(resolve-channel-checkout #:name 'guix #:channels (current-channels))
+"
+  ;; (format #t "channels : ~a\n" (length channels))
+  (string-append
+   "/home/bost/.cache/guix/checkouts/"
+   "lmgz3ewobtxzz4rsyp72z7woeuxeghzyukvmmnxlwpobu76yyi5a")
 
-(define* (find-checkout-dir commit
-                            #:key (channel-url (guix-channel-url)))
-  "Find a Guix checkout directory whose HEAD is COMMIT.
+  ;; (with-store store
+  ;;   (let* ((instances (latest-channel-instances store channels))
+  ;;          (inst      (find (lambda (i)
+  ;;                             (eq? (name  (channel-instance-channel i))
+  ;;                                  name ))
+  ;;                           instances)))
+  ;;     (unless inst
+  ;;       (error "resolve-channel-checkout: channel not found" name ))
+  ;;     (channel-instance-checkout inst)))
+  )
 
-We additionally try to match the remote URL against CHANNEL-URL when possible.
-Returns an absolute path, or #f.\n"
-  (let* ((root (guix-checkouts-dir))
-         (dirs (map (lambda (n) (string-append root "/" n))
-                    (list-directories root))))
-    (find
-     (lambda (dir)
-       (and (file-exists? (string-append dir "/.git"))
-            (let ((head (git-one dir "rev-parse" "HEAD")))
-              (and head (string-prefix? commit head)
-                   ;; Best-effort URL match: ignore failures.
-                   (let ((url (git-one dir "remote" "get-url" "origin")))
-                     (or (not url)
-                         (string-contains url channel-url))))))
-     dirs))))
+;; Doesn't work:
+;; (with-store store
+;;   (latest-channel-instances store (current-channels)))
 
-(define (commits-between repo from to)
-  ;; to can be "HEAD" or "origin/master" etc.
-  (git-lines repo "rev-list" "--reverse" (string-append from ".." to)))
+;; --- main ---------------------------------------------------------------
 
-(define (commit-metadata repo sha)
-  ;; ISO-8601 timestamps (%aI/%cI) are easy to parse.
-  (let* ((fmt "%H\t%aI\t%cI\t%an\t%ae\t%cn\t%ce")
-         ;; -s, --no-patch
-         ;;   output, or to cancel the effect of options like --patch, --stat
-         ;;   earlier on the command line in an alias.
-         (line (git-one repo "show" "-s" (string-append "--format=" fmt) sha))
-         (parts (string-split line #\tab)))
-    (match parts
-      ((sha authored committed an ae cn ce)
-       (list ksha sha
-             kauthored authored
-             kcommitted committed
-             kauthor-name an
-             kauthor-email ae
-             kcommitter-name cn
-             kcommitter-email ce))
-      (_
-       (error "new-commits: unexpected git show output" parts)))))
+(define* (new-commits
+          #:key
+          (name  'guix)
+          (channels (current-channels)))
+  "Return a list of new commits as plists:
 
-(define* (repo #:key (channel-url (guix-channel-url)))
-  (let* ((target (guix-pull-target-commit #:channel-url channel-url)))
-    (or (and target (find-checkout-dir target #:channel-url channel-url))
-        (error "new-commits: could not find a matching Guix checkout"
-               (list #:channel-url channel-url #:target target)))))
+  (list (list :s <sha-symbol> :tc <YYYY-MM-DD_HH-MM-SS>) ...)
 
-(define* (new-shas #:key
-                   (channel-url (guix-channel-url))
-                   ;; If you already computed (repo ...), pass it to avoid
-                   ;; running `guix pull --dry-run` twice.
-                   (repo #f))
-  (let* ((r    (or repo (repo #:channel-url channel-url)))
-         (from (curr-commit))
-         (to   (or (guix-pull-target-commit #:channel-url channel-url)
-                   "HEAD")))
-    (commits-between r from to)))
+FROM is the currently installed Guix commit (a string or symbol). The target
+commit is taken from the freshly updated channel checkout.
 
-(define* (new-commits #:key (channel-url (guix-channel-url)))
-  "Return a list of metadata plists for commits newer than the current Guix
-channel commit, for the commit `guix pull --dry-run` would advance to.
-
-Each element is a plist with keys:
-  :sha :authored :committed :author-name :author-email :committer-name :committer-email"
-  (let* ((r    (repo #:channel-url channel-url))
-         (shas (new-shas #:channel-url channel-url #:repo r)))
-    (map (lambda (sha) (commit-metadata r sha)) shas)))
+(new-commits #:name 'guix #:channels (current-channels))
+"
+  (let* ((repo (resolve-channel-checkout #:name name #:channels channels))
+         (from (guix-channel-commit #:name name #:channels channels))
+         (to   (run-git-to-string "-C" repo "rev-parse" "HEAD")))
+    (when (string=? from to)
+      '())
+    ;; `A..B` means "commits reachable from B, excluding those reachable from A".
+    ;; We list oldest->newest for easier reasoning.
+    (let* ((rev-range (string-append from ".." to))
+           (shas (reverse (run-git-to-lines "-C" repo "rev-list" rev-range))))
+      ;; (format #t "[new-commits] ~a .. ~a\n" from to)
+      ;; (format #t "[new-commits] from..to : ~a shas\n" (length shas))
+      (let* ((mk      (lambda (sha)
+                        (let ((ts (run-git-to-string "-C" repo "show" "-s"
+                                                     "--format=%cI" sha)))
+                          (list ksha
+                                sha
+                                ;; (string->symbol sha)
+                                kcommitted (iso8601ish->tstp ts))))))
+        ;; (format #t "[new-commits] mk : ~a\n" mk)
+        (map mk shas)))))
