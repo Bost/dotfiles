@@ -147,74 +147,6 @@
     ;; (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
     ;;                     f (test-type v) (length v))
     ;;         v)
-    (partial
-     append
-     ;; (service home-xsettingsd-service-type)
-     (list
-      (service
-       home-bash-service-type
-       (home-bash-configuration
-;;; (guix-defaults? #t) ;; Add sane defaults to the top of the .bashrc
-
-;;; Aliases will be defined after the contents of the bashrc field has been
-;;; put in the .bashrc
-;;; TODO fix the documentation:
-
-;;; The aliases are on the top of the .bashrc
-;;; (because of "(guix-defaults? #t)"???)
-
-
-;;; When using 'bashrc - local-file' then the aliases are added to the .bashrc
-;;; at the bottom. When using '(guix-defaults? #t)' then the aliases are on the
-;;; top of the .bashrc.
-
-
-;;; aliases for "l" "ll" "ls" come from the .bashrc template and will be
-;;; overridden because see above
-         ;; (aliases '())
-
-         ;; List of file-like objects, which will be ADDED(!) to .bashrc.
-         (bashrc
-          (list
-           (bash-config-file "bashrc" (bashrc-str))
-           (let* [(filename ".bashrc_additions")]
-             ;; this should work too:
-             ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
-             (local-file
-              (user-dotf "/" filename)
-              (fix-leading-dot filename)))))
-
-         ;; List of file-like objects, which will be ADDED(!) to .bash_profile
-         (bash-profile
-          (list
-           (bash-config-file
-            "bash-profile"
-            (str
-             "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
-             ;; %H:%M:%S can be abbreviated by %T
-             "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
-             ;; "\n" "GUIX_PROFILE=$HOME/.guix-profile"
-             ;; "\n" "source \"$GUIX_PROFILE/etc/profile\""
-             "\n"
-             ;; enable all profiles on login
-             "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
-             "\n" "for i in $GUIX_EXTRA_PROFILES/*; do"
-             "\n" "  profile=$i/$(basename \"$i\")"
-             "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
-             "\n" "    GUIX_PROFILE=\"$profile\""
-             "\n" "    set -x"
-             "\n" "    source \"$GUIX_PROFILE\"/etc/profile"
-             "\n" "    { retval=\"$?\"; set +x; } 2>/dev/null"
-             "\n" "  fi"
-             "\n" "  unset profile"
-             "\n" "done"
-             ))
-           ;; (local-file ".bashrc" "bash_profile") should work too
-           ;; (local-file
-           ;;  (user-dotf "/.bash_profile_additions")
-           ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
-           ;;  "bash_profile_additions")
-           ))))))
 
 ;;; fails with:
 ;;;   In procedure open-file: No such file or directory:
@@ -274,7 +206,7 @@
     ;;               )))))
     ;; (lambda (v) (format #t "~a 0\n" f) v)
     )
-   (non-env-var-services)))
+   (list)))
 
 (define (gcc-filepath)
   ;; (user-home "/.guix-home/profile/bin/gcc")
@@ -336,7 +268,6 @@
                        ;; See https://github.com/phiresky/ripgrep-all
                        ;; "user-home-relative/path/to/ripgrep_all"
                        ))))))
-(testsymb 'environment-vars)
 
 (def*-public (environment-vars-edge-ecke
               #:optional (list-separator list-separator-bash)
@@ -407,7 +338,6 @@
                   (list (str dgxp "/src"))
                   (list dgx)
                   ))))))
-(testsymb 'environment-vars-edge-ecke)
 
 (define-public (environment-variables-service srvc-name environment-vars)
   (simple-service
@@ -534,14 +464,12 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
   ;;          (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
   ;;      (projects-heroku))
   )
-(testsymb 'install-all-projects)
 
 (def-public (home-env-services)
   (append
    (non-env-var-services)
    (list (environment-variables-service 'env-vars-base
                                         (environment-vars)))))
-(testsymb 'home-env-services-edge-ecke)
 
 (def-public (home-env-services-edge-ecke)
   (append
@@ -549,8 +477,6 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
    (list (environment-variables-service 'env-vars-edge-ecke
                                         (environment-vars-edge-ecke)))
    (home-env-services)))
-
-(testsymb 'home-env-services-edge-ecke)
 
 (def-public (home-env-edge-ecke)
   ;; (format #t "~a Starting…\n" f)
@@ -562,6 +488,5 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
              (home-env-services-edge-ecke))))]
     ;; (format #t "~a done. type: ~a\n" f (test-type home-env-record))
     home-env-record))
-(testsymb 'home-env-edge-ecke)
 
 (module-evaluated)

@@ -312,7 +312,6 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     zip
     zstd ;; Zstandard real-time compression algorithm
     )))
-(testsymb 'basic-packages)
 
 (define (agda-devel-packages)
   (list
@@ -908,7 +907,6 @@ FIXME the inferior-packages are installed on every machine"
       ;; (list "signal-desktop" "65d23d2579b54bb5d52609bf6c34d2faafc8a6cf")
       ;; (list "firefox" "24f10c70518ae0eeaf77332bf15f70790e981d84")
       )))))
-(testsymb 'inferior-packages)
 
 (define (devel-guile-ide-arei-packages)
   (list
@@ -1066,6 +1064,5 @@ FIXME the inferior-packages are installed on every machine"
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
     )
    (basic-packages)))
-(testsymb 'home-packages-to-install)
 
 (module-evaluated)
