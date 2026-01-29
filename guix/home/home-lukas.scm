@@ -11,7 +11,7 @@
 
 source /etc/profile && baseLP=$HOME/dev/dotfiles/guix
 guix home --allow-downgrades --cores=$cores \
-     -L $baseLP/common -L $baseLP/home \
+     -L $baseLP/common -L $baseLP/home/common \
      reconfigure $baseLP/home/home-lukas.scm
 # -L --load-path
 
@@ -30,7 +30,7 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
-  #:use-module ((home-base) #:prefix base:)
+  #:use-module ((home-base) #:prefix home-base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -54,16 +54,16 @@ guix home --allow-downgrades --cores=$cores \
 ;; See also $dotf/.bashrc.martin
 (define home-env
   (home-environment
-   ;; Replaced by $dotf/guix/profile-manifest.scm
-   ;; (packages ((@(config packages all) home-packages-to-install)))
+   ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
+   ;; (packages (home-packages-to-install))
    (services
     ((comp
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
-      (partial append (base:services))
+      (partial append (home-base:services))
       #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
       list
-      base:environment-variables-service
-      (partial append (base:environment-vars list-separator-bash))
+      home-base:environment-variables-service
+      (partial append (home-base:environment-vars list-separator-bash))
       #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
       )
      (list)))))

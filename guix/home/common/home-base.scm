@@ -5,7 +5,6 @@
   #:use-module (dotf store-utils)
   #:use-module (dotf memo)
 
-  ;; the code of this module comes in via the 'bost' channel
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
@@ -194,13 +193,15 @@
     ;;             `((user
     ;;                ((name . ,user-full-name)
     ;;                 (email . ,user-mail-address)
-    ;;                 #;(signingKey . "...")))
+    ;;                 ;; (signingKey . "...")
+    ;;                 ))
     ;;               (github
     ;;                ((user . "Bost")))
     ;;               (remote
     ;;                ((pushDefault . "origin")))
-    ;;               #;(commit ((gpgSign . #t)))
-    ;;               #;(tag ((gpgSign . #t))))))))
+    ;;               ;; (commit ((gpgSign . #t)))
+    ;;               ;; (tag ((gpgSign . #t)))
+    ;;               )))))
     ;; (lambda (v) (format #t "~a 0\n" f) v)
     )
    (list)))
@@ -215,7 +216,8 @@
 ;; See also $dotf/.bashrc.martin
 (define-public (environment-vars list-separator)
   ((comp
-    #;(lambda (v) (format #t "~a 0\n" m) v))
+    ;; (lambda (v) (format #t "~a 0\n" m) v)
+    )
    `(
      ;; Warn about deprecated Guile features
      ("GUILE_WARN_DEPRECATED" . "detailed")
@@ -267,7 +269,8 @@
 
 (define-public (environment-vars-edge-ecke list-separator)
   ((comp
-    #;(lambda (v) (format #t "~a 0\n" m) v))
+    ;; (lambda (v) (format #t "~a 0\n" m) v)
+    )
    `(
      ;; Remedy against:
      ;; $ lein uberjar
@@ -364,13 +367,12 @@
                  "/cheatsheet"
                  "/zark"
                  ))
-   #;
-   (cons "/der" (list
-                 "/heroku-buildpack-racket"
-                 "/racket-koans"
-                 "/search-notes"
-                 ;; "/vesmir" ;; is in the projects-heroku list
-                 ))
+   ;; (cons "/der" (list
+   ;;               "/heroku-buildpack-racket"
+   ;;               "/racket-koans"
+   ;;               "/search-notes"
+   ;;               ;; "/vesmir" ;; is in the projects-heroku list
+   ;;               ))
    (cons
     "/dev"
     (append
@@ -437,8 +439,8 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
                           repo
                           (str "https://git.heroku.com/" repo ".git")))]
         (format #t "~a TODO clone ~a to ~a\n" m repo-url dest-dir-repo)
-        #;
-        (git-clone "--origin=vojto" repo-url dest-dir-repo)))))
+        ;; (git-clone "--origin=vojto" repo-url dest-dir-repo)
+        ))))
 (testsymb 'obtain-and-setup-heroku)
 
 (def-public (install-all-projects)
@@ -454,11 +456,11 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
          (let [(dest-dir (car project))]
            (map (partial obtain-and-setup dest-dir) (cdr project))))
        (projects))
-  #;
-  (map (lambda (project)
-         (let ((dest-dir (car project)))
-           (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
-       (projects-heroku)))
+  ;; (map (lambda (project)
+  ;;        (let ((dest-dir (car project)))
+  ;;          (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
+  ;;      (projects-heroku))
+  )
 (testsymb 'install-all-projects)
 
 ;; (define-public (home-env-services list-separator)
