@@ -214,7 +214,9 @@
 (testsymb 'gcc-filepath)
 
 ;; See also $dotf/.bashrc.martin
-(define-public (environment-vars list-separator)
+(def*-public (environment-vars
+              #:optional (list-separator list-separator-bash)
+              )
   ((comp
     ;; (lambda (v) (format #t "~a 0\n" m) v)
     )
@@ -267,7 +269,9 @@
                        ))))))
 (testsymb 'environment-vars)
 
-(define-public (environment-vars-edge-ecke list-separator)
+(def*-public (environment-vars-edge-ecke
+              #:optional (list-separator list-separator-bash)
+              )
   ((comp
     ;; (lambda (v) (format #t "~a 0\n" m) v)
     )
@@ -463,8 +467,8 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
   )
 (testsymb 'install-all-projects)
 
-;; (define-public (home-env-services list-separator)
-;;   (let* [(f (format #f "~a [home-env-services]" m))]
+;; (define-public (home-env-services-edge-ecke)
+;;   (let* [(f (format #f "~a [home-env-services-edge-ecke]" m))]
 ;;     (format #t "~a Starting…\n" f)
 ;;     ((comp
 ;;       (lambda (v) (format #t "~a done\n" f) v)
@@ -477,13 +481,12 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
 ;;       environment-variables-service
 ;;       (partial apply append)
 ;;       (partial map (lambda (fun-symb)
-;;                      ((eval fun-symb (resolve-module (list 'home-base)))
-;;                       list-separator)))
+;;                      ((eval fun-symb (resolve-module (list 'home-base))))))
 ;;       ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
 ;;       )
 ;;      (list 'environment-vars-edge-ecke 'environment-vars))))
 
-(def-public (home-env-services list-separator)
+(def-public (home-env-services-edge-ecke)
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (v) (format #t "~a done\n" f) v)
@@ -494,21 +497,21 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
     ;;   v)
     list
     environment-variables-service
-    (partial append (environment-vars-edge-ecke list-separator))
-    (partial append (environment-vars           list-separator))
+    (partial append (environment-vars-edge-ecke))
+    (partial append (environment-vars))
     ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
     )
    (list)))
-(testsymb 'home-env-services)
+(testsymb 'home-env-services-edge-ecke)
 
-(def-public (home-env-edge-ecke list-separator)
+(def-public (home-env-edge-ecke)
   ;; (format #t "~a Starting…\n" f)
   (let* [(home-env-record
           (home-environment
             ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
             ;; (packages (home-packages-to-install))
             (services
-             (home-env-services list-separator))))]
+             (home-env-services-edge-ecke))))]
     ;; (format #t "~a done. type: ~a\n" f (test-type home-env-record))
     home-env-record))
 (testsymb 'home-env-edge-ecke)

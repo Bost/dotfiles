@@ -148,7 +148,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
    (services
     (append
      (home-channels-services)
-     (home-base:home-env-services list-separator-bash))))
+     (home-base:home-env-services-edge-ecke))))
 
   ;; TODO Wayland-specific settings
   ;; (home-environment
@@ -169,8 +169,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;;                ("ELM_ENGINE" . "wayland_egl")
   ;;                ("ECORE_EVAS_ENGINE" . "wayland-egl")
   ;;                ("QT_QPA_PLATFORM" . "wayland-egl")))
-  ;;     (partial append (home-base:environment-vars-edge-ecke list-separator-bash))
-  ;;     (partial append (home-base:environment-vars           list-separator-bash))
+  ;;     (partial append (home-base:environment-vars-edge-ecke))
+  ;;     (partial append (home-base:environment-vars))
   ;;     #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
   ;;     )
   ;;    (list))))

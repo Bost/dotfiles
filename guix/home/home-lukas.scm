@@ -63,7 +63,7 @@ guix home --allow-downgrades --cores=$cores \
       #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
       list
       home-base:environment-variables-service
-      (partial append (home-base:environment-vars list-separator-bash))
+      (partial append (home-base:environment-vars))
       #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
       )
      (list)))))
