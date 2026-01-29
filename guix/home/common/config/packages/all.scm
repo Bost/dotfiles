@@ -46,7 +46,7 @@
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
- file-systems librewolf libcanberra security-token firmware ocr tex
+ file-systems librewolf libcanberra security-token firmware ocr tex monitoring
  )
 
 (define (email-in-emacs-packages)
@@ -274,7 +274,17 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     smartmontools
 
     ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
-    ;; sysstat
+    sysstat
+
+    ;; Lightweight Linux bootloader, for the isohybrid --type 1 guix.iso
+    syslinux
+
+    ;; Cross-platform curses-based monitoring tool; like htop
+    glances
+
+    ;; guix package --cores=24 '--search=dvd\+rw-tools'
+    ;; DVD and Blu-ray Disc burning tools
+    dvd+rw-tools
 
     ;; terminal multiplexer, more popular and modern than 'screen'
     tmux
