@@ -68,9 +68,79 @@
    ))
 (testsymb 'bashrc-str)
 
+(def-public (non-env-var-services)
+  ;; (format #t "~a Starting…\n" f)
+  (append
+   ;; (service home-xsettingsd-service-type)
+   (list
+    (service
+     home-bash-service-type
+     (home-bash-configuration
+;;; (guix-defaults? #t) ;; Add sane defaults to the top of the .bashrc
+
+;;; Aliases will be defined after the contents of the bashrc field has been
+;;; put in the .bashrc
+;;; TODO fix the documentation:
+
+;;; The aliases are on the top of the .bashrc
+;;; (because of "(guix-defaults? #t)"???)
+
+
+;;; When using 'bashrc - local-file' then the aliases are added to the .bashrc
+;;; at the bottom. When using '(guix-defaults? #t)' then the aliases are on the
+;;; top of the .bashrc.
+
+
+;;; aliases for "l" "ll" "ls" come from the .bashrc template and will be
+;;; overridden because see above
+      ;; (aliases '())
+
+      ;; List of file-like objects, which will be ADDED(!) to .bashrc.
+      (bashrc
+       (list
+        (bash-config-file "bashrc" (bashrc-str))
+        (let* [(filename ".bashrc_additions")]
+          ;; this should work too:
+          ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
+          (local-file
+           (user-dotf "/" filename)
+           (fix-leading-dot filename)))))
+
+      ;; List of file-like objects, which will be ADDED(!) to .bash_profile
+      (bash-profile
+       (list
+        (bash-config-file
+         "bash-profile"
+         (str
+          "\n" "export HISTFILE=$XDG_CACHE_HOME/.bash_history"
+          ;; %H:%M:%S can be abbreviated by %T
+          "\n" "export HISTTIMEFORMAT=\"[%Y-%m-%d %H:%M:%S] \""
+          ;; "\n" "GUIX_PROFILE=$HOME/.guix-profile"
+          ;; "\n" "source \"$GUIX_PROFILE/etc/profile\""
+          "\n"
+          ;; enable all profiles on login
+          "\n" "export GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles"
+          "\n" "for i in $GUIX_EXTRA_PROFILES/*; do"
+          "\n" "  profile=$i/$(basename \"$i\")"
+          "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
+          "\n" "    GUIX_PROFILE=\"$profile\""
+          "\n" "    set -x"
+          "\n" "    source \"$GUIX_PROFILE\"/etc/profile"
+          "\n" "    { retval=\"$?\"; set +x; } 2>/dev/null"
+          "\n" "  fi"
+          "\n" "  unset profile"
+          "\n" "done"
+          ))
+        ;; (local-file ".bashrc" "bash_profile") should work too
+        ;; (local-file
+        ;;  (user-dotf "/.bash_profile_additions")
+        ;;  ;; prevent "guix home: error: invalid name: `.bash_profile'"
+        ;;  "bash_profile_additions")
+        )))))))
+
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
-(def-public (non-env-var-services)
+(def-public (non-env-var-services-edge-ecke)
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (v) (format #t "~a done\n" f) v)
@@ -204,8 +274,7 @@
     ;;               )))))
     ;; (lambda (v) (format #t "~a 0\n" f) v)
     )
-   (list)))
-(testsymb 'non-env-var-services)
+   (non-env-var-services)))
 
 (define (gcc-filepath)
   ;; (user-home "/.guix-home/profile/bin/gcc")
@@ -340,9 +409,9 @@
                   ))))))
 (testsymb 'environment-vars-edge-ecke)
 
-(define-public (environment-variables-service environment-vars)
+(define-public (environment-variables-service srvc-name environment-vars)
   (simple-service
-   'environment-variables-service
+   srvc-name
    home-environment-variables-service-type
    environment-vars))
 (testsymb 'environment-variables-service)
@@ -467,41 +536,20 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
   )
 (testsymb 'install-all-projects)
 
-;; (define-public (home-env-services-edge-ecke)
-;;   (let* [(f (format #f "~a [home-env-services-edge-ecke]" m))]
-;;     (format #t "~a Starting…\n" f)
-;;     ((comp
-;;       (lambda (v) (format #t "~a done\n" f) v)
-;;       (partial append (non-env-var-services))
-;;       ;; (lambda (v)
-;;       ;;   ;; (map (partial format #t "~a 1:\n~a\n" f) v)
-;;       ;;   ;; (format #t "~a 1 (length v) : ~a\n" f (length v))
-;;       ;;   v)
-;;       list
-;;       environment-variables-service
-;;       (partial apply append)
-;;       (partial map (lambda (fun-symb)
-;;                      ((eval fun-symb (resolve-module (list 'home-base))))))
-;;       ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
-;;       )
-;;      (list 'environment-vars-edge-ecke 'environment-vars))))
+(def-public (home-env-services)
+  (append
+   (non-env-var-services)
+   (list (environment-variables-service 'env-vars-base
+                                        (environment-vars)))))
+(testsymb 'home-env-services-edge-ecke)
 
 (def-public (home-env-services-edge-ecke)
-  ;; (format #t "~a Starting…\n" f)
-  ((comp
-    ;; (lambda (v) (format #t "~a done\n" f) v)
-    (partial append (non-env-var-services))
-    ;; (lambda (v)
-    ;;   ;; (map (partial format #t "~a 1:\n~a\n" f) v)
-    ;;   ;; (format #t "~a 1 (length v) : ~a\n" f (length v))
-    ;;   v)
-    list
-    environment-variables-service
-    (partial append (environment-vars-edge-ecke))
-    (partial append (environment-vars))
-    ;; (lambda (v) (format #t "~a 0:\n~a\n" f v) v)
-    )
-   (list)))
+  (append
+   (non-env-var-services-edge-ecke)
+   (list (environment-variables-service 'env-vars-edge-ecke
+                                        (environment-vars-edge-ecke)))
+   (home-env-services)))
+
 (testsymb 'home-env-services-edge-ecke)
 
 (def-public (home-env-edge-ecke)

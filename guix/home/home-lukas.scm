@@ -56,17 +56,7 @@ guix home --allow-downgrades --cores=$cores \
   (home-environment
    ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
    ;; (packages (home-packages-to-install))
-   (services
-    ((comp
-      #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
-      (partial append (home-base:services))
-      #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
-      list
-      home-base:environment-variables-service
-      (partial append (home-base:environment-vars))
-      #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v)
-      )
-     (list)))))
+   (services (home-base:home-env-services))))
 (testsymb 'home-env)
 
 (module-evaluated)
