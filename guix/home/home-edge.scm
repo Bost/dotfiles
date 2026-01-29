@@ -135,7 +135,7 @@ guix home --allow-downgrades --cores=$cores \
 
 ;;; TODO home-git-configuration
 
-(define home-env (home-base:home-env-edge-ecke list-separator-bash))
+(define home-env (home-base:home-env-edge-ecke))
 (testsymb 'home-env)
 
 (module-evaluated)

@@ -246,7 +246,7 @@ guix home --allow-downgrades --cores=$cores \
          ("der"   . ,(user-home "/der"))
          ))
       #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
-     (home-base:environment-vars list-separator-bash)))))
+     (home-base:environment-vars)))))
 (testsymb 'home-env)
 
 (module-evaluated)
