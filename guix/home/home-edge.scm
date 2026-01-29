@@ -35,7 +35,7 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
-  #:use-module ((home-base) #:prefix base:)
+  #:use-module ((home-base) #:prefix home-base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -77,7 +77,7 @@ guix home --allow-downgrades --cores=$cores \
 ;;                        ;; #t to copy directory
 ;;                        #:recursive? #t))))))
 
-(base:install-all-projects)
+(home-base:install-all-projects)
 
 ;;     (begin
 ;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (services fish)
@@ -135,7 +135,7 @@ guix home --allow-downgrades --cores=$cores \
 
 ;;; TODO home-git-configuration
 
-(define home-env (base:home-env-edge-ecke list-separator-bash))
+(define home-env (home-base:home-env-edge-ecke list-separator-bash))
 (testsymb 'home-env)
 
 (module-evaluated)

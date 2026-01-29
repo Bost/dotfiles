@@ -33,7 +33,7 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
-  #:use-module ((home-base) #:prefix base:)
+  #:use-module ((home-base) #:prefix home-base:)
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
@@ -196,14 +196,14 @@ guix home --allow-downgrades --cores=$cores \
 (define home-env
   (home-environment
    ;; Replaced by $dotf/guix/profile-manifest.scm
-   ;; (packages ((@(config packages all) home-packages-to-install)))
+   ;; (packages (home-packages-to-install))
    (services
     ((comp
       #;(lambda (v) (format #t "~a 3:\n~a\n" m v) v)
-      (partial append (base:services))
+      (partial append (home-base:services))
       #;(lambda (v) (format #t "~a 2:\n~a\n" m v) v)
       list
-      base:environment-variables-service
+      home-base:environment-variables-service
       #;(lambda (v) (format #t "~a 1:\n~a\n" m v) v)
       (partial
        append
@@ -246,7 +246,7 @@ guix home --allow-downgrades --cores=$cores \
          ("der"   . ,(user-home "/der"))
          ))
       #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
-     (base:environment-vars list-separator-bash)))))
+     (home-base:environment-vars list-separator-bash)))))
 (testsymb 'home-env)
 
 (module-evaluated)
