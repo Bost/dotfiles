@@ -672,7 +672,8 @@ a list of files to search through."
         ;; gg and gk call exec-background
         (list #:utility "gg"                    #:desc "git-gui")
         (list #:utility "gk"                    #:desc "git-repo-browser")
-        (list #:utility "guix-git-authenticate" #:desc "guix-git-authenticate")
+        ;; TODO guix-git-authenticate is broken
+        ;; (list #:utility "guix-git-authenticate" #:desc "guix-git-authenticate")
         (list #:utility "gpg-pinentry-setup"    #:desc "gpg-pinentry-setup")
         (list #:utility "qemu-vm"               #:desc "qemu-vm")
         )))
