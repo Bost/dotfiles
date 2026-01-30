@@ -36,6 +36,12 @@
 ;; sessions using the xsettingsd daemon.")))
 
 (define (user-dotf-to-dir dir)
+  "
+(user-dotf-to-dir \"bin\") ; =>
+(\"bin\" #<<local-file>
+  file: \"/home/bost/dev/dotfiles/bin\"
+  absolute: #<promise #<procedure 7f839a518660 at ... ()>>
+  name: \"bin\" recursive?: #t select?: #<procedure true (file stat)>>)"
   ;; TODO (user-dotf-to-dir ".tmux") doesn't work
   (list dir ;; destination
         (local-file (user-dotf "/" dir) #:recursive? #t)))
@@ -63,7 +69,7 @@
           (format #t "E ~a Can't read ~a\n" m dotf-config-xfce-hostname-file)
           #f))))
 
-(define (host-specific-config)
+(def (host-specific-config)
   "Handle the host-specific configuration settings from .config<.hostname>/
 See also:
 - (@(fs-utils) local-dotfile)
@@ -109,10 +115,8 @@ See also:
        (list
         "xfce4-screenshooter")]
       [else (list)]))))
-(testsymb 'host-specific-config)
 
-(define (home-files-config)
-  (let* [(m (format #f "~a [home-files-config]" m))]
+(def (home-files-config)
     ;; (format #t "~a Starting…\n" m)
     ((comp
       ;; (lambda (p) (format #t "~a done\n" m) p)
@@ -183,15 +187,13 @@ See also:
                  )))
       ;; (lambda (p) (format #t "###### 0.\n") p)
       )
-     (list))))
-(testsymb 'home-files-config)
+     (list)))
 
-(define-public (home-config-service)
+(def-public (home-config-service)
   ;; TODO add to home-dir-config: notes, rest of the $dotf/.emacs.d.spacemacs directory
   (simple-service
    'home-config-service
    home-files-service-type ; from upstream, defined in gnu/home/services.scm
    (home-files-config)))
-(testsymb 'home-config-service)
 
 (module-evaluated)
