@@ -24,7 +24,7 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define-public (keyb-layout)
+(def-public (keyb-layout)
   (keyboard-layout
    ;; EurKEY: The European Keyboard Layout https://eurkey.steffen.bruentjen.eu/
    ;; "eu" ""
@@ -41,9 +41,8 @@
    ;;
    ;; 2. Switch layouts by pressing both Ctrl-keys
    #:options '("compose:menu,grp:ctrls_toggle")))
-(testsymb 'keyb-layout)
 
-(define-public (users-config additional-supplementary-groups)
+(def*-public (users-config #:optional (additional-users-groups '()))
   "The list of user accounts ('root' is implicit)."
   (cons*
    (user-account
@@ -57,6 +56,7 @@
     ;; (shell (file-append bash "/bin/bash"))
 
     ;; list of group names that this user-account belongs to
+    ;; TODO audio and netdev groups are not needed on every system
     (supplementary-groups
      (append
       (list
@@ -69,7 +69,7 @@
        ;; and type-in the WIFI passwords by him or herself.
        "netdev"
 
-       "audio"  ;; sound card
+       "audio"  ; sound card
 
        ;; "kvm"
        ;; "tty"
@@ -77,7 +77,7 @@
        ;; "docker"
        ;; "realtime"  #| Enable realtime scheduling |#
        )
-      additional-supplementary-groups)))
+      additional-users-groups)))
 
    ;; Example of an ordinary, non-privileged user, without root
    ;; permissions and access to home-directories of other users
@@ -88,9 +88,8 @@
    ;;  (password (crypt "password" "salt")) ;; SHA-512-hashed
    ;;  (home-directory "/home/jimb"))
    %base-user-accounts))
-(testsymb-trace 'users-config)
 
-(define-public (services)
+(def-public (services)
   (list
 
    ;; PC/SC - Personal Computer/Smart Card: specification for smart-card
@@ -116,9 +115,8 @@
       `((,user ,(local-file (string-append home "/.ssh/id_rsa.pub")))))))
 
    (service xfce-desktop-service-type)))
-(testsymb-trace 'services)
 
-(define-public (syst-config)
+(def-public (syst-config)
   (operating-system
     (locale "en_US.utf8")
     (timezone "Europe/Berlin")
@@ -142,7 +140,6 @@
                  (targets (list "/boot/efi"))
                  (keyboard-layout keyboard-layout)))
     (file-systems %base-file-systems)))
-(testsymb 'syst-config)
 
 (define-public (syst-config-linux)
   (operating-system
@@ -156,6 +153,5 @@
     (initrd microcode-initrd)
 
     (firmware (list linux-firmware))))
-(testsymb 'syst-config-linux)
 
 (module-evaluated)

@@ -46,9 +46,7 @@
     (keyboard-layout
      (keyboard-layout "us" "altgr-intl"))
     (host-name host-kalus)
-    (users (syst-base:users-config (list
-                                    "cdrom" ;; access to CD-ROM
-                                    )))
+    (users (syst-base:users-config))
 
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
