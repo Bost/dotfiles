@@ -15,7 +15,7 @@
 ;; sudo guix system --fallback -L $dotf/guix/common -L $dotf/guix/systems/common reconfigure $dotf/guix/systems/syst-$(hostname).scm
 
 (define-module (syst-geek)
-  #:use-module ((syst-base) #:prefix base:)
+  #:use-module ((syst-base) #:prefix syst-base:)
   #:use-module (dotf settings)
   #:use-module (dotf utils)                 ; partial
   #:use-module (dotf memo)
@@ -93,15 +93,15 @@
 
 (define-public syst-config
   (operating-system
-    (inherit (base:syst-config-linux))
+    (inherit (syst-base:syst-config-linux))
     (keyboard-layout
-     #;(operating-system-keyboard-layout (base:syst-config))
-     (base:keyb-layout))
+     #;(operating-system-keyboard-layout (syst-base:syst-config))
+     (syst-base:keyb-layout))
     (host-name host-geek)
-    (users (base:users-config (list
-                               "video"  ;; video devices, e.g. webcams
-                               "lp"     ;; control bluetooth devices
-                               )))
+    (users (syst-base:users-config (list
+                                    "video"  ;; video devices, e.g. webcams
+                                    "lp"     ;; control bluetooth devices
+                                    )))
     ;; (locale "fr_FR.utf8")
 
 ;;; Packages installed system-wide. Users can also install packages under their
@@ -136,7 +136,7 @@
     (services
      ;; TODO create macros pappend, premove, etc. - parallel processing
      (append
-      (base:services)
+      (syst-base:services)
       (list
        (set-xorg-configuration
         (xorg-configuration
