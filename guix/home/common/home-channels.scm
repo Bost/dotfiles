@@ -53,7 +53,7 @@
    ;; pulls-in: guix nonguix guix-rust-past-crates
    (channel-bost #:commit bost-commit)))
 
-(define* (home-channels #:key
+(def* (home-channels #:key
                         guix-android-commit
                         guixrus-commit
                         hask-clj-commit
@@ -76,8 +76,7 @@
             #:bost-commit          bost-commit
             ) lst)
           lst)))
-   (list (channel-guix #:commit guix-commit))
-   ))
+   (list (channel-guix #:commit guix-commit))))
 
 (home-channels
  ;; ;; 12 jan. 2026 12:30:03
@@ -131,6 +130,3 @@
  #:guix-commit         "a6dddbb062ebc9ed20a51dbec0f1f2e9b6dba77c"
  #:guix-past-commit    "be7997692e81a89817c7fa2d6e36aee71c8e6916"
  )
-(testsymb 'home-channels)
-
-(home-channels)
