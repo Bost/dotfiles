@@ -71,6 +71,7 @@
   (append
    ;; (service home-xsettingsd-service-type)
    (list
+    (fish-service)
     (service
      home-bash-service-type
      (home-bash-configuration
@@ -171,8 +172,6 @@
 
     ;; (lambda (v) (format #t "~a 6\n" f) v)
     (partial append (list (development-dirs-service)))
-    ;; (lambda (v) (format #t "~a 5\n" f) v)
-    (partial append (list (fish-service)))
     ;; (lambda (v) (format #t "~a 3 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
     (partial append (list (home-config-service)))
     ;; (lambda (v) (format #t "~a 2 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
