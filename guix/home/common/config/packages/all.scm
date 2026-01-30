@@ -261,23 +261,8 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Cross-platform curses-based monitoring tool; like htop
     glances
 
-    ;; guix package --cores=24 '--search=dvd\+rw-tools'
-    ;; DVD and Blu-ray Disc burning tools
-    dvd+rw-tools
-
     ;; terminal multiplexer, more popular and modern than 'screen'
     tmux
-
-    ;; tmux-based terminal divider
-    ;; * Split tmux window into multiple panes.
-    ;; * Build command lines & execute them on the panes.
-    ;; * Runnable from outside of tmux session.
-    ;; * Runnable from inside of tmux session.
-    ;; * Record operation log.
-    ;; * Flexible layout arrangement for panes.
-    ;; * Display pane title on each pane.
-    ;; * Generate command lines from standard input (Pipe mode).
-    tmux-xpanes
 
     ;; udisksctl
     udisks
@@ -472,7 +457,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
 (define (rest-packages)
   (list
-   adb
+   adb         ; Android Debug Bridge
    alsa-utils  ; Advanced Linux Sound Architecture; contains speaker-test
    android-ext4-utils
    android-file-transfer
@@ -492,19 +477,23 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; beep        ; command-line utility to control the PC speaker
 
    ;; specifying only 'bind' leads to "Wrong type argument in position 1 ..."
-   (list isc-bind "utils")
+   (list isc-bind "utils") ; DNS (Domain Name System) implementation
 
    ;; Contains mkisofs, which can create an hybrid ISO-9660/JOLIET/HFS/UDF
    ;; filesystem-image with optional Rock Ridge attributes. See also xorriso
    ;; cdrtools
 
-   clang
+   clang ; C language family frontend for LLVM
    ;; clojure-tools ;; 1.11.1.1413
    clusterssh
    cmake
    curl
    dos2unix
    drawing     ; basic image editor
+
+   ;; guix package --cores=24 '--search=dvd\+rw-tools'
+   dvd+rw-tools ; DVD and Blu-ray Disc burning tools
+
    fastboot    ; Android image flasher: upload file system images
    ffmpeg
    file        ; File type guesser
@@ -547,10 +536,10 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    libgccjit
 
    (list git "gui")
-   ghc
+   ghc ; The Glasgow Haskell Compiler
    (list glib "bin")
    graphviz
-   grub
+   grub ; GRand Unified Boot loader
 
    ;; specifying only 'guile' leads to "error: guile: unbound variable"
    guile-3.0
@@ -563,7 +552,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; etc.
    guile-studio
 
-   gv
+   gv           ; PostScript and PDF viewer using Ghostscript as a back-end
    gvfs         ; GIO virtual file system; user mounts
 
    ;; Guix Workflow Language: Workflow management extension for Guix's language
@@ -574,9 +563,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    htop
    hwinfo
    iniparser
-   inxi
+   inxi   ; Full-featured system information script
    ispell
-   jmtpfs
+   jmtpfs ; FUSE file system to access data over MTP (Media Transfer Protocol)
    libavc1394
    libavif
    libconfini
@@ -593,7 +582,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    libxpm
    lolcat
    lshw      ; List hardware information
-   lsof
+   lsof      ; Display information about open files
    lynx      ; Text Web Browser
    gnu-make  ; former (specification->package "make@4.3")
    maven
@@ -602,7 +591,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    mtr       ; My TraceRoute: Network diagnostic tool combine traceroute + ping
    ncurses
    network-manager
-   nmap
+   nmap      ; Network discovery and security auditing tool
 
 ;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
 ;;; See also ~/.npm, ~/.npmrc, ~/node_modules
@@ -627,7 +616,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    pulseaudio
    inotify-tools ; for $dotf/bin/battery-notifier
    libnotify     ; for $dotf/bin/battery-notifier
-   pv
+   pv            ; Pipeline progress indicator
    pybind11
 
  ;;; `python' should not be installed `python' with `python-wrapper'.
@@ -641,17 +630,29 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    python-2.7
    python-docx   ; Edit Microsoft Word documents in Python
    racket
-   readline
+   readline      ; Edit command lines while typing, with history support
    recutils      ; Manipulate plain text files as databases
    rlwrap
    ;; scsh          ; Unix shell embedded in Scheme
-   strace
-   taglib
+   strace        ; System call tracer for Linux
+   taglib        ; Library to access audio file meta-data
    tealdeer      ; tldr "Too Long Didn't Read" written in Rust
    texinfo       ; official documentation format of the GNU project
-   tig
+   tig           ; Ncurses-based text user interface for Git
    tree
-   tzdata
+
+   ;; tmux-based terminal divider
+   ;; * Split tmux window into multiple panes.
+   ;; * Build command lines & execute them on the panes.
+   ;; * Runnable from outside of tmux session.
+   ;; * Runnable from inside of tmux session.
+   ;; * Record operation log.
+   ;; * Flexible layout arrangement for panes.
+   ;; * Display pane title on each pane.
+   ;; * Generate command lines from standard input (Pipe mode).
+   ;; tmux-xpanes
+
+   tzdata        ; Database of current and historical time zones
    udiskie
    uniutils      ; Find out what is in a Unicode file
 
