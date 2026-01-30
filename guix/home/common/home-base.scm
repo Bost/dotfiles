@@ -32,6 +32,8 @@
   #:use-module (gnu packages commencement)
 )
 
+(read-set! keywords 'prefix) ; Allow both :keyword and #:keyword
+
 ;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
 
@@ -354,132 +356,69 @@
 ;;  # when the tags are named v1.0.1, v1.0.2 etc.
 ;;  # git checkout $(git tag --sort=-v:refname | head -n 1)
 
-(def (projects-base)
+(define (projects-base)
   (list
-   (cons
-    "/dev"
-    (append
-     (list
-      (list "/dotfiles"
-            ;; "https://codeberg.org/Bost/dotfiles.git"
-            ))))))
+   (list :dir "/dev/dotfiles" :url "")))
 
-(def (projects-edge-ecke)
+(define (projects-edge-ecke)
   (append
    (list
-    (cons "/dec" (list
-                  "/clj-time"
-                  "/cljplot"
-                  "/corona_cases"
-                  "/fdk"
-                  "/monad_koans"
-                  "/morse"
-                  "/utils"
-                  "/cheatsheet"
-                  "/zark"
-                  ))
-    ;; (cons "/der" (list
-    ;;               "/heroku-buildpack-racket"
-    ;;               "/racket-koans"
-    ;;               "/search-notes"
-    ;;               ;; "/vesmir" ;; is in the projects-heroku list
-    ;;               ))
-    (cons
-     "/dev"
-     (append
-;;;   cp -r <repo-local-checkout> $dev
-;;;   cd $dev/<repo-name>
-;;;   git remote add origin <repo-url>
-;;; The repo-url can be obtained from `guix describe --format=channels`
-;;;   git fetch --tags origin master
-      (list
-       (list "/guix" "https://codeberg.org/guix/guix.git")
-       (list "/nonguix" "https://gitlab.com/nonguix/nonguix"))
-      (list
-       (list "/elpa-mirror.d12frosted"
-             "https://github.com/d12frosted/elpa-mirror")
-       "/blog"
-       "/copy-sexp"
-       "/guix-packages"
-       "/jump-last"
-       "/kill-buffers"
-       "/tweaks"
-       "/notes"
-       "/farmhouse-light-mod-theme"
-       (list "/guile" "https://git.savannah.gnu.org/git/guix.git")
-       ;; guile bindings of libgit2
-       (list "/guile-git" "https://gitlab.com/guile-git/guile-git.git")))))
+    ;; (list :dir "/dev/elpa-mirror.d12frosted"    :url "https://github.com/d12frosted/elpa-mirror")
+    (list :dir "/dec/clj-time"                  :url "")
+    (list :dir "/dec/cljplot"                   :url "")
+    (list :dir "/dec/corona_cases"              :url "")
+    (list :dir "/dec/fdk"                       :url "")
+    (list :dir "/dec/monad_koans"               :url "")
+    (list :dir "/dec/morse"                     :url "")
+    (list :dir "/dec/utils"                     :url "")
+    (list :dir "/dec/cheatsheet"                :url "")
+    (list :dir "/dec/zark"                      :url "")
+    (list :dir "/dev/guix"                      :url "https://codeberg.org/guix/guix.git")
+    (list :dir "/dev/nonguix"                   :url "https://gitlab.com/nonguix/nonguix")
+    (list :dir "/dev/blog"                      :url "")
+    (list :dir "/dev/copy-sexp"                 :url "")
+    (list :dir "/dev/guix-packages"             :url "")
+    (list :dir "/dev/jump-last"                 :url "")
+    (list :dir "/dev/kill-buffers"              :url "")
+    (list :dir "/dev/tweaks"                    :url "ssh://git@codeberg.org/Bost/tweaks.git")
+    (list :dir "/dev/notes"                     :url "")
+    (list :dir "/dev/farmhouse-light-mod-theme" :url "")
+    (list :dir "/dev/guile"                     :url "https://codeberg.org/guile/guile.git")
+    (list :dir "/dev/guile-git"                 :url "https://gitlab.com/guile-git/guile-git.git")
+    (list :dir "/dev/dotfiles"                  :url "")
+    )
    (projects-base)))
+
+(define (projects-heroku)
+  (list
+   (list :dir "/der/vesmir"                    :url "")
+   (list :dir "/der/vojto"                     :url "")
+   ))
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
-(define (obtain-and-setup dest-dir repo-orig)
+(def* (setup-project #:key dir url)
   "TODO See https://gitlab.com/guile-git/guile-git.git
 Guile bindings to libgit2, to manipulate repositories of the Git."
-  (let* [(repo (if (list? repo-orig)
-                   (cadr repo-orig)
-                   repo-orig))
-         (dest-dir-repo (if (list? repo-orig)
-                            (str home dest-dir (car repo-orig))
-                            (str home dest-dir repo)))]
-    (unless (access? dest-dir-repo F_OK)
-      (let* [(repo-url (if (url? repo)
-                           repo
-                           (str gitlab repo)))]
-        (map (partial apply exec-system*)
-             (list
-              (list "git" "clone" "--origin=gitlab" repo-url dest-dir-repo)
-              (list "git" (str "--git-dir=" dest-dir-repo "/.git") "remote add github"
-                    (str github repo))))))))
-(testsymb 'obtain-and-setup)
-
-(def (projects-env-edge-heroku)
-  (list
-   (cons "/der" (list
-                 ;; "/pictures"
-                 ;; "/covid-survey"
-                 "/vesmir"
-                 ;; "/tetris"
-                 "/vojto"))))
-
-(define (obtain-and-setup-heroku dest-dir repo)
-  (let* [(dest-dir-repo (str home dest-dir repo))]
-    (unless (access? dest-dir-repo F_OK)
-      (let [(repo-url (if #f ; (url? repo)
-                          repo
-                          (str "https://git.heroku.com/" repo ".git")))]
-        (format #t "~a TODO clone ~a to ~a\n" m repo-url dest-dir-repo)
-        ;; (git-clone "--origin=vojto" repo-url dest-dir-repo)
-        ))))
+  (let* [(user-dir (user-home dir))]
+    (unless (access? user-dir F_OK)
+      (if (not (unspecified-or-empty-or-false? url))
+          (exec-system* #:verbose #t "git" "clone" "--quiet" url user-dir))
+      (my=warn "~a dir : ~a; can't `git clone ...`. The url is empty.\n" f dir))))
 
 (def-public (install-all-projects-base)
   "The `sgxr' pulls only from syst-channels, so make sure after the `sgxr' the
 `gxp' is executed so that all channels become available again. Otherwise the
 `gxhre' fails to execute."
   ;; (format #t "~a projects to install: ~a\n" f (length (projects)))
-  (map (lambda (project)
-         (let [(dest-dir (car project))]
-           (map (partial obtain-and-setup dest-dir) (cdr project))))
-       (projects-base)))
+  (map (partial apply setup-project) (projects-base)))
 
 (def-public (install-all-projects-edge-ecke)
   "The `sgxr' pulls only from syst-channels, so make sure after the `sgxr' the
 `gxp' is executed so that all channels become available again. Otherwise the
 `gxhre' fails to execute."
   ;; (format #t "~a projects to install: ~a\n" f (length (projects)))
-  (map (lambda (project)
-         ;; (format #t "~a project: ~a\n" f project)
-         ;; (match projects
-         ;;   [(dest-dir repo-orig)
-         ;;    (map (partial obtain-and-setup dest-dir) repo-orig)])
-         (let [(dest-dir (car project))]
-           (map (partial obtain-and-setup dest-dir) (cdr project))))
-       (projects-edge-ecke))
-  ;; (map (lambda (project)
-  ;;        (let ((dest-dir (car project)))
-  ;;          (map (partial obtain-and-setup-heroku dest-dir) (cdr project))))
-  ;;      (projects-heroku))
-  )
+  (map (partial apply setup-project) (projects-edge-ecke)))
 
 (def-public (home-env-services-base)
   (append
