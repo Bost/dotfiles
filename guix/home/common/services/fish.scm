@@ -49,39 +49,36 @@ Note:
 ;;; when the 'guix home reconfigure ...' fails or is interrupted.
 ;;; Can't use `local-file' or `mixed-text-file' or something similar since the
 ;;; `fish_variables' must be editable
-(define-public (copy-fish-config-dotfiles!)
-  (let* [(m (format #f "~a [copy-fish-config-dotfiles!]" m))]
-    ;; (format #t "~a Starting…\n" m)
-    (let* [(filepath "/fish_variables")
-           (src (fish-config-dotfiles filepath))
-           (dst (user-home "/" (fish-config-base filepath)))
-           (dstdir (dirname dst))]
-      (unless (file-exists? dstdir)
-        (let [(indent (str indent indent-inc))]
-          (format #t "~a(mkdir ~a)… " indent dstdir)
-          (let ((retval (mkdir dstdir)))
-            (format #t "retval: ~a\n" retval)
-            ;; The value of 'retval' is '#<unspecified>'
-;;; TODO continuation: executing the block only if the dstdir was created.
-            retval)))
-;;; TODO is this sexp is not executed because of lazy-evaluation?
+(def-public (copy-fish-config-dotfiles!)
+  ;; (format #t "~a Starting…\n" m)
+  (let* [(filepath "/fish_variables")
+         (src (fish-config-dotfiles filepath))
+         (dst (user-home "/" (fish-config-base filepath)))
+         (dstdir (dirname dst))]
+    (unless (file-exists? dstdir)
       (let [(indent (str indent indent-inc))]
-        (format #t "~a(copy-file ~a ~a)… " indent src dst)
-        (let ((retval (copy-file src dst))) ;; consider using `symlink'
+        (format #t "~a(mkdir ~a)… " indent dstdir)
+        (let ((retval (mkdir dstdir)))
           (format #t "retval: ~a\n" retval)
           ;; The value of 'retval' is '#<unspecified>'
-          retval))
+;;; TODO continuation: executing the block only if the dstdir was created.
+          retval)))
+;;; TODO is this sexp is not executed because of lazy-evaluation?
+    (let [(indent (str indent indent-inc))]
+      (format #t "~a(copy-file ~a ~a)… " indent src dst)
+      (let ((retval (copy-file src dst))) ;; consider using `symlink'
+        (format #t "retval: ~a\n" retval)
+        ;; The value of 'retval' is '#<unspecified>'
+        retval))
 ;;; Just changing ownership and permissions of `fish_variables' doesn't work:
-      #;
-      (begin
-      ;; .rw-r--r-- bost users fish_variables
-      (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
-      (chown dst (getuid) (getgid))
-      ;; .rw-r--r-- fish_variables
-      (format #t "(chmod ~a ~a)\n" dst #o644)
-      (chmod dst #o644)))
-    ;; (format #t "~a done\n" m)
-    ))
+    #;
+    (begin
+    ;; .rw-r--r-- bost users fish_variables
+    (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
+    (chown dst (getuid) (getgid))
+    ;; .rw-r--r-- fish_variables
+    (format #t "(chmod ~a ~a)\n" dst #o644)
+    (chmod dst #o644))))
 
 (define* (append-fish-config-dir dir lst)
   (append
