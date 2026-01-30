@@ -6,12 +6,11 @@
   #:use-module (gnu)
   #:use-module (guix modules)
   #:use-module (guix)                  ; package-version
-)
+  )
 
 (use-service-modules ; no need to write: #:use-module (gnu services <module>)
- desktop         ;; elogind-service-type
- networking      ;; dhcp-client-service-type
- ssh             ;; openssh-service-type
+ networking      ; network-manager-service-type, wpa-supplicant-service-type
+ ssh             ; openssh-service-type
  )
 
 (use-package-modules ; no need to write: #:use-module (gnu packages <module>)
@@ -30,15 +29,6 @@
 
 (define m (module-name-for-logging))
 (evaluating-module)
-
-;; (define minimal-desktop-services
-;;   (list polkit-wheel-service
-;;         (service upower-service-type)
-;;         (service accountsservice-service-type)
-;;         (service polkit-service-type)
-;;         (service elogind-service-type)
-;;         (service dbus-root-service-type)
-;;         (service x11-socket-directory-service-type)))
 
 (define-public syst-config
   (operating-system
@@ -73,19 +63,19 @@
 
     (services
      (cons*
-      ;; Avoid guix home warning: XDG_RUNTIME_DIR doesn't exists ...
-      (service elogind-service-type)
-
-      ;; (service network-manager-service-type)
-      ;; (service
-      ;;  openssh-service-type
-      ;;  (openssh-configuration
-      ;;   (openssh openssh-sans-x)
-      ;;   (password-authentication? #false)
-      ;;   (authorized-keys
-      ;;    ;; Assuming the id_rsa.pub exists under given path, e.g. it was
-      ;;    ;; transferred by `ssh-copy-id` at some point in the past.
-      ;;    `((,user ,(local-file (string-append home "/.ssh/id_rsa.pub")))))))
+      (service network-manager-service-type)
+      ;; Prevent error ... 'NetworkManager' requires 'wireless-daemon' ...
+      (service wpa-supplicant-service-type)
+      (service
+       openssh-service-type
+       (openssh-configuration
+         (openssh openssh-sans-x)
+         (password-authentication? #false)
+         (authorized-keys
+          ;; Assuming the local-file exists under given path, e.g. it was
+          ;; transferred by `ssh-copy-id` at some point in the past.
+          `((,user
+             ,(local-file (string-append home "/.ssh/authorized_keys")))))))
       %base-services))
 
 ;;; See
@@ -93,11 +83,11 @@
 ;;; https://www.gnu.org/software/grub/manual/grub/html_node/Invoking-grub_002dinstall.html#Invoking-grub_002dinstall
 ;;; https://github.com/babariviere/dotfiles/blob/guix/baba/bootloader/grub.scm
     (bootloader
-     (bootloader-configuration
-      (bootloader grub-bootloader)
-      (targets (list "/dev/sda"))
-      ;; keyboard-layout for the GRUB
-      (keyboard-layout keyboard-layout)))
+      (bootloader-configuration
+        (bootloader grub-efi-bootloader)
+        (targets (list "/boot/efi"))
+        ;; keyboard-layout for the GRUB
+        (keyboard-layout keyboard-layout)))
 
 ;;; The list of file systems that get "mounted". The unique file system
 ;;; identifiers there ("UUIDs") can be obtained by running 'blkid' in a
@@ -105,13 +95,17 @@
     (file-systems
      (cons*
       (file-system
+        (mount-point "/boot/efi")
+        (device (uuid "C433-B4CD" 'fat32))
+        (type "vfat"))
+      (file-system
         (mount-point "/")
-        (device (uuid "cf11628d-4887-42d2-aef1-635ad5089ce1" 'ext4))
+        (device (uuid "16e81bde-2975-4814-aef9-9d06484dd5e2" 'ext4))
         (type "ext4"))
       %base-file-systems))
     (swap-devices (list
                    (swap-space
-                    (target (uuid "a4767437-a9c8-4d57-9755-4fcd2aef73da")))))))
+                     (target (uuid "566ddff0-d6ee-4d7e-8cc9-ec273120617e")))))))
 
 (module-evaluated)
 
