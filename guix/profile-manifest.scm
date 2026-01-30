@@ -1,8 +1,8 @@
 (define-module (profile-manifest)
   #:use-module (ice-9 pretty-print)
   #:use-module (srfi srfi-1)
-  #:use-module (bost utils)
-  #:use-module (bost tests)
+  #:use-module (dotf utils)
+  #:use-module (dotf tests)
   #:use-module (guix profiles)
   #:use-module (config packages all) ; home-packages-to-install
   )
