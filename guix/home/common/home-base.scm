@@ -66,7 +66,7 @@
    ))
 (testsymb 'bashrc-str)
 
-(def-public (non-env-var-services)
+(def-public (non-env-var-services-base)
   ;; (format #t "~a Starting…\n" f)
   (append
    ;; (service home-xsettingsd-service-type)
@@ -433,7 +433,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
                     (str github repo))))))))
 (testsymb 'obtain-and-setup)
 
-(def (projects-heroku)
+(def (projects-env-edge-heroku)
   (list
    (cons "/der" (list
                  ;; "/pictures"
@@ -481,9 +481,9 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
   ;;      (projects-heroku))
   )
 
-(def-public (home-env-services)
+(def-public (home-env-services-base)
   (append
-   (non-env-var-services)
+   (non-env-var-services-base)
    (list (environment-variables-service 'env-vars-base
                                         (environment-vars)))))
 
@@ -492,7 +492,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
    (non-env-var-services-edge-ecke)
    (list (environment-variables-service 'env-vars-edge-ecke
                                         (environment-vars-edge-ecke)))
-   (home-env-services)))
+   (home-env-services-base)))
 
 (def-public (home-env-edge-ecke)
   ;; (format #t "~a Starting…\n" f)
