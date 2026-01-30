@@ -17,11 +17,13 @@
 (define-public user-mail-address "Rostislav.Svoboda@posteo.net")
 (define-public user "bost")
 (define-public home (str "/home/" user))
+(define-public host-kalus "kalus")
 (define-public host-lukas "lukas")
 (define-public host-ecke "ecke")
 (define-public host-geek "geek")
 (define-public host-edge "edge")
-(define-public hostnames (list host-lukas host-ecke host-geek host-edge))
+(define-public hostnames
+  (list host-kalus host-lukas host-ecke host-geek host-edge))
 
 (define-public emacs-init-file "init.el")
 (define-public emacs-distros "/.emacs.d.distros")
