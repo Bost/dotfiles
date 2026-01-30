@@ -64,18 +64,19 @@
                         )
   ((comp
     (lambda (lst)
-      (if (or (host-edge?) (host-ecke?))
-          (append (home-channels-edge-ecke
-                   #:guix-android-commit  guix-android-commit
-                   #:guixrus-commit       guixrus-commit
-                   #:hask-clj-commit      hask-clj-commit
-                   #:games-commit         games-commit
-                   #:bost-commit          bost-commit
-                   ) lst)
+      (if (or (host-edge?) (host-ecke?) (host-geek?))
+          (append
+           (list (channel-nonguix #:commit nonguix-commit))
+           (home-channels-edge-ecke
+            #:guix-android-commit  guix-android-commit
+            #:guixrus-commit       guixrus-commit
+            #:hask-clj-commit      hask-clj-commit
+            #:games-commit         games-commit
+            #:bost-commit          bost-commit
+            ) lst)
           lst)))
-   (common-channels
-    #:guix-commit    guix-commit
-    #:nonguix-commit nonguix-commit)))
+   (list (channel-guix #:commit guix-commit))
+   ))
 
 (home-channels
  ;; ;; 12 jan. 2026 12:30:03
