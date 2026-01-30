@@ -66,7 +66,7 @@ take() { mkcd "$@"; }
 ....() { cd ../../..; }
 
 # Directory shortcuts. ${VARNAME:?} guards against unset VARNAME
-bin()     { cd ~/bin; }
+bin()     { cd "$HOME/bin"; }
 cheat()   { cd "${cheat:?}"; }
 corona()  { cd "${dec:?}/corona_cases"; }
 dec()     { cd "${dec:?}"; }
@@ -85,7 +85,7 @@ dspc()    { cd "${dspc:?}"; }
 dtf()     { cd "${dtf:?}"; }
 dtfg()    { cd "${dtfg:?}"; }
 notes()   { cd "${dev:?}/notes/notes"; }
-rr()      { cd ~/.config/rash; }
+rr()      { cd "$HOME/.config/rash"; }
 tmp()     { cd /tmp; }
 utils()   { cd "${dec:?}/utils"; }
 vesmir()  { cd "${der:?}/vesmir"; }
@@ -95,16 +95,17 @@ yas()     { cd "${dev:?}/yasnippet"; }
 cd-() { cd -; }
 cdd() { cd -; }
 
-# --- Centralized project directory shortcuts ---
-declare -A CDMAP=(
-    # variable-based dirs (fail fast if unset)
-    # [latest]="$HOME/.cache/guix/checkouts/${latestRepo:?}"
-    [owid]="${dec:?}/owid"
-    [trackle]="${dev:?}/trackle"
-    [ufo]="${dec:?}/ufo"
-    [utils]="${dec:?}/utils"
-    [zark]="${dec:?}/zark"
-)
+# --- Centralized "change-to-project-directory" shortcuts ---
+# -A	make associative arrays
+# declare -A CDMAP=(
+#     # variable-based dirs (fail fast if unset)
+#     # [latest]="$HOME/.cache/guix/checkouts/${latestRepo:?}"
+#     [owid]="${dec:?}/owid"
+#     [trackle]="${dev:?}/trackle"
+#     [ufo]="${dec:?}/ufo"
+#     [utils]="${dec:?}/utils"
+#     [zark]="${dec:?}/zark"
+# )
 
 cdx() {
     local key=$1
