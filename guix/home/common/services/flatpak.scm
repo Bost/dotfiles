@@ -1,5 +1,4 @@
 (define-module (services flatpak)
-  #:use-module (aurtzy home services package-management)
   #:use-module (dotf utils)
   ;; #:use-module (dotf settings)
   ;; #:use-module (dotf memo)
@@ -31,15 +30,16 @@
 
 
 (define-public (telegram-from-flatpak-service)
-  (service home-flatpak-service-type
-           (home-flatpak-configuration
-            (remotes
-             '((flathub-remote
-                . "https://flathub.org/repo/flathub.flatpakrepo")))
+  (service
+   (@(bost home services package-management) home-flatpak-service-type)
+   ((@(bost home services package-management) home-flatpak-configuration)
+    (remotes
+     '((flathub-remote
+        . "https://flathub.org/repo/flathub.flatpakrepo")))
 
-            (profile
-             '((flathub-remote "org.telegram.desktop")))
-            )))
+    (profile
+     '((flathub-remote "org.telegram.desktop")))
+    )))
 (testsymb 'telegram-from-flatpak-service)
 ;;; TODO do not try to run flatpak update when no internet available
 ;;; TODO XDG_DATA_DIRS contains flatpak relevant information e.g. /var/lib/flatpak/exports/share, etc.

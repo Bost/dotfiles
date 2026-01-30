@@ -12,8 +12,8 @@
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
-  #:use-module (services flatpak) ; telegram-from-flatpak-service
-  #:use-module (services guake)   ; home-guake-service
+  ;; #:use-module (services flatpak) ; telegram-from-flatpak-service
+  ;; #:use-module (services guake)   ; home-guake-service
   #:use-module (services home-dir-config) ; home-config-service
 
   #:use-module (gnu home)
@@ -164,15 +164,12 @@
     ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
 
     ;; (lambda (v) (format #t "~a 8 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
-    (lambda (lst)
-      (if (or (host-edge?) (host-ecke?) (host-geek?))
-          (append (list (home-guake-service)) lst)
-          lst))
+    (partial append (list (@((services guake) home-guake-service))))
     ;; (lambda (v) (format #t "~a 7 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
 
     ;; See also /gnu/store/wcmicv1yy1jqgc816wizk48ij15asn27-telegram-desktop-5.12.4
     ;; flatpak doesn't terminate for some reasons. Ugh!
-    ;; (partial append (list (telegram-from-flatpak-service)))
+    ;; (partial append (list (@((services flatpak) telegram-from-flatpak-service))))
 
     ;; (lambda (v) (format #t "~a 6\n" f) v)
     (partial append (list (development-dirs-service)))
