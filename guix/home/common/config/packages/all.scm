@@ -5,13 +5,8 @@
   #:use-module (gnu)     ; provides use-package-modules
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
-  #:use-module ((bost gnu packages emacs-xyz) #:prefix bst:)
-  ;; provides: spacemacs-packages
-  #:use-module ((bost gnu packages space-needed) #:prefix bst:)
-  #:use-module ((bost gnu packages gnome) #:prefix bst:)
   ;; provides: specification->package
   #:use-module (gnu packages)
-  #:use-module (bost gnu packages guake)
   #:use-module (dotf config channels channel-defs)
 
   ;; for inferior-pkg-in-channel : beg
@@ -20,10 +15,6 @@
   #:use-module (guix channels)
   ;; #:use-module (guix profiles) ;; probably not needed
   ;; for inferior-pkg-in-channel : end
-
-  ;; Following is needed b/c an inferior version of signal-desktop is used
-  #:use-module (nongnu packages messaging)
-  #:use-module (nongnu packages firmware) ; fwupd-nonfree
 
   #:use-module (srfi srfi-1)  ; list-processing procedures
   ;; simple & compact notation for specializing any subset of the parameters of
@@ -58,8 +49,8 @@
    isync
 
    pkg:emacs-mbsync
-   bst:emacs-mu4e-alert
-   bst:emacs-helm-mu
+   (@(bost gnu packages emacs-xyz) emacs-mu4e-alert)
+   (@(bost gnu packages emacs-xyz) emacs-helm-mu)
    ))
 (testsymb 'email-in-emacs-packages)
 
@@ -154,7 +145,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;;  emacs-auctex
 
    ;;  ;; Completion for `AUCTeX'
-   ;;  bst:emacs-company-auctex
+   ;;  (@(bost gnu packages emacs-xyz) emacs-company-auctex)
    ;;  )
    ))
 (testsymb 'large-packages-ecke)
@@ -173,7 +164,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    rust-pcsc-2          ; Bindings to the PC/SC API for smart card communication. rust-pcsc not available
 
    emacs-flymake-clippy ; Flymake backend for Clippy
-   bst:emacs-rustic     ; Rust development environment for Emacs
+   (@(bost gnu packages emacs-xyz) emacs-rustic) ; Rust development environment for Emacs
    ))
 
 (define (large-packages-edge-ecke)
@@ -255,19 +246,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Read-write access to NTFS file systems
     ntfs-3g
 
-    ;; ripgrep@13.0.0 can be used a workaround for:
-    ;;   SPC * not working with ripgrep 14
-    ;;   https://github.com/syl20bnr/spacemacs/issues/16200
-    ;; When using the inferior mechanism to pull in the ripgrep@13.0.0 the build
-    ;; process (triggered via `guix pull`'), takes too long.
-    ;; To avoid lengthy build times, the bst:ripgrep can be used instead.
-    ;; However, the bst:ripgrep doesn't build since the upstream introduced a
-    ;; new Rust packaging model.
-    ;; https://guix.gnu.org/blog/2025/a-new-rust-packaging-model/
-    ;; See also `(setq helm-ag-use-grep-ignore-list nil)' in the Emacs init.el
-    ;; bst:ripgrep
     ripgrep
-
     rsync
 
     ;; S.M.A.R.T.  harddisk control and monitoring tools
@@ -467,7 +446,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
   (list
    nix                ; The Nix package manager
    nixfmt             ; Opinionated formatter for Nix
-   bst:emacs-nix-mode ; Emacs major mode for editing Nix expressions
+
+   ;; Emacs major mode for editing Nix expressions
+   (@(bost gnu packages emacs-xyz) emacs-nix-mode)
    ))
 (testsymb 'nix-packages)
 
@@ -531,14 +512,14 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    font-adobe-source-code-pro
    font-gnu-freefont
    font-gnu-unifont
-   fuse
+   fuse        ; Support file systems implemented in user space
 
    ;; See
    ;; https://forum.systemcrafters.net/t/updating-firmware-with-fwupdmgr/1766
    ;; https://issues.guix.gnu.org/60065
    ;; https://www.reddit.com/r/GUIX/comments/xjjmtr/fwupd_gives_another_service_has_claimed_the_dbus/
    fwupd ; Daemon to allow session software to update firmware
-   fwupd-nonfree
+   (@(nongnu packages firmware) fwupd-nonfree)
    fwupd-efi ; EFI executable used by uefi-capsule plugin in fwupd
    ;; dfu-util ; download / upload firmware to / from device
 
@@ -761,7 +742,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    alacritty          ;;  4.393s; no drop-down; no splits; no tabs; e.g.: alacritty -o font.size=8
    ;; xfce4-terminal  ;;  9,998s; has --drop-down; has context menu; already present, no splits
    ;; yakuake         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
-   guake              ;; 10,176s; has --drop-down; has context menu; already present, has splits
+   (@(bost gnu packages guake) guake) ;; 10,176s; has --drop-down; has context menu; already present, has splits
    ;; tilda           ;;  9.256s; drop down with F1 by default; has tabs; no splits
    qterminal          ;;  8,720s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
    ;; tilix           ;;        ; can't see a shit, the text (foreground color) is too dark
@@ -788,7 +769,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
 (define (printer-scanner-packages)
   (list
-   bst:simple-scan   ; Document and image scanner
+   (@(bost gnu packages gnome) simple-scan) ; Document and image scanner
    hplip-minimal ; Hewlett-Packard printer drivers
    ))
 (testsymb 'printer-scanner-packages)
@@ -911,7 +892,9 @@ FIXME the inferior-packages are installed on every machine"
 (define (devel-guile-ide-arei-packages)
   (list
    emacs-arei          ; Guile IDE
-   bst:emacs-plantuml-mode ; Edit and preview PlantUML diagrams
+   ;; Edit and preview PlantUML diagrams
+   (@(bost gnu packages emacs-xyz) emacs-plantuml-mode)
+
    plantuml            ; Draw UML diagrams from simple textual description
    ;; guile-next       ; Version 3.0.10-1.402e0df
    guile-ares-rs       ; Asyncronous Reliable Extensible Sleek RPC Server
@@ -938,19 +921,19 @@ FIXME the inferior-packages are installed on every machine"
     ;; emacs-native-comp doesn't compile. Ups
     ;; (@(flat packages emacs) emacs-native-comp) ;; version: 28.2.50-205.ae9bfed
 
-    bst:emacs-gptel
+    (@(bost gnu packages emacs-xyz) emacs-gptel)
     ;; emacs-next       ;; 29.0.92
     ;; emacs-next-pgtk  ;; 29.0.92
-    bst:emacs-with-editor ; for using Emacsclient as EDITOR
+    (@(bost gnu packages emacs-xyz) emacs-with-editor) ; for using Emacsclient as EDITOR
 
     emacs-geiser
     emacs-geiser-guile
-    bst:emacs-guix
+    (@(bost gnu packages emacs-xyz) emacs-guix)
     emacs-detached    ; Launch and manage detached processes
     emacs-crdt        ; Real-time collaborative editing environment
     ;; Used in ? crafted emacs ?
     emacs-elisp-demos ; add Elisp function examples into `*Help*' buffers
-    bst:emacs-helpful
+    (@(bost gnu packages emacs-xyz) emacs-helpful)
     emacs-keycast
     meld              ; compare files, directories and working copies
     leafpad           ; simple editor to use when emacs doesn't work
@@ -1035,7 +1018,8 @@ FIXME the inferior-packages are installed on every machine"
              ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)
              ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
              )
-            (bst:spacemacs-packages) ;; pulls-in ~430 additional packages
+            ;; pulls-in ~430 additional packages
+            ((@(bost gnu packages space-needed) spacemacs-packages))
             )
            ((comp
              ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)

@@ -24,7 +24,6 @@
 ;;   guake --restore-preferences=$dotf/.config/guake.cfg
 
 (define-module (services guake)
-  #:use-module (bost gnu packages guake)
   #:use-module (gnu home services)
   #:use-module (guix gexp)
   #:use-module (guix records)
@@ -48,7 +47,7 @@
   home-guake-configuration?
   ;; guake package
   (guake home-guake-configuration-guake
-         (default guake)))
+         (default (@(bost gnu packages guake) guake))))
 
 (def (home-guake-packages config)
   "Add guake package to profile."
