@@ -51,12 +51,14 @@ guix home --allow-downgrades --cores=$cores \
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(home-base:install-all-projects-base)
+
 ;; See also $dotf/.bashrc.martin
 (def home-env
   (home-environment
    ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
    ;; (packages (home-packages-to-install))
-   (services (home-base:home-env-services))))
+   (services (home-base:home-env-services-base))))
 
 (module-evaluated)
 home-env

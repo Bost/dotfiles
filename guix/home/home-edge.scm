@@ -77,7 +77,7 @@ guix home --allow-downgrades --cores=$cores \
 ;;                        ;; #t to copy directory
 ;;                        #:recursive? #t))))))
 
-(home-base:install-all-projects)
+(home-base:install-all-projects-edge-ecke)
 
 ;;     (begin
 ;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (services fish)
