@@ -1,5 +1,5 @@
 (define-module (syst-kalus)
-  #:use-module ((syst-base) #:prefix base:)
+  #:use-module ((syst-base) #:prefix syst-base:)
   #:use-module (dotf settings)
   #:use-module (dotf utils)                 ; partial, module-name-for-logging
   #:use-module (dotf memo)
@@ -42,13 +42,13 @@
 
 (define-public syst-config
   (operating-system
-    (inherit (base:syst-config))
+    (inherit (syst-base:syst-config))
     (keyboard-layout
      (keyboard-layout "us" "altgr-intl"))
     (host-name host-kalus)
-    (users (base:users-config (list
-                               "cdrom" ;; access to CD-ROM
-                               )))
+    (users (syst-base:users-config (list
+                                    "cdrom" ;; access to CD-ROM
+                                    )))
 
 ;;; Packages installed system-wide. Users can also install packages under their
 ;;; own account: use 'guix search KEYWORD' to search for packages and 'guix
