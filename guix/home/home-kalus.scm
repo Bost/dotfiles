@@ -52,12 +52,11 @@ guix home --allow-downgrades --cores=$cores \
 (evaluating-module)
 
 ;; See also $dotf/.bashrc.martin
-(define home-env
+(def home-env
   (home-environment
    ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
    ;; (packages (home-packages-to-install))
    (services (home-base:home-env-services))))
-(testsymb 'home-env)
 
 (module-evaluated)
 home-env

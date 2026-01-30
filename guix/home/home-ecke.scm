@@ -141,7 +141,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 ;;; TODO home-git-configuration
 
-(define home-env
+(def home-env
   (home-environment
    ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
    ;; (packages (home-packages-to-install))
@@ -175,7 +175,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;;     )
   ;;    (list))))
   )
-(testsymb 'home-env)
 
 (module-evaluated)
 home-env

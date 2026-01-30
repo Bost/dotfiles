@@ -193,7 +193,7 @@ guix home --allow-downgrades --cores=$cores \
 ;;         ))
 
 ;; See also $dotf/.bashrc.martin
-(define home-env
+(def home-env
   (home-environment
    ;; Replaced by $dotf/guix/profile-manifest.scm
    ;; (packages (home-packages-to-install))
@@ -247,7 +247,6 @@ guix home --allow-downgrades --cores=$cores \
          ))
       #;(lambda (v) (format #t "~a 0:\n~a\n" m v) v))
      (home-base:environment-vars)))))
-(testsymb 'home-env)
 
 (module-evaluated)
 home-env
