@@ -95,7 +95,7 @@
 ;;; install PACKAGE' to install a package.
     (packages
      (append
-      (map specification->package (sway-package-specifications))
+      ;; (map specification->package (sway-package-specifications))
       (list)
       (syst-packages-to-install)
       %base-packages))

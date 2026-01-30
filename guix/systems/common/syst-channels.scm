@@ -62,8 +62,12 @@
    ;; #:nonguix-commit "cb2d0277635eaf4c573aeb9ca7563605fac7601c"
 
    ;; 12 jav. 2026 12:04:45
-   #:guix-commit "62c28bc6d8c54800b16341d1c93a1d7833fc3328"
-   #:nonguix-commit "3ceef556e1ce8e52180b959a942b16000ed4e61c"
+   ;; #:guix-commit "62c28bc6d8c54800b16341d1c93a1d7833fc3328"
+   ;; #:nonguix-commit "3ceef556e1ce8e52180b959a942b16000ed4e61c"
+
+   ;; 30 jan. 2026 02:11:55
+   #:guix-commit "930ec113149f343c160349eb78044dab57d6fea5"
+   #:nonguix-commit "216cf961b56a8b2679239ba102089ab94c259e89"
    ))
 
 (syst-channels)
