@@ -83,7 +83,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;;                        ;; #t to copy directory
 ;;                        #:recursive? #t))))))
 
-(home-base:install-all-projects)
+(home-base:install-all-projects-edge-ecke)
 
 ;;     (begin
 ;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (services fish)
