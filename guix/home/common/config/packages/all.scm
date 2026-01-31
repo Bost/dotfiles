@@ -243,6 +243,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Command-line JSON processor
     jq
 
+    ;; Utilities to read temperature/voltage/fan sensors
+    lm-sensors ; watch --interval 1 sensors # wait 1 second between updates
+
     ;; Read-write access to NTFS file systems
     ntfs-3g
 
