@@ -14,6 +14,9 @@
   #:use-module (dotf memo)
   )
 
+(define m (module-name-for-logging))
+(evaluating-module)
+
 (define-public (home-channels-services)
   (list
    ;; (simple-service 'guixrus-service  home-channels-service-type (list (channel-guixrus)))
@@ -77,6 +80,8 @@
             ) lst)
           lst)))
    (list (channel-guix #:commit guix-commit))))
+
+(module-evaluated)
 
 (home-channels
  ;; ;; 12 jan. 2026 12:30:03
