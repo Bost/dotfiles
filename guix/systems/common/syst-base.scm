@@ -4,9 +4,13 @@
   #:use-module (dotf memo)
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; user-group user-account-shell
-  #:use-module (nongnu packages linux)
-  #:use-module (nongnu system linux-initrd)
   #:use-module (guix)                  ; package-version
+
+  ;; nongnu modules must not be present in the module definition otherwise there
+  ;; are 'syst-base:<...>: unbound variable' errors on systems without nongnu
+  ;; channel
+  ;; #:use-module (nongnu packages linux)
+  ;; #:use-module (nongnu system linux-initrd)
 )
 
 (use-service-modules
@@ -144,14 +148,14 @@
 (define-public (syst-config-linux)
   (operating-system
     (inherit (syst-config))
-    (kernel linux)
+    (kernel (@(nongnu packages linux) linux))
 
 ;;; CPU microcode updates are nonfree blobs that apply directly to a processor
 ;;; to patch its behavior, and are therefore not included in upstream GNU Guix.
 ;;; However, running the latest microcode is important to avoid nasty CPU bugs
 ;;; and hardware security vulnerabilities.
-    (initrd microcode-initrd)
+    (initrd (@(nongnu system linux-initrd) microcode-initrd))
 
-    (firmware (list linux-firmware))))
+    (firmware (list (@(nongnu packages linux) linux-firmware)))))
 
 (module-evaluated)

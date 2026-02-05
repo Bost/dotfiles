@@ -279,12 +279,4 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
        "1EFB 0909 1F17 D28C CBF9  B13A 53D4 57B2 D636 EE82"))))))
 (testsymb 'channel-guix-android)
 
-(define*-public (common-channels #:key (guix-commit #f) (nonguix-commit #f))
-  "Channels needed for the Guix-system configuration. If `guix-commit' and/or
-`nonguix-commit' are unspecified of #f it means 'use latest commit(s)'."
-  (list
-   (channel-guix    #:commit guix-commit)
-   (channel-nonguix #:commit nonguix-commit)))
-(testsymb 'common-channels)
-
 (module-evaluated)
