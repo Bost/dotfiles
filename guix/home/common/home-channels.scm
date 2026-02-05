@@ -125,13 +125,32 @@
  ;; #:guix-commit         "d25404a99832a059efcb68a2c97352c15924dd83"
  ;; #:guix-past-commit    "be7997692e81a89817c7fa2d6e36aee71c8e6916"
 
- ;; 30 jan. 2026 19:23:25
- #:nonguix-commit      "216cf961b56a8b2679239ba102089ab94c259e89"
+ ;; ;; 30 jan. 2026 19:23:25
+ ;; #:nonguix-commit      "216cf961b56a8b2679239ba102089ab94c259e89"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:guixrus-commit      "9f5a0a357ffafbe9b31fcdc3916dfee57baf5859"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "acc252d2f7fed939ace5a5a98d7750197696dac3"
+ ;; #:bost-commit         "748226b0987ae6eca76f8a5d4713451f641cce9e"
+ ;; #:guix-commit         "a6dddbb062ebc9ed20a51dbec0f1f2e9b6dba77c"
+ ;; #:guix-past-commit    "be7997692e81a89817c7fa2d6e36aee71c8e6916"
+
+ ;; #:nonguix-commit      "216cf961b56a8b2679239ba102089ab94c259e89"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:guixrus-commit      "9f5a0a357ffafbe9b31fcdc3916dfee57baf5859"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "acc252d2f7fed939ace5a5a98d7750197696dac3"
+ ;; #:bost-commit         "aa676169857506d61db08cbaed3a93c43c1c2078"
+ ;; #:guix-commit         "a6dddbb062ebc9ed20a51dbec0f1f2e9b6dba77c"
+ ;; #:guix-past-commit    "be7997692e81a89817c7fa2d6e36aee71c8e6916"
+
+ ;; 05 feb. 2026 10:41:44
+ #:nonguix-commit      "6c0ea215e0bd089bf3b2097e5c59dd726fbbe304"
  #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
  #:guixrus-commit      "9f5a0a357ffafbe9b31fcdc3916dfee57baf5859"
  #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
  #:games-commit        "acc252d2f7fed939ace5a5a98d7750197696dac3"
- #:bost-commit         "748226b0987ae6eca76f8a5d4713451f641cce9e"
- #:guix-commit         "a6dddbb062ebc9ed20a51dbec0f1f2e9b6dba77c"
+ #:bost-commit         "627b59db1e8155d51ac5a1d8cfcc2d81256730f9"
+ #:guix-commit         "2c710762f5c80b1a151b57c6f369dfa1812d1f97"
  #:guix-past-commit    "be7997692e81a89817c7fa2d6e36aee71c8e6916"
  )
