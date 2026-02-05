@@ -57,15 +57,15 @@
    (channel-bost #:commit bost-commit)))
 
 (def* (home-channels #:key
-                        guix-android-commit
-                        guixrus-commit
-                        hask-clj-commit
-                        games-commit
-                        bost-commit
-                        guix-commit
-                        nonguix-commit
-                        #:allow-other-keys
-                        )
+                     guix-android-commit
+                     guixrus-commit
+                     hask-clj-commit
+                     games-commit
+                     bost-commit
+                     guix-commit
+                     nonguix-commit
+                     #:allow-other-keys
+                     )
   ((comp
     (lambda (lst)
       (if (or (host-edge?) (host-ecke?) (host-geek?))
