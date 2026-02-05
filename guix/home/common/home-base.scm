@@ -32,7 +32,15 @@
   #:use-module (gnu packages commencement)
 )
 
-(read-set! keywords 'prefix) ; Allow both :keyword and #:keyword
+;; --- beg-keywords ------------------------------------------------------------
+;; (read-set! keywords 'prefix) ; Allow both :keyword and #:keyword;
+;; XXX Using Clojure-style keywords causes changes in derivation files!!!
+;; $ guix build julia@1.8.5 --derivations -L $dtf/guix/common -L $dtf/guix/home/common
+;; /gnu/store/dj66g7lhsq08v72db5pykj7km8hyw36l-julia-1.8.5.drv
+
+(define kdir #:dir)
+(define kurl #:url)
+;; --- end-keywords ------------------------------------------------------------
 
 ;; TODO consider putting home and system configurations in one file
 ;; (if (getenv "RUNNING_GUIX_HOME") home system)
@@ -358,42 +366,44 @@
 
 (define (projects-base)
   (list
-   (list :dir "/dev/dotfiles" :url "")))
+   (list kdir "/dev/dotfiles" kurl "")))
 
 (define (projects-edge-ecke)
   (append
    (list
-    ;; (list :dir "/dev/elpa-mirror.d12frosted"    :url "https://github.com/d12frosted/elpa-mirror")
-    (list :dir "/dec/clj-time"                  :url "")
-    (list :dir "/dec/cljplot"                   :url "")
-    (list :dir "/dec/corona_cases"              :url "")
-    (list :dir "/dec/fdk"                       :url "")
-    (list :dir "/dec/monad_koans"               :url "")
-    (list :dir "/dec/morse"                     :url "")
-    (list :dir "/dec/utils"                     :url "")
-    (list :dir "/dec/cheatsheet"                :url "")
-    (list :dir "/dec/zark"                      :url "")
-    (list :dir "/dev/guix"                      :url "https://codeberg.org/guix/guix.git")
-    (list :dir "/dev/nonguix"                   :url "https://gitlab.com/nonguix/nonguix")
-    (list :dir "/dev/blog"                      :url "")
-    (list :dir "/dev/copy-sexp"                 :url "")
-    (list :dir "/dev/guix-packages"             :url "")
-    (list :dir "/dev/jump-last"                 :url "")
-    (list :dir "/dev/kill-buffers"              :url "")
-    (list :dir "/dev/tweaks"                    :url "ssh://git@codeberg.org/Bost/tweaks.git")
-    (list :dir "/dev/notes"                     :url "")
-    (list :dir "/dev/farmhouse-light-mod-theme" :url "")
-    (list :dir "/dev/guile"                     :url "https://codeberg.org/guile/guile.git")
-    (list :dir "/dev/guile-git"                 :url "https://gitlab.com/guile-git/guile-git.git")
-    (list :dir "/dev/dotfiles"                  :url "")
+    ;; (list kdir "/dev/elpa-mirror.d12frosted"    kurl "https://github.com/d12frosted/elpa-mirror")
+    (list kdir "/dec/clj-time"                  kurl "")
+    (list kdir "/dec/cljplot"                   kurl "")
+    (list kdir "/dec/corona_cases"              kurl "")
+    (list kdir "/dec/fdk"                       kurl "")
+    (list kdir "/dec/monad_koans"               kurl "")
+    (list kdir "/dec/morse"                     kurl "")
+    (list kdir "/dec/utils"                     kurl "")
+    (list kdir "/dec/cheatsheet"                kurl "")
+    (list kdir "/dec/zark"                      kurl "")
+    (list kdir "/dev/guix"                      kurl "https://codeberg.org/guix/guix.git")
+    (list kdir "/dev/nonguix"                   kurl "https://gitlab.com/nonguix/nonguix")
+    (list kdir "/dev/blog"                      kurl "")
+    (list kdir "/dev/copy-sexp"                 kurl "")
+    (list kdir "/dev/guix-packages"             kurl "")
+    (list kdir "/dev/jump-last"                 kurl "")
+    (list kdir "/dev/kill-buffers"              kurl "")
+    (list kdir "/dev/tweaks"                    kurl "ssh://git@codeberg.org/Bost/tweaks.git")
+    (list kdir "/dev/notes"                     kurl "")
+    (list kdir "/dev/farmhouse-light-mod-theme" kurl "")
+    (list kdir "/dev/guile"                     kurl "https://codeberg.org/guile/guile.git")
+    (list kdir "/dev/guile-git"                 kurl "https://gitlab.com/guile-git/guile-git.git")
+    (list kdir "/dev/dotfiles"                  kurl "")
     )
    (projects-base)))
 
 (define (projects-heroku)
-  (list
-   (list :dir "/der/vesmir"                    :url "")
-   (list :dir "/der/vojto"                     :url "")
-   ))
+  (append
+   (list) ;; just for visual alignment
+   (list
+    (list kdir "/der/vesmir"                    kurl "")
+    (list kdir "/der/vojto"                     kurl "")
+    )))
 
 ;; wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 ;; ln -s ~/dev/dotfiles/.lein
