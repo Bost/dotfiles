@@ -24,7 +24,10 @@
   (let* [(cmd-result-struct (exec "hostname" #:return-plist #t))
          (retcode (plist-get cmd-result-struct #:retcode))]
     (if (zero? retcode)
-        (car (plist-get cmd-result-struct #:results))
+        (let [(result
+               (car (plist-get cmd-result-struct #:results)))]
+          (format #t "~a hostname is : ~a\n" f result)
+          result)
         (begin
           (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
           ;; (error-command-failed f)
