@@ -37,7 +37,7 @@ cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
   (call/cc
    (lambda (exit)
      ((comp
-       exec-system*
+       (partial exec-system* #:verbose #t)
        ;; udisksctl executed w/o specified device-lable reports
        ;;   Error looking up object for device
        ;; and returns the retcode 1
