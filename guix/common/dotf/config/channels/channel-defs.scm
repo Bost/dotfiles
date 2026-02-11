@@ -166,8 +166,9 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
       (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel (name channel-name)
              (url
-              ;; "https://github.com/Bost/guix-packages"
-              (format #f "file://~a/dev/guix-packages" home))
+              "https://github.com/Bost/guix-packages"
+              ;; (format #f "file://~a/dev/guix-packages" home)
+              )
              (commit commit))))
 
 (define*-public (channel-nonguix #:key (commit #f))
@@ -203,7 +204,11 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
       (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
     (channel
       (name channel-name)
-      (url (format #f "file://~a/dev/guixrus" home))
+      (url
+       "https://codeberg.org/Bost/guixrus"
+       ;; (format #f "file://~a/dev/guixrus" home)
+       ;; "https://git.sr.ht/~whereiseveryone/guixrus"
+       )
       (commit commit))
 
     ;; (channel
