@@ -92,11 +92,19 @@
  ;; #:guix-commit "a6dddbb062ebc9ed20a51dbec0f1f2e9b6dba77c"
  ;; #:nonguix-commit "216cf961b56a8b2679239ba102089ab94c259e89"
 
- ;; ;; 05 feb. 2026 14:35:03
+ ;; 05 feb. 2026 14:35:03
  ;; #:nonguix-commit "6c0ea215e0bd089bf3b2097e5c59dd726fbbe304"
  ;; #:guix-commit "2c710762f5c80b1a151b57c6f369dfa1812d1f97"
 
  ;; 07 feb. 2026 12:08:23
- #:nonguix-commit "6c0ea215e0bd089bf3b2097e5c59dd726fbbe304"
- #:guix-commit "ec5fb6678f8268437b1940f7ed2f2b72d62ab4e0"
+ ;; #:nonguix-commit "6c0ea215e0bd089bf3b2097e5c59dd726fbbe304"
+ ;; #:guix-commit "ec5fb6678f8268437b1940f7ed2f2b72d62ab4e0"
+
+ ;; 15 feb. 2026 13:47:37
+ ;; #:nonguix-commit "bbbc850e8a94833c9958625eb4c78a206fbacc1d"
+ ;; #:guix-commit "7113a63ff4bdcf24fbc4bb92367ea6354dd33290"
+
+ ;; 18 feb. 2026 18:07:07
+ #:nonguix-commit "1980960f932063f42f97ad3be4b020f68d24e62b"
+ #:guix-commit "0b6b8a1e88ada49cb3303be8d4eefe95dca704dd"
  )
