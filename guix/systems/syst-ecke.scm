@@ -101,10 +101,11 @@
       %base-packages))
 
     ;; Tweaks for nvidia drivers to work
-    (kernel-arguments '("modprobe.blacklist=nouveau"
-                        ;; Set this if the card is not used for displaying or
-                        ;; you're using Wayland:
-                        "nvidia_drm.modeset=1"))
+    (kernel-arguments
+     (list
+      "modprobe.blacklist=nouveau,usbmouse,usbkbd"
+      "nvidia-drm.modeset=1"
+      "quiet"))
 
     ;; (skeletons
     ;; `((".guile" ,(plain-file

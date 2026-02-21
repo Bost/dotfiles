@@ -73,10 +73,10 @@
 
     ;; Tweaks for nvidia drivers to work
     (kernel-arguments
-     (append
-      '("modprobe.blacklist=nouveau"
-        "nvidia-drm.modeset=1")
-      %default-kernel-arguments))
+     (list
+      "modprobe.blacklist=nouveau,usbmouse,usbkbd"
+      "nvidia-drm.modeset=1"
+      "quiet"))
 
     (keyboard-layout
      #;(operating-system-keyboard-layout (syst-base:syst-config))
