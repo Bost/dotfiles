@@ -38,6 +38,7 @@
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
  file-systems librewolf libcanberra security-token firmware ocr tex monitoring
+ pciutils
  )
 
 (define (email-in-emacs-packages)
@@ -460,6 +461,17 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
 (define (rest-packages)
   (list
+   ;; The daemon `boltd' exposes devices via D-Bus to clients. It also stores a
+   ;; database of previously authorized devices and will, depending on the
+   ;; policy set for the individual devices, automatically authorize newly
+   ;; connected devices without user interaction.
+   ;;
+   ;; The command-line utility `boltctl' manages Thunderbolt devices via
+   ;; `boltd'. It can list devices, monitor changes, and initiate authorization
+   ;; of devices.
+   bolt        ; Thunderbolt 3 device manager; provides: boltd, boltctl
+   pciutils    ; manage PCI devices; based on libpci, provides: lspci, setpci
+
    adb         ; Android Debug Bridge
    alsa-utils  ; Advanced Linux Sound Architecture; contains speaker-test
    android-ext4-utils
