@@ -25,7 +25,8 @@ function prep --description "See glances, cputool"
     end
 
     echo ""
-    pgrep --full (string escape -- $argv) | \
+    test (count $pids) != 0 && \
+        pgrep --full (string escape -- $argv) | \
         xargs ps -o %cpu,%mem --no-headers --pid | \
         awk -v cores=$(nproc) '{cpu+=$1; mem+=$2}
 END {
