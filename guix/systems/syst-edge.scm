@@ -24,7 +24,10 @@
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; user-group; user-account-shell
   #:use-module (guix)                  ; package-version
+  #:use-module (guix gexp)
   ;; #:use-module (gnu packages games)    ; steam-devices-udev-rules
+  #:use-module (nongnu packages nvidia) ; replace-mesa nvda
+  #:use-module (nongnu services nvidia) ; nvidia-service-type
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
@@ -67,9 +70,37 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(define thunderbolt-rescan-udev-rule
+  (udev-rule
+   "99-thunderbolt-pci-rescan.rules"
+   (string-join
+    (list
+     "ACTION==\"change\""
+     "SUBSYSTEM==\"thunderbolt\""
+     "ATTR{authorized}==\"1\""
+     ;; Remove the following line so that any authorized Thunderbolt device
+     ;; triggers a rescan
+     "ATTR{device_name}==\"AORUS GAMING BOX\""
+     ;; Use bash from the system profile to be safe. BTW the only reliable
+     ;; shebang is #!/bin/sh
+     (format #f "RUN+=\"/run/current-system/profile/bin/bash -c '~a'\"\n"
+             "echo 1 > /sys/bus/pci/rescan"))
+    ", ")))
+
 (define-public syst-config
   (operating-system
     (inherit (syst-base:syst-config-linux))
+
+    ;; Tweaks for nvidia drivers to work
+    (kernel-arguments
+     (append-to-default-kernel-arguments
+      (list
+       "intel_iommu=on"
+       "iommu=pt"
+       "modprobe.blacklist=nouveau"
+       "nvidia-drm.modeset=1"
+       )))
+
     (keyboard-layout
      #;(operating-system-keyboard-layout (syst-base:syst-config))
      (syst-base:keyb-layout))
@@ -105,6 +136,12 @@
                     )))
 
       (list
+       (service boltd-service-type)
+       (udev-rules-service 'gamingbox thunderbolt-rescan-udev-rule)
+
+       ;; Prepare system environment for NVIDIA driver
+       (service nvidia-service-type)
+
        ;; TODO lightdm doesn't work properly. The login fails
        ;; (service lightdm-service-type
        ;;          (lightdm-configuration

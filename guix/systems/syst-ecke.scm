@@ -1,5 +1,6 @@
 (define-module (syst-ecke)
   #:use-module ((syst-base) #:prefix syst-base:)
+  #:use-module (kernel-utils)          ; append-to-default-kernel-arguments
   #:use-module (dotf settings)
   #:use-module (dotf utils)                  ; partial
   #:use-module (dotf memo)
@@ -101,10 +102,12 @@
       %base-packages))
 
     ;; Tweaks for nvidia drivers to work
-    (kernel-arguments '("modprobe.blacklist=nouveau"
-                        ;; Set this if the card is not used for displaying or
-                        ;; you're using Wayland:
-                        "nvidia_drm.modeset=1"))
+    (kernel-arguments
+     (append-to-default-kernel-arguments
+      (list
+       "modprobe.blacklist=nouveau"
+       "nvidia-drm.modeset=1"
+       )))
 
     ;; (skeletons
     ;; `((".guile" ,(plain-file
@@ -225,17 +228,6 @@
        ;;             ;; Set up remaining TTYs for terminal use
        ;;             (greetd-terminal-configuration (terminal-vt "2"))
        ;;             (greetd-terminal-configuration (terminal-vt "3"))))))
-
-       (simple-service
-        'custom-udev-rules udev-service-type
-        (list nvidia-driver))
-
-       ;; load loadable kernel modules at boot with modprobe
-       (service kernel-module-loader-service-type
-                '("ipmi_devintf"
-                  "nvidia"
-                  "nvidia_modeset"
-                  "nvidia_uvm"))
 
        ;; Configure swaylock as a setuid program
        ;; (service screen-locker-service-type
