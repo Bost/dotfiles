@@ -116,6 +116,12 @@
      (append
       (syst-base:services)
       (list
+
+       ;; bolt-service-type doesn't exist in the upstream. However see
+       ;;   https://noonker.github.io/posts/2025-01-17-hello-guix/
+       ;;   https://lists.gnu.org/archive/html/help-guix/2021-08/msg00010.html
+       ;; (service bolt-service-type) ; Thunderbolt
+
        (service cups-service-type
                 (cups-configuration
                  (web-interface? #t)
