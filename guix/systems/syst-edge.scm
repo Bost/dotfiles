@@ -196,7 +196,7 @@
       (menu-entries
        (list
         ;; sudo rg vmlinuz /run/media/bost/c99384b9-*/boot/grub/grub.cfg | head
-        (let [(linux-version "6.17.0-8")]
+        (let [(linux-version "6.17.0-14")]
           (menu-entry
            (label "Ubuntu 25.10")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
