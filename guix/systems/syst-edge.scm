@@ -23,6 +23,8 @@
   #:use-module (gnu system shadow)     ; user-group; user-account-shell
   #:use-module (guix)                  ; package-version
   ;; #:use-module (gnu packages games)    ; steam-devices-udev-rules
+  #:use-module (nongnu packages nvidia) ; replace-mesa nvda
+  #:use-module (nongnu services nvidia) ; nvidia-service-type
 )
 
 ;; no need to write: #:use-module (gnu services <module>)
@@ -68,6 +70,14 @@
 (define-public syst-config
   (operating-system
     (inherit (syst-base:syst-config-linux))
+
+    ;; Tweaks for nvidia drivers to work
+    (kernel-arguments
+     (append
+      '("modprobe.blacklist=nouveau"
+        "nvidia-drm.modeset=1")
+      %default-kernel-arguments))
+
     (keyboard-layout
      #;(operating-system-keyboard-layout (syst-base:syst-config))
      (syst-base:keyb-layout))
@@ -103,6 +113,10 @@
                     )))
 
       (list
+
+       ;; Prepare system environment for NVIDIA driver
+       (service nvidia-service-type)
+
        ;; TODO lightdm doesn't work properly. The login fails
        ;; (service lightdm-service-type
        ;;          (lightdm-configuration
