@@ -74,9 +74,20 @@
     ;; Tweaks for nvidia drivers to work
     (kernel-arguments
      (list
+      "pcie_aspm=off"
+      "pci=realloc=on"
+      "intel_iommu=on"
+      "iommu=pt"
       "modprobe.blacklist=nouveau,usbmouse,usbkbd"
       "nvidia-drm.modeset=1"
-      "quiet"))
+      ;; "quiet"
+      )
+
+     ;; (list
+     ;;  "modprobe.blacklist=nouveau,usbmouse,usbkbd"
+     ;;  "nvidia-drm.modeset=1"
+     ;;  "quiet")
+     )
 
     (keyboard-layout
      #;(operating-system-keyboard-layout (syst-base:syst-config))
