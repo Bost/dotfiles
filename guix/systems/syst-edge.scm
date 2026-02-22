@@ -76,13 +76,13 @@
        (use-modules (ice-9 rdelim) (ice-9 popen))
        (call-with-output-file #$output
          (lambda (p)
-           (display "#!" p)
-           (display #$(file-append bash "/bin/sh") p)
-           (display "\nset -eu\n" p)
-           (display "for f in /sys/bus/thunderbolt/devices/0-1/authorized /sys/bus/thunderbolt/devices/0-301/authorized; do\n" p)
-           (display "  [ -e \"$f\" ] && echo 1 >\"$f\" || true\n" p)
-           (display "done\n" p)
-           (display "echo 1 >/sys/bus/pci/rescan || true\n" p)))
+           (write "#!" p)
+           (write #$(file-append bash "/bin/sh") p)
+           (write "\nset -eu\n" p)
+           (write "for f in /sys/bus/thunderbolt/devices/0-1/authorized /sys/bus/thunderbolt/devices/0-301/authorized; do\n" p)
+           (write "  [ -e \"$f\" ] && echo 1 >\"$f\" || true\n" p)
+           (write "done\n" p)
+           (write "echo 1 >/sys/bus/pci/rescan || true\n" p)))
        (chmod #$output #o755))))
 
 (define-public syst-config
@@ -98,7 +98,7 @@
       "iommu=pt"
       "modprobe.blacklist=nouveau,usbmouse,usbkbd"
       "nvidia-drm.modeset=1"
-      ;; "quiet"
+      "quiet"
       )
 
      ;; (list
