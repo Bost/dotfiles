@@ -22,6 +22,7 @@
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; user-group; user-account-shell
   #:use-module (guix)                  ; package-version
+  #:use-module (guix gexp)
   ;; #:use-module (gnu packages games)    ; steam-devices-udev-rules
   #:use-module (nongnu packages nvidia) ; replace-mesa nvda
   #:use-module (nongnu services nvidia) ; nvidia-service-type
@@ -66,6 +67,23 @@
 
 (define m (module-name-for-logging))
 (evaluating-module)
+
+(define thunderbolt-egpu-hotplug
+  ;; A store-backed script; uses bash from the system profile.
+  (computed-file
+   "thunderbolt-egpu-hotplug.sh"
+   #~(begin
+       (use-modules (ice-9 rdelim) (ice-9 popen))
+       (call-with-output-file #$output
+         (lambda (p)
+           (display "#!" p)
+           (display #$(file-append bash "/bin/sh") p)
+           (display "\nset -eu\n" p)
+           (display "for f in /sys/bus/thunderbolt/devices/0-1/authorized /sys/bus/thunderbolt/devices/0-301/authorized; do\n" p)
+           (display "  [ -e \"$f\" ] && echo 1 >\"$f\" || true\n" p)
+           (display "done\n" p)
+           (display "echo 1 >/sys/bus/pci/rescan || true\n" p)))
+       (chmod #$output #o755))))
 
 (define-public syst-config
   (operating-system
@@ -200,6 +218,20 @@
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
+        (udev-service-type
+         config =>
+         (udev-configuration
+          (inherit config)
+          (rules
+           (append
+            (list
+             (udev-rule
+              "99-thunderbolt-egpu.rules"
+              (string-append
+               "ACTION==\"add\", SUBSYSTEM==\"thunderbolt\", "
+               "RUN+=\"" thunderbolt-egpu-hotplug "\"\n")))
+            (udev-configuration-rules config)))))
+
         ;; GDM - GNOME Desktop Manager: graphical user login, display servers
         (gdm-service-type config => (gdm-configuration
                                      (inherit config)
