@@ -15,8 +15,10 @@
 
 (define-module (syst-edge)
   #:use-module ((syst-base) #:prefix syst-base:)
+  #:use-module (boltd)
+  #:use-module (kernel-utils)          ; append-to-default-kernel-arguments
   #:use-module (dotf settings)
-  #:use-module (dotf utils)                 ; partial
+  #:use-module (dotf utils)            ; partial
   #:use-module (dotf memo)
   #:use-module (config packages all)   ; syst-packages-to-install
   #:use-module (gnu)
