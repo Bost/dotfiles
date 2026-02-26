@@ -165,12 +165,23 @@
  ;; #:guix-past-commit    "be7997692e81a89817c7fa2d6e36aee71c8e6916"
 
  ;; 18 feb. 2026 12:50:26
- #:nonguix-commit      "1980960f932063f42f97ad3be4b020f68d24e62b"
- #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- #:guixrus-commit      "9f5a0a357ffafbe9b31fcdc3916dfee57baf5859"
- #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- #:games-commit        "fcf8e459d8a4fc2800d4a1af14f1c3c6c714e419"
- #:bost-commit         "627b59db1e8155d51ac5a1d8cfcc2d81256730f9"
- #:guix-commit         "0b6b8a1e88ada49cb3303be8d4eefe95dca704dd"
- #:guix-past-commit    "e5f020d2ea444861379120655e10da7824ad2606"
+ ;; #:nonguix-commit      "1980960f932063f42f97ad3be4b020f68d24e62b"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:guixrus-commit      "9f5a0a357ffafbe9b31fcdc3916dfee57baf5859"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "fcf8e459d8a4fc2800d4a1af14f1c3c6c714e419"
+ ;; #:bost-commit         "627b59db1e8155d51ac5a1d8cfcc2d81256730f9"
+ ;; #:guix-commit         "0b6b8a1e88ada49cb3303be8d4eefe95dca704dd"
+ ;; #:guix-past-commit    "e5f020d2ea444861379120655e10da7824ad2606"
+
+ ;; 26 feb. 2026 12:46:06
+ #:nonguix-commit       "da4e72efef62d48dbc2eb089c36972ff55fe6acd"
+ #:guix-android-commit  "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ #:hask-clj-commit      "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ #:games-commit         "fcf8e459d8a4fc2800d4a1af14f1c3c6c714e419"
+ #:bost-commit          "627b59db1e8155d51ac5a1d8cfcc2d81256730f9"
+ ;; #:guix-commit          "2f95cb9f470c7179ae219ebae969cf5f1c041994" ; See also https://codeberg.org/guix/guix/issues/6714
+ #:guix-commit         "c07690f0d673d8415066160617455313afa1d544" ; good
+ #:guix-past-commit     "bc95e89da6045cec1797673ba3283122a11e6ee7"
+
  )
