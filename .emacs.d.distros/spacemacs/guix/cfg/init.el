@@ -1286,7 +1286,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Then
   ;;  M-x package-list-packages
 
-  ;; prepend
+  ;; Make the emacs-packages installed by Guix visible to emacs (by prepending)
   (add-to-list 'package-directory-list
                "~/.guix-profile/share/emacs/site-lisp")
 
