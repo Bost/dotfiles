@@ -339,7 +339,7 @@
                         "/guile/module/srfi"
                         "/guile/libguile"
                         "/nonguix"
-                        "/guile-git" ; guile bindings of libgit2
+                        ;; "/guile-git" ; guile bindings of libgit2
                         ;; "/andrew-rde/src"
                         ))
                   (list (str dgxp "/src"))
