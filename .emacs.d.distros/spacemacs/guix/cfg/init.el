@@ -19,14 +19,11 @@ differences were encountered."
 (my-def-evar dev  "~/dev"          "dev")
 (my-def-evar dotf "~/dev/dotfiles" "dotf")
 
-(let ((emacs-default-dir "~/.emacs.d")
-      (emacs-distros-dir "~/.emacs.d.distros/"))
-  (setq sp-profile           "guix"
-        sp-dir               (format "spacemacs/%s/src" sp-profile)
-        sp-home-dir          (concat emacs-distros-dir sp-dir)
-        sp-elpa-mirror       (concat dev "/elpa-mirror.d12frosted")
-        sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
-        ))
+(setq
+ sp-home-dir          (concat (getenv "XDG_DATA_HOME") "/spacemacs/guix/")
+ sp-elpa-mirror       (concat dev "/elpa-mirror.d12frosted")
+ sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
+ )
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
