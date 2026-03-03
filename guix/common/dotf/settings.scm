@@ -51,7 +51,14 @@
 
    (cons #:spguix
          (list (cons #:user-emacs-directory
-                     "/gnu/store/san8x8wivjyigg5h52hmri6hxhhqmwcq-emacs-spacemacs-1.0-0.8a19733/share/emacs/site-lisp/spacemacs-1.0-0.8a19733")
+                     (let [(commit "e42e6de"
+                                   )
+                           (checksum "swr11n5rgx6962fwaawwhfn1azya6m80")]
+                       (str
+                        "/gnu/store/" checksum "-emacs-spacemacs-1.0-0."
+                        commit
+                        "/share/emacs/site-lisp/spacemacs-1.0-0."
+                        commit)))
                (cons #:env
                      (str home-emacs-distros "/spacemacs/spguix/cfg"))))
 

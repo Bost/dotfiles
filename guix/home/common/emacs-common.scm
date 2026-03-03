@@ -55,12 +55,20 @@ defined.
      (assoc profile profile->branch-kw))))
 
 (define (create-init-cmd profile)
+"
+(create-init-cmd \"spguix\") ; =>
+\"emacs --init-directory=/gnu/store/...-emacs-spacemacs-.../share/emacs/site-lisp/spacemacs-... --bg-daemon=spguix\"
+
+(create-init-cmd \"guix\")    ; =>
+\"emacs --init-directory=/home/bost/.emacs.d.distros/spacemacs/guix/src --bg-daemon=guix\"
+
+(create-init-cmd \"crafted\") ; =>
+\"emacs --init-directory=/home/bost/.emacs.d.distros/crafted-emacs --bg-daemon=crafted\"
+"
   (cmd->string
    (list
     (which-emacs)
-    (if (string= profile crafted)
-        (format #f "--init-directory=~a/crafted-emacs" home-emacs-distros)
-        (format #f "--init-directory=~a/spacemacs/~a/src" home-emacs-distros profile))
+    (format #f "--init-directory=~a" (get-src profile))
     (str "--bg-daemon=" (calculate-socket profile)))))
 
 (def*-public (pkill-server
@@ -118,8 +126,12 @@ TODO create-launcher ignores servers with '--debug-init' in the init-cmd.
 
 Examples:
 (create-launcher #:params \"develop\" \"rest\" \"args\")
+
 (create-launcher #:params \"guix\"
-\"guix/home/common/cli-common.scm\" \"--create-frame\")"
+\"guix/home/common/cli-common.scm\" \"--create-frame\")
+
+(create-launcher #:params \"spguix\" \"guix/home/common/cli-common.scm\" \"--create-frame\")
+"
   (when trace
     (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)           (test-type args))
     (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)          (test-type trace))
@@ -175,11 +187,24 @@ Examples:
               (when ((comp zero? car exec)
                      ;; Only the initial command needs to be executed in a
                      ;; modified environment
-                     (list (init-cmd-env-vars home-emacs-distros params) init-cmd
-;;; (if (string= params crafted)
-;;;     (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'")
-;;;     (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'"))
-                           ))
+                     (append
+                      (list (init-cmd-env-vars home-emacs-distros params) init-cmd)
+                      (cond
+                       ;; [(string= params crafted)
+                       ;;  (list (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'"))]
+                       [(string= params spguix)
+                        ;; (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'")
+                        (list
+                         "--debug-init"
+;;                          (format #f
+;;                                  "--eval '(progn
+;;   (setq user-emacs-directory (concat (getenv \"XDG_DATA_HOME\") \"/spacemacs/~a/\"))
+;; )'" params)
+                         )
+                        ]
+                       [#t (list)]
+                       ))
+                     )
                 ;; Calling (exec-background cmd-with-args) makes sense
                 ;; only if the Emacs server has been started successfully.
                 (exec-background cmd-with-args))))))

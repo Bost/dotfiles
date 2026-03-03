@@ -20,9 +20,13 @@ differences were encountered."
 (my-def-evar dotf "~/dev/dotfiles" "dotf")
 
 (setq
- sp-home-dir          (concat (getenv "XDG_DATA_HOME") "/spacemacs/guix/")
+ sp-home-dir          (concat (getenv "XDG_DATA_HOME") "/spacemacs/guix")
  sp-elpa-mirror       (concat dev "/elpa-mirror.d12frosted")
  sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
+
+ sp-snippets-dir          (concat sp-home-dir "/snippets")
+ sp-custom-settings-dir   (concat sp-home-dir "/.cache")
+ sp-layouts-dir           (concat sp-home-dir "/.cache/layouts")
  )
 
 (defun dotspacemacs/layers ()
@@ -707,6 +711,10 @@ This function should only modify configuration layer settings."
 This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
 It should only modify the values of Spacemacs settings."
+
+  (mapcar (lambda (dir) (mkdir dir 'parents))
+          (list sp-snippets-dir sp-custom-settings-dir sp-layouts-dir))
+
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -1290,17 +1298,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Don't download archive-contents of the gnu, melpa, nongnu
   ;; (setq my-retrieve-package-archives nil)
   (setq my-retrieve-package-archives t)
-  (setq yas--default-user-snippets-dir (concat
-                                        sp-home-dir "/"
-                                        "snippets"))
+  (setq yas--default-user-snippets-dir sp-snippets-dir)
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
   ;; .cache/.custom-settings
   ;; See core/core-custom-settings.el
-  (setq custom-file (concat
-                     sp-home-dir "/"
-                     ".cache/.custom-settings"))
+  (setq custom-file (concat sp-custom-settings-dir "/.custom-settings"))
   (when (file-exists-p custom-file)
     (load custom-file)) ;; `custom-file' is not auto-loaded
 
@@ -1675,9 +1679,7 @@ before packages are loaded."
 
   (defun tw-load-layout ()
     (interactive)
-    (persp-load-state-from-file (concat
-                                 sp-home-dir "/"
-                                 ".cache/layouts/persp-auto-save")))
+    (persp-load-state-from-file (concat sp-layouts-dir "/persp-auto-save")))
 
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   ;; (xterm-mouse-mode -1)
