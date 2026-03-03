@@ -7,7 +7,7 @@
 
 ;; It seems that this macro cannot be added to emacs-tweaks, as it only gets
 ;; loaded during a later stage of Spacemacs initialization.
-(defmacro my=def-evar (elisp-var def-val evar-name)
+(defmacro my-def-evar (elisp-var def-val evar-name)
   "Define an Emacs variable from environment with defaults. Warn if
 differences were encountered."
   `(let* ((evar-val (or (getenv ,evar-name) ,def-val)))
@@ -16,23 +16,19 @@ differences were encountered."
        (message "WARN (expand-file-name def-val): %s and evar: %s=%s differ"
                 (expand-file-name ,def-val) ,evar-name evar-val))))
 
-(my=def-evar dev  "~/dev"          "dev")
-(my=def-evar dotf "~/dev/dotfiles" "dotf")
+(my-def-evar dev  "~/dev"          "dev")
+(my-def-evar dotf "~/dev/dotfiles" "dotf")
 
-(let ((emacs-default-dir "~/.emacs.d")
-      (emacs-distros-dir "~/.emacs.d.distros/"))
-  (setq sp-profile           "spguix"
-        sp-dir               (format "spacemacs/%s/src" sp-profile)
-        sp-home-dir          (concat emacs-distros-dir sp-dir)
-        sp-elpa-mirror       (concat dev "/elpa-mirror.d12frosted")
-        sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
-        ))
+(setq
+ sp-home-dir          (concat (getenv "XDG_DATA_HOME") "/spacemacs/spguix")
+ ;; sp-home-dir          "~/.emacs.d.distros/spacemacs/spguix/src/"
+ sp-elpa-mirror       (concat dev "/elpa-mirror.d12frosted")
+ sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
 
-(message "sp-profile : %s" sp-profile)
-(message "sp-dir : %s" sp-dir)
-(message "sp-home-dir : %s" sp-home-dir)
-(message "sp-elpa-mirror : %s" sp-elpa-mirror)
-(message "sp-config-layer-path : %s" sp-config-layer-path)
+ sp-snippets-dir          (concat sp-home-dir "/snippets")
+ sp-custom-settings-dir   (concat sp-home-dir "/.cache")
+ sp-layouts-dir           (concat sp-home-dir "/.cache/layouts")
+ )
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
@@ -208,7 +204,7 @@ This function should only modify configuration layer settings."
      ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
      ;;       ~/.emacs.d.distros/spacemacs/guix/src/layers/fennel
      ;;   git submodule update --init
-     ;; fennel ;; fennel = lua in lisp
+     fennel ; fennel = lua in lisp
 
      ;; gnus
      ;; go
@@ -365,18 +361,17 @@ This function should only modify configuration layer settings."
       lsp-lens-enable t ; )
       )
 
-     (lua
-      :variables
-      lua-backend 'lua-mode ;; 'lsp is better, but requires more setup
-      )
+     (lua :variables
+          lua-backend 'lua-mode ;; 'lsp is better, but requires more setup
+          )
 
      ;; Editing multiple lines of text concurrently
      ;; `g r' menu in Emacs normal state
      multiple-cursors
 
-     ;; Direct jump with ~g f~ $dotf/.emacs.d.spacemacs/my=tweaks/funcs.el doesn't work.
+     ;; Direct jump with ~g f~ $dotf/.emacs.d.spacemacs/my-tweaks/funcs.el doesn't work.
      ;; The '=' in the file-path makes problems.
-     my=tweaks ;; See `dotspacemacs-configuration-layer-path'.
+     my-tweaks ;; See `dotspacemacs-configuration-layer-path'.
 
      octave
 
@@ -514,7 +509,6 @@ This function should only modify configuration layer settings."
      ;; windows-scripts
 
      yaml
-
      )
 
 
@@ -532,6 +526,9 @@ This function should only modify configuration layer settings."
    ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     ;; Integrating Evil with lispy
+     ;; lispyville
+
      ;; {{{ Guile IDE
      arei          ;; Guile IDE
      plantuml-mode ;; Edit and preview PlantUML diagrams
@@ -678,6 +675,20 @@ This function should only modify configuration layer settings."
      ;; https://github.com/Boruch-Baum/emacs-xhair
      (xhair :location (recipe :fetcher github :repo "Boruch-Baum/emacs-xhair"))
 
+     ;; ;; Minimalist presentation minor-mode for Emacs Org mode
+     ;; org-present   ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Build HTML presentations with reveal.js from Org source files
+     ;; org-re-reveal  ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Org and Reveal.js powered HTML presentation tool
+     ;; ;; org-reveal  ; part of emacs-org-reveal and also Emacs itself???
+
+     ;; ;; Progressively reveal individual subtrees of the document
+     ;; org-tree-slide ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Org export engine reveal.js Presentation Back-End
+     ;; ox-reveal      ; (Spacemacs) Warning: Unknown layer declared in dotfile
      )
 
    ;; A list of packages that cannot be updated.
@@ -701,6 +712,10 @@ This function should only modify configuration layer settings."
 This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
 It should only modify the values of Spacemacs settings."
+
+  (mapcar (lambda (dir) (mkdir dir 'parents))
+          (list sp-snippets-dir sp-custom-settings-dir sp-layouts-dir))
+
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -852,6 +867,7 @@ It should only modify the values of Spacemacs settings."
    ;; `custom-theme-load-path' and/or `custom-theme-directory'.
    dotspacemacs-themes
    `(
+     spacemacs-dark
      ;; WTF? The quoting works only if farmhouse-light-mod is the first item in
      ;; the list
      ;; ,(if (string= system-name "martin")
@@ -861,7 +877,6 @@ It should only modify the values of Spacemacs settings."
      farmhouse-light-mod-a
      ;; farmhouse-light-mod-b
      ;; farmhouse-light-mod-c
-     spacemacs-dark
      material
      misterioso
      spacemacs-light
@@ -1001,6 +1016,14 @@ It should only modify the values of Spacemacs settings."
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
+
+   ;; Make consecutive tab key presses after commands such as
+   ;; `spacemacs/alternate-buffer' (SPC TAB) cycle through previous
+   ;; buffers/windows/etc. Please see the option's docstring for more information.
+   ;; Set the option to t in order to enable cycling for all current and
+   ;; future cycling commands. Alternatively, choose a subset of the currently
+   ;; supported commands: '(alternate-buffer alternate-window). (default nil)
+   dotspacemacs-enable-cycling nil
 
    ;; Whether side windows (such as those created by treemacs or neotree)
    ;; are kept or minimized by `spacemacs/toggle-maximize-window' (SPC w m).
@@ -1156,16 +1179,15 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-persistent-server nil
 
    ;; List of search tool executable names. Spacemacs uses the first installed
-   ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
-   ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+   ;; tool of the list. Supported tools are `rg', `ag', `ack' and `grep'.
+   ;; (default '("rg" "ag" "ack" "grep"))
+   dotspacemacs-search-tools '("rg" "ag" "ack" "grep")
 
    ;; The backend used for undo/redo functionality. Possible values are
-   ;; `undo-fu', `undo-redo' and `undo-tree' see also `evil-undo-system'.
+   ;; `undo-redo', `undo-fu' and `undo-tree' see also `evil-undo-system'.
    ;; Note that saved undo history does not get transferred when changing
-   ;; your undo system. The default is currently `undo-fu' as `undo-tree'
-   ;; is not maintained anymore and `undo-redo' is very basic."
-   dotspacemacs-undo-system 'undo-fu
+   ;; your undo system from or to undo-tree. (default `undo-redo')"
+   dotspacemacs-undo-system 'undo-redo
 
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
@@ -1270,24 +1292,20 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Then
   ;;  M-x package-list-packages
 
-  ;; prepend
+  ;; Make the emacs-packages installed by Guix visible to emacs (by prepending)
   (add-to-list 'package-directory-list
                "~/.guix-profile/share/emacs/site-lisp")
 
   ;; Don't download archive-contents of the gnu, melpa, nongnu
-  ;; (setq my=retrieve-package-archives nil)
-  (setq my=retrieve-package-archives t)
-  (setq yas--default-user-snippets-dir (concat
-                                        sp-home-dir "/"
-                                        "snippets"))
+  ;; (setq my-retrieve-package-archives nil)
+  (setq my-retrieve-package-archives t)
+  (setq yas--default-user-snippets-dir sp-snippets-dir)
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
   ;; .cache/.custom-settings
   ;; See core/core-custom-settings.el
-  (setq custom-file (concat
-                     sp-home-dir "/"
-                     ".cache/.custom-settings"))
+  (setq custom-file (concat sp-custom-settings-dir "/.custom-settings"))
   (when (file-exists-p custom-file)
     (load custom-file)) ;; `custom-file' is not auto-loaded
 
@@ -1302,6 +1320,9 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  ;; undo-tree is unmaintained. Last commit in March 2021
+  ;; (global-undo-tree-mode)
 
   ;; (spacemacs/toggle-display-fill-column-indicator) ;; toggle with ~SCP t f~
 
@@ -1438,6 +1459,34 @@ before packages are loaded."
     ;; (tw-shell-which "fish")
     (getenv "SHELL"))
 
+  ;; Set back to its default value to avoid
+  ;;   SPC * not working with ripgrep 14
+  ;;   https://github.com/syl20bnr/spacemacs/issues/16200
+  ;; See also
+  ;; https://github.com/syl20bnr/spacemacs/issues/16200
+  (setq helm-ag-use-grep-ignore-list nil)
+
+  ;; org-tree-slide
+  (setq org-image-actual-width nil)
+
+  ;; Configure fill width
+  (setq visual-fill-column-width 110
+        visual-fill-column-center-text t)
+
+  (defun my/org-present-start ()
+    ;; Center the presentation and wrap lines
+    (visual-fill-column-mode 1)
+    (visual-line-mode 1))
+
+  (defun my/org-present-end ()
+    ;; Stop centering the document
+    (visual-fill-column-mode 0)
+    (visual-line-mode 0))
+
+  ;; Register hooks with org-present
+  (add-hook 'org-present-mode-hook 'my/org-present-start)
+  (add-hook 'org-present-mode-quit-hook 'my/org-present-end)
+
   (setq
    large-file-warning-threshold nil ;; don't ask before visiting big files
 
@@ -1473,10 +1522,11 @@ before packages are loaded."
    ;; Position of the popped buffer. (default "bottom")
    shell-pop-window-position "right"
 
-   ;; See also undo-tree-auto-save-history
-   undo-tree-history-directory-alist `(("." . ,(concat
-                                                sp-home-dir "/"
-                                                "undo")))
+   ;; undo-tree is unmaintained. Last commit in March 2021
+   ;; ;; See also undo-tree-auto-save-history
+   ;; undo-tree-history-directory-alist `(("." . ,(concat
+   ;;                                              sp-home-dir "/"
+   ;;                                              "undo")))
 
    ;; TODO If the "Search failed. ... unmatched expression ... " persists, try:
    ;; ;; Original value 160000 ;; Global value 800000
@@ -1630,9 +1680,7 @@ before packages are loaded."
 
   (defun tw-load-layout ()
     (interactive)
-    (persp-load-state-from-file (concat
-                                 sp-home-dir "/"
-                                 ".cache/layouts/persp-auto-save")))
+    (persp-load-state-from-file (concat sp-layouts-dir "/persp-auto-save")))
 
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   ;; (xterm-mouse-mode -1)
@@ -1712,23 +1760,23 @@ before packages are loaded."
               "l" #'helm-cider-repl-history))
           '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
 
-  (defun my=racket-repl-clear ()
+  (defun my-racket-repl-clear ()
     (interactive)
     (let ((inhibit-read-only t))
       ;; (erase-buffer)
       (delete-region (point-min) (- (point-max) 2))))
 
-  (defun my=H-1 () (interactive) (message "H-1"))
-  (defun my=H-2 () (interactive) (message "H-2"))
-  (defun my=H-3 () (interactive) (message "H-3"))
-  (defun my=H-4 () (interactive) (message "H-4"))
+  (defun my-H-1 () (interactive) (message "H-1"))
+  (defun my-H-2 () (interactive) (message "H-2"))
+  (defun my-H-3 () (interactive) (message "H-3"))
+  (defun my-H-4 () (interactive) (message "H-4"))
 
   ;; (setq text-quoting-style 'straight)
 
-  (defun my=eval-bind-keys-and-chords ()
+  (defun my-eval-bind-keys-and-chords ()
     "To activate changes, do:
-    ~s-d~ my=eval-current-defun
-    ~s-+~ my=eval-bind-keys-and-chords
+    ~s-d~ my-eval-current-defun
+    ~s-+~ my-eval-bind-keys-and-chords
 
 Some binding snippets / examples:
   (global-set-key (kbd \"s-<f2>\") \\='eshell)
@@ -1770,61 +1818,24 @@ Some binding snippets / examples:
                  ;; don't need to switch keyboards just because of parenthesis
                  ("fj" . (tw-insert-str "()" 1)))
 
-    ;; the comment is here just to get a better listing in `helm-swoop'
+    (progn
+      ;; "Set up multi-line comment style for Lisp code. Possible approaches:
+      ;; A. Automatic detection. It may miss some modes.
+      (add-hook 'prog-mode-hook 'tw-setup-lisp-comments-maybe)
 
-    (defun tw-setup-lisp-comments ()
-      "Set up multi-line comment style for Lisp code."
-      (setq-local comment-style 'multi-line)
-      (setq-local comment-continue ";;"))
-
-    ;; Wrapper function for automatic mode detection
-    (defun tw-setup-lisp-comments-maybe ()
-      "Set up Lisp comments if in a Lisp-like mode."
-      (when (derived-mode-p 'lisp-mode 'emacs-lisp-mode 'scheme-mode 'clojure-mode 'racket-mode)
-        (tw-setup-lisp-comments)))
-
-    ;; Choose one approach:
-    ;; (A) Automatic detection (may miss some modes)
-    (add-hook 'prog-mode-hook 'tw-setup-lisp-comments-maybe)
-
-    ;; (B) Explicit mode list (more reliable)
-    ;; (dolist (mode '(lisp-mode-hook
-    ;;                 emacs-lisp-mode-hook
-    ;;                 lisp-interaction-mode-hook
-    ;;                 scheme-mode-hook
-    ;;                 clojure-mode-hook
-    ;;                 racket-mode-hook))
-    ;;   (add-hook mode 'tw-setup-lisp-comments))
-
-    ;; (list 1  (list 2
-    ;;                3))
-    ;; (list 1 (list 2 3))
-    (defun tw-comment-sexp-lines ()
-      "Comment the current sexp with multi-line comment style.
-See also
-https://github.com/abo-abo/lispy
-https://github.com/remyferre/comment-dwim-2
-
-TODO if only-whitespaces-until-point
-     then (spacemacs/comment-or-uncomment-lines)
-     else (tw-comment-sexp-lines)"
-      (interactive)
-      (save-excursion
-        (sp-backward-sexp)  ;; ~SPC k H~
-        (sp-forward-sexp)   ;; ~SPC k L~
-        (sp-newline)        ;; ~SPC j n~
-        ;; (let ((start (point))
-        ;;       (end (progn (forward-sexp) (point))))
-        ;;   ;; C-M-\
-        ;;   ;; (indent-region start end)
-        ;;   )
-        )
-      ;; (indent-sexp)       ;; ~C-M-q~
-      (mark-sexp)            ;; ~C-M-SPC~ / ~C-M-@~
-      (paredit-comment-dwim) ;; like `comment-dwim', but specialized for Lisp editing
-      ;; (crux-move-beginning-of-line 1)
+      ;; B. Explicit mode list (more reliable)
+      ;; (dolist (mode '(
+      ;;                 lisp-mode-hook
+      ;;                 emacs-lisp-mode-hook
+      ;;                 lisp-interaction-mode-hook
+      ;;                 scheme-mode-hook
+      ;;                 clojure-mode-hook
+      ;;                 racket-mode-hook
+      ;;                 ))
+      ;;   (add-hook mode 'tw-setup-lisp-comments))
       )
 
+    ;; the comment is here just to get a better listing in `helm-swoop'
     (bind-keys ; :map global-map
      :map global-map
      ("<f5>" . tw-revert-buffer-no-confirm)
@@ -1836,7 +1847,7 @@ TODO if only-whitespaces-until-point
 
      ;; the funny keys can be seen
      ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
-     ("C-s-<268632070>" . my=H-3) ;; this is probably for an Apple computers
+     ("C-s-<268632070>" . my-H-3) ;; this is probably for an Apple computers
      ("<escape>"  . keyboard-escape-quit)
 
      ("M-Q"       . unfill-paragraph)
@@ -1864,8 +1875,8 @@ TODO if only-whitespaces-until-point
      ;; see ~SPC w /~ and ~SPC w 2~
      ("s-3"       . split-window-right-and-focus)
      ("s-9"       . tw-load-layout)
-     ("s-+"       . my=eval-bind-keys-and-chords)
-     ("s-<kp-add>". my=eval-bind-keys-and-chords)
+     ("s-+"       . my-eval-bind-keys-and-chords)
+     ("s-<kp-add>". my-eval-bind-keys-and-chords)
      ("s-z"       . tw-buffer-selection-show)
      ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
      ("s-D"       . dired-jump) ;; just open a dired buffer
@@ -1883,6 +1894,8 @@ TODO if only-whitespaces-until-point
      ("C-s-<left>"  . sp-backward-slurp-sexp)
      ("C-s-<right>" . sp-backward-barf-sexp)
      ("s-;"         . spacemacs/comment-or-uncomment-lines)
+     ("C-s-;"       . tw-toggle-comment-sexp-lines)
+     ;; ("M-;"         . tw-toggle-comment-sexp-lines) ; was comment-dwim
      ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
      ("s-<f1>"      . tw-toggle-shell-pop-multiterm) ;; tw-toggle-shell-pop-term
      ("s-<f2>"      . projectile-multi-term-in-root)
@@ -1997,11 +2010,15 @@ TODO if only-whitespaces-until-point
      ("C-s-/"   . avy-goto-line)
 
      ;; fd - evil-escape from insert state and everything else
-     ;; occurences - function scope
+     ;; occurrences - function scope
+     ;; ~n~ / ~N~ next / prev occurrence; ~TAB~ toggle occurrence
      ("s-I"           . tw-iedit-mode-toggle)
-     ("s-i"           . iedit-mode)     ; all occurences in the buffer
+     ("s-i"           . iedit-mode)     ; all occurrences in the buffer
      ;; ("s-i"        . spacemacs/enter-ahs-forward)
-     ("<f12>"         . undo-tree-visualize)
+
+     ;; undo-tree is unmaintained. Last commit in March 2021
+     ;; ("<f12>"         . undo-tree-visualize)
+
      ;; ("S-<delete>" . kill-region)
      ("C-s-<delete>"  . kill-line)      ; C-super-key
      ("C-S-<delete>"  . kill-line)      ; C-shift-key
@@ -2067,12 +2084,12 @@ TODO if only-whitespaces-until-point
      ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
      ;; <menu> is not a prefix key. See:
      ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-     ("H-1" . my=H-1) ;; this doesn't work ("C-c h 1" . my=H-1)
-     ("H-2" . my=H-2)
-     ("H-4" . my=H-4) ;; this doesn't work ("C-c h 4" . my=H-4)
+     ("H-1" . my-H-1) ;; this doesn't work ("C-c h 1" . my-H-1)
+     ("H-2" . my-H-2)
+     ("H-4" . my-H-4) ;; this doesn't work ("C-c h 4" . my-H-4)
      )
     (message "%s   Note: %s"
-             "(my=eval-bind-keys-and-chords) evaluated"
+             "(my-eval-bind-keys-and-chords) evaluated"
              "~SPC k $~ sp-end-of-sexp"))
 
   ;; Thanx to
@@ -2151,7 +2168,7 @@ TODO if only-whitespaces-until-point
   ;; swap keys
   ;; (define-key key-translation-map (kbd "<f11>") (kbd "<f12>"))
 
-  (my=eval-bind-keys-and-chords) ;; bound to ~s-<kp-add>~ or ~s-+~
+  (my-eval-bind-keys-and-chords) ;; bound to ~s-<kp-add>~ or ~s-+~
 
   ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
   ;; ("<s-kp-insert>" .)
@@ -2214,7 +2231,7 @@ TODO if only-whitespaces-until-point
                ("C-3" . magit-section-show-level-3)
                ("C-4" . magit-section-show-level-4)))
 
-  (defun my=evil-keybindings-in-term (map)
+  (defun my-evil-keybindings-in-term (map)
     "Fix evil keybindings in terminals. Alternatively just disable evil-mode:
   (evil-set-initial-state 'term-mode 'emacs)
 See also:
@@ -2248,7 +2265,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
 ;;;
   (with-eval-after-load 'multi-term
     ;; term-mode-map is apparently not needed
-    (mapcar #'my=evil-keybindings-in-term '(term-raw-map)))
+    (mapcar #'my-evil-keybindings-in-term '(term-raw-map)))
 
   (with-eval-after-load 'dired
     ;; ;; don't remove `other-window', the caller expects it to be there
@@ -2301,7 +2318,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                ("C-<right>"    . right-word)
                ("C-<left>"     . left-word)))
 
-  (defun my=clj-bind-keys-and-chords (map)
+  (defun my-clj-bind-keys-and-chords (map)
     (bind-keys :map map
                ;; on German keyboard the #-key is next to the Enter-key
                ("C-s-\\" . tw-clj-toggle-reader-comment-current-sexp)
@@ -2317,8 +2334,8 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                            (tw-insert-str "(remove (fn []))" 3)))
                  ("fi" . tw-clj-insert-filter-fn)
                  ("de" . tw-clj-insert-defn)
-                 ;; ("db" . my=clj-insert-debugf)
-                 ;; ("dg" . my=clj-insert-debugf)
+                 ;; ("db" . my-clj-insert-debugf)
+                 ;; ("dg" . my-clj-insert-debugf)
                  ("df" . tw-clj-insert-fn)
                  ("ds" . tw-clj-insert-doseq)
                  ("fn" . tw-clj-insert-fn)
@@ -2332,7 +2349,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                  ("ma" . tw-clj-insert-map-fn)))
 
   (with-eval-after-load 'cider-repl-mode
-    (my=clj-bind-keys-and-chords cider-repl-mode-map)
+    (my-clj-bind-keys-and-chords cider-repl-mode-map)
     (bind-keys :map cider-repl-mode-map
                ("<menu>" . tw-stop-synths-metronoms)
                ("s-h"    . helm-cider-history)
@@ -2344,7 +2361,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                ("C-s-<delete>" . cider-repl-clear-buffer)))
 
   (with-eval-after-load 'clojure-mode
-    (my=clj-bind-keys-and-chords clojure-mode-map)
+    (my-clj-bind-keys-and-chords clojure-mode-map)
     (bind-keys :map clojure-mode-map
                ("s-d"    . cider-eval-defun-at-point)
                ("s-x"    . tw-cider-switch-to-repl-buffer)
@@ -2486,9 +2503,9 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               (bind-keys :map debugger-mode-map
                          ("C-g" . debugger-quit))))
 
-  (defun my=fn-kbind-scheme (map)
+  (defun my-fn-kbind-scheme (keymap)
     (lambda ()
-      (bind-keys :map map
+      (bind-keys :map keymap
                  ("C-s-\\" . tw-racket-toggle-reader-comment-current-sexp)
                  ("C-s-m"  . tw-scheme-insert-log)
                  ("C-s-p"  . tw-scheme-insert-log)
@@ -2496,16 +2513,26 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ;; ("s-;"    . tw-racket-toggle-reader-comment-current-sexp)
                  ("s-\\"   . tw-racket-toggle-reader-comment-fst-sexp-on-line)
                  ("s-d"    . geiser-eval-definition)
-                 ("s-e"    . geiser-eval-last-sexp)
-                 ("s-x"    . geiser-mode-switch-to-repl))
-      (bind-chords :map map
+                 ("s-e"    . geiser-eval-last-sexp))
+      ;; ~s-x~ Switch back and forth between the REPL and code buffer
+      (cond
+       ((equal keymap geiser-mode-map)
+        (bind-keys :map keymap ("s-x" . geiser-mode-switch-to-repl)))
+       ((equal keymap geiser-repl-mode-map)
+        (bind-keys :map keymap ("s-x" . geiser-guile-switch)))
+       (t
+        (error "Unrecognized keymap: %s" keymap)))
+      (bind-chords :map keymap
                    ("le" . tw-scheme-insert-let*)
                    ("pr" . tw-scheme-insert-log))))
 
-  (defun my=fn-kbind-racket (map)
+  (defun my-fn-kbind-racket (keymap)
     (lambda ()
-      (bind-keys :map map
-                 ("<C-s-delete>" . my=racket-repl-clear)
+      (message "[my-fn-kbind-racket] mode %s; repl-mode %s"
+               (equal keymap racket-mode-map)
+               (equal keymap racket-repl-mode-map))
+      (bind-keys :map keymap
+                 ("<C-s-delete>" . my-racket-repl-clear)
                  ("C-s-\\" . tw-racket-toggle-reader-comment-current-sexp)
                  ("C-s-p"  . tw-racket-insert-log)
                  ("M-s-d"  . tw-racket-insert-fn)
@@ -2514,7 +2541,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                  ("s-e"    . racket-eval-last-sexp)
                  ("s-o"    . racket-run-and-switch-to-repl)
                  ("s-x"    . racket-repl))
-      (bind-chords :map map
+      (bind-chords :map keymap
                    ("pr" . tw-racket-insert-log))))
 
   ;; (defun set-frame-theme (theme)
@@ -2549,15 +2576,15 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; See M-x helm-descbinds
   (with-eval-after-load 'racket-mode
     (mapcar (-partial #'apply #'add-hook)
-            `((racket-mode-hook      ,(my=fn-kbind-racket racket-mode-map))
-              (racket-repl-mode-hook ,(my=fn-kbind-racket racket-repl-mode-map)))))
+            `((racket-mode-hook      ,(my-fn-kbind-racket racket-mode-map))
+              (racket-repl-mode-hook ,(my-fn-kbind-racket racket-repl-mode-map)))))
 
   ;; For scm-files the bindings are available via minor mode bindings for
   ;; geiser-mode, not for scheme-mode. See M-x helm-descbinds
   (with-eval-after-load 'geiser-mode
     (mapcar (-partial #'apply #'add-hook)
-            `((geiser-mode-hook      ,(my=fn-kbind-scheme geiser-mode-map))
-              (geiser-repl-mode-hook ,(my=fn-kbind-scheme geiser-repl-mode-map)))))
+            `((geiser-mode-hook      ,(my-fn-kbind-scheme geiser-mode-map))
+              (geiser-repl-mode-hook ,(my-fn-kbind-scheme geiser-repl-mode-map)))))
 
   (with-eval-after-load 'scheme-mode
     (font-lock-add-keywords
@@ -2589,14 +2616,14 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   (advice-add #'helm-swoop
               :after
-              (defun my=note--helm-swoop (&optional _)
-                (let ((p "[advice my=note--helm-swoop] %s"))
+              (defun my-note--helm-swoop (&optional _)
+                (let ((p "[advice my-note--helm-swoop] %s"))
                   (message
                    p "Try ~SPC s C-s~ for M-x helm-multi-swoop-all"))))
 
   (advice-add #'tw-search-region-or-symbol
               :after
-              (defun my=note--my=search-region-or-symbol (&optional _)
+              (defun my-note--my-search-region-or-symbol (&optional _)
                 (let ((p "[advice tw-search-region-or-symbol] "))
                   (message
                    (concat
@@ -2606,21 +2633,21 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                     p "2. ~M-<f3>~ for M-x spacemacs/helm-project-smart-do-search-region-or-symbol")))))
 
   (advice-add #'split-window-right-and-focus
-              :after (defun my=recenter-top-bottom ()
+              :after (defun my-recenter-top-bottom ()
                        ;; needed cause the (recenter-top-bottom) has
                        ;; (interactive "P")
                        (recenter-top-bottom)))
   (advice-add #'whitespace-cleanup
-              :after (defun my=whitespace-cleanup ()
+              :after (defun my-whitespace-cleanup ()
                        (message "[advice whitespace-cleanup] done")))
   (advice-add #'evil-avy-goto-char-timer
-              :after (defun my=note--evil-avy-goto-char-timer (_)
+              :after (defun my-note--evil-avy-goto-char-timer (_)
                        (message
                         "[advice evil-avy-goto-char-timer] %s"
                         "Also ~SPC j j~, ~<f2>~")))
   (advice-add #'evil-avy-goto-line
               :after
-              (defun my=note--evil-avy-goto-line (&optional _)
+              (defun my-note--evil-avy-goto-line (&optional _)
                 (message
                  "[advice evil-avy-goto-line] %s"
                  "Also ~SPC j l~, ~M-m j l~, ~<C-f2>~, ~C-s-/~")))
@@ -2638,7 +2665,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
    ;; (lambda (&optional COUNT)
    ;;   (interactive)
    ;;   (evil-scroll-line-to-center)
-   ;;   ;; (setq my=line-before (line-number-at-pos))
+   ;;   ;; (setq my-line-before (line-number-at-pos))
    ;;   )
    ;; ;; convenient name for identifying or removing this advice later
    ;; '((name . "before-search"))
@@ -2671,20 +2698,20 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               :before #'tw-helm-mini)
   (advice-add #'helm-mini
               :after
-              (defun my=note--evil-avy-goto-char-timer ()
+              (defun my-note--evil-avy-goto-char-timer ()
                 (message
                  "[advice helm-mini] %s"
                  "Toggle mark / unmark all buffers: ~M-m~")))
   (advice-add #'spacemacs/helm-persp-switch-project
               :after
-              (defun my=note--spacemacs/helm-persp-switch-project (_)
+              (defun my-note--spacemacs/helm-persp-switch-project (_)
                 (message
                  "[advice spacemacs/helm-persp-switch-project] %s"
                  "Try: ~SPC p p~ for M-x helm-projectile-switch-project")))
 
   (advice-add #'spacemacs/toggle-menu-bar
               :after
-              (defun my=note--spacemacs/toggle-menu-bar ()
+              (defun my-note--spacemacs/toggle-menu-bar ()
                 (message
                  "[advice spacemacs/toggle-menu-bar] %s"
                  "Try also: ~M-`~ for M-x tmm-menubar")))

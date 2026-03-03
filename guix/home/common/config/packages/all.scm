@@ -1033,6 +1033,7 @@ FIXME the inferior-packages are installed on every machine"
            ((comp
              ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)
              ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
+             (partial cons (@(bost gnu packages emacs-xyz) emacs-spacemacs-wrapped))
              )
             ;; pulls-in ~430 additional packages
             ((@(bost gnu packages space-needed) spacemacs-packages))
