@@ -189,7 +189,7 @@
  #:guix-android-commit  "e5f52bd57275e404db74bf03b541bb62f7d73d58"
  #:hask-clj-commit      "a8b30a606f91caabec3cc8dc4b1255a69836554e"
  #:games-commit         "fcf8e459d8a4fc2800d4a1af14f1c3c6c714e419"
- #:bost-commit          "2c08448ac54b7401ece5e7935b5bdb5ae0dcfb68"
+ #:bost-commit          "84999be7778fc2f08e09b056a3aa09afbd9d0c2c"
  #:guix-commit          "c07690f0d673d8415066160617455313afa1d544"
  #:guix-past-commit     "bc95e89da6045cec1797673ba3283122a11e6ee7"
 

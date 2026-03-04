@@ -51,9 +51,9 @@
 
    (cons #:spguix
          (list (cons #:user-emacs-directory
-                     (let [(commit "e42e6de"
+                     (let [(commit "b3197c2"
                                    )
-                           (checksum "swr11n5rgx6962fwaawwhfn1azya6m80")]
+                           (checksum "a4mb4cvcmihfkw8ilp7i8q4v9bii30f5")]
                        (str
                         "/gnu/store/" checksum "-emacs-spacemacs-1.0-0."
                         commit

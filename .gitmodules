@@ -1,5 +1,5 @@
 [submodule "spacemacs-fennel-layer"]
-	path = .emacs.d.sp---macs/fennel
+	path = .emacs.d.distros/spacemacs/configuration-layer/fennel
 	url = https://github.com/mitchellw/fennel-layer.git
 [submodule "tmux-plugins"]
 	path = .tmux/plugins/tpm

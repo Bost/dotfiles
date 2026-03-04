@@ -251,6 +251,7 @@
      ("dgxp"  . ,dgxp)
      ("dspd"  . ,dspd)
      ("dspg"  . ,dspg)
+     ("dsps"  . ,dsps)
      ("dspc"  . ,dspc)
      ("dgl"   . ,(user-dev "/guile"))
 

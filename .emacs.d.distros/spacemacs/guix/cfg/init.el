@@ -2,9 +2,6 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-;; When running from bash on a non-Guix system, some environment variables may
-;; not be defined.
-
 ;; It seems that this macro cannot be added to emacs-tweaks, as it only gets
 ;; loaded during a later stage of Spacemacs initialization.
 (defmacro my-def-evar (elisp-var def-val evar-name)
@@ -16,18 +13,8 @@ differences were encountered."
        (message "WARN (expand-file-name def-val): %s and evar: %s=%s differ"
                 (expand-file-name ,def-val) ,evar-name evar-val))))
 
-(my-def-evar dev  "~/dev"          "dev")
-(my-def-evar dotf "~/dev/dotfiles" "dotf")
-
-(setq
- sp-home-dir          (concat (getenv "XDG_DATA_HOME") "/spacemacs/guix")
- sp-elpa-mirror       (concat dev "/elpa-mirror.d12frosted")
- sp-config-layer-path (concat dotf "/.emacs.d.sp---macs/")
-
- sp-snippets-dir          (concat sp-home-dir "/snippets")
- sp-custom-settings-dir   (concat sp-home-dir "/.cache")
- sp-layouts-dir           (concat sp-home-dir "/.cache/layouts")
- )
+;; When running from bash on a non-Guix system, some environment variables may
+;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
@@ -55,7 +42,17 @@ This function should only modify configuration layer settings."
 
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
-   dotspacemacs-configuration-layer-path `(,sp-config-layer-path)
+   dotspacemacs-configuration-layer-path
+   `(
+     ,(let* ((dd default-directory)
+             (cln (concat dd "/../../configuration-layer/"))
+             (clo (concat (getenv "dtf") "/.emacs.d.distros/spacemacs/configuration-layer/")))
+        (message "### [guix] dd : %s" dd)
+        (message "### [guix] cln : %s" cln)
+        (message "### [guix] clo : %s" clo)
+        clo
+        )
+     )
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
@@ -712,6 +709,13 @@ This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
 It should only modify the values of Spacemacs settings."
 
+  (setq
+   sp-home-dir            (concat (getenv "XDG_DATA_HOME") "/spacemacs/guix")
+   sp-snippets-dir        (concat sp-home-dir "/snippets")
+   sp-custom-settings-dir (concat sp-home-dir "/.cache")
+   sp-layouts-dir         (concat sp-home-dir "/.cache/layouts")
+   )
+
   (mapcar (lambda (dir) (mkdir dir 'parents))
           (list sp-snippets-dir sp-custom-settings-dir sp-layouts-dir))
 
@@ -730,9 +734,9 @@ It should only modify the values of Spacemacs settings."
    ;; Update by running (fish-shell):
    ;;   set mirror $dev/elpa-mirror.d12frosted
    ;;   git --git-dir=$mirror/.git --work-tree=$mirror pull --rebase
-   `(("melpa"  . ,(concat sp-elpa-mirror "/melpa/"))
-     ("gnu"    . ,(concat sp-elpa-mirror "/gnu/"))
-     ("nongnu" . ,(concat sp-elpa-mirror "/nongnu/")))
+   `(("melpa"  . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/melpa/"))
+     ("gnu"    . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/gnu/"))
+     ("nongnu" . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/nongnu/")))
 
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    ;; (default 5)
@@ -1298,6 +1302,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Don't download archive-contents of the gnu, melpa, nongnu
   ;; (setq my-retrieve-package-archives nil)
   (setq my-retrieve-package-archives t)
+
   (setq yas--default-user-snippets-dir sp-snippets-dir)
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
@@ -1563,7 +1568,7 @@ before packages are loaded."
 
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
-   bookmark-default-file (format "%s/emacs/bookmarks" dotf)
+   bookmark-default-file (concat (getenv "dtf") "/.emacs.d.distros/bookmarks")
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
    ediff-window-setup-function 'ediff-setup-windows-default
 
@@ -1689,7 +1694,8 @@ before packages are loaded."
     ;; :load-path "~/.config/emacs/elisp/"
     :custom
     (kbd-mode-kill-kmonad "pkill -9 kmonad")
-    (kbd-mode-start-kmonad (format "kmonad %s/kmonad/KMonad.kbd" dotf)))
+    (kbd-mode-start-kmonad (format "kmonad %s/kmonad/KMonad.kbd"
+                                   (getenv "dtf"))))
 
   (use-package org
     :hook
@@ -1720,8 +1726,9 @@ before packages are loaded."
     "oc"  #'tw-cider-clear-compilation-highlights
     ;; "oc"  #'org-roam-capture
     ;; "of"  #'tw-switch-to-repl-start-figwheel
-    "oed" #'tw-find-dotf-spacemacs
+    "oed" #'tw-find-dotf-spacemacs-develop
     "oeg" #'tw-find-dotf-spacemacs-guix
+    "oes" #'tw-find-dotf-spacemacs-spguix
     "ogg" #'google-this
     "ogr" #'google-this-region
     "oh"  #'tw-find-home-config.scm
