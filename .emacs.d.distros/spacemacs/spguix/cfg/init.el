@@ -44,14 +44,8 @@ This function should only modify configuration layer settings."
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
    dotspacemacs-configuration-layer-path
    `(
-     ,(let* ((dd default-directory)
-             (cln (concat dd "/../../configuration-layer/"))
-             (clo (concat (getenv "dtf") "/.emacs.d.distros/spacemacs/configuration-layer/")))
-        (message "### [spguix] dd : %s" dd)
-        (message "### [spguix] cln : %s" cln)
-        (message "### [spguix] clo : %s" clo)
-        clo
-        )
+     ,(concat (getenv "dotf")
+              "/.emacs.d.distros/spacemacs/configuration-layer/")
      )
 
    ;; List of configuration layers to load.
@@ -1568,7 +1562,7 @@ before packages are loaded."
 
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
-   bookmark-default-file (concat (getenv "dtf") "/.emacs.d.distros/bookmarks")
+   bookmark-default-file (concat (getenv "dotf") "/.emacs.d.distros/bookmarks")
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
    ediff-window-setup-function 'ediff-setup-windows-default
 
@@ -1694,7 +1688,8 @@ before packages are loaded."
     ;; :load-path "~/.config/emacs/elisp/"
     :custom
     (kbd-mode-kill-kmonad "pkill -9 kmonad")
-    (kbd-mode-start-kmonad (format "kmonad %s/kmonad/KMonad.kbd" dotf)))
+    (kbd-mode-start-kmonad
+     (format "kmonad %s/kmonad/KMonad.kbd" (getenv "dotf"))))
 
   (use-package org
     :hook
