@@ -101,6 +101,8 @@ Usage:
     (apply exec-system*-new
            #:split-whitespace #f
            #:gx-dry-run gx-dry-run
+           #:trace trace
+           #:verbose verbose
            (list "pkill" "--echo" "--full" (create-init-cmd params)))))
 (testsymb 'pkill-server)
 
