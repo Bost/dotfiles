@@ -25,6 +25,7 @@
   )
 
 (define* (home-channels-edge-ecke #:key
+                                  guix-past-commit
                                   guix-android-commit
                                   guixrus-commit
                                   hask-clj-commit
@@ -38,7 +39,11 @@
    ;; (channel-home-service-dwl-guile)
 
    (channel-guix-android #:commit guix-android-commit)
-   ;; (channel-guix-past) ;; pulled-in via channel-games; not needed directly.
+
+   ;; The `guix-past' channel is not needed directly, however it is required by
+   ;; the `games' channel, which, without this pinning would pull from the
+   ;; latest channel version
+   (channel-guix-past #:commit guix-past-commit)
 
    ;; whereiseveryone
    ;; (channel-guixrus #:commit guixrus-commit)
@@ -64,6 +69,7 @@
                      bost-commit
                      guix-commit
                      nonguix-commit
+                     guix-past-commit
                      #:allow-other-keys
                      )
   ((comp
@@ -72,6 +78,7 @@
           (append
            (list (channel-nonguix #:commit nonguix-commit))
            (home-channels-edge-ecke
+            #:guix-past-commit     guix-past-commit
             #:guix-android-commit  guix-android-commit
             ;; #:guixrus-commit       guixrus-commit
             #:hask-clj-commit      hask-clj-commit
@@ -194,11 +201,20 @@
  ;; #:guix-past-commit     "bc95e89da6045cec1797673ba3283122a11e6ee7"
 
  ;; 04 mar. 2026 20:25:53
+ ;; #:nonguix-commit       "816b5c6f45ed56cd81e2a6338ed5b710e4e66e98"
+ ;; #:guix-android-commit  "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:hask-clj-commit      "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit         "348775cb228def51bba4f4502e68a078f492b72f"
+ ;; #:bost-commit          "84999be7778fc2f08e09b056a3aa09afbd9d0c2c"
+ ;; #:guix-commit          "a375202ad3443e4c3fb492160e32aa6abcc965bd"
+ ;; #:guix-past-commit     "bc95e89da6045cec1797673ba3283122a11e6ee7"
+
+ ;; 06 mar. 2026 17:01:23
  #:nonguix-commit       "816b5c6f45ed56cd81e2a6338ed5b710e4e66e98"
  #:guix-android-commit  "e5f52bd57275e404db74bf03b541bb62f7d73d58"
  #:hask-clj-commit      "a8b30a606f91caabec3cc8dc4b1255a69836554e"
  #:games-commit         "348775cb228def51bba4f4502e68a078f492b72f"
- #:bost-commit          "84999be7778fc2f08e09b056a3aa09afbd9d0c2c"
+ #:bost-commit          "70d2459d1123e5b5a0d1b12979c216e652ef96c6"
  #:guix-commit          "a375202ad3443e4c3fb492160e32aa6abcc965bd"
- #:guix-past-commit     "bc95e89da6045cec1797673ba3283122a11e6ee7"
+ #:guix-past-commit     "f5d1cdc58ea810c9d1f1858289b01e9fdc3e4b8f"
  )
