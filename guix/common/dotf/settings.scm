@@ -29,13 +29,35 @@
 (define-public emacs-distros "/.emacs.d.distros")
 (define-public home-emacs-distros (str home emacs-distros))
 
+(define (emacs-spacemacs-store-path)
+     (let* [(cmd-result-struct
+             ((comp
+               (lambda (cmd) (exec cmd  #:verbose #f #:return-plist #t))
+               cmd->string)
+              (list "guix package --profile=/home/bost/.guix-profile --list-installed=emacs-spacemacs\\$")))
+            (retcode (plist-get cmd-result-struct #:retcode))]
+       (if (zero? retcode)
+           ((comp
+             ;; (lambda (p) (format #t "~a done\n" f) p)
+             ;; (partial filter usb-device?)
+             ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
+             last
+             (lambda (s) (string-split s #\tab))
+             car
+             )
+            (plist-get cmd-result-struct #:results))
+           (begin
+             ;; error-out
+             (error (format #f "~a retcode: ~a\n" m retcode))
+             ))))
+
 ;; See also:
 ;;   git-spacemacs
 ;;   spacemacs-dir
 ;; files:
 ;;   guix/home/common/scm-bin/spag.scm
 ;;   guix/home/common/scm-bin/restore-spacemacs.scm
-(define-public emacs-profiles-config ;; branch-kw_to_settings-map
+(define (emacs-profiles-config) ;; branch-kw_to_settings-map
   (list
    ;; (const <profile-name> <profile-configuration>)
    (cons #:develop
@@ -51,14 +73,23 @@
 
    (cons #:spguix
          (list (cons #:user-emacs-directory
-                     (let [(commit "b3197c2"
-                                   )
-                           (checksum "a4mb4cvcmihfkw8ilp7i8q4v9bii30f5")]
-                       (str
-                        "/gnu/store/" checksum "-emacs-spacemacs-1.0-0."
-                        commit
-                        "/share/emacs/site-lisp/spacemacs-1.0-0."
-                        commit)))
+                     ;; TODO this is a hack. For some reasons this can't be used:
+                     ;;   (use-modules (guix scripts package) (guix profiles))
+                     ;;   (last (car (list-installed "emacs-spacemacs$" (list %current-profile))))
+                     ;; I guess it has something to do with build vs. runtime.
+                     ;; The start and stop commands should be implemented in the emacs-spacemacs-wrapped package
+                     ;; And also there should be emacs-wrapped and crafted-emacs-wrapped, etc.
+                     ;; See also (which-emacs) in guix/home/common/emacs-common.scm
+                     (let* [(esss (emacs-spacemacs-store-path))
+                            (s (substring esss
+                                          (string-length "/gnu/store/")))
+                            (checksum (substring
+                                       s 0 (- (string-length s)
+                                              (string-length "-emacs-spacemacs-1.0-0.<_sha_>"))))
+                            (commit (substring
+                                     s (+ (string-length checksum)
+                                          (string-length "-emacs-spacemacs-1.0-0."))))]
+                       (str esss "/share/emacs/site-lisp/spacemacs-1.0-0." commit)))
                (cons #:env
                      (str home-emacs-distros "/spacemacs/spguix/cfg"))))
 
@@ -107,7 +138,7 @@
   ;; (format #t "profile ~a; setting ~a\n" profile setting)
   (let* [(branch-kw (cdr (assoc profile profile->branch-kw)))]
     ;; (format #t "branch-kw ~a\n" branch-kw)
-    (let* [(settings-map (cdr (assoc branch-kw emacs-profiles-config)))]
+    (let* [(settings-map (cdr (assoc branch-kw (emacs-profiles-config))))]
       ;; (format #t "settings-map ~a\n" settings-map)
       (let* [(val (cdr (assoc setting settings-map)))]
         ;; (format #t "profile ~a; setting ~a; val: ~a\n" profile setting val)
@@ -123,7 +154,5 @@
   "(get-cfg spacemacs)
 ;; => \"/home/bost/.emacs.d.distros/spacemacs/develop/cfg\""
   (get-val profile #:env))
-
-(define-public spacemacs-dir (get-src guix))
 
 (module-evaluated)
