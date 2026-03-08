@@ -1261,18 +1261,6 @@ value).
 (get-keywords 1)              ; => not a list"
   (get-from-list keyword? lst))
 
-(define-public (has-duplicates? lst)
-  "Used in `plist?'
-(has-duplicates? '())        ; => #f
-(has-duplicates? '(1 2 3 4)) ; => #f
-(has-duplicates? '(1 2 3 2)) ; => #t
-(has-duplicates? '(a 1 a 2)) ; => #t
-"
-  (cond
-   ((null? lst) #f)
-   ((member (car lst) (cdr lst)) #t)
-   (else (has-duplicates? (cdr lst)))))
-
 (define-public (plist? lst)
   "Empty list is also a plist. Plist must not contain duplicate keys.
 (plist? '(a 1 b 2)) ; => #t

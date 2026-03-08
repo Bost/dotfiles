@@ -614,7 +614,7 @@ a list of files to search through."
     ;; scm-bin/reboot overshadows the real reboot in the $PATH
     (list #:utility "reboot" #:params "sudo /run/current-system/profile/sbin/reboot")
     )))
-(testsymb 'basic-cli-utils-background-service)
+(testsymb 'sudo-cli-utils-service)
 
 (define (mount-utils-service)
   ((comp
