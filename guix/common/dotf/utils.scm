@@ -1498,6 +1498,35 @@ Requires:
   (apply append
          (apply map list lists)))
 
+#|
+(define-public (interpose separator lst)
+"Insert separator between each element of lst"
+(cond
+((null? lst) '())
+((null? (cdr lst)) lst)
+(else
+(cons (car lst)
+(cons separator
+(interpose separator (cdr lst)))))))
+|#
+;; Alternative implementation using fold-right for better performance
+(define-public (interpose separator lst)
+  "Insert separator between each element of lst using fold
+(interpose '+ (list 1 2 3)) ;=> (1 + 2 + 3)"
+  (if (null? lst)
+      '()
+      (fold-right (lambda (x acc)
+                    (if (null? acc)
+                        (list x)
+                        (cons x (cons separator acc))))
+                  '()
+                  lst)))
+
+;; Usage examples:
+;; (interpose '| '(a b c d))     => (a | b | c | d)
+;; (interpose 0 '(1 2 3))        => (1 0 2 0 3)
+;; (interpose "," '("hello" "world")) => ("hello" "," "world")
+
 (define-public (combine . lists)
   "(combine (list 1 2 3) (list 4 5 6)) ;=> ((1 4) (2 5) (3 6))"
   (let ((len (length (car lists))))
