@@ -52,6 +52,8 @@
             testsymb
             testsymb-trace
             dbgfmt
+            and*
+            or*
             )
   #:re-export (
                smart-first
@@ -908,7 +910,7 @@ Usage:
   (if (zero? retcode)
       (process retcode (plist-get cmd-result-struct #:results))
       (begin
-        ;; (error (format #f \"~a retcode: ~a\n\" f retcode)) ; error-out
+        ;; (error (format #f \"~a retcode: ~a\\n\" f retcode)) ; error-out
         ;; (error-command-failed f \"extra_info\")
         ;; or return `retcode' instead of `*unspecified*'
         *unspecified*)))
@@ -1553,12 +1555,6 @@ Requires:
 ;;     package)))
 ;; (testsymb 'inferior-package-in-guix-channel)
 
-(define-public (directory-exists? dir)
-  "Return #t if DIR exists and is a directory. From $dgx/guix/build/utils.scm"
-  (let ((s (stat dir #f)))
-    (and s
-         (eq? 'directory (stat:type s)))))
-
 ;; (define-public (directory-exists? path)
 ;;   "Check if path exists and is a directory. (Alternative definition)"
 ;;   (and (file-exists? path)
@@ -1764,12 +1760,29 @@ separated by spaces.
          (let ((target (false-if-exception (readlink sys-path))))
            (and target (string-contains target "usb"))))))
 
-(def (mounted-usb-devices)
+;; #:use-module (ice-9 rdelim)     ; external-mount-points
+;; (define (external-mount-points)
+;;   (call-with-input-file "/proc/mounts"
+;;     (lambda (port)
+;;       (let loop ((line (read-line port))
+;;                  (result '()))
+;;         (if (eof-object? line)
+;;             (reverse result)
+;;             (let* ((fields (string-split line #\space))
+;;                    (mount-point (and (> (length fields) 1) (cadr fields))))
+;;               (loop (read-line port)
+;;                     (if (and mount-point
+;;                              (or (string-prefix? "/media/" mount-point)
+;;                                  (string-prefix? "/run/media/" mount-point)))
+;;                         (cons mount-point result)
+;;                         result))))))))
+
+(def*-public (mounted-usb-devices #:key (verbose #f))
   "Return a list of mounted USB block devices (e.g. /dev/sdb1)."
   ;; (format #t "~a Starting…\n" f)
   (let* [(cmd-result-struct
           ((comp
-            (lambda (cmd) (exec cmd #:return-plist #t))
+            (lambda (cmd) (exec cmd #:verbose verbose #:return-plist #t))
             cmd->string)
            (list "findmnt --real --raw --noheadings --output SOURCE")))
          (retcode (plist-get cmd-result-struct #:retcode))]
@@ -1781,15 +1794,14 @@ separated by spaces.
           )
          (plist-get cmd-result-struct #:results))
         (begin
-          ;; error-out
           (error (format #f "~a retcode: ~a\n" m retcode))
-          ))))
+          (list)))))
 
-(def-public (get-ethernet-interfaces)
+(def*-public (get-ethernet-interfaces #:key (verbose #f))
   ;; (format #t "~a Starting…\n" f)
   (let* [(cmd-result-struct
           ((comp
-            (lambda (cmd) (exec cmd #:return-plist #t))
+            (lambda (cmd) (exec cmd #:verbose verbose #:return-plist #t))
             cmd->string)
            (list "grep -l '1' /sys/class/net/*/type | cut -d'/' -f5")))
          (retcode (plist-get cmd-result-struct #:retcode))]
@@ -1800,8 +1812,8 @@ separated by spaces.
           )
          (plist-get cmd-result-struct #:results))
         (begin
-          ;; error-out
-          (error (format #f "~a retcode: ~a\n" m retcode))))))
+          (error (format #f "~a retcode: ~a\n" m retcode))
+          (list)))))
 
 (define-public (ethernet-cable-plugged? iface)
   "Returns #t or #f"
@@ -1811,17 +1823,17 @@ separated by spaces.
           (string-append "/sys/class/net/" iface "/carrier")
         (lambda (port)
           (string=? "1\n" (get-string-all port)))))
-    (lambda (key . args)
-      #f)))
+    (lambda (key . args) #f)))
 
-(def (mounted-with-option? option device-or-mountpoint)
+(def*-public (mounted-with-option? option device-or-mountpoint
+                                   #:key (verbose #f))
   "Return #t if the given DEVICE-OR-MOUNTPOINT is mounted with specified OPTION.
 (mounted-with-option? \"rw\" \"/run/media/bost/lbl-fsys-axagon\")
 (mounted-with-option? \"ro\" \"/dev/sdc1\")"
   ;; (format #t "~a Starting…\n" f)
   (let* [(cmd-result-struct
           ((comp
-            (lambda (cmd) (exec cmd #:return-plist #t))
+            (lambda (cmd) (exec cmd #:verbose verbose #:return-plist #t))
             cmd->string)
            (list "findmnt --real --noheadings --output OPTIONS"
 
@@ -1953,7 +1965,11 @@ See also:
 (define-public inc 1+)
 
 (define*-public (str-join lst #:optional (delimiter " ") (grammar 'infix))
-  "(str-join (map str (list 1 2 3)))         ;=> \"1 2 3\"
+  "Join a list of values into a string with an optional delimiter and grammar.
+Elements are converted with `str', and both (LIST DELIMITER) and (DELIMITER
+LIST) are accepted.
+
+(str-join (map str (list 1 2 3)))         ;=> \"1 2 3\"
 (str-join (map str (list 1 2 3)) \"\\n\") ;=> \"1\\n2\\n3\"
 (str-join \"_\" (map str (list 1 2)))     ;=> \"1_2\"
 (str-join (map str (list 1 2)) \"_\")     ;=> \"1_2\""
@@ -2075,5 +2091,82 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
     )
    lst))
+
+(define-public (source->string items)
+  "
+(define a 1)
+(define b #f)
+(define s \"42\")
+(define x \"24\")
+((comp
+  (partial format #t \"~a\\n\")
+  source->string
+  )
+  (list
+   `(define a ,a)
+   `(define b ,b)
+   '(blank)
+   `(commented
+     (define s ,s)
+     ,(format #f \"x was ~s\" x))))
+=>
+(define a 1)
+(define b #f)
+
+(define s \"42\") ; x was \"24\"
+"
+  (string-join
+   (map
+    (match-lambda
+      (('blank) "")
+      (('comment text)
+       (string-append "; " text))
+      (('commented form text)
+       (string-append
+        (call-with-output-string
+          (lambda (port) (write form port)))
+        " ; "
+        text))
+      (form
+       (call-with-output-string
+         (lambda (port) (write form port)))))
+    items)
+   "\n"))
+
+(define-public (scheme-literal x)
+  "(scheme-literal 42);  $17 = \"42\"
+  (scheme-literal \"42\") $18 = \"\\\"42\"\\\"
+
+(define av 1) (define sv \"42\")
+(str-join (list `(define a ,(scheme-literal av)) `(define s ,(scheme-literal sv))))
+=> \"(define a 1) (define s \\\"42\\\")\"
+"
+  (object->string x write))
+
+(define-syntax and*
+  (lambda (x)
+    (syntax-case x ()
+      [(_ rest ...)
+       #'(and rest ...)]
+      [var
+       (identifier? #'var)
+       #'(lambda args
+           (let loop ((args args))
+             (if (null? args)
+                 #t ; by default
+                 (and (car args) (loop (cdr args))))))])))
+
+(define-syntax or*
+  (lambda (x)
+    (syntax-case x ()
+      [(_ rest ...)
+       #'(or rest ...)]
+      [var
+       (identifier? #'var)
+       #'(lambda args
+           (let loop ((args args))
+             (if (null? args)
+                 #f ; by default
+                 (or (car args) (loop (cdr args))))))])))
 
 (module-evaluated)
