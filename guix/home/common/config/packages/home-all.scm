@@ -1071,6 +1071,12 @@ FIXME the inferior-packages are installed on every machine"
             ;; installed via bluetooth-service-type
             bluez
             bluez-alsa ; Bluetooth ALSA backend
+
+            ;; emacs-kbd-mode ; editing KMonad .kbd configuration files;
+                              ; installed via spacemacs
+
+            kmonad     ; Advanced keyboard manager
+
             tlp        ; Power management / battery life
             )
            lst)
