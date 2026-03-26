@@ -18,6 +18,7 @@
   #:use-module (boltd)
   #:use-module (kernel-utils)          ; append-to-default-kernel-arguments
   #:use-module (dotf settings)
+  #:use-module (dotf fs-utils)         ; user-dotf
   #:use-module (dotf utils)            ; partial
   #:use-module (dotf memo)
   #:use-module (config packages syst-all)   ; syst-packages-to-install
@@ -121,8 +122,8 @@
      (syst-base:keyb-layout))
     (host-name host-edge)
     (users (syst-base:users-config (list
-                                    "video"  ;; video devices, e.g. webcams
-                                    "lp"     ;; control bluetooth devices
+                                    "video"  ; video devices, e.g. webcams
+                                    "lp"     ; control bluetooth devices
                                     )))
     (locale "fr_FR.utf8")
 
@@ -151,6 +152,13 @@
                     )))
 
       (list
+       (service kmonad-service-type
+                (kmonad-configuration
+                 (keymaps
+                  (list
+                   (local-file
+                    (user-dotf "/kmonad/kmonad-laptop-fix.kbd"))))))
+
        (service boltd-service-type)
        (udev-rules-service 'gamingbox thunderbolt-rescan-udev-rule)
 
