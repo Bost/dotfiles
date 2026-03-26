@@ -1,4 +1,4 @@
-(define-module (config packages all)
+(define-module (config packages syst-all)
   #:use-module (dotf utils)
   #:use-module (gnu)   ; use-package-modules
   )
