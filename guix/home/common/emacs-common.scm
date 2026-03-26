@@ -32,6 +32,7 @@ defined.
 => \"/gnu/store/09a50cl6ndln4nmp56nsdvn61jgz2m07-emacs-29.1/bin/emacs\""
   ((comp
     (partial format #f "~a/bin/emacs")
+    ;; WTF?!? In the REPL I get: Unbound variable: package-output-path
     package-output-path)
    (@(gnu packages emacs) emacs)))
 

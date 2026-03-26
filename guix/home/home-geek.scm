@@ -29,7 +29,7 @@ guix home --allow-downgrades --cores=$cores \
   #:use-module (dotf memo)
   #:use-module (scm-bin git-clone)
   #:use-module (fs-utils)
-  #:use-module (config packages all)
+  #:use-module (config packages home-all)
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)

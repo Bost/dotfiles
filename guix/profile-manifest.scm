@@ -4,7 +4,7 @@
   #:use-module (dotf utils)
   #:use-module (dotf tests)
   #:use-module (guix profiles)
-  #:use-module (config packages all) ; home-packages-to-install
+  #:use-module (config packages home-all) ; home-packages-to-install
   )
 
 (define m (module-name-for-logging))

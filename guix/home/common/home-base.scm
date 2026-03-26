@@ -8,7 +8,7 @@
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
-  #:use-module (config packages all) ;; home-packages-to-install
+  #:use-module (config packages home-all) ;; home-packages-to-install
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)

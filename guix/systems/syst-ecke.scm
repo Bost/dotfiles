@@ -4,7 +4,7 @@
   #:use-module (dotf settings)
   #:use-module (dotf utils)                  ; partial
   #:use-module (dotf memo)
-  #:use-module (config packages all)    ; syst-packages-to-install
+  #:use-module (config packages syst-all)    ; syst-packages-to-install
   #:use-module (gnu)
   #:use-module (gnu system shadow)      ; user-group user-account-shell
   #:use-module (guix)                   ; package-version
