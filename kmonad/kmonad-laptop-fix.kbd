@@ -1,0 +1,23 @@
+(defcfg
+ input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+ output (uinput-sink "kmonad-laptop-fix")
+ fallthrough true
+ )
+
+(defsrc
+ caps 6 7 u j
+ )
+
+(defalias
+  ;; tap Caps -> Caps
+  ;; hold Caps -> activate repair layer while held
+  rep (tap-hold-next-release 200 caps (layer-toggle repair))
+  )
+
+(deflayer base
+          @rep 6 7 u j
+          )
+
+(deflayer repair
+          caps 8 9 o l
+          )

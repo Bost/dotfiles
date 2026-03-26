@@ -65,6 +65,7 @@
  libusb   ; libmtp
  shells   ; login shell
  linux    ; brightnessctl
+ haskell-apps  ; kmonad
  )
 
 (define m (module-name-for-logging))
@@ -214,6 +215,12 @@
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
+        ;; kmonad
+        (udev-service-type config =>
+                           (udev-configuration
+                            (inherit config)
+                            (rules (cons kmonad
+                                         (udev-configuration-rules config)))))
         ;; GDM - GNOME Desktop Manager: graphical user login, display servers
         (gdm-service-type config => (gdm-configuration
                                      (inherit config)

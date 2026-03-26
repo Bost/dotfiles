@@ -38,7 +38,7 @@
  elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
  file-systems librewolf libcanberra security-token firmware ocr tex monitoring
- pciutils
+ pciutils haskell-apps
  )
 
 (define (email-in-emacs-packages)
@@ -1010,6 +1010,12 @@ FIXME the inferior-packages are installed on every machine"
             ;; installed via bluetooth-service-type
             bluez
             bluez-alsa ; Bluetooth ALSA backend
+
+            ;; emacs-kbd-mode ; editing KMonad .kbd configuration files;
+                              ; installed via spacemacs
+
+            kmonad     ; Advanced keyboard manager
+
             tlp        ; Power management / battery life
             )
            lst)
