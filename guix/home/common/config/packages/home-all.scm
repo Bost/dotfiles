@@ -1,4 +1,4 @@
-(define-module (config packages all)
+(define-module (config packages home-all)
   #:use-module (dotf utils)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
@@ -1072,5 +1072,6 @@ FIXME the inferior-packages are installed on every machine"
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
     )
    (basic-packages)))
+(testsymb 'home-packages-to-install)
 
 (module-evaluated)
