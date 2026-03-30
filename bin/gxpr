@@ -23,8 +23,7 @@ guix package --cores=$cores \
      --load-path=$baseLP/home/common \
      --profile=$HOME/.guix-profile \
      --manifest=$baseLP/profile-manifest.scm \
-     "$@" \
-     2>&1 | tee "/tmp/${tstp}.guix-package.log"
+     "$@"
 
 { retval="$?"; set +x; } 2>/dev/null
 

@@ -17,8 +17,7 @@ guix home --cores=$cores --allow-downgrades \
      --load-path=$baseLP/home/common \
      reconfigure \
      $configFile \
-     "$@" \
-     2>&1 | tee "/tmp/${tstp}.guix-home-reconfigure.log"
+     "$@"
 
 { retval="$?"; set +x; } 2>/dev/null
 
