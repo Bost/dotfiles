@@ -242,14 +242,16 @@ a list of files to search through."
     (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
     (format #t "\n"))
 
-  (define common-modules '((srfi srfi-1)
-                           (guix monads)
-                           (dotf srfi-1-smart)
-                           (dotf utils)
-                           (dotf tests)
-                           (dotf settings)
-                           (cli-common)
-                           (command-line)))
+  (define common-modules
+    '(
+      ;; (srfi srfi-1) ;; leads to 'warning: importing module (srfi srfi-1) from the host'
+      (guix monads)
+      (dotf srfi-1-smart)
+      (dotf utils)
+      (dotf tests)
+      (dotf settings)
+      (cli-common)
+      (command-line)))
   (list
    (str scm-bin-dirname "/" utility)
    ((comp
