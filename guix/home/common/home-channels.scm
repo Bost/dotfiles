@@ -25,6 +25,7 @@
   )
 
 (define* (home-channels-edge-ecke #:key
+                                  guix-science-commit
                                   guix-past-commit
                                   guix-android-commit
                                   guixrus-commit
@@ -37,6 +38,10 @@
    ;; dwl-guile is a fork of the dwl Wayland Compositor (which is a
    ;; port of dwm - dynamic window manager for X).
    ;; (channel-home-service-dwl-guile)
+
+   ;; When firefox substitutes are not available in the nonguix channel. Fetch
+   ;; them from the guix-sciene
+   (channel-guix-science #:commit guix-science-commit)
 
    (channel-guix-android #:commit guix-android-commit)
 
@@ -62,6 +67,7 @@
    (channel-bost #:commit bost-commit)))
 
 (def* (home-channels #:key
+                     guix-science-commit
                      guix-android-commit
                      ;; guixrus-commit
                      hask-clj-commit
@@ -78,6 +84,7 @@
           (append
            (list (channel-nonguix #:commit nonguix-commit))
            (home-channels-edge-ecke
+            #:guix-science-commit  guix-science-commit
             #:guix-past-commit     guix-past-commit
             #:guix-android-commit  guix-android-commit
             ;; #:guixrus-commit       guixrus-commit
