@@ -363,6 +363,19 @@ Works also for functions returning and accepting multiple values."
 
 ;; (def-public ff 42)
 
+;; (def*-public (fg* a b)
+;;   "fg*: docstring"
+;;   (format #t "~a a ~a\n" f a)
+;;   (format #t "~a b ~a\n" f b)
+;;   42)
+
+;; (def*-public (fg* a b #:key (c #f))
+;;   "fg*: docstring"
+;;   (format #t "~a a ~a\n" f a)
+;;   (format #t "~a b ~a\n" f b)
+;;   (format #t "~a c ~a\n" f c)
+;;   42)
+
 ;; from /home/bost/dev/guile/module/ice-9/boot-9.scm
 ;; (define-syntax define-public
 ;;   (syntax-rules ()
