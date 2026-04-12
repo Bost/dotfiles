@@ -16,6 +16,7 @@
 (evaluating-module)
 
 (def* (syst-channels #:key
+                     guix-science-commit
                      guix-commit
                      nonguix-commit
                      #:allow-other-keys
@@ -24,7 +25,10 @@
     (lambda (lst)
       (if (or (host-edge?) (host-ecke?) (host-geek?))
           (append
-           (list (channel-nonguix #:commit nonguix-commit)) lst)
+           (list
+            (channel-guix-science #:commit guix-science-commit)
+            (channel-nonguix #:commit nonguix-commit)
+            ) lst)
           lst)))
    (list (channel-guix #:commit guix-commit))))
 
