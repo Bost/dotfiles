@@ -80,7 +80,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; guix weather --system=x86_64-linux --substitute-urls='https://substitutes.nonguix.org' firefox
     ;; /var/guix/profiles/per-user/bost/guix-profile-266-link/bin/firefox
     ;; See also module (bost manifest-set-operations)
-    ;; (@(nongnu packages mozilla) firefox)
+    (@(nongnu packages mozilla) firefox)
     (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
 
     ;; Factorio can be also installed by (in the fish-shell):
@@ -907,7 +907,7 @@ FIXME the inferior-packages are installed on every machine"
       ;;     commit d67dd230aae78b117164fbe90e85fed262071224
       ;;     Date:   Tue Mar 10 22:00:52 2026 +0100
       ;;     nongnu: firefox: Update to 148.0.2 [security fixes].
-      (list "firefox" "6a9650af356db741144560dbf71da9244499216b")
+      ;; (list "firefox" "6a9650af356db741144560dbf71da9244499216b")
       )))))
 
 (define (devel-guile-ide-arei-packages)
