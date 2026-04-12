@@ -151,18 +151,34 @@
                            #:groups '("adbusers"))
        (udev-rules-service 'steam-devices steam-devices-udev-rules)
 
-       ;; Configure the Guix service and ensure we use Nonguix substitutes
-       (simple-service 'add-nonguix-substitutes
-                       guix-service-type
-                       (guix-extension
-                        (substitute-urls
-                         (append (list "https://substitutes.nonguix.org")
-                                 %default-substitute-urls))
-                        (authorized-keys
-;;; The signing-key.pub should be obtained by
-;;;   wget https://substitutes.nonguix.org/signing-key.pub
-                         (append (list (local-file "./signing-key.pub"))
-                                 %default-authorized-guix-keys))))
+       (simple-service
+        'add-guix-science-substitutes
+        guix-service-type
+        (guix-extension
+         (substitute-urls
+          (append (list "https://guix.bordeaux.inria.fr/")
+                  %default-substitute-urls))
+         (authorized-keys
+;;; siging-key is from https://codeberg.org/guix-science/guix-science#readme
+;;;   wget https://substitutes.nonguix.org/signing-key.pub \
+;;;                         --output-document=signing-key.nonguix.pub
+          (append (list (local-file "./signing-key.guix-science.pub"))
+                  %default-authorized-guix-keys))))
+
+;;               ;; Configure the Guix service and ensure we use Nonguix substitutes
+;;               (simple-service
+;;                'add-nonguix-substitutes
+;;                guix-service-type
+;;                (guix-extension
+;;                 (substitute-urls
+;;                  (append (list "https://substitutes.nonguix.org")
+;;                          %default-substitute-urls))
+;;                 (authorized-keys
+;;        ;;; signing-key should be obtained by
+;;        ;;;   wget https://substitutes.nonguix.org/signing-key.pub \
+;;        ;;;                         --output-document=signing-key.nonguix.pub
+;;                  (append (list (local-file "./signing-key.nonguix.pub"))
+;;                          %default-authorized-guix-keys))))
 
        ;; (service pcscd-service-type) ;; usb card reader
 
