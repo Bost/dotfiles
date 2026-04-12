@@ -35,7 +35,7 @@
  hardware samba web image cpp libusb toys lsof networking ncurses node disk
  pulseaudio perl php pkg-config search databases pv python-xyz python
  virtualization racket readline mp3 texinfo freedesktop cdrom lua emacs-xyz
- elixir tree-sitter agda idris emacs text-editors patchutils java glib maven
+ elixir tree-sitter agda emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
  file-systems librewolf libcanberra security-token firmware ocr tex monitoring
  pciutils haskell-apps
@@ -202,6 +202,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 |#
 
 (def (basic-packages)
+     "basic-packages: docstring"
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)
@@ -280,6 +281,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     zip
     zstd ;; Zstandard real-time compression algorithm
     )))
+(testsymb-trace 'basic-packages)
 
 (define (agda-devel-packages)
   (list
@@ -287,7 +289,10 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    emacs-agda2-mode
    ;; agda-ial ;; broken build
    ;; cedille ;; depends on agda-ial
-   idris))
+
+   ;; idris is no longer available. Huh!?!
+   ;; idris
+   ))
 (testsymb 'agda-devel-packages)
 
 (define (fennel-devel-packages)
@@ -993,6 +998,7 @@ FIXME the inferior-packages are installed on every machine"
 (testsymb 'emacs-slide-creation-packages)
 
 (def-public (home-packages-to-install)
+  "home-packages-to-install: docstring"
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)
@@ -1076,7 +1082,8 @@ FIXME the inferior-packages are installed on every machine"
           lst))
     ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
     )
-   (basic-packages)))
+   (basic-packages)
+   ))
 (testsymb 'home-packages-to-install)
 
 (module-evaluated)
