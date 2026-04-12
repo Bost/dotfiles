@@ -284,4 +284,19 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
        "1EFB 0909 1F17 D28C CBF9  B13A 53D4 57B2 D636 EE82"))))))
 (testsymb 'channel-guix-android)
 
+(define*-public (channel-guix-science #:key (commit #f))
+  (let* [(channel-name 'guix-science)]
+    (when commit
+      (my=warn "Channel ~a pinned to ~a\n" channel-name commit))
+    (channel
+      (name channel-name)
+      (url "https://codeberg.org/guix-science/guix-science.git")
+      (commit commit)
+      (introduction
+       (make-channel-introduction
+        "b1fe5aaff3ab48e798a4cce02f0212bc91f423dc"
+        (openpgp-fingerprint
+         "CA4F 8CF4 37D7 478F DA05  5FD4 4213 7701 1A37 8446"))))))
+(testsymb 'channel-guix-science)
+
 (module-evaluated)
