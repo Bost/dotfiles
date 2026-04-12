@@ -60,6 +60,11 @@
  ;; #:guix-commit "a375202ad3443e4c3fb492160e32aa6abcc965bd"
 
  ;; 15 mar. 2026 12:05:35
- #:nonguix-commit "7d14e819fc7b2681240023b9e4c001fc3f5cba04"
- #:guix-commit "a375202ad3443e4c3fb492160e32aa6abcc965bd"
+ ;; #:nonguix-commit "7d14e819fc7b2681240023b9e4c001fc3f5cba04"
+ ;; #:guix-commit "a375202ad3443e4c3fb492160e32aa6abcc965bd"
+
+ ;; Génération 166	12 apr. 2026 01:53:12
+ #:guix-science-commit "937ad09462d85797a61001ab2c0d664320420b92"
+ #:nonguix-commit "c4541fdb0b472664dafe5d7b1ec2e51e4ef7b772"
+ #:guix-commit "f1cacebca6d7f9afc7fc81fb18ef6655b12d7f3c"
  )
