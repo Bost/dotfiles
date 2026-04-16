@@ -111,7 +111,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
      (name channel-name)
      (url
       #;"https://github.com/Tass0sm/guix-develop"
-      "https://github.com/Bost/haskell-guix"
+      "https://codeberg.org/Bost/haskell-guix"
       #;,(format #f "file://~a/dev/haskell-guix" home))
      (commit commit))))
 
@@ -166,7 +166,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
     (channel
      (name channel-name)
      (url
-      "https://github.com/Bost/guix-packages"
+      "https://codeberg.org/Bost/guix-packages"
       ;; (format #f "file://~a/dev/guix-packages" home)
       )
      (commit commit))))
@@ -304,5 +304,17 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
         (openpgp-fingerprint
          "CA4F 8CF4 37D7 478F DA05  5FD4 4213 7701 1A37 8446"))))))
 (testsymb 'channel-guix-science)
+
+(def*-public (channel-guix-guake #:key (commit #f))
+  "Provides a.o.:
+- (bost gnu packages guake) module
+- (bost gnu packages gtk) module"
+  (let* [(channel-name 'guix-guake)]
+    (when commit
+      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+    (channel
+     (name channel-name)
+     (url "https://codeberg.org/Bost/guix-guake")
+     (commit commit))))
 
 (module-evaluated)
