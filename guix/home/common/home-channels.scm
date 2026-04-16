@@ -32,6 +32,7 @@
                                   hask-clj-commit
                                   games-commit
                                   bost-commit
+                                  guix-guake-commit
                                   )
   (list
    ;; dwl window manager for Wayland with dynamic configuration in Guile.
@@ -64,7 +65,11 @@
    ;; (channel-rde)
 
    ;; pulls-in: guix nonguix guix-rust-past-crates
-   (channel-bost #:commit bost-commit)))
+   (channel-bost #:commit bost-commit)
+
+   ;; guake
+   (channel-guix-guake #:commit guix-guake-commit)
+   ))
 
 (def* (home-channels #:key
                      guix-science-commit
@@ -73,6 +78,7 @@
                      hask-clj-commit
                      games-commit
                      bost-commit
+                     guix-guake-commit
                      guix-commit
                      nonguix-commit
                      guix-past-commit
@@ -91,6 +97,7 @@
             #:hask-clj-commit      hask-clj-commit
             #:games-commit         games-commit
             #:bost-commit          bost-commit
+            #:guix-guake-commit    guix-guake-commit
             ) lst)
           lst)))
    (list (channel-guix #:commit guix-commit))))
@@ -254,7 +261,18 @@
  ;; #:nonguix-commit       "c4541fdb0b472664dafe5d7b1ec2e51e4ef7b772"
 
  ;; 12 apr. 2026 14:14:43
- #:bost-commit          "84999be7778fc2f08e09b056a3aa09afbd9d0c2c"
+ ;; #:bost-commit          "84999be7778fc2f08e09b056a3aa09afbd9d0c2c"
+ ;; #:games-commit         "348775cb228def51bba4f4502e68a078f492b72f"
+ ;; #:guix-android-commit  "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:guix-commit          "a375202ad3443e4c3fb492160e32aa6abcc965bd"
+ ;; #:guix-past-commit     "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
+ ;; #:guix-science-commit  "937ad09462d85797a61001ab2c0d664320420b92"
+ ;; #:hask-clj-commit      "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:nonguix-commit       "816b5c6f45ed56cd81e2a6338ed5b710e4e66e98"
+
+ ;; Génération 448	16 avril 2026 22:53:10
+ #:bost-commit          "ecf80aec358b183e079801cd24d6780c5e814f29"
+ #:guix-guake-commit    "77c000981152b7295fcf7654aa70a901817005c3"
  #:games-commit         "348775cb228def51bba4f4502e68a078f492b72f"
  #:guix-android-commit  "e5f52bd57275e404db74bf03b541bb62f7d73d58"
  #:guix-commit          "a375202ad3443e4c3fb492160e32aa6abcc965bd"
