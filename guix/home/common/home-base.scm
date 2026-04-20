@@ -150,70 +150,51 @@
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
 (def-public (non-env-var-services-edge-ecke)
-  ;; (format #t "~a Starting…\n" f)
-  ((comp
-    ;; (lambda (v) (format #t "~a done\n" f) v)
-    ;; (lambda (v) (format #t "~a test-type: ~a; length: ~a\n"
-    ;;                     f (test-type v) (length v))
-    ;;         v)
+  (list
+   ((@(bost home services guake) home-guake-service))
+   ((@(bost home services flatpak) telegram-from-flatpak-service))
+   (development-dirs-service)
+   (home-config-service)
+   (cli-utils-service)
+   ;; mcron-service
 
 ;;; fails with:
 ;;;   In procedure open-file: No such file or directory:
 ;;;   "eval \"$(direnv hook bash)\""
-    ;; (simple-service
-    ;;  'direnv-bash-hook
-    ;;  home-bash-service-type
-    ;;  (home-bash-extension
-    ;;   (bashrc (list "eval \"$(direnv hook bash)\""))))
+   ;; (simple-service
+   ;;  'direnv-bash-hook
+   ;;  home-bash-service-type
+   ;;  (home-bash-extension
+   ;;   (bashrc (list "eval \"$(direnv hook bash)\""))))
 
-    ;; emacs-with-native-comp - ? native compilation ?
-    ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
 
-    ;; https://github.com/search?q=home-fish-service-type&type=code
-    ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
+   ;; emacs-with-native-comp - ? native compilation ?
+   ;; https://github.com/flatwhatson/guix-channel/blob/master/flat/packages/emacs.scm
 
-    ;; (lambda (v) (format #t "~a 8 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
-    (partial append (list ((@(bost home services guake) home-guake-service))))
-    ;; (lambda (v) (format #t "~a 7 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
+   ;; https://github.com/search?q=home-fish-service-type&type=code
+   ;; see https://github.com/babariviere/brycus/blob/e22cd0c0b75c5b4c95369fc95cce95ed299b63ff/guix/brycus/home-service.scm
 
-    ;; See also /gnu/store/wcmicv1yy1jqgc816wizk48ij15asn27-telegram-desktop-5.12.4
-    ;; flatpak doesn't terminate for some reasons. Ugh!
-    (partial append (list ((@(bost home services flatpak) telegram-from-flatpak-service))))
-
-    ;; (lambda (v) (format #t "~a 6\n" f) v)
-    (partial append (list (development-dirs-service)))
-    ;; (lambda (v) (format #t "~a 3 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
-    (partial append (list (home-config-service)))
-    ;; (lambda (v) (format #t "~a 2 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
-    (partial append (list (cli-utils-service)))
-    ;; (lambda (v) (format #t "~a 1 type: ~a; length: ~a\n" f (test-type v) (length v)) v)
-    ;; (partial append mcron-service)
 
 ;;; https://github.com/babariviere/dotfiles/blob/1deae9e15250c86cc235bb7b6e69ea770af7b13a/baba/home/gaia.scm
 ;;; https://github.com/babariviere/dotfiles/blob/guix/baba/home/gaia.scm
 ;;; [WIP] home: Add home-git-service-type https://issues.guix.gnu.org/54293 is
 ;;; not pulled yed
-
-    ;; (partial
-    ;;  append
-    ;;  (service home-git-service-type
-    ;;           (home-git-confqiguration
-    ;;            (config
-    ;;             `((user
-    ;;                ((name . ,user-full-name)
-    ;;                 (email . ,user-mail-address)
-    ;;                 ;; (signingKey . "...")
-    ;;                 ))
-    ;;               (github
-    ;;                ((user . "Bost")))
-    ;;               (remote
-    ;;                ((pushDefault . "origin")))
-    ;;               ;; (commit ((gpgSign . #t)))
-    ;;               ;; (tag ((gpgSign . #t)))
-    ;;               )))))
-    ;; (lambda (v) (format #t "~a 0\n" f) v)
-    )
-   (list)))
+   ;; (service home-git-service-type
+   ;;          (home-git-confqiguration
+   ;;           (config
+   ;;            `((user
+   ;;               ((name . ,user-full-name)
+   ;;                (email . ,user-mail-address)
+   ;;                ;; (signingKey . "...")
+   ;;                ))
+   ;;              (github
+   ;;               ((user . "Bost")))
+   ;;              (remote
+   ;;               ((pushDefault . "origin")))
+   ;;              ;; (commit ((gpgSign . #t)))
+   ;;              ;; (tag ((gpgSign . #t)))
+   ;;              ))))
+   ))
 
 (define (gcc-filepath)
   ;; (user-home "/.guix-home/profile/bin/gcc")
@@ -436,7 +417,6 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
    (non-env-var-services-base)
    (list (environment-variables-service 'env-vars-base
                                         (environment-vars)))))
-
 (def-public (home-env-services-edge-ecke)
   (append
    (non-env-var-services-edge-ecke)
