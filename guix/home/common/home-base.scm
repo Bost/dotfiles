@@ -8,7 +8,9 @@
   ;; #:use-module (bost utils)
   #:use-module (fs-utils)
 
-  #:use-module (config packages home-all) ;; home-packages-to-install
+  ;; home-packages-to-install inferior-guake-package
+  #:use-module (config packages home-all)
+
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
@@ -150,8 +152,12 @@
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
 (def-public (non-env-var-services-edge-ecke)
+  "non-env-var-services-edge-ecke: docstring"
   (list
-   ((@(bost home services guake) home-guake-service))
+   ;; ((@(bost home services guake) home-guake-service))
+   ;; (service (@(bost home services guake) home-guake-service-type)
+   ;;          ((@(bost home services guake) home-guake-configuration)
+   ;;           (guake (inferior-guake-package))))
    ((@(bost home services flatpak) telegram-from-flatpak-service))
    (development-dirs-service)
    (home-config-service)
