@@ -151,6 +151,25 @@
                            #:groups '("adbusers"))
        (udev-rules-service 'steam-devices steam-devices-udev-rules)
 
+       ;; Set up local caching substitution server
+       (service guix-publish-service-type
+                (guix-publish-configuration
+                  ;; (port 8081)
+                  ;; "0.0.0.0" means listen on all the network interfaces
+                  (host "0.0.0.0")))
+
+       (simple-service
+        'add-ecke-substitutes
+        guix-service-type
+        (guix-extension
+         (substitute-urls
+          ;; Port 80 is the default defined by guix-publish-configuration
+          (append (list "http://edge:80")
+                  %default-substitute-urls))
+         (authorized-keys
+          (append (list (local-file "./signing-key.edge.pub"))
+                  %default-authorized-guix-keys))))
+
        (simple-service
         'add-guix-science-substitutes
         guix-service-type
