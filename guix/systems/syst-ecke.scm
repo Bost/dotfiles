@@ -151,34 +151,18 @@
                            #:groups '("adbusers"))
        (udev-rules-service 'steam-devices steam-devices-udev-rules)
 
-       (simple-service
-        'add-guix-science-substitutes
-        guix-service-type
-        (guix-extension
-         (substitute-urls
-          (append (list "https://guix.bordeaux.inria.fr/")
-                  %default-substitute-urls))
-         (authorized-keys
-;;; siging-key is from https://codeberg.org/guix-science/guix-science#readme
-;;;   wget https://substitutes.nonguix.org/signing-key.pub \
-;;;                         --output-document=signing-key.nonguix.pub
-          (append (list (local-file "./signing-key.guix-science.pub"))
-                  %default-authorized-guix-keys))))
-
-;;               ;; Configure the Guix service and ensure we use Nonguix substitutes
-;;               (simple-service
-;;                'add-nonguix-substitutes
-;;                guix-service-type
-;;                (guix-extension
-;;                 (substitute-urls
-;;                  (append (list "https://substitutes.nonguix.org")
-;;                          %default-substitute-urls))
-;;                 (authorized-keys
-;;        ;;; signing-key should be obtained by
-;;        ;;;   wget https://substitutes.nonguix.org/signing-key.pub \
-;;        ;;;                         --output-document=signing-key.nonguix.pub
-;;                  (append (list (local-file "./signing-key.nonguix.pub"))
-;;                          %default-authorized-guix-keys))))
+       ;; Set up local caching substitution server
+       (service
+        guix-publish-service-type
+        (guix-publish-configuration
+         ;; "0.0.0.0" means listen on all the network interfaces
+         (host "0.0.0.0")
+         ;; Advertise the service on the local network via the DNS-SD protocol,
+         ;; using Avahi.
+         ;; This allows neighboring Guix devices with discovery on (see
+         ;; guix-configuration above) to discover this guix publish instance and
+         ;; to automatically download substitutes from it.
+         (advertise? #t)))
 
        ;; (service pcscd-service-type) ;; usb card reader
 
@@ -256,6 +240,41 @@
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
+
+        (guix-service-type
+         config =>
+         (guix-configuration
+          (inherit config)
+          ;; Discover substitute servers on the local network using mDNS and
+          ;; DNS-SD.
+          (discover? #t)
+
+          ;; Machines running `guix publish' service with (advertise? #t) don't
+          ;; need to be in listed among substitute-urls ...
+          (substitute-urls
+           (append
+            (list
+             ;; Provides binary substitutes for the guix-science channel
+             ;; "https://guix.bordeaux.inria.fr/" ; no route to host
+
+             "https://substitutes.nonguix.org"
+             )
+            %default-substitute-urls))
+          ;; ... however their signing keys must be among authorized-keys.
+          (authorized-keys
+           (append
+            (list
+             (local-file "./signing-key.edge.pub") ; needed!
+
+             ;; siging-key from https://codeberg.org/guix-science/guix-science#readme
+             (local-file "./signing-key.guix-science.pub")
+
+             ;; wget https://substitutes.nonguix.org/signing-key.pub -O \
+             ;;      signing-key.nonguix.pub
+             (local-file "./signing-key.nonguix.pub")
+             )
+            %default-authorized-guix-keys))))
+
         ;; (sane-service-type _ => sane-backends)
 
         ;; (delete login-service-type)

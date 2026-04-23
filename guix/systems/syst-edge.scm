@@ -199,38 +199,48 @@
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers"))
 
-       (simple-service
-        'add-guix-science-substitutes
-        guix-service-type
-        (guix-extension
-         (substitute-urls
-          (append (list "https://guix.bordeaux.inria.fr/")
-                  %default-substitute-urls))
-         (authorized-keys
-;;; siging-key is from https://codeberg.org/guix-science/guix-science#readme
-;;;   wget https://substitutes.nonguix.org/signing-key.pub \
-;;;                         --output-document=signing-key.nonguix.pub
-          (append (list (local-file "./signing-key.guix-science.pub"))
-                  %default-authorized-guix-keys))))
-
-       ;; Configure the Guix service and ensure we use Nonguix substitutes
-       (simple-service
-        'add-nonguix-substitutes
-        guix-service-type
-        (guix-extension
-         (substitute-urls
-          (append (list "https://substitutes.nonguix.org")
-                  %default-substitute-urls))
-         (authorized-keys
-;;; signing-key should be obtained by
-;;;   wget https://substitutes.nonguix.org/signing-key.pub \
-;;;                         --output-document=signing-key.nonguix.pub
-          (append (list (local-file "./signing-key.nonguix.pub"))
-                  %default-authorized-guix-keys))))
+       ;; On trusted LANs, start a local substitute server manually with:
+       ;;   sudo guix publish --advertise --user=$USER
+       ;; The desktop can discover it automatically via (discover? #t).
        )
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
+
+        (guix-service-type
+         config =>
+         (guix-configuration
+          (inherit config)
+          ;; Discover substitute servers on the local network using mDNS and
+          ;; DNS-SD.
+          (discover? #t)
+
+          ;; Machines running `guix publish' service with (advertise? #t) don't
+          ;; need to be in listed among substitute-urls ...
+          (substitute-urls
+           (append
+            (list
+             ;; Provides binary substitutes for the guix-science channel
+             ;; "https://guix.bordeaux.inria.fr/" ; no route to host
+
+             "https://substitutes.nonguix.org"
+             )
+            %default-substitute-urls))
+          ;; ... however their signing keys must be among authorized-keys.
+          (authorized-keys
+           (append
+            (list
+             (local-file "./signing-key.ecke.pub") ; needed!
+
+             ;; siging-key from https://codeberg.org/guix-science/guix-science#readme
+             (local-file "./signing-key.guix-science.pub")
+
+             ;; wget https://substitutes.nonguix.org/signing-key.pub -O \
+             ;;      signing-key.nonguix.pub
+             (local-file "./signing-key.nonguix.pub")
+             )
+            %default-authorized-guix-keys))))
+
         ;; GDM - GNOME Desktop Manager: graphical user login, display servers
         (gdm-service-type config => (gdm-configuration
                                      (inherit config)
