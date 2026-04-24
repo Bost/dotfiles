@@ -216,14 +216,18 @@
           ;; DNS-SD.
           (discover? #t)
 
+          ;; Machines running `guix publish' service with (advertise? #t) don't
+          ;; need to be in listed among substitute-urls ...
           (substitute-urls
            (append
             (list
-             ;; "http://ecke:<port>" ; not needed
-             "https://guix.bordeaux.inria.fr/"
+             ;; Provides binary substitutes for the guix-science channel
+             ;; "https://guix.bordeaux.inria.fr/" ; no route to host
+
              "https://substitutes.nonguix.org"
              )
             %default-substitute-urls))
+          ;; ... however their signing keys must be among authorized-keys.
           (authorized-keys
            (append
             (list
