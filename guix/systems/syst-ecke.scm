@@ -252,7 +252,7 @@
           (substitute-urls
            (append
             (list
-             ;; "http://edge:80" ; not needed
+             ;; "http://edge:<port>" ; not needed
              "https://guix.bordeaux.inria.fr/"
              "https://substitutes.nonguix.org"
              )

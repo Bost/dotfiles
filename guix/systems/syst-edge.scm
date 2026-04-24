@@ -200,18 +200,9 @@
        (udev-rules-service 'android android-udev-rules
                            #:groups '("adbusers"))
 
-       ;; Set up local caching substitution server
-       (service
-        guix-publish-service-type
-        (guix-publish-configuration
-         ;; "0.0.0.0" means listen on all the network interfaces
-         (host "0.0.0.0")
-         ;; Advertise the service on the local network via the DNS-SD protocol,
-         ;; using Avahi.
-         ;; This allows neighboring Guix devices with discovery on (see
-         ;; guix-configuration above) to discover this guix publish instance and
-         ;; to automatically download substitutes from it.
-         (advertise? #t)))
+       ;; On trusted LANs, start a local substitute server manually with:
+       ;;   sudo guix publish --advertise --user=$USER
+       ;; The desktop can discover it automatically via (discover? #t).
        )
 
       ;; %desktop-services is the default list of services we are appending to.
@@ -228,7 +219,7 @@
           (substitute-urls
            (append
             (list
-             ;; "http://ecke:80" ; not needed
+             ;; "http://ecke:<port>" ; not needed
              "https://guix.bordeaux.inria.fr/"
              "https://substitutes.nonguix.org"
              )
