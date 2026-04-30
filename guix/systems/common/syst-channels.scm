@@ -35,14 +35,6 @@
 (module-evaluated)
 
 (syst-channels
- ;; 05 feb. 2026 14:35:03
- ;; #:nonguix-commit "6c0ea215e0bd089bf3b2097e5c59dd726fbbe304"
- ;; #:guix-commit "2c710762f5c80b1a151b57c6f369dfa1812d1f97"
-
- ;; 07 feb. 2026 12:08:23
- ;; #:nonguix-commit "6c0ea215e0bd089bf3b2097e5c59dd726fbbe304"
- ;; #:guix-commit "ec5fb6678f8268437b1940f7ed2f2b72d62ab4e0"
-
  ;; 15 feb. 2026 13:47:37
  ;; #:nonguix-commit "bbbc850e8a94833c9958625eb4c78a206fbacc1d"
  ;; #:guix-commit "7113a63ff4bdcf24fbc4bb92367ea6354dd33290"
@@ -69,9 +61,14 @@
  ;; #:guix-commit "f1cacebca6d7f9afc7fc81fb18ef6655b12d7f3c"
 
  ;; 16 avril 2026 16:31:45
- #:guix-science-commit "f81cc0ac8a7c75e732ee7a1bf2cf27099f07f284"
- #:nonguix-commit "5d8b56d6a07cdc1aa3022737c32ccb95f08aef08"
- #:guix-commit "41ab1cb9e44aca2f77534d4d2fa4386b039f74f9"
+ ;; #:guix-science-commit "f81cc0ac8a7c75e732ee7a1bf2cf27099f07f284"
+ ;; #:nonguix-commit "5d8b56d6a07cdc1aa3022737c32ccb95f08aef08"
+ ;; #:guix-commit "41ab1cb9e44aca2f77534d4d2fa4386b039f74f9"
+
+ ;; 30 avril 2026 14:08:50
+ #:guix-science-commit "8ce03731a8eb84afec21953d5706aa72199f6649"
+ #:nonguix-commit      "a3f4e7bff779da4593a2922516064a8edaafa3e6"
+ #:guix-commit         "2dde6fc80f96cd8b1edef8f61637cc2adeb8919f"
  )
 
 ;; It makes no sense to add generation number to the comment. Generation numbers
