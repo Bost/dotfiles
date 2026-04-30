@@ -63,13 +63,16 @@
  ;; #:nonguix-commit "7d14e819fc7b2681240023b9e4c001fc3f5cba04"
  ;; #:guix-commit "a375202ad3443e4c3fb492160e32aa6abcc965bd"
 
- ;; Génération 166	12 apr. 2026 01:53:12
+ ;; 12 apr. 2026 01:53:12
  ;; #:guix-science-commit "937ad09462d85797a61001ab2c0d664320420b92"
  ;; #:nonguix-commit "c4541fdb0b472664dafe5d7b1ec2e51e4ef7b772"
  ;; #:guix-commit "f1cacebca6d7f9afc7fc81fb18ef6655b12d7f3c"
 
- ;; Génération 168	16 avril 2026 16:31:45
+ ;; 16 avril 2026 16:31:45
  #:guix-science-commit "f81cc0ac8a7c75e732ee7a1bf2cf27099f07f284"
  #:nonguix-commit "5d8b56d6a07cdc1aa3022737c32ccb95f08aef08"
  #:guix-commit "41ab1cb9e44aca2f77534d4d2fa4386b039f74f9"
  )
+
+;; It makes no sense to add generation number to the comment. Generation numbers
+;; are different on each computer
