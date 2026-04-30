@@ -135,7 +135,7 @@
           "\n" "  profile=$i/$(basename \"$i\")"
           "\n" "  if [ -f \"$profile\"/etc/profile ]; then"
           "\n" "    GUIX_PROFILE=\"$profile\""
-          "\n" "    set -x"
+          "\n" "    printf 'Sourcing Guix profile: %s ...\n' \"$profile\" >&2"
           "\n" "    source \"$GUIX_PROFILE\"/etc/profile"
           "\n" "    { retval=\"$?\"; set +x; } 2>/dev/null"
           "\n" "  fi"
