@@ -13,8 +13,8 @@
      (name 'guix)
      (url "https://codeberg.org/guix/guix.git")
      (commit
-      ;; "396d955f0631edad3a972345cff2797cce0f4a63" ; bad
-      "9da01b88824c24b2bc453159ff18810fa978d50b" ; good
+      "396d955f0631edad3a972345cff2797cce0f4a63" ; bad
+      ;; "9da01b88824c24b2bc453159ff18810fa978d50b" ; good
       ;; "3765eb786c0ef2ac85ab36f0da37e64569a86be6" ; good
       ;; "5ea7ac82a4bbfe98f4c74f80005fba4e2b3f3b95" ; good
       ;; "112303be80c2d20a963aa2311d5ab2af7135f585" ; build failed for: python-brotlicffi-1.0.9.2.drv
