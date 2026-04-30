@@ -622,7 +622,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    parted
    pavucontrol ; PulseAudio volume control
    perl
-   php
+   ;; php      ; php-8.5.5 doesn't compile; using inferior version
 
    ;; GnuPG's interfaces to passphrase input
    pinentry
@@ -908,6 +908,10 @@ FIXME the inferior-packages are installed on every machine"
                            (lambda (p) (format #t "~a 0. ~a\n" f p) p))
       #:inferior-packages
       (list
+       ;; php-8.5.5 doesn't compile; use php-8.5.3 which came in package
+       ;; generation 1735 from 01 avril 2026 14:45:51
+       (list "php" "a375202ad3443e4c3fb492160e32aa6abcc965bd")
+
        ;; (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
        ;; (list "virglrenderer" "fec2fb89bb5dacc14ec619cd569278af34867e3d")
 
