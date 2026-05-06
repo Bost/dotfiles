@@ -77,11 +77,13 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     (@(nongnu packages clojure) clojure-lsp)
 
     (@(nongnu packages clojure) leiningen)
-    ;; guix weather --system=x86_64-linux --substitute-urls='https://substitutes.nonguix.org' firefox
+    ;;   guix weather --system=x86_64-linux \
+    ;;   --substitute-urls="https://bordeaux.guix.gnu.org https://substitutes.nonguix.org" \
+    ;;   firefox
     ;; /var/guix/profiles/per-user/bost/guix-profile-266-link/bin/firefox
     ;; See also module (bost manifest-set-operations)
-    (@(nongnu packages mozilla) firefox)
-    (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
+    ;; (@(nongnu packages mozilla) firefox)
+    ;; (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
 
     ;; Factorio can be also installed by (in the fish-shell):
     ;; guix package --load-path=$dev/games --install=factorio
@@ -504,7 +506,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; cdrtools
 
    clang ; C language family frontend for LLVM
-   ;; clojure-tools ;; 1.11.1.1413
+   clojure-tools
    clusterssh
    cmake
    curl
@@ -932,6 +934,9 @@ FIXME the inferior-packages are installed on every machine"
        ;;     Date:   Tue Mar 10 22:00:52 2026 +0100
        ;;     nongnu: firefox: Update to 148.0.2 [security fixes].
        ;; (list "firefox" "6a9650af356db741144560dbf71da9244499216b")
+
+       ;; Use 149.0.2 until a substitute for latest 150.0.1 is available
+       (list "firefox" "c68b963b8c826d14e0d93ad928cc87e5dd07ae1b")
        ))))))
 
 (define (devel-guile-ide-arei-packages)
