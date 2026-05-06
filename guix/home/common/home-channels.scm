@@ -105,26 +105,6 @@
 (module-evaluated)
 
 (home-channels
- ;; 12 apr. 2026 13:30:56
- ;; #:bost-commit          "29e431dd2d92175ac54a4ee4e93bacd25a9f5a63"
- ;; #:games-commit         "348775cb228def51bba4f4502e68a078f492b72f"
- ;; #:guix-android-commit  "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-commit          "f1cacebca6d7f9afc7fc81fb18ef6655b12d7f3c"
- ;; #:guix-past-commit     "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:guix-science-commit  "937ad09462d85797a61001ab2c0d664320420b92"
- ;; #:hask-clj-commit      "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:nonguix-commit       "c4541fdb0b472664dafe5d7b1ec2e51e4ef7b772"
-
- ;; 12 apr. 2026 14:14:43
- ;; #:bost-commit          "84999be7778fc2f08e09b056a3aa09afbd9d0c2c"
- ;; #:games-commit         "348775cb228def51bba4f4502e68a078f492b72f"
- ;; #:guix-android-commit  "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-commit          "a375202ad3443e4c3fb492160e32aa6abcc965bd"
- ;; #:guix-past-commit     "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:guix-science-commit  "937ad09462d85797a61001ab2c0d664320420b92"
- ;; #:hask-clj-commit      "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:nonguix-commit       "816b5c6f45ed56cd81e2a6338ed5b710e4e66e98"
-
  ;; 16 avril 2026 22:53:10
  ;; #:bost-commit          "ecf80aec358b183e079801cd24d6780c5e814f29"
  ;; #:guix-guake-commit    "77c000981152b7295fcf7654aa70a901817005c3"
@@ -170,15 +150,26 @@
  ;; #:guix-commit         "2dde6fc80f96cd8b1edef8f61637cc2adeb8919f"
 
  ;; 01 mai 2026 02:00:33
- #:nonguix-commit      "a3f4e7bff779da4593a2922516064a8edaafa3e6"
- #:guix-science-commit "8ce03731a8eb84afec21953d5706aa72199f6649"
+ ;; #:nonguix-commit      "a3f4e7bff779da4593a2922516064a8edaafa3e6"
+ ;; #:guix-science-commit "8ce03731a8eb84afec21953d5706aa72199f6649"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
+ ;; #:bost-commit         "ecf80aec358b183e079801cd24d6780c5e814f29"
+ ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
+ ;; #:guix-commit         "d3cc0386663ebc122edc051a4bad349097016190"
+
+ ;; 06 mai 2026 11:16:53
+ #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
+ #:guix-science-commit "4f29b99ce090ed2992d5bc6f3af42180201f5058"
  #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
  #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
  #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
  #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
  #:bost-commit         "ecf80aec358b183e079801cd24d6780c5e814f29"
  #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- #:guix-commit         "d3cc0386663ebc122edc051a4bad349097016190"
+ #:guix-commit         "81934cf7e9263e47f9fd8defa717365592a3473d"
  )
 
 ;; It makes no sense to add generation number to the comment. Generation numbers
