@@ -1508,10 +1508,6 @@ Requires:
                    connection))
          (ensure-list one-or-more-packages))))
 
-(define-public (interleave . lists)
-  "Take elements alternately from each list, stopping at the shortest."
-  (apply append
-         (apply map list lists)))
 
 #|
 (define-public (interpose separator lst)
@@ -1526,8 +1522,13 @@ Requires:
 |#
 ;; Alternative implementation using fold-right for better performance
 (define-public (interpose separator lst)
-  "Insert separator between each element of lst using fold
-(interpose '+ (list 1 2 3)) ;=> (1 + 2 + 3)"
+  "Insert separator between each element of lst using fold.
+Examples:
+(interpose '+ (list 1 2 3))        ;=> '(1 + 2 + 3)
+(interpose '(1 2 3) '(a b c))      ;=> '(a (1 2 3) b (1 2 3) c)
+(interpose '| '(a b c d))          ;=> '(a | b | c | d)
+(interpose 0 '(1 2 3))             ;=> '(1 0 2 0 3)
+(interpose \",\" '(\"hello\" \"world\")) ;=> '(\"hello\" \",\" \"world\")"
   (if (null? lst)
       '()
       (fold-right (lambda (x acc)
@@ -1537,17 +1538,18 @@ Requires:
                   '()
                   lst)))
 
-;; Usage examples:
-;; (interpose '| '(a b c d))     => (a | b | c | d)
-;; (interpose 0 '(1 2 3))        => (1 0 2 0 3)
-;; (interpose "," '("hello" "world")) => ("hello" "," "world")
-
 (define-public (combine . lists)
-  "(combine (list 1 2 3) (list 4 5 6)) ;=> ((1 4) (2 5) (3 6))"
+  "Combine elements alternately from each list, stopping at the shortest.
+(combine '(1 2 3 4) '(a b c)) ; => ((1 a) (2 b) (3 c)) ;=> ((1 4) (2 5) (3 6))"
   (let ((len (length (car lists))))
-    (unless (every (λ (l) (= (length l) len)) lists)
-      (error "combine: lists must all be the same length" lists))
+    ;; (unless (every (lambda (l) (= (length l) len)) lists)
+    ;;   (error "combine: lists must all be the same length" lists))
     (apply map list lists)))
+
+(define-public (interleave . lists)
+  "Flatten combined lists.
+(interleave '(1 2 3) '(a b c)) ; => '(1 a 2 b 3 c)"
+  (flatten (apply combine lists)))
 
 (define-public (keyword->string keyword)
   "(use-modules (srfi srfi-88))
@@ -1635,11 +1637,8 @@ that many from the end."
         (else (error "butlast-smart: expected 1 or 2 arguments"))))
 
 (define-public (cartesian xs ys)
-  "(cartesian '(a b) '(1 2)) => ((a 1) (a 2) (b 1) (b 2))"
-  (apply append
-         (map (lambda (x)
-                (map (lambda (y) (list x y)) ys))
-              xs)))
+  "(cartesian '(a b) '(1 2)) ;=> ((a 1) (a 2) (b 1) (b 2))"
+  (append-map (lambda (x) (map (lambda (y) (list x y)) ys)) xs))
 
 (define-public (member? x lst) (boolean (member x lst)))
 
