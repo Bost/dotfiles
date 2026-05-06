@@ -624,7 +624,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    parted
    pavucontrol ; PulseAudio volume control
    perl
-   ;; php      ; php-8.5.5 doesn't compile; using inferior version
+   php
 
    ;; GnuPG's interfaces to passphrase input
    pinentry
@@ -863,81 +863,60 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ))
 (testsymb 'xfce-packages)
 
-(define* (inferior-packages-in-channel #:key channels-fun inferior-packages)
-  (map (lambda (pkg-commit)
-;;; pattern matching doesn't work for: list cons. It works for (values ... ...)
-;;; somehow ???
-;;; (let* [(a b (list 1 2))] (+ a b))  ; => Syntax error
-;;; (let* [(a b (cons 1 2))] (+ a b))  ; => Syntax error
-         (let [(package (car pkg-commit))
-               (commit (cadr pkg-commit))]
-           ((comp
-             first
-             (cut lookup-inferior-packages <> package)
-             inferior-for-channels
-             channels-fun)
-            commit)))
-       inferior-packages))
-
-(define-public (inferior-guake-package)
-  (car
-   (inferior-packages-in-channel
-    #:channels-fun (comp (partial cons* (channel-guix-guake))
-                         list
-                         (partial channel-guix #:commit))
-    #:inferior-packages
-    (list
-     ;; last commit 396d955f0631edad3a972345cff2797cce0f4a63 commit before 'gnu: Remove pango-1.90.'
-     ;; next commit 69ed70167ec9d337e08199d4a130ba4797662de8 : 'gnu: Remove pango-1.90.'
-     (list "guake" "396d955f0631edad3a972345cff2797cce0f4a63")
-     ))))
-
+;; cat /var/guix/profiles/per-user/$USER/guix-profile-<profile-number>-link/manifest
 (def (inferior-packages)
-  "The original, i.e. non-inferior packages must not be present in the
+  "The original, i.e. non-inferior packages must NOT be present in the
 home-profile. Comment them out.
 
 FIXME the inferior-packages are installed on every machine"
-  (cons*
-   ;; (inferior-guake-package)
-   ((comp
-     (partial remove unspecified?)
-     flatten
-     (partial map
-              (partial apply inferior-packages-in-channel)))
-    (list
-     (list
-      #:channels-fun (comp list (partial channel-guix #:commit)
-                           (lambda (p) (format #t "~a 0. ~a\n" f p) p))
-      #:inferior-packages
-      (list
-       ;; php-8.5.5 doesn't compile; use php-8.5.3 which came in package
-       ;; generation 1735 from 01 avril 2026 14:45:51
-       (list "php" "a375202ad3443e4c3fb492160e32aa6abcc965bd")
+  ((comp
+    (partial map (partial apply (lambda* (#:key package channels)
+                                  (first
+                                   (lookup-inferior-packages
+                                    (inferior-for-channels channels)
+                                    package))))))
+   (list
+    ;; (list #:package "php" #:channels
+    ;;       (list
+    ;;        ;; php-8.5.5 doesn't compile; use php-8.5.3 which came in package
+    ;;        ;; generation 1735 from 01 avril 2026 14:45:51
+    ;;        (channel-guix #:commit "a375202ad3443e4c3fb492160e32aa6abcc965bd")))
 
-       ;; (list "icedove" "71f0676a295841e2cc662eec0d3e9b7e69726035")
-       ;; (list "virglrenderer" "fec2fb89bb5dacc14ec619cd569278af34867e3d")
+    ;; (list #:package "icedove" #:channels
+    ;;       (channel-guix #:commit "71f0676a295841e2cc662eec0d3e9b7e69726035"))
+    ;; (list #:package "virglrenderer" #:channels
+    ;;       (channel-guix #:commit "fec2fb89bb5dacc14ec619cd569278af34867e3d"))
 
-       ;; last commit fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df containing ripgrep@13.0.0;
-       ;; next commit 33313d57b97d3f2567037313133c1b9d565ba042; gnu: ripgrep: Update to 14.0.3.
-       ;; (list "ripgrep" "fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df")
-       ))
-     (list
-      #:channels-fun (comp (partial cons* (channel-guix))
-                           list
-                           (partial channel-nonguix #:commit))
-      #:inferior-packages
-      (list
-       ;; (list "signal-desktop" "65d23d2579b54bb5d52609bf6c34d2faafc8a6cf")
+    ;; (list #:package "ripgrep" #:channels
+    ;;       ;; last commit fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df containing ripgrep@13.0.0;
+    ;;       ;; next commit 33313d57b97d3f2567037313133c1b9d565ba042; gnu: ripgrep: Update to 14.0.3.
+    ;;       (channel-guix #:commit "fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df"))
 
-       ;; last commit 6a9650af356db741144560dbf71da9244499216b before:
-       ;;     commit d67dd230aae78b117164fbe90e85fed262071224
-       ;;     Date:   Tue Mar 10 22:00:52 2026 +0100
-       ;;     nongnu: firefox: Update to 148.0.2 [security fixes].
-       ;; (list "firefox" "6a9650af356db741144560dbf71da9244499216b")
+    ;; (list #:package "signal-desktop" #:channels
+    ;;       (list
+    ;;        (channel-guix    #:commit "...")
+    ;;        (channel-nonguix #:commit "65d23d2579b54bb5d52609bf6c34d2faafc8a6cf")))
 
-       ;; Use 149.0.2 until a substitute for latest 150.0.1 is available
-       (list "firefox" "c68b963b8c826d14e0d93ad928cc87e5dd07ae1b")
-       ))))))
+    ;; guake comes from a different profile ~/.guix-extra-profiles/guake/guake
+    ;; (list #:package "guake"
+    ;;       #:channels
+    ;;       (list
+    ;;        (channel-guix-guake)
+    ;;        ;; last commit 396d955f0631edad3a972345cff2797cce0f4a63 commit before 'gnu: Remove pango-1.90.'
+    ;;        ;; next commit 69ed70167ec9d337e08199d4a130ba4797662de8 : 'gnu: Remove pango-1.90.'
+    ;;        (channel-guix #:commit "396d955f0631edad3a972345cff2797cce0f4a63")))
+
+    ;; last commit 6a9650af356db741144560dbf71da9244499216b before:
+    ;;     commit d67dd230aae78b117164fbe90e85fed262071224
+    ;;     Date:   Tue Mar 10 22:00:52 2026 +0100
+    ;;     nongnu: firefox: Update to 148.0.2 [security fixes].
+
+    ;; Use 149.0.2 until a substitute for latest 150.0.1 is available
+    (list #:package "firefox" #:channels
+          (list
+           (channel-guix    #:commit "2dde6fc80f96cd8b1edef8f61637cc2adeb8919f")
+           (channel-nonguix #:commit "a3f4e7bff779da4593a2922516064a8edaafa3e6")))
+    )))
 
 (define (devel-guile-ide-arei-packages)
   (list
