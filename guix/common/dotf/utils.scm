@@ -84,7 +84,7 @@
 (define-public (partial fun . args)
   "Alternative implementation:
 (use-modules (srfi srfi-26))
-(map (cut * 2 <>) '(1 2 3 4)) ;; => (2 4 6 8)"
+(map (cut * 2 <>) '(1 2 3 4)) ;=> (2 4 6 8)"
   (lambda x (apply fun (append args x))))
 
 (define-public (comp . fns)
@@ -111,7 +111,7 @@ Works also for functions returning and accepting multiple values."
 (define combined (juxt add1 square negate))
 
 ;; Apply to arguments
-(combined 5)  ; => (6 25 -5)
+(combined 5)  ;=> (6 25 -5)
 
 ;; With multiple arguments
 (define add (lambda (x y) (+ x y)))
@@ -119,11 +119,11 @@ Works also for functions returning and accepting multiple values."
 (define sub (lambda (x y) (- x y)))
 
 (define math-ops (juxt add mult sub))
-(math-ops 10 3)  ; => (13 30 7)
+(math-ops 10 3)  ;=> (13 30 7)
 
 ;; Using with built-in functions
 (define string-ops (juxt string-length string-upcase string-downcase))
-(string-ops \"Hello\")  ; => (5 \"HELLO\" \"hello\")"
+(string-ops \"Hello\")  ;=> (5 \"HELLO\" \"hello\")"
   (lambda args
     (map (lambda (fn) (apply fn args)) fns)))
 
@@ -425,7 +425,7 @@ Works also for functions returning and accepting multiple values."
   "Does STRING end with the SUFFIX? As `string-suffix?' but the parameters are
 reversed. See also:
 (define s (string-match \"[0-9][0-9][0-9][0-9]\" \"blah2002foo\"))
-(match:end s) ; => 8"
+(match:end s) ;=> 8"
   (string-suffix? suffix string))
 
 (define-public ends-with? has-suffix?)
@@ -435,20 +435,18 @@ reversed. See also:
 
 (define-public (drop-right xs n)
   "Corresponds to `drop-last' in Clojure.
-(drop-right (list 1 2 3 4 5) 2) ; => (1 2 3)"
+(drop-right (list 1 2 3 4 5) 2) ;=> (1 2 3)"
   (reverse (list-tail (reverse xs) n)))
 
 (define-public (drop-left xs n)
   "Corresponds to `drop' in Clojure.
-(drop-left (list 1 2 3 4 5) 2) ; => (4 5)"
+(drop-left (list 1 2 3 4 5) 2) ;=> (4 5)"
   (reverse (list-head (reverse xs) n)))
 
 (define-public (flatten x)
-  "(flatten (list (cons 1 (cons 2 3))))
-   ;; => (1 2 3)
+  "(flatten (list (cons 1 (cons 2 3)))) ;=> (1 2 3)
    (equal? (list 1 2 3)
-           (flatten (list (cons 1 (cons 2 3)))))
-   ;; => #t"
+           (flatten (list (cons 1 (cons 2 3))))) ;=> #t"
   (cond ((null? x) '())
         ((pair? x) (append (flatten (car x)) (flatten (cdr x))))
         (else (list x))))
@@ -504,42 +502,42 @@ error-out!"
 (define-public (split-string s n)
   "Split a string S into substrings of length N.
 ;; Valid cases
-(split-string \"hello\" 2)          ; => (\"he\" \"ll\" \"o\")
-(split-string \"hello\" 5)          ; => (\"hello\")
-(split-string \"hello\" 10)         ; => (\"hello\") - n >= length
-(split-string \"\" 3)               ; => (\"\") or maybe should be '()?
-(split-string \"ab\" 1)             ; => (\"a\" \"b\")
-(split-string \"hello\" 0)          ; => (\"hello\")
+(split-string \"hello\" 2)        ;=> (\"he\" \"ll\" \"o\")
+(split-string \"hello\" 5)        ;=> (\"hello\")
+(split-string \"hello\" 10)       ;=> (\"hello\") - n >= length
+(split-string \"\" 3)             ;=> (\"\") or maybe should be '()?
+(split-string \"ab\" 1)           ;=> (\"a\" \"b\")
+(split-string \"hello\" 0)        ;=> (\"hello\")
 
 ;; Invalid n: not a number
-(split-string \"hello\" \"2\")        ; => error
-(split-string \"hello\" #f)         ; => error
-(split-string \"hello\" '())        ; => error
-(split-string \"hello\" #\\c)        ; => error
+(split-string \"hello\" \"2\")      ;=> error
+(split-string \"hello\" #f)       ;=> error
+(split-string \"hello\" '())      ;=> error
+(split-string \"hello\" #\\c)      ;=> error
 
 ;; Invalid n: negative number
-(split-string \"hello\" -1)         ; => error
-(split-string \"hello\" -5)         ; => error
+(split-string \"hello\" -1)       ;=> error
+(split-string \"hello\" -5)       ;=> error
 
 ;; Invalid n: non-integer number
-(split-string \"hello\" 2.5)        ; => error
-(split-string \"hello\" 1.0)        ; => error (even though mathematically = 1)
-(split-string \"hello\" +inf.0)     ; => error
-(split-string \"hello\" +nan.0)     ; => error
+(split-string \"hello\" 2.5)      ;=> error
+(split-string \"hello\" 1.0)      ;=> error; even though mathematically =1
+(split-string \"hello\" +inf.0)   ;=> error
+(split-string \"hello\" +nan.0)   ;=> error
 
 ;; Invalid s: not a string
-(split-string 123 2)              ; => error
-(split-string #f 2)               ; => error
-(split-string '() 2)              ; => error
-(split-string #\\h 2)              ; => error
+(split-string 123 2)            ;=> error
+(split-string #f 2)             ;=> error
+(split-string '() 2)            ;=> error
+(split-string #\\h 2)            ;=> error
 
 ;; Both invalid
-(split-string 123 \"2\")            ; => error
-(split-string #f -1)              ; => error
+(split-string 123 \"2\")          ;=> error
+(split-string #f -1)            ;=> error
 
 ;; Edge cases
-(split-string \"\" 0)               ; => (\"\")
-(split-string \"a\" 1)              ; => (\"a\")"
+(split-string \"\" 0)             ;=> (\"\")
+(split-string \"a\" 1)            ;=> (\"a\")"
   (def (error-out s n)
     (let* [(s1 (if (not (and (number? n)
                              (or (zero? n) (positive? n))
@@ -567,14 +565,14 @@ error-out!"
 
 (define-public (smart-split-string s n)
   "Smart split a string S into substrings of length N.
-(smart-split-string \"12345\" 2) ; => (\"12\" \"34\" \"5\")
-(smart-split-string 2 \"12345\") ; => (\"12\" \"34\" \"5\")"
+(smart-split-string \"12345\" 2) ;=> (\"12\" \"34\" \"5\")
+(smart-split-string 2 \"12345\") ;=> (\"12\" \"34\" \"5\")"
   (if (and (string? s) (number? n))
       (split-string s n)
       (split-string n s)))
 
 (define (split-space-escaped input)
-  "(split-space-escaped \"a b\\ c\") ;; => (\"a\" \"b c\")"
+  "(split-space-escaped \"a b\\ c\") ;=> (\"a\" \"b c\")"
   (let* [(placeholder "#\\space")]
     ((comp
       (partial map (lambda (s) (string-replace-substring s placeholder " ")))
@@ -583,8 +581,7 @@ error-out!"
      input)))
 
 (define (string-sff ch s-list)
-  "(string-sff #\\space (list \"foo bar baz\"))
-;; => (\"foo\" \"bar\" \"baz\")"
+  "(string-sff #\\space (list \"foo bar baz\")) ;=> (\"foo\" \"bar\" \"baz\")"
   ((comp
     (partial filter (comp not string-null?))
     flatten
@@ -593,12 +590,12 @@ error-out!"
 
 (define-public (ensure-list x)
   "Wrap X in a list if it is not already a list. Think \"monadic container\".
-(ensure-list '(a b c))   ; => (a b c)
-(ensure-list 'a)         ; => (a)
-(ensure-list 1)          ; => (1)
+(ensure-list '(a b c))   ;=> (a b c)
+(ensure-list 'a)         ;=> (a)
+(ensure-list 1)          ;=> (1)
 
 Note: Variadic definition `(define (ensure-list . xs) xs)' produces nested list:
-(ensure-list '(a b c)) ; => ((a b c))"
+(ensure-list '(a b c)) ;=> ((a b c))"
   (match x
     ((? list?) x)
     (else (list x))))
@@ -649,7 +646,7 @@ Note: Variadic definition `(define (ensure-list . xs) xs)' produces nested list:
               #:key (trace #f) (verbose #f) (ignore-errors #f)
               #:rest args)
   "Execute system command and returns its ret-code. E.g.:
-(exec-system* \"echo\" \"bar\" \"baz\") ;; =>
+(exec-system* \"echo\" \"bar\" \"baz\") ;=>
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
@@ -685,7 +682,7 @@ $9 = 0 ;; return code"
               (split-whitespace #t) (gx-dry-run #f)
               #:rest args)
   "Execute system command and returns its ret-code. E.g.:
-(exec-system* \"echo\" \"bar\" \"baz\") ;; =>
+(exec-system* \"echo\" \"bar\" \"baz\") ;=>
 $ (echo bar baz)
 bar baz
 $9 = 0 ;; return code"
@@ -783,13 +780,13 @@ $9 = 0 ;; <return-code>"
 (def*-public (exec-foreground
               command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND and returns its ret-code.
-(exec-foreground \"echo bar baz\") ;; =>
+(exec-foreground \"echo bar baz\") ;=>
 § echo bar baz
 bar baz
 $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
 
 (exec-foreground (str \"rg \" (timestamp)) #:ignore-errors #t)
-;; => *unspecified*"
+;=> *unspecified*"
 
   (when trace
     (format #t "~a #:trace         ~a\n" f (pr-str-with-quote trace))
@@ -815,7 +812,7 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
               command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND using `system' from the (guile) module and returns its
 ret-code.
-(exec-system \"echo bar baz\") ;; =>
+(exec-system \"echo bar baz\") ;=>
 § echo bar baz
 bar baz
 $9 = 0 ;; <return-code>"
@@ -1083,28 +1080,28 @@ found or the CLIENT-CMD if some process ID was found."
 
 ;; `any', `every' are from (srfi srfi-1)
 (define-public some any)
-;; (some even? '(1 2 3))       ; => 2
+;; (some even? '(1 2 3))       ;=> 2
 
 (define-public every? every)
-;; (every? even? '(2 4 6))     ; => #t
+;; (every? even? '(2 4 6))     ;=> #t
 
 (define-public not-any? (compose not any))
-;; (not-any? even? '(1 3 5))   ; => #t
+;; (not-any? even? '(1 3 5))   ;=> #t
 
 (define-public not-every? (compose not every))
-;; (not-every? even? '(2 4 6)) ; => #f
+;; (not-every? even? '(2 4 6)) ;=> #f
 
 (define-public some-true? (partial some true?))
 (define-public every-true? (partial every? true?))
 
 (define (get-keys lst)
   "Return a list of all keys in the list LST, which may or may not be a plist.
-(get-keys '(#:a 1 b 2))   ; => (#:a b)
-(get-keys '(a 1 b 2))     ; => (a b)
-(get-keys '())            ; => ()
-(get-keys '(#:a 1 #:a 3)) ; => (#:a #:a) ; not checking for duplicate keys
-(get-keys '(#:a 1 b))     ; => (#:a)
-(get-keys 1)              ; => not a list"
+(get-keys '(#:a 1 b 2))   ;=> (#:a b)
+(get-keys '(a 1 b 2))     ;=> (a b)
+(get-keys '())            ;=> ()
+(get-keys '(#:a 1 #:a 3)) ;=> (#:a #:a) ; not checking for duplicate keys
+(get-keys '(#:a 1 b))     ;=> (#:a)
+(get-keys 1)              ;=> not a list"
   (unless (list? lst)
     (error (format #f "get-keys: `~s' is not a list\n" lst)))
 
@@ -1117,10 +1114,10 @@ found or the CLIENT-CMD if some process ID was found."
 
 (define (has-duplicates? lst)
   "Used in `plist?'
-(has-duplicates? '())        ; => #f
-(has-duplicates? '(1 2 3 4)) ; => #f
-(has-duplicates? '(1 2 3 2)) ; => #t
-(has-duplicates? '(a 1 a 2)) ; => #t
+(has-duplicates? '())        ;=> #f
+(has-duplicates? '(1 2 3 4)) ;=> #f
+(has-duplicates? '(1 2 3 2)) ;=> #t
+(has-duplicates? '(a 1 a 2)) ;=> #t
 "
   (cond
    ((null? lst) #f)
@@ -1129,14 +1126,14 @@ found or the CLIENT-CMD if some process ID was found."
 
 (define-public (plist-get . args)
   "Smart plist-get that works with arguments in either order.
-(plist-get '(#:y 2 #:x 1) #:x)      ; => 1
-(plist-get #:x (list #:y 2 #:x 1))  ; => 1
+(plist-get '(#:y 2 #:x 1) #:x)      ;=> 1
+(plist-get #:x (list #:y 2 #:x 1))  ;=> 1
 (plist-get '(#:x 1 #:x 2) #:x)      ; plist-get: expected even-length ...
-(plist-get '(#:y 2 #:x 1) #:z)      ; => #f
-(plist-get '() #:x)                 ; => #f
+(plist-get '(#:y 2 #:x 1) #:z)      ;=> #f
+(plist-get '() #:x)                 ;=> #f
 
-(plist-get '(1 11 2 22) 1)          ; => 11
-(plist-get '((1 2) 11 2 22) '(1 2)) ; => 11
+(plist-get '(1 11 2 22) 1)          ;=> 11
+(plist-get '((1 2) 11 2 22) '(1 2)) ;=> 11
 
 (plist-get '(42 #:y 2 #:x 1) #:x)   ; plist-get: expected even-length ...
 
@@ -1164,7 +1161,7 @@ found or the CLIENT-CMD if some process ID was found."
          plist))))
 
 (def-public (plist-set plist key val)
-  "(plist-set (list) #:key 'val) ; => (#:key val)"
+  "(plist-set (list) #:key 'val) ;=> (#:key val)"
   (cond
    [(not (plist? plist))
     (error (format #f "~a `~s' is not a plist\n" f plist))]
@@ -1184,8 +1181,8 @@ found or the CLIENT-CMD if some process ID was found."
   "Destructively modifies PLIST by setting KEY to VAL. Note: Cannot mutate an
 empty list into a non-empty one.
 (define lst (list #:k1 1 #:k2 2 #:k3 3))
-(plist-set! lst #:k2 22) ; => (#:k1 1 #:k2 22 #:k3 3)
-lst ; => (#:k1 1 #:k2 22 #:k3 3)"
+(plist-set! lst #:k2 22) ;=> (#:k1 1 #:k2 22 #:k3 3)
+lst ;=> (#:k1 1 #:k2 22 #:k3 3)"
   (cond
    [(not (plist? plist))
     (error (format #f "~a `~s' is not a plist.\n" f plist))]
@@ -1220,7 +1217,7 @@ lst ; => (#:k1 1 #:k2 22 #:k3 3)"
 ;; in a procedure:
 ;;   (define lst (list))
 ;;   (set! lst (list #:key 'val)))
-;;   lst ; => '(#:key val)
+;;   lst ;=> '(#:key val)
 ;; A workaround is to use a macro:
 ;; (define-syntax-rule (plist-set! place key val)
 ;;   (set! place (plist-set place key val)))
@@ -1230,9 +1227,9 @@ lst ; => (#:k1 1 #:k2 22 #:k3 3)"
 If the element is a keyword (e.g., #:x), it also removes the next element (its
 value).
 (remove-element '(x #:a 1 x #:b 2 #:c 3 x b z #:d 1 #:d) #:d)
-; => (x #:a 1 x #:b 2 #:c 3 x b z)
+;=> (x #:a 1 x #:b 2 #:c 3 x b z)
 (remove-element #:d '(x #:a 1 x #:b 2 #:c 3 x b z #:d 1 #:d))
-; => (x #:a 1 x #:b 2 #:c 3 x b z)"
+;=> (x #:a 1 x #:b 2 #:c 3 x b z)"
 
   (define (loop lst element)
     "Original remove-element implementation."
@@ -1269,21 +1266,21 @@ value).
 
 (define-public (get-keywords lst)
   "Return a list of all keys in the list LST, which may or may not be a plist.
-(get-keywords '(#:a 1 b 2))   ; => (#:a)
-(get-keywords '(a 1 b 2))     ; => ()
-(get-keywords '())            ; => ()
-(get-keywords '(#:a 1 #:a 3)) ; => (#:a #:a) ; not checking for duplicate keys
-(get-keywords 1)              ; => not a list"
+(get-keywords '(#:a 1 b 2))   ;=> (#:a)
+(get-keywords '(a 1 b 2))     ;=> ()
+(get-keywords '())            ;=> ()
+(get-keywords '(#:a 1 #:a 3)) ;=> (#:a #:a) ; not checking for duplicate keys
+(get-keywords 1)              ;=> not a list"
   (get-from-list keyword? lst))
 
 (define-public (plist? lst)
   "Empty list is also a plist. Plist must not contain duplicate keys.
-(plist? '(a 1 b 2)) ; => #t
-(plist? '())        ; => #t
-(plist? '(1))       ; => #f
-(plist? '(1 2 3))   ; => #f
-(plist? 1)          ; => #f
-(plist? '(a 1 a 2)) ; => #f ; duplicate"
+(plist? '(a 1 b 2)) ;=> #t
+(plist? '())        ;=> #t
+(plist? '(1))       ;=> #f
+(plist? '(1 2 3))   ;=> #f
+(plist? 1)          ;=> #f
+(plist? '(a 1 a 2)) ;=> #f ; duplicate"
   (and (list? lst) (even? (length lst))
        (not (has-duplicates? (get-keys lst)))))
 
@@ -1298,27 +1295,27 @@ value).
 
 (define-public (plist-keys plist)
   "Return a list of all keys in the plist.
-(plist-keys '(a 1 b 2)) ; => (a b)
-(plist-keys '())        ; => ()
-(plist-keys '(1))       ; => not a plist"
+(plist-keys '(a 1 b 2)) ;=> (a b)
+(plist-keys '())        ;=> ()
+(plist-keys '(1))       ;=> not a plist"
   (plist-keys-or-vals car plist))
 
 (define-public (plist-vals plist)
   "Return a list of all values in the plist.
-(plist-vals '(a 1 b 2)) ; => (1 2)
-(plist-vals '())        ; => ()
-(plist-vals '(1))       ; => not a plist"
+(plist-vals '(a 1 b 2)) ;=> (1 2)
+(plist-vals '())        ;=> ()
+(plist-vals '(1))       ;=> not a plist"
   (plist-keys-or-vals cadr plist))
 
 (def-public (get-keyworded-vals lst)
   "Return a list of all keys in the plist.
-(get-keyworded-vals '(#:a 1 b 2))   ; => (1)
-(get-keyworded-vals '(a 1 b 2))     ; => ()
-(get-keyworded-vals '())            ; => ()
-(get-keyworded-vals '(a 1 a 3))     ; => ()
-(get-keyworded-vals '(#:a 1 a 3))   ; => (1) ; the second `a' is not a keyword
-(get-keyworded-vals '(#:a 1 #:a 3)) ; => not a plist - has duplicate keys
-(get-keyworded-vals 1)              ; => not a plist"
+(get-keyworded-vals '(#:a 1 b 2))   ;=> (1)
+(get-keyworded-vals '(a 1 b 2))     ;=> ()
+(get-keyworded-vals '())            ;=> ()
+(get-keyworded-vals '(a 1 a 3))     ;=> ()
+(get-keyworded-vals '(#:a 1 a 3))   ;=> (1) ; the second `a' is not a keyword
+(get-keyworded-vals '(#:a 1 #:a 3)) ;=> not a plist - has duplicate keys
+(get-keyworded-vals 1)              ;=> not a plist"
   (if (plist? lst)
       (map (partial plist-get lst) (get-keywords lst))
       (error (format #f "~a `~s' is not a plist\n" f lst))))
@@ -1339,17 +1336,17 @@ value).
 
 (define-public (get-non-keyworded-vals lst)
   "Return a list of all keys in the plist.
-(get-non-keyworded-vals '(#:a 1 b 2)) ; => (b 2)
-(get-non-keyworded-vals '(a 1 b 2))   ; => (1 2)
-(get-non-keyworded-vals '())          ; => ()
-(get-non-keyworded-vals 1)            ; => not a list"
+(get-non-keyworded-vals '(#:a 1 b 2)) ;=> (b 2)
+(get-non-keyworded-vals '(a 1 b 2))   ;=> (1 2)
+(get-non-keyworded-vals '())          ;=> ()
+(get-non-keyworded-vals 1)            ;=> not a list"
   (remove-all-elements lst (get-keywords lst)))
 
 (define-public (keyworded-plist? lst)
-  "(keyworded-plist? '(#:a 1 #:b 2)) ; => #t
-(keyworded-plist? '(#:a 1 b 2))   ; => #f
-(keyworded-plist? '())            ; => #t
-(keyworded-plist? '(1))           ; => not a plist"
+  "(keyworded-plist? '(#:a 1 #:b 2)) ;=> #t
+(keyworded-plist? '(#:a 1 b 2))   ;=> #f
+(keyworded-plist? '())            ;=> #t
+(keyworded-plist? '(1))           ;=> not a plist"
   (every? true? (map keyword? (plist-keys lst))))
 
 (define-inlinable (pipe-return params)
@@ -1451,10 +1448,10 @@ value).
   "Return the first element of @var{lst} that equals (string=)
 @var{string-elem}, or @code{#f} if no such element is found.
 
-(string-in? (list \"a\" \"b\" \"c\") \"b\") ; => \"b\"
-(string-in? (list \"a\" \"b\" \"c\") \"X\") ; => #f
-(string-in? (list \"a\" \"b\" \"c\") \"\")  ; => #f
-(string-in? (list \"a\" \"b\" \"c\") #f)    ; => Exception
+(string-in? (list \"a\" \"b\" \"c\") \"b\") ;=> \"b\"
+(string-in? (list \"a\" \"b\" \"c\") \"X\") ;=> #f
+(string-in? (list \"a\" \"b\" \"c\") \"\")  ;=> #f
+(string-in? (list \"a\" \"b\" \"c\") #f)    ;=> Exception
 
 Requires:
   (use-modules (srfi srfi-1))"
@@ -1499,7 +1496,7 @@ Requires:
 
 (define-public (package-output-paths one-or-more-packages)
   "(package-output-paths (@(gnu packages emacs) emacs))
-;; => (\"/gnu/store/<...>-emacs-29.1\")"
+;=> (\"/gnu/store/<...>-emacs-29.1\")"
   (let [(connection ((@(guix store) open-connection)))]
     (map (comp
           ;; (partial format #f "~a/bin/emacs")
@@ -1508,18 +1505,16 @@ Requires:
                    connection))
          (ensure-list one-or-more-packages))))
 
+;; (define-public (interpose separator lst)
+;;   "Insert separator between each element of lst"
+;;   (cond
+;;    ((null? lst) '())
+;;    ((null? (cdr lst)) lst)
+;;    (else
+;;     (cons (car lst)
+;;           (cons separator
+;;                 (interpose separator (cdr lst)))))))
 
-#|
-(define-public (interpose separator lst)
-"Insert separator between each element of lst"
-(cond
-((null? lst) '())
-((null? (cdr lst)) lst)
-(else
-(cons (car lst)
-(cons separator
-(interpose separator (cdr lst)))))))
-|#
 ;; Alternative implementation using fold-right for better performance
 (define-public (interpose separator lst)
   "Insert separator between each element of lst using fold.
@@ -1540,7 +1535,7 @@ Examples:
 
 (define-public (combine . lists)
   "Combine elements alternately from each list, stopping at the shortest.
-(combine '(1 2 3 4) '(a b c)) ; => ((1 a) (2 b) (3 c)) ;=> ((1 4) (2 5) (3 6))"
+(combine '(1 2 3 4) '(a b c)) ;=> ((1 a) (2 b) (3 c)) ;=> ((1 4) (2 5) (3 6))"
   (let ((len (length (car lists))))
     ;; (unless (every (lambda (l) (= (length l) len)) lists)
     ;;   (error "combine: lists must all be the same length" lists))
@@ -1548,27 +1543,13 @@ Examples:
 
 (define-public (interleave . lists)
   "Flatten combined lists.
-(interleave '(1 2 3) '(a b c)) ; => '(1 a 2 b 3 c)"
+(interleave '(1 2 3) '(a b c)) ;=> '(1 a 2 b 3 c)"
   (flatten (apply combine lists)))
 
 (define-public (keyword->string keyword)
   "(use-modules (srfi srfi-88))
-(keyword->string #:example) ; => \"example\""
+(keyword->string #:example) ;=> \"example\""
   (symbol->string (keyword->symbol keyword)))
-
-;; (define-public (inferior-package-in-guix-channel package commit)
-;;   "Returns an inferior representing the `commit' (predecessor-sha1) revision.
-;; Can't be in the guix/common/utils.scm. Therefore duplicated.
-;; See guix/manifest-emacs-29.1.scm, guix/home/common/config/packages/all.scm"
-;;   (first
-;;    (lookup-inferior-packages
-;;     (inferior-for-channels
-;;      (list (channel
-;;             (name 'guix)
-;;             (url "https://git.savannah.gnu.org/git/guix.git")
-;;             (commit commit))))
-;;     package)))
-;; (testsymb 'inferior-package-in-guix-channel)
 
 ;; (define-public (directory-exists? path)
 ;;   "Check if path exists and is a directory. (Alternative definition)"
@@ -1655,7 +1636,7 @@ that many from the end."
 (define-public (syntax->list orig-ls)
   "From $der/racket/pkgs/racket-benchmarks/tests/racket/benchmarks/common/psyntax-input.txt
 (syntax->list (call-with-input-string \"  (+ 1 2)\" read-syntax))
-; => (#<syntax:unknown file:1:3 +> #<syntax:unknown file:1:5 1> #<syntax:unknown file:1:7 2>)"
+;=> (#<syntax:unknown file:1:3 +> #<syntax:unknown file:1:5 1> #<syntax:unknown file:1:7 2>)"
   (let loop ((ls orig-ls))
     (syntax-case ls ()
       (() '())
@@ -1713,12 +1694,12 @@ that many from the end."
 (define-public (pr-str . xs)
   "Return a string containing the printed representation of all arguments,
 separated by spaces.
-(pr-str 1 '(2 3) 'x \"foo\") ; => \"1 (2 3) x \\\"foo\\\"\""
+(pr-str 1 '(2 3) 'x \"foo\") ;=> \"1 (2 3) x \\\"foo\\\"\""
   (string-join (map (lambda (x) (object->string x)) xs) " "))
 
 (define-public (pr-str-with-quote . xs)
   "See `pr-str'.
-(pr-str-with-quote 1 2 '(3 4) \"foo\") ; => \"1 '(2 3) 'x \\\"foo\\\"\""
+(pr-str-with-quote 1 2 '(3 4) \"foo\") ;=> \"1 '(2 3) 'x \\\"foo\\\"\""
   ((comp
     (lambda (lst) (string-join lst " "))
     (partial map (lambda (x)
@@ -1883,11 +1864,11 @@ separated by spaces.
 
 (define-public (sha1-string s)
   "(sha1-string \"0200000000010171\")
-;; => \"e2462d5e457858930952c8b7b80f49f3307234ec\"
+;=> \"e2462d5e457858930952c8b7b80f49f3307234ec\"
 
 See also:
-  (string-hash \"0200000000010171\")     ; => 1902129584164781890
-  (hash \"0200090000010170\" 2147483647) ; => 626328076"
+  (string-hash \"0200000000010171\")     ;=> 1902129584164781890
+  (hash \"0200090000010170\" 2147483647) ;=> 626328076"
   (let* [(cmd-result-struct
           ((comp
             (lambda (cmd) (exec cmd #:return-plist #t #:verbose #f))
@@ -1910,7 +1891,7 @@ See also:
           ))))
 
 (define-public (string-checksum s)
-  "(string-checksum \"0200000000010171\") ; => 683979683"
+  "(string-checksum \"0200000000010171\") ;=> 683979683"
   ;; simple polynomial hash: sum over chars of (char-code * weight^i) mod some
   ;; modulus
   (let* ((modulus 1000000007)   ; a large prime
@@ -1926,7 +1907,7 @@ See also:
             (loop (+ i 1) acc2))))))
 
 (define*-public (timestamp #:key (verbose #f))
-  "(timestamp) ;; => \"2025-10-14_20-14-16\""
+  "(timestamp) ;=> \"2025-10-14_20-14-16\""
   (let* [(cmd-result-struct
           ((comp
             (lambda (cmd) (exec cmd #:return-plist #t #:verbose verbose))
@@ -1951,7 +1932,7 @@ See also:
           ))))
 
 (define*-public (sha1-file filename #:key (verbose #f))
-  "(sha1-file \"/etc/hosts\") ; => \"...\""
+  "(sha1-file \"/etc/hosts\") ;=> \"...\""
   (let* [(cmd-result-struct
           ((comp
             (lambda (cmd) (exec cmd #:return-plist #t #:verbose verbose))
@@ -1973,7 +1954,7 @@ See also:
           ;; *unspecified*
           ))))
 
-;; Increment (inc 0) ; => 1
+;; Increment (inc 0) ;=> 1
 (define-public inc 1+)
 
 (define*-public (str-join lst #:optional (delimiter " ") (grammar 'infix))
@@ -2038,27 +2019,27 @@ LIST) are accepted.
   "SRFI-1's dotted-list? treats any finite list whose final cdr is not '() as a
 dotted (improper) list — and it allows the degenerate case with zero pairs.
 
-(nonempty-dotted-list? '(a b c))    ; => #f
-(nonempty-dotted-list? '(a b . c))  ; => #t
-(nonempty-dotted-list? '())         ; => #f
-(nonempty-dotted-list? 42)          ; => #f"
+(nonempty-dotted-list? '(a b c))    ;=> #f
+(nonempty-dotted-list? '(a b . c))  ;=> #t
+(nonempty-dotted-list? '())         ;=> #f
+(nonempty-dotted-list? 42)          ;=> #f"
   (and (pair? x) (dotted-list? x)))
 
 (define-public (flat-list-cond . xs)
   "Conditionally create a one level flattened list.
 
 (flat-list-cond 5 (list 4) 3 (when #f (list 2)) #f (list 1) 0)
-;; => (list 5 4 3 2 #f 1 0)
+;=> (list 5 4 3 2 #f 1 0)
 (flat-list-cond 5 (list 4) 3 (if #f (list 2)) #f (list 1) 0)
-;; => (list 5 4 3 2 #f 1 0)
+;=> (list 5 4 3 2 #f 1 0)
 
 (flat-list-cond 5 (list 4) 3 (when #t (list 2)) #f (list 1) 0)
-;; => (list 5 4 3 2 #f 1 0)
+;=> (list 5 4 3 2 #f 1 0)
 (flat-list-cond 5 (list 4) 3 (if #t (list 2)) #f (list 1) 0)
-;; => (list 5 4 3 2 #f 1 0)
+;=> (list 5 4 3 2 #f 1 0)
 
 (flat-list-cond 5 (list 4) 3 (if #t 2) #f (list 1) 0)
-;; => (list 5 4 3 2 #f 1 0)"
+;=> (list 5 4 3 2 #f 1 0)"
   (append-map                ; or (apply append (map ... xs))
    (lambda (x)
      (cond
@@ -2072,11 +2053,11 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
 ;; first paramter of `list=' is an equality predicate
 (define-public (list=eq?    . rest)
 "
-(list=eq?)           ; => #t
-(list=eq? 2 1)       ; => (expecting pair): 2
-(list=eq? 1 1)       ; => (expecting pair): 1
-(list=eq? '(2) '(1)) ; => #f
-(list=eq? '(1) '(1)) ; => #f
+(list=eq?)           ;=> #t
+(list=eq? 2 1)       ;=> (expecting pair): 2
+(list=eq? 1 1)       ;=> (expecting pair): 1
+(list=eq? '(2) '(1)) ;=> #f
+(list=eq? '(1) '(1)) ;=> #f
 "
   (apply (partial list= eq?) rest))
 
@@ -2085,10 +2066,10 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
 (define-public (list=equal? . rest) (apply (partial list= equal?) rest))
 
 (define-public (find-duplicates lst eq-proc)
-  "(find-duplicates (list 1 2 2 3) =)            ; => (2)
-(find-duplicates (list 1 2 1 2 3) =)          ; => (1 2)
-(find-duplicates (list 1 1 1 2) =)            ; => (1)
-(find-duplicates (list \"1\" \"2\" \"1\") string=?) ; => (\"1\")"
+  "(find-duplicates (list 1 2 2 3) =)            ;=> (2)
+(find-duplicates (list 1 2 1 2 3) =)          ;=> (1 2)
+(find-duplicates (list 1 1 1 2) =)            ;=> (1)
+(find-duplicates (list \"1\" \"2\" \"1\") string=?) ;=> (\"1\")"
 
   (define f (format #f "~a [find-duplicates]" m))
 
