@@ -711,28 +711,67 @@ $9 = 0 ;; return code"
                                    (string-split-whitespace s) s))))
      args)))
 
-(define-public (read-all reader-function)
-  "Returns a function which reads all lines of text from the PORT and applies
-READER-FUNCTION on them. "
+(define-public (read-all reader-procedure)
+  "Return a procedure which reads all items from a port using READER-PROCEDURE.
+
+The returned procedure repeatedly calls READER-PROCEDURE on the given port until
+it returns #f or an EOF object, and returns the collected items as a list in the
+order in which they were read.
+
+Example:
+
+  (call-with-input-string \"foo\\nbar\\n\"
+    ((read-all read-line)))
+  => (\"foo\" \"bar\")
+
+  (call-with-input-string \"(a b) 42\"
+    ((read-all read)))
+  => ((a b) 42)"
   (lambda (port)
-    (let loop ((acc '()) (item (reader-function port)))
+    (let loop ((acc '()) (item (reader-procedure port)))
       (if (or (not item) (eof-object? item))
           (reverse acc)
-          (loop (cons item acc) (reader-function port))))))
+          (loop (cons item acc) (reader-procedure port))))))
 
 (define-public (read-all-sexprs port)
-  "TODO better implementation of read-all-sexprs"
-  (let loop [(x (read port))]
-    (if (eof-object? x)
-        '()
-        (cons x (loop (read port))))))
+  "Return a list of all s-expressions read from PORT.
+
+Each item is read with `read`, so the returned values are ordinary Scheme
+datums.
+
+Example:
+
+  (call-with-input-string \"(define x 1)\\n(+ x 2)\\n\"
+    read-all-sexprs)
+  => ((define x 1) (+ x 2))"
+  ((read-all read) port))
 
 (define-public (read-all-syntax port)
-  "Return a list of all s-expressions from the PORT."
+  "Return a list of all syntax objects read from PORT.
+
+Each item is read with `read-syntax`, so the returned values are syntax objects
+rather than plain datums.  Use `syntax->datum` to obtain the corresponding
+s-expressions.
+
+Example:
+
+  (call-with-input-string \"(define x 1)\\n(+ x 2)\\n\"
+    (lambda (port)
+      (map syntax->datum (read-all-syntax port))))
+  => ((define x 1) (+ x 2))"
   ((read-all read-syntax) port))
 
 (define-public (read-all-strings port)
-  "Return a list of all lines, i.e. a list of string of text from the PORT."
+  "Return a list of all lines read from PORT.
+
+Each line is read with `read-line`.  The returned strings do not include the
+trailing newline.
+
+Example:
+
+  (call-with-input-string \"foo\\nbar\\n\"
+    read-all-strings)
+  => (\"foo\" \"bar\")"
   ((read-all read-line) port))
 
 (define-public (cmd->string cmd)
