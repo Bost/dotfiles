@@ -88,7 +88,9 @@
   (lambda x (apply fun (append args x))))
 
 (define-public (comp . fns)
-  "Like `compose'. Can be called with zero arguments. I.e. (thunk? comp) => #t
+  "Like `compose'. Can be called with zero arguments. I.e.
+(thunk? comp)    ;=> #t
+(thunk? compose) ;=> #f
 Works also for functions returning and accepting multiple values."
   (lambda args
     (if (null? fns)
@@ -137,7 +139,10 @@ Works also for functions returning and accepting multiple values."
 (define-public (boolean x) (not (not x)))
 
 (define-public (str . args)
-  "Convert all arguments to strings and concatenate them, like Clojure's `str`."
+  "Convert all arguments to strings and concatenate them, like Clojure's `str`.
+(str '(1 2 3)) ;=> \"(1 2 3)\"
+(str *unspecified*) ;=> \"\"
+"
   (string-concatenate
    (map (lambda (x)
           (cond
@@ -149,6 +154,7 @@ Works also for functions returning and accepting multiple values."
            ((empty? x) "()")
            ;; (use-modules (ice-9 format))  ; For `format` with ~A specifier
            ((pair? x) (format #f "~A" x))   ; Handle lists and pairs
+           ((unspecified? x) "")
            (else (format #f "~A" x))))      ; Fallback for other types
         args)))
 
@@ -439,9 +445,8 @@ reversed. See also:
   (reverse (list-tail (reverse xs) n)))
 
 (define-public (drop-left xs n)
-  "Corresponds to `drop' in Clojure.
-(drop-left (list 1 2 3 4 5) 2) ;=> (4 5)"
-  (reverse (list-head (reverse xs) n)))
+  "(drop-left (list 1 2 3 4 5) 2) ;=> (3 4 5)"
+  (drop xs n))
 
 (define-public (flatten x)
   "(flatten (list (cons 1 (cons 2 3)))) ;=> (1 2 3)
@@ -708,16 +713,25 @@ $9 = 0 ;; return code"
                                    (string-split-whitespace s) s))))
      args)))
 
+;; (define-public (read-all reader-function)
+;;   "Returns a function which reads all lines of text from the PORT and applies
+;; READER-FUNCTION on them. "
+;;   (lambda (port)
+;;     (let loop [(res '())
+;;                (str (reader-function port))] ; from (ice-9 popen)
+;;       (if (and str (not (eof-object? str)))
+;;           (loop (append res (list str))
+;;                 (reader-function port))
+;;           res))))
+
 (define-public (read-all reader-function)
   "Returns a function which reads all lines of text from the PORT and applies
 READER-FUNCTION on them. "
   (lambda (port)
-    (let loop [(res '())
-               (str (reader-function port))] ; from (ice-9 popen)
-      (if (and str (not (eof-object? str)))
-          (loop (append res (list str))
-                (reader-function port))
-          res))))
+    (let loop ((acc '()) (item (reader-function port)))
+      (if (or (not item) (eof-object? item))
+          (reverse acc)
+          (loop (cons item acc) (reader-function port))))))
 
 (define-public (read-all-sexprs p)
   "TODO better implementation of read-all-sexprs"
@@ -1143,7 +1157,8 @@ found or the CLIENT-CMD if some process ID was found."
 "
   (define (loop plist key)
     (cond [(null? plist) #f]
-          [(eq? (car plist) key) (cadr plist)]
+          ;; eq? - fragile for non-symbol/non-keyword keys
+          [(equal? (car plist) key) (cadr plist)]
           [else (loop (cddr plist) key)]))
 
   (unless (= 2 (length args))
@@ -1862,9 +1877,16 @@ separated by spaces.
     (partial map (partial mounted-with-option? "rw")))
    (mounted-usb-devices)))
 
+(define (escape-single-quotes s)
+  "Prevent shell injection vulnerability
+(escape-single-quotes \"a'b'c\") ;=> \"a'\\''b'\\''c\""
+  (string-replace-substring s "'" "'\\''"))
+
 (define-public (sha1-string s)
   "(sha1-string \"0200000000010171\")
 ;=> \"e2462d5e457858930952c8b7b80f49f3307234ec\"
+(sha1-string \"a'b'c\")
+;=> \"f28055385d2aa41b63e587f54ddc6ad961b36ad2\"
 
 See also:
   (string-hash \"0200000000010171\")     ;=> 1902129584164781890
@@ -1872,8 +1894,9 @@ See also:
   (let* [(cmd-result-struct
           ((comp
             (lambda (cmd) (exec cmd #:return-plist #t #:verbose #f))
-            cmd->string)
-           (list (string-append "echo -n '" s "' | sha1sum"))))
+            cmd->string
+            (lambda (es) (list (string-append "echo -n '" es "' | sha1sum"))))
+           (escape-single-quotes s)))
          (retcode (plist-get cmd-result-struct #:retcode))]
     (if (zero? retcode)
         ((comp
@@ -2136,30 +2159,19 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
 "
   (object->string x write))
 
-(define-syntax and*
-  (lambda (x)
-    (syntax-case x ()
-      [(_ rest ...)
-       #'(and rest ...)]
-      [var
-       (identifier? #'var)
-       #'(lambda args
-           (let loop ((args args))
-             (if (null? args)
-                 #t ; by default
-                 (and (car args) (loop (cdr args))))))])))
+;; see https://codeberg.org/guile/guile/issues/50
+(define-public and*
+  (lambda args
+    (let loop ((args args))
+      (if (null? args)
+          #t
+          (and (car args) (loop (cdr args)))))))
 
-(define-syntax or*
-  (lambda (x)
-    (syntax-case x ()
-      [(_ rest ...)
-       #'(or rest ...)]
-      [var
-       (identifier? #'var)
-       #'(lambda args
-           (let loop ((args args))
-             (if (null? args)
-                 #f ; by default
-                 (or (car args) (loop (cdr args))))))])))
+(define-public or*
+  (lambda args
+    (let loop ((args args))
+      (if (null? args)
+          #f
+          (or (car args) (loop (cdr args)))))))
 
 (module-evaluated)

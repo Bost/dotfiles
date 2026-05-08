@@ -32,71 +32,27 @@
     (else
      (error "not a list or string" obj))))
 
-(define*-public (smart-second obj)
-  "Returns second element of list or second character of string as a string."
-  (cond
-    ((string? obj)
-     (let ((len (string-length obj)))
-       (if (< len 2)
-           (error "string too short")
-           (string (string-ref obj 1)))))
-    ((pair? obj)
-     (let ((rest (cdr obj)))
-       (if (null? rest)
-           (error "list too short")
-           (car rest))))
-    ((null? obj)
-     (error "empty list"))
-    (else
-     (error "not a list or string" obj))))
+(define-syntax define-smart-nth
+  (syntax-rules ()
+    [(_ name idx)
+     (define*-public (name obj)
+       (cond
+        ((string? obj)
+         (let ((len (string-length obj)))
+           (if (< len (+ idx 1))
+               (error "string too short")
+               (string (string-ref obj idx)))))
+        ((pair? obj)
+         (let loop ((xs obj) (n idx))
+           (if (null? xs) (error "list too short")
+               (if (= n 0) (car xs) (loop (cdr xs) (- n 1))))))
+        ((null? obj) (error "empty list"))
+        (else (error "not a list or string" obj))))]))
 
-(define*-public (smart-third obj)
-  "Returns third element of list or third character of string as a string."
-  (cond
-    ((string? obj)
-     (let ((len (string-length obj)))
-       (if (< len 3)
-           (error "string too short")
-           (string (string-ref obj 2)))))
-    ((pair? obj)
-     (let ((rest (cddr obj)))
-       (if (null? rest)
-           (error "list too short")
-           (car rest))))
-    ((null? obj)
-     (error "empty list"))
-    (else
-     (error "not a list or string" obj))))
-
-(define*-public (smart-fourth obj)
-  "Returns fourth element of list or fourth character of string as a string."
-  (cond
-    ((string? obj)
-     (let ((len (string-length obj)))
-       (if (< len 4)
-           (error "string too short")
-           (string (string-ref obj 3)))))
-    ((pair? obj)
-     (fourth obj))
-    ((null? obj)
-     (error "empty list"))
-    (else
-     (error "not a list or string" obj))))
-
-(define*-public (smart-fifth obj)
-  "Returns fifth element of list or fifth character of string as a string."
-  (cond
-    ((string? obj)
-     (let ((len (string-length obj)))
-       (if (< len 5)
-           (error "string too short")
-           (string (string-ref obj 4)))))
-    ((pair? obj)
-     (fifth obj))
-    ((null? obj)
-     (error "empty list"))
-    (else
-     (error "not a list or string" obj))))
+(define-smart-nth smart-second 1)
+(define-smart-nth smart-third  2)
+(define-smart-nth smart-fourth 3)
+(define-smart-nth smart-fifth  4)
 
 (define*-public (smart-take obj n)
   "Takes first n elements from list or first n characters from string."
