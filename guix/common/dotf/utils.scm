@@ -52,8 +52,6 @@
             testsymb
             testsymb-trace
             dbgfmt
-            and*
-            or*
             )
   #:re-export (
                smart-first
@@ -151,7 +149,7 @@ Works also for functions returning and accepting multiple values."
            ((number? x) (number->string x))
            ((char? x) (string x))
            ((boolean? x) (if x "#t" "#f"))
-           ((empty? x) "()")
+           ((empty? x) "()")                ; catches '() before the (pair? x)
            ;; (use-modules (ice-9 format))  ; For `format` with ~A specifier
            ((pair? x) (format #f "~A" x))   ; Handle lists and pairs
            ((unspecified? x) "")
@@ -713,17 +711,6 @@ $9 = 0 ;; return code"
                                    (string-split-whitespace s) s))))
      args)))
 
-;; (define-public (read-all reader-function)
-;;   "Returns a function which reads all lines of text from the PORT and applies
-;; READER-FUNCTION on them. "
-;;   (lambda (port)
-;;     (let loop [(res '())
-;;                (str (reader-function port))] ; from (ice-9 popen)
-;;       (if (and str (not (eof-object? str)))
-;;           (loop (append res (list str))
-;;                 (reader-function port))
-;;           res))))
-
 (define-public (read-all reader-function)
   "Returns a function which reads all lines of text from the PORT and applies
 READER-FUNCTION on them. "
@@ -733,12 +720,12 @@ READER-FUNCTION on them. "
           (reverse acc)
           (loop (cons item acc) (reader-function port))))))
 
-(define-public (read-all-sexprs p)
+(define-public (read-all-sexprs port)
   "TODO better implementation of read-all-sexprs"
-  (let loop [(x (read p))]
+  (let loop [(x (read port))]
     (if (eof-object? x)
         '()
-        (cons x (loop (read p))))))
+        (cons x (loop (read port))))))
 
 (define-public (read-all-syntax port)
   "Return a list of all s-expressions from the PORT."
@@ -1157,7 +1144,7 @@ found or the CLIENT-CMD if some process ID was found."
 "
   (define (loop plist key)
     (cond [(null? plist) #f]
-          ;; eq? - fragile for non-symbol/non-keyword keys
+          ;; eq? is fragile for non-symbol/non-keyword keys
           [(equal? (car plist) key) (cadr plist)]
           [else (loop (cddr plist) key)]))
 
@@ -1184,7 +1171,8 @@ found or the CLIENT-CMD if some process ID was found."
     (let rec [(lst plist) (acc '())]
       (cond [(null? lst)
              (reverse (cons val (cons key acc)))]
-            [(eq? (car lst) key)
+            ;; eq? is fragile for non-symbol/non-keyword keys
+            [(equal? (car lst) key)
              ;; skip the old key+value, replace
              (reverse acc)   ; rinsed part
              (let ((rest (cddr lst)))
@@ -1215,7 +1203,8 @@ lst ;=> (#:k1 1 #:k2 22 #:k3 3)"
     ;; This implementation doesn't rebuild the whole tail:
     (let loop [(p plist)]
       (cond
-       [(eq? (car p) key)
+       ;; eq? is fragile for non-symbol/non-keyword keys
+       [(equal? (car p) key)
         (if (pair? (cdr p))
             (begin (set-car! (cdr p) val) plist)
             ;; The following error message should never appear. The test
