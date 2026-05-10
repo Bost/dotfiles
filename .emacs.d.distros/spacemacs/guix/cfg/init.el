@@ -1453,6 +1453,13 @@ before packages are loaded."
   ;;; hello
   ;;; #+end_src
 
+  ;; Remove emtpy spaces at the beginning of the lines, then apply the macro
+  (defalias 'macro-format-guix-channels
+    (kmacro
+     (concat
+      "f SPC D j 2 d d k J f : x i <delete>"
+      " \" M-s-<right> <home> # : <escape> f SPC r - <home> <left> <down>")))
+
   (defun tw-shell-path ()
     ;; (tw-shell-which "fish")
     (getenv "SHELL"))
