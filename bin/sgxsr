@@ -59,6 +59,7 @@ set -x # Print commands and their arguments as they are executed.
 # TODO add 'Do you agree with the following downgrades? [y/N]'
 # See /home/bost/.config/guix/current/bin/guix-daemon
 
+source /etc/profile 2>/dev/null
 guix pull --cores=$cores --allow-downgrades \
      --load-path=$baseLP/common \
      --channels=$baseLP/systems/common/syst-channels.scm \
@@ -89,8 +90,8 @@ sudo \
 #        --channels=$baseLP/systems/common/home-channels.scm
 #        "$@"
 
-guix pull --cores=$cores --roll-back \
-     "$@"
+source /etc/profile 2>/dev/null
+guix pull --cores=$cores --roll-back "$@"
 
 { retval="$?"; set +x; } 2>/dev/null
 

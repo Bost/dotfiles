@@ -3,6 +3,7 @@
 # TODO the sequence should be:
 # 'configure channels: copy channels.scm etc.' && \
 # 'configure fish-configL copy fish/config.fish etc.' && \
+#  source /etc/profile 2>/dev/null && \
 #  guix pull && \
 #  guix package --profile= && \
 #  guix home reconfigure
