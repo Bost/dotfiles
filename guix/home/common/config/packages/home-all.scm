@@ -953,7 +953,7 @@ FIXME the inferior-packages are installed on every machine"
     (@(bost gnu packages emacs-xyz) emacs-gptel)
     ;; emacs-next       ;; 29.0.92
     ;; emacs-next-pgtk  ;; 29.0.92
-    (@(bost gnu packages emacs-xyz) emacs-with-editor) ; for using Emacsclient as EDITOR
+    emacs-with-editor ; for using Emacsclient as EDITOR
 
     emacs-geiser
     emacs-geiser-guile
