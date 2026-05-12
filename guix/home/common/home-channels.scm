@@ -139,13 +139,36 @@
  ;; #:guix-commit         "81934cf7e9263e47f9fd8defa717365592a3473d"
 
  ;; 10 mai 2026 13:45:56
+ ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
+ ;; #:guix-science-commit "0c0df2b83829ba5cd1fa5ca58c861062a7d20c02"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
+ ;; #:bost-commit         "24485c102bd515fe7e7865173e0a6b433adfed73"
+ ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
+ ;; #:guix-commit         "9f8d0595a2c044a9bc1c97893b338c485ee83c18"
+
+ ;; 12 mai 2026 20:50:06 ; broken; `guix pull` doesn't work
+ ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
+ ;; #:guix-science-commit "7a0b91b1965bb4098b1bca2d482751123857a07d"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
+ ;; #:bost-commit         "f13a0d35106155139d368ec4ca90ce466bca128b"
+ ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
+ ;; #:guix-commit         "ddd26bef7e41d56b6a3de9838a8c41c7a39c55c9"
+
+ ;; 12 mai 2026 21:29:10
+ ;; the same as '10 mai 2026 13:45:56', only the #:bost-commit is updated
  #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
  #:guix-science-commit "0c0df2b83829ba5cd1fa5ca58c861062a7d20c02"
  #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
  #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
  #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
  #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- #:bost-commit         "24485c102bd515fe7e7865173e0a6b433adfed73"
+ #:bost-commit         "f13a0d35106155139d368ec4ca90ce466bca128b"
  #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
  #:guix-commit         "9f8d0595a2c044a9bc1c97893b338c485ee83c18"
  )
