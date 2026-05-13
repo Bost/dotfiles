@@ -82,7 +82,7 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;;   firefox
     ;; /var/guix/profiles/per-user/bost/guix-profile-266-link/bin/firefox
     ;; See also module (bost manifest-set-operations)
-    ;; (@(nongnu packages mozilla) firefox)
+    (@(nongnu packages mozilla) firefox)
     ;; (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
 
     ;; Factorio can be also installed by (in the fish-shell):
@@ -912,10 +912,10 @@ FIXME the inferior-packages are installed on every machine"
     ;;     nongnu: firefox: Update to 148.0.2 [security fixes].
 
     ;; Use 149.0.2 until a substitute for latest 150.0.1 is available
-    (list #:package "firefox" #:channels
-          (list
-           (channel-guix    #:commit "2dde6fc80f96cd8b1edef8f61637cc2adeb8919f")
-           (channel-nonguix #:commit "a3f4e7bff779da4593a2922516064a8edaafa3e6")))
+    ;; (list #:package "firefox" #:channels
+    ;;       (list
+    ;;        (channel-guix    #:commit "2dde6fc80f96cd8b1edef8f61637cc2adeb8919f")
+    ;;        (channel-nonguix #:commit "a3f4e7bff779da4593a2922516064a8edaafa3e6")))
     )))
 
 (define (devel-guile-ide-arei-packages)
