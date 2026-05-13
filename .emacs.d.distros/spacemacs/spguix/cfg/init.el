@@ -13,6 +13,13 @@ differences were encountered."
        (message "WARN (expand-file-name def-val): %s and evar: %s=%s differ"
                 (expand-file-name ,def-val) ,evar-name evar-val))))
 
+(defun my-dotf-path (&rest parts)
+  "Build a path to dotfiles from environment variable \"dotf\" or
+\"~/dotfiles\" and PARTS."
+  (expand-file-name
+   (mapconcat #'identity parts "/")
+   (expand-file-name (or (getenv "dotf") "~/dotfiles"))))
+
 ;; When running from bash on a non-Guix system, some environment variables may
 ;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
 
@@ -44,8 +51,7 @@ This function should only modify configuration layer settings."
    ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
    dotspacemacs-configuration-layer-path
    `(
-     ,(concat (getenv "dotf")
-              "/.emacs.d.distros/spacemacs/configuration-layer/")
+     ,(my-dotf-path ".emacs.d.distros/spacemacs/configuration-layer")
      )
 
    ;; List of configuration layers to load.
@@ -1453,6 +1459,14 @@ before packages are loaded."
   ;;; hello
   ;;; #+end_src
 
+  ;; Remove emtpy spaces at the beginning of the lines, then apply the macro
+  (defalias 'macro-format-guix-channels
+    (kmacro
+     (concat
+      "f SPC D j 2 d d k J f : x i <delete>"
+      " \" M-s-<right> <home> # : <escape> f SPC r - <home> <left> <down>")))
+  (global-set-key (kbd "<f6>") #'macro-format-guix-channels)
+
   (defun tw-shell-path ()
     ;; (tw-shell-which "fish")
     (getenv "SHELL"))
@@ -1562,7 +1576,8 @@ before packages are loaded."
 
    goto-address-mode nil
    frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
-   bookmark-default-file (concat (getenv "dotf") "/.emacs.d.distros/bookmarks")
+   bookmark-default-file (my-dotf-path ".emacs.d.distros/bookmarks")
+
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
    ediff-window-setup-function 'ediff-setup-windows-default
 
@@ -1688,8 +1703,8 @@ before packages are loaded."
     ;; :load-path "~/.config/emacs/elisp/"
     :custom
     (kbd-mode-kill-kmonad "pkill -9 kmonad")
-    (kbd-mode-start-kmonad
-     (format "kmonad %s/kmonad/KMonad.kbd" (getenv "dotf"))))
+    (kbd-mode-start-kmonad (concat "kmonad "
+                                   (my-dotf-path "kmonad/KMonad.kbd"))))
 
   (use-package org
     :hook
@@ -2127,15 +2142,6 @@ Some binding snippets / examples:
     ;; (global-unset-key (kbd "<H-menu>"))
     (message "(enable-hyper-super-modifiers-linux-x) evaluated"))
 
-  (defun enable-hyper-super-modifiers-macos ()
-    ;; http://xahlee.org/emacs/emacs_hyper_super_keys.html
-    (setq
-     mac-option-modifier 'hyper         ; Option key is Hyper
-     mac-option-modifier 'super         ; Option key is Super
-     mac-command-modifier 'meta         ; Command key is Meta
-     mac-control-modifier 'meta         ; Control key is Meta
-     ))
-
   (defun enable-hyper-super-modifiers ()
     (let ((frame (framep (selected-frame))))
       (cond
@@ -2143,8 +2149,7 @@ Some binding snippets / examples:
         (enable-hyper-super-modifiers-win32))
        ((eq frame 'x)
         (enable-hyper-super-modifiers-linux-x))
-       ((eq frame 'ns)
-        (enable-hyper-super-modifiers-macos))
+       ;; ((eq frame 'ns) ...) ;; Mac OS
        (t
         (message "%s %s %s"
                  "[enable-hyper-super-modifiers]"
@@ -2206,15 +2211,14 @@ Some binding snippets / examples:
                   ))
     )
 
-  ;; TODO This doesn't work:
-  ;; (with-eval-after-load 'magit-status-mode
-  ;;   (bind-keys :map magit-status-mode-map
-  ;;              ("s-\\" . magit-diff-toggle-refine-hunk)))
+  (with-eval-after-load 'magit-status
+    (bind-keys :map magit-status-mode-map
+               ("s-\\" . magit-diff-toggle-refine-hunk)))
 
-  ;; TODO This doesn't work:
-  ;; (with-eval-after-load 'magit-revision-mode
-  ;;   (bind-keys :map magit-revision-mode-map
-  ;;              ("s-\\" . magit-diff-toggle-refine-hunk)))
+  ;; magit-revision-mode-map is defined in ‘magit-diff.el’
+  (with-eval-after-load 'magit-diff
+    (bind-keys :map magit-revision-mode-map
+               ("s-\\" . magit-diff-toggle-refine-hunk)))
 
   (with-eval-after-load 'magit-mode
     (bind-keys :map magit-mode-map
@@ -2312,7 +2316,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                ("<return>"    . dired-find-file) ;; default
                ("S-<delete>"  . tw-dired-do-delete)))
 
-  (with-eval-after-load 'paredit-mode
+  (with-eval-after-load 'paredit
     (bind-keys :map paredit-mode-map
                ;; these keybindings don't work in the cider-repl-mode-map
                ("C-<right>"    . right-word)
@@ -2348,7 +2352,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                  ("ty" . tw-clj-insert-type)
                  ("ma" . tw-clj-insert-map-fn)))
 
-  (with-eval-after-load 'cider-repl-mode
+  (with-eval-after-load 'cider-repl
     (my-clj-bind-keys-and-chords cider-repl-mode-map)
     (bind-keys :map cider-repl-mode-map
                ("<menu>" . tw-stop-synths-metronoms)
@@ -2697,24 +2701,21 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   (advice-add #'helm-mini
               :before #'tw-helm-mini)
   (advice-add #'helm-mini
-              :after
-              (defun my-note--evil-avy-goto-char-timer ()
-                (message
-                 "[advice helm-mini] %s"
-                 "Toggle mark / unmark all buffers: ~M-m~")))
+              :after (defun my-note--helm-mini ()
+                       (message
+                        "[advice helm-mini] %s"
+                        "Toggle mark / unmark all buffers: ~M-m~")))
   (advice-add #'spacemacs/helm-persp-switch-project
-              :after
-              (defun my-note--spacemacs/helm-persp-switch-project (_)
-                (message
-                 "[advice spacemacs/helm-persp-switch-project] %s"
-                 "Try: ~SPC p p~ for M-x helm-projectile-switch-project")))
+              :after (defun my-note--spacemacs/helm-persp-switch-project (_)
+                       (message
+                        "[advice spacemacs/helm-persp-switch-project] %s"
+                        "Try ~SPC p p~ : M-x helm-projectile-switch-project")))
 
   (advice-add #'spacemacs/toggle-menu-bar
-              :after
-              (defun my-note--spacemacs/toggle-menu-bar ()
-                (message
-                 "[advice spacemacs/toggle-menu-bar] %s"
-                 "Try also: ~M-`~ for M-x tmm-menubar")))
+              :after (defun my-note--spacemacs/toggle-menu-bar ()
+                       (message
+                        "[advice spacemacs/toggle-menu-bar] %s"
+                        "Try ~M-`~ : M-x tmm-menubar")))
 
   (mapcar
    (lambda (map)
