@@ -325,7 +325,14 @@ This function should only modify configuration layer settings."
       :variables
       ;; (setq
       gptel-api-key (getenv "OPENAI_KEY")
-      gptel-model 'gpt-4o
+
+      ;; Price is in USD per 1M tokens
+      gptel-model 'gpt-5.5        ; In  5.00, Cached In 0.50, Out  30.00
+      ;; gptel-model 'gpt-5.5-pro ; In 30.00, Cached In    -, Out 180.00
+      ;; gptel-model 'gpt-5.4     ; In  2.50, Cached In 0.25, Out  15.00
+      ;; gptel-model 'gpt-5.4-mini
+      ;; gptel-model 'gpt-5.4-nano
+
       llm-client-enable-gptel t
       ;; )
       )
@@ -577,7 +584,10 @@ This function should only modify configuration layer settings."
      ;; strace-mode
 
      ;; Customize / extend keyboard functionality https://github.com/kmonad
-     (kbd-mode :location (recipe :fetcher github :repo "kmonad/kbd-mode"))
+     kbd-mode
+
+     claude-code-ide
+     ;; copilot
 
      ;; ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
      ;; rjsx-mode
@@ -667,9 +677,7 @@ This function should only modify configuration layer settings."
 
      tldr ;; access `tldr' pages from within Emacs
 
-     ;; M-x xhair-mode
-     ;; https://github.com/Boruch-Baum/emacs-xhair
-     (xhair :location (recipe :fetcher github :repo "Boruch-Baum/emacs-xhair"))
+     xhair ;; M-x xhair-mode
 
      ;; ;; Minimalist presentation minor-mode for Emacs Org mode
      ;; org-present   ; (Spacemacs) Warning: Unknown layer declared in dotfile
@@ -1698,6 +1706,25 @@ before packages are loaded."
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   ;; (xterm-mouse-mode -1)
   (super-save-mode +1) ;; better auto-save-mode
+
+  (use-package claude-code-ide
+    :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+    :config
+    ;; Optionally enable Emacs MCP (Model Context Protocol) tools
+    ;; MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems.
+    ;; (claude-code-ide-emacs-tools-setup)
+    )
+
+  ;; (use-package copilot
+  ;;   :ensure t
+  ;;   :hook (prog-mode . copilot-mode)
+  ;;   :bind (:map copilot-completion-map
+  ;;               ("<tab>" . copilot-accept-completion)
+  ;;               ("TAB" . copilot-accept-completion)
+  ;;               ("C-<tab>" . copilot-accept-completion-by-word)
+  ;;               ("C-TAB" . copilot-accept-completion-by-word)
+  ;;               ("C-n" . copilot-next-completion)
+  ;;               ("C-p" . copilot-previous-completion)))
 
   (use-package kbd-mode
     ;; :load-path "~/.config/emacs/elisp/"
