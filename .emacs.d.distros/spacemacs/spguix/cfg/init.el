@@ -325,7 +325,14 @@ This function should only modify configuration layer settings."
       :variables
       ;; (setq
       gptel-api-key (getenv "OPENAI_KEY")
-      gptel-model 'gpt-4o
+
+      ;; Price is in USD per 1M tokens
+      gptel-model 'gpt-5.5        ; In  5.00, Cached In 0.50, Out  30.00
+      ;; gptel-model 'gpt-5.5-pro ; In 30.00, Cached In    -, Out 180.00
+      ;; gptel-model 'gpt-5.4     ; In  2.50, Cached In 0.25, Out  15.00
+      ;; gptel-model 'gpt-5.4-mini
+      ;; gptel-model 'gpt-5.4-nano
+
       llm-client-enable-gptel t
       ;; )
       )
