@@ -586,6 +586,7 @@ This function should only modify configuration layer settings."
      ;; Customize / extend keyboard functionality https://github.com/kmonad
      kbd-mode
 
+     claude-code-ide
      ;; ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
      ;; rjsx-mode
 
@@ -1703,6 +1704,14 @@ before packages are loaded."
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   ;; (xterm-mouse-mode -1)
   (super-save-mode +1) ;; better auto-save-mode
+
+  (use-package claude-code-ide
+    :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+    :config
+    ;; Optionally enable Emacs MCP (Model Context Protocol) tools
+    ;; MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems.
+    ;; (claude-code-ide-emacs-tools-setup)
+    )
 
   (use-package kbd-mode
     ;; :load-path "~/.config/emacs/elisp/"
