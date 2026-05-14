@@ -575,11 +575,6 @@ This function should only modify configuration layer settings."
      ;; ob-chatgpt-shell
      ;; pcsv ;; CSV parser needed by `chatgpt-shell-load-awesome-prompts'
 
-     ;; (copilot :location (recipe
-     ;;                     :fetcher github
-     ;;                     :repo "zerolfx/copilot.el"
-     ;;                     :files ("*.el" "dist")))
-
      ;; Highlight output from `strace'
      ;; strace-mode
 
@@ -1715,17 +1710,6 @@ before packages are loaded."
     ;; (claude-code-ide-emacs-tools-setup)
     )
 
-  ;; (use-package copilot
-  ;;   :ensure t
-  ;;   :hook (prog-mode . copilot-mode)
-  ;;   :bind (:map copilot-completion-map
-  ;;               ("<tab>" . copilot-accept-completion)
-  ;;               ("TAB" . copilot-accept-completion)
-  ;;               ("C-<tab>" . copilot-accept-completion-by-word)
-  ;;               ("C-TAB" . copilot-accept-completion-by-word)
-  ;;               ("C-n" . copilot-next-completion)
-  ;;               ("C-p" . copilot-previous-completion)))
-
   (use-package kbd-mode
     ;; :load-path "~/.config/emacs/elisp/"
     :custom
@@ -2688,40 +2672,39 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; (advice-add #'evil-ex-search-previous
   ;;             :after #'evil-scroll-line-to-center)
 
-  ;; === BEG adjust-point-pos-after-search
-  (advice-add
-   #'evil-ex-search-next
-   :before
-   #'tw-adjust-point-pos-before-search
-   ;; (lambda (&optional COUNT)
-   ;;   (interactive)
-   ;;   (evil-scroll-line-to-center)
-   ;;   ;; (setq my-line-before (line-number-at-pos))
-   ;;   )
-   ;; ;; convenient name for identifying or removing this advice later
-   ;; '((name . "before-search"))
-   )
-  (advice-add #'evil-ex-search-next :after #'tw-adjust-point-pos-after-search)
-  (advice-add #'evil-ex-search-previous :before #'tw-adjust-point-pos-before-search)
-  (advice-add #'evil-ex-search-previous :after #'tw-adjust-point-pos-after-search)
-  (advice-add #'evil-goto-line :before #'evil-scroll-line-to-center)
-  (advice-add #'evil-goto-line :after #'evil-scroll-line-to-center)
+  (progn ; adjust-point-pos-after-search
+    (advice-add
+     #'evil-ex-search-next
+     :before
+     #'tw-adjust-point-pos-before-search
+     ;; (lambda (&optional COUNT)
+     ;;   (interactive)
+     ;;   (evil-scroll-line-to-center)
+     ;;   ;; (setq my-line-before (line-number-at-pos))
+     ;;   )
+     ;; ;; convenient name for identifying or removing this advice later
+     ;; '((name . "before-search"))
+     )
+    (advice-add #'evil-ex-search-next :after #'tw-adjust-point-pos-after-search)
+    (advice-add #'evil-ex-search-previous :before #'tw-adjust-point-pos-before-search)
+    (advice-add #'evil-ex-search-previous :after #'tw-adjust-point-pos-after-search)
+    (advice-add #'evil-goto-line :before #'evil-scroll-line-to-center)
+    (advice-add #'evil-goto-line :after #'evil-scroll-line-to-center)
 
-  ;; Both ~*~ / ~<kp-multiply>~ and ~s-*~ / ~<s-kp-multiply>~ should behave the
-  ;; same and open that transient menu.
-  (global-set-key (kbd "s-*") #'spacemacs/enter-ahs-backward)
-  (global-set-key (kbd "<s-kp-multiply>") #'spacemacs/enter-ahs-backward)
+    ;; Both ~*~ / ~<kp-multiply>~ and ~s-*~ / ~<s-kp-multiply>~ should behave the
+    ;; same and open that transient menu.
+    (global-set-key (kbd "s-*") #'spacemacs/enter-ahs-backward)
+    (global-set-key (kbd "<s-kp-multiply>") #'spacemacs/enter-ahs-backward)
 
-  ;; (advice-remove #'evil-ex-search-next "before-search")
-  ;; (advice-remove #'evil-ex-search-next #'tw-adjust-point-pos-before-search)
-  ;; (advice-remove #'evil-ex-search-next #'tw-adjust-point-pos-after-search)
-  ;; (advice-remove #'evil-ex-search-next #'evil-scroll-line-to-center)
-  ;; (advice-remove #'evil-ex-search-previous #'tw-adjust-point-pos-before-search)
-  ;; (advice-remove #'evil-ex-search-previous #'tw-adjust-point-pos-after-search)
-  ;; (advice-remove #'evil-goto-line #'evil-scroll-line-to-center)
-  ;; (advice-remove #'evil-goto-line #'evil-scroll-line-to-center)
-
-  ;; === END adjust-point-pos-after-search
+    ;; (advice-remove #'evil-ex-search-next "before-search")
+    ;; (advice-remove #'evil-ex-search-next #'tw-adjust-point-pos-before-search)
+    ;; (advice-remove #'evil-ex-search-next #'tw-adjust-point-pos-after-search)
+    ;; (advice-remove #'evil-ex-search-next #'evil-scroll-line-to-center)
+    ;; (advice-remove #'evil-ex-search-previous #'tw-adjust-point-pos-before-search)
+    ;; (advice-remove #'evil-ex-search-previous #'tw-adjust-point-pos-after-search)
+    ;; (advice-remove #'evil-goto-line #'evil-scroll-line-to-center)
+    ;; (advice-remove #'evil-goto-line #'evil-scroll-line-to-center)
+    )
 
   (advice-add #'ediff-quit
               :around #'tw-disable-y-or-n-p)
@@ -2797,24 +2780,31 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; (add-to-list 'spacemacs-indent-sensitive-modes #'clojure-mode)
   ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojurescript-mode)
 
-  ;; accept completion from copilot and fallback to company
+  (progn ; copilot config
+    ;; accept completion from copilot and fallback to company
+    ;; (with-eval-after-load 'company
+    ;;   ;; disable inline previews
+    ;;   (delq 'company-preview-if-just-one-frontend company-frontends))
 
-  ;;; github copilot config begin
-  ;; (with-eval-after-load 'company
-  ;;   ;; disable inline previews
-  ;;   (delq 'company-preview-if-just-one-frontend company-frontends))
+    ;; (with-eval-after-load 'copilot
+    ;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+    ;;   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
 
-  ;; (with-eval-after-load 'copilot
-  ;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-  ;;   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
+    ;; (add-hook 'prog-mode-hook 'copilot-mode)
 
-  ;; (add-hook 'prog-mode-hook 'copilot-mode)
+    ;; (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
+    ;; (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
 
-  ;; (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
-  ;; (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
-  ;;; github copilot config end
-
-  )
+    ;; (use-package copilot
+    ;;   :hook (prog-mode . copilot-mode)
+    ;;   :bind (:map copilot-completion-map
+    ;;               ("<tab>" . copilot-accept-completion)
+    ;;               ("TAB" . copilot-accept-completion)
+    ;;               ("C-<tab>" . copilot-accept-completion-by-word)
+    ;;               ("C-TAB" . copilot-accept-completion-by-word)
+    ;;               ("C-n" . copilot-next-completion)
+    ;;               ("C-p" . copilot-previous-completion)))
+    ))
 
 ;;; `package-directory-list' is list of directories containing packages intended
 ;;; for system-wide use. Original value of `package-directory-list' contains
