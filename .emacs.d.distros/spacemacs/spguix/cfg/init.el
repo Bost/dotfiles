@@ -577,7 +577,7 @@ This function should only modify configuration layer settings."
      ;; strace-mode
 
      ;; Customize / extend keyboard functionality https://github.com/kmonad
-     (kbd-mode :location (recipe :fetcher github :repo "kmonad/kbd-mode"))
+     kbd-mode
 
      ;; ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
      ;; rjsx-mode
@@ -667,9 +667,7 @@ This function should only modify configuration layer settings."
 
      tldr ;; access `tldr' pages from within Emacs
 
-     ;; M-x xhair-mode
-     ;; https://github.com/Boruch-Baum/emacs-xhair
-     (xhair :location (recipe :fetcher github :repo "Boruch-Baum/emacs-xhair"))
+     xhair ;; M-x xhair-mode
 
      ;; ;; Minimalist presentation minor-mode for Emacs Org mode
      ;; org-present   ; (Spacemacs) Warning: Unknown layer declared in dotfile
