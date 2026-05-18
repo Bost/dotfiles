@@ -60,7 +60,7 @@ set -x # Print commands and their arguments as they are executed.
 # See /home/bost/.config/guix/current/bin/guix-daemon
 
 source /etc/profile 2>/dev/null
-guix pull --cores=$cores --allow-downgrades \
+guix pull --cores=$cores --unsafe-channel-evaluation --allow-downgrades \
      --load-path=$baseLP/common \
      --channels=$baseLP/systems/common/syst-channels.scm \
      "$@"
