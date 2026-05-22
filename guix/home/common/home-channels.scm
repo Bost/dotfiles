@@ -46,29 +46,28 @@
 
    (channel-guix-android #:commit guix-android-commit)
 
-   ;; The `guix-past' channel is not needed directly, however it is required by
-   ;; the `games' channel, which, without this pinning would pull from the
-   ;; latest channel version
-   (channel-guix-past #:commit guix-past-commit)
-
    ;; whereiseveryone
    ;; (channel-guixrus #:commit guixrus-commit)
 
-   ;; (channel-hask-clj #:commit hask-clj-commit)
    (channel-hask-clj #:commit hask-clj-commit)
 
    ;; For factorio, pulls-in nonguix guix-past
    (channel-games #:commit games-commit)
 
+   ;; The `guix-past' channel is not needed directly, however it is required by
+   ;; the `games' channel, which, without this pinning would pull from the
+   ;; latest channel version
+   (channel-guix-past #:commit guix-past-commit)
+
    ;; (channel-home-service-dwl-guile)
    ;; (channel-flat)
    ;; (channel-rde)
 
-   ;; pulls-in: guix nonguix guix-rust-past-crates
-   (channel-bost #:commit bost-commit)
-
    ;; guake
    (channel-guix-guake #:commit guix-guake-commit)
+
+   ;; pulls-in: guix nonguix guix-rust-past-crates
+   (channel-bost #:commit bost-commit)
    ))
 
 (def* (home-channels #:key
