@@ -35,8 +35,6 @@ cd $dotf
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define cores (or (getenv "cores") "1"))
-
 (define (file-exists-and-readable? path)
   "Check if file exists and is readable"
   (access? path R_OK))
@@ -72,7 +70,7 @@ cd $dotf
               (get-extra-profiles)))
     cdr
     exec)
-   (str "guix package --cores=" cores " --list-profiles")))
+   (str "guix package --list-profiles")))
 
 (define (profile-param profile) (format #f "--profile=~a" profile))
 
@@ -127,7 +125,7 @@ Usage:
     ((comp
       ;; (lambda (v) (format #t "~a done\n" f) v)
       (partial map (comp print-package-table parse-package-output cdr exec))
-      (partial map (partial format #f "guix package --cores=~a ~a" cores))
+      (partial map (partial format #f "guix package ~a"))
       (partial map (comp
                     (lambda (lst) (string-join lst " "))
                     (lambda (lst) (append lst args))
