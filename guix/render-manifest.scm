@@ -1,17 +1,11 @@
-#|
-guix repl -L /home/bost/dev/dotfiles/guix -L /home/bost/dev/dotfiles/guix/common -L /home/bost/dev/dotfiles/guix/home/common /home/bost/dev/dotfiles/guix/render-manifest.scm
-guix package --cores=24 --profile=/home/bost/.guix-profile --manifest=/home/bost/dev/dotfiles/profile-manifest-evaluated.scm
-|#
-
-;; render-manifest.scm
 (use-modules (guix profiles)
              (srfi srfi-1)
              (ice-9 pretty-print))  ; enables pretty-print
 
-(define output-file "/home/bost/dev/dotfiles/profile-manifest-evaluated.scm")
+(define output-file "/tmp/profile-manifest-evaluated.scm")
 
 (define my-manifest
-  (load "/home/bost/dev/dotfiles/guix/profile-manifest.scm"))
+  (load (string-append (getenv "dtf") "/guix/profile-manifest.scm")))
 
 (define specs
   (map (lambda (entry)
