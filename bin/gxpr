@@ -18,7 +18,7 @@ baseLP=$dotf/guix # base-load-path
 
 set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null
-guix package --cores=$cores \
+guix package \
      --load-path=$baseLP/common \
      --load-path=$baseLP/home/common \
      --profile=$HOME/.guix-profile \

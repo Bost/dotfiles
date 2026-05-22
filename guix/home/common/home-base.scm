@@ -230,6 +230,7 @@
      ("bin"   . ,(user-home bin-dirpath))
      ("cheat" . ,(user-dev "/cheat"))
      ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
+     ;; --cores=n # Use n CPU cores; =0 use as many as available. (default=0)
      ("cores" . ,(number->string ((@(ice-9 threads) current-processor-count))))
      ("dotf"  . ,dotf)
      ("dtf"   . ,dtf)

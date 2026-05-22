@@ -513,7 +513,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    dos2unix
    drawing     ; basic image editor
 
-   ;; guix package --cores=24 '--search=dvd\+rw-tools'
+   ;; guix package '--search=dvd\+rw-tools'
    dvd+rw-tools ; DVD and Blu-ray Disc burning tools
 
    fastboot    ; Android image flasher: upload file system images

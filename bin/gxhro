@@ -4,13 +4,8 @@
 # chain the commands using '&&', since 'set -e' is used.
 set -e
 
-baseLP=$dotf/guix # base-load-path
-
 set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null
-guix home --cores=$cores \
-     --load-path=$baseLP/common \
-     --load-path=$baseLP/home/common \
-     roll-back "$@"
+guix home roll-back "$@"
 { retval="$?"; set +x; } 2>/dev/null
 exit $retval

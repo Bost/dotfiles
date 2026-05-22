@@ -2,6 +2,6 @@
 
 set -x  # Print commands and their arguments as they are executed.
 # -r, --remove PACKAGE
-guix package --cores=$cores --remove "$@"
+guix package --remove "$@"
 { retval="$?"; set +x; } 2>/dev/null
 exit $retval

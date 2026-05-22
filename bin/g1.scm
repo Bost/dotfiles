@@ -121,7 +121,7 @@ described by the line and column information. Is it possible? e.g.
             #;(begin
               (format #f "sed -i -e \"s|hashhash|~a|\" ~a/gnu/packages/emacs.scm" hash gp)
               (format #f "sed -i -e \"s|basebase|~a|\" ~a/gnu/packages/emacs.scm" base32 gp)
-              (format #f "guix build --cores=20 --load-path=~a emacs-next-~a" gp hash)))
+              (format #f "guix build --load-path=~a emacs-next-~a" gp hash)))
           (format #t "ERR: Command failed")))))
 
 #;(eval-string "(+ 1 2)" (interaction-environment))

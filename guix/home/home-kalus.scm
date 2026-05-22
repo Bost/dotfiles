@@ -10,7 +10,7 @@
 # sourcing the default bash profile and run `guix home ...` command from bash:
 
 source /etc/profile && baseLP=$HOME/dev/dotfiles/guix
-guix home --allow-downgrades --cores=$cores \
+guix home --allow-downgrades \
      -L $baseLP/common -L $baseLP/home/common \
      reconfigure $baseLP/home/home-kalus.scm
 # -L --load-path

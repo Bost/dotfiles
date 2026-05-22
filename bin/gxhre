@@ -12,7 +12,7 @@ configFile=$(printf "%s/home/home-%s.scm" $baseLP $hostname)
 
 set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null
-guix home --cores=$cores --allow-downgrades \
+guix home --allow-downgrades \
      --load-path=$baseLP/common \
      --load-path=$baseLP/home/common \
      reconfigure \
