@@ -272,6 +272,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Cross-platform curses-based monitoring tool; like htop
     glances
 
+    ;; Modern replacement for `ps' (process snapshot)
+    procs
+
     ;; terminal multiplexer, more popular and modern than 'screen'
     tmux
 
