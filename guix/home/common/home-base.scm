@@ -83,7 +83,8 @@
   (append
    ;; (service home-xsettingsd-service-type)
    (list
-    (fish-service)
+    (fish-package-service)
+    (fish-dotfiles-service)
     (service
      home-bash-service-type
      (home-bash-configuration
