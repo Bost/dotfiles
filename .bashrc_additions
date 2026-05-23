@@ -156,4 +156,6 @@ create_test_repo() {
     "${EDITOR:-emacs -nw}" foo.txt
 }
 
+eval "$(starship init bash)"
+
 #### home-bash-configuration -> .bashrc_additions: end
