@@ -42,7 +42,7 @@
 
    ;; When firefox substitutes are not available in the nonguix channel. Fetch
    ;; them from the guix-sciene
-   (channel-guix-science #:commit guix-science-commit)
+   ;; (channel-guix-science #:commit guix-science-commit)
 
    (channel-guix-android #:commit guix-android-commit)
 
@@ -282,15 +282,25 @@
  ;; #:guix-commit         "e6b49f7d47cb1c38bfeba661a5e5cc6d1d17c4f4"
 
  ;; May 22 2026 16:22:41
+ ;; #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
+ ;; #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
+ ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
+ ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
+ ;; #:bost-commit         "80e1dcb489b51ff226976ee3a444a466912d46ad"
+ ;; #:guix-commit         "e6b49f7d47cb1c38bfeba661a5e5cc6d1d17c4f4"
+
+ ;; 23 mai 2026 20:02:23
  #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
- #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
  #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
  #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
  #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- #:bost-commit         "80e1dcb489b51ff226976ee3a444a466912d46ad"
- #:guix-commit         "e6b49f7d47cb1c38bfeba661a5e5cc6d1d17c4f4"
+ #:guix-past-commit    "a0ea643f565d5aaa70e50e6a83865389aa5d80ba"
+ #:guix-guake-commit   "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
+ #:bost-commit         "c29b25bd632a955bd355979bd081987a8683fc04"
+ #:guix-commit         "0b597e551715ca6cbdbb2ffeacd530624a01d200"
  )
 
 ;; It makes no sense to add generation number to the comment. Generation numbers

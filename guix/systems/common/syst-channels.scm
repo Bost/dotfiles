@@ -26,7 +26,7 @@
       (if (or (host-edge?) (host-ecke?) (host-geek?))
           (append
            (list
-            (channel-guix-science #:commit guix-science-commit)
+            ;; (channel-guix-science #:commit guix-science-commit)
             (channel-nonguix #:commit nonguix-commit)
             ) lst)
           lst)))
@@ -56,9 +56,13 @@
  ;; #:guix-commit         "1672274e6f2bb20fb72bc8150ce4d0225281ac6b"
 
  ;; 22 mai 2026 14:25:04
+ ;; #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
+ ;; #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
+ ;; #:guix-commit         "e6b49f7d47cb1c38bfeba661a5e5cc6d1d17c4f4"
+
+ ;; May 23 2026 20:08:14
  #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
- #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
- #:guix-commit         "e6b49f7d47cb1c38bfeba661a5e5cc6d1d17c4f4"
+ #:guix-commit         "0b597e551715ca6cbdbb2ffeacd530624a01d200"
  )
 
 ;; It makes no sense to add generation number to the comment. Generation numbers
