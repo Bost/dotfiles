@@ -208,6 +208,11 @@ TODO implement: Show warning & don't compile if substitutes are not present."
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)
+    (partial append (list
+                     fish
+                     font-nerd-symbols ; required by starship
+                     starship
+                     ))
     )
    (list
     bash
@@ -222,7 +227,6 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     eza
 
     fd
-    fish
     git
 
 ;;; glibc and glibc-locales are needed to prevent:
