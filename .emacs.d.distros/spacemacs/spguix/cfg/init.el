@@ -20,6 +20,76 @@ differences were encountered."
    (mapconcat #'identity parts "/")
    (expand-file-name (or (getenv "dotf") "~/dotfiles"))))
 
+(defvar my-env-secrets-file
+  (expand-file-name "~/.env-secrets.gpg")
+  "Encrypted Bash-style environment file.")
+
+(defun my-load-env-secrets ()
+  "Decrypt `my-env-secrets-file`, let Bash source it, and import env vars."
+  (interactive)
+  (let ((decrypted-buffer (generate-new-buffer " *my-env-secrets-decrypted*"))
+        (env-buffer (generate-new-buffer " *my-env-secrets-env*")))
+    (unwind-protect
+        (progn
+          ;; Decrypt the file into a temporary Emacs buffer.
+          (with-current-buffer decrypted-buffer
+            (let ((status
+                   (call-process
+                    "gpg"
+                    nil
+                    decrypted-buffer
+                    nil
+                    "--quiet"
+                    "--for-your-eyes-only"
+                    "--decrypt"
+                    my-env-secrets-file)))
+              (unless (eq status 0)
+                (error "Failed to decrypt %s" my-env-secrets-file))))
+
+          ;; Let Bash parse the decrypted file.
+          ;;
+          ;; Bash has no long option for `-c`.
+          ;; `-c` means: execute the following string as Bash code.
+          ;;
+          ;; `--noprofile` means: do not read Bash profile files.
+          ;; `--norc` means: do not read ~/.bashrc.
+          ;;
+          ;; `env --null` prints environment entries separated by NUL bytes.
+          (with-current-buffer decrypted-buffer
+            (let ((status
+                   (call-process-region
+                    (point-min)
+                    (point-max)
+                    "bash"
+                    nil
+                    env-buffer
+                    nil
+                    "--noprofile"
+                    "--norc"
+                    "-c"
+                    "source /dev/stdin >/dev/null && env --null")))
+              (unless (eq status 0)
+                (error "Failed to source decrypted env file with Bash"))))
+
+          ;; Import Bash's resulting environment into Emacs.
+          (with-current-buffer env-buffer
+            (dolist (entry (split-string (buffer-string) "\0" t))
+              (when (string-match "\\`\\([^=]+\\)=\\(.*\\)\\'" entry)
+                (setenv (match-string 1 entry)
+                        (match-string 2 entry))))))
+
+      ;; Ensure decrypted secrets do not remain in buffers.
+      (kill-buffer decrypted-buffer)
+      (kill-buffer env-buffer))))
+
+(defun my-load-gptel-key ()
+  "Load OPENAI_KEY from encrypted env file and assign it to `gptel-api-key`."
+  (interactive)
+  (my-load-env-secrets)
+  (setq gptel-api-key (getenv "OPENAI_KEY"))
+  (message "gptel-api-key %s"
+           (if gptel-api-key "loaded" "is still nil")))
+
 (defun my-shell-path ()
   ;; (tw-shell-which "fish")
   (getenv "SHELL"))
@@ -750,6 +820,8 @@ This function should only modify configuration layer settings."
       gptel-api-key (getenv "OPENAI_KEY")
 
       ;; curl --request GET --header "Authorization: Bearer ${OPENAI_KEY}" "https://api.openai.com/v1/models"
+      ;; See https://platform.openai.com/settings/organization/usage
+      ;; Change with https://platform.openai.com/settings/.../limits
       ;; Price is in USD per 1M tokens
       gptel-model 'gpt-5.5        ; In  5.00, Cached In 0.50, Out  30.00
       ;; gptel-model 'gpt-5.5-pro ; In 30.00, Cached In    -, Out 180.00
