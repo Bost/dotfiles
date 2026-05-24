@@ -1942,22 +1942,6 @@ before packages are loaded."
 
   ;; (spaceline-all-the-icons-theme)
 
-  ;; (use-package chatgpt :ensure t)
-  ;; (use-package chatgpt-shell
-  ;;   :ensure t
-  ;;   :custom
-  ;;   (ob-chatgpt-shell-setup)
-  ;;   (setq chatgpt-shell-openai-key (getenv "OPENAI_KEY"))
-  ;;   )
-  ;; ;;; org-babel setup and usage:
-  ;; (use-package ob-chatgpt-shell :config (ob-chatgpt-shell-setup))
-  ;;; #+begin_src chatgpt-shell
-  ;;; Mirror, mirror, who's the most beautiful person on Earth?
-  ;;; #+end_src
-  ;;; #+begin_src chatgpt-shell :temperature 0.3
-  ;;; hello
-  ;;; #+end_src
-
   ;; Remove emtpy spaces at the beginning of the lines, then apply the macro
   (defalias 'macro-format-guix-channels
     (kmacro
@@ -1995,17 +1979,6 @@ before packages are loaded."
                            #'tw-shell-readlink
                            #'tw-shell-which)
                           "plantuml")
-
-   ;; Costs money https://platform.openai.com/account/usage
-   ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
-   ;; Change it using `(chatgpt-shell-swap-model-version)'
-   ;; chatgpt-shell-model-version "gpt-4" ;; (Default 0; i.e. "gpt-3.5-turbo")
-   chatgpt-shell-openai-key (getenv "OPENAI_KEY")
-
-   ;; Costs money https://platform.openai.com/account/usage
-   ;; Need to join waitlist https://openai.com/waitlist/gpt-4-api
-   gptel-api-key (getenv "OPENAI_KEY")
-   ;; ;; gptel-model "gpt-4" ;; (Default "gpt-3.5-turbo")
 
    ;; The program of term.
    ;; If this is nil, setup to environment variable of `SHELL'.
