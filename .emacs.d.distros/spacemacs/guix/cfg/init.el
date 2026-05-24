@@ -20,6 +20,429 @@ differences were encountered."
    (mapconcat #'identity parts "/")
    (expand-file-name (or (getenv "dotf") "~/dotfiles"))))
 
+(defun my-shell-path ()
+  ;; (tw-shell-which "fish")
+  (getenv "SHELL"))
+(defun my-org-present-start ()
+  ;; Center the presentation and wrap lines
+  (visual-fill-column-mode 1)
+  (visual-line-mode 1))
+
+(defun my-org-present-end ()
+  ;; Stop centering the document
+  (visual-fill-column-mode 0)
+  (visual-line-mode 0))
+
+(defun my-load-layout ()
+  (interactive)
+  (persp-load-state-from-file (concat sp-layouts-dir "/persp-auto-save")))
+
+(defun my-racket-repl-clear ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    ;; (erase-buffer)
+    (delete-region (point-min) (- (point-max) 2))))
+
+(defun my-H-1 () (interactive) (message "H-1"))
+(defun my-H-2 () (interactive) (message "H-2"))
+(defun my-H-3 () (interactive) (message "H-3"))
+(defun my-H-4 () (interactive) (message "H-4"))
+
+(defun my-eval-bind-keys-and-chords ()
+  "To activate changes, do:
+    ~s-d~ my-eval-current-defun
+    ~s-+~ my-eval-bind-keys-and-chords
+
+Some binding snippets / examples:
+  (global-set-key (kbd \"s-<f2>\") \\='eshell)
+  (key-chord-define-global \"fj\" (lambda () (interactive)
+                                             (tw-insert-str \"()\" 1)))"
+  (interactive)
+
+  ;; (key-chord-define-global "fj" (lambda () (interactive)
+  ;;                                 (tw-insert-str "()" 1)))
+  ;; (key-chord-define clojure-mode-map "fj" nil)
+  ;; (key-chord-define global-map "fj" nil)
+
+  ;; see also `key-chord-unset-global' / `key-chord-unset-local'
+
+  ;; for the substitution: ~s-:~ / M-x tw-fabricate-subst-cmd
+  ;; TODO this keychord doesn't work
+  (bind-chords :map evil-ex-completion-map ; not he evil-ex-map!!!
+               ("()" . tw-insert-group-parens))
+  (bind-keys :map evil-ex-completion-map ; not he evil-ex-map!!!
+             ("s-0" . tw-insert-group-parens)
+             ("s-)" . tw-insert-group-parens))
+
+  ;; (setq evil-respect-visual-line-mode t) doesn't work easily
+  ;; `remap' can't use the #' reader syntax for function form
+  (global-set-key [remap move-beginning-of-line] #'crux-move-beginning-of-line)
+  (global-set-key [remap evil-beginning-of-line] #'crux-move-beginning-of-line)
+
+  ;; BUG: The ~C-z~ / M-x suspend-frame surfaces when calling
+  ;; ~SPC k e~ / M-x evil-lisp-state-sp-splice-sexp-killing-forward.
+  ;; since this function changes 'evil-state' to 'lisp'.
+  ;; ~ESC~ / M-x evil-lisp-state/quit
+  (global-unset-key (kbd "C-z"))
+
+  ;; See also the value of `dotspacemacs-smart-closing-parenthesis'
+  ;; (unbind-key ")" term-mode-map)
+
+  (bind-chords :map global-map
+               ("KK" . tw-switch-to-previous-buffer)
+               ;; don't need to switch keyboards just because of parenthesis
+               ("fj" . (tw-insert-str "()" 1)))
+
+  (progn
+    ;; "Set up multi-line comment style for Lisp code. Possible approaches:
+    ;; A. Automatic detection. It may miss some modes.
+    (add-hook 'prog-mode-hook 'tw-setup-lisp-comments-maybe)
+
+    ;; B. Explicit mode list (more reliable)
+    ;; (dolist (mode '(
+    ;;                 lisp-mode-hook
+    ;;                 emacs-lisp-mode-hook
+    ;;                 lisp-interaction-mode-hook
+    ;;                 scheme-mode-hook
+    ;;                 clojure-mode-hook
+    ;;                 racket-mode-hook
+    ;;                 ))
+    ;;   (add-hook mode 'tw-setup-lisp-comments))
+    )
+
+  ;; the comment is here just to get a better listing in `helm-swoop'
+  (bind-keys ; :map global-map
+   :map global-map
+   ("<f5>" . tw-revert-buffer-no-confirm)
+   ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
+
+   ;; TODO The <escape> keybinding seems not to work.
+   ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+   ;; TODO notmuch
+
+   ;; the funny keys can be seen
+   ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
+   ("C-s-<268632070>" . my-H-3) ;; this is probably for an Apple computers
+   ("<escape>"  . keyboard-escape-quit)
+
+   ("M-Q"       . unfill-paragraph)
+   ;; TODO in the fish-mode the ~M-q~ is bound to `paredit-reindent-defun',
+   ;; which doesn't work well for unfilling comments (filling works). The same
+   ;; goes for `unfill-toggle'. (Does `paredit-reindent-defun' call
+   ;; `unfill-toggle'?)
+   ;; ("M-q" . unfill-toggle)
+
+   ("s-="       . balance-windows-area)
+   ("s-K"       . kb-kill-buffers--unwanted)
+   ("s-C-K"     . kb-kill-buffers--dired)
+   ("s-R"       . spacemacs/rename-current-buffer-file)
+   ("s-q"       . tw-other-window)
+   ("s-k"       . kb-close-buffer)
+   ("s-s"       . save-buffer)
+   ("s-0"       . tw-delete-window)
+   ("s-1"       . tw-delete-other-windows)
+   ("S-s-<f8>"    . ace-swap-window) ; ~SPC w M~
+   ;; ("S-s-<f8>" . transpose-frame)
+   ;; ("s-2"    . tw-split-other-window-below)
+   ("s-2"       . split-window-below) ; ~SPC w -~
+   ;; see ~SPC w /~ and ~SPC w 2~
+   ;; ("s-3"    . spacemacs/window-split-double-columns)
+   ;; see ~SPC w /~ and ~SPC w 2~
+   ("s-3"       . split-window-right-and-focus)
+   ("s-9"       . my-load-layout)
+   ("s-+"       . my-eval-bind-keys-and-chords)
+   ("s-<kp-add>". my-eval-bind-keys-and-chords)
+   ("s-z"       . tw-buffer-selection-show)
+   ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
+   ("s-D"       . dired-jump) ;; just open a dired buffer
+
+   ;; The highlighting of copied sexps is done by the copy-sexp.el
+   ;; TODO highlight text yanked with `y'
+   ("s-c"       . sp-copy-sexp)
+   ("s-b"       . sp-backward-copy-sexp)
+
+   ;; ("<f11>"     . bookmark-set)
+   ;; ("<f11>"     . equake-toggle-fullscreen)
+   ;; Move the parenthesis - see SPC k b/B/f/F
+   ("M-s-<left>"  . sp-forward-barf-sexp)
+   ("M-s-<right>" . sp-forward-slurp-sexp)
+   ("C-s-<left>"  . sp-backward-slurp-sexp)
+   ("C-s-<right>" . sp-backward-barf-sexp)
+   ("s-;"         . spacemacs/comment-or-uncomment-lines)
+   ("C-s-;"       . tw-toggle-comment-sexp-lines)
+   ;; ("M-;"         . tw-toggle-comment-sexp-lines) ; was comment-dwim
+   ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
+   ("s-<f1>"      . tw-toggle-shell-pop-multiterm) ;; tw-toggle-shell-pop-term
+   ("s-<f2>"      . projectile-multi-term-in-root)
+
+   ;; M-x term-line-mode - emacs keybindings
+   ;; M-x term-char-mode - chars sent directly to terminal
+   ("s-<f3>"      . spacemacs/shell-pop-vterm)
+
+   ;; terminal in the current working directory
+   ;; ("s-<f1>"      . terminal-here-launch)
+   ;; ("s-<f1>"      . spacemacs/default-pop-shell)
+   ;; ("s-<f1>"      . spacemacs/projectile-shell)
+   ;; jumps to the shell opened by `spacemacs/projectile-shell'
+   ;; ("s-<f1>"      . spacemacs/projectile-shell-pop)
+   ;; ("s-<f1>"      . terminal-here-project-launch)
+   ("s-W"         . whitespace-cleanup)
+   ("s-w"         . tw-whitespace-mode-toggle)
+   ("s-m"         . tw-magit-status)
+   ("<f3>"   . tw-search-region-or-symbol) ; advice-d
+   ;; advice-d
+   ("M-<f3>" . spacemacs/helm-project-smart-do-search-region-or-symbol)
+
+   ("s-a"    . helm-mini) ;; advice-d
+   ("s-]"    . helm-mini)
+   ;; helm-mini doesn't show all buffers when using layouts (~SPC l~)
+   ("C-s-a"  . spacemacs-layouts/non-restricted-buffer-list-helm) ; advice-d
+
+   ("s-B"    . helm-filtered-bookmarks)
+   ("<f9>"   . helm-filtered-bookmarks)
+   ;; ("s-p" . helm-projectile)
+   ("s-p"    . helm-projectile-find-file)
+   ("s-P"    . spacemacs/helm-persp-switch-project) ; advice-d
+   ("s-f"    . helm-find-files)
+   ("s-F"    . helm-recentf)
+   ;; Can't use `advice'. This is an advice for the binding, not the function
+   ("s-r"    . (lambda ()
+                 (interactive) (helm-recentf)
+                 (message "Use ~s-F~ instead of ~s-r~ for M-x helm-recentf")))
+   ("M-y"    . helm-show-kill-ring)   ; replaces evil-paste-pop
+   ("s-G"    . helm-google-suggest)
+   ("s-/"    . helm-swoop)                          ; advice-d
+   ("s-?"    . helm-multi-swoop-all)
+   ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
+
+   ;; TODO crux-duplicate-current-line-or-region gets confused with registry
+   ;; content
+   ("C-s-<down>" . crux-duplicate-current-line-or-region)
+   ("C-s-<up>"   . (lambda (arg) (interactive "p")
+                     (crux-duplicate-current-line-or-region arg)
+                     (if (evil-normal-state-p)
+                         (evil-previous-line)
+                       (previous-line))))
+
+   ("C-c d"      . crux-duplicate-current-line-or-region)
+   ("C-c t"      . crux-transpose-windows)
+   ("C-s-<backspace>" . crux-kill-line-backwards) ; kill-line-backward
+   ("s-j"             . crux-top-join-line)
+
+   ;; TODO xah-backward-block xah-forward-block were removed (by a mistake)
+   ;; in cf18cf842d4097934f58977665925eff004702e2
+   ("C-<up>"            . xah-backward-block)
+   ("C-<down>"          . xah-forward-block)
+   ;; TODO make pg-up / pg-down major-mode specific
+   ;; ("C-<prior>"      . hs-hide-block)    ; pg-up
+   ;; ("C-<next>"       . hs-show-block)    ; pg-down
+   ;; ("C-M-<prior>"    . hs-toggle-hiding) ; pg-up
+   ;; ("C-M-<prior>"    . hs-hide-all)      ; Ctrl + pg-up
+   ;; ("C-M-<next>"     . hs-show-all)      ; Ctrl + pg-down
+   ("C-M-<delete>"      . kill-sexp)
+   ("C-M-s-<delete>"    . tw-delete-next-sexp)
+   ("C-M-s-<backspace>" . tw-delete-prev-sexp)
+   ("C-M-<backspace>"   . backward-kill-sexp)
+
+   ("s-<backspace>"     .
+    ;; Can't use `advice'. This is an advice for the binding, not the function
+    (lambda ()
+      (interactive) (paredit-backward-kill-word)
+      (message "See ~%s~ / M-x "
+               "SPC k E"
+               "evil-lisp-state-sp-splice-sexp-killing-backward")))
+
+   ("s-<delete>"        .
+    ;; Can't use `advice'. This is an advice for the binding, not the function
+    (lambda ()
+      (interactive) (paredit-forward-kill-word)
+      (message "See ~%s~ / M-x "
+               "SPC k e"
+               "evil-lisp-state-sp-splice-sexp-killing-forward")))
+
+   ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
+   ("s-g"     . tw-search-or-browse)
+   ("s-8" . er/expand-region)     ; increase selected region by semantic units
+   ("<f2>"    . evil-avy-goto-char-timer)
+   ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
+
+   ;; TODO s-a when "Last buffer not found."
+   ("s-<tab>" . spacemacs/alternate-buffer)
+
+   ("C-<next>"  . next-buffer)        ; SPC b n; Ctrl-PageDown
+   ("s-<right>" . next-buffer)
+   ("C-<prior>" . previous-buffer)    ; SPC b p; Ctrl-PageUp
+   ("s-<left>"  . previous-buffer)
+
+   ;; same bindings as in the guake terminal
+   ("S-s-<up>"    . evil-window-up)
+   ("S-s-<down>"  . evil-window-down)
+   ("S-s-<left>"  . evil-window-left)
+   ("S-s-<right>" . evil-window-right)
+
+   ;; ("s-<tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
+   ("C-<f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
+   ("C-s-/"   . avy-goto-line)
+
+   ;; fd - evil-escape from insert state and everything else
+   ;; occurrences - function scope
+   ;; ~n~ / ~N~ next / prev occurrence; ~TAB~ toggle occurrence
+   ("s-I"           . tw-iedit-mode-toggle)
+   ("s-i"           . iedit-mode)     ; all occurrences in the buffer
+   ;; ("s-i"        . spacemacs/enter-ahs-forward)
+
+   ;; undo-tree is unmaintained. Last commit in March 2021
+   ;; ("<f12>"         . undo-tree-visualize)
+
+   ;; ("S-<delete>" . kill-region)
+   ("C-s-<delete>"  . kill-line)      ; C-super-key
+   ("C-S-<delete>"  . kill-line)      ; C-shift-key
+   ;; ("s-l"        . spacemacs/resume-last-search-buffer)
+   ("s-v"           . tw-evil-select-pasted)
+
+   ;; TODO what's the difference between insert and insertchar?
+   ("S-s-<insert>" . tw-yank-and-select)
+
+   ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
+   ;; zop-up-to-char works as zop-to-char but stop just before target
+   ("M-z" . zop-up-to-char)
+   ("M-Z" . zop-to-char)
+
+   ("C-s-." . spacemacs/jump-to-definition-other-window)
+   ("s->"   . spacemacs/jump-to-definition-other-window)
+
+   ("s-." . spacemacs/jump-to-definition)
+   ("s-," . evil-jump-backward)
+
+   ;; ("s-." . evil-goto-definition-imenu)
+   ;; ("s-." . evil-goto-definition-xref)
+   ;; ("s-," . evil-jump-backward)
+
+   ;; dumb-jump-go has been obsoleted by the xref interface.
+   ;; ("s-." . xref-find-definitions) ;; function is part of Emacs
+   ;; ("s-," . xref-go-back) ;; function is part of Emacs
+
+   ;; ("s-,"   . cider-pop-back)
+
+   ;; C-o; evil-jump-backward
+   ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
+
+   ;; M-x tw-what-face; C-M-<print> on edge doesn't work
+   ("C-<print>" . describe-text-properties)
+
+   ("s-<return>"   . jl-jump-last-edited-place)
+   ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
+   ;; it's easy to press Shift while holding s-<return> already
+   ("S-s-<return>" . evil-jump-backward)
+
+   ("s-J"          . evil-join)
+
+   ("s-<print>" . tw-ediff-buffers-left-right) ; see advice-add
+   ("s-A"       . align-regexp)
+   ("s-:" . tw-fabricate-subst-cmd) ;; see evil-ex-completion-map bindings
+
+   ("s-<" . tw-select-in-ang-bracket)
+   ("s-[" . tw-select-in-sqr-bracket)
+   ("s-(" . tw-select-in-rnd-bracket)
+   ("s-{" . tw-select-in-crl-bracket)
+
+   ;; may more comfortable than moving the hand away
+   ("C-{" . tw-ins-left-paren)
+   ("C-}" . tw-ins-right-paren)
+
+   ("s-\"" . tw-select-in-string)
+
+   ;; C-<mouse-4> and C-<mouse-4> might work too
+   ("C-<wheel-up>"   . tw-zoom-all-frames-in)  ;; mouse-4 / mouse-up
+   ("C-<wheel-down>" . tw-zoom-all-frames-out) ;; mouse-5 / mouse-down
+
+   ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
+   ;; <menu> is not a prefix key. See:
+   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
+   ("H-1" . my-H-1) ;; this doesn't work ("C-c h 1" . my-H-1)
+   ("H-2" . my-H-2)
+   ("H-4" . my-H-4) ;; this doesn't work ("C-c h 4" . my-H-4)
+   )
+  (message "%s   Note: %s"
+           "(my-eval-bind-keys-and-chords) evaluated"
+           "~SPC k $~ sp-end-of-sexp"))
+
+(defun my-enable-hyper-super-modifiers-win32 ()
+  "See https://github.com/fanhongtao/_emacs.d/blob/master/conf/my-key-modifiers.el
+See also 'Have you Hyper for Great Good' https://gist.github.com/toroidal-code/ec075dd05a23a8fb8af0
+Also '<Multi_key> s s' should produce 'ß'
+"
+  (setq
+   ;; w32-pass-apps-to-system nil
+   w32-apps-modifier 'hyper
+   w32-pass-lwindow-to-system nil
+   ;; w32-phantom-key-code 42  ;; what for?
+   w32-lwindow-modifier 'super
+   w32-rwindow-modifier 'alt))
+
+(defun my-enable-hyper-super-modifiers-linux-x ()
+  (interactive)
+  ;; On nowadays linux, ~<windows>~ key is usually configured to Super
+
+  ;; Menu key as hyper. Examples:
+  ;; * ~H-s-d~:
+  ;;   1. Press ~<menu>~ and release it.
+  ;;   2. Press simultaneously ~<windows>~ and ~d~
+  ;; * ~H-s-<menu>~:
+  ;;   1. Press ~<menu>~ and release it.
+  ;;   2. Press simultaneously ~<windows>~ and ~<menu>~
+  (define-key key-translation-map [menu] #'event-apply-hyper-modifier) ;H-
+  ;; (define-key key-translation-map [apps] #'event-apply-hyper-modifier)
+
+  ;; by default, Emacs bind <menu> to execute-extended-command (same as M-x)
+  ;; now <menu> defined as 'hyper, we need to press <menu> twice to get <H-menu>
+  ;; (global-set-key (kbd "<H-menu>") #'execute-extended-command)
+  ;; (global-unset-key (kbd "<menu>"))
+  ;; (global-unset-key (kbd "<H-menu>"))
+  (message "(my-enable-hyper-super-modifiers-linux-x) evaluated"))
+
+(defun my-enable-hyper-super-modifiers ()
+  (let ((frame (framep (selected-frame))))
+    (cond
+     ((memq frame '(w32 win32))
+      (my-enable-hyper-super-modifiers-win32))
+     ((eq frame 'x)
+      (my-enable-hyper-super-modifiers-linux-x))
+     ;; ((eq frame 'ns) ...) ;; Mac OS
+     (t
+      (message "%s %s %s"
+               "[my-enable-hyper-super-modifiers]"
+               "No enabler implemented for the frame:" frame))))
+  ;; I.e. ~C-c h d~ is ~H-d~ i.e.:
+  ;;   1. press and release ~<menu>~
+  ;;   2. press ~d~
+  ;; What following does mean?:
+  ;; you can always use "C-c h" as 'hyper modifier, even in Linux console or DOS
+  (define-key key-translation-map (kbd "C-c h") #'event-apply-hyper-modifier)
+  (define-key key-translation-map (kbd "C-c s") #'event-apply-super-modifier)
+  (define-key key-translation-map (kbd "C-c a") #'event-apply-alt-modifier))
+
+(defun my-evil-keybindings-in-term (map)
+  "Fix evil keybindings in terminals. Alternatively just disable evil-mode:
+  (evil-set-initial-state 'term-mode 'emacs)
+See also:
+- evil-collection-term-setup
+- \"TODO: Add support for normal-state editing.\"
+https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collection-term.el#L61
+"
+  (evil-collection-define-key 'insert map (kbd "S-<up>")   #'previous-line)
+  (evil-collection-define-key 'insert map (kbd "S-<down>") #'next-line)
+  (evil-collection-define-key 'insert map (kbd "C-<up>")   #'previous-line)
+  (evil-collection-define-key 'insert map (kbd "C-<down>") #'next-line)
+  (evil-collection-define-key 'insert map (kbd "<delete>") #'term-send-del)
+  (evil-collection-define-key 'insert map (kbd "<prior>")  #'evil-scroll-page-up)
+  (evil-collection-define-key 'insert map (kbd "<next>")   #'evil-scroll-page-down)
+;;; simple ~<prior>~, ~<next>~ (i.e. pgup / pgdown) don't even get registered by
+;;; Emacs. See: xfconf-query -c xfce4-keyboard-shortcuts -lv | grep Page
+  ;; (evil-collection-define-key 'insert map (kbd "s-<prior>") #'evil-scroll-page-up)
+  ;; (evil-collection-define-key 'insert map (kbd "s-<next>")  #'evil-scroll-page-down)
+  )
+
 ;; When running from bash on a non-Guix system, some environment variables may
 ;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
 
@@ -326,6 +749,7 @@ This function should only modify configuration layer settings."
       ;; (setq
       gptel-api-key (getenv "OPENAI_KEY")
 
+      ;; curl --request GET --header "Authorization: Bearer ${OPENAI_KEY}" "https://api.openai.com/v1/models"
       ;; Price is in USD per 1M tokens
       gptel-model 'gpt-5.5        ; In  5.00, Cached In 0.50, Out  30.00
       ;; gptel-model 'gpt-5.5-pro ; In 30.00, Cached In    -, Out 180.00
@@ -1470,10 +1894,6 @@ before packages are loaded."
       " \" M-s-<right> <home> # : <escape> f SPC r - <home> <left> <down>")))
   (global-set-key (kbd "<f6>") #'macro-format-guix-channels)
 
-  (defun tw-shell-path ()
-    ;; (tw-shell-which "fish")
-    (getenv "SHELL"))
-
   ;; Set back to its default value to avoid
   ;;   SPC * not working with ripgrep 14
   ;;   https://github.com/syl20bnr/spacemacs/issues/16200
@@ -1488,19 +1908,9 @@ before packages are loaded."
   (setq visual-fill-column-width 110
         visual-fill-column-center-text t)
 
-  (defun my/org-present-start ()
-    ;; Center the presentation and wrap lines
-    (visual-fill-column-mode 1)
-    (visual-line-mode 1))
-
-  (defun my/org-present-end ()
-    ;; Stop centering the document
-    (visual-fill-column-mode 0)
-    (visual-line-mode 0))
-
   ;; Register hooks with org-present
-  (add-hook 'org-present-mode-hook 'my/org-present-start)
-  (add-hook 'org-present-mode-quit-hook 'my/org-present-end)
+  (add-hook 'org-present-mode-hook 'my-org-present-start)
+  (add-hook 'org-present-mode-quit-hook 'my-org-present-end)
 
   (setq
    large-file-warning-threshold nil ;; don't ask before visiting big files
@@ -1529,10 +1939,10 @@ before packages are loaded."
    ;; If this is nil, setup to environment variable of `SHELL'.
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
    ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
-   multi-term-program (tw-shell-path)
+   multi-term-program (my-shell-path)
 
    ;; Shell used in `term' and `ansi-term'.
-   shell-pop-term-shell (tw-shell-path)
+   shell-pop-term-shell (my-shell-path)
 
    ;; Position of the popped buffer. (default "bottom")
    shell-pop-window-position "right"
@@ -1694,10 +2104,6 @@ before packages are loaded."
   (defalias #'save-selected-text #'write-region)
   ;; TODO (define-obsolete-function-alias)
 
-  (defun tw-load-layout ()
-    (interactive)
-    (persp-load-state-from-file (concat sp-layouts-dir "/persp-auto-save")))
-
   ;; disable mouse support in X11 terminals - enables copy/paste with mouse
   ;; (xterm-mouse-mode -1)
   (super-save-mode +1) ;; better auto-save-mode
@@ -1786,395 +2192,9 @@ before packages are loaded."
               "l" #'helm-cider-repl-history))
           '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
 
-  (defun my-racket-repl-clear ()
-    (interactive)
-    (let ((inhibit-read-only t))
-      ;; (erase-buffer)
-      (delete-region (point-min) (- (point-max) 2))))
-
-  (defun my-H-1 () (interactive) (message "H-1"))
-  (defun my-H-2 () (interactive) (message "H-2"))
-  (defun my-H-3 () (interactive) (message "H-3"))
-  (defun my-H-4 () (interactive) (message "H-4"))
-
   ;; (setq text-quoting-style 'straight)
 
-  (defun my-eval-bind-keys-and-chords ()
-    "To activate changes, do:
-    ~s-d~ my-eval-current-defun
-    ~s-+~ my-eval-bind-keys-and-chords
-
-Some binding snippets / examples:
-  (global-set-key (kbd \"s-<f2>\") \\='eshell)
-  (key-chord-define-global \"fj\" (lambda () (interactive)
-                                             (tw-insert-str \"()\" 1)))"
-    (interactive)
-
-    ;; (key-chord-define-global "fj" (lambda () (interactive)
-    ;;                                 (tw-insert-str "()" 1)))
-    ;; (key-chord-define clojure-mode-map "fj" nil)
-    ;; (key-chord-define global-map "fj" nil)
-
-    ;; see also `key-chord-unset-global' / `key-chord-unset-local'
-
-    ;; for the substitution: ~s-:~ / M-x tw-fabricate-subst-cmd
-    ;; TODO this keychord doesn't work
-    (bind-chords :map evil-ex-completion-map ; not he evil-ex-map!!!
-                 ("()" . tw-insert-group-parens))
-    (bind-keys :map evil-ex-completion-map ; not he evil-ex-map!!!
-               ("s-0" . tw-insert-group-parens)
-               ("s-)" . tw-insert-group-parens))
-
-    ;; (setq evil-respect-visual-line-mode t) doesn't work easily
-    ;; `remap' can't use the #' reader syntax for function form
-    (global-set-key [remap move-beginning-of-line] #'crux-move-beginning-of-line)
-    (global-set-key [remap evil-beginning-of-line] #'crux-move-beginning-of-line)
-
-    ;; BUG: The ~C-z~ / M-x suspend-frame surfaces when calling
-    ;; ~SPC k e~ / M-x evil-lisp-state-sp-splice-sexp-killing-forward.
-    ;; since this function changes 'evil-state' to 'lisp'.
-    ;; ~ESC~ / M-x evil-lisp-state/quit
-    (global-unset-key (kbd "C-z"))
-
-    ;; See also the value of `dotspacemacs-smart-closing-parenthesis'
-    ;; (unbind-key ")" term-mode-map)
-
-    (bind-chords :map global-map
-                 ("KK" . tw-switch-to-previous-buffer)
-                 ;; don't need to switch keyboards just because of parenthesis
-                 ("fj" . (tw-insert-str "()" 1)))
-
-    (progn
-      ;; "Set up multi-line comment style for Lisp code. Possible approaches:
-      ;; A. Automatic detection. It may miss some modes.
-      (add-hook 'prog-mode-hook 'tw-setup-lisp-comments-maybe)
-
-      ;; B. Explicit mode list (more reliable)
-      ;; (dolist (mode '(
-      ;;                 lisp-mode-hook
-      ;;                 emacs-lisp-mode-hook
-      ;;                 lisp-interaction-mode-hook
-      ;;                 scheme-mode-hook
-      ;;                 clojure-mode-hook
-      ;;                 racket-mode-hook
-      ;;                 ))
-      ;;   (add-hook mode 'tw-setup-lisp-comments))
-      )
-
-    ;; the comment is here just to get a better listing in `helm-swoop'
-    (bind-keys ; :map global-map
-     :map global-map
-     ("<f5>" . tw-revert-buffer-no-confirm)
-     ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
-
-     ;; TODO The <escape> keybinding seems not to work.
-     ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-     ;; TODO notmuch
-
-     ;; the funny keys can be seen
-     ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
-     ("C-s-<268632070>" . my-H-3) ;; this is probably for an Apple computers
-     ("<escape>"  . keyboard-escape-quit)
-
-     ("M-Q"       . unfill-paragraph)
-     ;; TODO in the fish-mode the ~M-q~ is bound to `paredit-reindent-defun',
-     ;; which doesn't work well for unfilling comments (filling works). The same
-     ;; goes for `unfill-toggle'. (Does `paredit-reindent-defun' call
-     ;; `unfill-toggle'?)
-     ;; ("M-q" . unfill-toggle)
-
-     ("s-="       . balance-windows-area)
-     ("s-K"       . kb-kill-buffers--unwanted)
-     ("s-C-K"     . kb-kill-buffers--dired)
-     ("s-R"       . spacemacs/rename-current-buffer-file)
-     ("s-q"       . tw-other-window)
-     ("s-k"       . kb-close-buffer)
-     ("s-s"       . save-buffer)
-     ("s-0"       . tw-delete-window)
-     ("s-1"       . tw-delete-other-windows)
-     ("S-s-<f8>"    . ace-swap-window) ; ~SPC w M~
-     ;; ("S-s-<f8>" . transpose-frame)
-     ;; ("s-2"    . tw-split-other-window-below)
-     ("s-2"       . split-window-below) ; ~SPC w -~
-     ;; see ~SPC w /~ and ~SPC w 2~
-     ;; ("s-3"    . spacemacs/window-split-double-columns)
-     ;; see ~SPC w /~ and ~SPC w 2~
-     ("s-3"       . split-window-right-and-focus)
-     ("s-9"       . tw-load-layout)
-     ("s-+"       . my-eval-bind-keys-and-chords)
-     ("s-<kp-add>". my-eval-bind-keys-and-chords)
-     ("s-z"       . tw-buffer-selection-show)
-     ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
-     ("s-D"       . dired-jump) ;; just open a dired buffer
-
-     ;; The highlighting of copied sexps is done by the copy-sexp.el
-     ;; TODO highlight text yanked with `y'
-     ("s-c"       . sp-copy-sexp)
-     ("s-b"       . sp-backward-copy-sexp)
-
-     ;; ("<f11>"     . bookmark-set)
-     ;; ("<f11>"     . equake-toggle-fullscreen)
-     ;; Move the parenthesis - see SPC k b/B/f/F
-     ("M-s-<left>"  . sp-forward-barf-sexp)
-     ("M-s-<right>" . sp-forward-slurp-sexp)
-     ("C-s-<left>"  . sp-backward-slurp-sexp)
-     ("C-s-<right>" . sp-backward-barf-sexp)
-     ("s-;"         . spacemacs/comment-or-uncomment-lines)
-     ("C-s-;"       . tw-toggle-comment-sexp-lines)
-     ;; ("M-;"         . tw-toggle-comment-sexp-lines) ; was comment-dwim
-     ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
-     ("s-<f1>"      . tw-toggle-shell-pop-multiterm) ;; tw-toggle-shell-pop-term
-     ("s-<f2>"      . projectile-multi-term-in-root)
-
-     ;; M-x term-line-mode - emacs keybindings
-     ;; M-x term-char-mode - chars sent directly to terminal
-     ("s-<f3>"      . spacemacs/shell-pop-vterm)
-
-     ;; terminal in the current working directory
-     ;; ("s-<f1>"      . terminal-here-launch)
-     ;; ("s-<f1>"      . spacemacs/default-pop-shell)
-     ;; ("s-<f1>"      . spacemacs/projectile-shell)
-     ;; jumps to the shell opened by `spacemacs/projectile-shell'
-     ;; ("s-<f1>"      . spacemacs/projectile-shell-pop)
-     ;; ("s-<f1>"      . terminal-here-project-launch)
-     ("s-W"         . whitespace-cleanup)
-     ("s-w"         . tw-whitespace-mode-toggle)
-     ("s-m"         . tw-magit-status)
-     ("<f3>"   . tw-search-region-or-symbol) ; advice-d
-     ;; advice-d
-     ("M-<f3>" . spacemacs/helm-project-smart-do-search-region-or-symbol)
-
-     ("s-a"    . helm-mini) ;; advice-d
-     ("s-]"    . helm-mini)
-     ;; helm-mini doesn't show all buffers when using layouts (~SPC l~)
-     ("C-s-a"  . spacemacs-layouts/non-restricted-buffer-list-helm) ; advice-d
-
-     ("s-B"    . helm-filtered-bookmarks)
-     ("<f9>"   . helm-filtered-bookmarks)
-     ;; ("s-p" . helm-projectile)
-     ("s-p"    . helm-projectile-find-file)
-     ("s-P"    . spacemacs/helm-persp-switch-project) ; advice-d
-     ("s-f"    . helm-find-files)
-     ("s-F"    . helm-recentf)
-     ;; Can't use `advice'. This is an advice for the binding, not the function
-     ("s-r"    . (lambda ()
-                   (interactive) (helm-recentf)
-                   (message "Use ~s-F~ instead of ~s-r~ for M-x helm-recentf")))
-     ("M-y"    . helm-show-kill-ring)   ; replaces evil-paste-pop
-     ("s-G"    . helm-google-suggest)
-     ("s-/"    . helm-swoop)                          ; advice-d
-     ("s-?"    . helm-multi-swoop-all)
-     ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
-
-     ;; TODO crux-duplicate-current-line-or-region gets confused with registry
-     ;; content
-     ("C-s-<down>" . crux-duplicate-current-line-or-region)
-     ("C-s-<up>"   . (lambda (arg) (interactive "p")
-                       (crux-duplicate-current-line-or-region arg)
-                       (if (evil-normal-state-p)
-                           (evil-previous-line)
-                         (previous-line))))
-
-     ("C-c d"      . crux-duplicate-current-line-or-region)
-     ("C-c t"      . crux-transpose-windows)
-     ("C-s-<backspace>" . crux-kill-line-backwards) ; kill-line-backward
-     ("s-j"             . crux-top-join-line)
-
-     ;; TODO xah-backward-block xah-forward-block were removed (by a mistake)
-     ;; in cf18cf842d4097934f58977665925eff004702e2
-     ("C-<up>"            . xah-backward-block)
-     ("C-<down>"          . xah-forward-block)
-     ;; TODO make pg-up / pg-down major-mode specific
-     ;; ("C-<prior>"      . hs-hide-block)    ; pg-up
-     ;; ("C-<next>"       . hs-show-block)    ; pg-down
-     ;; ("C-M-<prior>"    . hs-toggle-hiding) ; pg-up
-     ;; ("C-M-<prior>"    . hs-hide-all)      ; Ctrl + pg-up
-     ;; ("C-M-<next>"     . hs-show-all)      ; Ctrl + pg-down
-     ("C-M-<delete>"      . kill-sexp)
-     ("C-M-s-<delete>"    . tw-delete-next-sexp)
-     ("C-M-s-<backspace>" . tw-delete-prev-sexp)
-     ("C-M-<backspace>"   . backward-kill-sexp)
-
-     ("s-<backspace>"     .
-      ;; Can't use `advice'. This is an advice for the binding, not the function
-      (lambda ()
-        (interactive) (paredit-backward-kill-word)
-        (message "See ~%s~ / M-x "
-                 "SPC k E"
-                 "evil-lisp-state-sp-splice-sexp-killing-backward")))
-
-     ("s-<delete>"        .
-      ;; Can't use `advice'. This is an advice for the binding, not the function
-      (lambda ()
-        (interactive) (paredit-forward-kill-word)
-        (message "See ~%s~ / M-x "
-                 "SPC k e"
-                 "evil-lisp-state-sp-splice-sexp-killing-forward")))
-
-     ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
-     ("s-g"     . tw-search-or-browse)
-     ("s-8" . er/expand-region)     ; increase selected region by semantic units
-     ("<f2>"    . evil-avy-goto-char-timer)
-     ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
-
-     ;; TODO s-a when "Last buffer not found."
-     ("s-<tab>" . spacemacs/alternate-buffer)
-
-     ("C-<next>"  . next-buffer)        ; SPC b n; Ctrl-PageDown
-     ("s-<right>" . next-buffer)
-     ("C-<prior>" . previous-buffer)    ; SPC b p; Ctrl-PageUp
-     ("s-<left>"  . previous-buffer)
-
-     ;; same bindings as in the guake terminal
-     ("S-s-<up>"    . evil-window-up)
-     ("S-s-<down>"  . evil-window-down)
-     ("S-s-<left>"  . evil-window-left)
-     ("S-s-<right>" . evil-window-right)
-
-     ;; ("s-<tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
-     ("C-<f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
-     ("C-s-/"   . avy-goto-line)
-
-     ;; fd - evil-escape from insert state and everything else
-     ;; occurrences - function scope
-     ;; ~n~ / ~N~ next / prev occurrence; ~TAB~ toggle occurrence
-     ("s-I"           . tw-iedit-mode-toggle)
-     ("s-i"           . iedit-mode)     ; all occurrences in the buffer
-     ;; ("s-i"        . spacemacs/enter-ahs-forward)
-
-     ;; undo-tree is unmaintained. Last commit in March 2021
-     ;; ("<f12>"         . undo-tree-visualize)
-
-     ;; ("S-<delete>" . kill-region)
-     ("C-s-<delete>"  . kill-line)      ; C-super-key
-     ("C-S-<delete>"  . kill-line)      ; C-shift-key
-     ;; ("s-l"        . spacemacs/resume-last-search-buffer)
-     ("s-v"           . tw-evil-select-pasted)
-
-     ;; TODO what's the difference between insert and insertchar?
-     ("S-s-<insert>" . tw-yank-and-select)
-
-     ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
-     ;; zop-up-to-char works as zop-to-char but stop just before target
-     ("M-z" . zop-up-to-char)
-     ("M-Z" . zop-to-char)
-
-     ("C-s-." . spacemacs/jump-to-definition-other-window)
-     ("s->"   . spacemacs/jump-to-definition-other-window)
-
-     ("s-." . spacemacs/jump-to-definition)
-     ("s-," . evil-jump-backward)
-
-     ;; ("s-." . evil-goto-definition-imenu)
-     ;; ("s-." . evil-goto-definition-xref)
-     ;; ("s-," . evil-jump-backward)
-
-     ;; dumb-jump-go has been obsoleted by the xref interface.
-     ;; ("s-." . xref-find-definitions) ;; function is part of Emacs
-     ;; ("s-," . xref-go-back) ;; function is part of Emacs
-
-     ;; ("s-,"   . cider-pop-back)
-
-     ;; C-o; evil-jump-backward
-     ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
-
-     ;; M-x tw-what-face; C-M-<print> on edge doesn't work
-     ("C-<print>" . describe-text-properties)
-
-     ("s-<return>"   . jl-jump-last-edited-place)
-     ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
-     ;; it's easy to press Shift while holding s-<return> already
-     ("S-s-<return>" . evil-jump-backward)
-
-     ("s-J"          . evil-join)
-
-     ("s-<print>" . tw-ediff-buffers-left-right) ; see advice-add
-     ("s-A"       . align-regexp)
-     ("s-:" . tw-fabricate-subst-cmd) ;; see evil-ex-completion-map bindings
-
-     ("s-<" . tw-select-in-ang-bracket)
-     ("s-[" . tw-select-in-sqr-bracket)
-     ("s-(" . tw-select-in-rnd-bracket)
-     ("s-{" . tw-select-in-crl-bracket)
-
-     ;; may more comfortable than moving the hand away
-     ("C-{" . tw-ins-left-paren)
-     ("C-}" . tw-ins-right-paren)
-
-     ("s-\"" . tw-select-in-string)
-
-     ;; C-<mouse-4> and C-<mouse-4> might work too
-     ("C-<wheel-up>"   . tw-zoom-all-frames-in)  ;; mouse-4 / mouse-up
-     ("C-<wheel-down>" . tw-zoom-all-frames-out) ;; mouse-5 / mouse-down
-
-     ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
-     ;; <menu> is not a prefix key. See:
-     ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
-     ("H-1" . my-H-1) ;; this doesn't work ("C-c h 1" . my-H-1)
-     ("H-2" . my-H-2)
-     ("H-4" . my-H-4) ;; this doesn't work ("C-c h 4" . my-H-4)
-     )
-    (message "%s   Note: %s"
-             "(my-eval-bind-keys-and-chords) evaluated"
-             "~SPC k $~ sp-end-of-sexp"))
-
-  ;; Thanx to
-  ;; https://github.com/fanhongtao/_emacs.d/blob/master/conf/my-key-modifiers.el
-  ;; See also 'Have you Hyper for Great Good'
-  ;; https://gist.github.com/toroidal-code/ec075dd05a23a8fb8af0
-  ;; Also '<Multi_key> s s' should produce 'ß'
-  (defun enable-hyper-super-modifiers-win32 ()
-    (setq
-     ;; w32-pass-apps-to-system nil
-     w32-apps-modifier 'hyper
-     w32-pass-lwindow-to-system nil
-     ;; w32-phantom-key-code 42  ;; what for?
-     w32-lwindow-modifier 'super
-     w32-rwindow-modifier 'alt))
-
-  (defun enable-hyper-super-modifiers-linux-x ()
-    (interactive)
-    ;; On nowadays linux, ~<windows>~ key is usually configured to Super
-
-    ;; Menu key as hyper. Examples:
-    ;; * ~H-s-d~:
-    ;;   1. Press ~<menu>~ and release it.
-    ;;   2. Press simultaneously ~<windows>~ and ~d~
-    ;; * ~H-s-<menu>~:
-    ;;   1. Press ~<menu>~ and release it.
-    ;;   2. Press simultaneously ~<windows>~ and ~<menu>~
-    (define-key key-translation-map [menu] #'event-apply-hyper-modifier) ;H-
-    ;; (define-key key-translation-map [apps] #'event-apply-hyper-modifier)
-
-    ;; by default, Emacs bind <menu> to execute-extended-command (same as M-x)
-    ;; now <menu> defined as 'hyper, we need to press <menu> twice to get <H-menu>
-    ;; (global-set-key (kbd "<H-menu>") #'execute-extended-command)
-    ;; (global-unset-key (kbd "<menu>"))
-    ;; (global-unset-key (kbd "<H-menu>"))
-    (message "(enable-hyper-super-modifiers-linux-x) evaluated"))
-
-  (defun enable-hyper-super-modifiers ()
-    (let ((frame (framep (selected-frame))))
-      (cond
-       ((memq frame '(w32 win32))
-        (enable-hyper-super-modifiers-win32))
-       ((eq frame 'x)
-        (enable-hyper-super-modifiers-linux-x))
-       ;; ((eq frame 'ns) ...) ;; Mac OS
-       (t
-        (message "%s %s %s"
-                 "[enable-hyper-super-modifiers]"
-                 "No enabler implemented for the frame:" frame))))
-    ;; I.e. ~C-c h d~ is ~H-d~ i.e.:
-    ;;   1. press and release ~<menu>~
-    ;;   2. press ~d~
-    ;; What following does mean?:
-    ;; you can always use "C-c h" as 'hyper modifier, even in Linux console or DOS
-    (define-key key-translation-map (kbd "C-c h") #'event-apply-hyper-modifier)
-    (define-key key-translation-map (kbd "C-c s") #'event-apply-super-modifier)
-    (define-key key-translation-map (kbd "C-c a") #'event-apply-alt-modifier))
-
-  (enable-hyper-super-modifiers)
+  (my-enable-hyper-super-modifiers)
 
   ;; works but won't work in isearch
   (global-set-key                 (kbd "H-5") (lambda () (interactive) (insert "•")))
@@ -2245,27 +2265,6 @@ Some binding snippets / examples:
                ("C-2" . magit-section-show-level-2)
                ("C-3" . magit-section-show-level-3)
                ("C-4" . magit-section-show-level-4)))
-
-  (defun my-evil-keybindings-in-term (map)
-    "Fix evil keybindings in terminals. Alternatively just disable evil-mode:
-  (evil-set-initial-state 'term-mode 'emacs)
-See also:
-- evil-collection-term-setup
-- \"TODO: Add support for normal-state editing.\"
-https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collection-term.el#L61
-"
-    (evil-collection-define-key 'insert map (kbd "S-<up>")   #'previous-line)
-    (evil-collection-define-key 'insert map (kbd "S-<down>") #'next-line)
-    (evil-collection-define-key 'insert map (kbd "C-<up>")   #'previous-line)
-    (evil-collection-define-key 'insert map (kbd "C-<down>") #'next-line)
-    (evil-collection-define-key 'insert map (kbd "<delete>") #'term-send-del)
-    (evil-collection-define-key 'insert map (kbd "<prior>")  #'evil-scroll-page-up)
-    (evil-collection-define-key 'insert map (kbd "<next>")   #'evil-scroll-page-down)
-;;; simple ~<prior>~, ~<next>~ (i.e. pgup / pgdown) don't even get registered by
-;;; Emacs. See: xfconf-query -c xfce4-keyboard-shortcuts -lv | grep Page
-    ;; (evil-collection-define-key 'insert map (kbd "s-<prior>") #'evil-scroll-page-up)
-    ;; (evil-collection-define-key 'insert map (kbd "s-<next>")  #'evil-scroll-page-down)
-    )
 
 ;;; (funcall
 ;;;  (-compose
