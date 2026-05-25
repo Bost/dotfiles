@@ -269,9 +269,9 @@
       (menu-entries
        (list
         ;; sudo rg vmlinuz /run/media/bost/c99384b9-*/boot/grub/grub.cfg | head
-        (let [(linux-version "6.17.0-14")]
+        (let [(linux-version "7.0.0-15")]
           (menu-entry
-           (label "Ubuntu 25.10")
+           (label "Ubuntu 26.04 LTS")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
             '("root=UUID=c99384b9-1611-4318-a2d0-705e9b0c9007"
