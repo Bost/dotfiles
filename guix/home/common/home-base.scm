@@ -11,6 +11,7 @@
   ;; home-packages-to-install inferior-guake-package
   #:use-module (config packages home-all)
 
+  #:use-module (services starship)
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
@@ -82,9 +83,9 @@
   ;; (format #t "~a Starting…\n" f)
   (append
    ;; (service home-xsettingsd-service-type)
+   (starship-services)
+   (fish-services)
    (list
-    (fish-package-service)
-    (fish-dotfiles-service)
     (service
      home-bash-service-type
      (home-bash-configuration
