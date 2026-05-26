@@ -14,8 +14,9 @@
 
 # Simple `set --erase fish_greeting` doesn't work, since fish_greeting is a
 # function.
-# set fish_greeting ""
+set fish_greeting ""
 
+set --global --export STARSHIP_PROMPT_SYMBOL '❯'
 starship init fish | source
 
 #### config.fish manual configuration end
