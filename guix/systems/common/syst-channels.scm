@@ -61,8 +61,12 @@
  ;; #:guix-commit         "e6b49f7d47cb1c38bfeba661a5e5cc6d1d17c4f4"
 
  ;; May 23 2026 20:08:14
- #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
- #:guix-commit         "0b597e551715ca6cbdbb2ffeacd530624a01d200"
+ ;; #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
+ ;; #:guix-commit         "0b597e551715ca6cbdbb2ffeacd530624a01d200"
+
+ ;; 25 mai 2026 22:47:07
+ #:nonguix-commit      "ffa33d200e1c930e79d00021f03b2f8c31d00b61"
+ #:guix-commit         "8c95d6364a34cfbd60efbd15d85ce8b02ff6a2cd"
  )
 
 ;; It makes no sense to add generation number to the comment. Generation numbers
