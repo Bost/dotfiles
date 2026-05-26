@@ -9,7 +9,7 @@
   (local-file (user-dotf "/.config/fish/" name)
               #:recursive? #t))
 
-(define-public (fish-dotfiles-service)
+(define (fish-dotfiles-service)
   (simple-service
    'fish-dotfiles
    home-xdg-configuration-files-service-type
@@ -33,8 +33,13 @@
      ;;  ,(dotfiles-fish-file "fish_variables"))
      )))
 
-(define-public (fish-package-service)
+(define (fish-package-service)
   (simple-service
    'fish-package
    home-profile-service-type
    (list fish)))
+
+(define-public (fish-services)
+  (list
+   (fish-dotfiles-service)
+   (fish-package-service)))
