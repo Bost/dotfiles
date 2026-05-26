@@ -13,6 +13,19 @@ differences were encountered."
        (message "WARN (expand-file-name def-val): %s and evar: %s=%s differ"
                 (expand-file-name ,def-val) ,evar-name evar-val))))
 
+(defun my-koboldcpp ()
+  "Setup gptel. koboldcpp is a fork of llama.cpp."
+  (interactive)
+  (setq
+   gptel-model 'test
+   gptel-backend
+   (gptel-make-openai "koboldcpp" ; Any name
+     :stream t                    ; Stream responses
+     :protocol "http"
+     :host "edge:5001"
+     :models '(test)              ; Any names, doesn't matter for Llama
+     )))
+
 (defun my-dotf-path (&rest parts)
   "Build a path to dotfiles from environment variable \"dotf\" or
 \"~/dotfiles\" and PARTS."
