@@ -1,4 +1,4 @@
-(define-module (services starship)
+(define-module (services starship-dotfiles)
   #:use-module (fs-utils)
   #:use-module (gnu home services)
   #:use-module (gnu home services shells)
@@ -9,7 +9,7 @@
   (local-file (user-dotf "/.config/" name)
               #:recursive? #t))
 
-(define (starship-dotfiles-service)
+(define-public (starship-dotfiles-service)
   (simple-service
    'starship-dotfiles
    home-xdg-configuration-files-service-type
@@ -17,7 +17,7 @@
       ,(dotfiles-starship-file "starship.toml"))
      )))
 
-(define (starship-package-service)
+(define-public (starship-package-service)
   (simple-service
    'starship-package
    home-profile-service-type
