@@ -19,12 +19,12 @@ differences were encountered."
   (setq
    gptel-model 'test
    gptel-backend
-   (gptel-make-openai "koboldcpp" ; Any name
-     :stream t                    ; Stream responses
-     :protocol "http"
-     :host "edge:5001"
-     :models '(test)              ; Any names, doesn't matter for Llama
-     )))
+   (gptel-make-openai "koboldcpp"     ; Any name
+                      :stream t       ; Stream responses
+                      :protocol "http"
+                      :host "edge:5001"
+                      :models '(test) ; Any names, doesn't matter for Llama
+                      )))
 
 (defun my-dotf-path (&rest parts)
   "Build a path to dotfiles from environment variable \"dotf\" or
@@ -105,7 +105,9 @@ differences were encountered."
 
 (defun my-shell-path ()
   ;; (tw-shell-which "fish")
-  (getenv "SHELL"))
+  (getenv "SHELL")
+  )
+
 (defun my-org-present-start ()
   ;; Center the presentation and wrap lines
   (visual-fill-column-mode 1)
@@ -836,11 +838,16 @@ This function should only modify configuration layer settings."
       ;; See https://platform.openai.com/settings/organization/usage
       ;; Change with https://platform.openai.com/settings/.../limits
       ;; Price is in USD per 1M tokens
-      gptel-model 'gpt-5.5        ; In  5.00, Cached In 0.50, Out  30.00
+      ;; gptel-model 'gpt-5.5     ; In  5.00, Cached In 0.50, Out  30.00
       ;; gptel-model 'gpt-5.5-pro ; In 30.00, Cached In    -, Out 180.00
       ;; gptel-model 'gpt-5.4     ; In  2.50, Cached In 0.25, Out  15.00
       ;; gptel-model 'gpt-5.4-mini
       ;; gptel-model 'gpt-5.4-nano
+
+      ;; TPM Tokens Per Minute; RPM Requests Per Minute
+      gptel-model 'gpt-4o          ;  30,000 TPM, 500 RPM
+      ;; gptel-model 'gpt-4o-turbo ;  30,000 TPM, 500 RPM
+      ;; gptel-model 'gpt-4o-mini  ; 200,000 TPM, 500 RPM
 
       llm-client-enable-gptel t
       ;; )
