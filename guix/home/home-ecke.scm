@@ -35,7 +35,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   ;; fix the 'error: leiningen: unknown package', but it doesn't work
   #:use-module (nongnu packages clojure)
   #:use-module (fs-utils)
-  #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
   #:use-module ((home-base) #:prefix home-base:)
@@ -81,54 +80,6 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 (home-base:install-all-projects-edge-ecke)
 
-;;     (begin
-;;       ;; fish-config-base and fish-config-dotfiles are also defined in the (services fish)
-;;       (define* (fish-config-base #:rest args)
-;;         "(fish-config-base) ; => \".config/fish\""
-;;         (apply str (basename xdg-config-home) "/fish" args))
-
-;;       (define* (fish-config-dotfiles #:rest args)
-;;         "(fish-config-dotfiles) ; => \"/home/bost/dev/dotfiles/.config/fish\"
-;;     Note:
-;;     (format #t \"~a\" \"foo\") doesn't work"
-;;         (apply str (user-dotf) "/" (fish-config-base) args))
-
-;; ;;; TODO The (copy-file ...) is not an atomic operation, i.e. it's not undone
-;; ;;; when the 'guix home reconfigure ...' fails or is interrupted.
-;; ;;; Can't use `local-file' or `mixed-text-file' or something similar since the
-;; ;;; `fish_variables' must be editable
-;;       (let* [(indent "")
-;;              (indent-inc "   ")
-;;              (filepath "/fish_variables")
-;;              (src (fish-config-dotfiles filepath))
-;;              (dst (user-home "/" (fish-config-base filepath)))
-;;              (dstdir (dirname dst))]
-;;         (unless (file-exists? dstdir)
-;;           (let [(indent (str indent indent-inc))]
-;;             (format #t "~a(mkdir ~a)… " indent src dstdir)
-;;             (let ((retval (mkdir dstdir)))
-;;               (format #t "retval: ~a\n" retval)
-;;               ;; The value of 'retval' is '#<unspecified>'
-;; ;;; TODO continuation: executing the block only if the dstdir was created.
-;;               retval)))
-;; ;;; TODO is this sexp is not executed because of lazy-evaluation?
-;;         (let [(indent (str indent indent-inc))]
-;;           (format #t "~a(copy-file ~a ~a)… " indent src dst)
-;;           (let ((retval (copy-file src dst)))
-;;             (format #t "retval: ~a\n" retval)
-;;             ;; The value of 'retval' is '#<unspecified>'
-;;             retval))
-;; ;;; Just changing ownership and permissions of `fish_variables' doesn't work:
-
-;;         ;; (begin
-;;         ;;   ;; .rw-r--r-- bost users fish_variables
-;;         ;;   (format #t "(chown ~a ~a ~a)\n" dst (getuid) (getgid))
-;;         ;;   (chown dst (getuid) (getgid))
-;;         ;;   ;; .rw-r--r-- fish_variables
-;;         ;;   (format #t "(chmod ~a ~a)\n" dst #o644)
-;;         ;;   (chmod dst #o644))
-;;         ))
-
 ;;; TODO see also the xfce4 chromium launcher -> command
 ;;; /home/bost/.guix-profile/bin/chromium %U
 
@@ -143,7 +94,12 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
    ;; (packages (home-packages-to-install))
    (services
     (append
-     (home-channels-services)
+     (list
+      (simple-service 'home-channels home-channels-service-type
+                      (list
+                       ;; (channel-guixrus)
+                       (channel-bost)
+                       (channel-hask-clj))))
      (home-base:home-env-services-edge-ecke))))
 
   ;; TODO Wayland-specific settings

@@ -27,7 +27,6 @@ guix home --allow-downgrades \
   #:use-module (dotf utils)
   #:use-module (dotf memo)
   #:use-module (fs-utils)
-  #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
   #:use-module ((home-base) #:prefix home-base:)
