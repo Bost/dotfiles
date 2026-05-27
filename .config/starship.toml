@@ -1,12 +1,24 @@
 format = """
-$username\
+$time\
 $hostname\
+$username\
 $directory\
 $git_branch\
 $git_status\
 $cmd_duration\
 $line_break\
 ${custom.prompt_symbol}"""
+
+[time]
+disabled = false
+time_format = "%Y-%m-%d_%H:%M:%S"
+format = '[$time]($style) '
+style = "bold yellow"
+
+[hostname]
+ssh_only = false
+format = 'on [$hostname]($style) '
+style = "bold cyan"
 
 [character]
 disabled = true
