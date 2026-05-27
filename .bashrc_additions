@@ -76,6 +76,7 @@ desk()    { cd ~/Desktop; }
 dev()     { cd "${dev:?}"; }
 dgl()     { cd "${dgl:?}"; }
 dgx()     { cd "${dgx:?}"; }
+dngx()    { cd "${dngx:?}"; }
 dgxp()    { cd "${dgxp:?}"; }
 dotf()    { cd "${dotf:?}"; }
 down()    { cd ~/Downloads; }

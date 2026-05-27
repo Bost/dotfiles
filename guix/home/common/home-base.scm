@@ -239,6 +239,7 @@
      ("dtfg"  . ,dtfg)
      ("dgx"   . ,dgx)
      ("dgxp"  . ,dgxp)
+     ("dngx"  . ,dngx)
      ("dspd"  . ,dspd)
      ("dspg"  . ,dspg)
      ("dsps"  . ,dsps)

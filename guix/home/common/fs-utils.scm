@@ -26,6 +26,7 @@
 
 (define-public dgx  (user-dev "/guix"))
 (define-public dgxp (user-dev "/guix-packages"))
+(define-public dngx  (user-dev "/nonguix"))
 
 (define (spacemacs-dir branch)
   (user-home "/.emacs.d.distros/spacemacs/" branch "/src"))
