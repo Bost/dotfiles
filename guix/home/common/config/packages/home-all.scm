@@ -5,8 +5,7 @@
   #:use-module (gnu)     ; provides use-package-modules
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
-  ;; provides: specification->package
-  #:use-module (gnu packages)
+  #:use-module (gnu packages) ; specification->package
   #:use-module (dotf config channels channel-defs)
 
   ;; for inferior-pkg-in-channel : beg

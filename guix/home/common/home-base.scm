@@ -11,7 +11,7 @@
   ;; home-packages-to-install inferior-guake-package
   #:use-module (config packages home-all)
 
-  #:use-module (services starship)
+  #:use-module (services starship-dotfiles)
   #:use-module (services fish)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
@@ -84,8 +84,10 @@
   (append
    ;; (service home-xsettingsd-service-type)
    (starship-services)
-   (fish-services)
    (list
+    (service
+     home-my-fish-service-type
+     (home-my-fish-configuration))
     (service
      home-bash-service-type
      (home-bash-configuration
@@ -433,16 +435,5 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
    (list (environment-variables-service 'env-vars-edge-ecke
                                         (environment-vars-edge-ecke)))
    (home-env-services-base)))
-
-(def-public (home-env-edge-ecke)
-  ;; (format #t "~a Starting…\n" f)
-  (let* [(home-env-record
-          (home-environment
-            ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
-            ;; (packages (home-packages-to-install))
-            (services
-             (home-env-services-edge-ecke))))]
-    ;; (format #t "~a done. type: ~a\n" f (test-type home-env-record))
-    home-env-record))
 
 (module-evaluated)

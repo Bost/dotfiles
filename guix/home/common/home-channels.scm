@@ -17,13 +17,6 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define-public (home-channels-services)
-  (list
-   ;; (simple-service 'guixrus-service  home-channels-service-type (list (channel-guixrus)))
-   (simple-service 'hask-clj-service home-channels-service-type (list (channel-hask-clj)))
-   (simple-service 'bost-service     home-channels-service-type (list (channel-bost))))
-  )
-
 (define* (home-channels-edge-ecke #:key
                                   guix-science-commit
                                   guix-past-commit
