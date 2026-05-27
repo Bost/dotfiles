@@ -59,6 +59,7 @@
 ;; no need to write: #:use-module (gnu packages <module>)
 (use-package-modules
  android  ; android-udev-rules - access smartphone via mtp://
+ base     ; grep
  bash
  cups     ; lpinfo (printer)
  gnome    ; gnome-desktop-service
@@ -70,6 +71,22 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(define thunderbolt-pci-rescan-script
+  (program-file
+   "thunderbolt-pci-rescan"
+   #~(begin
+       ;; Avoid rescanning while NVIDIA is already loaded/owning or recovering
+       ;; a GPU. This prevents wedging after surprise eGPU disconnects.
+       (when (zero?
+              (system* #$(file-append grep "/bin/grep")
+                       "--quiet" "^nvidia "
+                       "/proc/modules"))
+         (exit 0))
+
+       (call-with-output-file "/sys/bus/pci/rescan"
+         (lambda (port)
+           (display "1\n" port))))))
+
 (define thunderbolt-rescan-udev-rule
   (udev-rule
    "99-thunderbolt-pci-rescan.rules"
@@ -78,13 +95,11 @@
      "ACTION==\"change\""
      "SUBSYSTEM==\"thunderbolt\""
      "ATTR{authorized}==\"1\""
-     ;; Remove the following line so that any authorized Thunderbolt device
-     ;; triggers a rescan
+     ;; Only trigger for the AORUS eGPU.  Broadly rescanning PCI for every
+     ;; authorized Thunderbolt device is unnecessary and can be risky after
+     ;; surprise-disconnects while the NVIDIA driver is wedged.
      "ATTR{device_name}==\"AORUS GAMING BOX\""
-     ;; Use bash from the system profile to be safe. BTW the only reliable
-     ;; shebang is #!/bin/sh
-     (format #f "RUN+=\"/run/current-system/profile/bin/bash -c '~a'\"\n"
-             "echo 1 > /sys/bus/pci/rescan"))
+     (format #f "RUN+=\"~a\"\n" thunderbolt-pci-rescan-script))
     ", ")))
 
 (define-public syst-config
