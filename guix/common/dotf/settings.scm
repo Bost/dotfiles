@@ -4,8 +4,7 @@
 
 (define-module (dotf settings)
   #:use-module (dotf utils)
-  ;; #:use-module (ice-9 r5rs)
-  #:use-module (srfi srfi-1)    #| remove delete-duplicates |#
+  #:use-module (srfi srfi-1) ; list-processing procedures
 )
 
 (define m (module-name-for-logging))

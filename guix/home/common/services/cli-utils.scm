@@ -9,17 +9,12 @@
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
-  ;; program-file local-file
   #:use-module (guix gexp)
   #:use-module (gnu home services shells)
-  ;; simple-service
   #:use-module (gnu home services)
-  ;; take remove delete-duplicates append-map etc.
-  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1) ; list-processing procedures
   #:use-module (ice-9 pretty-print)
-  ;; scandir nftw
-  #:use-module (ice-9 ftw)
-  ;; string-match
+  #:use-module (ice-9 ftw)   ; file tree walk
   #:use-module (ice-9 regex)
   )
 

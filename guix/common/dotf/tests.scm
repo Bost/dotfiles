@@ -1,15 +1,6 @@
 (define-module (dotf tests)
   #:use-module (dotf utils)
-  ;; #:use-module (ice-9 rdelim)
-  ;; #:use-module (ice-9 popen)
-  ;; #:use-module (ice-9 regex)
-  #:use-module (srfi srfi-1) ; List Library
-
-  ;; The syntax? and gexp? may not be defined when resolved by '#:use-module'.
-  ;; Use module scoping '@@' instead.
-  ;; #:use-module (system syntax internal) ; syntax?
-  ;; #:use-module (guix gexp)      ; gexp? and extended reader for #~ #$ #+ #$@
-
+  #:use-module (srfi srfi-1)      ; list-processing procedures
   #:use-module (guix build utils) ; find-files
   )
 

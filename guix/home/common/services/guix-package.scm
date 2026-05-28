@@ -12,11 +12,11 @@
   #:use-module (ice-9 pretty-print)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
-  #:use-module (ice-9 ftw)
+  #:use-module (ice-9 ftw)     ; file tree walk
   #:use-module (ice-9 regex)
-  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1)   ; list-processing procedures
   #:use-module (srfi srfi-26)
-  #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (ice-9 optargs) ; define*-public
   )
 
 #|

@@ -7,7 +7,7 @@
   #:use-module (dotf utils)        ; partial
   #:use-module (dotf tests)        ; test-type
   #:use-module (dotf settings)     ; user
-  #:use-module (srfi srfi-1)       ; remove
+  #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (ice-9 optargs)     ; define*-public
   )
 

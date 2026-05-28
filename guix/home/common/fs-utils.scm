@@ -1,10 +1,8 @@
 (define-module (fs-utils)
   #:use-module (dotf utils)
   #:use-module (dotf settings)
-  ;; program-file local-file
   #:use-module (guix gexp)
-  ;; take remove delete-duplicates append-map etc.
-  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (ice-9 optargs)     ; define*-public
   )
 
