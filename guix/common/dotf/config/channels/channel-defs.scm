@@ -6,17 +6,13 @@
   #:use-module (dotf memo)
   #:use-module (guix channels)
   #:use-module (gnu services)
-  ;; program-file local-file
   #:use-module (guix gexp)
-  ;; simple-service
   #:use-module (gnu home services)
-  ;; take remove delete-duplicates append-map etc.
-  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1)        ; list-processing procedures
   ;; $fish-foreign-env
   ;; #:use-module (gnu packages shells)
-  ;; pretty-print
   #:use-module (ice-9 pretty-print)
-  #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (ice-9 optargs)      ; define*-public
   )
 
 (define m (module-name-for-logging))

@@ -42,17 +42,13 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
-  ;; program-file local-file
   #:use-module (guix gexp)
   #:use-module (gnu home services shells)
-  #:use-module (gnu home services guix) ;; home-channels-service-type
-  ;; simple-service
+  #:use-module (gnu home services guix) ; home-channels-service-type
   #:use-module (gnu home services)
-  ;; first take remove delete-duplicates append-map etc.
-  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1) ; list-processing procedures
   #:use-module (dotf config channels channel-defs)
   #:use-module (home-channels)
-  ;; #:use-module (ice-9 pretty-print)
 
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
   ;; home-git-service-type

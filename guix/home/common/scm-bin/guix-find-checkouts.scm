@@ -6,12 +6,12 @@
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (dotf utils)
-  #:use-module (ice-9 ftw)
+  #:use-module (ice-9 ftw)           ; file tree walk
   #:use-module (ice-9 popen)
-  #:use-module (ice-9 textual-ports)
+  #:use-module (ice-9 textual-ports) ; textual I/O operations on chars & strings
   #:use-module (ice-9 regex)
-  #:use-module (srfi srfi-1)
-  #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (srfi srfi-1)         ; list-processing procedures
+  #:use-module (ice-9 optargs)       ; define*-public
   )
 
 #|

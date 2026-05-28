@@ -1,6 +1,6 @@
 (define-module (kernel-utils)
   ;; #:use-module (ice-9 pretty-print)
-  #:use-module (srfi srfi-1)      ; list utilities
+  #:use-module (srfi srfi-1)      ; list-processing procedures
   #:use-module (ice-9 string-fun) ; string-contains etc.
   #:use-module (gnu system)       ; %default-kernel-arguments
   #:export

@@ -4,11 +4,11 @@
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (ice-9 exceptions)
-  #:use-module (srfi srfi-1)       ; last
+  #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (guix monads)       ; with-monad
-  #:use-module (dotf utils)             ; partial
-  #:use-module (dotf tests)             ; test-type
-  #:use-module (dotf settings)          ; user
+  #:use-module (dotf utils)        ; partial
+  #:use-module (dotf tests)        ; test-type
+  #:use-module (dotf settings)     ; user
   #:use-module (cli-common)        ; for (eval ...) of cli-*command utility-funs
   #:use-module (ice-9 optargs)     ; define*-public
   )

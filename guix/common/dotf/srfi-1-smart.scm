@@ -1,6 +1,6 @@
 (define-module (dotf srfi-1-smart)
-  #:use-module (srfi srfi-1)
-  #:use-module (ice-9 optargs)  ; define*-public
+  #:use-module (srfi srfi-1)   ; list-processing procedures
+  #:use-module (ice-9 optargs) ; define*-public
  )
 
 (define*-public (smart-first obj)
