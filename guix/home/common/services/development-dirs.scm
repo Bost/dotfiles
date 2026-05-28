@@ -2,27 +2,20 @@
   ;; See service-file -> with-imported-modules
   #:use-module (dotf utils)
   #:use-module (fs-utils)
-
   #:use-module (gnu services)
-  ;; program-file local-file
   #:use-module (guix gexp)
-  ;; simple-service
   #:use-module (gnu home services)
 
   ;; Enables evaluating (serialize-string "field-name" "val") from the REPL.
   ;; Not strictly needed. Can be imported by: ,use (gnu home services utils)
   #:use-module (gnu home services utils)
 
-  ;; take remove delete-duplicates append-map last etc.
-  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1) ; list-processing procedures
   ;; $fish-foreign-env
   ;; #:use-module (gnu packages shells)
-  ;; pretty-print
   #:use-module (ice-9 pretty-print)
-
   #:use-module (gnu services configuration)
   #:use-module (gnu home services utils)
-  ;; ,use (gnu home services utils)
   )
 
 ;; (evaluating-module)

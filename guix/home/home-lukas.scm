@@ -34,14 +34,10 @@ guix home --allow-downgrades \
   #:use-module (gnu home)
   #:use-module (gnu packages)
   #:use-module (gnu services)
-  ;; program-file local-file
   #:use-module (guix gexp)
   #:use-module (gnu home services shells)
-  ;; simple-service
   #:use-module (gnu home services)
-  ;; take remove delete-duplicates append-map etc.
-  #:use-module (srfi srfi-1)
-  ;; #:use-module (ice-9 pretty-print)
+  #:use-module (srfi srfi-1) ; list-processing procedures
 
   ;; the https://issues.guix.gnu.org/51359 has not been merged yet
   ;; home-git-service-type

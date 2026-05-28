@@ -1,6 +1,6 @@
 (define-module (profile-manifest)
   #:use-module (ice-9 pretty-print)
-  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-1) ; list-processing procedures
   #:use-module (dotf utils)
   #:use-module (dotf tests)
   #:use-module (guix profiles)

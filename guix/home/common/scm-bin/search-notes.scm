@@ -1,11 +1,10 @@
 (define-module (scm-bin search-notes)
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
-  #:use-module (srfi srfi-1)       ; last
   #:use-module (guix colors)
   #:use-module (dotf utils)
-  ;; #:use-module (guix build utils) ; invoke
-  #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (srfi srfi-1)   ; list-processing procedures
+  #:use-module (ice-9 optargs) ; define*-public
   )
 
 #|
