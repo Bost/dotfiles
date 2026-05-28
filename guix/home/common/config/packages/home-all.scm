@@ -209,13 +209,13 @@ TODO implement: Show warning & don't compile if substitutes are not present."
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)
     (partial append (list
-                     fish
+                     ;; fish ; installed by home-my-fish-service-type
                      font-nerd-symbols ; required by starship
                      starship
                      ))
     )
    (list
-    bash
+    ;; bash ; installed by home-bash-service-type, already in /run/current-system/profile
     bash-completion ; Bash completions for common commands
     bat
 
@@ -526,7 +526,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    fastboot    ; Android image flasher: upload file system images
    ffmpeg
    file        ; File type guesser
-   flatpak
+   ;; flatpak  ; installed by (telegram-from-flatpak-service)
    font-adobe-source-code-pro
    font-gnu-freefont
    font-gnu-unifont
