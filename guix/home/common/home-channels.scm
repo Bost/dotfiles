@@ -313,6 +313,16 @@
  ;; #:guix-commit         "8c95d6364a34cfbd60efbd15d85ce8b02ff6a2cd"
 
  ;; 27 mai 2026 17:11:48
+ ;; #:nonguix-commit      "e1273e751bb4a65cd8f817b871bfde740373d917"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
+ ;; #:guix-past-commit    "a0ea643f565d5aaa70e50e6a83865389aa5d80ba"
+ ;; #:guix-guake-commit   "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
+ ;; #:bost-commit         "d54720c8d923dec686049efc6c32e07856ed9139"
+ ;; #:guix-commit         "19da15f8713af74f1f7fec0bc3864efa92f43129"
+
+ ;; 28 mai 2026 15:36:11
  #:nonguix-commit      "e1273e751bb4a65cd8f817b871bfde740373d917"
  #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
  #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
@@ -320,7 +330,7 @@
  #:guix-past-commit    "a0ea643f565d5aaa70e50e6a83865389aa5d80ba"
  #:guix-guake-commit   "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
  #:bost-commit         "d54720c8d923dec686049efc6c32e07856ed9139"
- #:guix-commit         "19da15f8713af74f1f7fec0bc3864efa92f43129"
+ #:guix-commit         "48dda47112f2e427ca17c9ccfa6ce83c026e228d"
  )
 
 ;; It makes no sense to add generation number to the comment. Generation numbers
