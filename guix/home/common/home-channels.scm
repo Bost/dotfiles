@@ -101,17 +101,6 @@
 (module-evaluated)
 
 (home-channels
- ;; 01 mai 2026 02:00:33
- ;; #:nonguix-commit      "a3f4e7bff779da4593a2922516064a8edaafa3e6"
- ;; #:guix-science-commit "8ce03731a8eb84afec21953d5706aa72199f6649"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "ecf80aec358b183e079801cd24d6780c5e814f29"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "d3cc0386663ebc122edc051a4bad349097016190"
-
  ;; 06 mai 2026 11:16:53
  ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
  ;; #:guix-science-commit "4f29b99ce090ed2992d5bc6f3af42180201f5058"
@@ -320,14 +309,17 @@
  ;; #:guix-commit         "19da15f8713af74f1f7fec0bc3864efa92f43129"
 
  ;; 28 mai 2026 15:36:11
- #:nonguix-commit      "e1273e751bb4a65cd8f817b871bfde740373d917"
- #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- #:guix-past-commit    "a0ea643f565d5aaa70e50e6a83865389aa5d80ba"
- #:guix-guake-commit   "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
- #:bost-commit         "d54720c8d923dec686049efc6c32e07856ed9139"
- #:guix-commit         "48dda47112f2e427ca17c9ccfa6ce83c026e228d"
+ ;; #:nonguix-commit      "e1273e751bb4a65cd8f817b871bfde740373d917"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
+ ;; #:guix-past-commit    "a0ea643f565d5aaa70e50e6a83865389aa5d80ba"
+ ;; #:guix-guake-commit   "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
+ ;; #:bost-commit         "d54720c8d923dec686049efc6c32e07856ed9139"
+ ;; #:guix-commit         "48dda47112f2e427ca17c9ccfa6ce83c026e228d"
+
+ #:nonguix-commit      "615f33a7ae0edd58ebeb412da15c56c4757e5547"
+ #:guix-commit         "33acdbdfb19aff97150c7922ed97e250825f566b"
 
  #:use-local-checkout #f)
 
