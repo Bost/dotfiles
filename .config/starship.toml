@@ -1,7 +1,7 @@
 format = """
 $time\
-$hostname\
 $username\
+$hostname\
 $directory\
 $git_branch\
 $git_status\
@@ -15,10 +15,24 @@ time_format = "%Y-%m-%d_%H:%M:%S"
 format = '[$time]($style) '
 style = "bold yellow"
 
+[username]
+show_always = true
+format = '[$user]($style)'
+style_user = "bold green"
+style_root = "bold red"
+
 [hostname]
 ssh_only = false
-format = 'on [$hostname]($style) '
+format = '[@$hostname]($style) '
 style = "bold cyan"
+
+[directory]
+truncation_length = 8
+truncate_to_repo = false
+format = '[$path]($style) '
+style = "bold blue"
+read_only = " "
+read_only_style = "red"
 
 [character]
 disabled = true
