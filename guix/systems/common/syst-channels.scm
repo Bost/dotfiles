@@ -19,6 +19,7 @@
                      guix-science-commit
                      guix-commit
                      nonguix-commit
+                     (use-local-checkout #f)
                      #:allow-other-keys
                      )
   ((comp
@@ -27,7 +28,8 @@
           (append
            (list
             ;; (channel-guix-science #:commit guix-science-commit)
-            (channel-nonguix #:commit nonguix-commit)
+            (channel-nonguix #:commit nonguix-commit
+                             #:use-local-checkout use-local-checkout)
             ) lst)
           lst)))
    (list (channel-guix #:commit guix-commit))))
@@ -75,7 +77,8 @@
  ;; 28 mai 2026 15:32:02
  #:nonguix-commit      "e1273e751bb4a65cd8f817b871bfde740373d917"
  #:guix-commit         "48dda47112f2e427ca17c9ccfa6ce83c026e228d"
- )
+
+ #:use-local-checkout #f)
 
 ;; It makes no sense to add generation number to the comment. Generation numbers
 ;; are different on each computer

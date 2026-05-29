@@ -26,6 +26,7 @@
                                   games-commit
                                   bost-commit
                                   guix-guake-commit
+                                  (use-local-checkout #f)
                                   )
   (list
    ;; dwl window manager for Wayland with dynamic configuration in Guile.
@@ -40,12 +41,12 @@
    (channel-guix-android #:commit guix-android-commit)
 
    ;; whereiseveryone
-   ;; (channel-guixrus #:commit guixrus-commit)
+   ;; (channel-guixrus #:commit guixrus-commit #:use-local-checkout use-local-checkout)
 
-   (channel-hask-clj #:commit hask-clj-commit)
+   (channel-hask-clj #:commit hask-clj-commit #:use-local-checkout use-local-checkout)
 
    ;; For factorio, pulls-in nonguix guix-past
-   (channel-games #:commit games-commit)
+   (channel-games #:commit games-commit #:use-local-checkout use-local-checkout)
 
    ;; The `guix-past' channel is not needed directly, however it is required by
    ;; the `games' channel, which, without this pinning would pull from the
@@ -57,16 +58,16 @@
    ;; (channel-rde)
 
    ;; guake
-   (channel-guix-guake #:commit guix-guake-commit)
+   (channel-guix-guake #:commit guix-guake-commit #:use-local-checkout use-local-checkout)
 
    ;; pulls-in: guix nonguix guix-rust-past-crates
-   (channel-bost #:commit bost-commit)
+   (channel-bost #:commit bost-commit #:use-local-checkout use-local-checkout)
    ))
 
 (def* (home-channels #:key
                      guix-science-commit
                      guix-android-commit
-                     ;; guixrus-commit
+                     guixrus-commit
                      hask-clj-commit
                      games-commit
                      bost-commit
@@ -74,22 +75,25 @@
                      guix-commit
                      nonguix-commit
                      guix-past-commit
+                     (use-local-checkout #f)
                      #:allow-other-keys
                      )
   ((comp
     (lambda (lst)
       (if (or (host-edge?) (host-ecke?) (host-geek?))
           (append
-           (list (channel-nonguix #:commit nonguix-commit))
+           (list (channel-nonguix #:commit nonguix-commit
+                                  #:use-local-checkout use-local-checkout))
            (home-channels-edge-ecke
             #:guix-science-commit  guix-science-commit
             #:guix-past-commit     guix-past-commit
             #:guix-android-commit  guix-android-commit
-            ;; #:guixrus-commit       guixrus-commit
+            #:guixrus-commit       guixrus-commit
             #:hask-clj-commit      hask-clj-commit
             #:games-commit         games-commit
             #:bost-commit          bost-commit
             #:guix-guake-commit    guix-guake-commit
+            #:use-local-checkout   use-local-checkout
             ) lst)
           lst)))
    (list (channel-guix #:commit guix-commit))))
@@ -324,7 +328,8 @@
  #:guix-guake-commit   "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
  #:bost-commit         "d54720c8d923dec686049efc6c32e07856ed9139"
  #:guix-commit         "48dda47112f2e427ca17c9ccfa6ce83c026e228d"
- )
+
+ #:use-local-checkout #f)
 
 ;; It makes no sense to add generation number to the comment. Generation numbers
 ;; are different on each computer
