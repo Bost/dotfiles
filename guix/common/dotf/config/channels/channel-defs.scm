@@ -18,8 +18,15 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(define dev (getenv "dev"))
+
+(define* (get-url repo-name #:key (use-local-checkout #f))
+  (str (if use-local-checkout
+           (str "file://" dev)
+           "https://codeberg.org/Bost/")
+       "/" repo-name))
+
 (define (create-file-channels-scm additional-channels)
-  ;; (format #t "~a Starting…\n" f)
   (let* [(channels-scm-fullpath (user-dotf "/" channels-scm-relpath))]
     (call-with-values
         (lambda ()
@@ -68,8 +75,9 @@
        "314453a87634d67e914cfdf51d357638902dd9fe"
        (openpgp-fingerprint
         "C9BE B8A0 4458 FDDF 1268 1B39 029D 8EB7 7E18 D68C"))))))
+(testsymb 'channel-home-service-dwl-guile)
 
-(def*-public (channel-games #:key (commit #f))
+(def*-public (channel-games #:key (commit #f) (use-local-checkout #f))
   "https://raw.githubusercontent.com/wube/factorio-data/master/changelog.txt
 Use:
     guix package --load-path=./ --install=factorio
@@ -78,15 +86,15 @@ wrong.
 The games channel requires the guix-gaming-channels/games.scm - see above.
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
-  (let* [(channel-name 'games)]
+  (let* [(channel-name 'games)
+         ;; (url (format "file://~a/games" dev))
+         ;; (url "https://gitlab.com/rostislav.svoboda/games")
+         (url "https://gitlab.com/guix-gaming-channels/games.git")]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
-     (url
-      #;"https://gitlab.com/rostislav.svoboda/games"
-      #;,(format #f "file://%s/dev/games" home)
-      "https://gitlab.com/guix-gaming-channels/games.git")
+     (url url)
      (commit commit)
      ;; Enable signature verification:
      (introduction
@@ -96,20 +104,21 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
        (openpgp-fingerprint
         ;; ... as it was made by some with OpenPGP fingerprint:
         "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))))
+(testsymb 'channel-games)
 
-(def*-public (channel-hask-clj #:key (commit #f))
+(def*-public (channel-hask-clj #:key (commit #f) (use-local-checkout #f))
   "Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
-  (let* [(channel-name 'hask-clj)]
+  (let* [(channel-name 'hask-clj)
+         (url (get-url "haskell-guix"
+                       #:use-local-checkout use-local-checkout))]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
-     (url
-      #;"https://github.com/Tass0sm/guix-develop"
-      "https://codeberg.org/Bost/haskell-guix"
-      #;,(format #f "file://~a/dev/haskell-guix" home))
+     (url url)
      (commit commit))))
+(testsymb 'channel-hask-clj)
 
 (def*-public (channel-flat #:key (commit #f))
   "flatwhatson contains emacs-native-comp, however it doesn't compile.
@@ -130,53 +139,58 @@ https://github.com/flatwhatson/guix-channel/blob/master/scripts/make-dist"
        "33f86a4b48205c0dc19d7c036c85393f0766f806"
        (openpgp-fingerprint
         "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490"))))))
+(testsymb 'channel-flat)
 
 (def*-public (channel-rde #:key (commit #f))
   "Andrew Tropin's tools for managing reproducible development environments.
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
-  (let* [(channel-name 'rde)]
+  (let* [(channel-name 'rde)
+         (url "https://git.sr.ht/~abcdw/rde")
+         ;; (url (format #f "file://~a/andrew-rde" dev))
+         ]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
-     (url
-      "https://git.sr.ht/~abcdw/rde"
-      #;,(format #f "file://~a/dev/andrew-rde" home))
+     (url url)
      (commit commit)
      (introduction
       (make-channel-introduction
        "257cebd587b66e4d865b3537a9a88cccd7107c95"
        (openpgp-fingerprint
         "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))))
+(testsymb 'channel-rde)
 
-(def*-public (channel-bost #:key (commit #f))
+(def*-public (channel-bost #:key (commit #f) (use-local-checkout #f))
   "Provides a.o.:
 - (bost gnu packages emacs-xyz) module
 - clojure, babashka, postgres 13.3, openjdk18
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
-  (let* [(channel-name 'bost)]
+  (let* [(channel-name 'bost)
+         (url (get-url "guix-packages"
+                       #:use-local-checkout use-local-checkout))]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
-     (url
-      "https://codeberg.org/Bost/guix-packages"
-      ;; (format #f "file://~a/dev/guix-packages" home)
-      )
+     (url url)
      (commit commit))))
+(testsymb 'channel-bost)
 
-(def*-public (channel-nonguix #:key (commit #f))
+(def*-public (channel-nonguix #:key (commit #f) (use-local-checkout #f))
   "Provides firefox, linux-kernel with non-free proprietary drivers, etc.
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
-  (let* [(channel-name 'nonguix)]
+  (let* [(channel-name 'nonguix)
+         ;; (url (format #f "file://~a/nonguix" dev))
+         (url "https://gitlab.com/nonguix/nonguix")]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
-     (url "https://gitlab.com/nonguix/nonguix")
+     (url url)
      (commit commit)
 ;;; Enable signature verification, i.e. declare that in the nonguix repository,
 ;;; the first commit which can be trusted is the 897c1a470d and it was created
@@ -186,8 +200,9 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
        "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
        (openpgp-fingerprint
         "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))))
+(testsymb 'channel-nonguix)
 
-(def*-public (channel-guixrus #:key (commit #f))
+(def*-public (channel-guixrus #:key (commit #f) (use-local-checkout #f))
   "This channel provides packages and services that are:
 * Yet to be merged upstream.
 * In alpha or beta stage of development.
@@ -195,16 +210,15 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
 * Nightly releases.
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
-  (let* [(channel-name 'guixrus)]
+  (let* [(channel-name 'guixrus)
+         ;; (url "https://git.sr.ht/~whereiseveryone/guixrus")
+         (url (get-url (str channel-name)
+                       #:use-local-checkout use-local-checkout))]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
-     (url
-      "https://codeberg.org/Bost/guixrus"
-      ;; (format #f "file://~a/dev/guixrus" home)
-      ;; "https://git.sr.ht/~whereiseveryone/guixrus"
-      )
+     (url url)
      (commit commit))
 
     ;; (channel
@@ -217,12 +231,20 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
     ;;     (openpgp-fingerprint
     ;;      "CD2D 5EAA A98C CB37 DA91  D6B0 5F58 1664 7F8B E551"))))
     ))
+(testsymb 'channel-guixrus)
 
 (def*-public (channel-guix #:key (commit #f))
   "Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   ;; %default-guix-channel
-  (let* [(channel-name 'guix)]
+  (let* [(channel-name 'guix)
+         (url
+          ;; (format #f "file://~a/guix" dev)
+          ;; "https://git.guix.gnu.org/guix.git" is redirected to codeberg
+          "https://codeberg.org/guix/guix.git"
+          ;; "https://git.savannah.gnu.org/git/guix.git"
+          )
+         ]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
@@ -231,12 +253,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
       ;; branch defaults to "master". See `define-record-type* <channel> ...` in
       ;; guix/channels.scm
       ;; (branch "master")
-      (url
-       ;; (format #f "file://~a/dev/guix" home)
-       ;; "https://git.guix.gnu.org/guix.git" is redirected to codeberg
-       "https://codeberg.org/guix/guix.git"
-       ;; "https://git.savannah.gnu.org/git/guix.git"
-       )
+      (url url)
       (commit commit)
       (introduction
        (make-channel-introduction
@@ -301,16 +318,19 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          "CA4F 8CF4 37D7 478F DA05  5FD4 4213 7701 1A37 8446"))))))
 (testsymb 'channel-guix-science)
 
-(def*-public (channel-guix-guake #:key (commit #f))
+(def*-public (channel-guix-guake #:key (commit #f) (use-local-checkout #f))
   "Provides a.o.:
 - (bost gnu packages guake) module
 - (bost gnu packages gtk) module"
-  (let* [(channel-name 'guix-guake)]
+  (let* [(channel-name 'guix-guake)
+         (url (get-url (str channel-name)
+                       #:use-local-checkout use-local-checkout))]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
-     (url "https://codeberg.org/Bost/guix-guake")
+     (url url)
      (commit commit))))
+(testsymb 'channel-guix-guake)
 
 (module-evaluated)

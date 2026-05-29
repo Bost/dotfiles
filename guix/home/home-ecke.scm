@@ -88,7 +88,12 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 
 ;;; TODO home-git-configuration
 
-(def home-env
+(def* (home-env #:key
+                guixrus-commit
+                hask-clj-commit
+                bost-commit
+                (use-local-checkout #f)
+                #:allow-other-keys)
   (home-environment
    ;; (packages ...) replaced by $dotf/guix/profile-manifest.scm
    ;; (packages (home-packages-to-install))
@@ -97,9 +102,13 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
      (list
       (simple-service 'home-channels home-channels-service-type
                       (list
-                       ;; (channel-guixrus)
-                       (channel-bost)
-                       (channel-hask-clj))))
+                       ;; (channel-guixrus #:commit guixrus-commit #:use-local-checkout use-local-checkout)
+
+                       (channel-hask-clj #:commit hask-clj-commit #:use-local-checkout use-local-checkout)
+
+                       ;; pulls-in: guix nonguix guix-rust-past-crates
+                       (channel-bost #:commit bost-commit #:use-local-checkout use-local-checkout)
+                       )))
      (home-base:home-env-services-edge-ecke))))
 
   ;; TODO Wayland-specific settings
@@ -129,4 +138,8 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   )
 
 (module-evaluated)
-home-env
+(home-env
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:bost-commit         "ecf80aec358b183e079801cd24d6780c5e814f29"
+
+ #:use-local-checkout #f)
