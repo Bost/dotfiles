@@ -184,7 +184,9 @@
 
        ;; (service pcscd-service-type)
 
-       (service bluetooth-service-type)
+       (service bluetooth-service-type
+                (bluetooth-configuration
+                 (auto-enable? #t)))
 
        (service cups-service-type
                 (cups-configuration
