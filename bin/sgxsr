@@ -60,7 +60,11 @@ set -x # Print commands and their arguments as they are executed.
 # See /home/bost/.config/guix/current/bin/guix-daemon
 
 source /etc/profile 2>/dev/null
-# No '--allow-downgrades' for system channels!
+# No automatic '--allow-downgrades' for system channels!
+# --unsafe-channel-evaluation allow:
+#   - access to bindings such as system (to run shell code)
+#   - use additional modules
+#   - etc.
 guix pull \
      --unsafe-channel-evaluation \
      --load-path=$baseLP/common \
@@ -82,12 +86,7 @@ sudo \
 # `guix pull` above, to effectivelly reactivate the home-channels. This won't
 # behave correctly if `guix pull ... system-channels` was consecutivelly called
 # more than once, but it's faster that pulling the home-channels.
-#
-# Need to include --allow-downgrades, since the system-channels may be newer.
-#   guix pull --unsafe-channel-evaluation --allow-downgrades \
-#        --load-path=$baseLP/common \
-#        --channels=$baseLP/systems/common/home-channels.scm
-#        "$@"
+# If `guix pull --roll-back "$@"` fails use `gxp`.
 
 source /etc/profile 2>/dev/null
 guix pull --roll-back "$@"
