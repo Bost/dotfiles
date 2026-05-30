@@ -83,6 +83,7 @@ down()    { cd ~/Downloads; }
 dspd()    { cd "${dspd:?}"; }
 dspg()    { cd "${dspg:?}"; }
 dspc()    { cd "${dspc:?}"; }
+dsps()    { cd "${dsps:?}"; }
 dtf()     { cd "${dtf:?}"; }
 dtfg()    { cd "${dtfg:?}"; }
 notes()   { cd "${dev:?}/notes/notes"; }
