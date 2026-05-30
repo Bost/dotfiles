@@ -178,7 +178,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    icecat ;; 1839.7 MiB
 
    ;; An inferior version of librewolf is used
-   ;; librewolf ; Custom version of Firefox. Better privacy, security and freedom
+   librewolf ; Custom version of Firefox. Better privacy, security and freedom
    qemu      ; Machine emulator and virtualizer ;; 688 MiB
 
    ;; ungoogled-chromium ; 285MiB; supports WebUSB; doesn't start
@@ -918,13 +918,6 @@ FIXME the inferior-packages are installed on every machine"
     ;;       (list
     ;;        (channel-guix    #:commit "2dde6fc80f96cd8b1edef8f61637cc2adeb8919f")
     ;;        (channel-nonguix #:commit "a3f4e7bff779da4593a2922516064a8edaafa3e6")))
-
-    ;; Use 151.0.1-2 until a substitute for the latest 151.0.2-1 is available
-    (list #:package "librewolf" #:channels
-          (list
-           (channel-guix    #:commit "8c95d6364a34cfbd60efbd15d85ce8b02ff6a2cd")
-           ;; (channel-nonguix #:commit "ffa33d200e1c930e79d00021f03b2f8c31d00b61")
-           ))
     )))
 
 (define (devel-guile-ide-arei-packages)
