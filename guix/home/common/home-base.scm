@@ -89,6 +89,15 @@
      home-my-fish-service-type
      (home-my-fish-configuration))
     (service
+     home-inputrc-service-type
+     (home-inputrc-configuration
+       (conditional-constructs
+        `(("$include" .
+           ,(local-file
+             (user-dotf "/" ".inputrc_additions")
+             "inputrc_additions"))))))
+
+    (service
      home-bash-service-type
      (home-bash-configuration
 ;;; (guix-defaults? #t) ;; Add sane defaults to the top of the .bashrc
