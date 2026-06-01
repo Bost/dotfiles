@@ -6,7 +6,8 @@
   ci = commit
   br = branch
   co = checkout
-  df = diff --word-diff
+  df = diff --word-diff=color
+	dft = "!f() { GIT_EXTERNAL_DIFF=difft git diff \"$@\"; }; f"
   bi = bisect
   # -s, --no-messages  suppress error messages
   who = shortlog --no-messages --
@@ -84,6 +85,7 @@
   user = Bost
 [diff]
   indentHeuristic = true
+  external = difft
 [rebase]
   autostash = true
 [core]

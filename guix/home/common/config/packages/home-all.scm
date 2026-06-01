@@ -942,6 +942,10 @@ FIXME the inferior-packages are installed on every machine"
    (devel-guile-ide-arei-packages)
    ;; remove packages from this list if their inferior version should be used
    (list
+
+    ;; Structural diff command that understands syntax
+    difftastic
+
 ;;; Make sure that emacs is also in the default profile, i.e. installed by
 ;;;   guix install emacs
 ;;; otherwise the:
