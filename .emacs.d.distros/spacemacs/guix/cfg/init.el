@@ -1062,6 +1062,9 @@ This function should only modify configuration layer settings."
      ;; dired alternative
      dirvish
 
+     ;; Wrapper interface for `difft' command line tool
+     difftastic
+
      ;; Emacs interface (not only) for GNU Guix package manager `guix package'.
      ;; It also provides highlighting and tools for Guix code.
      ;;
@@ -2173,6 +2176,10 @@ before packages are loaded."
   ;; (xterm-mouse-mode -1)
   (super-save-mode +1) ;; better auto-save-mode
 
+  (with-eval-after-load 'magit
+    (require 'difftastic-bindings)
+    (difftastic-bindings-mode 1))
+
   (use-package claude-code-ide
     :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
     :config
@@ -2213,6 +2220,11 @@ before packages are loaded."
   (spacemacs/declare-prefix "og" "google-this")
   (spacemacs/declare-prefix "oo" "org")
   (spacemacs/set-leader-keys
+    "gD" #'difftastic-magit-diff
+    ;; (global-set-key (kbd "C-c C-v")
+    ;;                 #'tw-evil-find-file-at-point-with-line-other-window)
+    "gF"  #'tw-evil-find-file-at-point-with-line-other-window
+    "gS" #'difftastic-magit-show
     "oa"  #'tw-find-ai-scrbl
     "oc"  #'tw-cider-clear-compilation-highlights
     ;; "oc"  #'org-roam-capture
@@ -2240,11 +2252,11 @@ before packages are loaded."
     ;; Toggle workspaces forward/backwards
     "ow"  #'eyebrowse-next-window-config
     "oW"  #'eyebrowse-last-window-config
-
-    ;; (global-set-key (kbd "C-c C-v")
-    ;;                 #'tw-evil-find-file-at-point-with-line-other-window)
-    "gF"  #'tw-evil-find-file-at-point-with-line-other-window
     )
+
+  (spacemacs/set-leader-keys-for-major-mode 'magit-status-mode
+    "D" #'difftastic-magit-diff
+    "S" #'difftastic-magit-show)
 
   ;; accessible from:
   ;; 1. from evil-nomal-mode by ~SPC m~ or ~M-m m~ or

@@ -1062,6 +1062,9 @@ This function should only modify configuration layer settings."
      ;; dired alternative
      dirvish
 
+     ;; Wrapper interface for `difft' command line tool
+     difftastic
+
      ;; Emacs interface (not only) for GNU Guix package manager `guix package'.
      ;; It also provides highlighting and tools for Guix code.
      ;;
@@ -1235,8 +1238,8 @@ It should only modify the values of Spacemacs settings."
    sp-layouts-dir         (concat sp-home-dir "/.cache/layouts")
    )
 
-  (mapcar (lambda (dir) (mkdir dir 'parents))
-          (list sp-snippets-dir sp-custom-settings-dir sp-layouts-dir))
+  (mapc (lambda (dir) (mkdir dir 'parents))
+        (list sp-snippets-dir sp-custom-settings-dir sp-layouts-dir))
 
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
@@ -2173,6 +2176,10 @@ before packages are loaded."
   ;; (xterm-mouse-mode -1)
   (super-save-mode +1) ;; better auto-save-mode
 
+  (with-eval-after-load 'magit
+    (require 'difftastic-bindings)
+    (difftastic-bindings-mode 1))
+
   (use-package claude-code-ide
     :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
     :config
@@ -2194,7 +2201,7 @@ before packages are loaded."
      .
      (lambda ()
        "Don't increase the height relative to the other text."
-       (mapcar
+       (mapc
         (lambda (face)
           ;; (set-face-attribute face nil :weight 'semi-bold :height 1.0)
           (set-face-attribute face nil :weight 'bold :height 1.0))
@@ -2213,6 +2220,11 @@ before packages are loaded."
   (spacemacs/declare-prefix "og" "google-this")
   (spacemacs/declare-prefix "oo" "org")
   (spacemacs/set-leader-keys
+    "gD" #'difftastic-magit-diff
+    ;; (global-set-key (kbd "C-c C-v")
+    ;;                 #'tw-evil-find-file-at-point-with-line-other-window)
+    "gF"  #'tw-evil-find-file-at-point-with-line-other-window
+    "gS" #'difftastic-magit-show
     "oa"  #'tw-find-ai-scrbl
     "oc"  #'tw-cider-clear-compilation-highlights
     ;; "oc"  #'org-roam-capture
@@ -2240,22 +2252,22 @@ before packages are loaded."
     ;; Toggle workspaces forward/backwards
     "ow"  #'eyebrowse-next-window-config
     "oW"  #'eyebrowse-last-window-config
-
-    ;; (global-set-key (kbd "C-c C-v")
-    ;;                 #'tw-evil-find-file-at-point-with-line-other-window)
-    "gF"  #'tw-evil-find-file-at-point-with-line-other-window
     )
+
+  (spacemacs/set-leader-keys-for-major-mode 'magit-status-mode
+    "D" #'difftastic-magit-diff
+    "S" #'difftastic-magit-show)
 
   ;; accessible from:
   ;; 1. from evil-nomal-mode by ~SPC m~ or ~M-m m~ or
   ;; 2. from evil-insert-mode by ~,~
   ;; TODO test this
-  (mapcar (lambda (mode)
-            (spacemacs/set-leader-keys-for-major-mode mode
-              "c" #'tw-cider-clear-compilation-highlights
-              "f" #'tw-switch-to-repl-start-figwheel
-              "l" #'helm-cider-repl-history))
-          '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
+  (mapc (lambda (mode)
+          (spacemacs/set-leader-keys-for-major-mode mode
+            "c" #'tw-cider-clear-compilation-highlights
+            "f" #'tw-switch-to-repl-start-figwheel
+            "l" #'helm-cider-repl-history))
+        '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
 
   ;; (setq text-quoting-style 'straight)
 
@@ -2344,7 +2356,7 @@ before packages are loaded."
 ;;;
   (with-eval-after-load 'multi-term
     ;; term-mode-map is apparently not needed
-    (mapcar #'my-evil-keybindings-in-term '(term-raw-map)))
+    (mapc #'my-evil-keybindings-in-term '(term-raw-map)))
 
   (with-eval-after-load 'dired
     ;; ;; don't remove `other-window', the caller expects it to be there
@@ -2546,7 +2558,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
     ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
     ;; TODO move this to project's .dir-locals.el
     (with-eval-after-load 'geiser-guile
-      (mapcar
+      (mapc
        ;; Add ELEMENT to the value of LIST-VAR if it isn't there yet.
        (-partial #'add-to-list 'geiser-guile-load-path)
        glp))
@@ -2654,16 +2666,16 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; For rkt-files the bindings are available via major mode bindings.
   ;; See M-x helm-descbinds
   (with-eval-after-load 'racket-mode
-    (mapcar (-partial #'apply #'add-hook)
-            `((racket-mode-hook      ,(my-fn-kbind-racket racket-mode-map))
-              (racket-repl-mode-hook ,(my-fn-kbind-racket racket-repl-mode-map)))))
+    (mapc (-partial #'apply #'add-hook)
+          `((racket-mode-hook      ,(my-fn-kbind-racket racket-mode-map))
+            (racket-repl-mode-hook ,(my-fn-kbind-racket racket-repl-mode-map)))))
 
   ;; For scm-files the bindings are available via minor mode bindings for
   ;; geiser-mode, not for scheme-mode. See M-x helm-descbinds
   (with-eval-after-load 'geiser-mode
-    (mapcar (-partial #'apply #'add-hook)
-            `((geiser-mode-hook      ,(my-fn-kbind-scheme geiser-mode-map))
-              (geiser-repl-mode-hook ,(my-fn-kbind-scheme geiser-repl-mode-map)))))
+    (mapc (-partial #'apply #'add-hook)
+          `((geiser-mode-hook      ,(my-fn-kbind-scheme geiser-mode-map))
+            (geiser-repl-mode-hook ,(my-fn-kbind-scheme geiser-repl-mode-map)))))
 
   (with-eval-after-load 'scheme-mode
     (font-lock-add-keywords
@@ -2791,7 +2803,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                         "[advice spacemacs/toggle-menu-bar] %s"
                         "Try ~M-`~ : M-x tmm-menubar")))
 
-  (mapcar
+  (map
    (lambda (map)
      (bind-keys :map map
 ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
@@ -2811,7 +2823,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; ;;; layers/+misc/multiple-cursors/packages.el
   ;;                   ("C-M-k" . kill-sexp)))
 
-  (mapcar
+  (mapc
    (lambda (map)
      ;; Move by screen lines instead of logical (long) lines
      (bind-keys :map map
