@@ -1,0 +1,22 @@
+# Notation
+# \t - Tab
+# \e - Escape prefix, usually produced by Alt/Meta or by special keys
+# \c - Ctrl
+# \b - Backspace
+#
+# Important: "\e[A" does NOT mean pressing Escape, then Shift+a.
+# It is the escape sequence sent by the Up Arrow key.
+# The "A" is a literal capital A byte inside the terminal escape sequence,
+# not a key you press manually.
+
+# Move one word:
+"\e[1;5C": forward-word              # Ctrl + Right Arrow
+"\e[1;5D": backward-word             # Ctrl + Left Arrow
+
+# Search in history using the already typed prefix:
+"\e[A": history-search-backward      # Up Arrow
+"\e[B": history-search-forward       # Down Arrow
+
+# Better completion behavior
+set show-all-if-ambiguous on
+set completion-ignore-case on
