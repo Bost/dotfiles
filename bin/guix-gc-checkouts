@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+find $HOME/.cache/guix/checkouts \
+    -mindepth 1 \
+    -maxdepth 1 \
+    -type d \
+    -exec test -d {}/.git ';' \
+    -exec printf 'git gc: %s\n' {} ';' \
+    -exec git -C {} gc ';'
