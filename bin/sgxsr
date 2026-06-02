@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 baseLP=$dotf/guix # base-load-path
 

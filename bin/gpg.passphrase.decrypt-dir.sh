@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Decrypt a GPG-encrypted archive and extract it
 # Usage: gpg.passphrase.decrypt-dir.sh /path/to/encrypted_file.gpg /path/to/target_dir

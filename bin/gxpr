@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # load manifest from dotfiles-guix-home to the default profile
 

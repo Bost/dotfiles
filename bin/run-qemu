@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # '--preserve-env=GUILE_LOAD_COMPILED_PATH' makes the (dotf utils) scheme module
 # accessible to the super-user

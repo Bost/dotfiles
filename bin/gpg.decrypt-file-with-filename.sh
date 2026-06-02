@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 random_name="$1"
 

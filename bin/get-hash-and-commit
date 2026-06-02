@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since 'set -e' is used.

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Configuration
 IN_FILE="/tmp/secure_data.tar.gz.gpg"  # Encrypted input file

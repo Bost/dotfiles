@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # - Use "$VAR" in 99% of cases - it's simpler and safer.
 # - Use "${VAR}" when:

@@ -25,7 +25,7 @@ find "$HOME" \
      -type d \
      -name '[0-9]*-guix-home-legacy-configs-backup' \
      -mtime +7 \
-     -exec rm --recursive --force -- {} +
+     -exec rm -rf -- {} +
 { retval="$?"; set +x; } 2>/dev/null
 
 exit "$retval"

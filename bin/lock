@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # TODO the sequence should be:
 # 'configure channels: copy channels.scm etc.' && \
