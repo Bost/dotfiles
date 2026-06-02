@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Configuration
 SRC_DIR="/path/to/your/data"           # The directory you want to encrypt

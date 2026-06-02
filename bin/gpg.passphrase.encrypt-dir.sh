@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Encrypt a directory using GPG (archived and encrypted)
 # Usage: gpg.passphrase.encrypt-dir.sh /path/to/source_dir /path/to/output_file.gpg

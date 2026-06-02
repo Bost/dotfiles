@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -x  # Print commands and their arguments as they are executed.
 expired_keys="$(gpg --list-public-keys --fixed-list-mode --with-colons | grep "^pub:e:" | cut --fields=5 --delimiter=":")"
