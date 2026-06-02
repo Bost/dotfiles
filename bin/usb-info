@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usb-info() {
+    lsusb -t | awk '
+      /^\/: .*Bus/ {
+        match($0, /Bus ([0-9]+)\./, arr);
+        bus = arr[1]
+      }
+      /Mass Storage/ {
+        match($0, /Dev ([0-9]+)/, dev_arr);
+        match($0, /([0-9]+)M/, speed_arr);
+        speed_num = speed_arr[1];
+        speed = speed_num "M";
+
+        if (speed_num == 480) {
+          usb_ver = "USB 2.0";
+          theoretical = "60 MB/s";
+          typical = "35-40 MB/s";
+        }
+        else if (speed_num == 5000) {
+          usb_ver = "USB 3.0";
+          theoretical = "625 MB/s";
+          typical = "100-400 MB/s";
+        }
+        else if (speed_num == 10000) {
+          usb_ver = "USB 3.1";
+          theoretical = "1250 MB/s";
+          typical = "500-900 MB/s";
+        }
+        else if (speed_num == 20000) {
+          usb_ver = "USB 3.2";
+          theoretical = "2500 MB/s";
+          typical = "1000-2000 MB/s";
+        }
+        else {
+          usb_ver = "USB ?";
+          theoretical = "? MB/s";
+          typical = "?";
+        }
+
+        printf "%s|%s|%s|%s|%s|%s\n", bus, dev_arr[1], speed, usb_ver, theoretical, typical
+      }
+    ' | while IFS='|' read bus dev speed usb_ver theoretical typical; do
+        busdev=$(printf "%03d:%03d" "$bus" "$dev")
+
+        # Try to get product from lsusb -v first
+        product=$(
+            lsusb -v -s "$busdev" 2>/dev/null | \
+                awk '/iProduct/ {for(i=3;i<=NF;i++) printf "%s%s", $i, (i<NF?" ":""); print ""; exit}'
+               )
+        serial=$(
+            lsusb -v -s "$busdev" 2>/dev/null | awk '/iSerial/ {print $3; exit}'
+              )
+
+        # If no product from lsusb -v, try plain lsusb
+        if [ -z "$product" ]; then
+            product=$(lsusb -s "$busdev" 2>/dev/null | sed 's/^.*ID [0-9a-f]*:[0-9a-f]* //')
+        fi
+
+        # If still no product, try to get it from udevadm using the block device
+        if [ -z "$product" ]; then
+            # Remove leading zeros from bus number for sysfs matching
+            bus_no_zero=$(echo "$bus" | sed 's/^0*//')
+
+            for sysdev in /sys/bus/usb/devices/$bus_no_zero-*; do
+                if [[ "$(basename "$sysdev")" == *":"* ]]; then
+                    continue
+                fi
+
+                if [ -f "$sysdev/devnum" ]; then
+                    devnum=$(cat "$sysdev/devnum")
+                    dev_no_zero=$(echo "$dev" | sed 's/^0*//')
+                    if [ "$devnum" = "$dev_no_zero" ]; then
+                        portname=$(basename "$sysdev")
+                        for blockpath in \
+                            /sys/bus/usb/devices/$portname/$portname:*/host*/target*/*/block/*; do
+                            if [ -d "$blockpath" ]; then
+                                blockname=$(basename "$blockpath")
+                                product=$(
+                                    udevadm \
+                                        info --query=property \
+                                        --name="/dev/$blockname" 2>/dev/null | \
+                                        grep "ID_MODEL=" | \
+                                        cut -d= -f2 | sed 's/_/ /g'
+                                       )
+                                break 2
+                            fi
+                        done
+                    fi
+                fi
+            done
+        fi
+
+        # Method 1: Try to match by serial (most reliable when available)
+        size="?"
+        if [ -n "$serial" ]; then
+            for blockdev in /dev/sd?; do
+                dev_serial=$(
+                    udevadm info --query=property --name=$blockdev \
+                            2>/dev/null | grep "ID_SERIAL_SHORT=" | cut -d= -f2
+                          )
+                if [ "$dev_serial" = "$serial" ]; then
+                    size=$(lsblk -ndo SIZE "$blockdev" 2>/dev/null)
+                    break
+                fi
+            done
+        fi
+
+        # Method 2: If no serial or no match, search /sys by bus and device number
+        if [ "$size" = "?" ]; then
+            # Remove leading zeros from bus number for sysfs matching
+            bus_no_zero=$(echo "$bus" | sed 's/^0*//')
+
+            for sysdev in /sys/bus/usb/devices/$bus_no_zero-*; do
+                # Skip interface entries (containing ':')
+                if [[ "$(basename "$sysdev")" == *":"* ]]; then
+                    continue
+                fi
+
+                if [ -f "$sysdev/devnum" ]; then
+                    devnum=$(cat "$sysdev/devnum")
+                    # Remove leading zeros from dev for comparison
+                    dev_no_zero=$(echo "$dev" | sed 's/^0*//')
+                    if [ "$devnum" = "$dev_no_zero" ]; then
+                        # Found the USB device, now find its block device
+                        portname=$(basename "$sysdev")
+                        for blockpath in \
+                            /sys/bus/usb/devices/$portname/$portname:*/host*/target*/*/block/*; do
+                            if [ -d "$blockpath" ]; then
+                                blockname=$(basename "$blockpath")
+                                size=$(lsblk -ndo SIZE "/dev/$blockname" 2>/dev/null)
+                                break 2
+                            fi
+                        done
+                    fi
+                fi
+            done
+        fi
+
+        printf "Bus %s Dev %s (%s / %s, max=%s avg=%s, size=%s): %s\n" \
+               "$bus" "$dev" "$speed" "$usb_ver" "$theoretical" "$typical" \
+               "$size" "$product"
+
+    done
+}
+usb-info
