@@ -1,31 +1,31 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since 'set -e' is used.
 set -e
 
-tstp=$(date +%F_%H-%M-%S)
-baseLP=$dotf/guix # base-load-path
-hostname=$(hostname)
-
-configFile=$(printf "%s/home/home-%s.scm" $baseLP $hostname)
+baseLP="$dtf/guix"     # base-load-path
+configFile=$(printf '%s/home/home-%s.scm' "$baseLP" "$(hostname)")
 
 set -x  # Print commands and their arguments as they are executed.
 source /etc/profile 2>/dev/null
 guix home --allow-downgrades \
-     --load-path=$baseLP/common \
-     --load-path=$baseLP/home/common \
+     --load-path="$baseLP/common" \
+     --load-path="$baseLP/home/common" \
      reconfigure \
-     $configFile \
+     "$configFile" \
      "$@"
-
 { retval="$?"; set +x; } 2>/dev/null
 
-set -x  # Print commands and their arguments as they are executed.
-# Remove `guix home` backup directories older than 10 days
-find ~ \
-     -maxdepth 1 -name "*-guix-home-legacy-configs-backup" \
-     -type d -mtime +10 -exec rm -rf {} \;
+printf '# Remove Guix Home backup directories older than 7 days:\n'
+set -x
+find "$HOME" \
+     -mindepth 1 \
+     -maxdepth 1 \
+     -type d \
+     -name '[0-9]*-guix-home-legacy-configs-backup' \
+     -mtime +7 \
+     -exec rm --recursive --force -- {} +
 { retval="$?"; set +x; } 2>/dev/null
 
-exit $retval
+exit "$retval"
