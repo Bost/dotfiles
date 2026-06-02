@@ -552,8 +552,8 @@ a list of files to search through."
    (list #:utility "gist"   #:params (git-cmdstr "status"))
    (list #:utility "gists"  #:params (git-cmdstr "status --short"))
    (list #:utility "gita"   #:params (git-cmdstr "tag --sort version:refname"))
-   ;; #:desc "Show last 20 git logs: git lg-20 …'"
-   (list #:utility "lg"     #:params (git-cmdstr "lg-20"))
+   ;; #:desc "Show last 20 git logs: git lg-n 20 …'"
+   (list #:utility "lg"     #:params (git-cmdstr "lg-n 20"))
    (list #:utility "lga"    #:params (git-cmdstr "lg"))
 
    ;;  -c <name>=<value>

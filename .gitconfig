@@ -1,75 +1,83 @@
 # see http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
 [alias]
-  au = add --update
-  ss = status --short
-  st = status
-  ci = commit
-  br = branch
-  co = checkout
-  df = diff --word-diff=color
+	au = add --update
+	bi = bisect
+	br = branch
+	ci = commit
+	co = checkout
+	ss = status --short
+	st = status
+	df = diff --word-diff=color   # with diffstatic
+	cp = cherry-pick
+
+	# Safer everyday helpers.
+	amend = commit --amend --reuse-message=HEAD
+	amend-edit = commit --amend
+	unstage = restore --staged --
+	discard = restore --worktree --
+	last = log --patch --max-count=1
+	root = rev-parse --show-toplevel
+
 	dft = "!f() { GIT_EXTERNAL_DIFF=difft git diff \"$@\"; }; f"
-  bi = bisect
-  # -s, --no-messages  suppress error messages
-  who = shortlog --no-messages --
-  undo = reset --hard
-  lg-20     = log         -20                        --color               --pretty=format:'%Cred%h%Creset%C(white) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --date=short
-  lg-all-20 = log --graph -20                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-30     = log         -30                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-all-30 = log --graph -30                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-40     = log         -40                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-all-40 = log --graph -40                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-50     = log         -50                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-all-50 = log --graph -50                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-60     = log         -60                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-all-60 = log --graph -60                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-70     = log         -70                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-all-70 = log --graph -70                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-80     = log         -80                        --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  lg-all-80 = log --graph -80                        --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  # lg-20   = log --graph -20 --color --oneline --graph --pickaxe-all --decorate --stat -G 'master' # see https://zwischenzugs.com/2018/03/26/git-log-the-good-parts/
-  lg        = log                                    --color               --pretty=format:'%Cred%h%Creset%C(white) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --date=short
-  lg-all    = log --graph --full-history             --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
-  alg       = log --graph --abbrev-commit            --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --
-  lg1       = log --graph --abbrev-commit --decorate --date=relative --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
-  lg2       = log --graph --abbrev-commit --decorate                 --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
 
-  # Read, modify and delete symbolic refs
-  cb = symbolic-ref HEAD --short
-  # show branches
-  sb = !ls .git/refs/remotes/*/$(git cb) | cut -d/ -f4,5 | xargs git show-branch $(git cb)
+	# -s, --no-messages    suppress error messages
+	who = shortlog --no-messages --
 
-  # text-mode interface for Git
-  tig = !tig
+	# Dangerous by design. Kept for muscle memory; prefer `git discard <path>` when possible.
+	undo = reset --hard
 
-  # files modified in last commit
-  dl = "!git log --patch -1"
+	lg       = log                                    --color               --pretty=format:'%Cred%h%Creset%C(white) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --date=short
+	lg-all   = log --graph --full-history             --color         --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset'
+	# Pass an optional count to lg-n/lg-all-n, e.g.: `git lg-n 50`
+	lg-n     = "!f() { n=${1:-20}; shift || true; git log --max-count=\"$n\" --color --date=short --pretty=format:'%Cred%h%Creset%C(white) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' \"$@\"; }; f"
+	lg-all-n = "!f() { n=${1:-20}; shift || true; git log --graph --max-count=\"$n\" --color --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' \"$@\"; }; f"
+	alg      = log --graph --abbrev-commit            --color               --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --
+	lg1      = log --graph --abbrev-commit --decorate --date=relative --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+	lg2      = log --graph --abbrev-commit --decorate                 --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
 
-  # show files modified in last commit - another
-  # dlc = diff --cached HEAD^
+	cb = branch --show-current
+	# Read, modify and delete symbolic refs
+	# cb = symbolic-ref HEAD --short
 
-  # find-file; --ignore-case -i
-  ff = "!git ls-files | grep --ignore-case"
+	# show branches
+	sb = !ls .git/refs/remotes/*/$(git cb) | cut -d/ -f4,5 | xargs git show-branch $(git cb)
+	# sb = "!f() { branch=$(git branch --show-current) || exit; git for-each-ref --format='%(refname:short)' refs/remotes | grep --extended-regexp --invert-match '/HEAD$' | grep --fixed-strings -- \"/$branch\" | xargs --no-run-if-empty git show-branch \"$branch\"; }; f"
 
-  sl = stash list
-  ss = stash save
-  sp = stash pop
+	# Text-mode interface for Git
+	tig = !tig
 
-  # ! is needed to pass argument correctly to -S
-  fsc = "!git log --color --patch -S " # find-string in the content of commits
-  fsm = "!git log --grep "             # find-string in commit messages
+  # Files modified in the last commit.
+	dl = "!git log --patch -1"
+
+	# Show diffs of the last commit
+  di = log --patch --max-count=1
+	dis = diff --cached HEAD^           # with diffstatic
+
+	# Find a tracked file, case-insensitively.
+	ff = "!git ls-files | grep --ignore-case"
+
+	sl = stash list
+	sp = stash pop
+	sw = stash show --patch
+	sa = stash push --include-untracked
+
+	# Search in commit contents and commit messages.
+	# ! is needed to pass argument correctly to -S
+	fsc = "!git log --color --patch -S "
+	fsm = "!git log --grep "
 
 [user]
-  name = Rostislav Svoboda
-  email = Rostislav.Svoboda@posteo.net
-  # The secret key is not in git's configs but in the GnuPG's "keyring".
-  # The signingkey value only instructs gpg which secret key to select.
-  # https://stackoverflow.com/a/48067999
-  # gpg --list-public-keys $personName
-  signingkey = A2FED89D9A10000E5BF63B37612D36368877DC81
-  # gpg --keyid-format=long
-  # signingkey = 612D36368877DC81
-  # gpg --keyid-format=short
-  # signingkey = 8877DC81
+	name = Rostislav Svoboda
+	email = Rostislav.Svoboda@posteo.net
+	# The secret key is not in git's configs but in the GnuPG's "keyring".
+	# The signingkey value only instructs gpg which secret key to select.
+	# https://stackoverflow.com/a/48067999
+	# gpg --list-public-keys $personName
+	signingkey = A2FED89D9A10000E5BF63B37612D36368877DC81
+	# gpg --keyid-format=long
+	# signingkey = 612D36368877DC81
+	# gpg --keyid-format=short
+	# signingkey = 8877DC81
 
 # [user.bad]
 #   name = Bad Guy
@@ -77,38 +85,60 @@
 #   signingkey = A74061D56CFE8E89
 
 [color]
-  ui = auto
-[push]
-  default = simple
-  autoSetupRemote = true
-[github]
-  user = Bost
-[diff]
-  indentHeuristic = true
-  external = difft
-[rebase]
-  autostash = true
-[core]
-  editor = vim
-[sendemail]
-  smtpserver = posteo.de
-# smtpserver = smtp.googlemail.com
-  smtpencryption = tls
-  smtpserverport = 587
-  smtpuser = Rostislav.Svoboda@posteo.net
-# smtpuser = Rostislav.Svoboda@gmail.com
-[commit]
-  gpgsign = true
-[merge]
-  tool = meld
-[mergetool "meld"]
-  path = /home/bost/.guix-profile/bin/meld
-[mergetool]
-  prompt = false
+	ui = auto
 
-# reconcile strategy for `git pull`
+[push]
+	default = simple
+	autoSetupRemote = true
+	# TODO followTags = true
+
+[github]
+	user = Bost
+
+[diff]
+	indentHeuristic = true
+	external = difft
+	# TODO algorithm = histogram
+	# TODO colorMoved = default
+	# TODO mnemonicPrefix = true
+
+[rebase]
+	autostash = true
+	# TODO autosquash = true
+	# TODO updateRefs = true
+
+[core]
+	editor = vim
+	# TODO whitespace = trailing-space,space-before-tab
+	# TODO pager = less --tabs=4 --RAW-CONTROL-CHARS --quit-if-one-screen
+
+[sendemail]
+	smtpserver = posteo.de
+# smtpserver = smtp.googlemail.com
+	smtpencryption = tls
+	smtpserverport = 587
+	smtpuser = Rostislav.Svoboda@posteo.net
+# smtpuser = Rostislav.Svoboda@gmail.com
+
+[commit]
+	gpgsign = true
+	verbose = true
+
+[tag]
+	gpgsign = true
+
+[merge]
+	tool = meld
+	# TODO conflictStyle = diff3
+	# TODO conflictStyle = zdiff3
+
+[mergetool "meld"]
+	path = /home/bost/.guix-profile/bin/meld
+	prompt = false
+
 [pull]
-  rebase = true
+	# Reconcile `git pull` by rebasing local commits on top of the upstream branch.
+	rebase = true
 
 # Using 'master' as the name for the initial branch. This default branch name
 # will change to "main" in Git 3.0. To configure the initial branch name
@@ -122,4 +152,22 @@
 #
 # Disable this message with "git config set advice.defaultBranchName false"
 [init]
-  defaultBranch = master
+	defaultBranch = master
+
+# [rerere]
+#   # Reuse recorded conflict resolutions.
+#   enabled = true
+#   autoupdate = true
+
+# [fetch]
+#   prune = true
+#   pruneTags = true
+
+# [branch]
+#   sort = -committerdate
+
+# [column]
+#   ui = auto
+
+# [help]
+#   autocorrect = prompt
