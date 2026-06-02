@@ -1,3 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
 guile -L /home/bost/dev/dotfiles/bin \
       -e main /home/bost/dev/dotfiles/bin/g1.scm $@

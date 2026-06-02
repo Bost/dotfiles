@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 iso=$HOME/virt-machines/ubuntu-21.10-live-server-amd64.iso
 run-qemu --iso-file=$iso --qcow2-file=$iso.qcow2 $@

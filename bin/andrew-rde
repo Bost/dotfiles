@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 iso=$HOME/virt-machines/rde-live-0.4.0-x86_64.iso
 run-qemu --iso-file=$iso --qcow2-file=$iso.qcow2 $@

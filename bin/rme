@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # -f, --force
 # ignore nonexistent files and arguments, never prompt; i.e. it overrides -i and
