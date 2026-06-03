@@ -2119,7 +2119,9 @@ before packages are loaded."
 
   (beacon-mode 1)
 
-  ;; TODO show how long was the delay + history, so that I can adjust the key-chord-two-keys-delay then ~l e~ are pressed.
+  ;; TODO show how long was the delay + history, so that I can adjust the
+  ;; key-chord-two-keys-delay then ~l e~ are pressed.
+
   ;; TODO implement per-keybinding-specific delay
   (progn
     ;; Max time delay between two key presses to be considered a key chord.
@@ -2188,8 +2190,8 @@ before packages are loaded."
   (use-package claude-code-ide
     :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
     :config
-    ;; Optionally enable Emacs MCP (Model Context Protocol) tools
-    ;; MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems.
+    ;; Optionally enable Emacs MCP (Model Context Protocol - open-source
+    ;; standard for connecting AI applications to external systems) tools
     ;; (claude-code-ide-emacs-tools-setup)
     )
 
