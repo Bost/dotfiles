@@ -282,7 +282,6 @@ a list of files to search through."
              `(begin
                 (use-modules (ice-9 getopt-long)
                              (ice-9 regex)
-                             (gnu packages guile)
                              ,@common-modules
                              ,@extra-modules)
                 (handle-cli
