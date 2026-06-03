@@ -345,7 +345,7 @@ a list of files to search through."
     (list "dev/tweaks" "el")
     (list "dev/farmhouse-light-mod-theme" "el"))))
 
-(def (search-notes-service)
+(def (search-notes-files)
   ;; (format #t "~a Starting…\n" f)
   (map
    (partial apply service-file-general)
@@ -394,7 +394,7 @@ a list of files to search through."
           #:scm-file "search-notes")
     (list #:utility "cru" #:files (list "utf8")
           #:scm-file "search-notes"))))
-(testsymb 'search-notes-service)
+(testsymb 'search-notes-files)
 
 (define (eza-command . args)
   (apply
@@ -565,7 +565,7 @@ a list of files to search through."
    ))
 (testsymb 'rest-utils-definitions)
 
-(def* (basic-cli-utils-service)
+(def* (basic-cli-utils-files)
   ;; (call/cc (lambda (exit)))
   ;; (format #t "~a Starting…\n" f)
   ((comp
@@ -580,9 +580,9 @@ a list of files to search through."
    (append
     ripgrep-utils-definition
     rest-utils-definitions)))
-(testsymb 'basic-cli-utils-service)
+(testsymb 'basic-cli-utils-files)
 
-(def (basic-cli-utils-background-service)
+(def (basic-cli-utils-background-files)
   ;; (call/cc (lambda (exit)))
   ((comp
     (partial map (comp
@@ -595,9 +595,9 @@ a list of files to search through."
     ;; WTF? a newline appears on top of the terminal before the prompt.
     (list #:utility "loff"   #:params "xfce4-session-logout --logout --fast")
     )))
-(testsymb 'basic-cli-utils-background-service)
+(testsymb 'basic-cli-utils-background-files)
 
-(def (sudo-cli-utils-service)
+(def (sudo-cli-utils-files)
   ;; (call/cc (lambda (exit)))
   ((comp
     (partial map (comp
@@ -611,9 +611,9 @@ a list of files to search through."
     ;; scm-bin/reboot overshadows the real reboot in the $PATH
     (list #:utility "reboot" #:params "sudo /run/current-system/profile/sbin/reboot")
     )))
-(testsymb 'sudo-cli-utils-service)
+(testsymb 'sudo-cli-utils-files)
 
-(define (mount-utils-service)
+(define (mount-utils-files)
   ((comp
     (partial map (comp
                   (partial apply service-file-utils)
@@ -629,7 +629,7 @@ a list of files to search through."
    (cartesian
     (list 'mount 'unmount 'eject 'info)
     (list "axa" "toshiba" "new" "t7"))))
-(testsymb 'mount-utils-service)
+(testsymb 'mount-utils-files)
 
 (define (emacs-cli-utils-service)
   ((comp
@@ -662,7 +662,7 @@ a list of files to search through."
     )))
 (testsymb 'emacs-cli-utils-service)
 
-(define (direct-utils-service)
+(define (direct-utils-files)
   (map (partial apply service-file-general)
        (list
         (list #:utility "extract"               #:desc "extract-uncompress")
@@ -674,7 +674,7 @@ a list of files to search through."
         (list #:utility "gpg-pinentry-setup"    #:desc "gpg-pinentry-setup")
         (list #:utility "qemu-vm"               #:desc "qemu-vm")
         )))
-(testsymb 'direct-utils-service)
+(testsymb 'direct-utils-files)
 
 (def-public (cli-utils-service)
   ;; (format #t "~a Starting…\n" f)
@@ -682,16 +682,16 @@ a list of files to search through."
     ;; (lambda (v) (format #t "~a done\n" f) v)
     ;; 'simple-service name target value'. E.g.:
     ;; (simple-service 'my-mcron-job mcron-service-type #~(job '(next-hour (3)) "guix gc -F 2G"))
-    (partial simple-service 'basic-cli-utils-service home-files-service-type))
+    (partial simple-service 'cli-utils-service home-files-service-type))
    (if (or (host-ecke?) (host-edge?))
        (append
-        (search-notes-service)
-        (basic-cli-utils-service)
-        (basic-cli-utils-background-service)
-        (sudo-cli-utils-service)
-        (mount-utils-service)
+        (search-notes-files)
+        (basic-cli-utils-files)
+        (basic-cli-utils-background-files)
+        (sudo-cli-utils-files)
+        (mount-utils-files)
         (emacs-cli-utils-service)
-        (direct-utils-service)
+        (direct-utils-files)
         )
        (list))))
 (testsymb 'cli-utils-service)
