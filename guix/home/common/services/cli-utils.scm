@@ -21,6 +21,8 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(define (fmt s f prm) (format #t s f (pr-str-with-quote prm) (test-type prm)))
+
 (define notes-dir "org-roam")
 
 (define (list-all-files path)
@@ -186,7 +188,10 @@ Example:
 (testsymb 'service-file-general)
 
 (def* (service-file-utils
-       #:key (trace #f) (verbose #t) utility fun exec-fun params extra-modules
+       #:key (trace #f) (verbose #t) utility fun exec-fun
+       params
+       profile       ; for Emacs launchers
+       extra-modules
        #:allow-other-keys #:rest args)
   "Create pairs like
   (\"scm-bin/g\"         \"/gnu/store/...\") ; for emacs CLI utils
@@ -227,15 +232,16 @@ a list of files to search through."
   ;; (format #t "~a Starting…\n" f)
 
   (when trace
-    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
-    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
-    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
-    (format #t "~a #:fun           ~a ; ~a\n" f (pr-str-with-quote fun)           (test-type fun))
-    (format #t "~a #:exec-fun      ~a ; ~a\n" f (pr-str-with-quote exec-fun)      (test-type exec-fun))
-    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
-    (format #t "~a #:extra-modules ~a ; ~a\n" f (pr-str-with-quote extra-modules) (test-type extra-modules))
-    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
-    (format #t "\n"))
+    (fmt "~a #:trace         ~a ; ~a\n" f trace)
+    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
+    (fmt "~a #:utility       ~a ; ~a\n" f utility)
+    (fmt "~a #:fun           ~a ; ~a\n" f fun)
+    (fmt "~a #:exec-fun      ~a ; ~a\n" f exec-fun)
+    (fmt "~a #:params        ~a ; ~a\n" f params)
+    (fmt "~a #:profile       ~a ; ~a\n" f profile)
+    (fmt "~a #:extra-modules ~a ; ~a\n" f extra-modules)
+    (fmt "~a   args          ~a ; ~a\n" f args)
+    )
 
   (define common-modules
     '(
@@ -639,26 +645,26 @@ a list of files to search through."
                                    #:exec-fun 'exec-foreground
                                    #:extra-modules '((emacs-common)))))))
    (list
-    (list #:utility  "d" #:fun 'create-launcher  #:params develop)
-    (list #:utility "ed" #:fun 'set-editable     #:params develop)
-    (list #:utility "kd" #:fun 'pkill-server     #:params develop)
+    (list #:utility  "d" #:fun 'create-launcher  #:profile develop)
+    (list #:utility "ed" #:fun 'set-editable     #:profile develop)
+    (list #:utility "kd" #:fun 'pkill-server     #:profile develop)
 
-    (list #:utility  "cy" #:fun 'create-launcher #:params cycle)
-    (list #:utility "ecy" #:fun 'set-editable    #:params cycle)
-    (list #:utility "kcy" #:fun 'pkill-server    #:params cycle)
+    (list #:utility  "cy" #:fun 'create-launcher #:profile cycle)
+    (list #:utility "ecy" #:fun 'set-editable    #:profile cycle)
+    (list #:utility "kcy" #:fun 'pkill-server    #:profile cycle)
 
-    (list #:utility  "g" #:fun 'create-launcher  #:params guix)
-    (list #:utility "eg" #:fun 'set-editable     #:params guix)
-    (list #:utility "kg" #:fun 'pkill-server     #:params guix)
+    (list #:utility  "g" #:fun 'create-launcher  #:profile guix)
+    (list #:utility "eg" #:fun 'set-editable     #:profile guix)
+    (list #:utility "kg" #:fun 'pkill-server     #:profile guix)
 
-    (list #:utility  "s" #:fun 'create-launcher  #:params spguix)
-    (list #:utility "es" #:fun 'set-editable     #:params spguix)
-    (list #:utility "ks" #:fun 'pkill-server     #:params spguix)
+    (list #:utility  "s" #:fun 'create-launcher  #:profile spguix)
+    (list #:utility "es" #:fun 'set-editable     #:profile spguix)
+    (list #:utility "ks" #:fun 'pkill-server     #:profile spguix)
 
-    (list #:utility  "r" #:fun 'create-launcher  #:params crafted)
+    (list #:utility  "r" #:fun 'create-launcher  #:profile crafted)
     ;; TODO Move crafted-emacs user config from the project repo to the dotfiles
-    ;; (list #:utility "er" #:fun 'set-editable  #:params crafted)
-    (list #:utility "kr" #:fun 'pkill-server     #:params crafted)
+    ;; (list #:utility "er" #:fun 'set-editable  #:profile crafted)
+    (list #:utility "kr" #:fun 'pkill-server     #:profile crafted)
     )))
 (testsymb 'emacs-cli-utils-service)
 

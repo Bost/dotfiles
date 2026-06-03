@@ -37,9 +37,14 @@ defined.
   ;; (field-name field-accessor) ...
   (handle-cli-procedure handle-cli-exception-procedure))
 
+(define (fmt s f prm) (format #t s f (pr-str-with-quote prm) (test-type prm)))
+
 ;; TODO rename fun, exec-fun -> symb-fun symb-exec-fun
 ;; TODO rename verbose -> verbose-exec-fun
-(def*-public (handle-cli #:key (trace #f) verbose utility fun exec-fun params ignore-errors
+(def*-public (handle-cli #:key (trace #f) verbose utility fun exec-fun
+                         params
+                         profile ; for Emacs launchers
+                         ignore-errors
                          #:allow-other-keys
                          #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
@@ -76,14 +81,15 @@ Examples:
   ;; (when (true? (plist-get args #:trace) (trace-params args)))
 
   (when trace
-    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
-    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
-    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
-    (format #t "~a #:fun           ~a ; ~a\n" f (pr-str-with-quote fun)           (test-type fun))
-    (format #t "~a #:exec-fun      ~a ; ~a\n" f (pr-str-with-quote exec-fun)      (test-type exec-fun))
-    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
-    (format #t "~a #:ignore-errors ~a ; ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
-    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args)))
+    (fmt "~a #:trace         ~a ; ~a\n" f trace)
+    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
+    (fmt "~a #:utility       ~a ; ~a\n" f utility)
+    (fmt "~a #:fun           ~a ; ~a\n" f fun)
+    (fmt "~a #:exec-fun      ~a ; ~a\n" f exec-fun)
+    (fmt "~a #:params        ~a ; ~a\n" f params)
+    (fmt "~a #:profile       ~a ; ~a\n" f profile)
+    (fmt "~a #:ignore-errors ~a ; ~a\n" f ignore-errors)
+    (fmt "~a   args          ~a ; ~a\n" f args))
   (let* [
          ;; Needed is e.g. '("/home/bost/scm-bin/f" "<file-name-pattern>")
          (command-line (last args))
@@ -137,16 +143,16 @@ Examples:
                        #:trace         trace
                        #:verbose       verbose
                        #:gx-dry-run    val-gx-dry-run
-                       #:params        params
                        #:ignore-errors ignore-errors
                        )
-                      (if (not (member? fun emacs-procedures))
-                          (list
-                           #:exec-fun (eval-here exec-fun))
-                          (list))
                       (if (equal? fun 'create-launcher)
                           (list #:create-frame val-create-frame)
                           (list))
+                      (if (member? fun emacs-procedures)
+                          (list #:profile profile)
+                          (list
+                           #:params params
+                           #:exec-fun (eval-here exec-fun)))
                       val-rest-args)))
 
             (raise-exception
