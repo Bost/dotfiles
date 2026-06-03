@@ -72,30 +72,32 @@ defined.
     (format #f "--init-directory=~a" (get-src profile))
     (str "--bg-daemon=" (calculate-socket profile)))))
 
+(define (fmt s f prm) (format #t s f (pr-str-with-quote prm) (test-type prm)))
+
 (def*-public (pkill-server
               #:key (trace #f) (verbose #f) (ignore-errors #f)
-              utility gx-dry-run params
+              utility gx-dry-run profile
               #:rest args)
   "The ARGS are being ignored.
 
 Usage:
-(pkill-server #:gx-dry-run #t #:params \"develop\" \"rest\" \"args\")
-(pkill-server #:gx-dry-run #t #:params \"guix\"    \"rest\" \"args\")
-(pkill-server                 #:params \"develop\" \"rest\" \"args\")
-(pkill-server                 #:params \"guix\"    \"rest\" \"args\")
+(pkill-server #:gx-dry-run #t #:profile \"develop\" \"rest\" \"args\")
+(pkill-server #:gx-dry-run #t #:profile \"guix\"    \"rest\" \"args\")
+(pkill-server                 #:profile \"develop\" \"rest\" \"args\")
+(pkill-server                 #:profile \"guix\"    \"rest\" \"args\")
 "
   (when trace
-    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
-    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
-    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
-    (format #t "~a #:ignore-errors ~a : ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
-    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
-    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)    (test-type gx-dry-run))
-    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
+    (fmt "~a   args          ~a ; ~a\n" f args)
+    (fmt "~a #:trace         ~a ; ~a\n" f trace)
+    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
+    (fmt "~a #:ignore-errors ~a : ~a\n" f ignore-errors)
+    (fmt "~a #:utility       ~a ; ~a\n" f utility)
+    (fmt "~a #:gx-dry-run    ~a ; ~a\n" f gx-dry-run)
+    (fmt "~a #:profile       ~a ; ~a\n" f profile)
     )
 
   (let* [(elements (list #:trace #:verbose #:ignore-errors
-                         #:utility #:gx-dry-run #:params))
+                         #:utility #:gx-dry-run #:profile))
          (filtered-args (remove-all-elements args elements))]
     ;; pkill-pattern must NOT be enclosed by \"\"
     ;; TODO use with-monad
@@ -104,7 +106,7 @@ Usage:
            #:gx-dry-run gx-dry-run
            #:trace trace
            #:verbose verbose
-           (list "pkill" "--echo" "--full" (create-init-cmd params)))))
+           (list "pkill" "--echo" "--full" (create-init-cmd profile)))))
 (testsymb 'pkill-server)
 
 (define (init-cmd-env-vars home-emacs-distros profile)
@@ -116,7 +118,7 @@ Usage:
 
 (def*-public (create-launcher
               #:key (trace #f) (verbose #f) (ignore-errors #f)
-              utility gx-dry-run params (create-frame #f)
+              utility gx-dry-run profile (create-frame #f)
 ;;; By not allowing other keys I don't have to remove them later on
               #:allow-other-keys
               #:rest args)
@@ -128,28 +130,29 @@ VERBOSE - print command line of the command being executed on the CLI
 TODO create-launcher ignores servers with '--debug-init' in the init-cmd.
 
 Examples:
-(create-launcher #:params \"develop\" \"rest\" \"args\")
+(create-launcher #:profile \"develop\" \"rest\" \"args\")
 
-(create-launcher #:params \"guix\"
-\"guix/home/common/cli-common.scm\" \"--create-frame\")
+(create-launcher #:profile \"guix\"
+                 \"guix/home/common/cli-common.scm\" \"--create-frame\")
 
-(create-launcher #:params \"spguix\" \"guix/home/common/cli-common.scm\" \"--create-frame\")
+(create-launcher #:profile \"spguix\"
+                 \"guix/home/common/cli-common.scm\" \"--create-frame\")
 "
   (when trace
-    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)           (test-type args))
-    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)          (test-type trace))
-    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)        (test-type verbose))
-    (format #t "~a #:ignore-errors ~a : ~a\n" f (pr-str-with-quote ignore-errors)  (test-type ignore-errors))
-    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)        (test-type utility))
-    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)     (test-type gx-dry-run))
-    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)         (test-type params))
-    (format #t "~a #:create-frame  ~a ; ~a\n" f (pr-str-with-quote create-frame)   (test-type create-frame))
+    (fmt "~a   args          ~a ; ~a\n" f args)
+    (fmt "~a #:trace         ~a ; ~a\n" f trace)
+    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
+    (fmt "~a #:ignore-errors ~a : ~a\n" f ignore-errors)
+    (fmt "~a #:utility       ~a ; ~a\n" f utility)
+    (fmt "~a #:gx-dry-run    ~a ; ~a\n" f gx-dry-run)
+    (fmt "~a #:profile       ~a ; ~a\n" f profile)
+    (fmt "~a #:create-frame  ~a ; ~a\n" f create-frame)
     )
 
   (let* [(elements (list #:trace #:verbose #:ignore-errors
-                         #:utility #:gx-dry-run #:params #:create-frame))
+                         #:utility #:gx-dry-run #:profile #:create-frame))
          (filtered-args (remove-all-elements args elements))
-         (init-cmd (create-init-cmd params))]
+         (init-cmd (create-init-cmd profile))]
     ((comp
 ;;; Search for the full command line:
 ;;; $ pkill --full /home/bost/.guix-profile/bin/emacs --init-directory=/home/bost/.emacs.d.distros/crafted-emacs --bg-daemon=crafted
@@ -191,18 +194,18 @@ Examples:
                      ;; Only the initial command needs to be executed in a
                      ;; modified environment
                      (append
-                      (list (init-cmd-env-vars home-emacs-distros params) init-cmd)
+                      (list (init-cmd-env-vars home-emacs-distros profile) init-cmd)
                       (cond
-                       ;; [(string= params crafted)
+                       ;; [(string= profile crafted)
                        ;;  (list (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'"))]
-                       [(string= params spguix)
+                       [(string= profile spguix)
                         ;; (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'")
                         (list
                          "--debug-init"
 ;;                          (format #f
 ;;                                  "--eval '(progn
 ;;   (setq user-emacs-directory (concat (getenv \"XDG_DATA_HOME\") \"/spacemacs/~a/\"))
-;; )'" params)
+;; )'" profile)
                          )
                         ]
                        [#t (list)]
@@ -212,7 +215,7 @@ Examples:
                 ;; only if the Emacs server has been started successfully.
                 (exec-background cmd-with-args))))))
      (list (which-emacsclient)
-           (str "--socket-name=" (calculate-socket params))))))
+           (str "--socket-name=" (calculate-socket profile))))))
 (testsymb 'create-launcher)
 
 ;; ### BEG: from (fs-utils)
@@ -233,30 +236,30 @@ Examples:
 
 (def*-public (set-editable
               #:key (trace #f) (verbose #f) (ignore-errors #f)
-              utility gx-dry-run params
+              utility gx-dry-run profile
               #:rest args)
   "The ARGS are being ignored.
 TRACE - trace procedure parameters
 VERBOSE - print command line of the command being executed on the CLI
 
 Examples:
-(set-editable #:gx-dry-run #t #:params \"develop\" \"rest\" \"args\")
-(set-editable #:gx-dry-run #t #:params \"guix\"    \"rest\" \"args\")
-(set-editable                 #:params \"develop\" \"rest\" \"args\")
-(set-editable                 #:params \"guix\"    \"rest\" \"args\")
+(set-editable #:gx-dry-run #t #:profile \"develop\" \"rest\" \"args\")
+(set-editable #:gx-dry-run #t #:profile \"guix\"    \"rest\" \"args\")
+(set-editable                 #:profile \"develop\" \"rest\" \"args\")
+(set-editable                 #:profile \"guix\"    \"rest\" \"args\")
 "
   (when trace
-    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
-    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
-    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
-    (format #t "~a #:ignore-errors ~a : ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
-    (format #t "~a #:utility       ~a ; ~a\n" f (pr-str-with-quote utility)       (test-type utility))
-    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)    (test-type gx-dry-run))
-    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
+    (fmt "~a   args          ~a ; ~a\n" f args)
+    (fmt "~a #:trace         ~a ; ~a\n" f trace)
+    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
+    (fmt "~a #:ignore-errors ~a : ~a\n" f ignore-errors)
+    (fmt "~a #:utility       ~a ; ~a\n" f utility)
+    (fmt "~a #:gx-dry-run    ~a ; ~a\n" f gx-dry-run)
+    (fmt "~a #:profile       ~a ; ~a\n" f profile)
     )
 
   (let* [(elements (list #:trace #:verbose #:ignore-errors
-                         #:utility #:gx-dry-run #:params))
+                         #:utility #:gx-dry-run #:profile))
          (args (remove-all-elements args elements))
 
          (monad (if gx-dry-run
@@ -266,7 +269,7 @@ Examples:
         (begin
           (format #t "~a monad: ~a\n" f monad)
           (format #t "~a TODO implement --gx-dry-run\n" f))
-        (let* [(dst-src (make-pair-dst-src params))
+        (let* [(dst-src (make-pair-dst-src profile))
                (dst (car dst-src))
                (src (cdr dst-src))]
           (with-monad monad
@@ -279,13 +282,26 @@ Examples:
 (testsymb 'set-editable)
 
 (def* (handle-cli #:key (trace #f) verbose utility fun profile
-                     #:allow-other-keys
-                     #:rest args)
+                  #:allow-other-keys
+                  #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'.
 TRACE - trace procedure parameters
 VERBOSE - print command line of the command being executed on the CLI
 
+(begin
+  (use-modules (ice-9 getopt-long) (ice-9 regex) (guix monads)
+               (dotf srfi-1-smart) (dotf utils) (dotf tests) (dotf settings)
+               (cli-common) (command-line) (emacs-common))
+  (handle-cli #:trace #f #:verbose #t #:exec-fun 'exec-foreground
+              #:utility \"s\" #:fun 'create-launcher #:profile \"spguix\"
+              (command-line)))
+
+(handle-cli
+   #:trace #t
+   #:verbose #t #:exec-fun 'exec-foreground
+   #:utility \"s\" #:fun create-launcher #:profile \"spguix\"
+   (list \"\" \"guix/home/common/cli-common.scm\"))
 "
   (when trace
     (format #t "~a trace   : ~a\n" f trace)
