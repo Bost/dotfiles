@@ -109,6 +109,22 @@ Usage:
            (list "pkill" "--echo" "--full" (create-init-cmd profile)))))
 (testsymb 'pkill-server)
 
+(define (eval-crafted)
+  (format #f (str "--eval='(message \" CRAFTED_EMACS_HOME : %s\" "
+                  "(getenv \"CRAFTED_EMACS_HOME\"))'")))
+
+(define (eval-spacemacs)
+  (format #f (str "--eval='(message \" SPACEMACSDIR : %s\\n "
+                  "dotspacemacs-directory : %s\\n "
+                  "dotspacemacs-server-socket-dir : %s\" "
+                  "(getenv \"SPACEMACSDIR\") dotspacemacs-directory "
+                  "dotspacemacs-server-socket-dir)'")))
+
+(define (eval-xdata-home profile)
+  (format #f (str "--eval '(progn
+  (setq user-emacs-directory (concat (getenv \"XDG_DATA_HOME\") \"/spacemacs/~a/\"))
+)'") profile))
+
 (define (init-cmd-env-vars home-emacs-distros profile)
   (if (string= profile crafted)
       (format #f "CRAFTED_EMACS_HOME=~a/crafted-emacs/personal"
@@ -118,7 +134,7 @@ Usage:
 
 (def*-public (create-launcher
               #:key (trace #f) (verbose #f) (ignore-errors #f)
-              utility gx-dry-run profile (create-frame #f)
+              utility gx-dry-run profile
 ;;; By not allowing other keys I don't have to remove them later on
               #:allow-other-keys
               #:rest args)
@@ -133,10 +149,10 @@ Examples:
 (create-launcher #:profile \"develop\" \"rest\" \"args\")
 
 (create-launcher #:profile \"guix\"
-                 \"guix/home/common/cli-common.scm\" \"--create-frame\")
+                 \"guix/home/common/cli-common.scm\")
 
 (create-launcher #:profile \"spguix\"
-                 \"guix/home/common/cli-common.scm\" \"--create-frame\")
+                 \"guix/home/common/cli-common.scm\")
 "
   (when trace
     (fmt "~a   args          ~a ; ~a\n" f args)
@@ -146,11 +162,10 @@ Examples:
     (fmt "~a #:utility       ~a ; ~a\n" f utility)
     (fmt "~a #:gx-dry-run    ~a ; ~a\n" f gx-dry-run)
     (fmt "~a #:profile       ~a ; ~a\n" f profile)
-    (fmt "~a #:create-frame  ~a ; ~a\n" f create-frame)
     )
 
   (let* [(elements (list #:trace #:verbose #:ignore-errors
-                         #:utility #:gx-dry-run #:profile #:create-frame))
+                         #:utility #:gx-dry-run #:profile))
          (filtered-args (remove-all-elements args elements))
          (init-cmd (create-init-cmd profile))]
     ((comp
@@ -165,15 +180,10 @@ Examples:
                     (list
                      #:client-cmd? client-cmd?
                      #:cmd-with-args
-                     (remove unspecified-or-empty-or-false?
-                             (append
-                              client-cmd
-;;; --create-frame must be present if no frame exists, e.g. right after
-;;; emacs-server starts
-                              (list (when (or create-frame (not client-cmd?))
-                                      ;; also "-c"
-                                      "--create-frame"))
-                              (if (null? filtered-args) '("./") filtered-args)))))
+                     (append
+                      client-cmd
+                      (list "--reuse-frame" "--no-wait")
+                      (if (null? filtered-args) '("./") filtered-args))))
                   ;; (lambda (v) (format #t "~a 1. ~a\n" f v) v)
                   (partial equal? client-cmd)
                   ;; (lambda (v) (format #t "~a 0. ~a\n" f v) v)
@@ -189,31 +199,28 @@ Examples:
           ;; (format #t "~a cmd-with-args : ~a\n" f cmd-with-args)
 
           (if client-cmd?
-              (exec-background cmd-with-args)
-              (when ((comp zero? car exec)
-                     ;; Only the initial command needs to be executed in a
-                     ;; modified environment
-                     (append
-                      (list (init-cmd-env-vars home-emacs-distros profile) init-cmd)
-                      (cond
-                       ;; [(string= profile crafted)
-                       ;;  (list (format #f "--eval='(message \" CRAFTED_EMACS_HOME : %s\" (getenv \"CRAFTED_EMACS_HOME\"))'"))]
-                       [(string= profile spguix)
-                        ;; (format #f "--eval='(message \" SPACEMACSDIR : %s\\n dotspacemacs-directory : %s\\n dotspacemacs-server-socket-dir : %s\" (getenv \"SPACEMACSDIR\") dotspacemacs-directory dotspacemacs-server-socket-dir)'")
-                        (list
-                         "--debug-init"
-;;                          (format #f
-;;                                  "--eval '(progn
-;;   (setq user-emacs-directory (concat (getenv \"XDG_DATA_HOME\") \"/spacemacs/~a/\"))
-;; )'" profile)
-                         )
-                        ]
-                       [#t (list)]
-                       ))
-                     )
-                ;; Calling (exec-background cmd-with-args) makes sense
-                ;; only if the Emacs server has been started successfully.
-                (exec-background cmd-with-args))))))
+              (exec-background cmd-with-args #:verbose #t)
+              (let* [(cmd-result-struct
+                      (exec
+                       ;; Only the initial command needs to be executed in a
+                       ;; modified environment
+                       (append
+                        (list (init-cmd-env-vars home-emacs-distros profile) init-cmd)
+                        (cond
+                         [(and #f (string= profile crafted)) (list (eval-crafted))]
+                         [(and #f (string= profile spguix))
+                          ;; (eval-spacemacs)
+                          (list
+                           "--debug-init"
+                           ;; (eval-xdata-home profile)
+                           )]
+                         [#t (list)]))
+                       #:return-plist #t))
+                     (retcode (plist-get cmd-result-struct #:retcode))]
+                (when (zero? retcode)
+                  ;; Calling (exec-background cmd-with-args) makes sense
+                  ;; only if the Emacs server has been started successfully.
+                  (exec-background cmd-with-args #:verbose #t)))))))
      (list (which-emacsclient)
            (str "--socket-name=" (calculate-socket profile))))))
 (testsymb 'create-launcher)
