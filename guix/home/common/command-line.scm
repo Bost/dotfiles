@@ -98,7 +98,6 @@ Examples:
          (option-spec `[(help         (single-char #\h) (value #f))
                         (version      (single-char #\v) (value #f))
                         (gx-dry-run   (single-char #\d) (value #f))
-                        (create-frame (single-char #\c) (value #f))
                         (rest-args                      (value #f))])
 
          (options (getopt-long command-line option-spec
@@ -109,7 +108,6 @@ Examples:
          (val-help         (option-ref options 'help       #f))
          (val-version      (option-ref options 'version    #f))
          (val-gx-dry-run   (option-ref options 'gx-dry-run #f))
-         (val-create-frame (option-ref options 'create-frame #f))
          (val-rest-args    (option-ref options '()         #f))]
     (when trace
       (format #t "~a option-spec      : ~a\n" f option-spec)
@@ -117,7 +115,6 @@ Examples:
       (format #t "~a val-help         : ~a\n" f val-help)
       (format #t "~a val-version      : ~a\n" f val-version)
       (format #t "~a val-gx-dry-run   : ~a\n" f val-gx-dry-run)
-      (format #t "~a val-create-frame : ~a\n" f val-create-frame)
       (format #t "~a val-rest-args    : ~a\n" f val-rest-args))
     (cond
      [val-help
@@ -145,9 +142,6 @@ Examples:
                        #:gx-dry-run    val-gx-dry-run
                        #:ignore-errors ignore-errors
                        )
-                      (if (equal? fun 'create-launcher)
-                          (list #:create-frame val-create-frame)
-                          (list))
                       (if (member? fun emacs-procedures)
                           (list #:profile profile)
                           (list
