@@ -571,8 +571,13 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    grub ; GRand Unified Boot loader
 
    ;; specifying only 'guile' leads to "error: guile: unbound variable"
-   guile-3.0
-   (list guile-3.0 "debug")
+   ;; ((@(guix packages) package-version) (@(gnu packages guile) guile-3.0)) ;=> 3.0.9
+   ;; guile-3.0
+   ;; (list guile-3.0 "debug")
+
+   ;; ((@(guix packages) package-version) (@(gnu packages guile) guile-3.0-latest)) ;=> "3.0.11"
+   guile-3.0-latest
+   (list guile-3.0-latest "debug")
 
    guile-hall   ; to build guile projects
 
