@@ -184,7 +184,8 @@ Example:
              (scm-bin ,symb)))
         #~(begin
             (use-modules (scm-bin #$symb))
-            #$main-call))))))
+            #$main-call)))
+    #:guile (@(gnu packages guile) guile-3.0-latest))))
 (testsymb 'service-file-general)
 
 (def* (service-file-utils
@@ -281,6 +282,7 @@ a list of files to search through."
              `(begin
                 (use-modules (ice-9 getopt-long)
                              (ice-9 regex)
+                             (gnu packages guile)
                              ,@common-modules
                              ,@extra-modules)
                 (handle-cli
@@ -294,7 +296,8 @@ a list of files to search through."
          (format #t "sexp :\n~a\n" (pretty-print->string sexp))
          (format #t "\n"))
        (with-imported-modules (append common-modules extra-modules)
-         #~#$sexp))))))
+         #~#$sexp))
+     #:guile (@(gnu packages guile) guile-3.0-latest)))))
 (testsymb 'service-file-utils)
 
 (define crc-other-files
