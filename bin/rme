@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n rme
+## shellcheck rme
 
 # -f, --force
 # ignore nonexistent files and arguments, never prompt; i.e. it overrides -i and

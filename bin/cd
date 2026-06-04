@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n cd
+## shellcheck cd
 
 # cd - wrap cd as executable (for POSIX)
 # http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap01.html#tag_17_06

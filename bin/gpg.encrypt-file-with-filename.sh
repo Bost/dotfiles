@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gpg.encrypt-file-with-filename.sh
+## shellcheck gpg.encrypt-file-with-filename.sh
 
 check_file () {
     if [ -z "$1" ]; then

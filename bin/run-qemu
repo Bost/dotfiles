@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n run-qemu
+## shellcheck run-qemu
 
 # '--preserve-env=GUILE_LOAD_COMPILED_PATH' makes the (dotf utils) scheme module
 # accessible to the super-user

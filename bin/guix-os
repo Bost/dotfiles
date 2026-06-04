@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n guix-os
+## shellcheck guix-os
 
 run-qemu \
     --qcow2-file=$HOME/virt-machines/guix-system-vm-image-1.4.0.x86_64-linux.qcow2 \

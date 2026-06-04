@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n remove-old-kernels
+## shellcheck remove-old-kernels
 
 echo "# Current kernel:" $(uname -a)
 

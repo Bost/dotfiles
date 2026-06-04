@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gpg.passphrase.decrypt-dir.sh
+## shellcheck gpg.passphrase.decrypt-dir.sh
 
 # Decrypt a GPG-encrypted archive and extract it
 # Usage: gpg.passphrase.decrypt-dir.sh /path/to/encrypted_file.gpg /path/to/target_dir
