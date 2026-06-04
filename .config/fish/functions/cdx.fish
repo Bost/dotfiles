@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n cdx.fish
+## fish_indent --check cdx.fish
+
 function cdx --description "Change into a project shortcut directory"
     set -l key $argv[1]
 

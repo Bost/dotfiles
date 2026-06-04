@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n make-emacs.fish
+## fish_indent --check make-emacs.fish
+
 function isCodeFile --description "Check if argv has a code-file extention"
     # echo "argv:" $argv
     switch $argv

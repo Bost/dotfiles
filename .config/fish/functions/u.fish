@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n u.fish
+## fish_indent --check u.fish
+
 function u --description "Ubuntu update & full-upgrade & needrestart"
     # string delims - '; and'
     set cmd "sudo apt update && sudo apt full-upgrade --yes && sudo needrestart"

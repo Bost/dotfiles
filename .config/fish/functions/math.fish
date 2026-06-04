@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n math.fish
+## fish_indent --check math.fish
+
 # TODO eval with clj only if it has lisp syntax
 # function math
 #     set escArgv (string escape -- $argv)

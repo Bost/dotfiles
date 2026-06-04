@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n inst.fish
+## fish_indent --check inst.fish
+
 function inst --description "Install Debian package"
     set prm (string escape -- $argv)
     if test -f $prm; and test (string match --regex "\.deb\$" $prm)

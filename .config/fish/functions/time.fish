@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n time.fish
+## fish_indent --check time.fish
+
 function time --description "Time just like in Bash"
     # command forces the shell to execute the program COMMANDNAME and ignore any
     # functions or builtins with the same name.
