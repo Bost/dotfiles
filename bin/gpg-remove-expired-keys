@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gpg-remove-expired-keys
+## shellcheck gpg-remove-expired-keys
 
 set -x  # Print commands and their arguments as they are executed.
 expired_keys="$(gpg --list-public-keys --fixed-list-mode --with-colons | grep "^pub:e:" | cut --fields=5 --delimiter=":")"

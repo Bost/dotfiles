@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n dmesg-after
+## shellcheck dmesg-after
 
 # Example
 # ./dmesg-after "17:49:18"

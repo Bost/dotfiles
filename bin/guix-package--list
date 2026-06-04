@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n guix-package--list
+## shellcheck guix-package--list
 
 # myProfiles=(
 #     $HOME/.config/guix/current

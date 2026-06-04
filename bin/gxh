@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gxh
+## shellcheck gxh
 
 set -x  # Print commands and their arguments as they are executed.
 guix home "$@"

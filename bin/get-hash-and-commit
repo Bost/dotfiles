@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n get-hash-and-commit
+## shellcheck get-hash-and-commit
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since 'set -e' is used.

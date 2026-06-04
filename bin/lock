@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n lock
+## shellcheck lock
 
 # TODO the sequence should be:
 # 'configure channels: copy channels.scm etc.' && \

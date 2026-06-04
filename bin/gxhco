@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gxhco
+## shellcheck gxhco
 
 baseLP=$dotf/guix # base-load-path
 hostname=$(hostname)

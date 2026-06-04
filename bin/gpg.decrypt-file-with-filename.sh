@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gpg.decrypt-file-with-filename.sh
+## shellcheck gpg.decrypt-file-with-filename.sh
 
 random_name="$1"
 

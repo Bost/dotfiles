@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gxpr
+## shellcheck gxpr
 
 # load manifest from dotfiles-guix-home to the default profile
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
-# chain the commands using '&&', since 'set -e' is used.
-set -e
+# chain the commands using '&&', since errexit is used.
+set errexit     # set -e
+set nounset     # set -u
+set -o pipefail
 
 tstp=$(date +%F_%H-%M-%S)
 baseLP=$dotf/guix # base-load-path

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n ubuntu-desktop-23.04
+## shellcheck ubuntu-desktop-23.04
 
 iso=$HOME/virt-machines/ubuntu-23.04-desktop-amd64.iso
 run-qemu --iso-file=$iso --qcow2-file=$iso.qcow2 $@

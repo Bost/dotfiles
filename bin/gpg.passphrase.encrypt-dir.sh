@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gpg.passphrase.encrypt-dir.sh
+## shellcheck gpg.passphrase.encrypt-dir.sh
 
 # Encrypt a directory using GPG (archived and encrypted)
 # Usage: gpg.passphrase.encrypt-dir.sh /path/to/source_dir /path/to/output_file.gpg

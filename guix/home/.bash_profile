@@ -1,3 +1,8 @@
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n .bash_profile
+## shellcheck .bash_profile
+
 # Setups system and user profiles and related variables
 # /etc/profile will be sourced by bash automatically
 # Setups home environment profile

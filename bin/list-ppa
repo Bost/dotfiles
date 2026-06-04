@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n list-ppa
+## shellcheck list-ppa
 
 # get all the PPAs installed on a system ready to share for reininstall
 for APT in `find /etc/apt/ -name \*.list`; do

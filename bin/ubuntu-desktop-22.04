@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n ubuntu-desktop-22.04
+## shellcheck ubuntu-desktop-22.04
+
 # Download verification:
 # echo "b85286d9855f549ed9895763519f6a295a7698fb9c5c5345811b3eefadfb6f07 *ubuntu-22.04-desktop-amd64.iso" | shasum -a 256 --check
 

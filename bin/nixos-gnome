@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n nixos-gnome
+## shellcheck nixos-gnome
+
 # Download verification:
 # echo "039226ca44e15506d97a68a315a97334ab300c90abb03b4c4621544994ab975b  latest-nixos-gnome-x86_64-linux.iso" | shasum -a 256 --check
 

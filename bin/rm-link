@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n rm-link
+## shellcheck rm-link
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <symlink>" >&2

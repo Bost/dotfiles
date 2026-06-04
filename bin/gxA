@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gxA
+## shellcheck gxA
+
 # -A, --list-available[=REGEXP]
 guix-package--list --list-available="$@"

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n mount_encrypted.sh
+## shellcheck mount_encrypted.sh
 
 # - Use "$VAR" in 99% of cases - it's simpler and safer.
 # - Use "${VAR}" when:

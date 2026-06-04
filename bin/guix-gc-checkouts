@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n guix-gc-checkouts
+## shellcheck guix-gc-checkouts
 
 find $HOME/.cache/guix/checkouts \
     -mindepth 1 \

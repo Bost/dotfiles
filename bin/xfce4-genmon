@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n xfce4-genmon
+## shellcheck xfce4-genmon
 
 # Script for the xfce4-genmon-plugin
 # must be used with an absolute path /home/<user>/...

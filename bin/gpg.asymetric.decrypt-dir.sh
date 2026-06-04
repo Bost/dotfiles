@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gpg.asymetric.decrypt-dir.sh
+## shellcheck gpg.asymetric.decrypt-dir.sh
 
 # Configuration
 IN_FILE="/tmp/secure_data.tar.gz.gpg"  # Encrypted input file

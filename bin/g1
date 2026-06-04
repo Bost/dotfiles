@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n g1
+## shellcheck g1
 
 guile -L /home/bost/dev/dotfiles/bin \
       -e main /home/bost/dev/dotfiles/bin/g1.scm $@
