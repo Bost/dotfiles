@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n config.fish
+## fish_indent --check config.fish
+
 #### config.fish manual configuration begin
 
 # To reset the fish-shell back to it's initial state execute from bash:

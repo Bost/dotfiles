@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n guix-find-checkouts.fish
+## fish_indent --check guix-find-checkouts.fish
+
 function guix-find-checkouts --description "Find Guix and NonGuix checkout dirs"
     # set guixRepo https://git.savannah.gnu.org/git/guix.git
     # set guixRepo file:///home/bost/dev/guix

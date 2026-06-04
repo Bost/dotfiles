@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n mount-usb.fish
+## fish_indent --check mount-usb.fish
+
 function mount-usb
     # set cmd mount $usbDevice /media/bost/usb-drive
     # set cmd mount --all

@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n mkcd.fish
+## fish_indent --check mkcd.fish
+
 #!/usr/bin/env fish
 function mkcd --description "mkdir … && cd …"
     set dirName (string escape -- $argv)

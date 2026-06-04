@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n gicl.fish
+## fish_indent --check gicl.fish
+
 # In bash a script is executes in a subshell, so the cd command only changes the
 # directory within that subshell. So `gicl` for bash it it implemented as a
 # function in .bashrc. See home-base.scm

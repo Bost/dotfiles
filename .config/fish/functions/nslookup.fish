@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n nslookup.fish
+## fish_indent --check nslookup.fish
+
 function nslookup --description "dig …"
     set cmd dig (string escape -- $argv)
     echo $cmd

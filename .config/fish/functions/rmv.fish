@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n rmv.fish
+## fish_indent --check rmv.fish
+
 function rmv --description "Remove snap/deb package"
     set cmd snap list (string escape -- $argv)
     echo $cmd

@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n unset.fish
+## fish_indent --check unset.fish
+
 function unset --description "set --erase …"
     set cmd (printf "set --erase %s" (string escape -- $argv))
     printf "ERR: command doesn't work '%s'\n" $cmd
