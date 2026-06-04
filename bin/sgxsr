@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n sgxsr
+## shellcheck sgxsr
 
 baseLP=$dotf/guix # base-load-path
 

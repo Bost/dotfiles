@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n create_signal_protection_setup.sh
+## shellcheck create_signal_protection_setup.sh
+
 # SYNOPSIS:
 #   create_signal_protection_setup.sh
 #

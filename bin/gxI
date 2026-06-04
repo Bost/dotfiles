@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gxI
+## shellcheck gxI
+
 # -I, --list-installed[=REGEXP]
 guix-package--list --list-installed="$@"

@@ -1,10 +1,11 @@
-#!/usr/bin/env bash
-# -*- coding:utf-8 -*-
+# -*- mode: sh; sh-shell: bash -*-
 
-# debugging:
-# set -x
-# stop on error:
-# set -e
+## bash -n guix-shell-claude.sh
+## shellcheck guix-shell-claude.sh
+
+set errexit     # set -e
+set nounset     # set -u
+set -o pipefail
 
 readFile() {
     if [ -f ${1} ]; then

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gpg.asymetric.encrypt-dir.sh
+## shellcheck gpg.asymetric.encrypt-dir.sh
 
 # Configuration
 SRC_DIR="/path/to/your/data"           # The directory you want to encrypt

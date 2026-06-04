@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gxp
+## shellcheck gxp
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since 'set -e' is used.
