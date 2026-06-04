@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n foo.fish
+## fish_indent --check foo.fish
+
 function foo -d "Also some code snippets here"
     # examples https://nicolas-van.github.io/programming-with-fish-shell
     math "1 + 2"

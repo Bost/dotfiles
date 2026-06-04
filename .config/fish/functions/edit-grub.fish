@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n edit-grub.fish
+## fish_indent --check edit-grub.fish
+
 function edit-grub
     udiskie-mount /dev/sdb3
 

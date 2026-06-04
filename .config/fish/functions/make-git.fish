@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n make-git.fish
+## fish_indent --check make-git.fish
+
 function make-git --description "Compile, install git code"
     set cntJobs (math (eval nproc) / 2)
     set cmd make --jobs $cntJobs

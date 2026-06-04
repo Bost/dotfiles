@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n cpr.fish
+## fish_indent --check cpr.fish
+
 function cpr --description "cp -r …"
     # TODO cpr doesn't work with sudo:
     #     sudo cpr /boot/grub/ /tmp

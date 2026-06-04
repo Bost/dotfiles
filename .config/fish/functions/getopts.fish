@@ -1,3 +1,8 @@
+# -*- mode: fish -*-
+
+## fish -n getopts.fish
+## fish_indent --check getopts.fish
+
 set -g getopts_version 1.0.0
 
 function getopts -d "CLI options parser"
