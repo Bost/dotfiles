@@ -472,7 +472,7 @@ a list of files to search through."
 
 (define rest-utils-definitions
   (list
-   (list #:utility "gx"  #:params "guix")
+   (list #:utility "gxx"  #:params "guix" #:trace #t #:verbose #t )
 
    ;; verbose with colors
    (list #:utility "f"   #:params "fd --color=always"
