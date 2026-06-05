@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n gx
+## shellcheck gx
+
+set -x  # Print commands and their arguments as they are executed.
+guix "$@"
+{ retval="$?"; set +x; } 2>/dev/null
+exit $retval
