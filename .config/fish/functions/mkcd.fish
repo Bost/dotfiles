@@ -3,19 +3,11 @@
 ## fish -n mkcd.fish
 ## fish_indent --check mkcd.fish
 
-function mkcd --description "mkdir … && cd …"
-    set dirName (string escape -- $argv)
-    # this doesn't work because of the command composition with ';'
-    # set cmd (mkdir -p $dirName; and cd $dirName)
-
-    if not test -d $dirName
-        set cmd mkdir -p $dirName
-        echo $cmd
-        eval $cmd
+function mkcd --description "Create a directory and cd into it (mkdir; cd)"
+    if not test -d $argv
+        trace mkdir -p $argv
     end
-    if test -d $dirName
-        set cmd1 cd $dirName
-        echo $cmd1
-        eval $cmd1
+    if test -d $argv
+        cd $argv
     end
 end

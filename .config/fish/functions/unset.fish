@@ -4,7 +4,7 @@
 ## fish_indent --check unset.fish
 
 function unset --description "set --erase …"
-    set cmd (printf "set --erase %s" (string escape -- $argv))
+    set cmd (printf "set --erase %s" $argv)
     printf "ERR: command doesn't work '%s'\n" $cmd
     return 1 # retcode 1 means: command failed to perform the requested operation
 end

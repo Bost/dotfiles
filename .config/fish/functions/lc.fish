@@ -3,8 +3,6 @@
 ## fish -n lc.fish
 ## fish_indent --check lc.fish
 
-function lc --description "lein clean …"
-    set cmd lein clean (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function lc --description "Clean Leiningen build artifacts (lein clean)"
+    trace lein clean $argv
 end

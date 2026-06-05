@@ -3,9 +3,7 @@
 ## fish -n nt.fish
 ## fish_indent --check nt.fish
 
-function nt --description "nmcli general status …"
+function nt --description "Show NetworkManager status (nmcli general status)"
     echo "# NetworkManager"
-    set cmd nmcli general status (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+    trace nmcli general status $argv
 end

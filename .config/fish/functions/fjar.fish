@@ -3,8 +3,6 @@
 ## fish -n fjar.fish
 ## fish_indent --check fjar.fish
 
-function fjar --description "fd --extension jar …"
-    set cmd fd --extension jar (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function fjar --description "Find .jar files (fd --extension jar)"
+    trace fd --extension jar $argv
 end

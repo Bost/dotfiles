@@ -3,10 +3,8 @@
 ## fish -n cpr.fish
 ## fish_indent --check cpr.fish
 
-function cpr --description "cp -r …"
+function cpr --description "Copy recursively (cp -r)"
     # TODO cpr doesn't work with sudo:
     #     sudo cpr /boot/grub/ /tmp
-    set cmd cp -r (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+    trace cp -r $argv
 end

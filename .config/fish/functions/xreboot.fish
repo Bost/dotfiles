@@ -3,10 +3,8 @@
 ## fish -n xreboot.fish
 ## fish_indent --check xreboot.fish
 
-function xreboot --description "xfce4-session-logout --reboot --fast"
+function xreboot --description "Reboot now, skip dialog (xfce4-session-logout --reboot)"
     # -r, --reboot             Reboot without displaying the logout dialog
     # -f, --fast               Log out quickly; don't save the session
-    set cmd xfce4-session-logout --reboot --fast $argv
-    echo $cmd
-    eval $cmd
+    trace xfce4-session-logout --reboot --fast $argv
 end

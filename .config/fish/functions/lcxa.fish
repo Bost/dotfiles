@@ -3,8 +3,6 @@
 ## fish -n lcxa.fish
 ## fish_indent --check lcxa.fish
 
-function lcxa --description "lein cljx auto …"
-    set cmd lein cljx auto (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function lcxa --description "Auto-process cljx sources (lein cljx auto)"
+    trace lein cljx auto $argv
 end
