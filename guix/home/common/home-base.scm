@@ -33,6 +33,7 @@
   ;; #:use-module (gnu home services version-control)
 
   #:use-module (gnu packages commencement)
+  #:use-module (srfi srfi-1) ; list-processing procedures
 )
 
 ;; --- beg-keywords ------------------------------------------------------------
@@ -221,6 +222,12 @@
                            (@(gnu packages commencement) gcc-toolchain))))
 (testsymb 'gcc-filepath)
 
+(define (claude-code-relative-path)
+  "~/.local/bin/claude points at a binary file which hardcodes
+/lib64/ld-linux-x86-64.so.2 as its ELF interpreter."
+  ;; "/.local/bin" ; for Claude Code
+  *unspecified*)
+
 ;; See also $dotf/.bashrc.martin
 (def*-public (environment-vars
               #:optional (list-separator list-separator-bash)
@@ -268,16 +275,21 @@
      ("EDITOR" . "g") ;; The 'guix' branch of Spacemacs
 
      ;; My own scripts and guix-home profile take precedence over $PATH.
-     ("PATH" . ,((comp
+     ("PATH" . , ((comp
                   (lambda (lst) (string-join lst list-separator))
                   (lambda (lst) (append lst (list "$PATH" "/usr/local/bin")))
-                  (partial map user-home))
-                 (list scm-bin-dirpath bin-dirpath
-                       ;; rga: ripgrep, plus search in pdf, E-Books, Office
-                       ;; docs, zip, tar.gz, etc.
-                       ;; See https://github.com/phiresky/ripgrep-all
-                       ;; "user-home-relative/path/to/ripgrep_all"
-                       ))))))
+                  (partial map user-home)
+                  (partial remove unspecified-or-empty-or-false?))
+                  (list
+                   (str "/" scm-bin-dirname)
+                   bin-dirpath
+                   (claude-code-relative-path)
+
+                   ;; rga: ripgrep, plus search in pdf, E-Books, Office
+                   ;; docs, zip, tar.gz, etc.
+                   ;; See https://github.com/phiresky/ripgrep-all
+                   ;; "user-home-relative/path/to/ripgrep_all"
+                   ))))))
 
 (def*-public (environment-vars-edge-ecke
               #:optional (list-separator list-separator-bash)

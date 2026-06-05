@@ -88,6 +88,5 @@
 (define-public bin-dirpath "/bin")
 (define-public sbin-dirpath "/sbin")
 (define-public scm-bin-dirname "scm-bin")
-(define-public scm-bin-dirpath (str "/" scm-bin-dirname))
 
 (module-evaluated)
