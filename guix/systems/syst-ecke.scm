@@ -40,11 +40,13 @@
 
  ;; vim
 
- ;; Window Managers:
- ;; - sway
- ;; - herbstluftwm
- ;; - i3-wm
- ;; - xmonad (Tiling window manager)
+ ;; Window Managers https://github.com/protesilaos/dotfiles#window-managers
+ ;; sway          ; Wayland compositor compatible with i3
+ ;; herbstluftwm  ; Tiling window manager for X11
+ ;; bspwm         ; Tiling window manager based on binary space partitioning
+ ;; i3-wm         ; Tiling window manager
+ ;; xmonad        ; Tiling window manager
+
  ;; ...
  wm ;; provides "sway" "swaybg" "swayidle" "swaylock"
 
