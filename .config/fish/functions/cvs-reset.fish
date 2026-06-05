@@ -3,8 +3,6 @@
 ## fish -n cvs-reset.fish
 ## fish_indent --check cvs-reset.fish
 
-function cvs-reset --description "cvs update -C -l -d -P …"
-    set cmd cvs update -C -l -d -P (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function cvs-reset --description "Reset CVS working copy (cvs update -CldP)"
+    trace cvs update -C -l -d -P $argv
 end

@@ -3,8 +3,6 @@
 ## fish -n fxml.fish
 ## fish_indent --check fxml.fish
 
-function fxml --description "fd --extension xml …"
-    set cmd fd --extension xml (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function fxml --description "Find .xml files (fd --extension xml)"
+    trace fd --extension xml $argv
 end

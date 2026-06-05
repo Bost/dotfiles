@@ -3,8 +3,6 @@
 ## fish -n lco.fish
 ## fish_indent --check lco.fish
 
-function lco --description "lein cljsbuild once …"
-    set cmd lein cljsbuild once (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function lco --description "Build ClojureScript once (lein cljsbuild once)"
+    trace lein cljsbuild once $argv
 end

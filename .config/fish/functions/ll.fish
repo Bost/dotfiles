@@ -3,8 +3,6 @@
 ## fish -n ll.fish
 ## fish_indent --check ll.fish
 
-function ll --description "ls -lh …"
-    set cmd ls -lh (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function ll --description "List files, long form, human sizes (ls -lh)"
+    trace ls -lh $argv
 end

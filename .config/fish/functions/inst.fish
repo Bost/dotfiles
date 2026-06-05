@@ -3,23 +3,15 @@
 ## fish -n inst.fish
 ## fish_indent --check inst.fish
 
-function inst --description "Install Debian package"
-    set prm (string escape -- $argv)
+function inst --description "Install a .deb file or apt package (dpkg/apt)"
+    set prm $argv
     if test -f $prm; and test (string match --regex "\.deb\$" $prm)
-        set cmd sudo dpkg --install $prm
-        echo $cmd
-        eval $cmd
+        trace sudo dpkg --install $prm
     else
-        # set cmd sudo snap install $prm
-        # echo $cmd
-        # eval $cmd
+        # trace sudo snap install $prm
         # if test $status != 0
-        #     set cmd sudo apt install --yes $prm
-        #     echo $cmd
-        #     eval $cmd
+        #     trace sudo apt install --yes $prm
         # end
-        set cmd sudo apt install --yes $prm
-        echo $cmd
-        eval $cmd
+        trace sudo apt install --yes $prm
     end
 end

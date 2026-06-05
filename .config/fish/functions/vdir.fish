@@ -3,8 +3,6 @@
 ## fish -n vdir.fish
 ## fish_indent --check vdir.fish
 
-function vdir --description "Listing …"
-    set cmd ls --color=auto --format=long (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function vdir --description "List files, long form (ls --format=long)"
+    trace ls --color=auto --format=long $argv
 end

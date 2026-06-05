@@ -3,18 +3,18 @@
 ## fish -n prep.fish
 ## fish_indent --check prep.fish
 
-function prep --description "See glances, cputool"
+function prep --description "Find processes, report CPU/MEM (pgrep + ps)"
     # https://www.tecmint.com/cputool-limit-linux-process-cpu-usage-load/
     # https://www.tecmint.com/glances-an-advanced-real-time-system-monitoring-tool-for-linux/
     # http://morningcoffee.io/killing-a-process-and-all-of-its-descendants.html
 
-    # set cmd pgrep --list-full (string escape -- $argv)
+    # set cmd pgrep --list-full $argv
     # echo $cmd
     # set ret (eval $cmd)
     # set pid (string split "/" -- $ret)[0]
 
-    set cmd_pidof pidof (string escape -- $argv)
-    set cmd_pgrep pgrep --full (string escape -- $argv)
+    set cmd_pidof pidof $argv
+    set cmd_pgrep pgrep --full $argv
     set cmd $cmd_pgrep
     echo $cmd "   # see also: $cmd_pidof"
     set pids (eval $cmd)
@@ -31,7 +31,7 @@ function prep --description "See glances, cputool"
 
     echo ""
     test (count $pids) != 0 && \
-        pgrep --full (string escape -- $argv) | \
+        pgrep --full $argv | \
         xargs ps -o %cpu,%mem --no-headers --pid | \
         awk -v cores=$(nproc) '{cpu+=$1; mem+=$2}
 END {

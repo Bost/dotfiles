@@ -3,6 +3,6 @@
 ## fish -n take.fish
 ## fish_indent --check take.fish
 
-function take --description "mkdir … && cd …"
+function take --description "Create a directory and cd into it (mkcd)"
     mkcd $argv
 end
