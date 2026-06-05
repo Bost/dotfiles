@@ -968,9 +968,18 @@ This function should only modify configuration layer settings."
 
      ;; smex ; smart M-x enhacements - recent & most used commands
 
-     ;; requires:
+     ;; ~SPC S~ / M-x flyspell-mode
+     ;; requires hunspell or aspell:
      ;; sudo apt install --yes aspell-en aspell-fr aspell-de aspell-sk
-     spell-checking ;; ~SPC S~ / M-x flyspell-mode
+     (spell-checking
+      :variables
+      ;; spell-checking-enable-by-default nil
+      spell-checking-enable-auto-dictionary t
+
+      ;; Eenable auto-completion popup when the point is idle on a misspelled
+      ;; word set the layer variable enable-flyspell-auto-completion to t:
+      enable-flyspell-auto-completion t
+      )
 
      sql
      ;; swift
@@ -1851,6 +1860,11 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  ;; Use hunspell's multi-dictionary mode for multi-lingual documents or if
+  ;; your language is not supported by auto-dictionary
+  (with-eval-after-load "ispell"
+    (setq ispell-program-name "hunspell"))
 
   ;; undo-tree is unmaintained. Last commit in March 2021
   ;; (global-undo-tree-mode)

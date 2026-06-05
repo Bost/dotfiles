@@ -37,7 +37,7 @@
  elixir tree-sitter agda emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
  file-systems librewolf libcanberra security-token firmware ocr tex monitoring
- pciutils haskell-apps
+ pciutils haskell-apps hunspell
  )
 
 (define (email-in-emacs-packages)
@@ -492,10 +492,24 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    android-file-transfer
    android-udev-rules
    asciinema
+
+   ;; Aspell is a spell-checker which can be used either as a library or as a
+   ;; standalone program. Notable features of Aspell include its full support of
+   ;; documents written in the UTF-8 encoding and its ability to use multiple
+   ;; dictionaries, including personal ones.
    aspell
    aspell-dict-de
    aspell-dict-en
    aspell-dict-fr
+
+   ;; Hunspell is a spell checker and morphological analyzer library and program
+   ;; designed for languages with rich morphology and complex word compounding
+   ;; or character encoding.
+   hunspell
+   hunspell-dict-de          ; Hunspell dictionary for German (de_DE)
+   hunspell-dict-en-us
+   hunspell-dict-fr-moderne
+
    autoconf
    automake    ; for `make doc/guix.info`
    bc          ; Arbitrary precision numeric processing language
