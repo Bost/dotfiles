@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# -*- mode: sh; sh-shell: bash -*-
+
+## bash -n timestamp
+## shellcheck timestamp
+
+# date "+%F_%H:%M:%S"
+date "+%F_%H-%M-%S"
