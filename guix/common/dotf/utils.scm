@@ -479,9 +479,12 @@ reversed. See also:
 (define-public dbg peek)
 
 (define*-public (dbg-exec prm #:key (verbose #t))
-  "`pk', i.e. `peek' can be used instead of this procedure."
+  "`pk', i.e. `peek' can be used instead of this procedure.
+See also (getenv \"STARSHIP_PROMPT_SYMBOL\")
+⋎ U+22CE Curly logical OR, licensed Guix logo
+λ U+03BB Greek small lambda"
   (when verbose
-    (format #t "§ ~a\n" (if (list? prm) (string-join prm) prm)))
+    (format #t "+⋎ ~a\n" (if (list? prm) (string-join prm) prm)))
   prm)
 
 (def*-public (error-command-failed #:rest args)
@@ -795,7 +798,7 @@ Example:
               command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings.
-§ echo bar baz & disown
++λ echo bar baz & disown
 bar baz
 $9 = 0 ;; <return-code>"
 
@@ -821,7 +824,7 @@ $9 = 0 ;; <return-code>"
               command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND and returns its ret-code.
 (exec-foreground \"echo bar baz\") ;=>
-§ echo bar baz
++λ echo bar baz
 bar baz
 $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
 
@@ -853,7 +856,7 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
   "Execute COMMAND using `system' from the (guile) module and returns its
 ret-code.
 (exec-system \"echo bar baz\") ;=>
-§ echo bar baz
++λ echo bar baz
 bar baz
 $9 = 0 ;; <return-code>"
   (when trace
