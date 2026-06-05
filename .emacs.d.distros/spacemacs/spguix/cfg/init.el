@@ -1068,8 +1068,11 @@ This function should only modify configuration layer settings."
      ;; Launch and manage detached processes
      detached
 
-     ;; dired alternative
-     dirvish
+     ;; ; Automatically preview file at point in Dired
+     dired-preview
+
+     ;; A polished Dired with batteries included
+     ;; dirvish
 
      ;; Wrapper interface for `difft' command line tool
      difftastic
@@ -1866,6 +1869,8 @@ before packages are loaded."
   (with-eval-after-load "ispell"
     (setq ispell-program-name "hunspell"))
 
+  ;; (sp-use-paredit-bindings)
+
   ;; undo-tree is unmaintained. Last commit in March 2021
   ;; (global-undo-tree-mode)
 
@@ -1905,37 +1910,8 @@ before packages are loaded."
   ;;   (end-of-buffer)
   ;;   (dired-next-line -1))
 
-  ;; Dired
-  ;; ;; dired-x is part of the spacemacs-defaults layer. It is used by default.
-  ;; (require 'dired-x) ; Enable dired-x
-  ;; ;; dired+ is unavailable
-  ;; ;; (require 'dired+)  ; Enable dired+
-  ;; (setq-default dired-omit-files-p t)  ; Don't show hidden files by default
-  ;; (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$\\|\\.pyc$"))
-  ;; (add-hook 'dired-mode-hook 'ao/dired-omit-caller)
-  ;; (define-key evil-normal-state-map (kbd "_") 'projectile-dired)
-  ;; (define-key evil-normal-state-map (kbd "-") 'dired-jump)
-  ;; (setq diredp-hide-details-initially-flag nil)
-  ;; (advice-add 'spacemacs/find-dotfile :around 'ao/find-dotfile)
-  ;; ;; Make `gg' and `G' do the correct thing
-  ;; (eval-after-load "dired-mode"
-  ;;   (evilified-state-evilify
-  ;;    ;; evilify
-  ;;    dired-mode dired-mode-map
-  ;;            "f" 'helm-find-files
-  ;;            "h" 'diredp-up-directory-reuse-dir-buffer
-  ;;            "l" 'diredp-find-file-reuse-dir-buffer
-  ;;            "I" 'ao/dired-omit-switch
-  ;;            "gg" 'ao/dired-back-to-top
-  ;;            "G" 'ao/dired-jump-to-bottom))
-
   ;; typescript-indent-level is overridden by project-specific .editorconfig
   ;; (setq-default typescript-indent-level 4)
-
-  ;; (sp-use-paredit-bindings)
-
-  ;; activate the dirvish, the dired alternate
-  ;; (dirvish-override-dired-mode)
 
   ;; set up `evil' bindings for `info-mode'
   (evil-collection-info-setup)
@@ -2235,6 +2211,62 @@ before packages are loaded."
            .
            (lambda () ;; capital lambda char Λ
              (push '("tw-interactive-lambda" . 923) prettify-symbols-alist))))
+
+  (use-package dired-preview
+    :defer t
+    :commands (dired-preview-mode)
+    :init
+    (with-eval-after-load 'dired
+      (define-key dired-mode-map (kbd "P") #'dired-preview-mode))
+    :config
+    (setq dired-preview-delay 0.2)
+    ;; Do not preview huge files.
+    (setq dired-preview-max-size (* 1024 1024))
+    ;; Optional: skip files that are usually annoying to preview.
+    (setq dired-preview-ignored-extensions-regexp
+          (concat "\\."
+                  "\\(mkv\\|mp4\\|mp3\\|ogg\\|webm"
+                  "\\|zip\\|tar\\|gz\\|xz\\|zst"
+                  "\\|iso\\|epub\\)"
+                  "\\'"))
+    ;; Prefer using / creating a preview window on the right.
+    (setq dired-preview-display-action-alist
+          '((display-buffer-reuse-window
+             display-buffer-in-side-window)
+            (side . right)
+            (window-width . 0.5))))
+
+  ;; (use-package dirvish
+  ;;   :ensure t
+  ;;   :init
+  ;;   ;; Make normal Dired buffers use Dirvish.
+  ;;   (dirvish-override-dired-mode)
+  ;;   :config
+  ;;   (dirvish-peek-mode)
+  ;;   ;; Optional: choose a 3-pane layout:
+  ;;   ;; parent directory | current directory | preview
+  ;;   ;; (setq dirvish-default-layout '(1 0.11 0.55))
+  ;;   ;; Make preview use a side window, suitable for your left/right layout.
+  ;;   (setq dirvish-preview-dispatchers
+  ;;         '(image
+  ;;           gif
+  ;;           video
+  ;;           audio
+  ;;           epub
+  ;;           pdf
+  ;;           archive
+  ;;           font
+  ;;           yadm
+  ;;           symlink
+  ;;           directory
+  ;;           file))
+  ;;   :bind
+  ;;   (("C-c f" . dirvish)
+  ;;    :map dirvish-mode-map
+  ;;    ("M-t" . dirvish-layout-toggle)
+  ;;    ("M-s" . dirvish-layout-switch)
+  ;;    ;; Toggle preview with `P` in Dirvish/Dired.
+  ;;    ("P"   . dirvish-side-follow-mode)))
 
   ;; TODO autoload
   (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")
