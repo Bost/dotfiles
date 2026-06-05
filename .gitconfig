@@ -46,11 +46,11 @@
 	# Text-mode interface for Git
 	tig = !tig
 
-  # Files modified in the last commit.
+	# Files modified in the last commit.
 	dl = "!git log --patch -1"
 
 	# Show diffs of the last commit
-  di = log --patch --max-count=1
+	di = log --patch --max-count=1
 	dis = diff --cached HEAD^           # with diffstatic
 
 	# Find a tracked file, case-insensitively.
@@ -65,6 +65,13 @@
 	# ! is needed to pass argument correctly to -S
 	fsc = "!git log --color --patch -S "
 	fsm = "!git log --grep "
+
+	# All commits which touched this path (one-line output)
+	touched = "!f() { git log --oneline -- \"$1\"; }; f"
+	# Full log of commits which touched this path
+	touched-full = "!f() { git log -- \"$1\"; }; f"
+	# Just commit hashes which touched this path
+	touched-hashes = "!f() { git log --format=\"%H\" -- \"$1\"; }; f"
 
 [user]
 	name = Rostislav Svoboda
