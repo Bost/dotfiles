@@ -3,10 +3,8 @@
 ## fish -n umount-usb.fish
 ## fish_indent --check umount-usb.fish
 
-function umount-usb --description "udisksctl unmount --block-device=$usbDevice"
-    # set cmd umount $usbDevice
-    # set cmd sudo eject $usbDevice
-    set cmd udisksctl unmount --block-device=$usbDevice
-    echo $cmd
-    eval $cmd
+function umount-usb --description "Unmount the USB drive (udisksctl unmount)"
+    # trace umount $usbDevice
+    # trace sudo eject $usbDevice
+    trace udisksctl unmount --block-device=$usbDevice
 end

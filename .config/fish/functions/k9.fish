@@ -3,8 +3,6 @@
 ## fish -n k9.fish
 ## fish_indent --check k9.fish
 
-function k9 --description "kill -9 …"
-    set cmd kill -9 (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function k9 --description "Force-kill processes by PID (kill -9)"
+    trace kill -9 $argv
 end

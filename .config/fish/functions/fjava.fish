@@ -3,8 +3,6 @@
 ## fish -n fjava.fish
 ## fish_indent --check fjava.fish
 
-function fjava --description "fd --extension java …"
-    set cmd fd --extension java (string escape -- $argv)
-    echo $cmd
-    eval $cmd
+function fjava --description "Find .java files (fd --extension java)"
+    trace fd --extension java $argv
 end
