@@ -528,6 +528,36 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
   ;; (evil-collection-define-key 'insert map (kbd "s-<next>")  #'evil-scroll-page-down)
   )
 
+(defun my-clj-bind-keys-and-chords (map)
+  (bind-keys :map map
+             ;; on German keyboard the #-key is next to the Enter-key
+             ("C-s-\\" . tw-clj-toggle-reader-comment-current-sexp)
+             ("s-\\"   . tw-clj-toggle-reader-comment-fst-sexp-on-line)
+             ("s-X"   . tw-switch-to-repl-start-figwheel)
+             ("s-e"   . cider-eval-last-sexp)
+             ("s-j"   . cider-format-defun)
+             ("s-i"   . cljr-rename-symbol))
+  (bind-chords :map map
+               ("pr" . (lambda () (interactive)
+                         (tw-insert-str "(println \"\")" 2)))
+               ("rm" . (lambda () (interactive)
+                         (tw-insert-str "(remove (fn []))" 3)))
+               ("fi" . tw-clj-insert-filter-fn)
+               ("de" . tw-clj-insert-defn)
+               ;; ("db" . my-clj-insert-debugf)
+               ;; ("dg" . my-clj-insert-debugf)
+               ("df" . tw-clj-insert-fn)
+               ("ds" . tw-clj-insert-doseq)
+               ("fn" . tw-clj-insert-fn)
+               ("do" . tw-clj-insert-do)
+               ("co" . tw-clj-insert-comp)
+               ("cd" . tw-insert-clojuredocs)
+               ("pa" . tw-insert-partial)
+               ("le" . tw-clj-insert-let)
+               ("fo" . tw-clj-insert-for)
+               ("ty" . tw-clj-insert-type)
+               ("ma" . tw-clj-insert-map-fn)))
+
 ;; When running from bash on a non-Guix system, some environment variables may
 ;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
 
@@ -2462,36 +2492,6 @@ before packages are loaded."
                ("C-<right>"    . right-word)
                ("C-<left>"     . left-word)))
 
-  (defun my-clj-bind-keys-and-chords (map)
-    (bind-keys :map map
-               ;; on German keyboard the #-key is next to the Enter-key
-               ("C-s-\\" . tw-clj-toggle-reader-comment-current-sexp)
-               ("s-\\"   . tw-clj-toggle-reader-comment-fst-sexp-on-line)
-               ("s-X"   . tw-switch-to-repl-start-figwheel)
-               ("s-e"   . cider-eval-last-sexp)
-               ("s-j"   . cider-format-defun)
-               ("s-i"   . cljr-rename-symbol))
-    (bind-chords :map map ; clojure-mode-map cider-repl-mode-map
-                 ("pr" . (lambda () (interactive)
-                           (tw-insert-str "(println \"\")" 2)))
-                 ("rm" . (lambda () (interactive)
-                           (tw-insert-str "(remove (fn []))" 3)))
-                 ("fi" . tw-clj-insert-filter-fn)
-                 ("de" . tw-clj-insert-defn)
-                 ;; ("db" . my-clj-insert-debugf)
-                 ;; ("dg" . my-clj-insert-debugf)
-                 ("df" . tw-clj-insert-fn)
-                 ("ds" . tw-clj-insert-doseq)
-                 ("fn" . tw-clj-insert-fn)
-                 ("do" . tw-clj-insert-do)
-                 ("co" . tw-clj-insert-comp)
-                 ("cd" . tw-insert-clojuredocs)
-                 ("pa" . tw-insert-partial)
-                 ("le" . tw-clj-insert-let)
-                 ("fo" . tw-clj-insert-for)
-                 ("ty" . tw-clj-insert-type)
-                 ("ma" . tw-clj-insert-map-fn)))
-
   (with-eval-after-load 'cider-repl
     (my-clj-bind-keys-and-chords cider-repl-mode-map)
     (bind-keys :map cider-repl-mode-map
@@ -2856,7 +2856,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                         "[advice spacemacs/toggle-menu-bar] %s"
                         "Try ~M-`~ : M-x tmm-menubar")))
 
-  (map
+  (mapc
    (lambda (map)
      (bind-keys :map map
 ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
