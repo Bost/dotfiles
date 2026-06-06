@@ -2284,7 +2284,7 @@ before packages are loaded."
     ;; "of"  #'tw-switch-to-repl-start-figwheel
     "oed" #'tw-find-dotf-spacemacs-develop
     "oeg" #'tw-find-dotf-spacemacs-guix
-    "oes" #'tw-find-dotf-spacemacs-spguix
+    "oes" #'tw-find-dotf-spacemacs-spgx
     "ogg" #'google-this
     "ogr" #'google-this-region
     "oh"  #'tw-find-home-config.scm
