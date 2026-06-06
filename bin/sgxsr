@@ -4,7 +4,12 @@
 ## bash -n sgxsr
 ## shellcheck sgxsr
 
-baseLP=$dotf/guix # base-load-path
+set -o errexit  # set -e
+set -o nounset  # set -u
+set -o pipefail
+
+: "${dtf:?Variable dtf is not set or empty}"
+baseLP="$dtf/guix" # base-load-path
 
 beep_once() {
     (speaker-test --test sine --frequency 440 > /dev/null 2>&1) &
@@ -23,10 +28,10 @@ notify() {
     # command is a shell utility. `command --query` works only in fish-shell
     # speaker-test is in the alsa-utils package
     if [ "$(command -v speaker-test)" ]; then
-        for i in $(seq 1 3); do beep_once; done
+        for _ in {1..3}; do beep_once; done
     else
         # if [ "$(command -v canberra-gtk-play)" ]; then
-        #     for i in $(seq 1 3); do canberra-gtk-play -i message; done
+        #     for _ in {1..3}; do canberra-gtk-play -i message; done
         # fi
         # echo "speaker-test not found"
         : # for the sake of simplicity just give up ¯\_(ツ)_/¯
@@ -48,14 +53,6 @@ notify() {
 set -e
 
 set -o xtrace
-## Run this file by (the `~' doesn't work as a value of --load-path):
-# --fallback         fall back to building when the substituter fails
-# -L --load-path
-# -v, --verbosity=LEVEL  use the given verbosity LEVEL
-
-# guix repl \
-#      -L $baseLP/common \
-#      $baseLP/systems/common/kernel-version.scm
 
 # TODO implement parameter: -n --no-guix-pull which skips the `guix pull ...` command
 # TODO implement auto-update of linux-version in the bootloader of syst-ecke and syst-edge
@@ -63,7 +60,12 @@ set -o xtrace
 # TODO add 'Do you agree with the following downgrades? [y/N]'
 # See /home/bost/.config/guix/current/bin/guix-daemon
 
+set -o xtrace   # set -x
+set +o nounset  # set +u
+# shellcheck disable=SC1091
 source /etc/profile 2>/dev/null
+set -o nounset  # set -u
+
 # No automatic '--allow-downgrades' for system channels!
 # --unsafe-channel-evaluation allow:
 #   - access to bindings such as system (to run shell code)
@@ -71,8 +73,8 @@ source /etc/profile 2>/dev/null
 #   - etc.
 guix pull \
      --unsafe-channel-evaluation \
-     --load-path=$baseLP/common \
-     --channels=$baseLP/systems/common/syst-channels.scm \
+     --load-path="$baseLP/common" \
+     --channels="$baseLP/systems/common/syst-channels.scm" \
      "$@"
 
 { retval="$?"; set +o xtrace; } 2>/dev/null
@@ -92,7 +94,12 @@ sudo \
 # more than once, but it's faster that pulling the home-channels.
 # If `guix pull --roll-back "$@"` fails use `gxp`.
 
+set -o xtrace   # set -x
+set +o nounset  # set +u
+# shellcheck disable=SC1091
 source /etc/profile 2>/dev/null
+set -o nounset  # set -u
+
 guix pull --roll-back "$@"
 
 { retval="$?"; set +o xtrace; } 2>/dev/null

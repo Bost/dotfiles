@@ -4,58 +4,61 @@
 ## bash -n guix-package--list
 ## shellcheck guix-package--list
 
+set -o errexit  # set -e
+set -o nounset  # set -u
+set -o pipefail
+
 # myProfiles=(
 #     $HOME/.config/guix/current
 #     $HOME/.guix-profile
 #     $HOME/.guix-home/profile
 #     /run/current-system/profile
 # )
-myProfiles=($(guix package --list-profiles))
-myProfiles+=($HOME/.guix-home/profile)
-myProfiles+=(/run/current-system/profile)
+mapfile -t myProfiles < <(guix package --list-profiles)
+myProfiles+=("$HOME/.guix-home/profile")
+myProfiles+=("/run/current-system/profile")
 
-for i in $GUIX_EXTRA_PROFILES/*; do
-  profile=$i/$(basename "$i")
-  if [ -f "$profile"/etc/profile ]; then
-      myProfiles+=("$profile"/etc/profile)
-      # printf "Added %s\n" "$profile"/etc/profile
-  else
-      :
-      # printf "NOT Added %s\n" "$profile"/etc/profile
-  fi
+for i in "$GUIX_EXTRA_PROFILES"/*; do
+    profile="$i/$(basename "$i")"
+    if [ -f "$profile"/etc/profile ]; then
+        myProfiles+=("$profile"/etc/profile)
+        # printf "Added %s\n" "$profile"/etc/profile
+    else
+        :
+        # printf "NOT Added %s\n" "$profile"/etc/profile
+    fi
 done
 
 # printf "length myProfiles: %s\n" ${#myProfiles[@]}
 
 # declare -p $myProfiles 2> /dev/null | grep -q '^declare \-a'
 
-for profile in ${myProfiles[@]}; do
+for profile in "${myProfiles[@]}"; do
     # printf "profile: %s\n" $profile
-
     # set -o xtrace
     # It also causes printing of the 'result=' assignment and the
     # '... | column --table' redirection. That's too much noise.
-    cmd=$(printf "guix package --profile=%s %s" $profile "$@")
+    cmd=$(printf 'guix package --profile=%s %s' "$profile" "$@")
     echo "+ $cmd"
     result=$($cmd)
     # { retval="$?"; set +o xtrace; } 2>/dev/null
     # printf -- "--profile=%s\n" $profile
     line0='                         '
     line1='                      '
-    if [ ! -z "$result" ]; then
-        fmtRes=$(echo $result | sed 's#\s#;#g')
+    if [ -n "$result" ]; then
+        fmtRes=${result//[[:space:]]/;}
         # echo $fmtRes
-        # split a string to an array in bash https://stackoverflow.com/a/10586169
+        # split string to an array in bash https://stackoverflow.com/a/10586169
         IFS=';' read -r -a resArr <<< "$fmtRes"
-        maxRange=$[(${#resArr[@]} / 4) - 1]
-        for idx in $(seq 0 $maxRange); do
-            offset=$[$idx * 4]
+        maxRange=$(( (${#resArr[@]} / 4) - 1 ))
+        for idx in $(seq 0 "$maxRange"); do
+            offset=$((idx * 4))
             pkgName=${resArr[$offset + 0]}
             pkgVer=${resArr[$offset + 1]}
             pkgPath=${resArr[$offset + 3]}
-            printf "    %s %s %s %s %s\n" \
-                   $pkgName "${line0:${#pkgName}}" $pkgVer "${line1:${#pkgVer}}" \
-                   $pkgPath
+            printf '    %s %s %s %s %s\n' \
+                   "$pkgName" "${line0:${#pkgName}}" "$pkgVer" \
+                   "${line1:${#pkgVer}}" "$pkgPath"
         done
     fi
 done

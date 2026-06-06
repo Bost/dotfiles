@@ -6,21 +6,27 @@
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since 'set -e' is used.
-set -e
+set -o errexit  # set -e
+set -o nounset  # set -u
+set -o pipefail
 
-tstp=$(date +%F_%H-%M-%S)
-baseLP=$dotf/guix # base-load-path
+: "${dtf:?Variable dtf is not set or empty}"
 
-set -o xtrace
-# prevent 'WARNING: ... incompatible bytecode version'
+baseLP="$dtf/guix" # base-load-path
+
+set -o xtrace   # set -x
+set +o nounset  # set +u
+# shellcheck disable=SC1091
 source /etc/profile 2>/dev/null
+set -o nounset  # set -u
+
 # --unsafe-channel-evaluation allow:
 #   - access to bindings such as system (to run shell code)
 #   - use additional modules
 #   - etc.
 guix pull --unsafe-channel-evaluation --allow-downgrades \
-     --load-path=$baseLP/common \
-     --channels=$baseLP/home/common/home-channels.scm \
+     --load-path="$baseLP/common" \
+     --channels="$baseLP/home/common/home-channels.scm" \
      "$@"
 
 # No need to chain the commands using '&&', since 'set -e' is used.

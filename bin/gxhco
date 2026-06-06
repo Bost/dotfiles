@@ -4,17 +4,26 @@
 ## bash -n gxhco
 ## shellcheck gxhco
 
-baseLP=$dotf/guix # base-load-path
-hostname=$(hostname)
+set -o errexit  # set -e
+set -o nounset  # set -u
+set -o pipefail
 
-configFile=$(printf "%s/home/home-%s.scm" $baseLP $hostname)
+: "${dtf:?Variable dtf is not set or empty}"
+baseLP="$dtf/guix" # base-load-path
+configFile=$(printf "%s/home/home-%s.scm" "$baseLP" "$(hostname)")
 
-set -o xtrace
+set -o xtrace   # set -x
+set +o nounset  # set +u
+# shellcheck disable=SC1091
 source /etc/profile 2>/dev/null
+set -o nounset  # set -u
+
 guix home --allow-downgrades \
-     -L $baseLP/common \
-     -L $baseLP/home/common \
+     --load-path="$baseLP/common" \
+     --load-path="$baseLP/home/common" \
      container \
-     $configFile "$@"
+     "$configFile" "$@"
+
 { retval="$?"; set +o xtrace; } 2>/dev/null
+
 exit $retval
