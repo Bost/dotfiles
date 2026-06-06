@@ -472,7 +472,7 @@ a list of files to search through."
 
 (define rest-utils-definitions
   (list
-   (list #:utility "gxx"  #:params "guix" #:trace #t #:verbose #t )
+   ;; (list #:utility "gxx"  #:params "guix" #:trace #t #:verbose #t )
 
    ;; verbose with colors
    (list #:utility "f"   #:params "fd --color=always"
@@ -659,9 +659,9 @@ a list of files to search through."
     (list #:utility "eg" #:fun 'set-editable     #:profile guix)
     (list #:utility "kg" #:fun 'pkill-server     #:profile guix)
 
-    (list #:utility  "s" #:fun 'create-launcher  #:profile spguix)
-    (list #:utility "es" #:fun 'set-editable     #:profile spguix)
-    (list #:utility "ks" #:fun 'pkill-server     #:profile spguix)
+    (list #:utility  "s" #:fun 'create-launcher  #:profile spgx)
+    (list #:utility "es" #:fun 'set-editable     #:profile spgx)
+    (list #:utility "ks" #:fun 'pkill-server     #:profile spgx)
 
     (list #:utility  "r" #:fun 'create-launcher  #:profile crafted)
     ;; TODO Move crafted-emacs user config from the project repo to the dotfiles

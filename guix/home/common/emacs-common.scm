@@ -57,8 +57,8 @@ defined.
 
 (define (create-init-cmd profile)
 "
-(create-init-cmd \"spguix\") ; =>
-\"emacs --init-directory=/gnu/store/...-emacs-spacemacs-.../share/emacs/site-lisp/spacemacs-... --bg-daemon=spguix\"
+(create-init-cmd \"spgx\") ; =>
+\"emacs --init-directory=/gnu/store/...-emacs-spacemacs-.../share/emacs/site-lisp/spacemacs-... --bg-daemon=spgx\"
 
 (create-init-cmd \"guix\")    ; =>
 \"emacs --init-directory=/home/bost/.emacs.d.distros/spacemacs/guix/src --bg-daemon=guix\"
@@ -151,7 +151,7 @@ Examples:
 (create-launcher #:profile \"guix\"
                  \"guix/home/common/cli-common.scm\")
 
-(create-launcher #:profile \"spguix\"
+(create-launcher #:profile \"spgx\"
                  \"guix/home/common/cli-common.scm\")
 "
   (when trace
@@ -208,7 +208,7 @@ Examples:
                         (list (init-cmd-env-vars home-emacs-distros profile) init-cmd)
                         (cond
                          [(and #f (string= profile crafted)) (list (eval-crafted))]
-                         [(and #f (string= profile spguix))
+                         [(and #f (string= profile spgx))
                           ;; (eval-spacemacs)
                           (list
                            "--debug-init"
@@ -301,13 +301,13 @@ VERBOSE - print command line of the command being executed on the CLI
                (dotf srfi-1-smart) (dotf utils) (dotf tests) (dotf settings)
                (cli-common) (command-line) (emacs-common))
   (handle-cli #:trace #f #:verbose #t #:exec-fun 'exec-foreground
-              #:utility \"s\" #:fun 'create-launcher #:profile \"spguix\"
+              #:utility \"s\" #:fun 'create-launcher #:profile \"spgx\"
               (command-line)))
 
 (handle-cli
    #:trace #t
    #:verbose #t #:exec-fun 'exec-foreground
-   #:utility \"s\" #:fun create-launcher #:profile \"spguix\"
+   #:utility \"s\" #:fun create-launcher #:profile \"spgx\"
    (list \"\" \"guix/home/common/cli-common.scm\"))
 "
   (when trace

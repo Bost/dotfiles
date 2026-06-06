@@ -31,7 +31,7 @@
 
 (define-public dspd (spacemacs-dir "develop"))
 (define-public dspg (spacemacs-dir "guix"))
-(define-public dsps (spacemacs-dir "spguix"))
+(define-public dsps (spacemacs-dir "spgx"))
 (define-public dspc (spacemacs-dir "cycle"))
 
 ;; see gnu/home/services/symlink-manager.scm

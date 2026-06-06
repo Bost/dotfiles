@@ -1244,7 +1244,7 @@ before layer configuration.
 It should only modify the values of Spacemacs settings."
 
   (setq
-   sp-home-dir            (concat (getenv "XDG_DATA_HOME") "/spacemacs/spguix")
+   sp-home-dir            (concat (getenv "XDG_DATA_HOME") "/spacemacs/spgx")
    sp-snippets-dir        (concat sp-home-dir "/snippets")
    sp-custom-settings-dir (concat sp-home-dir "/.cache")
    sp-layouts-dir         (concat sp-home-dir "/.cache/layouts")
@@ -2284,7 +2284,7 @@ before packages are loaded."
     ;; "of"  #'tw-switch-to-repl-start-figwheel
     "oed" #'tw-find-dotf-spacemacs-develop
     "oeg" #'tw-find-dotf-spacemacs-guix
-    "oes" #'tw-find-dotf-spacemacs-spguix
+    "oes" #'tw-find-dotf-spacemacs-spgx
     "ogg" #'google-this
     "ogr" #'google-this-region
     "oh"  #'tw-find-home-config.scm
