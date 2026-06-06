@@ -11,7 +11,7 @@ set -e
 tstp=$(date +%F_%H-%M-%S)
 baseLP=$dotf/guix # base-load-path
 
-set -x # Print commands and their arguments as they are executed.
+set -o xtrace
 # prevent 'WARNING: ... incompatible bytecode version'
 source /etc/profile 2>/dev/null
 # --unsafe-channel-evaluation allow:
@@ -26,6 +26,6 @@ guix pull --unsafe-channel-evaluation --allow-downgrades \
 # No need to chain the commands using '&&', since 'set -e' is used.
 # guix describe
 
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 
 exit $retval

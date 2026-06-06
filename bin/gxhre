@@ -11,7 +11,7 @@ set -e
 baseLP="$dtf/guix"     # base-load-path
 configFile=$(printf '%s/home/home-%s.scm' "$baseLP" "$(hostname)")
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 source /etc/profile 2>/dev/null
 guix home --allow-downgrades \
      --load-path="$baseLP/common" \
@@ -19,7 +19,7 @@ guix home --allow-downgrades \
      reconfigure \
      "$configFile" \
      "$@"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 
 printf '# Remove Guix Home backup directories older than 7 days:\n'
 set -x
@@ -30,6 +30,6 @@ find "$HOME" \
      -name '[0-9]*-guix-home-legacy-configs-backup' \
      -mtime +7 \
      -exec rm -rf -- {} +
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 
 exit "$retval"

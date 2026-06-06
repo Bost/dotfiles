@@ -4,7 +4,7 @@
 ## bash -n gxb
 ## shellcheck gxb
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 guix build "$@"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 exit $retval

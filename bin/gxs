@@ -4,7 +4,7 @@
 ## bash -n gxsy
 ## shellcheck gxsy
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 guix system "$@"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 exit $retval

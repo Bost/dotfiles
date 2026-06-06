@@ -32,13 +32,13 @@ done
 for profile in ${myProfiles[@]}; do
     # printf "profile: %s\n" $profile
 
-    # set -x  # Print commands and their arguments as they are executed.
+    # set -o xtrace
     # It also causes printing of the 'result=' assignment and the
     # '... | column --table' redirection. That's too much noise.
     cmd=$(printf "guix package --profile=%s %s" $profile "$@")
     echo "+ $cmd"
     result=$($cmd)
-    # { retval="$?"; set +x; } 2>/dev/null
+    # { retval="$?"; set +o xtrace; } 2>/dev/null
     # printf -- "--profile=%s\n" $profile
     line0='                         '
     line1='                      '

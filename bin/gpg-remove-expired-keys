@@ -4,34 +4,34 @@
 ## bash -n gpg-remove-expired-keys
 ## shellcheck gpg-remove-expired-keys
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 expired_keys="$(gpg --list-public-keys --fixed-list-mode --with-colons | grep "^pub:e:" | cut --fields=5 --delimiter=":")"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 
 for key in $expired_keys; do
-    set -x  # Print commands and their arguments as they are executed.
+    set -o xtrace
     gpg --list-keys $key
-    { retval="$?"; set +x; } 2>/dev/null
+    { retval="$?"; set +o xtrace; } 2>/dev/null
 
-    set -x  # Print commands and their arguments as they are executed.
+    set -o xtrace
     gpg --no-greeting --delete-key $key # will ask for confirmation
-    { retval="$?"; set +x; } 2>/dev/null
+    { retval="$?"; set +o xtrace; } 2>/dev/null
 
     echo
 done
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 expired_keys="$(gpg --list-secret-keys --fixed-list-mode --with-colons | grep "^pub:e:" | cut --fields=5 --delimiter=":")"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 
 for key in $expired_keys; do
-    set -x  # Print commands and their arguments as they are executed.
+    set -o xtrace
     gpg --list-keys $key
-    { retval="$?"; set +x; } 2>/dev/null
+    { retval="$?"; set +o xtrace; } 2>/dev/null
 
-    set -x  # Print commands and their arguments as they are executed.
+    set -o xtrace
     gpg --no-greeting --delete-key $key # will ask for confirmation
-    { retval="$?"; set +x; } 2>/dev/null
+    { retval="$?"; set +o xtrace; } 2>/dev/null
 
     echo
 done

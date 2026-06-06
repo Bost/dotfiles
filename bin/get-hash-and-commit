@@ -8,7 +8,7 @@
 # chain the commands using '&&', since 'set -e' is used.
 set -e
 
-# set -x # Print commands and their arguments as they are executed.
+# set -o xtrace
 
 msg=$(git log --max-count=1 --oneline --pretty=format:'%s')
 
@@ -24,6 +24,6 @@ echo "${text}" | xsel -bi
 
 printf "%s\n\n# Text above saved to clipboard\n" "${text}"
 
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 
 exit $retval
