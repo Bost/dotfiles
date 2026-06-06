@@ -63,7 +63,7 @@
                (cons #:env
                      (str home-emacs-distros "/spacemacs/cycle/cfg"))))
 
-   (cons #:spguix
+   (cons #:spgx
          (list (cons #:user-emacs-directory
                      ;; TODO this is a hack. For some reasons this can't be used:
                      ;;   (use-modules (guix scripts package) (guix profiles))
@@ -93,7 +93,7 @@
                                                 (string-length "-emacs-spacemacs-1.0-0."))))]
                              (str esp "/share/emacs/site-lisp/spacemacs-1.0-0." commit)))))
                (cons #:env
-                     (str home-emacs-distros "/spacemacs/spguix/cfg"))))
+                     (str home-emacs-distros "/spacemacs/spgx/cfg"))))
 
    (cons #:guix
          (list (cons #:user-emacs-directory
@@ -110,13 +110,13 @@
 
 (define-public develop "develop")
 (define-public cycle   "cycle")
-(define-public spguix  "spguix")
+(define-public spgx    "spgx")
 (define-public guix    "guix")
 (define-public crafted "crafted")
 
 (define-public profile->branch-kw
   (list
-   (cons spguix  #:spguix)
+   (cons spgx    #:spgx)
    (cons develop #:develop)
    (cons cycle   #:cycle)
    (cons guix    #:guix)
