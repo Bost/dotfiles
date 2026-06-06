@@ -1,13 +1,19 @@
-# Notation
-# \t - Tab
-# \e - Escape prefix, usually produced by Alt/Meta or by special keys
-# \c - Ctrl
-# \b - Backspace
-#
-# Important: "\e[A" does NOT mean pressing Escape, then Shift+a.
-# It is the escape sequence sent by the Up Arrow key.
-# The "A" is a literal capital A byte inside the terminal escape sequence,
-# not a key you press manually.
+# -*- mode: conf-space; -*-
+
+## Note:
+## .inputrc configures Readline, not “the shell”. Bash happens to use Readline.
+## fish and zsh mostly do not.
+
+## Notation
+## \t - Tab
+## \e - Escape prefix, usually produced by Alt/Meta or by special keys
+## \c - Ctrl
+## \b - Backspace
+##
+## Important: "\e[A" does NOT mean pressing Escape, then Shift+a.
+## It is the escape sequence sent by the Up Arrow key.
+## The "A" is a literal capital A byte inside the terminal escape sequence,
+## not a key you press manually.
 
 # Move one word:
 "\e[1;5C": forward-word              # Ctrl + Right Arrow
