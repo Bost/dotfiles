@@ -4,8 +4,19 @@
 ## bash -n gxu
 ## shellcheck gxu
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if (( $# == 0 )); then
+    printf 'Usage: %s SEARCH-TERM...\n' "$0" >&2
+    exit 2
+fi
+
 set -o xtrace
 # -u, --upgrade[=REGEXP]
-guix package --upgrade="$@"
+guix package --upgrade="$*"
+
 { retval="$?"; set +o xtrace; } 2>/dev/null
+
 exit $retval

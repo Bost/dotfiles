@@ -4,8 +4,19 @@
 ## bash -n gxse
 ## shellcheck gxse
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if (( $# == 0 )); then
+    printf 'Usage: %s SEARCH-TERM...\n' "$0" >&2
+    exit 2
+fi
+
 set -o xtrace
 # -s, --search=REGEXP; guix search
-guix package --search="$@"
+guix package --search="$*"
+
 { retval="$?"; set +o xtrace; } 2>/dev/null
+
 exit $retval

@@ -12,7 +12,8 @@ set -o errexit  # set -e
 set -o nounset  # set -u
 set -o pipefail
 
-baseLP="$dotf/guix" # base-load-path
+: "${dtf:?Variable dtf is not set or empty}"
+baseLP="$dtf/guix" # base-load-path
 
 # both variants work:
 # --install-from-file=$baseLP/manifest.scm \
@@ -21,12 +22,12 @@ baseLP="$dotf/guix" # base-load-path
 # -f --install-from-file
 # -m --manifest
 
-set +o nounset  # set +u
 set -o xtrace   # set -x
+set +o nounset  # set +u
 # shellcheck disable=SC1091
 source /etc/profile 2>/dev/null
-set +o xtrace   # set +x
 set -o nounset  # set -u
+
 guix package \
      --load-path="$baseLP/common" \
      --load-path="$baseLP/home/common" \

@@ -6,30 +6,35 @@
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since 'set -e' is used.
-set -e
+set -o errexit  # set -e
+set -o nounset  # set -u
+set -o pipefail
 
-baseLP="$dtf/guix"     # base-load-path
-configFile=$(printf '%s/home/home-%s.scm' "$baseLP" "$(hostname)")
+: "${dtf:?Variable dtf is not set or empty}"
 
-set -o xtrace
+baseLP="$dtf/guix" # base-load-path
+
+set -o xtrace   # set -x
+set +o nounset  # set +u
+# shellcheck disable=SC1091
 source /etc/profile 2>/dev/null
+set -o nounset  # set -u
+
 guix home --allow-downgrades \
-     --load-path="$baseLP/common" \
-     --load-path="$baseLP/home/common" \
-     reconfigure \
-     "$configFile" \
-     "$@"
+  --load-path="$baseLP/common" \
+  --load-path="$baseLP/home/common" \
+  reconfigure \
+  "$baseLP/home/home-$(hostname).scm" \
+  "$@"
 { retval="$?"; set +o xtrace; } 2>/dev/null
 
 printf '# Remove Guix Home backup directories older than 7 days:\n'
 set -x
 find "$HOME" \
-     -mindepth 1 \
-     -maxdepth 1 \
-     -type d \
-     -name '[0-9]*-guix-home-legacy-configs-backup' \
-     -mtime +7 \
-     -exec rm -rf -- {} +
+  -mindepth 1 -maxdepth 1 -type d \
+  -name '[0-9]*-guix-home-legacy-configs-backup' \
+  -mtime +7 -exec rm -rf -- {} +
+
 { retval="$?"; set +o xtrace; } 2>/dev/null
 
 exit "$retval"
