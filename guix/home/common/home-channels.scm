@@ -38,20 +38,20 @@
    ;; them from the guix-sciene
    ;; (channel-guix-science #:commit guix-science-commit)
 
-   (channel-guix-android #:commit guix-android-commit)
+   ;; (channel-guix-android #:commit guix-android-commit)
 
    ;; whereiseveryone
    ;; (channel-guixrus #:commit guixrus-commit #:use-local-checkout use-local-checkout)
 
-   (channel-hask-clj #:commit hask-clj-commit #:use-local-checkout use-local-checkout)
+   ;; (channel-hask-clj #:commit hask-clj-commit #:use-local-checkout use-local-checkout)
 
    ;; For factorio, pulls-in nonguix guix-past
-   (channel-games #:commit games-commit #:use-local-checkout use-local-checkout)
+   ;; (channel-games #:commit games-commit #:use-local-checkout use-local-checkout)
 
    ;; The `guix-past' channel is not needed directly, however it is required by
    ;; the `games' channel, which, without this pinning would pull from the
    ;; latest channel version
-   (channel-guix-past #:commit guix-past-commit)
+   ;; (channel-guix-past #:commit guix-past-commit)
 
    ;; (channel-home-service-dwl-guile)
    ;; (channel-flat)
@@ -101,17 +101,6 @@
 (module-evaluated)
 
 (home-channels
- ;; 06 mai 2026 11:16:53
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "4f29b99ce090ed2992d5bc6f3af42180201f5058"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "ecf80aec358b183e079801cd24d6780c5e814f29"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "81934cf7e9263e47f9fd8defa717365592a3473d"
-
  ;; 10 mai 2026 13:45:56
  ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
  ;; #:guix-science-commit "0c0df2b83829ba5cd1fa5ca58c861062a7d20c02"
@@ -359,14 +348,20 @@
  ;; #:guix-commit         "c905bdf006e13ac1bf8f2ff375674d7cfa484bac"
 
  ;; 30 mai 2026 17:20:28
- #:nonguix-commit      "3ed7c207c59dde11a97db483cad4c96eae1a10c4"
- #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- #:guix-past-commit    "a0ea643f565d5aaa70e50e6a83865389aa5d80ba"
- #:guix-guake-commit   "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
- #:bost-commit         "500c24c9bbb5e34840ffe378cb602884279f3c47"
- #:guix-commit         "c905bdf006e13ac1bf8f2ff375674d7cfa484bac"
+ ;; #:nonguix-commit      "3ed7c207c59dde11a97db483cad4c96eae1a10c4"
+ ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
+ ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
+ ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
+ ;; #:guix-past-commit    "a0ea643f565d5aaa70e50e6a83865389aa5d80ba"
+ ;; #:guix-guake-commit   "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
+ ;; #:bost-commit         "500c24c9bbb5e34840ffe378cb602884279f3c47"
+ ;; #:guix-commit         "c905bdf006e13ac1bf8f2ff375674d7cfa484bac"
+
+ ;; 06 juin 2026 19:23:09
+ #:nonguix-commit    "3ed7c207c59dde11a97db483cad4c96eae1a10c4"
+ #:guix-guake-commit "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
+ #:bost-commit       "308ba7fb5a2e5a82226dd13f749929541ac14709"
+ #:guix-commit       "53fabf4eb1f91e670f391d579c31b88ff83a207c"
 
  #:use-local-checkout #f)
 
