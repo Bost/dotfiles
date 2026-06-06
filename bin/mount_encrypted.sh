@@ -31,9 +31,9 @@ if [ ! -d "$ENCRYPTED_DIR" ]; then
         printf "[ERR] Failed to create ENCRYPTED_DIR\n"
         exit 1
     }
-    set -x                                # Start command tracing
+    set -o xtrace
     gocryptfs -init "$ENCRYPTED_DIR"
-    { retval="$?"; set +x; } 2>/dev/null  # End command tracing
+    { retval="$?"; set +o xtrace; } 2>/dev/null
     [ $retval -ne 0 ] && {
         printf "[ERR] gocryptfs -init failed\n"
         exit $retval
@@ -54,9 +54,9 @@ fi
 
 # Mount
 printf "Enter password to mount encrypted directory: %s\n" "$ENCRYPTED_DIR"
-set -x                                # Start command tracing
+set -o xtrace
 gocryptfs "$ENCRYPTED_DIR" "$MOUNT_POINT"
-{ retval="$?"; set +x; } 2>/dev/null  # End command tracing
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 [ $retval -ne 0 ] && {
     exit $retval
 }

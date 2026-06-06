@@ -4,8 +4,8 @@
 ## bash -n gxr
 ## shellcheck gxr
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 # -r, --remove PACKAGE
 guix package --remove "$@"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 exit $retval
