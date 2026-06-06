@@ -62,7 +62,7 @@
     )))
 (testsymb 'bash-config-file)
 
-(define (bashrc-str)
+(define (bashrc-additions)
   (str
 ;;; Also https://github.com/oh-my-fish/plugin-foreign-env
 ;;; 1. ~/.guix-home/setup-environment does:
@@ -78,7 +78,7 @@
 ;;;    i.e. `. ~/.guix-profile/etc/profile`
    "\n"
    ))
-(testsymb 'bashrc-str)
+(testsymb 'bashrc-additions)
 
 (def-public (non-env-var-services-base)
   ;; (format #t "~a Starting…\n" f)
@@ -95,8 +95,8 @@
        (conditional-constructs
         `(("$include" .
            ,(local-file
-             (user-dotf "/" ".inputrc_additions")
-             "inputrc_additions"))))))
+             (user-dotf "/" ".inputrc")
+             "inputrc"))))))
 
     (service
      home-bash-service-type
@@ -123,8 +123,8 @@
       ;; List of file-like objects, which will be ADDED(!) to .bashrc.
       (bashrc
        (list
-        (bash-config-file "bashrc" (bashrc-str))
-        (let* [(filename ".bashrc_additions")]
+        (bash-config-file "bashrc" (bashrc-additions))
+        (let* [(filename ".bashrc")]
           ;; this should work too:
           ;; (local-file ".bashrc" (fix-leading-dot ".bashrc"))
           (local-file

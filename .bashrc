@@ -1,44 +1,165 @@
 # -*- mode: sh; sh-shell: bash -*-
+#### home-bash-configuration -> .bashrc_additions: begin
 
-## bash -n guix-shell-claude.sh
-## shellcheck guix-shell-claude.sh
+# --- GnuPG / direnv setup ---
+# See `info "(gnupg) Invoking GPG-AGENT"`
+export GPG_TTY=$(tty)
 
-set errexit     # set -e
-set nounset     # set -u
-set -o pipefail
+# Export empty DIRENV_LOG_FORMAT to silence direnv log output. See
+# https://github.com/direnv/direnv/issues/68
+export DIRENV_LOG_FORMAT=
+eval "$(direnv hook bash)"
 
-readFile() {
-    if [ -f ${1} ]; then
-        source ${1}
-    else
-        echo "ERROR: File not found: ${1}"
-        #exit 1
-    fi
+# --- History & shell options for convenience ---
+shopt -s autocd                  # Type just a directory name to cd into it
+shopt -s cdspell                 # Fixe small typos in cd paths
+shopt -s checkwinsize            # Update $LINES/$COLUMNS when resizing terminal
+HISTCONTROL=ignoredups:erasedups # Avoid clutter in history
+
+# Enlarge history beyond defaults
+HISTSIZE=100000
+HISTFILESIZE=200000
+
+# --- Functions ---
+
+# In Bash, a script runs in a subshell, so `cd` only changes the directory
+# within that subshell. To change the state of the current shell (such as the
+# working directory with `cd`), the logic must be implemented as a shell
+# function.
+
+# $* vs. $@
+# "$*" concatenates all args into a single string, separated by the first
+#      character of $IFS (normally a space)
+# "$@" treats each arg as its own word.
+# -- is a POSIX‑style "end of options" marker
+
+# Clone with git-clone (Scheme procedure) and cd into repo
+gicl() {
+    git-clone -- "$@" || return
+
+    # Last argument = repo URL
+    local url=${!#}
+
+    # Remove a possible trailing slash
+    url=${url%/}
+
+    # Strip path and optional .git suffix
+    local repo=${url##*/}
+
+    # Remove trailing .git suffix
+    repo=${repo%.git}
+
+    cd -- "$repo" || return
 }
 
-# can't be local - local: can only be used in a function
-bash_profile=${HOME}/.bash_profile
+# mkdir + cd
+mkcd() {
+    mkdir -p -- "$*" || return
+    cd --       "$*" || return
+}
 
-if [ -z ${dotfilesHOME} ]; then
-    source ${bash_profile}
-    # TODO make sure ~/.bashrc is not executed twice, eg in a loop:
-    # ~/.bashrc -> ~/.bash_profile -> ~/.bashrc
-fi
+# alias for mkcd
+take() { mkcd "$@"; }
 
-if [ ! -d ${dotfilesHOME} ]; then
-    echo "ERROR: Directory doesn't exits: dotfilesHOME=${dotfilesHOME}"
-    echo "Check the ${bash_profile}"
-    return
-else
-    # can't be local - local: can only be used in a function
-    bash_files=${dotfilesHOME}/bash
-    readFile ${bash_files}/env
-    readFile ${bash_files}/aliases
-fi
-# TODO try history-search-backward "\e[A", history-search-forward "\e[B"
-#"\e[A": history-search-backward
-#"\e[B": history-search-forward
-#set show-all-if-ambiguous on
-#set completion-ignore-case on
-# export PATH=~/.local/bin:${PATH}
-unset JAVA_TOOL_OPTIONS
+# Shortcuts for moving up dirs
+..()   { cd ..; }
+...()  { cd ../..; }
+....() { cd ../../..; }
+
+# Directory shortcuts. ${VARNAME:?} guards against unset VARNAME
+bin()     { cd "$HOME/bin"; }
+cheat()   { cd "${cheat:?}"; }
+corona()  { cd "${dec:?}/corona_cases"; }
+dec()     { cd "${dec:?}"; }
+dema()    { cd "${dev:?}/emacs"; }
+der()     { cd "${der:?}"; }
+desk()    { cd ~/Desktop; }
+dev()     { cd "${dev:?}"; }
+dgl()     { cd "${dgl:?}"; }
+dgx()     { cd "${dgx:?}"; }
+dngx()    { cd "${dngx:?}"; }
+dgxp()    { cd "${dgxp:?}"; }
+dotf()    { cd "${dotf:?}"; }
+down()    { cd ~/Downloads; }
+dspd()    { cd "${dspd:?}"; }
+dspg()    { cd "${dspg:?}"; }
+dspc()    { cd "${dspc:?}"; }
+dsps()    { cd "${dsps:?}"; }
+dtf()     { cd "${dtf:?}"; }
+dtfg()    { cd "${dtfg:?}"; }
+notes()   { cd "${dev:?}/notes/notes"; }
+rr()      { cd "$HOME/.config/rash"; }
+tmp()     { cd /tmp; }
+utils()   { cd "${dec:?}/utils"; }
+vesmir()  { cd "${der:?}/vesmir"; }
+yas()     { cd "${dev:?}/yasnippet"; }
+
+# Quick jump back
+cd-() { cd -; }
+cdd() { cd -; }
+
+# --- Centralized "change-to-project-directory" shortcuts ---
+# -A	make associative arrays
+# declare -A CDMAP=(
+#     # variable-based dirs (fail fast if unset)
+#     # [latest]="$HOME/.cache/guix/checkouts/${latestRepo:?}"
+#     [owid]="${dec:?}/owid"
+#     [trackle]="${dev:?}/trackle"
+#     [ufo]="${dec:?}/ufo"
+#     [utils]="${dec:?}/utils"
+#     [zark]="${dec:?}/zark"
+# )
+
+cdx() {
+    local key=$1
+    if [[ -z $key ]]; then
+        printf 'Usage: cdx <shortcut>\nAvailable: %s\n' "${!CDMAP[@]}" | sort
+        return 1
+    fi
+    local target=${CDMAP[$key]}
+    if [[ -z $target ]]; then
+        printf 'cdx: unknown shortcut "%s"\n' "$key" >&2
+        return 1
+    fi
+    cd -- "$target" || return
+}
+
+# Usage
+# $ cdx corona   # goes to $dec/corona_cases
+# $ cdx rr       # goes to ~/.config/rash
+# $ cdx latest   # goes to ~/.cache/guix/checkouts/$latestRepo
+
+# Benefits
+#     Single function (cdx) instead of dozens of small ones.
+#     Associative array keeps shortcuts centralized and easy to extend.
+#     Usage hint if you run cdx with no args.
+#     Error message if you mistype a key.
+
+# --- Bash completion for cdx ---
+_cdx_completions() {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=( $(compgen -W "${!CDMAP[@]}" -- "$cur") )
+}
+complete -F _cdx_completions cdx
+
+# Usage
+# $ cdx <TAB>
+# latest  owid  trackle  ufo  utils  zark  rr
+
+
+# Create a quick test repo
+create_test_repo() {
+    mkdir foo && cd foo || return
+    git init
+    git config user.email "${GIT_AUTHOR_EMAIL:-x@y.com}"
+    git config user.name  "${GIT_AUTHOR_NAME:-Jim Beam}"
+    echo "some content" > foo.txt
+    git add foo.txt
+    git commit -m "1st commit"
+    "${EDITOR:-emacs -nw}" foo.txt
+}
+
+export STARSHIP_PROMPT_SYMBOL='$'
+eval "$(starship init bash)"
+
+#### home-bash-configuration -> .bashrc_additions: end
