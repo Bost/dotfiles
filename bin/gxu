@@ -4,8 +4,8 @@
 ## bash -n gxu
 ## shellcheck gxu
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 # -u, --upgrade[=REGEXP]
 guix package --upgrade="$@"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 exit $retval

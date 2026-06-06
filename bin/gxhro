@@ -8,8 +8,8 @@
 # chain the commands using '&&', since 'set -e' is used.
 set -e
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 source /etc/profile 2>/dev/null
 guix home roll-back "$@"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 exit $retval

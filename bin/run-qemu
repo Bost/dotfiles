@@ -6,11 +6,11 @@
 
 # '--preserve-env=GUILE_LOAD_COMPILED_PATH' makes the (dotf utils) scheme module
 # accessible to the super-user
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 sudo --preserve-env=GUILE_LOAD_COMPILED_PATH \
      guile \
      -e '(@ (scm-bin qemu-vm) main)' \
      ~/scm-bin/qemu-vm \
      --user=$USER \
      $@
-# { retval="$?"; set +x; } 2>/dev/null
+# { retval="$?"; set +o xtrace; } 2>/dev/null

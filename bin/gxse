@@ -4,8 +4,8 @@
 ## bash -n gxse
 ## shellcheck gxse
 
-set -x  # Print commands and their arguments as they are executed.
+set -o xtrace
 # -s, --search=REGEXP; guix search
 guix package --search="$@"
-{ retval="$?"; set +x; } 2>/dev/null
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 exit $retval

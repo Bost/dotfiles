@@ -8,12 +8,11 @@
 
 # Exit immediately if a command exits with a non-zero status, ie. no need to
 # chain the commands using '&&', since errexit is used.
-set errexit     # set -e
-set nounset     # set -u
+set -o errexit  # set -e
+set -o nounset  # set -u
 set -o pipefail
 
-tstp=$(date +%F_%H-%M-%S)
-baseLP=$dotf/guix # base-load-path
+baseLP="$dotf/guix" # base-load-path
 
 # both variants work:
 # --install-from-file=$baseLP/manifest.scm \
@@ -22,15 +21,18 @@ baseLP=$dotf/guix # base-load-path
 # -f --install-from-file
 # -m --manifest
 
-set -x  # Print commands and their arguments as they are executed.
+set +o nounset  # set +u
+set -o xtrace   # set -x
+# shellcheck disable=SC1091
 source /etc/profile 2>/dev/null
+set +o xtrace   # set +x
+set -o nounset  # set -u
 guix package \
-     --load-path=$baseLP/common \
-     --load-path=$baseLP/home/common \
-     --profile=$HOME/.guix-profile \
-     --manifest=$baseLP/profile-manifest.scm \
+     --load-path="$baseLP/common" \
+     --load-path="$baseLP/home/common" \
+     --profile="$HOME/.guix-profile" \
+     --manifest="$baseLP/profile-manifest.scm" \
      "$@"
 
-{ retval="$?"; set +x; } 2>/dev/null
-
+{ retval="$?"; set +o xtrace; } 2>/dev/null
 exit $retval
