@@ -541,9 +541,14 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ffmpeg
    file        ; File type guesser
    ;; flatpak  ; installed by (telegram-from-flatpak-service)
-   font-adobe-source-code-pro
-   font-gnu-freefont
-   font-gnu-unifont
+
+   font-adobe-source-code-pro ; Spacemacs / Emacs
+   font-nerd-jetbrains-mono   ; terminal font + fish prompt glyph
+   font-dejavu                ; broad Unicode fallback
+   font-google-noto-emoji     ; color emoji (optional)
+   font-gnu-freefont          ; Unicode's Basic Multilingual Plane, large bitmap
+   font-gnu-unifont           ; Unicode-encoded outline fonts
+
    fuse        ; Support file systems implemented in user space
 
    ;; See

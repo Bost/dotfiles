@@ -23,6 +23,7 @@
   ;; program-file local-file
   #:use-module (guix gexp)
   #:use-module (gnu home services shells)
+  #:use-module (gnu home services fontutils)
   ;; simple-service
   #:use-module (gnu home services)
   ;; pretty-print
@@ -97,6 +98,13 @@
            ,(local-file
              (user-dotf "/" ".inputrc")
              "inputrc"))))))
+
+    (simple-service 'emoji-fontconfig
+                    home-fontconfig-service-type
+                    (list
+                     '(alias
+                       (family "emoji")
+                       (prefer (family "Noto Color Emoji")))))
 
     (service
      home-bash-service-type
