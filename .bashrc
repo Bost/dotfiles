@@ -159,7 +159,8 @@ create_test_repo() {
     "${EDITOR:-emacs -nw}" foo.txt
 }
 
-export STARSHIP_PROMPT_SYMBOL='$'
+# 🐟🐳🐠🎣🦑👽🛸🚀🧙🦊🐍💡🧠🤓👾🤖🦾🐌🐚
+export STARSHIP_PROMPT_SYMBOL='🐚'
 eval "$(starship init bash)"
 
 #### home-bash-configuration -> .bashrc_additions: end
