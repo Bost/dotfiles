@@ -482,9 +482,11 @@ reversed. See also:
   "`pk', i.e. `peek' can be used instead of this procedure.
 See also (getenv \"STARSHIP_PROMPT_SYMBOL\")
 ⋎ U+22CE Curly logical OR, licensed Guix logo
-λ U+03BB Greek small lambda"
+λ U+03BB Greek small lambda
+🐟🐳🐠🎣🦑👽🛸🚀🧙🦊🐍💡🧠🤓👾🤖🦾🐌🐚
+"
   (when verbose
-    (format #t "+⋎ ~a\n" (if (list? prm) (string-join prm) prm)))
+    (format #t "+🤓 ~a\n" (if (list? prm) (string-join prm) prm)))
   prm)
 
 (def*-public (error-command-failed #:rest args)

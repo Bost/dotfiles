@@ -21,11 +21,10 @@
 # function.
 set fish_greeting ""
 
-# 🐟 U+1F41F Fish
-# 🐠 U+1F420 Tropical fish
-# ψ  U+03C8  Psi — resembles a fish skeleton / trident
+# ❯ψ Psi — resembles a fish skeleton / trident
+# 🐟🐳🐠🎣🦑👽🛸🚀🧙🦊🐍💡🧠🤓👾🤖🦾🐌🐚
 
-set --global --export STARSHIP_PROMPT_SYMBOL '🐟'
+set --global --export STARSHIP_PROMPT_SYMBOL '🐠'
 starship init fish | source
 
 #### config.fish manual configuration end
