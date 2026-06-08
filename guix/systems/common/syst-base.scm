@@ -130,6 +130,11 @@
     (services
      (append
       (list
+
+       (service shepherd-system-log-service-type
+                ;; Disable the '<date-time> localhost -- MARK --'
+                (system-log-configuration (max-silent-time #f)))
+
 ;;; Enable SysRq (PRT SC / Drucken) "magic keys" by putting 'kernel.sysrq=1' in
 ;;; /etc/sysctl.conf
 ;;; Alt+SysRq+f       OOM killer immediately kills something big
