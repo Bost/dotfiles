@@ -458,6 +458,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
    (non-env-var-services-base)
    (list (environment-variables-service 'env-vars-base
                                         (environment-vars)))))
+
 (def-public (home-env-services-edge-ecke)
   (append
    (non-env-var-services-edge-ecke)
