@@ -248,6 +248,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; transport layer security library, implements SSL, TLS, DTLS
     gnutls
 
+    ;; View and tune ATA disk drive parameters
+    hdparm
+
     ;; Command-line JSON processor
     jq
 
@@ -278,7 +281,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; terminal multiplexer, more popular and modern than 'screen'
     tmux
 
-    ;; udisksctl
+    ;; Disk manager service. Provides udisksctl
     udisks
 
     unzip
@@ -288,7 +291,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
     vim
     zip
-    zstd ;; Zstandard real-time compression algorithm
+
+    ;; Zstandard real-time compression algorithm
+    zstd
     )))
 (testsymb-trace 'basic-packages)
 
