@@ -159,6 +159,11 @@ create_test_repo() {
     "${EDITOR:-emacs -nw}" foo.txt
 }
 
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
+
+eval "$(zoxide init bash)"
+
 # 🐟🐳🐠🎣🦑👽🛸🚀🧙🦊🐍💡🧠🤓👾🤖🦾🐌🐚
 export STARSHIP_PROMPT_SYMBOL='🐚'
 eval "$(starship init bash)"

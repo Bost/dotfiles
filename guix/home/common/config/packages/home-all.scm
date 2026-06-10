@@ -223,10 +223,13 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
     dmidecode ; Read hardware information from the BIOS
 
+    du-dust ; Graphical disk usage analyzer. Modern 'du'
+
     ;; exa deprecated by eza in the daaedc9ab3; TODO the package is aliased but the binary is not
     eza
 
     fd
+    fzf ; Command-line fuzzy-finder
     git
 
 ;;; glibc and glibc-locales are needed to prevent:
@@ -257,11 +260,16 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Utilities to read temperature/voltage/fan sensors
     lm-sensors ; watch --interval 1 sensors # wait 1 second between updates
 
+    ;; Mostly ls compatible command with pretty colors
+    lsd
+
     ;; Read-write access to NTFS file systems
     ntfs-3g
 
     ripgrep
     rsync
+
+    sd ; Intuitive find & replace CLI. Modern 'sed'
 
     ;; S.M.A.R.T.  harddisk control and monitoring tools
     smartmontools
@@ -291,6 +299,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
     vim
     zip
+
+    ;; Fast way to navigate your file system. Modern 'cd'
+    zoxide
 
     ;; Zstandard real-time compression algorithm
     zstd
