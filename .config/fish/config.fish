@@ -21,6 +21,11 @@
 # function.
 set fish_greeting ""
 
+# Set up fzf key bindings
+fzf --fish | source
+
+zoxide init fish | source
+
 # ❯ψ Psi — resembles a fish skeleton / trident
 # 🐟🐳🐠🎣🦑👽🛸🚀🧙🦊🐍💡🧠🤓👾🤖🦾🐌🐚
 
