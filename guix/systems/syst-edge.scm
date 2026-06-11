@@ -279,7 +279,7 @@
       (menu-entries
        (list
         ;; sudo rg vmlinuz /run/media/bost/c99384b9-*/boot/grub/grub.cfg | head
-        (let [(linux-version "7.0.0-15")]
+        (let [(linux-version "7.0.0-22")]
           (menu-entry
            (label "Ubuntu 26.04 LTS")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
