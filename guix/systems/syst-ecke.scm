@@ -303,7 +303,7 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "7.0.0-15"))
+        (let ((linux-version "7.0.0-22"))
           (menu-entry
            (label "Ubuntu 26.04 LTS")
            ;; vmlinuz - compressed linux kernel
