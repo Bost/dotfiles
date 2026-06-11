@@ -636,7 +636,7 @@ a list of files to search through."
                        #:extra-modules '((mount-common))))))))
    (cartesian
     (list 'mount 'unmount 'eject 'info)
-    (list "axa" "toshiba" "new" "t7"))))
+    (list "axa" "toshiba" "new" "t7" "crucial"))))
 (testsymb 'mount-utils-files)
 
 (define (emacs-cli-utils-service)
