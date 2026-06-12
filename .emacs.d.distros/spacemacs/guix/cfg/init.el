@@ -95,13 +95,34 @@ differences were encountered."
       (kill-buffer decrypted-buffer)
       (kill-buffer env-buffer))))
 
+(defun my-getenv-required (variable)
+  "Return environment VARIABLE or signal a helpful error."
+  (or (getenv variable)
+      (user-error "Missing required environment variable: %s" variable)))
+
+(defun my-getenv-secret (variable)
+  "Load encrypted env secrets, then return required environment VARIABLE."
+  (my-load-env-secrets)
+  (my-getenv-required variable))
+
+(defun my-erc-libera-server ()
+  "Return the ERC server specification for Libera.Chat."
+  (my-load-env-secrets)
+  (let ((nick (my-getenv-required "IRC_USER"))
+        (password (my-getenv-required "IRC_PASSWD")))
+    `("irc.libera.chat"
+      :port 6697
+      :ssl t
+      :nick ,nick
+      :user ,nick
+      :password ,password)))
+
 (defun my-load-gptel-key ()
   "Load OPENAI_KEY from encrypted env file and assign it to `gptel-api-key`."
   (interactive)
   (my-load-env-secrets)
-  (setq gptel-api-key (getenv "OPENAI_KEY"))
-  (message "gptel-api-key %s"
-           (if gptel-api-key "loaded" "is still nil")))
+  (setq gptel-api-key (my-getenv-secret "OPENAI_KEY"))
+  (message "gptel-api-key loaded"))
 
 (defun my-shell-path ()
   ;; (tw-shell-which "fish")
@@ -698,7 +719,8 @@ This function should only modify configuration layer settings."
 
      elixir ; Erlang VM
 
-     ;; For Spacemacs configuration files and packages
+     ;; For Spacemacs configuration files and packages. Provides a.o.
+     ;; flycheck-package
      emacs-lisp
 
      ;; Include emojis into everything
@@ -711,15 +733,15 @@ This function should only modify configuration layer settings."
           erc-fill-function 'erc-fill-static
           erc-fill-static-center 15
           ;; erc-enable-notifications nil
-          erc-autojoin-channels-alist
-          '(("libera.chat" "#guix"
-             ;; "#systemcrafters"
-             ))
+
+          ;; Keep password lookup non-interactive.
           erc-prompt-for-nickserv-password nil
-          erc-server-list
-          (list (list "irc.libera.chat" :port "6667"
-                      :nick (getenv "IRC_USER")
-                      :password (getenv "IRC_PASSWD"))))
+
+          ;; erc-server-list defined by (with-eval-after-load 'erc ...)
+
+          erc-autojoin-channels-alist
+          ;; '(("libera.chat" "#guix" "#systemcrafters"))
+          '(("libera.chat" "#guix")))
 
      (git :variables
           ;; TODO implement it as spacemacs|toggle
@@ -862,8 +884,6 @@ This function should only modify configuration layer settings."
      (llm-client
       :variables
       ;; (setq
-      gptel-api-key (getenv "OPENAI_KEY")
-
       ;; curl --request GET --header "Authorization: Bearer ${OPENAI_KEY}" "https://api.openai.com/v1/models"
       ;; See https://platform.openai.com/settings/organization/usage
       ;; Change with https://platform.openai.com/settings/.../limits
@@ -987,6 +1007,7 @@ This function should only modify configuration layer settings."
       ;; shell-default-position 'bottom
       )
 
+     ;; Provides a.o. flycheck-bashate
      shell-scripts
 
      ;; spacemacs-layouts layer added to set variables
@@ -1006,14 +1027,19 @@ This function should only modify configuration layer settings."
       ;; spell-checking-enable-by-default nil
       spell-checking-enable-auto-dictionary t
 
-      ;; Eenable auto-completion popup when the point is idle on a misspelled
-      ;; word set the layer variable enable-flyspell-auto-completion to t:
+      ;; Enable auto-completion popup when the point is idle on a misspelled
+      ;; word
       enable-flyspell-auto-completion t
       )
 
      sql
      ;; swift
-     syntax-checking
+
+     ;; Provides a.o. flycheck
+     (syntax-checking
+      :variables
+      syntax-checking-enable-by-default t)
+
      systemd
 
      ;; M-x centaur-tab-mode
@@ -1106,6 +1132,8 @@ This function should only modify configuration layer settings."
 
      ;; Wrapper interface for `difft' command line tool
      difftastic
+
+     flycheck-guile
 
      ;; Emacs interface (not only) for GNU Guix package manager `guix package'.
      ;; It also provides highlighting and tools for Guix code.
@@ -1885,6 +1913,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
+
+  ;; Configure this early: the spell-checking layer may enable Flyspell
+  ;; during startup.
+  ;; Use hunspell's multi-dictionary mode for multi-lingual documents or if
+  ;; your language is not supported by auto-dictionary
+  (setq ispell-program-name "hunspell"
+        ispell-dictionary "en_US")
   )
 
 (defun dotspacemacs/user-config ()
@@ -1894,10 +1929,16 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  ;; Use hunspell's multi-dictionary mode for multi-lingual documents or if
-  ;; your language is not supported by auto-dictionary
-  (with-eval-after-load "ispell"
-    (setq ispell-program-name "hunspell"))
+  (with-eval-after-load 'flycheck
+    (require 'flycheck-guile))
+
+  (with-eval-after-load 'gptel
+    (setq gptel-api-key
+          (my-getenv-secret "OPENAI_KEY")))
+
+  (with-eval-after-load 'erc
+    (setq erc-server-list
+          (list (my-erc-libera-server))))
 
   ;; (sp-use-paredit-bindings)
 
@@ -1974,9 +2015,6 @@ before packages are loaded."
 
   ;; disable the hint when pasting - ??? doesn't work, i.e. no difference ???
   ;; (setq evil-goggles-enable-paste nil)
-
-  (global-flycheck-mode)
-  (add-hook 'after-init-hook #'global-flycheck-mode)
 
   ;; Company is a modular completion framework.
   (global-company-mode)
