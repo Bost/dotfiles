@@ -21,7 +21,14 @@ beep_once() {
 
 # Acoustic and visual notification
 notify() {
-    if [ "${XDG_CURRENT_DESKTOP}" = "XFCE" ]; then
+    # "${VARIABLE-}"
+    # the '-' causes expantion to an empty string when the VARIABLE is unset, so
+    # the test simply becomes false instead of aborting the script.
+
+    if [ "${XDG_CURRENT_DESKTOP-}" = "XFCE" ] &&
+           [ -n "${DISPLAY-}${WAYLAND_DISPLAY-}" ] &&
+           command -v notify-send > /dev/null 2>&1
+    then
         notify-send "$@"
     fi
 
