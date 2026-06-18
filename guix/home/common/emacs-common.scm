@@ -225,13 +225,13 @@ Examples:
            (str "--socket-name=" (calculate-socket profile))))))
 (testsymb 'create-launcher)
 
-;; ### BEG: from (fs-utils)
+;; ### BEG: from (dotf fs-utils)
 (define* (user-home #:rest args) (apply str home args))
 (define dev (user-home "/dev"))
 (define* (user-dev #:rest args)  (apply str dev args))
 (define dotf (user-dev "/dotfiles"))
 (define* (user-dotf #:rest args) (apply str dotf args))
-;; ### END: from (fs-utils)
+;; ### END: from (dotf fs-utils)
 
 (define (make-pair-dst-src profile)
   (cons (str (get-cfg profile) "/" emacs-init-file)

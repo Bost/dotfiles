@@ -28,7 +28,7 @@ guix home --allow-downgrades \
   #:use-module (dotf settings)
   #:use-module (dotf memo)
   #:use-module (scm-bin git-clone)
-  #:use-module (fs-utils)
+  #:use-module (dotf fs-utils)
   #:use-module (config packages home-all)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)

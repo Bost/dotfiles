@@ -3,7 +3,7 @@
   #:use-module (dotf utils)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
-  #:use-module (fs-utils)
+  #:use-module (dotf fs-utils)
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (gnu home services)
@@ -68,7 +68,7 @@
 (def (host-specific-config)
   "Handle the host-specific configuration settings from .config<.hostname>/
 See also:
-- (@(fs-utils) local-dotfile)
+- (@(dotf fs-utils) local-dotfile)
 - How to copy all my XFCE settings between two computers/machines?
   https://unix.stackexchange.com/a/353936"
   (let [(hostname (hostname-memoized))]

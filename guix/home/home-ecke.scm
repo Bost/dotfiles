@@ -34,7 +34,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
   #:use-module (dotf memo)
   ;; fix the 'error: leiningen: unknown package', but it doesn't work
   #:use-module (nongnu packages clojure)
-  #:use-module (fs-utils)
+  #:use-module (dotf fs-utils)
   #:use-module (services development-dirs)
   #:use-module (services cli-utils)
   #:use-module ((home-base) #:prefix home-base:)
