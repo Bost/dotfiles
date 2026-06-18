@@ -6,7 +6,7 @@
   #:use-module (dotf memo)
 
   ;; #:use-module (bost utils)
-  #:use-module (fs-utils)
+  #:use-module (dotf fs-utils)
 
   ;; home-packages-to-install inferior-guake-package
   #:use-module (config packages home-all)

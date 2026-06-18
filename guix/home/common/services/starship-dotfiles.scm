@@ -1,5 +1,5 @@
 (define-module (services starship-dotfiles)
-  #:use-module (fs-utils)
+  #:use-module (dotf fs-utils)
   #:use-module (gnu home services)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages shellutils)

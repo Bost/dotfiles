@@ -31,7 +31,7 @@ guix home --allow-downgrades \
   #:use-module (dotf utils)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
-  #:use-module (fs-utils)
+  #:use-module (dotf fs-utils)
   #:use-module (services development-dirs)
   #:use-module (services blueman-applet-autostart)
   #:use-module (services cli-utils)

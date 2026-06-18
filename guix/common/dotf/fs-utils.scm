@@ -1,4 +1,4 @@
-(define-module (fs-utils)
+(define-module (dotf fs-utils)
   #:use-module (dotf utils)
   #:use-module (dotf settings)
   #:use-module (guix gexp)

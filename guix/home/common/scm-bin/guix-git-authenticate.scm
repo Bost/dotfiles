@@ -2,7 +2,7 @@
 ;;; All used modules must be present in the module (services cli-utils) under:
 ;;;   service-file -> with-imported-modules
   #:use-module (dotf utils)
-  #:use-module (fs-utils)      ; dgx (repository location)
+  #:use-module (dotf fs-utils) ; dgx (repository location)
   #:use-module (dotf settings) ; home
   #:use-module (srfi srfi-26)  ; special selected function parameters
   #:use-module (ice-9 optargs) ; define*-public

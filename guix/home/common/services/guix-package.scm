@@ -6,7 +6,7 @@
   #:use-module (dotf utils)
   #:use-module (dotf srfi-1-smart)
   #:use-module (dotf tests)
-  #:use-module (fs-utils)
+  #:use-module (dotf fs-utils)
   #:use-module (dotf settings)
   #:use-module (cli-common)
   #:use-module (ice-9 pretty-print)

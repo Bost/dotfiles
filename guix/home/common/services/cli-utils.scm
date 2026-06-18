@@ -4,7 +4,7 @@
   #:use-module (dotf tests)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
-  #:use-module (fs-utils)
+  #:use-module (dotf fs-utils)
   #:use-module (command-line)
   #:use-module (gnu home)
   #:use-module (gnu packages)
@@ -150,12 +150,12 @@ Example:
                               (guix colors)
                               ;; (ice-9 getopt-long)
                               ))]
-;;; Having '#:use-module (fs-utils)' in the (scm-bin guix-git-authenticate) module
-;;; implies importing a number of additional (guix ...) modules. Alternative
-;;; solution: use '(getenv "dgx")' instead of 'dgx' from fs-utils.
+;;; Having '#:use-module (dotf fs-utils)' in the (scm-bin guix-git-authenticate)
+;;; module implies importing a number of additional (guix ...) modules.
+;;; Alternative solution: use '(getenv "dgx")' instead of 'dgx' from fs-utils.
                [(equal? utility "guix-git-authenticate")
                 (append lst `(
-                              (fs-utils)
+                              (dotf fs-utils)
                               (guix gexp)
                               (guix store)
                               (guix utils)
