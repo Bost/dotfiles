@@ -1027,9 +1027,8 @@ This function should only modify configuration layer settings."
       ;; spell-checking-enable-by-default nil
       spell-checking-enable-auto-dictionary t
 
-      ;; Enable auto-completion popup when the point is idle on a misspelled
-      ;; word
-      enable-flyspell-auto-completion t
+      ;; Auto-completion popup when the point is idle on a misspelled word
+      enable-flyspell-auto-completion nil
       )
 
      sql
