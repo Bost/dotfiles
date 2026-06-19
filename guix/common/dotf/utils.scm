@@ -52,6 +52,8 @@
             testsymb
             testsymb-trace
             dbgfmt
+            and*
+            or*
             )
   #:re-export (
                smart-first
@@ -443,8 +445,9 @@ reversed. See also:
   (reverse (list-tail (reverse xs) n)))
 
 (define-public (drop-left xs n)
-  "(drop-left (list 1 2 3 4 5) 2) ;=> (3 4 5)"
-  (drop xs n))
+  "Corresponds to `drop' in Clojure.
+(drop-left (list 1 2 3 4 5) 2) ;=> (4 5)"
+  (reverse (list-head (reverse xs) n)))
 
 (define-public (flatten x)
   "(flatten (list (cons 1 (cons 2 3)))) ;=> (1 2 3)
@@ -800,7 +803,7 @@ Example:
               command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND in background, i.e. in a detached process.
 COMMAND can be a string or a list of strings.
-+λ echo bar baz & disown
++🤓 echo bar baz & disown
 bar baz
 $9 = 0 ;; <return-code>"
 
@@ -826,7 +829,7 @@ $9 = 0 ;; <return-code>"
               command #:key (trace #f) (verbose #f) (ignore-errors #f))
   "Execute COMMAND and returns its ret-code.
 (exec-foreground \"echo bar baz\") ;=>
-+λ echo bar baz
++🤓 echo bar baz
 bar baz
 $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
 
@@ -858,7 +861,7 @@ $9 = (0 \"bar baz\") ;; (<return-code> <return-value>)
   "Execute COMMAND using `system' from the (guile) module and returns its
 ret-code.
 (exec-system \"echo bar baz\") ;=>
-+λ echo bar baz
++🤓 echo bar baz
 bar baz
 $9 = 0 ;; <return-code>"
   (when trace
@@ -1007,6 +1010,25 @@ Or:
     (partial exec-or-dry-run exec-function)
     (lambda (prm) (dbg-exec prm #:verbose verbose))
     cmd->string)
+   command))
+
+(define*-public (exec-argv command #:key (verbose #t) (return-plist #f))
+  "Run COMMAND as an argv list without invoking a shell.
+COMMAND must be a list whose first element is the program and whose remaining
+items are argv elements. No whitespace splitting, quote interpretation, globbing,
+pipes, or variable expansion is performed."
+  (define (exec-function . argv)
+    (unless (and (not (null? argv)) (every string? argv))
+      (error "exec-argv expects a non-empty list of strings" argv))
+    (let* [(port (apply open-pipe* OPEN_READ argv))
+           (results (read-all-strings port))
+           (retcode (status:exit-val (close-pipe port)))]
+      (if return-plist
+          (list #:retcode retcode #:results results)
+          (cons retcode results))))
+  ((comp
+    (partial exec-or-dry-run exec-function)
+    (lambda (prm) (dbg-exec prm #:verbose verbose)))
    command))
 
 (define-public (analyze-pids-flag-variable user init-cmd client-cmd pids)
@@ -2192,15 +2214,42 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
 "
   (object->string x write))
 
-;; see https://codeberg.org/guile/guile/issues/50
-(define-public and*
+;; See https://codeberg.org/guile/guile/issues/50#issuecomment-14496786
+;; The dual-mode syntax is clever but fragile, so if the short-circuiting is not needed a plain procedure may be better:
+;; (define-syntax and*
+;;   (lambda (x)
+;;     (syntax-case x ()
+;;       [(_ rest ...)
+;;        #'(and rest ...)]
+;;       [var
+;;        (identifier? #'var)
+;;        #'(lambda args
+;;            (let loop ((args args))
+;;              (if (null? args)
+;;                  #t ; by default
+;;                  (and (car args) (loop (cdr args))))))])))
+;;
+;; (define-syntax or*
+;;   (lambda (x)
+;;     (syntax-case x ()
+;;       [(_ rest ...)
+;;        #'(or rest ...)]
+;;       [var
+;;        (identifier? #'var)
+;;        #'(lambda args
+;;            (let loop ((args args))
+;;              (if (null? args)
+;;                  #f ; by default
+;;                  (or (car args) (loop (cdr args))))))])))
+
+(define and*
   (lambda args
     (let loop ((args args))
       (if (null? args)
           #t
           (and (car args) (loop (cdr args)))))))
 
-(define-public or*
+(define or*
   (lambda args
     (let loop ((args args))
       (if (null? args)
