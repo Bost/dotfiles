@@ -1031,6 +1031,18 @@ pipes, or variable expansion is performed."
     (lambda (prm) (dbg-exec prm #:verbose verbose)))
    command))
 
+(define*-public (run-command #:key args)
+  "argv -> list of stdout lines.  Runs via exec-argv (no shell), errors on a
+non-zero exit, and normalizes the result to a list of lines."
+  ((comp
+    (lambda (res) (let ((out (cdr res)))
+                    (if (string? out) (string-split out #\newline) out)))
+    (lambda (res) (if (zero? (car res))
+                      res
+                      (error "command failed with code" (car res))))
+    (lambda (argv) (exec-argv argv #:verbose #f)))
+   args))
+
 (define-public (analyze-pids-flag-variable user init-cmd client-cmd pids)
   "Breakout implementation using a flag variable"
   (let [(ret-cmd init-cmd)]
@@ -2255,5 +2267,9 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
       (if (null? args)
           #f
           (or (car args) (loop (cdr args)))))))
+
+(define-public (print-lines lines)
+  "Print each of LINES followed by a newline."
+  (for-each (lambda (line) (display line) (newline)) lines))
 
 (module-evaluated)
