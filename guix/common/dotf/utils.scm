@@ -1576,7 +1576,7 @@ Requires:
       (format #t "writing ~a\n" file-size))))
 |#
 
-(define-public (package-output-paths one-or-more-packages)
+(define-public (package-output-paths one-or-more)
   "(package-output-paths (@(gnu packages emacs) emacs))
 ;=> (\"/gnu/store/<...>-emacs-29.1\")"
   (let [(connection ((@(guix store) open-connection)))]
@@ -1585,7 +1585,7 @@ Requires:
           (@(guix derivations) derivation->output-path)
           (partial (@(guix packages) package-derivation)
                    connection))
-         (ensure-list one-or-more-packages))))
+         (ensure-list one-or-more))))
 
 ;; (define-public (interpose separator lst)
 ;;   "Insert separator between each element of lst"
@@ -1725,12 +1725,28 @@ that many from the end."
       ((x . r) (cons (syntax x) (loop (syntax r))))
       (_ (error 'syntax->list "invalid argument ~s" orig-ls)))))
 
-(define (build one-or-more-packages)
-  "(build (@(bost gnu packages emacs-xyz) emacs-tweaks))"
+(define (build one-or-more)
+  "
+(build (@(bost gnu packages emacs-xyz) emacs-tweaks)) ; doesn't build
+
+(build (@(gnu packages emacs-xyz) emacs-back-button)) ;=> (#t)
+(build \"emacs-back-button\")                           ;=> (#t)
+(build 'emacs-back-button)                            ;=> (#t)
+"
   (let [(daemon ((@ (guix store) open-connection)))]
     ;; Define `partial' locally so that this procedure is self-sustained
     (define (partial fun . args) (lambda x (apply fun (append args x))))
     (define (ensure-list args) (if (list? args) args (list args)))
+    (define packages
+      (map (lambda (p)
+             (cond
+              [((@(guix packages) package?) p) p]
+              [(symbol? p) ((@(gnu packages) specification->package)
+                            (symbol->string p))]
+              [(string? p) ((@(gnu packages) specification->package)
+                            p)]))
+           (ensure-list one-or-more)))
+
     (map (compose
           ;; (lambda (p) (format #t "3 p: ~a\n" p) p)
           (partial (@ (guix derivations) build-derivations) daemon)
@@ -1739,31 +1755,11 @@ that many from the end."
           ;; (lambda (p) (format #t "1 p: ~a\n" p) p)
           (partial (@ (guix packages) package-derivation) daemon)
           ;; (lambda (p)
-          ;;   (format #t "0 p: ~a\n" p)
-          ;;   (format #t "(record? p): ~a\n" (record? p))
-          ;;   (format #t "(package? p) p: ~a\n" (package? p))
+          ;;   (format #t "0. p : ~a; record? : ~a; package? : ~a\n"
+          ;;           p (record? p) ((@(guix packages) package?) p))
           ;;   p)
           )
-         (ensure-list one-or-more-packages))
-
-    ;; ((compose
-    ;;   (lambda (p) (format #t "3 p: ~a\n" p) p)
-    ;;   (partial (@ (guix derivations) build-derivations) daemon)
-    ;;   (lambda (p) (format #t "2 p: ~a\n" p) p)
-    ;;   list
-    ;;   (lambda (p) (format #t "1 p: ~a\n" p) p)
-    ;;   (partial (@ (guix packages) package-derivation) daemon)
-    ;;   (lambda (p)
-    ;;     (format #t "0 p: ~a\n" p)
-    ;;     (format #t "(record? p: ~a\n" (record? p))
-    ;;     (format #t "(package? p) p: ~a\n" (package? p))
-    ;;     p)
-    ;;   )
-    ;;  (specification->package
-    ;;   (format #f "(@ (bost packages emacs-xyz) ~a)"
-    ;;           (symbol->string one-or-more-packages))
-    ;;   ))
-    ))
+         (ensure-list packages))))
 
 (define (symbolic-link? path)
   "Check if path is a symbolic link"
