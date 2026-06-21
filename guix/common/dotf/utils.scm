@@ -1127,25 +1127,6 @@ found or the CLIENT-CMD if some process ID was found."
    "/tmp/myfile-XXXXXX"))
 (testsymb 'mktmpfile)
 
-;; TODO add install-recursively to (guix build utils) and send it to upstream
-(define*-public (install-recursively source destination
-                              #:key
-                              (log (current-output-port))
-                              (follow-symlinks? #f)
-                              (copy-file copy-file)
-                              keep-mtime? keep-permissions?)
-  "Recursive version of install-file."
-  ((@(guix build utils) mkdir-p) destination)
-  ((@(guix build utils) copy-recursively)
-   source
-   (string-append destination "/" (basename destination))
-   #:log log
-   #:follow-symlinks? follow-symlinks?
-   #:copy-file copy-file
-   #:keep-mtime? keep-mtime?
-   #:keep-permissions? keep-permissions?
-   ))
-
 (define-public (url? url)
   "Is URL a valid url?"
   (or (string-prefix? "https://" url)
