@@ -145,7 +145,7 @@ Type Testing Predicates.
     'list?
     '(@(dotf utils) plist?)
     'pair?
-
+    ;;
     '(@(srfi srfi-1) proper-list?)
     '(@(srfi srfi-1) circular-list?)
     ;; SRFI-1's dotted-list? treats any finite list whose final cdr is not '()
@@ -153,10 +153,10 @@ Type Testing Predicates.
     ;; pairs.
     ;; '(@(srfi srfi-1) dotted-list?)
     '(@(dotf utils) nonempty-dotted-list?)
-
+    ;;
     '(@(srfi srfi-1) null-list?)
     '(@(srfi srfi-1) not-pair?)
-
+    ;;
     'vector?
     'procedure?
     'record?
@@ -188,40 +188,176 @@ Type Testing Predicates.
     'char-numeric?
     'char-whitespace?
     ;;
-    '(@(gnu services) service?)
-    '(@(gnu services) service-type?)
-    '(@(gnu services) service-extension?)
-    ;;
     'exception?
     '(@(rnrs conditions) error?)
     '(@(ice-9 exceptions) error?)
-
+    ;;
     ;; Conditions are records of a subtype of the &condition record type, which
     ;; is neither sealed nor opaque. See R6RS Records.
     '(@(rnrs conditions) condition?)
     '(@(rnrs conditions) violation?)
-
-    ;; '(@(language tree-il) void?)
-    ;; '(@(language tree-il) const?)
-    ;; '(@(language tree-il) lexical-ref?)
-    ;; '(@(language tree-il) lexical-set?)
-    ;; '(@(language tree-il) module-ref?)
-    ;; '(@(language tree-il) module-set?)
-    ;; '(@(language tree-il) toplevel-ref?)
-    ;; '(@(language tree-il) toplevel-set?)
-    ;; '(@(language tree-il) toplevel-define?)
-    ;; '(@(language tree-il) conditional?)
-    ;; '(@(language tree-il) call?)
-    ;; '(@(language tree-il) primcall?)
-    ;; '(@(language tree-il) seq?)
-    ;; '(@(language tree-il) lambda?)
-    ;; '(@(language tree-il) lambda-case?)
-    ;; '(@(language tree-il) let?)
-    ;; '(@(language tree-il) letrec?)
-    ;; '(@(language tree-il) fix?)
-    ;; '(@(language tree-il) let-values?)
-    ;; '(@(language tree-il) prompt?)
-    ;; '(@(language tree-il) abort?)
+    ;;
+    '(@(language tree-il) void?)
+    '(@(language tree-il) const?)
+    '(@(language tree-il) lexical-ref?)
+    '(@(language tree-il) lexical-set?)
+    '(@(language tree-il) module-ref?)
+    '(@(language tree-il) module-set?)
+    '(@(language tree-il) toplevel-ref?)
+    '(@(language tree-il) toplevel-set?)
+    '(@(language tree-il) toplevel-define?)
+    '(@(language tree-il) conditional?)
+    '(@(language tree-il) call?)
+    '(@(language tree-il) primcall?)
+    '(@(language tree-il) seq?)
+    '(@(language tree-il) lambda?)
+    '(@(language tree-il) lambda-case?)
+    '(@(language tree-il) let?)
+    '(@(language tree-il) letrec?)
+    '(@(language tree-il) fix?)
+    '(@(language tree-il) let-values?)
+    '(@(language tree-il) prompt?)
+    '(@(language tree-il) abort?)
+    ;;
+    '(@(gnu packages) cache-is-authoritative?)
+    ;;
+    '(@(gnu services) ambiguous-target-service-error?)
+    '(@(gnu services) for-home?)
+    '(@(gnu services) linux-builder-configuration?)
+    '(@(gnu services) missing-target-service-error?)
+    '(@(gnu services) missing-value-service-error?)
+    '(@(gnu services) service-error?)
+    '(@(gnu services) service-extension?)
+    '(@(gnu services) service-type?)
+    '(@(gnu services) service?)
+    ;;
+    '(@(gnu home) home-environment?)
+    ;;
+    '(@(gnu system) operating-system?)
+    '(@(gnu system) boot-parameters?)
+    ;;
+    '(@(gnu bootloader) bootloader-configuration-device-tree-support?)
+    '(@(gnu bootloader) bootloader-configuration?)
+    '(@(gnu bootloader) bootloader?)
+    '(@(gnu bootloader) menu-entry?)
+    ;;
+    '(@(gnu services configuration) configuration-error?)
+    '(@(gnu services configuration) empty-serializer?)
+    '(@(gnu services configuration) maybe-value-set?)
+    '(@(gnu services configuration) list-of-packages?)
+    '(@(gnu services configuration) list-of-strings?)
+    '(@(gnu services configuration) list-of-symbols?)
+    '(@(gnu services configuration) alist?)
+    '(@(gnu services configuration) text-config?)
+    ;;
+    '(@(gnu services base) host?)
+    '(@(gnu services base) static-networking?)
+    '(@(gnu services base) network-address?)
+    '(@(gnu services base) network-address-ipv6?)
+    '(@(gnu services base) network-link?)
+    '(@(gnu services base) network-route?)
+    '(@(gnu services base) network-route-ipv6?)
+    ;;
+    '(@(guix colors) color-output?)
+    ;;
+    '(@(guix grafts) graft?)
+    ;;
+    '(@(guix narinfo) narinfo?)
+    '(@(guix narinfo) valid-narinfo?)
+    '(@(guix narinfo) equivalent-narinfo?)
+    ;;
+    '(@(guix derivations) derivation?)
+    '(@(guix derivations) derivation-output?)
+    '(@(guix derivations) derivation-output-recursive?)
+    '(@(guix derivations) derivation-input?)
+    '(@(guix derivations) valid-derivation-input?)
+    '(@(guix derivations) derivation-error?)
+    '(@(guix derivations) derivation-missing-output-error?)
+    '(@(guix derivations) derivation-missing-output)
+    '(@(guix derivations) fixed-output-derivation?)
+    '(@(guix derivations) offloadable-derivation?)
+    '(@(guix derivations) substitutable-derivation?)
+    '(@(guix derivations) file-search-error?)
+    ;;
+    '(@(guix store) substitutable?)
+    '(@(guix store) path-info?)
+    '(@(guix store) store-connection?)
+    '(@(guix store) store-error?)
+    '(@(guix store) store-connection-error?)
+    '(@(guix store) store-protocol-error?)
+    '(@(guix store) grafting?)
+    '(@(guix store) store-path?)
+    '(@(guix store) direct-store-path?)
+    '(@(guix store) derivation-path?)
+    ;;
+    '(@(guix profiles) profile-error?)
+    '(@(guix profiles) profile-not-found-error?)
+    '(@(guix profiles) profile-collision-error?)
+    '(@(guix profiles) missing-generation-error?)
+    '(@(guix profiles) manifest-entry?)
+    '(@(guix profiles) manifest-entry=?)
+    '(@(guix profiles) manifest-pattern?)
+    '(@(guix profiles) manifest-installed?)
+    '(@(guix profiles) manifest-transaction?)
+    '(@(guix profiles) manifest-transaction-null?)
+    '(@(guix profiles) manifest-transaction-removal-candidate?)
+    '(@(guix profiles) profile?)
+    '(@(guix profiles) profile-locales?)
+    '(@(guix profiles) profile-allow-collisions?)
+    '(@(guix profiles) profile-relative-symlinks?)
+    ;;
+    '(@(guix gexp) gexp?)
+    '(@(guix gexp) gexp-input?)
+    '(@(guix gexp) gexp-input-native?)
+    '(@(guix gexp) local-file?)
+    '(@(guix gexp) local-file-recursive?)
+    '(@(guix gexp) local-file-select?)
+    '(@(guix gexp) plain-file?)
+    '(@(guix gexp) computed-file?)
+    '(@(guix gexp) program-file?)
+    '(@(guix gexp) scheme-file?)
+    '(@(guix gexp) file-append?)
+    '(@(guix gexp) raw-derivation-file?)
+    '(@(guix gexp) parameterized?)
+    '(@(guix gexp) delayed-object?)
+    '(@(guix gexp) lowered-gexp?)
+    '(@(guix gexp) gexp-compiler?)
+    '(@(guix gexp) file-like?)
+    '(@(guix gexp) gexp-error?)
+    '(@(guix gexp) gexp-input-error?)
+    ;;
+    '(@(guix channels) channel?)
+    '(@(guix channels) channel-introduction?)
+    '(@(guix channels) guix-channel?)
+    '(@(guix channels) channel-instance?)
+    '(@(guix channels) channel-news-entry?)
+    ;;
+    '(@(guix packages) content-hash?)
+    '(@(guix packages) hidden-package?)
+    '(@(guix packages) origin?)
+    '(@(guix packages) package-cross-build-system-error?)
+    '(@(guix packages) package-cyclic-dependency-error?)
+    '(@(guix packages) package-error?)
+    '(@(guix packages) package-input-error?)
+    '(@(guix packages) package-license-error?)
+    '(@(guix packages) package-location<?)
+    '(@(guix packages) package-unsupported-target-error?)
+    '(@(guix packages) package?)
+    '(@(guix packages) supported-package?)
+    '(@(guix packages) unsupported-cross-compilation-target-error?)
+    ;;
+    '(@(guix store roots) user-owned?)
+    ;;
+    '(@(guix tests) canonical-file?)
+    ;;
+    '(@(guix sets) set?)
+    ;;
+    '(@(guix quirks) patch?)
+    '(@(guix quirks) applicable-patch?)
+    ;;
+    '(@(guix monads) monad?)
+    ;;
+    '(@(guix modules) guix-module-name?)
     )))
 (define-public tt test-type)
 
@@ -272,5 +408,7 @@ Type Testing Predicates.
 
     ;; Tree Intermediate Language
     '(@(language tree-il) tree-il=?)
+
+    '(@(guix tests) file=?)
     )))
 (define-public te test-equality)
