@@ -10,12 +10,16 @@
   #:use-module (gnu packages)
   #:use-module (gnu services)
   #:use-module (guix gexp)
+  #:use-module (guix store) ; run-with-store
+  #:use-module (guix monads) ; mlet
+  #:use-module (guix derivations) ; build-derivations
   #:use-module (gnu home services shells)
   #:use-module (gnu home services)
   #:use-module (srfi srfi-1) ; list-processing procedures
   #:use-module (ice-9 pretty-print)
   #:use-module (ice-9 ftw)   ; file tree walk
   #:use-module (ice-9 regex)
+  #:use-module (dotf build-utils)
   )
 
 (define m (module-name-for-logging))
@@ -176,6 +180,10 @@ Example:
                               (guix combinators)
                               (guix sets)
                               ))]
+               [(member utility (list
+                                 "guix-describe"
+                                 "guix-system-describe"))
+                (append lst `((scm-bin describe-commits)))]
                [#t lst])))
            `((guix monads)
              (dotf srfi-1-smart)
@@ -679,6 +687,8 @@ a list of files to search through."
         (list #:utility "gk"                    #:desc "git-repo-browser")
         ;; TODO guix-git-authenticate is broken
         ;; (list #:utility "guix-git-authenticate" #:desc "guix-git-authenticate")
+        (list #:utility "guix-system-describe"  #:desc "guix-system-describe")
+        (list #:utility "guix-describe"         #:desc "guix-describe")
         (list #:utility "gpg-pinentry-setup"    #:desc "gpg-pinentry-setup")
         (list #:utility "qemu-vm"               #:desc "qemu-vm")
         )))
