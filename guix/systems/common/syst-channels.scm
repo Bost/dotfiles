@@ -37,26 +37,6 @@
 (module-evaluated)
 
 (syst-channels
- ;; 06 mai 2026 12:02:11
- ;; #:guix-science-commit "4f29b99ce090ed2992d5bc6f3af42180201f5058"
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-commit         "81934cf7e9263e47f9fd8defa717365592a3473d"
-
- ;; 10 mai 2026 14:05:19
- ;; #:guix-science-commit "0c0df2b83829ba5cd1fa5ca58c861062a7d20c02"
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-commit         "9f8d0595a2c044a9bc1c97893b338c485ee83c18"
-
- ;; 18 mai 2026 17:43:45
- ;; #:guix-science-commit "24317029245eddca35f64b81280a831a18bc680c"
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-commit         "928f7ff31a61d6e3f764d6ce32bfe3bb4c9db9e8"
-
- ;; 21 mai 2026 12:48:04
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
- ;; #:guix-commit         "1672274e6f2bb20fb72bc8150ce4d0225281ac6b"
-
  ;; 22 mai 2026 14:25:04
  ;; #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
  ;; #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
@@ -99,8 +79,16 @@
  ;; #:guix-commit       "4a50b4bc65758f2917774f335de4c4586baa72fc"
 
  ;; 18 juin 2026 14:51:15
- #:nonguix-commit    "bf39542ca537fde8839b209ac21d6f3254469b15"
- #:guix-commit       "d0580550cd4a3a34aab31d631751ed5847e42976"
+ ;; #:nonguix-commit    "bf39542ca537fde8839b209ac21d6f3254469b15"
+ ;; #:guix-commit       "d0580550cd4a3a34aab31d631751ed5847e42976"
+
+ ;; Jun 22 2026 16:50:09
+ ;; #:nonguix-commit "bf39542ca537fde8839b209ac21d6f3254469b15"
+ ;; #:guix-commit    "acd7100df96a4de2e702072c24b0445438c0c9a7"
+
+ ;; 24 juin 2026 13:57:36
+ #:nonguix-commit "bf39542ca537fde8839b209ac21d6f3254469b15"
+ #:guix-commit    "6d7a9269eac93919f050ff0146e261e1b27d1cbe"
 
  #:use-local-checkout #f)
 

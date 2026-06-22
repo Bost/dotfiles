@@ -101,105 +101,6 @@
 (module-evaluated)
 
 (home-channels
- ;; 14 mai 2026 16:51:28
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "c0321213ed34a76fc513a0f930d5d072b6785bec"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "067c601412c5d6678e9f225f92017362d763b951"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "a6f6e6c7b3354a2138b7573b352a4fa3bc6a10be"
-
- ;; 15 mai 2026 16:38:36
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "c0321213ed34a76fc513a0f930d5d072b6785bec"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "92e3160b208aa898023c91d4d944d971161b9713"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "a6f6e6c7b3354a2138b7573b352a4fa3bc6a10be"
-
- ;; 18 mai 2026 15:42:35
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "c0321213ed34a76fc513a0f930d5d072b6785bec"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "8a211715352a1862658791f4b3105f4dbf8a7682"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "c7e85bab139ebc9b59ffc0e1f773fb79634ce2ce"
-
- ;; 18 mai 2026 16:18:37
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "24317029245eddca35f64b81280a831a18bc680c"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "8a211715352a1862658791f4b3105f4dbf8a7682"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "928f7ff31a61d6e3f764d6ce32bfe3bb4c9db9e8"
-
- ;; 19 mai 2026 13:23:10
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "3e887c81a68c38aede80d92947b449f9c254602f"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "22bbae9a7045a852563e89657c7517fc779d4188"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "7309f55abc4010037eda80cb5d2afd4548db5b25"
-
- ;; 19 mai 2026 21:57:40
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "3e887c81a68c38aede80d92947b449f9c254602f"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "1c910ece10bdd8afca04a63b943f1001075257f0"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "5f42ab7d46cf22b19844521b2385a7890faf274b"
-
- ;; 21 mai 2026 12:40:20
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "3629589bc85d0736ba64494408a45d59fbe439ee"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "1672274e6f2bb20fb72bc8150ce4d0225281ac6b"
-
- ;; 22 mai 2026 13:29:31
- ;; #:nonguix-commit      "5f2630e69fbbe9e79c350a67545f0fef7e93e223"
- ;; #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "923714836eddc9ffb8ded1f91a9b85078dbad201"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "1672274e6f2bb20fb72bc8150ce4d0225281ac6b"
-
- ;; 22 mai 2026 13:40:15
- ;; #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
- ;; #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
- ;; #:guix-android-commit "e5f52bd57275e404db74bf03b541bb62f7d73d58"
- ;; #:guix-past-commit    "82f634f37c1d7b6d4051aa126f7b835c2419e58b"
- ;; #:hask-clj-commit     "a8b30a606f91caabec3cc8dc4b1255a69836554e"
- ;; #:games-commit        "8c8f3383cda8e269f40cdfcdd020c172cfd62312"
- ;; #:bost-commit         "977f4539406fa62d4995ce33e1e83098736e9be6"
- ;; #:guix-guake-commit   "450bdda20c443d4493fad677e0ccf9861aadf977"
- ;; #:guix-commit         "e6b49f7d47cb1c38bfeba661a5e5cc6d1d17c4f4"
-
  ;; May 22 2026 16:22:41
  ;; #:nonguix-commit      "0107c1c4849460b567424ba2cdc8942294c7a611"
  ;; #:guix-science-commit "76200c5a049c59eb9f7622cbafc20bafddf3750a"
@@ -332,10 +233,22 @@
  ;; #:guix-commit       "32574d8377643af53cbef88d0fb8ed3c8774867d"
 
  ;; 18 juin 2026 11:58:32
+ ;; #:nonguix-commit    "bf39542ca537fde8839b209ac21d6f3254469b15"
+ ;; #:guix-guake-commit "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
+ ;; #:bost-commit       "b8bec1ed2b041b703c4ade0d9f91e7651b221073"
+ ;; #:guix-commit       "d32d199b43a598acc57d8077c35c9f93874ab562"
+
+ ;; 22 juin 2026 13:10:38
+ ;; #:nonguix-commit    "bf39542ca537fde8839b209ac21d6f3254469b15"
+ ;; #:guix-guake-commit "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
+ ;; #:bost-commit       "a927285a66cd68589b814a08e2222ebc9d4ae73f"
+ ;; #:guix-commit       "a24d3b2d8cb9857a677388530a3de6c4ecd8fec2"
+
+ ;; 24 juin 2026 13:36:31
  #:nonguix-commit    "bf39542ca537fde8839b209ac21d6f3254469b15"
  #:guix-guake-commit "0344ac31a3a8b2dc0b3a43bfed63cf80f205b311"
- #:bost-commit       "b8bec1ed2b041b703c4ade0d9f91e7651b221073"
- #:guix-commit       "d32d199b43a598acc57d8077c35c9f93874ab562"
+ #:bost-commit       "a927285a66cd68589b814a08e2222ebc9d4ae73f"
+ #:guix-commit       "6d7a9269eac93919f050ff0146e261e1b27d1cbe"
 
  #:use-local-checkout #f)
 
