@@ -154,7 +154,7 @@ See also:
                  ".gnupg/gpg.conf"
                  ".gnupg/gpg-agent.conf"
                  ".guile" ;; used by `guix repl'
-                 ".gitconfig"
+                 ".config/git/config"
                  ".envrc"
                  ".env-secrets.gpg"
                  ".lein/profiles.clj"
