@@ -176,7 +176,12 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
     (channel
      (name channel-name)
      (url url)
-     (commit commit))))
+     (commit commit)
+     (introduction
+      (make-channel-introduction
+       "59ffa85243acf82735d1bddfc7ab8f22f41ab30e"
+       (openpgp-fingerprint
+        "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))))
 (testsymb 'channel-bost)
 
 (def*-public (channel-nonguix #:key (commit #f) (use-local-checkout #f))
