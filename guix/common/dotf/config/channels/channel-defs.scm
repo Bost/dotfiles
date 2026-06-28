@@ -323,19 +323,4 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          "CA4F 8CF4 37D7 478F DA05  5FD4 4213 7701 1A37 8446"))))))
 (testsymb 'channel-guix-science)
 
-(def*-public (channel-guix-guake #:key (commit #f) (use-local-checkout #f))
-  "Provides a.o.:
-- (bost gnu packages guake) module
-- (bost gnu packages gtk) module"
-  (let* [(channel-name 'guix-guake)
-         (url (get-url (str channel-name)
-                       #:use-local-checkout use-local-checkout))]
-    (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
-    (channel
-     (name channel-name)
-     (url url)
-     (commit commit))))
-(testsymb 'channel-guix-guake)
-
 (module-evaluated)

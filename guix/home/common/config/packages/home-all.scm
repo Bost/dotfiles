@@ -5,6 +5,7 @@
   #:use-module (gnu)     ; provides use-package-modules
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
+  #:use-module ((bost gnu packages guake) #:prefix bst:)
   #:use-module (gnu packages) ; specification->package
   #:use-module (dotf config channels channel-defs)
 
@@ -805,26 +806,27 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; * Has a framework for Kittens, small terminal programs that can be used to extend kitty's functionality.  For example, they are used for Unicode input, hints, and side-by-side diff.
    ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
    ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
-   ;; kitty           ;;  5.443s; no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
+   ;; kitty           ;  5.443s no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
    ;;
-   ;; terminator      ;;  8.916s; no drop-down; has splits
+   ;; terminator      ;  8.916s no drop-down; has splits
 
    ;; thread 'main' panicked at /tmp/guix-build-alacritty-0.13.1.drv-0/source/guix-vendor/rust-xkbcommon-dl-0.4.1.tar.gz/src/x11.rs:59:28:
    ;; Library libxkbcommon-x11.so could not be loaded.
    ;; note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-   alacritty          ;;  4.393s; no drop-down; no splits; no tabs; e.g.: alacritty -o font.size=8
-   ;; xfce4-terminal  ;;  9,998s; has --drop-down; has context menu; already present, no splits
-   ;; yakuake         ;;        ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
-   ;; (@(bost gnu packages guake) guake) ;; 10,176s; has --drop-down; has context menu; already present, has splits
-   ;; tilda           ;;  9.256s; drop down with F1 by default; has tabs; no splits
-   qterminal          ;;  8,720s; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
-   ;; tilix           ;;        ; can't see a shit, the text (foreground color) is too dark
-   ;; xterm           ;; 17.341s; has nothing, too basic
-   ;; lxterminal      ;;  9.022s; has context-menu; no drop-down; no splits; has tabs
-   ;; cool-retro-term ;; 25.256s; is cool!
+   alacritty          ;         no drop-down; no splits; no tabs; e.g.: alacritty -o font.size=8
+   ;; xfce4-terminal  ;         has --drop-down; has context menu; already present, no splits
+   ;; yakuake         ;         doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
+   ;;                            See also https://zellij.dev/
+   bst:guake          ;  4,620s has --drop-down; has context menu; already present, has splits
+   ;; tilda           ;         drop down with F1 by default; has tabs; no splits
+   qterminal          ;         drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
+   ;; tilix           ;         can't see a shit, the text (foreground color) is too dark
+   ;; xterm           ;         has nothing, too basic
+   ;; lxterminal      ;         has context-menu; no drop-down; no splits; has tabs
+   ;; cool-retro-term ;         is cool!
 
-   ;; wezterm ; not available in Guix yet 2025-08; sudo flatpak install org.wezfurlong.wezterm
-   ;; ghostty ; not available in Guix yet 2025-08
+   wezterm         ; 4,887s
+   ;; ghostty ; not available in Guix yet 2026-06
 
    ;; Aggressive refactor of Vim
    neovim
@@ -850,7 +852,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
 (define (printer-scanner-packages)
   (list
-   (@(bost gnu packages gnome) simple-scan) ; Document and image scanner
+   simple-scan   ; Document and image scanner
    hplip-minimal ; Hewlett-Packard printer drivers
    ))
 (testsymb 'printer-scanner-packages)
@@ -954,15 +956,6 @@ FIXME the inferior-packages are installed on every machine"
     ;;       (list
     ;;        (channel-guix    #:commit "...")
     ;;        (channel-nonguix #:commit "65d23d2579b54bb5d52609bf6c34d2faafc8a6cf")))
-
-    ;; guake comes from a different profile ~/.guix-extra-profiles/guake/guake
-    ;; (list #:package "guake"
-    ;;       #:channels
-    ;;       (list
-    ;;        (channel-guix-guake)
-    ;;        ;; last commit 396d955f0631edad3a972345cff2797cce0f4a63 commit before 'gnu: Remove pango-1.90.'
-    ;;        ;; next commit 69ed70167ec9d337e08199d4a130ba4797662de8 : 'gnu: Remove pango-1.90.'
-    ;;        (channel-guix #:commit "396d955f0631edad3a972345cff2797cce0f4a63")))
 
     ;; Use 149.0.2 until a substitute for latest 150.0.1 is available
     ;; (list #:package "firefox" #:channels

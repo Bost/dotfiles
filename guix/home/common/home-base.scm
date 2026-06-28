@@ -8,7 +8,7 @@
   ;; #:use-module (bost utils)
   #:use-module (dotf fs-utils)
 
-  ;; home-packages-to-install inferior-guake-package
+  ;; home-packages-to-install
   #:use-module (config packages home-all)
 
   #:use-module (services starship-dotfiles)
@@ -176,10 +176,6 @@
 (def-public (non-env-var-services-edge-ecke)
   "non-env-var-services-edge-ecke: docstring"
   (list
-   ;; ((@(bost home services guake) home-guake-service))
-   ;; (service (@(bost home services guake) home-guake-service-type)
-   ;;          ((@(bost home services guake) home-guake-configuration)
-   ;;           (guake (inferior-guake-package))))
    ((@(bost home services flatpak) telegram-from-flatpak-service))
    (development-dirs-service)
    (home-config-service)
