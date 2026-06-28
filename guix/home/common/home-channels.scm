@@ -25,7 +25,6 @@
                                   hask-clj-commit
                                   games-commit
                                   bost-commit
-                                  guix-guake-commit
                                   (use-local-checkout #f)
                                   )
   (list
@@ -57,9 +56,6 @@
    ;; (channel-flat)
    ;; (channel-rde)
 
-   ;; guake
-   ;; (channel-guix-guake #:commit guix-guake-commit #:use-local-checkout use-local-checkout)
-
    ;; pulls-in: guix nonguix guix-rust-past-crates
    (channel-bost #:commit bost-commit #:use-local-checkout use-local-checkout)
    ))
@@ -71,7 +67,6 @@
                      hask-clj-commit
                      games-commit
                      bost-commit
-                     guix-guake-commit
                      guix-commit
                      nonguix-commit
                      guix-past-commit
@@ -92,7 +87,6 @@
             #:hask-clj-commit      hask-clj-commit
             #:games-commit         games-commit
             #:bost-commit          bost-commit
-            #:guix-guake-commit    guix-guake-commit
             #:use-local-checkout   use-local-checkout
             ) lst)
           lst)))
