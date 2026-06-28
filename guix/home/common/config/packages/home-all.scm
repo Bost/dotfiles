@@ -230,7 +230,6 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
     fd
     fzf ; Command-line fuzzy-finder
-    git
 
 ;;; glibc and glibc-locales are needed to prevent:
 ;;;     guile: warning: failed to install locale
@@ -599,7 +598,11 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    gcc-toolchain
    libgccjit
 
+   git
    (list git "gui")
+   git-delta ; synopsis: Syntax-highlighting pager for git
+   ;; See emacs-magit-delta ; Integration of `delta' with `emacs-magit'
+
    ghc ; The Glasgow Haskell Compiler
    (list glib "bin")
    graphviz

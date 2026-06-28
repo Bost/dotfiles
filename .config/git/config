@@ -8,6 +8,7 @@
 	ss = status --short
 	st = status
 	df = diff --word-diff=color   # with diffstatic
+	dft = "!f() { GIT_EXTERNAL_DIFF=difft git diff \"$@\"; }; f"
 	cp = cherry-pick
 
 	# Safer everyday helpers.
@@ -17,8 +18,6 @@
 	discard = restore --worktree --
 	last = log --patch --max-count=1
 	root = rev-parse --show-toplevel
-
-	dft = "!f() { GIT_EXTERNAL_DIFF=difft git diff \"$@\"; }; f"
 
 	# -s, --no-messages    suppress error messages
 	who = shortlog --no-messages --
@@ -117,7 +116,15 @@
 [core]
 	editor = vim
 	# TODO whitespace = trailing-space,space-before-tab
-	# TODO pager = less --tabs=4 --RAW-CONTROL-CHARS --quit-if-one-screen
+	# pager = less --tabs=4 --RAW-CONTROL-CHARS --quit-if-one-screen
+	pager = delta # git-delta
+
+[interactive]
+	diffFilter = delta --color-only  # git-delta
+
+[delta]
+	navigate = true  # use n and N to move between diff sections
+	# dark = true    # or light = true, or omit for auto-detection
 
 [sendemail]
 	smtpserver = posteo.de
@@ -136,8 +143,10 @@
 
 [merge]
 	tool = meld
-	# TODO conflictStyle = diff3
-	# TODO conflictStyle = zdiff3
+	# diff3 and zdiff3 both show the common ancestor inside conflicts. zdiff3
+	# keeps the useful base section from diff3, but makes the conflict hunk more
+	# like the ordinary merge style in compactness.
+	conflictStyle = zdiff3
 
 [mergetool "meld"]
 	path = /home/bost/.guix-profile/bin/meld
