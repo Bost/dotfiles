@@ -89,4 +89,35 @@
 (define-public sbin-dirpath "/sbin")
 (define-public scm-bin-dirname "scm-bin")
 
+(define (tap f)
+  "Run F for its side effect; return the argument unchanged."
+  (lambda (x) (f x) x))
+
+(define-public (create-file path)
+  "Overwrites the PATH!
+
+First call:
+  (create-file \"/tmp/foo/file.txt\")  ;=> #t
+Consecutive calls:
+  (unspecified? (begin (create-file \"/tmp/foo/file.txt\")
+                       (create-file \"/tmp/foo/file.txt\"))) ;=> #t
+"
+  ((comp close-port
+         open-output-file
+         ;; The tap combinator keeps the pipeline point-free
+         (tap (comp (@(guix build utils) mkdir-p) dirname)))
+   path))
+
+(define-public (ensure-file path)
+  "First call:
+  (ensure-file \"/tmp/foo/file.txt\")  ;=> #t
+Consecutive calls:
+  (unspecified? (begin (ensure-file \"/tmp/foo/file.txt\")
+                       (ensure-file \"/tmp/foo/file.txt\"))) ;=> #t"
+  (unless (file-exists? path)
+    (create-file path)))
+
+(define-public (ensure-dir path)
+  ((@(guix build utils) mkdir-p) path))
+
 (module-evaluated)
