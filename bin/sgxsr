@@ -12,7 +12,9 @@ set -o pipefail
 baseLP="$dtf/guix" # base-load-path
 
 beep_once() {
-    (speaker-test --test sine --frequency 440 > /dev/null 2>&1) &
+    # exec replaces the subshell with speaker-test so $! is its direct PID;
+    # without exec, kill -9 hits the subshell and leaves speaker-test orphaned.
+    (exec speaker-test --test sine --frequency 440 > /dev/null 2>&1) &
     local pid=$!
     sleep 0.22
     kill -9 "$pid" 2>/dev/null
@@ -29,7 +31,9 @@ notify() {
            [ -n "${DISPLAY-}${WAYLAND_DISPLAY-}" ] &&
            command -v notify-send > /dev/null 2>&1
     then
-        notify-send "$@"
+        # || true: notify-send can fail (no daemon, D-Bus error); without it
+        # set -e would abort the script before guix system reconfigure runs.
+        notify-send "$@" || true
     fi
 
     # command is a shell utility. `command --query` works only in fish-shell
@@ -70,8 +74,12 @@ set -o xtrace
 set -o xtrace   # set -x
 set +o nounset  # set +u
 # shellcheck disable=SC1091
-source /etc/profile 2>/dev/null
+# || true: a broken profile fragment would trigger set -e and abort silently.
+source /etc/profile 2>/dev/null || true
 set -o nounset  # set -u
+
+config="$baseLP/systems/syst-$(hostname).scm"
+[[ -f "$config" ]] || { echo "No system config for host '$(hostname)': $config" >&2; exit 1; }
 
 # No automatic '--allow-downgrades' for system channels!
 # --unsafe-channel-evaluation allow:
@@ -89,11 +97,18 @@ guix pull \
 notify "Done" "\`guix pull\` finished"
 
 set -o xtrace
+# If reconfigure fails, set -e would skip the roll-back below; the trap ensures
+# roll-back always runs so home-channels are restored even on failure.
+trap 'rc=$?; guix pull --roll-back; exit $rc' EXIT
+
+# No --login: guix pull above already updated the current shell's guix binary;
+# --login would source root's profile and pick up root's older Guix generation.
 sudo \
      guix system --verbosity=3 --fallback \
      --load-path="$baseLP/common" \
      --load-path="$baseLP/systems/common" \
-     reconfigure "$baseLP/systems/syst-$(hostname).scm"
+     reconfigure "$config"
+trap - EXIT
 
 # The channels for the system and home configurations may differ. Roll back the
 # `guix pull` above, to effectivelly reactivate the home-channels. This won't
@@ -104,10 +119,11 @@ sudo \
 set -o xtrace   # set -x
 set +o nounset  # set +u
 # shellcheck disable=SC1091
-source /etc/profile 2>/dev/null
+# || true: a broken profile fragment would trigger set -e and abort silently.
+source /etc/profile 2>/dev/null || true
 set -o nounset  # set -u
 
-guix pull --roll-back "$@"
+guix pull --roll-back
 
 { retval="$?"; set +o xtrace; } 2>/dev/null
 
