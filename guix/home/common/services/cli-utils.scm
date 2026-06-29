@@ -157,7 +157,7 @@ Example:
 ;;; Having '#:use-module (dotf fs-utils)' in the (scm-bin guix-git-authenticate)
 ;;; module implies importing a number of additional (guix ...) modules.
 ;;; Alternative solution: use '(getenv "dgx")' instead of 'dgx' from fs-utils.
-               [(equal? utility "guix-git-authenticate")
+               [(member utility (list "guix-git-authenticate"))
                 (append lst `(
                               (dotf fs-utils)
                               (guix gexp)
@@ -180,10 +180,37 @@ Example:
                               (guix combinators)
                               (guix sets)
                               ))]
-               [(member utility (list
-                                 "guix-describe"
-                                 "guix-system-describe"))
+               [(member utility (list "guix-describe"
+                                      "guix-system-describe"))
                 (append lst `((scm-bin describe-commits)))]
+               [(member utility (list "sgxsr"))
+                (append lst
+                        `(
+                          (dotf fs-utils)
+                          (guix gexp)
+                          (guix store)
+                          (guix utils)
+;;; Having (guix config) probably causes:
+;;;     warning: importing module (guix config) from the host
+                          (guix config)
+                          (guix memoization)
+                          (guix profiling)
+                          (guix diagnostics)
+                          (guix colors)
+                          (guix i18n)
+                          (guix deprecation)
+                          (guix serialization)
+                          (guix records)
+                          (guix base16)
+                          (guix base32)
+                          (guix derivations)
+                          (guix combinators)
+                          (guix sets)
+                          )
+                        `(
+                          (guix remote-procedures)
+                          )
+                        )]
                [#t lst])))
            `((guix monads)
              (dotf srfi-1-smart)
@@ -681,6 +708,8 @@ a list of files to search through."
 (define (direct-utils-files)
   (map (partial apply service-file-general)
        (list
+        (list #:utility "sgxsr"
+              #:desc "guix-pull-and-system-reconfigure") ; Can't use spaces
         (list #:utility "extract"               #:desc "extract-uncompress")
         ;; gg and gk call exec-background
         (list #:utility "gg"                    #:desc "git-gui")
