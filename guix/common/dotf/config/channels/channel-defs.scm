@@ -179,7 +179,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
      (commit commit)
      (introduction
       (make-channel-introduction
-       "59ffa85243acf82735d1bddfc7ab8f22f41ab30e"
+       "62a193df129b5a7a0da6af4f586b2b51d5b10629"
        (openpgp-fingerprint
         "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))))
 (testsymb 'channel-bost)
@@ -245,8 +245,8 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guix)
          (url
           ;; (format #f "file://~a/guix" dev)
-          ;; "https://git.guix.gnu.org/guix.git" is redirected to codeberg
-          "https://codeberg.org/guix/guix.git"
+          "https://git.guix.gnu.org/guix.git" ; redirected to codeberg
+          ;; "https://codeberg.org/guix/guix.git"
           ;; "https://git.savannah.gnu.org/git/guix.git"
           )
          ]
