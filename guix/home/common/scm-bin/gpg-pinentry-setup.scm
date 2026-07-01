@@ -40,8 +40,7 @@ cd $dotf
 (main (list \"<ignored>\"))"
   ((comp
     (partial apply gpg-pinentry-setup)
-    (partial apply cdr)
-    #;dbg)
+    (partial apply cdr))
    args))
 (testsymb 'main)
 

@@ -42,8 +42,7 @@ Bottom
   ((comp
     (partial apply (lambda (options string)
                      (echo #:options options #:string string)))
-    (partial apply cdr)
-    #;dbg)
+    (partial apply cdr))
    args))
 (testsymb 'main)
 
