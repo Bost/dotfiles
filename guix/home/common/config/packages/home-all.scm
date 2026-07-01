@@ -632,7 +632,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; "Automate the execution of programs in scientific workflows"
    ;; gwl
 
-   htop
+   htop   ; See also btop
    hwinfo
    iniparser
    inxi   ; Full-featured system information script
@@ -826,7 +826,15 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; wezterm ; not available in Guix yet 2025-08; sudo flatpak install org.wezfurlong.wezterm
    ;; ghostty ; not available in Guix yet 2025-08
 
+   ;; Aggressive refactor of Vim
    neovim
+
+   ;; Small and fast IDE with only a few dependencies
+   ;; geany
+
+   ;; Modern, legacy free, vim-like. Modal editing, multiple cursors/selections,
+   ;; sam's structural regular expression based command language
+   vis
 
    ;; guvcview doesn't compile:
    ;;   uvc_h264.c:1035:17: error: implicit declaration of function ‘avcodec_close’
