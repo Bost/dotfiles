@@ -19,9 +19,7 @@
 -L ./guix/common -L ./guix/home/common -e (emacs-common) -s
 !#
 
-This file is not meant to be executed directly, thus no main functions is
-defined.
-
+This module is not directly executed. No main-procedure is needed.
 |#
 
 (define m (module-name-for-logging))

@@ -19,12 +19,10 @@ udisksctl mount --block-device=(lsblk --output PATH,LABEL | rg toshiba | awk '{p
 -L ./guix/common -L ./guix/home/common -e (mount-common) -s
 !#
 
-This file is not meant to be executed directly, thus no main functions is
-defined.
-
 cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm axa
 cd $dotf && ./guix/home/common/scm-bin/mount-usb.scm toshiba
 
+This module is not directly executed. No main-procedure is needed.
 |#
 
 (define m (module-name-for-logging))

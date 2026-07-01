@@ -68,8 +68,7 @@ cd $dotf
 (main \"<ignored>\" ...)"
   ((comp
     (partial apply extract)
-    (partial apply cdr)
-    #;dbg)
+    (partial apply cdr))
    args))
 (testsymb 'main)
 

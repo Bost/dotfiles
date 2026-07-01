@@ -61,8 +61,7 @@ cd $dotf
 (main \"<ignored>\" \"arg0\")"
   ((comp
     (partial apply git-push-everywhere)
-    (partial apply cdr)
-    #;dbg)
+    (partial apply cdr))
    args))
 (testsymb 'main)
 

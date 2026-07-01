@@ -118,7 +118,7 @@ cd $dotf
   ((comp
     (partial apply guix-git-authenticate)
     (partial apply cdr)
-    dbg)
+    peek)
    args))
 (testsymb 'main)
 

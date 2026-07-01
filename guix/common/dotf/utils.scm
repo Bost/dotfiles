@@ -462,8 +462,7 @@ reversed. See also:
       ""
       (format #f "~a" (string-join (map str rest)))))
 
-;; TODO dbgfmt should be smart to detect if the symbols `f' and/or `m' are
-;; defined and if so then use them
+;; TODO dbgfmt should detect if the f / m are defined and if so then use them
 (define-syntax dbgfmt
   ;; match specific datums `m' and `f' in an expression
   (syntax-rules (m f)
@@ -477,9 +476,6 @@ reversed. See also:
      (format #t "~a ~a\n" m (fmt-rest (list e ...)))]
     [(_ e ...)
      (format #f "~a\n" (fmt-rest (list e ...)))]))
-
-;; TODO implement pretty-print for bash commands
-(define-public dbg peek)
 
 (define*-public (dbg-exec prm #:key (verbose #t))
   "`pk', i.e. `peek' can be used instead of this procedure.
@@ -495,13 +491,9 @@ See also (getenv \"STARSHIP_PROMPT_SYMBOL\")
 (def*-public (error-command-failed #:rest args)
   "Returns #t and prints \"Command failed.\" with some extra text. Does NOT
 error-out!"
-  ;; (format #t "~a ~a Starting ...\n" f m)
   (define (error-fun . args)
-    ;; (error (apply (partial format #f (car args))
-    ;;               (cdr args)))
     (apply (partial format (current-error-port))
-           (cons (str "E " (car args) "\n") (cdr args)))
-    )
+           (cons (str "E " (car args) "\n") (cdr args))))
   (match args
     ['()
      (error-fun "Command failed.")]

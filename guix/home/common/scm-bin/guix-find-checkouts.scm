@@ -99,8 +99,7 @@ Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((comp
     (partial apply guix-find-checkouts)
-    (partial apply cdr)
-    #;dbg)
+    (partial apply cdr))
    args))
 (testsymb 'main)
 
