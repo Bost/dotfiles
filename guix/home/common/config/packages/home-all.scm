@@ -210,15 +210,46 @@ TODO implement: Show warning & don't compile if substitutes are not present."
   ;; (format #t "~a Starting…\n" f)
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)
-    (partial append (list
-                     ;; fish ; installed by home-my-fish-service-type
-                     font-nerd-symbols ; required by starship
-                     starship
-                     ))
+    (partial
+     append
+     (list
+      ;; S.M.A.R.T.  harddisk control and monitoring tools
+      smartmontools
+
+      ;; performance monitoring:
+      ;; mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
+      sysstat
+
+      ;; Cross-platform curses-based monitoring tool; like htop
+      glances
+
+      ;; Modern replacement for `ps' (process snapshot)
+      procs
+
+      ;; Interactive text-mode process viewer
+      htop
+
+      ;; Unified monitoring of CPU, memory, network and processes
+      btop
+
+      ;; Hardware information tool
+      hwinfo
+
+      inxi   ; Full-featured system information script
+      ))
+    (partial
+     append
+     (list
+      ;; fish ; installed by home-my-fish-service-type
+      font-nerd-symbols ; required by starship
+      starship
+      ))
     )
    (list
     ;; bash ; installed by home-bash-service-type, already in /run/current-system/profile
     bash-completion ; Bash completions for common commands
+
+    ;; `cat' clone with syntax highlighting and git integration
     bat
 
     direnv
@@ -230,7 +261,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; exa deprecated by eza in the daaedc9ab3; TODO the package is aliased but the binary is not
     eza
 
+    ;; Simple, fast and user-friendly alternative to find
     fd
+
     fzf ; Command-line fuzzy-finder
 
 ;;; glibc and glibc-locales are needed to prevent:
@@ -272,20 +305,8 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
     sd ; Intuitive find & replace CLI. Modern 'sed'
 
-    ;; S.M.A.R.T.  harddisk control and monitoring tools
-    smartmontools
-
-    ;; performance monitoring: mpstat iostat tapestat cifsiostat pidstat sar sadc sadf sa
-    sysstat
-
     ;; Lightweight Linux bootloader, for the isohybrid --type 1 guix.iso
     syslinux
-
-    ;; Cross-platform curses-based monitoring tool; like htop
-    glances
-
-    ;; Modern replacement for `ps' (process snapshot)
-    procs
 
     ;; terminal multiplexer, more popular and modern than 'screen'
     tmux
@@ -634,10 +655,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; "Automate the execution of programs in scientific workflows"
    ;; gwl
 
-   htop   ; See also btop
-   hwinfo
    iniparser
-   inxi   ; Full-featured system information script
    ispell
    jmtpfs ; FUSE file system to access data over MTP (Media Transfer Protocol)
    libavc1394
