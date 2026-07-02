@@ -3,6 +3,7 @@
 	au = add --update
 	bi = bisect
 	br = branch
+	re = rebase
 	ci = commit
 	co = checkout
 	ss = status --short
