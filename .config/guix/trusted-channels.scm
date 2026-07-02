@@ -10,11 +10,11 @@
           "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
       (channel
        (name 'bost)
-       (url "https://codeberg.org/Bost//guix-packages")
+       (url "https://codeberg.org/Bost/guix-packages")
        (branch "master")
        (introduction
         (make-channel-introduction
-         "62a193df129b5a7a0da6af4f586b2b51d5b10629"
+         "3b9e76f138579a3eb521a9f8206aa8a1fbcc7b39"
          (openpgp-fingerprint
           "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))
       (channel
