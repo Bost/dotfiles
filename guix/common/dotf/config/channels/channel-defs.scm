@@ -23,7 +23,7 @@
 (define* (get-url repo-name #:key (use-local-checkout #f))
   (str (if use-local-checkout
            (str "file://" dev)
-           "https://codeberg.org/Bost/")
+           "https://codeberg.org/Bost")
        "/" repo-name))
 
 (define (create-file-channels-scm additional-channels)
@@ -179,7 +179,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
      (commit commit)
      (introduction
       (make-channel-introduction
-       "62a193df129b5a7a0da6af4f586b2b51d5b10629"
+       "3b9e76f138579a3eb521a9f8206aa8a1fbcc7b39"
        (openpgp-fingerprint
         "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))))
 (testsymb 'channel-bost)
