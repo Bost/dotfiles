@@ -250,9 +250,14 @@
  ;; #:guix-commit    "1ddddf2a1235dc8a320def0c0808a905453315a7"
 
  ;;  1 July 2026 13:00:39
- #:nonguix-commit "d35a2f8f22023426ccf3598fa7079b09bb821e3e"
- #:bost-commit    "62a193df129b5a7a0da6af4f586b2b51d5b10629"
- #:guix-commit    "38031dd2c8b08bb21cc429f981a2ca843c205bd5"
+ ;; #:nonguix-commit "d35a2f8f22023426ccf3598fa7079b09bb821e3e"
+ ;; #:bost-commit    "62a193df129b5a7a0da6af4f586b2b51d5b10629"
+ ;; #:guix-commit    "38031dd2c8b08bb21cc429f981a2ca843c205bd5"
+
+ ;;  4 juillet 2026 14:12:51
+ #:nonguix-commit "4bc86c61d5ab661614b099bfe524f7f5798988b3"
+ #:bost-commit    "5e19cf4f4b95dffdb7cd12ac4be5be99675f2bd4"
+ #:guix-commit    "a118e78776390b1e56928927d5056cd9426d786e"
 
  #:use-local-checkout #f)
 
