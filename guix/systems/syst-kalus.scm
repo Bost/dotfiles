@@ -53,13 +53,19 @@
       git-minimal     ;; git
 
       gnupg
-      iptables        ;; Programs to configure Linux IP packet filtering rules
+      iptables        ; Programs to configure Linux IP packet filtering rules
       openssh-sans-x
-      rsync           ;; 'scp' is preinstalled
+      rsync           ; 'scp' is preinstalled
       strace
-      vim             ;; 'vi' is preinstalled
+      vim             ; 'vi' is preinstalled
       wget
-      %base-packages))
+
+      ;; Provides a console that allows users to enter a passphrase when `gpg'
+      ;; is run and needs it.
+      pinentry        ; Seems like just 'pinentry-tty' doesn't do the job
+
+      %base-packages
+      ))
 
     (services
      (cons*
