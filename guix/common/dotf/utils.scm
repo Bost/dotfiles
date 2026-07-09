@@ -18,6 +18,7 @@
   #:use-module (ice-9 rdelim) ; read-line
   #:use-module (ice-9 regex)  ; regexp and string matching
   #:use-module (srfi srfi-1)  ; list-processing procedures
+  #:use-module (srfi srfi-171) ; transducers
   ;; #:use-module (guix build utils) ; invoke - not needed
   #:use-module (ice-9 pretty-print)
 
@@ -128,6 +129,18 @@ Works also for functions returning and accepting multiple values."
 (string-ops \"Hello\")  ;=> (5 \"HELLO\" \"hello\")"
   (lambda args
     (map (lambda (fn) (apply fn args)) fns)))
+
+(define-public rflatten
+  (case-lambda ; multi-arity
+    "Reducer collecting inputs into a list, flattening each input first.
+(list-transduce (tmap (juxt 1+ 1-)) rflatten '(1 2)) ;=> (2 0 3 1)
+
+See also
+(list-transduce (compose (tmap (juxt 1+ 1-)) tflatten) rcons '(1 2))
+;=> (2 0 3 1)"
+    (() '())
+    ((acc) (reverse! acc))
+    ((acc input) (fold cons acc (flatten input)))))
 
 (define eq-op? string-ci=?)
 (define-public (s+ . rest) (apply (partial lset-union eq-op?) rest))
@@ -2240,5 +2253,12 @@ dotted (improper) list — and it allows the degenerate case with zero pairs.
 (define-public (print-lines lines)
   "Print each of LINES followed by a newline."
   (for-each (lambda (line) (display line) (newline)) lines))
+
+(define-public (die fmt . args)
+  "Print a message to the error port and exit with status 1.
+Unlike `error', no backtrace — for expected failures, not bugs."
+  (apply format (current-error-port) fmt args)
+  (newline (current-error-port))
+  (exit 1))
 
 (module-evaluated)
