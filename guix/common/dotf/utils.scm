@@ -85,7 +85,12 @@
 (define-public (partial fun . args)
   "Alternative implementation:
 (use-modules (srfi srfi-26))
-(map (cut * 2 <>) '(1 2 3 4)) ;=> (2 4 6 8)"
+(map (cut * 2 <>) '(1 2 3 4)) ;=> (2 4 6 8)
+
+Works also for multiple args:
+(define (fabc a b c) (+ a b c))
+(define (fa a) (partial fabc a))
+((fa 1) 3 4) ;=> 8"
   (lambda x (apply fun (append args x))))
 
 (define-public (comp . fns)
