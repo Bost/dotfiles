@@ -5,7 +5,9 @@
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (dotf utils)
+  #:use-module (ice-9 match)
   #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (srfi srfi-26)      ; special selected function parameters
   )
 
 #|
@@ -30,34 +32,39 @@ This module is not directly executed. No main-procedure is needed.
 
 (define*-public (udisksctl command device-name-pattern)
   "Example:
-(udisksctl \"info\" \"axa\")"
-  ;; (format #t "device-name-pattern : ~a\n" device-name-pattern)
-  (call/cc
-   (lambda (exit)
-     ((comp
-       (partial exec-system* #:verbose #t)
-       ;; udisksctl executed w/o specified device-lable reports
-       ;;   Error looking up object for device
-       ;; and returns the retcode 1
-       (partial format #f "udisksctl ~a --block-device=~a" command)
-       (lambda (ret)
-         (let* [(retval (car ret))]
-           (if (= 0 retval)
-               (let* [(output (cdr ret))]
-                 (if (empty? output)
-                     ((comp
-                       exit
-                       ;; (error-command-failed "[module]" "extra_info")
-                       (partial error-command-failed m)
-                       (partial format #f "No matching device found: ~a"))
-                      device-name-pattern)
-                     (car output)))
-               ;; return `retval' or `*unspecified*'
-               (exit retval))))
-       exec
-       (partial format #f
-                "lsblk --output PATH,LABEL | rg ~a | awk '{print $1}'"))
-      device-name-pattern))))
+(udisksctl \"info\" \"axa\")
+(udisksctl \"info\" \"crucial\")
+(udisksctl \"mount\" \"crucial\")
+(udisksctl \"info\" \"xxx\") ;=> error
+(udisksctl \"mount\" \"xxx\") ;=> error"
+  ((comp
+    (lambda (cmd-result-struct)
+      (match cmd-result-struct ; match is a macro
+        [(#:retcode retcode #:results results)
+         (cond
+          [(not (zero? retcode)) (exit retcode)]
+          [else (for-each (partial format #t "~a\n") results)])]))
+    (cut exec <> #:return-plist #t)
+    ;; udisksctl executed w/o specified device-label reports
+    ;;   Error looking up object for device
+    ;; and returns the retcode 1
+    (partial format #f "udisksctl ~a --block-device=~a" command)
+    (lambda (cmd-result-struct)
+      (match cmd-result-struct ; match is a macro
+        [(#:retcode retcode #:results results)
+         (cond
+          [(not (zero? retcode)) (exit retcode)]
+          [(empty? results)
+           ((comp
+             (lambda (_) (exit 1)) ; retcode of `rg' not matching anything
+             ;; (error-command-failed "[module]" "extra_info")
+             (partial error-command-failed m)
+             (partial format #f "No matching device found: ~a"))
+            device-name-pattern)]
+          [else (car results)])]))
+    (cut exec <> #:return-plist #t)
+    (partial format #f "lsblk --output PATH,LABEL | rg ~a | awk '{print $1}'"))
+   device-name-pattern))
 
 (define*-public (mount #:key params #:allow-other-keys)
   "Example:
