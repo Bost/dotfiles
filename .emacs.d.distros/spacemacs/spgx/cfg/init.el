@@ -579,6 +579,50 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                ("ty" . tw-clj-insert-type)
                ("ma" . tw-clj-insert-map-fn)))
 
+(defun my-spacemacs/resize-shell-to-desired-width ()
+  ;; `shell-pop--is-shell-buffer' is a buffer-local flag set by shell-pop on
+  ;; managed buffers (replaces the removed `shell-pop-last-shell-buffer-name'
+  ;; comparison). `bound-and-true-p' keeps this safe on shell-pop versions
+  ;; that predate the rewrite.
+  (when (and (bound-and-true-p shell-pop--is-shell-buffer)
+;;; The following line is the fix:
+             (shell-pop--split-side-p)
+;;; See implementation of `shell-pop--split-side-p' and
+;;; `spacemacs/resize-shell-to-desired-width' in layers/+tools/shell/funcs.el
+             )
+    (enlarge-window-horizontally (- (/ (* (frame-width) shell-default-width)
+                                       100)
+                                    (window-width)))))
+
+(defmacro my-make-shell-pop-command (name func &optional shell)
+  "Create a function to open a shell via the function FUNC.
+SHELL is the SHELL function to use (i.e. when FUNC represents a terminal)."
+  `(defun ,(intern (concat "spacemacs/shell-pop-" name)) (index)
+     ,(format (concat "Toggle a popup window with `%S'.\n"
+                      "Multiple shells can be opened with a numerical prefix "
+                      "argument. Using the universal prefix argument will "
+                      "open the shell in the current buffer instead of a "
+                      "popup buffer.")
+              func)
+     (interactive "P")
+     (require 'shell-pop)
+     (if (equal '(4) index)
+         ;; no popup
+         (,func ,shell)
+       (shell-pop--set-shell-type
+        'shell-pop-shell-type
+        (list ,name
+              ,(if (bound-and-true-p layouts-enable-local-variables)
+                   `(concat "*" (spacemacs//current-layout-name) "-"
+                            (if (file-remote-p default-directory)
+                                "remote-"
+                              "")
+                            ,name "*")
+                 (concat "*" name "*"))
+              (lambda nil (,func ,shell))))
+       (shell-pop index)
+       (my-spacemacs/resize-shell-to-desired-width))))
+
 ;; When running from bash on a non-Guix system, some environment variables may
 ;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
 
@@ -1938,6 +1982,8 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  (my-make-shell-pop-command "vterm" vterm)
 
   (with-eval-after-load 'flycheck
     (require 'flycheck-guile))
