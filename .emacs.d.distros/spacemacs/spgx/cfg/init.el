@@ -999,12 +999,16 @@ This function should only modify configuration layer settings."
              scheme-implementations '(guile))
 
      (shell
-      ;; :variables
-      ;; (Default 'ansi-term)
-      ;; shell-default-shell 'eshell
+      :variables
+      ;; (setq
+      ;; shell-default-shell 'eshell ; (Default 'ansi-term)
 
       ;; shell-default-height 30
       ;; shell-default-position 'bottom
+
+      ;; Width in percents for the shell window.
+      shell-default-width 50 ; (default 30)
+      ;; )
       )
 
      ;; Provides a.o. flycheck-bashate
