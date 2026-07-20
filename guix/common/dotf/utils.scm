@@ -38,6 +38,10 @@
   ;; for inferior-package-in-guix-channel : end
   #:use-module (ice-9 exceptions) ; guard
   #:use-module (ice-9 optargs)    ; define*-public
+
+  #:use-module (rnrs bytevectors) ; for procedure: cnt
+  #:use-module (ice-9 hash-table) ; for procedure: cnt
+
   #:export (
             compose-commands-guix-shell
             compose-commands-guix-shell-dry-run
@@ -79,8 +83,64 @@
 
 ;;;;;; beg: testsymb, testsymb-trace
 
-;; neither `=' nor `eqv?' work
-(define-public cnt length+)
+(define-public (cnt obj)
+  "Return the number of elements in OBJ, dispatching on its type.
+
+Supported types and semantics:
+  #f            → 0  (like Clojure's nil)
+  '()           → 0
+  string        → number of characters
+  vector        → number of elements
+  bytevector    → number of bytes
+  bitvector     → number of bits
+  hash table    → number of entries
+  char-set      → number of characters in the set
+  pair          → number of distinct pairs reachable via cdr;
+                  terminates on proper, improper, and circular lists
+  array         → total number of elements across all dimensions
+
+Any other type signals an error.
+
+(define circular-list (let ((x '(1 2 3))) (set-cdr! (cddr x) x) x))
+(cnt circular-list) ;=> 3
+"
+  (define (count-pairs x)
+    ;; Floyd's tortoise-and-hare: O(n) time, O(1) space.
+    ;; For a ρ-shaped structure the answer is μ + λ, i.e. the
+    ;; number of distinct pairs.
+    (define (cdr* x) (and (pair? x) (cdr x)))
+    (let race ((slow x) (fast x))
+      (let* ((f1 (cdr* fast))
+             (f2 (and f1 (cdr* f1))))
+        (if (not f2)
+            ;; Finite — plain linear walk.
+            (let walk ((y x) (n 0))
+              (if (pair? y) (walk (cdr y) (+ n 1)) n))
+            (let ((slow* (cdr slow)))
+              (if (eq? slow* f2)
+                  ;; Cycle detected; SLOW* lies on it.
+                  (let* ((mu  (let find-mu ((a x) (b slow*) (m 0))
+                                (if (eq? a b) m
+                                    (find-mu (cdr a) (cdr b) (+ m 1)))))
+                         (lam (let find-lam ((y (cdr slow*)) (l 1))
+                                (if (eq? y slow*) l
+                                    (find-lam (cdr y) (+ l 1))))))
+                    (+ mu lam))
+                  (race slow* f2)))))))
+  (cond
+   ((not obj)         0)
+   ((null? obj)       0)
+   ((string? obj)     (string-length obj))
+   ((vector? obj)     (vector-length obj))
+   ((bytevector? obj) (bytevector-length obj))
+   ((bitvector? obj)  (bitvector-length obj))
+   ((hash-table? obj) (hash-count (const #t) obj))
+   ((char-set? obj)   (char-set-size obj))
+   ((pair? obj)       (count-pairs obj))
+   ((array? obj)      (apply * (map (lambda (dim)
+                                      (- (cadr dim) (car dim) -1))
+                                    (array-shape obj))))
+   (else (error "count: unsupported type" obj))))
 
 (define-public (partial fun . args)
   "Alternative implementation:
