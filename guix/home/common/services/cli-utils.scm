@@ -656,6 +656,8 @@ a list of files to search through."
     )))
 (testsymb 'sudo-cli-utils-files)
 
+(define mountable-devices (list "axa" "toshiba" "new" "t7" "crucial"))
+
 (define (mount-utils-files)
   ((comp
     (partial map (comp
@@ -671,7 +673,7 @@ a list of files to search through."
                        #:extra-modules '((mount-common))))))))
    (cartesian
     (list 'mount 'unmount 'eject 'info)
-    (list "axa" "toshiba" "new" "t7" "crucial"))))
+    mountable-devices)))
 (testsymb 'mount-utils-files)
 
 (define (emacs-cli-utils-service)
