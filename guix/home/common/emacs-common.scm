@@ -8,6 +8,7 @@
   #:use-module (dotf settings)     ; user
   #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (dotf fs-utils)     ; user-home dev user-dev dotf user-dotf
   )
 
 #|
@@ -221,14 +222,6 @@ Examples:
      (list (which-emacsclient)
            (str "--socket-name=" (calculate-socket profile))))))
 (testsymb 'create-launcher)
-
-;; ### BEG: from (dotf fs-utils)
-(define* (user-home #:rest args) (apply str home args))
-(define dev (user-home "/dev"))
-(define* (user-dev #:rest args)  (apply str dev args))
-(define dotf (user-dev "/dotfiles"))
-(define* (user-dotf #:rest args) (apply str dotf args))
-;; ### END: from (dotf fs-utils)
 
 (define (make-pair-dst-src profile)
   (cons (str (get-cfg profile) "/" emacs-init-file)
