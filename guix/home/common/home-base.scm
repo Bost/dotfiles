@@ -260,6 +260,7 @@
      ;; for --cores=$cores; see `jobs=$[$(nproc) * 95 / 100]'
      ;; --cores=n # Use n CPU cores; =0 use as many as available. (default=0)
      ("cores" . ,(number->string ((@(ice-9 threads) current-processor-count))))
+     ("down"  . ,down)
      ("dotf"  . ,dotf)
      ("dtf"   . ,dtf)
      ("dtfg"  . ,dtfg)
