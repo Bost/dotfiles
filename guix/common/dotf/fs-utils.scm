@@ -11,6 +11,7 @@
 
 (define*-public (user-home #:rest args) (apply str home args))
 (define-public dev (user-home "/dev"))
+(define-public down (user-home "/Downloads"))
 
 (define*-public (user-dev #:rest args)  (apply str dev args))
 (define-public dotf (user-dev "/dotfiles"))
