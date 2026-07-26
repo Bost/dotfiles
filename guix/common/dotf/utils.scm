@@ -7,9 +7,7 @@
 ;; See `guile-build-system'
 
 (define-module (dotf utils)
-;;; All used modules must be present in the module (services cli-utils) under:
-;;;   1. service-file -> with-imported-modules
-;;;   2. common-modules
+;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (dotf srfi-1-smart)
   #:use-module (ice-9 match)  ; match
   #:use-module (ice-9 popen)  ; open-input-pipe

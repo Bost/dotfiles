@@ -1,6 +1,5 @@
 (define-module (scm-bin search-notes)
-;;; All used modules must be present in the module (services cli-utils) under:
-;;;   service-file -> with-imported-modules
+;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (guix colors)
   #:use-module (dotf utils)
   #:use-module (srfi srfi-1)   ; list-processing procedures

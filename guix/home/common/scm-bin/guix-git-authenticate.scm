@@ -1,6 +1,5 @@
 (define-module (scm-bin guix-git-authenticate)
-;;; All used modules must be present in the module (services cli-utils) under:
-;;;   service-file -> with-imported-modules
+;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (dotf utils)
   #:use-module (dotf fs-utils) ; dgx (repository location)
   #:use-module (dotf settings) ; home

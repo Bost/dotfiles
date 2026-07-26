@@ -87,6 +87,36 @@
    patterns))
 (testsymb 'full-filepaths)
 
+(define common-modules
+  '(
+    (cli-common)
+    (command-line)
+    (dotf fs-utils)
+    (dotf settings)
+    (dotf srfi-1-smart)
+    (dotf tests)
+    (dotf utils)
+    (guix base16)
+    (guix base32)
+    (guix colors)
+    (guix combinators)
+    (guix config)
+    (guix deprecation)
+    (guix derivations)
+    (guix diagnostics)
+    (guix gexp)
+    (guix i18n)
+    (guix memoization)
+    (guix monads)
+    (guix profiling)
+    (guix records)
+    (guix remote-procedures)
+    (guix serialization)
+    (guix sets)
+    (guix store)
+    (guix utils)
+    ))
+
 (def* (service-file-general
        #:key utility desc scm-file module-name chmod-params files
        (excluded-files (list))
@@ -143,80 +173,11 @@ Example:
                                 (full-filepaths excluded-files))))]
                          [#t `(command-line)]))))]
       (with-imported-modules
-          ((comp
-            (partial remove unspecified?)
-            (lambda (lst)
-              (cond
-               [(equal? scm-file "search-notes")
-                (append lst `(
-                              (guix profiling)
-                              (guix memoization)
-                              (guix colors)
-                              ;; (ice-9 getopt-long)
-                              ))]
-;;; Having '#:use-module (dotf fs-utils)' in the (scm-bin guix-git-authenticate)
-;;; module implies importing a number of additional (guix ...) modules.
-;;; Alternative solution: use '(getenv "dgx")' instead of 'dgx' from fs-utils.
-               [(member utility (list "guix-git-authenticate"))
-                (append lst `(
-                              (dotf fs-utils)
-                              (guix gexp)
-                              (guix store)
-                              (guix utils)
-;;; Having (guix config) probably causes:
-;;;     warning: importing module (guix config) from the host
-                              (guix config)
-                              (guix memoization)
-                              (guix profiling)
-                              (guix diagnostics)
-                              (guix colors)
-                              (guix i18n)
-                              (guix deprecation)
-                              (guix serialization)
-                              (guix records)
-                              (guix base16)
-                              (guix base32)
-                              (guix derivations)
-                              (guix combinators)
-                              (guix sets)
-                              ))]
-               [(member utility (list "guix-describe"
-                                      "guix-system-describe"))
-                (append lst `((scm-bin describe-commits)))]
-               [(member utility (list "sgxsr"))
-                (append lst
-                        `(
-                          (dotf fs-utils)
-                          (guix gexp)
-                          (guix store)
-                          (guix utils)
-;;; Having (guix config) probably causes:
-;;;     warning: importing module (guix config) from the host
-                          (guix config)
-                          (guix memoization)
-                          (guix profiling)
-                          (guix diagnostics)
-                          (guix colors)
-                          (guix i18n)
-                          (guix deprecation)
-                          (guix serialization)
-                          (guix records)
-                          (guix base16)
-                          (guix base32)
-                          (guix derivations)
-                          (guix combinators)
-                          (guix sets)
-                          )
-                        `(
-                          (guix remote-procedures)
-                          )
-                        )]
-               [#t lst])))
-           `((guix monads)
-             (dotf srfi-1-smart)
-             (dotf utils)
-             (dotf settings)
-             (scm-bin ,symb)))
+          ;; Having among with-imported-modules
+          ;;     (guix config) (srfi srfi-1)
+          ;; probably causes:
+          ;;     warning: importing module (guix config) from the host
+          (append common-modules `((scm-bin ,symb) (scm-bin describe-commits)))
         #~(begin
             (use-modules (scm-bin #$symb))
             #$main-call)))
@@ -279,16 +240,6 @@ a list of files to search through."
     (fmt "~a   args          ~a ; ~a\n" f args)
     )
 
-  (define common-modules
-    '(
-      ;; (srfi srfi-1) ;; leads to 'warning: importing module (srfi srfi-1) from the host'
-      (guix monads)
-      (dotf srfi-1-smart)
-      (dotf utils)
-      (dotf tests)
-      (dotf settings)
-      (cli-common)
-      (command-line)))
   (list
    (str scm-bin-dirname "/" utility)
    ((comp
