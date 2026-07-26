@@ -1,6 +1,5 @@
 (define-module (scm-bin git-push-everywhere)
-;;; All used modules must be present in the module (services cli-utils) under:
-;;;   service-file -> with-imported-modules
+;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
   #:use-module (dotf utils)

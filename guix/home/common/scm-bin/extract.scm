@@ -1,6 +1,5 @@
 (define-module (scm-bin extract)
-;;; All used modules must be present in the module (services cli-utils) under:
-;;;   service-file -> with-imported-modules
+;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (dotf utils)
   ;; the (ice-9 regex) might need to be added in the home-configuration.scm in the macro
   #:use-module (ice-9 regex)

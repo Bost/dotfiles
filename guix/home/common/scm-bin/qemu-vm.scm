@@ -1,6 +1,5 @@
 (define-module (scm-bin qemu-vm)
-;;; All used modules must be present in the module (services cli-utils) under:
-;;;   service-file -> with-imported-modules
+;;; All used modules must be present in (@(services cli-utils) common-modules)
   ;; #:use-module (dotf memo) ;; host-ecke? host-edge?
   #:use-module (dotf utils) ;; partial
   #:use-module (dotf settings) ;; user

@@ -1,12 +1,12 @@
 (define-module (cli-common)
-;;; All used modules must be present in the module (services cli-utils) under:
-;;;   service-file -> with-imported-modules
+;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (dotf utils)
   #:use-module (dotf tests)
   #:use-module (ice-9 optargs)     ; define*-public
+  ;; #:use-module (dotf fs-utils)
   )
 
 #|
