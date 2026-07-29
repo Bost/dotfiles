@@ -287,7 +287,7 @@
       (menu-entries
        (list
         ;; sudo rg vmlinuz /run/media/bost/c99384b9-*/boot/grub/grub.cfg | head
-        (let [(linux-version "7.0.0-27")]
+        (let [(linux-version "7.0.0-28")]
           (menu-entry
            (label "Ubuntu 26.04 LTS")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
@@ -300,7 +300,7 @@
            (initrd (format #f "/boot/initrd.img-~a-generic" linux-version))))
 
         ;; sudo rg vmlinuz /run/media/bost/9025de3c-*/boot/grub/grub.cfg | head
-        (let [(linux-version "6.8.0-90")]
+        (let [(linux-version "6.8.0-136")]
           (menu-entry
            (label "Linux Mint 22.2 Zara")
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
