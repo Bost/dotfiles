@@ -1,5 +1,5 @@
 (define-module (config packages home-all)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
   #:use-module (gnu)     ; provides use-package-modules

@@ -1,6 +1,6 @@
 (define-module (services home-dir-config)
   ;; See service-file -> with-imported-modules
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
   #:use-module (dotf fs-utils)

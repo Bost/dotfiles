@@ -1,5 +1,5 @@
 (define-module (scm-bin sgxsr)
-  #:use-module (dotf utils)       ; str, module-name-for-logging, etc.
+  #:use-module (bost common utils)       ; str, module-name-for-logging, etc.
   #:use-module (dotf fs-utils)    ; dtfg
   #:use-module (guix build utils) ; which
   #:use-module (ice-9 optargs)    ; define*-public

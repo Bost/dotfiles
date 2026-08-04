@@ -1,6 +1,6 @@
 (define-module (services fish)
   #:use-module (dotf fs-utils)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services xdg)
   #:use-module (gnu home services)

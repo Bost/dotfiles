@@ -1,6 +1,6 @@
 (define-module (scm-bin tst)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (guix monads)
   #:use-module (scm-bin echo)
   #:use-module (ice-9 optargs)     ; define*-public

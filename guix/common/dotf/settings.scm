@@ -3,7 +3,7 @@
 ;;; such a utility is executed.
 
 (define-module (dotf settings)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (srfi srfi-1) ; list-processing procedures
 )
 

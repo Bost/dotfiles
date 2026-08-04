@@ -3,8 +3,8 @@
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (srfi srfi-1)       ; list-processing procedures
-  #:use-module (dotf utils)
-  #:use-module (dotf tests)
+  #:use-module (bost common utils)
+  #:use-module (bost common tests)
   #:use-module (ice-9 optargs)     ; define*-public
   ;; #:use-module (dotf fs-utils)
   )

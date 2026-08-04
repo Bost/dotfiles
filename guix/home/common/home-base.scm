@@ -1,7 +1,7 @@
 (define-module (home-base)
   #:use-module (dotf settings)
-  #:use-module (dotf tests)
-  #:use-module (dotf utils)
+  #:use-module (bost common tests)
+  #:use-module (bost common utils)
   #:use-module (dotf store-utils)
   #:use-module (dotf memo)
 

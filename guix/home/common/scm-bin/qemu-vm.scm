@@ -1,7 +1,7 @@
 (define-module (scm-bin qemu-vm)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
   ;; #:use-module (dotf memo) ;; host-ecke? host-edge?
-  #:use-module (dotf utils) ;; partial
+  #:use-module (bost common utils) ;; partial
   #:use-module (dotf settings) ;; user
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)

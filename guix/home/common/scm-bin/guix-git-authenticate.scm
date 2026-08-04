@@ -1,6 +1,6 @@
 (define-module (scm-bin guix-git-authenticate)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf fs-utils) ; dgx (repository location)
   #:use-module (dotf settings) ; home
   #:use-module (srfi srfi-26)  ; special selected function parameters

@@ -28,7 +28,7 @@ guix home --allow-downgrades \
 ;; enough to handle the differences just a few branching statements, e.g.
 ;; if, cond, etc.
 (define-module (home-edge)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
   #:use-module (dotf fs-utils)

@@ -4,7 +4,7 @@
 ## bash -n run-qemu
 ## shellcheck run-qemu
 
-# '--preserve-env=GUILE_LOAD_COMPILED_PATH' makes the (dotf utils) scheme module
+# '--preserve-env=GUILE_LOAD_COMPILED_PATH' makes the (bost common utils) scheme module
 # accessible to the super-user
 set -o xtrace
 sudo --preserve-env=GUILE_LOAD_COMPILED_PATH \

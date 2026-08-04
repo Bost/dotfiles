@@ -4,7 +4,7 @@
 
 (define-module (scm-bin guix-find-checkouts)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (ice-9 ftw)           ; file tree walk
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports) ; textual I/O operations on chars & strings

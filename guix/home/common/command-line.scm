@@ -5,8 +5,8 @@
   #:use-module (ice-9 exceptions)
   #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (guix monads)       ; with-monad
-  #:use-module (dotf utils)        ; partial
-  #:use-module (dotf tests)        ; test-type
+  #:use-module (bost common utils)        ; partial
+  #:use-module (bost common tests)        ; test-type
   #:use-module (dotf settings)     ; user
   #:use-module (cli-common)        ; for (eval ...) of cli-*command utility-funs
   #:use-module (ice-9 optargs)     ; define*-public

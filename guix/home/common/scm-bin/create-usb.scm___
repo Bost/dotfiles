@@ -4,7 +4,7 @@
 
 (define-module (scm-bin create-usb)
   #:use-module (ice-9 regex)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (ice-9 optargs)     ; define*-public
   )
 

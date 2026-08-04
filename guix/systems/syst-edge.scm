@@ -19,7 +19,7 @@
   #:use-module (kernel-utils)          ; append-to-default-kernel-arguments
   #:use-module (dotf settings)
   #:use-module (dotf fs-utils)         ; user-dotf
-  #:use-module (dotf utils)            ; partial
+  #:use-module (bost common utils)            ; partial
   #:use-module (dotf memo)
   #:use-module (config packages syst-all)   ; syst-packages-to-install
   #:use-module (gnu)
