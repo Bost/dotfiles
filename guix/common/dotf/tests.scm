@@ -188,6 +188,10 @@ Type Testing Predicates.
     'char-numeric?
     'char-whitespace?
     ;;
+    '(@(gnu services) service?)
+    '(@(gnu services) service-type?)
+    '(@(gnu services) service-extension?)
+    ;;
     'exception?
     '(@(rnrs conditions) error?)
     '(@(ice-9 exceptions) error?)
