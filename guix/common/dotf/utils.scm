@@ -553,6 +553,9 @@ reversed. See also:
     [(_ e ...)
      (format #f "~a\n" (fmt-rest (list e ...)))]))
 
+;; TODO implement pretty-print for bash commands
+(define-public dbg peek)
+
 (define*-public (dbg-exec prm #:key (verbose #t))
   "`pk', i.e. `peek' can be used instead of this procedure.
 See also (getenv \"STARSHIP_PROMPT_SYMBOL\")
@@ -1625,7 +1628,7 @@ Requires:
       (format #t "writing ~a\n" file-size))))
 |#
 
-(define-public (package-output-paths one-or-more)
+(define-public (package-output-paths one-or-more-packages)
   "(package-output-paths (@(gnu packages emacs) emacs))
 ;=> (\"/gnu/store/<...>-emacs-29.1\")"
   (let [(connection ((@(guix store) open-connection)))]
@@ -1634,7 +1637,7 @@ Requires:
           (@(guix derivations) derivation->output-path)
           (partial (@(guix packages) package-derivation)
                    connection))
-         (ensure-list one-or-more))))
+         (ensure-list one-or-more-packages))))
 
 ;; (define-public (interpose separator lst)
 ;;   "Insert separator between each element of lst"
@@ -1774,7 +1777,7 @@ that many from the end."
       ((x . r) (cons (syntax x) (loop (syntax r))))
       (_ (error 'syntax->list "invalid argument ~s" orig-ls)))))
 
-(define (build one-or-more)
+(define (build one-or-more-packages)
   "
 (build (@(bost gnu packages emacs-xyz) emacs-tweaks)) ; doesn't build
 
@@ -1794,7 +1797,7 @@ that many from the end."
                             (symbol->string p))]
               [(string? p) ((@(gnu packages) specification->package)
                             p)]))
-           (ensure-list one-or-more)))
+           (ensure-list one-or-more-packages)))
 
     (map (compose
           ;; (lambda (p) (format #t "3 p: ~a\n" p) p)
