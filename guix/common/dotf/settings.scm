@@ -28,20 +28,27 @@
 (define-public emacs-distros "/.emacs.d.distros")
 (define-public home-emacs-distros (str home emacs-distros))
 
-(define (emacs-spacemacs-profile-paths)
-  (let* [(cmd-result-struct
-          ((comp
-            (lambda (cmd) (exec cmd  #:verbose #f #:return-plist #t))
-            cmd->string)
-           (list
-            "guix package --profile=$HOME/.guix-profile --list-installed=emacs-spacemacs\\$")))
-         (retcode (plist-get cmd-result-struct #:retcode))]
-    (if (zero? retcode)
-        (plist-get cmd-result-struct #:results)
-        (begin
-          ;; error-out
-          (error (format #f "~a retcode: ~a\n" m retcode))
-          ))))
+(define (emacs-spacemacs-store-path)
+     (let* [(cmd-result-struct
+             ((comp
+               (lambda (cmd) (exec cmd  #:verbose #f #:return-plist #t))
+               cmd->string)
+              (list "guix package --profile=$HOME/.guix-profile --list-installed=emacs-spacemacs\\$")))
+            (retcode (plist-get cmd-result-struct #:retcode))]
+       (if (zero? retcode)
+           ((comp
+             ;; (lambda (p) (format #t "~a done\n" f) p)
+             ;; (partial filter usb-device?)
+             ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
+             last
+             (lambda (s) (string-split s #\tab))
+             car
+             )
+            (plist-get cmd-result-struct #:results))
+           (begin
+             ;; error-out
+             (error (format #f "~a retcode: ~a\n" m retcode))
+             ))))
 
 ;; See also:
 ;;   git-spacemacs
@@ -72,26 +79,16 @@
                      ;; The start and stop commands should be implemented in the emacs-spacemacs-wrapped package
                      ;; And also there should be emacs-wrapped and crafted-emacs-wrapped, etc.
                      ;; See also (which-emacs) in guix/home/common/emacs-common.scm
-                     (let [(results (emacs-spacemacs-profile-paths))]
-                       (if (empty? results)
-                           (str home-emacs-distros "/spacemacs/guix/src")
-                           (let* [(esp ((comp
-                                         ;; (lambda (p) (format #t "~a done\n" f) p)
-                                         ;; (partial filter usb-device?)
-                                         ;; (lambda (v) (format #t "~a 0: ~a\n" m v) v)
-                                         last
-                                         (lambda (s) (string-split s #\tab))
-                                         car)
-                                        results))
-                                  (s (substring esp
-                                                (string-length "/gnu/store/")))
-                                  (checksum (substring
-                                             s 0 (- (string-length s)
-                                                    (string-length "-emacs-spacemacs-1.0-0.<_sha_>"))))
-                                  (commit (substring
-                                           s (+ (string-length checksum)
-                                                (string-length "-emacs-spacemacs-1.0-0."))))]
-                             (str esp "/share/emacs/site-lisp/spacemacs-1.0-0." commit)))))
+                     (let* [(esss (emacs-spacemacs-store-path))
+                            (s (substring esss
+                                          (string-length "/gnu/store/")))
+                            (checksum (substring
+                                       s 0 (- (string-length s)
+                                              (string-length "-emacs-spacemacs-1.0-0.<_sha_>"))))
+                            (commit (substring
+                                     s (+ (string-length checksum)
+                                          (string-length "-emacs-spacemacs-1.0-0."))))]
+                       (str esss "/share/emacs/site-lisp/spacemacs-1.0-0." commit)))
                (cons #:env
                      (str home-emacs-distros "/spacemacs/spgx/cfg"))))
 
