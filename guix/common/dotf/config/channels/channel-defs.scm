@@ -3,6 +3,7 @@
   ;; See service-file -> with-imported-modules
   #:use-module (dotf utils)
   #:use-module (dotf settings)
+  #:use-module (dotf fs-utils)     ; dev
   #:use-module (dotf memo)
   #:use-module (guix channels)
   #:use-module (gnu services)
@@ -17,8 +18,6 @@
 
 (define m (module-name-for-logging))
 (evaluating-module)
-
-(define dev (getenv "dev"))
 
 (define* (get-url repo-name #:key (use-local-checkout #f))
   (str (if use-local-checkout
@@ -179,7 +178,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
      (commit commit)
      (introduction
       (make-channel-introduction
-       "3b9e76f138579a3eb521a9f8206aa8a1fbcc7b39"
+       "d92cc7a959fbde6ff4ac202e43069ddf37be233c"
        (openpgp-fingerprint
         "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))))
 (testsymb 'channel-bost)
