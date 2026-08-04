@@ -1,7 +1,3 @@
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-find-checkouts) -s
-!#
-
 (define-module (scm-bin guix-find-checkouts)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (bost common utils)
@@ -15,11 +11,11 @@
 
 #|
 
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-find-checkouts) -s
+#!/usr/bin/env -S guix repl --
 !#
 
 cd $dotf
+echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-find-checkouts.scm
 ./guix/home/common/scm-bin/guix-find-checkouts.scm
 
 |#
@@ -98,7 +94,7 @@ Usage:
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((comp
     (partial apply guix-find-checkouts)
-    (partial apply cdr))
+    cdr)
    args))
 (testsymb 'main)
 

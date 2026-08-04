@@ -13,7 +13,11 @@
 --use-srfi=26 -L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-git-authenticate) -s
 !#
 
+#!/usr/bin/env -S guix repl --
+!#
+
 cd $dotf
+echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-git-authenticate.scm
 ./guix/home/common/scm-bin/guix-git-authenticate.scm
 
 |#
@@ -116,7 +120,7 @@ cd $dotf
 (main \"<ignored>\" \"-f\" \"arg0\")"
   ((comp
     (partial apply guix-git-authenticate)
-    (partial apply cdr)
+    cdr
     peek)
    args))
 (testsymb 'main)

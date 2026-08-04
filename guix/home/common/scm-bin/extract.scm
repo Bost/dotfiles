@@ -8,11 +8,11 @@
 
 #|
 
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ extract) -s
+#!/usr/bin/env -S guix repl --
 !#
 
 cd $dotf
+echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/extract.scm
 ./guix/home/common/scm-bin/extract.scm
 
 |#
@@ -67,7 +67,7 @@ cd $dotf
 (main \"<ignored>\" ...)"
   ((comp
     (partial apply extract)
-    (partial apply cdr))
+    cdr)
    args))
 (testsymb 'main)
 

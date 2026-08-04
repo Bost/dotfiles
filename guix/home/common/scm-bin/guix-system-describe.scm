@@ -1,7 +1,3 @@
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-system-describe) -s
-!#
-
 (define-module (scm-bin guix-system-describe)
   #:use-module (scm-bin describe-commits)
   #:use-module (bost common utils)
@@ -12,11 +8,11 @@
 
 #|
 
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-system-describe) -s
+#!/usr/bin/env -S guix repl --
 !#
 
 cd $dotf
+echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-system-describe.scm
 ./guix/home/common/scm-bin/guix-system-describe.scm | tee /dev/tty | xsel -bi
 
 |#
@@ -81,6 +77,7 @@ channels, as reported by `guix system describe'."
     ;; peek
     (lambda (argv) (run-command #:args argv))
     (lambda (_) '("guix" "system" "describe"))   ; ignore CLI args
+    cdr
     ;; peek
     )
    args))
