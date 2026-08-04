@@ -128,7 +128,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
     ;; Thunderbird console Ctrl-Shift-j
     ;; 48.8MiB; ie. thunderbird
-    icedove
+    ;; icedove ; TODO add icedove to the profile when a substitute is available
 
     ;; Vector graphics editor. ~93MiB
     inkscape
