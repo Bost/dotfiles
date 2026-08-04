@@ -1,17 +1,17 @@
 (define-module (scm-bin sgxsr)
-  #:use-module (bost common utils)       ; str, module-name-for-logging, etc.
-  #:use-module (dotf fs-utils)    ; dtfg
-  #:use-module (guix build utils) ; which
-  #:use-module (ice-9 optargs)    ; define*-public
+  #:use-module (bost common utils) ; str, module-name-for-logging, etc.
+  #:use-module (dotf fs-utils)     ; dtfg
+  #:use-module (guix build utils)  ; which
+  #:use-module (ice-9 optargs)     ; define*-public
   )
 
 #|
 
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ sgxsr) -s
+#!/usr/bin/env -S guix repl --
 !#
 
-cd $dtf
+cd $dotf
+echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/sgxsr.scm
 ./guix/home/common/scm-bin/sgxsr.scm
 
 |#

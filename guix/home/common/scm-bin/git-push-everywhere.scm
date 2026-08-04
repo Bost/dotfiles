@@ -8,11 +8,11 @@
 
 #|
 
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ git-push-everywhere) -s
+#!/usr/bin/env -S guix repl --
 !#
 
 cd $dotf
+echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/git-push-everywhere.scm
 ./guix/home/common/scm-bin/git-push-everywhere.scm
 
 |#
@@ -60,7 +60,7 @@ cd $dotf
 (main \"<ignored>\" \"arg0\")"
   ((comp
     (partial apply git-push-everywhere)
-    (partial apply cdr))
+    cdr)
    args))
 (testsymb 'main)
 

@@ -6,11 +6,11 @@
 
 #|
 
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ gpg-pinentry-setup) -s
+#!/usr/bin/env -S guix repl --
 !#
 
 cd $dotf
+echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/gpg-pinentry-setup.scm
 ./guix/home/common/scm-bin/gpg-pinentry-setup.scm
 
 |#
@@ -39,7 +39,7 @@ cd $dotf
 (main (list \"<ignored>\"))"
   ((comp
     (partial apply gpg-pinentry-setup)
-    (partial apply cdr))
+    cdr)
    args))
 (testsymb 'main)
 

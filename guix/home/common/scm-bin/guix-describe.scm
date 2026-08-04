@@ -1,21 +1,17 @@
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-describe) -s
-!#
-
 (define-module (scm-bin guix-describe)
   #:use-module (scm-bin describe-commits) ; commit-block, run-command, print-lines
-  #:use-module (bost common utils)               ; comp, partial, logging helpers
+  #:use-module (bost common utils)        ; comp, partial, logging helpers
   #:use-module (srfi srfi-1)              ; fold-right
   #:use-module (ice-9 optargs)            ; define*-public
   )
 
 #|
 
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ guix-describe) -s
+#!/usr/bin/env -S guix repl --
 !#
 
 cd $dotf
+echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-describe.scm
 ./guix/home/common/scm-bin/guix-describe.scm | tee /dev/tty | xsel -bi
 
 |#
@@ -68,6 +64,7 @@ by `guix describe --format=channels`."
     (lambda (lines) (describe->pairs #:args lines))
     (lambda (argv)  (run-command #:args argv))
     (lambda (_) '("guix" "describe" "--format=channels"))   ; ignore CLI args
+    cdr
     ;; peek
     )
    args))
