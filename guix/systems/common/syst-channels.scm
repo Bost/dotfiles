@@ -16,9 +16,9 @@
 (evaluating-module)
 
 (def* (syst-channels #:key
-                     guix-science-commit
-                     guix-commit
                      nonguix-commit
+                     bost-commit
+                     guix-commit
                      (use-local-checkout #f)
                      #:allow-other-keys
                      )
@@ -27,7 +27,9 @@
       (if (or (host-edge?) (host-ecke?) (host-geek?))
           (append
            (list
-            ;; (channel-guix-science #:commit guix-science-commit)
+            ;; pulls-in (bost common utils)
+            (channel-bost #:commit bost-commit
+                          #:use-local-checkout use-local-checkout)
             (channel-nonguix #:commit nonguix-commit
                              #:use-local-checkout use-local-checkout)
             ) lst)
