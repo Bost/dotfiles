@@ -2,7 +2,7 @@
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (ice-9 optargs)     ; define*-public
   )
 

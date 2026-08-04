@@ -10,7 +10,7 @@
   #:use-module (gnu home services guix) ; home-channels-service-type
 
   #:use-module (dotf config channels channel-defs)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf memo)
   )
 

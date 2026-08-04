@@ -1,7 +1,7 @@
 (define-module (scm-bin search-notes)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (guix colors)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (srfi srfi-1)   ; list-processing procedures
   #:use-module (ice-9 optargs) ; define*-public
   )

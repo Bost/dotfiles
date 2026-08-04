@@ -29,7 +29,7 @@ TODO see https://github.com/daviwil/dotfiles/tree/guix-home
 ;; enough to handle the differences just a few branching statements, e.g.
 ;; if, cond, etc.
 (define-module (home-ecke)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
   ;; fix the 'error: leiningen: unknown package', but it doesn't work

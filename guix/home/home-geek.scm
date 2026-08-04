@@ -24,7 +24,7 @@ guix home --allow-downgrades \
 |#
 
 (define-module (home-geek)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf settings)
   #:use-module (dotf memo)
   #:use-module (scm-bin git-clone)

@@ -1,6 +1,6 @@
 (define-module (scm-bin extract)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   ;; the (ice-9 regex) might need to be added in the home-configuration.scm in the macro
   #:use-module (ice-9 regex)
   #:use-module (ice-9 optargs)     ; define*-public

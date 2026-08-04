@@ -4,7 +4,7 @@
 
 (define-module (scm-bin guix-system-describe)
   #:use-module (scm-bin describe-commits)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (srfi srfi-1)     ; list-processing procedures
   #:use-module (srfi srfi-13)    ; string library
   #:use-module (ice-9 optargs)   ; define*-public

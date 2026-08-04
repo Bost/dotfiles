@@ -1,7 +1,7 @@
 (define-module (syst-lukas)
   #:use-module ((syst-base) #:prefix syst-base:)
   #:use-module (dotf settings)
-  #:use-module (dotf utils)                 ; partial, module-name-for-logging
+  #:use-module (bost common utils)                 ; partial, module-name-for-logging
   #:use-module (dotf memo)
   #:use-module (gnu)
   #:use-module (guix modules)

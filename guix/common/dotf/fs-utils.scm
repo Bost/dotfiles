@@ -1,5 +1,5 @@
 (define-module (dotf fs-utils)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf settings)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)       ; list-processing procedures

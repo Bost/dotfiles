@@ -1,7 +1,7 @@
 ;;; See https://guix.gnu.org/manual/devel/en/html_node/Channels-with-Substitutes.html
 (define-module (dotf config channels channel-defs)
   ;; See service-file -> with-imported-modules
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf settings)
   #:use-module (dotf fs-utils)     ; dev
   #:use-module (dotf memo)

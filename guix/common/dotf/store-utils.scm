@@ -1,5 +1,5 @@
 (define-module (dotf store-utils)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (guix)
   #:use-module (guix store)
 )

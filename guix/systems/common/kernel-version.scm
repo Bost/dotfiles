@@ -1,5 +1,5 @@
 (define-module (kernel-version)
-  #:use-module (dotf utils)         ; partial
+  #:use-module (bost common utils)         ; partial
   #:use-module (gnu packages)  ; find-packages-by-name
   #:use-module (guix packages) ; package-version
   ;; #:use-module (gnu system)    ; operating-system-kernel

@@ -24,7 +24,7 @@ guix home --allow-downgrades \
 |#
 
 (define-module (home-kalus)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf memo)
   #:use-module (dotf fs-utils)
   #:use-module (services development-dirs)

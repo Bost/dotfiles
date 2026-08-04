@@ -8,7 +8,7 @@
 
 (define-module (syst-channels)
   #:use-module (dotf config channels channel-defs)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (dotf memo)
   )
 

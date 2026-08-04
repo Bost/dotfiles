@@ -1,5 +1,5 @@
 (define-module (config packages syst-all)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (gnu)   ; use-package-modules
   )
 

@@ -1,6 +1,6 @@
 (define-module (scm-bin gpg-pinentry-setup)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
-  #:use-module (dotf utils)
+  #:use-module (bost common utils)
   #:use-module (ice-9 optargs)     ; define*-public
   )
 

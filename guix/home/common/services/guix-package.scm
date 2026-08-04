@@ -3,9 +3,9 @@
 !#
 
 (define-module (services guix-package)
-  #:use-module (dotf utils)
-  #:use-module (dotf srfi-1-smart)
-  #:use-module (dotf tests)
+  #:use-module (bost common utils)
+  #:use-module (bost common srfi-1-smart)
+  #:use-module (bost common tests)
   #:use-module (dotf fs-utils)
   #:use-module (dotf settings)
   #:use-module (cli-common)

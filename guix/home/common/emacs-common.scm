@@ -3,8 +3,8 @@
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (guix monads)       ; with-monad
-  #:use-module (dotf utils)        ; partial
-  #:use-module (dotf tests)        ; test-type
+  #:use-module (bost common utils)        ; partial
+  #:use-module (bost common tests)        ; test-type
   #:use-module (dotf settings)     ; user
   #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (ice-9 optargs)     ; define*-public
@@ -288,7 +288,7 @@ VERBOSE - print command line of the command being executed on the CLI
 
 (begin
   (use-modules (ice-9 getopt-long) (ice-9 regex) (guix monads)
-               (dotf srfi-1-smart) (dotf utils) (dotf tests) (dotf settings)
+               (bost common srfi-1-smart) (bost common utils) (bost common tests) (dotf settings)
                (cli-common) (command-line) (emacs-common))
   (handle-cli #:trace #f #:verbose #t #:exec-fun 'exec-foreground
               #:utility \"s\" #:fun 'create-launcher #:profile \"spgx\"

@@ -1,6 +1,6 @@
 (define-module (syst-base)
   #:use-module (dotf settings)
-  #:use-module (dotf utils)                 ; for partial
+  #:use-module (bost common utils)                 ; for partial
   #:use-module (dotf memo)
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; user-group user-account-shell
