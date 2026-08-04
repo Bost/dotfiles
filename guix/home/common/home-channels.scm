@@ -191,9 +191,9 @@
  ;; #:bost-commit    "35282eedb5d4f59f09273d0c44e69c9918eb735a"
  ;; #:guix-commit    "dcddca760b8252474498e549b6e6ef34fc393f21"
 
- ;;  4 août 2026 13:27:05
+ ;; 4 août 2026 16:20:22
  #:nonguix-commit "7b7b2c47f9c205ad89ddf54293e7756e797f8980"
- #:bost-commit    "63d64069273f43a48f5bed492bf50fd9f9bec8cb"
+ #:bost-commit    "55dc35853c3a0429d37fd367a6c6e556b0ef3b5c"
  #:guix-commit    "86813d5779253bb50002d79ab791eeda5a8b4729"
 
  #:use-local-checkout #f)
