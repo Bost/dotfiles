@@ -6,6 +6,7 @@
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module ((bost gnu packages terminals) #:prefix bst:)
+  #:use-module ((bost gnu packages ocr) #:prefix bst:)
   #:use-module (gnu packages) ; specification->package
   #:use-module (dotf config channels channel-defs)
 
@@ -740,7 +741,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    youtube-viewer  ; Search & play YT videos in a native player
    vlc             ; Audio and video player and framework
 
-   tesseract-ocr               ; OCR Optical character recognition engine
+   bst:tesseract-ocr           ; OCR Optical character recognition engine
    tesseract-ocr-tessdata-fast ; Fast versions of trained LSTM models
    gimagereader                ; Qt front-end to tesseract-ocr
 
@@ -775,7 +776,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; /gnu/store/znrni9c6mjx45ps4j0jkrbgl6rvc6s2p-libreoffice-25.2.3.2
    ;; https://ci.guix.gnu.org/search?query=spec%3Amaster+system%3Ax86_64-linux+libreoffice
    ;; doesn't build due to failing build of the firebird-3.0.13 dependency - see https://ci.guix.gnu.org/build/13148158/details
-   libreoffice
+   ;; libreoffice ; using inferior version
 
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
@@ -935,6 +936,11 @@ FIXME the inferior-packages are installed on every machine"
                                     (inferior-for-channels channels)
                                     package))))))
    (list
+    (list #:package "libreoffice" #:channels
+          (list
+           ;; Substitute not available yet. Use version from 4 août 2026 18:11:58
+           (channel-guix #:commit "d3acc7d021c51e292fe7572d6eef3d2d8d86b1c2")))
+
     ;; (list #:package "php" #:channels
     ;;       (list
     ;;        ;; php-8.5.5 doesn't compile; use php-8.5.3 which came in package
