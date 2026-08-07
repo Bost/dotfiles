@@ -579,6 +579,50 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                ("ty" . tw-clj-insert-type)
                ("ma" . tw-clj-insert-map-fn)))
 
+(defun my-spacemacs/resize-shell-to-desired-width ()
+  ;; `shell-pop--is-shell-buffer' is a buffer-local flag set by shell-pop on
+  ;; managed buffers (replaces the removed `shell-pop-last-shell-buffer-name'
+  ;; comparison). `bound-and-true-p' keeps this safe on shell-pop versions
+  ;; that predate the rewrite.
+  (when (and (bound-and-true-p shell-pop--is-shell-buffer)
+;;; The following line is the fix:
+             (shell-pop--split-side-p)
+;;; See implementation of `shell-pop--split-side-p' and
+;;; `spacemacs/resize-shell-to-desired-width' in layers/+tools/shell/funcs.el
+             )
+    (enlarge-window-horizontally (- (/ (* (frame-width) shell-default-width)
+                                       100)
+                                    (window-width)))))
+
+(defmacro my-make-shell-pop-command (name func &optional shell)
+  "Create a function to open a shell via the function FUNC.
+SHELL is the SHELL function to use (i.e. when FUNC represents a terminal)."
+  `(defun ,(intern (concat "spacemacs/shell-pop-" name)) (index)
+     ,(format (concat "Toggle a popup window with `%S'.\n"
+                      "Multiple shells can be opened with a numerical prefix "
+                      "argument. Using the universal prefix argument will "
+                      "open the shell in the current buffer instead of a "
+                      "popup buffer.")
+              func)
+     (interactive "P")
+     (require 'shell-pop)
+     (if (equal '(4) index)
+         ;; no popup
+         (,func ,shell)
+       (shell-pop--set-shell-type
+        'shell-pop-shell-type
+        (list ,name
+              ,(if (bound-and-true-p layouts-enable-local-variables)
+                   `(concat "*" (spacemacs//current-layout-name) "-"
+                            (if (file-remote-p default-directory)
+                                "remote-"
+                              "")
+                            ,name "*")
+                 (concat "*" name "*"))
+              (lambda nil (,func ,shell))))
+       (shell-pop index)
+       (my-spacemacs/resize-shell-to-desired-width))))
+
 ;; When running from bash on a non-Guix system, some environment variables may
 ;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
 
@@ -888,16 +932,11 @@ This function should only modify configuration layer settings."
       ;; See https://platform.openai.com/settings/organization/usage
       ;; Change with https://platform.openai.com/settings/.../limits
       ;; Price is in USD per 1M tokens
-      ;; gptel-model 'gpt-5.5     ; In  5.00, Cached In 0.50, Out  30.00
-      ;; gptel-model 'gpt-5.5-pro ; In 30.00, Cached In    -, Out 180.00
-      ;; gptel-model 'gpt-5.4     ; In  2.50, Cached In 0.25, Out  15.00
-      ;; gptel-model 'gpt-5.4-mini
-      ;; gptel-model 'gpt-5.4-nano
-
       ;; TPM Tokens Per Minute; RPM Requests Per Minute
-      gptel-model 'gpt-4o          ;  30,000 TPM, 500 RPM
-      ;; gptel-model 'gpt-4o-turbo ;  30,000 TPM, 500 RPM
-      ;; gptel-model 'gpt-4o-mini  ; 200,000 TPM, 500 RPM
+      ;; gptel-model 'gpt-5.6-sol   ; In 5.00, Cached In 0.50, Out 30.00
+      ;; gptel-model 'gpt-5.6-terra ; In 2.00, Cached In 0.20, Out 12.00
+      gptel-model 'gpt-5.6-luna     ; In 0.20, Cached In 0.02, Out  1.20
+      ;; gptel-model 'gpt-4o-mini   ; In 0.15, Cached In 0.08, Out  0.60
 
       llm-client-enable-gptel t
       ;; )
@@ -999,12 +1038,16 @@ This function should only modify configuration layer settings."
              scheme-implementations '(guile))
 
      (shell
-      ;; :variables
-      ;; (Default 'ansi-term)
-      ;; shell-default-shell 'eshell
+      :variables
+      ;; (setq
+      ;; shell-default-shell 'eshell ; (Default 'ansi-term)
 
       ;; shell-default-height 30
       ;; shell-default-position 'bottom
+
+      ;; Width in percents for the shell window.
+      shell-default-width 50 ; (default 30)
+      ;; )
       )
 
      ;; Provides a.o. flycheck-bashate
@@ -1928,6 +1971,8 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  (my-make-shell-pop-command "vterm" vterm)
+
   (with-eval-after-load 'flycheck
     (require 'flycheck-guile))
 
@@ -2629,47 +2674,38 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               (bind-keys :map LaTeX-mode-map
                          ("H-<menu>" . latex/build)))) ;; ~<menu>~ pressed twice
 
+  (add-hook 'scheme-mode-hook #'tw-scheme-additional-keywords)
+
   ;; Setup for Hacking on Guix and Scheme Code
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
   ;;
-  ;; `parse-colon-path' returns a list with items containing trailing slash '/',
-  ;; geiser-guile-load-path doesn't like it.
-  (when-let ((glp-env (getenv "glp"))) ; when the environment variable is defined
-    ;; `glp' and `dgx' are referenced in (with-eval-after-load ...)
-    ;; macros. Can't bind them using (let ...). The bindings won't exist
-    ;; when the bodies of the macros are evaluated.
-    (setq glp (split-string glp-env ":"))
-    (setq dgx (getenv "dgx"))
-
+  ;; `parse-colon-path' returns a list with items containing trailing slash
+  ;; '/', geiser-guile-load-path doesn't like it.
+  ;;
+  ;; When the `dgx' environment variable is defined it is referenced in
+  ;; (with-eval-after-load ...) macros. Can't bind it using (let ...). The
+  ;; bindings won't exist when the bodies of the macros are evaluated.
+  (when-let ((dgx-env (getenv "dgx")))
     ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
     (add-hook 'scheme-mode-hook #'guix-devel-mode)
-    (add-hook 'scheme-mode-hook #'tw-scheme-additional-keywords)
-
-    ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
-    ;; TODO move this to project's .dir-locals.el
-    (with-eval-after-load 'geiser-guile
-      (mapc
-       ;; Add ELEMENT to the value of LIST-VAR if it isn't there yet.
-       (-partial #'add-to-list 'geiser-guile-load-path)
-       glp))
 
     (with-eval-after-load 'yasnippet
-      (add-to-list 'yas-snippet-dirs (concat dgx "/etc/snippets/yas")))
+      (add-to-list 'yas-snippet-dirs (concat dgx-env "/etc/snippets/yas")))
 
-    ;; TODO extend the GuixOS with a service providing user full-name and email
-    ;; or parse (one of):
+    ;; TODO extend the GuixOS with a service providing user full-name and
+    ;; email or parse (one of):
     ;;   /run/current-system/configuration.scm
     ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
 
     (setq
-     ;; Location for geiser-history.guile and geiser-history.racket. (Default
-     ;; "~/.geiser_history")
+     ;; Location for geiser-history.guile and geiser-history.racket.
+     ;; (Default "~/.geiser_history")
      ;; geiser-repl-history-filename "..."
      user-full-name         (getenv "user_full_name")
      user-mail-address      (getenv "user_mail_address")
      copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
 
-    (load-file (concat dgx "/etc/copyright.el"))
+    (load-file (concat dgx-env "/etc/copyright.el"))
     ;; check if the copyright is up to date M-x copyright-update.
     ;; automatically add copyright after each buffer save
     ;; (add-hook 'after-save-hook #'copyright-update)

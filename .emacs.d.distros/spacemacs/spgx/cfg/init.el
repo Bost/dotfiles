@@ -888,16 +888,11 @@ This function should only modify configuration layer settings."
       ;; See https://platform.openai.com/settings/organization/usage
       ;; Change with https://platform.openai.com/settings/.../limits
       ;; Price is in USD per 1M tokens
-      ;; gptel-model 'gpt-5.5     ; In  5.00, Cached In 0.50, Out  30.00
-      ;; gptel-model 'gpt-5.5-pro ; In 30.00, Cached In    -, Out 180.00
-      ;; gptel-model 'gpt-5.4     ; In  2.50, Cached In 0.25, Out  15.00
-      ;; gptel-model 'gpt-5.4-mini
-      ;; gptel-model 'gpt-5.4-nano
-
       ;; TPM Tokens Per Minute; RPM Requests Per Minute
-      gptel-model 'gpt-4o          ;  30,000 TPM, 500 RPM
-      ;; gptel-model 'gpt-4o-turbo ;  30,000 TPM, 500 RPM
-      ;; gptel-model 'gpt-4o-mini  ; 200,000 TPM, 500 RPM
+      ;; gptel-model 'gpt-5.6-sol   ; In 5.00, Cached In 0.50, Out 30.00
+      ;; gptel-model 'gpt-5.6-terra ; In 2.00, Cached In 0.20, Out 12.00
+      gptel-model 'gpt-5.6-luna     ; In 0.20, Cached In 0.02, Out  1.20
+      ;; gptel-model 'gpt-4o-mini   ; In 0.15, Cached In 0.08, Out  0.60
 
       llm-client-enable-gptel t
       ;; )
@@ -2633,47 +2628,38 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
               (bind-keys :map LaTeX-mode-map
                          ("H-<menu>" . latex/build)))) ;; ~<menu>~ pressed twice
 
+  (add-hook 'scheme-mode-hook #'tw-scheme-additional-keywords)
+
   ;; Setup for Hacking on Guix and Scheme Code
   ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
   ;;
-  ;; `parse-colon-path' returns a list with items containing trailing slash '/',
-  ;; geiser-guile-load-path doesn't like it.
-  (when-let ((glp-env (getenv "glp"))) ; when the environment variable is defined
-    ;; `glp' and `dgx' are referenced in (with-eval-after-load ...)
-    ;; macros. Can't bind them using (let ...). The bindings won't exist
-    ;; when the bodies of the macros are evaluated.
-    (setq glp (split-string glp-env ":"))
-    (setq dgx (getenv "dgx"))
-
+  ;; `parse-colon-path' returns a list with items containing trailing slash
+  ;; '/', geiser-guile-load-path doesn't like it.
+  ;;
+  ;; When the `dgx' environment variable is defined it is referenced in
+  ;; (with-eval-after-load ...) macros. Can't bind it using (let ...). The
+  ;; bindings won't exist when the bodies of the macros are evaluated.
+  (when-let ((dgx-env (getenv "dgx")))
     ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
     (add-hook 'scheme-mode-hook #'guix-devel-mode)
-    (add-hook 'scheme-mode-hook #'tw-scheme-additional-keywords)
-
-    ;; Put scheme code like e.g utils.scm on the geiser-guile-load-path
-    ;; TODO move this to project's .dir-locals.el
-    (with-eval-after-load 'geiser-guile
-      (mapc
-       ;; Add ELEMENT to the value of LIST-VAR if it isn't there yet.
-       (-partial #'add-to-list 'geiser-guile-load-path)
-       glp))
 
     (with-eval-after-load 'yasnippet
-      (add-to-list 'yas-snippet-dirs (concat dgx "/etc/snippets/yas")))
+      (add-to-list 'yas-snippet-dirs (concat dgx-env "/etc/snippets/yas")))
 
-    ;; TODO extend the GuixOS with a service providing user full-name and email
-    ;; or parse (one of):
+    ;; TODO extend the GuixOS with a service providing user full-name and
+    ;; email or parse (one of):
     ;;   /run/current-system/configuration.scm
     ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
 
     (setq
-     ;; Location for geiser-history.guile and geiser-history.racket. (Default
-     ;; "~/.geiser_history")
+     ;; Location for geiser-history.guile and geiser-history.racket.
+     ;; (Default "~/.geiser_history")
      ;; geiser-repl-history-filename "..."
      user-full-name         (getenv "user_full_name")
      user-mail-address      (getenv "user_mail_address")
      copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
 
-    (load-file (concat dgx "/etc/copyright.el"))
+    (load-file (concat dgx-env "/etc/copyright.el"))
     ;; check if the copyright is up to date M-x copyright-update.
     ;; automatically add copyright after each buffer save
     ;; (add-hook 'after-save-hook #'copyright-update)
