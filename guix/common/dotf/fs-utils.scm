@@ -46,7 +46,7 @@
 (define-public (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
 
-(define-public (local-dotfile path filename)
+(define-public (local-dotfile fs-path filename)
   "See also (@(services home-dir-config) host-specific-config).
 
 (local-dotfile \"/guix/home/\" \".dir-locals.el\") ; with '.' before file-name
@@ -67,7 +67,7 @@
       (local-file \"/home/bost/dev/dotfiles/guix/home/.guile\"
                   \"dot-guile\")
 "
-  (let [(filepath (user-dotf path filename))]
+  (let [(filepath (user-dotf fs-path filename))]
     (if (access? filepath R_OK)
       (list filename
             (let [(base-filename (basename filename))]
@@ -94,8 +94,8 @@
   "Run F for its side effect; return the argument unchanged."
   (lambda (x) (f x) x))
 
-(define-public (create-file path)
-  "Overwrites the PATH!
+(define-public (create-file fs-path)
+  "Overwrites the FS-PATH!
 
 First call:
   (create-file \"/tmp/foo/file.txt\")  ;=> #t
@@ -107,18 +107,18 @@ Consecutive calls:
          open-output-file
          ;; The tap combinator keeps the pipeline point-free
          (tap (comp (@(guix build utils) mkdir-p) dirname)))
-   path))
+   fs-path))
 
-(define-public (ensure-file path)
+(define-public (ensure-file fs-path)
   "First call:
   (ensure-file \"/tmp/foo/file.txt\")  ;=> #t
 Consecutive calls:
   (unspecified? (begin (ensure-file \"/tmp/foo/file.txt\")
                        (ensure-file \"/tmp/foo/file.txt\"))) ;=> #t"
-  (unless (file-exists? path)
-    (create-file path)))
+  (unless (file-exists? fs-path)
+    (create-file fs-path)))
 
-(define-public (ensure-dir path)
-  ((@(guix build utils) mkdir-p) path))
+(define-public (ensure-dir fs-path)
+  ((@(guix build utils) mkdir-p) fs-path))
 
 (module-evaluated)
