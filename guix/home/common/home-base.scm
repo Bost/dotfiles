@@ -342,33 +342,7 @@
                            (getenv "XDG_DATA_DIRS"))))
 
      ("dec"   . ,(user-home "/dec"))
-     ("der"   . ,(user-home "/der"))
-     ;; The glp variable contains a list paths to the source code of Guile, Guix
-     ;; and related projects. It is used (among others) by the
-     ;; `geiser-guile-load-path' variable in Emacs
-     ("glp"  . ,((comp
-                  (lambda (lst) (string-join lst list-separator)))
-                 (append
-                  (map user-dotf
-                       (list
-                        "/guix/common"
-                        "/guix/home/common"
-                        "/guix/systems/common"
-                        "/guix/home"
-                        "/guix/systems"
-                        ))
-                  (map user-dev
-                       (list
-                        ;; "/guile" ; this doesn't work
-                        "/guile/module/srfi"
-                        "/guile/libguile"
-                        "/nonguix"
-                        ;; "/guile-git" ; guile bindings of libgit2
-                        ;; "/andrew-rde/src"
-                        ))
-                  (list (str dgxp "/src"))
-                  (list dgx)
-                  ))))))
+     ("der"   . ,(user-home "/der")))))
 
 (define-public (environment-variables-service srvc-name environment-vars)
   (simple-service
