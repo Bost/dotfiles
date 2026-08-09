@@ -20,6 +20,7 @@
   #:use-module (ice-9 ftw)   ; file tree walk
   #:use-module (ice-9 regex)
   #:use-module (dotf build-utils)
+  #:use-module ((guix self) #:select (make-config.scm))
   )
 
 (define m (module-name-for-logging))
@@ -86,6 +87,16 @@
     (partial map (partial expand-pattern notes-dir)))
    patterns))
 (testsymb 'full-filepaths)
+
+(define (with-fresh-config modules)
+  "Replace the host's (guix config) in MODULES with a freshly-generated one,
+avoiding the \"importing module (guix config) from the host\" warning."
+  ;; The => spec form maps the module name to a file that provides it, and
+  ;; make-config.scm emits a proper (define-module (guix config) …) computed at
+  ;; your current Guix's parameters — same values as the host's, but
+  ;; reproducibly, so the provenance warning goes away.
+  (cons `((guix config) => ,(make-config.scm))
+        (delete '(guix config) modules)))
 
 (define common-modules
   '(
@@ -183,11 +194,9 @@ Example:
                                 (full-filepaths excluded-files))))]
                          [#t `(command-line)]))))]
       (with-imported-modules
-          ;; Having among with-imported-modules
-          ;;     (guix config) (srfi srfi-1)
-          ;; probably causes:
-          ;;     warning: importing module (guix config) from the host
-          (append common-modules `((scm-bin ,symb) (scm-bin describe-commits)))
+          (with-fresh-config
+           (append common-modules
+                   `((scm-bin ,symb) (scm-bin describe-commits))))
         #~(begin
             (use-modules (scm-bin #$symb))
             #$main-call)))
@@ -290,7 +299,8 @@ a list of files to search through."
          (format #t "extra-modules  : ~a\n" extra-modules)
          (format #t "sexp :\n~a\n" (pretty-print->string sexp))
          (format #t "\n"))
-       (with-imported-modules (append common-modules extra-modules)
+       (with-imported-modules
+           (with-fresh-config (append common-modules extra-modules))
          #~#$sexp))
      #:guile (@(gnu packages guile) guile-3.0-latest)))))
 (testsymb 'service-file-utils)
