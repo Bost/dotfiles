@@ -7,7 +7,7 @@
 
 #|
 
-#!/usr/bin/env -S guix repl --
+#!/usr/bin/env -S guix repl -L ./ -L ./guix/common --
 !#
 
 cd $dotf
@@ -56,9 +56,14 @@ echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/sgxsr.scm
 
 (define*-public (main #:rest args)
   "Pull system channels, reconfigure the Guix system, roll back to
-home-channels.  Extra arguments are forwarded to the initial `guix pull'."
-  (let* ((extra-args (cdr args))
-         (config (str dtfg "/systems/syst-" (gethostname) ".scm")))
+home-channels.
+
+TODO Implement separate `sgxsr --args-pull ... --args-system ...'
+Extra arguments are forwarded to the initial `guix system'.
+
+"
+ (let* ((extra-args (cdr args))
+        (config (str dtfg "/systems/syst-" (gethostname) ".scm")))
 
     (unless (file-exists? config)
       (format (current-error-port)
@@ -68,11 +73,13 @@ home-channels.  Extra arguments are forwarded to the initial `guix pull'."
 
     ;; No automatic --allow-downgrades for system channels.
     (let ((rc (status:exit-val
-               (apply system* `("guix" "pull"
-                                "--unsafe-channel-evaluation"
-                                ,(string-append "--load-path=" common-lp)
-                                ,(string-append "--channels=" channels-scm)
-                                ,@extra-args)))))
+               (apply system*
+                      `("guix" "pull"
+                        "--unsafe-channel-evaluation"
+                        ,(string-append "--load-path=" common-lp)
+                        ,(string-append "--channels=" channels-scm)
+                        ,@extra-args
+                        )))))
       (unless (zero? rc) (exit rc)))
 
     (notify "Done" "`guix pull` finished")
@@ -94,14 +101,18 @@ home-channels.  Extra arguments are forwarded to the initial `guix pull'."
           ;; root's older Guix generation instead.
           (set! reconfigure-rc
                 (status:exit-val
-                 (system* "sudo"
-                          "guix" "system" "--verbosity=3" "--fallback"
-                          (string-append "--load-path=" common-lp)
-                          (string-append "--load-path=" systems-common-lp)
-                          "reconfigure" config))))
+                 (apply system*
+                        `("sudo" "guix" "system"
+                          ,@extra-args
+                          "--verbosity=3" "--fallback"
+                          ,(string-append "--load-path=" common-lp)
+                          ,(string-append "--load-path=" systems-common-lp)
+                          "reconfigure" ,config
+                          )))))
         (lambda ()
           (let ((rollback-rc (status:exit-val
-                              (system* "guix" "pull" "--roll-back"))))
+                              (apply system*
+                                     `("guix" "pull" "--roll-back")))))
             (exit (if (zero? reconfigure-rc)
                       rollback-rc
                       reconfigure-rc))))))))
