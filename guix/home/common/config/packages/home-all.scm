@@ -794,7 +794,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; /gnu/store/znrni9c6mjx45ps4j0jkrbgl6rvc6s2p-libreoffice-25.2.3.2
    ;; https://ci.guix.gnu.org/search?query=spec%3Amaster+system%3Ax86_64-linux+libreoffice
    ;; doesn't build due to failing build of the firebird-3.0.13 dependency - see https://ci.guix.gnu.org/build/13148158/details
-   ;; libreoffice ; using inferior version
+   libreoffice
 
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
@@ -955,10 +955,10 @@ FIXME the inferior-packages are installed on every machine"
                                     (inferior-for-channels channels)
                                     package))))))
    (list
-    (list #:package "libreoffice" #:channels
-          (list
-           ;; Substitute not available yet. Use version from 4 août 2026 18:11:58
-           (channel-guix #:commit "d3acc7d021c51e292fe7572d6eef3d2d8d86b1c2")))
+    ;; (list #:package "libreoffice" #:channels
+    ;;       (list
+    ;;        ;; Substitute not available yet. Use version from 4 août 2026 18:11:58
+    ;;        (channel-guix #:commit "d3acc7d021c51e292fe7572d6eef3d2d8d86b1c2")))
 
     ;; (list #:package "php" #:channels
     ;;       (list
