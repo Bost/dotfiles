@@ -7,6 +7,15 @@
 (list
 
  (channel
+  (name 'guix-ai-cloud)
+  (url "https://codeberg.org/Bost/guix-ai-cloud")
+  (introduction
+   (make-channel-introduction
+    "0051f7605d10c563c2092a26c4a45e4320d2a04f"
+    (openpgp-fingerprint
+     "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))
+
+ (channel
   (name 'nonguix)
   (url "https://gitlab.com/nonguix/nonguix")
   (introduction

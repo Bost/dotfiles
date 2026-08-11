@@ -1,15 +1,35 @@
-;;;; Emacs Bookmark Format Version 1 ;;;;
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("dired: .emacs.d"
- (filename . "~/.emacs.d/")
- (front-context-string . "private\n  -rw-rw")
- (rear-context-string . "96 Jan 27 17:56 ")
- (position . 1266))
-("edit: .spacemacs"
- (filename . "~/dev/dotfiles/emacs/.spacemacs")
- (front-context-string . "-default-file \"~")
- (rear-context-string . "  (setq bookmark")
- (position . 26504))
+(("CLAUDE.md"
+ (filename . "~/dev/claude-code-projects/dev/CLAUDE.md")
+ (front-context-string)
+ (rear-context-string . "spacemacs)'\n```\n")
+ (position . 7643)
+ (last-modified 27199 44230 856270 303000))
+("spgx: config-layers"
+ (filename . "~/dev/dotfiles/.emacs.d.distros/spacemacs/spgx/cfg/init.el")
+ (front-context-string . "   `(\n     ;; --")
+ (rear-context-string . "guration-layers\n")
+ (position . 25086)
+ (last-modified 27198 26450 842979 878000))
+("syst-channels.scm"
+ (filename . "~/dev/dotfiles/guix/systems/common/syst-channels.scm")
+ (front-context-string . " #:use-local-che")
+ (rear-context-string . "261e1b27d1cbe\"\n\n")
+ (position . 3385)
+ (last-modified 27198 26260 780516 538000))
+("home-channels.scm"
+ (filename . "~/dev/dotfiles/guix/home/common/home-channels.scm")
+ (front-context-string . " #:use-local-che")
+ (rear-context-string . "0a45d8463c074\"\n\n")
+ (position . 11201)
+ (last-modified 27198 26248 490697 853000))
+("emacs-spacemacs"
+ (filename . "~/dev/guix-packages/src/bost/gnu/packages/emacs-xyz.scm")
+ (front-context-string . "        \"eff4d8f")
+ (rear-context-string . "quashed-broken\n ")
+ (position . 780253)
+ (last-modified 27198 26110 383030 144000))
 )
