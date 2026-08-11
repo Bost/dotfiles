@@ -322,4 +322,23 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          "CA4F 8CF4 37D7 478F DA05  5FD4 4213 7701 1A37 8446"))))))
 (testsymb 'channel-guix-science)
 
+(def*-public (channel-guix-ai-cloud #:key (commit #f) (use-local-checkout #f))
+  "Danny Milosavljevic's Guix AI Cloud channel. Depends on nonguix
+
+Pin to a specific commit instead of pulling-in the lastest so that this
+channel doesn't get rebuild everytime `guix pull ...` is executed."
+  (let* [(channel-name 'guix-ai-cloud)]
+    (when commit
+      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+    (channel
+     (name channel-name)
+     (url "https://codeberg.org/daym/guix-ai-cloud.git")
+     (commit commit)
+     (introduction
+      (make-channel-introduction
+       "ba6015f3120e56a18eeb31ee31cbd0efc25dbb94"
+       (openpgp-fingerprint ; See .guix-authorizations of this channel
+        "76CE C6B1 7274 B465 C02D B3D9 E71A 3554 2C30 BAA5"))))))
+(testsymb 'channel-guix-ai-cloud)
+
 (module-evaluated)

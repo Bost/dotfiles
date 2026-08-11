@@ -18,13 +18,14 @@
 (evaluating-module)
 
 (define* (home-channels-edge-ecke #:key
-                                  guix-science-commit
-                                  guix-past-commit
+                                  bost-commit
+                                  games-commit
+                                  guix-ai-cloud
                                   guix-android-commit
+                                  guix-past-commit
+                                  guix-science-commit
                                   guixrus-commit
                                   hask-clj-commit
-                                  games-commit
-                                  bost-commit
                                   (use-local-checkout #f)
                                   )
   (list
@@ -58,18 +59,24 @@
 
    ;; pulls-in: guix nonguix guix-rust-past-crates
    (channel-bost #:commit bost-commit #:use-local-checkout use-local-checkout)
+
+   ;; pulls-in: nonguix
+   (channel-guix-ai-cloud #:commit guix-ai-cloud #:use-local-checkout use-local-checkout)
+
    ))
 
 (def* (home-channels #:key
-                     guix-science-commit
+                     bost-commit
+                     games-commit
+                     guix-ai-cloud
                      guix-android-commit
+                     guix-commit
+                     guix-past-commit
+                     guix-science-commit
                      guixrus-commit
                      hask-clj-commit
-                     games-commit
-                     bost-commit
-                     guix-commit
                      nonguix-commit
-                     guix-past-commit
+
                      (use-local-checkout #f)
                      #:allow-other-keys
                      )
@@ -80,13 +87,15 @@
            (list (channel-nonguix #:commit nonguix-commit
                                   #:use-local-checkout use-local-checkout))
            (home-channels-edge-ecke
-            #:guix-science-commit  guix-science-commit
-            #:guix-past-commit     guix-past-commit
+            #:bost-commit          bost-commit
+            #:guix-ai-cloud        guix-ai-cloud
+            #:games-commit         games-commit
             #:guix-android-commit  guix-android-commit
+            #:guix-past-commit     guix-past-commit
+            #:guix-science-commit  guix-science-commit
             #:guixrus-commit       guixrus-commit
             #:hask-clj-commit      hask-clj-commit
-            #:games-commit         games-commit
-            #:bost-commit          bost-commit
+
             #:use-local-checkout   use-local-checkout
             ) lst)
           lst)))
@@ -136,14 +145,14 @@
  ;; #:guix-commit    "714b87a5955f590b79c4f54c071f3f54b66c3c50"
 
  ;; 10 August 2026 15:49:23
- #:nonguix-commit "653504e6551198c9b2b998c143d7cf2675b22547"
- #:bost-commit    "d70b6844d0c1a41be8be5addc61ff435a22c556e"
- #:guix-commit    "bdc339838a450b64413dc7a4d9fa78cdb30062f7"
+ ;; #:nonguix-commit "653504e6551198c9b2b998c143d7cf2675b22547"
+ ;; #:bost-commit    "d70b6844d0c1a41be8be5addc61ff435a22c556e"
+ ;; #:guix-commit    "bdc339838a450b64413dc7a4d9fa78cdb30062f7"
 
- ;; 10 août 2026 17:32:02
- #:nonguix-commit "653504e6551198c9b2b998c143d7cf2675b22547"
- #:bost-commit    "2554e5e7540fe4bc6e62fc088c210b50c77614ce"
- #:guix-commit    "bdc339838a450b64413dc7a4d9fa78cdb30062f7"
+ ;; 10 août 2026 20:27:21
+ ;; #:nonguix-commit "653504e6551198c9b2b998c143d7cf2675b22547"
+ ;; #:bost-commit    "b2c3b690122e0afec40ade444611df2f515758ca"
+ ;; #:guix-commit    "bdc339838a450b64413dc7a4d9fa78cdb30062f7"
 
  #:use-local-checkout #f)
 
