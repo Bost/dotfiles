@@ -118,10 +118,16 @@ See also:
       ;; (lambda (p) (format #t "~a done\n" m) p)
       ;; (lambda (p) (format #t "###### 3.p:\n~a\n" (pretty-print->string p)) p)
       (partial append
-               (list (local-dotfile
-                      "/"
-                      (str (basename xdg-config-home)
-                           "/guix-gaming-channels/games.scm"))))
+               (map (comp
+                      (partial local-dotfile "/")
+                      (partial str (basename xdg-config-home)))
+                    (list
+                     "/guix/trusted-channels.scm"
+                     "/guix-gaming-channels/games.scm"
+                     "/sway/config"
+                     "/tmux/tmux.conf"
+                     "/git/config"
+                     )))
       ;; (lambda (p) (format #t "###### 3.\n~a\n" p) p)
       (partial append (host-specific-config))
       ;; (lambda (p) (format #t "###### 2.\n~a\n" p) p)
@@ -149,12 +155,9 @@ See also:
 ;;; find ~/.gnupg -type f -exec chmod u=rwx,g=---,o=--- {} \;
 ;;; # i.e. 700 for directories:
 ;;; find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \;
-                 ".config/sway/config"
-                 ".config/tmux/tmux.conf"
                  ".gnupg/gpg.conf"
                  ".gnupg/gpg-agent.conf"
                  ".guile" ;; used by `guix repl'
-                 ".config/git/config"
                  ".envrc"
                  ".env-secrets.gpg"
                  ".lein/profiles.clj"

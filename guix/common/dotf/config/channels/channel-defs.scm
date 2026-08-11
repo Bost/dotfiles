@@ -303,8 +303,8 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
 (testsymb 'channel-guix-android)
 
 (def*-public (channel-guix-science #:key (commit #f))
-  "Provides binary substitutes for x86_64-linux, which may no longer be available
-in the nonguix channel, like e.g. for firefox
+  "Provides binary substitutes for x86_64-linux, which may no longer be
+available in the nonguix channel, like e.g. for firefox
 
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
@@ -312,14 +312,14 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
-      (name channel-name)
-      (url "https://codeberg.org/guix-science/guix-science.git")
-      (commit commit)
-      (introduction
-       (make-channel-introduction
-        "b1fe5aaff3ab48e798a4cce02f0212bc91f423dc"
-        (openpgp-fingerprint
-         "CA4F 8CF4 37D7 478F DA05  5FD4 4213 7701 1A37 8446"))))))
+     (name channel-name)
+     (url "https://codeberg.org/guix-science/guix-science.git")
+     (commit commit)
+     (introduction
+      (make-channel-introduction
+       "b1fe5aaff3ab48e798a4cce02f0212bc91f423dc"
+       (openpgp-fingerprint
+        "CA4F 8CF4 37D7 478F DA05  5FD4 4213 7701 1A37 8446"))))))
 (testsymb 'channel-guix-science)
 
 (def*-public (channel-guix-ai-cloud #:key (commit #f) (use-local-checkout #f))
@@ -332,11 +332,22 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
-     (url "https://codeberg.org/daym/guix-ai-cloud.git")
+     (url
+      ;; "https://codeberg.org/daym/guix-ai-cloud"
+      "https://codeberg.org/Bost/guix-ai-cloud"
+      )
      (commit commit)
      (introduction
       (make-channel-introduction
-       "ba6015f3120e56a18eeb31ee31cbd0efc25dbb94"
+       ;; Danny's 1st commit
+       ;; "ba6015f3120e56a18eeb31ee31cbd0efc25dbb94"
+
+       ;; Authorize Rostislav Svoboda's key
+       ;; "0051f7605d10c563c2092a26c4a45e4320d2a04f"
+
+       ;; guix-channel: Add channel-introduction for nonguix
+       ;; (this is the first commit after 'Authorize Rostislav Svoboda's key')
+       "05ca2453b4650f7a82b28234f9e512a4ce80d4a4"
        (openpgp-fingerprint ; See .guix-authorizations of this channel
         "76CE C6B1 7274 B465 C02D B3D9 E71A 3554 2C30 BAA5"))))))
 (testsymb 'channel-guix-ai-cloud)
