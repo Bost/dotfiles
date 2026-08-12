@@ -63,10 +63,15 @@ Including these packages in the `home-packages-to-install' causes:
 when called from the Emacs Geiser REPL by ,use or ,load"
   (append
    (list
+    ;; The open source AI coding agent
+    (@(ai-cloud packages opencode) opencode)
+
     ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
     (@(nongnu packages messaging) signal-desktop)
+
     ;; Program launcher for idle X sessions
     xautolock
+
     ;; Fake keyboard/mouse input, window management, and more
     xdotool
 
