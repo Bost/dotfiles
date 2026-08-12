@@ -928,15 +928,27 @@ This function should only modify configuration layer settings."
      (llm-client
       :variables
       ;; (setq
-      ;; curl --request GET --header "Authorization: Bearer ${OPENAI_KEY}" "https://api.openai.com/v1/models"
+      ;; -H, --header; -X, --request : GET seems to be the default
+      ;; curl -H "Authorization: Bearer $OPENAI_KEY" https://api.openai.com/v1/models
       ;; See https://platform.openai.com/settings/organization/usage
       ;; Change with https://platform.openai.com/settings/.../limits
-      ;; Price is in USD per 1M tokens
-      ;; TPM Tokens Per Minute; RPM Requests Per Minute
+      ;; TPM Tokens Per Minute; RPM Requests Per Minute; Price USD $ / 1M tokens
       ;; gptel-model 'gpt-5.6-sol   ; In 5.00, Cached In 0.50, Out 30.00
       ;; gptel-model 'gpt-5.6-terra ; In 2.00, Cached In 0.20, Out 12.00
       gptel-model 'gpt-5.6-luna     ; In 0.20, Cached In 0.02, Out  1.20
       ;; gptel-model 'gpt-4o-mini   ; In 0.15, Cached In 0.08, Out  0.60
+
+      ;; https://platform.claude.com/docs/en/about-claude/pricing USD $ / MTok
+      ;; Model     Base Input   5m Cache     1h Cache   Cache Hits   Output
+      ;;           Tokens          Writes       Writes  & Refreshes  Tokens
+      ;; opus-5    5            6.25         10         0.50         25
+      ;; sonnet-5  2            2.50          4         0.20         10
+      ;; gptel-model 'claude-opus-5   ; complex agentic coding & enterprise work
+      ;; gptel-model 'claude-sonnet-5 ; best combination of speed & intelligence
+      ;; gptel-backend (gptel-make-anthropic
+      ;;                "Claude"          ; Any name you want
+      ;;                :stream t         ; Streaming responses
+      ;;                :key "your-api-key")
 
       llm-client-enable-gptel t
       ;; )
