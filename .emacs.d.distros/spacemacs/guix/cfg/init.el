@@ -1356,8 +1356,8 @@ It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
-   configuration-layer-elpa-archives
-   ;; Default values
+   ;; configuration-layer-elpa-archives
+   ;; Default values:
    ;; `(("melpa"  . "melpa.org/packages/")
    ;;   ("gnu"    . "elpa.gnu.org/packages/")
    ;;   ("nongnu" . "elpa.nongnu.org/nongnu/"))
@@ -1368,9 +1368,9 @@ It should only modify the values of Spacemacs settings."
    ;; Update by running (fish-shell):
    ;;   set mirror $dev/elpa-mirror.d12frosted
    ;;   git --git-dir=$mirror/.git --work-tree=$mirror pull --rebase
-   `(("melpa"  . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/melpa/"))
-     ("gnu"    . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/gnu/"))
-     ("nongnu" . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/nongnu/")))
+   ;; `(("melpa"  . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/melpa/"))
+   ;;   ("gnu"    . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/gnu/"))
+   ;;   ("nongnu" . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/nongnu/")))
 
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    ;; (default 5)
