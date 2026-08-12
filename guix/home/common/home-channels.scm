@@ -155,10 +155,16 @@
  ;; #:guix-commit    "bdc339838a450b64413dc7a4d9fa78cdb30062f7"
 
  ;; 11 août 2026 13:39:21
+ ;; #:nonguix-commit       "653504e6551198c9b2b998c143d7cf2675b22547"
+ ;; #:bost-commit          "b2c3b690122e0afec40ade444611df2f515758ca"
+ ;; #:guix-ai-cloud-commit "05ca2453b4650f7a82b28234f9e512a4ce80d4a4"
+ ;; #:guix-commit          "f0332077b948a72f79c16b0838c3c7cdddaed631"
+
+ ;; 11 August 2026 14:57:45
  #:nonguix-commit       "653504e6551198c9b2b998c143d7cf2675b22547"
- #:bost-commit          "b2c3b690122e0afec40ade444611df2f515758ca"
- #:guix-ai-cloud-commit "05ca2453b4650f7a82b28234f9e512a4ce80d4a4"
- #:guix-commit          "f0332077b948a72f79c16b0838c3c7cdddaed631"
+ #:bost-commit          "0ed162e0aa261636a0afb747db95dd888a27860d"
+ #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ #:guix-commit          "c98ec501cce5c4776602ae7cb90b0ba5962ee895"
 
  #:use-local-checkout #f)
 
