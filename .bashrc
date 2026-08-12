@@ -1,4 +1,8 @@
 # -*- mode: sh; sh-shell: bash -*-
+
+## bash -n .bashrc
+## shellcheck .bashrc
+
 #### home-bash-configuration -> .bashrc_additions: begin
 
 # --- GnuPG / direnv setup ---
@@ -7,6 +11,10 @@ export GPG_TTY=$(tty)
 
 # Export empty DIRENV_LOG_FORMAT to silence direnv log output. See
 # https://github.com/direnv/direnv/issues/68
+#
+# CAVEAT: this hides direnv's "is blocked"/"is denied" errors. See
+# `direnv status` (look for "Found RC allowed 2" = denied) and fix with
+# `direnv allow ~`
 export DIRENV_LOG_FORMAT=
 eval "$(direnv hook bash)"
 
@@ -165,6 +173,8 @@ eval "$(fzf --bash)"
 eval "$(zoxide init bash)"
 
 # 🐟🐳🐠🎣🦑👽🛸🚀🧙🦊🐍💡🧠🤓👾🤖🦾🐌🐚
+# Single quotes preferred: no interpolation happens here anyway, and they
+# make that explicit instead of implying "$..." expansion might be wanted.
 export STARSHIP_PROMPT_SYMBOL='🐚'
 eval "$(starship init bash)"
 
