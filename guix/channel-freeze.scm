@@ -21,7 +21,7 @@
             (openpgp-fingerprint
               "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5"))))
       (channel
-        (name 'bost)
+        (name 'bstx)
         (url "file:///home/bost/dev/guix-packages")
         (branch "master")
         (commit
