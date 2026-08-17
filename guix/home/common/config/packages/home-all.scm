@@ -5,8 +5,6 @@
   #:use-module (gnu)     ; provides use-package-modules
   ;; some packages may clash with (rde packages emacs-xyz)
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
-  #:use-module ((bost gnu packages terminals) #:prefix bst:)
-  #:use-module ((bost gnu packages ocr) #:prefix bst:)
   #:use-module (gnu packages) ; specification->package
   #:use-module (dotf config channels channel-defs)
 
@@ -764,7 +762,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    youtube-viewer  ; Search & play YT videos in a native player
    vlc             ; Audio and video player and framework
 
-   bst:tesseract-ocr           ; OCR Optical character recognition engine
+   (@(bost gnu packages ocr) tesseract-ocr) ; OCR engine
    tesseract-ocr-tessdata-fast ; Fast versions of trained LSTM models
    gimagereader                ; Qt front-end to tesseract-ocr
 
@@ -830,26 +828,26 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; * Has a framework for Kittens, small terminal programs that can be used to extend kitty's functionality.  For example, they are used for Unicode input, hints, and side-by-side diff.
    ;; * Supports startup sessions which allow you to specify the window/tab layout, working directories and programs to run on startup.
    ;; * Allows you to open the scrollback buffer in a separate window using arbitrary programs of your choice.  This is useful for browsing the history comfortably in a pager or editor.
-   ;; kitty           ;  5.443s no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
+   ;; kitty           ; no drop-down; no splits; in fish no linux icon in the prompt; tabs are strange
    ;;
-   ;; terminator      ;  8.916s no drop-down; has splits
+   ;; terminator      ; no drop-down; has splits
 
    ;; thread 'main' panicked at /tmp/guix-build-alacritty-0.13.1.drv-0/source/guix-vendor/rust-xkbcommon-dl-0.4.1.tar.gz/src/x11.rs:59:28:
    ;; Library libxkbcommon-x11.so could not be loaded.
    ;; note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-   alacritty          ;         no drop-down; no splits; no tabs; e.g.: alacritty -o font.size=8
-   ;; xfce4-terminal  ;         has --drop-down; has context menu; already present, no splits
-   ;; yakuake         ;         doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
+   alacritty          ; no drop-down; no splits; no tabs; e.g.: alacritty -o font.size=8
+   ;; xfce4-terminal  ; has --drop-down; has context menu; already present, no splits
+   ;; yakuake         ; doesn't work: The name org.kde.kglobalaccel was not provided by any .service files
    ;;                            See also https://zellij.dev/
-   bst:guake          ;  4,620s has --drop-down; has context menu; already present, has splits
-   ;; tilda           ;         drop down with F1 by default; has tabs; no splits
-   qterminal          ;         drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
-   ;; tilix           ;         can't see a shit, the text (foreground color) is too dark
-   ;; xterm           ;         has nothing, too basic
-   ;; lxterminal      ;         has context-menu; no drop-down; no splits; has tabs
-   ;; cool-retro-term ;         is cool!
+   (@(bost gnu packages terminals) guake) ; has --drop-down; has context menu; already present, has splits
+   ;; tilda           ; drop down with F1 by default; has tabs; no splits
+   qterminal          ; drop down opens new process (no xfce4 integration?); has splits; has tabs; has context-menu
+   ;; tilix           ; can't see a shit, the text (foreground color) is too dark
+   ;; xterm           ; has nothing, too basic
+   ;; lxterminal      ; has context-menu; no drop-down; no splits; has tabs
+   ;; cool-retro-term ; is cool!
 
-   wezterm         ; 4,887s
+   wezterm            ; good for OpenCode; Cross-platform terminal emulator & multiplexer
    ;; ghostty ; not available in Guix yet 2026-06
 
    ;; Aggressive refactor of Vim

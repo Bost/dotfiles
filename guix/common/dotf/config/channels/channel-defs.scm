@@ -109,7 +109,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
   "Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'hask-clj)
-         (url (get-url "haskell-guix"
+         (url (get-url (symbol->string channel-name)
                        #:use-local-checkout use-local-checkout))]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
@@ -161,14 +161,14 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
         "2841 9AC6 5038 7440 C7E9  2FFA 2208 D209 58C1 DEB0"))))))
 (testsymb 'channel-rde)
 
-(def*-public (channel-bost #:key (commit #f) (use-local-checkout #f))
+(def*-public (channel-bstx #:key (commit #f) (use-local-checkout #f))
   "Provides a.o.:
 - (bost gnu packages emacs-xyz) module
 - clojure, babashka, postgres 13.3, openjdk18
 Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
-  (let* [(channel-name 'bost)
-         (url (get-url "guix-packages"
+  (let* [(channel-name 'bstx)
+         (url (get-url (symbol->string channel-name)
                        #:use-local-checkout use-local-checkout))]
     (when commit
       (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
@@ -181,7 +181,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
        "d92cc7a959fbde6ff4ac202e43069ddf37be233c"
        (openpgp-fingerprint
         "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))))
-(testsymb 'channel-bost)
+(testsymb 'channel-bstx)
 
 (def*-public (channel-nonguix #:key (commit #f) (use-local-checkout #f))
   "Provides firefox, linux-kernel with non-free proprietary drivers, etc.
