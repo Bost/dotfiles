@@ -929,19 +929,20 @@ TODO implement: Show warning & don't compile if substitutes are not present."
        )))
 
 (define (xfce-packages)
+  "See https://www.xfce-look.org/browse?cat=638&order=latest"
   (list
    xfce4-clipman-plugin
-   xfce4-netload-plugin ; traffic indicator
+   xfce4-netload-plugin     ; traffic indicator
    xfce4-notifyd
+   xfce4-pulseaudio-plugin
    xfce4-screensaver
    xfce4-screenshooter
    xfce4-settings
+   xfce4-systemload-plugin
+   ;; xfce4-volumed-pulse   ;  volume keys daemon
 
    ;; in gnu/packages/xfce.scm
    thunar-volman        ; Removable media manager for Thunar; USB disks etc.
-
-   ;; xfce4-volumed-pulse ;  XFCE volume keys daemon
-   xfce4-pulseaudio-plugin
    ))
 (testsymb 'xfce-packages)
 
