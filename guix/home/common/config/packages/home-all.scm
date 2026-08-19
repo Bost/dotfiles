@@ -1078,92 +1078,82 @@ FIXME the inferior-packages are installed on every machine"
    ))
 (testsymb 'emacs-slide-creation-packages)
 
+;; Append the lists produced by LIST-EXPRESSION ... to LST when CONDITION
+;; evaluates to true.  Without #:lst, return the corresponding list
+;; transformation.  The list expressions are not evaluated when CONDITION is
+;; false.
+(define-syntax append-when
+  (syntax-rules ()
+    ((_ #:condition condition
+        #:lists (list list-expression ...)
+        #:lst lst)
+     (if condition
+         (append list-expression ... lst)
+         lst))
+    ((_ #:condition condition
+        #:lists (list list-expression ...))
+     (lambda (lst)
+       (append-when #:condition condition
+                    #:lists (list list-expression ...)
+                    #:lst lst)))))
+
 (def-public (home-packages-to-install)
-  "home-packages-to-install: docstring"
-  ;; (format #t "~a Starting…\n" f)
+  "Return the home-profile packages for the current host."
   ((comp
-    ;; (lambda (p) (format #t "~a done\n" f) p)
-    ;; (lambda (p) (format #t "~a 6. (length p): ~a\n" f (length p)) p)
     (partial append (inferior-packages))
-    ;; (lambda (p) (format #t "~a 5.\n~a\n" f p) p)
-    ;; (lambda (p) (format #t "~a 4. (length p): ~a\n" f (length p)) p)
-    (lambda (lst)
-      (if (or (host-edge?))
-          (append
-           ;; (map (comp list specification->package) (video-packages))
-           ;; TODO check ‘all-the-icons’ in the /home/bost/.local/share/fonts/
-           ;; and call (all-the-icons-install-fonts) when installing emacs
-           (remote-desktop-packages #:is-server #t)
-           (list
-            koboldcpp
-            acpi    ; Information on ACPI devices: battery & temperature
-            blueman ; GTK+ Bluetooth manager
+    (append-when #:condition (host-edge?)
+     #:lists
+     (list
+      ;; (map (comp list specification->package) (video-packages))
+      ;; TODO check ‘all-the-icons’ in the /home/bost/.local/share/fonts/
+      ;; and call (all-the-icons-install-fonts) when installing emacs
+      (remote-desktop-packages #:is-server #t)
+      (list
+       koboldcpp
+       acpi    ; Information on ACPI devices: battery & temperature
+       blueman ; GTK+ Bluetooth manager
 
-            ;; Linux Bluetooth protocol stack, provides bluetootctl, NOT(!)
-            ;; installed via bluetooth-service-type
-            bluez
-            bluez-alsa ; Bluetooth ALSA backend
-
-            ;; emacs-kbd-mode ; editing KMonad .kbd configuration files;
-                              ; installed via spacemacs
-
-            kmonad     ; Advanced keyboard manager
-
-            tlp        ; Power management / battery life
-            )
-           lst)
-          lst))
-    ;; (lambda (p) (format #t "~a 3. (length p): ~a\n" f (length p)) p)
-    (lambda (lst)
-      (if (or (host-ecke?))
-          (append
-           ;; (map (comp list specification->package) (video-packages))
-           (large-packages-ecke)
-           (remote-desktop-packages #:is-server #f)
-           lst)
-          lst))
-    ;; (lambda (p) (format #t "~a 2. (length p): ~a\n" f (length p)) p)
-    (lambda (lst)
-      (if (or (host-edge?) (host-ecke?))
-          (append
-           (nix-packages)
-           ;; (rust-development-packages)
-           (large-packages-edge-ecke)
-           ((comp
-             ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)
-             ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
-             (partial cons (@(bost gnu packages emacs-xyz) emacs-spacemacs)))
-            ;; pulls-in ~430 additional packages
-            ((@(bost gnu packages space-needed) spacemacs-packages))
-            )
-           ((comp
-             ;; (lambda (p) (format #t "~a 1.\n~a\n" f (pretty-print->string p)) p)
-             ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
-             )
-            (printer-scanner-packages))
-           lst)
-          lst))
-    ;; (lambda (p) (format #t "~a 1. (length p): ~a\n" f (length p)) p)
-    (lambda (lst)
-      (if (or (host-edge?) (host-ecke?) (host-geek?))
-          (append
-           (emacs-slide-creation-packages)
-           (packages-from-additional-channels)
-           (devel-packages)
-           (kde-dependent-packages)
-           (other-gui-packages)
-           (irc-packages)
-           (encryption-packages)
-           (rest-packages)
-           (xfce-packages)
-           (xorg-packages)
-           ;; (webkitgtk-based-browsers)
-           lst)
-          lst))
-    ;; (lambda (p) (format #t "~a 0. (length p): ~a\n" f (length p)) p)
-    )
-   (basic-packages)
-   ))
+       ;; Linux Bluetooth protocol stack, provides bluetootctl, NOT(!)
+       ;; installed via bluetooth-service-type
+       bluez
+       bluez-alsa ; Bluetooth ALSA backend
+       kmonad     ; Advanced keyboard manager
+       tlp        ; Power management / battery life
+       )))
+    (append-when #:condition (host-ecke?)
+     #:lists
+     (list
+      ;; (map (comp list specification->package) (video-packages))
+      (large-packages-ecke)
+      (remote-desktop-packages #:is-server #f)
+      ))
+    (append-when #:condition (or (host-edge?) (host-ecke?))
+     #:lists
+     (list
+      (nix-packages)
+      ;; (rust-development-packages)
+      (large-packages-edge-ecke)
+      ;; Pulls in ~430 additional packages.
+      (cons (@(bost gnu packages emacs-xyz) emacs-spacemacs)
+            ((@(bost gnu packages space-needed) spacemacs-packages)))
+      (printer-scanner-packages)
+      ))
+    (append-when #:condition (or (host-edge?) (host-ecke?) (host-geek?))
+     #:lists
+     (list
+      (emacs-slide-creation-packages)
+      (packages-from-additional-channels)
+      (devel-packages)
+      (kde-dependent-packages)
+      (other-gui-packages)
+      (irc-packages)
+      (encryption-packages)
+      (rest-packages)
+      (xfce-packages)
+      (xorg-packages)
+      ;; (webkitgtk-based-browsers)
+      )))
+   (basic-packages)))
 (testsymb 'home-packages-to-install)
 
 (module-evaluated)
