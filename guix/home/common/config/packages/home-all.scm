@@ -65,7 +65,11 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     (@(ai-cloud packages opencode) opencode)
 
     ;; downloads signal-desktop_6.14.0_amd64.deb 101.9MiB
-    (@(nongnu packages messaging) signal-desktop)
+    (pkg-or-inferior
+     (@(nongnu packages messaging) signal-desktop)
+     ;; #:channels
+     ;; (list (channel-guix #:commit "...") (channel-nonguix #:commit "..."))
+     )
 
     ;; Program launcher for idle X sessions
     xautolock
@@ -81,12 +85,18 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     (@(nongnu packages clojure) clojure-lsp)
 
     (@(nongnu packages clojure) leiningen)
+
     ;;   guix weather --system=x86_64-linux \
     ;;   --substitute-urls="https://bordeaux.guix.gnu.org https://substitutes.nonguix.org" \
     ;;   firefox
-    ;; /var/guix/profiles/per-user/bost/guix-profile-266-link/bin/firefox
+    ;; /var/guix/profiles/per-user/bost/guix-profile-<number>-link/bin/firefox
     ;; See also module (bost manifest-set-operations)
-    (@(nongnu packages mozilla) firefox)
+    (pkg-or-inferior
+     (@(nongnu packages mozilla) firefox)
+     ;; #:channels
+     ;; (list (channel-guix #:commit "...") (channel-nonguix #:commit "..."))
+     )
+
     ;; (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
 
     ;; Factorio can be also installed by (in the fish-shell):
@@ -132,7 +142,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; libotr the Off-the-Record (OTR) Messaging Library and Toolkit. See
     ;; Thunderbird console Ctrl-Shift-j
     ;; 48.8MiB; ie. thunderbird
-    ;; icedove ; TODO add icedove to the profile when a substitute is available
+    ;; (pkg-or-inferior icedove #:channels (list (channel-guix #:commit "...")))
 
     ;; Vector graphics editor. ~93MiB
     inkscape
@@ -182,9 +192,14 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; See also icecat-minimal
    icecat ;; 1839.7 MiB
 
-   ;; An inferior version of librewolf is used
    librewolf ; Custom version of Firefox. Better privacy, security and freedom
    qemu      ; Machine emulator and virtualizer ;; 688 MiB
+
+   ;; 3D GPU emulation/virtualization library used by qemu/spice
+   (pkg-or-inferior
+    virglrenderer
+    ;; #:channels (list (channel-guix #:commit "..."))
+    )
 
    ;; ungoogled-chromium ; 285MiB; supports WebUSB; doesn't start
 
@@ -303,7 +318,11 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Read-write access to NTFS file systems
     ntfs-3g
 
-    ripgrep
+    (pkg-or-inferior
+     ripgrep
+     ;; #:channels (list (channel-guix #:commit "..."))
+     )
+
     rsync
 
     sd ; Intuitive find & replace CLI. Modern 'sed'
@@ -697,7 +716,11 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    parted
    pavucontrol ; PulseAudio volume control
    perl
-   php
+
+   (pkg-or-inferior
+    php
+    ;; #:channels (list (channel-guix #:commit "..."))
+    )
 
    ;; GnuPG's interfaces to passphrase input
    pinentry
@@ -797,7 +820,11 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; /gnu/store/znrni9c6mjx45ps4j0jkrbgl6rvc6s2p-libreoffice-25.2.3.2
    ;; https://ci.guix.gnu.org/search?query=spec%3Amaster+system%3Ax86_64-linux+libreoffice
    ;; doesn't build due to failing build of the firebird-3.0.13 dependency - see https://ci.guix.gnu.org/build/13148158/details
-   libreoffice
+   (pkg-or-inferior
+    libreoffice
+    ;; #:channels
+    ;; (list (channel-guix #:commit "d3acc7d021c51e292fe7572d6eef3d2d8d86b1c2"))
+    )
 
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
@@ -947,50 +974,19 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 (testsymb 'xfce-packages)
 
 ;; cat /var/guix/profiles/per-user/$USER/guix-profile-<profile-number>-link/manifest
-(def (inferior-packages)
-  "The original, i.e. non-inferior packages must NOT be present in the
-home-profile. Comment them out.
+(def* (pkg-or-inferior package #:key (channels '()))
+  "Return PACKAGE as-is, unless CHANNELS is non-empty, in which case look up
+and return the same-named package from the inferior built from CHANNELS - a
+list of channel objects, e.g. (list (channel-guix #:commit \"...\")).
 
-FIXME the inferior-packages are installed on every machine"
-  ((comp
-    (partial map (partial apply (lambda* (#:key package channels)
-                                  (first
-                                   (lookup-inferior-packages
-                                    (inferior-for-channels channels)
-                                    package))))))
-   (list
-    ;; (list #:package "libreoffice" #:channels
-    ;;       (list
-    ;;        ;; Substitute not available yet. Use version from 4 août 2026 18:11:58
-    ;;        (channel-guix #:commit "d3acc7d021c51e292fe7572d6eef3d2d8d86b1c2")))
-
-    ;; (list #:package "php" #:channels
-    ;;       (list
-    ;;        ;; php-8.5.5 doesn't compile; use php-8.5.3 which came in package
-    ;;        ;; generation 1735 from 01 avril 2026 14:45:51
-    ;;        (channel-guix #:commit "a375202ad3443e4c3fb492160e32aa6abcc965bd")))
-
-    ;; (list #:package "icedove" #:channels
-    ;;       (channel-guix #:commit "71f0676a295841e2cc662eec0d3e9b7e69726035"))
-    ;; (list #:package "virglrenderer" #:channels
-    ;;       (channel-guix #:commit "fec2fb89bb5dacc14ec619cd569278af34867e3d"))
-
-    ;; (list #:package "ripgrep" #:channels
-    ;;       ;; last commit fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df containing ripgrep@13.0.0;
-    ;;       ;; next commit 33313d57b97d3f2567037313133c1b9d565ba042; gnu: ripgrep: Update to 14.0.3.
-    ;;       (channel-guix #:commit "fe60fe4fe0193eec0f66a1c5cf0b7ad6e416c9df"))
-
-    ;; (list #:package "signal-desktop" #:channels
-    ;;       (list
-    ;;        (channel-guix    #:commit "...")
-    ;;        (channel-nonguix #:commit "65d23d2579b54bb5d52609bf6c34d2faafc8a6cf")))
-
-    ;; Use 149.0.2 until a substitute for latest 150.0.1 is available
-    ;; (list #:package "firefox" #:channels
-    ;;       (list
-    ;;        (channel-guix    #:commit "2dde6fc80f96cd8b1edef8f61637cc2adeb8919f")
-    ;;        (channel-nonguix #:commit "a3f4e7bff779da4593a2922516064a8edaafa3e6")))
-    )))
+To switch between the ordinary and the inferior package, comment/uncomment
+the channel entries inside #:channels - no separate flag needed."
+  (if (empty? channels)
+      package
+      (first (lookup-inferior-packages
+              (inferior-for-channels channels)
+              (package-name package)))))
+(testsymb 'pkg-or-inferior)
 
 (define (devel-guile-ide-arei-packages)
   (list
@@ -1100,7 +1096,6 @@ FIXME the inferior-packages are installed on every machine"
 (def-public (home-packages-to-install)
   "Return the home-profile packages for the current host."
   ((comp
-    (partial append (inferior-packages))
     (append-when #:condition (host-edge?)
      #:lists
      (list
