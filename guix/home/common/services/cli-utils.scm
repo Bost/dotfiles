@@ -435,12 +435,12 @@ a list of files to search through."
              ))
    args))
 
-(define (git-cmdstr . args) (apply (partial format #f "git -c color.ui=always ~a") args))
-;; TODO implement git-cmdstr without colors
-;; (define (git-cmdstr . args) (apply (partial format #f "git -c color.interactive=always ~a") args))
-;; (def-public (git-cmdstr-no-color . args)
-;;   (format #t "~a args: ~a\n" f args)
-;;   (apply (partial format #f "git ~a") args))
+(define (git-cmdstr . args)
+ "TODO implement git-cmdstr without colors"
+  (apply (partial format #f
+                  ;; "git ~a"
+                  ;; "git -c color.interactive=always ~a"
+                  "git -c color.ui=always ~a") args))
 
 (define ripgrep-utils-definition
   ((comp
@@ -515,10 +515,11 @@ a list of files to search through."
    (list #:utility "susp" #:params "xfce4-session-logout --suspend" #:desc "Suspend to RAM")
    ;; gifetare.fish:git fetch --tags … && git rebase …
 
-;;; In bash a script is executes in a subshell, so the cd command only changes
-;;; the directory within that subshell. So `gicl` for bash it it implemented as
-;;; a function in .bashrc. See home-base.scm
-   ;; TODO gicl needs special treatment
+;;; In bash, a script is executed in a subshell, so the cd command only changes
+;;; the directory within that subshell. So `gicl` for bash is implemented as a
+;;; function in .bashrc. See home-base.scm
+;;; When in bash the gicl comes from ~/.bashrc, otherwise (e.g. in fish-shell)
+;;; it comes from /home/bost/scm-bin/gicl
    (list #:utility "gicl"  #:params (git-cmdstr "clone"))
    (list #:utility "girt"  #:params (git-cmdstr "remote"))
    (list #:utility "girtv" #:params (git-cmdstr "remote --verbose"))
