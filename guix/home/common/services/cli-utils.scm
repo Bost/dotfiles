@@ -515,12 +515,6 @@ a list of files to search through."
    (list #:utility "susp" #:params "xfce4-session-logout --suspend" #:desc "Suspend to RAM")
    ;; gifetare.fish:git fetch --tags … && git rebase …
 
-;;; In bash, a script is executed in a subshell, so the cd command only changes
-;;; the directory within that subshell. So `gicl` for bash is implemented as a
-;;; function in .bashrc. See home-base.scm
-;;; When in bash the gicl comes from ~/.bashrc, otherwise (e.g. in fish-shell)
-;;; it comes from /home/bost/scm-bin/gicl
-   (list #:utility "gicl"  #:params (git-cmdstr "clone"))
    (list #:utility "girt"  #:params (git-cmdstr "remote"))
    (list #:utility "girtv" #:params (git-cmdstr "remote --verbose"))
    (list #:utility "gire"  #:params (git-cmdstr "rebase"))
@@ -680,21 +674,27 @@ a list of files to search through."
 (testsymb 'emacs-cli-utils-service)
 
 (define (direct-utils-files)
-  (map (partial apply service-file-general)
-       (list
-        (list #:utility "sgxsr"
-              #:desc "guix-pull-and-system-reconfigure") ; Can't use spaces
-        (list #:utility "extract"               #:desc "extract-uncompress")
-        ;; gg and gk call exec-background
-        (list #:utility "gg"                    #:desc "git-gui")
-        (list #:utility "gk"                    #:desc "git-repo-browser")
-        ;; TODO guix-git-authenticate is broken
-        ;; (list #:utility "guix-git-authenticate" #:desc "guix-git-authenticate")
-        (list #:utility "guix-system-describe"  #:desc "guix-system-describe")
-        (list #:utility "guix-describe"         #:desc "guix-describe")
-        (list #:utility "gpg-pinentry-setup"    #:desc "gpg-pinentry-setup")
-        (list #:utility "qemu-vm"               #:desc "qemu-vm")
-        )))
+  (map
+   (partial apply service-file-general)
+   (list ; Can't use spaces in the #:desc "..." strings
+    (list #:utility "sgxsr"   #:desc "guix-pull-and-system-reconfigure")
+    (list #:utility "extract" #:desc "extract-uncompress")
+
+    (list #:utility "gg" #:desc "git-gui") ; Calls exec-background
+    (list #:utility "gk" #:desc "git-repo-browser") ; Calls exec-background
+
+    ;; A subprocess can't change its parent shell's working directory. The
+    ;; actual `cd' is done by a `gicl' function in .bashrc / gicl.fish.
+    (list #:utility "gicl" #:desc "git-clone-and-print-target-dir"
+          #:scm-file "git-clone")
+
+    ;; TODO guix-git-authenticate is broken
+    ;; (list #:utility "guix-git-authenticate" #:desc "guix-git-authenticate")
+    (list #:utility "guix-system-describe" #:desc "guix-system-describe")
+    (list #:utility "guix-describe"        #:desc "guix-describe")
+    (list #:utility "gpg-pinentry-setup"   #:desc "gpg-pinentry-setup")
+    (list #:utility "qemu-vm"              #:desc "qemu-vm")
+    )))
 (testsymb 'direct-utils-files)
 
 (def-public (cli-utils-service)

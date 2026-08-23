@@ -41,23 +41,15 @@ HISTFILESIZE=200000
 # "$@" treats each arg as its own word.
 # -- is a POSIX‑style "end of options" marker
 
-# Clone with git-clone (Scheme procedure) and cd into repo
+# Clone with gicl (Scheme procedure) and cd into the resulting directory.
+# `command' bypasses this very function so it doesn't recurse; `gicl' only
+# prints the cloned directory on stdout, on success -- see
+# guix/home/common/scm-bin/git-clone.scm for why (a subprocess can't change its
+# parent shell's directory, so the cd has to happen out here).
 gicl() {
-    git-clone -- "$@" || return
-
-    # Last argument = repo URL
-    local url=${!#}
-
-    # Remove a possible trailing slash
-    url=${url%/}
-
-    # Strip path and optional .git suffix
-    local repo=${url##*/}
-
-    # Remove trailing .git suffix
-    repo=${repo%.git}
-
-    cd -- "$repo" || return
+    local dir
+    dir=$(command gicl -- "$@") || return
+    cd -- "$dir" || return
 }
 
 # mkdir + cd

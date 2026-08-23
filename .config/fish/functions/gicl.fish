@@ -3,26 +3,15 @@
 ## fish -n gicl.fish
 ## fish_indent --check gicl.fish
 
-# In bash a script is executes in a subshell, so the cd command only changes the
-# directory within that subshell. So `gicl` for bash it it implemented as a
-# function in .bashrc. See home-base.scm
+# A subprocess can't change its parent shell's working directory, so
+# ~/scm-bin/gicl only clones and prints the resulting directory on stdout;
+# see guix/home/common/scm-bin/git-clone.scm. The `cd` happens here, in the
+# calling shell -- same idea as the `gicl` function in .bashrc.
 function gicl --description "Clone a repo and cd into it (git clone)"
-    $HOME/scm-bin/gicl $argv
+    set --local dir (command gicl -- $argv)
     or return
 
-    # Last argument (repo URL)
-    set url $argv[-1]
-
-    # Remove a possible trailing slash
-    set url (string replace --regex '/$' '' -- $url)
-
-    # Take the last path component
-    set repo (basename $url)
-
-    # Remove trailing .git suffix
-    set repo (string replace --regex '\.git$' '' -- $repo)
-
-    cd $repo
+    cd $dir
     or return
 end
 
@@ -33,5 +22,7 @@ end
 # gicl https://gitlab.com/ambrevar/ambrevar.gitlab.io
 #
 # mkcd /tmp/bar
-## clone to the correct directory works; 'cd ambrevar.gitlab.io' fails:
 # gicl /tmp/foo/ambrevar.gitlab.io
+#
+## explicit target directory now also works:
+# gicl https://gitlab.com/ambrevar/ambrevar.gitlab.io my-clone
