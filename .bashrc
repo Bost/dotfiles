@@ -78,7 +78,7 @@ dev()     { cd "${dev:?}"; }
 dgl()     { cd "${dgl:?}"; }
 dgx()     { cd "${dgx:?}"; }
 dngx()    { cd "${dngx:?}"; }
-dgxp()    { cd "${dgxp:?}"; }
+dbstx()   { cd "${dbstx:?}"; }
 dotf()    { cd "${dotf:?}"; }
 down()    { cd ~/Downloads; }
 dspd()    { cd "${dspd:?}"; }

@@ -139,7 +139,7 @@ export bin=/home/bost/bin
 export cheat=$dev/cheat
 export dotf=$dev/dotfiles
 export dgx=$dev/guix
-export dgxp=$dev/guix-packages
+export dbstx=$dev/bstx
 export dgl=$dev/guile
 
 # used by gps, gpl

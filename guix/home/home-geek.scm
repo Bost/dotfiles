@@ -82,7 +82,7 @@ guix home --allow-downgrades \
 ;;                       ;; "/vesmir" is in the projects-heroku list
 ;;                       "/heroku-buildpack-racket"))
 ;;    (cons "/dev" (list
-;;                  "/guix-packages" ;; "/guix"
+;;                  "/bstx" ;; "/guix"
 ;;                  "/copy-sexp" "/kill-buffers" "/jump-last"
 ;; ;;; use the local guix repo-checkout instead of git.savannah.gnu.org:
 ;; ;;; set latest (ls --sort=time --almost-all ~/.cache/guix/checkouts/ | head -1)

@@ -24,7 +24,7 @@
 (define* (user-dtfg #:rest args) (apply str dtfg args))
 
 (define-public dgx  (user-dev "/guix"))
-(define-public dgxp (user-dev "/guix-packages"))
+(define-public dbstx (user-dev "/bstx"))
 (define-public dngx  (user-dev "/nonguix"))
 
 (define (spacemacs-dir branch)

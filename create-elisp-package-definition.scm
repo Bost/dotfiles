@@ -1,5 +1,5 @@
 #!/usr/bin/env -S guile \\
--L /home/bost/dev/guix-packages/src -L /home/bost/dev/dotfiles/guix/common -L /home/bost/dev/dotfiles/guix/home/common -e (create-elisp-package-definition) -s
+-L /home/bost/dev/bstx/src -L /home/bost/dev/dotfiles/guix/common -L /home/bost/dev/dotfiles/guix/home/common -e (create-elisp-package-definition) -s
 !#
 
 (define-module (create-elisp-package-definition)

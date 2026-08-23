@@ -22,7 +22,7 @@
               "3CE4 6455 8A84 FDC6 9DB4  0CFB 090B 1199 3D9A EBB5"))))
       (channel
         (name 'bstx)
-        (url "file:///home/bost/dev/guix-packages")
+        (url "file:///home/bost/dev/bstx")
         (branch "master")
         (commit
 	  "6cbff072327122a364dc2a0532849acf69dbcd31"))
