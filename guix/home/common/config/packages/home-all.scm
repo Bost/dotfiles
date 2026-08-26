@@ -292,37 +292,6 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     glibc
     glibc-locales
 
-    ;; gnupg is installed system-wide via `guix system reconfigure' instead
-    ;; (see (config packages syst-all) syst-packages-to-install), using the
-    ;; same pkg-or-inferior/channel-guix pin as below.
-    ;;
-    ;; This alone already excludes gnupg from `guix home reconfigure' too:
-    ;; every guix/home/home-*.scm has its `home-environment' (packages ...)
-    ;; field commented out - "replaced by $dtf/guix/profile-manifest.scm" -
-    ;; so `basic-packages'/`home-packages-to-install' (this list) currently
-    ;; only feeds `profile-manifest.scm', i.e. `guix package --install', not
-    ;; `guix home reconfigure'. No home-profile-service-type extension
-    ;; (services/blueman-applet-autostart.scm, services/starship-dotfiles.scm)
-    ;; adds gnupg either. If the (packages ...) field is ever reenabled,
-    ;; keep this entry commented out here too.
-    ;; (pkg-or-inferior
-    ;;  gnupg
-    ;;  #:channels
-    ;;  (list (channel-guix
-    ;;         #:commit
-    ;;         ;; Last working guix pull from 20 aug 2026 22:39:36
-    ;;         "c98ec501cce5c4776602ae7cb90b0ba5962ee895"
-    ;;
-    ;;         ;; Causes https://codeberg.org/guix/guix/issues/10622
-    ;;         ;; CommitDate: Mon Aug 17 11:00:35 2026 +0200
-    ;;         ;; gnu: gnupg: Update to 2.5.20.
-    ;;         ;; "e660026a1625db74f844bbd96a6681ca0fe922b3"
-    ;;
-    ;;         ;; Last before the "gnu: gnupg: Update to 2.5.20."
-    ;;         ;; Can't use it. Causes too may builds
-    ;;         ;; "1b19586c07b586d6fb8b3ead00153fbeb882faf8"
-    ;;         )))
-
     ;; transport layer security library, implements SSL, TLS, DTLS
     gnutls
 

@@ -3,6 +3,7 @@
   #:use-module (dotf settings)
   #:use-module (bost common utils)                 ; partial, module-name-for-logging
   #:use-module (dotf memo)
+  #:use-module (config packages syst-all)   ; syst-packages-to-install
   #:use-module (gnu)
   #:use-module (guix modules)
   #:use-module (guix)                  ; package-version
@@ -12,20 +13,6 @@
  desktop         ;; elogind-service-type
  networking      ;; dhcp-client-service-type
  ssh             ;; openssh-service-type
- )
-
-(use-package-modules ; no need to write: #:use-module (gnu packages <module>)
- gnupg           ;; gpg
- linux           ;; iptables (IP packet filtering rules)
- rsync
- ssh             ;; openssh
- version-control ;; git
- vim
- wget            ;; wget
-
- admin
- package-management
- tls
  )
 
 (define m (module-name-for-logging))
@@ -56,21 +43,8 @@
 ;;;
 ;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
     (packages
-     (cons*
-
-      ;; From the comment in gnu/packages/version-control.scm
-      ;; The size of the closure of 'git-minimal' is two thirds that of 'git'.
-      ;; Its test suite runs slightly faster and most importantly it doesn't
-      ;; depend on packages that are expensive to build such as Subversion.
-      git-minimal     ;; git
-
-      gnupg
-      iptables        ;; Programs to configure Linux IP packet filtering rules
-      openssh-sans-x
-      rsync           ;; 'scp' is preinstalled
-      strace
-      vim             ;; 'vi' is preinstalled
-      wget
+     (append
+      (syst-packages-to-install)
       %base-packages))
 
     (services

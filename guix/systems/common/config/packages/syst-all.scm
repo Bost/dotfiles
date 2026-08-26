@@ -9,7 +9,7 @@
  base            ;; glibc
  cups            ;; cups
  disk            ;; gparted
- gnupg           ;; gpg
+ gnupg           ;; gpg, pinentry
  linux           ;; iptables (IP packet filtering rules)
  mtools          ;; used by gparted
  rsync
