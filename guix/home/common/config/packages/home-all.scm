@@ -294,8 +294,17 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
     ;; gnupg is installed system-wide via `guix system reconfigure' instead
     ;; (see (config packages syst-all) syst-packages-to-install), using the
-    ;; same pkg-or-inferior/channel-guix pin as below. TODO: also exclude it
-    ;; from `guix home reconfigure' proper (not just commented out here).
+    ;; same pkg-or-inferior/channel-guix pin as below.
+    ;;
+    ;; This alone already excludes gnupg from `guix home reconfigure' too:
+    ;; every guix/home/home-*.scm has its `home-environment' (packages ...)
+    ;; field commented out - "replaced by $dtf/guix/profile-manifest.scm" -
+    ;; so `basic-packages'/`home-packages-to-install' (this list) currently
+    ;; only feeds `profile-manifest.scm', i.e. `guix package --install', not
+    ;; `guix home reconfigure'. No home-profile-service-type extension
+    ;; (services/blueman-applet-autostart.scm, services/starship-dotfiles.scm)
+    ;; adds gnupg either. If the (packages ...) field is ever reenabled,
+    ;; keep this entry commented out here too.
     ;; (pkg-or-inferior
     ;;  gnupg
     ;;  #:channels
