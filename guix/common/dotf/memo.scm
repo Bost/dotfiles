@@ -44,10 +44,6 @@
 (testsymb 'host-kalus?)
 ;; (format #t "D ~a host-kalus?: ~a\n" m (host-kalus?))
 
-(define-public (host-lukas?) (equal? (hostname-memoized) host-lukas))
-(testsymb 'host-lukas?)
-;; (format #t "D ~a host-lukas?: ~a\n" m (host-lukas?))
-
 (define-public (host-ecke?) (equal? (hostname-memoized) host-ecke))
 (testsymb 'host-ecke?)
 ;; (format #t "D ~a host-ecke?: ~a\n" m (host-ecke?))
