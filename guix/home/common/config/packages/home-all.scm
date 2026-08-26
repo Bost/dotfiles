@@ -816,15 +816,10 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    gsettings-desktop-schemas ; GNOME
    gtk ; multi-platform toolkit for creating GUIs
 
-   ;; On ecke in generation 1661
-   ;; /gnu/store/znrni9c6mjx45ps4j0jkrbgl6rvc6s2p-libreoffice-25.2.3.2
-   ;; https://ci.guix.gnu.org/search?query=spec%3Amaster+system%3Ax86_64-linux+libreoffice
-   ;; doesn't build due to failing build of the firebird-3.0.13 dependency - see https://ci.guix.gnu.org/build/13148158/details
    (pkg-or-inferior
     libreoffice
-    ;; #:channels
-    ;; (list (channel-guix #:commit "d3acc7d021c51e292fe7572d6eef3d2d8d86b1c2"))
-    )
+    #:channels
+    (list (channel-guix #:commit "c98ec501cce5c4776602ae7cb90b0ba5962ee895")))
 
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
