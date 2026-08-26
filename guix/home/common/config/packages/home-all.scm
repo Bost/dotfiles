@@ -7,13 +7,7 @@
   #:use-module ((gnu packages emacs-xyz) #:prefix pkg:)
   #:use-module (gnu packages) ; specification->package
   #:use-module (dotf config channels channel-defs)
-
-  ;; for inferior-pkg-in-channel : beg
-  #:use-module (guix packages)
-  #:use-module (guix inferior)
-  #:use-module (guix channels)
-  ;; #:use-module (guix profiles) ;; probably not needed
-  ;; for inferior-pkg-in-channel : end
+  #:use-module (dotf config packages package-defs) ; pkg-or-inferior
 
   #:use-module (srfi srfi-1)  ; list-processing procedures
   ;; simple & compact notation for specializing any subset of the parameters of
@@ -298,7 +292,27 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     glibc
     glibc-locales
 
-    gnupg
+    ;; gnupg is installed system-wide via `guix system reconfigure' instead
+    ;; (see (config packages syst-all) syst-packages-to-install), using the
+    ;; same pkg-or-inferior/channel-guix pin as below. TODO: also exclude it
+    ;; from `guix home reconfigure' proper (not just commented out here).
+    ;; (pkg-or-inferior
+    ;;  gnupg
+    ;;  #:channels
+    ;;  (list (channel-guix
+    ;;         #:commit
+    ;;         ;; Last working guix pull from 20 aug 2026 22:39:36
+    ;;         "c98ec501cce5c4776602ae7cb90b0ba5962ee895"
+    ;;
+    ;;         ;; Causes https://codeberg.org/guix/guix/issues/10622
+    ;;         ;; CommitDate: Mon Aug 17 11:00:35 2026 +0200
+    ;;         ;; gnu: gnupg: Update to 2.5.20.
+    ;;         ;; "e660026a1625db74f844bbd96a6681ca0fe922b3"
+    ;;
+    ;;         ;; Last before the "gnu: gnupg: Update to 2.5.20."
+    ;;         ;; Can't use it. Causes too may builds
+    ;;         ;; "1b19586c07b586d6fb8b3ead00153fbeb882faf8"
+    ;;         )))
 
     ;; transport layer security library, implements SSL, TLS, DTLS
     gnutls
@@ -968,20 +982,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ))
 (testsymb 'xfce-packages)
 
-;; cat /var/guix/profiles/per-user/$USER/guix-profile-<profile-number>-link/manifest
-(def* (pkg-or-inferior package #:key (channels '()))
-  "Return PACKAGE as-is, unless CHANNELS is non-empty, in which case look up
-and return the same-named package from the inferior built from CHANNELS - a
-list of channel objects, e.g. (list (channel-guix #:commit \"...\")).
-
-To switch between the ordinary and the inferior package, comment/uncomment
-the channel entries inside #:channels - no separate flag needed."
-  (if (empty? channels)
-      package
-      (first (lookup-inferior-packages
-              (inferior-for-channels channels)
-              (package-name package)))))
-(testsymb 'pkg-or-inferior)
+;; `pkg-or-inferior' moved to (dotf config packages package-defs) so it's
+;; also visible to `guix system reconfigure' (guix/systems/*.scm and
+;; guix/systems/common/syst-base.scm).
 
 (define (devel-guile-ide-arei-packages)
   (list

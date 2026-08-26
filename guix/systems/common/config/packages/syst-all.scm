@@ -1,6 +1,8 @@
 (define-module (config packages syst-all)
   #:use-module (bost common utils)
   #:use-module (gnu)   ; use-package-modules
+  #:use-module (dotf config channels channel-defs) ; channel-guix
+  #:use-module (dotf config packages package-defs)  ; pkg-or-inferior
   )
 
 (use-package-modules
@@ -55,7 +57,23 @@
     openssh
     strace
 
-    gnupg
+    (pkg-or-inferior
+     gnupg
+     #:channels
+     (list (channel-guix
+            #:commit
+            ;; Last working guix pull from 20 aug 2026 22:39:36
+            "c98ec501cce5c4776602ae7cb90b0ba5962ee895"
+
+            ;; Causes https://codeberg.org/guix/guix/issues/10622
+            ;; CommitDate: Mon Aug 17 11:00:35 2026 +0200
+            ;; gnu: gnupg: Update to 2.5.20.
+            ;; "e660026a1625db74f844bbd96a6681ca0fe922b3"
+
+            ;; Last before the "gnu: gnupg: Update to 2.5.20."
+            ;; Can't use it. Causes too may builds
+            ;; "1b19586c07b586d6fb8b3ead00153fbeb882faf8"
+            )))
     gparted    ;; disk partition
     mtools     ;; used by gparted
     rsync      ;; 'scp' is preinstalled
