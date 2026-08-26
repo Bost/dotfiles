@@ -10,6 +10,9 @@
 
   ;; home-packages-to-install
   #:use-module (config packages home-all)
+  #:use-module (dotf config channels channel-defs)  ; channel-guix
+  #:use-module (dotf config packages package-defs)  ; pkg-or-inferior
+  #:use-module (gnu packages package-management)    ; flatpak
 
   #:use-module (services starship-dotfiles)
   #:use-module (services fish)
@@ -173,10 +176,34 @@
 
 ;; TODO check if GPG keys are present and show commands how to transfer them:
 ;; See `crep 'copy\ \/\ transfer'`
+
+(define (pinned-telegram-from-flatpak-service)
+  "`telegram-from-flatpak-service' uses an unpinned `flatpak', whose propagated
+`gnupg' can shadow the pinned system version without appearing in `guix package
+--list-installed'. Pinning `flatpak' here via `pkg-or-inferior' keeps it and its
+propagated inputs on the same known-good channel commit."
+  (service
+   (@(bost home services package-management) home-flatpak-service-type)
+   ((@(bost home services package-management) home-flatpak-configuration)
+    (flatpak
+     (pkg-or-inferior
+      flatpak
+      #:channels
+      (list (channel-guix
+             #:commit
+             ;; Last working guix pull from 20 aug 2026 22:39:36
+             "c98ec501cce5c4776602ae7cb90b0ba5962ee895"))))
+    (remotes
+     '((flathub-remote
+        . "https://flathub.org/repo/flathub.flatpakrepo")))
+    (profile
+     '((flathub-remote "org.telegram.desktop"))))))
+(testsymb 'pinned-telegram-from-flatpak-service)
+
 (def-public (non-env-var-services-edge-ecke)
   "non-env-var-services-edge-ecke: docstring"
   (list
-   ((@(bost home services flatpak) telegram-from-flatpak-service))
+   (pinned-telegram-from-flatpak-service)
    (development-dirs-service)
    (home-config-service)
    (cli-utils-service)
