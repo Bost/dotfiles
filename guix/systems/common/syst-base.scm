@@ -125,8 +125,31 @@ so the full name from `comment' never shows up."
 (def-public (services)
   (list
 
-   ;; TODO guix system: error: duplicate 'dconf/profile/gdm' entry for /etc
-   ;; (gdm-login-screen-hide-users-service)
+   ;; Don't list accounts on the login screen — GDM prompts for a user name
+   ;; instead, so the full name from `comment' never shows up.
+   (simple-service
+    'gdm-login-screen dconf-service-type
+    (list
+     (dconf-profile
+      (name "gdm")
+      ;; Preserve GDM's built-in profile defaults, then add the generated
+      ;; system database containing the login-screen setting below.
+      (content
+       (list #~(begin
+                 (use-modules (ice-9 textual-ports))
+                 (string-trim
+                  (call-with-input-file
+                      #$(file-append (@ (gnu packages gnome) gdm)
+                                     "/share/dconf/profile/gdm")
+                    get-string-all)))
+             "system-db:gdm"))
+      (keyfile
+       (dconf-keyfile
+        (name "00-login-screen")
+        (content
+         (list
+          "[org/gnome/login-screen]"
+          "disable-user-list=true")))))))
 
    ;; Personal Computer/Smart Card PC/SC: specification for smart-card
    ;; integration into computing environments.
