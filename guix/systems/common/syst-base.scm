@@ -51,7 +51,9 @@
   (cons*
    (user-account
     (name user)
-    (comment user-full-name)
+    ;; Keep the real name out of GECOS so account pickers fall back to the
+    ;; login name instead of exposing `user-full-name'.
+    (comment user)
     (group "users")
     (home-directory home)
     ;; login shell; see also `packages`
@@ -93,8 +95,38 @@
    ;;  (home-directory "/home/jimb"))
    %base-user-accounts))
 
+(define (gdm-login-screen-hide-users-service)
+  "Don't list accounts on the login screen. GDM prompts for a user name instead,
+so the full name from `comment' never shows up."
+  (simple-service
+   'gdm-login-prompt-instead-of-list dconf-service-type
+   (list
+    (dconf-profile
+     (name "gdm")
+     ;; Preserve GDM's built-in profile defaults, then add the generated
+     ;; system database containing the login-screen setting below.
+     (content
+      (list #~(begin
+                (use-modules (ice-9 textual-ports))
+                (string-trim
+                 (call-with-input-file
+                     #$(file-append (@ (gnu packages gnome) gdm)
+                                    "/share/dconf/profile/gdm")
+                     get-string-all)))
+            "system-db:gdm"))
+     (keyfile
+      (dconf-keyfile
+       (name "00-login-screen")
+       (content
+        (list
+         "[org/gnome/login-screen]"
+         "disable-user-list=true"))))))))
+
 (def-public (services)
   (list
+
+   ;; TODO guix system: error: duplicate 'dconf/profile/gdm' entry for /etc
+   ;; (gdm-login-screen-hide-users-service)
 
    ;; PC/SC - Personal Computer/Smart Card: specification for smart-card
    ;; integration into computing environments.
