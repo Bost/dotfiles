@@ -98,25 +98,31 @@ avoiding the \"importing module (guix config) from the host\" warning."
   (cons `((guix config) => ,(make-config.scm))
         (delete '(guix config) modules)))
 
-(define common-modules
+(define (common-modules)
+  "Must contain all (bost common *), incl. (bost common test)
+necessary. See $dbstx/src/bost/gnu/packages/emacs-build.scm
+
+TODO auto-include the (bost common *) modules."
   '(
     (cli-common)
     (command-line)
     (dotf fs-utils)
     (dotf settings)
-    (bost common tests)
-    (bost common utils)
-    (bost common srfi-1-smart)
-    (bost common core)
     (bost common boolean)
-    (bost common list)
-    (bost common plist)
-    (bost common string)
+    (bost common core)
+    (bost common environment)
     (bost common exec)
     (bost common fs)
-    (bost common monad)
-    (bost common pretty-print)
     (bost common guix)
+    (bost common guix-shell)
+    (bost common list)
+    (bost common monad)
+    (bost common plist)
+    (bost common pretty-print)
+    (bost common srfi-1-smart)
+    (bost common string)
+    (bost common utils)
+    (bost common tests)
     (guix base16)
     (guix base32)
     (guix colors)
@@ -195,7 +201,7 @@ Example:
                          [#t `(command-line)]))))]
       (with-imported-modules
           (with-fresh-config
-           (append common-modules
+           (append (common-modules)
                    `((scm-bin ,symb) (scm-bin describe-commits))))
         #~(begin
             (use-modules (scm-bin #$symb))
@@ -287,7 +293,7 @@ a list of files to search through."
              `(begin
                 (use-modules (ice-9 getopt-long)
                              (ice-9 regex)
-                             ,@common-modules
+                             ,@(common-modules)
                              ,@extra-modules)
                 (handle-cli
                  ,@(if (member? #:trace   new-args) `() `(#:trace   ,trace))
@@ -295,12 +301,12 @@ a list of files to search through."
                  ,@fixed-new-args
                  (command-line))))]
        (when trace ;; (string=? "rgt" utility)
-         (format #t "common-modules : ~a\n" common-modules)
+         (format #t "common-modules : ~a\n" (common-modules))
          (format #t "extra-modules  : ~a\n" extra-modules)
          (format #t "sexp :\n~a\n" (pretty-print->string sexp))
          (format #t "\n"))
        (with-imported-modules
-           (with-fresh-config (append common-modules extra-modules))
+           (with-fresh-config (append (common-modules) extra-modules))
          #~#$sexp))
      #:guile (@(gnu packages guile) guile-3.0-latest)))))
 (testsymb 'service-file-utils)
