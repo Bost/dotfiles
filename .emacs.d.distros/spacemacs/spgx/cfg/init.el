@@ -2133,7 +2133,13 @@ before packages are loaded."
    bookmark-default-file (my-dotf-path ".emacs.d.distros/bookmarks")
 
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
-   ediff-window-setup-function 'ediff-setup-windows-default
+   ;; See ~M-x ediff-toggle-multiframe~ toggle multiframe / single frame
+   ;; (setq
+   ediff-window-setup-function
+   ;; #'ediff-setup-windows-multiframe ; control panel in a separate frame.
+   #'ediff-setup-windows-plain         ; everything in one frame, on the bottom
+   ;; #'ediff-setup-windows-default    ; 'multiframe' in GUI, 'plain' in TTY
+   ;; )
 
    ;; Fix projectile-regenerate-tags: ctags: invalid option -- ’e’
    ;; See https://github.com/bbatsov/projectile/issues/133
