@@ -303,9 +303,10 @@
       (keyboard-layout keyboard-layout)
       (menu-entries
        (list
-        (let ((linux-version "7.0.0-22"))
+        ;; sudo rg vmlinuz </path/to>/boot/grub/grub.cfg | head
+        (let ((linux-version "7.0.0-31"))
           (menu-entry
-           (label "Ubuntu 26.04 LTS")
+           (label "Ubuntu 26.04.1 LTS")
            ;; vmlinuz - compressed linux kernel
            (linux (format #f "/boot/vmlinuz-~a-generic" linux-version))
            (linux-arguments
