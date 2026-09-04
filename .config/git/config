@@ -11,6 +11,7 @@
 	df = diff --word-diff=color   # with diffstatic
 	dft = "!f() { GIT_EXTERNAL_DIFF=difft git diff \"$@\"; }; f"
 	cp = cherry-pick
+	wt = worktree
 
 	# Safer everyday helpers.
 	amend = commit --amend --reuse-message=HEAD
