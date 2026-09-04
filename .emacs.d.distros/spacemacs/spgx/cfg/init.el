@@ -2257,10 +2257,6 @@ before packages are loaded."
   ;; (xterm-mouse-mode -1)
   (super-save-mode +1) ;; better auto-save-mode
 
-  (with-eval-after-load 'magit
-    (require 'difftastic-bindings)
-    (difftastic-bindings-mode 1))
-
   (use-package claude-code-ide
     :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
     :config
@@ -2454,6 +2450,16 @@ before packages are loaded."
                   ;;   "/run/current-system/profile/bin"
                   ;;   "/run/current-system/profile/sbin")
                   ))
+    )
+
+  (with-eval-after-load 'magit
+    (require 'difftastic-bindings)
+    (difftastic-bindings-mode 1)
+
+    (transient-suffix-put 'magit-branch       "s" :description "spin-off → changer de branche")
+    (transient-suffix-put 'magit-branch       "S" :description "spin-out → rester ici")
+    (transient-suffix-put 'magit-cherry-pick  "s" :description "spin-off → changer de branche")
+    (transient-suffix-put 'magit-cherry-pick  "n" :description "spin-out → rester ici")
     )
 
   (with-eval-after-load 'magit-status
