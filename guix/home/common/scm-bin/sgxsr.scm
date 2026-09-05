@@ -10,8 +10,7 @@
 #!/usr/bin/env -S guix repl -L ./ -L ./guix/common --
 !#
 
-cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/sgxsr.scm
+cd $dotf && echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/sgxsr.scm
 ./guix/home/common/scm-bin/sgxsr.scm
 
 |#
@@ -61,6 +60,12 @@ home-channels.
 TODO Implement separate `sgxsr --args-pull ... --args-system ...'
 Extra arguments are forwarded to the initial `guix system'.
 
+TODO Implement separate `sgxsr --no-pull ... --args-system ...'
+
+TODO Implement `sgxsr --equal-to-home-channels'
+1. comment out existing in syst-channels.scm
+2. add the channels from home-channels.scm
+3. prepend timestamp
 "
  (let* ((extra-args (cdr args))
         (config (str dtfg "/systems/syst-" (gethostname) ".scm")))
@@ -71,18 +76,20 @@ Extra arguments are forwarded to the initial `guix system'.
               (gethostname) config)
       (exit 1))
 
-    ;; No automatic --allow-downgrades for system channels.
-    (let ((rc (status:exit-val
-               (apply system*
-                      `("guix" "pull"
-                        "--unsafe-channel-evaluation"
-                        ,(string-append "--load-path=" common-lp)
-                        ,(string-append "--channels=" channels-scm)
-                        ,@extra-args
-                        )))))
-      (unless (zero? rc) (exit rc)))
+    (define no-pull #f)
+    (unless no-pull
+      ;; No automatic --allow-downgrades for system channels.
+      (let ((rc (status:exit-val
+                 (apply system*
+                        `("guix" "pull"
+                          "--unsafe-channel-evaluation"
+                          ,(string-append "--load-path=" common-lp)
+                          ,(string-append "--channels=" channels-scm)
+                          ,@extra-args
+                          )))))
+        (unless (zero? rc) (exit rc)))
 
-    (notify "Done" "`guix pull` finished")
+      (notify "Done" "`guix pull` finished"))
 
     ;; The channels for system and home configurations may differ.  Roll back
     ;; the pull above to reactivate home-channels.  This won't behave correctly
@@ -110,12 +117,13 @@ Extra arguments are forwarded to the initial `guix system'.
                           "reconfigure" ,config
                           )))))
         (lambda ()
-          (let ((rollback-rc (status:exit-val
-                              (apply system*
-                                     `("guix" "pull" "--roll-back")))))
-            (exit (if (zero? reconfigure-rc)
-                      rollback-rc
-                      reconfigure-rc))))))))
+          (unless no-pull
+            (let ((rollback-rc (status:exit-val
+                                (apply system*
+                                       `("guix" "pull" "--roll-back")))))
+              (exit (if (zero? reconfigure-rc)
+                        rollback-rc
+                        reconfigure-rc)))))))))
 (testsymb 'main)
 
 (module-evaluated)
