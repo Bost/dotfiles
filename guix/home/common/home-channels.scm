@@ -104,18 +104,6 @@
 (module-evaluated)
 
 (home-channels
- ;; 20 août 2026 22:39:36
- ;; #:nonguix-commit       "653504e6551198c9b2b998c143d7cf2675b22547"
- ;; #:bstx-commit          "cca04f96125424bed31a59d3e9461da8518c7ba5"
- ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- ;; #:guix-commit          "c98ec501cce5c4776602ae7cb90b0ba5962ee895"
-
- ;; 25 août 2026 22:34:26
- ;; #:nonguix-commit       "c15e19cdbdfdfddacdae865741809af4fa86a665"
- ;; #:bstx-commit          "e5194b1fc1a9e417bfabfd65f692294fdef2d9be"
- ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- ;; #:guix-commit          "df854574b0e2ec021dcd94cd3784b51c2ba7e4c2"
-
  ;; 26 août 2026 12:20:08
  ;; #:nonguix-commit       "c15e19cdbdfdfddacdae865741809af4fa86a665"
  ;; #:bstx-commit          "e5194b1fc1a9e417bfabfd65f692294fdef2d9be"
@@ -135,10 +123,22 @@
  ;; #:guix-commit          "c610516db57e247b42c22094ecdf149c8bff116b"
 
  ;; 1 septembre 2026 16:40:43
+ ;; #:nonguix-commit       "accdba77be815bbe00868145dd66d68056eecf7a"
+ ;; #:bstx-commit          "c43512e5959601efb7cc2584dfae852028653f5b"
+ ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ ;; #:guix-commit          "b8422bc92c56c5c7f22a9378b5ac7695bc487fb4"
+
+ ;; 5 septembre 2026 11:27:01
+ ;; #:nonguix-commit       "accdba77be815bbe00868145dd66d68056eecf7a"
+ ;; #:bstx-commit          "388a77283a2b74cf7e1b4826be60473b40ebc114"
+ ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ ;; #:guix-commit          "99cd3f04169d0eef03b5fc7e3a9e2fec6542c3aa"
+
+ ;; 7 September 2026 11:40:50
  #:nonguix-commit       "accdba77be815bbe00868145dd66d68056eecf7a"
- #:bstx-commit          "c43512e5959601efb7cc2584dfae852028653f5b"
+ #:bstx-commit          "49335107503e4a0b0755b135cbedbd233f77a16b"
  #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- #:guix-commit          "b8422bc92c56c5c7f22a9378b5ac7695bc487fb4"
+ #:guix-commit          "d759a1922126909b6097e245631669cf0b368b57"
 
  #:use-local-checkout #f)
 
