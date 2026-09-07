@@ -661,6 +661,10 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; etc.
    guile-studio
 
+   ;; https://codeberg.org/rgherdt/scheme-lsp-server
+   ;; LSP (Language Server Protocol) server for Guile
+   (@(bost gnu packages guile-xyz) guile-lsp-server)
+
    gv           ; PostScript and PDF viewer using Ghostscript as a back-end
    gvfs         ; GIO virtual file system; user mounts
 
