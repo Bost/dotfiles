@@ -1,0 +1,43 @@
+* Utils
+* smart versions of take-*, drop-* etc.
+* Continue adding tests
+
+* bin/gpg.*.sh utilities
+** asymetric decryption
+** long param names
+** file & directory encryption
+** key transfer
+
+* sgxsr: parameter -n --no-guix-pull: skip the `guix pull ...`
+
+* gxs
+** syst-all: locales
+** syst-ecke: Add sway / Wayland-specific settings
+** Why is icecat present in the system profile?
+** claude: .refactor-services-plan.md
+** Fix gdm-login-screen-hide-users-service
+  guix system: error: duplicate 'dconf/profile/gdm' entry for /etc
+
+* gxh
+** Compose shell commands with a monad
+** home-all: 'Error loading autoloads' caused by omtose-phellack-theme
+** home-all: calculate (guix-size "firefox")
+** xfce-terminal: Remove menu
+** pull nonguix from localhost
+** render-manifest into a single file
+** cli-common: Implement --dx-dry-run
+** Implement guix-find-checkouts in Guile Scheme
+** test bin/dmesg-after
+** Finish terminal-benchmark.scm implementations
+
+* crep
+** better searches
+** search-notes: diacritic
+
+* guix-os: wip - no shared clipboard
+
+
+* Spacemacs
+** ~C-s-;~ tw-toggle-comment-sexp-lines
+** Add lispyville - Integrating Evil with lispy
+** Fix spacemacs/resize-shell-to-desired-width
