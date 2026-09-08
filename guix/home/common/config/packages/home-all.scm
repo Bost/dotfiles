@@ -190,10 +190,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    qemu      ; Machine emulator and virtualizer ;; 688 MiB
 
    ;; 3D GPU emulation/virtualization library used by qemu/spice
-   (pkg-or-inferior
-    virglrenderer
-    ;; #:channels (list (channel-guix #:commit "..."))
-    )
+   virglrenderer
 
    ;; ungoogled-chromium ; 285MiB; supports WebUSB; doesn't start
 
@@ -310,10 +307,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Read-write access to NTFS file systems
     ntfs-3g
 
-    (pkg-or-inferior
-     ripgrep
-     ;; #:channels (list (channel-guix #:commit "..."))
-     )
+    ripgrep
 
     rsync
 
@@ -637,7 +631,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
    git
    (list git "gui")
-   git-delta ; synopsis: Syntax-highlighting pager for git
+   git-delta ; Syntax-highlighting pager for git
    ;; See emacs-magit-delta ; Integration of `delta' with `emacs-magit'
 
    ghc ; The Glasgow Haskell Compiler
@@ -713,10 +707,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    pavucontrol ; PulseAudio volume control
    perl
 
-   (pkg-or-inferior
-    php
-    ;; #:channels (list (channel-guix #:commit "..."))
-    )
+   php
 
    ;; GnuPG's interfaces to passphrase input
    pinentry
@@ -814,8 +805,9 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
    (pkg-or-inferior
     libreoffice
-    #:channels
-    (list (channel-guix #:commit "c98ec501cce5c4776602ae7cb90b0ba5962ee895")))
+    ;; #:channels
+    ;; (list (channel-guix #:commit "..."))
+    )
 
    ;; Manage encryption keys and passwords in the GNOME keyring
    seahorse
