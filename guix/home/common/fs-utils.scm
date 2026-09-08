@@ -27,9 +27,13 @@
 (define-public dgx  (user-dev "/guix"))
 (define-public dgxp (user-dev "/guix-packages"))
 
-(define-public dspd (user-home "/.emacs.d.distros/spacemacs/develop/src"))
-(define-public dspg (user-home "/.emacs.d.distros/spacemacs/guix/src"))
-(define-public dspc (user-home "/.emacs.d.distros/spacemacs/cycle/src"))
+(define (spacemacs-dir branch)
+  (user-home "/.emacs.d.distros/spacemacs/" branch "/src"))
+
+(define-public dspd (spacemacs-dir "develop"))
+(define-public dspg (spacemacs-dir "guix"))
+(define-public dsps (spacemacs-dir "spguix"))
+(define-public dspc (spacemacs-dir "cycle"))
 
 ;; see gnu/home/services/symlink-manager.scm
 (define-public xdg-config-home (or (getenv "XDG_CONFIG_HOME")
