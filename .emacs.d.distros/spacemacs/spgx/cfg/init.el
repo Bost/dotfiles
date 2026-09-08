@@ -2,6 +2,27 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+;;; :beg: move to `my-tweaks` layer or `tweaks` package
+;; Avoid starting Flyspell (and auto-dictionary) on large buffers.
+;; Install before layer initialization, including restored startup buffers.
+;; Manual spellchecking and `SPC t S' remain available at any size.
+(defvar my-spell-checking-max-buffer-size (* 512 1024)
+  "Buffer size in bytes at which automatic spellchecking is skipped.")
+
+(defun my-enable-spell-checking-for-small-buffer ()
+  "Enable automatic spellchecking only below the buffer size limit."
+  (when (save-restriction
+          (widen)
+          (< (1- (position-bytes (point-max)))
+             my-spell-checking-max-buffer-size))
+    (if (derived-mode-p 'prog-mode)
+        (flyspell-prog-mode)
+      (flyspell-mode 1))))
+
+(add-hook 'text-mode-hook #'my-enable-spell-checking-for-small-buffer)
+(add-hook 'prog-mode-hook #'my-enable-spell-checking-for-small-buffer)
+;;; :end: move to `my-tweaks` layer or `tweaks` package
+
 ;; It seems that this macro cannot be added to emacs-tweaks, as it only gets
 ;; loaded during a later stage of Spacemacs initialization.
 (defmacro my-def-evar (elisp-var def-val evar-name)
@@ -1079,7 +1100,8 @@ This function should only modify configuration layer settings."
      ;; sudo apt install --yes aspell-en aspell-fr aspell-de aspell-sk
      (spell-checking
       :variables
-      ;; spell-checking-enable-by-default nil
+      ;; Enable through the size-aware hooks defined above.
+      spell-checking-enable-by-default nil
       spell-checking-enable-auto-dictionary t
 
       ;; Auto-completion popup when the point is idle on a misspelled word
