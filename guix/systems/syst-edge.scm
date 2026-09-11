@@ -231,7 +231,6 @@
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
-
         (guix-service-type
          config =>
          (guix-configuration
@@ -266,13 +265,14 @@
              )
             %default-authorized-guix-keys))))
 
-        ;; GDM - GNOME Desktop Manager: graphical user login, display servers
+        ;; GNOME Desktop Manager GDM: graphical user login, display servers
         (gdm-service-type config => (gdm-configuration
                                      (inherit config)
                                      (auto-suspend? #f)
 ;;; See the Warning above in the xvnc-configuration
                                      (xdmcp? #t)))
-        #;(delete gdm-service-type))))
+        ;; (delete gdm-service-type)
+        )))
 
 ;;; See
 ;;; https://guix.gnu.org/manual/en/html_node/Bootloader-Configuration.html

@@ -192,7 +192,7 @@
          (drivers '("nvidia"))
          (keyboard-layout keyboard-layout))
 
-        ;; SDDM - Simple Desktop Display Manager (for login screen)
+        ;; Simple Desktop Display Manager SDDM: for login screen
         ;; Recommended for KDE Plasma, LXQt desktop environments
         sddm-service-type)
 
@@ -242,7 +242,6 @@
 
       ;; %desktop-services is the default list of services we are appending to.
       (modify-services %desktop-services
-
         (guix-service-type
          config =>
          (guix-configuration
@@ -288,7 +287,7 @@
 
         ;; service "xorg-server" must be defined only once (see above)
 
-        ;; GDM - GNOME Desktop Manager: graphical user login, display servers
+        ;; GNOME Desktop Manager GDM: graphical user login, display servers
         (delete gdm-service-type))))
 
 ;;; See

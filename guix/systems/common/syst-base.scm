@@ -128,7 +128,7 @@ so the full name from `comment' never shows up."
    ;; TODO guix system: error: duplicate 'dconf/profile/gdm' entry for /etc
    ;; (gdm-login-screen-hide-users-service)
 
-   ;; PC/SC - Personal Computer/Smart Card: specification for smart-card
+   ;; Personal Computer/Smart Card PC/SC: specification for smart-card
    ;; integration into computing environments.
    (service pcscd-service-type)
 
