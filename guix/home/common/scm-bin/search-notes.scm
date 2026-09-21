@@ -2,35 +2,30 @@
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
   #:use-module (guix colors)
   #:use-module (bost common utils)
-  #:use-module (srfi srfi-1)   ; list-processing procedures
-  #:use-module (ice-9 optargs) ; define*-public
+  #:use-module (srfi srfi-1)       ; list-processing procedures
+  #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (ice-9 getopt-long) ; -v/--verbose parsing
+  #:use-module (srfi srfi-26)      ; Conveniently specialize selected parameters
   )
 
 #|
 ;; `-e (module)` calls the `main` from a given module or `-e my-procedure` calls
 ;; `my-procedure` from current module
 
-#!/usr/bin/env -S guile \\
--L ./guix/common -L ./guix/home/common -e (scm-bin\ search-notes) -s
+#!/usr/bin/env -S guix repl --
 !#
 
 cd $dotf
-./guix/home/common/scm-bin/search-notes.scm \
-    'rest ' \
-    /home/bost/org-roam/guix-guile-nix/guile.scrbl \
-    /home/bost/org-roam/guix-guile-nix/guile_scripting.scrbl
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/search-notes.scm
+./guix/home/common/scm-bin/search-notes.scm -v 'timezone ' \
+  /home/bost/org-roam/cli/git.scrbl
+
 |#
 
-(define m
-  #;(module-name-for-logging)
-  ((comp
-    (partial string-join)
-    (partial map (partial format #f "~a"))
-    (partial module-name))
-   (current-module)))
-(evaluating-module)
+(define m (module-name-for-logging))
 
-(define dbg #f)
+(evaluating-module)
 
 ;; (define diacritic-map
 ;;   (hash "a" "[aáäàâæ]"
@@ -87,7 +82,7 @@ cd $dotf
 ;;     ;; (printf "[regexp-normalize-split] normalized-target: ~a\n" normalized-target)
 ;;     (regexp-split regex normalized-target)))
 
-(define (search-file-ripgrep search-pattern file)
+(define* (search-file-ripgrep search-pattern file #:key (verbose #f))
   "
 (search-file-ripgrep \"search-pattern\"
              \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\")
@@ -126,7 +121,7 @@ cd $dotf
            "rg -iN --color=always -B 3 -U '~a(.|\n)*?\n\n'"
            search-pattern))
          (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
-         (cmd-result-struct (exec cmd #:verbose #f #:return-plist #t))
+         (cmd-result-struct (exec cmd #:verbose verbose #:return-plist #t))
          (retcode (plist-get cmd-result-struct #:retcode))]
     (if (zero? retcode)
         (let* [(results (plist-get cmd-result-struct #:results))]
@@ -142,7 +137,7 @@ cd $dotf
         )))
 (testsymb 'search-file-ripgrep)
 
-(def (search-file-awk search-pattern file)
+(def* (search-file-awk search-pattern file #:key (verbose #f))
   "
 (search-file-awk \"search-pattern\"
              \"/home/bost/dev/notes/notes/bric_a_brac.scrbl\")
@@ -180,7 +175,7 @@ cd $dotf
            "awk -v RS='' 'BEGIN {IGNORECASE=1} /~a/ {gsub(/~a/, \"\\033[1;31m&\\033[0m\"); print $0 \"\\n\"}'"
            search-pattern search-pattern))
          (cmd (format #f "~a | ~a | ~a" cmd1 cmd2 cmd3))
-         (cmd-result-struct (exec cmd #:verbose #f #:return-plist #t))
+         (cmd-result-struct (exec cmd #:verbose verbose #:return-plist #t))
          (retcode (plist-get cmd-result-struct #:retcode))]
     (if (zero? retcode)
         (let* [(results (plist-get cmd-result-struct #:results))]
@@ -189,23 +184,40 @@ cd $dotf
             (map (partial format #t "~a\n") results)))
         (error (format #f "~a retcode: ~a\n" f retcode)))))
 
-(define*-public (search-notes #:rest args)
+(def*-public (search-notes #:key (trace #f) #:rest args)
   "Usage:
 (search-notes (list \"<ignored>\"
-  \"rest \"
+  \"-v\" \"rest \"
   \"/home/bost/org-roam/guix-guile-nix/guile.scrbl\"
   \"/home/bost/org-roam/guix-guile-nix/guile_scripting.scrbl\"))
+
+-v/--verbose prints the sed/awk pipeline before it's executed.
 "
-  ;; (format #t "args: '~a'\n" args)
+  (when trace
+    (format #t "~a trace   : ~a\n" f trace)
+    (format #t "~a args    : ~a\n" f args))
   (let* [(arg-lst (car args))
-         (search-pattern ((comp car cdr) arg-lst))]
-    ;; (format #t "arg-lst: '~a'\n" arg-lst)
-    ;; (format #t "ptrn: '~a'\n" search-pattern)
-    (let* [(files ((comp cdr cdr) arg-lst))]
-      ;; (format #t "files: '~a'\n" files)
-      ;; (map (partial search-file-ripgrep search-pattern) files)
-      (map (partial search-file-awk search-pattern) files)
-      )))
+         (option-spec '((verbose (single-char #\v) (value #f))))
+         ;; `getopt-long' expects ARG-LST's car to be the program name, as
+         ;; `command-line' would produce it -- it's skipped, not parsed.
+         (options (getopt-long arg-lst option-spec))
+         (verbose (option-ref options 'verbose #f))
+         (positional-args (option-ref options '() '()))
+         (search-pattern (car positional-args))
+         (files (cdr positional-args))
+         ]
+    (when trace
+      (format #t "arg-lst: '~a'\n" arg-lst)
+      (format #t "option-spec: '~a'\n" option-spec)
+      (format #t "options: '~a'\n" options)
+      (format #t "verbose: '~a'\n" verbose)
+      (format #t "positional-args: '~a'\n" positional-args)
+      (format #t "search-pattern: '~a'\n" search-pattern)
+      (format #t "files: '~a'\n" files)
+      )
+    (map (cut search-file-awk search-pattern <> #:verbose verbose)
+         files)
+    ))
 
 (define-public main search-notes)
 
