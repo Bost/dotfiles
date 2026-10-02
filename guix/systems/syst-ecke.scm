@@ -303,7 +303,7 @@
       (menu-entries
        (list
         ;; sudo rg vmlinuz </path/to>/boot/grub/grub.cfg | head
-        (let ((linux-version "7.0.0-31"))
+        (let ((linux-version "7.0.0-38"))
           (menu-entry
            (label "Ubuntu 26.04.1 LTS")
            ;; vmlinuz - compressed linux kernel
