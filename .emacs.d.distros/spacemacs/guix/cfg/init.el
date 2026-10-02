@@ -2024,6 +2024,9 @@ before packages are loaded."
   ;; (global-undo-tree-mode)
 
   ;; (spacemacs/toggle-display-fill-column-indicator) ;; toggle with ~SCP t f~
+  ;; Show the indicator at column 100; `fill-column' (e.g. for M-q) is unchanged.
+  ;; Buffer-local variable, so set its default value.
+  ;; (setq-default display-fill-column-indicator-column 100)
 
   ;; (debug) ;; stops the execution. What I need is the stack frame as a string
 
