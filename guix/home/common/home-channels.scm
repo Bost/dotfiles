@@ -20,7 +20,7 @@
 (define* (home-channels-edge-ecke #:key
                                   bstx-commit
                                   games-commit
-                                  guix-ai-cloud
+                                  guix-ai-cloud-commit
                                   guix-android-commit
                                   guix-past-commit
                                   guix-science-commit
@@ -61,14 +61,14 @@
    (channel-bstx #:commit bstx-commit #:use-local-checkout use-local-checkout)
 
    ;; pulls-in: nonguix
-   (channel-guix-ai-cloud #:commit guix-ai-cloud #:use-local-checkout use-local-checkout)
+   (channel-guix-ai-cloud #:commit guix-ai-cloud-commit #:use-local-checkout use-local-checkout)
 
    ))
 
 (def* (home-channels #:key
                      bstx-commit
                      games-commit
-                     guix-ai-cloud
+                     guix-ai-cloud-commit
                      guix-android-commit
                      guix-commit
                      guix-past-commit
@@ -88,7 +88,7 @@
                                   #:use-local-checkout use-local-checkout))
            (home-channels-edge-ecke
             #:bstx-commit          bstx-commit
-            #:guix-ai-cloud        guix-ai-cloud
+            #:guix-ai-cloud-commit guix-ai-cloud-commit
             #:games-commit         games-commit
             #:guix-android-commit  guix-android-commit
             #:guix-past-commit     guix-past-commit
