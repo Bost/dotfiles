@@ -2267,6 +2267,9 @@ before packages are loaded."
   ;; Show the window's buffers as tabs: left = previous, right = next.
   (global-tab-line-mode 1)
 
+  ;; Don't reindent (gptel-make-openai ...) when saving this init.el file
+  (put 'gptel-make-openai 'lisp-indent-function nil)
+
   ;; TODO show how long was the delay + history, so that I can adjust the
   ;; key-chord-two-keys-delay then ~l e~ are pressed.
 
