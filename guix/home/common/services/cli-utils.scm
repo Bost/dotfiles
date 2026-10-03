@@ -144,38 +144,49 @@ TODO auto-include the (bost common *) modules."
     (guix utils)
     ))
 
+(define (desc->store-name desc)
+  "\"foo bar baz\" -> \"foo-bar-baz\"
+A store item name may only contain [a-zA-Z0-9+-._?=]; replace anything else
+by `-' so #:desc can be any human readable string."
+  (let [(valid (char-set-union char-set:letter+digit (string->char-set "+-._?=")))]
+    (string-map (lambda (c) (if (and (char-set-contains? valid c)
+                                     (< (char->integer c) 128))
+                                c
+                                #\-))
+                desc)))
+
 (def* (service-file-general
-       #:key utility desc scm-file module-name chmod-params files
-       (excluded-files (list))
-       (other-files (list)))
+       #:key (trace #f) utility desc scm-file module-name chmod-params files
+       (excluded-files (list)) (other-files (list))
+       #:rest args)
   "The priority is 1. module-name, 2. scm-file, 3. utility
 TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  ;; (format #t "~a Starting…\n" f)
-  ;; (when (string=? utility "gicl")
-  ;;   (format #t "~a git?         : ~s\n" f git?)
-  ;;   (format #t "~a utility      : ~s\n" f utility)
-  ;;   (format #t "~a desc         : ~s\n" f desc)
-  ;;   (format #t "~a scm-file     : ~s\n" f scm-file)
-  ;;   (format #t "~a module-name  : ~s\n" f module-name)
-  ;;   (format #t "~a chmod-params : ~s\n" f chmod-params)
-  ;;   (format #t "~a files        : ~s\n" f files)
-  ;;   (format #t "~a other-files  : ~s\n" f other-files))
+  (when trace
+    (fmt "~a #:trace        : ~s\n" f trace)
+    (fmt "~a #:utility      : ~s\n" f utility)
+    (fmt "~a #:desc         : ~s\n" f desc)
+    (fmt "~a #:scm-file     : ~s\n" f scm-file)
+    (fmt "~a #:module-name  : ~s\n" f module-name)
+    (fmt "~a #:chmod-params : ~s\n" f chmod-params)
+    (fmt "~a #:files        : ~s\n" f files)
+    (fmt "~a #:files        : ~s\n" f excluded-files)
+    (fmt "~a #:other-files  : ~s\n" f other-files)
+    (fmt "~a   args          ~a ; ~a\n" f args)
+    )
   (list
    (str scm-bin-dirname "/" utility)
    (program-file
-    ;; 1st param: name
+    ;; program-file 1st param: name
     (cond
-     [(equal? scm-file "chmod")
-      (str "chmod-plus-" chmod-params)]
-     [(equal? scm-file "search-notes")
-      (str "search-notes-" utility)]
-     [#t
-      desc])
-    ;; 2nd param: exp
+     [(equal? scm-file "chmod")        (str "chmod-plus-" chmod-params)]
+     [(equal? scm-file "search-notes") (str "search-notes-" utility)]
+     [#t                               (desc->store-name desc)])
+
+    ;; program-file 2nd param: exp
     ;; TODO clarify if source-module-closure is needed only for imports of
     ;; guix modules?
     (let* [(symb-string (or scm-file utility))
@@ -682,7 +693,7 @@ a list of files to search through."
 (define (direct-utils-files)
   (map
    (partial apply service-file-general)
-   (list ; Can't use spaces in the #:desc "..." strings
+   (list
     (list #:utility "sgxsr"   #:desc "guix-pull-and-system-reconfigure")
     (list #:utility "extract" #:desc "extract-uncompress")
 
