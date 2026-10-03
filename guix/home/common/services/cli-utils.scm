@@ -10,6 +10,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu services)
   #:use-module (guix gexp)
+  #:use-module (guix modules) ; source-module-closure guix-module-name?
   #:use-module (guix store) ; run-with-store
   #:use-module (guix monads) ; mlet
   #:use-module (guix derivations) ; build-derivations
@@ -97,6 +98,23 @@ avoiding the \"importing module (guix config) from the host\" warning."
   ;; reproducibly, so the provenance warning goes away.
   (cons `((guix config) => ,(make-config.scm))
         (delete '(guix config) modules)))
+
+(define (program-modules modules)
+  "MODULES plus every (guix ...), (gnu ...), (bost ...) and (dotf ...) module
+they transitively use, with a fresh (guix config).
+Without the closure e.g. (bost common tests) -> (guix build utils) isn't
+imported and resolves only via the caller's GUILE_LOAD_PATH, which `sudo'
+clears:
+  sudo reboot
+  ...
+  no code for module (guix build utils)"
+  (with-fresh-config
+   (source-module-closure
+    modules
+    #:select? (lambda (module)
+                (or (member module modules)
+                    (guix-module-name? module)
+                    (memq (car module) '(bost dotf)))))))
 
 (define (common-modules)
   "Must contain all (bost common *), incl. (bost common test)
@@ -211,7 +229,7 @@ Example:
                                 (full-filepaths excluded-files))))]
                          [#t `(command-line)]))))]
       (with-imported-modules
-          (with-fresh-config
+          (program-modules
            (append (common-modules)
                    `((scm-bin ,symb) (scm-bin describe-commits))))
         #~(begin
@@ -317,7 +335,7 @@ a list of files to search through."
          (format #t "sexp :\n~a\n" (pretty-print->string sexp))
          (format #t "\n"))
        (with-imported-modules
-           (with-fresh-config (append (common-modules) extra-modules))
+           (program-modules (append (common-modules) extra-modules))
          #~#$sexp))
      #:guile (@(gnu packages guile) guile-3.0-latest)))))
 (testsymb 'service-file-utils)
