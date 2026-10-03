@@ -396,10 +396,10 @@ Some binding snippets / examples:
    ;; TODO s-a when "Last buffer not found."
    ("s-<tab>" . spacemacs/alternate-buffer)
 
-   ("C-<next>"  . next-buffer)        ; SPC b n; Ctrl-PageDown
-   ("s-<right>" . next-buffer)
-   ("C-<prior>" . previous-buffer)    ; SPC b p; Ctrl-PageUp
-   ("s-<left>"  . previous-buffer)
+   ("C-<next>"  . my-next-buffer)     ; Ctrl-PageDown; right in the tab-bar
+   ("s-<right>" . my-next-buffer)
+   ("C-<prior>" . my-previous-buffer) ; Ctrl-PageUp; left in the tab-bar
+   ("s-<left>"  . my-previous-buffer)
 
    ;; same bindings as in the guake terminal
    ("S-s-<up>"    . evil-window-up)
@@ -2264,8 +2264,166 @@ before packages are loaded."
 
   (beacon-mode 1)
 
-  ;; Show the window's buffers as tabs: left = previous, right = next.
-  (global-tab-line-mode 1)
+;;; ┌── Tab-bar: buffers of the current layout ─────────────────────────────────
+
+  (progn
+    ;; A single frame-wide tab-bar showing the buffers of the current layout
+    ;; (persp-mode perspective) in opening order. `my-next-buffer' and
+    ;; `my-previous-buffer' switch to the right / left neighbour, so the
+    ;; tab-bar shows where they go. tab-bar is built-in Emacs.
+    (defvar my-buffer-order nil
+      "Buffers in the order they first appeared in `my-frame-buffers'.")
+
+    (defun my-frame-buffers ()
+      "Live buffers of the current layout, in opening order.
+The order stays constant; a newly opened buffer is added at the end.
+The Default layout is persp-mode's nil perspective, which has no buffer
+list of its own, so fall back to `buffer-list' there. Buffers matching
+`helm-boring-buffer-regexp-list' are left out, as in `helm-buffers-list'."
+      (let ((bufs (seq-remove
+                   (lambda (b)
+                     (or (not (buffer-live-p b))
+                         (string-prefix-p " " (buffer-name b))
+                         (and (boundp 'helm-boring-buffer-regexp-list)
+                              (seq-some
+                               (lambda (re) (string-match-p re (buffer-name b)))
+                               helm-boring-buffer-regexp-list))))
+                   (if (and (bound-and-true-p persp-mode) (get-current-persp))
+                       ;; persp-add-buffer pushes new buffers to the front
+                       (reverse (persp-buffers (get-current-persp)))
+                     ;; Most-recently-used first, i.e. reordered on every switch
+                     (buffer-list)))))
+        (setq my-buffer-order
+              (append (seq-filter #'buffer-live-p my-buffer-order)
+                      (seq-remove (lambda (b) (memq b my-buffer-order)) bufs)))
+        (seq-filter (lambda (b) (memq b bufs)) my-buffer-order)))
+
+    (defun my-switch-frame-buffer (step)
+      "Switch to the buffer STEP positions away in `my-frame-buffers'.
+Wrap around at both ends."
+      (let* ((bufs (my-frame-buffers))
+             (pos (seq-position bufs (current-buffer))))
+        (when bufs
+          (switch-to-buffer
+           (nth (mod (cond (pos (+ pos step))
+                           ((> step 0) 0)
+                           (t -1))
+                     (length bufs))
+                bufs)))))
+
+    (defun my-next-buffer ()
+      "Switch to the buffer right of the current one in the tab-bar."
+      (interactive)
+      (my-switch-frame-buffer 1))
+
+    (defun my-previous-buffer ()
+      "Switch to the buffer left of the current one in the tab-bar."
+      (interactive)
+      (my-switch-frame-buffer -1))
+
+    (defun my-tab-bar-frame-buffers ()
+      "Tab-bar items for `my-frame-buffers', centred in the frame.
+Show as many as fit the frame width, centred on the current buffer, with
+an ellipsis at a cut-off end. The tabs are separated by vertical lines."
+      (with-selected-window (or (minibuffer-selected-window) (selected-window))
+        (let* ((cur (current-buffer))
+               (bufs (vconcat (my-frame-buffers)))
+               (n (length bufs))
+               (labels (vconcat
+                        (mapcar (lambda (b)
+                                  (propertize (concat " " (buffer-name b) " ")
+                                              'face (if (eq b cur)
+                                                        'tab-bar-tab
+                                                      'tab-bar-tab-inactive)))
+                                bufs)))
+               ;; Every tab is followed by a 1 px wide separator line
+               (widths (vconcat (mapcar (lambda (label)
+                                          (1+ (string-pixel-width label)))
+                                        labels)))
+               (separator
+                (propertize " "
+                            'face `(:background
+                                    ,(or (face-foreground 'shadow nil t)
+                                         "grey50"))
+                            'display '(space :width (1))))
+               (more (propertize " … " 'face 'tab-bar))
+               (more-width (string-pixel-width more))
+               (avail (- (frame-inner-width) (* 2 more-width)))
+               (pos (or (seq-position bufs cur) 0))
+               (lo pos)
+               (hi pos)
+               ;; 1+ for the separator line in front of the first tab
+               (used (if (> n 0) (1+ (aref widths pos)) 0))
+               (grew (> n 0)))
+          ;; Grow the visible range alternately to the right and to the left
+          (while grew
+            (setq grew nil)
+            (when (and (< hi (1- n))
+                       (<= (+ used (aref widths (1+ hi))) avail))
+              (setq hi (1+ hi) used (+ used (aref widths hi)) grew t))
+            (when (and (> lo 0)
+                       (<= (+ used (aref widths (1- lo))) avail))
+              (setq lo (1- lo) used (+ used (aref widths lo)) grew t)))
+          (when (> n 0)
+            (append
+             ;; Left padding which centres the tabs in the frame
+             (let ((total (+ used
+                             (if (> lo 0) more-width 0)
+                             (if (< hi (1- n)) more-width 0))))
+               `((my-buf-padding
+                  menu-item
+                  ,(propertize " " 'face 'tab-bar
+                               'display `(space :width
+                                                (,(max 0 (/ (- (frame-inner-width)
+                                                               total)
+                                                            2)))))
+                  ignore)))
+             (when (> lo 0)
+               `((my-buf-more-left menu-item ,more ignore)))
+             `((my-buf-separator menu-item ,separator ignore))
+             (mapcan (lambda (i)
+                       (let ((b (aref bufs i)))
+                         `((,(intern (format "my-buf-%d" i))
+                            menu-item
+                            ,(aref labels i)
+                            ,(lambda () (interactive) (switch-to-buffer b))
+                            :help ,(or (buffer-file-name b) (buffer-name b)))
+                           (,(intern (format "my-buf-separator-%d" i))
+                            menu-item ,separator ignore))))
+                     (number-sequence lo hi))
+             (if (< hi (1- n))
+                 `((my-buf-more-right menu-item ,more ignore))
+               ;; The rest of the tab-bar gets the face of its last item, so
+               ;; don't let it be the current tab's face.
+               `((my-buf-end menu-item ,(propertize " " 'face 'tab-bar)
+                             ignore))))))))
+
+    (setq tab-bar-format '(my-tab-bar-frame-buffers))
+    (tab-bar-mode 1)
+
+    ;; Give the tab-bar the background of the active mode-line, i.e. of its
+    ;; spaceline filler `powerline-active2', so that the tab-bar doesn't merge
+    ;; with the highlighted current line when the point is at the window top.
+    ;; The current tab gets the buffer background, so it stands out.
+    (defun my-tab-bar-colors ()
+      (let ((mode-line-face (if (facep 'powerline-active2)
+                                'powerline-active2
+                              'mode-line-active)))
+        (dolist (spec `((tab-bar              . ,mode-line-face)
+                        (tab-bar-tab-inactive . ,mode-line-face)
+                        (tab-bar-tab          . default)))
+          (set-face-attribute
+           (car spec) nil
+           :background (or (face-background (cdr spec) nil t) 'unspecified)
+           :foreground (or (face-foreground (cdr spec) nil t) 'unspecified)))))
+    (my-tab-bar-colors)
+    (with-eval-after-load 'powerline (my-tab-bar-colors))
+    (add-hook 'spacemacs-post-theme-change-hook #'my-tab-bar-colors)
+    ;; Redraw the tab-bar when another window gets selected
+    (add-hook 'window-selection-change-functions
+              (defun my-tab-bar-refresh (_frame) (force-mode-line-update t))))
+
+;;; └── Tab-bar: buffers of the current layout ─────────────────────────────────
 
   ;; Don't reindent (gptel-make-openai ...) when saving this init.el file
   (put 'gptel-make-openai 'lisp-indent-function nil)
