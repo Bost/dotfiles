@@ -65,8 +65,13 @@
  ;; #:guix-commit    "0daef659a23220fa76a62dcbda7057cb649f415c"
 
  ;; 02 oct. 2026 17:48:49
+ ;; #:nonguix-commit "c0192e90a52cafb4d33b04734cbe9bbedd703a04"
+ ;; #:bstx-commit    "659599cb0a766790adc41f0abfb0773b42b96280"
+ ;; #:guix-commit    "8205e4d43b9fd4090643bdebc048699ff60c359d"
+
+ ;; 04 oct. 2026 01:19:31
+ #:bstx-commit    "df76da5ac5a87c5cddec2f14a0cc533a70fab958"
  #:nonguix-commit "c0192e90a52cafb4d33b04734cbe9bbedd703a04"
- #:bstx-commit    "659599cb0a766790adc41f0abfb0773b42b96280"
  #:guix-commit    "8205e4d43b9fd4090643bdebc048699ff60c359d"
 
  #:use-local-checkout #f)
