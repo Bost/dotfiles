@@ -2264,6 +2264,9 @@ before packages are loaded."
 
   (beacon-mode 1)
 
+  ;; Show the window's buffers as tabs: left = previous, right = next.
+  (global-tab-line-mode 1)
+
   ;; TODO show how long was the delay + history, so that I can adjust the
   ;; key-chord-two-keys-delay then ~l e~ are pressed.
 
