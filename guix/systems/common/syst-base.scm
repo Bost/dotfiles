@@ -56,10 +56,7 @@
     (comment user)
     (group "users")
     (home-directory home)
-    ;; login shell; see also `packages`
-    ;; explicitly define fish / bash:
-    ;; (shell (file-append fish "/bin/fish"))
-    ;; (shell (file-append bash "/bin/bash"))
+    ;; Use the default Bash login shell; local interactive sessions start Fish.
 
     ;; list of group names that this user-account belongs to
     ;; TODO audio and netdev groups are not needed on every system

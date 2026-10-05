@@ -171,3 +171,13 @@ export STARSHIP_PROMPT_SYMBOL='🐚'
 eval "$(starship init bash)"
 
 #### home-bash-configuration -> .bashrc_additions: end
+
+# Use Fish locally while keeping Bash for SSH and noninteractive commands.
+# Switch only once: Fish and its children inherit this flag, so running
+# `bash` from Fish opens Bash instead of replacing it with another Fish.
+if [[ $- == *i* && -z ${SSH_CONNECTION-} && -z ${FISH_STARTED-} ]]; then
+    if command -v fish >/dev/null 2>&1; then
+        export FISH_STARTED=1
+        exec fish
+    fi
+fi
