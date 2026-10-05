@@ -21,6 +21,19 @@
 # function.
 set fish_greeting ""
 
+# --- GnuPG / direnv setup ---
+# See `info "(gnupg) Invoking GPG-AGENT"`
+set --global --export GPG_TTY (tty)
+
+# Export empty DIRENV_LOG_FORMAT to silence direnv log output. See
+# https://github.com/direnv/direnv/issues/68
+#
+# CAVEAT: this hides direnv's "is blocked"/"is denied" errors. See
+# `direnv status` (look for "Found RC allowed 2" = denied) and fix with
+# `direnv allow ~`
+set --global --export DIRENV_LOG_FORMAT ""
+direnv hook fish | source
+
 # Set up fzf key bindings
 fzf --fish | source
 
