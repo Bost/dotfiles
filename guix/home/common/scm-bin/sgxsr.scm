@@ -53,22 +53,56 @@ cd $dotf && echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bi
   (when (which "speaker-test")
     (for-each (lambda (_) (beep-once)) '(1 2 3))))
 
+(define (parse-command-args args)
+  ;; Keep each shell argument intact; ungrouped arguments go to guix system.
+  (let loop ((args args) (group 'system) (pull '()) (system '()))
+    (if (null? args)
+        (cons (reverse pull) (reverse system))
+        (let ((arg (car args)))
+          (cond
+           ((string=? arg "--no-pull")
+            (loop (cdr args) group pull system))
+           ((string=? arg "--args-pull")
+            (loop (cdr args) 'pull pull system))
+           ((string=? arg "--args-system")
+            (loop (cdr args) 'system pull system))
+           ((eq? group 'pull)
+            (loop (cdr args) group (cons arg pull) system))
+           (else
+            (loop (cdr args) group pull (cons arg system))))))))
+
 (define*-public (main #:rest args)
   "Pull system channels, reconfigure the Guix system, roll back to
 home-channels.
 
-TODO Implement separate `sgxsr --args-pull ... --args-system ...'
-Extra arguments are forwarded to the initial `guix system'.
+`--args-pull' collects arguments for the first `guix pull'.
+`--args-system' collects arguments for `guix system'.  Each group runs
+until the next group marker or the end of the command line.  Arguments
+before either marker are forwarded to `guix system'.  Repeated groups
+append arguments in order.  The rollback receives no extra arguments.
 
-TODO Implement separate `sgxsr --no-pull ... --args-system ...'
+Examples:
+  sgxsr --args-pull --allow-downgrades --args-system --dry-run
+  sgxsr --no-pull --args-system --dry-run
+
+`--no-pull' skips both pull and rollback and cannot be combined with
+`--args-pull', even when that argument group is empty.
 
 TODO Implement `sgxsr --equal-to-home-channels'
 1. comment out existing in syst-channels.scm
 2. add the channels from home-channels.scm
 3. prepend timestamp
 "
- (let* ((extra-args (cdr args))
+ (let* ((no-pull (member "--no-pull" (cdr args)))
+        (command-args (parse-command-args (cdr args)))
+        (pull-args (car command-args))
+        (system-args (cdr command-args))
         (config (str dtfg "/systems/syst-" (gethostname) ".scm")))
+
+    (when (and no-pull (member "--args-pull" (cdr args)))
+      (format (current-error-port)
+              "sgxsr: --no-pull cannot be combined with --args-pull\n")
+      (exit 1))
 
     (unless (file-exists? config)
       (format (current-error-port)
@@ -76,7 +110,6 @@ TODO Implement `sgxsr --equal-to-home-channels'
               (gethostname) config)
       (exit 1))
 
-    (define no-pull #f)
     (unless no-pull
       ;; No automatic --allow-downgrades for system channels.
       (let ((rc (status:exit-val
@@ -85,7 +118,7 @@ TODO Implement `sgxsr --equal-to-home-channels'
                           "--unsafe-channel-evaluation"
                           ,(string-append "--load-path=" common-lp)
                           ,(string-append "--channels=" channels-scm)
-                          ,@extra-args
+                          ,@pull-args
                           )))))
         (unless (zero? rc) (exit rc)))
 
@@ -110,7 +143,7 @@ TODO Implement `sgxsr --equal-to-home-channels'
                 (status:exit-val
                  (apply system*
                         `("sudo" "guix" "system"
-                          ,@extra-args
+                          ,@system-args
                           "--verbosity=3" "--fallback"
                           ,(string-append "--load-path=" common-lp)
                           ,(string-append "--load-path=" systems-common-lp)
@@ -123,7 +156,8 @@ TODO Implement `sgxsr --equal-to-home-channels'
                                        `("guix" "pull" "--roll-back")))))
               (exit (if (zero? reconfigure-rc)
                         rollback-rc
-                        reconfigure-rc)))))))))
+                        reconfigure-rc))))))
+      (exit reconfigure-rc))))
 (testsymb 'main)
 
 (module-evaluated)
