@@ -2,18 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("CLAUDE.md"
- (filename . "~/dev/claude-code-projects/dev/CLAUDE.md")
- (front-context-string)
- (rear-context-string . "spacemacs)'\n```\n")
- (position . 7643)
- (last-modified 27199 44230 856270 303000))
-("spgx: config-layers"
- (filename . "~/dev/dotfiles/.emacs.d.distros/spacemacs/spgx/cfg/init.el")
- (front-context-string . "   `(\n     ;; --")
- (rear-context-string . "guration-layers\n")
- (position . 25086)
- (last-modified 27198 26450 842979 878000))
+(("spgx: config-layers"
+  (filename . "~/dev/dotfiles/.emacs.d.distros/spacemacs/spgx/cfg/init.el")
+  (front-context-string . "   `(\n     ;; --")
+  (rear-context-string . "guration-layers\n")
+  (position . 25086)
+  (last-modified 27198 26450 842979 878000))
 ("syst-channels.scm"
  (filename . "~/dev/dotfiles/guix/systems/common/syst-channels.scm")
  (front-context-string . " #:use-local-che")
