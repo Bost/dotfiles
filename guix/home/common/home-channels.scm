@@ -104,18 +104,6 @@
 (module-evaluated)
 
 (home-channels
- ;; 7 September 2026 11:40:50
- ;; #:nonguix-commit       "accdba77be815bbe00868145dd66d68056eecf7a"
- ;; #:bstx-commit          "49335107503e4a0b0755b135cbedbd233f77a16b"
- ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- ;; #:guix-commit          "d759a1922126909b6097e245631669cf0b368b57"
-
- ;; 8 septembre 2026 20:59:13
- ;; #:nonguix-commit       "accdba77be815bbe00868145dd66d68056eecf7a"
- ;; #:bstx-commit          "49335107503e4a0b0755b135cbedbd233f77a16b"
- ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- ;; #:guix-commit          "ab3cc11100a7eeff65b9a36d849d0fb96dda4eb9"
-
  ;; 18 septembre 2026 13:03:29
  ;; #:nonguix-commit       "f9171dd0d0a58d63c0811d61e51493a3fa4ae4f3"
  ;; #:bstx-commit          "49335107503e4a0b0755b135cbedbd233f77a16b"
@@ -135,10 +123,22 @@
  ;; #:guix-commit          "8205e4d43b9fd4090643bdebc048699ff60c359d"
 
  ;; 5 octobre 2026 13:02:49
+ ;; #:nonguix-commit       "c0192e90a52cafb4d33b04734cbe9bbedd703a04"
+ ;; #:bstx-commit          "2d770a49c8d693b31ccad47c50ce30e4140c0bfd"
+ ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ ;; #:guix-commit          "7eccf1b3f2525b909fc9ae5e039c4af7eebe3b05"
+
+ ;; 6 October 2026 12:35:20
+ ;; #:nonguix-commit       "c0192e90a52cafb4d33b04734cbe9bbedd703a04"
+ ;; #:bstx-commit          "54d3963dec27d1b4b319387a4c5f52b2c12a6675"
+ ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ ;; #:guix-commit          "08db59e41162efaaf8991719df155199741eca46"
+
+ ;; 7 October 2026 11:20:35
  #:nonguix-commit       "c0192e90a52cafb4d33b04734cbe9bbedd703a04"
- #:bstx-commit          "2d770a49c8d693b31ccad47c50ce30e4140c0bfd"
+ #:bstx-commit          "daa72b0b09cc336c73ffb4f8e4ee09e02cae9d7c"
  #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- #:guix-commit          "7eccf1b3f2525b909fc9ae5e039c4af7eebe3b05"
+ #:guix-commit          "4341c003d7655ac02d72aea58cda706d87d0f965"
 
  #:use-local-checkout #f)
 
