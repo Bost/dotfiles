@@ -34,11 +34,9 @@ This module is not directly executed. No main-procedure is needed.
   ;; (field-name field-accessor) ...
   (handle-cli-procedure handle-cli-exception-procedure))
 
-(define (fmt s f prm) (format #t s f (pr-str-with-quote prm) (test-type prm)))
-
 ;; TODO rename fun, exec-fun -> symb-fun symb-exec-fun
 ;; TODO rename verbose -> verbose-exec-fun
-(def*-public (handle-cli #:key (trace #f) verbose utility fun exec-fun
+(def*-public (handle-cli #:key verbose utility fun exec-fun
                          params
                          profile ; for Emacs launchers
                          ignore-errors
@@ -57,36 +55,19 @@ Examples:
   '((\"/home/bost/scm-bin/rgt4\" \"flatpakxxx\")))
 
 (handle-cli
- #:trace #t
  #:utility  \"techo\"
  #:fun      'cli-general-command
  #:exec-fun 'exec-background
  #:params   \"echo \\\"foo\\\"\")
 "
-  ;; (define (trace-params param-lst) ;; TODO write trace-params
-  ;;   (let [(max-length
-  ;;          ((comp
-  ;;            max
-  ;;            (partial map (lambda (param)
-  ;;                           (if (equal? 'args param)
-  ;;                               (string-length (str params))
-  ;;                               (+ 2 (string-length (str params)))))))
-  ;;           param-lst))]
-  ;;     max-length))
-  ;; `args' the list, contains all parameters; see also ;; `padding-string'
-  ;; Show the trace-infor only when the `trace' parameter is explicitly set
-  ;; (when (true? (plist-get args #:trace) (trace-params args)))
-
-  (when trace
-    (fmt "~a #:trace         ~a ; ~a\n" f trace)
-    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
-    (fmt "~a #:utility       ~a ; ~a\n" f utility)
-    (fmt "~a #:fun           ~a ; ~a\n" f fun)
-    (fmt "~a #:exec-fun      ~a ; ~a\n" f exec-fun)
-    (fmt "~a #:params        ~a ; ~a\n" f params)
-    (fmt "~a #:profile       ~a ; ~a\n" f profile)
-    (fmt "~a #:ignore-errors ~a ; ~a\n" f ignore-errors)
-    (fmt "~a   args          ~a ; ~a\n" f args))
+  (trc "#:verbose:" verbose)
+  (trc "#:utility:" utility)
+  (trc "#:fun:" fun)
+  (trc "#:exec-fun:" exec-fun)
+  (trc "#:params:" params)
+  (trc "#:profile:" profile)
+  (trc "#:ignore-errors:" ignore-errors)
+  (trc "args:" args)
   (let* [
          ;; Needed is e.g. '("/home/bost/scm-bin/f" "<file-name-pattern>")
          (command-line (last args))
@@ -106,13 +87,12 @@ Examples:
          (val-version      (option-ref options 'version    #f))
          (val-gx-dry-run   (option-ref options 'gx-dry-run #f))
          (val-rest-args    (option-ref options '()         #f))]
-    (when trace
-      (format #t "~a option-spec      : ~a\n" f option-spec)
-      (format #t "~a options          : ~a\n" f options)
-      (format #t "~a val-help         : ~a\n" f val-help)
-      (format #t "~a val-version      : ~a\n" f val-version)
-      (format #t "~a val-gx-dry-run   : ~a\n" f val-gx-dry-run)
-      (format #t "~a val-rest-args    : ~a\n" f val-rest-args))
+    (trc "option-spec:" option-spec)
+    (trc "options:" options)
+    (trc "val-help:" val-help)
+    (trc "val-version:" val-version)
+    (trc "val-gx-dry-run:" val-gx-dry-run)
+    (trc "val-rest-args:" val-rest-args)
     (cond
      [val-help
       (format #t "~a [options]\n~a\n~a\n\n"
@@ -134,7 +114,6 @@ Examples:
               (apply (eval-here fun)
                      (append
                       (list
-                       #:trace         trace
                        #:verbose       verbose
                        #:gx-dry-run    val-gx-dry-run
                        #:ignore-errors ignore-errors
