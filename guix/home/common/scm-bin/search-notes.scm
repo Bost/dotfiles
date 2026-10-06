@@ -184,7 +184,7 @@ echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/search-notes.scm
             (map (partial format #t "~a\n") results)))
         (error (format #f "~a retcode: ~a\n" f retcode)))))
 
-(def*-public (search-notes #:key (trace #f) #:rest args)
+(def*-public (search-notes #:rest args)
   "Usage:
 (search-notes (list \"<ignored>\"
   \"-v\" \"rest \"
@@ -193,9 +193,7 @@ echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/search-notes.scm
 
 -v/--verbose prints the sed/awk pipeline before it's executed.
 "
-  (when trace
-    (format #t "~a trace   : ~a\n" f trace)
-    (format #t "~a args    : ~a\n" f args))
+  (trc "args:" args)
   (let* [(arg-lst (car args))
          (option-spec '((verbose (single-char #\v) (value #f))))
          ;; `getopt-long' expects ARG-LST's car to be the program name, as
@@ -206,15 +204,13 @@ echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/search-notes.scm
          (search-pattern (car positional-args))
          (files (cdr positional-args))
          ]
-    (when trace
-      (format #t "arg-lst: '~a'\n" arg-lst)
-      (format #t "option-spec: '~a'\n" option-spec)
-      (format #t "options: '~a'\n" options)
-      (format #t "verbose: '~a'\n" verbose)
-      (format #t "positional-args: '~a'\n" positional-args)
-      (format #t "search-pattern: '~a'\n" search-pattern)
-      (format #t "files: '~a'\n" files)
-      )
+    (trc "arg-lst:" arg-lst)
+    (trc "option-spec:" option-spec)
+    (trc "options:" options)
+    (trc "verbose:" verbose)
+    (trc "positional-args:" positional-args)
+    (trc "search-pattern:" search-pattern)
+    (trc "files:" files)
     (map (cut search-file-awk search-pattern <> #:verbose verbose)
          files)
     ))

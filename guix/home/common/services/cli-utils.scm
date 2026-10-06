@@ -27,8 +27,6 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
-(define (fmt s f prm) (format #t s f (pr-str-with-quote prm) (test-type prm)))
-
 (define notes-dir "org-roam")
 
 (define (list-all-files path)
@@ -174,7 +172,7 @@ by `-' so #:desc can be any human readable string."
                 desc)))
 
 (def* (service-file-general
-       #:key (trace #f) utility desc scm-file module-name chmod-params files
+       #:key utility desc scm-file module-name chmod-params files
        (excluded-files (list)) (other-files (list))
        #:rest args)
   "The priority is 1. module-name, 2. scm-file, 3. utility
@@ -183,18 +181,15 @@ a list of files to search through.
 Example:
     chmod --recursive u=rwx,g=rwx,o=rwx /path/to/dir
 "
-  (when trace
-    (fmt "~a #:trace        : ~s\n" f trace)
-    (fmt "~a #:utility      : ~s\n" f utility)
-    (fmt "~a #:desc         : ~s\n" f desc)
-    (fmt "~a #:scm-file     : ~s\n" f scm-file)
-    (fmt "~a #:module-name  : ~s\n" f module-name)
-    (fmt "~a #:chmod-params : ~s\n" f chmod-params)
-    (fmt "~a #:files        : ~s\n" f files)
-    (fmt "~a #:files        : ~s\n" f excluded-files)
-    (fmt "~a #:other-files  : ~s\n" f other-files)
-    (fmt "~a   args          ~a ; ~a\n" f args)
-    )
+  (trc "#:utility:" utility)
+  (trc "#:desc:" desc)
+  (trc "#:scm-file:" scm-file)
+  (trc "#:module-name:" module-name)
+  (trc "#:chmod-params:" chmod-params)
+  (trc "#:files:" files)
+  (trc "#:excluded-files:" excluded-files)
+  (trc "#:other-files:" other-files)
+  (trc "args:" args)
   (list
    (str scm-bin-dirname "/" utility)
    (program-file
@@ -239,7 +234,7 @@ Example:
 (testsymb 'service-file-general)
 
 (def* (service-file-utils
-       #:key (trace #f) (verbose #t) utility fun exec-fun
+       #:key (verbose #t) utility fun exec-fun
        params
        profile       ; for Emacs launchers
        extra-modules
@@ -249,29 +244,25 @@ Example:
   (\"scm-bin/mount-axa\" \"/gnu/store/...\") ; for mount utils
 
 Example:
-(service-file-utils #:trace         #t
-                    #:fun           'cli-general-command
+(service-file-utils #:fun           'cli-general-command
                     #:exec-fun      'exec-background
                     #:extra-modules '()
                     #:utility       \"techo\"
                     #:params        \"echo \\\"foo\\\"\")
 
-(service-file-utils #:trace         #t
-                    #:fun           'cli-general-command
+(service-file-utils #:fun           'cli-general-command
                     #:exec-fun      'exec-foreground
                     #:extra-modules '()
                     #:utility       \"techo\"
                     #:params        \"echo \\\"foo\\\"\")
 
-(service-file-utils #:trace         #t
-                    #:fun           'cli-general-command
+(service-file-utils #:fun           'cli-general-command
                     #:exec-fun      'exec-system
                     #:extra-modules '()
                     #:utility       \"techo\"
                     #:params        \"echo \\\"foo\\\"\")
 
-(service-file-utils #:trace         #t
-                    #:exec-fun      'exec-foreground
+(service-file-utils #:exec-fun      'exec-foreground
                     #:extra-modules '((emacs-common))
                     #:utility       \"r\" #:fun 'create-launcher
                     ;; #:utility       \"er\" #:fun 'set-editable
@@ -282,17 +273,14 @@ TODO The `search-notes' program should read a `search-space-file' containing
 a list of files to search through."
   ;; (format #t "~a Starting…\n" f)
 
-  (when trace
-    (fmt "~a #:trace         ~a ; ~a\n" f trace)
-    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
-    (fmt "~a #:utility       ~a ; ~a\n" f utility)
-    (fmt "~a #:fun           ~a ; ~a\n" f fun)
-    (fmt "~a #:exec-fun      ~a ; ~a\n" f exec-fun)
-    (fmt "~a #:params        ~a ; ~a\n" f params)
-    (fmt "~a #:profile       ~a ; ~a\n" f profile)
-    (fmt "~a #:extra-modules ~a ; ~a\n" f extra-modules)
-    (fmt "~a   args          ~a ; ~a\n" f args)
-    )
+  (trc "#:verbose:" verbose)
+  (trc "#:utility:" utility)
+  (trc "#:fun:" fun)
+  (trc "#:exec-fun:" exec-fun)
+  (trc "#:params:" params)
+  (trc "#:profile:" profile)
+  (trc "#:extra-modules:" extra-modules)
+  (trc "args:" args)
 
   (list
    (str scm-bin-dirname "/" utility)
@@ -325,15 +313,12 @@ a list of files to search through."
                              ,@(common-modules)
                              ,@extra-modules)
                 (handle-cli
-                 ,@(if (member? #:trace   new-args) `() `(#:trace   ,trace))
                  ,@(if (member? #:verbose new-args) `() `(#:verbose ,verbose))
                  ,@fixed-new-args
                  (command-line))))]
-       (when trace ;; (string=? "rgt" utility)
-         (format #t "common-modules : ~a\n" (common-modules))
-         (format #t "extra-modules  : ~a\n" extra-modules)
-         (format #t "sexp :\n~a\n" (pretty-print->string sexp))
-         (format #t "\n"))
+       (trc "common-modules:" (common-modules))
+       (trc "extra-modules:" extra-modules)
+       (trc "sexp:" sexp)
        (with-imported-modules
            (program-modules (append (common-modules) extra-modules))
          #~#$sexp))
@@ -482,7 +467,6 @@ a list of files to search through."
     (partial map (partial
                   append
                   (list
-                   ;; #:trace #t
                    ;; ripgrep returns 1 when nothing is found. Do not error out!
                    #:ignore-errors #t
                    ;; no verbosity for processing in the CLI pipeline
@@ -513,7 +497,7 @@ a list of files to search through."
 
 (define rest-utils-definitions
   (list
-   ;; (list #:utility "gxx"  #:params "guix" #:trace #t #:verbose #t )
+   ;; (list #:utility "gxx"  #:params "guix" #:verbose #t )
 
    ;; verbose with colors
    (list #:utility "f"   #:params "fd --color=always"

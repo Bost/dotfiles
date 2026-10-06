@@ -24,10 +24,10 @@ cd $dotf
 
 ;; TODO rename params -> cli-command
 (def*-public (cli-general-command
-              #:key (trace #f) verbose gx-dry-run params exec-fun ignore-errors
+              #:key verbose gx-dry-run params exec-fun ignore-errors
               #:allow-other-keys #:rest args)
   "The ARGS are being ignored.
-TRACE - trace procedure parameters
+Tracing is controlled by tracing-enabled? and tracing-procedures.
 VERBOSE - print command line of the command being executed on the CLI
 
 Examples:
@@ -48,15 +48,12 @@ Examples:
 (cli-general-command #:exec-fun exec-background #:params \"echo foo\")
 (cli-general-command #:exec-fun exec-foreground #:params \"echo foo\")
 "
-  (when trace
-    (format #t "~a   args          ~a ; ~a\n" f (pr-str-with-quote args)          (test-type args))
-    (format #t "~a #:trace         ~a ; ~a\n" f (pr-str-with-quote trace)         (test-type trace))
-    (format #t "~a #:verbose       ~a ; ~a\n" f (pr-str-with-quote verbose)       (test-type verbose))
-    (format #t "~a #:gx-dry-run    ~a ; ~a\n" f (pr-str-with-quote gx-dry-run)    (test-type gx-dry-run))
-    (format #t "~a #:params        ~a ; ~a\n" f (pr-str-with-quote params)        (test-type params))
-    (format #t "~a #:exec-fun      ~a ; ~a\n" f (pr-str-with-quote exec-fun)      (test-type exec-fun))
-    (format #t "~a #:ignore-errors ~a ; ~a\n" f (pr-str-with-quote ignore-errors) (test-type ignore-errors))
-    )
+  (trc "args:" args)
+  (trc "#:verbose:" verbose)
+  (trc "#:gx-dry-run:" gx-dry-run)
+  (trc "#:params:" params)
+  (trc "#:exec-fun:" exec-fun)
+  (trc "#:ignore-errors:" ignore-errors)
   ((comp
     ;; (lambda (p) (format #t "~a done\n" f) p)
     (lambda (command)
@@ -67,7 +64,6 @@ Examples:
             (format #t "~a --gx-dry-run : ~a\n" f gx-dry-run)
             (format #t "~a ~a\n" f command))
           (exec-fun command
-                    #:trace trace
                     #:verbose verbose
                     #:ignore-errors ignore-errors
                     )))
@@ -78,7 +74,7 @@ Examples:
     ;; (lambda (p) (format #t "~a 1. ~a\n" f p) p)
     ;; Extract the string typed on the command line
     (lambda (lst) (remove-all-elements
-                   lst (list #:trace #:verbose #:gx-dry-run
+                   lst (list #:verbose #:gx-dry-run
                              #:params #:exec-fun #:ignore-errors)))
     ;; (lambda (p) (format #t "~a 0. ~a\n" f p) p)
     )

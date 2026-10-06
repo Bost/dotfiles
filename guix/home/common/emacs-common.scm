@@ -70,10 +70,8 @@ This module is not directly executed. No main-procedure is needed.
     (format #f "--init-directory=~a" (get-src profile))
     (str "--bg-daemon=" (calculate-socket profile)))))
 
-(define (fmt s f prm) (format #t s f (pr-str-with-quote prm) (test-type prm)))
-
 (def*-public (pkill-server
-              #:key (trace #f) (verbose #f) (ignore-errors #f)
+              #:key (verbose #f) (ignore-errors #f)
               utility gx-dry-run profile
               #:rest args)
   "The ARGS are being ignored.
@@ -84,17 +82,14 @@ Usage:
 (pkill-server                 #:profile \"develop\" \"rest\" \"args\")
 (pkill-server                 #:profile \"guix\"    \"rest\" \"args\")
 "
-  (when trace
-    (fmt "~a   args          ~a ; ~a\n" f args)
-    (fmt "~a #:trace         ~a ; ~a\n" f trace)
-    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
-    (fmt "~a #:ignore-errors ~a : ~a\n" f ignore-errors)
-    (fmt "~a #:utility       ~a ; ~a\n" f utility)
-    (fmt "~a #:gx-dry-run    ~a ; ~a\n" f gx-dry-run)
-    (fmt "~a #:profile       ~a ; ~a\n" f profile)
-    )
+  (trc "args:" args)
+  (trc "#:verbose:" verbose)
+  (trc "#:ignore-errors:" ignore-errors)
+  (trc "#:utility:" utility)
+  (trc "#:gx-dry-run:" gx-dry-run)
+  (trc "#:profile:" profile)
 
-  (let* [(elements (list #:trace #:verbose #:ignore-errors
+  (let* [(elements (list #:verbose #:ignore-errors
                          #:utility #:gx-dry-run #:profile))
          (filtered-args (remove-all-elements args elements))]
     ;; pkill-pattern must NOT be enclosed by \"\"
@@ -102,7 +97,6 @@ Usage:
     (apply exec-system*-new
            #:split-whitespace #f
            #:gx-dry-run gx-dry-run
-           #:trace trace
            #:verbose verbose
            (list "pkill" "--echo" "--full" (create-init-cmd profile)))))
 (testsymb 'pkill-server)
@@ -131,14 +125,14 @@ Usage:
               home-emacs-distros profile)))
 
 (def*-public (create-launcher
-              #:key (trace #f) (verbose #f) (ignore-errors #f)
+              #:key (verbose #f) (ignore-errors #f)
               utility gx-dry-run profile
 ;;; By not allowing other keys I don't have to remove them later on
               #:allow-other-keys
               #:rest args)
   "Uses `user' from settings. The ARGS are used only when `emacsclient' command
  is executed. The server, called by `emacs' ignores them.
-TRACE - trace procedure parameters
+Tracing is controlled by tracing-enabled? and tracing-procedures.
 VERBOSE - print command line of the command being executed on the CLI
 
 TODO create-launcher ignores servers with '--debug-init' in the init-cmd.
@@ -152,17 +146,14 @@ Examples:
 (create-launcher #:profile \"spgx\"
                  \"guix/home/common/cli-common.scm\")
 "
-  (when trace
-    (fmt "~a   args          ~a ; ~a\n" f args)
-    (fmt "~a #:trace         ~a ; ~a\n" f trace)
-    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
-    (fmt "~a #:ignore-errors ~a : ~a\n" f ignore-errors)
-    (fmt "~a #:utility       ~a ; ~a\n" f utility)
-    (fmt "~a #:gx-dry-run    ~a ; ~a\n" f gx-dry-run)
-    (fmt "~a #:profile       ~a ; ~a\n" f profile)
-    )
+  (trc "args:" args)
+  (trc "#:verbose:" verbose)
+  (trc "#:ignore-errors:" ignore-errors)
+  (trc "#:utility:" utility)
+  (trc "#:gx-dry-run:" gx-dry-run)
+  (trc "#:profile:" profile)
 
-  (let* [(elements (list #:trace #:verbose #:ignore-errors
+  (let* [(elements (list #:verbose #:ignore-errors
                          #:utility #:gx-dry-run #:profile))
          (filtered-args (remove-all-elements args elements))
          (init-cmd (create-init-cmd profile))]
@@ -232,11 +223,11 @@ Examples:
          (string-length (user-home emacs-distros)))))
 
 (def*-public (set-editable
-              #:key (trace #f) (verbose #f) (ignore-errors #f)
+              #:key (verbose #f) (ignore-errors #f)
               utility gx-dry-run profile
               #:rest args)
   "The ARGS are being ignored.
-TRACE - trace procedure parameters
+Tracing is controlled by tracing-enabled? and tracing-procedures.
 VERBOSE - print command line of the command being executed on the CLI
 
 Examples:
@@ -245,17 +236,14 @@ Examples:
 (set-editable                 #:profile \"develop\" \"rest\" \"args\")
 (set-editable                 #:profile \"guix\"    \"rest\" \"args\")
 "
-  (when trace
-    (fmt "~a   args          ~a ; ~a\n" f args)
-    (fmt "~a #:trace         ~a ; ~a\n" f trace)
-    (fmt "~a #:verbose       ~a ; ~a\n" f verbose)
-    (fmt "~a #:ignore-errors ~a : ~a\n" f ignore-errors)
-    (fmt "~a #:utility       ~a ; ~a\n" f utility)
-    (fmt "~a #:gx-dry-run    ~a ; ~a\n" f gx-dry-run)
-    (fmt "~a #:profile       ~a ; ~a\n" f profile)
-    )
+  (trc "args:" args)
+  (trc "#:verbose:" verbose)
+  (trc "#:ignore-errors:" ignore-errors)
+  (trc "#:utility:" utility)
+  (trc "#:gx-dry-run:" gx-dry-run)
+  (trc "#:profile:" profile)
 
-  (let* [(elements (list #:trace #:verbose #:ignore-errors
+  (let* [(elements (list #:verbose #:ignore-errors
                          #:utility #:gx-dry-run #:profile))
          (args (remove-all-elements args elements))
 
@@ -278,35 +266,32 @@ Examples:
           (copy-file src dst)))))
 (testsymb 'set-editable)
 
-(def* (handle-cli #:key (trace #f) verbose utility fun profile
+(def* (handle-cli #:key verbose utility fun profile
                   #:allow-other-keys
                   #:rest args)
   "All the options, except rest-args, must be specified for the option-spec so
  that the options-parser doesn't complain about e.g. 'no such option: -p'.
-TRACE - trace procedure parameters
+Tracing is controlled by tracing-enabled? and tracing-procedures.
 VERBOSE - print command line of the command being executed on the CLI
 
 (begin
   (use-modules (ice-9 getopt-long) (ice-9 regex) (guix monads)
                (bost common srfi-1-smart) (bost common utils) (bost common tests) (dotf settings)
                (cli-common) (command-line) (emacs-common))
-  (handle-cli #:trace #f #:verbose #t #:exec-fun 'exec-foreground
+  (handle-cli #:verbose #t #:exec-fun 'exec-foreground
               #:utility \"s\" #:fun 'create-launcher #:profile \"spgx\"
               (command-line)))
 
 (handle-cli
-   #:trace #t
    #:verbose #t #:exec-fun 'exec-foreground
    #:utility \"s\" #:fun create-launcher #:profile \"spgx\"
    (list \"\" \"guix/home/common/cli-common.scm\"))
 "
-  (when trace
-    (format #t "~a trace   : ~a\n" f trace)
-    (format #t "~a verbose : ~a\n" f verbose)
-    (format #t "~a utility : ~a\n" f utility)
-    (format #t "~a fun     : ~a\n" f fun)
-    (format #t "~a profile : ~a\n" f profile)
-    (format #t "~a args    : ~a\n" f args))
+  (trc "verbose:" verbose)
+  (trc "utility:" utility)
+  (trc "fun:" fun)
+  (trc "profile:" profile)
+  (trc "args:" args)
   (let* [
          ;; Needed is e.g. '("/home/bost/scm-bin/g" "/path/to/file.ext")
          (command-line (last args))
@@ -326,13 +311,12 @@ VERBOSE - print command line of the command being executed on the CLI
          (val-version    (option-ref options 'version    #f))
          (val-gx-dry-run (option-ref options 'gx-dry-run #f))
          (val-rest-args  (option-ref options '()         #f))]
-    (when trace
-      (format #t "~a option-spec    : ~a\n" f option-spec)
-      (format #t "~a options        : ~a\n" f options)
-      (format #t "~a val-help       : ~a\n" f val-help)
-      (format #t "~a val-version    : ~a\n" f val-version)
-      (format #t "~a val-gx-dry-run : ~a\n" f val-gx-dry-run)
-      (format #t "~a val-rest-args  : ~a\n" f val-rest-args))
+    (trc "option-spec:" option-spec)
+    (trc "options:" options)
+    (trc "val-help:" val-help)
+    (trc "val-version:" val-version)
+    (trc "val-gx-dry-run:" val-gx-dry-run)
+    (trc "val-rest-args:" val-rest-args)
     (cond
      [val-help
       (format #t "~a [options]\n~a\n~a\n\n"
@@ -343,7 +327,6 @@ VERBOSE - print command line of the command being executed on the CLI
       (format #t "~a version <...>\n" utility)]
      [#t
       (apply (partial fun
-                      #:trace trace
                       #:verbose verbose
                       #:utility utility
                       #:gx-dry-run val-gx-dry-run
