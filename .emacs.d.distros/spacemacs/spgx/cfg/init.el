@@ -2401,24 +2401,78 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
     (setq tab-bar-format '(my-tab-bar-frame-buffers))
     (tab-bar-mode 1)
 
-    ;; Give the tab-bar the background of the active mode-line, i.e. of its
-    ;; spaceline filler `powerline-active2', so that the tab-bar doesn't merge
-    ;; with the highlighted current line when the point is at the window top.
-    ;; The current tab gets the buffer background, so it stands out.
-    (defun my-tab-bar-colors ()
-      (let ((mode-line-face (if (facep 'powerline-active2)
-                                'powerline-active2
-                              'mode-line-active)))
-        (dolist (spec `((tab-bar              . ,mode-line-face)
-                        (tab-bar-tab-inactive . ,mode-line-face)
-                        (tab-bar-tab          . default)))
+    ;; Stable frame identities: blue, green, amber and violet.  Each entry
+    ;; contains backgrounds for light and dark themes respectively.
+    (defvar my-frame-color-palette
+      '(("#b8d4ee" "#294b68")
+        ("#bfdcc1" "#34583c")
+        ("#ecd39d" "#68512a")
+        ("#d8c3e8" "#553b68"))
+      "Frame backgrounds in light-theme and dark-theme variants.")
+
+    (defun my-frame-color-eligible-p (frame)
+      "Whether FRAME is an ordinary graphical editing frame."
+      (and (frame-live-p frame)
+           (display-graphic-p frame)
+           (not (frame-parent frame))
+           (not (eq (frame-parameter frame 'minibuffer) 'only))))
+
+    (defun my-frame-color-slot (frame)
+      "Return FRAME's stable palette slot, allocating a free slot if needed."
+      (or (frame-parameter frame 'my-color-slot)
+          (let* ((used (mapcar (lambda (other)
+                                (frame-parameter other 'my-color-slot))
+                              (seq-filter #'my-frame-color-eligible-p
+                                          (frame-list))))
+                 (slot (or (seq-find (lambda (index) (not (memq index used)))
+                                     (number-sequence
+                                      0 (1- (length my-frame-color-palette))))
+                           ;; More than four frames may share a color.
+                           0)))
+            (set-frame-parameter frame 'my-color-slot slot)
+            slot)))
+
+    (defun my-frame-colors (frame)
+      "Apply FRAME's identity to its tab bar and modeline filler."
+      (when (my-frame-color-eligible-p frame)
+        (let* ((dark (eq (frame-parameter frame 'background-mode) 'dark))
+               (colors (nth (my-frame-color-slot frame)
+                            my-frame-color-palette))
+               (background (nth (if dark 1 0) colors))
+               (foreground (if dark "#f4f4f4" "#202020")))
+          ;; Leave powerline-active1 and the Evil-state highlight alone.
+          (dolist (face '(mode-line mode-line-active mode-line-inactive
+                         powerline-active2 powerline-inactive2
+                         tab-bar tab-bar-tab-inactive))
+            (when (facep face)
+              (set-face-attribute face frame
+                                  :background background
+                                  :foreground foreground)))
+          ;; Keep the selected tab distinct using the editing background.
           (set-face-attribute
-           (car spec) nil
-           :background (or (face-background (cdr spec) nil t) 'unspecified)
-           :foreground (or (face-foreground (cdr spec) nil t) 'unspecified)))))
+           'tab-bar-tab frame
+           :background (or (face-background 'default frame t) 'unspecified)
+           :foreground (or (face-foreground 'default frame t) 'unspecified)))))
+
+    (defun my-tab-bar-colors ()
+      "Refresh frame colors after startup or a theme change."
+      (dolist (frame (frame-list))
+        (my-frame-colors frame))
+      (when (fboundp 'powerline-reset)
+        (powerline-reset))
+      (force-mode-line-update t))
+
+    (defun my-frame-colors-after-create (frame)
+      "Color a newly created FRAME and refresh modeline separators."
+      (my-frame-colors frame)
+      (when (fboundp 'powerline-reset)
+        (powerline-reset))
+      (force-mode-line-update t))
+
     (my-tab-bar-colors)
     (with-eval-after-load 'powerline (my-tab-bar-colors))
-    (add-hook 'spacemacs-post-theme-change-hook #'my-tab-bar-colors)
+    (add-hook 'after-make-frame-functions #'my-frame-colors-after-create)
+    (add-hook 'spacemacs-post-theme-change-hook #'my-tab-bar-colors t)
     ;; Redraw the tab-bar when another window gets selected
     (add-hook 'window-selection-change-functions
               (defun my-tab-bar-refresh (_frame) (force-mode-line-update t))))
