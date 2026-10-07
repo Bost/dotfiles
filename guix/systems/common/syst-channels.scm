@@ -65,7 +65,12 @@
  ;; #:guix-commit    "08db59e41162efaaf8991719df155199741eca46"
 
  ;; Oct 07 2026 11:32:56
- #:bstx-commit    "daa72b0b09cc336c73ffb4f8e4ee09e02cae9d7c"
+ ;; #:bstx-commit    "daa72b0b09cc336c73ffb4f8e4ee09e02cae9d7c"
+ ;; #:nonguix-commit "c0192e90a52cafb4d33b04734cbe9bbedd703a04"
+ ;; #:guix-commit    "4341c003d7655ac02d72aea58cda706d87d0f965"
+
+ ;; Oct 07 2026 17:50:06
+ #:bstx-commit    "bcf1fd4ab60d47ccfcef16994459a88931f071a3"
  #:nonguix-commit "c0192e90a52cafb4d33b04734cbe9bbedd703a04"
  #:guix-commit    "4341c003d7655ac02d72aea58cda706d87d0f965"
 
