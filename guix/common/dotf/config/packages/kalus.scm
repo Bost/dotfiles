@@ -11,7 +11,9 @@
 (define-module (dotf config packages kalus)
   #:use-module (bost common utils)
   #:use-module (gnu)                       ; %base-packages, use-package-modules
+  #:use-module (guix packages)             ; package?, package-name
   #:use-module (guix profiles)             ; packages->manifest
+  #:use-module (srfi srfi-1)               ; remove
   #:use-module (config packages syst-all)  ; syst-packages-to-install
   )
 
@@ -22,6 +24,13 @@
 (define m (module-name-for-logging))
 (evaluating-module)
 
+(def (kalus-excluded-package-names)
+  "Names of packages from `syst-packages-to-install' that kalus doesn't get,
+unlike the other machines sharing it. kalus is offline; openssh was probably
+needed only for its setup."
+  '("openssh"))
+(testsymb 'kalus-excluded-package-names)
+
 (def-public (kalus-system-packages)
   "Packages installed system-wide on kalus."
   (append
@@ -29,7 +38,10 @@
     ;; Provides a console that allows users to enter a passphrase when
     ;; `gpg' is run and needs it.
     pinentry)      ; Seems like just 'pinentry-tty' doesn't do the job
-   (syst-packages-to-install)
+   (remove (lambda (p)
+             (and (package? p)
+                  (member (package-name p) (kalus-excluded-package-names))))
+           (syst-packages-to-install))
    %base-packages))
 (testsymb 'kalus-system-packages)
 

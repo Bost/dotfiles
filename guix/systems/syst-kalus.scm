@@ -11,12 +11,12 @@
 
 (use-service-modules ; no need to write: #:use-module (gnu services <module>)
  networking      ; network-manager-service-type, wpa-supplicant-service-type
- ssh             ; openssh-service-type
+ ;; ssh          ; openssh-service-type
  )
 
-(use-package-modules ; no need to write: #:use-module (gnu packages <module>)
- ssh             ;; openssh-sans-x
- )
+;; (use-package-modules ; no need to write: #:use-module (gnu packages <module>)
+;;  ssh             ;; openssh-sans-x
+;;  )
 
 (define m (module-name-for-logging))
 (evaluating-module)
@@ -43,16 +43,17 @@
       (service network-manager-service-type)
       ;; Prevent error ... 'NetworkManager' requires 'wireless-daemon' ...
       (service wpa-supplicant-service-type)
-      (service
-       openssh-service-type
-       (openssh-configuration
-         (openssh openssh-sans-x)
-         (password-authentication? #false)
-         (authorized-keys
-          ;; Assuming the local-file exists under given path, e.g. it was
-          ;; transferred by `ssh-copy-id` at some point in the past.
-          `((,user
-             ,(local-file (string-append home "/.ssh/authorized_keys")))))))
+      ;; kalus is offline. sshd was probably needed only for its setup.
+      ;; (service
+      ;;  openssh-service-type
+      ;;  (openssh-configuration
+      ;;    (openssh openssh-sans-x)
+      ;;    (password-authentication? #false)
+      ;;    (authorized-keys
+      ;;     ;; Assuming the local-file exists under given path, e.g. it was
+      ;;     ;; transferred by `ssh-copy-id` at some point in the past.
+      ;;     `((,user
+      ;;        ,(local-file (string-append home "/.ssh/authorized_keys")))))))
       %base-services))
 
 ;;; See
