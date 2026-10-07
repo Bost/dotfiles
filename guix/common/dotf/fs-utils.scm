@@ -39,10 +39,6 @@
 (define-public xdg-config-home (or (getenv "XDG_CONFIG_HOME")
                                    (user-home "/.config")))
 
-(define-public channels-scm "channels.scm")
-(define-public channels-scm-relpath
-  (str (basename xdg-config-home) "/guix/" channels-scm))
-
 (define-public (fix-leading-dot filename)
   (string-replace filename "dot-" 0 1))
 
