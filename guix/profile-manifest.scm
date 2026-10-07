@@ -86,7 +86,7 @@
       (let [(duplicates (find-duplicates lst string=?))]
         (if (not (empty? duplicates))
             (begin
-              (my=warn "~a Removing ~a duplicate package(s):\n~a\n"
+              (my-warn "~a Removing ~a duplicate package(s):\n~a\n"
                        ;; Printing module-name is enough (m instead of f)
                        m (length duplicates) duplicates)
               (delete-duplicates packages))

@@ -432,7 +432,7 @@ Guile bindings to libgit2, to manipulate repositories of the Git."
     (unless (access? user-dir F_OK)
       (if (not (unspecified-or-empty-or-false? url))
           (exec-system* #:verbose #t "git" "clone" "--quiet" url user-dir))
-      (my=warn "~a dir : ~a; can't `git clone ...`. The url is empty.\n" f dir))))
+      (my-warn "~a dir : ~a; can't `git clone ...`. The url is empty.\n" f dir))))
 
 (def-public (install-all-projects-base)
   "The `sgxr' pulls only from syst-channels, so make sure after the `sgxr' the

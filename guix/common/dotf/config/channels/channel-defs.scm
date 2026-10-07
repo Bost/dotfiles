@@ -28,7 +28,7 @@
   "Dynamic tiling Wayland compositor configurable in Guile Scheme"
   (let* [(channel-name 'home-service-dwl-guile)]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url
@@ -56,7 +56,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          ;; (url "https://gitlab.com/rostislav.svoboda/games")
          (url "https://gitlab.com/guix-gaming-channels/games.git")]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url url)
@@ -78,7 +78,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          (url (get-url (symbol->string channel-name)
                        #:use-local-checkout use-local-checkout))]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url url)
@@ -94,7 +94,7 @@ TODO make-dist script contains Guile code for package-export. See
 https://github.com/flatwhatson/guix-channel/blob/master/scripts/make-dist"
   (let* [(channel-name 'flat)]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url "https://github.com/flatwhatson/guix-channel.git")
@@ -115,7 +115,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          ;; (url (format #f "file://~a/andrew-rde" dev))
          ]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url url)
@@ -137,7 +137,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          (url (get-url (str channel-name)
                        #:use-local-checkout use-local-checkout))]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url url)
@@ -157,7 +157,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          ;; (url (format #f "file://~a/nonguix" dev))
          (url "https://gitlab.com/nonguix/nonguix")]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url url)
@@ -185,7 +185,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
          (url (get-url (str channel-name)
                        #:use-local-checkout use-local-checkout))]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url url)
@@ -216,7 +216,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
           )
          ]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
       (name channel-name)
       ;; Probably either 'branch' or 'commit' can be used.
@@ -237,7 +237,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guix-past)]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
       (name channel-name)
       (url "https://codeberg.org/guix-science/guix-past")
@@ -256,7 +256,7 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guix-android)]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
    (channel
     (name channel-name)
     (url "https://framagit.org/tyreunom/guix-android.git")
@@ -276,7 +276,7 @@ Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guix-science)]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url "https://codeberg.org/guix-science/guix-science.git")
@@ -295,7 +295,7 @@ Pin to a specific commit instead of pulling-in the lastest so that this
 channel doesn't get rebuild everytime `guix pull ...` is executed."
   (let* [(channel-name 'guix-ai-cloud)]
     (when commit
-      (my=warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
+      (my-warn "~a Channel ~a pinned to ~a\n" f channel-name commit))
     (channel
      (name channel-name)
      (url
