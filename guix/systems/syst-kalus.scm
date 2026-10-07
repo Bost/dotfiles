@@ -3,7 +3,7 @@
   #:use-module (dotf settings)
   #:use-module (bost common utils)                 ; partial, module-name-for-logging
   #:use-module (dotf memo)
-  #:use-module (config packages syst-all)   ; syst-packages-to-install
+  #:use-module (dotf config packages kalus) ; kalus-system-packages
   #:use-module (gnu)
   #:use-module (guix modules)
   #:use-module (guix)                  ; package-version
@@ -15,7 +15,6 @@
  )
 
 (use-package-modules ; no need to write: #:use-module (gnu packages <module>)
- gnupg           ;; pinentry
  ssh             ;; openssh-sans-x
  )
 
@@ -35,14 +34,9 @@
 ;;; install PACKAGE' to install a package.
 ;;;
 ;;; Install git & rsync system-wide to be able to git-clone / rsync the dotfiles
-    (packages
-     (append
-      (list
-       ;; Provides a console that allows users to enter a passphrase when
-       ;; `gpg' is run and needs it.
-       pinentry)      ; Seems like just 'pinentry-tty' doesn't do the job
-      (syst-packages-to-install)
-      %base-packages))
+;;;
+;;; Shared with the guix shell container emulating kalus.
+    (packages (kalus-system-packages))
 
     (services
      (cons*

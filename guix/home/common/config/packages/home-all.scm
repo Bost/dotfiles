@@ -214,7 +214,7 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 (guix-size "firefox")
 |#
 
-(def (basic-packages)
+(def-public (basic-packages)
      "basic-packages: docstring"
   ;; (format #t "~a Starting…\n" f)
   ((comp
