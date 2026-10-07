@@ -1,7 +1,7 @@
 ;;; Packages of the kalus machine, shared between:
 ;;;     guix system reconfigure guix/systems/syst-kalus.scm
 ;;; and the guix shell container emulating kalus:
-;;;     /home/bost/dev/ai-coding-agents/guix-shell.new.scm
+;;;     guix/systems/guix-shell-kalus.scm
 ;;;
 ;;; `guix system reconfigure' loads only guix/common and guix/systems/common,
 ;;; so `kalus-home-packages' refers to (config packages home-all) via `@'. That
