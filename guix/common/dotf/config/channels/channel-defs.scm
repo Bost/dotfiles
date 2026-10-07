@@ -12,7 +12,6 @@
   #:use-module (srfi srfi-1)        ; list-processing procedures
   ;; $fish-foreign-env
   ;; #:use-module (gnu packages shells)
-  #:use-module (ice-9 pretty-print)
   #:use-module (ice-9 optargs)      ; define*-public
   )
 
@@ -24,39 +23,6 @@
            (str "file://" dev)
            "https://codeberg.org/Bost")
        "/" repo-name))
-
-(define (create-file-channels-scm additional-channels)
-  (let* [(channels-scm-fullpath (user-dotf "/" channels-scm-relpath))]
-    (call-with-values
-        (lambda ()
-          (let* [(lst-channels-scm
-                  ((comp
-                    car
-                    syntax->datum
-                    (partial call-with-input-file channels-scm-fullpath))
-                   (read-all read-syntax)))]
-            (split-at lst-channels-scm (1- (length lst-channels-scm)))))
-      (lambda (prm-fst prm-snd)
-        ((comp
-          ;; (lambda (sexp) (scheme-file "channels.scm" (sexp->gexp sexp)))
-          (lambda (s) (format #t "done\n") s)
-          (lambda (sexp)
-            (list
-             channels-scm-relpath
-             ;; (scheme-file "channels.scm" (sexp->gexp sexp))
-             (local-file
-              (let* [(tmpfile (mktmpfile))
-                     (port (open-output-file tmpfile))]
-                ;; save the channel configuration to a temporary file
-                (pretty-print sexp port)
-                (close-port port)
-                tmpfile)
-              channels-scm)))
-          (lambda (s)
-            (format #t "I ~a Creating ~a ... " f channels-scm-fullpath) s)
-          (lambda (sexp) (append prm-fst sexp (list (car prm-snd)))))
-         additional-channels)))))
-(testsymb 'create-file-channels-scm)
 
 (def*-public (channel-home-service-dwl-guile #:key (commit #f))
   "Dynamic tiling Wayland compositor configurable in Guile Scheme"
