@@ -147,7 +147,7 @@ See also
 
 ;; (git-clone-to-tmp "https://github.com/purcell/color-theme-sanityinc-tomorrow")
 
-(define* (main #:rest args)
+(define (main args)
   (map (compose
         (partial format #t "\n~a\n")
         make-pkg)

@@ -10,7 +10,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/gg.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/gg.scm
 ./guix/home/common/scm-bin/gg.scm
 
 |#
