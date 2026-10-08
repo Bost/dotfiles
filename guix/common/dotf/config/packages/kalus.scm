@@ -3,10 +3,16 @@
 ;;; and the guix shell container emulating kalus:
 ;;;     guix/systems/guix-shell-kalus.scm
 ;;;
-;;; `guix system reconfigure' loads only guix/common and guix/systems/common,
-;;; so `kalus-home-packages' refers to (config packages home-all) via `@'. That
-;;; module is resolved only when `kalus-home-packages' is called, which needs
+;;; The (config packages *) modules aren't under guix/common, so they're
+;;; referred to via `@' and resolved only when called:
+;;; - `kalus-system-packages' needs (config packages syst-all), i.e.
+;;;     --load-path=/home/bost/dev/dotfiles/guix/systems/common
+;;;   `-L guix/common' alone makes Guix scan this module for packages, e.g. in
+;;;   `guix pull'; a #:use-module would then fail with
+;;;     no code for module (config packages syst-all)
+;;; - `kalus-home-packages' needs (config packages home-all), i.e.
 ;;;     --load-path=/home/bost/dev/dotfiles/guix/home/common
+;;;   `guix system reconfigure' loads only guix/common and guix/systems/common.
 
 (define-module (dotf config packages kalus)
   #:use-module (bost common utils)
@@ -14,7 +20,6 @@
   #:use-module (guix packages)             ; package?, package-name
   #:use-module (guix profiles)             ; packages->manifest
   #:use-module (srfi srfi-1)               ; remove
-  #:use-module (config packages syst-all)  ; syst-packages-to-install
   )
 
 (use-package-modules
@@ -41,7 +46,7 @@ needed only for its setup."
    (remove (lambda (p)
              (and (package? p)
                   (member (package-name p) (kalus-excluded-package-names))))
-           (syst-packages-to-install))
+           ((@(config packages syst-all) syst-packages-to-install)))
    %base-packages))
 (testsymb 'kalus-system-packages)
 
