@@ -3,7 +3,7 @@
   #:use-module (bost common utils)
   #:use-module (ice-9 match)       ; match
   #:use-module (ice-9 regex)       ; make-regexp, regexp-exec, match:substring
-  #:use-module (ice-9 optargs)     ; define*-public, def*-public
+  #:use-module (ice-9 optargs)     ; def*-public
   )
 
 #|
@@ -12,7 +12,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/git-clone.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/git-clone.scm
 ./guix/home/common/scm-bin/git-clone.scm https://codeberg.org/Bost/guix-guake
 ./guix/home/common/scm-bin/git-clone.scm https://codeberg.org/Bost/guix-guake foobar
 
@@ -70,9 +71,9 @@ standard output.
           [else #f]))])))
 (testsymb 'git-clone)
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Usage:
-(main \"<ignored>\" \"url\" [\"dir\"])"
+(main (list \"<ignored>\" \"url\" [\"dir\"]))"
   (let [(dir ((comp (partial apply git-clone) cdr) args))]
     (if dir
         (begin (display dir) (newline) (exit 0))

@@ -10,7 +10,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/gpg-pinentry-setup.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/gpg-pinentry-setup.scm
 ./guix/home/common/scm-bin/gpg-pinentry-setup.scm
 
 |#
@@ -34,7 +35,7 @@ echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/gpg-pinent
       (partial format #f "which ~a"))
      pinentry-binary)))
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Usage:
 (main (list \"<ignored>\"))"
   ((comp

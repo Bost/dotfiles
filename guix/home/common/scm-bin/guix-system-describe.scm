@@ -3,7 +3,7 @@
   #:use-module (bost common utils)
   #:use-module (srfi srfi-1)     ; list-processing procedures
   #:use-module (srfi srfi-13)    ; string library
-  #:use-module (ice-9 optargs)   ; define*-public
+  #:use-module (ice-9 optargs)   ; define*
   )
 
 #|
@@ -12,7 +12,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-system-describe.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/guix-system-describe.scm
 ./guix/home/common/scm-bin/guix-system-describe.scm | tee /dev/tty | xsel -bi
 
 |#
@@ -69,9 +70,9 @@ The lines must come from the C locale. See `format-date'."
       (or (find (lambda (l) (not (string-null? (string-trim-both l)))) lines) "")))
    args))
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Usage:
-(main \"<ignored>\")
+(main (list \"<ignored>\"))
 CLI args are ignored; prints the #:NAME-commit block for the running system's
 channels, as reported by `guix system describe'."
   ((comp

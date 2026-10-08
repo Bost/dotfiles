@@ -2,7 +2,7 @@
   #:use-module (scm-bin describe-commits) ; commit-block, run-command, print-lines
   #:use-module (bost common utils)        ; comp, partial, logging helpers
   #:use-module (srfi srfi-1)              ; fold-right
-  #:use-module (ice-9 optargs)            ; define*-public
+  #:use-module (ice-9 optargs)            ; define*
   )
 
 #|
@@ -11,7 +11,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-describe.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/guix-describe.scm
 ./guix/home/common/scm-bin/guix-describe.scm | tee /dev/tty | xsel -bi
 
 |#
@@ -51,9 +52,9 @@ this stays a leaf module whose whole closure is pure Scheme."
     (lambda (lines) (fold-right (lambda (s acc) (string-append s "\n" acc)) "" lines)))
    args))
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Usage:
-(main \"<ignored>\")
+(main (list \"<ignored>\"))
 CLI args are ignored; prints the #:NAME-commit block for the channels reported
 by `guix describe --format=channels`."
   ((comp

@@ -15,7 +15,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-find-checkouts.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/guix-find-checkouts.scm
 ./guix/home/common/scm-bin/guix-find-checkouts.scm
 
 |#
@@ -89,9 +90,9 @@ Usage:
           (format #t "NonGuix checkout directory: ~a~%" co-non-gx-dir))
         result))))
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Usage:
-(main \"<ignored>\" \"-f\" \"arg0\")"
+(main (list \"<ignored>\" \"-f\" \"arg0\"))"
   ((comp
     (partial apply guix-find-checkouts)
     cdr)
