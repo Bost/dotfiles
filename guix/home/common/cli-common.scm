@@ -80,15 +80,12 @@ Examples:
     )
    args))
 
-(define-public (main . args)
+(define-public (main args)
   (format #t "~a\n" args)
   (format #t "car: ~a\n" (car args))
   (format #t "cdr: ~a\n" (cdr args))
-  ;; (format #t "cadr: ~a\n" (cadr args)) ;; doesn't work
-  (format #t "caar: ~a\n" (caar args))
-  (format #t "cdar: ~a\n" (cdar args))
-  (format #t "cadar: ~a\n" (cadar args))
+  (format #t "cadr: ~a\n" (cadr args))
   (cli-general-command #:verbose #t
-                       #:params "rg --pretty -t lisp" (cadar args)))
+                       #:params "rg --pretty -t lisp" (cadr args)))
 
 (module-evaluated)

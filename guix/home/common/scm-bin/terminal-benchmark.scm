@@ -11,7 +11,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/terminal-benchmark.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/terminal-benchmark.scm
 ./guix/home/common/scm-bin/terminal-benchmark.scm
 
 |#

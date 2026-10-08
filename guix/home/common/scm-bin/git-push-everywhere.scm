@@ -3,7 +3,7 @@
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 popen)
   #:use-module (bost common utils)
-  #:use-module (ice-9 optargs)     ; define*-public
+  #:use-module (ice-9 optargs)     ; def*-public
   )
 
 #|
@@ -12,7 +12,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/git-push-everywhere.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/git-push-everywhere.scm
 ./guix/home/common/scm-bin/git-push-everywhere.scm
 
 |#
@@ -55,9 +56,9 @@ echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/git-push-e
   )
 (testsymb 'git-push-everywhere)
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Usage:
-(main \"<ignored>\" \"arg0\")"
+(main (list \"<ignored>\" \"arg0\"))"
   ((comp
     (partial apply git-push-everywhere)
     cdr)

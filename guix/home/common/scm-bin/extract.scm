@@ -12,7 +12,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/extract.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/extract.scm
 ./guix/home/common/scm-bin/extract.scm
 
 |#
@@ -62,9 +63,9 @@ echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/extract.sc
        )
       args))))
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Usage:
-(main \"<ignored>\" ...)"
+(main (list \"<ignored>\" ...))"
   ((comp
     (partial apply extract)
     cdr)

@@ -12,7 +12,8 @@
 #!/usr/bin/env -S guix repl -L ./ -L ./guix/common --
 !#
 
-cd $dotf && echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/sgxsr.scm
+# not '(apply main (command-line))'
+cd $dotf && echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/sgxsr.scm
 ./guix/home/common/scm-bin/sgxsr.scm
 
 |#
@@ -172,7 +173,7 @@ Reject unknown options, operands, missing values, and pull with --no-pull."
       (no-pull . ,val-no-pull)
       (dry-run . ,val-dry-run))))
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Pull system channels, reconfigure the Guix system, roll back to
 home-channels.
 

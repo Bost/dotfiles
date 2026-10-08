@@ -8,7 +8,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/gk.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/gk.scm
 ./guix/home/common/scm-bin/gk.scm
 
 |#
@@ -16,7 +17,7 @@ echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/gk.scm
 ;; (define m (module-name-for-logging))
 ;; (evaluating-module)
 
-(define-public (main . args)
+(define-public (main args)
   ((comp
     exec-background
     (lambda (p) (append '("gitk") (if (null? p) '("--all") p)))

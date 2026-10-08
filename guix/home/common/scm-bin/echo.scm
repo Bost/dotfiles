@@ -10,7 +10,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/echo.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/echo.scm
 ./guix/home/common/scm-bin/echo.scm -e "'Top\\nBottom'"
 
 |#
@@ -35,9 +36,9 @@ Bottom
     ret))
 (testsymb 'echo)
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Usage:
-(main \"<ignored>\" \"arg0\")"
+(main (list \"<ignored>\" \"arg0\"))"
   ((comp
     (partial apply (lambda (options string)
                      (echo #:options options #:string string)))

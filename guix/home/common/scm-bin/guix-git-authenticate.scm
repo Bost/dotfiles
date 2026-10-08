@@ -4,7 +4,7 @@
   #:use-module (dotf fs-utils) ; dgx (repository location)
   #:use-module (dotf settings) ; home
   #:use-module (srfi srfi-26)  ; special selected function parameters
-  #:use-module (ice-9 optargs) ; define*-public
+  #:use-module (ice-9 optargs) ; def*-public, define*
   )
 
 #|
@@ -17,7 +17,8 @@
 !#
 
 cd $dotf
-echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-git-authenticate.scm
+# not '(apply main (command-line))'
+echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/guix-git-authenticate.scm
 ./guix/home/common/scm-bin/guix-git-authenticate.scm
 
 |#
@@ -115,9 +116,9 @@ echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-git-a
                   commits)))
 (testsymb 'guix-git-authenticate)
 
-(define*-public (main #:rest args)
+(define-public (main args)
   "Examples:
-(main \"<ignored>\" \"-f\" \"arg0\")"
+(main (list \"<ignored>\" \"-f\" \"arg0\"))"
   ((comp
     (partial apply guix-git-authenticate)
     cdr

@@ -184,7 +184,7 @@ echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/search-notes.scm
             (map (partial format #t "~a\n") results)))
         (error (format #f "~a retcode: ~a\n" f retcode)))))
 
-(def*-public (search-notes #:rest args)
+(def-public (search-notes args)
   "Usage:
 (search-notes (list \"<ignored>\"
   \"-v\" \"rest \"
@@ -194,7 +194,7 @@ echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/search-notes.scm
 -v/--verbose prints the sed/awk pipeline before it's executed.
 "
   (trc "args:" args)
-  (let* [(arg-lst (car args))
+  (let* [(arg-lst args)
          (option-spec '((verbose (single-char #\v) (value #f))))
          ;; `getopt-long' expects ARG-LST's car to be the program name, as
          ;; `command-line' would produce it -- it's skipped, not parsed.
@@ -215,7 +215,7 @@ echo -e "\n(main (command-line))" >> ./guix/home/common/scm-bin/search-notes.scm
          files)
     ))
 
-(define-public main search-notes)
+(define-public (main args) (search-notes args))
 
 (testsymb 'main)
 
