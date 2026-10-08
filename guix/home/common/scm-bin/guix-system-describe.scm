@@ -8,7 +8,7 @@
 
 #|
 
-#!/usr/bin/env -S guix repl --
+#!/usr/bin/env -S guix repl -L ./guix/home/common --
 !#
 
 cd $dotf
@@ -53,10 +53,14 @@ localized labels (commit:/branche:/URL du depot:, etc.)."
      lines))))
 
 (define* (parse-generation-date #:key args)
-  "lines -> date string from the first (generation) line, taken verbatim.
-Drops the localized `Generation' word, the number, and the trailing `(current)'
-marker, so the date reads in whatever locale the command ran under."
+  "lines -> date string from the first (generation) line. E.g.
+\"Generation 42  Oct 08 2026 13:58:57  (current)\" -> \"8 October 2026 13:58\"
+Drops the `Generation' word, the number, and the trailing `(current)' marker.
+The lines must come from the C locale. See `format-date'."
   ((comp
+    format-date
+    car
+    (lambda (s) (setlocale LC_TIME "C") (strptime "%b %d %Y %H:%M:%S" s))
     (lambda (toks) (string-join toks " "))
     (lambda (toks) (filter (lambda (s) (not (string-prefix? "(" s))) toks))
     cddr
@@ -76,7 +80,8 @@ channels, as reported by `guix system describe'."
                                   (parse-channels lines)))
     ;; peek
     (lambda (argv) (run-command #:args argv))
-    (lambda (_) '("guix" "system" "describe"))   ; ignore CLI args
+    ;; ignore CLI args; LC_ALL=C for English and unlocalized labels
+    (lambda (_) '("env" "LC_ALL=C" "guix" "system" "describe"))
     cdr
     ;; peek
     )

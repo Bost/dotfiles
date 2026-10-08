@@ -7,7 +7,7 @@
 
 #|
 
-#!/usr/bin/env -S guix repl --
+#!/usr/bin/env -S guix repl -L ./guix/home/common --
 !#
 
 cd $dotf
@@ -20,15 +20,14 @@ echo -e "\n(apply main (command-line))" >> ./guix/home/common/scm-bin/guix-descr
 (evaluating-module)
 
 (define (current-generation-date)
-  "-> \"18 juin 2026 15:35:17\"
+  "-> \"8 October 2026 13:58\"
 Generation date of ~/.config/guix/current, from its ctime -- the same thing
 `guix describe` stats -- so it stays correct regardless of which profile the
-running Guile belongs to.  Localized via the environment (LC_ALL > LC_TIME > LANG)."
-  (setlocale LC_TIME "")
-  (strftime "%e %B %Y %H:%M:%S"
-            (localtime
-             (stat:ctime
-              (stat (string-append (getenv "HOME") "/.config/guix/current"))))))
+running Guile belongs to.  See `format-date'."
+  (format-date
+   (localtime
+    (stat:ctime
+     (stat (string-append (getenv "HOME") "/.config/guix/current"))))))
 
 (define (unquote-symbol x)
   "(quote SYM) -> SYM; SYM -> SYM."

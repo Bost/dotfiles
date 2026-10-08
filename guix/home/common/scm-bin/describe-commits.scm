@@ -35,6 +35,12 @@
                    (make-string (- (1+ width) (string-length kw)) #\space)
                    "\"" (cdr entry) "\"")))
 
+(define-public (format-date tm)
+  "broken-down time TM -> \"8 October 2026 13:58\"
+Always in English (the C locale); no padding of the day, no seconds."
+  (setlocale LC_TIME "C")
+  (strftime "%-d %B %Y %H:%M" tm))
+
 (define-public (commit-block date-string pairs)
   "DATE-STRING and ((NAME . COMMIT) ...) -> list of output lines: a
 \" ;; DATE-STRING\" comment followed by the aligned #:NAME-commit block."
