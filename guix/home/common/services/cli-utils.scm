@@ -11,6 +11,7 @@
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (guix modules) ; source-module-closure guix-module-name?
+  #:use-module ((bost gnu packages emacs-build) #:select (bost-common-modules))
   #:use-module (guix store) ; run-with-store
   #:use-module (guix monads) ; mlet
   #:use-module (guix derivations) ; build-derivations
@@ -115,30 +116,13 @@ clears:
                     (memq (car module) '(bost dotf)))))))
 
 (define (common-modules)
-  "Must contain all (bost common *), incl. (bost common test)
-necessary. See $dbstx/src/bost/gnu/packages/emacs-build.scm
-
-TODO auto-include the (bost common *) modules."
-  '(
+  `(
     (cli-common)
     (command-line)
     (dotf fs-utils)
     (dotf settings)
-    (bost common boolean)
-    (bost common core)
-    (bost common environment)
-    (bost common exec)
-    (bost common fs)
-    (bost common guix)
-    (bost common guix-shell)
-    (bost common list)
-    (bost common monad)
-    (bost common plist)
-    (bost common pretty-print)
-    (bost common srfi-1-smart)
-    (bost common string)
-    (bost common utils)
-    (bost common tests)
+    ,@(bost-common-modules)
+    (bost common tests) ; testsymb; `bost-common-modules' skips it
     (guix base16)
     (guix base32)
     (guix colors)
