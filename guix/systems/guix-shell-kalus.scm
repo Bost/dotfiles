@@ -1,4 +1,4 @@
-#!/usr/bin/env -S guix repl -L /home/bost/dev/bstx/src -L /home/bost/dev/dotfiles/guix/common --
+#!/usr/bin/env -S guix repl -L /home/bost/dev/dotfiles/guix/common --
 !#
 
 ;;; Simulate the offline kalus machine (see syst-kalus.scm) in a guix shell
@@ -6,8 +6,8 @@
 ;;; the container in: like `bash --rcfile .bash_profile', the persistent GPG home
 ;;; `.gnupg-container' is relative to the current working directory.
 ;;;
-;;; `-L /home/bost/dev/bstx/src' makes the (bost common *) modules come from the
-;;; local bstx checkout rather than from the pulled channel.
+;;; The (bost common *) modules come from the pulled channel. To use the local
+;;; bstx checkout instead, add `-L /home/bost/dev/bstx/src' to the shebang.
 
 (use-modules
  (bost common guix-shell) ; call-with-guix-gpg-home, guix-shell-run, ...
