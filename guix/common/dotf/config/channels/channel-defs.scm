@@ -144,7 +144,8 @@ channel doesn't get rebuild everytime `guix pull ...` is executed."
      (commit commit)
      (introduction
       (make-channel-introduction
-       "d92cc7a959fbde6ff4ac202e43069ddf37be233c"
+       ;; channel: enable keyring-based authentication
+       "f0c587b967e974776019a7c918d23740fc75e0e9"
        (openpgp-fingerprint
         "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))))
 (testsymb 'channel-bstx)
