@@ -41,6 +41,16 @@
 ;; Fixed location in the dotfiles, independent of where this script lives
 (define manifest-kalus (str dtf "/guix/systems/manifest-kalus.scm"))
 
+(define (bstx-load-path)
+  "Return the `guix shell' flags making the manifest use the local bstx
+checkout, when the shebang loads (bost common *) from it via `-L'. Otherwise
+return '(), so that both processes use the pulled channel. Allows testing bstx
+changes before `guix pull'."
+  (let [(bstx-src (str dbstx "/src"))]
+    (if (member bstx-src %load-path)
+        (list (str "--load-path=" bstx-src))
+        '())))
+
 (define (args gpg-home)
   (append
    (list
@@ -71,6 +81,8 @@
    ;; The kalus packages from the dotfiles, see manifest-kalus.scm
    (map (cut str "--load-path=" dtf <>)
         '("/guix/common" "/guix/systems/common" "/guix/home/common"))
+
+   (bstx-load-path)
 
    (map guix-preserve-exact
         '("dev"
