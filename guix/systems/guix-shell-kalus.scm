@@ -28,8 +28,8 @@
 ;; GPG home: host-side, see `call-with-guix-gpg-home'
 (define dir-dot-gnupg-container ".gnupg-container") ; 'persistent strategy
 
-;; Lives next to this script, so it works from any working directory
-(define manifest-kalus (str (dirname (current-filename)) "/manifest-kalus.scm"))
+;; Fixed location in the dotfiles, independent of where this script lives
+(define manifest-kalus (str dtf "/guix/systems/manifest-kalus.scm"))
 
 (define (args gpg-home)
   (append
