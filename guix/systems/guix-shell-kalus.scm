@@ -51,6 +51,11 @@ changes before `guix pull'."
         (list (str "--load-path=" bstx-src))
         '())))
 
+(define (cli-options)
+  "Return the command line arguments, passed to `guix shell' as they are, e.g.
+  ./guix-shell-kalus.scm --share=$HOME/dev/foo --network"
+  (cdr (command-line)))
+
 (define (args gpg-home)
   (append
    (list
@@ -101,6 +106,9 @@ changes before `guix pull'."
          dbstx
          dtf
          ))
+
+   ;; Ad hoc options from the command line, e.g. projects to work on
+   (cli-options)
 
    ;; Time zone: without /etc/localtime the container's glibc falls back to
    ;; UTC. On Guix System it is a symlink into the host's store; the bind
