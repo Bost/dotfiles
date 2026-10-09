@@ -10,7 +10,7 @@
   )
 
 (use-service-modules ; no need to write: #:use-module (gnu services <module>)
- networking      ; network-manager-service-type, wpa-supplicant-service-type
+ ;; networking   ; network-manager-service-type, wpa-supplicant-service-type
  ;; ssh          ; openssh-service-type
  )
 
@@ -40,10 +40,17 @@
 
     (services
      (cons*
-      (service network-manager-service-type)
-      ;; Prevent error ... 'NetworkManager' requires 'wireless-daemon' ...
-      (service wpa-supplicant-service-type)
-      ;; kalus is offline. sshd was probably needed only for its setup.
+      ;; ;; This machine is offline.
+      ;; ;; To update it occasionally, uncomment these two services and
+      ;; ;; `networking' in `use-service-modules' above. While enabled,
+      ;; ;; NetworkManager autoconnects any saved profile at boot.
+      ;; (service network-manager-service-type)
+      ;; ;; Prevent error ... 'NetworkManager' requires 'wireless-daemon' ...
+      ;; (service wpa-supplicant-service-type)
+      ;;
+      ;; ;; sshd is needed only for initial machine setup and update. To enable
+      ;; ;; it, also uncomment `ssh' in `use-service-modules' and the whole
+      ;; ;; `use-package-modules' (for `openssh-sans-x') above.
       ;; (service
       ;;  openssh-service-type
       ;;  (openssh-configuration
