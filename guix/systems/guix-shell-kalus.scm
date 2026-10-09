@@ -35,10 +35,28 @@
   (append
    (list
     "shell"
+    ;; Isolated container: only the current working directory, the
+    ;; manifest's store items and the --share/--expose paths are visible, and
+    ;; the home directory is a fresh dummy one.
     ;; No --network: the container gets its own network namespace with only
     ;; a loopback interface, i.e. it is offline.
-    "--container" "--emulate-fhs" "--pure" "--nesting"
-    (str "--manifest=" manifest-kalus))
+    "--container"
+
+    ;; Provide /bin, /lib, /usr, ... like other GNU/Linux distributions, and
+    ;; a glibc that reads /etc/ld.so.cache, so that programs expecting the FHS
+    ;; layout (e.g. `#!/bin/bash' scripts, prebuilt binaries) work.
+    "--emulate-fhs"
+
+    ;; Unset the host's environment variables, except those preserved below,
+    ;; so search paths like PATH contain only the manifest's packages.
+    "--pure"
+
+    ;; Provide `guix' inside the container, talking to the host's build
+    ;; daemon through its socket, e.g. for `./pre-inst-env guix build ...'.
+    "--nesting"
+
+    (str "--manifest=" manifest-kalus)
+    )
 
    ;; The kalus packages from the dotfiles, see manifest-kalus.scm
    (map (cut str "--load-path=" dtf <>)
