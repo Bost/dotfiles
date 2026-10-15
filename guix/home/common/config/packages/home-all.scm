@@ -184,7 +184,12 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    ;; Default browser. GNU version of the Firefox. Includes the `geckodriver'
    ;; command, which can be useful for automated web testing.
    ;; See also icecat-minimal
-   icecat ;; 1839.7 MiB
+
+   (pkg-or-inferior
+    icecat ;; 1839.7 MiB
+    #:channels
+    (list (channel-guix #:commit "e100c252b4ae4f1d4d93ff1c964b6cd467107bc4"))
+    )
 
    librewolf ; Custom version of Firefox. Better privacy, security and freedom
    qemu      ; Machine emulator and virtualizer ;; 688 MiB
