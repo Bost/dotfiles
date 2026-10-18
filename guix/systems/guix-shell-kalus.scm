@@ -20,12 +20,12 @@
 ;;; `.gnupg-container' is relative to the current working directory.
 
 (use-modules
- (bost common guix-shell) ; call-with-guix-gpg-home, guix-shell-run, ...
- (bost common utils)      ; str, comp, required-getenv, setenv-default!, ...
- (dotf fs-utils)          ; user-home
+ (bost common guix-shell)
+ (bost common utils)
+ (dotf fs-utils)
  (dotf settings)          ; host-kalus
  (srfi srfi-1)            ; append-map
- (srfi srfi-26)           ; cut
+ (srfi srfi-26)           ; Conveniently specialize selected parameters
  )
 
 (setenv-default! "XDG_CONFIG_HOME" (user-home "/.config"))
@@ -33,7 +33,8 @@
 
 ;; Abort if required path vars are unset  (bash: `${VAR:?}`)
 (define-values (dsps dgx dev dbstx dtf)
-  (apply values (map required-getenv '("dsps" "dgx" "dev" "dbstx" "dtf"))))
+  (apply values (map required-getenv
+                     '("dsps" "dgx" "dev" "dbstx" "dtf"))))
 
 ;; GPG home: host-side, see `call-with-guix-gpg-home'
 (define dir-dot-gnupg-container ".gnupg-container") ; 'persistent strategy
@@ -96,7 +97,8 @@ changes before `guix pull'."
           "dsps"
           "dtf"
           "gpgPubKey"
-          "GPG_TTY"))
+          "GPG_TTY"
+          ))
 
    ;; Projects to work on
    (map guix-share
@@ -141,7 +143,10 @@ changes before `guix pull'."
    (list "--")
 
    ;; command-env
-   (cons "env" (guix-gpg-environment))
+   (append
+    (list "env")
+    (guix-gpg-environment)
+    )
 
    (list "bash" "--noprofile" "--rcfile" ".bash_profile" "-i")))
 
