@@ -260,6 +260,24 @@ system version without appearing in `guix package --list-installed'."
 (def*-public (environment-vars
               #:optional (list-separator list-separator-bash)
               )
+  "Variable inspection in Bash:
+| env            | Exported environment variables              |
+| printenv       | Exported environment variables              |
+| set            | All shell variables and functions           |
+| declare -p     | All shell variables with their declarations |
+| declare -p foo | Declaration of a specific variable          |
+| compgen -v     | Names of all shell variables                |
+| declare -px    | Exported variables with their declarations  |
+| declare -pF    | Defined function names                      |
+
+
+`declare -p' is particularly useful because it preserves information about
+variable attributes, such as whether a variable is exported (-x), readonly (-r),
+indexed array (-a), or associative array (-A).
+
+One subtle distinction: set also prints function definitions and can produce
+multiline output, whereas declare -p focuses on variable declarations. For
+interactive debugging, declare -p is usually the more convenient choice."
   ((comp
     ;; (lambda (v) (format #t "~a 0\n" m) v)
     )
