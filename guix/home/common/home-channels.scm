@@ -104,12 +104,6 @@
 (module-evaluated)
 
 (home-channels
- ;; 18 septembre 2026 13:03:29
- ;; #:nonguix-commit       "f9171dd0d0a58d63c0811d61e51493a3fa4ae4f3"
- ;; #:bstx-commit          "49335107503e4a0b0755b135cbedbd233f77a16b"
- ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- ;; #:guix-commit          "0daef659a23220fa76a62dcbda7057cb649f415c"
-
  ;; 2 octobre 2026 17:21:26
  ;; #:nonguix-commit       "c0192e90a52cafb4d33b04734cbe9bbedd703a04"
  ;; #:bstx-commit          "659599cb0a766790adc41f0abfb0773b42b96280"
@@ -171,10 +165,16 @@
  ;; #:guix-commit          "e100c252b4ae4f1d4d93ff1c964b6cd467107bc4"
 
  ;; 15 October 2026 14:30
- #:nonguix-commit       "4b21ba0c885907aff3b1b6c717ac830144d3c575"
+ ;; #:nonguix-commit       "4b21ba0c885907aff3b1b6c717ac830144d3c575"
+ ;; #:bstx-commit          "99d266e26ef0cdd4ab61f234aba7f917bb35ebc3"
+ ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ ;; #:guix-commit          "a6f963401bbe9ced6e1dbea99cb4c0ce50534fce"
+
+ ;; 20 October 2026 18:47
+ #:nonguix-commit       "25226c35c150f03d469b0c855d10b2402a094bc1"
  #:bstx-commit          "99d266e26ef0cdd4ab61f234aba7f917bb35ebc3"
  #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- #:guix-commit          "a6f963401bbe9ced6e1dbea99cb4c0ce50534fce"
+ #:guix-commit          "13fd2311536f40d645167215671ed42b211e9c21"
 
  #:use-local-checkout #f)
 
