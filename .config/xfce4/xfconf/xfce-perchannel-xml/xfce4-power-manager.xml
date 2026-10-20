@@ -4,6 +4,7 @@
   <property name="xfce4-power-manager" type="empty">
     <property name="lock-screen-suspend-hibernate" type="bool" value="false"/>
     <property name="heartbeat-command" type="string" value=""/>
+    <!-- Brightness settings should do nothing on a monitor which doesn't support it. -->
     <property name="brightness-switch-restore-on-exit" type="int" value="1"/>
     <property name="brightness-switch" type="int" value="0"/>
   </property>
