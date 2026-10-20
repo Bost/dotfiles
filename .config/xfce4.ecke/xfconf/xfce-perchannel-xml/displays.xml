@@ -20,6 +20,7 @@
         <property name="Y" type="int" value="0"/>
       </property>
     </property>
+    <!-- Acer 27" on HDMI-1; currently not used
     <property name="HDMI-1" type="string" value="Acer 27&quot;">
       <property name="Active" type="bool" value="true"/>
       <property name="EDID" type="string" value="59cf6ed72582299bbb78a3bb6e4647d305884a69"/>
@@ -37,6 +38,7 @@
         <property name="Y" type="int" value="0"/>
       </property>
     </property>
+    -->
   </property>
   <property name="Fallback" type="empty">
     <property name="DP-1" type="string" value="LG 27&quot;">
@@ -56,6 +58,7 @@
         <property name="Y" type="int" value="0"/>
       </property>
     </property>
+    <!-- Acer 27" on HDMI-1; currently not used
     <property name="HDMI-1" type="string" value="Acer 27&quot;">
       <property name="Active" type="bool" value="true"/>
       <property name="EDID" type="string" value="59cf6ed72582299bbb78a3bb6e4647d305884a69"/>
@@ -73,5 +76,6 @@
         <property name="Y" type="int" value="0"/>
       </property>
     </property>
+    -->
   </property>
 </channel>

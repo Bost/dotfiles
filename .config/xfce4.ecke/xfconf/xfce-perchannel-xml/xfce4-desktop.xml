@@ -25,6 +25,7 @@
           <property name="last-image" type="string" value="/gnu/store/3gxkbvl24jal7dl51y434yghsz8hx6pp-xfdesktop-4.18.1/share/backgrounds/xfce/xfce-shapes.svg"/>
         </property>
       </property>
+      <!-- Acer 27" on HDMI-1; currently not used
       <property name="monitorHDMI-1" type="empty">
         <property name="workspace0" type="empty">
           <property name="color-style" type="int" value="0"/>
@@ -47,6 +48,7 @@
           <property name="last-image" type="string" value="/gnu/store/3gxkbvl24jal7dl51y434yghsz8hx6pp-xfdesktop-4.18.1/share/backgrounds/xfce/xfce-shapes.svg"/>
         </property>
       </property>
+      -->
     </property>
   </property>
 </channel>
