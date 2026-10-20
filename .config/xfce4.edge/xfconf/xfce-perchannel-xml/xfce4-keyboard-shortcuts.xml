@@ -179,6 +179,18 @@
       <property name="&lt;Super&gt;KP_End"     type="string" value="tile_down_left_key"/>
       <property name="&lt;Super&gt;KP_Next"    type="string" value="tile_down_right_key"/>
 
+      <!-- in Fish shell:
+set -l channel xfce4-keyboard-shortcuts
+xfconf-query --channel $channel --property '/xfwm4/custom/<Super>KP_Home'  --create --type string --set tile_up_left_key
+xfconf-query --channel $channel --property '/xfwm4/custom/<Super>KP_Prior' --create --type string --set tile_up_right_key
+xfconf-query --channel $channel --property '/xfwm4/custom/<Super>KP_End'   --create --type string --set tile_down_left_key
+xfconf-query --channel $channel --property '/xfwm4/custom/<Super>KP_Next'  --create --type string --set tile_down_right_key
+      -->
+      <property name="&lt;Super&gt;KP_Home"    type="string" value="tile_up_left_key"/>
+      <property name="&lt;Super&gt;KP_Prior"   type="string" value="tile_up_right_key"/>
+      <property name="&lt;Super&gt;KP_End"     type="string" value="tile_down_left_key"/>
+      <property name="&lt;Super&gt;KP_Next"    type="string" value="tile_down_right_key"/>
+
       <property name="&lt;Super&gt;Tab" type="string" value="switch_window_key"/>
       <property name="&lt;Primary&gt;&lt;Alt&gt;d" type="string" value="show_desktop_key"/>
       <property name="&lt;Alt&gt;space" type="string" value="popup_menu_key"/>
