@@ -11,6 +11,7 @@
   ;; $fish-foreign-env
   ;; #:use-module (gnu packages shells)
   #:use-module (ice-9 pretty-print)
+  #:use-module (ice-9 ftw)          ; file tree walk
 )
 
 (define m (module-name-for-logging))
@@ -42,75 +43,59 @@
   (list dir ;; destination
         (local-file (user-dotf "/" dir) #:recursive? #t)))
 
-(define (make-config-xfce4-local-file hostname file)
-  "For a given hostname handle creation of a local-file"
+(define config-xfce4 ".config/xfce4")
+
+(define (list-relative-files dir)
+  "Return the regular files found recursively under the dotfiles DIR, relative
+to DIR. Return an empty list if DIR doesn't exist.
+
+(list-relative-files \".config/xfce4\")
+;; =>
+(\"xfconf/xfce-perchannel-xml/keyboards.xml\" ...)"
+  (let [(dotf-dir (user-dotf "/" dir))
+        (files '())]
+    (when (file-exists? dotf-dir)
+      (nftw dotf-dir
+            (lambda (filename statinfo flag base level)
+              (when (equal? 'regular flag) ; it's a regular file
+                (set! files
+                      (cons (substring filename (1+ (string-length dotf-dir)))
+                            files)))
+              #t)))                     ; continue traversing
+    (reverse files)))
+
+(define (make-config-xfce4-local-file dir file)
+  "Create a local-file for the FILE located under the dotfiles DIR. The FILE is
+always placed under .config/xfce4 in the home directory."
   (let* [(basename-file (basename file))
-         (config-xfce ".config/xfce4")
-         (config-xfce-file (str config-xfce "/" file))
-         (dotf-config-xfce-hostname-file
-          (user-dotf "/" (str config-xfce "." hostname "/" file)))]
-    (if (access? dotf-config-xfce-hostname-file R_OK)
-        (list
-         config-xfce-file
-         ;; 'local-file' is a macro and cannot be used by 'apply'
-         (if (equal? "." (substring basename-file 0 1))
+         (dotf-dir-file (user-dotf "/" (str dir "/" file)))]
+    (list
+     (str config-xfce4 "/" file)
+     ;; 'local-file' is a macro and cannot be used by 'apply'
+     (if (equal? "." (substring basename-file 0 1))
 ;;; basename-file of the local-file can't start with '.'
 ;;; Use the `(...) forms for debugging
-;;;`(local-file ,dotf-config-xfce-hostname-file ,(fix-leading-dot basename-file))
-;;;`(local-file ,dotf-config-xfce-hostname-file)
-             (local-file dotf-config-xfce-hostname-file
-                         (fix-leading-dot basename-file))
-             (local-file dotf-config-xfce-hostname-file)))
-        (begin
-          (format #t "E ~a Can't read ~a\n" m dotf-config-xfce-hostname-file)
-          #f))))
+;;;`(local-file ,dotf-dir-file ,(fix-leading-dot basename-file))
+;;;`(local-file ,dotf-dir-file)
+         (local-file dotf-dir-file (fix-leading-dot basename-file))
+         (local-file dotf-dir-file)))))
 
 (def (host-specific-config)
-  "Handle the host-specific configuration settings from .config<.hostname>/
+  "Handle the xfce4 configuration settings from .config/xfce4/ (shared by all
+hosts) and .config/xfce4.<hostname>/ (host-specific). A host-specific file
+takes precedence over a shared file of the same name.
 See also:
 - (@(dotf fs-utils) local-dotfile)
 - How to copy all my XFCE settings between two computers/machines?
   https://unix.stackexchange.com/a/353936"
-  (let [(hostname (hostname-memoized))]
-    ((comp
-      (partial remove unspecified-or-empty-or-false?)
-      ;; (lambda (p) (format #t "###### 2.:\n~a\n" (pretty-print->string p)) p)
-      (partial map (partial make-config-xfce4-local-file hostname))
-      ;; (lambda (p) (format #t "###### 1.:\n~a\n" (pretty-print->string p)) p)
-      #;(lambda (lst) (take lst 2))
-      (partial remove unspecified-or-empty-or-false?)
-      (partial append
-               (cond
-                [(or (host-edge?) (host-ecke?))
-                 (list
-                  "xfconf/xfce-perchannel-xml/displays.xml"
-                  "xfconf/xfce-perchannel-xml/keyboards.xml"
-                  "xfconf/xfce-perchannel-xml/thunar.xml"
-                  "xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
-                  "xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
-                  "xfconf/xfce-perchannel-xml/xfce4-notifyd.xml"
-                  "xfconf/xfce-perchannel-xml/xfce4-panel.xml"
-                  "xfconf/xfce-perchannel-xml/xfce4-power-manager.xml"
-                  "xfconf/xfce-perchannel-xml/xfce4-screensaver.xml"
-                  "xfconf/xfce-perchannel-xml/xfce4-session.xml"
-                  "xfconf/xfce-perchannel-xml/xfce4-terminal.xml"
-                  "xfconf/xfce-perchannel-xml/xfwm4.xml")]
-                [else (list)]))
-      ;; (lambda (p) (format #t "###### 0:\n~a\n" (pretty-print->string p)) p)
-      )
-     (cond
-      [(host-ecke?)
-       (list
-        "panel/launcher-17/17100751821.desktop"
-        "panel/launcher-18/17100751822.desktop"
-        "panel/launcher-19/17100751823.desktop"
-        "panel/launcher-20/17100751824.desktop"
-        "panel/xfce4-clipman-actions.xml"
-        "xfconf/xfce-perchannel-xml/xfce4-appfinder.xml")]
-      [(host-edge?)
-       (list
-        "xfce4-screenshooter")]
-      [else (list)]))))
+  (let* [(config-xfce4-hostname (str config-xfce4 "." (hostname-memoized)))
+         (hostname-files (list-relative-files config-xfce4-hostname))]
+    (append
+     (map (partial make-config-xfce4-local-file config-xfce4-hostname)
+          hostname-files)
+     (map (partial make-config-xfce4-local-file config-xfce4)
+          (remove (lambda (file) (member file hostname-files))
+                  (list-relative-files config-xfce4))))))
 
 (def (home-files-config)
     ;; (format #t "~a Starting…\n" m)
