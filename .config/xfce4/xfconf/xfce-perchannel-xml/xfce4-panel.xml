@@ -21,6 +21,8 @@
         <value type="int" value="6"/>
         <value type="int" value="8"/>
         <value type="int" value="10"/>
+        <value type="int" value="24"/>
+        <value type="int" value="25"/>
         <value type="int" value="11"/>
         <value type="int" value="12"/>
         <value type="int" value="13"/>
@@ -28,7 +30,6 @@
         <value type="int" value="7"/>
         <value type="int" value="23"/>
       </property>
-      <property name="output-name" type="string" value="HDMI-0"/>
       <property name="mode" type="uint" value="1"/>
       <property name="nrows" type="uint" value="2"/>
     </property>
@@ -90,7 +91,10 @@
     <property name="plugin-13" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
     </property>
-    <property name="plugin-14" type="string" value="actions"/>
+    <property name="plugin-14" type="string" value="actions">
+      <property name="button-title" type="uint" value="3"/>
+      <property name="custom-title" type="string" value="⏻"/>
+    </property>
     <property name="plugin-15" type="string" value="showdesktop"/>
     <property name="plugin-16" type="string" value="separator"/>
     <property name="plugin-17" type="string" value="launcher">
@@ -119,5 +123,7 @@
     </property>
     <property name="plugin-7" type="string" value="xkb"/>
     <property name="plugin-23" type="string" value="xfce4-clipman-plugin"/>
+    <property name="plugin-24" type="string" value="battery"/>
+    <property name="plugin-25" type="string" value="netload"/>
   </property>
 </channel>
