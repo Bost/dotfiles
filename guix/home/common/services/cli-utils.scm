@@ -573,7 +573,30 @@ a list of files to search through."
    ;; override values from configuration files. The <name> is expected in the
    ;; same format as listed by git config (subkeys separated by dots).
    (list #:utility "gs"     #:params (git-cmdstr "status"))
-   (list #:utility "wp"     #:params "printf '\\ec'" #:desc "Wipe / clear terminal")
+
+   ;; RIS (Reset to Initial State), a full terminal reset. Besides clearing the
+   ;; screen, it resets:
+   ;; - text attributes and colors, character sets (fixes the "line-drawing
+   ;;   garbage" after cating a binary)
+   ;; - scroll regions, tab stops, origin/wrap modes
+   ;; - cursor visibility and shape, keypad and mouse modes
+   ;; - bracketed-paste mode and other modes your shell enabled (Fish turns
+   ;;   these back on at the next prompt, so that's harmless)
+   ;; - the alternate screen, if a crashed full-screen program left you stuck in it
+   (list #:utility "wp-hard"
+         #:params "printf '\\ec'" #:desc "Full terminal reset")
+
+   ;; Targeted terminal reset:
+   ;; Move the cursor home, clear the visible screen, and clear the scrollback.
+   ;; Nothing else about the terminal's state changes: colors, modes,and
+   ;; settings the shell has enabled all stay as they were.
+   (list #:utility "wp"
+         #:params "printf '\\e[H\\e[2J\\e[3J'" #:desc "Targeted terminal reset")
+
+   ;; reset everything and then explicitly clear scrollback in case the
+   ;; emulator's RIS doesn't.
+   (list #:utility "wp-soft"
+         #:params "printf '\\ec\\e[3J'" #:desc "Less targeted terminal reset")
    ))
 (testsymb 'rest-utils-definitions)
 
