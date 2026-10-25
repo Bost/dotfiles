@@ -87,9 +87,9 @@ when called from the Emacs Geiser REPL by ,use or ,load"
     ;; See also module (bost manifest-set-operations)
     (pkg-or-inferior
      (@(nongnu packages mozilla) firefox)
-     #:channels
-     (list (channel-guix #:commit "a6f963401bbe9ced6e1dbea99cb4c0ce50534fce")
-           (channel-nonguix #:commit "4b21ba0c885907aff3b1b6c717ac830144d3c575"))
+     ;; #:channels
+     ;; (list (channel-guix #:commit "a6f963401bbe9ced6e1dbea99cb4c0ce50534fce")
+     ;;       (channel-nonguix #:commit "4b21ba0c885907aff3b1b6c717ac830144d3c575"))
      )
 
     ;; (@(bost gnu packages clojure) clojure-tools) ;; 1.12.0.1488
@@ -188,15 +188,15 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
    (pkg-or-inferior
     icecat ;; 1839.7 MiB
-    #:channels
-    (list (channel-guix #:commit "e100c252b4ae4f1d4d93ff1c964b6cd467107bc4"))
+    ;; #:channels
+    ;; (list (channel-guix #:commit "e100c252b4ae4f1d4d93ff1c964b6cd467107bc4"))
     )
 
    ;; Custom version of Firefox. Better privacy, security and freedom
    (pkg-or-inferior
     librewolf
-    #:channels
-    (list (channel-guix #:commit "a6f963401bbe9ced6e1dbea99cb4c0ce50534fce"))
+    ;; #:channels
+    ;; (list (channel-guix #:commit "a6f963401bbe9ced6e1dbea99cb4c0ce50534fce"))
     )
 
    qemu      ; Machine emulator and virtualizer ;; 688 MiB
