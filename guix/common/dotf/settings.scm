@@ -23,6 +23,12 @@
 (define-public hostnames
   (list host-kalus host-ecke host-geek host-edge))
 
+(define-public (mountable-devices)
+  "Patterns matched against the labels of the USB drives, like `rg' does in
+mount-common.scm, e.g. \"axa\" matches lbl-fsys-axagon. Used for the mount-*,
+unmount-*, ... utilities in services/cli-utils.scm."
+  (list "axa" "toshiba" "new" "t7" "crucial"))
+
 (define-public emacs-init-file "init.el")
 (define-public emacs-distros "/.emacs.d.distros")
 (define-public home-emacs-distros (str home emacs-distros))
