@@ -30,7 +30,7 @@
   (introduction
    (make-channel-introduction
     ;; channel: enable keyring-based authentication
-    "f0c587b967e974776019a7c918d23740fc75e0e9"
+    "1b9ea1ba7698e02d5ca61713b31e965e1d74f373"
     (openpgp-fingerprint
      "A2FE D89D 9A10 000E 5BF6  3B37 612D 3636 8877 DC81"))))
 
