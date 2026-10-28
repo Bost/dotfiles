@@ -104,12 +104,6 @@
 (module-evaluated)
 
 (home-channels
- ;; 10 October 2026 19:11
- ;; #:nonguix-commit       "c0e1cd5cd22919ebf2f89fc6578f2169ae9f1323"
- ;; #:bstx-commit          "241ce06bd6fc15d1b55a4113784649a3f8c0f086"
- ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- ;; #:guix-commit          "9a1075521011fe6b6ec40746c9b711a01e002800"
-
  ;; 14 October 2026 01:08
  ;; #:nonguix-commit       "4b21ba0c885907aff3b1b6c717ac830144d3c575"
  ;; #:bstx-commit          "c672b64e732b0ea16cdd26d6ef86d712b50553df"
@@ -129,10 +123,28 @@
  ;; #:guix-commit          "13fd2311536f40d645167215671ed42b211e9c21"
 
  ;; 24 October 2026 15:27
- #:nonguix-commit       "c241d19ff840dc75556f722b231760d119b6adea"
- #:bstx-commit          "99d266e26ef0cdd4ab61f234aba7f917bb35ebc3"
+ ;; #:nonguix-commit       "c241d19ff840dc75556f722b231760d119b6adea"
+ ;; #:bstx-commit          "47a468b9a842c5e5ea9f334d7240b317dc22df57"
+ ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ ;; #:guix-commit          "973dbc8c00de826f3c38468b09519d30d064eea3"
+
+ ;; 28 October 2026 14:57
+ ;; #:nonguix-commit       "c241d19ff840dc75556f722b231760d119b6adea"
+ ;; #:bstx-commit          "d18c7b445ac9758da87cec10e32eff1cc8fbac31"
+ ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ ;; #:guix-commit          "7c76ac3104534da484372241010dab32a0cf65b2"
+
+ ;; 30 October 2026 15:26
+ ;; #:nonguix-commit       "c241d19ff840dc75556f722b231760d119b6adea"
+ ;; #:bstx-commit          "d18c7b445ac9758da87cec10e32eff1cc8fbac31"
+ ;; #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
+ ;; #:guix-commit          "3d3ceb703652b069d5d8d6241f430072e95ddf2a"
+
+ ;; 3 November 2026 23:26
+ #:nonguix-commit       "63d83b22615e7a97a4fb0c3d9f6419e9a7fc4fe0"
+ #:bstx-commit          "d18c7b445ac9758da87cec10e32eff1cc8fbac31"
  #:guix-ai-cloud-commit "6e8d113cf0e711dc32481a43f4876a43105c3b17"
- #:guix-commit          "973dbc8c00de826f3c38468b09519d30d064eea3"
+ #:guix-commit          "b7f6549b5026b5776141482f9e228c49f09b5569"
 
  #:use-local-checkout #f)
 
