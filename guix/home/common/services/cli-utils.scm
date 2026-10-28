@@ -530,7 +530,7 @@ a list of files to search through."
    (list #:utility "gico-" #:params (git-cmdstr "switch -"))
    (list #:utility "gicm"  #:params (git-cmdstr "checkout master"))
    (list #:utility "gips"  #:params (git-cmdstr "push --verbose"))
-   (list #:utility "gipsf" #:params (git-cmdstr "push --verbose --force"))
+   (list #:utility "gipsf" #:params (git-cmdstr "push --verbose --force-with-lease"))
    (list #:utility "giad"  #:params (git-cmdstr "add"))
    (list #:utility "giad." #:params (git-cmdstr "add ."))
    (list #:utility "giap"  #:params (git-cmdstr "add --patch"))
