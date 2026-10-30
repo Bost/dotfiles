@@ -709,10 +709,8 @@ TODO implement: Show warning & don't compile if substitutes are not present."
    network-manager
    nmap      ; Network discovery and security auditing tool
 
-;;; TODO put ~/.npm-packages on PATH only if npm, i.e. node is installed
-;;; See also ~/.npm, ~/.npmrc, ~/node_modules
-   ;; node ;; this installs only 10.24.1
-   node-lts ;; LTS Long Time Support
+   ;; ~/.npm-packages/bin added to the PATH in home-base.scm
+   node     ; v26.12.1
 
    openssl
    parted

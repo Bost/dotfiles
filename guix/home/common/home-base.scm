@@ -332,6 +332,9 @@ interactive debugging, declare -p is usually the more convenient choice."
                    bin-dirpath
                    (claude-code-relative-path)
 
+                   ;; Needed only when `node' is installed. See home-all.scm
+                   "/.npm-packages/bin"
+
                    ;; rga: ripgrep, plus search in pdf, E-Books, Office
                    ;; docs, zip, tar.gz, etc.
                    ;; See https://github.com/phiresky/ripgrep-all
