@@ -22,6 +22,7 @@
 
 (use-package-modules
  aidc            ;; zbar
+ cdrom           ;; xorriso
  gnupg           ;; pinentry
  scanner         ;; sane-backends
  )
@@ -43,6 +44,7 @@ setup and standard updates."
     ;; `gpg' is run and needs it.
     pinentry       ; Seems like just 'pinentry-tty' doesn't do the job
     sane-backends  ; scanimage
+    xorriso        ; burn directories onto DVDs
     zbar)          ; zbarimg: read barcodes and QR codes from images
    (remove (lambda (p)
              (and (package? p)
