@@ -119,8 +119,34 @@ so the full name from `comment' never shows up."
          "[org/gnome/login-screen]"
          "disable-user-list=true"))))))))
 
+(define (blocked-usb-devices)
+  "USB devices, as (vendor-id . product-id) from `lsusb', that must not be used
+on this machine. See `blocked-usb-devices-service'."
+  (list
+   ;; TODO Epson printer/scanner: run `lsusb' to obtain the ID
+   ;; TODO external USB DVD drive: run `lsusb' to obtain the ID
+   ))
+
+(define (blocked-usb-devices-service)
+  "De-authorize the `blocked-usb-devices' when plugged in: the kernel then
+binds no driver to them. Check after plugging one in:
+  sudo dmesg | tail   # ... Device is not authorized for usage"
+  (udev-rules-service
+   'blocked-usb-devices
+   (udev-rule
+    "10-blocked-usb-devices.rules"
+    (string-join
+     (map (lambda (id)
+            (format #f "ACTION==\"add\", SUBSYSTEM==\"usb\", \
+ENV{DEVTYPE}==\"usb_device\", ATTR{idVendor}==\"~a\", ATTR{idProduct}==\"~a\", \
+ATTR{authorized}=\"0\"\n"
+                    (car id) (cdr id)))
+          (blocked-usb-devices))
+     ""))))
+
 (def-public (services)
   (list
+   (blocked-usb-devices-service)
 
    ;; TODO guix system: error: duplicate 'dconf/profile/gdm' entry for /etc
    ;; (gdm-login-screen-hide-users-service)

@@ -21,7 +21,9 @@
   )
 
 (use-package-modules
+ aidc            ;; zbar
  gnupg           ;; pinentry
+ scanner         ;; sane-backends
  )
 
 (define m (module-name-for-logging))
@@ -39,7 +41,9 @@ setup and standard updates."
    (list
     ;; Provides a console that allows users to enter a passphrase when
     ;; `gpg' is run and needs it.
-    pinentry)      ; Seems like just 'pinentry-tty' doesn't do the job
+    pinentry       ; Seems like just 'pinentry-tty' doesn't do the job
+    sane-backends  ; scanimage
+    zbar)          ; zbarimg: read barcodes and QR codes from images
    (remove (lambda (p)
              (and (package? p)
                   (member (package-name p) (kalus-excluded-package-names))))
