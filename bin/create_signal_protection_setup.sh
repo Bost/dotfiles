@@ -50,7 +50,7 @@ set -euo pipefail
 # guix install gnupg xdotool zenity xautolock procps
 for cmd in gpg xdotool zenity xautolock pkill; do
     if ! command -v "$cmd" > /dev/null 2>&1; then
-        printf '[ERROR] Missing required command: %s\n' "$cmd" >&2
+        printf '[ERR] Missing required command: %s\n' "$cmd" >&2
         exit 1
     fi
 done
@@ -76,7 +76,7 @@ read -r -s -p "Enter protection password for Signal Desktop: " password
 printf '\n'
 
 if [[ -z "$password" ]]; then
-    printf '[ERROR] Empty password is not allowed\n' >&2
+    printf '[ERR] Empty password is not allowed\n' >&2
     exit 1
 fi
 
@@ -152,7 +152,7 @@ protect_app() {
     fi
 
     xdotool windowminimize "$win_id"
-    printf '[INFO] Signal window minimized.\n'
+    printf '[INF] Signal window minimized.\n'
 
     correct_pw=$(get_correct_password)
 
@@ -163,7 +163,7 @@ protect_app() {
 
         if [[ "$password" == "$correct_pw" ]]; then
             xdotool windowactivate "$win_id"
-            printf '[INFO] Signal unlocked.\n'
+            printf '[INF] Signal unlocked.\n'
             break
         fi
 
@@ -201,7 +201,7 @@ case "${1:-}" in
     "$PRM_PROTECT") protect_app ;;
     "$PRM_KILL")    kill_app ;;
     *)
-        printf '[ERROR] %s: unknown parameter: %s. Expected one of: %s %s\n' \
+        printf '[ERR] %s: unknown parameter: %s. Expected one of: %s %s\n' \
             "$0" "${1:-}" "$PRM_PROTECT" "$PRM_KILL" >&2
         exit 1 ;;
 esac

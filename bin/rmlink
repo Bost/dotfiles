@@ -11,7 +11,7 @@ fi
 
 for symlink in "$@"; do
     if [ ! -L "$symlink" ]; then
-        echo "[ERROR] $symlink is not a symlink. Refusing to remove." >&2
+        echo "[ERR] $symlink is not a symlink. Refusing to remove." >&2
         exit 1
     fi
 done
