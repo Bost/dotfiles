@@ -31,7 +31,7 @@
  elixir tree-sitter agda emacs text-editors patchutils java glib maven
  mail messaging irc commencement gcc clojure machine-learning cups scanner
  file-systems librewolf libcanberra security-token firmware ocr tex monitoring
- pciutils hunspell
+ pciutils hunspell aidc imagemagick fontutils
  )
 
 (define (email-in-emacs-packages)
@@ -896,6 +896,10 @@ TODO implement: Show warning & don't compile if substitutes are not present."
   (list
    simple-scan   ; Document and image scanner
    hplip-minimal ; Hewlett-Packard printer drivers
+   ;; Printable QR codes; font-dejavu: see rest-packages
+   qrencode      ; encode data as QR code images
+   imagemagick   ; montage: arrange images on pages, convert to PDF
+   fontconfig    ; lets imagemagick find the fonts for its labels
    ))
 (testsymb 'printer-scanner-packages)
 
