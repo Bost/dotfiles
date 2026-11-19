@@ -74,6 +74,11 @@
 
        "audio"  ; sound card
 
+       ;; scanimage as the user; the group is created by `sane-service-type'
+       ;; (part of %desktop-services, explicit on kalus)
+       "scanner"
+       "cdrom"  ; DVD burning (xorriso) as the user
+
        ;; "kvm"
        ;; "tty"
        ;; "input"

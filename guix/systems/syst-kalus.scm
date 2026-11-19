@@ -10,6 +10,7 @@
   )
 
 (use-service-modules ; no need to write: #:use-module (gnu services <module>)
+ desktop        ; sane-service-type
  ;; networking   ; network-manager-service-type, wpa-supplicant-service-type
  ;; ssh          ; openssh-service-type
  )
@@ -60,6 +61,8 @@
       ;;     ;; transferred by `ssh-copy-id` at some point in the past.
       ;;     `((,user
       ;;        ,(local-file (string-append home "/.ssh/authorized_keys")))))))
+      ;; Scanner udev rules and the "scanner" group, see `users-config'
+      (service sane-service-type)
       %base-services))
 
 ;;; See
