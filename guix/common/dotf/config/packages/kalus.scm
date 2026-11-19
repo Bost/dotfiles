@@ -33,8 +33,9 @@
 (define (kalus-excluded-package-names)
   "Names of packages from `syst-packages-to-install' that kalus doesn't get,
 unlike the other machines sharing it. openssh is needed only for initial machine
-setup and standard updates."
-  '("openssh"))
+setup and standard updates. cups: kalus prints nothing, it only scans with the
+Epson (sane-backends)."
+  '("openssh" "cups"))
 
 (def-public (kalus-system-packages)
   "Packages installed system-wide on kalus."
