@@ -24,6 +24,7 @@
   #:use-module (config packages syst-all)   ; syst-packages-to-install
   #:use-module (gnu)
   #:use-module (gnu system shadow)     ; user-group; user-account-shell
+  #:use-module (gnu system nss)        ; %mdns-host-lookup-nss
   #:use-module (guix)                  ; package-version
   #:use-module (guix gexp)
   ;; #:use-module (gnu packages games)    ; steam-devices-udev-rules
@@ -106,6 +107,11 @@
 (define-public syst-config
   (operating-system
     (inherit (syst-base:syst-config-linux))
+
+    ;; Resolve *.local host names via mDNS (avahi): the network printer found
+    ;; by CUPS, dnssd://... -> NPIxxxxxx.local. Not in syst-base: kalus mustn't
+    ;; reach it.
+    (name-service-switch %mdns-host-lookup-nss)
 
     ;; Tweaks for nvidia drivers to work
     (kernel-arguments
