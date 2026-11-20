@@ -2124,6 +2124,12 @@ before packages are loaded."
   ;; https://github.com/syl20bnr/spacemacs/issues/16200
   (setq helm-ag-use-grep-ignore-list nil)
 
+  ;; <up>/<down> walk the search pattern history, like M-p/M-n, in the
+  ;; SPC s ... searches. Move through the results with C-k/C-j instead.
+  (with-eval-after-load 'helm-ag
+    (define-key helm-do-ag-map (kbd "<up>")   #'previous-history-element)
+    (define-key helm-do-ag-map (kbd "<down>") #'next-history-element))
+
   ;; org-tree-slide
   (setq org-image-actual-width nil)
 
