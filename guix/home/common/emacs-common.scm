@@ -3,8 +3,8 @@
   #:use-module (ice-9 getopt-long) ; command-line arguments handling
   #:use-module (ice-9 regex)       ; string-match
   #:use-module (guix monads)       ; with-monad
-  #:use-module (bost common utils)        ; partial
-  #:use-module (bost common tests)        ; test-type
+  #:use-module (bost common utils)
+  #:use-module (bost common tests)
   #:use-module (dotf settings)     ; user
   #:use-module (srfi srfi-1)       ; list-processing procedures
   #:use-module (ice-9 optargs)     ; define*-public

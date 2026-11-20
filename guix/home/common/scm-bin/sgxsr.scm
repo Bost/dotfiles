@@ -1,5 +1,5 @@
 (define-module (scm-bin sgxsr)
-  #:use-module (bost common utils) ; str, module-name-for-logging, etc.
+  #:use-module (bost common utils)
   #:use-module (dotf fs-utils)     ; dtfg
   #:use-module (guix build utils)  ; which
   #:use-module (srfi srfi-1)       ; filter-map
