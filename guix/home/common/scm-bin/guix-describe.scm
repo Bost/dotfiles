@@ -1,6 +1,6 @@
 (define-module (scm-bin guix-describe)
   #:use-module (scm-bin describe-commits) ; commit-block, run-command, print-lines
-  #:use-module (bost common utils)        ; comp, partial, logging helpers
+  #:use-module (bost common utils)
   #:use-module (srfi srfi-1)              ; fold-right
   #:use-module (ice-9 optargs)            ; define*
   )

@@ -1,6 +1,6 @@
 (define-module (scm-bin touch)
 ;;; All used modules must be present in (@(services cli-utils) common-modules)
-  #:use-module (bost common utils) ; comp, partial, logging helpers
+  #:use-module (bost common utils)
   #:use-module (srfi srfi-1)       ; remove
   #:use-module (ice-9 optargs)     ; define*-public
   #:use-module (ice-9 getopt-long) ; -p/--parents -v/--verbose -h/--help parsing

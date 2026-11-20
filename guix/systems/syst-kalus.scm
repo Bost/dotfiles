@@ -1,7 +1,7 @@
 (define-module (syst-kalus)
   #:use-module ((syst-base) #:prefix syst-base:)
   #:use-module (dotf settings)
-  #:use-module (bost common utils)                 ; partial, module-name-for-logging
+  #:use-module (bost common utils)
   #:use-module (dotf memo)
   #:use-module (dotf config packages kalus) ; kalus-system-packages
   #:use-module (gnu)
