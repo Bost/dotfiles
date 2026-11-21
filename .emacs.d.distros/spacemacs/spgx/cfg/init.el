@@ -175,6 +175,12 @@ differences were encountered."
 (defun my-H-3 () (interactive) (message "H-3"))
 (defun my-H-4 () (interactive) (message "H-4"))
 
+(defun my-find-ai-conversation ()
+  (interactive)
+  (find-file-existing
+   (format "%s/ai-coding-agents/conversation.org"
+           (getenv "dev"))))
+
 (defun my-eval-bind-keys-and-chords ()
   "To activate changes, do:
     ~s-d~ my-eval-current-defun
@@ -2659,6 +2665,7 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
     ;; "oc"  #'org-roam-capture
     ;; "of"  #'tw-switch-to-repl-start-figwheel
     "oed" #'tw-find-dotf-spacemacs-develop
+    "oec" #'my-find-ai-conversation
     "oeg" #'tw-find-dotf-spacemacs-guix
     "oes" #'tw-find-dotf-spacemacs-spgx
     "ogg" #'google-this
