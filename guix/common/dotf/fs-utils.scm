@@ -25,6 +25,8 @@
 
 (define-public dgx  (user-dev "/guix"))
 (define-public dbstx (user-dev "/bstx"))
+(define-public dbst  dbstx)
+(define-public dai   (user-dev "/ai-coding-agents"))
 (define-public dngx  (user-dev "/nonguix"))
 
 (define (spacemacs-dir branch)

@@ -78,6 +78,8 @@ dev()     { cd "${dev:?}"; }
 dgl()     { cd "${dgl:?}"; }
 dgx()     { cd "${dgx:?}"; }
 dngx()    { cd "${dngx:?}"; }
+dai()     { cd "${dai:?}"; }
+dbst()    { cd "${dbst:?}"; }
 dbstx()   { cd "${dbstx:?}"; }
 dotf()    { cd "${dotf:?}"; }
 down()    { cd ~/Downloads; }

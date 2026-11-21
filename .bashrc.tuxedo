@@ -140,6 +140,8 @@ export cheat=$dev/cheat
 export dotf=$dev/dotfiles
 export dgx=$dev/guix
 export dbstx=$dev/bstx
+export dbst=$dbstx
+export dai=$dev/ai-coding-agents
 export dgl=$dev/guile
 
 # used by gps, gpl

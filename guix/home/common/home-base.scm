@@ -304,6 +304,8 @@ interactive debugging, declare -p is usually the more convenient choice."
      ("dtfg"  . ,dtfg)
      ("dgx"   . ,dgx)
      ("dbstx" . ,dbstx)
+     ("dbst"  . ,dbst)
+     ("dai"   . ,dai)
      ("dngx"  . ,dngx)
      ("dspd"  . ,dspd)
      ("dspg"  . ,dspg)
