@@ -2434,9 +2434,9 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
       "Return FRAME's stable palette slot, allocating a free slot if needed."
       (or (frame-parameter frame 'my-color-slot)
           (let* ((used (mapcar (lambda (other)
-                                (frame-parameter other 'my-color-slot))
-                              (seq-filter #'my-frame-color-eligible-p
-                                          (frame-list))))
+                                 (frame-parameter other 'my-color-slot))
+                               (seq-filter #'my-frame-color-eligible-p
+                                           (frame-list))))
                  (slot (or (seq-find (lambda (index) (not (memq index used)))
                                      (number-sequence
                                       0 (1- (length my-frame-color-palette))))
@@ -2455,8 +2455,8 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
                (foreground (if dark "#f4f4f4" "#202020")))
           ;; Leave powerline-active1 and the Evil-state highlight alone.
           (dolist (face '(mode-line mode-line-active mode-line-inactive
-                         powerline-active2 powerline-inactive2
-                         tab-bar tab-bar-tab-inactive))
+                                    powerline-active2 powerline-inactive2
+                                    tab-bar tab-bar-tab-inactive))
             (when (facep face)
               (set-face-attribute face frame
                                   :background background
@@ -2659,7 +2659,7 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
     ;; (global-set-key (kbd "C-c C-v")
     ;;                 #'tw-evil-find-file-at-point-with-line-other-window)
     "gF"  #'tw-evil-find-file-at-point-with-line-other-window
-    "gS" #'difftastic-magit-show
+    "gS"  #'difftastic-magit-show
     "oa"  #'tw-find-ai-scrbl
     "oc"  #'tw-cider-clear-compilation-highlights
     ;; "oc"  #'org-roam-capture
