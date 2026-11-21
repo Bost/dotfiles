@@ -719,6 +719,7 @@ a list of files to search through."
     (list #:utility "gpg-pinentry-setup"   #:desc "gpg-pinentry-setup")
     (list #:utility "qemu-vm"              #:desc "qemu-vm")
     (list #:utility "touch"                #:desc "touch with -p/--parents")
+    (list #:utility "timestamp"            #:desc "timestamp")
     )))
 (testsymb 'direct-utils-files)
 
