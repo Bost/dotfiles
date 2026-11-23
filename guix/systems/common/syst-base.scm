@@ -128,8 +128,8 @@ so the full name from `comment' never shows up."
   "USB devices, as (vendor-id . product-id) from `lsusb', that must not be used
 on this machine. See `blocked-usb-devices-service'."
   (list
-   ;; TODO Epson printer/scanner: run `lsusb' to obtain the ID
-   ;; TODO external USB DVD drive: run `lsusb' to obtain the ID
+   (cons "04b8" "0838") ; Epson printer/scanner; see `lsusb | rg -i epson`
+   (cons "1132" "4511") ; External DVD drive;    see `lsusb | rg -i toshiba`
    ))
 
 (define (blocked-usb-devices-service)
