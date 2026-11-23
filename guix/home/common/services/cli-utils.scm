@@ -529,6 +529,12 @@ a list of files to search through."
    (list #:utility "gico"  #:params (git-cmdstr "checkout"))
    (list #:utility "gico-" #:params (git-cmdstr "switch -"))
    (list #:utility "gicm"  #:params (git-cmdstr "checkout master"))
+;;; TODO The push / pull / fetch utils (gips, gipsf, gipS, gipl, giplr, gife,
+;;; ...) act on one remote only. The dotfiles and bstx are mirrored on github,
+;;; gitlab and codeberg: these utils should use such a list of remotes, e.g.
+;;; as `-all' variants (gips-all, gipl-all, ...). See also
+;;; scm-bin/git-push-everywhere.scm, which pushes to all `git remote's.
+;;; See also https://guix.gnu.org/blog/2026/extending-guix
    (list #:utility "gips"  #:params (git-cmdstr "push --verbose"))
    (list #:utility "gipsf" #:params (git-cmdstr "push --verbose --force-with-lease"))
    (list #:utility "giad"  #:params (git-cmdstr "add"))
