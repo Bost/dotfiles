@@ -2,26 +2,17 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-;;; :beg: move to `my-tweaks` layer or `tweaks` package
-;; Avoid starting Flyspell (and auto-dictionary) on large buffers.
-;; Install before layer initialization, including restored startup buffers.
-;; Manual spellchecking and `SPC t S' remain available at any size.
-(defvar my-spell-checking-max-buffer-size (* 512 1024)
-  "Buffer size in bytes at which automatic spellchecking is skipped.")
+;; Layer discovery runs before the tweaks package is loaded.
+(defun my-dotf-path (&rest parts)
+  "Build a path to dotfiles from environment variable \"dotf\" or
+\"~/dotfiles\" and PARTS."
+  (expand-file-name
+   (mapconcat #'identity parts "/")
+   (expand-file-name (or (getenv "dotf") "~/dotfiles"))))
 
-(defun my-enable-spell-checking-for-small-buffer ()
-  "Enable automatic spellchecking only below the buffer size limit."
-  (when (save-restriction
-          (widen)
-          (< (1- (position-bytes (point-max)))
-             my-spell-checking-max-buffer-size))
-    (if (derived-mode-p 'prog-mode)
-        (flyspell-prog-mode)
-      (flyspell-mode 1))))
-
-(add-hook 'text-mode-hook #'my-enable-spell-checking-for-small-buffer)
-(add-hook 'prog-mode-hook #'my-enable-spell-checking-for-small-buffer)
-;;; :end: move to `my-tweaks` layer or `tweaks` package
+(with-eval-after-load 'tweaks
+  (add-hook 'text-mode-hook #'tw-enable-spell-checking-for-small-buffer)
+  (add-hook 'prog-mode-hook #'tw-enable-spell-checking-for-small-buffer))
 
 ;; It seems that this macro cannot be added to emacs-tweaks, as it only gets
 ;; loaded during a later stage of Spacemacs initialization.
@@ -33,142 +24,6 @@ differences were encountered."
      (unless (string= ,elisp-var (expand-file-name ,def-val))
        (message "WARN (expand-file-name def-val): %s and evar: %s=%s differ"
                 (expand-file-name ,def-val) ,evar-name evar-val))))
-
-(defun my-koboldcpp ()
-  "Setup gptel. koboldcpp is a fork of llama.cpp."
-  (interactive)
-  (setq
-   gptel-model 'test
-   gptel-backend
-   (gptel-make-openai "koboldcpp"     ; Any name
-                      :stream t       ; Stream responses
-                      :protocol "http"
-                      :host "edge:5001"
-                      :models '(test) ; Any names, doesn't matter for Llama
-                      )))
-
-(defun my-dotf-path (&rest parts)
-  "Build a path to dotfiles from environment variable \"dotf\" or
-\"~/dotfiles\" and PARTS."
-  (expand-file-name
-   (mapconcat #'identity parts "/")
-   (expand-file-name (or (getenv "dotf") "~/dotfiles"))))
-
-(defvar my-env-secrets-file
-  (expand-file-name "~/.env-secrets.gpg")
-  "Encrypted Bash-style environment file.")
-
-(defun my-load-env-secrets ()
-  "Decrypt `my-env-secrets-file`, let Bash source it, and import env vars."
-  (interactive)
-  (let ((decrypted-buffer (generate-new-buffer " *my-env-secrets-decrypted*"))
-        (env-buffer (generate-new-buffer " *my-env-secrets-env*")))
-    (unwind-protect
-        (progn
-          ;; Decrypt the file into a temporary Emacs buffer.
-          (with-current-buffer decrypted-buffer
-            (let ((status
-                   (call-process
-                    "gpg"
-                    nil
-                    decrypted-buffer
-                    nil
-                    "--quiet"
-                    "--for-your-eyes-only"
-                    "--decrypt"
-                    my-env-secrets-file)))
-              (unless (eq status 0)
-                (error "Failed to decrypt %s" my-env-secrets-file))))
-
-          ;; Let Bash parse the decrypted file.
-          ;;
-          ;; Bash has no long option for `-c`.
-          ;; `-c` means: execute the following string as Bash code.
-          ;;
-          ;; `--noprofile` means: do not read Bash profile files.
-          ;; `--norc` means: do not read ~/.bashrc.
-          ;;
-          ;; `env --null` prints environment entries separated by NUL bytes.
-          (with-current-buffer decrypted-buffer
-            (let ((status
-                   (call-process-region
-                    (point-min)
-                    (point-max)
-                    "bash"
-                    nil
-                    env-buffer
-                    nil
-                    "--noprofile"
-                    "--norc"
-                    "-c"
-                    "source /dev/stdin >/dev/null && env --null")))
-              (unless (eq status 0)
-                (error "Failed to source decrypted env file with Bash"))))
-
-          ;; Import Bash's resulting environment into Emacs.
-          (with-current-buffer env-buffer
-            (dolist (entry (split-string (buffer-string) "\0" t))
-              (when (string-match "\\`\\([^=]+\\)=\\(.*\\)\\'" entry)
-                (setenv (match-string 1 entry)
-                        (match-string 2 entry))))))
-
-      ;; Ensure decrypted secrets do not remain in buffers.
-      (kill-buffer decrypted-buffer)
-      (kill-buffer env-buffer))))
-
-(defun my-getenv-required (variable)
-  "Return environment VARIABLE or signal a helpful error."
-  (or (getenv variable)
-      (user-error "Missing required environment variable: %s" variable)))
-
-(defun my-getenv-secret (variable)
-  "Load encrypted env secrets, then return required environment VARIABLE."
-  (my-load-env-secrets)
-  (my-getenv-required variable))
-
-(defun my-erc-libera-server ()
-  "Return the ERC server specification for Libera.Chat."
-  (my-load-env-secrets)
-  (let ((nick (my-getenv-required "IRC_USER"))
-        (password (my-getenv-required "IRC_PASSWD")))
-    `("irc.libera.chat"
-      :port 6697
-      :ssl t
-      :nick ,nick
-      :user ,nick
-      :password ,password)))
-
-(defun my-load-gptel-key ()
-  "Load OPENAI_KEY from encrypted env file and assign it to `gptel-api-key`."
-  (interactive)
-  (my-load-env-secrets)
-  (setq gptel-api-key (my-getenv-secret "OPENAI_KEY"))
-  (message "gptel-api-key loaded"))
-
-(defun my-shell-path ()
-  ;; (tw-shell-which "fish")
-  (getenv "SHELL")
-  )
-
-(defun my-org-present-start ()
-  ;; Center the presentation and wrap lines
-  (visual-fill-column-mode 1)
-  (visual-line-mode 1))
-
-(defun my-org-present-end ()
-  ;; Stop centering the document
-  (visual-fill-column-mode 0)
-  (visual-line-mode 0))
-
-(defun my-load-layout ()
-  (interactive)
-  (persp-load-state-from-file (concat sp-layouts-dir "/persp-auto-save")))
-
-(defun my-racket-repl-clear ()
-  (interactive)
-  (let ((inhibit-read-only t))
-    ;; (erase-buffer)
-    (delete-region (point-min) (- (point-max) 2))))
 
 (defun my-H-1 () (interactive) (message "H-1"))
 (defun my-H-2 () (interactive) (message "H-2"))
@@ -282,7 +137,7 @@ Some binding snippets / examples:
    ;; ("s-3"    . spacemacs/window-split-double-columns)
    ;; see ~SPC w /~ and ~SPC w 2~
    ("s-3"       . split-window-right-and-focus)
-   ("s-9"       . my-load-layout)
+   ("s-9"       . tw-load-layout)
    ("s-+"       . my-eval-bind-keys-and-chords)
    ("s-<kp-add>". my-eval-bind-keys-and-chords)
    ("s-z"       . tw-buffer-selection-show)
@@ -432,6 +287,7 @@ Some binding snippets / examples:
    ("C-S-<delete>"  . kill-line)      ; C-shift-key
    ;; ("s-l"        . spacemacs/resume-last-search-buffer)
    ("s-v"           . tw-evil-select-pasted)
+   ("C-S-v"         . tw-paste-from-xsel-clipboard)
 
    ;; TODO what's the difference between insert and insertchar?
    ("S-s-<insert>" . tw-yank-and-select)
@@ -2018,11 +1874,11 @@ before packages are loaded."
 
   (with-eval-after-load 'gptel
     (setq gptel-api-key
-          (my-getenv-secret "OPENAI_KEY")))
+          (tw-getenv-secret "OPENAI_KEY")))
 
   (with-eval-after-load 'erc
     (setq erc-server-list
-          (list (my-erc-libera-server))))
+          (list (tw-erc-libera-server))))
 
   ;; (sp-use-paredit-bindings)
 
@@ -2145,8 +2001,8 @@ before packages are loaded."
         visual-fill-column-center-text t)
 
   ;; Register hooks with org-present
-  (add-hook 'org-present-mode-hook 'my-org-present-start)
-  (add-hook 'org-present-mode-quit-hook 'my-org-present-end)
+  (add-hook 'org-present-mode-hook 'tw-org-present-start)
+  (add-hook 'org-present-mode-quit-hook 'tw-org-present-end)
 
   (setq
    large-file-warning-threshold nil ;; don't ask before visiting big files
@@ -2164,10 +2020,10 @@ before packages are loaded."
    ;; If this is nil, setup to environment variable of `SHELL'.
    ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
    ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
-   multi-term-program (my-shell-path)
+   multi-term-program (tw-shell-path)
 
    ;; Shell used in `term' and `ansi-term'.
-   shell-pop-term-shell (my-shell-path)
+   shell-pop-term-shell (tw-shell-path)
 
    ;; Position of the popped buffer. (default "bottom")
    shell-pop-window-position "right"
@@ -2208,6 +2064,8 @@ before packages are loaded."
    ;; global-display-line-numbers-mode t
    ;; display-line-numbers 'relative
    ;; display-line-numbers 'visual
+
+   interprogram-paste-function #'tw-primary-selection-value
 
    ;; prevent: Error saving to X clipboard manager
    x-select-enable-clipboard-manager nil
@@ -3030,7 +2888,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
                (equal keymap racket-mode-map)
                (equal keymap racket-repl-mode-map))
       (bind-keys :map keymap
-                 ("<C-s-delete>" . my-racket-repl-clear)
+                 ("<C-s-delete>" . tw-racket-repl-clear)
                  ("C-s-\\" . tw-racket-toggle-reader-comment-current-sexp)
                  ("C-s-p"  . tw-racket-insert-log)
                  ("M-s-d"  . tw-racket-insert-fn)
