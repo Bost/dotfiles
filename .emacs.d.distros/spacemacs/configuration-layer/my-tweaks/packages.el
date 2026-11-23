@@ -41,28 +41,27 @@
 ;;; Code:
 
 (defconst my-tweaks-packages
-  '(
+  `(
     ;; (equake :variables equake-default-shell 'term)
     (copy-sexp
      :location
-     ;; "~/dev/copy-sexp/"
+     ;; ,(expand-file-name "copy-sexp" (or (getenv "dev") "~/dev"))
      (recipe :fetcher github :repo "Bost/copy-sexp"))
     drag-stuff
     (jump-last
      :location
-     ;; "~/dev/jump-last/"
+     ;; ,(expand-file-name "jump-last" (or (getenv "dev") "~/dev"))
      (recipe :fetcher github :repo "Bost/jump-last"))
     (kill-buffers
      :location
-     ;; "~/dev/kill-buffers/"
+     ;; ,(expand-file-name "kill-buffers" (or (getenv "dev") "~/dev"))
      (recipe :fetcher github :repo "Bost/kill-buffers")
      )
     (tweaks
      :location
-     ;; "~/dev/tweaks/"
+     ;; ,(expand-file-name "tweaks" (or (getenv "dev") "~/dev"))
      (recipe :fetcher github :repo "Bost/tweaks")
-     )
-    )
+     ))
   "The list of Lisp packages required by the my-tweaks layer.
 
 Each entry is either:
