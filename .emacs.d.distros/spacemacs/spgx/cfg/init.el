@@ -2448,6 +2448,7 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
                                    (my-dotf-path "kmonad/KMonad.kbd"))))
 
   (use-package org
+    :defer 5
     :hook
     (org-mode
      .
