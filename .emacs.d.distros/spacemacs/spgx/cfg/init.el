@@ -1869,6 +1869,20 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
 
+  ;; Keep these commands reachable when Evil uses g and G for navigation.
+  ;; This suppresses the "Auto-evilification could not remap" warnings.
+  (with-eval-after-load 'archive-mode
+    (define-key archive-mode-map (kbd "C-c G") #'archive-chgrp-entry)
+    (define-key archive-mode-map (kbd "G") nil))
+  (with-eval-after-load 'cider-doc
+    (define-key cider-docview-mode-map (kbd "C-c G") #'cider-docview-clojuredocs-web)
+    (define-key cider-docview-mode-map (kbd "G") nil))
+  (with-eval-after-load 'dired
+    (define-key dired-mode-map (kbd "C-c G") #'dired-do-chgrp)
+    (define-key dired-mode-map (kbd "G") nil))
+
+  (setq yas-verbosity 2)
+
   ;; Configure this early: the spell-checking layer may enable Flyspell
   ;; during startup.
   (setq ispell-program-name "hunspell"
