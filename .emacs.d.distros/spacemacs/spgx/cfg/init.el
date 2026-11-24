@@ -14,6 +14,23 @@
   (add-hook 'text-mode-hook #'tw-enable-spell-checking-for-small-buffer)
   (add-hook 'prog-mode-hook #'tw-enable-spell-checking-for-small-buffer))
 
+(with-eval-after-load 'guess-language
+  (setq guess-language-languages '(en de fr)
+        guess-language-langcodes
+        '((en . ("en_US" "English" "🇺🇸" "English"))
+          (de . ("de_DE" "German" "🇩🇪" "German"))
+          (fr . ("fr-moderne" "French" "🇫🇷" "French")))))
+
+(defun my-sync-guess-language-with-flyspell ()
+  "Enable Guess Language in buffers where Flyspell is active."
+  (if flyspell-mode
+      (when (require 'guess-language nil t)
+        (guess-language-mode 1))
+    (when (bound-and-true-p guess-language-mode)
+      (guess-language-mode -1))))
+
+(add-hook 'flyspell-mode-hook #'my-sync-guess-language-with-flyspell)
+
 ;; It seems that this macro cannot be added to emacs-tweaks, as it only gets
 ;; loaded during a later stage of Spacemacs initialization.
 (defmacro my-def-evar (elisp-var def-val evar-name)
@@ -964,7 +981,6 @@ This function should only modify configuration layer settings."
       :variables
       ;; Enable through the size-aware hooks defined above.
       spell-checking-enable-by-default nil
-      spell-checking-enable-auto-dictionary t
 
       ;; Auto-completion popup when the point is idle on a misspelled word
       enable-flyspell-auto-completion nil
@@ -1176,6 +1192,7 @@ This function should only modify configuration layer settings."
      ;; helm-descbinds
      ;; helm-slime
      helm-dictionary ;; look up words in dictionaries
+     guess-language
 
      ;; telegram client for emacs
      ;; TODO document the ln -s `which gcc` ~/bin/cc
@@ -1854,8 +1871,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Configure this early: the spell-checking layer may enable Flyspell
   ;; during startup.
-  ;; Use hunspell's multi-dictionary mode for multi-lingual documents or if
-  ;; your language is not supported by auto-dictionary
   (setq ispell-program-name "hunspell"
         ispell-dictionary "en_US")
   )
