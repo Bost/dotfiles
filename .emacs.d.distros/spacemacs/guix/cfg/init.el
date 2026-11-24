@@ -685,9 +685,9 @@ This function should only modify configuration layer settings."
 
      ;; Try some of the following commands:
      ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
-     ;;       ~/.emacs.d.distros/spacemacs/guix/src/layers/fennel
+     ;;       /home/bost/.emacs.d.distros/spacemacs/guix/src/layers/fennel
      ;;   git submodule update --init
-     fennel ; fennel = lua in lisp
+     ;; fennel ; fennel = lua in lisp
 
      ;; gnus
      ;; go
@@ -2824,7 +2824,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
   ;; When the `dgx' environment variable is defined it is referenced in
   ;; (with-eval-after-load ...) macros. Can't bind it using (let ...). The
   ;; bindings won't exist when the bodies of the macros are evaluated.
-  (when-let ((dgx-env (getenv "dgx")))
+  (when-let* ((dgx-env (getenv "dgx")))
     ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
     (add-hook 'scheme-mode-hook #'guix-devel-mode)
 
