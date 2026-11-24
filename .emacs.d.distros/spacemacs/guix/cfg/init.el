@@ -1887,6 +1887,11 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; during startup.
   (setq ispell-program-name "hunspell"
         ispell-dictionary "en_US")
+  ;; Under a C locale, Hunspell needs a default for the first dictionary scan.
+  ;; This avoids Ispell's retry and suppresses its startup warning:
+  ;; ispell-set-spellchecker-params: Missing equivalent for "...". Skipping.
+  (when (member (getenv "DICTIONARY") '(nil ""))
+    (setenv "DICTIONARY" ispell-dictionary))
   )
 
 (defun dotspacemacs/user-config ()
