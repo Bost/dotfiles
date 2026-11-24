@@ -26,34 +26,24 @@
     (if (zero? retcode)
         (let [(result
                (car (plist-get cmd-result-struct #:results)))]
-          (format #t "~a hostname is : ~a\n" f result)
+          (format #t "~a ~a hostname is : ~a\n" msgdbg f result)
           result)
         (begin
-          (error (format #f "~a retcode: ~a\n" f retcode)) ; error-out
+          (error (format #f "~a ~a retcode: ~a\n" msgerr f retcode)) ; error-out
           ;; (error-command-failed f)
           ;; or return `retcode' instead of `*unspecified*'
           ;; *unspecified*
           ))))
 (testsymb 'hostname)
-;; (format #t "D ~a hostname: ~a\n" m hostname)
 
 (define-public hostname-memoized (memoize hostname))
-(testsymb 'hostname-memoized)
 
 (define-public (host-kalus?) (equal? (hostname-memoized) host-kalus))
-(testsymb 'host-kalus?)
-;; (format #t "D ~a host-kalus?: ~a\n" m (host-kalus?))
 
 (define-public (host-ecke?) (equal? (hostname-memoized) host-ecke))
-(testsymb 'host-ecke?)
-;; (format #t "D ~a host-ecke?: ~a\n" m (host-ecke?))
 
 (define-public (host-edge?) (equal? (hostname-memoized) host-edge))
-(testsymb 'host-edge?)
-;; (format #t "D ~a host-edge?: ~a\n" m (host-edge?))
 
 (define-public (host-geek?) (equal? (hostname-memoized) host-geek))
-(testsymb 'host-geek?)
-;; (format #t "D ~a host-geek?: ~a\n" m (host-geek?))
 
 (module-evaluated)

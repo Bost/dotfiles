@@ -997,12 +997,15 @@ TODO implement: Show warning & don't compile if substitutes are not present."
     ;; Structural diff command that understands syntax
     difftastic
 
-;;; Make sure that emacs is also in the default profile, i.e. installed by
-;;;   guix install emacs
-;;; otherwise the:
-;;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
-;;; gets triggered. See https://issues.guix.gnu.org/issue/52002
-    emacs
+    ;; Instead of vanilla Emacs, use Emacs with Lucid toolkit
+    ;; (--with-x-toolkit=lucid) for X11 daemons so losing the X connection can
+    ;; be handled.
+    ;; Having emacs/emacs-lucid in the default profile, too (i.e. installed by
+    ;; `guix install ...`) prevents:
+    ;;   No such file or directory /home/bost/.guix-profile/share/emacs/site-lisp
+    ;; See https://issues.guix.gnu.org/issue/52002
+    emacs ; emacs-lucid ; 2026-11-25_17-33-41 doesn't compile
+
     emacs-bash-completion ; Bash completion for the shell buffer
     ;; emacs-native-comp doesn't compile. Ups
     ;; (@(flat packages emacs) emacs-native-comp) ;; version: 28.2.50-205.ae9bfed
