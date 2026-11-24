@@ -18,15 +18,12 @@
 (define my-inferior-package-name (@(guix inferior) inferior-package-name))
 (define my-inferior-package->manifest-entry (@(guix inferior) inferior-package->manifest-entry))
 
-(define* (debug-packages-to-install #:key search-space pkgs)
-
-  (define f (format #f "~a [debug-packages-to-install]" m))
-
+(def* (debug-packages-to-install #:key search-space pkgs)
   ((comp
     (lambda (p)
       (unless (unspecified-or-empty-or-false? p)
-        (format #t "D ~a Packages in the search-space: ~a :\n~a\n"
-                m search-space p))
+        (format #t "~a ~a Packages in the search-space: ~a :\n~a\n"
+                msgdbg f search-space p))
       p)
     (partial
      filter
@@ -45,25 +42,25 @@
        (cond ;; we have a colorful mix here
         [(list? p)
          (when (member (my-package-name (car p)) search-space)
-           (format #t "D ~a Object is a list: ~a\n" m p))]
+           (format #t "~a ~a Object is a list: ~a\n" msgdbg f p))]
         [(string? p)
          (when (member p search-space)
-           (format #t "D ~a Object is a string: ~a\n" m p))]
+           (format #t "~a ~a Object is a string: ~a\n" msgdbg f p))]
         [(my-package? p)
          (when (member (my-package-name p) search-space)
-           (format #t "D ~a Object is a package: ~a\n" m p))]
+           (format #t "~a ~a Object is a package: ~a\n" msgdbg f p))]
         [(record? p)
          (when (member (my-inferior-package-name p) search-space)
-           (format #t "D ~a Object is a record: ~a\n" m p))]
+           (format #t "~a ~a Object is a record: ~a\n" msgdbg f p))]
         [else
          (when (member (my-package-name p) search-space)
-           (format #t "D ~a Object is something else: ~a\n" m p))])
+           (format #t "~a ~a Object is something else: ~a\n" msgdbg f p))])
        p))
     identity)
    pkgs)
-  (format #t "I ~a Packages to install: ~a\n"
+  (format #t "~a ~a Packages to install: ~a\n"
           ;; Printing module-name is enough (m instead of f)
-          m (length pkgs))
+          msginf f (length pkgs))
   pkgs)
 (testsymb 'debug-packages-to-install)
 
@@ -79,16 +76,14 @@
     (my-package->manifest-entry package)]))
 (testsymb 'to-manifest-entry)
 
-(define (delete-duplicate-packages packages)
-  (define f (format #f "~a [delete-duplicate-packages]" m))
+(def (delete-duplicate-packages packages)
   ((comp
     (lambda (lst)
       (let [(duplicates (find-duplicates lst string=?))]
         (if (not (empty? duplicates))
             (begin
               (my-warn "~a Removing ~a duplicate package(s):\n~a\n"
-                       ;; Printing module-name is enough (m instead of f)
-                       m (length duplicates) duplicates)
+                       f (length duplicates) duplicates)
               (delete-duplicates packages))
             packages)))
     (partial map (lambda (p)
@@ -105,12 +100,10 @@
                      (my-package-name p)]))))
    packages))
 
-(define-public (manifest-content)
+(def-public (manifest-content)
   "Leads to creation of a rather large file:
 $ ls --human-readable --size /home/bost/.guix-profile/manifest
 540K /home/bost/.guix-profile/manifest"
-
-  (define f (format #f "~a [manifest-content]" m))
 
   ;; (format #t "~a Starting…\n" f)
   ((comp
