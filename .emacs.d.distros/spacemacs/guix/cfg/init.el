@@ -49,12 +49,6 @@ differences were encountered."
 (defun my-H-3 () (interactive) (message "H-3"))
 (defun my-H-4 () (interactive) (message "H-4"))
 
-(defun my-find-ai-conversation ()
-  (interactive)
-  (find-file-existing
-   (format "%s/ai-coding-agents/conversation.org"
-           (getenv "dev"))))
-
 (defun my-eval-bind-keys-and-chords ()
   "To activate changes, do:
     ~s-d~ my-eval-current-defun
@@ -375,82 +369,6 @@ Some binding snippets / examples:
            "(my-eval-bind-keys-and-chords) evaluated"
            "~SPC k $~ sp-end-of-sexp"))
 
-(defun my-enable-hyper-super-modifiers-win32 ()
-  "See https://github.com/fanhongtao/_emacs.d/blob/master/conf/my-key-modifiers.el
-See also 'Have you Hyper for Great Good' https://gist.github.com/toroidal-code/ec075dd05a23a8fb8af0
-Also '<Multi_key> s s' should produce 'ß'
-"
-  (setq
-   ;; w32-pass-apps-to-system nil
-   w32-apps-modifier 'hyper
-   w32-pass-lwindow-to-system nil
-   ;; w32-phantom-key-code 42  ;; what for?
-   w32-lwindow-modifier 'super
-   w32-rwindow-modifier 'alt))
-
-(defun my-enable-hyper-super-modifiers-linux-x ()
-  (interactive)
-  ;; On nowadays linux, ~<windows>~ key is usually configured to Super
-
-  ;; Menu key as hyper. Examples:
-  ;; * ~H-s-d~:
-  ;;   1. Press ~<menu>~ and release it.
-  ;;   2. Press simultaneously ~<windows>~ and ~d~
-  ;; * ~H-s-<menu>~:
-  ;;   1. Press ~<menu>~ and release it.
-  ;;   2. Press simultaneously ~<windows>~ and ~<menu>~
-  (define-key key-translation-map [menu] #'event-apply-hyper-modifier) ;H-
-  ;; (define-key key-translation-map [apps] #'event-apply-hyper-modifier)
-
-  ;; by default, Emacs bind <menu> to execute-extended-command (same as M-x)
-  ;; now <menu> defined as 'hyper, we need to press <menu> twice to get <H-menu>
-  ;; (global-set-key (kbd "<H-menu>") #'execute-extended-command)
-  ;; (global-unset-key (kbd "<menu>"))
-  ;; (global-unset-key (kbd "<H-menu>"))
-  (message "(my-enable-hyper-super-modifiers-linux-x) evaluated"))
-
-(defun my-enable-hyper-super-modifiers ()
-  (let ((frame (framep (selected-frame))))
-    (cond
-     ((memq frame '(w32 win32))
-      (my-enable-hyper-super-modifiers-win32))
-     ((eq frame 'x)
-      (my-enable-hyper-super-modifiers-linux-x))
-     ;; ((eq frame 'ns) ...) ;; Mac OS
-     (t
-      (message "%s %s %s"
-               "[my-enable-hyper-super-modifiers]"
-               "No enabler implemented for the frame:" frame))))
-  ;; I.e. ~C-c h d~ is ~H-d~ i.e.:
-  ;;   1. press and release ~<menu>~
-  ;;   2. press ~d~
-  ;; What following does mean?:
-  ;; you can always use "C-c h" as 'hyper modifier, even in Linux console or DOS
-  (define-key key-translation-map (kbd "C-c h") #'event-apply-hyper-modifier)
-  (define-key key-translation-map (kbd "C-c s") #'event-apply-super-modifier)
-  (define-key key-translation-map (kbd "C-c a") #'event-apply-alt-modifier))
-
-(defun my-evil-keybindings-in-term (map)
-  "Fix evil keybindings in terminals. Alternatively just disable evil-mode:
-  (evil-set-initial-state 'term-mode 'emacs)
-See also:
-- evil-collection-term-setup
-- \"TODO: Add support for normal-state editing.\"
-https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collection-term.el#L61
-"
-  (evil-collection-define-key 'insert map (kbd "S-<up>")   #'previous-line)
-  (evil-collection-define-key 'insert map (kbd "S-<down>") #'next-line)
-  (evil-collection-define-key 'insert map (kbd "C-<up>")   #'previous-line)
-  (evil-collection-define-key 'insert map (kbd "C-<down>") #'next-line)
-  (evil-collection-define-key 'insert map (kbd "<delete>") #'term-send-del)
-  (evil-collection-define-key 'insert map (kbd "<prior>")  #'evil-scroll-page-up)
-  (evil-collection-define-key 'insert map (kbd "<next>")   #'evil-scroll-page-down)
-;;; simple ~<prior>~, ~<next>~ (i.e. pgup / pgdown) don't even get registered by
-;;; Emacs. See: xfconf-query -c xfce4-keyboard-shortcuts -lv | grep Page
-  ;; (evil-collection-define-key 'insert map (kbd "s-<prior>") #'evil-scroll-page-up)
-  ;; (evil-collection-define-key 'insert map (kbd "s-<next>")  #'evil-scroll-page-down)
-  )
-
 (defun my-clj-bind-keys-and-chords (map)
   (bind-keys :map map
              ;; on German keyboard the #-key is next to the Enter-key
@@ -480,50 +398,6 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                ("fo" . tw-clj-insert-for)
                ("ty" . tw-clj-insert-type)
                ("ma" . tw-clj-insert-map-fn)))
-
-(defun my-resize-shell-to-desired-width ()
-  ;; `shell-pop--is-shell-buffer' is a buffer-local flag set by shell-pop on
-  ;; managed buffers (replaces the removed `shell-pop-last-shell-buffer-name'
-  ;; comparison). `bound-and-true-p' keeps this safe on shell-pop versions
-  ;; that predate the rewrite.
-  (when (and (bound-and-true-p shell-pop--is-shell-buffer)
-;;; The following line is the fix:
-             (shell-pop--split-side-p)
-;;; See implementation of `shell-pop--split-side-p' and
-;;; `spacemacs/resize-shell-to-desired-width' in layers/+tools/shell/funcs.el
-             )
-    (enlarge-window-horizontally (- (/ (* (frame-width) shell-default-width)
-                                       100)
-                                    (window-width)))))
-
-(defmacro my-make-shell-pop-command (name func &optional shell)
-  "Create a function to open a shell via the function FUNC.
-SHELL is the SHELL function to use (i.e. when FUNC represents a terminal)."
-  `(defun ,(intern (concat "spacemacs/shell-pop-" name)) (index)
-     ,(format (concat "Toggle a popup window with `%S'.\n"
-                      "Multiple shells can be opened with a numerical prefix "
-                      "argument. Using the universal prefix argument will "
-                      "open the shell in the current buffer instead of a "
-                      "popup buffer.")
-              func)
-     (interactive "P")
-     (require 'shell-pop)
-     (if (equal '(4) index)
-         ;; no popup
-         (,func ,shell)
-       (shell-pop--set-shell-type
-        'shell-pop-shell-type
-        (list ,name
-              ,(if (bound-and-true-p layouts-enable-local-variables)
-                   `(concat "*" (spacemacs//current-layout-name) "-"
-                            (if (file-remote-p default-directory)
-                                "remote-"
-                              "")
-                            ,name "*")
-                 (concat "*" name "*"))
-              (lambda nil (,func ,shell))))
-       (shell-pop index)
-       (my-resize-shell-to-desired-width))))
 
 ;; When running from bash on a non-Guix system, some environment variables may
 ;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
@@ -1903,7 +1777,7 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  (my-make-shell-pop-command "vterm" vterm)
+  (tw-make-shell-pop-command "vterm" vterm)
 
   (with-eval-after-load 'flycheck
     (require 'flycheck-guile))
@@ -2560,7 +2434,7 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
     ;; "oc"  #'org-roam-capture
     ;; "of"  #'tw-switch-to-repl-start-figwheel
     "oed" #'tw-find-dotf-spacemacs-develop
-    "oec" #'my-find-ai-conversation
+    "oec" #'tw-find-ai-conversation
     "oeg" #'tw-find-dotf-spacemacs-guix
     "oes" #'tw-find-dotf-spacemacs-spgx
     "ogg" #'google-this
@@ -2602,7 +2476,7 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
 
   ;; (setq text-quoting-style 'straight)
 
-  (my-enable-hyper-super-modifiers)
+  (tw-enable-hyper-super-modifiers)
 
   ;; works but won't work in isearch
   (global-set-key                 (kbd "H-5") (lambda () (interactive) (insert "•")))
@@ -2697,7 +2571,7 @@ an ellipsis at a cut-off end. The tabs are separated by vertical lines."
 ;;;
   (with-eval-after-load 'multi-term
     ;; term-mode-map is apparently not needed
-    (mapc #'my-evil-keybindings-in-term '(term-raw-map)))
+    (mapc #'tw-evil-keybindings-in-term '(term-raw-map)))
 
   (with-eval-after-load 'dired
     ;; ;; don't remove `other-window', the caller expects it to be there
