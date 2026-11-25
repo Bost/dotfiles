@@ -1978,7 +1978,8 @@ before packages are loaded."
    ;; display-line-numbers 'visual
 
    ;; Yank checks this function for external text before using the kill ring.
-   ;; Default to X PRIMARY. Use tw-toggle-yank-selection to swap selections.
+   ;; Use tw-toggle-yank-selection to swap selections.
+   tw-yank-clipboard-first t
    interprogram-paste-function #'tw-yank-selection-value
 
    ;; prevent: Error saving to X clipboard manager
