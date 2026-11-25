@@ -8,23 +8,31 @@
 	co = checkout
 	ss = status --short
 	st = status
-	df = diff --word-diff=color   # with diffstatic
-	dft = "!f() { GIT_EXTERNAL_DIFF=difft git diff \"$@\"; }; f"
 	cp = cherry-pick
 	wt = worktree
 
-	# Safer everyday helpers.
+	# Safer everyday helpers
 	amend = commit --amend --reuse-message=HEAD
 	amend-edit = commit --amend
 	unstage = restore --staged --
 	discard = restore --worktree --
-	last = log --patch --max-count=1
+
+	# Show diffs of the last commit
+	# last = -c core.pager= log --patch --max-count=1
+	# last = -c core.pager=delta log --patch --max-count=1
+	last = -c diff.external=difft log --patch --max-count=1 --ext-diff
+	#
+	# dl = -c core.pager= log --patch --max-count=1
+	# dl = -c core.pager=delta log --patch --max-count=1
+	dl = -c diff.external=difft log --patch --max-count=1 --ext-diff
+
 	root = rev-parse --show-toplevel
 
 	# -s, --no-messages    suppress error messages
 	who = shortlog --no-messages --
 
-	# Dangerous by design. Kept for muscle memory; prefer `git discard <path>` when possible.
+	# Dangerous by design. Kept for muscle memory; prefer `git discard <path>`
+	# when possible.
 	undo = reset --hard
 
 	lg       = log                                    --color               --pretty=format:'%Cred%h%Creset%C(white) %ad%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --date=short
@@ -47,12 +55,24 @@
 	# Text-mode interface for Git
 	tig = !tig
 
-	# Files modified in the last commit.
-	dl = "!git log --patch -1"
+	# Show the most recent commit with difftastic
+	# ds = -c core.pager= show
+	# ds = -c core.pager=delta show
+	ds = -c diff.external=difft show --ext-diff
 
-	# Show diffs of the last commit
-	di = log --patch --max-count=1
-	dis = diff --cached HEAD^           # with diffstatic
+	# df = -c core.pager= diff
+	# df = -c core.pager=delta diff
+	# df = -c core.pager=delta -c delta.side-by-side=true -c delta.line-numbers=false diff
+	df = -c diff.external=difft diff
+
+	# dfw = -c core.pager= diff --word-diff=color
+	# dfw = -c core.pager=delta diff --word-diff=color
+	dfw = -c diff.external=difft diff --word-diff=color
+
+	# dis = -c core.pager= diff --cached HEAD^
+	# dis = -c core.pager='less --tabs=4 --RAW-CONTROL-CHARS --quit-if-one-screen' diff --cached HEAD^
+	# dis = -c core.pager=delta diff --cached HEAD^
+	dis = -c diff.external=difft diff --cached HEAD^
 
 	# Find a tracked file, case-insensitively.
 	ff = "!git ls-files | grep --ignore-case"
@@ -62,7 +82,7 @@
 	sw = stash show --patch
 	sa = stash push --include-untracked
 
-	# Search in commit contents and commit messages.
+	# Search in commit contents and commit messages
 	# ! is needed to pass argument correctly to -S
 	fsc = "!git log --color --patch -S "
 	fsm = "!git log --grep "
@@ -104,8 +124,8 @@
 	user = Bost
 
 [diff]
+	# external = difft
 	indentHeuristic = true
-	external = difft
 	# TODO algorithm = histogram
 	# TODO colorMoved = default
 	# TODO mnemonicPrefix = true
@@ -116,17 +136,19 @@
 	# TODO updateRefs = true
 
 [core]
-	editor = vim
+	editor = nvim
 	# TODO whitespace = trailing-space,space-before-tab
 	# pager = less --tabs=4 --RAW-CONTROL-CHARS --quit-if-one-screen
-	pager = delta # git-delta
+	# pager = delta # guix package --install git-delta
 
 [interactive]
 	diffFilter = delta --color-only  # git-delta
 
 [delta]
+	side-by-side = true # default: false
 	navigate = true  # use n and N to move between diff sections
 	# dark = true    # or light = true, or omit for auto-detection
+	# line-numbers = true # default: true
 
 [sendemail]
 	smtpserver = posteo.de
@@ -155,7 +177,7 @@
 	prompt = false
 
 [pull]
-	# Reconcile `git pull` by rebasing local commits on top of the upstream branch.
+	# Reconcile `git pull` by rebasing local commits on top of the upstream branch
 	rebase = true
 
 # Using 'master' as the name for the initial branch. This default branch name
@@ -173,7 +195,7 @@
 	defaultBranch = master
 
 # [rerere]
-#   # Reuse recorded conflict resolutions.
+#   # Reuse recorded conflict resolutions
 #   enabled = true
 #   autoupdate = true
 
