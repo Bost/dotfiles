@@ -2,7 +2,9 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-;; Layer discovery runs before the tweaks package is loaded.
+;; Spacemacs uses this helper to set `dotspacemacs-configuration-layer-path'
+;; before it loads the tweaks package. Define it here so layer discovery can
+;; find the local layers.
 (defun my-dotf-path (&rest parts)
   "Build a path to dotfiles from environment variable \"dotf\" or
 \"~/dotfiles\" and PARTS."
@@ -479,7 +481,7 @@ https://github.com/emacs-evil/evil-collection/blob/master/modes/term/evil-collec
                ("ty" . tw-clj-insert-type)
                ("ma" . tw-clj-insert-map-fn)))
 
-(defun my-spacemacs/resize-shell-to-desired-width ()
+(defun my-resize-shell-to-desired-width ()
   ;; `shell-pop--is-shell-buffer' is a buffer-local flag set by shell-pop on
   ;; managed buffers (replaces the removed `shell-pop-last-shell-buffer-name'
   ;; comparison). `bound-and-true-p' keeps this safe on shell-pop versions
@@ -521,7 +523,7 @@ SHELL is the SHELL function to use (i.e. when FUNC represents a terminal)."
                  (concat "*" name "*"))
               (lambda nil (,func ,shell))))
        (shell-pop index)
-       (my-spacemacs/resize-shell-to-desired-width))))
+       (my-resize-shell-to-desired-width))))
 
 ;; When running from bash on a non-Guix system, some environment variables may
 ;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
@@ -3155,32 +3157,7 @@ https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
 
   ;; (add-to-list 'spacemacs-indent-sensitive-modes #'clojure-mode)
   ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojurescript-mode)
-
-  (progn ; copilot config
-    ;; accept completion from copilot and fallback to company
-    ;; (with-eval-after-load 'company
-    ;;   ;; disable inline previews
-    ;;   (delq 'company-preview-if-just-one-frontend company-frontends))
-
-    ;; (with-eval-after-load 'copilot
-    ;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-    ;;   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
-
-    ;; (add-hook 'prog-mode-hook 'copilot-mode)
-
-    ;; (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
-    ;; (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
-
-    ;; (use-package copilot
-    ;;   :hook (prog-mode . copilot-mode)
-    ;;   :bind (:map copilot-completion-map
-    ;;               ("<tab>" . copilot-accept-completion)
-    ;;               ("TAB" . copilot-accept-completion)
-    ;;               ("C-<tab>" . copilot-accept-completion-by-word)
-    ;;               ("C-TAB" . copilot-accept-completion-by-word)
-    ;;               ("C-n" . copilot-next-completion)
-    ;;               ("C-p" . copilot-previous-completion)))
-    ))
+  )
 
 ;;; `package-directory-list' is list of directories containing packages intended
 ;;; for system-wide use. Original value of `package-directory-list' contains
