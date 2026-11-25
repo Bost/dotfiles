@@ -300,7 +300,7 @@ Some binding snippets / examples:
    ("C-S-<delete>"  . kill-line)      ; C-shift-key
    ;; ("s-l"        . spacemacs/resume-last-search-buffer)
    ("s-v"           . tw-evil-select-pasted)
-   ("C-S-v"         . tw-paste-from-xsel-clipboard)
+   ("C-S-v"         . tw-yank-alternate-selection)
 
    ;; TODO what's the difference between insert and insertchar?
    ("S-s-<insert>" . tw-yank-and-select)
@@ -365,6 +365,8 @@ Some binding snippets / examples:
    ("H-2" . my-H-2)
    ("H-4" . my-H-4) ;; this doesn't work ("C-c h 4" . my-H-4)
    )
+  ;; Give Shift+Insert precedence over mode-specific paste bindings.
+  (bind-key* "S-<insert>" #'tw-yank-configured-selection)
   (message "%s   Note: %s"
            "(my-eval-bind-keys-and-chords) evaluated"
            "~SPC k $~ sp-end-of-sexp"))
@@ -1975,7 +1977,9 @@ before packages are loaded."
    ;; display-line-numbers 'relative
    ;; display-line-numbers 'visual
 
-   interprogram-paste-function #'tw-primary-selection-value
+   ;; Yank checks this function for external text before using the kill ring.
+   ;; Default to X PRIMARY. Use tw-toggle-yank-selection to swap selections.
+   interprogram-paste-function #'tw-yank-selection-value
 
    ;; prevent: Error saving to X clipboard manager
    x-select-enable-clipboard-manager nil
