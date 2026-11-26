@@ -454,12 +454,10 @@ This function should only modify configuration layer settings."
      ;; Show snippets in the auto-completion popup
      ;; Show suggestions by most commonly used
      (auto-completion :variables
-                      ;; (setq
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-sort-by-usage t
                       ;; auto-completion-enable-help-tooltip 'manual
-                      ;; )
                       )
 
      better-defaults
@@ -567,15 +565,97 @@ This function should only modify configuration layer settings."
 
      (git :variables
           ;; TODO implement it as spacemacs|toggle
-          ;; (setq
-          ;; git-magit-status-fullscreen t   ;; (Default nil)
-          ;; git-enable-magit-todos-plugin t ;; (Default nil)
+          ;; git-magit-status-fullscreen t    ;; (Default nil)
+          ;; git-enable-magit-todos-plugin t  ;; (Default nil)
 
-          ;; `nil'  Never show fine differences. (Default nil)
-          ;; `t'    Show fine differences for the current diff hunk only.
-          ;; `'all' Show fine differences for all displayed diff hunks.
+          ;; Fine-grained (word-level) diff highlighting.
+          ;; `nil'  Disable refinement. (Default nil)
+          ;; `t'    Refine hunks when selected.
+          ;; `'all' Refine every displayed hunk immediately.
           magit-diff-refine-hunk t
-          ;; )
+
+          ;; Syntax highlighting within diff hunks (Magit >= 4.6.0).
+          ;; `nil'  Disable syntax highlighting. (Default nil)
+          ;; `t'    Fontify hunks when selected.
+          ;; `'all' Fontify every displayed hunk immediately.
+          magit-diff-fontify-hunk 'all
+
+          ;; Foreground colors for hunk faces.
+          ;; `nil' Let syntax highlighting determine foreground colors.
+          ;; `t'   Use Magit's own foreground colors. (Default t)
+          ;; Must be set before Magit is loaded.
+          magit-diff-specify-hunk-foreground nil
+
+          ;; Separate faces for the +/- diff indicators.
+          ;; `nil' Use the same face as the corresponding line. (Default nil)
+          ;; `t'   Use dedicated indicator faces.
+          magit-diff-use-indicator-faces t
+
+          ;; Whitespace handling during fine-grained diff refinement.
+          ;; `nil' Include whitespace changes.
+          ;; `t'   Ignore whitespace changes. (Default t)
+          ;; The initial value is inherited from
+          ;; `smerge-refine-ignore-whitespace', which defaults to `t'.
+          magit-diff-refine-ignore-whitespace nil
+
+          ;; Highlight the body of the currently selected hunk.
+          ;; `nil' Disable highlighting.
+          ;; `t'   Enable highlighting. (Default t)
+          magit-diff-highlight-hunk-body t
+
+          ;; Where to highlight whitespace errors.
+          ;; `nil'          Nowhere.
+          ;; `t'            Everywhere. (Default t)
+          ;; `'uncommitted' Only in uncommitted changes.
+          ;; `'status'      Alias for `uncommitted' (backward compatibility).
+          magit-diff-paint-whitespace t
+
+          ;; Which lines to check for whitespace errors.
+          ;; `t'     Added lines only. (Default t)
+          ;; `'both' Added and removed lines.
+          ;; `'all'  Added, removed and context lines.
+          magit-diff-paint-whitespace-lines t
+
+          ;; Highlight trailing whitespace.
+          ;; `nil' Disable highlighting.
+          ;; `t'   Enable highlighting. (Default t)
+          magit-diff-highlight-trailing t
+
+          ;; Highlight incorrect indentation.
+          ;; `nil'               Disable highlighting. (Default nil)
+          ;; '((".*" . tabs))    Highlight indentation containing tabs.
+          ;; '((".*" . 4))       Highlight indentation of >= 4 spaces.
+          ;; '((".*" . 8))       Highlight indentation of >= 8 spaces.
+          ;; An alist of (DIRECTORY-REGEXP . INDENTATION) pairs.
+          magit-diff-highlight-indentation nil
+
+          ;; Adjust tab width according to the corresponding file.
+          ;; `nil'     Use the Magit buffer's tab-width. (Default nil)
+          ;; `t'       Use the existing file-visiting buffer's tab-width.
+          ;; `'always' Open the file if necessary to determine its tab-width.
+          ;; NUMBER    Like `always', but with a file-size limit in bytes.
+          magit-diff-adjust-tab-width nil
+
+          ;; Hide trailing carriage-return (^M) characters.
+          ;; `nil' Display CR characters. (Default on GNU/Linux)
+          ;; `t'   Hide CR characters. (Default on Windows)
+          magit-diff-hide-trailing-cr-characters nil
+
+          ;; Foreground colors outside the selected hunk-internal region.
+          ;; `nil' Dim foreground and background colors.
+          ;; `t'   Preserve foreground colors. (Default t)
+          magit-diff-unmarked-lines-keep-foreground t
+
+          ;; Highlight a selected region within a hunk.
+          ;; Available functions:
+          ;; - magit-diff-highlight-hunk-region-dim-outside
+          ;; - magit-diff-highlight-hunk-region-using-overlays
+          ;; - magit-diff-highlight-hunk-region-using-underline
+          ;; - magit-diff-highlight-hunk-region-using-face
+          ;; The following combination is the default.
+          magit-diff-highlight-hunk-region-functions
+          '(magit-diff-highlight-hunk-region-dim-outside
+            magit-diff-highlight-hunk-region-using-overlays)
           )
 
      ;; Try some of the following commands:
@@ -599,53 +679,51 @@ This function should only modify configuration layer settings."
 
      ;; hy ;; hylang - lisp embedded in python
 
-     (helm :variables
-           ;; (setq
+     (helm
+      :variables
+      ;; When non-nil, save last state of ‘helm-follow-mode’ for the next Emacs
+      ;; sessions. Each time you turn on or off ‘helm-follow-mode’, the current
+      ;; source name will be stored or removed from
+      ;; `helm-source-names-using-follow'. (Default nil)
+      ;; helm-follow-mode-persistent t
 
-           ;; When non-nil, save last state of ‘helm-follow-mode’ for the next
-           ;; Emacs sessions. Each time you turn on or off ‘helm-follow-mode’,
-           ;; the current source name will be stored or removed from
-           ;; `helm-source-names-using-follow'. (Default nil)
-           ;; helm-follow-mode-persistent t
+      ;; helm-display-function 'helm-display-buffer-in-own-frame
 
-           ;; helm-display-function 'helm-display-buffer-in-own-frame
+      ;; nil - use the longest `buffer-name' length found. (Default 20)
+      ;; When in M-x helm-mini ~s-]~ see also:
+      ;; ~C-]~ / M-x helm-ff-run-toggle-basename
+      ;; C-i
 
-           ;; nil - use the longest `buffer-name' length found. (Default 20)
-           ;; When in M-x helm-mini ~s-]~ see also:
-           ;; ~C-]~ / M-x helm-ff-run-toggle-basename
-           ;; C-i
+      ;; Doesn't work / does nothing
+      ;; (add-to-list 'helm-commands-using-frame #'helm-M-x) ;; (Default nil)
+      ;; helm-commands-using-frame nil ;; (Default nil)
 
-           ;; Doesn't work / does nothing
-           ;; (add-to-list 'helm-commands-using-frame #'helm-M-x) ;; (Default nil)
-           ;; (setq helm-commands-using-frame nil) ;; (Default nil)
+      ;; (Default ((width . 80) (height . 2)))
+      ;; minibuffer-frame-alist '((minibuffer . only))
+      ;; minibuffer-frame-alist '((width . 80) (height . 2))
+      ;; minibuffer-frame-alist '((top . 1) (left . 1) (width . 80) (height . 2))
 
-           ;; (Default ((width . 80) (height . 2)))
-           ;; (setq minibuffer-frame-alist '((minibuffer . only)))
-           ;; (setq minibuffer-frame-alist '((width . 80) (height . 2)))
-           ;; (setq minibuffer-frame-alist '((top . 1) (left . 1) (width . 80) (height . 2)))
+      ;; helm-split-window-inside-p t ;; (Default nil)
+      ;; helm-split-window-inside-p nil ;; (Default nil)
 
-           ;; (setq helm-split-window-inside-p t) ;; (Default nil)
-           ;; (setq helm-split-window-inside-p nil) ;; (Default nil)
+      ;; https://github.com/emacs-helm/helm/issues/2039#issuecomment-390103697
+      ;; helm-always-two-windows nil ;; (Default nil)
+      ;; helm-display-buffer-default-height 23 ;; (Default nil)
+      ;; helm-display-buffer-default-height nil ;; (Default nil)
+      ;; helm-default-display-buffer-functions '(display-buffer-in-side-window)
 
-           ;; https://github.com/emacs-helm/helm/issues/2039#issuecomment-390103697
-           ;; (setq helm-always-two-windows nil) ;; (Default nil)
-           ;; (setq helm-display-buffer-default-height 23) ;; (Default nil)
-           ;; (setq helm-display-buffer-default-height nil) ;; (Default nil)
-           ;; (setq helm-default-display-buffer-functions '(display-buffer-in-side-window))
+      ;; Max column width of buffer names before truncate. (Default 20)
+      helm-buffer-max-length nil
 
-           ;; Max column width of buffer names before truncate. (Default 20)
-           helm-buffer-max-length nil
+      ;; Truncate lines in ‘helm-buffers-list’ when non-nil. (Default t)
+      ;; helm-buffers-truncate-lines nil
 
-           ;; Truncate lines in ‘helm-buffers-list’ when non-nil. (Default t)
-           ;; helm-buffers-truncate-lines nil
+      ;; helm-display-buffer-width 100 ;; (Default 72)
 
-           ;; helm-display-buffer-width 100 ;; (Default 72)
-
-           ;; Value is `spacemacs//display-helm-window'. Original value was
-           ;; `helm-default-display-buffer'
-           ;; helm-display-function 'helm-default-display-buffer
-           ;; )
-           )
+      ;; Value is `spacemacs//display-helm-window'. Original value was
+      ;; `helm-default-display-buffer'
+      ;; helm-display-function 'helm-default-display-buffer
+      )
 
      html
 
@@ -705,7 +783,6 @@ This function should only modify configuration layer settings."
 
      (llm-client
       :variables
-      ;; (setq
       ;; -H, --header; -X, --request : GET seems to be the default
       ;; curl -H "Authorization: Bearer $OPENAI_KEY" https://api.openai.com/v1/models
       ;; See https://platform.openai.com/settings/organization/usage
@@ -729,7 +806,6 @@ This function should only modify configuration layer settings."
       ;;                :key "your-api-key")
 
       llm-client-enable-gptel t
-      ;; )
       )
 
      ;; Language Server Protocol https://emacs-lsp.github.io/lsp-mode/
@@ -807,14 +883,14 @@ This function should only modify configuration layer settings."
      ;; https://github.com/alexluigit/dirvish
      ;; https://github.com/Fuco1/dired-hacks
      ;; https://github.com/jojojames/dired-sidebar
-     ;; (ranger :variables ; (setq
-     ;;          ranger-override-dired 'ranger
-     ;;          ranger-show-dotfiles t
-     ;;          ;; ranger-show-preview t
-     ;;          ranger-show-hidden t
-     ;;          ranger-cleanup-eagerly t
-     ;;          ranger-cleanup-on-disable t
-     ;;          ranger-ignored-extensions '("mkv" "flv" "iso" "mp4") ; )
+     ;; (ranger :variables
+     ;;         ranger-override-dired 'ranger
+     ;;         ranger-show-dotfiles t
+     ;;         ;; ranger-show-preview t
+     ;;         ranger-show-hidden t
+     ;;         ranger-cleanup-eagerly t
+     ;;         ranger-cleanup-on-disable t
+     ;;         ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
      ;;         )
 
      rust
@@ -829,7 +905,6 @@ This function should only modify configuration layer settings."
 
      (shell
       :variables
-      ;; (setq
       ;; shell-default-shell 'eshell ; (Default 'ansi-term)
 
       ;; shell-default-height 30
@@ -837,7 +912,6 @@ This function should only modify configuration layer settings."
 
       ;; Width in percents for the shell window.
       shell-default-width 50 ; (default 30)
-      ;; )
       )
 
      ;; Provides a.o. flycheck-bashate
@@ -1712,28 +1786,35 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
-  ;; If non-nil then the `spacemacs-buffer/message'-messages appear in the
-  ;; *Messages* buffer. Setting this variable in the `dotspacemacs/user-init'
-  ;; ensures the output of layer-loading processes, ie. from
-  ;; (configuration-layer/load) and (configuration-layer//load)
-  ;; appears there too. (Default nil)
-  ;; (setq init-file-debug t)
+  (setq
+   ;; If non-nil then the `spacemacs-buffer/message'-messages appear in the
+   ;; *Messages* buffer. Setting this variable in the `dotspacemacs/user-init'
+   ;; ensures the output of layer-loading processes, ie. from
+   ;; (configuration-layer/load) and (configuration-layer//load)
+   ;; appears there too. (Default nil)
+   ;; init-file-debug t
 
-  ;; When:
-  ;;   Failed to verify signature archive-contents.sig
-  ;; (setq package-check-signature nil)
-  ;; Then
-  ;;  M-x package-list-packages
+   ;; When 'Failed to verify signature archive-contents.sig' set
+   ;; package-check-signature nil
+   ;; Then
+   ;;  M-x package-list-packages
+
+   ;; Don't download archive-contents of the gnu, melpa, nongnu
+   ;; my-retrieve-package-archives nil
+   my-retrieve-package-archives t
+
+   yas--default-user-snippets-dir sp-snippets-dir
+   yas-verbosity 2
+
+   ;; Configure this early: the spell-checking layer may enable Flyspell
+   ;; during startup.
+   ispell-program-name "hunspell"
+   ispell-dictionary "en_US"
+   )
 
   ;; Make the emacs-packages installed by Guix visible to emacs (by prepending)
   (add-to-list 'package-directory-list
                "~/.guix-profile/share/emacs/site-lisp")
-
-  ;; Don't download archive-contents of the gnu, melpa, nongnu
-  ;; (setq my-retrieve-package-archives nil)
-  (setq my-retrieve-package-archives t)
-
-  (setq yas--default-user-snippets-dir sp-snippets-dir)
 
   ;; Avoid creation of dotspacemacs/emacs-custom-settings
   ;; https://github.com/syl20bnr/spacemacs/issues/7891
@@ -1759,12 +1840,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
     (define-key dired-mode-map (kbd "C-c G") #'dired-do-chgrp)
     (define-key dired-mode-map (kbd "G") nil))
 
-  (setq yas-verbosity 2)
-
-  ;; Configure this early: the spell-checking layer may enable Flyspell
-  ;; during startup.
-  (setq ispell-program-name "hunspell"
-        ispell-dictionary "en_US")
   ;; Under a C locale, Hunspell needs a default for the first dictionary scan.
   ;; This avoids Ispell's retry and suppresses its startup warning:
   ;; ispell-set-spellchecker-params: Missing equivalent for "...". Skipping.
@@ -1868,9 +1943,6 @@ before packages are loaded."
   ;;  '(evil-goggles-paste-face ((t (:inherit 'lazy-highlight))))
   ;;  '(evil-goggles-yank-face ((t (:inherit 'isearch-fail)))))
 
-  ;; disable the hint when pasting - ??? doesn't work, i.e. no difference ???
-  ;; (setq evil-goggles-enable-paste nil)
-
   ;; Company is a modular completion framework.
   (global-company-mode)
 
@@ -1891,13 +1963,6 @@ before packages are loaded."
       " \" M-s-<right> <home> # : <escape> f SPC r - <home> <left> <down>")))
   (global-set-key (kbd "<f6>") #'macro-format-guix-channels)
 
-  ;; Set back to its default value to avoid
-  ;;   SPC * not working with ripgrep 14
-  ;;   https://github.com/syl20bnr/spacemacs/issues/16200
-  ;; See also
-  ;; https://github.com/syl20bnr/spacemacs/issues/16200
-  (setq helm-ag-use-grep-ignore-list nil)
-
   ;; M-<up>/M-<down> walk the search pattern history, like M-p/M-n, in the
   ;; SPC s ... searches. Plain <up>/<down> are taken: helm-map binds them to
   ;; helm-previous-line/helm-next-line, i.e. moving through the results.
@@ -1905,18 +1970,28 @@ before packages are loaded."
     (define-key helm-do-ag-map (kbd "M-<up>")   #'previous-history-element)
     (define-key helm-do-ag-map (kbd "M-<down>") #'next-history-element))
 
-  ;; org-tree-slide
-  (setq org-image-actual-width nil)
-
-  ;; Configure fill width
-  (setq visual-fill-column-width 110
-        visual-fill-column-center-text t)
-
   ;; Register hooks with org-present
   (add-hook 'org-present-mode-hook 'tw-org-present-start)
   (add-hook 'org-present-mode-quit-hook 'tw-org-present-end)
 
   (setq
+   ;; disable the hint when pasting - ??? doesn't work, i.e. no difference ???
+   ;; evil-goggles-enable-paste nil
+
+   ;; Set back to its default value to avoid
+   ;;   SPC * not working with ripgrep 14
+   ;;   https://github.com/syl20bnr/spacemacs/issues/16200
+   ;; See also
+   ;; https://github.com/syl20bnr/spacemacs/issues/16200
+   helm-ag-use-grep-ignore-list nil
+
+   ;; org-tree-slide
+   org-image-actual-width nil
+
+   ;; Configure fill width
+   visual-fill-column-width 110
+   visual-fill-column-center-text t
+
    large-file-warning-threshold nil ;; don't ask before visiting big files
 
    org-plantuml-jar-path (funcall
@@ -1991,12 +2066,10 @@ before packages are loaded."
 
    ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
    ;; See ~M-x ediff-toggle-multiframe~ toggle multiframe / single frame
-   ;; (setq
    ediff-window-setup-function
    ;; #'ediff-setup-windows-multiframe ; control panel in a separate frame.
    #'ediff-setup-windows-plain         ; everything in one frame, on the bottom
    ;; #'ediff-setup-windows-default    ; 'multiframe' in GUI, 'plain' in TTY
-   ;; )
 
    ;; Fix projectile-regenerate-tags: ctags: invalid option -- ’e’
    ;; See https://github.com/bbatsov/projectile/issues/133
@@ -2012,14 +2085,12 @@ before packages are loaded."
    font-latex-fontify-script nil
    org-latex-listings 'minted
    org-latex-packages-alist '(("" "minted"))
-   ;; (setq
    org-latex-pdf-process ;; is it customizable? customize-set-variable
    '("%latex -interaction nonstopmode -output-directory %o %f"
      "%latex -interaction nonstopmode -output-directory %o %f"
      "%latex -interaction nonstopmode -output-directory %o %f")
    ;; '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
    ;;   "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
-   ;; )
 
    ;; color-identifiers-mode t
    )
@@ -2038,7 +2109,7 @@ before packages are loaded."
   (setq-default
    ;; Truncate lines in every buffer. Overridden by
    ;; `truncate-partial-width-windows'
-   ;; See also: ;; (setq-default global-visual-line-mode t)
+   ;; See also: global-visual-line-mode t
    ;; Using `setq-default' makes it default for all buffers.
    truncate-lines t)
 
