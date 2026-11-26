@@ -140,6 +140,7 @@ See also:
 ;;; find ~/.gnupg -type f -exec chmod u=rwx,g=---,o=--- {} \;
 ;;; # i.e. 700 for directories:
 ;;; find ~/.gnupg -type d -exec chmod u=rwx,g=---,o=--- {} \;
+                 ".emacs.d.distros/spacemacs/init-common.el"
                  ".gnupg/gpg.conf"
                  ".gnupg/gpg-agent.conf"
                  ".guile" ;; used by `guix repl'

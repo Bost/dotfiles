@@ -1,0 +1,3123 @@
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
+;; Shared configuration loaded by the Guix and spgx init files.
+
+;; Spacemacs uses this helper to set `dotspacemacs-configuration-layer-path'
+;; before it loads the tweaks package. Define it here so layer discovery can
+;; find the local layers.
+(defun my-dotf-path (&rest parts)
+  "Build a path to dotfiles from environment variable \"dotf\" or
+\"~/dotfiles\" and PARTS."
+  (expand-file-name
+   (mapconcat #'identity parts "/")
+   (expand-file-name (or (getenv "dotf") "~/dotfiles"))))
+
+(defun my-find-spacemacs-init-common ()
+  "Open the shared Spacemacs configuration in the dotfiles checkout."
+  (interactive)
+  (find-file-existing
+   (my-dotf-path ".emacs.d.distros" "spacemacs" "init-common.el")))
+
+(with-eval-after-load 'tweaks
+  (add-hook 'text-mode-hook #'tw-enable-spell-checking-for-small-buffer)
+  (add-hook 'prog-mode-hook #'tw-enable-spell-checking-for-small-buffer))
+
+(with-eval-after-load 'guess-language
+  (setq guess-language-languages '(en de fr)
+        guess-language-langcodes
+        '((en . ("en_US" "English" "🇺🇸" "English"))
+          (de . ("de_DE" "German" "🇩🇪" "German"))
+          (fr . ("fr-moderne" "French" "🇫🇷" "French")))))
+
+(defun my-sync-guess-language-with-flyspell ()
+  "Enable Guess Language in buffers where Flyspell is active."
+  (if flyspell-mode
+      (when (require 'guess-language nil t)
+        (guess-language-mode 1))
+    (when (bound-and-true-p guess-language-mode)
+      (guess-language-mode -1))))
+
+(add-hook 'flyspell-mode-hook #'my-sync-guess-language-with-flyspell)
+
+;; It seems that this macro cannot be added to emacs-tweaks, as it only gets
+;; loaded during a later stage of Spacemacs initialization.
+(defmacro my-def-evar (elisp-var def-val evar-name)
+  "Define an Emacs variable from environment with defaults. Warn if
+differences were encountered."
+  `(let* ((evar-val (or (getenv ,evar-name) ,def-val)))
+     (setq ,elisp-var (or (getenv ,evar-name) ,def-val))
+     (unless (string= ,elisp-var (expand-file-name ,def-val))
+       (message "WARN (expand-file-name def-val): %s and evar: %s=%s differ"
+                (expand-file-name ,def-val) ,evar-name evar-val))))
+
+(defun my-H-1 () (interactive) (message "H-1"))
+(defun my-H-2 () (interactive) (message "H-2"))
+(defun my-H-3 () (interactive) (message "H-3"))
+(defun my-H-4 () (interactive) (message "H-4"))
+
+(defun my-eval-bind-keys-and-chords ()
+  "To activate changes, do:
+    ~s-d~ my-eval-current-defun
+    ~s-+~ my-eval-bind-keys-and-chords
+
+Some binding snippets / examples:
+  (global-set-key (kbd \"s-<f2>\") \\='eshell)
+  (key-chord-define-global \"fj\" (lambda () (interactive)
+                                             (tw-insert-str \"()\" 1)))"
+  (interactive)
+
+  ;; (key-chord-define-global "fj" (lambda () (interactive)
+  ;;                                 (tw-insert-str "()" 1)))
+  ;; (key-chord-define clojure-mode-map "fj" nil)
+  ;; (key-chord-define global-map "fj" nil)
+
+  ;; see also `key-chord-unset-global' / `key-chord-unset-local'
+
+  ;; for the substitution: ~s-:~ / M-x tw-fabricate-subst-cmd
+  ;; TODO this keychord doesn't work
+  (bind-chords :map evil-ex-completion-map ; not he evil-ex-map!!!
+               ("()" . tw-insert-group-parens))
+  (bind-keys :map evil-ex-completion-map ; not he evil-ex-map!!!
+             ("s-0" . tw-insert-group-parens)
+             ("s-)" . tw-insert-group-parens))
+
+  ;; (setq evil-respect-visual-line-mode t) doesn't work easily
+  ;; `remap' can't use the #' reader syntax for function form
+  (global-set-key [remap move-beginning-of-line] #'crux-move-beginning-of-line)
+  (global-set-key [remap evil-beginning-of-line] #'crux-move-beginning-of-line)
+
+  ;; BUG: The ~C-z~ / M-x suspend-frame surfaces when calling
+  ;; ~SPC k e~ / M-x evil-lisp-state-sp-splice-sexp-killing-forward.
+  ;; since this function changes 'evil-state' to 'lisp'.
+  ;; ~ESC~ / M-x evil-lisp-state/quit
+  (global-unset-key (kbd "C-z"))
+
+  ;; See also the value of `dotspacemacs-smart-closing-parenthesis'
+  ;; (unbind-key ")" term-mode-map)
+
+  (bind-chords :map global-map
+               ("KK" . tw-switch-to-previous-buffer)
+               ;; don't need to switch keyboards just because of parenthesis
+               ("fj" . (tw-insert-str "()" 1)))
+
+  (progn
+    ;; "Set up multi-line comment style for Lisp code. Possible approaches:
+    ;; A. Automatic detection. It may miss some modes.
+    (add-hook 'prog-mode-hook 'tw-setup-lisp-comments-maybe)
+
+    ;; B. Explicit mode list (more reliable)
+    ;; (dolist (mode '(
+    ;;                 lisp-mode-hook
+    ;;                 emacs-lisp-mode-hook
+    ;;                 lisp-interaction-mode-hook
+    ;;                 scheme-mode-hook
+    ;;                 clojure-mode-hook
+    ;;                 racket-mode-hook
+    ;;                 ))
+    ;;   (add-hook mode 'tw-setup-lisp-comments))
+    )
+
+  ;; the comment is here just to get a better listing in `helm-swoop'
+  (bind-keys ; :map global-map
+   :map global-map
+   ("<f5>" . tw-revert-buffer-no-confirm)
+   ;; ("s-*"    . er/contract-region) ;; TODO see https://github.com/joshwnj
+
+   ;; TODO The <escape> keybinding seems not to work.
+   ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+   ;; TODO notmuch
+
+   ;; the funny keys can be seen
+   ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2008-11/msg00011.html
+   ("C-s-<268632070>" . my-H-3) ;; this is probably for an Apple computers
+   ("<escape>"  . keyboard-escape-quit)
+
+   ("M-Q"       . unfill-paragraph)
+   ;; TODO in the fish-mode the ~M-q~ is bound to `paredit-reindent-defun',
+   ;; which doesn't work well for unfilling comments (filling works). The same
+   ;; goes for `unfill-toggle'. (Does `paredit-reindent-defun' call
+   ;; `unfill-toggle'?)
+   ;; ("M-q" . unfill-toggle)
+
+   ("s-="       . balance-windows-area)
+   ("s-K"       . kb-kill-buffers--unwanted)
+   ("s-C-K"     . kb-kill-buffers--dired)
+   ("s-R"       . spacemacs/rename-current-buffer-file)
+   ("s-q"       . tw-other-window)
+   ("s-k"       . kb-close-buffer)
+   ("s-s"       . save-buffer)
+   ("s-0"       . tw-delete-window)
+   ("s-1"       . tw-delete-other-windows)
+   ("S-s-<f8>"    . ace-swap-window) ; ~SPC w M~
+   ;; ("S-s-<f8>" . transpose-frame)
+   ;; ("s-2"    . tw-split-other-window-below)
+   ("s-2"       . split-window-below) ; ~SPC w -~
+   ;; see ~SPC w /~ and ~SPC w 2~
+   ;; ("s-3"    . spacemacs/window-split-double-columns)
+   ;; see ~SPC w /~ and ~SPC w 2~
+   ("s-3"       . split-window-right-and-focus)
+   ("s-9"       . tw-load-layout)
+   ("s-+"       . my-eval-bind-keys-and-chords)
+   ("s-<kp-add>". my-eval-bind-keys-and-chords)
+   ("s-z"       . tw-buffer-selection-show)
+   ;; dired: https://danlamanna.com/forget-scp-use-dired-dwim.html
+   ("s-D"       . dired-jump) ;; just open a dired buffer
+
+   ;; The highlighting of copied sexps is done by the copy-sexp.el
+   ;; TODO highlight text yanked with `y'
+   ("s-c"       . sp-copy-sexp)
+   ("s-b"       . sp-backward-copy-sexp)
+
+   ;; ("<f11>"     . bookmark-set)
+   ;; ("<f11>"     . equake-toggle-fullscreen)
+   ;; Move the parenthesis - see SPC k b/B/f/F
+   ("M-s-<left>"  . sp-forward-barf-sexp)
+   ("M-s-<right>" . sp-forward-slurp-sexp)
+   ("C-s-<left>"  . sp-backward-slurp-sexp)
+   ("C-s-<right>" . sp-backward-barf-sexp)
+   ("s-;"         . spacemacs/comment-or-uncomment-lines)
+   ("C-s-;"       . tw-toggle-comment-sexp-lines)
+   ;; ("M-;"         . tw-toggle-comment-sexp-lines) ; was comment-dwim
+   ("S-s-<f1>"    . eshell) ;; Shitf-Super-F1
+   ("s-<f1>"      . tw-toggle-shell-pop-multiterm) ;; tw-toggle-shell-pop-term
+   ("s-<f2>"      . projectile-multi-term-in-root)
+
+   ;; M-x term-line-mode - emacs keybindings
+   ;; M-x term-char-mode - chars sent directly to terminal
+   ("s-<f3>"      . spacemacs/shell-pop-vterm)
+
+   ;; terminal in the current working directory
+   ;; ("s-<f1>"      . terminal-here-launch)
+   ;; ("s-<f1>"      . spacemacs/default-pop-shell)
+   ;; ("s-<f1>"      . spacemacs/projectile-shell)
+   ;; jumps to the shell opened by `spacemacs/projectile-shell'
+   ;; ("s-<f1>"      . spacemacs/projectile-shell-pop)
+   ;; ("s-<f1>"      . terminal-here-project-launch)
+   ("s-W"         . whitespace-cleanup)
+   ("s-w"         . tw-whitespace-mode-toggle)
+   ("s-m"         . tw-magit-status)
+   ("<f3>"   . tw-search-region-or-symbol) ; advice-d
+   ;; advice-d
+   ("M-<f3>" . spacemacs/helm-project-smart-do-search-region-or-symbol)
+
+   ("s-a"    . helm-mini) ;; advice-d
+   ("s-]"    . helm-mini)
+   ;; helm-mini doesn't show all buffers when using layouts (~SPC l~)
+   ("C-s-a"  . spacemacs-layouts/non-restricted-buffer-list-helm) ; advice-d
+
+   ("s-B"    . helm-filtered-bookmarks)
+   ("<f9>"   . helm-filtered-bookmarks)
+   ;; ("s-p" . helm-projectile)
+   ("s-p"    . helm-projectile-find-file)
+   ("s-P"    . spacemacs/helm-persp-switch-project) ; advice-d
+   ("s-f"    . helm-find-files)
+   ("s-F"    . helm-recentf)
+   ;; Can't use `advice'. This is an advice for the binding, not the function
+   ("s-r"    . (lambda ()
+                 (interactive) (helm-recentf)
+                 (message "Use ~s-F~ instead of ~s-r~ for M-x helm-recentf")))
+   ("M-y"    . helm-show-kill-ring)   ; replaces evil-paste-pop
+   ("s-G"    . helm-google-suggest)
+   ("s-/"    . helm-swoop)                          ; advice-d
+   ("s-?"    . helm-multi-swoop-all)
+   ("s-l"    . lazy-helm/spacemacs/resume-last-search-buffer)
+
+   ;; TODO crux-duplicate-current-line-or-region gets confused with registry
+   ;; content
+   ("C-s-<down>" . crux-duplicate-current-line-or-region)
+   ("C-s-<up>"   . (lambda (arg) (interactive "p")
+                     (crux-duplicate-current-line-or-region arg)
+                     (if (evil-normal-state-p)
+                         (evil-previous-line)
+                       (previous-line))))
+
+   ("C-c d"      . crux-duplicate-current-line-or-region)
+   ("C-c t"      . crux-transpose-windows)
+   ("C-s-<backspace>" . crux-kill-line-backwards) ; kill-line-backward
+   ("s-j"             . crux-top-join-line)
+
+   ;; TODO xah-backward-block xah-forward-block were removed (by a mistake)
+   ;; in cf18cf842d4097934f58977665925eff004702e2
+   ("C-<up>"            . xah-backward-block)
+   ("C-<down>"          . xah-forward-block)
+   ;; TODO make pg-up / pg-down major-mode specific
+   ;; ("C-<prior>"      . hs-hide-block)    ; pg-up
+   ;; ("C-<next>"       . hs-show-block)    ; pg-down
+   ;; ("C-M-<prior>"    . hs-toggle-hiding) ; pg-up
+   ;; ("C-M-<prior>"    . hs-hide-all)      ; Ctrl + pg-up
+   ;; ("C-M-<next>"     . hs-show-all)      ; Ctrl + pg-down
+   ("C-M-<delete>"      . kill-sexp)
+   ("C-M-s-<delete>"    . tw-delete-next-sexp)
+   ("C-M-s-<backspace>" . tw-delete-prev-sexp)
+   ("C-M-<backspace>"   . backward-kill-sexp)
+
+   ("s-<backspace>"     .
+    ;; Can't use `advice'. This is an advice for the binding, not the function
+    (lambda ()
+      (interactive) (paredit-backward-kill-word)
+      (message "See ~%s~ / M-x "
+               "SPC k E"
+               "evil-lisp-state-sp-splice-sexp-killing-backward")))
+
+   ("s-<delete>"        .
+    ;; Can't use `advice'. This is an advice for the binding, not the function
+    (lambda ()
+      (interactive) (paredit-forward-kill-word)
+      (message "See ~%s~ / M-x "
+               "SPC k e"
+               "evil-lisp-state-sp-splice-sexp-killing-forward")))
+
+   ("M-s-SPC" . spacemacs/evil-search-clear-highlight)
+   ("s-g"     . tw-search-or-browse)
+   ("s-8" . er/expand-region)     ; increase selected region by semantic units
+   ("<f2>"    . evil-avy-goto-char-timer)
+   ;; S-<tab> i.e. Shift-Tab i.e. <backtab> calls `next-buffer'
+
+   ;; TODO s-a when "Last buffer not found."
+   ("s-<tab>" . spacemacs/alternate-buffer)
+
+   ("C-<next>"  . my-next-buffer)     ; Ctrl-PageDown; right in the tab-bar
+   ("s-<right>" . my-next-buffer)
+   ("C-<prior>" . my-previous-buffer) ; Ctrl-PageUp; left in the tab-bar
+   ("s-<left>"  . my-previous-buffer)
+
+   ;; same bindings as in the guake terminal
+   ("S-s-<up>"    . evil-window-up)
+   ("S-s-<down>"  . evil-window-down)
+   ("S-s-<left>"  . evil-window-left)
+   ("S-s-<right>" . evil-window-right)
+
+   ;; ("s-<tab>" . popwin:switch-to-last-buffer) ; - for popup buffers??
+   ("C-<f2>"  . avy-goto-line) ;; binding clashes with xfce4-workspace
+   ("C-s-/"   . avy-goto-line)
+
+   ;; fd - evil-escape from insert state and everything else
+   ;; occurrences - function scope
+   ;; ~n~ / ~N~ next / prev occurrence; ~TAB~ toggle occurrence
+   ("s-I"           . tw-iedit-mode-toggle)
+   ("s-i"           . iedit-mode)     ; all occurrences in the buffer
+   ;; ("s-i"        . spacemacs/enter-ahs-forward)
+
+   ;; undo-tree is unmaintained. Last commit in March 2021
+   ;; ("<f12>"         . undo-tree-visualize)
+
+   ;; ("S-<delete>" . kill-region)
+   ("C-s-<delete>"  . kill-line)      ; C-super-key
+   ("C-S-<delete>"  . kill-line)      ; C-shift-key
+   ;; ("s-l"        . spacemacs/resume-last-search-buffer)
+   ("s-v"           . tw-evil-select-pasted)
+   ("C-S-v"         . tw-yank-alternate-selection)
+
+   ;; TODO what's the difference between insert and insertchar?
+   ("S-s-<insert>" . tw-yank-and-select)
+
+   ;; jump like f/t in vim; TODO integrate zop-to-char with 'y' in evil
+   ;; zop-up-to-char works as zop-to-char but stop just before target
+   ("M-z" . zop-up-to-char)
+   ("M-Z" . zop-to-char)
+
+   ("C-s-." . spacemacs/jump-to-definition-other-window)
+   ("s->"   . spacemacs/jump-to-definition-other-window)
+
+   ("s-." . spacemacs/jump-to-definition)
+   ("s-," . evil-jump-backward)
+
+   ;; ("s-." . evil-goto-definition-imenu)
+   ;; ("s-." . evil-goto-definition-xref)
+   ;; ("s-," . evil-jump-backward)
+
+   ;; dumb-jump-go has been obsoleted by the xref interface.
+   ;; ("s-." . xref-find-definitions) ;; function is part of Emacs
+   ;; ("s-," . xref-go-back) ;; function is part of Emacs
+
+   ;; ("s-,"   . cider-pop-back)
+
+   ;; C-o; evil-jump-backward
+   ;; C-i; evil-jump-forward; see dotspacemacs-distinguish-gui-tab
+
+   ;; M-x tw-what-face; C-M-<print> on edge doesn't work
+   ("C-<print>" . describe-text-properties)
+
+   ("s-<return>"   . jl-jump-last-edited-place)
+   ("C-s-<return>" . goto-last-change) ;; M-x evil-goto-last-change ~g ;~
+   ;; it's easy to press Shift while holding s-<return> already
+   ("S-s-<return>" . evil-jump-backward)
+
+   ("s-J"          . evil-join)
+
+   ("s-<print>" . tw-ediff-buffers-left-right) ; see advice-add
+   ("s-A"       . align-regexp)
+   ("s-:" . tw-fabricate-subst-cmd) ;; see evil-ex-completion-map bindings
+
+   ("s-<" . tw-select-in-ang-bracket)
+   ("s-[" . tw-select-in-sqr-bracket)
+   ("s-(" . tw-select-in-rnd-bracket)
+   ("s-{" . tw-select-in-crl-bracket)
+
+   ;; may more comfortable than moving the hand away
+   ("C-{" . tw-ins-left-paren)
+   ("C-}" . tw-ins-right-paren)
+
+   ("s-\"" . tw-select-in-string)
+
+   ;; C-<mouse-4> and C-<mouse-4> might work too
+   ("C-<wheel-up>"   . tw-zoom-all-frames-in)  ;; mouse-4 / mouse-up
+   ("C-<wheel-down>" . tw-zoom-all-frames-out) ;; mouse-5 / mouse-down
+
+   ;; Set xfce4-keyboard-settings -> Layout -> Compose key: -
+   ;; <menu> is not a prefix key. See:
+   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
+   ("H-1" . my-H-1) ;; this doesn't work ("C-c h 1" . my-H-1)
+   ("H-2" . my-H-2)
+   ("H-4" . my-H-4) ;; this doesn't work ("C-c h 4" . my-H-4)
+   )
+  ;; Give Shift+Insert precedence over mode-specific paste bindings.
+  (bind-key* "S-<insert>" #'tw-yank-configured-selection)
+  (message "%s   Note: %s"
+           "(my-eval-bind-keys-and-chords) evaluated"
+           "~SPC k $~ sp-end-of-sexp"))
+
+(defun my-clj-bind-keys-and-chords (map)
+  (bind-keys :map map
+             ;; on German keyboard the #-key is next to the Enter-key
+             ("C-s-\\" . tw-clj-toggle-reader-comment-current-sexp)
+             ("s-\\"   . tw-clj-toggle-reader-comment-fst-sexp-on-line)
+             ("s-X"   . tw-switch-to-repl-start-figwheel)
+             ("s-e"   . cider-eval-last-sexp)
+             ("s-j"   . cider-format-defun)
+             ("s-i"   . cljr-rename-symbol))
+  (bind-chords :map map
+               ("pr" . (lambda () (interactive)
+                         (tw-insert-str "(println \"\")" 2)))
+               ("rm" . (lambda () (interactive)
+                         (tw-insert-str "(remove (fn []))" 3)))
+               ("fi" . tw-clj-insert-filter-fn)
+               ("de" . tw-clj-insert-defn)
+               ;; ("db" . my-clj-insert-debugf)
+               ;; ("dg" . my-clj-insert-debugf)
+               ("df" . tw-clj-insert-fn)
+               ("ds" . tw-clj-insert-doseq)
+               ("fn" . tw-clj-insert-fn)
+               ("do" . tw-clj-insert-do)
+               ("co" . tw-clj-insert-comp)
+               ("cd" . tw-insert-clojuredocs)
+               ("pa" . tw-insert-partial)
+               ("le" . tw-clj-insert-let)
+               ("fo" . tw-clj-insert-for)
+               ("ty" . tw-clj-insert-type)
+               ("ma" . tw-clj-insert-map-fn)))
+
+;; When running from bash on a non-Guix system, some environment variables may
+;; not be defined. In this case do (my-def-evar dev "~/dev" "dev")
+
+(defun dotspacemacs/layers ()
+  "Layer configuration:
+This function should only modify configuration layer settings."
+  (setq-default ; of dotspacemacs/layers
+   ;; Base distribution to use. This is a layer contained in the directory
+   ;; `+distribution'. For now available distributions are `spacemacs-base'
+   ;; or `spacemacs'. (default 'spacemacs)
+   dotspacemacs-distribution 'spacemacs
+
+   ;; Lazy installation of layers (i.e. layers are installed only when a file
+   ;; with a supported type is opened). Possible values are `all', `unused'
+   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
+   ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
+   ;; lazy install any layer that support lazy installation even the layers
+   ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
+   ;; installation feature and you have to explicitly list a layer in the
+   ;; variable `dotspacemacs-configuration-layers' to install it.
+   ;; (default 'unused)
+   dotspacemacs-enable-lazy-installation 'unused
+
+   ;; If non-nil then Spacemacs will ask for confirmation before installing
+   ;; a layer lazily. (default t)
+   dotspacemacs-ask-for-lazy-installation t
+
+   ;; List of additional paths where to look for configuration layers.
+   ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
+   dotspacemacs-configuration-layer-path
+   `(
+     ,(my-dotf-path ".emacs.d.distros/spacemacs/configuration-layer")
+     )
+
+   ;; List of configuration layers to load.
+   dotspacemacs-configuration-layers
+   `(
+     ;; ----------------------------------------------------------------
+     ;; Example of useful layers you may want to use right away.
+     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
+     ;; `M-m f e R' (Emacs style) to install them.
+     ;; ----------------------------------------------------------------
+     ;;
+     ;; Layers added in alphabetic order
+
+     ;; Enable asciidoc layer for editing asciidoc content e.g. docs.cider.mx
+     ;; editing
+     ;; asciidoc
+
+     ;; Add tool tips to show doc string of functions
+     ;; Show snippets in the auto-completion popup
+     ;; Show suggestions by most commonly used
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-enable-sort-by-usage t
+                      ;; auto-completion-enable-help-tooltip 'manual
+                      )
+
+     better-defaults
+
+     ;; (setq org-babel-clojure-backend 'cider)
+     ;; (setq gui-elements 1) ; because of CIDER menu
+     ;; (define-key cider-repl-mode-map "s-<delete>" nil)
+     ;; (unbind-key "s-<delete>" cider-repl-mode-map)
+
+     ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html cider
+     ;; package location configured by +lang/clojure/packages.el in its
+     ;; 'use-package'
+     (clojure
+      :variables
+      ;; (Default '(macro core deprecated))
+      ;; cider-font-lock-dynamically '(macro core function var)
+
+      ;; (Default undef)
+      cider-overlays-use-font-lock t
+
+      ;; (Default nil)
+      cider-preferred-build-tool 'clojure-cli
+
+      ;; Limit lines shown in REPL buffer. (Default nil)
+      ;; cider-repl-buffer-size-limit 500
+
+      ;; (Default undef) - really undef?
+      cider-repl-use-pretty-printing t
+
+      ;; Pretty printing with sorted keys / set values
+      cider-print-fn 'puget
+
+      ;; Run Cider without any LSP features. (Default nil)
+      ;; clojure-backend 'cider
+
+      ;; (Default nil) - really nil?
+      clojure-enable-clj-refactor t
+
+      ;; (Default t) - really t?
+      cljr-warn-on-eval nil
+
+      ;; (Default ?)
+      clojure-enable-linters 'clj-kondo
+
+      ;; Debugger & Profiler. Requires:
+      ;; {:deps {com.billpiel/sayid {:mvn/version "0.1.0"}}}
+      ;; in the deps.end of a given Clojure project. (Default nil)
+      clojure-enable-sayid t
+
+      ;; Evaluate expressions in comment as top level. (Default nil)
+      clojure-toplevel-inside-comment-form t
+
+      ;; Indentation of function forms
+      ;; https://github.com/clojure-emacs/clojure-mode#indentation-of-function-forms
+      ;; (setq clojure-indent-style 'align-arguments)
+
+      ;; Vertically align s-expressions
+      ;; https://github.com/clojure-emacs/clojure-mode#vertical-alignment
+      ;; (setq clojure-align-forms-automatically t)
+
+      ;; Auto-indent code automatically
+      ;; https://emacsredux.com/blog/2016/02/07/auto-indent-your-code-with-aggressive-indent-mode/
+      ;; (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+      )
+
+     ;; Nyan cat indicating relative position in current buffer
+     ;; :variables colors-enable-nyan-cat-progress-bar (display-graphic-p)
+     colors
+
+     ;; SPC a L displays key and command history in a separate buffer
+     ;; Show commands as you type in a separate buffer
+     ;; command-log  ;; deprecated - log keystrokes
+
+     ;; Tools to work with comma separate values e.g. data science data
+     ;; https://develop.spacemacs.org/layers/+lang/csv/README.html
+     csv
+
+     ;; docker
+
+     elixir ; Erlang VM
+
+     ;; For Spacemacs configuration files and packages. Provides a.o.
+     ;; flycheck-package
+     emacs-lisp
+
+     ;; Include emojis into everything
+     ;; emoji
+
+     ;; M-x erc/default-servers `SPC a c i D`
+     (erc :variables
+          erc-fill-column 120
+          ;; erc-fill-function 'erc-fill-variable
+          erc-fill-function 'erc-fill-static
+          erc-fill-static-center 15
+          ;; erc-enable-notifications nil
+
+          ;; Keep password lookup non-interactive.
+          erc-prompt-for-nickserv-password nil
+
+          ;; erc-server-list defined by (with-eval-after-load 'erc ...)
+
+          erc-autojoin-channels-alist
+          ;; '(("libera.chat" "#guix" "#systemcrafters"))
+          '(("libera.chat" "#guix")))
+
+     (git :variables
+          ;; TODO implement it as spacemacs|toggle
+          ;; git-magit-status-fullscreen t    ;; (Default nil)
+          ;; git-enable-magit-todos-plugin t  ;; (Default nil)
+
+          ;; Fine-grained (word-level) diff highlighting.
+          ;; `nil'  Disable refinement. (Default nil)
+          ;; `t'    Refine hunks when selected.
+          ;; `'all' Refine every displayed hunk immediately.
+          magit-diff-refine-hunk t
+
+          ;; Syntax highlighting within diff hunks (Magit >= 4.6.0).
+          ;; `nil'  Disable syntax highlighting. (Default nil)
+          ;; `t'    Fontify hunks when selected.
+          ;; `'all' Fontify every displayed hunk immediately.
+          magit-diff-fontify-hunk 'all
+
+          ;; Foreground colors for hunk faces.
+          ;; `nil' Let syntax highlighting determine foreground colors.
+          ;; `t'   Use Magit's own foreground colors. (Default t)
+          ;; Must be set before Magit is loaded.
+          magit-diff-specify-hunk-foreground nil
+
+          ;; Separate faces for the +/- diff indicators.
+          ;; `nil' Use the same face as the corresponding line. (Default nil)
+          ;; `t'   Use dedicated indicator faces.
+          magit-diff-use-indicator-faces t
+
+          ;; Whitespace handling during fine-grained diff refinement.
+          ;; `nil' Include whitespace changes.
+          ;; `t'   Ignore whitespace changes. (Default t)
+          ;; The initial value is inherited from
+          ;; `smerge-refine-ignore-whitespace', which defaults to `t'.
+          magit-diff-refine-ignore-whitespace nil
+
+          ;; Highlight the body of the currently selected hunk.
+          ;; `nil' Disable highlighting.
+          ;; `t'   Enable highlighting. (Default t)
+          magit-diff-highlight-hunk-body t
+
+          ;; Where to highlight whitespace errors.
+          ;; `nil'          Nowhere.
+          ;; `t'            Everywhere. (Default t)
+          ;; `'uncommitted' Only in uncommitted changes.
+          ;; `'status'      Alias for `uncommitted' (backward compatibility).
+          magit-diff-paint-whitespace t
+
+          ;; Which lines to check for whitespace errors.
+          ;; `t'     Added lines only. (Default t)
+          ;; `'both' Added and removed lines.
+          ;; `'all'  Added, removed and context lines.
+          magit-diff-paint-whitespace-lines t
+
+          ;; Highlight trailing whitespace.
+          ;; `nil' Disable highlighting.
+          ;; `t'   Enable highlighting. (Default t)
+          magit-diff-highlight-trailing t
+
+          ;; Highlight incorrect indentation.
+          ;; `nil'               Disable highlighting. (Default nil)
+          ;; '((".*" . tabs))    Highlight indentation containing tabs.
+          ;; '((".*" . 4))       Highlight indentation of >= 4 spaces.
+          ;; '((".*" . 8))       Highlight indentation of >= 8 spaces.
+          ;; An alist of (DIRECTORY-REGEXP . INDENTATION) pairs.
+          magit-diff-highlight-indentation nil
+
+          ;; Adjust tab width according to the corresponding file.
+          ;; `nil'     Use the Magit buffer's tab-width. (Default nil)
+          ;; `t'       Use the existing file-visiting buffer's tab-width.
+          ;; `'always' Open the file if necessary to determine its tab-width.
+          ;; NUMBER    Like `always', but with a file-size limit in bytes.
+          magit-diff-adjust-tab-width nil
+
+          ;; Hide trailing carriage-return (^M) characters.
+          ;; `nil' Display CR characters. (Default on GNU/Linux)
+          ;; `t'   Hide CR characters. (Default on Windows)
+          magit-diff-hide-trailing-cr-characters nil
+
+          ;; Foreground colors outside the selected hunk-internal region.
+          ;; `nil' Dim foreground and background colors.
+          ;; `t'   Preserve foreground colors. (Default t)
+          magit-diff-unmarked-lines-keep-foreground t
+
+          ;; Highlight a selected region within a hunk.
+          ;; Available functions:
+          ;; - magit-diff-highlight-hunk-region-dim-outside
+          ;; - magit-diff-highlight-hunk-region-using-overlays
+          ;; - magit-diff-highlight-hunk-region-using-underline
+          ;; - magit-diff-highlight-hunk-region-using-face
+          ;; The following combination is the default.
+          magit-diff-highlight-hunk-region-functions
+          '(magit-diff-highlight-hunk-region-dim-outside
+            magit-diff-highlight-hunk-region-using-overlays)
+          )
+
+     ;; Try some of the following commands:
+     ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
+     ;;       /home/bost/.emacs.d.distros/spacemacs/<profile>/src/layers/fennel
+     ;;   git submodule update --init
+     ;; fennel ; fennel = lua in lisp
+
+     ;; gnus
+     ;; go
+
+     ;; graphviz - open-source graph declaration system
+     ;; Used to generated graphs of Clojure project dependencies,
+     ;; erc-social-graph-draw, etc.
+     ;; https://develop.spacemacs.org/layers/+lang/graphviz/README.html
+     graphviz
+
+     ;; the guix packaes emacs-haskell-mode and/or emacs-haskell-snippets cause
+     ;; Error (use-package): tweaks/:catch: Opening directory: Aucun fichier ou dossier de ce type, /gnu/store/...-emacs-haskell-snippets-.../share/emacs/site-lisp/snippets
+     ;; haskell
+
+     ;; hy ;; hylang - lisp embedded in python
+
+     (helm
+      :variables
+      ;; When non-nil, save last state of ‘helm-follow-mode’ for the next Emacs
+      ;; sessions. Each time you turn on or off ‘helm-follow-mode’, the current
+      ;; source name will be stored or removed from
+      ;; `helm-source-names-using-follow'. (Default nil)
+      ;; helm-follow-mode-persistent t
+
+      ;; helm-display-function 'helm-display-buffer-in-own-frame
+
+      ;; nil - use the longest `buffer-name' length found. (Default 20)
+      ;; When in M-x helm-mini ~s-]~ see also:
+      ;; ~C-]~ / M-x helm-ff-run-toggle-basename
+      ;; C-i
+
+      ;; Doesn't work / does nothing
+      ;; (add-to-list 'helm-commands-using-frame #'helm-M-x) ;; (Default nil)
+      ;; helm-commands-using-frame nil ;; (Default nil)
+
+      ;; (Default ((width . 80) (height . 2)))
+      ;; minibuffer-frame-alist '((minibuffer . only))
+      ;; minibuffer-frame-alist '((width . 80) (height . 2))
+      ;; minibuffer-frame-alist '((top . 1) (left . 1) (width . 80) (height . 2))
+
+      ;; helm-split-window-inside-p t ;; (Default nil)
+      ;; helm-split-window-inside-p nil ;; (Default nil)
+
+      ;; https://github.com/emacs-helm/helm/issues/2039#issuecomment-390103697
+      ;; helm-always-two-windows nil ;; (Default nil)
+      ;; helm-display-buffer-default-height 23 ;; (Default nil)
+      ;; helm-display-buffer-default-height nil ;; (Default nil)
+      ;; helm-default-display-buffer-functions '(display-buffer-in-side-window)
+
+      ;; Max column width of buffer names before truncate. (Default 20)
+      helm-buffer-max-length nil
+
+      ;; Truncate lines in ‘helm-buffers-list’ when non-nil. (Default t)
+      ;; helm-buffers-truncate-lines nil
+
+      ;; helm-display-buffer-width 100 ;; (Default 72)
+
+      ;; Value is `spacemacs//display-helm-window'. Original value was
+      ;; `helm-default-display-buffer'
+      ;; helm-display-function 'helm-default-display-buffer
+      )
+
+     html
+
+     ;;;; ivy ;; helm replacement
+
+     ;; Operate on buffers as in dired.
+     ;; (ibuffer :variables ibuffer-group-buffers-by 'projects)
+
+     (java
+      ;; :variables
+      ;; eclim-eclipse-dirs "~/eclipse-java-neon"
+      ;; eclim-executable "~/eclipse-java-neon/eclim"
+      )
+
+     javascript
+     json
+     markdown
+
+;;;     ,(let ((maildir "~/Mail"))
+;;;        (when (file-directory-p maildir)
+;;;          (mu4e
+;;;           :variables
+;;;           ;; mu4e-installation-path "/usr/share/emacs/site-lisp"
+;;;
+;;;           ;; This is set to 't' to avoid mail syncing issues when using mbsync
+;;;           mu4e-change-filenames-when-moving t
+;;;
+;;;           ;; Refresh mail using isync every 10 minutes.
+;;;           ;; (Default nil - don't update automatically)
+;;;           mu4e-update-interval (* 10 60)
+;;;
+;;;           mu4e-maildir maildir
+;;;           mu4e-get-mail-command "mbsync -a"
+;;;           ;; mu4e-compose-signature-auto-include nil
+;;;           mu4e-drafts-folder "/[Gmail]/Drafts"
+;;;           mu4e-sent-folder   "/[Gmail]/Sent Mail"
+;;;           mu4e-refile-folder "/[Gmail]/All Mail"
+;;;           mu4e-trash-folder  "/[Gmail]/Trash"
+;;;
+;;;           mu4e-maildir-shortcuts '(
+;;;                                    (:maildir "/Inbox"             :key ?i)
+;;;                                    (:maildir "/[Gmail]/Sent Mail" :key ?s)
+;;;                                    (:maildir "/[Gmail]/Trash"     :key ?t)
+;;;                                    (:maildir "/[Gmail]/Drafts"    :key ?d)
+;;;                                    (:maildir "/[Gmail]/All Mail"  :key ?a)
+;;;                                    ))))
+     ;; multiple-cursors
+     ;; nginx
+
+     (latex
+      ;; :variables
+      ;; latex-build-command "LaTeX" ;; defaults to "LatexMk"
+      ;; latex-enable-folding t      ;; defaults to nil
+      ;; latex-enable-auto-fill nil  ;; defaults to t
+      ;; latex-enable-magic t        ;; defaults to nil
+      )
+
+     (llm-client
+      :variables
+      ;; -H, --header; -X, --request : GET seems to be the default
+      ;; curl -H "Authorization: Bearer $OPENAI_KEY" https://api.openai.com/v1/models
+      ;; See https://platform.openai.com/settings/organization/usage
+      ;; Change with https://platform.openai.com/settings/.../limits
+      ;; TPM Tokens Per Minute; RPM Requests Per Minute; Price USD $ / 1M tokens
+      ;; gptel-model 'gpt-5.6-sol   ; In 5.00, Cached In 0.50, Out 30.00
+      ;; gptel-model 'gpt-5.6-terra ; In 2.00, Cached In 0.20, Out 12.00
+      gptel-model 'gpt-5.6-luna     ; In 0.20, Cached In 0.02, Out  1.20
+      ;; gptel-model 'gpt-4o-mini   ; In 0.15, Cached In 0.08, Out  0.60
+
+      ;; https://platform.claude.com/docs/en/about-claude/pricing USD $ / MTok
+      ;; Model     Base Input   5m Cache     1h Cache   Cache Hits   Output
+      ;;           Tokens          Writes       Writes  & Refreshes  Tokens
+      ;; opus-5    5            6.25         10         0.50         25
+      ;; sonnet-5  2            2.50          4         0.20         10
+      ;; gptel-model 'claude-opus-5   ; complex agentic coding & enterprise work
+      ;; gptel-model 'claude-sonnet-5 ; best combination of speed & intelligence
+      ;; gptel-backend (gptel-make-anthropic
+      ;;                "Claude"          ; Any name you want
+      ;;                :stream t         ; Streaming responses
+      ;;                :key "your-api-key")
+
+      llm-client-enable-gptel t
+      )
+
+     ;; Language Server Protocol https://emacs-lsp.github.io/lsp-mode/
+     (lsp
+      :variables ; (setq
+      ;; lsp-enable-file-watchers nil
+      ;; lsp-file-watch-threshold 1500
+      ;; lsp-keymap-prefix "C-M-s-l"
+      ;; lsp-enable-which-key-integration t
+
+      ;; Indent regions using the file formatting functionality provided by the
+      ;; language server. Set to nil to use CIDER features instead of LSP UI
+      lsp-enable-indentation nil
+
+      ;; Enable textDocument/onTypeFormatting integration
+      lsp-enable-on-type-formatting nil
+
+      ;; lsp-file-watch-ignored-director
+
+      ;; docstring popup - delay in seconds for mouse and cursor
+      lsp-ui-doc-delay 2
+
+      ;; show code actions and diagnostics text as right-hand side of buffer
+      lsp-ui-sideline-enable nil
+
+      ;; show reference count for functions (assume more lenses added in future)
+      lsp-lens-enable t ; )
+      )
+
+     (lua :variables
+          lua-backend 'lua-mode ;; 'lsp is better, but requires more setup
+          )
+
+     ;; Editing multiple lines of text concurrently
+     ;; `g r' menu in Emacs normal state
+     multiple-cursors
+
+     ;; Direct jump with ~g f~ $dotf/.emacs.d.spacemacs/my-tweaks/funcs.el doesn't work.
+     ;; The '=' in the file-path makes problems.
+     my-tweaks ;; See `dotspacemacs-configuration-layer-path'.
+
+     octave
+
+     (org :variables
+          ;; Don't ask for confirmation before interactively evaluating code
+          org-confirm-babel-evaluate nil ;; (Default t)
+
+          org-support-shift-select 'always
+          org-src-tab-acts-natively nil ;; default is t
+          ;; org-roam-v2-ack t ; switch off the ' Org-roam v2!' warning
+          ;; org-enable-roam-support t
+          ;; capture content from external applications such as the browser
+          ;; org-enable-roam-protocol t
+          )
+
+     pdf
+     php
+
+     ;; Breaks the ~C-h k command~
+     ;; Error message is "mapcar: Symbol’s value as variable is void: code-cells-mode""
+     ;; See https://github.com/syl20bnr/spacemacs/issues/15548
+     (python
+      ;; :variables
+      ;; ;; TODO use a list of prefered python interpreters
+      ;; python-shell-interpreter "python3.9.9"; python3.8 python3.7 python3.6
+      ;; ;; -i   : inspect interactively after running script; forces a prompt even
+      ;; ;; if stdin does not appear to be a terminal; also PYTHONINSPECT=x
+      ;; python-shell-interpreter-args "-i"
+      )
+
+     ;; https://gist.github.com/soegaard/942a3074513655292816e0b79c466620
+     racket ;; see https://racket-mode.com
+
+     ;; dired alternatives & related stuff :
+     ;; https://github.com/alexluigit/dirvish
+     ;; https://github.com/Fuco1/dired-hacks
+     ;; https://github.com/jojojames/dired-sidebar
+     ;; (ranger :variables
+     ;;         ranger-override-dired 'ranger
+     ;;         ranger-show-dotfiles t
+     ;;         ;; ranger-show-preview t
+     ;;         ranger-show-hidden t
+     ;;         ranger-cleanup-eagerly t
+     ;;         ranger-cleanup-on-disable t
+     ;;         ranger-ignored-extensions '("mkv" "flv" "iso" "mp4")
+     ;;         )
+
+     rust
+
+     ;; see https://github.com/syl20bnr/spacemacs/issues/12462
+     ;; try also:
+     ;; dotspacemacs-excluded-packages '(ensime)
+     (scala :variables scala-backend 'scala-metals)
+
+     (scheme :variables ; M-x run-guile
+             scheme-implementations '(guile))
+
+     (shell
+      :variables
+      ;; shell-default-shell 'eshell ; (Default 'ansi-term)
+
+      ;; shell-default-height 30
+      ;; shell-default-position 'bottom
+
+      ;; Width in percents for the shell window.
+      shell-default-width 50 ; (default 30)
+      )
+
+     ;; Provides a.o. flycheck-bashate
+     shell-scripts
+
+     ;; spacemacs-layouts layer added to set variables
+     ;; ~SPC TAB~ restricted to current layout buffers
+     ;; Kill buffers when killing layer - ~SPC l x~
+     (spacemacs-layouts :variables
+                        spacemacs-layouts-restrict-spc-tab t
+                        persp-autokill-buffer-on-remove 'kill-weak)
+
+     ;; smex ; smart M-x enhacements - recent & most used commands
+
+     ;; ~SPC S~ / M-x flyspell-mode
+     ;; requires hunspell or aspell:
+     ;; sudo apt install --yes aspell-en aspell-fr aspell-de aspell-sk
+     (spell-checking
+      :variables
+      ;; Enable through the size-aware hooks defined above.
+      spell-checking-enable-by-default nil
+
+      ;; Auto-completion popup when the point is idle on a misspelled word
+      enable-flyspell-auto-completion nil
+      )
+
+     sql
+     ;; swift
+
+     ;; Provides a.o. flycheck
+     (syntax-checking
+      :variables
+      syntax-checking-enable-by-default t)
+
+     systemd
+
+     ;; M-x centaur-tab-mode
+     ;; (tabs :variables
+     ;;       ;; tabs-auto-hide t
+     ;;       ;; tabs-auto-hide-delay 3
+     ;;       ;; tabs-highlight-current-tab 'left
+     ;;       )
+
+     themes-megapack
+
+     ;; Customise the Spacemacs themes
+     ;; https://develop.spacemacs.org/layers/+themes/theming/README.html
+     ;; Code in dotspacemacs/user-init to reduce size of modeline
+     theming
+
+     ;; Visual file manager - ~SPC p t~
+     (treemacs
+      :variables
+      ;; Removes file and directory icons
+      ;; treemacs-no-png-images t
+
+      ;; treemacs-indentation 1
+      ;; treemacs-use-filewatch-mode t
+      ;; treemacs-use-follow-mode t
+      )
+
+     typescript
+
+     ;; Support font ligatures (fancy symbols) in all modes
+     ;; 'prog-mode for only programming languages
+     ;; including text-mode may cause issues with org-mode and magit
+     (unicode-fonts :variables
+                    unicode-fonts-enable-ligatures t
+                    unicode-fonts-ligature-modes '(prog-mode))
+
+     ;; Highlight changes in buffers
+     ;; ~SPC g .~ transient state for navigating changes
+     (version-control :variables
+                      version-control-diff-tool 'diff-hl
+                      version-control-global-margin t)
+
+     ;; vimscript
+
+     ;; dired alternatives & related stuff :
+     (vinegar :variables
+              vinegar-reuse-dired-buffer t
+              vinegar-dired-hide-details nil)
+
+     openai
+     ;; windows-scripts
+
+     yaml
+     )
+
+
+   ;; List of additional packages that will be installed without being wrapped
+   ;; in a layer (generally the packages are installed only and should still be
+   ;; loaded using load/require/use-package in the user-config section below in
+   ;; this file). If you need some configuration for these packages, then
+   ;; consider creating a layer. You can also put the configuration in
+   ;; `dotspacemacs/user-config'. To use a local version of a package, use the
+   ;; `:location' property: '(your-package :location "~/path/to/your-package/")
+   ;; Also include the dependencies as they will not be resolved automatically.
+   ;;
+   ;; Note:
+   ;; '(your-package :location local) requires '(require 'your-package) or
+   ;; '(use-package your-package ...) in the `dotspacemacs/user-config'.
+   dotspacemacs-additional-packages
+   '(
+     ;; Integrating Evil with lispy
+     ;; lispyville
+
+     ;; {{{ Guile IDE
+     arei          ;; Guile IDE
+     plantuml-mode ;; Edit and preview PlantUML diagrams
+     ;; }}}
+
+     ;; Real-time collaborative editing environment
+     crdt
+
+     ;; Launch and manage detached processes
+     detached
+
+     ;; ; Automatically preview file at point in Dired
+     dired-preview
+
+     ;; A polished Dired with batteries included
+     ;; dirvish
+
+     ;; Wrapper interface for `difft' command line tool
+     difftastic
+
+     flycheck-guile
+
+     ;; Emacs interface (not only) for GNU Guix package manager `guix package'.
+     ;; It also provides highlighting and tools for Guix code.
+     ;;
+     ;; Installation:
+     ;; 1. Via Spacemacs installation mechanism:
+     ;; Note: The version installed by spacemacs contains:
+     ;;   '(geiser-company--setup geiser-repl-company-p)'
+     ;; However geiser-company.el has been removed in upstream repo:
+     ;; https://gitlab.com/emacs-geiser/geiser/-/commit/18faa0ba32c9ce751c16960b2a39b3880b523272
+     ;; See e.g. ~/.emacs.d.distros/spacemacs/elpa/29.4/develop/guix-20231206.2147/guix-repl.el
+     guix
+     ;;
+     ;; 2. By Guix:
+     ;;   $ guix install emacs-guix
+     ;; then use
+     ;;   $ ls /gnu/store/*-emacs-guix-*
+     ;; to get the elisp-code location.
+     ;; (guix :location "/gnu/store/a0fr1hkq5kd0xywwakby1dbk4c6qqs13-emacs-guix-0.5.2-5.c9aef52/share/emacs/site-lisp/guix-0.5.2-5.c9aef52/")
+     ;;
+     ;; 3. From local clone of the
+     ;;    https://git.savannah.gnu.org/git/guix/emacs-guix.git
+     ;; (guix :location "~/dev/emacs-guix/") ;; not working
+
+     ;; gptel ; part of the layer `llm-client'
+     ;; chatgpt
+     ;; chatgpt-shell
+     ;; ob-chatgpt-shell
+     ;; pcsv ;; CSV parser needed by `chatgpt-shell-load-awesome-prompts'
+
+     ;; Highlight output from `strace'
+     ;; strace-mode
+
+     ;; Customize / extend keyboard functionality https://github.com/kmonad
+     kbd-mode
+
+     claude-code-ide
+     ;; copilot
+
+     ;; ;; JSX major mode. JSX is an XML-like syntax extension to ECMAScript
+     ;; rjsx-mode
+
+     ;; ;; Minor mode to format JS code on file save
+     ;; prettier-js
+
+     ;; yasnippet-snippets
+     ;; (yasnippet :location ;; local
+     ;;            (recipe :fetcher github :repo "Bost/yasnippet"
+     ;;                    ;; :min-version "1"
+     ;;                    ))
+     ;; send files marked in dired via MTP to Android
+     ;; dired-mtp     ; not found
+     ;; android-mode  ; doesn't work
+
+     ;; Never lose your cursor again - see also 'Highlight current line'
+     beacon
+     use-package-chords
+
+     ;; Discover elisp functions
+     suggest
+
+     crux
+
+     ;; Save buffers when they lose focus
+     super-save
+
+     zop-to-char
+     fish-mode
+     transpose-frame
+     ;; google-this
+
+     ;; Pop-up menus of commands with common prefixes for CIDER
+     cider-hydra
+
+     ;; Emacs mode for the Lean theorem prover
+     ;; lean-mode
+     ;; helm-lean
+
+     evil-vimish-fold
+
+     ;; crosshairs-mode messes up with the background color of the current-line
+     ;; (crosshairs    :location local)
+     ;; (hl-line+      :location local)
+     ;; (vline         :location local)
+     ;; (col-highlight :location local)
+
+     ;; cobol-mode
+
+     ;; racket ;; ;; org-mode-babel packages {{{
+     ;; racket ;; ;; see also org-babel-load-languages
+     ;; racket ;; (ob-racket
+     ;; racket ;;  :location (recipe :fetcher github :repo "hasu/emacs-ob-racket"))
+     ;; racket ;; ;; TODO add scribble-mode pollen-mode to the racket layer; with :defer t
+     ;; racket ;; ;; (defun racket/init-pollen-mode () (use-package pollen-mode :defer t))
+     ;; racket ;; ;; (defun racket/init-scribble-mode () (use-package scribble-mode :defer t))
+     ;; racket ;; scribble-mode
+     ;; racket ;; pollen-mode
+     ;; racket ;; ;; }}}
+
+     helm-cider-history
+     helm-system-packages
+     ;; helm-descbinds
+     ;; helm-slime
+     helm-dictionary ;; look up words in dictionaries
+     guess-language
+
+     ;; telegram client for emacs
+     ;; TODO document the ln -s `which gcc` ~/bin/cc
+     ;; telega
+     ;; Error: Package fonts-symbola is unavailable
+     ;; fonts-symbola ;; for the telega
+     ;; Fonts installed using:
+     ;;   guix package -i font-gnu-{freefont,unifont}
+
+     ;; https://gitter.im/syl20bnr/spacemacs?at=5dba1a66e886fb5aa225bcf8
+     ;; dired-x is part of the spacemacs-defaults layer, so it's used by default.
+     ;; It extends dired by:
+     ;;     Omitting uninteresting files
+     ;;     Guessing shell commands
+     ;;     Running Dired command in non-Dired
+     ;;     Finding a file mentioned in a buffer
+     ;;     Commands using file marking
+     ;; dired+ is unavailable
+
+     sqlite3 ;; for magit
+
+     tldr ;; access `tldr' pages from within Emacs
+
+     xhair ;; M-x xhair-mode
+
+     ;; ;; Minimalist presentation minor-mode for Emacs Org mode
+     ;; org-present   ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Build HTML presentations with reveal.js from Org source files
+     ;; org-re-reveal  ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Org and Reveal.js powered HTML presentation tool
+     ;; ;; org-reveal  ; part of emacs-org-reveal and also Emacs itself???
+
+     ;; ;; Progressively reveal individual subtrees of the document
+     ;; org-tree-slide ; (Spacemacs) Warning: Unknown layer declared in dotfile
+
+     ;; ;; Org export engine reveal.js Presentation Back-End
+     ;; ox-reveal      ; (Spacemacs) Warning: Unknown layer declared in dotfile
+     )
+
+   ;; A list of packages that cannot be updated.
+   dotspacemacs-frozen-packages '()
+
+   ;; A list of packages that will not be installed and loaded.
+   dotspacemacs-excluded-packages '()
+
+   ;; Defines the behaviour of Spacemacs when installing packages.
+   ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
+   ;; `used-only' installs only explicitly used packages and deletes any unused
+   ;; packages as well as their unused dependencies. `used-but-keep-unused'
+   ;; installs only the used packages but won't delete unused ones. `all'
+   ;; installs *all* packages supported by Spacemacs and never uninstalls them.
+   ;; (default is `used-only')
+   ;; dotspacemacs-install-packages 'used-only
+   dotspacemacs-install-packages 'used-but-keep-unused))
+
+(defun dotspacemacs/init ()
+  "Initialization:
+This function is called at the very beginning of Spacemacs startup,
+before layer configuration.
+It should only modify the values of Spacemacs settings."
+
+  (setq
+   sp-home-dir            (concat (getenv "XDG_DATA_HOME") "/spacemacs/"
+                                   my-spacemacs-profile)
+   sp-snippets-dir        (concat sp-home-dir "/snippets")
+   sp-custom-settings-dir (concat sp-home-dir "/.cache")
+   sp-layouts-dir         (concat sp-home-dir "/.cache/layouts")
+   )
+
+  (mapc (lambda (dir) (mkdir dir 'parents))
+        (list sp-snippets-dir sp-custom-settings-dir sp-layouts-dir))
+
+  ;; This setq-default sexp is an exhaustive list of all the supported
+  ;; spacemacs settings.
+  (setq-default
+   ;; configuration-layer-elpa-archives
+   ;; Default values:
+   ;; `(("melpa"  . "melpa.org/packages/")
+   ;;   ("gnu"    . "elpa.gnu.org/packages/")
+   ;;   ("nongnu" . "elpa.nongnu.org/nongnu/"))
+   ;; Local mirrors created by https://github.com/d12frosted/elpa-mirror
+   ;; See also:
+   ;;   https://github.com/redguardtoo/elpa-mirror
+   ;;   https://github.com/melpa/melpa
+   ;; Update by running (fish-shell):
+   ;;   set mirror $dev/elpa-mirror.d12frosted
+   ;;   git --git-dir=$mirror/.git --work-tree=$mirror pull --rebase
+   ;; `(("melpa"  . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/melpa/"))
+   ;;   ("gnu"    . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/gnu/"))
+   ;;   ("nongnu" . ,(concat (getenv "dev") "/elpa-mirror.d12frosted/nongnu/")))
+
+   ;; Maximum allowed time in seconds to contact an ELPA repository.
+   ;; (default 5)
+   dotspacemacs-elpa-timeout 5
+
+   ;; Set `gc-cons-threshold' and `gc-cons-percentage' when startup finishes.
+   ;; This is an advanced option and should not be changed unless you suspect
+   ;; performance issues due to garbage collection operations.
+   ;; (default '(100000000 0.1))
+   dotspacemacs-gc-cons '(100000000 0.1)
+
+   ;; Set `read-process-output-max' when startup finishes.
+   ;; This defines how much data is read from a foreign process.
+   ;; Setting this >= 1 MB should increase performance for lsp servers
+   ;; in emacs 27.
+   ;; (default (* 1024 1024))
+   dotspacemacs-read-process-output-max (* 1024 1024)
+
+   ;; If non-nil then Spacelpa repository is the primary source to install
+   ;; a locked version of packages. If nil then Spacemacs will install the
+   ;; latest version of packages from MELPA. Spacelpa is currently in
+   ;; experimental state please use only for testing purposes.
+   ;; (default nil)
+   dotspacemacs-use-spacelpa nil
+
+   ;; If non-nil then verify the signature for downloaded Spacelpa archives.
+   ;; (default t)
+   dotspacemacs-verify-spacelpa-archives t
+
+   ;; If non-nil then spacemacs will check for updates at startup
+   ;; when the current branch is not `develop'. Note that checking for
+   ;; new versions works via git commands, thus it calls GitHub services
+   ;; whenever you start Emacs. (default nil)
+   dotspacemacs-check-for-update nil
+
+   ;; If non-nil, a form that evaluates to a package directory. For example, to
+   ;; use different package directories for different Emacs versions, set this
+   ;; to `emacs-version'. (default 'emacs-version)
+   dotspacemacs-elpa-subdirectory 'emacs-version
+
+   ;; One of `vim', `emacs' or `hybrid'.
+   ;; `hybrid' is like `vim' except that `insert state' is replaced by the
+   ;; `hybrid state' with `emacs' key bindings. The value can also be a list
+   ;; with `:variables' keyword (similar to layers). Check the editing styles
+   ;; section of the documentation for details on available variables.
+   ;; (default 'vim)
+   dotspacemacs-editing-style 'vim
+
+   ;; If non-nil show the version string in the Spacemacs buffer. It will
+   ;; appear as (spacemacs version)@(emacs version)
+   ;; (default t)
+   dotspacemacs-startup-buffer-show-version t
+
+   ;; Specify the startup banner. Default value is `official', it displays
+   ;; the official spacemacs logo. An integer value is the index of text
+   ;; banner, `random' chooses a random text banner in `core/banners'
+   ;; directory. A string value must be a path to an image format supported
+   ;; by your Emacs build.
+   ;; If the value is nil then no banner is displayed. (default 'official)
+   dotspacemacs-startup-banner 'official
+
+   ;; Scale factor controls the scaling (size) of the startup banner. Default
+   ;; value is `auto' for scaling the logo automatically to fit all buffer
+   ;; contents, to a maximum of the full image height and a minimum of 3 line
+   ;; heights. If set to a number (int or float) it is used as a constant
+   ;; scaling factor for the default logo size.
+   dotspacemacs-startup-banner-scale 'auto
+
+   ;; List of items to show in startup buffer or an association list of
+   ;; the form `(list-type . list-size)`. If nil then it is disabled.
+   ;; Possible values for list-type are:
+   ;; `recents' `recents-by-project' `bookmarks' `projects' `agenda' `todos'.
+   ;; List sizes may be nil, in which case
+   ;; `spacemacs-buffer-startup-lists-length' takes effect.
+   ;; The exceptional case is `recents-by-project', where list-type must be a
+   ;; pair of numbers, e.g. `(recents-by-project . (7 .  5))', where the first
+   ;; number is the project limit and the second the limit on the recent files
+   ;; within a project.
+   dotspacemacs-startup-lists '((recents . 10)
+                                (projects . 14))
+
+   ;; True if the home buffer should respond to resize events. (default t)
+   dotspacemacs-startup-buffer-responsive t
+
+   ;; Show numbers before the startup list lines. (default t)
+   dotspacemacs-show-startup-list-numbers t
+
+   ;; The maximum delay in seconds between number key presses. (default 0.4)
+   dotspacemacs-startup-buffer-multi-digit-delay 0.4
+
+   ;; If non-nil, show file icons for entries and headings on Spacemacs home buffer.
+   ;; This has no effect in terminal or if "nerd-icons" package or the font
+   ;; is not installed. (default nil)
+   dotspacemacs-startup-buffer-show-icons t
+
+   ;; Default major mode for a new empty buffer. Possible values are mode
+   ;; names such as `text-mode'; and `nil' to use Fundamental mode.
+   ;; (default `text-mode')
+   dotspacemacs-new-empty-buffer-major-mode 'text-mode
+
+   ;; Default major mode of the scratch buffer (default `text-mode')
+   dotspacemacs-scratch-mode 'text-mode
+
+   ;; If non-nil, *scratch* buffer will be persistent. Things you write down in
+   ;; *scratch* buffer will be saved and restored automatically.
+   dotspacemacs-scratch-buffer-persistent nil
+
+   ;; If non-nil, `kill-buffer' on *scratch* buffer
+   ;; will bury it instead of killing.
+   dotspacemacs-scratch-buffer-unkillable nil
+
+   ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
+   ;; (default nil)
+   dotspacemacs-initial-scratch-message nil
+
+   ;; List of themes, the first of the list is loaded when spacemacs starts.
+   ;; Press `SPC T n' to cycle to the next theme in the list (works great
+   ;; with 2 themes variants, one dark and one light). A theme from external
+   ;; package can be defined with `:package', or a theme can be defined with
+   ;; `:location' to download the theme package, refer the themes section in
+   ;; DOCUMENTATION.org for the full theme specifications.
+   ;;
+   ;; '(<theme-name> :location local)' on a:
+   ;; - non-Guix machine:
+   ;;     ~/.emacs.d.distros/spacemacs/guix/src/private/local/<theme-name>-theme/
+   ;; - Guix machine:
+   ;;     /gnu/store/*-spacemacs-rolling-release-*/private/local
+   ;; TODO check the
+   ;; /gnu/store/*-spacemacs-rolling-release-*/private/local/<theme-name>-theme/
+   ;; I.e. the ':location local' won't work on Guix for private themes. Use
+   ;; `custom-theme-load-path' and/or `custom-theme-directory'.
+   dotspacemacs-themes
+   `(,@my-spacemacs-leading-themes
+     ;; WTF? The quoting works only if farmhouse-light-mod is the first item in
+     ;; the list
+     ;; ,(if (string= system-name "martin")
+     ;;      '(farmhouse-light-mod :location local)
+     ;;    'farmhouse-light-mod)
+     modus-operandi
+     farmhouse-light-mod-a
+     ;; farmhouse-light-mod-b
+     ;; farmhouse-light-mod-c
+     ,@(unless my-spacemacs-leading-themes '(spacemacs-dark))
+     material
+     misterioso
+     ,@(unless my-spacemacs-leading-themes '(spacemacs-light))
+     twilight-anti-bright
+     underwater
+     solarized-dark-high-contrast
+     heroku
+     )
+
+   ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
+   ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
+   ;; first three are spaceline themes. `doom' is the doom-emacs mode-line.
+   ;; `vanilla' is default Emacs mode-line. `custom' is a user defined themes,
+   ;; refer to the DOCUMENTATION.org for more info on how to create your own
+   ;; spaceline theme. Value can be a symbol or list with additional properties.
+   ;; (default '(spacemacs :separator wave :separator-scale 1.5))
+   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.0)
+
+   ;; If non-nil the cursor color matches the state color in GUI Emacs.
+   ;; (default t)
+   dotspacemacs-colorize-cursor-according-to-state t
+
+   ;; Default font or prioritized list of fonts. This setting has no effect when
+   ;; running Emacs in terminal. The font set here will be used for `default' and
+   ;; `fixed-pitch' faces. The `:size' can be specified as
+   ;; a non-negative integer (pixel size), or a floating-point (point size).
+   ;; Point size is recommended, because it's device independent. (default 10.0)
+   ;;
+   ;; See functions and keybindings for `text-scale-...' and `zoom-...'
+   ;; Reset by (spacemacs/set-default-font dotspacemacs-default-font)
+   dotspacemacs-default-font
+   `("Source Code Pro"
+     :size
+     ,(let* ((default 10.0)
+             (point-size (cond
+                          ((string= system-name "edge") 19.0)
+                          ((or (string= system-name "ecke")
+                               (string= system-name "tuxedo"))
+                           (+ default (* 5 1.2))) ; 1.2 is
+                                        ; `text-scale-mode-step'
+                                        ; (undefined for some reason)
+                          ;; TODO this is a pixel-size not point-size
+                          ((string= system-name "geek") 17)
+                          (t default))))
+        ;; (message "### dotspacemacs-default-font system-name: %s; point-size: %s"
+        ;;          system-name point-size)
+        point-size)
+     :weight normal
+     :width normal)
+
+   ;; Default icons font, it can be `all-the-icons' or `nerd-icons'.
+   dotspacemacs-default-icons-font 'all-the-icons
+
+   ;; The leader key (default "SPC")
+   dotspacemacs-leader-key "SPC"
+
+   ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
+   ;; (default "SPC")
+   dotspacemacs-emacs-command-key "SPC"
+
+   ;; The key used for Vim Ex commands (default ":")
+   dotspacemacs-ex-command-key ":"
+
+   ;; The leader key accessible in `emacs state' and `insert state'
+   ;; (default "M-m")
+   dotspacemacs-emacs-leader-key "M-m"
+
+   ;; Major mode leader key is a shortcut key which is the equivalent of
+   ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
+   dotspacemacs-major-mode-leader-key ","
+
+   ;; Major mode leader key accessible in `emacs state' and `insert state'.
+   ;; (default "C-M-m" for terminal mode, "M-<return>" for GUI mode).
+   ;; Thus M-RET should work as leader key in both GUI and terminal modes.
+   ;; C-M-m also should work in terminal mode, but not in GUI mode.
+   dotspacemacs-major-mode-emacs-leader-key (if window-system "M-<return>" "C-M-m")
+
+   ;; These variables control whether separate commands are bound in the GUI to
+   ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
+   ;; Setting it to a non-nil value, allows for separate commands under `C-i'
+   ;; and TAB or `C-m' and `RET'.
+   ;; In the terminal, these pairs are generally indistinguishable, so this only
+   ;; works in the GUI. (default nil)
+   dotspacemacs-distinguish-gui-tab nil
+
+   ;; Name of the default layout (default "Default")
+   dotspacemacs-default-layout-name "Default"
+
+   ;; If non-nil the default layout name is displayed in the mode-line.
+   ;; (default nil)
+   dotspacemacs-display-default-layout nil
+
+   ;; If non-nil then the last auto saved layouts are resumed automatically upon
+   ;; start. (default nil)
+   dotspacemacs-auto-resume-layouts nil
+
+   ;; If non-nil, auto-generate layout name when creating new layouts. Only has
+   ;; effect when using the "jump to layout by number" commands. (default nil)
+   dotspacemacs-auto-generate-layout-names nil
+
+   ;; Size (in MB) above which spacemacs will prompt to open the large file
+   ;; literally to avoid performance issues. Opening a file literally means that
+   ;; no major mode or minor modes are active. (default is 1)
+   dotspacemacs-large-file-size 1
+
+   ;; Location where to auto-save files. Possible values are `original' to
+   ;; auto-save the file in-place, `cache' to auto-save the file to another
+   ;; file stored in the cache directory and `nil' to disable auto-saving.
+   ;; (default 'cache)
+   dotspacemacs-auto-save-file-location 'cache
+
+   ;; Maximum number of rollback slots to keep in the cache. (default 5)
+   dotspacemacs-max-rollback-slots 5
+
+   ;; If non-nil, the paste transient-state is enabled. While enabled, after you
+   ;; paste something, pressing `C-j' and `C-k' several times cycles through the
+   ;; elements in the `kill-ring'. (default nil)
+   dotspacemacs-enable-paste-transient-state nil
+
+   ;; Which-key delay in seconds. The which-key buffer is the popup listing
+   ;; the commands bound to the current keystroke sequence. (default 0.4)
+   dotspacemacs-which-key-delay 0.4
+
+   ;; Which-key frame position. Possible values are `right', `bottom' and
+   ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
+   ;; right; if there is insufficient space it displays it at the bottom.
+   ;; It is also possible to use a posframe with the following cons cell
+   ;; `(posframe . position)' where position can be one of `center',
+   ;; `top-center', `bottom-center', `top-left-corner', `top-right-corner',
+   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'
+   ;; (default 'bottom)
+   dotspacemacs-which-key-position 'bottom
+
+   ;; Control where `switch-to-buffer' displays the buffer. If nil,
+   ;; `switch-to-buffer' displays the buffer in the current window even if
+   ;; another same-purpose window is available. If non-nil, `switch-to-buffer'
+   ;; displays the buffer in a same-purpose window even if the buffer can be
+   ;; displayed in the current window. (default nil)
+   dotspacemacs-switch-to-buffer-prefers-purpose nil
+
+   ;; Make consecutive tab key presses after commands such as
+   ;; `spacemacs/alternate-buffer' (SPC TAB) cycle through previous
+   ;; buffers/windows/etc. Please see the option's docstring for more information.
+   ;; Set the option to t in order to enable cycling for all current and
+   ;; future cycling commands. Alternatively, choose a subset of the currently
+   ;; supported commands: '(alternate-buffer alternate-window). (default nil)
+   dotspacemacs-enable-cycling nil
+
+   ;; Whether side windows (such as those created by treemacs or neotree)
+   ;; are kept or minimized by `spacemacs/toggle-maximize-window' (SPC w m).
+   ;; (default t)
+   dotspacemacs-maximize-window-keep-side-windows t
+
+   ;; If nil, no load-hints enabled. If t, enable the `load-hints' which will
+   ;; put the most likely path on the top of `load-path' to reduce walking
+   ;; through the whole `load-path'. It's an experimental feature to speedup
+   ;; Spacemacs on Windows. Refer the FAQ.org "load-hints" session for details.
+   dotspacemacs-enable-load-hints nil
+
+   ;; If non-nil, enable the `package-quickstart' feature to avoid activating
+   ;; all package autoloads one by one.
+   ;; Requires building and maintaining a quickstart autoload file for all
+   ;; installed packages.
+   ;; Refer to the FAQ.org "package-quickstart" section for details.
+   ;; (default nil)
+   dotspacemacs-enable-package-quickstart nil
+
+   ;; If non-nil a progress bar is displayed when spacemacs is loading. This
+   ;; may increase the boot time on some systems and emacs builds, set it to
+   ;; nil to boost the loading time. (default t)
+   dotspacemacs-loading-progress-bar nil
+
+   ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
+   ;; (Emacs 24.4+ only)
+   dotspacemacs-fullscreen-at-startup nil
+
+   ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
+   ;; Use to disable fullscreen animations in OSX. (default nil)
+   dotspacemacs-fullscreen-use-non-native nil
+
+   ;; If non-nil the frame is maximized when Emacs starts up.
+   ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
+   ;; (default t) (Emacs 24.4+ only)
+   dotspacemacs-maximized-at-startup t
+
+   ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
+   ;; variable with `dotspacemacs-maximized-at-startup' to obtain fullscreen
+   ;; without external boxes. Also disables the internal border. (default nil)
+   dotspacemacs-undecorated-at-startup t
+
+   ;; A value from the range (0..100), in increasing opacity, which describes
+   ;; the transparency level of a frame when it's active or selected.
+   ;; Transparency can be toggled through `toggle-transparency'. (default 90)
+   dotspacemacs-active-transparency 90
+
+   ;; A value from the range (0..100), in increasing opacity, which describes
+   ;; the transparency level of a frame when it's inactive or deselected.
+   ;; Transparency can be toggled through `toggle-transparency'. (default 90)
+   dotspacemacs-inactive-transparency 90
+
+   ;; A value from the range (0..100), in increasing opacity, which describes the
+   ;; transparency level of a frame background when it's active or selected. Transparency
+   ;; can be toggled through `toggle-background-transparency'. (default 90)
+   dotspacemacs-background-transparency 90
+
+   ;; If non-nil show the titles of transient states. (default t)
+   dotspacemacs-show-transient-state-title t
+
+   ;; If non-nil show the color guide hint for transient state keys. (default t)
+   dotspacemacs-show-transient-state-color-guide t
+
+   ;; If non-nil unicode symbols are displayed in the mode line.
+   ;; If you use Emacs as a daemon and wants unicode characters only in GUI set
+   ;; the value to quoted `display-graphic-p'. (default t)
+   dotspacemacs-mode-line-unicode-symbols t
+
+   ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
+   ;; scrolling overrides the default behavior of Emacs which recenters point
+   ;; when it reaches the top or bottom of the screen. (default t)
+   dotspacemacs-smooth-scrolling t
+
+   ;; Show the scroll bar while scrolling. The auto hide time can be configured
+   ;; by setting this variable to a number. (default t)
+   dotspacemacs-scroll-bar-while-scrolling t
+
+   ;; Control line numbers activation.
+   ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
+   ;; `prog-mode' and `text-mode' derivatives. If set to `relative', line
+   ;; numbers are relative. If set to `visual', line numbers are also relative,
+   ;; but only visual lines are counted. For example, folded lines will not be
+   ;; counted and wrapped lines are counted as multiple lines.
+   ;; This variable can also be set to a property list for finer control:
+   ;; '(:relative nil
+   ;;   :visual nil
+   ;;   :disabled-for-modes dired-mode
+   ;;                       doc-view-mode
+   ;;                       markdown-mode
+   ;;                       org-mode
+   ;;                       pdf-view-mode
+   ;;                       text-mode
+   ;;   :size-limit-kb 1000)
+   ;; When used in a plist, `visual' takes precedence over `relative'.
+   ;; (default nil)
+   ;; can't zoom-in if it's `t'; use `display-line-numbers-mode'
+   dotspacemacs-line-numbers nil
+
+   ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
+   ;; (default 'evil)
+   ;; use `origami' for folding of:
+   ;; <description> {{{
+   ;;     <some content>
+   ;; }}}
+   dotspacemacs-folding-method 'evil
+
+   ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
+   ;; `smartparens-strict-mode' will be enabled in programming modes.
+   ;; (default nil)
+   dotspacemacs-smartparens-strict-mode nil
+
+   ;; If non-nil smartparens-mode will be enabled in programming modes.
+   ;; (default t)
+   dotspacemacs-activate-smartparens-mode t
+
+   ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
+   ;; over any automatically added closing parenthesis, bracket, quote, etc...
+   ;; This can be temporary disabled by pressing `C-q' before `)'.
+   ;; Only effective when `dotspacemacs-activate-smartparens-mode' is non-nil.
+   ;; Redundant when `smartparens-strict-mode' is enabled. (default nil)
+   ;;
+   ;; smart-closing-parenthesis doesn't work when:
+   ;; - In a terminal, i.e. can't insert closing bracket in the terminal. The
+   ;;   error in the *Messages* is: Search failed: there is an unmatched
+   ;;   expression somewhere or we are at the beginning/end of file.
+   ;;
+   ;;   In scheme-mode to trigger this bug it is enough to put the cursor on
+   ;;   'B', press ~V~, mark both comment lines with ~j~, and try to delete them
+   ;;   with ~x~:
+   ;;            (list
+   ;;             ;; aBc
+   ;;             ;; efg
+   ;;             )
+   ;;
+   ;; - In a shell-script buffer: it reports 'while: End of buffer' even if
+   ;;   there's some comment following the cursor
+   dotspacemacs-smart-closing-parenthesis nil
+
+   ;; Select a scope to highlight delimiters. Possible values are `any',
+   ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
+   ;; emphasis the current one). (default 'all)
+   dotspacemacs-highlight-delimiters 'all
+
+   ;; If non-nil, start an Emacs server if one is not already running.
+   ;; (default nil)
+   dotspacemacs-enable-server nil
+
+   ;; Set the emacs server socket location.
+   ;; If nil, uses whatever the Emacs default is, otherwise a directory path
+   ;; like \"~/.emacs.d/server\". It has no effect if
+   ;; `dotspacemacs-enable-server' is nil.
+   ;; (default nil)
+   dotspacemacs-server-socket-dir nil
+
+   ;; If non-nil, advise quit functions to keep server open when quitting.
+   ;; (default nil)
+   dotspacemacs-persistent-server nil
+
+   ;; List of search tool executable names. Spacemacs uses the first installed
+   ;; tool of the list. Supported tools are `rg', `ag', `ack' and `grep'.
+   ;; (default '("rg" "ag" "ack" "grep"))
+   dotspacemacs-search-tools '("rg" "ag" "ack" "grep")
+
+   ;; The backend used for undo/redo functionality. Possible values are
+   ;; `undo-redo', `undo-fu' and `undo-tree' see also `evil-undo-system'.
+   ;; Note that saved undo history does not get transferred when changing
+   ;; your undo system from or to undo-tree. (default `undo-redo')
+   dotspacemacs-undo-system 'undo-redo
+
+   ;; Format specification for setting the frame title.
+   ;; %a - the `abbreviated-file-name', or `buffer-name'
+   ;; %t - `projectile-project-name'
+   ;; %I - `invocation-name'
+   ;; %S - `system-name'
+   ;; %U - contents of $USER
+   ;; %b - buffer name
+   ;; %f - visited file name
+   ;; %F - frame name
+   ;; %s - process status
+   ;; %p - percent of buffer above top of window, or Top, Bot or All
+   ;; %P - percent of buffer above bottom of window, perhaps plus Top, or Bot or All
+   ;; %m - mode name
+   ;; %n - Narrow if appropriate
+   ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
+   ;; %Z - like %z, but including the end-of-line format
+   ;; If nil then Spacemacs uses default `frame-title-format' to avoid
+   ;; performance issues, instead of calculating the frame title by
+   ;; `spacemacs/title-prepare' all the time.
+   ;; (default "%I@%S")
+   dotspacemacs-frame-title-format "%I@%S"
+
+   ;; Format specification for setting the icon title format
+   ;; (default nil - same as frame-title-format)
+   dotspacemacs-icon-title-format nil
+
+   ;; Color highlight trailing whitespace in all prog-mode and text-mode derived
+   ;; modes such as c++-mode, python-mode, emacs-lisp, html-mode, rst-mode etc.
+   ;; (default t)
+   dotspacemacs-show-trailing-whitespace t
+
+   ;; Delete whitespace while saving buffer. Possible values are `all'
+   ;; to aggressively delete empty line and long sequences of whitespace,
+   ;; `trailing' to delete only the whitespace at end of lines, `changed' to
+   ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; The variable `global-spacemacs-whitespace-cleanup-modes' controls
+   ;; which major modes have whitespace cleanup enabled or disabled
+   ;; by default.
+   ;; (default nil)
+   dotspacemacs-whitespace-cleanup nil
+
+   ;; If non-nil activate `clean-aindent-mode' which tries to correct
+   ;; virtual indentation of simple modes. This can interfere with mode specific
+   ;; indent handling like has been reported for `go-mode'.
+   ;; If it does deactivate it here.
+   ;; (default t)
+   dotspacemacs-use-clean-aindent-mode t
+
+   ;; Accept SPC as y for prompts if non-nil. (default nil)
+   dotspacemacs-use-SPC-as-y nil
+
+   ;; If non-nil shift your number row to match the entered keyboard layout
+   ;; (only in insert state). Currently supported keyboard layouts are:
+   ;; `qwerty-us', `qwertz-de' and `querty-ca-fr'.
+   ;; New layouts can be added in `spacemacs-editing' layer.
+   ;; (default nil)
+   dotspacemacs-swap-number-row nil
+
+   ;; Either nil or a number of seconds. If non-nil zone out after the specified
+   ;; number of seconds. (default nil)
+   dotspacemacs-zone-out-when-idle nil
+
+   ;; Run `spacemacs/prettify-org-buffer' when
+   ;; visiting README.org files of Spacemacs.
+   ;; (default nil)
+   dotspacemacs-pretty-docs nil
+
+   ;; If nil the home buffer shows the full path of agenda items
+   ;; and todos. If non-nil only the file name is shown.
+   dotspacemacs-home-shorten-agenda-source nil
+
+   ;; If non-nil then byte-compile some of Spacemacs files.
+   dotspacemacs-byte-compile nil))
+
+(defun dotspacemacs/user-env ()
+  "Environment variables setup.
+This function defines the environment variables for your Emacs session. By
+default it calls `spacemacs/load-spacemacs-env' which loads the environment
+variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
+See the header of this file for more information."
+  (spacemacs/load-spacemacs-env)
+  )
+
+(defun dotspacemacs/user-init ()
+  "Initialization for user code:
+This function is called immediately after `dotspacemacs/init', before layer
+configuration.
+It is mostly for variables that should be set before packages are loaded.
+If you are unsure, try setting them in `dotspacemacs/user-config' first."
+
+  (setq
+   ;; If non-nil then the `spacemacs-buffer/message'-messages appear in the
+   ;; *Messages* buffer. Setting this variable in the `dotspacemacs/user-init'
+   ;; ensures the output of layer-loading processes, ie. from
+   ;; (configuration-layer/load) and (configuration-layer//load)
+   ;; appears there too. (Default nil)
+   ;; init-file-debug t
+
+   ;; When 'Failed to verify signature archive-contents.sig' set
+   ;; package-check-signature nil
+   ;; Then
+   ;;  M-x package-list-packages
+
+   ;; Don't download archive-contents of the gnu, melpa, nongnu
+   ;; my-retrieve-package-archives nil
+   my-retrieve-package-archives t
+
+   yas--default-user-snippets-dir sp-snippets-dir
+   yas-verbosity 2
+
+   ;; Configure this early: the spell-checking layer may enable Flyspell
+   ;; during startup.
+   ispell-program-name "hunspell"
+   ispell-dictionary "en_US"
+   )
+
+  ;; Make the emacs-packages installed by Guix visible to emacs (by prepending)
+  (add-to-list 'package-directory-list
+               "~/.guix-profile/share/emacs/site-lisp")
+
+  ;; Avoid creation of dotspacemacs/emacs-custom-settings
+  ;; https://github.com/syl20bnr/spacemacs/issues/7891
+  ;; .cache/.custom-settings
+  ;; See core/core-custom-settings.el
+  (setq custom-file (concat sp-custom-settings-dir "/.custom-settings"))
+  (when (file-exists-p custom-file)
+    (load custom-file)) ;; `custom-file' is not auto-loaded
+
+  (add-to-list 'package-archives
+               '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  (add-to-list 'package-pinned-packages '(telega . "melpa-stable"))
+
+  ;; Keep these commands reachable when Evil uses g and G for navigation.
+  ;; This suppresses the "Auto-evilification could not remap" warnings.
+  (with-eval-after-load 'archive-mode
+    (define-key archive-mode-map (kbd "C-c G") #'archive-chgrp-entry)
+    (define-key archive-mode-map (kbd "G") nil))
+  (with-eval-after-load 'cider-doc
+    (define-key cider-docview-mode-map (kbd "C-c G") #'cider-docview-clojuredocs-web)
+    (define-key cider-docview-mode-map (kbd "G") nil))
+  (with-eval-after-load 'dired
+    (define-key dired-mode-map (kbd "C-c G") #'dired-do-chgrp)
+    (define-key dired-mode-map (kbd "G") nil))
+
+  ;; Under a C locale, Hunspell needs a default for the first dictionary scan.
+  ;; This avoids Ispell's retry and suppresses its startup warning:
+  ;; ispell-set-spellchecker-params: Missing equivalent for "...". Skipping.
+  (when (member (getenv "DICTIONARY") '(nil ""))
+    (setenv "DICTIONARY" ispell-dictionary))
+  )
+
+(defun dotspacemacs/user-config ()
+  "Configuration for user code:
+This function is called at the very end of Spacemacs startup, after layer
+configuration.
+Put your configuration code here, except for variables that should be set
+before packages are loaded."
+
+  (tw-make-shell-pop-command "vterm" vterm)
+
+  (with-eval-after-load 'flycheck
+    (require 'flycheck-guile))
+
+  (with-eval-after-load 'gptel
+    (setq gptel-api-key
+          (tw-getenv-secret "OPENAI_KEY")))
+
+  (with-eval-after-load 'erc
+    (setq erc-server-list
+          (list (tw-erc-libera-server))))
+
+  ;; (sp-use-paredit-bindings)
+
+  ;; undo-tree is unmaintained. Last commit in March 2021
+  ;; (global-undo-tree-mode)
+
+  ;; (spacemacs/toggle-display-fill-column-indicator) ;; toggle with ~SCP t f~
+  ;; Show the indicator at column 100; `fill-column' (e.g. for M-q) is unchanged.
+  ;; Buffer-local variable, so set its default value.
+  ;; (setq-default display-fill-column-indicator-column 100)
+
+  ;; (debug) ;; stops the execution. What I need is the stack frame as a string
+
+  ;; https://gist.github.com/synic/5c1a494eaad1406c5519
+  ;; (defvar ao/v-dired-omit t
+  ;;   "If dired-omit-mode enabled by default. Don't setq me.")
+
+  ;; (defun ao/dired-omit-switch ()
+  ;;   "This function is a small enhancement for `dired-omit-mode', which will
+  ;;  \"remember\" omit state across Dired buffers."
+  ;;   (interactive)
+  ;;   (if (eq ao/v-dired-omit t)
+  ;;       (setq ao/v-dired-omit nil)
+  ;;     (setq ao/v-dired-omit t))
+  ;;   (ao/dired-omit-caller)
+  ;;   (when (equal major-mode 'dired-mode)
+  ;;     (revert-buffer)))
+
+  ;; (defun ao/dired-omit-caller ()
+  ;;   (if ao/v-dired-omit
+  ;;       (setq dired-omit-mode t)
+  ;;     (setq dired-omit-mode nil)))
+
+  ;; (defun ao/dired-back-to-top()
+  ;;   "Move to the first file."
+  ;;   (interactive)
+  ;;   (beginning-of-buffer)
+  ;;   (dired-next-line 2))
+
+  ;; (defun ao/dired-jump-to-bottom()
+  ;;   "Move to last file."
+  ;;   (interactive)
+  ;;   (end-of-buffer)
+  ;;   (dired-next-line -1))
+
+  ;; typescript-indent-level is overridden by project-specific .editorconfig
+  ;; (setq-default typescript-indent-level 4)
+
+  ;; set up `evil' bindings for `info-mode'
+  (evil-collection-info-setup)
+  ;; ... or try to remove evil support in the Info buffers (doesn't work)
+  ;; (remove-hook 'Info-mode-hook 'evil-mode)
+
+  ;; ;; The yas-snippet-dirs contains
+  ;; ;; ".../layers/+completion/auto-completion/local/snippets" already
+  ;; (yas-global-mode 1) ; M-x helm-yas or ~SPC s i~ or ~M-m s i~
+  ;; ;; If a major mode has yasnippets enabled then activate yasnippets. Useful for
+  ;; ;; sharing snippets between modes. See https://youtu.be/xmBovJvQ3KU?t=123
+  ;; (add-hook 'yas-minor-mode-hook (lambda ()
+  ;;                                  (yas-activate-extra-mode 'fundamental-mode)))
+  ;; ;; Fix:
+  ;; ;;   Search failed. This means there is unmatched expression somewhere or we
+  ;; ;;   are at the beginning/end of file
+  ;; ;; https://github.com/Fuco1/smartparens/issues/431#issuecomment-72834657
+  ;; (add-hook 'yas-before-expand-snippet-hook (lambda () (smartparens-mode -1)))
+  ;; (add-hook 'yas-after-exit-snippet-hook (lambda () (smartparens-mode 1)))
+
+  (evil-goggles-mode) ;; Display visual hint on evil edit operations
+  (setq evil-goggles-async-duration 0.200)
+  ;; run `M-x list-faces-display` in a fresh emacs to get a list of faces on your emacs
+  ;; (custom-set-faces
+  ;;  ;; inherits from 'region by default
+  ;;  '(evil-goggles-default-face ((t (:inherit 'highlight))))
+  ;;  '(evil-goggles-delete-face ((t (:inherit 'shadow))))
+  ;;  '(evil-goggles-paste-face ((t (:inherit 'lazy-highlight))))
+  ;;  '(evil-goggles-yank-face ((t (:inherit 'isearch-fail)))))
+
+  ;; Company is a modular completion framework.
+  (global-company-mode)
+
+  (add-to-list 'auto-mode-alist '("\\.cob" . cobol-mode))
+
+  (add-to-list 'exec-path "/usr/local/bin") ;; for cider on guix
+
+  ;; (spacemacs/toggle-menu-bar-on)
+  ;; (global-prettify-symbols-mode +1)
+
+  ;; (spaceline-all-the-icons-theme)
+
+  ;; Remove emtpy spaces at the beginning of the lines, then apply the macro
+  (defalias 'macro-format-guix-channels
+    (kmacro
+     (concat
+      "f SPC D j 2 d d k J f : x i <delete>"
+      " \" M-s-<right> <home> # : <escape> f SPC r - <home> <left> <down>")))
+  (global-set-key (kbd "<f6>") #'macro-format-guix-channels)
+
+  ;; M-<up>/M-<down> walk the search pattern history, like M-p/M-n, in the
+  ;; SPC s ... searches. Plain <up>/<down> are taken: helm-map binds them to
+  ;; helm-previous-line/helm-next-line, i.e. moving through the results.
+  (with-eval-after-load 'helm-ag
+    (define-key helm-do-ag-map (kbd "M-<up>")   #'previous-history-element)
+    (define-key helm-do-ag-map (kbd "M-<down>") #'next-history-element))
+
+  ;; Register hooks with org-present
+  (add-hook 'org-present-mode-hook 'tw-org-present-start)
+  (add-hook 'org-present-mode-quit-hook 'tw-org-present-end)
+
+  (setq
+   ;; disable the hint when pasting - ??? doesn't work, i.e. no difference ???
+   ;; evil-goggles-enable-paste nil
+
+   ;; Set back to its default value to avoid
+   ;;   SPC * not working with ripgrep 14
+   ;;   https://github.com/syl20bnr/spacemacs/issues/16200
+   ;; See also
+   ;; https://github.com/syl20bnr/spacemacs/issues/16200
+   helm-ag-use-grep-ignore-list nil
+
+   ;; org-tree-slide
+   org-image-actual-width nil
+
+   ;; Configure fill width
+   visual-fill-column-width 110
+   visual-fill-column-center-text t
+
+   large-file-warning-threshold nil ;; don't ask before visiting big files
+
+   org-plantuml-jar-path (funcall
+                          (-compose
+                           (-partial #'format "%s/share/java/plantuml.jar")
+                           #'directory-file-name
+                           #'directory-file-name
+                           #'tw-shell-readlink
+                           #'tw-shell-which)
+                          "plantuml")
+
+   ;; The program of term.
+   ;; If this is nil, setup to environment variable of `SHELL'.
+   ;; Use fish-shell in the emacs terminal and bash as the fallback, i.e. the
+   ;; login shell. See also `(getenv "SHELL")' and M-x spacemacs/edit-env
+   multi-term-program (tw-shell-path)
+
+   ;; Shell used in `term' and `ansi-term'.
+   shell-pop-term-shell (tw-shell-path)
+
+   ;; Position of the popped buffer. (default "bottom")
+   shell-pop-window-position "right"
+
+   ;; undo-tree is unmaintained. Last commit in March 2021
+   ;; ;; See also undo-tree-auto-save-history
+   ;; undo-tree-history-directory-alist `(("." . ,(concat
+   ;;                                              sp-home-dir "/"
+   ;;                                              "undo")))
+
+   ;; TODO If the "Search failed. ... unmatched expression ... " persists, try:
+   ;; ;; Original value 160000 ;; Global value 800000
+   ;; undo-limit 160000
+   ;; See also:
+   ;;   Company backend ’geiser-company-backend’ could not be initialized:
+   ;;   Symbol’s function definition is void: geiser-company-backend
+   ;; See also:
+   ;;    helm-M-x-execute-command:
+   ;;    Symbol’s function definition is void: geiser-company--setup
+
+   ;; TODO create toggle for evil-ex-substitute-interactive-replace
+   evil-ex-substitute-interactive-replace t ;; nil/t. default is t
+
+   ;; Kill process buffer without confirmation
+   ;; See https://emacs.stackexchange.com/a/14511
+   kill-buffer-query-functions (delq 'process-kill-buffer-query-function
+                                     kill-buffer-query-functions)
+
+   ;; See https://emacs.stackexchange.com/q/22283 and
+   ;; `ls-lisp-use-insert-directory-program', `ls-lisp-dirs-first'
+   ;; ls -la: -a - show hidden files
+   dired-listing-switches "--group-directories-first --dereference -al"
+   ;; dired-listing-switches "--group-directories-first -al"
+
+   ;; none of these works; not even in the `dotspacemacs/user-init'
+   ;; has to be set as `custom-set-variables'
+   ;; display-line-numbers t
+   ;; global-display-line-numbers-mode t
+   ;; display-line-numbers 'relative
+   ;; display-line-numbers 'visual
+
+   ;; Yank checks this function for external text before using the kill ring.
+   ;; Use tw-toggle-yank-selection to swap selections.
+   tw-yank-clipboard-first t
+   interprogram-paste-function #'tw-yank-selection-value
+
+   ;; prevent: Error saving to X clipboard manager
+   x-select-enable-clipboard-manager nil
+
+   goto-address-mode nil
+   frame-title-format "%f - Emacs" ; 'path/to/file' in title bar; %b only 'file'
+   bookmark-default-file (my-dotf-path ".emacs.d.distros/bookmarks")
+
+   ;; Hotfix of "magit ediff on unstaged file leads to emacs freeze. #4730"
+   ;; See ~M-x ediff-toggle-multiframe~ toggle multiframe / single frame
+   ediff-window-setup-function
+   ;; #'ediff-setup-windows-multiframe ; control panel in a separate frame.
+   #'ediff-setup-windows-plain         ; everything in one frame, on the bottom
+   ;; #'ediff-setup-windows-default    ; 'multiframe' in GUI, 'plain' in TTY
+
+   ;; Fix projectile-regenerate-tags: ctags: invalid option -- ’e’
+   ;; See https://github.com/bbatsov/projectile/issues/133
+   projectile-tags-command "ctags-exuberant -Re -f \"%s\" %s"
+
+   create-lockfiles nil ;; do not create .# lockfiles
+   vc-follow-symlinks t ;; auto follow symbolic links
+
+   ;; On GuixOS `browse-url-firefox-program' evaluates to "icecat" by default.
+   ;; This variable can be set at the end of Spacemacs startup
+   browse-url-firefox-program "firefox"
+
+   font-latex-fontify-script nil
+   org-latex-listings 'minted
+   org-latex-packages-alist '(("" "minted"))
+   org-latex-pdf-process ;; is it customizable? customize-set-variable
+   '("%latex -interaction nonstopmode -output-directory %o %f"
+     "%latex -interaction nonstopmode -output-directory %o %f"
+     "%latex -interaction nonstopmode -output-directory %o %f")
+   ;; '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+   ;;   "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+
+   ;; color-identifiers-mode t
+   )
+
+  ;; Safe structural editing for all major modes:
+  (when (boundp 'spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
+    (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks))
+  ;; Safe structural editing for clojure layer only (comment out line above):
+  ;; (when (boundp 'spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode)
+  ;;   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hook-clojure-mode))
+
+  ;; diff-hl - diff hightlights in right gutter as you type
+  ;; (diff-hl-flydiff-mode)    ;; enable
+  (diff-hl-flydiff-mode -1) ;; disable
+
+  (setq-default
+   ;; Truncate lines in every buffer. Overridden by
+   ;; `truncate-partial-width-windows'
+   ;; See also: global-visual-line-mode t
+   ;; Using `setq-default' makes it default for all buffers.
+   truncate-lines t)
+
+  (blink-cursor-mode t)
+
+  (progn
+    (setq global-hl-line-sticky-flag t)
+    (global-hl-line-mode +1))
+
+  (beacon-mode 1)
+
+;;; ┌── Tab-bar: buffers of the current layout ─────────────────────────────────
+
+  (progn
+    ;; A single frame-wide tab-bar showing the buffers of the current layout
+    ;; (persp-mode perspective) in opening order. `my-next-buffer' and
+    ;; `my-previous-buffer' switch to the right / left neighbour, so the
+    ;; tab-bar shows where they go. tab-bar is built-in Emacs.
+    (defvar my-buffer-order nil
+      "Buffers in the order they first appeared in `my-frame-buffers'.")
+
+    (defun my-frame-buffers ()
+      "Live buffers of the current layout, in opening order.
+The order stays constant; a newly opened buffer is added at the end.
+The Default layout is persp-mode's nil perspective, which has no buffer
+list of its own, so fall back to `buffer-list' there. Buffers matching
+`helm-boring-buffer-regexp-list' are left out, as in `helm-buffers-list'."
+      (let ((bufs (seq-remove
+                   (lambda (b)
+                     (or (not (buffer-live-p b))
+                         (string-prefix-p " " (buffer-name b))
+                         (and (boundp 'helm-boring-buffer-regexp-list)
+                              (seq-some
+                               (lambda (re) (string-match-p re (buffer-name b)))
+                               helm-boring-buffer-regexp-list))))
+                   (if (and (bound-and-true-p persp-mode) (get-current-persp))
+                       ;; persp-add-buffer pushes new buffers to the front
+                       (reverse (persp-buffers (get-current-persp)))
+                     ;; Most-recently-used first, i.e. reordered on every switch
+                     (buffer-list)))))
+        (setq my-buffer-order
+              (append (seq-filter #'buffer-live-p my-buffer-order)
+                      (seq-remove (lambda (b) (memq b my-buffer-order)) bufs)))
+        (seq-filter (lambda (b) (memq b bufs)) my-buffer-order)))
+
+    (defun my-switch-frame-buffer (step)
+      "Switch to the buffer STEP positions away in `my-frame-buffers'.
+Wrap around at both ends."
+      (let* ((bufs (my-frame-buffers))
+             (pos (seq-position bufs (current-buffer))))
+        (when bufs
+          (switch-to-buffer
+           (nth (mod (cond (pos (+ pos step))
+                           ((> step 0) 0)
+                           (t -1))
+                     (length bufs))
+                bufs)))))
+
+    (defun my-next-buffer ()
+      "Switch to the buffer right of the current one in the tab-bar."
+      (interactive)
+      (my-switch-frame-buffer 1))
+
+    (defun my-previous-buffer ()
+      "Switch to the buffer left of the current one in the tab-bar."
+      (interactive)
+      (my-switch-frame-buffer -1))
+
+    (defun my-tab-bar-frame-buffers ()
+      "Tab-bar items for `my-frame-buffers', centred in the frame.
+Show as many as fit the frame width, centred on the current buffer, with
+an ellipsis at a cut-off end. The tabs are separated by vertical lines."
+      (with-selected-window (or (minibuffer-selected-window) (selected-window))
+        (let* ((cur (current-buffer))
+               (bufs (vconcat (my-frame-buffers)))
+               (n (length bufs))
+               (labels (vconcat
+                        (mapcar (lambda (b)
+                                  (propertize (concat " " (buffer-name b) " ")
+                                              'face (if (eq b cur)
+                                                        'tab-bar-tab
+                                                      'tab-bar-tab-inactive)))
+                                bufs)))
+               ;; Every tab is followed by a 1 px wide separator line
+               (widths (vconcat (mapcar (lambda (label)
+                                          (1+ (string-pixel-width label)))
+                                        labels)))
+               (separator
+                (propertize " "
+                            'face `(:background
+                                    ,(or (face-foreground 'shadow nil t)
+                                         "grey50"))
+                            'display '(space :width (1))))
+               (more (propertize " … " 'face 'tab-bar))
+               (more-width (string-pixel-width more))
+               (avail (- (frame-inner-width) (* 2 more-width)))
+               (pos (or (seq-position bufs cur) 0))
+               (lo pos)
+               (hi pos)
+               ;; 1+ for the separator line in front of the first tab
+               (used (if (> n 0) (1+ (aref widths pos)) 0))
+               (grew (> n 0)))
+          ;; Grow the visible range alternately to the right and to the left
+          (while grew
+            (setq grew nil)
+            (when (and (< hi (1- n))
+                       (<= (+ used (aref widths (1+ hi))) avail))
+              (setq hi (1+ hi) used (+ used (aref widths hi)) grew t))
+            (when (and (> lo 0)
+                       (<= (+ used (aref widths (1- lo))) avail))
+              (setq lo (1- lo) used (+ used (aref widths lo)) grew t)))
+          (when (> n 0)
+            (append
+             ;; Left padding which centres the tabs in the frame
+             (let ((total (+ used
+                             (if (> lo 0) more-width 0)
+                             (if (< hi (1- n)) more-width 0))))
+               `((my-buf-padding
+                  menu-item
+                  ,(propertize " " 'face 'tab-bar
+                               'display `(space :width
+                                                (,(max 0 (/ (- (frame-inner-width)
+                                                               total)
+                                                            2)))))
+                  ignore)))
+             (when (> lo 0)
+               `((my-buf-more-left menu-item ,more ignore)))
+             `((my-buf-separator menu-item ,separator ignore))
+             (mapcan (lambda (i)
+                       (let ((b (aref bufs i)))
+                         `((,(intern (format "my-buf-%d" i))
+                            menu-item
+                            ,(aref labels i)
+                            ,(lambda () (interactive) (switch-to-buffer b))
+                            :help ,(or (buffer-file-name b) (buffer-name b)))
+                           (,(intern (format "my-buf-separator-%d" i))
+                            menu-item ,separator ignore))))
+                     (number-sequence lo hi))
+             (if (< hi (1- n))
+                 `((my-buf-more-right menu-item ,more ignore))
+               ;; The rest of the tab-bar gets the face of its last item, so
+               ;; don't let it be the current tab's face.
+               `((my-buf-end menu-item ,(propertize " " 'face 'tab-bar)
+                             ignore))))))))
+
+    (setq tab-bar-format '(my-tab-bar-frame-buffers))
+    (tab-bar-mode 1)
+
+    ;; Stable frame identities: blue, green, amber and violet.  Each entry
+    ;; contains backgrounds for light and dark themes respectively.
+    (defvar my-frame-color-palette
+      '(("#b8d4ee" "#294b68")
+        ("#bfdcc1" "#34583c")
+        ("#ecd39d" "#68512a")
+        ("#d8c3e8" "#553b68"))
+      "Frame backgrounds in light-theme and dark-theme variants.")
+
+    (defun my-frame-color-eligible-p (frame)
+      "Whether FRAME is an ordinary graphical editing frame."
+      (and (frame-live-p frame)
+           (display-graphic-p frame)
+           (not (frame-parent frame))
+           (not (eq (frame-parameter frame 'minibuffer) 'only))))
+
+    (defun my-frame-color-slot (frame)
+      "Return FRAME's stable palette slot, allocating a free slot if needed."
+      (or (frame-parameter frame 'my-color-slot)
+          (let* ((used (mapcar (lambda (other)
+                                 (frame-parameter other 'my-color-slot))
+                               (seq-filter #'my-frame-color-eligible-p
+                                           (frame-list))))
+                 (slot (or (seq-find (lambda (index) (not (memq index used)))
+                                     (number-sequence
+                                      0 (1- (length my-frame-color-palette))))
+                           ;; More than four frames may share a color.
+                           0)))
+            (set-frame-parameter frame 'my-color-slot slot)
+            slot)))
+
+    (defun my-frame-colors (frame)
+      "Apply FRAME's identity to its tab bar and modeline filler."
+      (when (my-frame-color-eligible-p frame)
+        (let* ((dark (eq (frame-parameter frame 'background-mode) 'dark))
+               (colors (nth (my-frame-color-slot frame)
+                            my-frame-color-palette))
+               (background (nth (if dark 1 0) colors))
+               (foreground (if dark "#f4f4f4" "#202020")))
+          ;; Leave powerline-active1 and the Evil-state highlight alone.
+          (dolist (face '(mode-line mode-line-active mode-line-inactive
+                                    powerline-active2 powerline-inactive2
+                                    tab-bar tab-bar-tab-inactive))
+            (when (facep face)
+              (set-face-attribute face frame
+                                  :background background
+                                  :foreground foreground)))
+          ;; Keep the selected tab distinct using the editing background.
+          (set-face-attribute
+           'tab-bar-tab frame
+           :background (or (face-background 'default frame t) 'unspecified)
+           :foreground (or (face-foreground 'default frame t) 'unspecified)))))
+
+    (defun my-tab-bar-colors ()
+      "Refresh frame colors after startup or a theme change."
+      (dolist (frame (frame-list))
+        (my-frame-colors frame))
+      (when (fboundp 'powerline-reset)
+        (powerline-reset))
+      (force-mode-line-update t))
+
+    (defun my-frame-colors-after-create (frame)
+      "Color a newly created FRAME and refresh modeline separators."
+      (my-frame-colors frame)
+      (when (fboundp 'powerline-reset)
+        (powerline-reset))
+      (force-mode-line-update t))
+
+    (my-tab-bar-colors)
+    (with-eval-after-load 'powerline (my-tab-bar-colors))
+    (add-hook 'after-make-frame-functions #'my-frame-colors-after-create)
+    (add-hook 'spacemacs-post-theme-change-hook #'my-tab-bar-colors t)
+    ;; Redraw the tab-bar when another window gets selected
+    (add-hook 'window-selection-change-functions
+              (defun my-tab-bar-refresh (_frame) (force-mode-line-update t))))
+
+;;; └── Tab-bar: buffers of the current layout ─────────────────────────────────
+
+  ;; Don't reindent (gptel-make-openai ...) when saving this init.el file
+  (put 'gptel-make-openai 'lisp-indent-function nil)
+
+  ;; TODO show how long was the delay + history, so that I can adjust the
+  ;; key-chord-two-keys-delay then ~l e~ are pressed.
+
+  ;; TODO implement per-keybinding-specific delay
+  (progn
+    ;; Max time delay between two key presses to be considered a key chord.
+    ;; (Default 0.1)
+    (setq key-chord-two-keys-delay 0.02)
+    (key-chord-mode 1))
+
+  (with-eval-after-load 'ffap
+    "Ensure all FFAP modes treat spaces, '(' and ')' as part of filenames."
+
+    ;; Ensure ffap will use spaces when guessing filenames
+    (setq ffap-file-name-with-spaces t)
+
+    ;; Walk every (MODE CHARS BEG END) entry and patch CHARS
+    (dolist (entry ffap-string-at-point-mode-alist)
+      (let* ((chars      (nth 1 entry))
+             ;; determine missing characters
+             (need-paren (not (string-match-p "[()]" chars)))
+             (need-space (not (string-match-p " "   chars)))
+             (to-add     (concat
+                          (when need-paren "()")
+                          (when need-space " "))))
+        (when (not (string-empty-p to-add))
+          ;; (message "Entry %s: chars '%s' to-add '%s'" (car entry) chars to-add)
+          (setf (nth 1 entry) (concat chars to-add))))))
+
+  (with-eval-after-load 'org
+    (setq org-src-lang-modes-orig org-src-lang-modes)
+    (setq org-src-lang-modes (cons '("fish" . fish) org-src-lang-modes))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '(
+       (R . t)
+       (latex . t)
+       (emacs-lisp . t)
+       (C . t)
+       (scheme . t)
+       ;; racket ;; (racket . t)
+       ;; Although adviced by https://github.com/hasu/emacs-ob-racket this leads
+       ;; to 'ob-scribble not found' when activated:
+       ;; (scribble . t)
+       (python . t)
+       ;; (ditaa . t)
+       (clojure . t)
+       (java . t)
+       (shell . t)
+       ;; (plantuml . t)
+       (js . t)
+       ;; (kotlin . t)
+       (lisp . t)
+       (ruby . t)     ;; also needed for plantuml - UML diagrams
+       (plantuml . t) ;; UML diagrams
+       (haskell . t))))
+
+  (defalias #'save-selected-text #'write-region)
+  ;; TODO (define-obsolete-function-alias)
+
+  ;; disable mouse support in X11 terminals - enables copy/paste with mouse
+  ;; (xterm-mouse-mode -1)
+  (super-save-mode +1) ;; better auto-save-mode
+
+  (use-package claude-code-ide
+    :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+    :config
+    ;; Optionally enable Emacs MCP (Model Context Protocol - open-source
+    ;; standard for connecting AI applications to external systems) tools
+    ;; (claude-code-ide-emacs-tools-setup)
+    )
+
+  (use-package kbd-mode
+    ;; :load-path "~/.config/emacs/elisp/"
+    :custom
+    (kbd-mode-kill-kmonad "pkill -9 kmonad")
+    (kbd-mode-start-kmonad (concat "kmonad "
+                                   (my-dotf-path "kmonad/KMonad.kbd"))))
+
+  (use-package org
+    :defer 5
+    :hook
+    (org-mode
+     .
+     (lambda ()
+       "Don't increase the height relative to the other text."
+       (mapc
+        (lambda (face)
+          ;; (set-face-attribute face nil :weight 'semi-bold :height 1.0)
+          (set-face-attribute face nil :weight 'bold :height 1.0))
+        '(org-level-1 org-level-2 org-level-3 org-level-4 org-level-5)))))
+
+  (use-package fish-mode :hook (fish-mode . paredit-mode))
+
+  (use-package emacs
+    :hook (emacs-lisp-mode
+           .
+           (lambda () ;; capital lambda char Λ
+             (push '("tw-interactive-lambda" . 923) prettify-symbols-alist))))
+
+  (use-package dired-preview
+    :defer t
+    :commands (dired-preview-mode)
+    :init
+    (with-eval-after-load 'dired
+      (define-key dired-mode-map (kbd "P") #'dired-preview-mode))
+    :config
+    (setq dired-preview-delay 0.2)
+    ;; Do not preview huge files.
+    (setq dired-preview-max-size (* 1024 1024))
+    ;; Optional: skip files that are usually annoying to preview.
+    (setq dired-preview-ignored-extensions-regexp
+          (concat "\\."
+                  "\\(mkv\\|mp4\\|mp3\\|ogg\\|webm"
+                  "\\|zip\\|tar\\|gz\\|xz\\|zst"
+                  "\\|iso\\|epub\\)"
+                  "\\'"))
+    ;; Prefer using / creating a preview window on the right.
+    (setq dired-preview-display-action-alist
+          '((display-buffer-reuse-window
+             display-buffer-in-side-window)
+            (side . right)
+            (window-width . 0.5))))
+
+  ;; (use-package dirvish
+  ;;   :ensure t
+  ;;   :init
+  ;;   ;; Make normal Dired buffers use Dirvish.
+  ;;   (dirvish-override-dired-mode)
+  ;;   :config
+  ;;   (dirvish-peek-mode)
+  ;;   ;; Optional: choose a 3-pane layout:
+  ;;   ;; parent directory | current directory | preview
+  ;;   ;; (setq dirvish-default-layout '(1 0.11 0.55))
+  ;;   ;; Make preview use a side window, suitable for your left/right layout.
+  ;;   (setq dirvish-preview-dispatchers
+  ;;         '(image
+  ;;           gif
+  ;;           video
+  ;;           audio
+  ;;           epub
+  ;;           pdf
+  ;;           archive
+  ;;           font
+  ;;           yadm
+  ;;           symlink
+  ;;           directory
+  ;;           file))
+  ;;   :bind
+  ;;   (("C-c f" . dirvish)
+  ;;    :map dirvish-mode-map
+  ;;    ("M-t" . dirvish-layout-toggle)
+  ;;    ("M-s" . dirvish-layout-switch)
+  ;;    ;; Toggle preview with `P` in Dirvish/Dired.
+  ;;    ("P"   . dirvish-side-follow-mode)))
+
+  ;; TODO autoload
+  (spacemacs/declare-prefix "oe" "Emacs/Spacemacs dotfiles")
+  (spacemacs/declare-prefix "og" "google-this")
+  (spacemacs/declare-prefix "oo" "org")
+  (spacemacs/set-leader-keys
+    "fed" #'my-find-spacemacs-init-common
+    "gD" #'difftastic-magit-diff
+    ;; (global-set-key (kbd "C-c C-v")
+    ;;                 #'tw-evil-find-file-at-point-with-line-other-window)
+    "gF"  #'tw-evil-find-file-at-point-with-line-other-window
+    "gS"  #'difftastic-magit-show
+    "oa"  #'tw-find-ai-scrbl
+    "oc"  #'tw-cider-clear-compilation-highlights
+    ;; "oc"  #'org-roam-capture
+    ;; "of"  #'tw-switch-to-repl-start-figwheel
+    "oed" #'tw-find-dotf-spacemacs-develop
+    "oec" #'tw-find-ai-conversation
+    "ogg" #'google-this
+    "ogr" #'google-this-region
+    "oh"  #'tw-find-home-config.scm
+    "oep" #'tw-find-spguimacs-packages.scm
+    "oof" #'tw-org-babel-demarcate-block-fish-with-results
+    "or"  #'rotate-frame
+    "os"  #'tw-find-syst-config.scm
+    ;; Revert buffer - loads in .dir-locals.el changes
+    "oR"  #'tw-revert-buffer-no-confirm
+    ;; Show list of references to a given node from other nodes
+    "ob"  #'org-roam-buffer-toggle
+    "of"  #'org-roam-node-find
+    "oi"  #'org-roam-node-insert
+    "op"  #'tw-yank-and-select
+    ;; These two functions seem not to be useful:
+    ;; "op" #'tw-paste-from-clipboard ; TODO is this function useful?
+    ;; "oy" #'tw-copy-to-clipboard    ; TODO is this function useful?
+    ;; Toggle workspaces forward/backwards
+    "ow"  #'eyebrowse-next-window-config
+    "oW"  #'eyebrowse-last-window-config
+    )
+
+  (spacemacs/set-leader-keys-for-major-mode 'magit-status-mode
+    "D" #'difftastic-magit-diff
+    "S" #'difftastic-magit-show)
+
+  ;; accessible from:
+  ;; 1. from evil-nomal-mode by ~SPC m~ or ~M-m m~ or
+  ;; 2. from evil-insert-mode by ~,~
+  ;; TODO test this
+  (mapc (lambda (mode)
+          (spacemacs/set-leader-keys-for-major-mode mode
+            "c" #'tw-cider-clear-compilation-highlights
+            "f" #'tw-switch-to-repl-start-figwheel
+            "l" #'helm-cider-repl-history))
+        '(clojure-mode clojure-modec clojurescript-mode cider-repl-mode))
+
+  ;; (setq text-quoting-style 'straight)
+
+  (tw-enable-hyper-super-modifiers)
+
+  ;; works but won't work in isearch
+  (global-set-key                 (kbd "H-5") (lambda () (interactive) (insert "•")))
+  (define-key key-translation-map (kbd "H-6") (kbd "↑")) ;; Error: H-6 is undefined
+  ;; works
+  (define-key key-translation-map (kbd "<pause> u <down>") (kbd "↓"))
+  ;; swap keys
+  ;; (define-key key-translation-map (kbd "<f11>") (kbd "<f12>"))
+
+  (my-eval-bind-keys-and-chords) ;; bound to ~s-<kp-add>~ or ~s-+~
+
+  ;; BUG: "<s-kp-insert>" "<C-insert>" are the same keys Uhg?
+  ;; ("<s-kp-insert>" .)
+  ;; ("<s-kp-0>"      .)
+  ;; ("s-'"           .)
+  ;; (unbind-key "<C-insert>" &optional keymap)
+  ;; ("<C-insert>"    .)
+
+  ;; ~C-x C-f~ /sshq:bost@localhost#10022:/home/bost
+  (with-eval-after-load 'tramp
+    (add-to-list 'tramp-methods
+                 '("sshq"
+                   (tramp-login-program "ssh")
+                   (tramp-login-args (("-l" "%u") ("-p" "%p") ("%c") ("-e" "none")
+                                      ("-o" "UserKnownHostsFile=/dev/null")
+                                      ("-o" "StrictHostKeyChecking=no")
+                                      ("%h")))
+                   (tramp-async-args (("-q")))
+                   (tramp-direct-async t)
+                   (tramp-remote-shell "/bin/sh")
+                   (tramp-remote-shell-login ("-l"))
+                   (tramp-remote-shell-args ("-c"))))
+    (tramp-set-completion-function "sshq" tramp-completion-function-alist-ssh)
+
+    ;; Make sure tramp work on remote guix machines. It probably only helps if
+    ;; tramp is starte on a guix machine. It also fixes:
+    ;;    "Couldn't find a proper `ls' command"
+    (setq tramp-remote-path
+          (append tramp-remote-path
+                  '(tramp-own-remote-path)
+                  ;; Alternatively try following value:
+                  ;; '("~/.guix-profile/bin"
+                  ;;   "/run/current-system/profile/bin"
+                  ;;   "/run/current-system/profile/sbin")
+                  ))
+    )
+
+  (with-eval-after-load 'magit
+    (require 'difftastic-bindings)
+    (difftastic-bindings-mode 1)
+
+    (transient-suffix-put 'magit-branch       "s" :description "spin-off → changer de branche")
+    (transient-suffix-put 'magit-branch       "S" :description "spin-out → rester ici")
+    (transient-suffix-put 'magit-cherry-pick  "s" :description "spin-off → changer de branche")
+    (transient-suffix-put 'magit-cherry-pick  "n" :description "spin-out → rester ici")
+    )
+
+  (with-eval-after-load 'magit-status
+    (bind-keys :map magit-status-mode-map
+               ("s-\\" . magit-diff-toggle-refine-hunk)))
+
+  ;; magit-revision-mode-map is defined in ‘magit-diff.el’
+  (with-eval-after-load 'magit-diff
+    (bind-keys :map magit-revision-mode-map
+               ("s-\\" . magit-diff-toggle-refine-hunk)))
+
+  (with-eval-after-load 'magit-mode
+    (bind-keys :map magit-mode-map
+               ;; Workaround for the
+               ;; https://github.com/emacs-evil/evil-collection/issues/554
+               ("C-v" . evil-visual-line)
+               ("1"   . magit-section-show-level-1-all)
+               ("2"   . magit-section-show-level-2-all)
+               ("3"   . magit-section-show-level-3-all)
+               ("4"   . magit-section-show-level-4-all)
+               ;; overshadows `(digit-argument <n>)'; use C-M-<n> instead
+               ("C-1" . magit-section-show-level-1)
+               ("C-2" . magit-section-show-level-2)
+               ("C-3" . magit-section-show-level-3)
+               ("C-4" . magit-section-show-level-4)))
+
+;;; (funcall
+;;;  (-compose
+;;;; 1. `-partial', `apply-partially' and `-compose' accept only functions, not
+;;;; macros and `with-eval-after-load' is a macro. Following doesn't work:
+;;;;  (-partial #'with-eval-after-load 'term-mode)
+;;;; 2. This leads to: Symbol’s value as variable is void: term-raw-map
+;;;; `with-eval-after-load' can't be inside a lambda or function. The delayed
+;;;; evaluation won't work. `term-raw-map' is defined only after loading
+;;;; `multi-term'
+;;;   (lambda (body) (with-eval-after-load 'multi-term body))))
+;;;
+  (with-eval-after-load 'multi-term
+    ;; term-mode-map is apparently not needed
+    (mapc #'tw-evil-keybindings-in-term '(term-raw-map)))
+
+  (with-eval-after-load 'dired
+    ;; ;; don't remove `other-window', the caller expects it to be there
+    ;; (defun dired-up-directory (&optional other-window)
+    ;;   "Run Dired on parent directory of current directory."
+    ;;   (interactive "P")
+    ;;   (let* ((dir (dired-current-directory))
+    ;;          (orig (current-buffer))
+    ;;          (up (file-name-directory (directory-file-name dir))))
+    ;;     (or (dired-goto-file (directory-file-name dir))
+    ;;         ;; Only try dired-goto-subdir if buffer has more than one dir.
+    ;;         (and (cdr dired-subdir-alist)
+    ;;              (dired-goto-subdir up))
+    ;;         (progn
+    ;;           (kill-buffer orig)
+    ;;           (dired up)
+    ;;           (dired-goto-file dir)))))
+
+    ;; (defadvice dired-advertised-find-file (around dired-subst-directory activate)
+    ;;   "Replace current buffer if file is a directory."
+    ;;   (interactive)
+    ;;   (message "%s" #'dired-advertised-find-file)
+    ;;   (let* ((orig (current-buffer))
+    ;;          ;; (filename (dired-get-filename))
+    ;;          (filename (dired-get-filename t t))
+    ;;          (bye-p (file-directory-p filename)))
+    ;;     ad-do-it
+    ;;     (when (and bye-p (not (string-match "[/\\\\]\\.$" filename)))
+    ;;       (kill-buffer orig))))
+
+    (bind-keys :map dired-mode-map
+               ("<f5>"        . tw-revert-buffer-no-confirm)
+               ;; ("<f5>"        . revert-buffer)
+
+               ;; Use ~C-s-h~ b/c ~C-H~ (shift-h) doesn't work
+               ("C-s-h"       . tw-dired-dotfiles-toggle)
+               ("<backspace>" . (lambda () (interactive)
+                                  (find-alternate-file "..")))
+               ;; See https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
+               ;; ("<return>"    . dired-find-alternate-file)
+               ;; ("<return>"    . diredp-find-file-reuse-dir-buffer)
+               ;; asks for file instead of opening it
+               ;; ("<return>"    . dired-x-find-file)
+               ("<return>"    . dired-find-file) ;; default
+               ("S-<delete>"  . tw-dired-do-delete)))
+
+  (with-eval-after-load 'paredit
+    (bind-keys :map paredit-mode-map
+               ;; these keybindings don't work in the cider-repl-mode-map
+               ("C-<right>"    . right-word)
+               ("C-<left>"     . left-word)))
+
+  (with-eval-after-load 'cider-repl
+    (my-clj-bind-keys-and-chords cider-repl-mode-map)
+    (bind-keys :map cider-repl-mode-map
+               ("<menu>" . tw-stop-synths-metronoms)
+               ("s-h"    . helm-cider-history)
+               ("s-j"    . cider-format-defun)
+               ("s-x"    . cider-switch-to-last-clojure-buffer)
+               ("M-s-l"  . tw-cider-reload-ns-from-file)
+               ("s-u"    . tw-cider-reload-ns-from-file)
+               ;; invoke from clojure buffer
+               ("C-s-<delete>" . cider-repl-clear-buffer)))
+
+  (with-eval-after-load 'clojure-mode
+    (my-clj-bind-keys-and-chords clojure-mode-map)
+    (bind-keys :map clojure-mode-map
+               ("s-d"    . cider-eval-defun-at-point)
+               ("s-x"    . tw-cider-switch-to-repl-buffer)
+               ("C-s-c"  . cider-connect-clj)
+               ("C-s-j"  . cider-jack-in)
+               ;; ("s-r" . cider-eval-last-expression-in-repl)
+               ("M-s-l"  . tw-cider-save-and-load-current-buffer)
+               ("s-u"    . tw-cider-save-and-load-current-buffer)
+               ("M-s-n"  . cider-repl-set-ns)
+               ("s-t"    . cider-test-run-tests)
+
+               ;; TODO see global-map keybindings
+               ;; ("s-."  . cider-find-var)
+               ;; ("s-,"  . cider-pop-back)
+               ;; TODO s-M does not work in REPL buffer
+
+               ;; Reload modified and unloaded namespaces on the classpath
+               ("s-o"     . cider-ns-refresh)
+
+               ;; Send a (require ’ns :reload) to the REPL
+               ;; ("s-o"  . cider-ns-reload)
+
+               ("C-s-o"   . tw-cider-clear-compilation-highlights)))
+
+  (defun endless/sharp ()
+    "Insert the function form abbreviation #' unless in a string
+or comment.
+
+The reader synstax #' is a function form abbreviation, it enables
+byte-compilation, however:
+1. Lambdas should never be quoted. I.e. don't do any of this:
+      '(lambda (...) ...)
+      #'(lambda (...) ...)
+2. It doesn't work for `bind-keys' and `bind-chords'
+See
+https://endlessparentheses.com/get-in-the-habit-of-using-sharp-quote.html"
+    (interactive)
+    (call-interactively #'self-insert-command)
+    (let ((ppss (syntax-ppss)))
+      (unless (or (elt ppss 3)
+                  (elt ppss 4)
+                  (eq (char-after) ?'))
+        (insert "'"))))
+
+  (bind-chords :map emacs-lisp-mode-map
+               ("df" . tw-elisp-insert-defun)
+               ("la" . tw-elisp-insert-lambda)
+               ("le" . tw-elisp-insert-let)
+               ("me" . tw-elisp-insert-message)
+               ("pr" . tw-elisp-insert-message))
+
+  (bind-keys :map emacs-lisp-mode-map
+             ("C-s-l" . tw-elisp-insert-let)
+             ("C-s-m" . tw-elisp-insert-message)
+             ("C-s-p" . tw-elisp-insert-message)
+             ;; Evaluates the defun above the point. (Is a bit buggy)
+             ("C-s-d" . tw-elisp-insert-defun)
+             ("s-d"   . eval-defun) ;; tw-eval-current-defun
+             ;; The point must be inside the right sexp
+             ("M-s-d" . eval-sexp-fu-eval-sexp-inner-list)
+             ("#"     . endless/sharp)
+             ("s-\\"  . tw-elisp-toggle-reader-comment-current-sexp))
+
+  (bind-keys :map org-mode-map
+             ;; ~<menu>~ pressed twice
+             ("H-<menu>" . org-latex-export-to-pdf))
+
+  ;; (with-eval-after-load 'org-mode
+  ;;   (bind-keys :map org-mode-map
+  ;;              ;; ~<menu>~ pressed twice
+  ;;              ("H-<menu>" . org-latex-export-to-pdf)))
+
+  (bind-keys :map prog-mode-map
+             ;; M-/  M-x hippie-expand
+             ("s-Q" . dumb-jump-quick-look)
+             ("s-h" . spacemacs/helm-jump-in-buffer)
+             ;; previously: helm-imenu-in-all-buffers
+             ("s-H" . lazy-helm/helm-imenu-in-all-buffers)
+             ("s-u" . eval-buffer)
+             ("s-e" . eval-last-sexp))
+
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+              (bind-keys :map LaTeX-mode-map
+                         ("H-<menu>" . latex/build)))) ;; ~<menu>~ pressed twice
+
+  (add-hook 'scheme-mode-hook #'tw-scheme-additional-keywords)
+
+  ;; Setup for Hacking on Guix and Scheme Code
+  ;; https://guix.gnu.org/en/manual/devel/en/guix.html#The-Perfect-Setup
+  ;;
+  ;; `parse-colon-path' returns a list with items containing trailing slash
+  ;; '/', geiser-guile-load-path doesn't like it.
+  ;;
+  ;; When the `dgx' environment variable is defined it is referenced in
+  ;; (with-eval-after-load ...) macros. Can't bind it using (let ...). The
+  ;; bindings won't exist when the bodies of the macros are evaluated.
+  (when-let* ((dgx-env (getenv "dgx")))
+    ;; https://emacs-guix.gitlab.io/website/manual/latest/html_node/Development.html
+    (add-hook 'scheme-mode-hook #'guix-devel-mode)
+
+    (with-eval-after-load 'yasnippet
+      (add-to-list 'yas-snippet-dirs (concat dgx-env "/etc/snippets/yas")))
+
+    ;; TODO extend the GuixOS with a service providing user full-name and
+    ;; email or parse (one of):
+    ;;   /run/current-system/configuration.scm
+    ;;   `guix system describe | rg "configuration file" | rg -o "/gnu/.*"`
+
+    (setq
+     ;; Location for geiser-history.guile and geiser-history.racket.
+     ;; (Default "~/.geiser_history")
+     ;; geiser-repl-history-filename "..."
+     user-full-name         (getenv "user_full_name")
+     user-mail-address      (getenv "user_mail_address")
+     copyright-names-regexp (format "%s <%s>" user-full-name user-mail-address))
+
+    (load-file (concat dgx-env "/etc/copyright.el"))
+    ;; check if the copyright is up to date M-x copyright-update.
+    ;; automatically add copyright after each buffer save
+    ;; (add-hook 'after-save-hook #'copyright-update)
+    )
+
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (bind-keys :map python-mode-map
+                         ("s-x" . spacemacs/python-start-or-switch-repl))))
+  (add-hook 'debugger-mode-hook
+            (lambda ()
+              (bind-keys :map debugger-mode-map
+                         ("C-g" . debugger-quit))))
+
+  (defun my-fn-kbind-scheme (keymap)
+    (lambda ()
+      (bind-keys :map keymap
+                 ("C-s-\\" . tw-racket-toggle-reader-comment-current-sexp)
+                 ("C-s-m"  . tw-scheme-insert-log)
+                 ("C-s-p"  . tw-scheme-insert-log)
+                 ("s-."    . geiser-edit-symbol-at-point)
+                 ;; ("s-;"    . tw-racket-toggle-reader-comment-current-sexp)
+                 ("s-\\"   . tw-racket-toggle-reader-comment-fst-sexp-on-line)
+                 ("s-d"    . geiser-eval-definition)
+                 ("s-e"    . geiser-eval-last-sexp))
+      ;; ~s-x~ Switch back and forth between the REPL and code buffer
+      (cond
+       ((equal keymap geiser-mode-map)
+        (bind-keys :map keymap ("s-x" . geiser-mode-switch-to-repl)))
+       ((equal keymap geiser-repl-mode-map)
+        (bind-keys :map keymap ("s-x" . geiser-guile-switch)))
+       (t
+        (error "Unrecognized keymap: %s" keymap)))
+      (bind-chords :map keymap
+                   ("le" . tw-scheme-insert-let*)
+                   ("pr" . tw-scheme-insert-log))))
+
+  (defun my-fn-kbind-racket (keymap)
+    (lambda ()
+      (message "[my-fn-kbind-racket] mode %s; repl-mode %s"
+               (equal keymap racket-mode-map)
+               (equal keymap racket-repl-mode-map))
+      (bind-keys :map keymap
+                 ("<C-s-delete>" . tw-racket-repl-clear)
+                 ("C-s-\\" . tw-racket-toggle-reader-comment-current-sexp)
+                 ("C-s-p"  . tw-racket-insert-log)
+                 ("M-s-d"  . tw-racket-insert-fn)
+                 ("M-s-p"  . tw-insert-partial)
+                 ("s-\\"   . tw-racket-toggle-reader-comment-fst-sexp-on-line)
+                 ("s-e"    . racket-eval-last-sexp)
+                 ("s-o"    . racket-run-and-switch-to-repl)
+                 ("s-x"    . racket-repl))
+      (bind-chords :map keymap
+                   ("pr" . tw-racket-insert-log))))
+
+  ;; (defun set-frame-theme (theme)
+  ;;   "Set the THEME for the current frame only. TODO doesn't work"
+  ;;   (interactive
+  ;;    (list
+  ;;     (intern (completing-read "Theme: " (mapcar 'symbol-name (custom-available-themes))))))
+  ;;   ;; Disable all current themes to avoid mixing theme elements
+  ;;   (mapc #'disable-theme custom-enabled-themes)
+  ;;   (load-theme theme t t) ;; Load the chosen theme without enabling it
+  ;;   ;; Re-enable the previously active themes for other frames
+  ;;   (dolist (other-theme custom-enabled-themes)
+  ;;     (unless (eq other-theme theme)
+  ;;       (enable-theme other-theme)))
+  ;;   ;; Apply the theme only to the current frame - doesn't work!!!
+  ;;   (with-selected-frame (selected-frame)
+  ;;     (enable-theme theme)))
+  ;; (set-frame-theme 'zenburn)
+
+  ;; (set-background-color "gray0")   ;; black
+  ;; (set-background-color "gray100") ;; white
+
+  ;; (defun my-haskell-faces ()
+  ;;   "Buffer-local face remapping for `haskell-mode-hook'."
+  ;;   (face-remap-add-relative 'default
+  ;;                            :background "darkgreen"
+  ;;                            :foreground "lightblue"))
+
+  ;; (add-hook 'haskell-mode-hook #'my-haskell-faces)
+
+  ;; For rkt-files the bindings are available via major mode bindings.
+  ;; See M-x helm-descbinds
+  (with-eval-after-load 'racket-mode
+    (mapc (-partial #'apply #'add-hook)
+          `((racket-mode-hook      ,(my-fn-kbind-racket racket-mode-map))
+            (racket-repl-mode-hook ,(my-fn-kbind-racket racket-repl-mode-map)))))
+
+  ;; For scm-files the bindings are available via minor mode bindings for
+  ;; geiser-mode, not for scheme-mode. See M-x helm-descbinds
+  (with-eval-after-load 'geiser-mode
+    (mapc (-partial #'apply #'add-hook)
+          `((geiser-mode-hook      ,(my-fn-kbind-scheme geiser-mode-map))
+            (geiser-repl-mode-hook ,(my-fn-kbind-scheme geiser-repl-mode-map)))))
+
+  (with-eval-after-load 'scheme-mode
+    (font-lock-add-keywords
+     'scheme-mode (mapcar (lambda (keyword)
+                            `(,(concat "(" (regexp-quote keyword) "\\>")
+                              . 'font-lock-keyword-face))
+                          '("if-let")))
+    ;; indentation for 'if-let' should be same as for e.g. 'let'.
+    (put 'if-let 'scheme-indent-function 1))
+
+  ;; advice, defadvice and letf shouldn't be used:
+  ;; https://lists.gnu.org/archive/html/emacs-devel/2012-12/msg00146.html
+  ;; Emacs 24.4 replaces this mechanism with advice-add
+
+  ;; Difference between `evil-search-forward` and `evil-ex-search-forward`:
+  ;; evil-search-forward    - wrap emacs isearch-forward
+  ;; evil-ex-search-forward - invoke the evil internal search
+  ;; https://emacs.stackexchange.com/a/24913
+
+  ;; See
+  ;; https://www.reddit.com/r/emacs/comments/6ewd0h/how_can_i_center_the_search_results_vertically/?utm_source=share&utm_medium=web2x
+
+  ;; (bind-keys :map scheme-mode-map
+  ;;            ("<f11>" . (lambda () (interactive) (forward-sexp 1))))
+  ;; (bind-keys :map scheme-mode-map
+  ;;            ("<f12>" . (lambda () (interactive) (sp-forward-sexp 1))))
+  ;; (unbind-key "<f11>" scheme-mode-map)
+  ;; (unbind-key "<f12>" scheme-mode-map)
+
+  (advice-add #'helm-swoop
+              :after
+              (defun my-note--helm-swoop (&optional _)
+                (let ((p "[advice my-note--helm-swoop] %s"))
+                  (message
+                   p "Try ~SPC s C-s~ for M-x helm-multi-swoop-all"))))
+
+  (advice-add #'tw-search-region-or-symbol
+              :after
+              (defun my-note--my-search-region-or-symbol (&optional _)
+                (let ((p "[advice tw-search-region-or-symbol] "))
+                  (message
+                   (concat
+                    p "Try:\n"
+                    p "1. ~<f3>~ then ~<f4>~ then ~v~ (evil-visual-mode)"
+                    " mark something and press ~SPC s e~\n"
+                    p "2. ~M-<f3>~ for M-x spacemacs/helm-project-smart-do-search-region-or-symbol")))))
+
+  (advice-add #'split-window-right-and-focus
+              :after (defun my-recenter-top-bottom ()
+                       ;; needed cause the (recenter-top-bottom) has
+                       ;; (interactive "P")
+                       (recenter-top-bottom)))
+  (advice-add #'whitespace-cleanup
+              :after (defun my-whitespace-cleanup ()
+                       (message "[advice whitespace-cleanup] done")))
+  (advice-add #'evil-avy-goto-char-timer
+              :after (defun my-note--evil-avy-goto-char-timer (_)
+                       (message
+                        "[advice evil-avy-goto-char-timer] %s"
+                        "Also ~SPC j j~, ~<f2>~")))
+  (advice-add #'evil-avy-goto-line
+              :after
+              (defun my-note--evil-avy-goto-line (&optional _)
+                (message
+                 "[advice evil-avy-goto-line] %s"
+                 "Also ~SPC j l~, ~M-m j l~, ~<C-f2>~, ~C-s-/~")))
+
+  ;; (advice-add #'evil-ex-search-next
+  ;;             :after #'evil-scroll-line-to-center)
+  ;; (advice-add #'evil-ex-search-previous
+  ;;             :after #'evil-scroll-line-to-center)
+
+  (progn ; adjust-point-pos-after-search
+    (advice-add
+     #'evil-ex-search-next
+     :before
+     #'tw-adjust-point-pos-before-search
+     ;; (lambda (&optional COUNT)
+     ;;   (interactive)
+     ;;   (evil-scroll-line-to-center)
+     ;;   ;; (setq my-line-before (line-number-at-pos))
+     ;;   )
+     ;; ;; convenient name for identifying or removing this advice later
+     ;; '((name . "before-search"))
+     )
+    (advice-add #'evil-ex-search-next :after #'tw-adjust-point-pos-after-search)
+    (advice-add #'evil-ex-search-previous :before #'tw-adjust-point-pos-before-search)
+    (advice-add #'evil-ex-search-previous :after #'tw-adjust-point-pos-after-search)
+    (advice-add #'evil-goto-line :before #'evil-scroll-line-to-center)
+    (advice-add #'evil-goto-line :after #'evil-scroll-line-to-center)
+
+    ;; Both ~*~ / ~<kp-multiply>~ and ~s-*~ / ~<s-kp-multiply>~ should behave the
+    ;; same and open that transient menu.
+    (global-set-key (kbd "s-*") #'spacemacs/enter-ahs-backward)
+    (global-set-key (kbd "<s-kp-multiply>") #'spacemacs/enter-ahs-backward)
+
+    ;; (advice-remove #'evil-ex-search-next "before-search")
+    ;; (advice-remove #'evil-ex-search-next #'tw-adjust-point-pos-before-search)
+    ;; (advice-remove #'evil-ex-search-next #'tw-adjust-point-pos-after-search)
+    ;; (advice-remove #'evil-ex-search-next #'evil-scroll-line-to-center)
+    ;; (advice-remove #'evil-ex-search-previous #'tw-adjust-point-pos-before-search)
+    ;; (advice-remove #'evil-ex-search-previous #'tw-adjust-point-pos-after-search)
+    ;; (advice-remove #'evil-goto-line #'evil-scroll-line-to-center)
+    ;; (advice-remove #'evil-goto-line #'evil-scroll-line-to-center)
+    )
+
+  (advice-add #'ediff-quit
+              :around #'tw-disable-y-or-n-p)
+  (advice-add #'helm-mini
+              :before #'tw-helm-mini)
+  (advice-add #'helm-mini
+              :after (defun my-note--helm-mini ()
+                       (message
+                        "[advice helm-mini] %s"
+                        "Toggle mark / unmark all buffers: ~M-m~")))
+  (advice-add #'spacemacs/helm-persp-switch-project
+              :after (defun my-note--spacemacs/helm-persp-switch-project (_)
+                       (message
+                        "[advice spacemacs/helm-persp-switch-project] %s"
+                        "Try ~SPC p p~ : M-x helm-projectile-switch-project")))
+
+  (advice-add #'spacemacs/toggle-menu-bar
+              :after (defun my-note--spacemacs/toggle-menu-bar ()
+                       (message
+                        "[advice spacemacs/toggle-menu-bar] %s"
+                        "Try ~M-`~ : M-x tmm-menubar")))
+
+  (mapc
+   (lambda (map)
+     (bind-keys :map map
+;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+;;; layers/+misc/multiple-cursors/packages.el
+                ("C-M-k" . kill-sexp)))
+   '(evil-normal-state-map evil-insert-state-map))
+
+  ;;   (with-eval-after-load 'evil-normal-state
+  ;;     (bind-keys :map evil-normal-state-map
+  ;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+  ;; ;;; layers/+misc/multiple-cursors/packages.el
+  ;;                   ("C-M-k" . kill-sexp)))
+
+  ;;   (with-eval-after-load 'evil-insert-state
+  ;;     (bind-keys :map evil-insert-state-map
+  ;; ;;; TODO workaround for (global-set-key (kbd "C-M-k") 'kill-sexp) overridden by
+  ;; ;;; layers/+misc/multiple-cursors/packages.el
+  ;;                   ("C-M-k" . kill-sexp)))
+
+  (mapc
+   (lambda (map)
+     ;; Move by screen lines instead of logical (long) lines
+     (bind-keys :map map
+                ("j" . evil-next-visual-line)
+                ("k" . evil-previous-visual-line)))
+   '(evil-motion-state-map evil-visual-state-map))
+
+  (bind-keys :map evil-visual-state-map
+             ("p" . tw-evil-paste-after-from-0))
+
+  ;; (with-eval-after-load 'evil-motion-state
+  ;;    ;; Move by screen lines instead of logical (long) lines
+  ;;    (bind-keys :map evil-motion-state-map
+  ;;               ("j" . evil-next-visual-line)
+  ;;               ("k" . evil-previous-visual-line)))
+
+  ;; (with-eval-after-load 'evil-visual-state
+  ;;   ;; Move by screen lines instead of logical (long) lines
+  ;;   (bind-keys :map evil-visual-state-map
+  ;;                   ("j" . evil-next-visual-line)
+  ;;                   ("k" . evil-previous-visual-line))
+  ;;   (bind-keys :map evil-visual-state-map
+  ;;              ("p" . tw-evil-paste-after-from-0)))
+
+  ;; see also binding for <f2>
+  ;; (bind-keys :map evil-normal-state-map
+  ;;            ("f" . evil-avy-goto-char-timer)
+  ;;            ("t" . evil-avy-goto-char-timer))
+
+  ;; (add-to-list 'spacemacs-indent-sensitive-modes #'clojure-mode)
+  ;; (add-to-list 'spacemacs-indent-sensitive-modes 'clojurescript-mode)
+  )
+
+;;; `package-directory-list' is list of directories containing packages intended
+;;; for system-wide use. Original value of `package-directory-list' contains
+;;; duplicates.
+(delq nil (delete-dups package-directory-list))
+
+;; Do not write anything past this comment. This is where Emacs will
+;; auto-generate custom variable definitions.
