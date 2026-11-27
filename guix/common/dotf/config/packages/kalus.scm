@@ -21,10 +21,11 @@
   )
 
 (use-package-modules
- aidc            ;; zbar
- cdrom           ;; xorriso
- gnupg           ;; pinentry
- scanner         ;; sane-backends
+ aidc     ; zbar
+ cdrom    ; xorriso
+ gnupg    ; pinentry
+ scanner  ; sane-backends
+ tmux     ; tmux
  )
 
 (define m (module-name-for-logging))
@@ -45,6 +46,7 @@ Epson (sane-backends)."
     ;; `gpg' is run and needs it.
     pinentry       ; Seems like just 'pinentry-tty' doesn't do the job
     sane-backends  ; scanimage
+    tmux           ; terminal multiplexer, default configuration
     xorriso        ; burn directories onto DVDs
     zbar)          ; zbarimg: read barcodes and QR codes from images
    (remove (lambda (p)

@@ -39,7 +39,6 @@
   file: \"/home/bost/dev/dotfiles/bin\"
   absolute: #<promise #<procedure 7f839a518660 at ... ()>>
   name: \"bin\" recursive?: #t select?: #<procedure true (file stat)>>)"
-  ;; TODO (user-dotf-to-dir ".tmux") doesn't work
   (list dir ;; destination
         (local-file (user-dotf "/" dir) #:recursive? #t)))
 
@@ -110,7 +109,6 @@ See also:
                      "/guix/trusted-channels.scm"
                      "/guix-gaming-channels/games.scm"
                      "/sway/config"
-                     "/tmux/tmux.conf"
                      "/git/config"
                      )))
       ;; (lambda (p) (format #t "###### 3.\n~a\n" p) p)

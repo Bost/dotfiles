@@ -20,7 +20,7 @@
 
 (use-package-modules
  maths base file web-browsers haskell-apps uml vnc rdesktop
- w3m dns bash rust-apps shellutils admin shells version-control rsync tmux
+ w3m dns bash rust-apps shellutils admin shells version-control rsync
  compression vim audio gnuzilla inkscape rust graphviz texlive chromium
  kde-systemtools kde-utils gnome gtk libreoffice spice terminals lxqt xorg
  xdisorg xfce android linux aspell autotools algebra llvm cmake curl textutils
@@ -327,9 +327,6 @@ TODO implement: Show warning & don't compile if substitutes are not present."
 
     ;; Lightweight Linux bootloader, for the isohybrid --type 1 guix.iso
     syslinux
-
-    ;; terminal multiplexer, more popular and modern than 'screen'
-    tmux
 
     ;; Disk manager service. Provides udisksctl
     udisks

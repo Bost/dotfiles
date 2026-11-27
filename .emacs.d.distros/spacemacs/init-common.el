@@ -663,12 +663,6 @@ This function should only modify configuration layer settings."
             magit-diff-highlight-hunk-region-using-overlays)
           )
 
-     ;; Try some of the following commands:
-     ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
-     ;;       /home/bost/.emacs.d.distros/spacemacs/<profile>/src/layers/fennel
-     ;;   git submodule update --init
-     ;; fennel ; fennel = lua in lisp
-
      ;; gnus
      ;; go
 

@@ -200,12 +200,6 @@ This function should only modify configuration layer settings."
           ;; )
           )
 
-     ;; Try some of the following commands:
-     ;;   git submodule add https://github.com/mitchellw/fennel-layer.git \
-     ;;       ~/.emacs.d.distros/spacemacs/guix/src/layers/fennel
-     ;;   git submodule update --init
-     ;; fennel ;; fennel = lua in lisp
-
      ;; gnus
      ;; go
 
