@@ -726,6 +726,7 @@ a list of files to search through."
     (list #:utility "qemu-vm"              #:desc "qemu-vm")
     (list #:utility "touch"                #:desc "touch with -p/--parents")
     (list #:utility "timestamp"            #:desc "timestamp")
+    (list #:utility "git-apply"            #:desc "git-am-and-mark-applied")
     )))
 (testsymb 'direct-utils-files)
 
