@@ -196,7 +196,13 @@
         (xorg-configuration
          (modules (cons nvda %default-xorg-modules))
          (drivers '("nvidia"))
-         (keyboard-layout keyboard-layout))
+         (keyboard-layout keyboard-layout)
+         ;; -nolisten local: no abstract socket @/tmp/.X11-unix/X0, which any
+         ;; process sharing the network namespace reaches, e.g. a guix shell
+         ;; container started with --network. Clients use the socket file in
+         ;; /tmp/.X11-unix.
+         (server-arguments (append %default-xorg-server-arguments
+                                   '("-nolisten" "local"))))
 
         ;; Simple Desktop Display Manager SDDM: for login screen
         ;; Recommended for KDE Plasma, LXQt desktop environments
